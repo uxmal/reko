@@ -71,12 +71,6 @@ namespace Decompiler.Core.Code
             d.VisitPhiAssignment(phi);
         }
 
-
-        public void VisitIndirectCall(IndirectCall ic)
-        {
-            d.VisitIndirectCall(ic);
-        }
-
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             d.VisitReturnInstruction(ret);

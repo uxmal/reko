@@ -24,75 +24,33 @@ using System;
 
 namespace Decompiler.Core.Code
 {
-	public abstract class CallBase : Instruction
-	{
-		protected Expression expr;
-
-		public CallBase(Expression expr, CallSite site)
-		{
-			this.expr = expr;
+    public class CallInstruction : Instruction
+    {
+        public CallInstruction(Expression callee, CallSite site)
+        {
+            if (callee == null)
+                throw new ArgumentNullException("callee");
+            this.Callee = callee;
             this.CallSite = site;
-		}
-
-		public CallSite CallSite { get; private set; }
-
-        public override bool IsControlFlow
-        {
-            get { return false; }
-        }
-	}
-
-    //$TODO: the distinction between indirect call and call is just the type of the target expression. We should attempt to get rid of the two subclasses.
-	public class IndirectCall : CallBase
-	{
-        public IndirectCall(Expression expr, CallSite site) : base(expr, site)
-        {
         }
 
-		public override Instruction Accept(InstructionTransformer xform)
-		{
-			return xform.TransformIndirectCall(this);
-		}
+        public Expression Callee { get; set; }
+        public CallSite CallSite { get; private set; }
+        public override bool IsControlFlow { get { return false; } }
 
-        public override T Accept<T>(InstructionVisitor<T> visitor)
+        public override Instruction Accept(InstructionTransformer xform)
         {
-            return visitor.VisitIndirectCall(this);
+            return xform.TransformCallInstruction(this);
         }
-
-		public override void Accept(InstructionVisitor v)
-		{
-			v.VisitIndirectCall(this);
-		}
-
-		public Expression Callee
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
-	}
-
-	public class CallInstruction : CallBase
-	{
-        public CallInstruction(ProcedureConstant pc, CallSite site) : base(pc, site)
-        {
-            this.Callee = pc != null ? pc.Procedure : null;
-        }
-
-        public ProcedureBase Callee { get; set; }
-
-		public override Instruction Accept(InstructionTransformer xform)
-		{
-			return xform.TransformCallInstruction(this);
-		}
 
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitCallInstruction(this);
         }
 
-		public override void Accept(InstructionVisitor v)
-		{
-			v.VisitCallInstruction(this);
-		}
-	}
+        public override void Accept(InstructionVisitor v)
+        {
+            v.VisitCallInstruction(this);
+        }
+    }
 }

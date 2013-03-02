@@ -313,6 +313,7 @@ main_exit:
         }
 
         [Test]
+        [Ignore("Unhappy about this, but we probably want to do this later in the analysis")]
         public void ReplaceLongAdds()
         {
             p.Add("main", m =>
@@ -331,7 +332,18 @@ main_exit:
                 m.Return();
             });
 
-            var sExp = @"@@@";
+            var sExp = @"// main
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	edx_eax = edx_eax + ebx_ecx
+	SCZO = cond(edx_eax)
+	return
+	// succ: main_exit
+main_exit:
+
+";
             RunTest(sExp);
         }
 

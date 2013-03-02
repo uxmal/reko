@@ -100,11 +100,6 @@ namespace Decompiler.Evaluation
             throw new NotImplementedException();
         }
 
-        public bool VisitIndirectCall(IndirectCall ic)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool VisitReturnInstruction(ReturnInstruction ret)
         {
             var retPat = pattern as ReturnInstruction;

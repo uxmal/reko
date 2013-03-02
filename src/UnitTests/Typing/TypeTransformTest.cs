@@ -355,7 +355,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier pfn = Local32("pfn");
 			Assign(pfn, Int32(0x1213130));
 			Store(Int32(0x10000000), pfn);
-			this.Emit(new IndirectCall(LoadDw(Int32(0x10000000)), new CallSite(0, 0)));
+			this.Emit(new CallInstruction(LoadDw(Int32(0x10000000)), new CallSite(0, 0)));
 		}
 	}
 

@@ -366,7 +366,9 @@ namespace Decompiler.Core.Output
 		{
 			writer.Indent();
 			writer.WriteKeyword("call");
-            writer.Write(string.Format(" {0} ({1})", ci.Callee.Name, ci.CallSite));
+            writer.Write(" ");
+            ci.Callee.Accept(this);
+            writer.Write(" ({0})", ci.CallSite);
 			writer.Terminate();
 		}
 
@@ -416,15 +418,6 @@ namespace Decompiler.Core.Output
             g.Target.Accept(this);
             writer.Terminate();
         }
-
-		public void VisitIndirectCall(IndirectCall ic)
-		{
-			writer.Indent();
-			writer.WriteKeyword("icall");
-            writer.Write(" ");
-			WriteExpression(ic.Callee);
-			writer.Terminate();
-		}
 
 		public void VisitPhiAssignment(PhiAssignment phi)
 		{

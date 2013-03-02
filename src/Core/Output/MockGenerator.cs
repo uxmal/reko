@@ -207,11 +207,6 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
-        void InstructionVisitor.VisitIndirectCall(IndirectCall ic)
-        {
-            throw new NotImplementedException();
-        }
-
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
         {
             writer.Write("Return(");

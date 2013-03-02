@@ -32,7 +32,6 @@ namespace Decompiler.Core.Code
 		void VisitDefInstruction(DefInstruction def);
         void VisitGotoInstruction(GotoInstruction gotoInstruction);
 		void VisitPhiAssignment(PhiAssignment phi);
-		void VisitIndirectCall(IndirectCall ic);
 		void VisitReturnInstruction(ReturnInstruction ret);
 		void VisitSideEffect(SideEffect side);
 		void VisitStore(Store store);
@@ -49,7 +48,6 @@ namespace Decompiler.Core.Code
         T VisitDefInstruction(DefInstruction def);
         T VisitGotoInstruction(GotoInstruction gotoInstruction);
         T VisitPhiAssignment(PhiAssignment phi);
-        T VisitIndirectCall(IndirectCall ic);
         T VisitReturnInstruction(ReturnInstruction ret);
         T VisitSideEffect(SideEffect side);
         T VisitStore(Store store);
@@ -101,11 +99,6 @@ namespace Decompiler.Core.Code
 		{
 			phi.Src.Accept(this);
 			phi.Dst.Accept(this);
-		}
-
-		public virtual void VisitIndirectCall(IndirectCall ic)
-		{
-			ic.Callee.Accept(this);
 		}
 
 		public virtual void VisitReturnInstruction(ReturnInstruction ret)

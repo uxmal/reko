@@ -278,9 +278,9 @@ namespace Decompiler.UnitTests.Analysis
         {
             Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
             var frame = proc.Frame;
-            Identifier r1 = m.Register(1);
-            Identifier r2 = m.Register(2);
-            Identifier r3 = m.Register(3);
+            Identifier ecx = m.Register(1);
+            Identifier edx = m.Register(2);
+            Identifier ebx = m.Register(3);
             Block b = proc.AddBlock("b");
             Block t = proc.AddBlock("t");
             Block e = proc.AddBlock("e");
@@ -292,39 +292,39 @@ namespace Decompiler.UnitTests.Analysis
             trf = CreateTrashedRegisterFinder(prog);
             CreateBlockFlow(b, frame);
             trf.StartProcessingBlock(b);
-            trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage] = Constant.Invalid;
-            trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage] = r3;
+            trf.RegisterSymbolicValues[(RegisterStorage)ecx.Storage] = Constant.Invalid;
+            trf.RegisterSymbolicValues[(RegisterStorage)edx.Storage] = ebx;
 
-            flow[e].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage] = r2;
-            flow[e].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage] = r3;
+            flow[e].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage] = edx;
+            flow[e].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage] = ebx;
 
-            flow[t].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage] = Constant.Invalid;
-            flow[t].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage] = r2;
+            flow[t].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage] = Constant.Invalid;
+            flow[t].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage] = edx;
 
             trf.PropagateToSuccessorBlock(e);
             trf.PropagateToSuccessorBlock(t);
             Assert.AreEqual(2, proc.ControlGraph.Successors(b).Count);
-            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage].ToString(), "trash & r2 => trash");
-            Assert.AreEqual("r3", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage].ToString(), "r3 & r3 => r3");
-            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage].ToString(), "trash & r2 => trash");
-            Assert.AreEqual("r3", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage].ToString(), "r3 & r3 => r3");
+            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage].ToString(), "trash & r2 => trash");
+            Assert.AreEqual("ebx", flow[e].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage].ToString(), "ebx & ebx => ebx");
+            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage].ToString(), "trash & r2 => trash");
+            Assert.AreEqual("ebx", flow[e].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage].ToString(), "ebx & ebx => ebx");
 
-            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage].ToString(), "trash & trash => trash");
-            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage].ToString(), "r3 & r2 => trash");
+            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage].ToString(), "trash & trash => trash");
+            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage].ToString(), "r3 & r2 => trash");
         }
 
         [Test]
         public void PropagateStackValuesToSuccessor()
         {
             m.Label("Start");
-            Identifier r1 = m.Register(1);
+            Identifier ecx = m.Register(1);
             trf = CreateTrashedRegisterFinder(prog);
             CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
-            trf.StackSymbolicValues[-4] = r1;
-            trf.StackSymbolicValues[-8] = r1;
-            trf.StackSymbolicValues[-12] = r1;
+            trf.StackSymbolicValues[-4] = ecx;
+            trf.StackSymbolicValues[-8] = ecx;
+            trf.StackSymbolicValues[-12] = ecx;
             trf.StackSymbolicValues[-16] = m.Word32(0x1234);
             trf.StackSymbolicValues[-20] = m.Word32(0x5678);
             trf.StackSymbolicValues[-24] = m.Word32(0x9ABC);
@@ -332,15 +332,15 @@ namespace Decompiler.UnitTests.Analysis
             var succ = new Block(m.Procedure, "succ");
             var sf = CreateBlockFlow(succ, m.Frame);
             flow[succ] = sf;
-            sf.SymbolicIn.StackState[-8] = r1;
+            sf.SymbolicIn.StackState[-8] = ecx;
             sf.SymbolicIn.StackState[-12] = Constant.Word32(1231);
             sf.SymbolicIn.StackState[-20] = Constant.Word32(0x5678);
             sf.SymbolicIn.StackState[-24] = Constant.Word32(0xCCCC);
 
             trf.PropagateToSuccessorBlock(succ);
 
-            Assert.AreEqual("r1", sf.SymbolicIn.StackState[-4].ToString(), "Didn't have a value before");
-            Assert.AreEqual("r1", sf.SymbolicIn.StackState[-8].ToString(), "Same value as before");
+            Assert.AreEqual("ecx", sf.SymbolicIn.StackState[-4].ToString(), "Didn't have a value before");
+            Assert.AreEqual("ecx", sf.SymbolicIn.StackState[-8].ToString(), "Same value as before");
             Assert.AreEqual("<invalid>", sf.SymbolicIn.StackState[-12].ToString());
             Assert.AreEqual("0x00001234", sf.SymbolicIn.StackState[-16].ToString());
             Assert.AreEqual("0x00005678", sf.SymbolicIn.StackState[-20].ToString());

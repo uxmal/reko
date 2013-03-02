@@ -39,7 +39,6 @@ namespace Decompiler.UnitTests.Mocks
         private int numBlock;
         private List<ProcUpdater> unresolvedProcedures;
         private uint iStmt;
-        private IProcessorArchitecture arch;
 
         public ProcedureBuilder()
         {
@@ -65,7 +64,7 @@ namespace Decompiler.UnitTests.Mocks
         {
             if (arch == null)
                 throw new ArgumentNullException("arch");
-            this.arch = arch;
+            this.Architecture = arch;
             this.blocks = new Dictionary<string, Block>();
             this.Procedure = new Procedure(name, arch.CreateFrame());
             this.unresolvedProcedures = new List<ProcUpdater>();
@@ -78,6 +77,7 @@ namespace Decompiler.UnitTests.Mocks
         public Block Block { get; private set; }
         public Procedure Procedure { get; private set; }
         public ProgramBuilder ProgramMock { get; set; }
+        public IProcessorArchitecture Architecture { get; private set; }
 
         private Block BlockOf(string label)
         {
@@ -121,7 +121,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Statement Call(string procedureName)
         {
-            var ci = new CallInstruction(null, new CallSite(4, 0));  //$REVIEW: hard-wired 4-byte pointer.
+            var ci = new CallInstruction(Constant.Invalid, new CallSite(4, 0));  //$REVIEW: hard-wired 4-byte pointer.
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
             return Emit(ci);
         }
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Statement Call(Expression expr)
         {
-            var ic = new IndirectCall(expr, new CallSite(4, 0));
+            var ic = new CallInstruction(expr, new CallSite(4, 0));
             return Emit(ic);
         }
 
@@ -160,7 +160,6 @@ namespace Decompiler.UnitTests.Mocks
             Emit(new Declaration(id, expr));
             return id;
         }
-
 
         public Statement Declare(Identifier id, Expression initial)
         {
@@ -245,8 +244,6 @@ namespace Decompiler.UnitTests.Mocks
             return Block;
         }
 
-
-
         public void FinishProcedure()
         {
             TerminateBlock();
@@ -265,7 +262,12 @@ namespace Decompiler.UnitTests.Mocks
 
         public override Identifier Register(int i)
         {
-            return Frame.EnsureRegister(FakeArchitecture.GetMachineRegister(i));
+            return Frame.EnsureRegister(Architecture.GetRegister(i));
+        }
+
+        public Identifier Register(string name)
+        {
+            return Frame.EnsureRegister(Architecture.GetRegister(name));
         }
 
         public override void Return(Expression exp)
@@ -301,5 +303,10 @@ namespace Decompiler.UnitTests.Mocks
             }
         }
 
+
+        public Identifier Reg32(string name)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word32));
+        }
     }
 }

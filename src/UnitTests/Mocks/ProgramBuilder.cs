@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Mocks
         public void Add(Procedure proc)
         {
             ++procCount;
-            prog.Procedures[new Address(procCount)] = proc;
+            prog.Procedures[new Address(procCount * 0x1000u)] = proc;
             nameToProcedure.Add(proc.Name, proc);
         }
 
@@ -78,10 +78,13 @@ namespace Decompiler.UnitTests.Mocks
             {
                 foreach (Statement stm in proc.Statements)
                 {
-                    CallInstruction call = stm.Instruction as CallInstruction;
+                    var call = stm.Instruction as CallInstruction;
                     if (call == null)
                         continue;
-                    var callee = call.Callee as Procedure;
+                    var pc = call.Callee as ProcedureConstant;
+                    if (pc == null)
+                        continue;
+                    var callee = pc.Procedure as Procedure;
                     if (callee == null)
                         continue;
                     prog.CallGraph.AddEdge(stm, callee);
@@ -142,7 +145,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public override void Update(Procedure proc)
 		{
-			ci.Callee = proc;
+			ci.Callee = new ProcedureConstant(PrimitiveType.Word32,proc);
 		}
 
 	}

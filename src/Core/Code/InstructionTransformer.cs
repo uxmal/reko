@@ -77,14 +77,6 @@ namespace Decompiler.Core.Code
             return gotoInstruction;
         }
 
-		public virtual Instruction TransformIndirectCall(IndirectCall ic)
-		{
-			ic.Callee = ic.Callee.Accept(this);
-			return ic;
-		}
-
-
-
 		public virtual Instruction TransformPhiAssignment(PhiAssignment phi)
 		{
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)

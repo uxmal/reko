@@ -115,6 +115,12 @@ namespace Decompiler.Analysis
 
         public void Use(Expression ex)
         {
+            var id = ex as Identifier;
+            if (id != null)
+            {
+                Use(id);
+                return;
+            }
             throw new NotImplementedException();
         }
 

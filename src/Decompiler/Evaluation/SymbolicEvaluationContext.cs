@@ -289,7 +289,7 @@ namespace Decompiler.Evaluation
 
             public Storage VisitMemoryStorage(MemoryStorage global)
             {
-                throw new NotImplementedException();
+                return global;
             }
 
             public Storage VisitStackLocalStorage(StackLocalStorage local)
