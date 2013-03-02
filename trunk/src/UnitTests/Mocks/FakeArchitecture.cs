@@ -119,7 +119,13 @@ namespace Decompiler.UnitTests.Mocks
 
 		public RegisterStorage GetRegister(string s)
 		{
-			return null;
+            if (s[0] == 'r')
+            {
+                int reg;
+                if (int.TryParse(s.Substring(1), out reg))
+                    return GetRegister(reg);
+            }
+            return null;
 		}
 
 		public BitSet ImplicitArgumentRegisters

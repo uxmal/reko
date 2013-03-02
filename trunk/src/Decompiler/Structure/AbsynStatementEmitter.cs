@@ -121,7 +121,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
         {
-            throw new NotImplementedException();
+            stms.Add(new AbsynSideEffect(new Application(ci.Callee, PrimitiveType.Void)));
         }
 
         void InstructionVisitor.VisitDeclaration(Declaration decl)
@@ -152,12 +152,6 @@ namespace Decompiler.Structure
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
-        }
-
-
-        void InstructionVisitor.VisitIndirectCall(IndirectCall ic)
-        {
-            stms.Add(new AbsynSideEffect(new Application(ic.Callee, PrimitiveType.Void)));
         }
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)

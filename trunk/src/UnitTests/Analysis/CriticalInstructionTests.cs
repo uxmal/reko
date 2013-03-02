@@ -102,12 +102,6 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void TestIndirectCall()
-		{
-			Assert.IsTrue(ci.IsCritical(new IndirectCall(null, new CallSite(0, 0))));
-		}
-
-		[Test]
 		public void TestUse()
 		{
 			Assert.IsTrue(ci.IsCritical(new UseInstruction(null, null)));

@@ -3,64 +3,88 @@
 	MayUseIn:  ds
 	BypassIn: 
 	Trashed:   ax si al ah
-	Preserved:
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0000_entry:
 // DataOut: ds
-l0C00_0000:		// block 1, pred: 0
-	call fn0C00_000D (depth: 2;)
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0000:
+	call fn0C00_000D (retsize: 2; depth: 2)
 	si = ax
-	call fn0C00_001A (depth: 2;)
+	call fn0C00_001A (retsize: 2; depth: 2)
 	Mem0[ds:0x0400:word16] = ax
 	return
-	// succ:  2
 // DataOut:
-fn0C00_0000_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_0000_exit:
 // DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
+
 // fn0C00_000D /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  ds
 	BypassIn: 
 	Trashed:   ax al ah
-	Preserved: si
+	Preserved: sp si
 // fn0C00_000D
 void fn0C00_000D()
-fn0C00_000D_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_000D_entry:
 // DataOut: ds
-l0C00_000D:		// block 1, pred: 0
-	wLoc04 = si
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Temporary(16)
+
+l0C00_000D:
+	sp = fp - 0x0002
+	wLoc02 = si
 	si = Mem0[ds:0x007A:word16]
 	si = Mem0[ds:si + 0x0004:word16]
 	ax = si + 0x0008
-	si = wLoc04
+	si = wLoc02
+	sp = fp
 	return
-	// succ:  2
 // DataOut: ax ds
-fn0C00_000D_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_000D_exit:
 // DataOut: ax ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp si:si ax:<invalid> -2:si
+
 // fn0C00_001A /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  si ds
 	BypassIn: 
 	Trashed:   ax al ah
-	Preserved: si
+	Preserved: sp si
 // fn0C00_001A
 void fn0C00_001A()
-fn0C00_001A_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_001A_entry:
 // DataOut: si ds
-l0C00_001A:		// block 1, pred: 0
-	wLoc04 = si
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Temporary(16)
+
+l0C00_001A:
+	sp = fp - 0x0002
+	wLoc02 = si
 	ax = Mem0[ds:si:word16]
-	si = wLoc04
+	si = wLoc02
+	sp = fp
 	return
-	// succ:  2
 // DataOut: ax ds
-fn0C00_001A_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_001A_exit:
 // DataOut: ax ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp ax:<invalid> si:si -2:si
+

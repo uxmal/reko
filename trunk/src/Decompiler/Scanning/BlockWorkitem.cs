@@ -242,7 +242,7 @@ namespace Decompiler.Scanning
                 if (mem.EffectiveAddress is Constant)
                 {
                     var site = state.OnBeforeCall(this.stackReg, 4);            //$BUGBUG: hard coded.
-                    Emit(new IndirectCall(g.Target, site));
+                    Emit(new CallInstruction(g.Target, site));
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
@@ -322,7 +322,7 @@ namespace Decompiler.Scanning
 
             ProcessVector(ric.Address, call);
 
-            var ic = new IndirectCall(call.Target, site);
+            var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
             state.OnAfterCall(stackReg, sig, eval);
@@ -404,7 +404,7 @@ namespace Decompiler.Scanning
             return true;
         }
 
-        private ProcedureSignature GuessProcedureSignature(IndirectCall ic)
+        private ProcedureSignature GuessProcedureSignature(CallInstruction call)
         {
             return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
             // This would have to be arch-dependent + platform-dependent as some arch pass

@@ -208,10 +208,6 @@ namespace Decompiler.Analysis
             bool changed = false;
             BlockFlow succFlow = flow[s];
             var ctxSucc = succFlow.SymbolicIn;
-
-            Dump(ctx.RegisterState);
-            Dump(ctx.StackState);
-
             foreach (var de in ctx.RegisterState)
             {
                 Expression oldValue;
@@ -297,15 +293,18 @@ namespace Decompiler.Analysis
                 return ci;
             }
 
-            var callee = ci.Callee as Procedure;
-            if (callee != null)
+            var pc = ci.Callee as ProcedureConstant;
+            if (pc != null)
             {
-                ctx.UpdateRegistersTrashedByProcedure(flow[callee]);
+                var callee = pc.Procedure as Procedure;
+                if (callee != null)
+                {
+                    ctx.UpdateRegistersTrashedByProcedure(flow[callee]);
+                    return ci;
+                }
             }
-            else
-            {
-                //$TODO: get trash information from signature?
-            }
+            
+            //$TODO: get trash information from signature?
             return ci;
         }
 
@@ -322,11 +321,6 @@ namespace Decompiler.Analysis
         public Instruction VisitGotoInstruction(GotoInstruction g)
         {
             return se.VisitGotoInstruction(g);
-        }
-
-        public Instruction VisitIndirectCall(IndirectCall ic)
-        {
-            return se.VisitIndirectCall(ic);
         }
 
         public Instruction VisitPhiAssignment(PhiAssignment phi)
@@ -359,8 +353,12 @@ namespace Decompiler.Analysis
             throw new NotSupportedException();
         }
 
-        private bool ProcedureTerminates(ProcedureBase proc)
+        private bool ProcedureTerminates(Expression expr)
         {
+            var pc = expr as ProcedureConstant;
+            if (pc == null)
+                return false;
+            var proc = pc.Procedure;
             if (proc.Characteristics.Terminates)
                 return true;
             var p = proc as Procedure;
@@ -382,8 +380,7 @@ namespace Decompiler.Analysis
             public override Expression VisitApplication(Application appl)
             {
                 var e = base.VisitApplication(appl);
-                var pc = appl.Procedure as ProcedureConstant;
-                if (pc != null && trf.ProcedureTerminates(pc.Procedure))
+                if (appl.Procedure != null && trf.ProcedureTerminates(appl.Procedure))
                 {
                     ctx.TrashedFlags = 0;
                     ctx.RegisterState.Clear();

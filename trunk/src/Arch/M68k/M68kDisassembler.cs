@@ -182,8 +182,6 @@ namespace Decompiler.Arch.M68k
 
         public M68kInstruction Disassemble()
         {
-            throw new NotImplementedException();
-#if NEVER
             if (!g_initialized)
             {
                 build_opcode_table();
@@ -202,12 +200,11 @@ namespace Decompiler.Arch.M68k
                 instr.dataWidth = OperandFormatDecoder.GetSizeType(g_cpu_ir, args[1], null);
                 i = 3;
             }
-            OperandFormatDecoder opTranslator = new OperandFormatDecoder(g_cpu_ir, args, i);
+            var opTranslator = new OperandFormatDecoder(g_cpu_ir, args, i);
             instr.op1 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
             instr.op2 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
             instr.op3 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
             return instr;
-#endif
         }
 
 #if !NEVER
@@ -322,9 +319,7 @@ namespace Decompiler.Arch.M68k
         private const uint DASMFLAG_STEP_OVER = 1;
         private const uint DASMFLAG_STEP_OUT = 2;
 
-        /* ======================================================================== */
         /* =============================== PROTOTYPES ============================= */
-        /* ======================================================================== */
 
         ///* Read data at the PC and increment PC */
         //uint  read_imm_8();
@@ -403,9 +398,7 @@ namespace Decompiler.Arch.M68k
 
 
 
-        /* ======================================================================== */
         /* ================================= DATA ================================= */
-        /* ======================================================================== */
 
         /* Opcode handler jump table */
         static opcode_struct[] g_instruction_table = new opcode_struct[0x10000];

@@ -33,17 +33,17 @@ word16 maybeterminate(word16 ax, word16 bx)
 maybeterminate_entry:		// pred:
 	// succ:  l0C00_0015
 // DataOut: ax bx ds
-l0C00_0015:		// pred: maybeterminate_entry
+l0C00_0015:
 	SCZO = cond(ax - Mem0[ds:bx:word16])
 	branch Test(ULT,C) l0C00_0023
 	// succ:  l0C00_0019 l0C00_0023
 // DataOut: ax bx ds
-l0C00_0019:		// pred: l0C00_0015
+l0C00_0019:
 	SCZO = cond(ax - Mem0[ds:bx + 0x0002:word16])
 	branch Test(UGE,C) l0C00_0023
 	// succ:  l0C00_001E l0C00_0023
 // DataOut: ax bx ds
-l0C00_0023:		// pred: l0C00_0015 l0C00_0019
+l0C00_0023:
 	cx = 0x0000
 	SCZO = cond(cx)
 	Mem0[ds:0x0232:word16] = cx
@@ -51,13 +51,11 @@ l0C00_0023:		// pred: l0C00_0015 l0C00_0019
 	msdos_terminate(al)
 	// succ:  maybeterminate_exit
 // DataOut:
-l0C00_001E:		// pred: l0C00_0019
+l0C00_001E:
 	bx = bx + ax
 	SCZO = cond(bx)
 	ax = Mem0[ds:bx:word16]
 	return
-	// succ:  maybeterminate_exit
 // DataOut:
-maybeterminate_exit:		// pred: l0C00_0023 l0C00_001E
-	// succ: 
+maybeterminate_exit:
 // DataOut:

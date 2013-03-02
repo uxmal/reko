@@ -186,10 +186,11 @@ namespace Decompiler.Typing
 			return handler.EqualTrait(store.Dst, store.Src);
 		}
 
-		public DataType VisitCallInstruction(CallInstruction ci)
+		public DataType VisitCallInstruction(CallInstruction call)
 		{
-			 throw new NotImplementedException();
-		}
+            call.Callee.Accept(this);
+            return handler.DataTypeTrait(call.Callee, PrimitiveType.Create(Domain.PtrCode, call.Callee.DataType.Size));
+        }
 
 
         public DataType VisitGotoInstruction(GotoInstruction g)
@@ -200,12 +201,6 @@ namespace Decompiler.Typing
 		public DataType VisitDefInstruction(DefInstruction def)
 		{
 			return def.Expression.Accept(this);
-		}
-
-		public DataType VisitIndirectCall(IndirectCall ic)
-		{
-			ic.Callee.Accept(this);
-            return handler.DataTypeTrait(ic.Callee, PrimitiveType.Create(Domain.PtrCode, ic.Callee.DataType.Size));
 		}
 
 		public DataType VisitPhiAssignment(PhiAssignment phi)

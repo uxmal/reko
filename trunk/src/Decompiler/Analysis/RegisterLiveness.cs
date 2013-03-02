@@ -268,7 +268,10 @@ namespace Decompiler.Analysis
         // Consults the instruction ci and determines which of the parameters on stack are live.
 		public void MarkLiveStackParameters(CallInstruction ci)
 		{
-            var callee = ci.Callee as Procedure;
+            var pc = ci.Callee as ProcedureConstant;
+            if (pc == null)
+                return;
+            var callee = pc.Procedure as Procedure;
             if (callee == null)
                 return;         //$TODO: use signature to mark stack liveness.
 			int cBegin = callee.Frame.GetStackArgumentSpace();
@@ -500,10 +503,16 @@ namespace Decompiler.Analysis
 
 		public override void VisitCallInstruction(CallInstruction ci)
 		{
-			if (ci.Callee.Signature != null && ci.Callee.Signature.ArgumentsValid)		
+            ProcedureSignature sig = GetProcedureSignature(ci.Callee);
+			if (sig != null && sig.ArgumentsValid)		
 			{
-                var sig = ci.Callee.Signature;
-                var ab = new ApplicationBuilder(prog.Architecture, proc.Frame, ci.CallSite, new ProcedureConstant(prog.Architecture.PointerType, ci.Callee), sig);
+                var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
+                var ab = new ApplicationBuilder(
+                    prog.Architecture, 
+                    proc.Frame, 
+                    ci.CallSite,
+                    new ProcedureConstant(prog.Architecture.PointerType, procCallee), 
+                    sig);
 				if (sig.ReturnValue != null)
 				{
                     varLive.Def(ab.Bind(sig.ReturnValue));
@@ -533,7 +542,7 @@ namespace Decompiler.Analysis
 
 				// Update trash information.
 
-				ProcedureFlow pi = mpprocData[(Procedure)ci.Callee];
+				ProcedureFlow pi = mpprocData[(Procedure)((ProcedureConstant)ci.Callee).Procedure];
 				ProcedureFlow item = mpprocData[proc];
 
 				// The registers that are still live before a call are those
@@ -546,6 +555,13 @@ namespace Decompiler.Analysis
 				MarkLiveStackParameters(ci);
 			}
 		}
+
+        private ProcedureSignature GetProcedureSignature(Expression expr)
+        {
+            var pc = expr as ProcedureConstant;
+            if (pc == null) return null;
+            return pc.Procedure.Signature;
+        }
 
         public override void VisitCast(Cast cast)
         {

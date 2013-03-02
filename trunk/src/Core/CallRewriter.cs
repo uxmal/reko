@@ -57,7 +57,7 @@ namespace Decompiler.Core
 		/// a signature yet.</returns>
 		public bool RewriteCall(Procedure proc, IProcessorArchitecture arch, Statement stm, CallInstruction call)
 		{
-			var procCallee = call.Callee;
+			var procCallee = ((ProcedureConstant) call.Callee).Procedure;       //$REVIEW: what happens with indirect calls?
 			var sigCallee = GetProcedureSignature(procCallee);
 			var fn = new ProcedureConstant(arch.PointerType, procCallee);
             if (sigCallee == null || !sigCallee.ArgumentsValid)

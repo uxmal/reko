@@ -75,8 +75,7 @@ namespace Decompiler.Analysis
 
         public Instruction VisitAssignment(Assignment ass)
         {
-            var s = ass.Src.Accept(sub);
-            var src = s.Accept(this);
+            var src = ass.Src.Accept(this);
             ctx.SetValue(ass.Dst, src.Value);
             return new Assignment(ass.Dst, src.PropagatedExpression);
         }
@@ -105,12 +104,23 @@ namespace Decompiler.Analysis
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
             ci.CallSite.StackDepthOnEntry =
-                GetStackDepthBeforeCall() +
+                 GetStackDepthBeforeCall() +
                 ci.CallSite.SizeOfReturnAddressOnStack;
-            var proc = ci.Callee as Procedure;
-            if (proc != null)
+            var pc = ci.Callee as ProcedureConstant;
+            if (pc != null)
             {
-                ctx.UpdateRegistersTrashedByProcedure(flow[proc]);
+                var proc = pc.Procedure as Procedure;
+                {
+                    if (proc != null)
+                    {
+                        ctx.UpdateRegistersTrashedByProcedure(flow[proc]);
+                    }
+                }
+            }
+            else
+            {
+                var fn = ci.Callee.Accept(this);
+                return new CallInstruction(fn.PropagatedExpression, ci.CallSite);
             }
             return ci;
         }
@@ -149,12 +159,6 @@ namespace Decompiler.Analysis
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
-        }
-
-        public Instruction VisitIndirectCall(IndirectCall ic)
-        {
-            var fn = ic.Callee.Accept(this);
-            return new IndirectCall(fn.PropagatedExpression, ic.CallSite);
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)

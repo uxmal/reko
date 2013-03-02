@@ -107,24 +107,53 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void IndirectCall()
         {
-            var p = new ProgramBuilder();
+            var arch = new FakeArchitecture();
+            var p = new ProgramBuilder(arch);
             var proc = p.Add("main", (m) =>
             {
-                var r1 = m.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Word32));
+                var r1 = m.Register("r1");
 
                 m.Assign(r1, m.Word32(0x42));
-                m.Emit(new IndirectCall(r1, new CallSite(4, 0)));
+                m.Emit(new CallInstruction(r1, new CallSite(4, 0)));
                 m.Return();
             });
 
-            var ctx = new SymbolicEvaluationContext(new FakeArchitecture(), proc.Frame);
+            var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
-            var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
+            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
 
+            ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
             var stms = proc.EntryBlock.Succ[0].Statements;
             stms[0].Instruction.Accept(ep);
             var newInstr = stms[1].Instruction.Accept(ep);
-            Assert.AreEqual("icall 0x00000042", newInstr.ToString());
+            Assert.AreEqual("call 0x00000042 (retsize: 4; depth: 4)", newInstr.ToString());
+        }
+
+        [Test]
+        public void StackReference()
+        {
+            var arch = new FakeArchitecture();
+            var p = new ProgramBuilder(arch);
+            var proc = p.Add("main", (m) =>
+            {
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                var r1 = m.Register(1);
+                m.Assign(sp, m.Sub(sp, 4));
+                m.Assign(r1, m.LoadDw(m.Add(sp, 8)));
+                m.Return();
+            });
+
+            var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
+            var simplifier = new ExpressionSimplifier(ctx);
+            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
+
+            ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
+
+            var stms = proc.EntryBlock.Succ[0].Statements;
+            var newInstr = stms[0].Instruction.Accept(ep);
+            Assert.AreEqual("r63 = fp - 0x00000004", newInstr.ToString());
+            newInstr = stms[1].Instruction.Accept(ep);
+            Assert.AreEqual("r1 = dwArg04", newInstr.ToString());
         }
     }
 }

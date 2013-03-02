@@ -104,12 +104,6 @@ namespace Decompiler.Evaluation
             throw new NotSupportedException("PhiAssignments shouldn't have been generated yet.");
         }
 
-        public Instruction VisitIndirectCall(IndirectCall ic)
-        {
-            ic.Callee.Accept(eval);
-            return ic;
-        }
-
         public Instruction VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression != null)

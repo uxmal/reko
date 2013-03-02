@@ -74,7 +74,8 @@ namespace Decompiler.Analysis
         public override void VisitCallInstruction(CallInstruction ci)
         {
             base.VisitCallInstruction(ci);
-            if (ProcedureTerminates(ci.Callee))
+            var pc = ci.Callee as ProcedureConstant;
+            if (pc != null && ProcedureTerminates(pc.Procedure))
             {
                 flow[curBlock].TerminatesProcess = true;
             }

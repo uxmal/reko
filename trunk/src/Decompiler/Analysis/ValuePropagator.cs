@@ -93,6 +93,7 @@ namespace Decompiler.Analysis
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
+            ci.Callee = ci.Callee.Accept(eval);
             return ci;
         }
 
@@ -116,12 +117,6 @@ namespace Decompiler.Analysis
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
             return phi;
-        }
-
-        public Instruction VisitIndirectCall(IndirectCall ic)
-        {
-            ic.Callee = ic.Callee.Accept(eval);
-            return ic;
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)

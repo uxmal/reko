@@ -58,11 +58,6 @@ namespace Decompiler.Analysis
 			isCritical = true;
 		}
 
-		public override void VisitIndirectCall(IndirectCall ic)
-		{
-			isCritical = true;
-		}
-
 		public override void VisitReturnInstruction(ReturnInstruction ret)
 		{
 			isCritical = true;
