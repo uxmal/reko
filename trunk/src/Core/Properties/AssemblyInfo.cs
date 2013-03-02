@@ -53,8 +53,8 @@ namespace Decompiler
 {
     public class AssemblyMetadata
     {
-        public const string AssemblyVersion = "0.2.3.*";
-        public const string AssemblyFileVersion = "0.2.3.0";
+        public const string AssemblyVersion = "0.2.4.*";
+        public const string AssemblyFileVersion = "0.2.4.0";
         public const string Product = "Decompiler";
         public const string Copyright = "Copyright © 1999-2013 John Källén";
         public const string Company = "John Källén Konsult AB";
