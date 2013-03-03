@@ -108,6 +108,11 @@ namespace Decompiler.Core.Output
             writer.Write(format, arguments);
         }
 
+        public virtual void WriteComment(string comment)
+        {
+            writer.Write(comment);
+        }
+
         public virtual void WriteKeyword(string keyword)
         {
             writer.Write(keyword);

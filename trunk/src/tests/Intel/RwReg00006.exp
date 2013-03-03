@@ -253,7 +253,7 @@ l10000194:
 	// succ:  l10000198 l10000211
 l10000198:
 	edx = Mem0[esi + 0x00000004:word32]
-	icall Mem0[edx + 0x000000E0:word32]
+	call Mem0[edx + 0x000000E0:word32] (retsize: 4;)
 	ecx = Mem0[esi:word32]
 	Mem0[ecx:word16] = ax
 	edx = Mem0[esi:word32]

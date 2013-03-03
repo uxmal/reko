@@ -22,9 +22,11 @@ using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Gui;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -55,6 +57,43 @@ namespace Decompiler.UnitTests.Gui
             pc.Accept(hcf);
 
             Assert.AreEqual("<a href=\"00000042\">proc</a>", sb.ToString());
+        }
+
+        [Test]
+        public void WriteProcedure_Max()
+        {
+            var m = new ProcedureBuilder("proc");
+            var r1 = m.Register("r1");
+            var r2 = m.Register("r2");
+            var r3 = m.Register("r3");
+            m.BranchIf(m.Gt(r1, r2), "greaterthan");
+            m.Assign(r3,r2);
+            m.Assign(r2, r1);
+            m.Assign(r1, r3);
+            m.Label("greatherthan");
+            m.Return(r1);
+
+            hcf.Write(m.Procedure);
+
+            var sExp = @"void&nbsp;proc()<br />
+{<br />
+proc_entry:<br />
+l1:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">if</span>&nbsp;(r1&nbsp;&gt;&nbsp;r2)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;greaterthan<br />
+greaterthan:<br />
+l2:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;r3&nbsp;=&nbsp;r2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;r2&nbsp;=&nbsp;r1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;r1&nbsp;=&nbsp;r3<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;greatherthan<br />
+greatherthan:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">return</span>&nbsp;r1<br />
+proc_exit:<br />
+}<br />
+";
+            Debug.Write(sb.ToString());
+            Assert.AreEqual(sExp, sb.ToString());
         }
     }
 }

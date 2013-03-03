@@ -56,7 +56,9 @@ namespace Decompiler.Arch.X86
             var fpu = op as FpuOperand;
             if (fpu != null)
                 return FpuRegister(fpu.StNumber, state);
-
+            var addr = op as AddressOperand;
+            if (addr != null)
+                return addr.Address;
             throw new NotImplementedException(string.Format("Operand {0}", op));
         }
 

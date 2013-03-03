@@ -67,6 +67,15 @@ namespace Decompiler.Gui
             Write(string.Format(format, arguments));
         }
 
+        public override void WriteComment(string comment)
+        {
+            if (string.IsNullOrEmpty(comment))
+                return;
+            writer.Write("<span class=\"comment\">");
+            Write(comment);
+            writer.Write("</span>");
+        }
+
         public override void WriteKeyword(string keyword)
         {
             if (keyword == null)

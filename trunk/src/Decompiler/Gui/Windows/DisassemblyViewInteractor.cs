@@ -187,8 +187,7 @@ namespace Decompiler.Gui.Windows
 
         void txtDisassembly_Resize(object sender, EventArgs e)
         {
-            DumpAssembler();
+                DumpAssembler();
         }
-
     }
 }
