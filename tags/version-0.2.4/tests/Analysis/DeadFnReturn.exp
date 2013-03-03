@@ -1,0 +1,14 @@
+Mem0:Global memory
+fp:Temporary
+unused:Local -0004
+r63:r63
+unused_4: orig: unused
+// foo
+void foo()
+foo_entry:
+	// succ:  l1
+l1:
+	foo(0x00000001)
+	return
+	// succ:  foo_exit
+foo_exit:

@@ -1,0 +1,43 @@
+// void fn0C00_0000(Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax cx dx al cl dl ah ch dh
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	Mem7[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+
+// Register word16 fn0C00_000B(Register word16 cx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  cx
+// LiveOut: ax
+// Trashed: SCZO ax cx dx al cl dl ah ch dh
+// Preserved: si
+// fn0C00_000B
+word16 fn0C00_000B(word16 cx)
+fn0C00_000B_entry:		// pred:
+	// succ:  l0C00_000B
+l0C00_000B:		// pred: fn0C00_000B_entry
+	word16 ax_13
+	branch cx <= 0x0001 l0C00_001C
+	// succ:  l0C00_0011 l0C00_001C
+l0C00_0011:		// pred: l0C00_000B
+	ax_13 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+	// succ:  l0C00_001F
+l0C00_001F:		// pred: l0C00_001C l0C00_0011
+	return ax_13
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:		// pred: l0C00_001F
+	// succ: 
+l0C00_001C:		// pred: l0C00_000B
+	ax_13 = 0x0001
+	// succ:  l0C00_001F
+

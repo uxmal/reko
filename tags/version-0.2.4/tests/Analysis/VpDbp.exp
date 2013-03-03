@@ -1,0 +1,13 @@
+// DpbMock
+void DpbMock()
+DpbMock_entry:		// pred:
+	def dl
+	// succ:  l1
+l1:		// pred: DpbMock_entry
+	Mem7[0x01000000:word32] = 0x0AAA55AA
+	edx_9 = (word32) dl
+	return edx_9
+	// succ:  DpbMock_exit
+DpbMock_exit:		// pred: l1
+	// succ: 
+

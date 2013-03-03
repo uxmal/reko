@@ -1,0 +1,84 @@
+= Before ==========
+// fn0B00_0000
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// loc02:Local -0002
+// loc06:Local -0006
+// loc04:Local -0004
+// loc08:Local -0008
+// fn0B00_0000_frame:Temporary
+// Frame escapes
+// return address size: 2
+void fn0B00_0000()
+fn0B00_0000_entry:		// block 0, pred:
+	// succ:  1
+fn0B00_0000_frame_asgn:		// block 1, pred: 0
+	fp = &fn0B00_0000_frame
+	// succ:  2
+l0B00_0000:		// block 2, pred: 1
+	Mem0[fp + 0x0000:word16] = bp
+	Mem0[fp - 0x0004:word16] = 0x0000
+	Mem0[fp - 0x0002:word16] = 0x0001
+	Mem0[fp - 0x0006:word16] = bp
+	call fn0B00_0018 (depth: 8;)
+	bp = Mem0[fp + 0x0000:word16]
+	return
+	// succ:  3
+fn0B00_0000_exit:		// block 3, pred: 2
+	// succ: 
+The frame of procedure fn0B00_0000 escapes
+= After ==========
+// fn0B00_0000
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// loc02:Local -0002
+// loc06:Local -0006
+// loc04:Local -0004
+// loc08:Local -0008
+// fn0B00_0000_frame:Temporary
+// Frame escapes
+// return address size: 2
+void fn0B00_0000()
+fn0B00_0000_entry:		// block 0, pred:
+	// succ:  1
+fn0B00_0000_frame_asgn:		// block 1, pred: 0
+	fp = &fn0B00_0000_frame
+	// succ:  2
+l0B00_0000:		// block 2, pred: 1
+	Mem0[fp + 0x0000:word16] = bp
+	Mem0[fp - 0x0004:word16] = 0x0000
+	Mem0[fp - 0x0002:word16] = 0x0001
+	Mem0[fp - 0x0006:word16] = bp
+	call fn0B00_0018 (depth: 8;)
+	bp = Mem0[fp + 0x0000:word16]
+	return
+	// succ:  3
+fn0B00_0000_exit:		// block 3, pred: 2
+	// succ: 
+
+= Before ==========
+// fn0B00_0018
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// loc02:Local -0002
+// arg02:Stack +0002
+// di:Register
+// ds:Register
+// return address size: 2
+void fn0B00_0018()
+fn0B00_0018_entry:		// block 0, pred:
+	// succ:  1
+l0B00_0018:		// block 1, pred: 0
+	loc02 = bp
+	di = arg02
+	Mem0[ds:di - 0x0002:word16] = 0x0000
+	bp = loc02
+	return
+	// succ:  2
+fn0B00_0018_exit:		// block 2, pred: 1
+	// succ: 
+The frame of procedure fn0B00_0018 doesn't escape
+

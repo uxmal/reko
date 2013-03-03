@@ -1,0 +1,61 @@
+// fn0C00_0000
+void fn0C00_0000(word16 ax, selector ds)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	byte cl_10
+	branch ax < 0x0000 l0C00_0012
+	// succ:  l0C00_0005 l0C00_0012
+l0C00_0005:		// pred: l0C00_0000
+	cl_10 = 0x00
+	branch ax <= 0x000C l0C00_000F
+	// succ:  l0C00_000C l0C00_000F
+l0C00_000C:		// pred: l0C00_0005
+	ax = 0x000C
+	// succ:  l0C00_000F
+l0C00_000F:		// pred: l0C00_0005 l0C00_000C
+	// succ:  l0C00_001C
+l0C00_001C:		// pred: l0C00_0012 l0C00_0019 l0C00_000F
+	Mem24[ds:0x0300:word16] = ax
+	Mem25[ds:0x0302:byte] = cl_10
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_001C
+	// succ: 
+l0C00_0012:		// pred: l0C00_0000
+	cl_10 = 0x01
+	branch ax >= 0xFFF4 l0C00_001C
+	// succ:  l0C00_0019 l0C00_001C
+l0C00_0019:		// pred: l0C00_0012
+	ax = 0xFFF4
+	// succ:  l0C00_001C
+// fn0C00_0000
+void fn0C00_0000(word16 ax, selector ds)
+fn0C00_0000_entry:		// pred:
+	byte cl_10
+	branch ax < 0x0000 l0C00_0012
+	// succ:  l0C00_0005 l0C00_0012
+l0C00_0000:
+l0C00_0005:		// pred: fn0C00_0000_entry
+	cl_10 = 0x00
+	branch ax <= 0x000C l0C00_000F
+	// succ:  l0C00_000C l0C00_001C
+l0C00_000C:		// pred: l0C00_0005
+	ax = 0x000C
+	// succ:  l0C00_001C
+l0C00_000F:		// pred:
+	// succ:  l0C00_001C
+l0C00_001C:		// pred: l0C00_0012 l0C00_0019 l0C00_0005 l0C00_000C
+	Mem24[ds:0x0300:word16] = ax
+	Mem25[ds:0x0302:byte] = cl_10
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_001C
+	// succ: 
+l0C00_0012:		// pred: fn0C00_0000_entry
+	cl_10 = 0x01
+	branch ax >= 0xFFF4 l0C00_001C
+	// succ:  l0C00_0019 l0C00_001C
+l0C00_0019:		// pred: l0C00_0012
+	ax = 0xFFF4
+	// succ:  l0C00_001C

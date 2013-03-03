@@ -1,0 +1,15 @@
+// StoreMock
+// Mem0:Global memory
+// fp:Temporary
+// r0:Local -0004
+// return address size: 0
+void StoreMock()
+StoreMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: StoreMock_entry
+	r0 = Mem0[0x20000000:word32]
+	Mem0[0x20000000:word32] = r0
+	return
+	// succ:  StoreMock_exit
+StoreMock_exit:		// pred: l1
+	// succ: 

@@ -1,0 +1,157 @@
+<Project name="Decompiler" fileversion="2.0" language="C#" clr-version="Net_1_1" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="./bin/Debug/" assembly="Decompiler2003" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" definesymbols="MONO" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="./bin/Release/" assembly="Decompiler2003" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" definesymbols="MONO" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="./AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Decompiler.cs" subtype="Code" buildaction="Compile" />
+    <File name="./DecompilerHost.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Diagnostic.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Aliases.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/BlockFlow.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Coalescer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/ConditionCodeEliminator.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/CriticalInstruction.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/DataFlow.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/DataFlowAnalysis.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/DeadCode.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/DeclarationInserter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/DefinedIdentifierFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/ExpressionSimplifier.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/ExpressionUseAdder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/GlobalCallRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/GrfDefinitionFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/InductionVariableCollection.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Inteference.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/InteferenceGraph.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/LinearInductionVariable.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/LinearInductionVariableFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/LiveCopyInserter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Liveness.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/MemReplacer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/OutParameterTransformer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/ProcedureFlow.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/ProgramDataFlow.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/RegisterLiveness.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SegmentedAccessClassifier.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SequenceFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SideEffectFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SsaIdentifier.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SsaIdentifierCollection.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SsaLiveness.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SsaState.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/SsaTransform.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/StackVariableMap.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/TrashedRegisterFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/TrashedStorageHelper.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/ValueNumbering.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/ValuePropagator.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/VariableLiveness.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Web.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/WebBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/Add_e_c_cRule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/Add_mul_id_c_id_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/AddTwoIdsRule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/ConstConstBin_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/DpbConstantRule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/IdBinIdc_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/IdConstant.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/IdCopyPropagationRule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/Mps_Constant_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/NegSub_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/Shl_mul_e_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/Shl_Shl_c_c_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/SliceConstant_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Analysis/Simplification/SliceMem_Rule.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Gui/CommandGroup.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Gui/decompiler-menus.xml" subtype="Code" buildaction="Exclude" />
+    <File name="./Gui/ICommandTarget.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Gui/IMainForm.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Gui/IStartPage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Gui/MainFormInteractor.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Gui/MenuBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/ExeImageLoader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/ExePackLoader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/ImageLoader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/Loader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/LzExeUnpacker.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/MsdosImageLoader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/PeImageLoader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Loading/PkLiteUnpacker.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/EscapedAccessRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/HeuristicScanner.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/InstructionTrie.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/ProcedureRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/Regexp.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/RegexpBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/RewriterHost.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/Scanner.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/VectorBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Scanning/WorkItem.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/BlockLinearizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/CaseStatementRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/CompoundConditionCoalescer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/ControlFlowGraphCleaner.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/DerivedSequence.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/IfRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/Interval.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/IntervalCollection.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/IntervalFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/Linearizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/Loop.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/LoopFinder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/Region.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/StraightPathWalker.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/StructureAnalysis.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/StructureBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/StructureNode.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/StructureTransform.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Structure/SwitchRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/AddressTraitCollector.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/ArrayExpressionMatcher.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/ArrayExpressionNormalizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/ComplexExpressionBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/ComplexTypeNamer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/DataTypeBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/DerivedPointerAnalysis.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/EquivalenceClassBuilder.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/ITraitHandler.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/NestedComplexTypeRemover.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/PtrPrimitiveReplacer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/StructureMerger.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TraitCollector.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypeAnalyzer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypedConstantRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypedExpressionRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypedMemoryExpressionRewriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypeInferenceException.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypeStore.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypeTransformer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypeVariableCollection.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypeVariableReplacer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/TypeVarMapping.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/Unifier.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/UnionPointersStructuresMatcher.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Typing/UnionTypeVarsReplacer.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <ProjectReference type="Project" localcopy="True" refto="Core" />
+    <ProjectReference type="Project" localcopy="True" refto="Intel" />
+  </References>
+  <DeployTargets />
+</Project>

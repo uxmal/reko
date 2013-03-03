@@ -1,0 +1,3 @@
+T_2 (in esi : word32)
+	trait_memsize(1)
+	trait_mem(T_5, 0)

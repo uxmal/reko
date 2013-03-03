@@ -1,0 +1,25 @@
+body
+{
+}
+
+.navbar
+{
+	font-family: Verdana, Arial, Helvetica, Sans-Serif
+}
+
+.navbar #imgBlock
+{
+	float:left; padding-right: 20px
+}
+
+.navbar h2
+{
+	padding-top: 10px;
+	font-family: Courier New, Monospace;
+	font-weight: bold;
+} 
+
+.navbar a
+{
+	font-size: 10pt
+}

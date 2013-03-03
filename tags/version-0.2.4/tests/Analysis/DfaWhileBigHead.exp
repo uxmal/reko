@@ -1,0 +1,29 @@
+// void fn0C00_0000(Register word16 si, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  si ds
+// LiveOut:
+// Trashed: SCZO ax al ah
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(word16 si, selector ds)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	word16 ax_10 = Mem0[ds:si:word16]
+	// succ:  l0C00_000E
+l0C00_000E:		// pred: l0C00_0000 l0C00_0005
+	Mem15[ds:si + 0x0002:word16] = ax_10
+	Mem16[ds:si + 0x0004:word16] = ax_10
+	Mem17[ds:si + 0x0008:word16] = 0x0003
+	branch ax_10 != 0x0000 l0C00_0005
+	// succ:  l0C00_001E l0C00_0005
+l0C00_001E:		// pred: l0C00_000E
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_001E
+	// succ: 
+l0C00_0005:		// pred: l0C00_000E
+	Mem23[ds:si + 0x0006:word16] = Mem17[ds:si + 0x0006:word16] + Mem17[ds:si + 0x0006:word16]
+	ax_10 = ax_10 - 0x0001
+	// succ:  l0C00_000E
+

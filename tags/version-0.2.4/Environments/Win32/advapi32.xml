@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <includefile>winreg.h</includefile>
+  <default>
+	<signature convention="stdapi">
+	</signature>
+  </default>
+
+  <procedure name="CloseServiceHandle">
+    <signature>
+      <return type="BOOL"><reg>eax</reg></return>
+      <arg type="SC_HANDLE" name="hSCObject"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
+  <procedure name="IsTextUnicode">
+    <signature>
+      <return type="BOOL"><reg>eax</reg></return>
+      <arg type="VOID *" name="lpv"><stack size="4"/></arg>
+      <arg type="int32" name="iSize"><stack size="4"/></arg>
+      <arg type="int32 *" name="lpiResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
+  <procedure name="OpenSCManagerW">
+    <signature>
+      <return type="SC_HANDLE"><reg>eax</reg></return>
+    <arg type="LPCWSTR" name="lpMachineName"><stack size="4"/></arg>
+    <arg type="LPCWSTR" name="lpDatabaseName"><stack size="4"/></arg>
+    <arg type="DWORD" name="dwDesiredAccess"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
+
+
+  <procedure name="OpenServiceW">
+    <signature>
+      <return type="SC_HANDLE">
+        <reg>eax</reg>
+      </return>
+        <arg name="hSCManager">SC_HANDLE<stack size="4"/></arg>
+        <arg name="lpServiceName">LPCWSTR<stack size="4"/></arg>
+        <arg name="dwDesiredAccess">DWORD<stack size="4"/></arg>
+      </signature>
+  </procedure >
+
+
+  <procedure name="QueryServiceConfigW">
+    <signature>
+      <return type="BOOL"><reg>eax</reg></return>
+      <arg name="hService" type="SC_HANDLE"><stack size="4"/></arg>
+      <arg name="lpServiceConfig" type="LPQUERY_SERVICE_CONFIGW"><stack size="4"/></arg>
+      <arg name="cbBufSize" type="DWORD"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
+  <procedure name="RegSetValueExA">
+    <signature>  
+	  <return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    <arg type="LPCSTR" name="lpValueName"><stack size="4"/></arg>
+    <arg type="DWORD" name="Reserved"><stack size="4"/></arg>
+    <arg type="DWORD" name="dwType"><stack size="4"/></arg>
+    <arg type="CONST BYTE *" name="lpData"><stack size="4"/></arg>
+    <arg type="DWORD" name="cbData"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  <procedure name="RegSetValueExW">
+    <signature>  
+	  <return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    <arg type="LPCWSTR" name="lpValueName"><stack size="4"/></arg>
+    <arg type="DWORD" name="Reserved"><stack size="4"/></arg>
+    <arg type="DWORD" name="dwType"><stack size="4"/></arg>
+    <arg type="CONST BYTE *" name="lpData"><stack size="4"/></arg>
+    <arg type="DWORD" name="cbData"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
+  
+  <procedure name="RegQueryValueExA">
+    <signature>  
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+      <arg type="LPCSTR" name="lpValueName"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpReserved"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpType"><stack size="4"/></arg>
+      <arg type="LPBYTE" name="lpData"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpcbData"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  <procedure name="RegQueryValueExW">
+    <signature>  
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+      <arg type="LPCWSTR" name="lpValueName"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpReserved"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpType"><stack size="4"/></arg>
+      <arg type="LPBYTE" name="lpData"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpcbData"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  
+  <procedure name="RegCloseKey">
+    <signature>  
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  
+  <procedure name="RegFlushKey">
+    <signature>  
+
+<return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  
+  <procedure name="RegCreateKeyA">
+    <signature>  
+    <return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    <arg type="LPCSTR" name="lpSubKey"><stack size="4"/></arg>
+    <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  <procedure name="RegCreateKeyW">
+    <signature>  
+    <return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    <arg type="LPCWSTR" name="lpSubKey"><stack size="4"/></arg>
+    <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  
+  <procedure name="RegOpenKeyA">
+    <signature>  
+    <return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    <arg type="LPCSTR" name="lpSubKey"><stack size="4"/></arg>
+    <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  
+  <procedure name="RegOpenKeyExW">
+    <signature>  
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+      <arg type="LPCWSTR" name="lpSubKey"><stack size="4"/></arg>
+      <arg type="DWORD" name="ulOptions"><stack size="4"/></arg>
+      <arg type="REGSAM" name="samDesired"><stack size="4"/></arg>
+      <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
+</library>

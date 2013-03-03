@@ -1,0 +1,69 @@
+// SegMem3Mock
+void SegMem3Mock()
+SegMem3Mock_entry:
+	// succ:  l1
+l1:
+	0x1796->ptr0001 = 0x0800;
+	0x0800->ptr5422 = ds;
+	0x0800->w0066 = 0x0800->w5420;
+	// succ: 
+SegMem3Mock_exit:
+
+// Equivalence classes ////////////
+Eq_2: (segment "Eq_2" (66 word16 w0066) (5420 word16 w5420) (5422 (ptr Eq_6) ptr5422))
+	T_2 (in 0x0800 : selector)
+	T_5 (in Mem0[0x1796:0x0001:word16] : word16)
+Eq_3: (segment "Eq_3" (1 (ptr Eq_2) ptr0001))
+	T_3 (in 0x1796 : selector)
+Eq_6: (segment "Eq_6")
+	T_6 (in ds : selector)
+	T_8 (in Mem0[0x0800:0x5422:word16] : word16)
+// Type Variables ////////////
+Globals: (in globals : ptr32)
+  Class: Eq_1
+  DataType: Eq_1
+  OrigDataType: 
+T_2: (in 0x0800 : selector)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (segment (66 T_12 t0066) (5420 T_10 t5420) (5422 T_8 t5422)))
+T_3: (in 0x1796 : selector)
+  Class: Eq_3
+  DataType: (ptr Eq_3)
+  OrigDataType: (ptr (segment (1 T_5 t0001)))
+T_4: (in 0x0001 : word16)
+  Class: Eq_4
+  DataType: (memptr (ptr Eq_3) (ptr Eq_2))
+  OrigDataType: (memptr T_3 (struct (0 T_5 t0000)))
+T_5: (in Mem0[0x1796:0x0001:word16] : word16)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: word16
+T_6: (in ds : selector)
+  Class: Eq_6
+  DataType: (ptr Eq_6)
+  OrigDataType: (ptr (segment))
+T_7: (in 0x5422 : word16)
+  Class: Eq_7
+  DataType: (memptr (ptr Eq_2) (ptr Eq_6))
+  OrigDataType: (memptr T_2 (struct (0 T_8 t0000)))
+T_8: (in Mem0[0x0800:0x5422:word16] : word16)
+  Class: Eq_6
+  DataType: (ptr Eq_6)
+  OrigDataType: word16
+T_9: (in 0x5420 : word16)
+  Class: Eq_9
+  DataType: (memptr (ptr Eq_2) word16)
+  OrigDataType: (memptr T_2 (struct (0 T_10 t0000)))
+T_10: (in Mem0[0x0800:0x5420:word16] : word16)
+  Class: Eq_10
+  DataType: word16
+  OrigDataType: word16
+T_11: (in 0x0066 : word16)
+  Class: Eq_11
+  DataType: (memptr (ptr Eq_2) word16)
+  OrigDataType: (memptr T_2 (struct (0 T_12 t0000)))
+T_12: (in Mem0[0x0800:0x0066:word16] : word16)
+  Class: Eq_10
+  DataType: word16
+  OrigDataType: word16

@@ -1,0 +1,2 @@
+T_3 (in bx : word16)
+	trait_mem(T_1:T_4, 0)

@@ -1,0 +1,120 @@
+void fn0C00_0000(Register I2 ax)
+// LiveIn:  ax
+// LiveOut:
+// MayUse:  ax
+// Trashed: SCZO bx bl bh
+// Preserved:
+// fn0C00_0000
+// Mem0:Global memory (aliases: 0)
+// SCZO:Flags (aliases: 1 3)
+// ax:Register (aliases: 2)
+// CZ:Flags (aliases: 3 1)
+// bx:Register (aliases: 4)
+// return address size: 2; frame pointer size: 0
+void fn0C00_0000()
+// block 0, pred:
+fn0C00_0000_entry:
+	// succ:  1
+// block 1, pred: 0
+l0C00_0000:
+	SCZO = ax - 0002
+	CZ = SCZO (alias)
+	branch A (using: CZ)
+	// succ:  2 3
+// block 2, pred: 1
+l0C00_0005:
+	bx = ax
+	bx = bx + bx
+	SCZO = cond(bx)
+	CZ = SCZO (alias)
+	icall Mem0[bx + 000F:I2]
+	// succ:  3
+// block 3, pred: 2 1
+l0C00_000E:
+	return
+	// succ:  4
+// block 4, pred: 3
+fn0C00_0000_exit:
+	// succ: 
+void fn0C00_0015(Register I2 si)
+// LiveIn:  si
+// LiveOut:
+// MayUse:  si
+// Trashed: SCZO ax al ah
+// Preserved:
+// fn0C00_0015
+// Mem0:Global memory (aliases: 0)
+// si:Register (aliases: 1)
+// ax:Register (aliases: 2)
+// SCZO:Flags (aliases: 3)
+// return address size: 2; frame pointer size: 0
+void fn0C00_0015()
+// block 0, pred:
+fn0C00_0015_entry:
+	// succ:  1
+// block 1, pred: 0
+l0C00_0015:
+	ax = Mem0[si + 02:I2]
+	ax = ax + Mem0[si + 04:I2]
+	SCZO = cond(ax)
+	Mem0[si + 06:I2] = ax
+	return
+	// succ:  2
+// block 2, pred: 1
+fn0C00_0015_exit:
+	// succ: 
+void fn0C00_001F(Register I2 si)
+// LiveIn:  si
+// LiveOut:
+// MayUse:  si
+// Trashed: SCZO ax al ah
+// Preserved:
+// fn0C00_001F
+// Mem0:Global memory (aliases: 0)
+// si:Register (aliases: 1)
+// ax:Register (aliases: 2)
+// SCZO:Flags (aliases: 3)
+// return address size: 2; frame pointer size: 0
+void fn0C00_001F()
+// block 0, pred:
+fn0C00_001F_entry:
+	// succ:  1
+// block 1, pred: 0
+l0C00_001F:
+	ax = Mem0[si + 02:I2]
+	ax = ax - Mem0[si + 04:I2]
+	SCZO = cond(ax)
+	Mem0[si + 06:I2] = ax
+	return
+	// succ:  2
+// block 2, pred: 1
+fn0C00_001F_exit:
+	// succ: 
+void fn0C00_0029(Register I2 bx, Register I2 si)
+// LiveIn:  bx si
+// LiveOut:
+// MayUse:  bx si
+// Trashed: SCZO ax al ah
+// Preserved:
+// fn0C00_0029
+// Mem0:Global memory (aliases: 0)
+// si:Register (aliases: 1)
+// ax:Register (aliases: 2)
+// bx:Register (aliases: 3)
+// SCZO:Flags (aliases: 4)
+// return address size: 2; frame pointer size: 0
+void fn0C00_0029()
+// block 0, pred:
+fn0C00_0029_entry:
+	// succ:  1
+// block 1, pred: 0
+l0C00_0029:
+	ax = Mem0[si + 02:I2]
+	ax = ax & Mem0[bx + 04:I2]
+	SCZO = cond(ax)
+	Mem0[si + 06:I2] = ax
+	return
+	// succ:  2
+// block 2, pred: 1
+fn0C00_0029_exit:
+	// succ: 

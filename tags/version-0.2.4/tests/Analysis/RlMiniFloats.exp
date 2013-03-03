@@ -1,0 +1,90 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   SCZO ax cx dx bx al cl dl bl ah ch dh bh
+	Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: ds
+l0C00_0000:		// block 1, pred: 0
+	ax = 0x0001
+	cl = 0x00
+	bx = 0x0001
+	ch = 0x02
+	call fn0C00_001E (depth: 2;)
+	bx = 0x0005
+	ch = 0x03
+	call fn0C00_0032 (depth: 2;)
+	Mem0[ds:0x0120:word16] = ax
+	Mem0[ds:0x0122:byte] = cl
+	return
+	// succ:  2
+// DataOut:
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut:
+// fn0C00_001E /////////////////////
+	LiveOut:   ax cl ds
+	MayUseIn:  ax bx cl ch
+	BypassIn: 
+	Trashed:   SCZO ax cx bx al cl bl ah bh
+	Preserved:
+// fn0C00_001E
+void fn0C00_001E()
+fn0C00_001E_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: ax bx cl ch ds
+l0C00_001E:		// block 1, pred: 0
+	cl = cl - ch
+	SCZO = cond(cl)
+	branch Test(ULT,C) l0C00_0027
+	// succ:  3 2
+// DataOut: ax bx cl ch ds
+l0C00_0027:		// block 2, pred: 1
+	cl = -cl
+	C = cl == 0x00
+	ax = ax >> cl
+	cl = -cl
+	SZO = cond(cl)
+	C = cl == 0x00
+	// succ:  4
+// DataOut: ax bx cl ch ds
+l0C00_0022:		// block 3, pred: 1
+	bx = bx >> cl
+	SCZO = cond(bx)
+	// succ:  4
+// DataOut: ax bx cl ch ds
+l0C00_002D:		// block 4, pred: 2 3
+	ax = ax + bx
+	cl = cl + ch
+	SCZO = cond(cl)
+	return
+	// succ:  5
+// DataOut: ax cl ds
+fn0C00_001E_exit:		// block 5, pred: 4
+	// succ: 
+// DataOut: ax cl ds
+// fn0C00_0032 /////////////////////
+	LiveOut:   ax cl ds
+	MayUseIn:  ax bx cl ch
+	BypassIn: 
+	Trashed:   SCZO ax cx dx al cl dl ah dh
+	Preserved:
+// fn0C00_0032
+void fn0C00_0032()
+fn0C00_0032_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: ax bx cl ch ds
+l0C00_0032:		// block 1, pred: 0
+	dx_ax = bx *s ax
+	cl = cl + ch
+	SCZO = cond(cl)
+	return
+	// succ:  2
+// DataOut: ax cl ds
+fn0C00_0032_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut: ax cl ds

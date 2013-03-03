@@ -1,0 +1,369 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0051)http://www.village.org/pdp11/faq.pages/PDPinst.html -->
+<HTML><HEAD><TITLE>The PDP-11 FAQ</TITLE>
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.7600.16671"></HEAD>
+<BODY>
+<H1><A name=PDPinst>What is the PDP-11 instruction set?</A></H1>
+<P>The instruction set of the PDP-11 was designed towards a clean, general, 
+symmetric instruction set. It can be used as a register-based, stack-based, or 
+memory-based machine, depending on the programmer's preferences. Interrupt 
+responsiveness is also important, supported with multiple interrupt levels for 
+real-time computing as well as allowing for a separate interrupt handler for 
+each device that generates interrupts. </P>
+<P>Word length is 16 bits with the leftmost, most significant bit (MSB) being 
+bit 15. There are eight general registers of 16 bits each. Register 7 is the 
+program counter (PC) and, by convention, Register 6 is the stack pointer (SP). 
+There is also a Processor Status Register/Word (PSW) which indicates the 4 
+condition code bits (N, Z, V, C), the Trace Trap bit, processor interrupt 
+priority, and 4 bits for current and previous operating modes. Addressing on the 
+-11 is linear from memory address 0 through 177777. Memory management allows 
+access to physical memory with addresses of up to 22 bits (17777777). All I/O 
+devices, registers etc are addressed as if they were part of memory. These live 
+in the 4KW of reserved memory space at the top of the addressing range. 
+Additionally, on most implementations of the PDP-11 architecture, the 
+processor's registers are memory-mapped to the range 17777700-17777717 (there 
+are many control registers beyond just the general registers, the specifics vary 
+between implementations). Thus Register 2 (R2) has an address of 17777702. All 
+word memory addresses are even, except for registers. In byte operations, an 
+even address specifies the least-significant byte and an odd address specifies 
+the most-significant byte. Specifying an odd byte in a word operation will 
+return an odd address trap. Memory addresses from 0 to 400 octal are reserved 
+for various exception traps such as timeouts, reserved instructions, parity, 
+etc., and device interrupts. </P>
+<P>Addressing for the Single Operand, Double Operand and Jump instructions is 
+achieved via six bits: </P><PRE>                          _ _ _ _ _ _
+                         |x|x|x|_|_|_|
+                         |Mode |Reg  |
+</PRE>
+<P>where the modes are as follows: (Reg = Register, Def = Deferred) </P><PRE>     Mode 0  Reg           Direct addressing of the register
+     Mode 1  Reg Def       Contents of Reg is the address
+     Mode 2  AutoIncr      Contents of Reg is the address, then Reg incremented
+     Mode 3  AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
+     Mode 4  AutoDecr      Reg is decremented then contents is address
+     Mode 5  AutoDecrDef   Reg is decremented then contents is addr of addr
+     Mode 6  Index         Contents of Reg + Following word is address
+     Mode 7  IndexDef      Contents of Reg + Following word is addr of addr
+</PRE>
+<P>Note that the right-most bit of the mode is an indirection bit. 
+<P>Although not special cases, when dealing with R7 (aka the PC), some of these 
+operations are called different things: </P><PRE>                          _ _ _ _ _ _
+                         |x|x|x|1|1|1|
+                         |Mode |  R7 |
+
+     Mode 2  Immediate     Operand follows the instruction
+     Mode 3  Absolute      Address of Operand follows the instruction
+     Mode 6  Relative      Instr address+4+Next word is Address
+     Mode 7  RelativeDef   Instr address+4+Next word is Address of address
+</PRE>
+<P>Mainstream instructions are broken into Single operand and Double operand 
+instructions, which in turn can be word or byte instructions. </P>
+<H2>Double Operand Instructions</H2><PRE>                      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                     |b|i|i|i|s|s|s|s|s|s|d|d|d|d|d|d|
+                     | |     |     :     |     :     |
+                     | | Op  | Source    |  Dest     |
+</PRE>
+<P>Bit 15, b, generally selects between word-sized (b=0) and byte-sized (b=1) 
+operands. In the table below, the mnemonics and names are given in the order 
+b=0/b=1. </P>
+<P>The double operand instructions are: </P>
+<DL>
+  <DT>b 000 ssssss dddddd 
+  <DD>Non-double-operand instructions. 
+  <P></P>
+  <DT>b 001 ssssss dddddd -- MOV/MOVB <I>Move Word/Byte</I> 
+  <DD>Moves a value from source to destination. 
+  <P></P>
+  <DT>b 010 ssssss dddddd -- CMP/CMPB <I>Compare Word/Byte</I> 
+  <DD>Compares values by subtracting the destination from the source, setting 
+  the condition codes, and then discarding the result of the subtraction. 
+  <P></P>
+  <DT>b 011 ssssss dddddd -- BIT/BITB <I>Bit Test Word/Byte</I> 
+  <DD>Performs a bit-wise AND of the source and the destination, sets the 
+  condition codes, and then discards the result of the AND. 
+  <P></P>
+  <DT>b 100 ssssss dddddd -- BIC/BICB <I>Bit Clear Word/Byte</I> 
+  <DD>For each bit set in the source, that bit is cleared in the destination. 
+  This is accomplished by taking the ones-complement of the source and ANDing it 
+  with the destination. The result of the AND is stored in the destination. 
+  <P></P>
+  <DT>b 101 ssssss dddddd -- BIS/BISB <I>Bit Set Word/Byte</I> 
+  <DD>For each bit set in the source, that bit is set in the destination. This 
+  is accomplished by ORing the source and destination, and storing the result in 
+  the destination. 
+  <P></P>
+  <DT>b 110 ssssss dddddd -- ADD/SUB <I>Add/Subtract Word</I> 
+  <DD>Adds the source and destination, storing the results in the destination. 
+  <P>Subtracts the source from the destination, storing the results in the 
+  destination. 
+  <P>Note that this is a special case for b=1, in that it does not indicate that 
+  byte-wide operands are used. 
+  <P></P>
+  <DT>b 111 xxxxxx xxxxxx 
+  <DD>Arithmetic functions not supported by all implementations of the PDP-11 
+  architecture. </DD></DL>
+<H2>Single Operand Instructions</H2><PRE>                      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                     |b|0|0|0|i|i|i|i|i|i|d|d|d|d|d|d|
+                     | |     |     :     |     :     |
+                     | |     |Instruction|  Dest     |
+</PRE>
+<P>Bit 15, b, generally selects between word-sized (b=0) and byte-sized (b=1) 
+operands. In the table below, the mnemonics and names are given in the order 
+b=0/b=1. Unless otherwise stated, the operand is read for the data to operate 
+on, and the result is then written over that data. </P>
+<P>The single operand instructions are: </P>
+<DL>
+  <DT>b 000 000 011 dddddd -- SWAB/BPL <I>Swap Bytes/Branch Plus</I> 
+  <DD>Swap bytes exchanges the two bytes found in the destination, writing the 
+  result back to it. 
+  <P>The branch (b=1) is described in the section on branches, below. 
+  <P>Note that SWAB is actually a bit pattern from the range reserved for 
+  branches. This particular pattern is otherwise unused, as it would be a 
+  modification of BR, Branch Always, which has no obvious semantics. 
+  <P></P>
+  <DT>b 000 101 000 dddddd -- CLR/CLRB <I>Clear Word/Byte</I> 
+  <DD>Sets all the bits in destination to zero. 
+  <P></P>
+  <DT>b 000 101 001 dddddd -- COM/COMB <I>Complement Word/Byte</I> 
+  <DD>Calculates the ones-complement of the operand, and stores it. The 
+  ones-complement is formed by inverting each bit (0-&gt;1, 1-&gt;0) 
+  independently. 
+  <P></P>
+  <DT>b 000 010 010 dddddd -- INC/INCB <I>Increment Word/Byte</I> 
+  <DD>Adds one to the destination. 
+  <P></P>
+  <DT>b 000 101 011 dddddd -- DEC/DECB <I>Decrement Word/Byte</I> 
+  <DD>Subtracts one from the destination. 
+  <P></P>
+  <DT>b 000 101 100 dddddd -- NEG/NEGB <I>Negate Word/Byte</I> 
+  <DD>Calculates the twos-complement of the operand, and stores it. The 
+  twos-complement is formed by adding one to the ones-complement. The effect is 
+  the same as subtracting the operand from zero. 
+  <P></P>
+  <DT>b 000 101 101 dddddd -- ADC/ADCB <I>Add Carry Word/Byte</I> 
+  <DD>Adds the current value of the carry flag to the destination. This is 
+  useful for implementing arithmetic subroutines with more than word-sized 
+  operands. 
+  <P></P>
+  <DT>b 000 101 110 dddddd -- SBC/SBCB <I>Subtract Carry Word/Byte</I> 
+  <DD>Subtracts the current value of the carry flag from the destination. This 
+  is useful for implementing arithmetic subroutines with more than word-sized 
+  operands. 
+  <P></P>
+  <DT>b 000 101 111 dddddd -- TST/TSTB <I>Test Word/Byte</I> 
+  <DD>Sets the N (negative) and Z (zero) condition codes based on the value of 
+  the operand. 
+  <P></P>
+  <DT>b 000 110 000 dddddd -- ROR/RORB <I>Rotate Right Word/Byte</I> 
+  <DD>Rotates the bits of the operand one position to the right. The right-most 
+  bit is placed in the carry flag, and the carry flag is copied to the left-most 
+  bit (bit 15) of the operand. 
+  <P></P>
+  <DT>b 000 110 001 dddddd -- ROL/ROLB <I>Rotate Left Word/Byte</I> 
+  <DD>Rotates the bits of the operand one position to the left. The left-most 
+  bit is placed in the carry flag, and the carry flag is copied to the 
+  right-most bit (bit 0) of the operand. 
+  <P></P>
+  <DT>b 000 110 010 dddddd -- ASR/ASRB <I>Arithmetic Shift Right Word/Byte</I> 
+  <DD>Shifts the bits of the operand one position to the right. The left-most 
+  bit is duplicated. The effect is to perform a signed division by 2. 
+  <P></P>
+  <DT>b 000 110 011 dddddd -- ASL/ASLB <I>Arithmetic Shift Left Word/Byte</I> 
+  <DD>Shifts the bits of the operand one position to the left. The right-most 
+  bit is set to zero. The effect is to perform a signed multiplication by 2. 
+  <P></P>
+  <DT>b 000 110 100 dddddd -- MARK/MTPS <I>Mark/Move To Processor Status</I> 
+  <DD>Mark is used as part of one of the subroutine call/ return sequences. The 
+  operand is the number of parameters. 
+  <P>MTPS is only on LSI-11s, and is used to move a byte to the processor status 
+  word. This is needed because the LSI-11 does not support accessing registers 
+  via memory addresses. 
+  <P></P>
+  <DT>b 000 110 101 dddddd -- MFPI/MFPD <I>Move From Prev. Instruction/Data</I> 
+  <DD>Pushes a word onto the current R6 stack from the operand address in the 
+  previous address space, as indicated in the PSW. On PDP-11s that do not 
+  support separate instruction and data spaces, MFPD is treated the same as 
+  MFPI. 
+  <P></P>
+  <DT>b 000 110 110 dddddd -- MTPI/MTPD <I>Move To Previous Instruction/Data</I> 
+
+  <DD>Pops a word from the current stack as indicated in the PSW to the operand 
+  address in the previous address space, as indicated in the PSW. On PDP-11s 
+  that do not support separate instruction and data spaces, MTPD is treated the 
+  same as MTPI. 
+  <P></P>
+  <DT>b 000 110 111 dddddd -- SXT/MFPS <I>Sign Extend/Move From Processor 
+  Status</I> 
+  <DD>SXT sets the destination to zero if the N (negative) flag is clear, or to 
+  all ones if N is set. This is useful for implementing arithmetic subroutines 
+  with more than word-sized operands. 
+  <P>MFPS copies the processor status byte to the indicated register. This only 
+  exists on LSI-11s, and is needed there because those systems don't support 
+  accessing registers via memory addresses. </P></DD></DL>
+<H2>Branches</H2><PRE>                      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                     |b|0|0|0|b|b|b|b|d|d|d|d|d|d|d|d|
+                     |  Branch Code  |  Destination  |
+</PRE>
+<P>The destination of a branch is +127 to -128 words from the word following the 
+branch instruction itself. This seems slightly odd, until you realize the 
+sequence of events: the branch instruction is read from memory and the PC 
+incremented. If the branch is to be taken, the offset is then added to the 
+current value of the PC. Since the PC has already been incremented, the offset 
+is thus relative to the following word. Note that all branch instructions are 
+one word long. </P>
+<P>The various branches test the values of specific condition codes, and if the 
+tests succeed, the branch is taken. The condition codes are N (negative), Z 
+(zero), C (carry), and V (overflow). In the table below, the branch tests are 
+shown as boolean expressions. `x' stands for exclusive-OR. `v' stands for 
+inclusive-OR. </P>
+<DL compact>
+  <DT>0 000 000 1dd dddddd 
+  <DD>BR: Branch Always 
+  <DT>0 000 001 0dd dddddd 
+  <DD>BNE: Branch if Not Equal (Z==0) 
+  <DT>0 000 001 1dd dddddd 
+  <DD>BEQ: Branch if EQual (Z==1) 
+  <DT>0 000 010 0dd dddddd 
+  <DD>BGE: Branch if Greater or Equal (NxV == 0) 
+  <DT>0 000 010 1dd dddddd 
+  <DD>BLT: Branch if Less Than (NxV == 1) 
+  <DT>0 000 011 0dd dddddd 
+  <DD>BGT: Branch if Greater Than (Zv(NxV) == 0) 
+  <DT>0 000 011 1dd dddddd 
+  <DD>BLE: Branch if Less or Equal (Zv(NxV) == 1) 
+  <DT>1 000 000 0dd dddddd 
+  <DD>BPL: Branch if PLus (N == 0) 
+  <DT>1 000 000 1dd dddddd 
+  <DD>BMI: Branch if MInus (N == 1) 
+  <DT>1 000 001 0dd dddddd 
+  <DD>BHI: Branch if HIgher (C==0 and Z==0) 
+  <DT>1 000 001 1dd dddddd 
+  <DD>BLOS: Branch if Lower Or Same (CvZ == 1) 
+  <DT>1 000 010 0dd dddddd 
+  <DD>BVC: Branch if oVerflow Clear (V == 0) 
+  <DT>1 000 010 1dd dddddd 
+  <DD>BVS: Branch if oVerflow set (V == 1) 
+  <DT>1 000 011 0dd dddddd 
+  <DD>BCC: Branch if Carry Clear (C == 0) <BR><I>also known as</I><BR>BHIS: 
+  Branch if Higher Or Same 
+  <DT>1 000 011 1dd dddddd 
+  <DD>BCS: Branch if Carry Set (C == 1) <BR><I>also known as</I><BR>BLO: Branch 
+  if Lower </DD></DL>
+<H2>Condition Code Operations</H2><PRE>                      _ _ _ _ _ _ _ _ _ _:_ _ _:_ _ _
+                     |0|0|0|0|0|0|0|0|1|0|1|s|N|Z|V|C|
+                     |     O p c o d e     | | Mask  |
+</PRE>
+<P>General opcode 000240x. Set/Clear corresponding bits depending on sense of 
+bit 04 (set=1, clear=0). Codes 240 and 260 set/clear no bits and are, thus, used 
+as NOP. Although specific mnemonic are provided for each flag and all flags, any 
+combination may actually be set or cleared at a time. </P>
+<P>General mnemonics are: </P>
+<DL compact>
+  <DT>CLx 
+  <DD>Clear x, where x is N, Z, V, or C 
+  <DT>SEx 
+  <DD>Set x, where x is N, Z, V, or C 
+  <DT>CCC 
+  <DD>Clear all condition codes 
+  <DT>SCC 
+  <DD>Set all condition codes </DD></DL><BR>
+<DL compact>
+  <DT>0 000 000 010 1s0 000 
+  <DD>NOP/NOP: No Operation 
+  <DT>0 000 000 010 1s0 001 
+  <DD>SEC/CLC: Set/Clear Carry 
+  <DT>0 000 000 010 1s0 010 
+  <DD>SEV/CLV: Set/Clear Overflow 
+  <DT>0 000 000 010 1s0 100 
+  <DD>SEZ/CLZ: Set/Clear Zero 
+  <DT>0 000 000 010 1s1 000 
+  <DD>SEN/CLN: Set/Clear Negative 
+  <DT>0 000 000 010 1s1 111 
+  <DD>SCC/CCC: Set/Clear All Condition Codes </DD></DL>
+<H2>Other, Miscellaneous</H2><PRE>                      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                     |0|0|0|0|1|0|0|s|s|s|d|d|d|d|d|d|
+                     |   Opcode    |Stack|Destination|
+</PRE>
+<P>
+<DL compact>
+  <DT>0 000 100 sss dddddd -- JSR <I>Jump to Subroutine</I> 
+  <DD>The actual sequence of steps taken is: <PRE>                  MOV &lt;source&gt;,-(R6)
+                  MOV PC,&lt;source&gt;
+                  JMP &lt;destination&gt;
+</PRE><BR>
+  <P>Thus, it loads the calling address into the specified source register 
+  (after saving the original contents). It then jumps to the destination. The 
+  fun part is (as usual with the PDP-11) that the PC is a general register, and 
+  the description above is the result when the PC is used as the source. 
+  </P></DD></DL><PRE>                      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                     |0|0|0|0|0|0|0|0|1|0|0|0|0|s|s|s|
+                     |          Opcode         |Stack|
+</PRE>
+<P>
+<DL compact>
+  <DT>0 000 000 010 000 sss -- RTS <I>ReTurn from Subroutine</I> 
+  <DD>Undoes the effects of a JSR. For predictable results, it is suggested that 
+  the same register should be used as was named in the corresponding JSR 
+  instruction. 
+  <P>The actual operations involved are: <PRE>                  MOV &lt;source&gt;,PC
+                  MOV (R6)+,&lt;source&gt;
+</PRE><BR>
+  <P>This is the reverse of JSR. Obviously, the finesse here too is that you can 
+  use the PC, to get what people normally consider a CALL/RETURN function. 
+  <P>Why is it done like this then? Well, consider this example: <PRE>                  ...
+                       JSR   R0,FOO
+                       .WORD A
+                       .WORD B
+                       MOV   R1,C
+                  ...
+
+                  FOO: MOV   @(R0)+,R1
+                       ADD   @(R0)+,R1
+                       RTS   R0
+</PRE><BR>
+  <P>This type of parameter passing is used extensively in the PDP-8 and 
+  PDP-10), for example. Also, the FORTRAN runtime system on the PDP-11 do it 
+  this way. (It is fairly easy to write a compiler who generates such a calling 
+  sequence, and then have a library of functions which expect this calling 
+  convention.) </P></DD></DL><PRE>                      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                     |0|0|0|0|0|0|0|0|0|1|d|d|d|d|d|d|
+                     |       Opcode      |Destination|
+</PRE>
+<P>
+<DL compact>
+  <DT>0 000 000 001 ddd ddd -- JMP <I>JuMP</I> 
+  <DD>Loads the destination address into the PC, thus effecting an unconditional 
+  jump. Note that a trap will occur on some systems if an odd address is 
+  specified. On others, the destination is silently rounded down to the 
+  next-lower even address (i.e., the right-most bit is ignored). </DD></DL><PRE>                      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                     |0|0|0|0|0|0|0|0|0|0|0|0|0|i|i|i|
+                     | |     |     |     |     | Op  |
+</PRE>
+<P>
+<DL compact>
+  <DD>0 000 000 000 000 000 -- HALT <I>Halts the machine</I> 
+  <DD>Ceases I/O, and gives control to the console. Operator intervention is 
+  required to continue or restart the system. 
+  <P></P>
+  <DD>0 000 000 000 000 001 -- WAIT <I>WAIT for interrupt</I> 
+  <DD>0 000 000 000 000 010 -- RTI <I>ReTurn from Interrupt</I> 
+  <DD>0 000 000 000 000 100 -- BPT <I>BreakPoint Trap</I> 
+  <DD>0 000 000 000 000 101 -- RESET <I>Initializes the system</I> </DD></DL>
+<P>The following opcode ranges are all unused (using three bits per digit): 
+<P>
+<DL compact>
+  <DD>00 00 07 .. 00 00 77 
+  <DD>00 02 10 .. 00 02 27 
+  <DD>00 70 00 .. 00 77 77 
+  <DD>07 50 40 .. 07 67 77 
+  <DD>10 64 00 .. 10 64 77 
+  <DD>10 67 00 .. 10 77 77 </DD></DL>
+<P>Other arithmetic and floating point instructions were added to the basic set 
+over the years, but those listed above form the core PDP-11 instruction set. 
+<P>There is a comparison of PDP-11 and 80x86 floating point formats available 
+at: <A 
+href="ftp://ftp.dbit.com/pub/pdp11/info/fpp.txt">ftp://ftp.dbit.com/pub/pdp11/info/fpp.txt</A> 
+
+<HR>
+<A href="http://www.village.org/pdp11/faq.html">Table of Contents</A> 
+</BODY></HTML>

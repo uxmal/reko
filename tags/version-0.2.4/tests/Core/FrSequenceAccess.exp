@@ -1,0 +1,8 @@
+// Mem0:Global memory
+// fp:Temporary
+// ax:ax
+// dx:dx
+// dx_ax:Sequence dx:ax
+// return address size: 0
+Head(dx_ax) = dx
+Tail(dx_ax) = ax

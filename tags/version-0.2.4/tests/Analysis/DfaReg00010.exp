@@ -1,0 +1,58 @@
+// void fn0C00_0000(Register word16 bp, Register word16 si, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  bp si ds
+// LiveOut:
+// Trashed: SCZO ax cx dx bx bp si al cl dl bl ah ch dh bh
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(word16 bp, word16 si, selector ds)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	fn0C00_0004(bp, si, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+
+// void fn0C00_0004(Register word16 bp, Register word16 si, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  bp si ds
+// LiveOut:
+// Trashed: SCZO ax cx dx bx bp si al cl dl bl ah ch dh bh
+// Preserved:
+// fn0C00_0004
+void fn0C00_0004(word16 bp, word16 si, selector ds)
+fn0C00_0004_entry:		// pred:
+	// succ:  l0C00_0004
+l0C00_0004:		// pred: fn0C00_0004_entry l0C00_0026
+	byte al_27 = Mem26[ds:si:byte]
+	byte al_32 = (al_27 >>u 0x04) + 0x30
+	word16 ax_33 = DPB(ax, al_32, 0, 8)
+	branch al_32 <= 0x39 l0C00_0016
+	// succ:  l0C00_0014 l0C00_0016
+l0C00_0014:		// pred: l0C00_0004
+	ax_33 = DPB(ax_33, (al_27 >>u 0x04) + 0x37, 0, 8) (alias)
+	// succ:  l0C00_0016
+l0C00_0016:		// pred: l0C00_0004 l0C00_0014
+	byte ah_41 = Mem26[ds:si:byte]
+	byte ah_44 = (ah_41 & 0x0F) + 0x30
+	word16 ax_45 = DPB(ax_33, ah_44, 8, 8)
+	branch ah_44 <= 0x39 l0C00_0026
+	// succ:  l0C00_0023 l0C00_0026
+l0C00_0023:		// pred: l0C00_0016
+	ax_45 = DPB(ax_45, (ah_41 & 0x0F) + 0x37, 8, 8) (alias)
+	// succ:  l0C00_0026
+l0C00_0026:		// pred: l0C00_0016 l0C00_0023
+	Mem53[ds:0x5427:word16] = ax_45
+	msdos_write_file(Mem53[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), &ax)
+	si = si + 0x0001
+	bp = bp - 0x0001
+	branch bp != 0x0000 l0C00_0004
+	// succ:  l0C00_003C l0C00_0004
+l0C00_003C:		// pred: l0C00_0026
+	return
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:		// pred: l0C00_003C
+	// succ: 
+

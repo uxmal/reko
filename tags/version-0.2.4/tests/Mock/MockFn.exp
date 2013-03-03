@@ -1,0 +1,16 @@
+// FnMock
+// Mem0:Global memory
+// fp:Temporary
+// r1:Local -0004
+// r2:Local -0008
+// return address size: 0
+void FnMock()
+FnMock_entry:
+	// succ:  l1
+l1:
+	r1 = foo()
+	r1 = bar(r1)
+	baz(r1, r2)
+	return
+	// succ:  FnMock_exit
+FnMock_exit:

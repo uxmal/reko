@@ -1,0 +1,36 @@
+// void fn0C00_0000(Register word16 bx, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  bx sp ss ds
+// LiveOut:
+// Trashed: ax sp al ah ss
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(word16 bx, selector ds)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	Mem6[ds:0x0306:word16] = fn0C00_0008(bx, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+
+// Register word16 fn0C00_0008(Register word16 bx, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  bx sp ss ds
+// LiveOut: ax
+// Trashed: ax sp al ah ss
+// Preserved:
+// fn0C00_0008
+word16 fn0C00_0008(word16 bx, selector ds)
+fn0C00_0008_entry:		// pred:
+	// succ:  l0C00_0008
+l0C00_0008:		// pred: fn0C00_0008_entry
+	Mem8[ds:0x0300:word16] = sp
+	Mem9[ds:0x0302:word16] = ss
+	Mem10[ds:0x0308:word16] = bx
+	return Mem10[ds:0x0304:word16]
+	// succ:  fn0C00_0008_exit
+fn0C00_0008_exit:		// pred: l0C00_0008
+	// succ: 
+

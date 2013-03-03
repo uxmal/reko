@@ -1,0 +1,57 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// sp:sp
+// ds:ds
+// ax:ax
+// dx:dx
+// SCZO:Flags
+// v7:Temporary
+// C:Flags
+// si:si
+// cx:cx
+// v11:Temporary
+// bx:bx
+// eax:eax
+// v14:Temporary
+// v15:Temporary
+// edx:edx
+// v17:Temporary
+// v18:Temporary
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	ax = Mem0[ds:0x0300:word16]
+	dx = Mem0[ds:0x0302:word16]
+	ax = ax + Mem0[ds:0x0304:word16]
+	SCZO = cond(ax)
+	v7 = dx + Mem0[ds:0x0306:word16]
+	dx = v7 + (word16) C
+	SCZO = cond(dx)
+	ax = Mem0[ds:si + 0x0308:word16]
+	ax = ax + cx
+	SCZO = cond(ax)
+	dx = Mem0[ds:si + 0x030A:word16]
+	v11 = dx + bx
+	dx = v11 + (word16) C
+	SCZO = cond(dx)
+	v14 = Mem0[ds:0x0200:word32] + eax
+	Mem0[ds:0x0200:word32] = v14
+	SCZO = cond(v14)
+	v15 = Mem0[ds:0x0204:word32] + edx
+	v17 = v15 + (word32) C
+	Mem0[ds:0x0204:word32] = v17
+	SCZO = cond(v17)
+	cx = Mem0[ds:si + 0x030C:word16]
+	ax = ax - cx
+	SCZO = cond(ax)
+	bx = Mem0[ds:si + 0x030E:word16]
+	v18 = dx - bx
+	dx = v18 - (word16) C
+	SCZO = cond(dx)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

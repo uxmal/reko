@@ -1,0 +1,91 @@
+void fn0C00_0000(Register selector ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: ax bx al bl ah bh
+// Preserved:
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// rLoc1:FPU stack
+// ds:Register ds
+// rLoc2:FPU stack
+// wLoc04:Local -0004
+// ax:Register ax
+// wLoc06:Local -0006
+// return address size: 2
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	rLoc1 = Mem0[ds:0x0300:real32]
+	rLoc2 = Mem0[ds:0x0304:real32]
+	wLoc04 = 0x0308
+	fn0C00_0024(ds, wLoc04, rLoc2, rLoc1)
+	rLoc1 = 0
+	Mem0[ds:0x030C:real32] = rLoc1
+	ax = Mem0[ds:0x0308:word16]
+	wLoc06 = ax
+	rLoc1 = fn0C00_0031(ds, wLoc06)
+	Mem0[ds:0x030C:real32] = rLoc1
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+void fn0C00_0024(Register selector ds, Stack word16 wArg00, FpuStack real64 rArg0, FpuStack real64 rArg1)
+// MayUse:  ds
+// LiveOut:
+// Trashed: bx bl bh
+// Preserved: bp
+// Stack args: Stack +0000(16)
+// fn0C00_0024
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// bx:Register bx
+// rArg0:FPU stack
+// ds:Register ds
+// rArg1:FPU stack
+// return address size: 2
+void fn0C00_0024(selector ds, word16 wArg00, real64 rArg0, real64 rArg1)
+fn0C00_0024_entry:		// pred:
+	// succ:  l0C00_0024
+l0C00_0024:		// pred: fn0C00_0024_entry
+	wLoc04 = bp
+	bx = wArg00
+	Mem0[ds:bx:real32] = rArg0
+	Mem0[ds:bx + 0x0004:real32] = rArg1
+	bp = wLoc04
+	return
+	// succ:  fn0C00_0024_exit
+fn0C00_0024_exit:		// pred: l0C00_0024
+	// succ: 
+FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg00)
+// MayUse:  ds
+// LiveOut:
+// Trashed: bx bl bh
+// Preserved: bp
+// Stack args: Stack +0000(16)
+// fn0C00_0031
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// bx:Register bx
+// rLoc1:FPU stack
+// ds:Register ds
+// return address size: 2
+real64 fn0C00_0031(selector ds, word16 wArg00)
+fn0C00_0031_entry:		// pred:
+	// succ:  l0C00_0031
+l0C00_0031:		// pred: fn0C00_0031_entry
+	wLoc04 = bp
+	bx = wArg00
+	rLoc1 = Mem0[ds:bx:real32]
+	bp = wLoc04
+	return rLoc1
+	// succ:  fn0C00_0031_exit
+fn0C00_0031_exit:		// pred: l0C00_0031
+	// succ: 

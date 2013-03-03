@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <procedure name="malloc">
+    <signature convention="cdecl">
+      <return>
+        <reg>eax</reg>
+      </return>
+      <arg name="cb">
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+</library>

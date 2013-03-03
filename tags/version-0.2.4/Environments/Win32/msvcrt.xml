@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <default>
+	<signature convention="cdecl"></signature>
+  </default>
+  <procedure name="malloc">
+	<signature>
+	  <return type="void *">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="size_t">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="free">
+	<signature>
+	  <arg type="void *">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="_CIacos">
+	<signature></signature>
+  </procedure>
+  <procedure name="_ltoa">
+	<signature>
+	  <return>
+		<reg>eax</reg>
+	  </return>
+	  <arg type="int32 *">
+		<stack size="4" />
+	  </arg>
+	  <arg type="char *">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="rand">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	</signature>
+  </procedure>
+  <procedure name="strncmp">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="const char *">
+		<stack size="4" />
+	  </arg>
+	  <arg type="const char *">
+		<stack size="4" />
+	  </arg>
+	  <arg type="size_t">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="calloc">
+	<signature>
+	  <return type="void *">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="size_t">
+		<stack size="4" />
+	  </arg>
+	  <arg type="size_t">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="atol">
+	<signature>
+	  <return type="long">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="const char *">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="time">
+	<signature>
+	  <return type="time_t">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="time_t *">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="srand">
+	<signature>
+	  <return type="void">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="unsigned int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="_ftol">
+	<signature>
+	  <return type="long">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="double">
+		<fpustack />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="sprintf">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="char *">
+		<stack size="4" />
+	  </arg>
+	  <arg type="const char *">
+		<stack size="4" />
+	  </arg>
+	  <!-- // TODO: what about varargs functions -->
+	</signature>
+  </procedure>
+  <procedure name="_CIpow">
+	<signature>
+    <return type="double">
+      <fpustack />
+    </return>
+    <arg type="double">
+      <fpustack />
+    </arg>
+    <arg type="double">
+      <fpustack />
+    </arg>
+  </signature>
+  </procedure>
+  <procedure name="strncpy">
+	<signature>
+	  <return type="char *">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="char *">
+		<stack size="4" />
+	  </arg>
+	  <arg type="const char *">
+		<stack size="4" />
+	  </arg>
+	  <arg type="size_t">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+</library>

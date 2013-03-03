@@ -1,0 +1,6 @@
+SCZO_43 = cond(cl_42 - 0x30): cond(cl_42 - 0x30)
+C_44 = SCZO_43 (alias): cond(cl_42 - 0x30)
+SCZO_51 = cond(cl_47 - 0x3A): cond(cl_47 - 0x3A)
+C_52 = SCZO_51 (alias): cond(cl_47 - 0x3A)
+C_53 = !C_52: !cond(cl_47 - 0x3A);
+SCZO_57 = cond(ax_55): cond(ax_55)

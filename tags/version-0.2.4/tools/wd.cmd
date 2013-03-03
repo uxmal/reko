@@ -1,0 +1,1 @@
+start windiff *.exp *.txt

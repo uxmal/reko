@@ -1,0 +1,40 @@
+Mem0:Global memory
+fp:Temporary
+r0:Register r0
+    def:  def r0
+    uses: r0_7 = PHI(r0, r0_6)
+          r0_6 = r0 + r1
+          branch r0 == 0x00000000 skip
+r1:Register r1
+    def:  def r1
+    uses: r0_6 = r0 + r1
+Z:Flags
+Z_5: orig: Z
+r0_6: orig: r0
+    def:  r0_6 = r0 + r1
+    uses: r0_7 = PHI(r0, r0_6)
+r0_7: orig: r0
+    def:  r0_7 = PHI(r0, r0_6)
+    uses: Mem8[0x10003000:word32] = r0_7
+Mem8: orig: Mem0
+    def:  Mem8[0x10003000:word32] = r0_7
+// CmpMock
+void CmpMock(word32 r0, word32 r1)
+CmpMock_entry:		// pred:
+	def r0
+	def r1
+	// succ:  l1
+l1:		// pred: CmpMock_entry
+	branch r0 == 0x00000000 skip
+	// succ:  l2 skip
+l2:		// pred: l1
+	r0_6 = r0 + r1
+	// succ:  skip
+skip:		// pred: l1 l2
+	r0_7 = PHI(r0, r0_6)
+	Mem8[0x10003000:word32] = r0_7
+	return
+	// succ:  CmpMock_exit
+CmpMock_exit:		// pred: skip
+	// succ: 
+

@@ -1,0 +1,63 @@
+Mem0:Global memory (aliases:)
+fp:Temporary (aliases:)
+sp:sp (aliases:)
+cx:cx (aliases:)
+ax:ax (aliases:)
+ds:ds (aliases:)
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	cx = 0x0005
+	call fn0C00_000B (retsize: 2; depth: 2)
+	Mem0[ds:0x0064:word16] = ax
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory (aliases:)
+fp:Temporary (aliases:)
+sp:sp (aliases:)
+si:si (aliases:)
+ss:ss (aliases:)
+cx:cx (aliases:)
+SCZO:Flags (aliases: SZO)
+SZO:Flags (aliases: SCZO)
+ax:ax (aliases: dx_ax)
+dx:dx (aliases: dx_ax)
+dx_ax:Sequence dx:ax (aliases: ax dx)
+wLoc02:Local -0002 (aliases:)
+// fn0C00_000B
+void fn0C00_000B()
+fn0C00_000B_entry:
+	// succ:  l0C00_000B
+l0C00_000B:
+	sp = fp - 0x0002
+	wLoc02 = si
+	SCZO = cond(cx - 0x0001)
+	SZO = SCZO (alias)
+	branch Test(LE,SZO) l0C00_001C
+	// succ:  l0C00_0011 l0C00_001C
+l0C00_0011:
+	si = cx
+	cx = cx - 0x0001
+	SZO = cond(cx)
+	call fn0C00_000B (retsize: 2; depth: 4)
+	dx_ax = si *s ax
+	ax = (word16) dx_ax (alias)
+	dx = SLICE(dx_ax, word16, 16) (alias)
+	SCZO = cond(dx_ax)
+	goto l0C00_001F
+	// succ:  l0C00_001F
+l0C00_001C:
+	ax = 0x0001
+	dx_ax = SEQ(dx, ax) (alias)
+	// succ:  l0C00_001F
+l0C00_001F:
+	si = wLoc02
+	sp = fp
+	return
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:
+
