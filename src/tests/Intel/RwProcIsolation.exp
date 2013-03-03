@@ -19,8 +19,11 @@ l0C00_0000:
 	Mem0[ds:0x0300:word16] = ax
 	di = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
-	goto l0C00_000F
-	// succ:  l0C00_000F
+	// succ:  l0C00_0000_tmp
+l0C00_0000_tmp:
+	call fn0C00_000F (retsize: 0;)
+	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 // fn0C00_000F
 // Mem0:Global memory

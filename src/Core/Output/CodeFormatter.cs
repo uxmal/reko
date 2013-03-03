@@ -57,7 +57,7 @@ namespace Decompiler.Core.Output
             this.writer = writer;
 		}
 
-        protected Formatter InnerFormatter
+        public Formatter InnerFormatter
         {
             get { return writer; }
         }
@@ -700,52 +700,7 @@ namespace Decompiler.Core.Output
 			}
 			else
 			{
-				foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
-				{
-                    if (!string.IsNullOrEmpty(b.Name))
-                    {
-                        writer.Write(b.Name);
-                        writer.Write(":");
-                        writer.WriteLine();
-                    }
-					if (b.Statements.Count > 0)
-					{
-                        int c = b.Statements.Count;
-                        Branch br = b.Statements.Last.Instruction as Branch;
-                        if (br != null)
-                        {
-                            --c;
-                        }
-                        for (int s = 0; s < c; ++s)
-						{
-							b.Statements[s].Instruction.Accept(this);
-						}
-                        if (br != null)
-                        {
-                            writer.Indent();
-                            writer.WriteKeyword("if");
-                            writer.Write(" (");
-                            WriteExpression(br.Condition);
-                            writer.Terminate(")");
-                            int old = writer.Indentation;
-                            writer.Indentation += writer.TabSize;
-                            writer.Indent();
-                            writer.WriteKeyword("goto");
-                            writer.Write(" ");
-                            writer.Write(b.Succ[1].Name);
-                            writer.Terminate();
-                            writer.Indentation = old;
-                        }
-                        else if (b.Succ.Count == 1 && !(b.Statements.Last.Instruction is ReturnInstruction))
-                        {
-                            writer.Indent();
-                            writer.WriteKeyword("goto");
-                            writer.Write(" ");
-                            writer.Write(b.Succ[0].Name);
-                            writer.Terminate();
-                        }
-					}
-				}
+                new ProcedureFormatter(proc, this).WriteProcedureBlocks(false);
 			}
 			writer.Write("}");
             writer.WriteLine();

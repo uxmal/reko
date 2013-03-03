@@ -6,18 +6,14 @@
 // ax:ax
 // dx:dx
 // SCZO:Flags
-// v7:Temporary
 // C:Flags
 // si:si
 // cx:cx
-// v11:Temporary
 // bx:bx
 // eax:eax
-// v14:Temporary
-// v15:Temporary
+// v12:Temporary
 // edx:edx
-// v17:Temporary
-// v18:Temporary
+// v14:Temporary
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -27,29 +23,25 @@ l0C00_0000:
 	dx = Mem0[ds:0x0302:word16]
 	ax = ax + Mem0[ds:0x0304:word16]
 	SCZO = cond(ax)
-	v7 = dx + Mem0[ds:0x0306:word16]
-	dx = v7 + (word16) C
+	dx = dx + Mem0[ds:0x0306:word16] + C
 	SCZO = cond(dx)
 	ax = Mem0[ds:si + 0x0308:word16]
 	ax = ax + cx
 	SCZO = cond(ax)
 	dx = Mem0[ds:si + 0x030A:word16]
-	v11 = dx + bx
-	dx = v11 + (word16) C
+	dx = dx + bx + C
 	SCZO = cond(dx)
-	v14 = Mem0[ds:0x0200:word32] + eax
-	Mem0[ds:0x0200:word32] = v14
+	v12 = Mem0[ds:0x0200:word32] + eax
+	Mem0[ds:0x0200:word32] = v12
+	SCZO = cond(v12)
+	v14 = Mem0[ds:0x0204:word32] + edx + C
+	Mem0[ds:0x0204:word32] = v14
 	SCZO = cond(v14)
-	v15 = Mem0[ds:0x0204:word32] + edx
-	v17 = v15 + (word32) C
-	Mem0[ds:0x0204:word32] = v17
-	SCZO = cond(v17)
 	cx = Mem0[ds:si + 0x030C:word16]
 	ax = ax - cx
 	SCZO = cond(ax)
 	bx = Mem0[ds:si + 0x030E:word16]
-	v18 = dx - bx
-	dx = v18 - (word16) C
+	dx = dx - bx - C
 	SCZO = cond(dx)
 	return
 	// succ:  fn0C00_0000_exit

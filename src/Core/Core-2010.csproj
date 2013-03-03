@@ -180,11 +180,11 @@
     <Compile Include="Expressions\Slice.cs" />
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
     </Compile>
+    <Compile Include="Output\ProcedureFormatter.cs" />
     <Compile Include="Rtl\RtlAssignment.cs" />
     <Compile Include="Rtl\RtlBranch.cs" />
     <Compile Include="Rtl\RtlCall.cs" />

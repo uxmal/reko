@@ -8,15 +8,11 @@
 // cx:cx
 // bx:bx
 // SCZO:Flags
-// v9:Temporary
 // C:Flags
 // es:es
 // es_cx:Sequence es:cx
-// v13:Temporary
 // SZO:Flags
 // cl:cl
-// v16:Temporary
-// v17:Temporary
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -28,8 +24,7 @@ l0C00_0000:
 	bx = Mem0[ds:0x0206:word16]
 	ax = ax + cx
 	SCZO = cond(ax)
-	v9 = dx + bx
-	dx = v9 + (word16) C
+	dx = dx + bx + C
 	SCZO = cond(dx)
 	Mem0[ds:0x0208:word16] = ax
 	Mem0[ds:0x020A:word16] = dx
@@ -40,8 +35,7 @@ l0C00_0000:
 	ax = ax - cx
 	SCZO = cond(ax)
 	Mem0[ds:0x0218:word16] = ax
-	v13 = dx - bx
-	dx = v13 - (word16) C
+	dx = dx - bx - C
 	SCZO = cond(dx)
 	Mem0[ds:0x021A:word16] = dx
 	ax = ax ^ ax
@@ -49,14 +43,12 @@ l0C00_0000:
 	C = false
 	cl = Mem0[ds:0x0220:byte]
 	SCZO = cond(cl - 0x30)
-	v16 = ax + ax
-	ax = v16 + (word16) C
+	ax = ax + ax + C
 	SCZO = cond(ax)
 	cl = Mem0[ds:0x0221:byte]
 	SCZO = cond(cl - 0x3A)
 	C = !C
-	v17 = ax + ax
-	ax = v17 + (word16) C
+	ax = ax + ax + C
 	SCZO = cond(ax)
 	Mem0[ds:0x0222:word16] = ax
 	return

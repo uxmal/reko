@@ -124,7 +124,6 @@ namespace Decompiler.Core
 			return change;
 		}
 
-
         public override string ToString()
         {
             return Name;

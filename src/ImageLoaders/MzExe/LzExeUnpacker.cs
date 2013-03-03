@@ -36,7 +36,7 @@ namespace Decompiler.ImageLoaders.MzExe
         private IProcessorArchitecture arch;
         private Platform platform;
 
-		private uint lzHdrOffset;
+		private int lzHdrOffset;
 		private bool isLz91;
 		private ProgramImage imgLoaded;
 		private ushort lzIp;
@@ -49,12 +49,12 @@ namespace Decompiler.ImageLoaders.MzExe
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(arch);
 
-			this.lzHdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) << 4;
+			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
 
 			// Locate the LzExe header and verify signature.
 
 			byte [] abC = RawImage;
-			int entry = (int) lzHdrOffset + exe.e_ip;
+			int entry = lzHdrOffset + exe.e_ip;
 			if (ProgramImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
 			{
 				// Untested binary version
@@ -115,7 +115,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		// for LZEXE ver 0.90 
 		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, ProgramImage pgmImgNew, RelocationDictionary relocations)
 		{
-			uint ifile = lzHdrOffset + 0x19D;
+			int ifile = lzHdrOffset + 0x19D;
 
 			// 0x19d=compressed relocation table address 
 
@@ -149,9 +149,9 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			ImageMap imageMap = pgmImgNew.Map;
             const int CompressedRelocationTableAddress = 0x0158;
-			uint ifile = lzHdrOffset + CompressedRelocationTableAddress;
+			int ifile = lzHdrOffset + CompressedRelocationTableAddress;
 
-			uint rel_off=0;
+			int rel_off=0;
 			for (;;)
 			{
     			ushort span = abUncompressed[ifile++];
@@ -161,7 +161,7 @@ namespace Decompiler.ImageLoaders.MzExe
 					span |= (ushort) (abUncompressed[ifile++] << 8);
 					if (span == 0)
 					{
-						rel_off += 0x0FFF0u;
+						rel_off += 0x0FFF0;
 						continue;
 					}
 					else if (span == 1)
@@ -171,9 +171,9 @@ namespace Decompiler.ImageLoaders.MzExe
 				}
 
 				rel_off += span;
-				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16(rel_off) + segReloc);
-				pgmImgNew.WriteLeUInt16(rel_off, seg);
-				relocations.AddSegmentReference(rel_off, seg);
+				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
+				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
+				relocations.AddSegmentReference((uint)rel_off, seg);
 				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 			}
 			return imageMap;
@@ -205,7 +205,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			// Find the start of the compressed stream.
 
-			uint ifile = (uint) (lzHdrOffset - (lzcpCompressed << 4));
+			int ifile = lzHdrOffset - (lzcpCompressed << 4);
 
 			// Allocate space for the decompressed goo.
 
@@ -214,8 +214,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			// Decompress this sorry mess.
 
-			uint len;
-			uint span;
+			int len;
+			int span;
 			int p = 0;
 			BitStream bits = new BitStream(abC, ifile);
 			for (;;)
@@ -233,7 +233,7 @@ namespace Decompiler.ImageLoaders.MzExe
 					len = bits.GetBit() << 1;
 					len |= bits.GetBit();
 					len += 2;
-					span = bits.GetByte() | ~0xFFu;
+					span = bits.GetByte() | ~0xFF;
 				} 
 				else
 				{
@@ -241,7 +241,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 					span = bits.GetByte();
 					len = bits.GetByte();;
-					span |= ((len & ~0x07u)<<5) | ~0x1FFFu;
+					span |= ((len & ~0x07)<<5) | ~0x1FFF;
 					len = (len & 0x07) + 2;
 					if (len == 2)
 					{
@@ -339,11 +339,11 @@ namespace Decompiler.ImageLoaders.MzExe
 	public class BitStream
 	{
 		private byte [] ab;
-		private uint p;
+		private int p;
 		private int cb;
 		private ushort bitBuf;
 
-		public BitStream(byte [] ab, uint i) 
+		public BitStream(byte [] ab, int i) 
 		{
 			this.ab = ab;
 			this.p = i;
@@ -351,14 +351,14 @@ namespace Decompiler.ImageLoaders.MzExe
 			LoadNextWord();
 		}
 
-		public uint AccumulateBit(uint acc)
+		public int AccumulateBit(int acc)
 		{
 			return (acc << 1) | GetBit();
 		}
 
-		public uint GetBit()
+		public int GetBit()
 		{
-			uint b = (bitBuf & 1u);
+			int b = (bitBuf & 1);
 			bitBuf >>= 1;
 			if (--cb == 0)
 			{

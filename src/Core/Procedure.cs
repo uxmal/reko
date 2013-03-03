@@ -146,7 +146,7 @@ namespace Decompiler.Core
         /// <param name="writer"></param>
 		public void Write(bool emitFrame, TextWriter writer)
         {
-            Write(emitFrame, false, writer);
+            Write(emitFrame, true, writer);
         }
 
 		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
@@ -157,33 +157,7 @@ namespace Decompiler.Core
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
 			writer.WriteLine();
 
-            var blocks = SortBlocksByName().ToArray();
-            for (var i = 0; i < blocks.Length; ++i)
-			{
-                var block = blocks[i];
-				if (block == null)
-                    continue;
-                block.Write(writer);
-                if (block != ExitBlock)
-                {
-                    var succ = block.Succ;
-                    if (succ.Count == 1)
-                    {
-                        var ret = block.Statements.Count > 0 && (block.Statements.Last.Instruction is ReturnInstruction);
-                        if (!ret && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
-                            writer.WriteLine("\tgoto {0}", succ[0].Name);
-                    }
-                    else if (succ.Count == 2)
-                    {
-                        var br = block.Statements.Last.Instruction is Branch;
-                        if (br && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
-                            writer.WriteLine("\tgoto {0}", succ[0].Name);
-                    }
-                    writer.Write("\t// succ: ");
-                    foreach (var s in succ) writer.Write(" {0}", s.Name);
-                    writer.WriteLine();
-                }
-			}
+            new ProcedureFormatter(this, writer).WriteProcedureBlocks(showEdges);
 		}
 
         public void WriteGraph(TextWriter writer)

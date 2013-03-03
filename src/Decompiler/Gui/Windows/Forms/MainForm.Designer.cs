@@ -185,7 +185,7 @@
             // 
             // ofd
             // 
-            this.ofd.FileName = "openFileDialog1";
+            this.ofd.Multiselect = false;
             // 
             // MainForm
             // 

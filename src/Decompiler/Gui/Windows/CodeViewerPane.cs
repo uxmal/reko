@@ -125,7 +125,7 @@ namespace Decompiler.Gui.Windows
             {
                 SetDocumentText();
                 webControl.Document.Write("<html><head>" +
-                    "<style>.kw { color:blue } " +
+                    "<style>.kw { color:blue } .comment { color:green } " +
                     "</style>" +
                     "</head>" + Environment.NewLine +
                     "<body><pre id=\"contents\">" +
@@ -149,7 +149,7 @@ namespace Decompiler.Gui.Windows
         {
             this.webControl.DocumentText = (
                     "<html><head>" +
-                    "<style>.kw { color:blue } " +
+                    "<style>.kw { color:blue } .comment { color:green } " +
                     "</style>" +
                     "</head>" + Environment.NewLine +
                     "<body><pre id=\"contents\">" +
@@ -163,6 +163,8 @@ namespace Decompiler.Gui.Windows
                 return;
 
             e.Cancel = true;    // this disables the annoying "click" of the IE web control
+            if (e.Url.AbsolutePath == "blank")
+                return;
             DisplayProcedure(GetProcedureFromUrl(e.Url));
         }
 
@@ -184,6 +186,8 @@ namespace Decompiler.Gui.Windows
             public void SetInnerHtmlOfElement(string elementId, string innerHtml)
             {
                 var contents = Document.GetElementById("contents");
+                if (contents == null)
+                    return;
                 contents.InnerHtml = innerHtml;
             }
         }

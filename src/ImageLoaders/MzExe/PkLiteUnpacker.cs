@@ -54,14 +54,14 @@ namespace Decompiler.ImageLoaders.MzExe
 			uint pkLiteHdrOffset = (uint) (exe.e_cparHeader * 0x10);
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
-				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}", pkLiteHdrOffset));
+				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}.", pkLiteHdrOffset));
 			uint cparUncompressed = ProgramImage.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
 			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
-				throw new ApplicationException(string.Format("Expected ADD BX,+XX at offset 0x{0:X4}", pkLiteHdrOffset + 0x04C));
+				throw new ApplicationException(string.Format("Expected ADD BX,+XX at offset 0x{0:X4}.", pkLiteHdrOffset + 0x04C));
 			uint offCompressedData = pkLiteHdrOffset + RawImage[pkLiteHdrOffset + 0x04E] * 0x10u - PspSize;
-			bitStm = new BitStream(RawImage, offCompressedData);
+			bitStm = new BitStream(RawImage, (int) offCompressedData);
 		}
 
         public override IProcessorArchitecture Architecture
@@ -96,8 +96,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 				// Read span length
 
-				uint CX = 0;
-				uint BX = bitStm.AccumulateBit(0);				// bx= [0-1]
+				int CX = 0;
+				int BX = bitStm.AccumulateBit(0);				// bx= [0-1]
 				BX = bitStm.AccumulateBit(BX);					// bx= [0-3]
 				if (BX < 0x02)
 				{
@@ -113,7 +113,7 @@ namespace Decompiler.ImageLoaders.MzExe
 								BX &= 0x03;
 								BX = bitStm.AccumulateBit(BX);
 								if (BX >= 0x05)
-								{
+							    {
 									BX = bitStm.AccumulateBit(BX);
 									if (BX > 0x0C)
 									{
@@ -216,7 +216,7 @@ l01C8:
 			return imgU;
 		}
 
-		public uint CopyDictionaryWord(byte [] abU, uint offset, uint bytes, BitStream stm, uint dst)
+		public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)
 		{
 			offset |= stm.GetByte();
 			var src = dst - offset;
@@ -227,7 +227,7 @@ l01C8:
 			return dst;
 		}
 	
-		public uint CopyDictionaryWord2(byte [] abU, uint BX, uint bytes, BitStream stm, uint dst)
+		public uint CopyDictionaryWord2(byte [] abU, int BX, int bytes, BitStream stm, uint dst)
 		{
 			BX = (ushort) (ab022C[BX] << 8);
 			return CopyDictionaryWord(abU, BX, bytes, stm, dst);
