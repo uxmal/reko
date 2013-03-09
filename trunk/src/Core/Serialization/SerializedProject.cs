@@ -55,9 +55,14 @@ namespace Decompiler.Core.Serialization
         {
             using (FileStream stm = new FileStream(file, FileMode.Open))
             {
-                XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
-                return (SerializedProject) ser.Deserialize(stm);
+                return Load(stm);
             }
+        }
+
+        public static SerializedProject Load(Stream stm)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
+            return (SerializedProject) ser.Deserialize(stm);
         }
 
         public void Save(TextWriter sw)

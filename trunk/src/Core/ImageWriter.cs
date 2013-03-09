@@ -27,12 +27,6 @@ namespace Decompiler.Core
 {
     public abstract class ImageWriter
     {
-        public ImageWriter() 
-        {
-            this.Bytes = new byte[16];
-            this.Position = 0;
-        }
-
         public ImageWriter(byte[] image)
         {
             this.Bytes = image;
@@ -101,10 +95,6 @@ namespace Decompiler.Core
 
     public class BeImageWriter : ImageWriter
     {
-        public BeImageWriter()
-        {
-        }
-
         public BeImageWriter(byte [] image) : base(image)
         {
         }
@@ -114,10 +104,6 @@ namespace Decompiler.Core
 
     public class LeImageWriter : ImageWriter
     {
-        public LeImageWriter()
-        {
-        }
-
         public LeImageWriter(byte [] image) :base(image)
         {
         }

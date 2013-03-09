@@ -60,10 +60,9 @@ namespace Decompiler.UnitTests.Loading
             Assert.IsTrue(PkLiteUnpacker.IsCorrectUnpacker(exe, rawImage.Bytes));
         }
 
-
         private byte[] CreateMsdosHeader()
         {
-            ImageWriter stm = new LeImageWriter();
+            ImageWriter stm = new LeImageWriter(new byte[16]);
             stm.WriteByte(0x4D);    // MZ
             stm.WriteByte(0x5A);
             stm.WriteBytes(0xCC, 4);
@@ -77,7 +76,5 @@ namespace Decompiler.UnitTests.Loading
             stm.WriteBytes(0xCC, 0x0C);
             return stm.Bytes;
         }
-
-
 	}
 }

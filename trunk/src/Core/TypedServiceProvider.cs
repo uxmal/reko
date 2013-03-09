@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Core
 {
     /// <summary>
     /// Utility class for eliminating redundant mentions of service types when getting and adding services.

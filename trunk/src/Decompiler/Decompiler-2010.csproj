@@ -280,7 +280,6 @@
     <Compile Include="Gui\ProcedureSearchResult.cs">
     </Compile>
     <Compile Include="Gui\SignatureParser.cs" />
-    <Compile Include="Gui\TypedServiceProvider.cs" />
     <Compile Include="Gui\AddressNavigator.cs" />
     <Compile Include="Gui\Windows\CodeViewerPane.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceImpl.cs" />

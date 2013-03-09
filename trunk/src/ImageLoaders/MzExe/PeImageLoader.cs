@@ -381,7 +381,7 @@ namespace Decompiler.ImageLoaders.MzExe
             SignatureLibrary lib = LoadSignatureLibrary(arch, id.DllName);
             if (lib == null)
             {
-                GetService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
+                Services.GetService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
                     new Diagnostic(string.Format("Unable to locate signature library for {0}.", id.DllName)));
             }
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
@@ -425,7 +425,7 @@ namespace Decompiler.ImageLoaders.MzExe
         private void AddUnresolvedImport(ImportDescriptor id, string fnName)
         {
             unresolvedImports.Add(new ImportedFunction(id, fnName));
-            GetService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
+            Services.RequireService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
                 new Diagnostic(string.Format("Unable to locate signature for {0} ({1}).", fnName, id.DllName)));
         }
 

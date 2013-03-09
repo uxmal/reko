@@ -25,10 +25,7 @@ namespace Decompiler.Core
 {
 	public interface Disassembler
 	{
-		Address Address
-		{
-			get; 
-		}
+        Address Address { get; }
 
         MachineInstruction DisassembleInstruction();
 	}

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Gui;
 using System;
 using System.ComponentModel;

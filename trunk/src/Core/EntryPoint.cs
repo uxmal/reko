@@ -25,40 +25,23 @@ namespace Decompiler.Core
 {
 	public class EntryPoint
 	{
-		private Address addr;
-		private string name;
-		private ProcessorState state;
-
-		public EntryPoint(Address addr, ProcessorState state)
+		public EntryPoint(Address addr, ProcessorState state) : this(addr, null, state)
 		{
-			if (state == null)
-				throw new ArgumentNullException("state");
-			this.addr = addr;
-			this.state = state;
 		}
 
 		public EntryPoint(Address addr, string name, ProcessorState state)
 		{
-			if (state == null)
+            if (addr == null)
+                throw new ArgumentNullException("addr");
+            if (state == null)
 				throw new ArgumentNullException("state");
-			this.addr = addr;
-			this.name = name;
-			this.state = state;
+			this.Address = addr;
+			this.Name = name;
+			this.ProcessorState = state;
 		}
 
-		public Address Address
-		{
-			get { return addr;}
-		}
-
-		public string Name
-		{
-			get { return name; }
-		}
-
-		public ProcessorState ProcessorState
-		{
-			get { return state; }
-		}
+		public Address Address { get; private set; }
+		public string Name { get; private set; }
+		public ProcessorState ProcessorState { get; private set; }
 	}
 }

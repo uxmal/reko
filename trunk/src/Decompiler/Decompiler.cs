@@ -194,8 +194,8 @@ namespace Decompiler
                 try
                 {
                     var project = new Project();
-                    XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
-                    project.Load((SerializedProject)ser.Deserialize(new MemoryStream(image)));
+                    Stream stm = new MemoryStream(image);
+                    project.Load(SerializedProject.Load(stm));
                     return project;
                 }
                 catch (XmlException)
@@ -206,6 +206,7 @@ namespace Decompiler
             else
                 return null;
         }
+
 
         private static bool IsXmlFile(byte[] image)
         {
