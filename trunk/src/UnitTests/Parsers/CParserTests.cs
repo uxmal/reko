@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
+using Decompiler.Parsers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Core.Serialization
+namespace Decompiler.UnitTests.Parsers
 {
     [TestFixture]
     public class CParserTests
@@ -61,6 +61,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
             Lex("a[3][4]");
             var decl = parser.Parse_Declarator();
+            Debug.Print("{0}: ", decl);
             //var arr = (ArrayDeclarator) decl.DirectDeclarator;
             //Assert.AreEqual("3", arr.Size.ToString());
             //arr = (ArrayDeclarator) arr.DirectDeclarator;
