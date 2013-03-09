@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Services;
 using Decompiler.Gui;
 using Decompiler.Gui.Forms;
@@ -47,7 +48,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             i = new TestInitialPageInteractor();
             site = new FakeComponentSite(i);
             uiSvc = new FakeShellUiService();
-            site.AddService(typeof(IDecompilerUIService), uiSvc);
+            site.AddService<IDecompilerUIService>(uiSvc);
             site.AddService(typeof(IDecompilerShellUiService), uiSvc);
             site.AddService(typeof(IDecompilerService), new DecompilerService());
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());

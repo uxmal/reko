@@ -29,12 +29,11 @@ namespace Decompiler.Core
 	/// </summary>
 	public abstract class ImageLoader
 	{
-        private IServiceProvider services;
 		private byte [] imgRaw;
 
         public ImageLoader(IServiceProvider services, byte[] imgRaw)
         {
-            this.services = services;
+            this.Services = services;
             this.imgRaw = imgRaw;
         }
 
@@ -43,12 +42,7 @@ namespace Decompiler.Core
         public abstract Platform Platform { get; }
         public abstract Address PreferredBaseAddress { get; }
         public byte[] RawImage { get { return imgRaw; } }
-
-        public T GetService<T>()
-        {
-            return (T)services.GetService(typeof(T));
-        }
-
+        public IServiceProvider Services { get; private set; }
 
         /// <summary>
 		/// Loads the image into memory starting at the specified address

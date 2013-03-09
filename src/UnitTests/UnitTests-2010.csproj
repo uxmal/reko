@@ -116,6 +116,8 @@
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
+    <Compile Include="Core\Serialization\CLexerTests.cs" />
+    <Compile Include="Core\Serialization\CParserTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />

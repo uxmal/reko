@@ -32,24 +32,18 @@ namespace Decompiler.Core
     /// </summary>
 	public class ExternalProcedure :  ProcedureBase
 	{
-		private ProcedureSignature signature;
-
 		public ExternalProcedure(string name, ProcedureSignature signature) : base(name)
 		{
-			this.signature = signature;
+			this.Signature = signature;
 		}
 
         public ExternalProcedure(string name, ProcedureSignature signature, ProcedureCharacteristics chars) : base(name)
         {
-            this.signature = signature;
+            this.Signature = signature;
             this.Characteristics = chars;
         }
 
-		public override ProcedureSignature Signature
-		{
-			get { return signature; }
-			set { signature = value; }
-		}
+		public override ProcedureSignature Signature { get; set; }
 
 		public override string ToString()
 		{
@@ -57,7 +51,7 @@ namespace Decompiler.Core
             Formatter fmt = new Formatter(sw);
             CodeFormatter cf = new CodeFormatter(fmt);
             TypeFormatter tf = new TypeFormatter(fmt, false);
-			signature.Emit(Name, ProcedureSignature.EmitFlags.ArgumentKind, fmt, cf, tf);
+			Signature.Emit(Name, ProcedureSignature.EmitFlags.ArgumentKind, fmt, cf, tf);
 			return sw.ToString();
 		}
 	}

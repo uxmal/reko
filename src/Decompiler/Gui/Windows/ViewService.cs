@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,15 +33,7 @@ namespace Decompiler.Gui.Windows
         public ViewService(IServiceProvider sp)
         {
             this.sp = sp;
-            this.shellUiSvc = RequireService<IDecompilerShellUiService>();
-        }
-
-        protected T RequireService<T>()
-        {
-            T svc = sp.GetService<T>();
-            if (svc == null)
-                throw new InvalidOperationException(string.Format("Service {0} unavailable at this time.", typeof(T).FullName));
-            return svc;
+            this.shellUiSvc = sp.RequireService<IDecompilerShellUiService>();
         }
 
         protected IDecompilerShellUiService ShellUiSvc
