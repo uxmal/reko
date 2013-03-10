@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Parsers
 
         private void Lexer(string input)
         {
-            lexer = new LookAheadLexer(new CLexer(new StringReader(input)));
+            lexer = new LookAheadLexer(new CDirectiveLexer(new CLexer(new StringReader(input))));
         }
 
         private void Expect(CTokenType expectedType, string expectedValue)

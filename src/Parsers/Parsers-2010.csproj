@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CDirectiveLexer.cs" />
     <Compile Include="CGrammar.cs" />
     <Compile Include="CLexer.cs" />
     <Compile Include="CParser.cs" />
