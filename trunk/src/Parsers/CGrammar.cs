@@ -112,9 +112,9 @@ namespace Decompiler.Parsers
             return new TypeQualifier { Qualifier = qualifier };
         }
 
-        public FieldDeclarator StructDeclarator(Declarator decl, CExpression bitField)
+        public FieldDeclarator FieldDeclarator(Declarator decl, CExpression bitField)
         {
-            throw new NotImplementedException();
+            return new FieldDeclarator { Declarator = decl, FieldSize = bitField };
         }
 
         internal TypeSpec SimpleType(CTokenType type)
@@ -211,9 +211,14 @@ namespace Decompiler.Parsers
             };
         }
 
-        internal TypeSpec ComplexType(CTokenType token, string tag, List<StructDecl> decls)
+        public TypeSpec ComplexType(CTokenType token, string tag, List<StructDecl> decls)
         {
-            throw new NotImplementedException();
+            return new ComplexTypeSpec
+            {
+                Type = token,
+                Name = tag,
+                DeclList = decls,
+            };
         }
 
         internal Label DefaultCaseLabel()
@@ -266,9 +271,9 @@ namespace Decompiler.Parsers
             throw new NotImplementedException();
         }
 
-        internal StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls)
+        public StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls)
         {
-            throw new NotImplementedException();
+            return new StructDecl { SpecQualifierList = sql, FieldDeclarators = decls };
         }
 
         public Declarator ArrayDeclarator(Declarator decl, CExpression expr)
@@ -508,7 +513,7 @@ namespace Decompiler.Parsers
     public class StructDecl
     {
         public List<DeclSpec> SpecQualifierList;
-        public List<FieldDeclarator> Declarators;
+        public List<FieldDeclarator> FieldDeclarators;
 
         public override string ToString()
         {
@@ -519,7 +524,7 @@ namespace Decompiler.Parsers
                 sb.AppendFormat(" {0}", sq);
             }
             sb.Append(") (");
-            foreach (var d in Declarators)
+            foreach (var d in FieldDeclarators)
             {
                 sb.AppendFormat(" {0}", d);
             }
@@ -531,7 +536,7 @@ namespace Decompiler.Parsers
     public class FieldDeclarator : Declarator
     {
         public Declarator Declarator;
-        public ConstExp FieldSize;
+        public CExpression FieldSize;
 
         public override string ToString()
         {

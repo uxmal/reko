@@ -18,52 +18,50 @@
  */
 #endregion
 
+using Decompiler.Parsers;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Parsers
+namespace Decompiler.UnitTests.Parsers
 {
-    public class LookAheadLexer
+    [TestFixture]
+    public class CDirectiveLexerTests
     {
         private CDirectiveLexer lexer;
-        private List<CToken> queue;
-        private int iRead;
 
-        public LookAheadLexer(CDirectiveLexer lexer)
+        private void Lex(string text)
         {
-            this.lexer = lexer;
-            this.queue = new List<CToken>();
-            iRead= 0;
+            lexer = new CDirectiveLexer(new CLexer(new StringReader(text)));
         }
 
-        public CToken Read()
+        private void Expect(CTokenType expectedType)
         {
-            if (iRead < queue.Count)
-            {
-                return queue[iRead++];
-            }
-            if (queue.Count > 0)
-                queue.Clear();
-            return lexer.Read();
+            var token = lexer.Read();
+            Assert.AreEqual(expectedType, token.Type);
+        }
+        private void Expect(CTokenType expectedType, object expectedValue)
+        {
+            var token = lexer.Read();
+            Assert.AreEqual(expectedType, token.Type);
+            Assert.AreEqual(expectedValue, token.Value);
         }
 
-        public CToken Peek(int n)
+        [Test]
+        public void CDirectiveLexer_NotTerminated_ReturnEof()
         {
-            if (n < 0)
-                throw new ArgumentOutOfRangeException("Can only peek ahead in the stream of tokens.");
-            int i = iRead + n;
-            while (IsSlotEmpty(i))
-            {
-                queue.Add(lexer.Read());
-            }
-            return queue[i];
+            Lex("#line 1\n \"foo.h\"");
+            Expect(CTokenType.EOF);
         }
 
-        private bool IsSlotEmpty(int n)
+        [Test]
+        public void CDirectiveLexer_LineDirective_ReturnFollowingToken()
         {
-            return queue.Count <= n;
+            Lex("#line 1\n \"foo.h\"\na");
+            Expect(CTokenType.Id, "a");
         }
     }
 }

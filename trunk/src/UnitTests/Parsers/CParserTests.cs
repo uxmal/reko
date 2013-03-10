@@ -699,6 +699,7 @@ MemoryBarrier (
         {
             Lex(windows_h);
             var decls = parser.Parse();
+            Assert.AreEqual(30, decls.Count);
             foreach (var decl in decls)
             {
                 Debug.Write(decl.ToString());
