@@ -358,5 +358,16 @@ namespace Decompiler.UnitTests.Parsers
             AssertToken(CTokenType.CharLiteral, 'a');
             AssertToken(CTokenType.CharLiteral, '\'');
         }
+
+        [Test]
+        public void CLexer_LineNumber()
+        {
+            Lex(" a\nb ");
+            Assert.AreEqual(1, lex.LineNumber);
+            AssertToken(CTokenType.Id, "a");
+            Assert.AreEqual(1, lex.LineNumber);
+            AssertToken(CTokenType.Id, "b");
+            Assert.AreEqual(2, lex.LineNumber);
+        }
     }
 }

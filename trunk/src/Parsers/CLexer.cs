@@ -75,6 +75,7 @@ namespace Decompiler.Parsers
         {
             this.rdr = rdr;
             this.sb = new StringBuilder();
+            this.LineNumber = 1;
         }
 
         private enum State
@@ -109,6 +110,8 @@ namespace Decompiler.Parsers
             Shr,
             RealExponentSign,
         }
+
+        public int LineNumber { get; private set; }
 
         public CToken Peek()
         {
@@ -660,6 +663,8 @@ namespace Decompiler.Parsers
             int ch = rdr.Peek();
             while (ch >= 0 && Char.IsWhiteSpace((char)ch))
             {
+                if (ch == '\n')
+                    ++LineNumber;
                 rdr.Read();
                 ch = rdr.Peek();
             }
