@@ -126,6 +126,7 @@
     <Compile Include="Mocks\FakeDialogFactory.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Parsers\LookAheadLexerTests.cs" />
+    <Compile Include="Parsers\NamedDataTypeExtractorTests.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
