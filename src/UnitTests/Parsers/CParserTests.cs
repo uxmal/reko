@@ -84,6 +84,23 @@ namespace Decompiler.UnitTests.Parsers
             Debug.Write(decl.ToString());
         }
 
+        [Test]
+        public void CParser_Typedef_Ulong()
+        {
+            Lex("typedef unsigned long ULONG;");
+            var decl = parser.Parse_ExternalDecl();
+            Debug.WriteLine(decl.ToString());
+            Assert.IsTrue(parser.IsTypeName("ULONG"));
+        }
+
+        [Test]
+        public void CParser_Function()
+        {
+            Lex("int atoi(char * number);");
+            var decl = parser.Parse_Decl();
+            Debug.WriteLine(decl.ToString());
+        }
+
         private string windows_h =
 #region Windows.h
 @"#line 1 ""\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\windows.h""

@@ -44,6 +44,8 @@
     <Compile Include="CLexer.cs" />
     <Compile Include="CParser.cs" />
     <Compile Include="LookaheadLexer.cs" />
+    <Compile Include="NamedDataType.cs" />
+    <Compile Include="NamedDataTypeExtractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

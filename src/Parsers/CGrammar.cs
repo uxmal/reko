@@ -27,6 +27,11 @@ namespace Decompiler.Parsers
 {
     public class CGrammar
     {
+        public CExpression Const(object value)
+        {
+            return new ConstExp { Const = value };
+        }
+
         public virtual CExpression Bin(CTokenType op, CExpression left, CExpression right)
         {
             return new CBinaryExpression
@@ -47,62 +52,57 @@ namespace Decompiler.Parsers
             return new CIdentifier { Name = name };
         }
 
-        internal CExpression Application(CExpression e, List<CExpression> list)
+        public CExpression Application(CExpression e, List<CExpression> list)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression ArrayAccess(CExpression e, CExpression idx)
+        public CExpression ArrayAccess(CExpression e, CExpression idx)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression MemberAccess(CExpression e, string id)
+        public CExpression MemberAccess(CExpression e, string id)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression PtrMemberAccess(CExpression e, string id)
+        public CExpression PtrMemberAccess(CExpression e, string id)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression PostIncrement(CExpression e, CTokenType token)
+        public CExpression PostIncrement(CExpression e, CTokenType token)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression Const(object value)
-        {
-            return new ConstExp { Const = value };
-        }
-
-        internal CExpression Sizeof(CType type)
+        public CExpression Sizeof(CType type)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression Sizeof(CExpression sexp)
+        public CExpression Sizeof(CExpression sexp)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression PreIncrement(CTokenType token, CExpression uexpr)
+        public CExpression PreIncrement(CTokenType token, CExpression uexpr)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression Cast(CType type, CExpression exp)
+        public CExpression Cast(CType type, CExpression exp)
         {
             throw new NotImplementedException();
         }
 
-        internal CExpression Application(CExpression e)
+        public CExpression Application(CExpression e)
         {
             throw new NotImplementedException();
         }
 
-        internal DeclSpec StorageClass(CTokenType token)
+        public DeclSpec StorageClass(CTokenType token)
         {
             return new StorageClassSpec {  Type = token };
         }
@@ -117,19 +117,19 @@ namespace Decompiler.Parsers
             return new FieldDeclarator { Declarator = decl, FieldSize = bitField };
         }
 
-        internal TypeSpec SimpleType(CTokenType type)
+        public TypeSpec SimpleType(CTokenType type)
         {
             return new SimpleTypeSpec { Type = type };
         }
 
-        internal TypeSpec TypeName(string name)
+        public TypeSpec TypeName(string name)
         {
-            throw new NotImplementedException(name);
+            return new TypeDefName { Name = name };
         }
 
-        internal Declarator IdDeclarator(string name)
+        public Declarator IdDeclarator(string name)
         {
-            return new IdDeclarator { Id = name };
+            return new IdDeclarator { Name = name };
         }
 
         public PointerDeclarator PointerDeclarator()
@@ -137,22 +137,22 @@ namespace Decompiler.Parsers
             return new PointerDeclarator { };
         }
 
-        internal Stat IfStatement(CExpression expr, Stat consequence, Stat alternative)
+        public Stat IfStatement(CExpression expr, Stat consequence, Stat alternative)
         {
             throw new NotImplementedException();
         }
 
-        internal Stat SwitchStatement(CExpression expr, Stat switchBody)
+        public Stat SwitchStatement(CExpression expr, Stat switchBody)
         {
             throw new NotImplementedException();
         }
 
-        internal Stat WhileStatement(CExpression expr, Stat switchBody)
+        public Stat WhileStatement(CExpression expr, Stat switchBody)
         {
             throw new NotImplementedException();
         }
 
-        internal Stat DoWhileStatement(Stat doBody, CExpression expr)
+        public Stat DoWhileStatement(Stat doBody, CExpression expr)
         {
             throw new NotImplementedException();
         }
@@ -168,27 +168,27 @@ namespace Decompiler.Parsers
             };
         }
 
-        internal Stat GotoStatement(string gotoLabel)
+        public Stat GotoStatement(string gotoLabel)
         {
             throw new NotImplementedException();
         }
 
-        internal Stat ContinueStatement()
+        public Stat ContinueStatement()
         {
             throw new NotImplementedException();
         }
 
-        internal Stat BreakStatement()
+        public Stat BreakStatement()
         {
             throw new NotImplementedException();
         }
 
-        internal Stat EmptyStatement()
+        public Stat EmptyStatement()
         {
             throw new NotImplementedException();
         }
 
-        internal Stat ReturnStatement(CExpression expr)
+        public Stat ReturnStatement(CExpression expr)
         {
             throw new NotImplementedException();
         }
@@ -221,29 +221,27 @@ namespace Decompiler.Parsers
             };
         }
 
-        internal Label DefaultCaseLabel()
+        public Label DefaultCaseLabel()
         {
             throw new NotImplementedException();
         }
 
-        internal Stat LabeledStatement(Label label, Stat stat)
+        public Stat LabeledStatement(Label label, Stat stat)
         {
-            throw new NotImplementedException();
+            return new LabeledStat {
+                Label = label,
+                Stat = stat,
+            };
         }
 
-        internal Label CaseLabel(CExpression constExpr)
+        public Label CaseLabel(CExpression constExpr)
         {
-            throw new NotImplementedException();
+            return new CaseLabel { Value = constExpr };
         }
 
         internal Label Label(string p)
         {
             throw new NotImplementedException();
-        }
-
-        internal Decl Decl()
-        {
-            return new ExternalDecl();
         }
 
         public InitDeclarator InitDeclarator(Declarator decl, Initializer init)
@@ -281,17 +279,27 @@ namespace Decompiler.Parsers
             return new ArrayDeclarator { Declarator = decl, Size = expr };
         }
 
-        internal Enumerator Enumerator(string id, CExpression init)
+        public Declarator FunctionDeclarator(Declarator decl, List<ParamDecl> parameters)
+        {
+            return new FunctionDeclarator { Declarator = decl, Parameters = parameters };
+        }
+
+        public Declarator PointerDeclarator(Declarator decl, List<TypeQualifier> tqs)
+        {
+            return new PointerDeclarator { TypeQualifierList = tqs, Pointee = decl};
+        }
+
+        public Enumerator Enumerator(string id, CExpression init)
         {
             return new Enumerator { Name = id, Value = init };
         }
 
-        internal ParamDecl Ellipsis()
+        public ParamDecl Ellipsis()
         {
             throw new NotImplementedException();
         }
 
-        internal Decl Decl(List<DeclSpec> list, List<Declarator> listDecls)
+        internal Decl Decl(List<DeclSpec> list, List<InitDeclarator> listDecls)
         {
             return new Decl
             {
@@ -300,7 +308,12 @@ namespace Decompiler.Parsers
             };
         }
 
-        internal Stat DeclStat(Decl decl)
+        public Stat DeclStat(Decl decl)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Decl FunctionDefinition(List<DeclSpec> decl_spec_list, Declarator declarator, List<Stat> statements)
         {
             throw new NotImplementedException();
         }
@@ -317,7 +330,7 @@ namespace Decompiler.Parsers
     public class Decl
     {
         public List<DeclSpec> decl_specs;
-        public List<Declarator> init_declarator_list;
+        public List<InitDeclarator> init_declarator_list;
 
         public override string ToString()
         {
@@ -343,35 +356,68 @@ namespace Decompiler.Parsers
         }
     }
 
+    public interface DeclSpecVisitor<T>
+    {
+        T VisitSimpleType(SimpleTypeSpec simpleType);
+        T VisitTypedef(TypeDefName typeDefName);
+        T VisitComplexType(ComplexTypeSpec complexType);
+        T VisitStorageClass(StorageClassSpec storageClass);
+        T VisitTypeQualifier(TypeQualifier typeQualifier);
+        T VisitEnum(EnumeratorTypeSpec enumeratorTypeSpec);
+    }
+
     public abstract class DeclSpec
     {
-    }
-
-    public class TypeQualifier : DeclSpec
-    {
-        public CTokenType Qualifier;
-    }
-
-    public class StorageClassSpec : DeclSpec
-    {
-        public CTokenType Type;
-
-        public override string ToString() { return Type.ToString(); }
+        public abstract T Accept<T>(DeclSpecVisitor<T> visitor);
     }
 
     public abstract class TypeSpec : DeclSpec
     {
     }
 
+
+    public class TypeQualifier : DeclSpec
+    {
+        public CTokenType Qualifier;
+
+        public override T Accept<T>(DeclSpecVisitor<T> visitor)
+        {
+            return visitor.VisitTypeQualifier(this);
+        }
+    }
+
+    public class StorageClassSpec : DeclSpec
+    {
+        public CTokenType Type;
+
+        public override T Accept<T>(DeclSpecVisitor<T> visitor)
+        {
+            return visitor.VisitStorageClass(this);
+        }
+
+        public override string ToString() { return Type.ToString(); }
+    }
+
     public class SimpleTypeSpec : TypeSpec
     {
         public CTokenType Type;
+
+        public override T Accept<T>(DeclSpecVisitor<T> visitor)
+        {
+            return visitor.VisitSimpleType(this);
+        }
+
         public override string ToString() { return Type.ToString(); }
     }
 
     public class TypeDefName : TypeSpec
     {
-        public string Id;
+        public string Name;
+
+        public override T Accept<T>(DeclSpecVisitor<T> visitor)
+        {
+            return visitor.VisitTypedef(this);
+        }
     }
 
     public class ComplexTypeSpec : TypeSpec
@@ -379,6 +425,11 @@ namespace Decompiler.Parsers
         public CTokenType Type;
         public string Name;
         public List<StructDecl> DeclList;
+
+        public override T Accept<T>(DeclSpecVisitor<T> visitor)
+        {
+            return visitor.VisitComplexType(this);
+        }
 
         public override string ToString()
         {
@@ -401,6 +452,11 @@ namespace Decompiler.Parsers
     {
         public string Tag;
         public List<Enumerator> Enums;
+
+        public override T Accept<T>(DeclSpecVisitor<T> visitor)
+        {
+            return visitor.VisitEnum(this);
+        }
     }
 
     public class Enumerator
@@ -416,11 +472,17 @@ namespace Decompiler.Parsers
         }
     }
 
-    public abstract class Declarator
+    public interface DeclaratorVisitor<T>
     {
+        T VisitId(IdDeclarator idDeclarator);
+        T VisitArray(ArrayDeclarator array);
+        T VisitField(FieldDeclarator field);
+        T VisitPointer(PointerDeclarator pointer);
+        T VisitFunction(FunctionDeclarator function);
+
     }
 
-    public class InitDeclarator : Declarator
+    public class InitDeclarator
     {
         public Declarator Declarator;
         public Initializer Init;
@@ -439,40 +501,41 @@ namespace Decompiler.Parsers
         }
     }
 
-    public class DirectDeclarator : Declarator
-    {
-        public PointerDeclarator Pointer;
-        public Declarator Declarator;
 
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            if (Pointer != null)
-            {
-                sb.Append("(");
-                sb.Append(Pointer);
-                sb.Append(" ");
-                sb.Append(Declarator);
-                sb.Append(")");
-            }
-            else
-            {
-                sb.Append(Declarator);
-            }
-            return sb.ToString();
-        }
+    public abstract class Declarator
+    {
+        public abstract T Accept<T>(DeclaratorVisitor<T> visitor);
     }
 
     public class ParamDecl
     {
         public List<DeclSpec> DeclSpecs;
         public Declarator Declarator;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("(");
+            foreach (var declspec in DeclSpecs)
+            {
+                sb.Append(declspec);
+                sb.Append(" ");
+            }
+            sb.Append(Declarator);
+            sb.Append(")");
+            return sb.ToString();
+        }
     }
 
     public class PointerDeclarator : Declarator
     {
-        public PointerDeclarator Pointer;
+        public Declarator Pointee;
         public List<TypeQualifier> TypeQualifierList;
+
+        public override T Accept<T>(DeclaratorVisitor<T> visitor)
+        {
+            return visitor.VisitPointer(this);
+        }
 
         public override string ToString()
         {
@@ -485,15 +548,48 @@ namespace Decompiler.Parsers
                     sb.AppendFormat(" {0}", tq);
                 }
             }
-            sb.AppendFormat(" {0})", Pointer);
+            sb.AppendFormat(" {0})", Pointee);
             return sb.ToString();
         }
     }
 
-    public class IdDeclarator : DirectDeclarator
+    public class IdDeclarator : Declarator
     {
-        public string Id;
-        public override string ToString() { return Id; }
+        public string Name;
+
+        public override T Accept<T>(DeclaratorVisitor<T> visitor)
+        {
+            return visitor.VisitId(this);
+        }
+
+        public override string ToString() { return Name; }
+    }
+
+    public class FunctionDeclarator : Declarator
+    {
+        public Declarator Declarator;
+        public List<ParamDecl> Parameters;
+
+        public override T Accept<T>(DeclaratorVisitor<T> visitor)
+        {
+            return visitor.VisitFunction(this);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("(func ");
+            sb.Append(Declarator);
+            var sep = " (";
+            foreach (var param in Parameters)
+            {
+                sb.Append(sep);
+                sb.Append(param);
+                sep = " ";
+            }
+            sb.Append("))");
+            return sb.ToString();
+        }
     }
 
     public class ArrayDeclarator : Declarator
@@ -501,13 +597,12 @@ namespace Decompiler.Parsers
         public Declarator Declarator;
         public CExpression Size;
 
-        public override string ToString() { return string.Format("(arr {0} {1})", Declarator, Size); }
-    }
+        public override T Accept<T>(DeclaratorVisitor<T> visitor)
+        {
+            return visitor.VisitArray(this);
+        }
 
-    public class FuncDeclarator : DirectDeclarator
-    {
-        public DirectDeclarator DirectDeclarator;
-        public object args;
+        public override string ToString() { return string.Format("(arr {0} {1})", Declarator, Size); }
     }
 
     public class StructDecl
@@ -538,6 +633,11 @@ namespace Decompiler.Parsers
         public Declarator Declarator;
         public CExpression FieldSize;
 
+        public override T Accept<T>(DeclaratorVisitor<T> visitor)
+        {
+            return visitor.VisitField(this);
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -561,8 +661,11 @@ namespace Decompiler.Parsers
     public class ExpressionInitializer : Initializer
     {
         public CExpression Expression;
+
         public override string ToString() { return Expression.ToString(); }
     }
+        
+    #region Expressions 
 
     public abstract class CExpression
     {
@@ -608,12 +711,9 @@ namespace Decompiler.Parsers
         public CExpression Consequent;
         public CExpression Alternative;
     }
+#endregion
 
-    public class FunctionDefinition : Decl
-    {
-        public Declarator declarator;
-        public List<Stat> compound_stat;
-    }
+    #region Statements
 
     public abstract class Stat
     {
@@ -622,6 +722,7 @@ namespace Decompiler.Parsers
     public class LabeledStat : Stat
     {
         public Label Label;
+        public Stat Stat;
     }
 
     public class DeclStat : Stat
@@ -643,7 +744,7 @@ namespace Decompiler.Parsers
 
     public class CaseLabel : Label
     {
-        public ConstExp Value;
+        public CExpression Value;
 
         public override string ToString() 
         { 
@@ -661,4 +762,6 @@ namespace Decompiler.Parsers
         public CExpression Update;
         public Stat Body;
     }
+
+#endregion
 }

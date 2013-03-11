@@ -1,4 +1,25 @@
-﻿using System;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2013 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Core.Types;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -58,13 +79,6 @@ namespace Decompiler.Parsers
 
         //---------- LL(1) conflict resolvers ------------------------------
 
-
-        [Obsolete]
-        private CToken ReadToken()
-        {
-            return lexer.Read();
-        }
-
         private CTokenType PeekTokenType()
         {
             return lexer.Peek(0).Type;
@@ -91,22 +105,30 @@ namespace Decompiler.Parsers
             throw new FormatException(string.Format("Expected token '{0}' but saw '{1}'.", expected, actual));
         }
 
-        private bool IsTypeName(CToken x)
+        public bool IsTypeName(CToken x)
         {
-            if (x.Type != CTokenType.Id) return false;
-            return tab[x.Value] is Type;
+            if (x.Type != CTokenType.Id)
+                return false;
+            return tab[x.Value] is DataType;
+        }
+
+        public bool IsTypeName(string id)
+        {
+            return tab[id] is DataType;
         }
 
         bool IsType0()
         { // return true if the next token is a type name
-            PeekTokenType();
-            return IsTypeName(tokenCur);
+            var token = lexer.Peek(0);
+            if (startOfTypeName[(int) token.Type])
+                return true;
+            return IsTypeName(lexer.Peek(0));
         }
 
         bool IsType1()
         { // return true if "(" TypeName
-            if (PeekTokenType() != CTokenType.LParen) return false;
-            CToken x = lexer.Peek(0);
+            if (lexer.Peek(0).Type != CTokenType.LParen) return false;
+            CToken x = lexer.Peek(1);
             if (startOfTypeName[(int)x.Type]) return true;
             return IsTypeName(x);
         }
@@ -114,9 +136,9 @@ namespace Decompiler.Parsers
         // return true if not "," "}"
         bool IsContinued()
         {
-            if (PeekTokenType() == CTokenType.Comma)
+            if (lexer.Peek(0).Type == CTokenType.Comma)
             {
-                CToken x = lexer.Peek(0);
+                CToken x = lexer.Peek(1);
                 if (x.Type == CTokenType.RBrace) return false;
             }
             return true;
@@ -125,9 +147,9 @@ namespace Decompiler.Parsers
         // return true if ",", which is not followed by "..."
         bool IsContinued1()
         { 
-            if (tokenCur.Type == CTokenType.Comma)
+            if (lexer.Peek(0).Type == CTokenType.Comma)
             {
-                CToken x = lexer.Peek(0);
+                CToken x = lexer.Peek(1);
                 if (x.Type != CTokenType.Ellipsis)
                     return true;
             }
@@ -162,9 +184,10 @@ namespace Decompiler.Parsers
         // return true if there is no non-type-ident after '*', '(', "const", "volatile"
         bool IsAbstractDecl()
         {
-            CToken x = tokenCur;
+            int i = 0;
+            CToken x = lexer.Peek(i);
             while (x.Type == CTokenType.Star || x.Type == CTokenType.LParen || x.Type == CTokenType.Const || x.Type == CTokenType.Volatile)
-                x = lexer.Peek(0);
+                x = lexer.Peek(++i);
             if (x.Type != CTokenType.Id)
                 return true;
             return IsTypeName(x);
@@ -296,67 +319,89 @@ IGNORE tab + cr + lf
         //  | ';'                                           // Decl
         //  ).
 
-
-        Decl Parse_ExternalDecl()
+        public Decl Parse_ExternalDecl()
         {
             var decl_spec_list = Parse_DeclSpecifierList();
             if (decl_spec_list == null)
                 return null;
+            var inits = new List<InitDeclarator>();
             if (PeekThenDiscard(CTokenType.Semicolon))
-                return grammar.Decl();
+                return grammar.Decl(decl_spec_list, inits);
             var declarator = Parse_Declarator();
+            if (declarator.ToString().Contains("HANDLE_PTR"))   //$DEBUG
+                declarator.ToString();
             var token = PeekTokenType();
             if (token == CTokenType.Assign ||
                 token == CTokenType.Comma ||
                 token == CTokenType.Semicolon)
             {
+                // Declaration.
                 Initializer init = null;
-
                 if (PeekThenDiscard(CTokenType.Assign))
                 {
                     init = Parse_Initializer();
                 }
+                inits.Add(grammar.InitDeclarator(declarator, init));
                 while (PeekThenDiscard(CTokenType.Comma))
                 {
-                    var init_decl = Parse_InitDeclarator();
+                    inits.Add(Parse_InitDeclarator());
                 }
                 ExpectToken(CTokenType.Semicolon);
-                return new ExternalDecl
-                {
-                };
+                var decl = grammar.Decl(decl_spec_list, inits);
+                UpdateNamespaceWithTypedefs(decl_spec_list, inits);
+                return decl;
             }
             else
             {
-                while (!PeekThenDiscard(CTokenType.LBrace))
+                // Function definition
+                while (lexer.Peek(0).Type != CTokenType.LBrace)
                 {
+                    // Old-style C definition.
                     Parse_Decl();
                 }
                 ExpectToken(CTokenType.LBrace);
+                var statements = new List<Stat>();
                 while (!PeekThenDiscard(CTokenType.RBrace))
                 {
                     if (IsDecl())
                     {
-                        Parse_Decl();
+                        statements.Add(grammar.DeclStat(Parse_Decl()));
                     }
                     else
                     {
-                        Parse_Stat();
+                        statements.Add(Parse_Stat());
                     }
                 }
-                return new FunctionDefinition();
+                return grammar.FunctionDefinition(decl_spec_list, declarator, statements);
             }
         }
 
+        private void UpdateNamespaceWithTypedefs(List<DeclSpec> declspecs, List<InitDeclarator> declarators)
+        {
+            if (declspecs.Count == 0)
+               return;
+            var typedefSpec = declspecs[0] as StorageClassSpec;
+            if (typedefSpec == null || typedefSpec.Type != CTokenType.Typedef)
+                return;
+            declspecs.RemoveAt(0);
+            foreach (var declarator in declarators)
+            {
+                if (declarator.Init != null)
+                    throw new FormatException("typedefs can't be initialized.");
+                var nameType = NamedDataTypeExtractor.GetNameAndType(declspecs, declarator.Declarator, tab);
+                tab[nameType.Name] = nameType.DataType;
+            }
+        }
 
         //---------- Declarations ----------
 
         //Decl = DeclSpecifierList [InitDeclarator {',' InitDeclarator}] ';'.
         public Decl Parse_Decl()
         {
-            var list = Parse_DeclSpecifierList();
-            if (list == null)
+            var declSpecifiers = Parse_DeclSpecifierList();
+            if (declSpecifiers == null)
                 return null;
-            var listDecls = new List<Declarator>();
+            var listDecls = new List<InitDeclarator>();
             if (!PeekThenDiscard(CTokenType.Semicolon))
             {
                 listDecls.Add(Parse_InitDeclarator());
@@ -366,10 +411,18 @@ IGNORE tab + cr + lf
                 }
             }
             ExpectToken(CTokenType.Semicolon);
-            return grammar.Decl(list, listDecls);
+            //UpdateNamespaceWithTypedefs(decl_spec_list, inits);
+            return grammar.Decl(declSpecifiers, listDecls);
         }
 
-        //InitDeclarator = Declarator ['=' Initializer].
+        
+        /// <summary>
+        /// Parses a (possibly initialized) declarator.
+        /// </summary>
+        /// <remarks>
+        /// InitDeclarator = Declarator ['=' Initializer].
+        /// </remarks>
+        /// <returns></returns>
         private InitDeclarator Parse_InitDeclarator()
         {
             var decl = Parse_Declarator();
@@ -411,10 +464,12 @@ IGNORE tab + cr + lf
             case CTokenType.Static:
             case CTokenType.Auto:
             case CTokenType.Register:
-                return grammar.StorageClass( ReadToken().Type);
+            case CTokenType.__Inline:
+                return grammar.StorageClass( lexer.Read().Type);
             case CTokenType.Const:
             case CTokenType.Volatile:
-                return grammar.TypeQualifier(ReadToken().Type);
+            case CTokenType.__Ptr64:
+                return grammar.TypeQualifier(lexer.Read().Type);
             default:
                 return Parse_TypeSpecifier();
             }
@@ -441,22 +496,24 @@ IGNORE tab + cr + lf
             case CTokenType.Char:
             case CTokenType.Short:
             case CTokenType.Int:
+            case CTokenType.__Int64:
             case CTokenType.Long:
             case CTokenType.Float:
             case CTokenType.Double:
             case CTokenType.Signed:
             case CTokenType.Unsigned:
-                return grammar.SimpleType(ReadToken().Type);
+            case CTokenType.__W64:
+                return grammar.SimpleType(lexer.Read().Type);
             case CTokenType.Id: // type name
-                return grammar.TypeName((string) ReadToken().Value);
+                return grammar.TypeName((string) lexer.Read().Value);
             case CTokenType.Struct:
             case CTokenType.Union:
-                ReadToken();
+                lexer.Read();
                 string tag = null;
                 List<StructDecl> decls = null;
                 if (PeekTokenType() == CTokenType.Id)
                 {
-                    tag = (string) ReadToken().Value;
+                    tag = (string) lexer.Read().Value;
                     if (PeekThenDiscard(CTokenType.LBrace))
                     {
                         decls = new List<StructDecl>();
@@ -479,11 +536,11 @@ IGNORE tab + cr + lf
                 }
                 return grammar.ComplexType(token, tag, decls);
             case CTokenType.Enum:
-                ReadToken();
+                lexer.Read();
                 List<Enumerator> enums = null;
                 if (PeekTokenType() == CTokenType.Id)
                 {
-                    tag = (string) ReadToken().Value;
+                    tag = (string) lexer.Read().Value;
                     if (PeekThenDiscard(CTokenType.LBrace))
                     {
                         enums = new List<Enumerator>();
@@ -506,8 +563,11 @@ IGNORE tab + cr + lf
                     ExpectToken(CTokenType.RBrace);
                 }
                 return grammar.Enum(tag, enums);
-            default:
+            case CTokenType.EOF:
+            case CTokenType.RParen:
                 return null;
+            default:
+                throw new NotImplementedException(string.Format("Meuf: {0}", token));
             }
         }
 
@@ -583,6 +643,8 @@ IGNORE tab + cr + lf
             {
             case CTokenType.Const:
             case CTokenType.Volatile:
+            case CTokenType.__Ptr64:
+                lexer.Read();
                 return grammar.TypeQualifier(token);
             }
             return null;
@@ -598,23 +660,20 @@ IGNORE tab + cr + lf
         //    }.
         public Declarator Parse_Declarator()
         {
-            PointerDeclarator ptr = null;
-            if (PeekTokenType() == CTokenType.Star)
-            {
-                ptr = Parse_Pointer();
-            }
             Declarator decl;
-            var token = PeekTokenType();
+            var token = lexer.Peek(0).Type;
             switch (token)
             {
             case CTokenType.Id:
-                decl = grammar.IdDeclarator((string) ReadToken().Value);
+                decl = grammar.IdDeclarator((string) lexer.Read().Value);
                 break;
             case CTokenType.LParen:
                 ExpectToken(CTokenType.LParen);
                 decl = Parse_Declarator();
                 ExpectToken(CTokenType.RParen);
                 break;
+            case CTokenType.Star:
+                return Parse_Pointer();
             default:
                 return null;
             }
@@ -623,7 +682,7 @@ IGNORE tab + cr + lf
                 switch (PeekTokenType())
                 {
                 case CTokenType.LBracket:
-                    ReadToken();
+                    lexer.Read();
                     CExpression expr = null;
                     if (PeekTokenType() != CTokenType.RBracket)
                     {
@@ -633,14 +692,17 @@ IGNORE tab + cr + lf
                     decl = grammar.ArrayDeclarator(decl, expr);
                     break;
                 case CTokenType.LParen:
+                    lexer.Read();
                     if (!IsType0())
                     {
                         Parse_IdentList();
                     }
                     else
                     {
-                        Parse_ParamTypeList();
+                        var parameters = Parse_ParamTypeList();
+                        decl = grammar.FunctionDeclarator(decl, parameters); 
                     }
+                    ExpectToken(CTokenType.RParen);
                     break;
                 default: 
                     return decl;
@@ -650,23 +712,20 @@ IGNORE tab + cr + lf
 
         // Pointer = '*'  {TypeQualifier} {'*'  {TypeQualifier}}.
 
-        PointerDeclarator Parse_Pointer()
+        Declarator Parse_Pointer()
         {
             ExpectToken(CTokenType.Star);
+            List<TypeQualifier> tqs = null;
             var tq = Parse_TypeQualifier();
             while (tq != null)
             {
+                if (tqs == null)
+                    tqs = new List<TypeQualifier>();
+                tqs.Add(tq);
                 tq = Parse_TypeQualifier();
             }
-            while (PeekThenDiscard(CTokenType.Star))
-            {
-                tq = Parse_TypeQualifier();
-                while (tq != null)
-                {
-                    tq = Parse_TypeQualifier();
-                }
-            }
-            return grammar.PointerDeclarator();
+            var declarator = Parse_Declarator();
+            return grammar.PointerDeclarator(declarator, tqs);
         }
 
         //ParamTypeList = ParamDecl {IF(Continued1()) ',' ParamDecl} [',' "..."].
@@ -773,10 +832,10 @@ IGNORE tab + cr + lf
             switch (PeekTokenType())
             {
             case CTokenType.LParen:
-                ReadToken();
+                lexer.Read();
                 break;
             case CTokenType.LBracket:
-                ReadToken();
+                lexer.Read();
                 expr = null;
                 if (PeekTokenType() != CTokenType.RBracket)
                 {
@@ -794,10 +853,10 @@ IGNORE tab + cr + lf
                 switch (PeekTokenType())
                 {
                 case CTokenType.LParen:
-                    ReadToken();
+                    lexer.Read();
                     break;
                 case CTokenType.LBracket:
-                    ReadToken();
+                    lexer.Read();
                     expr = null;
                     if (PeekTokenType() != CTokenType.RBracket)
                     {
@@ -870,7 +929,7 @@ IGNORE tab + cr + lf
             case CTokenType.AndAssign:
             case CTokenType.OrAssign:
             case CTokenType.XorAssign:
-                ReadToken();
+                lexer.Read();
                 var right = Parse_AssignExpr();
                 return grammar.Bin(token, left, right);
             default:
@@ -957,7 +1016,7 @@ IGNORE tab + cr + lf
             var token = PeekTokenType();
             while (token == CTokenType.Eq || token == CTokenType.Ne)
             {
-                ReadToken();
+                lexer.Read();
                 var right = Parse_RelExpr();
                 left = grammar.Bin(token, left, right);
                 token = PeekTokenType();
@@ -972,7 +1031,7 @@ IGNORE tab + cr + lf
             while (token == CTokenType.Le || token == CTokenType.Lt ||
                    token == CTokenType.Ge || token == CTokenType.Gt)
             {
-                ReadToken();
+                lexer.Read();
                 var right = Parse_ShiftExpr();
                 left = grammar.Bin(token, left, right);
                 token = PeekTokenType();
@@ -986,7 +1045,7 @@ IGNORE tab + cr + lf
             var token = PeekTokenType();
             while (token == CTokenType.Shl || token == CTokenType.Shr)
             {
-                ReadToken();
+                lexer.Read();
                 var right = Parse_AddExpr();
                 left = grammar.Bin(token, left, right);
                 token = PeekTokenType();
@@ -1000,7 +1059,7 @@ IGNORE tab + cr + lf
             var token = PeekTokenType();
             while (token == CTokenType.Plus || token == CTokenType.Minus)
             {
-                ReadToken();
+                lexer.Read();
                 var right = Parse_MultExpr();
                 left = grammar.Bin(token, left, right);
                 token = PeekTokenType();
@@ -1015,7 +1074,7 @@ IGNORE tab + cr + lf
             while (token == CTokenType.Star || token == CTokenType.Slash ||
                    token == CTokenType.Percent)
             {
-                ReadToken();
+                lexer.Read();
                 var right = Parse_CastExpr();
                 left = grammar.Bin(token, left, right);
                 token = PeekTokenType();
@@ -1048,7 +1107,7 @@ IGNORE tab + cr + lf
             {
             case CTokenType.Increment:
             case CTokenType.Decrement:
-                ReadToken();
+                lexer.Read();
                 expr = Parse_UnaryExpr();
                 return grammar.PreIncrement(token, expr);
             case CTokenType.Ampersand:
@@ -1057,10 +1116,10 @@ IGNORE tab + cr + lf
             case CTokenType.Minus:
             case CTokenType.Tilde:
             case CTokenType.Bang:
-                ReadToken();
+                lexer.Read();
                 return grammar.Unary(token, Parse_CastExpr());
             case CTokenType.Sizeof:
-                ReadToken();
+                lexer.Read();
                 if (IsType1())
                 {
                     ExpectToken(CTokenType.LParen);
@@ -1095,20 +1154,20 @@ IGNORE tab + cr + lf
             switch (token)
             {
             case CTokenType.LBracket:
-                ReadToken();
+                lexer.Read();
                 var expr = Parse_Expr();
                 ExpectToken(CTokenType.RBracket);
                 return grammar.ArrayAccess(left, expr);
             case CTokenType.Dot:
-                ReadToken();
+                lexer.Read();
                 id = (string) ExpectToken(CTokenType.Id);
                 return grammar.MemberAccess(left, id);
             case CTokenType.Arrow:
-                ReadToken();
+                lexer.Read();
                 id = (string) ExpectToken(CTokenType.Id);
                 return grammar.PtrMemberAccess(left, id);
             case CTokenType.LParen:
-                ReadToken();
+                lexer.Read();
                 List<CExpression> args = null;
                 if (PeekThenDiscard(CTokenType.LParen))
                 {
@@ -1122,7 +1181,7 @@ IGNORE tab + cr + lf
                 return grammar.Application(left, args);
             case CTokenType.Increment:
             case CTokenType.Decrement:
-                ReadToken();
+                lexer.Read();
                 return grammar.PostIncrement(left, token);
             default:
                 return left;
@@ -1137,15 +1196,15 @@ IGNORE tab + cr + lf
             switch (token)
             {
             case CTokenType.Id:
-                return grammar.Id((string) ReadToken().Value);
+                return grammar.Id((string) lexer.Read().Value);
             case CTokenType.NumericLiteral:
-                return grammar.Const(ReadToken().Value);
+                return grammar.Const(lexer.Read().Value);
             case CTokenType.StringLiteral:
-                return grammar.Const(ReadToken().Value);
+                return grammar.Const(lexer.Read().Value);
             case CTokenType.RealLiteral:
-                return grammar.Const(ReadToken().Value);
+                return grammar.Const(lexer.Read().Value);
             case CTokenType.CharLiteral:
-                return grammar.Const(ReadToken().Value);
+                return grammar.Const(lexer.Read().Value);
             default:
                 ExpectToken(CTokenType.LParen);
                 var expr = Parse_Expr();
@@ -1205,7 +1264,7 @@ IGNORE tab + cr + lf
                 switch (PeekTokenType())
                 {
                 case CTokenType.Id:
-                    label = grammar.Label((string) ReadToken().Value);
+                    label = grammar.Label((string) lexer.Read().Value);
                     break;
                 case CTokenType.Case:
                     ExpectToken(CTokenType.Case);
@@ -1316,7 +1375,6 @@ IGNORE tab + cr + lf
                 ExpectToken(CTokenType.Semicolon);
                 return grammar.ExprStatement(expr);
             }
-
         }
     }
 }
