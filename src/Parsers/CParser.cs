@@ -43,7 +43,6 @@ namespace Decompiler.Parsers
 	    translated to any other language.
         */
 
-        private CToken tokenCur;
         private LookAheadLexer lexer;
         private CGrammar grammar;
         private Hashtable tab;
@@ -52,7 +51,6 @@ namespace Decompiler.Parsers
         {
             this.lexer = new LookAheadLexer(new CDirectiveLexer(lexer));
             this.grammar = new CGrammar();
-            this.tokenCur = new CToken(CTokenType.None);
             this.tab = new Hashtable();
         }
 
@@ -159,14 +157,15 @@ namespace Decompiler.Parsers
         // return true if ident ":" | "case" | "default"
         bool IsLabel()
         {
-            if (tokenCur.Type == CTokenType.Id)
+            var type = lexer.Peek(0).Type;
+            if (type == CTokenType.Id)
             {
-                CToken x = lexer.Peek(0);
+                CToken x = lexer.Peek(1);
                 if (x.Type == CTokenType.Colon)
                     return true;
             }
-            else if (tokenCur.Type == CTokenType.Case ||
-                     tokenCur.Type == CTokenType.Default)
+            else if (type == CTokenType.Case ||
+                     type == CTokenType.Default)
             {
                 return true;
             }
@@ -176,9 +175,9 @@ namespace Decompiler.Parsers
         // return true if followed by Decl
         bool IsDecl()
         {
-            if (startOfDecl[(int)tokenCur.Type])
+            if (startOfDecl[(int)lexer.Peek(0).Type])
                 return true;
-            return IsTypeName(tokenCur);
+            return IsTypeName(lexer.Peek(0));
         }
 
         // return true if there is no non-type-ident after '*', '(', "const", "volatile"
@@ -785,16 +784,19 @@ IGNORE tab + cr + lf
         CType Parse_TypeName()
         {
             var sql = Parse_SpecifierQualifierList();
+            Declarator decl = null;
             switch (PeekTokenType())
             {
             case CTokenType.Star:
             case CTokenType.LParen:
             case CTokenType.LBracket:
-                Parse_AbstractDeclarator();
+                decl = Parse_AbstractDeclarator();
                 break;
             }
             return new CType
             {
+                DeclSpecList = sql,
+                Declarator = decl,
             };
         }
 
@@ -1217,9 +1219,7 @@ IGNORE tab + cr + lf
         private CExpression Parse_ConstExpr()
         {
             PeekTokenType();
-            Debug.Print("Parse_ConstExpr: peek {0}: {1}", tokenCur.Type, tokenCur.Value); 
             var e = Parse_CondExpr();
-            Debug.Print("Parse_ConstExpr: e: {0}", e);
             return e;
         }
 

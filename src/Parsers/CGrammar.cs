@@ -321,6 +321,8 @@ namespace Decompiler.Parsers
 
     public class CType
     {
+        public Declarator Declarator;
+        public List<DeclSpec> DeclSpecList;
     }
 
     public class ExternalDecl: Decl

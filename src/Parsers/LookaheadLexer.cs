@@ -42,10 +42,14 @@ namespace Decompiler.Parsers
         {
             if (iRead < queue.Count)
             {
-                return queue[iRead++];
+                var token = queue[iRead++];
+                if (iRead == queue.Count)
+                {
+                    queue.Clear();
+                    iRead = 0;
+                }
+                return token;
             }
-            if (queue.Count > 0)
-                queue.Clear();
             return lexer.Read();
         }
 
