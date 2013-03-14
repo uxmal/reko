@@ -1,43 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+* Copyright (C) 1999-2013 John Källén.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; see the file COPYING.  If not, write to
+* the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
+-->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product 
-    Id="*" 
+  <Product
+    Id="*"
     Name="Decompiler"
-    Language="1033" 
+    Language="1033"
     Version="0.2.5.0"
-    Manufacturer="JKLSoft" 
+    Manufacturer="jklSoft"
     UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E">
-    
-		<Package 
+
+    <Package
       InstallerVersion="200"
-      Compressed="yes" 
+      Compressed="yes"
       InstallScope="perMachine" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
-		<Feature Id="ProductFeature" Title="Complete" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
-	</Product>
+    <MediaTemplate EmbedCab="yes"/>
 
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
         <Directory Id="jklSoftFolder" Name="jklSoft">
           <Directory Id="INSTALLFOLDER" Name="Decompiler">
           </Directory>
         </Directory>
       </Directory>
-		</Directory>
-	</Fragment>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Decompiler"/>
+      </Directory>
+    </Directory>
 
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<Component Id="ProductComponent">
-				<!-- Insert files, registry keys, and other resources here. -->
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="BAA295FE-414E-4043-B865-66278DEC98AE">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="Decompiler"
+                  Description="Decompile binary executable files"
+                  Target="[APPLICATIONROOTDIRECTORY]WindowsDecompiler.exe"
+                  WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\jklSoft\Decompiler" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup
+        Id="ProductComponents"
+        Directory="INSTALLFOLDER">
+      <Component
+        Id="ProductComponent"
+        Guid="553679A0-D65D-46AC-B811-E7660CF46B4C">
+        <!-- Insert files, registry keys, and other resources here. -->
+        <File Source="$(var.Arm-2010.TargetPath)" />
+        <File Source="$(var.BinHex-2010.TargetPath)" />
+        <File Source="$(var.Coff-2010.TargetPath)" />
         <File Source="$(var.Core-2010.TargetPath)" />
-			</Component>
-		</ComponentGroup>
-	</Fragment>
+        <File Source="$(var.Decompiler-2010.TargetPath)" />
+        <File Source="$(var.Elf-2010.TargetPath)" />
+        <File Source="$(var.M68k-2010.TargetPath)" />
+        <File Source="$(var.MachO-2010.TargetPath)" />
+        <File Source="$(var.MacOS-2010.TargetPath)" />
+        <File Source="$(var.Msdos-2010.TargetPath)" />
+        <File Source="$(var.MzExe-2010.TargetPath)" />
+        <File Source="$(var.Parsers-2010.TargetPath)" />
+        <File Source="$(var.Pdp11-2010.TargetPath)" />
+        <File Source="$(var.PowerPC-2010.TargetPath)" />
+        <File Source="$(var.Sparc-2010.TargetPath)" />
+        <File Source="$(var.Win32-2010.TargetPath)" />
+        <File Source="$(var.WindowsDecompiler-2010.TargetPath)" />
+        <File Source="$(var.X86-2010.TargetPath)" />
+        <File Source="$(var.Win32-2010.ProjectDir)win32.xml" />
+      </Component>
+    </ComponentGroup>
+
+    <Feature Id="ProductFeature" Title="Complete" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+    
+  </Product>
 </Wix>

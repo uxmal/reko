@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
 * Copyright (C) 1999-2013 John Källén.
 *
@@ -18,33 +18,20 @@
 */
 #endregion
 
-using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows.Forms;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Decompiler.Gui.Forms
 {
-	public class WindowsFormsDialogFactory : IDialogFactory
-	{
-		public WindowsFormsDialogFactory()
-		{
-		}
+    public class HeaderFileDialogInteractor
+    {
+        private IHeaderFileDialog dlg;
 
-		public IAddressPromptDialog CreateAddressPromptDialog()
-		{
-			return new AddressPromptDialog();
-		}
-
-
-        public IMainForm CreateMainForm()
+        public void Attach(IHeaderFileDialog dlg)
         {
-            return new MainForm();
-        }
-
-        public IHeaderFileDialog CreateHeaderFileDialog()
-        {
-            return new HeaderFileDialog();
+            this.dlg = dlg;
         }
     }
 }
-
