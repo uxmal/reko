@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product 
+    Id="*" 
+    Name="Decompiler"
+    Language="1033" 
+    Version="0.2.5.0"
+    Manufacturer="JKLSoft" 
+    UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E">
+    
+		<Package 
+      InstallerVersion="200"
+      Compressed="yes" 
+      InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="Complete" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+        <Directory Id="jklSoftFolder" Name="jklSoft">
+          <Directory Id="INSTALLFOLDER" Name="Decompiler">
+          </Directory>
+        </Directory>
+      </Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="ProductComponent">
+				<!-- Insert files, registry keys, and other resources here. -->
+        <File Source="$(var.Core-2010.TargetPath)" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
