@@ -101,6 +101,14 @@ namespace Decompiler.UnitTests.Parsers
             Debug.WriteLine(decl.ToString());
         }
 
+        [Test]
+        public void CParser_ZeroArityFn()
+        {
+            Lex("void _mm_pause (void);");
+            var decl = parser.Parse_ExternalDecl();
+            Assert.AreEqual("@@@", decl.ToString());
+        }
+
         private string windows_h =
 #region Windows.h
 @"#line 1 ""\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\windows.h""

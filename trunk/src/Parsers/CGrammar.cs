@@ -94,7 +94,7 @@ namespace Decompiler.Parsers
 
         public CExpression Cast(CType type, CExpression exp)
         {
-            throw new NotImplementedException();
+            return new CastExpression { Type = type, Expression = exp };
         }
 
         public CExpression Application(CExpression e)
@@ -185,12 +185,12 @@ namespace Decompiler.Parsers
 
         public Stat EmptyStatement()
         {
-            throw new NotImplementedException();
+            return new ExprStat();
         }
 
         public Stat ReturnStatement(CExpression expr)
         {
-            throw new NotImplementedException();
+            return new ReturnStat { Expression = expr };
         }
 
         public ParamDecl ParamDecl(List<DeclSpec> dsl, Declarator decl)
@@ -259,9 +259,9 @@ namespace Decompiler.Parsers
             return new ExpressionInitializer { Expression = expr };
         }
 
-        internal Stat ExprStatement(CExpression expr)
+        public Stat ExprStatement(CExpression expr)
         {
-            throw new NotImplementedException();
+            return new ExprStat { Expression = expr };
         }
 
         internal CExpression Conditional(CExpression cond, CExpression consequent, CExpression alternant)
@@ -308,14 +308,34 @@ namespace Decompiler.Parsers
             };
         }
 
+        internal Decl Decl(List<DeclSpec> list, Declarator decl)
+        {
+            return new Decl
+            {
+                decl_specs = list,
+                init_declarator_list = new List<InitDeclarator> 
+                {
+                    new InitDeclarator {
+                        Declarator = decl,
+                        Init= null
+                    }
+                }
+            };
+        }
+
         public Stat DeclStat(Decl decl)
         {
-            throw new NotImplementedException();
+            return new DeclStat { Declaration = decl };
         }
 
         internal Decl FunctionDefinition(List<DeclSpec> decl_spec_list, Declarator declarator, List<Stat> statements)
         {
-            throw new NotImplementedException();
+            return new FunctionDecl
+            {
+                Signature = Decl(decl_spec_list, declarator),
+                Body = statements
+            };
+                
         }
     }
 
@@ -327,6 +347,12 @@ namespace Decompiler.Parsers
 
     public class ExternalDecl: Decl
     {
+    }
+
+    public class FunctionDecl : Decl
+    {
+        public Decl Signature;
+        public List<Stat> Body;
     }
 
     public class Decl
@@ -707,12 +733,19 @@ namespace Decompiler.Parsers
         public CExpression RValue;
     }
 
+    public class CastExpression : CExpression
+    {
+        public CType Type;
+        public CExpression Expression;
+    }
+
     public class ConditionalExpression : CExpression
     {
         public CExpression Condition;
         public CExpression Consequent;
         public CExpression Alternative;
     }
+
 #endregion
 
     #region Statements
@@ -763,6 +796,16 @@ namespace Decompiler.Parsers
         public CExpression Test;
         public CExpression Update;
         public Stat Body;
+    }
+
+    public class ReturnStat : Stat
+    {
+        public CExpression Expression;
+    }
+
+    public class ExprStat : Stat
+    {
+        public CExpression Expression;
     }
 
 #endregion

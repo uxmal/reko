@@ -38,6 +38,8 @@ namespace Decompiler.Parsers
             iRead= 0;
         }
 
+        public object LineNumber { get { return lexer.LineNumber; } }
+
         public CToken Read()
         {
             if (iRead < queue.Count)
