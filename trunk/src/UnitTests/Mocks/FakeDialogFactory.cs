@@ -38,5 +38,10 @@ namespace Decompiler.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public IHeaderFileDialog CreateHeaderFileDialog()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

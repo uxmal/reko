@@ -27,6 +27,7 @@ namespace Decompiler.Gui
 	{
 		IAddressPromptDialog CreateAddressPromptDialog();
         IMainForm CreateMainForm();
+        IHeaderFileDialog CreateHeaderFileDialog();
     }
 }
 
