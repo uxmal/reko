@@ -57,7 +57,7 @@ namespace Decompiler.ImageLoaders.BinHex
             {
                 Cpt.CompactProArchive archive = new Cpt.CompactProArchive();
                 List<ArchiveDirectoryEntry> items = archive.Load(new MemoryStream(dataFork));
-                IArchiveBrowserService abSvc = GetService<IArchiveBrowserService>();
+                IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
                 if (abSvc != null)
                 {
                     byte[] image = abSvc.UserSelectFileFromArchive(items);
