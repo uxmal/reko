@@ -57,16 +57,18 @@ namespace Decompiler.Parsers
         //------------------ token sets ------------------------------------
 
         static BitArray startOfTypeName = NewBitArray(
-            CTokenType.Const, CTokenType.Volatile, CTokenType.Void, CTokenType.Char,
-            CTokenType.Short, CTokenType.Int, CTokenType.Long, CTokenType.Double,
-            CTokenType.Float, CTokenType.Signed, CTokenType.Unsigned, CTokenType.Struct,
+            CTokenType.Const, CTokenType.Volatile, CTokenType.Void, CTokenType.Wchar_t,
+            CTokenType.Char, CTokenType.Short, CTokenType.Int, CTokenType.__Int64, 
+            CTokenType.Long, CTokenType.Double,CTokenType.Float, CTokenType.Signed, 
+            CTokenType.Unsigned, CTokenType.Struct,
             CTokenType.Union, CTokenType.Enum);
         static BitArray startOfDecl = NewBitArray(
             CTokenType.Typedef, CTokenType.Extern, CTokenType.Static, CTokenType.Auto,
             CTokenType.Register, CTokenType.Const, CTokenType.Volatile, CTokenType.Void,
-            CTokenType.Char, CTokenType.Short, CTokenType.Int, CTokenType.Long,
-            CTokenType.Double, CTokenType.Float, CTokenType.Signed, CTokenType.Unsigned,
-            CTokenType.Struct, CTokenType.Union, CTokenType.Enum);
+            CTokenType.Char, CTokenType.Wchar_t, CTokenType.Short, CTokenType.Int, 
+            CTokenType.__Int64, CTokenType.Long,CTokenType.Double, CTokenType.Float,
+            CTokenType.Signed, CTokenType.Unsigned,CTokenType.Struct, CTokenType.Union,
+            CTokenType.Enum);
 
         private static BitArray NewBitArray(params CTokenType[] val)
         {
@@ -100,7 +102,7 @@ namespace Decompiler.Parsers
 
         private Exception Unexpected(CTokenType expected, CTokenType actual)
         {
-            throw new FormatException(string.Format("Expected token '{0}' but saw '{1}'.", expected, actual));
+            throw new FormatException(string.Format("Expected token '{0}' but saw '{1}' on line {2}.", expected, actual, lexer.LineNumber));
         }
 
         public bool IsTypeName(CToken x)
@@ -185,7 +187,8 @@ namespace Decompiler.Parsers
         {
             int i = 0;
             CToken x = lexer.Peek(i);
-            while (x.Type == CTokenType.Star || x.Type == CTokenType.LParen || x.Type == CTokenType.Const || x.Type == CTokenType.Volatile)
+            while (x.Type == CTokenType.Star || x.Type == CTokenType.LParen || x.Type == CTokenType.Const || 
+                   x.Type == CTokenType.Volatile || x.Type == CTokenType.__Ptr64)
                 x = lexer.Peek(++i);
             if (x.Type != CTokenType.Id)
                 return true;
@@ -444,7 +447,10 @@ IGNORE tab + cr + lf
             list.Add(ds);
             while (!IsDeclarator())
             {
-                list.Add(Parse_DeclSpecifier());
+                ds = Parse_DeclSpecifier();
+                if (ds == null)
+                    break;
+                list.Add(ds);
             }
             return list;
         }
@@ -463,7 +469,9 @@ IGNORE tab + cr + lf
             case CTokenType.Static:
             case CTokenType.Auto:
             case CTokenType.Register:
+            case CTokenType.__Cdecl:
             case CTokenType.__Inline:
+            case CTokenType.__Stdcall:
                 return grammar.StorageClass( lexer.Read().Type);
             case CTokenType.Const:
             case CTokenType.Volatile:
@@ -501,6 +509,7 @@ IGNORE tab + cr + lf
             case CTokenType.Double:
             case CTokenType.Signed:
             case CTokenType.Unsigned:
+            case CTokenType.Wchar_t:
             case CTokenType.__W64:
                 return grammar.SimpleType(lexer.Read().Type);
             case CTokenType.Id: // type name
@@ -629,6 +638,8 @@ IGNORE tab + cr + lf
                 DeclSpec t = Parse_TypeSpecifier();
                 if (t == null)
                     t = Parse_TypeQualifier();
+                if (t == null)
+                    break;
                 sql.Add(t);
             } while (!IsDeclarator());
             return sql;
@@ -727,6 +738,22 @@ IGNORE tab + cr + lf
             return grammar.PointerDeclarator(declarator, tqs);
         }
 
+        Declarator Parse_AbstractPointer()
+        {
+            ExpectToken(CTokenType.Star);
+            List<TypeQualifier> tqs = null;
+            var tq = Parse_TypeQualifier();
+            while (tq != null)
+            {
+                if (tqs == null)
+                    tqs = new List<TypeQualifier>();
+                tqs.Add(tq);
+                tq = Parse_TypeQualifier();
+            }
+            var declarator = Parse_DirectAbstractDeclarator();
+            return grammar.PointerDeclarator(declarator, tqs);
+        }
+
         //ParamTypeList = ParamDecl {IF(Continued1()) ',' ParamDecl} [',' "..."].
 
         List<ParamDecl> Parse_ParamTypeList()
@@ -808,10 +835,10 @@ IGNORE tab + cr + lf
         Declarator Parse_AbstractDeclarator()
         {
             Declarator decl;
-            if (PeekTokenType() == CTokenType.Star)
+            var token = lexer.Peek(0);
+            if (token.Type == CTokenType.Star)
             {
-                var ptr = Parse_Pointer();
-                decl = Parse_DirectAbstractDeclarator();
+                return Parse_AbstractPointer();
             }
             else
             {
@@ -831,7 +858,8 @@ IGNORE tab + cr + lf
         {
             CExpression expr;
             Declarator decl = null;
-            switch (PeekTokenType())
+            var token = lexer.Peek(0);
+            switch (token.Type)
             {
             case CTokenType.LParen:
                 lexer.Read();
@@ -1087,14 +1115,20 @@ IGNORE tab + cr + lf
         //           | UnaryExpr.
         public CExpression Parse_CastExpr()
         {
-            while (IsType1())
+            if (IsType1())
             {
                 ExpectToken(CTokenType.LParen);
                 var type = Parse_TypeName();
                 ExpectToken(CTokenType.RParen);
+                var expr = Parse_CastExpr();
+                return grammar.Cast(type, expr);
             }
-            return Parse_UnaryExpr();
+            else
+            {
+                return Parse_UnaryExpr();
+            }
         }
+
         //UnaryExpr =
         //  {"++" | "--"}
         //  ( PostfixExpr
@@ -1370,6 +1404,13 @@ IGNORE tab + cr + lf
             case CTokenType.Semicolon:
                 ExpectToken(CTokenType.Semicolon);
                 return grammar.EmptyStatement();
+            case CTokenType.__Asm:
+                ExpectToken(CTokenType.__Asm);
+                ExpectToken(CTokenType.LBrace);
+                while (lexer.Peek(0).Type != CTokenType.RBrace)
+                    lexer.Read();
+                ExpectToken(CTokenType.RBrace);
+                return grammar.EmptyStatement();        // don't care?
             default:
                 expr = Parse_Expr();
                 ExpectToken(CTokenType.Semicolon);

@@ -100,7 +100,6 @@ namespace Decompiler.Parsers
                 return PrimitiveType.Void;
             case CTokenType.__W64:
                 return dt;      // Used by Microsoft compilers for 32->64 bit transition, deprecated.
-
             case CTokenType.Signed:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'signed' after '{0}'.", domain));
@@ -108,7 +107,6 @@ namespace Decompiler.Parsers
                 byteSize = 4;                   // 'unsigned' == 'unsigned int'
                 //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
                 return PrimitiveType.Create(domain, byteSize);
-
             case CTokenType.Unsigned:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'unsigned' after '{0}'.", domain));
@@ -116,13 +114,19 @@ namespace Decompiler.Parsers
                 byteSize = 4;                   // 'unsigned' == 'unsigned int'
                 //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
                 return PrimitiveType.Create(domain, byteSize);
-
             case CTokenType.Char:
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 1;
+                return PrimitiveType.Create(domain, byteSize);
+            case CTokenType.Wchar_t:
+                if (domain == Domain.None)
+                    domain = Domain.Character;
+                else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
+                    throw new FormatException(string.Format("Unexpected domain {0}", domain));
+                byteSize = 2;       //$TODO: this is different on Unix platforms.
                 return PrimitiveType.Create(domain, byteSize);
             case CTokenType.Short:
                 if (domain == Domain.None)
@@ -154,7 +158,6 @@ namespace Decompiler.Parsers
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 8;
                 return PrimitiveType.Create(domain, byteSize);
-
             case CTokenType.Float:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
@@ -165,7 +168,6 @@ namespace Decompiler.Parsers
             throw new NotImplementedException(string.Format("{0}", simpleType.Type));
         }
 
-
         public DataType VisitTypedef(TypeDefName typeDefName)
         {
             return (DataType) typedefs[typeDefName.Name];
@@ -173,9 +175,59 @@ namespace Decompiler.Parsers
 
         public DataType VisitComplexType(ComplexTypeSpec complexTypeSpec)
         {
-            throw new NotImplementedException();
+            if (complexTypeSpec.Type == CTokenType.Struct)
+            {
+                var str = new StructureType
+                {
+                    Name = complexTypeSpec.Name,
+                };
+                str.Fields.AddRange(ExpandStructFields(complexTypeSpec.DeclList));
+                return str;
+            }
+            else if (complexTypeSpec.Type == CTokenType.Union)
+            {
+                var un = new UnionType
+                {
+                    Name = complexTypeSpec.Name,
+                };
+                un.Alternatives.AddRange(ExpandUnionFields(complexTypeSpec.DeclList));
+                return un;
+            }
+            else
+                throw new NotImplementedException();
         }
 
+        private IEnumerable<StructureField> ExpandStructFields(IEnumerable<StructDecl> decls)
+        {
+            int offset = 0;
+            foreach (var decl in decls)
+            {
+                foreach (var declarator in decl.FieldDeclarators)
+                {
+                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, typedefs);
+                    offset = Align(offset, nt.DataType, 8);
+                    yield return new StructureField(offset, nt.DataType, nt.Name);
+                }
+            }
+        }
+
+        private IEnumerable<UnionAlternative> ExpandUnionFields(IEnumerable<StructDecl> decls)
+        {
+            foreach (var decl in decls)
+            {
+                foreach (var declarator in decl.FieldDeclarators)
+                {
+                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, typedefs);
+                    yield return new UnionAlternative(nt.Name, nt.DataType);
+                }
+            }
+        }
+
+        private int Align(int offset, DataType dt, int maxAlign)
+        {
+            var size = Math.Min(maxAlign, dt.Size);
+            return size * ((offset + (size - 1)) / size);
+        }
 
         public DataType VisitStorageClass(StorageClassSpec storageClassSpec)
         {

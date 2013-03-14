@@ -111,6 +111,14 @@ namespace Decompiler.Core.Types
 			innerList.Insert(i, f);
 		}
 
+        public void AddRange(IEnumerable<StructureField> fields)
+        {
+            foreach (var field in fields)
+            {
+                Add(field);
+            }
+        }
+
         /// <summary>
         /// Returns the structurefield exactly located at the specified offset.
         /// </summary>
@@ -209,6 +217,5 @@ namespace Decompiler.Core.Types
         }
 
         #endregion
-
     }
 }

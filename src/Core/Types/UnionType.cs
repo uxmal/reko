@@ -189,5 +189,13 @@ namespace Decompiler.Core.Types
 		{
 			Add(new UnionAlternative(dt));
 		}
+
+        public void AddRange(IEnumerable<UnionAlternative> alternatives)
+        {
+            foreach (var alt in alternatives)
+            {
+                Add(alt);
+            }
+        }
     }
 }

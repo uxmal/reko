@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -37,6 +38,8 @@ namespace Decompiler.Parsers
             this.lexer = lexer;
         }
 
+        public int LineNumber { get { return lexer.LineNumber; } }
+
         public CToken Read()
         {
             CToken token = lexer.Read();
@@ -50,8 +53,7 @@ namespace Decompiler.Parsers
                 }
                 else if (token.Type == CTokenType.PragmaDirective)
                 {
-                    ReadPragma((string) lexer.Read().Value);
-                    token = lexer.Read();
+                    token = ReadPragma((string) lexer.Read().Value);
                 }
                 else 
                 {
@@ -60,11 +62,11 @@ namespace Decompiler.Parsers
             }
         }
 
-        public virtual void ReadPragma(string pragma)
+        public virtual CToken ReadPragma(string pragma)
         {
             if (pragma == "once")
             {
-                return;
+                return lexer.Read();
             }
             else if (pragma == "warning")
             {
@@ -74,11 +76,26 @@ namespace Decompiler.Parsers
                 {
                     Expect(CTokenType.Colon);
                     Expect(CTokenType.NumericLiteral);
+                    var token = lexer.Read();
+                    while (token.Type == CTokenType.NumericLiteral)
+                    {
+                        token = lexer.Read();
+                    }
+                    Expect(CTokenType.RParen, token);
+                    return lexer.Read();
                 }
                 else if (value == "push" || value == "pop")
                 {
                 }
                 Expect(CTokenType.RParen);
+                return lexer.Read();
+            }
+            else if (pragma == "intrinsic" || pragma == "function")
+            {
+                Expect(CTokenType.LParen);
+                Expect(CTokenType.Id);
+                Expect(CTokenType.RParen);
+                return lexer.Read();
             }
             else
             {
@@ -90,9 +107,14 @@ namespace Decompiler.Parsers
         private object Expect(CTokenType expected)
         {
             var token = lexer.Read();
-            if (token.Type != expected)
-                throw new FormatException(string.Format("Expected '{0}' but got '{1}'.", expected, token.Type));
-            return token.Value;
+            return Expect(expected, token);
+        }
+
+        private object Expect(CTokenType expected, CToken actualToken)
+        {
+            if (actualToken.Type != expected)
+                throw new FormatException(string.Format("Expected '{0}' but got '{1}'.", expected, actualToken.Type));
+            return actualToken.Value;
         }
 
         private void Expect(CTokenType expected, object expectedValue)
