@@ -56,7 +56,6 @@ namespace Decompiler.Gui.Forms
         void Show();
 
         DialogResult ShowDialog(System.Windows.Forms.Form dialog);
-
         DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
 
         void Close();

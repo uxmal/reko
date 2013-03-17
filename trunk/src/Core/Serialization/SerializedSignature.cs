@@ -29,7 +29,7 @@ namespace Decompiler.Core.Serialization
 	/// <summary>
 	/// Serialized representation of a procedure signature.
 	/// </summary>
-	public class SerializedSignature
+	public class SerializedSignature : SerializedType
 	{
         public SerializedSignature()
         {
@@ -51,5 +51,10 @@ namespace Decompiler.Core.Serialization
         [XmlAttribute("fpuStackDelta")]
         [DefaultValue(0)]
         public int FpuStackDelta;
+
+        public override Types.DataType BuildDataType(Types.TypeFactory factory)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

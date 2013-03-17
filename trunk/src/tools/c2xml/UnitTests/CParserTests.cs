@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Decompiler.Parsers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Parsers
+namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class CParserTests

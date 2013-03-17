@@ -26,29 +26,58 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	[XmlRoot(ElementName="library", Namespace="http://schemata.jklnet.org/Decompiler")]
-	public class SerializedLibrary
-	{
-		[XmlAttribute("case")]
-		public string Case;
+    [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace)]
+    public class SerializedLibrary
+    {
+        public const string Namespace = "http://schemata.jklnet.org/Decompiler";
 
-		[XmlElement("default")]
-		public SerializedLibraryDefaults Defaults;
+        [XmlAttribute("case")]
+        public string Case;
 
-		[XmlElement("procedure", typeof (SerializedProcedure))]
-		[XmlElement("service", typeof (SerializedService))]
-		public List<SerializedProcedureBase> Procedures;
+        [XmlElement("default")]
+        public SerializedLibraryDefaults Defaults;
 
-		public SerializedLibrary()
-		{
-			this.Procedures = new List<SerializedProcedureBase>();
-		}
+        [XmlElement("types")]
+        public SerializedType[] Types;
+
+        [XmlElement("procedure", typeof(SerializedProcedure))]
+        [XmlElement("service", typeof(SerializedService))]
+        public List<SerializedProcedureBase> Procedures;
+
+        private static XmlSerializer serializer;
+
+        public SerializedLibrary()
+        {
+            this.Procedures = new List<SerializedProcedureBase>();
+        }
 
         public static SerializedLibrary LoadFromStream(Stream stm)
         {
-            var ser = new XmlSerializer(typeof(SerializedLibrary));
+            var ser = CreateSerializer();
             var rdr = new XmlTextReader(stm);
-            return (SerializedLibrary)ser.Deserialize(rdr);
+            return (SerializedLibrary) ser.Deserialize(rdr);
         }
-	}
+
+        public static XmlSerializer CreateSerializer()
+        {
+            if (serializer == null)
+            {
+                var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate);
+                serializer = new XmlSerializer(typeof(SerializedLibrary), attrOverrides);
+            }
+            return serializer;
+        }
+
+        private static Type[] TypesToDecorate = new Type[] 
+        {
+            typeof(SerializedPrimitiveType),
+            typeof(SerializedPointerType),
+            //typeof(SerializedArray),
+            typeof(SerializedStructType),
+            //typeof(serializedUnionType),
+            typeof(SerializedSignature),
+            typeof(SerializedTypedef),
+            typeof(SerializedLibrary),
+        };
+    }
 }

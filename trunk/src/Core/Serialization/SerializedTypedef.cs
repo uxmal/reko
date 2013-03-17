@@ -23,12 +23,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
-namespace Decompiler.Parsers
+namespace Decompiler.Core.Serialization
 {
-    public class NamedDataType
+    /// <summary>
+    /// Used for type defs: introduces a new name for a type.
+    /// </summary>
+    public class SerializedTypedef : SerializedType
     {
-        public string Name { get; set; }
-        public DataType DataType { get; set; }
+        [XmlAttribute("name")]
+        public string Name;
+
+        public SerializedType DataType;
+
+        public override DataType BuildDataType(TypeFactory factory)
+        {
+            var type = DataType.BuildDataType(factory);
+            throw new NotImplementedException();
+        }
     }
 }

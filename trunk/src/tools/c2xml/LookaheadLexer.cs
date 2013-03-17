@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Parsers
+namespace Decompiler.Tools.C2Xml
 {
     public class LookAheadLexer
     {

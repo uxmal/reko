@@ -121,7 +121,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public DialogResult ShowDialog(Form dialog)
         {
-            throw new NotImplementedException();
+            return dialog.ShowDialog(this);
         }
 
         public DialogResult ShowDialog(CommonDialog dialog)

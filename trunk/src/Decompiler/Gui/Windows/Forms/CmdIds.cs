@@ -42,12 +42,11 @@ namespace Decompiler.Gui
 		public const int EditMenu = 3;
 		public const int ViewMenu = 4;
 		public const int ActionMenu = 5;
-		public const int ToolsMenu = 6;
-		public const int WindowsMenu = 7;
-		public const int HelpMenu = 8;
-		public const int CtxMemoryControl = 9;
-		public const int CtxBrowser = 10;
-		public const int MainToolbar = 11;
+		public const int WindowsMenu = 6;
+		public const int HelpMenu = 7;
+		public const int CtxMemoryControl = 8;
+		public const int CtxBrowser = 9;
+		public const int MainToolbar = 10;
 	}
 	
 	public class GroupIds
@@ -62,13 +61,12 @@ namespace Decompiler.Gui
 		public const int GrpActions = 8 + 1000;
 		public const int GrpActionsScanned = 9 + 1000;
 		public const int GrpActionsRewritten = 10 + 1000;
-		public const int GrpTools = 11 + 1000;
-		public const int GrpWindows = 12 + 1000;
-		public const int GrpHelp = 13 + 1000;
-		public const int GrpMemoryControl = 14 + 1000;
-		public const int GrpBrowser = 15 + 1000;
-		public const int GrpToolbarFileOps = 16 + 1000;
-		public const int GrpToolbarActions = 17 + 1000;
+		public const int GrpWindows = 11 + 1000;
+		public const int GrpHelp = 12 + 1000;
+		public const int GrpMemoryControl = 13 + 1000;
+		public const int GrpBrowser = 14 + 1000;
+		public const int GrpToolbarFileOps = 15 + 1000;
+		public const int GrpToolbarActions = 16 + 1000;
 	}
 	
 	public class CmdIds
@@ -90,12 +88,11 @@ namespace Decompiler.Gui
 		public const int ActionMarkProcedure = 15 + 2000;
 		public const int ActionEditSignature = 16 + 2000;
 		public const int ActionMarkType = 17 + 2000;
-		public const int ToolsImportHeader = 18 + 2000;
-		public const int WindowsCascade = 19 + 2000;
-		public const int WindowsTileVertical = 20 + 2000;
-		public const int WindowsTileHorizontal = 21 + 2000;
-		public const int WindowsCloseAll = 22 + 2000;
-		public const int HelpAbout = 23 + 2000;
+		public const int WindowsCascade = 18 + 2000;
+		public const int WindowsTileVertical = 19 + 2000;
+		public const int WindowsTileHorizontal = 20 + 2000;
+		public const int WindowsCloseAll = 21 + 2000;
+		public const int HelpAbout = 22 + 2000;
 		public const int FileMru = 2200;
 	}
 

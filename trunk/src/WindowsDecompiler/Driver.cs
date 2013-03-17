@@ -37,11 +37,11 @@ namespace WindowsDecompiler
 		[STAThread]
 		public static void Main(string [] args)
 		{
-			if (args.Length == 0)
+            var services = new ServiceContainer();
+            if (args.Length == 0)
 			{
-                var services = new ServiceContainer();
                 services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
-                services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory());
+                services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
                 var interactor = new MainFormInteractor(services);
                 interactor.Run();
             }
@@ -50,10 +50,9 @@ namespace WindowsDecompiler
                 var host = NullDecompilerHost.Instance;
                 var listener = NullDecompilerEventListener.Instance;
 
-                var sc = new ServiceContainer();
-                sc.AddService(typeof (DecompilerEventListener), listener);
-                var ldr = new Loader(new DecompilerConfiguration(), sc);
-				var dec = new DecompilerDriver(ldr, host, sc);
+                services.AddService(typeof (DecompilerEventListener), listener);
+                var ldr = new Loader(new DecompilerConfiguration(), services);
+				var dec = new DecompilerDriver(ldr, host, services);
 				dec.Decompile(args[0]);
 			}
 		}

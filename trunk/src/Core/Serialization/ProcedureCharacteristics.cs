@@ -26,7 +26,7 @@ using System.Xml.Serialization;
 namespace Decompiler.Core.Serialization
 {
 	/// <summary>
-	/// Extra characteristics that describe the semantics of a procedure.
+	/// Extra characteristics that describe extra-lingustiic semantics of a procedure.
 	/// </summary>
 	public class ProcedureCharacteristics
 	{
@@ -44,15 +44,6 @@ namespace Decompiler.Core.Serialization
 		[DefaultValue(false)]
 		public virtual bool Terminates { get;set; } 
 
-		public void Write()
-		{
-			foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(this))
-			{
-				DefaultValueAttribute dv = (DefaultValueAttribute)
-					prop.Attributes[typeof(DefaultValueAttribute)];
-			}
-		}
-
         [XmlElement("allocator")]
         [DefaultValue(false)]
         public bool Allocator { get; set; }
@@ -62,6 +53,15 @@ namespace Decompiler.Core.Serialization
         {
             get { return arraySize; }
             set { arraySize = value; }
+        }
+
+        public void Write()
+        {
+            foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(this))
+            {
+                DefaultValueAttribute dv = (DefaultValueAttribute)
+                    prop.Attributes[typeof(DefaultValueAttribute)];
+            }
         }
     }
 

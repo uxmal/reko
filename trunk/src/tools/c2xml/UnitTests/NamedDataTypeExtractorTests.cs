@@ -19,7 +19,6 @@
 #endregion
 
 using Decompiler.Core.Types;
-using Decompiler.Parsers;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -27,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Parsers
+namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class NamedDataTypeExtractorTests

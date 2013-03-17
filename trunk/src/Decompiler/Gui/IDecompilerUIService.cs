@@ -36,7 +36,7 @@ namespace Decompiler.Gui
         string ShowSaveFileDialog(string fileName);
     }
 
-    public interface IDecompilerShellUiService : IDecompilerUIService
+    public interface IDecompilerShellUiService : IDecompilerUIService, ICommandTarget
     {
         ContextMenu GetContextMenu(int p);
 

@@ -26,7 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Parsers
+namespace Decompiler.Tools.C2Xml
 {
     public class NamedDataTypeExtractor : 
         DeclaratorVisitor<NamedDataType>,
@@ -140,7 +140,7 @@ namespace Decompiler.Parsers
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                byteSize = 2;
+                byteSize = 4;
                 return PrimitiveType.Create(domain, byteSize);
             //$TODO: bitsize is platform-dependent. For instance, an 'int' is 32-bits on Windows x86-64 but 16-bits on MS-DOS
             case CTokenType.Long:

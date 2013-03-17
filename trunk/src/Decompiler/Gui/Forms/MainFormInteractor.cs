@@ -140,7 +140,7 @@ namespace Decompiler.Gui.Forms
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
             uiSvc = CreateShellUiService(dm);
-            subWindowCommandTarget = (ICommandTarget)uiSvc;
+            subWindowCommandTarget = uiSvc;
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
