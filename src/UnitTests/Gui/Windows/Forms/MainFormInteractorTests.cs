@@ -51,6 +51,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IMemoryViewService memSvc;
         private IDisassemblyViewService disasmSvc;
         private IDiagnosticsService diagnosticSvc;
+        private IDecompilerShellUiService uiSvc;
 
 		[SetUp]
 		public void Setup()
@@ -62,12 +63,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		[Test]
 		public void OpenBinary_SwitchToInitialPhase()
 		{
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             form.Stub(f => f.CloseAllDocumentWindows());
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
 			interactor.OpenBinary("floxie.exe");
             Assert.AreSame(interactor.CurrentPhase, interactor.InitialPageInteractor);
             Assert.IsTrue(((FakeInitialPageInteractor)interactor.InitialPageInteractor).OpenBinaryCalled);
@@ -76,13 +77,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void OpenBinary_ClearDiagnostics()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             form.Stub(f => f.CloseAllDocumentWindows());
             diagnosticSvc.Stub(d => d.AddDiagnostic(null, null)).IgnoreArguments();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             var svc = interactor.ProbeGetService<IDiagnosticsService>();
             svc.AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic("test"));
             interactor.OpenBinary(null);
@@ -93,13 +94,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void OpenBinary_CloseAllWindows()
         {
             var docWindows = new List<IWindowFrame>();
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             form.Stub(f => f.DocumentWindows).Return(docWindows);
             form.Expect(f => f.CloseAllDocumentWindows());
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             form.DocumentWindows.Add(new TestForm());
             interactor.OpenBinary("");
 
@@ -109,12 +110,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		[Test]
 		public void NextPhase_AdvanceToNextInteractor()
 		{
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             form.Expect(f => f.CloseAllDocumentWindows());
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
 			interactor.OpenBinary(null);
 			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
 			interactor.NextPhase();
@@ -126,10 +127,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Save()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             repository.ReplayAll();
 
             IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
@@ -165,10 +166,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void SaveShouldShowDialog()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             Assert.IsNull(interactor.ProjectFileName);
 
             IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
@@ -184,17 +185,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void DecompilerServiceInstalled()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             Assert.IsNotNull(interactor.ProbeGetService<IDecompilerService>(), "Should have IDecompilerService available.");
         }
 
         [Test] 
         public void IsNextPhaseEnabled()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
 
             CreateMainFormInteractorWithLoader();
@@ -214,9 +215,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void GetWorkerService()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             Assert.IsNotNull(interactor.ProbeGetService<IWorkerDialogService>());
 
         }
@@ -224,10 +225,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void StatusBarServiceSetText()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             var sbSvc = (IStatusBarService)interactor.ProbeGetService<IStatusBarService>();
             sbSvc.SetText("Hello!");
             Assert.AreEqual("Hello!", form.StatusStrip.Items[0].Text);
@@ -236,10 +237,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void FindAllProcedures_NoLoadedProgram_QueryStatusDisnabled()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             CommandStatus status;
             status = QueryStatus(CmdIds.ViewFindAllProcedures);
             Assert.AreEqual(MenuStatus.Visible,  status.Status);
@@ -249,7 +250,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void FindAllProcedures_LoadedProgram_QueryStatusEnabled()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             repository.ReplayAll();
 
             CreateMainFormInteractorWithLoader();
@@ -261,9 +262,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void ExecuteFindProcedures()
+        public void MainForm_ExecuteFindProcedures()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
 
             var srSvc = repository.StrictMock<ISearchResultService>();
             srSvc.Expect(s => s.ShowSearchResults(
@@ -280,9 +281,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void ViewMemoryWindow()
+        public void MainForm_ViewMemoryWindow()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             var disasmSvc = repository.StrictMock<IDisassemblyViewService>();
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);       //$REVIEW: this shouldn't be necessary -- only if user explicitly asks for it.
             memSvc.Expect(x => x.ShowWindow());
@@ -311,9 +312,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void ViewDisassemblyWindow()
+        public void MainForm_ViewDisassemblyWindow()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             disasmSvc.Expect(x => x.ShowWindow());
             repository.ReplayAll();
 
@@ -325,21 +326,30 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
 
         [Test]
-        public void CloseAllWindows()
+        public void MainForm_CloseAllWindows()
         {
-            SetupFormInteractor();
+            Given_MainFormInteractor();
             var docWindows = new List<IWindowFrame>();
             form.Stub(f => f.DocumentWindows).Return(docWindows);
             form.Expect(f => f.CloseAllDocumentWindows());
+            Expect_CommandNotHandledBySubwindow();
             repository.ReplayAll();
 
-            CreateMainFormInteractor();
+            When_CreateMainFormInteractor();
             var mdi = new TestForm();
             form.DocumentWindows.Add(mdi);
             Assert.AreEqual(1, form.DocumentWindows.Count);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll);
 
             repository.VerifyAll();
+        }
+
+        private void Expect_CommandNotHandledBySubwindow()
+        {
+            Guid guid = new Guid();
+            uiSvc.Stub(u => u.Execute(ref guid, 0))
+                .IgnoreArguments()
+                .Return(false);
         }
 
         private class TestForm : Form, IWindowFrame
@@ -355,12 +365,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return prog; 
         }
 
-
-        private void SetupFormInteractor()
+        private void Given_MainFormInteractor()
         {
             prog = CreateFakeProgram();
             svcFactory = repository.StrictMock<IServiceFactory>();
             dlgFactory = repository.StrictMock<IDialogFactory>();
+            uiSvc = repository.StrictMock<IDecompilerShellUiService>();
             memSvc = repository.StrictMock<IMemoryViewService>();
             disasmSvc = repository.StrictMock<IDisassemblyViewService>();
             diagnosticSvc = repository.StrictMock<IDiagnosticsService>();
@@ -377,7 +387,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
 
             services.AddService(typeof(IDialogFactory), dlgFactory);
-
             services.AddService(typeof(IServiceFactory), svcFactory);
 
             form = repository.StrictMock<IMainForm>();
@@ -405,13 +414,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             dlgFactory.Stub(d => d.CreateMainForm()).Return(form);
         }
 
-        private void CreateMainFormInteractor()
+        private void When_CreateMainFormInteractor()
         {
             Assert.IsNotNull(dlgFactory, "Make sure you have called SetupMainFormInteractor to set up all mocks and stubs");
             var services = new ServiceContainer();
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             interactor = new TestMainFormInteractor(prog, services);
+            interactor.Test_UiSvc = uiSvc;
             interactor.LoadForm();
             form.Raise(f => f.Load += null, form, EventArgs.Empty);
         }
@@ -474,9 +484,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return base.CreateDecompiler(ldr);
 		}
 
+        public IDecompilerShellUiService Test_UiSvc { get; set; }
         protected override IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
         {
-            return new FakeShellUiService();
+            if (Test_UiSvc != null)
+                return Test_UiSvc;
+            else 
+                return new FakeShellUiService();
         }
 
         public override TextWriter CreateTextWriter(string filename)
@@ -513,5 +527,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             get { return promptedForSaving; }
         }
+
     }
 }

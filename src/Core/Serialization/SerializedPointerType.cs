@@ -24,10 +24,9 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
+    [XmlType(TypeName="ptr", Namespace=SerializedLibrary.Namespace)]
 	public class SerializedPointerType : SerializedType
 	{
-		[XmlElement("ptr", typeof (SerializedPointerType))]
-		[XmlElement("prim", typeof (SerializedPrimitiveType))]
 		public SerializedType DataType;
 
 		public SerializedPointerType()
@@ -48,6 +47,5 @@ namespace Decompiler.Core.Serialization
 		{
 			return string.Format("ptr({0})", DataType);
 		}
-
 	}
 }

@@ -26,8 +26,11 @@ namespace Decompiler.Gui.Windows
 {
 	public class WindowsFormsDialogFactory : IDialogFactory
 	{
-		public WindowsFormsDialogFactory()
+        private IServiceProvider services;
+
+		public WindowsFormsDialogFactory(IServiceProvider services)
 		{
+            this.services = services;
 		}
 
 		public IAddressPromptDialog CreateAddressPromptDialog()
@@ -39,11 +42,6 @@ namespace Decompiler.Gui.Windows
         public IMainForm CreateMainForm()
         {
             return new MainForm();
-        }
-
-        public IHeaderFileDialog CreateHeaderFileDialog()
-        {
-            return new HeaderFileDialog();
         }
     }
 }

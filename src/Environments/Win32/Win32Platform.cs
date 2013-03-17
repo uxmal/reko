@@ -33,12 +33,17 @@ namespace Decompiler.Environments.Win32
 		public Win32Platform(IProcessorArchitecture arch)
 		{
 			this.arch = arch;
-			int3svc = new SystemService();
-			int3svc.SyscallInfo.Vector = 3;
-			int3svc.SyscallInfo.RegisterValues = new RegValue[0];
-			int3svc.Name = "int3";
-			int3svc.Signature = new ProcedureSignature(null, new Identifier[0]);
-			int3svc.Characteristics = new ProcedureCharacteristics();
+            int3svc = new SystemService
+            {
+                SyscallInfo = new SyscallInfo
+                {
+                    Vector = 3,
+                    RegisterValues = new RegValue[0],
+                },
+                Name = "int3",
+                Signature = new ProcedureSignature(null, new Identifier[0]),
+                Characteristics = new ProcedureCharacteristics(),
+            };
 		}
 
 		public override SystemService FindService(int vector, ProcessorState state)

@@ -101,11 +101,13 @@ namespace Decompiler.Core.Serialization
         {
             if (arg == null)
                 return null;
-            SerializedArgument sarg = new SerializedArgument();
-			sarg.Name = arg.Name;
-			sarg.Kind = arg.Storage.Serialize();
-            sarg.OutParameter = arg.Storage is OutArgumentStorage;
-            sarg.Type = arg.DataType.ToString();
+            SerializedArgument sarg = new SerializedArgument 
+            {
+			    Name = arg.Name,
+			    Kind = arg.Storage.Serialize(),
+                OutParameter = arg.Storage is OutArgumentStorage,
+                Type = arg.DataType.ToString(),
+            };
             return sarg;
         }
     }

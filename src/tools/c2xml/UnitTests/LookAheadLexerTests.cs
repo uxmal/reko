@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Parsers;
+using Decompiler.Tools.C2Xml;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.UnitTests.Parsers
+namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class LookAheadLexerTests

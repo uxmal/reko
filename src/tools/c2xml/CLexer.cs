@@ -26,7 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Parsers
+namespace Decompiler.Tools.C2Xml
 {
     public class CLexer 
     {

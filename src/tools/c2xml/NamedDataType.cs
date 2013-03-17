@@ -18,28 +18,17 @@
  */
 #endregion
 
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Tools.C2Xml
 {
-    public interface CSyntaxVisitor<T>
+    public class NamedDataType
     {
-        T VisitType(CType cType);
-
-        T VisitDeclaration(Decl decl);
-        T VisitDeclSpec(DeclSpec declSpec);
-        T VisitInitDeclarator(InitDeclarator initDeclarator);
-
-        T VisitEnumerator(Enumerator enumerator);
-
-        T VisitStatement(Stat stm);
-
-        T VisitExpression(CExpression stm);
-
-
-        T VisitParamDeclaration(ParamDecl paramDecl);
-
+        public string Name { get; set; }
+        public DataType DataType { get; set; }
     }
 }
