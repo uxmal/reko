@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml;
 
 namespace Decompiler.Tools.C2Xml
 {
@@ -66,7 +67,11 @@ namespace Decompiler.Tools.C2Xml
                     return 1;
                 }
             }
-            XmlConverter c = new XmlConverter(input, output);
+            var xWriter = new XmlTextWriter(output)
+            {
+                Formatting = Formatting.Indented
+            };
+            XmlConverter c = new XmlConverter(input, xWriter);
             c.Convert();
             output.Flush();
             return 0;

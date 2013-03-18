@@ -48,6 +48,8 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("type")]
         public string Type { get;set; }		//$REVIEW: this needs to be SerializedType.
+        [XmlElement("taip")]
+        public SerializedType Taip { get; set; }
 
         [XmlElement("reg", typeof(SerializedRegister))]
         [XmlElement("stack", typeof(SerializedStackVariable))]

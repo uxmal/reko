@@ -43,7 +43,7 @@ namespace Decompiler.Core
 
 		public void Write(TextWriter writer)
 		{
-            SortedList<string, ProcedureSignature> sl = new SortedList<string, ProcedureSignature>(
+            var sl = new SortedList<string, ProcedureSignature>(
                 hash,
                 StringComparer.InvariantCulture);
             Formatter f = new Formatter(writer);

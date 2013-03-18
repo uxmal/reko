@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 
 			using (FileUnitTester fut = new FileUnitTester("Core/SudWrite.txt"))
 			{
-				FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
+			    var writer = new FilteringXmlWriter(fut.TextWriter);
 				writer.Formatting = System.Xml.Formatting.Indented;
 				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject));
 				ser.Serialize(writer, ud);
