@@ -33,20 +33,21 @@ namespace Decompiler.Tools.C2Xml
 {
     public class XmlConverter : 
         CSyntaxVisitor<int>,
-        IDataTypeVisitor<int>
+        IDataTypeVisitor<SerializedType>
     {
         private TextReader rdr;
         private XmlWriter writer;
-        private Hashtable typedefs;
+        private Hashtable mpNameType;
+        private List<SerializedType> types;
+        private List<SerializedProcedureBase> procs;
 
-        public XmlConverter(TextReader rdr, TextWriter writer)
+        public XmlConverter(TextReader rdr, XmlWriter writer)
         {
             this.rdr = rdr;
-            this.writer = new XmlTextWriter(writer)
-            {
-                Formatting = Formatting.Indented
-            };
-            this.typedefs = new Hashtable();
+            this.writer = writer;
+            this.mpNameType = new Hashtable();
+            this.types = new List<SerializedType>();
+            this.procs = new List<SerializedProcedureBase>();
         }
 
         public void Convert()
@@ -54,14 +55,18 @@ namespace Decompiler.Tools.C2Xml
             var lexer = new CLexer(rdr);
             var parser = new CParser(lexer);
             var declarations = parser.Parse();
-            writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-16\"");
-            writer.WriteStartElement("library");
-            writer.WriteAttributeString("xmlns", SerializedLibrary.Namespace);
             foreach (var decl in declarations)
             {
                 decl.Accept(this);
             }
-            writer.WriteEndElement();
+
+            var lib = new SerializedLibrary
+            {
+                Types = types.ToArray(),
+                Procedures = procs,
+            };
+            var ser = SerializedLibrary.CreateSerializer();
+            ser.Serialize(writer, lib);
         }
 
         public int VisitType(CType cType)
@@ -76,13 +81,14 @@ namespace Decompiler.Tools.C2Xml
             {
                 foreach (var declarator in decl.init_declarator_list)
                 {
-                    var nt = NamedDataTypeExtractor.GetNameAndType(decl.decl_specs.Skip(1), declarator.Declarator, typedefs);
-                    writer.WriteStartElement("typedef");
-                    writer.WriteAttributeString("name", nt.Name);
-                    nt.DataType.Accept(this);
-
-                    writer.WriteEndElement();
-                    typedefs.Add(nt.Name, nt.DataType);
+                    var nt = NamedDataTypeExtractor.GetNameAndType(decl.decl_specs.Skip(1), declarator.Declarator, mpNameType);
+                    var serType = nt.DataType.Accept(this);
+                    mpNameType.Add(nt, serType);
+                    types.Add(new SerializedTypedef
+                    {
+                        Name = nt.Name,
+                        DataType = serType
+                    });
                 }
                 return 0;
             }
@@ -119,56 +125,56 @@ namespace Decompiler.Tools.C2Xml
             throw new NotImplementedException();
         }
 
-        public int VisitArray(ArrayType at)
+        public SerializedType VisitArray(ArrayType at)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitEquivalenceClass(EquivalenceClass eq)
+        public SerializedType VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitFunctionType(FunctionType ft)
+        public SerializedType VisitFunctionType(FunctionType ft)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitPrimitive(PrimitiveType pt)
+        public SerializedType VisitPrimitive(PrimitiveType pt)
         {
-            writer.WriteStartElement("prim");
-            writer.WriteAttributeString("domain", pt.Domain.ToString());
-            writer.WriteAttributeString("size", pt.Size.ToString());
-            writer.WriteEndElement();
-            return 0;
+            return new SerializedPrimitiveType
+            {
+                Domain = pt.Domain,
+                ByteSize = pt.Size,
+            };
         }
 
-        public int VisitMemberPointer(MemberPointer memptr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitPointer(Pointer ptr)
+        public SerializedType VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitStructure(StructureType str)
+        public SerializedType VisitPointer(Pointer ptr)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitTypeVar(TypeVariable tv)
+        public SerializedType VisitStructure(StructureType str)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitUnion(UnionType ut)
+        public SerializedType VisitTypeVar(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitUnknownType(UnknownType ut)
+        public SerializedType VisitUnion(UnionType ut)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SerializedType VisitUnknownType(UnknownType ut)
         {
             throw new NotImplementedException();
         }

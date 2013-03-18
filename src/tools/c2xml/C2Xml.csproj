@@ -78,6 +78,7 @@
     <Compile Include="UnitTests\NamedDataTypeExtractorTests.cs" />
     <Compile Include="UnitTests\TypedefTests.cs" />
     <Compile Include="UnitTests\XmlConverterTests.cs" />
+    <Compile Include="UnitTests\XmlnsHidingWriter.cs" />
     <Compile Include="XmlConverter.cs" />
     <Compile Include="XmlRenderer.cs" />
   </ItemGroup>

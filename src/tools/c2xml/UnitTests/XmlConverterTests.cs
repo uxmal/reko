@@ -25,10 +25,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace Decompiler.Tools.C2Xml.UnitTests
 {
-
     [TestFixture]
     public class XmlConverterTests
     {
@@ -40,7 +40,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             {
                 reader = new StringReader(c_code);
                 writer = new StringWriter();
-                var xc = new XmlConverter(reader, writer);
+                var xWriter = new XmlnsHidingWriter(writer)
+                {
+                    Formatting = Formatting.Indented
+                };
+                var xc = new XmlConverter(reader, xWriter);
                 xc.Convert();
                 writer.Flush();
                 Assert.AreEqual(expectedXml, writer.ToString());
@@ -64,9 +68,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             var sExp =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
-  <typedef name=""INT"">
-    <prim domain=""SignedInt"" size=""4"" />
-  </typedef>
+  <Types>
+    <typedef name=""INT"">
+      <prim domain=""SignedInt"" size=""4"" />
+    </typedef>
+  </Types>
 </library>";
             RunTest("typedef int INT;", sExp);
         }
