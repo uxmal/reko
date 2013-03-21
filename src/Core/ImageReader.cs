@@ -63,7 +63,9 @@ namespace Decompiler.Core
 
         public Address Address { get { return addrStart + (off - offStart); } }
         public uint Offset { get { return off; } }
-        public bool IsValid { get { return 0 <= off && off < img.Length; } }
+        public bool IsValid { get { return IsValidOffset(Offset); } }
+        public bool IsValidOffset(uint offset) { return 0 <= offset && offset < img.Length; }
+
 
         public byte ReadByte()
         {

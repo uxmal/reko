@@ -38,12 +38,10 @@ namespace Decompiler.Core.Serialization
 
         public SerializedUnionType()
 		{
-            Alternatives = new List<SerializedUnionAlternative>();
 		}
 
 		[XmlElement("field", typeof (SerializedUnionAlternative))]
-        public List<SerializedUnionAlternative> Alternatives { get; private set; }
-
+        public SerializedUnionAlternative[]  Alternatives;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {

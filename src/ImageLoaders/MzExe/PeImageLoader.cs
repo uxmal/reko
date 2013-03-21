@@ -30,6 +30,9 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.MzExe
 {
+    /// <summary>
+    /// Loads Windows NT PE images.
+    /// </summary>
 	public class PeImageLoader : ImageLoader
 	{
         private IProcessorArchitecture arch;

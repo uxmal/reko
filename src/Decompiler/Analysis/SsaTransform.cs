@@ -171,8 +171,8 @@ namespace Decompiler.Analysis
 		}
 
 		/// <summary>
-		/// Locates the variables defined in this block by examining each
-		/// statement to find variables in L-value positions.
+		/// Locates the variables defined in this block by examining
+        /// each statement to find variables in L-value positions.
 		/// In addition, the set deadIn for each block is calculated.
 		/// These are all the variables that are known to be dead on
 		/// entry to the function. Dead variables won't need phi code!
@@ -203,7 +203,7 @@ namespace Decompiler.Analysis
 
 			public void LocateDefs(Block b)
 			{
-				block = b;
+				this.block = b;
 				for (int i = block.Statements.Count - 1; i >= 0; --i)
 				{
 					stmCur = block.Statements[i];
@@ -304,9 +304,9 @@ namespace Decompiler.Analysis
 			public VariableRenamer(SsaTransform ssa, Identifier [] varsOrig, Procedure p)
 			{
 				this.ssa = ssa;
-				rename = new int[varsOrig.Length];
-				wasonentry = new int[varsOrig.Length];
-				stmCur = null;
+				this.rename = new int[varsOrig.Length];
+				this.wasonentry = new int[varsOrig.Length];
+				this.stmCur = null;
 				proc = p;
 
 				Block entryBlock = p.EntryBlock;
@@ -413,7 +413,6 @@ namespace Decompiler.Analysis
 				return sid.Identifier;
 			}
 
-
 			private Identifier NewUse(Identifier idOld, Statement stm)
 			{
                 int iNew = Rename(idOld);
@@ -458,7 +457,6 @@ namespace Decompiler.Analysis
 				return ci;
 			}
 
-
 			public override Expression VisitApplication(Application appl)
 			{
 				for (int i = 0; i < appl.Arguments.Length; ++i)
@@ -477,7 +475,6 @@ namespace Decompiler.Analysis
 				}
 				return appl;
 			}
-
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
@@ -503,7 +500,6 @@ namespace Decompiler.Analysis
 				}
 				return store;
 			}
-
 
 			public override Expression VisitUnaryExpression(UnaryExpression unary)
 			{
