@@ -249,7 +249,13 @@ namespace Decompiler.UnitTests.Arch.Arm
             Assert.AreEqual("setendle", instr.ToString());
             instr = DisassembleBits("11110 0010000 000 1 00000010 0000 0000");
             Assert.AreEqual("setendbe", instr.ToString());
+        }
 
+        [Test]
+        public void mov_pc_r14()
+        {
+            var instr = DisassembleBits("1110 00011010 0000 1111 000000001110");
+            Assert.AreEqual("mov\tr15,r14", instr.ToString());
         }
     }
 }

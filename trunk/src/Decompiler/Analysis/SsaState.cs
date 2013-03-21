@@ -44,7 +44,6 @@ namespace Decompiler.Analysis
 
         public Procedure Procedure { get; private set; }
 
-
         /// <summary>
         /// Inserts the instr d of the identifier v at statement S.
         /// </summary>

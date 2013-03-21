@@ -25,6 +25,11 @@ using System.IO;
 
 namespace Decompiler.Analysis
 {
+    /// <summary>
+    /// Keeps track of what identifier interfere with each other.
+    /// Because the graph is sparse, it's implemented as a set of 
+    /// edges, rather than a bit matrix.
+    /// </summary>
 	public class InterferenceGraph
 	{
         private Dictionary<Interference, Interference> intf;
@@ -52,7 +57,7 @@ namespace Decompiler.Analysis
 
 		public void Write(TextWriter sb)
 		{
-			SortedList<Interference,Interference> sl = new SortedList<Interference,Interference>(intf);
+			var sl = new SortedList<Interference,Interference>(intf);
 			foreach (Interference i in sl.Values)
 			{
 				sb.WriteLine("{0} interferes with {1}", i.Identifier1, i.Identifier2);

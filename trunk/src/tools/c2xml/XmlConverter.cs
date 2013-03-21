@@ -171,7 +171,7 @@ namespace Decompiler.Tools.C2Xml
             };
             if (cpxSpec.DeclList == null)
                 return u;
-            var alts = u.Alternatives;
+            var alts = new List<SerializedUnionAlternative>();
             foreach (var uspec in cpxSpec.DeclList)
             {
                 foreach (var declarator in uspec.FieldDeclarators)
@@ -187,6 +187,7 @@ namespace Decompiler.Tools.C2Xml
                     });
                 }
             }
+            u.Alternatives = alts.ToArray();
             return u;
         }
 

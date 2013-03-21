@@ -57,8 +57,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachO-2010", "ImageLoaders\
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MsiInstaller-2010", "MsiInstaller\MsiInstaller.vdproj", "{DD3B0A61-A03B-4CDF-905F-96D270DAB698}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parsers-2010", "Parsers\Parsers-2010.csproj", "{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}"
-EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "WixInstaller\WixInstaller.wixproj", "{B1916638-EF20-4692-8C95-1C5AD6C67D30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "tools\xslt\xslt.csproj", "{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}"
@@ -390,19 +388,6 @@ Global
 		{DD3B0A61-A03B-4CDF-905F-96D270DAB698}.Release|Win32.ActiveCfg = Release
 		{DD3B0A61-A03B-4CDF-905F-96D270DAB698}.Release|Win32.Build.0 = Release
 		{DD3B0A61-A03B-4CDF-905F-96D270DAB698}.Release|x86.ActiveCfg = Release
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Release|.NET.ActiveCfg = Release|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Release|Win32.ActiveCfg = Release|Any CPU
-		{0FEED5C8-A3CF-42B7-8CB3-E9BE9D5D4155}.Release|x86.ActiveCfg = Release|Any CPU
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Debug|.NET.ActiveCfg = Debug|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
