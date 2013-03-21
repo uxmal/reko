@@ -52,6 +52,16 @@ namespace Decompiler.Core.Serialization
         [DefaultValue(0)]
         public int FpuStackDelta;
 
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitSignature(this);
+        }
+
+        public override int GetSize()
+        {
+            return 0;
+        }
+
         public override Types.DataType BuildDataType(Types.TypeFactory factory)
         {
             throw new NotImplementedException();

@@ -29,13 +29,13 @@ using System.Xml.Serialization;
 namespace Decompiler.Core.Serialization
 {
 	/// <summary>
-	/// In-memory description of XML format for serializing Variables.
+	/// Serialization format for procedure arguments.
 	/// </summary>
 	public class SerializedArgument
 	{
         public SerializedArgument() { }
 
-        public SerializedArgument(string name, string type, SerializedKind kind, bool outParameter)
+        public SerializedArgument(string name, SerializedType type, SerializedKind kind, bool outParameter)
         {
             Name = name;
             Type = type;
@@ -46,10 +46,7 @@ namespace Decompiler.Core.Serialization
         [XmlAttribute("name")]
         public string Name { get; set; }
 
-        [XmlElement("type")]
-        public string Type { get;set; }		//$REVIEW: this needs to be SerializedType.
-        [XmlElement("taip")]
-        public SerializedType Taip { get; set; }
+        public SerializedType Type;		// Reference to a type
 
         [XmlElement("reg", typeof(SerializedRegister))]
         [XmlElement("stack", typeof(SerializedStackVariable))]

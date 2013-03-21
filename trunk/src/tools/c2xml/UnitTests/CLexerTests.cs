@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+#if DEBUG
 namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
@@ -368,5 +369,37 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             AssertToken(CTokenType.Id, "b");
             Assert.AreEqual(2, lex.LineNumber);
         }
+
+        [Test]
+        public void CLexer_Hexnumber()
+        {
+            Lex("0x12");
+            AssertToken(CTokenType.NumericLiteral, 0x12);
+        }
+
+        [Test]
+        public void CLexer_ZeroComma()
+        {
+            Lex("0,1,");
+            AssertToken(CTokenType.NumericLiteral, 0);
+            AssertToken(CTokenType.Comma);
+            AssertToken(CTokenType.NumericLiteral, 1);
+            AssertToken(CTokenType.Comma);
+        }
+
+        [Test]
+        public void CLexer_declspec()
+        {
+            Lex("__declspec");
+            AssertToken(CTokenType.__Declspec);
+        }
+
+        [Test]
+        public void CLexer_Ellipsis()
+        {
+            Lex("...");
+            AssertToken(CTokenType.Ellipsis);
+        }
     }
 }
+#endif

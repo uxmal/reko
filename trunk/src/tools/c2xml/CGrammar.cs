@@ -52,9 +52,12 @@ namespace Decompiler.Tools.C2Xml
             return new CIdentifier { Name = name };
         }
 
-        public CExpression Application(CExpression e, List<CExpression> list)
+        public CExpression Application(CExpression fn, List<CExpression> list)
         {
-            throw new NotImplementedException();
+            return new Application { 
+                Function = fn, 
+                Arguments = list
+            };
         }
 
         public CExpression ArrayAccess(CExpression e, CExpression idx)
@@ -62,19 +65,34 @@ namespace Decompiler.Tools.C2Xml
             throw new NotImplementedException();
         }
 
-        public CExpression MemberAccess(CExpression e, string id)
+        public CExpression MemberAccess(CExpression e, string fieldName)
         {
-            throw new NotImplementedException();
+            return new MemberExpression
+            {
+                Expression = e,
+                Dereference = false,
+                FieldName = fieldName,
+            };
         }
 
-        public CExpression PtrMemberAccess(CExpression e, string id)
+        public CExpression PtrMemberAccess(CExpression e, string fieldName)
         {
-            throw new NotImplementedException();
+            return new MemberExpression
+            {
+                Expression = e,
+                Dereference = true,
+                FieldName = fieldName,
+            };
         }
 
         public CExpression PostIncrement(CExpression e, CTokenType token)
         {
-            throw new NotImplementedException();
+            return new IncrementExpression
+            {
+                Expression = e,
+                Incrementor = token,
+                Prefix = false
+            };
         }
 
         public CExpression Sizeof(CType type)
@@ -147,14 +165,22 @@ namespace Decompiler.Tools.C2Xml
             throw new NotImplementedException();
         }
 
-        public Stat WhileStatement(CExpression expr, Stat switchBody)
+        public Stat WhileStatement(CExpression expr, Stat whileBody)
         {
-            throw new NotImplementedException();
+            return new WhileStat
+            {
+                Expression = expr,
+                Body = whileBody
+            };
         }
 
         public Stat DoWhileStatement(Stat doBody, CExpression expr)
         {
-            throw new NotImplementedException();
+            return new DoWhileStat
+            {
+                Body = doBody,
+                Expression = expr,
+            };
         }
 
         public Stat ForStatement(Stat init, CExpression test, CExpression  incr, Stat forBody)
@@ -188,6 +214,15 @@ namespace Decompiler.Tools.C2Xml
             return new ExprStat();
         }
 
+        public Stat CompoundStatement(List<Stat> statements)
+        {
+            return new CompoundStatement
+            {
+                Statements = statements,
+            };
+        }
+
+
         public Stat ReturnStatement(CExpression expr)
         {
             return new ReturnStat { Expression = expr };
@@ -211,12 +246,13 @@ namespace Decompiler.Tools.C2Xml
             };
         }
 
-        public TypeSpec ComplexType(CTokenType token, string tag, List<StructDecl> decls)
+        public TypeSpec ComplexType(CTokenType token, int alignment, string tag, List<StructDecl> decls)
         {
             return new ComplexTypeSpec
             {
                 Type = token,
                 Name = tag,
+                Alignment = alignment,
                 DeclList = decls,
             };
         }
@@ -264,9 +300,14 @@ namespace Decompiler.Tools.C2Xml
             return new ExprStat { Expression = expr };
         }
 
-        internal CExpression Conditional(CExpression cond, CExpression consequent, CExpression alternant)
+        public CExpression Conditional(CExpression cond, CExpression consequent, CExpression alternant)
         {
-            throw new NotImplementedException();
+            return new ConditionalExpression
+            {
+                Condition = cond,
+                Consequent = consequent,
+                Alternative = alternant,
+            };
         }
 
         public StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls)
@@ -289,6 +330,15 @@ namespace Decompiler.Tools.C2Xml
             return new PointerDeclarator { TypeQualifierList = tqs, Pointee = decl};
         }
 
+        public Declarator CallConventionDeclarator(CTokenType conv, Declarator decl)
+        {
+            return new CallConventionDeclarator
+            {
+                Convention = conv,
+                Declarator = decl,
+            };
+        }
+
         public Enumerator Enumerator(string id, CExpression init)
         {
             return new Enumerator { Name = id, Value = init };
@@ -296,7 +346,10 @@ namespace Decompiler.Tools.C2Xml
 
         public ParamDecl Ellipsis()
         {
-            throw new NotImplementedException();
+            return new ParamDecl
+            {
+                IsEllipsis = true,
+            };
         }
 
         internal Decl Decl(List<DeclSpec> list, List<InitDeclarator> listDecls)
@@ -332,10 +385,20 @@ namespace Decompiler.Tools.C2Xml
         {
             return new FunctionDecl
             {
+                decl_specs = decl_spec_list,        //$REVIEW: dupe?
                 Signature = Decl(decl_spec_list, declarator),
                 Body = statements
             };
                 
+        }
+
+
+        public DeclSpec ExtendedDeclspec(string s)
+        {
+            return new ExtendedDeclspec
+            {
+                Name = s,
+            };
         }
     }
 

@@ -40,16 +40,6 @@ namespace Decompiler.Tools.C2Xml
         }
     }
 
-    public class ExternalDecl : Decl
-    {
-    }
-
-    public class FunctionDecl : Decl
-    {
-        public Decl Signature;
-        public List<Stat> Body;
-    }
-
     public class Decl : CSyntax
     {
         public List<DeclSpec> decl_specs;
@@ -84,6 +74,35 @@ namespace Decompiler.Tools.C2Xml
         }
     }
 
+    public class ExternalDecl : Decl
+    {
+    }
+
+    public class FunctionDecl : Decl
+    {
+        public Decl Signature;
+        public List<Stat> Body;
+        public CTokenType calling_convention;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("(fndecl ");
+            sb.Append(Signature);
+            sb.Append(" (");
+            var sep = false;
+            foreach (var s in Body)
+            {
+                if (sep)
+                    sb.AppendLine();
+                sb.Append(s);
+                sep = true;
+            }
+            sb.Append("))");
+            return sb.ToString();
+        }
+    }
+   
     public interface DeclSpecVisitor<T>
     {
         T VisitSimpleType(SimpleTypeSpec simpleType);
@@ -92,16 +111,32 @@ namespace Decompiler.Tools.C2Xml
         T VisitStorageClass(StorageClassSpec storageClass);
         T VisitTypeQualifier(TypeQualifier typeQualifier);
         T VisitEnum(EnumeratorTypeSpec enumeratorTypeSpec);
+        T VisitExtendedDeclspec(ExtendedDeclspec extendedDeclspec);
     }
 
     public abstract class DeclSpec : CSyntax
     {
-        public override T Accept<T>(CSyntaxVisitor<T> visitor)
+        public sealed override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
             return visitor.VisitDeclSpec(this);
         }
 
         public abstract T Accept<T>(DeclSpecVisitor<T> visitor);
+    }
+
+    public class ExtendedDeclspec : DeclSpec
+    {
+        public string Name;
+
+        public override T Accept<T>(DeclSpecVisitor<T> visitor)
+        {
+            return visitor.VisitExtendedDeclspec(this);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("(__declspec {0})", Name);
+        }
     }
 
     public abstract class TypeSpec : DeclSpec
@@ -116,6 +151,8 @@ namespace Decompiler.Tools.C2Xml
         {
             return visitor.VisitTypeQualifier(this);
         }
+
+        public override string ToString() { return Qualifier.ToString(); }
     }
 
     public class StorageClassSpec : DeclSpec
@@ -150,6 +187,8 @@ namespace Decompiler.Tools.C2Xml
         {
             return visitor.VisitTypedef(this);
         }
+
+        public override string ToString() { return Name; }
     }
 
     public class ComplexTypeSpec : TypeSpec
@@ -157,6 +196,7 @@ namespace Decompiler.Tools.C2Xml
         public CTokenType Type;
         public string Name;
         public List<StructDecl> DeclList;
+        public int Alignment;
 
         public override T Accept<T>(DeclSpecVisitor<T> visitor)
         {
@@ -167,16 +207,26 @@ namespace Decompiler.Tools.C2Xml
         {
             var sb = new StringBuilder();
             sb.AppendFormat("({0} ", Type);
+            if (Alignment != 0)
+                sb.AppendFormat("{0} ", Alignment);
             if (!string.IsNullOrEmpty(Name))
-                sb.AppendFormat("{0} ", Name);
-            var sep = "(";
-            foreach (var sd in DeclList)
+                sb.AppendFormat("{0}", Name);
+            if (!IsForwardDeclaration())
             {
-                sb.AppendFormat("{0}{1}", sep, sd);
-                sep = " ";
+                var sep = " (";
+                foreach (var sd in DeclList)
+                {
+                    sb.AppendFormat("{0}{1}", sep, sd);
+                    sep = " ";
+                }
             }
             sb.Append(")");
             return sb.ToString();
+        }
+
+        public bool IsForwardDeclaration()
+        {
+            return DeclList == null;
         }
     }
 
@@ -216,7 +266,7 @@ namespace Decompiler.Tools.C2Xml
         T VisitField(FieldDeclarator field);
         T VisitPointer(PointerDeclarator pointer);
         T VisitFunction(FunctionDeclarator function);
-
+        T VisitCallConvention(CallConventionDeclarator callConvention);
     }
 
     public class InitDeclarator : CSyntax
@@ -253,6 +303,7 @@ namespace Decompiler.Tools.C2Xml
     {
         public List<DeclSpec> DeclSpecs;
         public Declarator Declarator;
+        public bool IsEllipsis;
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -339,6 +390,24 @@ namespace Decompiler.Tools.C2Xml
         }
     }
 
+    public class CallConventionDeclarator : Declarator
+    {
+        public CTokenType Convention;
+        public Declarator Declarator;
+
+        public override T Accept<T>(DeclaratorVisitor<T> visitor)
+        {
+            return visitor.VisitCallConvention(this);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("({0} {1})", Convention, Declarator);
+            return sb.ToString();
+        }
+    }
+
     public class ArrayDeclarator : Declarator
     {
         public Declarator Declarator;
@@ -366,14 +435,18 @@ namespace Decompiler.Tools.C2Xml
         {
             var sb = new StringBuilder();
             sb.Append("(");
+            var sep = "";
             foreach (var sq in SpecQualifierList)
             {
-                sb.AppendFormat(" {0}", sq);
+                sb.AppendFormat("{0}{1}", sep, sq);
+                sep = " ";
             }
             sb.Append(") (");
+            sep = "";
             foreach (var d in FieldDeclarators)
             {
-                sb.AppendFormat(" {0}", d);
+                sb.AppendFormat("{0}{1}", sep, d);
+                sep = " ";
             }
             sb.Append(")");
             return sb.ToString();
@@ -439,6 +512,22 @@ namespace Decompiler.Tools.C2Xml
         public override string ToString() { return Name; }
     }
 
+    public class Application : CExpression
+    {
+        public CExpression Function;
+        public List<CExpression> Arguments;
+    }
+
+    public class MemberExpression : CExpression
+    {
+        public CExpression Expression;
+        public string FieldName;
+        public bool Dereference;
+        public override string ToString() { return string.Format("({0} {1} {2}",
+            Expression, 
+            Dereference ? "->" : ".",
+            FieldName); }
+    }
     public class CUnaryExpression : CExpression
     {
         public CTokenType Operation;
@@ -474,6 +563,12 @@ namespace Decompiler.Tools.C2Xml
         public CExpression Alternative;
     }
 
+    public class IncrementExpression : CExpression
+    {
+        public CTokenType Incrementor;
+        public bool Prefix;
+        public CExpression Expression;
+    }
     #endregion
 
     #region Statements
@@ -522,6 +617,29 @@ namespace Decompiler.Tools.C2Xml
         }
     }
 
+    public class WhileStat : Stat
+    {
+        public CExpression Expression;
+        public Stat Body;
+    }
+
+    public class DoWhileStat : Stat
+    {
+        public Stat Body;
+        public CExpression Expression;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("(do ");
+            sb.Append(Body);
+            sb.Append(") ");
+            sb.Append(Expression);
+            sb.Append(")");
+            return sb.ToString();
+        }
+    }
+
     public class ForStat : Stat
     {
         public Stat Initializer;
@@ -540,5 +658,21 @@ namespace Decompiler.Tools.C2Xml
         public CExpression Expression;
     }
 
+    public class CompoundStatement : Stat
+    {
+        public List<Stat> Statements;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("(");
+            foreach (var stat in Statements)
+            {
+                sb.Append(stat);
+            }
+            sb.Append(")");
+            return sb.ToString();
+        }
+    }
     #endregion
 }

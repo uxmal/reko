@@ -196,7 +196,11 @@
     <Compile Include="Rtl\RtlReturn.cs" />
     <Compile Include="Rtl\RtlSideEffect.cs" />
     <Compile Include="Rtl\RtlTransfer.cs" />
+    <Compile Include="Serialization\DataTypeNameSerializer.cs" />
+    <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
+    <Compile Include="Serialization\SerializedArrayType.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
+    <Compile Include="Serialization\SerializedTypeReference.cs" />
     <Compile Include="Serialization\SerializedUnionType.cs" />
     <Compile Include="Services\DecompilerEventListener.cs" />
     <Compile Include="Lib\BlockDominatorGraph.cs" />

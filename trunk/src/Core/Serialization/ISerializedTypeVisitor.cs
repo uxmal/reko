@@ -18,37 +18,22 @@
  */
 #endregion
 
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Text;
 
-#if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Decompiler.Core.Serialization
 {
-    [TestFixture]
-    public class TypedefTests
+    public interface ISerializedTypeVisitor<T>
     {
-        private CLexer lexer;
-        private ParserState parserState;
-
-        private void CreateLexer(string text)
-        {
-            parserState = new ParserState();
-
-            lexer = new CLexer(new StringReader(text));
-        }
-
-        [Test]
-        public void ParseTypedef()
-        {
-            CreateLexer("typedef int GOO;");
-            CParser parser = new CParser(parserState, lexer);
-            var decl = parser.Parse();
-            //Assert.AreEqual("int", td.TypeSpecifier.ToString());
-            //Assert.AreEqual("GOO", td.Declarators[0]);
-        }
+        T VisitPrimitive(SerializedPrimitiveType primitive);
+        T VisitPointer(SerializedPointerType pointer);
+        T VisitArray(SerializedArrayType array);
+        T VisitSignature(SerializedSignature signature);
+        T VisitStructure(SerializedStructType structure);
+        T VisitTypedef(SerializedTypedef typedef);
+        T VisitTypeReference(SerializedTypeReference typeReference);
+        T VisitUnion(SerializedUnionType union);
     }
 }
-#endif

@@ -21,6 +21,7 @@
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -30,10 +31,11 @@ namespace Decompiler.Core.Serialization
 	{
 		private List<SerializedStructField> fields;
 
-		[XmlElement("name")]
+		[XmlAttribute("name")]
 		public string Name;
 
-		[XmlElement("size")]
+		[XmlAttribute("size")]
+        [DefaultValue(0)]
 		public int ByteSize;
 
 		public SerializedStructType()
@@ -46,6 +48,16 @@ namespace Decompiler.Core.Serialization
 		{
 			get { return fields; }
 		}
+
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitStructure(this);
+        }
+
+        public override int GetSize()
+        {
+            return ByteSize;
+        }
 
 		public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
 		{
@@ -60,10 +72,14 @@ namespace Decompiler.Core.Serialization
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("struct({0}", ByteSize);
+            sb.Append("struct(");
+            if (!string.IsNullOrEmpty(Name))
+                sb.AppendFormat("{0}, ", Name);
+            if (ByteSize > 0)
+                sb.AppendFormat("{0}, ", ByteSize);
 			foreach (SerializedStructField f in fields)
 			{
-				sb.AppendFormat(", ({0}, {1}, {2})", f.Offset, f.Name != null?f.Name: "?", f.Type);
+				sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null?f.Name: "?", f.Type);
 			}
 			sb.Append(")");
 			return sb.ToString();

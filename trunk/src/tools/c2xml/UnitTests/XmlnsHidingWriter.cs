@@ -18,36 +18,42 @@
  */
 #endregion
 
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Xml;
 
 #if DEBUG
 namespace Decompiler.Tools.C2Xml.UnitTests
 {
-    [TestFixture]
-    public class TypedefTests
+    public class XmlnsHidingWriter : XmlTextWriter
     {
-        private CLexer lexer;
-        private ParserState parserState;
+        private bool ignoreString = false;
 
-        private void CreateLexer(string text)
+        public XmlnsHidingWriter(TextWriter writer)
+            : base(writer)
         {
-            parserState = new ParserState();
-
-            lexer = new CLexer(new StringReader(text));
         }
 
-        [Test]
-        public void ParseTypedef()
+        public override void WriteStartAttribute(string prefix, string localName, string ns)
         {
-            CreateLexer("typedef int GOO;");
-            CParser parser = new CParser(parserState, lexer);
-            var decl = parser.Parse();
-            //Assert.AreEqual("int", td.TypeSpecifier.ToString());
-            //Assert.AreEqual("GOO", td.Declarators[0]);
+            if (prefix == "xmlns")
+                ignoreString = true;
+            else 
+                base.WriteStartAttribute(prefix, localName, ns);
+        }
+
+        public override void WriteString(string text)
+        {
+            if (!ignoreString)
+                base.WriteString(text);
+        }
+
+        public override void WriteEndAttribute()
+        {
+            ignoreString = false;
         }
     }
 }

@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,6 @@ namespace Decompiler.Tools.C2Xml
     public class NamedDataType
     {
         public string Name { get; set; }
-        public DataType DataType { get; set; }
+        public SerializedType DataType { get; set; }
     }
 }

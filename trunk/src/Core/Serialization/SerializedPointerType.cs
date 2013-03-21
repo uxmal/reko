@@ -24,7 +24,6 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    [XmlType(TypeName="ptr", Namespace=SerializedLibrary.Namespace)]
 	public class SerializedPointerType : SerializedType
 	{
 		public SerializedType DataType;
@@ -38,6 +37,13 @@ namespace Decompiler.Core.Serialization
 			DataType = pointee;
 		}
 
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitPointer(this);
+        }
+
+        public override int GetSize() { return 4; }//$BUG: hard-wired
+        
 		public override DataType BuildDataType(TypeFactory factory)
 		{
 			return factory.CreatePointer(DataType.BuildDataType(factory), 4);			//$REVIEW: that hard-wired 4 needs a better solution...

@@ -38,7 +38,7 @@ namespace Decompiler.Tools.C2Xml
             iRead= 0;
         }
 
-        public object LineNumber { get { return lexer.LineNumber; } }
+        public int LineNumber { get { return lexer.LineNumber; } }
 
         public CToken Read()
         {

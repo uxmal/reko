@@ -26,16 +26,26 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
+#if DEBUG
 namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class LookAheadLexerTests
     {
-        private LookAheadLexer lexer; 
+        private LookAheadLexer lexer;
+        private ParserState parserState;
 
+        [SetUp]
+        public void Setup()
+        {
+            parserState = new ParserState();
+        }
         private void Lexer(string input)
         {
-            lexer = new LookAheadLexer(new CDirectiveLexer(new CLexer(new StringReader(input))));
+            var dlexer = new CDirectiveLexer(
+                parserState, 
+                new CLexer(new StringReader(input)));
+            lexer = new LookAheadLexer(dlexer);
         }
 
         private void Expect(CTokenType expectedType, string expectedValue)
@@ -98,3 +108,4 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 
     }
 }
+#endif

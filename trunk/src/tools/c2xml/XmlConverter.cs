@@ -32,12 +32,11 @@ using System.Xml.Serialization;
 namespace Decompiler.Tools.C2Xml
 {
     public class XmlConverter : 
-        CSyntaxVisitor<int>,
-        IDataTypeVisitor<SerializedType>
+        CSyntaxVisitor<int>
     {
         private TextReader rdr;
         private XmlWriter writer;
-        private Hashtable mpNameType;
+        private ParserState parserState;
         private List<SerializedType> types;
         private List<SerializedProcedureBase> procs;
 
@@ -45,15 +44,16 @@ namespace Decompiler.Tools.C2Xml
         {
             this.rdr = rdr;
             this.writer = writer;
-            this.mpNameType = new Hashtable();
+            this.parserState = new ParserState();
             this.types = new List<SerializedType>();
             this.procs = new List<SerializedProcedureBase>();
         }
 
         public void Convert()
         {
+            var parserState = new ParserState();
             var lexer = new CLexer(rdr);
-            var parser = new CParser(lexer);
+            var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
             foreach (var decl in declarations)
             {
@@ -63,7 +63,7 @@ namespace Decompiler.Tools.C2Xml
             var lib = new SerializedLibrary
             {
                 Types = types.ToArray(),
-                Procedures = procs,
+                Procedures = procs.ToList(),
             };
             var ser = SerializedLibrary.CreateSerializer();
             ser.Serialize(writer, lib);
@@ -76,23 +76,118 @@ namespace Decompiler.Tools.C2Xml
 
         public int VisitDeclaration(Decl decl)
         {
+            var fndec = decl as FunctionDecl;
+            if (fndec != null)
+            {
+                return 0;
+            }
+
+            IEnumerable<DeclSpec> declspecs = decl.decl_specs;
+            var isTypedef = false;
             var scspec = decl.decl_specs[0] as StorageClassSpec;
             if (scspec != null && scspec.Type == CTokenType.Typedef)
             {
-                foreach (var declarator in decl.init_declarator_list)
+                declspecs = decl.decl_specs.Skip(1);
+                isTypedef = true;
+            }
+
+            var t = declspecs.First() as ComplexTypeSpec;
+            if (t != null)
+            {
+                if (t.Type == CTokenType.Struct)
                 {
-                    var nt = NamedDataTypeExtractor.GetNameAndType(decl.decl_specs.Skip(1), declarator.Declarator, mpNameType);
-                    var serType = nt.DataType.Accept(this);
-                    mpNameType.Add(nt, serType);
+                    types.Add(ConvertStructure(t));
+                }
+                else if (t.Type == CTokenType.Union)
+                {
+                    types.Add(ConvertUnion(t));
+                }
+            }
+            foreach (var declarator in decl.init_declarator_list)
+            {
+                var nt = NamedDataTypeExtractor.GetNameAndType(
+                    declspecs,
+                    declarator.Declarator,
+                    parserState);
+                var serType = nt.DataType;
+
+                var sSig = nt.DataType as SerializedSignature;
+                if (sSig != null)
+                {
+                    procs.Add(new SerializedProcedure
+                    {
+                        Name = nt.Name,
+                        Signature = sSig,
+                    });
+                }
+                if (isTypedef)
+                {
+                    //$REVIEW: make sure that if it already exists, types match
+                    // but a real compiler would have validated that.
+                    parserState.Typedefs[nt.Name] = serType;
                     types.Add(new SerializedTypedef
                     {
                         Name = nt.Name,
                         DataType = serType
                     });
                 }
-                return 0;
             }
-            throw new NotImplementedException(decl.ToString());
+            return 0;
+        }
+
+        private SerializedStructType ConvertStructure(ComplexTypeSpec cpxSpec)
+        {
+            int offset = 0;
+            var str = new SerializedStructType
+            {
+                Name = cpxSpec.Name
+            };
+            if (cpxSpec.DeclList == null)
+                return str;
+            var fields = str.Fields;
+            foreach (var strspec in cpxSpec.DeclList)
+            {
+                foreach (var declarator in strspec.FieldDeclarators)
+                {
+                    var nt = NamedDataTypeExtractor.GetNameAndType(
+                        strspec.SpecQualifierList,
+                        declarator.Declarator,
+                        parserState);
+                    fields.Add(new SerializedStructField(
+                        offset,
+                        nt.Name,
+                        nt.DataType));
+                    offset += nt.DataType.GetSize();
+                }
+            }
+            return str;
+        }
+
+        private SerializedType ConvertUnion(ComplexTypeSpec cpxSpec)
+        {
+            var u = new SerializedUnionType
+            {
+                Name = cpxSpec.Name
+            };
+            if (cpxSpec.DeclList == null)
+                return u;
+            var alts = u.Alternatives;
+            foreach (var uspec in cpxSpec.DeclList)
+            {
+                foreach (var declarator in uspec.FieldDeclarators)
+                {
+                    var nt = NamedDataTypeExtractor.GetNameAndType(
+                        uspec.SpecQualifierList,
+                        declarator.Declarator,
+                        parserState);
+                    alts.Add(new SerializedUnionAlternative
+                    {
+                        Name = nt.Name,
+                        Type = nt.DataType,
+                    });
+                }
+            }
+            return u;
         }
 
         public int VisitDeclSpec(DeclSpec declSpec)

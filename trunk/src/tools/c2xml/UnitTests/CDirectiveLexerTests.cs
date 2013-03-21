@@ -32,10 +32,17 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     public class CDirectiveLexerTests
     {
         private CDirectiveLexer lexer;
+        private ParserState state;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.state = new ParserState();
+        }
 
         private void Lex(string text)
         {
-            lexer = new CDirectiveLexer(new CLexer(new StringReader(text)));
+            lexer = new CDirectiveLexer(state, new CLexer(new StringReader(text)));
         }
 
         private void Expect(CTokenType expectedType)
@@ -62,6 +69,47 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         {
             Lex("#line 1\n \"foo.h\"\na");
             Expect(CTokenType.Id, "a");
+        }
+
+        [Test]
+        public void CDirectiveLexer_Pack_Push()
+        {
+            Assert.AreEqual(8, state.Alignment);
+            Lex("#pragma pack(push,4)");
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+            Assert.AreEqual(4, state.Alignment);
+        }
+
+        [Test]
+        public void CDirectiveLexer_Pack_Push_Pop()
+        {
+            Assert.AreEqual(8, state.Alignment);
+            Lex("#pragma pack(push,4)\nx\n#pragma pack(pop)");
+            Assert.AreEqual(CTokenType.Id, lexer.Read().Type);
+            Assert.AreEqual(4, state.Alignment);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+            Assert.AreEqual(8, state.Alignment);
+        }
+
+        [Test]
+        public void CDirectiveLexer_Pragma_Keywords()
+        {
+            Lex("__pragma(warning(push)) __pragma(warning(disable : 4548)) x");
+            Assert.AreEqual("x", lexer.Read().Value);
+        }
+
+        [Test]
+        public void CDirectiveLexer_Pragma_deprecated()
+        {
+            Lex("#pragma deprecated (Foo) x");
+            Assert.AreEqual("x", lexer.Read().Value);
+        }
+
+        [Test]
+        public void CDirectiveLexer_Pragma_comment_lib()
+        {
+            Lex("#pragma comment(lib, \"foo.lib\")\nx");
+            Assert.AreEqual("x", lexer.Read().Value);
         }
     }
 }

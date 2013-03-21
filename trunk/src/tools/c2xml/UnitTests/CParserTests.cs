@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Serialization;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+#if DEBUG
 namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
@@ -33,11 +35,18 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     {
         private CLexer lexer;
         private CParser parser;
+        private ParserState parserState;
+
+        [SetUp]
+        public void Setup()
+        {
+            parserState = new ParserState();
+        }
 
         private void Lex(string str)
         {
             lexer = new CLexer(new StringReader(str));
-            parser = new CParser(lexer);
+            parser = new CParser(parserState, lexer);
         }
 
         [Test]
@@ -72,6 +81,13 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         {
             Lex("typedef struct tagFoo { int x; int y; } FOO, *PFOO;");
             var decl = parser.Parse_Decl();
+            var sExp =
+                "(decl Typedef (Struct tagFoo " +
+                       "((Int) ((x))" +
+                       " (Int) ((y))) " +
+                       "((init-decl FOO)" +
+                       " (init-decl (ptr PFOO))))";
+            Assert.AreEqual(sExp, decl.ToString());
             Debug.Write(decl.ToString());
         }
 
@@ -93,6 +109,16 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         }
 
         [Test]
+        public void CParser_Typef_Pulong()
+        {
+            Lex("typedef unsigned long ULONG; typedef ULONG *PULONG;");
+            var decl = parser.Parse_ExternalDecl();
+            decl = parser.Parse_ExternalDecl();
+            Debug.WriteLine(decl.ToString());
+            Assert.AreEqual("(decl Typedef ULONG ((init-decl (ptr PULONG))))", decl.ToString());
+        }
+
+        [Test]
         public void CParser_Function()
         {
             Lex("int atoi(char * number);");
@@ -105,9 +131,214 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         {
             Lex("void _mm_pause (void);");
             var decl = parser.Parse_ExternalDecl();
-            Assert.AreEqual("@@@", decl.ToString());
+            Assert.AreEqual("(decl Void ((init-decl (func _mm_pause ((Void ))))))", decl.ToString());
         }
 
+        [Test]
+        public void CParser_SelfReferencingStructure()
+        {
+            Lex("typedef struct _LIST_ENTRY { " +
+                "    struct _LIST_ENTRY *Flink;" +
+                "    struct _LIST_ENTRY *Blink;" +
+                "} LIST_ENTRY, *PLIST_ENTRY, * PRLIST_ENTRY;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Typedef (Struct _LIST_ENTRY " +
+                "(((Struct _LIST_ENTRY)) (((ptr Flink)))" +
+                " ((Struct _LIST_ENTRY)) (((ptr Blink)))) " +
+                "((init-decl LIST_ENTRY)" +
+                " (init-decl (ptr PLIST_ENTRY))" +
+                " (init-decl (ptr PRLIST_ENTRY))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Regression1()
+        {
+            Lex("__inline PVOID GetFiberData( void )    { return *(PVOID *) (ULONG_PTR) __readfsdword (0x10);}\r\n");
+            parser.ParserState.Typedefs["PVOID"] =
+                new SerializedPointerType
+                {
+                    DataType = new SerializedPrimitiveType
+                    {
+                        Domain = Core.Types.Domain.Void,
+                        ByteSize = 0
+                    }
+                };
+            parser.ParserState.Typedefs["ULONG_PTR"] =
+                new SerializedPrimitiveType
+                {
+                    Domain = Core.Types.Domain.UnsignedInt,
+                    ByteSize = 8
+                };
+
+            var decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(fndecl (decl __Inline PVOID " +
+                    "((init-decl (func GetFiberData ((Void )))))) " +
+                    "(Decompiler.Tools.C2Xml.ReturnStat))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Enum()
+        {
+            Lex("typedef enum _S { Item = 1, Folder } S;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Typedef Decompiler.Tools.C2Xml.EnumeratorTypeSpec " +
+                "((init-decl S)))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_declspec_align()
+        {
+            Lex("struct __declspec(align(16)) _S { int x; };");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl (Struct 16 _S ((Int) ((x))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_stdcall_in_typedef()
+        {
+            Lex("typedef void (__stdcall *PFN) ();");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef Void ((init-decl " +
+                "(func (__Stdcall (ptr PFN)))))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Bitfields()
+        {
+            Lex("typedef struct _BitField { unsigned int : 1; } foo;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef (Struct _BitField ((Unsigned Int) (( 1))) " +
+                "((init-decl foo)))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_DoWhile()
+        {
+            Lex("do {__noop(TagBase);} while((0,0));");
+            var stat = parser.Parse_Stat();
+            var sExp =
+                "(do \r\n" +
+                "(Decompiler.Tools.C2Xml.ExprStat)) " +
+                "(Comma 0 0))";
+            Assert.AreEqual(sExp, stat.ToString());
+        }
+
+        [Test]
+        public void CParser_IdList()
+        {
+            parserState.Typedefs.Add("PVOID", new SerializedPrimitiveType { Domain = Core.Types.Domain.Void });
+            parserState.Typedefs.Add("BOOLEAN", new SerializedPrimitiveType { Domain = Core.Types.Domain.SignedInt, ByteSize = 8 });
+            Lex("typedef void (__stdcall * FOO) (PVOID, BOOLEAN );   ");
+            var decl = parser.Parse_Decl();
+            var sExp =
+                "(decl Typedef Void " +
+                "((init-decl (func (__Stdcall (ptr FOO)) ((PVOID ) (BOOLEAN ))))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Derefs()
+        {
+            Lex("CallbackEnviron->u.Flags = 0;");
+            var stat = parser.Parse_Stat();
+        }
+
+        [Test]
+        public void CParser_Ptr_to_Const_Int()
+        {
+            Lex(" int const * pint;");
+            var decl = parser.Parse_Decl();
+            var sExp =
+                "(decl Int Const ((init-decl (ptr pint))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_StructField_Ptr_to_Const_Int()
+        {
+            Lex("struct { int const * pint; };");
+            var decl = parser.Parse_Decl();
+            var sExp =
+                "(decl (Struct  ((Int Const) (((ptr pint)))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_ForwardTypedef()
+        {
+            Lex("typedef struct _tagFoo Foo; ");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual("(decl Typedef (Struct _tagFoo) ((init-decl Foo)))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_typedef_struct_redef()
+        {
+            Lex(
+                "typedef struct _M { int x; } M, *PM;" +
+                "typedef struct _M M, *PM;");
+            var decl1 = parser.Parse_ExternalDecl();
+            Assert.IsTrue(parserState.Typedefs.ContainsKey("M"));
+            var decl2 = parser.Parse_ExternalDecl();
+        }
+
+        [Test]
+        public void CParser_typedef_union_redef()
+        {
+            Lex(
+                "typedef union _M { int x; } M, *PM;" +
+                "typedef union _M M, *PM;");
+            var decl1 = parser.Parse_ExternalDecl();
+            Assert.IsTrue(parserState.Typedefs.ContainsKey("M"));
+            var decl2 = parser.Parse_ExternalDecl();
+        }
+
+        [Test]
+        public void CParser_Use_typedefname_As_variable()
+        {
+            parserState.Typedefs.Add("Doc", new SerializedTypeReference { TypeName = "int" });
+            Lex("typeof struct vtbl {\r\n" +
+                "int (__stdcall * method)(\r\n" +
+                    "int ** Doc);\r\n" +
+                "} vtbl;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl typeof (Struct vtbl " +
+                    "((Int)" +
+                    " (((func (__Stdcall (ptr method)) " +
+                        "((Int (ptr (ptr Doc)))))))) " +
+                    "((init-decl vtbl)))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_vtable_method_With_pfn()
+        {
+            Lex(
+                "typedef struct myVtbl { \n" +
+                "int (__stdcall  * Do) (\n" +
+                "    int x,\n" +
+                "    bool (__stdcall * cont) ());\n" +
+                "} myVtbl;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef (Struct myVtbl " +
+                    "((Int)" +
+                    " (((func (__Stdcall (ptr Do)) " +
+                        "((Int x)" +
+                        " (bool (func (__Stdcall (ptr cont)))))))))) " +
+                    "((init-decl myVtbl)))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
         private string windows_h =
 #region Windows.h
 @"#line 1 ""\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\windows.h""
@@ -723,11 +954,13 @@ MemoryBarrier (
         {
             Lex(windows_h);
             var decls = parser.Parse();
-            Assert.AreEqual(30, decls.Count);
-            foreach (var decl in decls)
+            for (int i = 0; i < decls.Count; ++i)
             {
-                Debug.Write(decl.ToString());
+                Debug.Print("{0}: {1}", i, decls[i].ToString());
+                Debug.WriteLine("");
             }
+            Assert.AreEqual(185, decls.Count);
         }
     }
 }
+#endif
