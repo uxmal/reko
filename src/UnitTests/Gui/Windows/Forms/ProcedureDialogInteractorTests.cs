@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             sig.ReturnValue = new SerializedArgument();
             sig.ReturnValue.Kind = new SerializedRegister("eax");
-            sig.ReturnValue.Type = "int32";
+            sig.ReturnValue.Type = new SerializedTypeReference("int32");
         }
 
         [Test]

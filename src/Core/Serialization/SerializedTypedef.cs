@@ -42,5 +42,15 @@ namespace Decompiler.Core.Serialization
             var type = DataType.BuildDataType(factory);
             throw new NotImplementedException();
         }
+
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitTypedef(this);
+        }
+
+        public override int GetSize()
+        {
+            return this.DataType.GetSize();
+        }
     }
 }

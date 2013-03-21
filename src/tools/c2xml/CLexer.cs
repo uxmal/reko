@@ -41,6 +41,7 @@ namespace Decompiler.Tools.C2Xml
             { "char", CTokenType.Char },
             { "class", CTokenType.Class },
             { "const", CTokenType.Const },
+            { "do", CTokenType.Do },
             { "double", CTokenType.Double },
             { "enum", CTokenType.Enum },
             { "extern", CTokenType.Extern },
@@ -60,12 +61,16 @@ namespace Decompiler.Tools.C2Xml
             { "void", CTokenType.Void },
             { "volatile", CTokenType.Volatile },
             { "wchar_t", CTokenType.Wchar_t },
+            { "while", CTokenType.While },
 
+            { "_cdecl", CTokenType.__Cdecl },
             { "__asm", CTokenType.__Asm },
             { "__cdecl", CTokenType.__Cdecl },
+            { "__declspec", CTokenType.__Declspec },
             { "__fastcall", CTokenType.__Fastcall },
             { "__inline", CTokenType.__Inline },
             { "__int64", CTokenType.__Int64 },
+            { "__pragma", CTokenType.__Pragma },
             { "__ptr64", CTokenType.__Ptr64 },
             { "__stdcall", CTokenType.__Stdcall },
             { "__w64", CTokenType.__W64 },
@@ -109,6 +114,8 @@ namespace Decompiler.Tools.C2Xml
             Shl,
             Shr,
             RealExponentSign,
+            Dot,
+            DotDot,
         }
 
         public int LineNumber { get; private set; }
@@ -152,7 +159,7 @@ namespace Decompiler.Tools.C2Xml
                     case '&': state = State.Ampersand; break;
                     case '(': return Tok(CTokenType.LParen);
                     case ')': return Tok(CTokenType.RParen);
-                    case '.': return Tok(CTokenType.Dot);
+                    case '.': state = State.Dot; break;
                     case ',': return Tok(CTokenType.Comma);
                     case ':': return Tok(CTokenType.Colon);
                     case ';': return Tok(CTokenType.Semicolon);
@@ -171,6 +178,7 @@ namespace Decompiler.Tools.C2Xml
                     case '-':
                         state = State.Minus;
                         break;
+                    case '?': return Tok(CTokenType.Question);
                     case '[': return Tok(CTokenType.LBracket);
                     case ']': return Tok(CTokenType.RBracket);
                     case '^': state = State.Caret; break;
@@ -219,8 +227,8 @@ namespace Decompiler.Tools.C2Xml
                             sb.Append(ch);
                             state = State.DecimalNumber;
                         }
-                        Nyi(state, ch);
-                        break;
+                        //$BUG: L, u, F suffixes.
+                        return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString()));
                     }
                     break;
                 case State.DecimalNumber:
@@ -416,6 +424,22 @@ namespace Decompiler.Tools.C2Xml
                         break;
                     }
                     break;
+                case State.Dot:
+                    if (c >= 0 && ch == '.')
+                    {
+                        rdr.Read();
+                        state = State.DotDot;
+                        break;
+                    }
+                    return Tok(CTokenType.Dot);
+                case State.DotDot:
+                    if (c >= 0 && ch == '.')
+                    {
+                        rdr.Read();
+                        return Tok(CTokenType.Ellipsis);
+                    }
+                    throw new FormatException("Token '..' is not valid C.");
+
                 case State.Eq:
                     if (c >= 0 && ch == '=')
                     {
@@ -619,10 +643,10 @@ namespace Decompiler.Tools.C2Xml
                 }
             }
             Nyi(state, default(char));
-            return new CToken(CTokenType.EOF);
+            return Tok(CTokenType.EOF);
         }
 
-        private static void Nyi(State state, char ch)
+        private void Nyi(State state, char ch)
         {
             throw new NotImplementedException(string.Format("State {0}, ch: {1}", state, ch));
         }
@@ -784,13 +808,14 @@ namespace Decompiler.Tools.C2Xml
         Decrement,
         Pipe,
 
-
-
         Auto,
+        Case,
         Char,
         Class,
         Const,
+        Default,
         Double,
+        Else,
         Enum,
         Extern,
         Float,
@@ -815,15 +840,14 @@ namespace Decompiler.Tools.C2Xml
         Xor,
         __Asm,
         __Cdecl,
+        __Declspec,
         __Fastcall,
         __Inline,
         __Int64,
+        __Pragma,
         __Ptr64,
         __Stdcall,
         __W64,
-        Case,
-        Default,
-        Else,
         Switch,
         While,
         Do,

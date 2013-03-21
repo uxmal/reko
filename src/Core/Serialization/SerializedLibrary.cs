@@ -72,12 +72,15 @@ namespace Decompiler.Core.Serialization
         {
             typeof(SerializedPrimitiveType),
             typeof(SerializedPointerType),
-            //typeof(SerializedArray),
+            typeof(SerializedArrayType),
             typeof(SerializedStructType),
-            //typeof(serializedUnionType),
+            typeof(SerializedStructField),
+            typeof(SerializedUnionType),
+            typeof(SerializedUnionAlternative),
             typeof(SerializedSignature),
             typeof(SerializedTypedef),
             typeof(SerializedLibrary),
+            typeof(SerializedArgument),
         };
     }
 }

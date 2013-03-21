@@ -18,37 +18,24 @@
  */
 #endregion
 
+using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Text;
 
-#if DEBUG
-namespace Decompiler.Tools.C2Xml.UnitTests
+namespace Decompiler.UnitTests.Core.Serialization
 {
     [TestFixture]
-    public class TypedefTests
+    public class DataTypeSerializerTests
     {
-        private CLexer lexer;
-        private ParserState parserState;
-
-        private void CreateLexer(string text)
-        {
-            parserState = new ParserState();
-
-            lexer = new CLexer(new StringReader(text));
-        }
-
         [Test]
-        public void ParseTypedef()
+        public void DTS_Primitive()
         {
-            CreateLexer("typedef int GOO;");
-            CParser parser = new CParser(parserState, lexer);
-            var decl = parser.Parse();
-            //Assert.AreEqual("int", td.TypeSpecifier.ToString());
-            //Assert.AreEqual("GOO", td.Declarators[0]);
+            var pt = PrimitiveType.Word32.Accept(new DataTypeSerializer());
+            Assert.AreEqual("word32", pt.ToString());
         }
     }
 }
-#endif

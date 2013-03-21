@@ -111,12 +111,12 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
                 Convention = "stdapi",
                 ReturnValue = new SerializedArgument {
-                    Type = "int", 
+                    Type = new SerializedTypeReference("int"), 
                     Kind = new SerializedRegister { Name = "eax" },
                 },
                 Arguments = new SerializedArgument[] {
                     new SerializedArgument {
-                        Type = "double", 
+                        Type = new SerializedTypeReference("double"), 
                         Kind = new SerializedFpuStackVariable {
                             ByteSize = 8
                         }
@@ -136,7 +136,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                 Convention = "stdapi",
                 ReturnValue = new SerializedArgument
                 {
-                    Type = "double",
+                    Type = new SerializedTypeReference("double"),
                     Kind = new SerializedFpuStackVariable { ByteSize = 8 },
                 }
             };

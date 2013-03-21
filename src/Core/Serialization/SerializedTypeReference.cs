@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2013 John Källén.
+ * Copyright (C) 1999-2013 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,49 +18,46 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
 using System;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	/// <summary>
-	/// Serialized representation of serialized primitive types.
-	/// </summary>
-	public class SerializedPrimitiveType : SerializedType
-	{
-		[XmlAttribute("domain")]
-		public Domain Domain;
+    /// <summary>
+    /// Refers to another type by name only. Requires an external symbol table to
+    /// resolve the type.
+    /// </summary>
+    public class SerializedTypeReference : SerializedType
+    {
+        [XmlText]
+        public string TypeName;
 
-		[XmlAttribute("size")]
-		public int ByteSize;
+        public SerializedTypeReference()
+        {
+        }
 
-		public SerializedPrimitiveType()
-		{
-		}
+        public SerializedTypeReference(string typeName)
+        {
+            this.TypeName = typeName;
+        }
 
-		public SerializedPrimitiveType(Domain domain, int byteSize)
-		{
-			this.Domain = domain;	
-			this.ByteSize = byteSize;
-		}
+        public override Types.DataType BuildDataType(Types.TypeFactory factory)
+        {
+            throw new NotImplementedException();
+        }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
-            return visitor.VisitPrimitive(this);
+            return visitor.VisitTypeReference(this);
         }
 
-        public override int GetSize() { return ByteSize; }
-
-		public override DataType BuildDataType(TypeFactory factory)
-		{
-			return factory.CreatePrimitiveType(Domain, ByteSize);
-		}
-
-		public override string ToString()
-		{
-			return string.Format("prim({0},{1})", Domain, ByteSize);
-		}
-	}
+        public override int GetSize()
+        {
+            //$BUGGITY: needs a ParserState.
+            return 4;
+        }
+    }
 }

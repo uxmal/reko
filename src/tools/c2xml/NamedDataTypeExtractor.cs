@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Types;
+using Decompiler.Core.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,35 +31,33 @@ namespace Decompiler.Tools.C2Xml
 {
     public class NamedDataTypeExtractor : 
         DeclaratorVisitor<NamedDataType>,
-        DeclSpecVisitor<DataType>
+        DeclSpecVisitor<SerializedType>
     {
         private IEnumerable<DeclSpec> specs;
-        private DataType dt;
+        private SerializedType dt;
         private Domain domain;
         private int byteSize;
-        private Hashtable typedefs;
+        private ParserState parserState;
+        private CTokenType callingConvention;
 
-        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, Hashtable typedefs)
+        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, ParserState parserState)
         {
             this.specs = specs;
-            this.typedefs = typedefs;
+            this.parserState = parserState;
+            this.callingConvention = CTokenType.None;
             foreach (var declspec in specs)
             {
                 dt = declspec.Accept(this);
             }
         }
 
-        public static NamedDataType GetNameAndType(IEnumerable<DeclSpec> declspecs, Declarator declarator, Hashtable typedefs)
+        public static NamedDataType GetNameAndType(IEnumerable<DeclSpec> declspecs, Declarator declarator, ParserState state)
         {
-            try
-            {
-                return declarator.Accept(new NamedDataTypeExtractor(declspecs, typedefs));
-            }
-            catch
-            {
-                Debug.Print("Horfed while processing {0}", declarator);
-                throw;
-            }
+            var ndte = new NamedDataTypeExtractor(declspecs, state);
+            if (declarator != null)
+                return declarator.Accept(ndte);
+            else
+                return new NamedDataType { DataType = ndte.dt };
         }
 
         public NamedDataType VisitId(IdDeclarator id)
@@ -69,27 +68,100 @@ namespace Decompiler.Tools.C2Xml
 
         public NamedDataType VisitArray(ArrayDeclarator array)
         {
-            throw new NotImplementedException();
+            var nt = array.Declarator.Accept(this);
+            return new NamedDataType
+            {
+                Name = nt.Name,
+                DataType = new SerializedArrayType
+                {
+                    ElementType = nt.DataType,
+                    //Length = array.Size         //$TODO: evaluate c const exprs(!)
+                }
+            };
         }
 
         public NamedDataType VisitField(FieldDeclarator field)
         {
-            throw new NotImplementedException();
+            if (field.Declarator == null)
+            {
+                return new NamedDataType
+                {
+                    DataType = dt,
+                    Name = null
+                };
+            }
+            else
+            {
+                return field.Declarator.Accept(this);
+            }
         }
 
         public NamedDataType VisitPointer(PointerDeclarator pointer)
         {
-            var nt = pointer.Pointee.Accept(this);
-            nt.DataType = new Pointer(nt.DataType, 4);      //$TODO: architecture-specific pointer size.
+            NamedDataType nt;
+            if (pointer.Pointee != null)
+            {
+                nt = pointer.Pointee.Accept(this);
+            }
+            else 
+            {
+                nt = new NamedDataType { DataType = dt };
+            }
+            nt.DataType = new SerializedPointerType
+            {
+                DataType = nt.DataType,
+                //$BUG: architecture-specific type to go here.
+            };
             return nt;
         }
 
         public NamedDataType VisitFunction(FunctionDeclarator function)
         {
-            throw new NotImplementedException();
+            var nt = function.Declarator.Accept(this);
+            var parameters =
+                function.Parameters.Select(p => ConvertParameter(p));
+            nt.DataType = new SerializedSignature
+            {
+                Convention = callingConvention != CTokenType.None
+                    ? callingConvention.ToString().ToLower()
+                    : null,
+                ReturnValue = new SerializedArgument
+                {
+                    Kind = new SerializedRegister { Name="eax" },       //$REVIEW platform-specific.
+                },
+                Arguments = parameters.ToArray(),
+            };
+            return nt;
         }
 
-        public DataType VisitSimpleType(SimpleTypeSpec simpleType)
+        private SerializedArgument ConvertParameter(ParamDecl decl)
+        {
+            if (decl.IsEllipsis)
+            {
+                return new SerializedArgument 
+                {
+                    Kind = new SerializedStackVariable {},
+                    Name = "...",
+                };
+            }
+            else
+            {
+                var nt = NamedDataTypeExtractor.GetNameAndType(decl.DeclSpecs, decl.Declarator, parserState);
+                return new SerializedArgument
+                {
+                    Kind = new SerializedStackVariable { ByteSize = 4, },     //$REVIEW: depends on type and call convention
+                    Name = nt.Name,
+                    Type = nt.DataType
+                };
+            }
+        }
+        public NamedDataType VisitCallConvention(CallConventionDeclarator conv)
+        {
+            return conv.Declarator.Accept(this);
+        }
+
+
+        public SerializedType VisitSimpleType(SimpleTypeSpec simpleType)
         {
             switch (simpleType.Type)
             {
@@ -97,7 +169,8 @@ namespace Decompiler.Tools.C2Xml
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'void' after '{0}'.", domain));
                 domain = Domain.Void;
-                return PrimitiveType.Void;
+                byteSize = 0;
+                return CreatePrimitive();
             case CTokenType.__W64:
                 return dt;      // Used by Microsoft compilers for 32->64 bit transition, deprecated.
             case CTokenType.Signed:
@@ -106,42 +179,42 @@ namespace Decompiler.Tools.C2Xml
                 domain = Domain.SignedInt;
                 byteSize = 4;                   // 'unsigned' == 'unsigned int'
                 //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             case CTokenType.Unsigned:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'unsigned' after '{0}'.", domain));
                 domain = Domain.UnsignedInt;
                 byteSize = 4;                   // 'unsigned' == 'unsigned int'
                 //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             case CTokenType.Char:
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 1;
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             case CTokenType.Wchar_t:
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 2;       //$TODO: this is different on Unix platforms.
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             case CTokenType.Short:
                 if (domain == Domain.None)
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 2;
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             case CTokenType.Int:
                 if (domain == Domain.None)
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 4;
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             //$TODO: bitsize is platform-dependent. For instance, an 'int' is 32-bits on Windows x86-64 but 16-bits on MS-DOS
             case CTokenType.Long:
                 if (domain == Domain.None)
@@ -149,7 +222,7 @@ namespace Decompiler.Tools.C2Xml
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 4;
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
             case CTokenType.__Int64:
                 if (domain == Domain.None)
@@ -157,92 +230,143 @@ namespace Decompiler.Tools.C2Xml
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
                 byteSize = 8;
-                return PrimitiveType.Create(domain, byteSize);
+                return CreatePrimitive();
             case CTokenType.Float:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
                 domain = Domain.Real;
-                byteSize = 8;
-                return PrimitiveType.Create(domain, byteSize);
+                byteSize = 4;
+                return CreatePrimitive();
+            case CTokenType.Double:
+                if (domain != Domain.None)  //$REVIEW: short double? long double? long long double?
+                    throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
+                domain = Domain.Real;
+                byteSize = 8;       //$REVIEW: arch-specific.
+                return CreatePrimitive();
             }
             throw new NotImplementedException(string.Format("{0}", simpleType.Type));
         }
 
-        public DataType VisitTypedef(TypeDefName typeDefName)
+        private SerializedPrimitiveType CreatePrimitive()
         {
-            return (DataType) typedefs[typeDefName.Name];
+            return new SerializedPrimitiveType
+            {
+                Domain = domain,
+                ByteSize = byteSize
+            };
         }
 
-        public DataType VisitComplexType(ComplexTypeSpec complexTypeSpec)
+        public SerializedType VisitTypedef(TypeDefName typeDefName)
+        {
+            return (SerializedType) parserState.Typedefs[typeDefName.Name];
+        }
+
+        public SerializedType VisitComplexType(ComplexTypeSpec complexTypeSpec)
         {
             if (complexTypeSpec.Type == CTokenType.Struct)
             {
-                var str = new StructureType
+                var str = new SerializedStructType
                 {
                     Name = complexTypeSpec.Name,
                 };
-                str.Fields.AddRange(ExpandStructFields(complexTypeSpec.DeclList));
+                if (!complexTypeSpec.IsForwardDeclaration())
+                {
+                    str.Fields.AddRange(ExpandStructFields(complexTypeSpec.DeclList));
+                }
                 return str;
             }
             else if (complexTypeSpec.Type == CTokenType.Union)
             {
-                var un = new UnionType
+                var un = new SerializedUnionType
                 {
                     Name = complexTypeSpec.Name,
                 };
-                un.Alternatives.AddRange(ExpandUnionFields(complexTypeSpec.DeclList));
+                if (!complexTypeSpec.IsForwardDeclaration())
+                {
+                    un.Alternatives.AddRange(ExpandUnionFields(complexTypeSpec.DeclList));
+                }
                 return un;
             }
             else
                 throw new NotImplementedException();
         }
 
-        private IEnumerable<StructureField> ExpandStructFields(IEnumerable<StructDecl> decls)
+        
+        private IEnumerable<SerializedStructField> ExpandStructFields(IEnumerable<StructDecl> decls)
         {
             int offset = 0;
             foreach (var decl in decls)
             {
                 foreach (var declarator in decl.FieldDeclarators)
                 {
-                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, typedefs);
+                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, parserState);
                     offset = Align(offset, nt.DataType, 8);
-                    yield return new StructureField(offset, nt.DataType, nt.Name);
+                    yield return new SerializedStructField
+                    {
+                        Offset = offset,
+                        Name = nt.Name,
+                        Type = nt.DataType,
+                    };
                 }
             }
         }
 
-        private IEnumerable<UnionAlternative> ExpandUnionFields(IEnumerable<StructDecl> decls)
+        private IEnumerable<SerializedUnionAlternative> ExpandUnionFields(IEnumerable<StructDecl> decls)
         {
             foreach (var decl in decls)
             {
                 foreach (var declarator in decl.FieldDeclarators)
                 {
-                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, typedefs);
-                    yield return new UnionAlternative(nt.Name, nt.DataType);
+                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, parserState);
+                    yield return new SerializedUnionAlternative
+                    {
+                        Name = nt.Name,
+                        Type = nt.DataType
+                    };
                 }
             }
         }
 
-        private int Align(int offset, DataType dt, int maxAlign)
+        private int Align(int offset, SerializedType dt, int maxAlign)
         {
-            var size = Math.Min(maxAlign, dt.Size);
+            var size = Math.Min(maxAlign, dt.GetSize());
+            if (size == 0)
+                size = maxAlign;
             return size * ((offset + (size - 1)) / size);
         }
 
-        public DataType VisitStorageClass(StorageClassSpec storageClassSpec)
+        public SerializedType VisitStorageClass(StorageClassSpec storageClassSpec)
         {
-            throw new NotImplementedException();
+            switch (storageClassSpec.Type)
+            {
+            case CTokenType.__Cdecl:
+            case CTokenType.__Fastcall:
+            case CTokenType.__Stdcall:
+                if (callingConvention != CTokenType.None)
+                    throw new FormatException(string.Format("Unexpected extra calling convetion specifier '{0}'.", callingConvention));
+                callingConvention = storageClassSpec.Type;
+                break;
+            }
+            return null;       //$TODO make use of CDECL.
         }
 
+        public SerializedType VisitExtendedDeclspec(ExtendedDeclspec declspec)
+        {
+            return null;
+        }
 
-        public DataType VisitTypeQualifier(TypeQualifier typeQualifier)
+        public SerializedType VisitTypeQualifier(TypeQualifier typeQualifier)
         {
             return dt;      //$TODO: Ignoring 'const' and 'volatile' for now.
         }
 
-        public DataType VisitEnum(EnumeratorTypeSpec enumeratorTypeSpec)
+        public SerializedType VisitEnum(EnumeratorTypeSpec enumeratorTypeSpec)
         {
-            throw new NotImplementedException();
+            //$BUGGITYBUG. Need a serialized enum. Gee whillikers.
+            return new SerializedTypeReference
+            {
+                TypeName = enumeratorTypeSpec.Tag
+            };
         }
     }
 }

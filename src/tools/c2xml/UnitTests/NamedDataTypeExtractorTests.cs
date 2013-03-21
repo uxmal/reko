@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -26,23 +27,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+#if DEBUG
 namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
     public class NamedDataTypeExtractorTests
     {
         private NamedDataType nt;
-        private Hashtable typedefs;
+        private ParserState parserState;
 
         [SetUp]
         public void Setup()
         {
-            typedefs = new Hashtable();
+            parserState = new ParserState();
         }
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)
         {
-            this.nt = NamedDataTypeExtractor.GetNameAndType(declSpecs, decl, typedefs);
+            this.nt = NamedDataTypeExtractor.GetNameAndType(declSpecs, decl, parserState);
         }
 
         private TypeSpec SType(CTokenType type)
@@ -68,9 +70,13 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                     Pointee = new IdDeclarator { Name="Sue" }
                 });
             Assert.AreEqual("Sue", nt.Name);
-            Assert.IsInstanceOf<Pointer>(nt.DataType);
-            var ptr = (Pointer) nt.DataType;
-            Assert.AreEqual(PrimitiveType.Char, ptr.Pointee);
+            Assert.IsInstanceOf<SerializedPointerType>(nt.DataType);
+            var ptr = (SerializedPointerType) nt.DataType;
+            Assert.IsInstanceOf<SerializedPrimitiveType>(ptr.DataType);
+            var p = (SerializedPrimitiveType) ptr.DataType;
+            Assert.AreEqual(Domain.Character, p.Domain);
+            Assert.AreEqual(1, p.ByteSize);
         }
     }
 }
+#endif

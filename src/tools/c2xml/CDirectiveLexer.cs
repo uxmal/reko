@@ -32,9 +32,11 @@ namespace Decompiler.Tools.C2Xml
     public class CDirectiveLexer
     {
         private CLexer lexer;
+        private ParserState state;
 
-        public CDirectiveLexer(CLexer lexer)
+        public CDirectiveLexer(ParserState state, CLexer lexer)
         {
+            this.state = state;
             this.lexer = lexer;
         }
 
@@ -55,7 +57,13 @@ namespace Decompiler.Tools.C2Xml
                 {
                     token = ReadPragma((string) lexer.Read().Value);
                 }
-                else 
+                else if (token.Type == CTokenType.__Pragma)
+                {
+                    Expect(CTokenType.LParen);
+                    token = ReadPragma((string) lexer.Read().Value);
+                    token = lexer.Read();
+                }
+                else
                 {
                     return token;
                 }
@@ -94,6 +102,41 @@ namespace Decompiler.Tools.C2Xml
             {
                 Expect(CTokenType.LParen);
                 Expect(CTokenType.Id);
+                Expect(CTokenType.RParen);
+                return lexer.Read();
+            }
+            else if (pragma == "pack")
+            {
+                Expect(CTokenType.LParen);
+                var verb = (string) Expect(CTokenType.Id);
+                if (verb == "push")
+                {
+                    Expect(CTokenType.Comma);
+                    int align = (int) Expect(CTokenType.NumericLiteral);
+                    this.state.PushAlignment(align);
+                }
+                else if (verb == "pop")
+                {
+                    this.state.PopAlignment();
+                }
+                else
+                    throw new FormatException();
+                Expect(CTokenType.RParen);
+                return lexer.Read();
+            }
+            else if (pragma == "deprecated")
+            {
+                Expect(CTokenType.LParen);
+                Expect(CTokenType.Id);
+                Expect(CTokenType.RParen);
+                return lexer.Read();
+            }
+            else if (pragma == "comment")
+            {
+                Expect(CTokenType.LParen);
+                Expect(CTokenType.Id);
+                Expect(CTokenType.Comma);
+                Expect(CTokenType.StringLiteral);
                 Expect(CTokenType.RParen);
                 return lexer.Read();
             }

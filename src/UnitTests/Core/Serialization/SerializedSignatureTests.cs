@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature ssig = new SerializedSignature();
 			
 			SerializedArgument sarg = new SerializedArgument();
-			sarg.Type = "int";
+			sarg.Type = new SerializedTypeReference("int");
 			sarg.Kind = new SerializedRegister("ax");
 			ssig.ReturnValue = sarg;
 
@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature ssig = new SerializedSignature();
 			
 			SerializedArgument sarg = new SerializedArgument();
-			sarg.Type = "int";
+			sarg.Type = new SerializedTypeReference("int");
 			sarg.Kind = new SerializedRegister("ax");
 			ssig.ReturnValue = sarg;
 

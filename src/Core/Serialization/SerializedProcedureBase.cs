@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    public class SerializedProcedureBase
+    public abstract class SerializedProcedureBase
     {
         /// <summary>
         /// The name of a procedure.

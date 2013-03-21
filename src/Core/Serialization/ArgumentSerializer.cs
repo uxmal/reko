@@ -106,7 +106,7 @@ namespace Decompiler.Core.Serialization
 			    Name = arg.Name,
 			    Kind = arg.Storage.Serialize(),
                 OutParameter = arg.Storage is OutArgumentStorage,
-                Type = arg.DataType.ToString(),
+                Type = arg.DataType.Accept(new DataTypeSerializer()),
             };
             return sarg;
         }

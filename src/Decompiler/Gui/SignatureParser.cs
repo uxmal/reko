@@ -200,11 +200,13 @@ namespace Decompiler.Gui
                 return ParseRegisterSequence(reg, type);
             }
 
-            var arg = new SerializedArgument();
-            arg.Name = reg.Name;
-            arg.Kind = new SerializedRegister(reg.Name);
-            arg.OutParameter = false;
-            arg.Type = type;
+            var arg = new SerializedArgument()
+            {
+                Name = reg.Name,
+                Kind = new SerializedRegister(reg.Name),
+                OutParameter = false,
+                Type = new SerializedTypeReference { TypeName = type },
+            };
             return arg;
         }
 
@@ -218,7 +220,7 @@ namespace Decompiler.Gui
             if (!arch.TryGetRegister(w2, out reg2))
                 return null;
             var seqArgName = reg.Name + "_" + reg2.Name;
-            var seqArgType = type;
+            var seqArgType = new SerializedTypeReference { TypeName = type };
             var seqKind = new SerializedSequence();
             seqKind.Registers = new SerializedRegister[]{ 
                     new SerializedRegister(reg.Name), 
@@ -248,7 +250,7 @@ namespace Decompiler.Gui
 
             SerializedArgument arg = new SerializedArgument();
             arg.Name= argName;
-            arg.Type = typeName;
+            arg.Type = new SerializedTypeReference { TypeName = typeName };
             arg.Kind = new SerializedStackVariable(sizeInWords * wordSize);
             return arg;
         }

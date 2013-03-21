@@ -44,10 +44,11 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SargWriteRegisterArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument();
-			sarg.Name = "foo";
-			sarg.Type = "int";
-			sarg.Kind = new SerializedRegister("eax");
+			SerializedArgument sarg = new SerializedArgument {
+			    Name = "foo",
+			    Type = new SerializedTypeReference("int"),
+			    Kind = new SerializedRegister("eax"),
+            };
 			Verify(sarg, "Core/SargWriteRegisterArgument.txt");
 		}
 
@@ -55,7 +56,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void SargWriteNamelessRegisterArgument()
 		{
 			SerializedArgument sarg = new SerializedArgument();
-			sarg.Type = "int";
+			sarg.Type = new SerializedTypeReference("int");
 			sarg.Kind = new SerializedRegister("eax");
 			Verify(sarg, "Core/SargWriteNamelessRegisterArgument.txt");
 		}
@@ -66,7 +67,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			SerializedArgument sarg = new SerializedArgument();
 			sarg.Name = "bar";
-			sarg.Type = "int";
+			sarg.Type = new SerializedTypeReference("int");
 			sarg.Kind = new SerializedStackVariable(4);
 			Verify(sarg, "Core/SargWriteStackArgument.txt");
 		}
@@ -76,7 +77,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			SerializedArgument sarg = new SerializedArgument();
 			sarg.Name = "bxOut";
-			sarg.Type = "int";
+			sarg.Type = new SerializedTypeReference("int");
 			sarg.OutParameter = true;
 			sarg.Kind = new SerializedRegister("bx");
 			Verify(sarg, "Core/SargWriteOutArgument.txt");

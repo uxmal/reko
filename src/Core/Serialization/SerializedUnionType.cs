@@ -44,6 +44,17 @@ namespace Decompiler.Core.Serialization
 		[XmlElement("field", typeof (SerializedUnionAlternative))]
         public List<SerializedUnionAlternative> Alternatives { get; private set; }
 
+
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitUnion(this);
+        }
+
+        public override int GetSize()
+        {
+            return ByteSize;
+        }
+
 		public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
 		{
 			UnionType u = factory.CreateUnionType(Name, null);

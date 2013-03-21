@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
+#if DEBUG
 namespace Decompiler.Tools.C2Xml.UnitTests
 {
     [TestFixture]
@@ -49,7 +50,8 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 writer.Flush();
                 Assert.AreEqual(expectedXml, writer.ToString());
             }
-            catch {
+            catch
+            {
                 Debug.WriteLine(writer.ToString());
                 throw;
             }
@@ -76,5 +78,107 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 </library>";
             RunTest("typedef int INT;", sExp);
         }
+
+        [Test]
+        public void C2X_Struct()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""tagPoint"">
+      <field offset=""0"" name=""x"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+      <field offset=""4"" name=""y"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest("struct tagPoint { int x; int y; };", sExp);
+        }
+
+        [Test]
+        public void C2X_Selfref()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""link"">
+      <field offset=""0"" name=""next"">
+        <ptr>
+          <struct name=""link"" />
+        </ptr>
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest("struct link { struct link *next; }; ", sExp);
+        }
+
+        [Test]
+        public void C2X_FunctionDecl()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""strlen"">
+    <signature convention=""__cdecl"">
+      <return>
+        <reg>eax</reg>
+      </return>
+      <arg>
+        <ptr>
+          <prim domain=""Character"" size=""1"" />
+        </ptr>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest("size_t __cdecl strlen(const char *);", sExp);
+        }
+
+        [Test]
+        public void C2X_ForwardDeclaration()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""foo"" />
+    <typedef name=""FOO"">
+      <struct name=""foo"" />
+    </typedef>
+  </Types>
+</library>";
+            RunTest("typedef struct foo FOO;", sExp);
+        }
+
+        [Test]
+        public void C2X_TypeReference()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""foo"">
+      <field offset=""0"" name=""x"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+    <typedef name=""FOO"">
+      <struct name=""foo"" />
+    </typedef>
+</library>";
+            RunTest(
+                "typedef struct foo { int x; } FOO;" +
+                "int bar(FOO * pfoo);",
+                sExp);
+        }
     }
 }
+#endif

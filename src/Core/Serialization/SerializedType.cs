@@ -39,6 +39,8 @@ namespace Decompiler.Core.Serialization
         }
 
         public abstract DataType BuildDataType(TypeFactory factory);
+        public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
+        public abstract int GetSize();
 
         public static XmlAttributeOverrides GetAttributeOverrides(IEnumerable<Type> typesToDecorate)
         {
@@ -78,13 +80,14 @@ namespace Decompiler.Core.Serialization
             {
                 XmlElements = 
                 {
-                    new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)),
-                    new XmlElementAttribute("ptr", typeof(SerializedPointerType)),
-                    //new XmlElementAttribute("arr", typeof(SerializedArrayType)),
-                    new XmlElementAttribute("struct", typeof(SerializedStructType)),
-                    //new XmlElementAttribute("union", typeof(SerializedUnionType)),
-                    new XmlElementAttribute("fn", typeof(SerializedSignature)),
-                    new XmlElementAttribute("typedef", typeof(SerializedTypedef))
+                    new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("ptr", typeof(SerializedPointerType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("union", typeof(SerializedUnionType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("typedef", typeof(SerializedTypedef)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("type", typeof(SerializedTypeReference)) { Namespace = SerializedLibrary.Namespace },
                 }
             };
             return sertypeAttributes;
@@ -96,17 +99,19 @@ namespace Decompiler.Core.Serialization
             {
                 XmlArrayItems = 
                 {
-                    new XmlArrayItemAttribute("prim", typeof(SerializedPrimitiveType)),
-                    new XmlArrayItemAttribute("ptr", typeof(SerializedPointerType)),
-                    //new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)),
-                    new XmlArrayItemAttribute("struct", typeof(SerializedStructType)),
-                    //new XmlArrayItemAttribute("union", typeof(SerializedUnionType)),
-                    new XmlArrayItemAttribute("fn", typeof(SerializedSignature)),
-                    new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef))
+                    new XmlArrayItemAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("ptr", typeof(SerializedPointerType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("union", typeof(SerializedUnionType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("type", typeof(SerializedTypeReference)) { Namespace = SerializedLibrary.Namespace },
                 }
             };
             return sertypeAttributes;
         }
+        
     }
 
     public static class CollectionExtension
