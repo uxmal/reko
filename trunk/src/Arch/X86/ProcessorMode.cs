@@ -24,6 +24,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Arch.X86
 {
@@ -87,6 +88,8 @@ namespace Decompiler.Arch.X86
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
 
+        public abstract IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses);
+
         public abstract Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state);
 
         protected Address ReadSegmentedCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
@@ -111,10 +114,37 @@ namespace Decompiler.Arch.X86
         {
         }
 
+        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            while (rdr.IsValid)
+            {
+                uint linAddrCall = rdr.Address.Linear;
+                var opcode = rdr.ReadByte();
+                if (opcode == 0xE8 && rdr.IsValidOffset(rdr.Offset + 2u))         // CALL NEAR
+                {
+                    int callOffset = rdr.ReadLeInt16();
+                    uint target = (uint) (callOffset + rdr.Address.Linear);
+                    rdr.Seek(-2);
+                    if (knownLinAddresses.Contains(target))
+                        yield return linAddrCall;
+                }
+                else if (opcode == 0x9A && rdr.IsValidOffset(rdr.Offset + 4u))     // CALL FAR
+                {
+                    uint off = rdr.ReadLeUInt16();
+                    uint seg = rdr.ReadLeUInt16();
+                    rdr.Seek(-4);
+                    if (knownLinAddresses.Contains((seg << 4) + off))
+                        yield return linAddrCall;
+                }
+            }
+        }
+
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
+
+
     }
 
     internal class SegmentedMode : ProcessorMode
@@ -122,6 +152,11 @@ namespace Decompiler.Arch.X86
         public SegmentedMode()
             : base(PrimitiveType.Word16, PrimitiveType.Ptr16, PrimitiveType.Pointer32)
         {
+        }
+
+        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            throw new NotImplementedException();
         }
 
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
@@ -145,6 +180,23 @@ namespace Decompiler.Arch.X86
         public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return new Address(offset);
+        }
+
+        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            while (rdr.IsValid)
+            {
+                uint linAddrCall = rdr.Address.Linear;
+                var opcode = rdr.ReadByte();
+                if (opcode == 0xE8 && rdr.IsValidOffset(rdr.Offset + 4u))         // CALL NEAR
+                {
+                    int callOffset = rdr.ReadLeInt32();
+                    uint target = (uint) (callOffset + rdr.Address.Linear);
+                    rdr.Seek(-4);
+                    if (knownLinAddresses.Contains(target))
+                        yield return linAddrCall;
+                }
+            }
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -179,6 +231,11 @@ namespace Decompiler.Arch.X86
         public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return new Address(offset);
+        }
+
+        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            throw new NotImplementedException();
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)

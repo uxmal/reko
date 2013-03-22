@@ -97,6 +97,11 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            throw new NotImplementedException();
+        }
+
         public Frame CreateFrame()
         {
             return new Frame(FramePointerType); 

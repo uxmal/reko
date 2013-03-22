@@ -90,6 +90,11 @@ namespace Decompiler.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+            {
+                throw new NotImplementedException();
+            }
+
             public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
             {
                 throw new NotImplementedException();

@@ -55,6 +55,11 @@ namespace Decompiler.Arch.Sparc
             throw new NotImplementedException();
         }
 
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            throw new NotImplementedException();
+        }
+
         public Frame CreateFrame()
         {
             throw new NotImplementedException();

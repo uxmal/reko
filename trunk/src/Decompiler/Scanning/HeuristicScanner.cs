@@ -39,99 +39,24 @@ namespace Decompiler.Scanning
 			this.prog = prog;
 		}
 
-        public IEnumerable<Address> FindCallOpcodesBackwards(Address address)
+        /// <summary>
+        /// Determines the locations of all instructions that perform a 
+        /// CALL / JSR / BL to a _known_ procedure address.
+        /// </summary>
+        /// <param name="knownProcedureAddresses">A sequence of addresses
+        /// that are known to be procedures.</param>
+        /// <returns>A sequence of linear addresses where those call 
+        /// instructions are.</returns>
+        public IEnumerable<uint> FindCallOpcodes(IEnumerable<Address> knownProcedureAddresses)
         {
-            int procOffset = address - prog.Image.BaseAddress;
-            int offset = procOffset
-                    - (4) // Address length 
-                        - 1;  // opcode 
-            while (offset >= 0)
-            {
-                if (prog.Image.Bytes[offset] == 0xE8)       // CALL NEAR
-                {
-                    int callOffset = prog.Image.ReadLeInt32((uint) offset + 1);
-                    int targetOffset = offset + callOffset + 1 + 4;
-                    if (targetOffset == procOffset)
-                        yield return prog.Image.BaseAddress + offset;
-                }
-                --offset;
-            }
-        }
-
-        public IEnumerable<uint> FindCallOpcodeLinearAddresses_32(IEnumerable<Address> procedureEntryAddresses)
-        {
-            var procEntryLinearAddresses = procedureEntryAddresses
+            var procEntryLinearAddresses = knownProcedureAddresses
                 .Select(addr => addr.Linear)
                 .Aggregate(
                     new HashSet<uint>(),
                     (set, linear) => { set.Add(linear); return set; });
-            var rdr = prog.Image.CreateReader(0);
-            uint linBase = prog.Image.BaseAddress.Linear;
-            while (rdr.IsValid)
-            {
-                uint callingOffset = rdr.Offset;
-                var opcode = rdr.ReadByte();
-                if (opcode == 0xE8 && rdr.IsValidOffset(rdr.Offset + 4u))         // CALL NEAR
-                {
-                    int callOffset = prog.Image.ReadLeInt32(rdr.Offset);
-                    uint target = (uint)(linBase + callOffset + rdr.Offset + 4);
-                    if (procEntryLinearAddresses.Contains(target))
-                        yield return callingOffset + linBase;
-                }
-            }
-        }
-
-        public IEnumerable<uint> FindCallOpcodeLinearAddresses_16(IEnumerable<Address> procedureEntryAddresses)
-        {
-            var procEntryLinearAddresses = procedureEntryAddresses
-                .Select(addr => addr.Linear)
-                .Aggregate(
-                    new HashSet<uint>(),
-                    (set, linear) => { set.Add(linear); return set; });
-            var rdr = prog.Image.CreateReader(0);
-            uint linBase = prog.Image.BaseAddress.Linear;
-            while (rdr.IsValid)
-            {
-                uint callingOffset = rdr.Offset;
-                var opcode = rdr.ReadByte();
-                if (opcode == 0xE8 && rdr.IsValidOffset(rdr.Offset + 2u))         // CALL NEAR
-                {
-                    int callOffset = prog.Image.ReadLeInt16(rdr.Offset);
-                    uint target = (uint) (linBase + callOffset + rdr.Offset + 2);
-                    if (procEntryLinearAddresses.Contains(target))
-                        yield return callingOffset + linBase;
-                }
-                else if (opcode == 0x9A && rdr.IsValidOffset(rdr.Offset + 4u))     // CALL FAR
-                {
-                    uint off = prog.Image.ReadLeUInt16(rdr.Offset);
-                    uint seg = prog.Image.ReadLeUInt16(rdr.Offset + 2);
-                    if (procEntryLinearAddresses.Contains((seg << 4) + off))
-                        yield return callingOffset + linBase;
-                }
-            }
-        }
-
-        public IEnumerable<uint> FindCallOpcodeLinearAddresses_Arm32(IEnumerable<Address> procedureEntryAddresses)
-        {
-            var procEntryLinearAddresses = procedureEntryAddresses
-                            .Select(addr => addr.Linear)
-                            .Aggregate(
-                                new HashSet<uint>(),
-                                (set, linear) => { set.Add(linear); return set; });
-            var rdr = prog.Image.CreateReader(0);
-            uint linBase = prog.Image.BaseAddress.Linear;
-            while (rdr.IsValid)
-            {
-                uint callOffset = rdr.Offset;
-                var opcode = rdr.ReadLeUInt32();
-                if ((opcode & 0x0F000000) == 0x0B000000)         // BL
-                {
-                    int offset = ((int)opcode << 8) >> 6;
-                    uint target = (uint)(linBase + callOffset + 8 + offset);
-                    if (procEntryLinearAddresses.Contains(target))
-                        yield return callOffset + linBase;
-                }
-            }
+            return prog.Architecture.CreateCallInstructionScanner(
+                prog.Image.CreateReader(0),
+                procEntryLinearAddresses);
         }
     }
 }

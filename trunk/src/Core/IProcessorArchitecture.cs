@@ -47,6 +47,8 @@ namespace Decompiler.Core
         /// </summary>
         IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
 
+        IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses);
+
         Frame CreateFrame();
 
 		RegisterStorage GetRegister(int i);			// Returns register corresponding to number i.
@@ -74,5 +76,6 @@ namespace Decompiler.Core
 
         RegisterStorage StackRegister { get; }              // Stack pointer for this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
+
     }
 }

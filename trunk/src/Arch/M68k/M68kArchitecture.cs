@@ -48,6 +48,11 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            throw new NotImplementedException();
+        }
+
         public Frame CreateFrame()
         {
             return new Frame(FramePointerType);

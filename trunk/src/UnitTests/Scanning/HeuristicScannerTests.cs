@@ -19,6 +19,8 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Arch.Arm;
+using Decompiler.Arch.X86;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
@@ -31,8 +33,20 @@ namespace Decompiler.UnitTests.Scanning
     [TestFixture]
     public class HeuristicScannerTests
     {
+        private ProgramImage CreateImage(Address addr, params uint[] opcodes)
+        {
+            byte[] bytes = new byte[0x20];
+            var writer = new LeImageWriter(bytes);
+            uint offset = 0;
+            for (int i = 0; i < opcodes.Length; ++i, offset += 4)
+            {
+                writer.WriteLeUInt32(offset, opcodes[i]);
+            }
+            return new ProgramImage(addr, bytes);
+        }
+
         [Test]
-        public void HSC_x86_FindCallOpcodeBackwards()
+        public void HSC_x86_FindCallOpcode()
         {
             var image = new ProgramImage(new Address(0x001000), new byte[] {
                 0xE8, 0x03, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
@@ -40,14 +54,17 @@ namespace Decompiler.UnitTests.Scanning
             });
             var prog = new Program
             {
-                Image = image
+                Image = image,
+                Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat),
             };
             var hsc = new HeuristicScanner(prog);
 
-            var addr = hsc.FindCallOpcodesBackwards(new Address(0x1008)).ToList();
+            var addr = hsc.FindCallOpcodes(new Address[] {
+                new Address(0x1008)
+            }).ToList();
 
             Assert.AreEqual(1, addr.Count);
-            Assert.AreEqual(0x001000, addr[0].Linear);
+            Assert.AreEqual(0x001000, addr[0]);
         }
 
         [Test]
@@ -60,11 +77,12 @@ namespace Decompiler.UnitTests.Scanning
             });
             var prog = new Program
             {
-                Image = image
+                Image = image,
+                Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat),
             };
             var hsc = new HeuristicScanner(prog);
 
-            var linAddrs = hsc.FindCallOpcodeLinearAddresses_32(new Address[]{
+            var linAddrs = hsc.FindCallOpcodes(new Address[]{
                 new Address(0x1010),
                 new Address(0x1011)}).ToList();
 
@@ -81,11 +99,12 @@ namespace Decompiler.UnitTests.Scanning
             });
             var prog = new Program
             {
-                Image = image
+                Image = image,
+                Architecture = new IntelArchitecture(ProcessorMode.Real),
             };
             var hsc = new HeuristicScanner(prog);
 
-            var linAddrs = hsc.FindCallOpcodeLinearAddresses_16(new Address[] {
+            var linAddrs = hsc.FindCallOpcodes(new Address[] {
                 new Address(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
@@ -100,27 +119,16 @@ namespace Decompiler.UnitTests.Scanning
             });
             var prog = new Program
             {
-                Image = image
+                Image = image,
+                Architecture = new IntelArchitecture(ProcessorMode.Real),
             };
             var hsc = new HeuristicScanner(prog);
 
-            var linAddrs = hsc.FindCallOpcodeLinearAddresses_16(new Address[] {
+            var linAddrs = hsc.FindCallOpcodes(new Address[] {
                 new Address(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
             Assert.AreEqual(0xC002, linAddrs[0]);
-        }
-
-        private ProgramImage CreateImage(Address addr, params uint[] opcodes)
-        {
-            byte[] bytes = new byte[0x20];
-            var writer = new LeImageWriter(bytes);
-            uint offset = 0;
-            for (int i = 0; i < opcodes.Length; ++i, offset += 4)
-            {
-                writer.WriteLeUInt32(offset, opcodes[i]);
-            }
-            return new ProgramImage(addr, bytes);
         }
 
         [Test]
@@ -132,10 +140,11 @@ namespace Decompiler.UnitTests.Scanning
                 0xEBFFFFFC);
             var prog = new Program
             {
-                Image = image
+                Image = image,
+                Architecture = new ArmProcessorArchitecture(),
             };
             var hsc = new HeuristicScanner(prog);
-            var linAddrs = hsc.FindCallOpcodeLinearAddresses_Arm32(new Address[] {
+            var linAddrs = hsc.FindCallOpcodes(new Address[] {
                 new Address(0x1000),
             }).ToList();
 
