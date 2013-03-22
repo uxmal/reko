@@ -113,6 +113,11 @@ namespace Decompiler.Arch.X86
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
+        public virtual IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            return mode.CreateCallInstructionScanner(rdr, knownLinAddresses);
+        }
+
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return mode.CreateStackAccess(frame, offset, dataType);

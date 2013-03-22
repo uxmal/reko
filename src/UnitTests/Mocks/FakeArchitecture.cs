@@ -89,6 +89,11 @@ namespace Decompiler.UnitTests.Mocks
             return trace;
         }
 
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddrs)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             throw new NotImplementedException();

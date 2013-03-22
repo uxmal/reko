@@ -58,6 +58,22 @@ namespace Decompiler.Arch.Arm
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame);
         }
 
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        {
+            while (rdr.IsValid)
+            {
+                uint linAddrCall = rdr.Address.Linear;
+                var opcode = rdr.ReadLeUInt32();
+                if ((opcode & 0x0F000000) == 0x0B000000)         // BL
+                {
+                    int offset = ((int) opcode << 8) >> 6;
+                    uint target = (uint) (linAddrCall + 8 + offset);
+                    if (knownLinAddresses.Contains(target))
+                        yield return linAddrCall;
+                }
+            }
+        }
+
         public Frame CreateFrame()
         {
             throw new NotImplementedException();
