@@ -102,8 +102,9 @@ l0C00_000F:
 	branch ax_18 == 0x0000 l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	wLoc06_21 = ax_14
-	ax_34 = fn0C00_000F(wLoc06)
+	sp_32 = fp - 0x0004
+        wLoc06_33 = ax_14
+	ax_34 = fn0C00_000F(wLoc06_33)
 	dx_39 = wArg02
 	dx_ax_40 = dx_39 *s ax_34
 	ax_41 = (word16) dx_ax_40 (alias)

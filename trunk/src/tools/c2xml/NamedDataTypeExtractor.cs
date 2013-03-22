@@ -258,22 +258,34 @@ namespace Decompiler.Tools.C2Xml
 
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
-            return (SerializedType) parserState.Typedefs[typeDefName.Name];
+            return new SerializedTypeReference(typeDefName.Name);
         }
 
         public SerializedType VisitComplexType(ComplexTypeSpec complexTypeSpec)
         {
             if (complexTypeSpec.Type == CTokenType.Struct)
             {
-                var str = new SerializedStructType
+                SerializedStructType str;
+                if (complexTypeSpec.Name == null ||
+                    !parserState.StructsSeen.TryGetValue(complexTypeSpec.Name, out str))
                 {
-                    Name = complexTypeSpec.Name,
-                };
+                    str = new SerializedStructType
+                    {
+                        Name = complexTypeSpec.Name,
+                    };
+                    if (str.Name != null)
+                    {
+                        parserState.StructsSeen.Add(str.Name, str);
+                    }
+                }
                 if (!complexTypeSpec.IsForwardDeclaration())
                 {
                     str.Fields.AddRange(ExpandStructFields(complexTypeSpec.DeclList));
                 }
-                return str;
+                return str = new SerializedStructType
+                {
+                    Name = str.Name,
+                };
             }
             else if (complexTypeSpec.Type == CTokenType.Union)
             {
@@ -283,7 +295,7 @@ namespace Decompiler.Tools.C2Xml
                 };
                 if (!complexTypeSpec.IsForwardDeclaration())
                 {
-                    un.Alternatives.AddRange(ExpandUnionFields(complexTypeSpec.DeclList));
+                    un.Alternatives = ExpandUnionFields(complexTypeSpec.DeclList).ToArray();
                 }
                 return un;
             }

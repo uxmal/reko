@@ -33,6 +33,7 @@ namespace Decompiler.Tools.C2Xml
         public ParserState()
         {
             Typedefs = new Dictionary<string, SerializedType>();
+            StructsSeen = new Dictionary<string, SerializedStructType>();
             alignments = new Stack<int>();
             alignments.Push(8);
             Typedefs.Add("size_t", new SerializedPrimitiveType {
@@ -47,6 +48,8 @@ namespace Decompiler.Tools.C2Xml
         }
 
         public Dictionary<string, SerializedType> Typedefs { get; private set; }
+        public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
+
         public int Alignment { get { return alignments.Peek(); } }
 
         public void PushAlignment(int align)
@@ -57,6 +60,90 @@ namespace Decompiler.Tools.C2Xml
         public void PopAlignment()
         {
             alignments.Pop();
+        }
+
+        private class STComparer : IEqualityComparer<SerializedType>, 
+            ISerializedTypeVisitor<bool>
+        {
+            private SerializedType y;
+
+            public bool Equals(SerializedType x, SerializedType y)
+            {
+                if (x.GetType() != y.GetType())
+                    return false;
+                this.y = y;
+                return x.Accept(this);
+            }
+
+            public int GetHashCode(SerializedType obj)
+            {
+                int hash = obj.GetHashCode() * 11;
+                var prim = obj as SerializedPrimitiveType;
+                if (prim != null)
+                    return hash  ^ ((int) prim.Domain << 8) ^ prim.ByteSize;
+                var ptr = obj as SerializedPointerType;
+                if (ptr != null)
+                    return hash  ^ GetHashCode(ptr.DataType);
+                var arr = obj as SerializedArrayType;
+                if (arr != null)
+                    return hash  ^ GetHashCode(arr.ElementType);
+                var str = obj as SerializedStructType;
+                if (str != null)
+                    return hash  ^ str.Name.GetHashCode();
+                var uni = obj as SerializedUnionType;
+                if (uni != null)
+                    return hash ^ uni.Name.GetHashCode();
+
+                throw new NotImplementedException();
+            }
+
+            public bool VisitPrimitive(SerializedPrimitiveType pX)
+            {
+                var pY = (SerializedPrimitiveType) y;
+                return pX.Domain == pY.Domain && pX.ByteSize == pY.ByteSize;
+            }
+
+            public bool VisitPointer(SerializedPointerType pX)
+            {
+                y = ((SerializedPointerType) y).DataType;
+                return pX.DataType.Accept(this);
+            }
+
+            public bool VisitArray(SerializedArrayType aX)
+            {
+                var aY = ((SerializedArrayType) y);
+                if (aX.Length != aY.Length)
+                    return false;
+                y = aY.ElementType;
+                return aX.ElementType.Accept(this);
+            }
+
+            public bool VisitSignature(SerializedSignature signature)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool VisitStructure(SerializedStructType sX)
+            {
+                var sY = (SerializedStructType) y;
+                return sX.Name == sY.Name && sX.Name != null;
+            }
+
+            public bool VisitTypedef(SerializedTypedef typedef)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool VisitTypeReference(SerializedTypeReference typeReference)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool VisitUnion(SerializedUnionType uX)
+            {
+                var uY = (SerializedUnionType) y;
+                return uX.Name == uY.Name && uX.Name != null;
+            }
         }
     }
 }
