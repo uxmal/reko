@@ -29,17 +29,6 @@ namespace Decompiler.Tools.C2Xml
         public abstract T Accept<T>(CSyntaxVisitor<T> visitor);
     }
 
-    public class CType : CSyntax
-    {
-        public Declarator Declarator;
-        public List<DeclSpec> DeclSpecList;
-
-        public override T Accept<T>(CSyntaxVisitor<T> visitor)
-        {
-            return visitor.VisitType(this);
-        }
-    }
-
     public class Decl : CSyntax
     {
         public List<DeclSpec> decl_specs;
@@ -191,6 +180,17 @@ namespace Decompiler.Tools.C2Xml
         public override string ToString() { return Name; }
     }
 
+    public class CType : CSyntax
+    {
+        public Declarator Declarator;
+        public List<DeclSpec> DeclSpecList;
+
+        public override T Accept<T>(CSyntaxVisitor<T> visitor)
+        {
+            return visitor.VisitType(this);
+        }
+    }
+
     public class ComplexTypeSpec : TypeSpec
     {
         public CTokenType Type;
@@ -292,7 +292,6 @@ namespace Decompiler.Tools.C2Xml
             return sb.ToString();
         }
     }
-
 
     public abstract class Declarator
     {

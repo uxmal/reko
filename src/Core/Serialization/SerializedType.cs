@@ -113,13 +113,4 @@ namespace Decompiler.Core.Serialization
         }
         
     }
-
-    public static class CollectionExtension
-    {
-        public static void AddRange(this IList list, IEnumerable items)
-        {
-            foreach (var item in items)
-                list.Add(item);
-        }
-    }
 }

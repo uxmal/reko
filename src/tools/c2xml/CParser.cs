@@ -121,23 +121,35 @@ namespace Decompiler.Tools.C2Xml
             return ParserState.Typedefs.ContainsKey(id);
         }
 
+        /// <summary>
+        /// Return true if the next token is a type name
+        /// </summary>
+        /// <returns></returns>
         bool IsType0()
-        { // return true if the next token is a type name
+        {
             var token = lexer.Peek(0);
             if (startOfTypeName[(int) token.Type])
                 return true;
             return IsTypeName(lexer.Peek(0));
         }
 
+        
+        /// <summary>
+        /// return true if "(" TypeName
+        /// </summary>
+        /// <returns></returns>
         bool IsType1()
-        { // return true if "(" TypeName
+        {
             if (lexer.Peek(0).Type != CTokenType.LParen) return false;
             CToken x = lexer.Peek(1);
             if (startOfTypeName[(int)x.Type]) return true;
             return IsTypeName(x);
         }
 
-        // return true if not "," "}"
+        /// <summary>
+        /// return true if not "," "}"
+        /// </summary>
+        /// <returns></returns>
         bool IsContinued()
         {
             if (lexer.Peek(0).Type == CTokenType.Comma)
@@ -148,7 +160,10 @@ namespace Decompiler.Tools.C2Xml
             return true;
         }
 
-        // return true if ",", which is not followed by "..."
+        /// <summary>
+        /// Returns true if ",", which is not followed by "..."
+        /// </summary>
+        /// <returns></returns>
         bool IsContinued1()
         { 
             if (lexer.Peek(0).Type == CTokenType.Comma)
@@ -160,7 +175,10 @@ namespace Decompiler.Tools.C2Xml
             return false;
         }
 
-        // return true if ident ":" | "case" | "default"
+        /// <summary>
+        /// Return true if ident ":" | "case" | "default"
+        /// </summary>
+        /// <returns></returns>
         bool IsLabel()
         {
             var type = lexer.Peek(0).Type;
@@ -178,7 +196,10 @@ namespace Decompiler.Tools.C2Xml
             return false;
         }
 
-        // return true if followed by Decl
+        /// <summary>
+        /// Return true if followed by Decl
+        /// </summary>
+        /// <returns></returns>
         bool IsDecl()
         {
             if (startOfDecl[(int)lexer.Peek(0).Type])
@@ -186,7 +207,10 @@ namespace Decompiler.Tools.C2Xml
             return IsTypeName(lexer.Peek(0));
         }
 
-        // return true if there is no non-type-ident after '*', '(', "const", "volatile"
+        /// <summary>
+        /// Return true if there is no non-type-ident after '*', '(', "const", "volatile"
+        /// </summary>
+        /// <returns></returns>
         bool IsAbstractDecl()
         {
             int i = 0;
@@ -305,7 +329,7 @@ IGNORE tab + cr + lf
 
         //---------- Compilation Unit ----------
 
-        //C = 
+        //CompilationUnit = 
         //    ExternalDecl {ExternalDecl}.
 
         public List<Decl> Parse()
@@ -894,7 +918,6 @@ IGNORE tab + cr + lf
                 Declarator = decl,
             };
         }
-
 
         //AbstractDeclarator =
         //    Pointer [DirectAbstractDeclarator]

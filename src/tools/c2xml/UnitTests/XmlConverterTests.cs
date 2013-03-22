@@ -173,6 +173,20 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <typedef name=""FOO"">
       <struct name=""foo"" />
     </typedef>
+  </Types>
+  <procedure name=""bar"">
+    <signature>
+      <return>
+        <reg>eax</reg>
+      </return>
+      <arg name=""pfoo"">
+        <ptr>
+          <type>FOO</type>
+        </ptr>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
 </library>";
             RunTest(
                 "typedef struct foo { int x; } FOO;" +
