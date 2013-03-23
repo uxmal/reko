@@ -115,6 +115,10 @@ namespace Decompiler.Arch.X86
         public override void OnProcedureEntered()
         {
             FpuStackItems = 0;
+            // We're making an assumption that the direction flag is always clear
+            // when a procedure is entered. This is true of the vast majority of
+            // x86 code out there, and the assumption is certainly made by most
+            // compilers and code libraries.
             SetFlagGroup(arch.GetFlagGroup((uint) FlagM.DF), Constant.False());
         }
 

@@ -32,23 +32,18 @@ namespace Decompiler.Tools.C2Xml
         
         public ParserState()
         {
-            Typedefs = new Dictionary<string, SerializedType>();
+            Typedefs = new HashSet<string>();
             StructsSeen = new Dictionary<string, SerializedStructType>();
+            UnionsSeen = new Dictionary<string, SerializedUnionType>();
             alignments = new Stack<int>();
             alignments.Push(8);
-            Typedefs.Add("size_t", new SerializedPrimitiveType {
-                Domain = Core.Types.Domain.UnsignedInt,
-                ByteSize = 4,       //$BUGBUG: architecture-specific
-            });
-            Typedefs.Add("va_list", new SerializedPrimitiveType
-            {
-                Domain = Core.Types.Domain.Pointer,
-                ByteSize = 4,       //$BUGBUG: architecture-specific
-            });
+            Typedefs.Add("size_t");
+            Typedefs.Add("va_list");
         }
 
-        public Dictionary<string, SerializedType> Typedefs { get; private set; }
+        public HashSet<string> Typedefs { get; private set; }
         public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
+        public Dictionary<string, SerializedUnionType> UnionsSeen { get; private set; }
 
         public int Alignment { get { return alignments.Peek(); } }
 

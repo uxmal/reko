@@ -113,12 +113,12 @@ namespace Decompiler.Tools.C2Xml
         {
             if (x.Type != CTokenType.Id)
                 return false;
-            return ParserState.Typedefs.ContainsKey((string)x.Value);
+            return ParserState.Typedefs.Contains((string)x.Value);
         }
 
         public bool IsTypeName(string id)
         {
-            return ParserState.Typedefs.ContainsKey(id);
+            return ParserState.Typedefs.Contains(id);
         }
 
         /// <summary>
@@ -424,8 +424,8 @@ IGNORE tab + cr + lf
             {
                 if (declarator.Init != null)
                     throw new FormatException("typedefs can't be initialized.");
-                var nameType = NamedDataTypeExtractor.GetNameAndType(declspecs.Skip(1), declarator.Declarator, ParserState);
-                ParserState.Typedefs[nameType.Name] = nameType.DataType;
+                var name = NameExtractor.GetName(declspecs.Skip(1), declarator.Declarator, ParserState);
+                ParserState.Typedefs.Add(name);
             }
         }
 

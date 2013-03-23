@@ -193,6 +193,35 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "int bar(FOO * pfoo);",
                 sExp);
         }
+
+        [Test]
+        public void C2x_Variant()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""tagVariant"">
+      <field offset=""0"" name=""type"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+      <field offset=""4"" name=""type"">
+        <union name=""u"" />
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest(
+                "typedef struct tagVariant { " +
+                    "int type;" +
+                    "union u {" +
+                        "int i;" + 
+                        "char * s;" +
+                        "float f;" +
+                    "};" +
+                "} Variant;",
+                sExp);
+        }
     }
 }
 #endif

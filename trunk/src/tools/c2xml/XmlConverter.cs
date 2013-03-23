@@ -51,7 +51,6 @@ namespace Decompiler.Tools.C2Xml
 
         public void Convert()
         {
-            var parserState = new ParserState();
             var lexer = new CLexer(rdr);
             var parser = new CParser(parserState, lexer);
             var declarations = parser.Parse();
@@ -124,7 +123,7 @@ namespace Decompiler.Tools.C2Xml
                 {
                     //$REVIEW: make sure that if it already exists, types match
                     // but a real compiler would have validated that.
-                    parserState.Typedefs[nt.Name] = serType;
+                    parserState.Typedefs.Add(nt.Name);
                     types.Add(new SerializedTypedef
                     {
                         Name = nt.Name,
