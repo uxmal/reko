@@ -283,6 +283,11 @@ namespace Decompiler.Core.Expressions
             return new Constant(0.69314718055994530941723212145818);
         }
 
+        public bool ToBoolean()
+        {
+            return Convert.ToBoolean(c);
+        }
+
 		public double ToDouble()
 		{
 			return Convert.ToDouble(c);
@@ -330,6 +335,11 @@ namespace Decompiler.Core.Expressions
 			return new Constant(PrimitiveType.Bool, 1);
 		}
 
+        public static Constant Bool(bool f)
+        {
+            return f ? True() : False();
+        }
+
         public static Constant SByte(sbyte p)
         {
             return new Constant(PrimitiveType.SByte, p);
@@ -367,6 +377,5 @@ namespace Decompiler.Core.Expressions
 
 		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0xBADDCAFE);
         public static readonly Constant Unknown = new Constant(PrimitiveType.Void, 0xDEADFACE);
-
     }
 }

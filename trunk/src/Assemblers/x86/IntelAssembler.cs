@@ -1686,6 +1686,11 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xF8, null);
         }
 
+        public void Cld()
+        {
+            emitter.EmitOpcode(0xFC, null);
+        }
+
         public void Cmc()
         {
             emitter.EmitOpcode(0xF5, null);
@@ -1809,6 +1814,10 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xF9, null);
         }
 
+        public void Std()
+        {
+            emitter.EmitOpcode(0xFD, null);
+        }
 
         public void Fcompp()
         {
@@ -2083,6 +2092,7 @@ namespace Decompiler.Assemblers.x86
         {
             emitter.EmitByte(0xD7);
         }
+
     }
 }
 

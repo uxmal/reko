@@ -111,7 +111,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private class RewriterHost : IRewriterHost
         {
-            private Dictionary<string, PseudoProcedure> ppp ;
+            private Dictionary<string, PseudoProcedure> ppp;
             private Dictionary<uint, PseudoProcedure> importThunks;
 
             public RewriterHost(Dictionary<uint, PseudoProcedure> importThunks)
@@ -152,19 +152,19 @@ namespace Decompiler.UnitTests.Arch.Intel
             m.Mov(m.ax, m.bx);
             var rw = CreateRewriter(m);
             var e = rw.GetEnumerator();
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(2): 1 instructions",
                 "1|ax = bx");
         }
 
         private X86Rewriter CreateRewriter(IntelAssembler m)
         {
-            return new X86Rewriter(arch, host, state,  m.GetImage().CreateReader(0),new Frame(arch.WordWidth));
+            return new X86Rewriter(arch, host, state, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(IntelAssembler m)
         {
-            return new X86Rewriter(arch32, host,  state, m.GetImage().CreateReader(0), new Frame(arch32.WordWidth));
+            return new X86Rewriter(arch32, host, state, m.GetImage().CreateReader(0), new Frame(arch32.WordWidth));
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Mov(m.ax, m.MemW(Registers.bp, -8));
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(3): 1 instructions",
                 "1|ax = Mem0[ss:bp - 0x0008:word16]");
         }
@@ -184,7 +184,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Add(m.ax, m.MemW(Registers.si, 4));
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(3): 2 instructions",
                 "1|ax = ax + Mem0[ds:si + 0x0004:word16]",
                 "2|SCZO = cond(ax)");
@@ -234,7 +234,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.And(m.si, m.Imm(0x32));
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(3): 3 instructions",
                 "1|si = si & 0x0032",
                 "2|SZO = cond(si)",
@@ -249,7 +249,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Xor(m.eax, m.eax);
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(3): 3 instructions",
                 "1|eax = eax ^ eax",
                 "2|SZO = cond(eax)",
@@ -302,7 +302,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Push(m.eax);
                 m.Pop(m.ebx);
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(2): 2 instructions",
                 "1|sp = sp - 0x0004",
                 "2|Mem0[ss:sp:word32] = eax",
@@ -331,7 +331,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Jmp(m.WordPtr(m.bx, 0x10));
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(3): 1 instructions",
                 "1|goto Mem0[ds:bx + 0x0010:word16]");
         }
@@ -360,8 +360,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Label("self");
                 m.Call("self");
             });
-            AssertCode(e, 
-                "0|0C00:0000(3): 1 instructions", 
+            AssertCode(e,
+                "0|0C00:0000(3): 1 instructions",
                 "1|call 0C00:0000 (2)");
         }
 
@@ -374,7 +374,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Call("self");
             });
             AssertCode(e,
-                "0|10000000(5): 1 instructions", 
+                "0|10000000(5): 1 instructions",
                 "1|call 10000000 (4)");
         }
 
@@ -385,7 +385,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Bswap(m.ebx);
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|10000000(2): 1 instructions",
                 "1|ebx = __bswap(ebx)");
         }
@@ -398,12 +398,12 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Mov(m.ax, 0x4C00);
                 m.Int(0x21);
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(3): 1 instructions",
                 "1|ax = 0x4C00",
                 "2|0C00:0003(2): 1 instructions",
                 "3|__syscall(0x21)");
-            var s = (RtlSideEffect)e.Current.Instructions[0];
+            var s = (RtlSideEffect) e.Current.Instructions[0];
             var app = (Application) s.Expression;
             var pc = (ProcedureConstant) app.Procedure;
             var ppp = (PseudoProcedure) pc.Procedure;
@@ -418,7 +418,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.In(m.al, m.dx);
             });
             AssertCode(e,
-                "0|0C00:0000(1): 1 instructions", 
+                "0|0C00:0000(1): 1 instructions",
                 "1|al = __inb(dx)");
         }
 
@@ -429,8 +429,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Ret();
             });
-            AssertCode(e, 
-                "0|0C00:0000(1): 1 instructions", 
+            AssertCode(e,
+                "0|0C00:0000(1): 1 instructions",
                 "1|return (2,0)");
         }
 
@@ -441,8 +441,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.JmpF(new Address(0xF000, 0xFFF0));
             });
-            AssertCode(e, 
-                "0|0C00:0000(5): 1 instructions", 
+            AssertCode(e,
+                "0|0C00:0000(5): 1 instructions",
                 "1|__bios_reboot()");
         }
 
@@ -453,7 +453,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Ret(8);
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(3): 1 instructions",
                 "1|return (2,8)");
         }
@@ -466,7 +466,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Label("lupe");
                 m.Loop("lupe");
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(2): 2 instructions",
                 "1|cx = cx - 0x0001",
                 "2|if (cx != 0x0000) branch 0C00:0000");
@@ -522,7 +522,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Enter(16, 0);
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(4): 4 instructions",
                 "1|sp = sp - 0x0002",
                 "2|Mem0[ss:sp:word16] = bp",
@@ -563,7 +563,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Out(m.dx, m.al);
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(1): 1 instructions",
                 "1|__outb(dx, al)");
         }
@@ -611,7 +611,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Shld(m.edx, m.eax, m.cl);
             });
             AssertCode(e,
-                "0|0C00:0000(4): 1 instructions", 
+                "0|0C00:0000(4): 1 instructions",
                 "1|edx = __shld(edx, eax, cl)");
         }
 
@@ -623,7 +623,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Shrd(m.eax, m.edx, 4);
             });
             AssertCode(e,
-                "0|0C00:0000(5): 1 instructions", 
+                "0|0C00:0000(5): 1 instructions",
                 "1|eax = __shrd(eax, edx, 0x04)");
         }
 
@@ -678,7 +678,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Les(m.bx, m.MemW(Registers.bp, 6));
             });
-            var ass = (RtlAssignment)SingleInstruction(e); 
+            var ass = (RtlAssignment) SingleInstruction(e);
             Assert.AreEqual("es_bx = Mem0[ss:bp + 0x0006:ptr32]", ass.ToString());
             Assert.AreSame(PrimitiveType.Pointer32, ass.Src.DataType);
         }
@@ -728,14 +728,14 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "3|C = false");
         }
 
-        [Test(Description="Captures the side effect of setting CF = 0")]
+        [Test(Description = "Captures the side effect of setting CF = 0")]
         public void RewriteTest()
         {
             var e = Run16bitTest(delegate(IntelAssembler m)
             {
                 m.Test(m.ax, m.Const(8));
             });
-            AssertCode(e, 
+            AssertCode(e,
                 "0|0C00:0000(4): 2 instructions",
                 "1|SZO = cond(ax & 0x0008)",
                 "2|C = false");
@@ -908,7 +908,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "4|bx = bx >> cl",
                 "5|SCZO = cond(bx)",
                 "6|0C00:0004(3): 2 instructions",
-                "7|dx = dx >> 0x0004", 
+                "7|dx = dx >> 0x0004",
                 "8|SCZO = cond(dx)");
         }
 
@@ -982,11 +982,11 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Hlt();
             });
             Assert.IsTrue(e.MoveNext());
-            var rtls= e.Current;
+            var rtls = e.Current;
             Assert.AreEqual(1, rtls.Instructions.Count);
             var rtl = (RtlSideEffect) rtls.Instructions[0];
-            var fnExp = ((Application)rtl.Expression).Procedure;
-            var ppp = ((ProcedureConstant)fnExp).Procedure;
+            var fnExp = ((Application) rtl.Expression).Procedure;
+            var ppp = ((ProcedureConstant) fnExp).Procedure;
             Assert.IsTrue(ppp.Characteristics.Terminates);
         }
 
@@ -1005,6 +1005,29 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "3|0C00:0001(1): 2 instructions",
                 "4|SCZDOP = Mem0[ss:sp:word16]",
                 "5|sp = sp + 0x0002");
+        }
+
+        [Test]
+        public void X86RW_Std_Lodsw()
+        {
+            var e = Run32bitTest(m =>
+            {
+                m.Std();
+                m.Lodsw();
+                m.Cld();
+                m.Lodsw();
+            });
+            AssertCode(e,
+                "0|10000000(1): 1 instructions",
+                "1|D = true",
+                "2|10000001(2): 2 instructions",
+                "3|ax = Mem0[esi:word16]",
+                "4|esi = esi - 0x00000002",
+                "5|10000003(1): 1 instructions",
+                "6|D = false",
+                "7|10000004(2): 2 instructions",
+                "8|ax = Mem0[esi:word16]",
+                "9|esi = esi + 0x00000002");
         }
     }
 }
