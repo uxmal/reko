@@ -105,8 +105,8 @@ namespace Decompiler.Arch.X86
                 case Opcode.bt: RewriteBt(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
                 case Opcode.cbw: RewriteCbw(); break;
-                case Opcode.clc: emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False()); break;
-                case Opcode.cld: break; //$TODO
+                case Opcode.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
+                case Opcode.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
                 case Opcode.cli: break; //$TODO
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
                 case Opcode.cmp: RewriteCmp(); break;
@@ -244,8 +244,8 @@ namespace Decompiler.Arch.X86
                 case Opcode.shld: RewriteShxd("__shld"); break;
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
-                case Opcode.stc: emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.True()); break;
-                case Opcode.std: break; //$TODO:
+                case Opcode.stc: RewriteSetFlag(FlagM.CF, Constant.True()); break;
+                case Opcode.std: RewriteSetFlag(FlagM.DF, Constant.True()); break;
                 case Opcode.sti: break; //$TODO:
                 case Opcode.stos: RewriteStringInstruction(); break;
                 case Opcode.stosb: RewriteStringInstruction(); break;

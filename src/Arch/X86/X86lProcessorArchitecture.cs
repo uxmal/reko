@@ -195,7 +195,7 @@ namespace Decompiler.Arch.X86
 			return s.ToString();
 		}
 
-		public bool IsSingleBit(uint u)
+		public static bool IsSingleBit(uint u)
 		{
 			if (u == 0)
 				return false;

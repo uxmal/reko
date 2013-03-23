@@ -664,10 +664,19 @@ namespace Decompiler.Arch.X86
                 emitter.Assign(orw.FlagGroup(FlagM.CF), t);
         }
 
-        private void RewriteSet( ConditionCode cc)
+        private void RewriteSet(ConditionCode cc)
         {
             EmitCopy(di.Instruction.op1, new TestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), false);
         }
+
+        private void RewriteSetFlag(FlagM flagM, Constant value)
+        {
+            var reg = arch.GetFlagGroup((uint) flagM);
+            state.SetFlagGroup(reg, value);
+            var id = orw.FlagGroup(flagM);
+            emitter.Assign(id, value);
+        }
+
 
         private void RewriteShxd(string name)
         {
@@ -727,6 +736,8 @@ namespace Decompiler.Arch.X86
         {
             bool incSi = false;
             bool incDi = false;
+            var incOperator = GetIncrementOperator();
+
             Identifier regDX;
             PseudoProcedure ppp;
             switch (di.Instruction.code)
@@ -790,7 +801,7 @@ namespace Decompiler.Arch.X86
             if (incSi)
             {
                 emitter.Assign(RegSi,
-                    new BinaryExpression(Operator.Add,
+                    new BinaryExpression(incOperator,
                     di.Instruction.addrWidth,
                     RegSi,
                     new Constant(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
@@ -799,11 +810,22 @@ namespace Decompiler.Arch.X86
             if (incDi)
             {
                 emitter.Assign(RegDi,
-                    new BinaryExpression(Operator.Add,
+                    new BinaryExpression(incOperator,
                     di.Instruction.addrWidth,
                     RegDi,
                     new Constant(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
             }
+        }
+
+        private BinaryOperator GetIncrementOperator()
+        {
+            Constant direction = state.GetFlagGroup((uint)FlagM.DF);
+            Debug.Print("dir: " + direction);
+            if (direction == null || !direction.IsValid)
+                return Operator.Add;        // Better safe than sorry.
+            return direction.ToBoolean()
+                ? Operator.Sub
+                : Operator.Add;
         }
 
         private void RewriteTest()

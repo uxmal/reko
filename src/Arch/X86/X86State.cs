@@ -1,3 +1,4 @@
+
 #region License
 /* 
  * Copyright (C) 1999-2013 John Källén.
@@ -35,6 +36,8 @@ namespace Decompiler.Arch.X86
 	{
 		private ulong [] regs;
 		private bool [] valid;
+        private uint flags;
+        private uint validFlags;
         private IntelArchitecture arch;
 
         private const int StackItemSize = 2;
@@ -112,7 +115,7 @@ namespace Decompiler.Arch.X86
         public override void OnProcedureEntered()
         {
             FpuStackItems = 0;
-            SetRegister(Registers.D, Constant.False());
+            SetFlagGroup(arch.GetFlagGroup((uint) FlagM.DF), Constant.False());
         }
 
         public override void OnProcedureLeft(ProcedureSignature sig)
@@ -192,5 +195,46 @@ namespace Decompiler.Arch.X86
         {
             FpuStackItems -= cItems;
         }
+
+        public Constant GetFlagGroup(uint mask)
+        {
+            bool sigle = IntelArchitecture.IsSingleBit(mask);
+            if ((mask & validFlags) == mask)
+            {
+                if (sigle)
+                {
+                    return Constant.Bool((flags & mask) != 0);
+                }
+                else {
+                    return Constant.Byte((byte)(flags & mask));
+                }
+            }
+            else 
+            {
+                return Constant.Invalid;
+            }
+        }
+
+        public void SetFlagGroup(FlagGroupStorage reg, Constant value)
+        {
+            uint mask = reg.FlagGroupBits;
+            if (value.IsValid)
+            {
+                validFlags |= mask;
+                if (value.ToBoolean())
+                {
+                    this.flags |= mask;
+                }
+                else
+                {
+                    this.flags &= ~mask;
+                }
+            }
+            else
+            {
+                validFlags &= ~mask;
+            }
+        }
+
     }
 }
