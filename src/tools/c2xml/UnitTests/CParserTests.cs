@@ -155,21 +155,8 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         public void CParser_Regression1()
         {
             Lex("__inline PVOID GetFiberData( void )    { return *(PVOID *) (ULONG_PTR) __readfsdword (0x10);}\r\n");
-            parser.ParserState.Typedefs["PVOID"] =
-                new SerializedPointerType
-                {
-                    DataType = new SerializedPrimitiveType
-                    {
-                        Domain = Core.Types.Domain.Void,
-                        ByteSize = 0
-                    }
-                };
-            parser.ParserState.Typedefs["ULONG_PTR"] =
-                new SerializedPrimitiveType
-                {
-                    Domain = Core.Types.Domain.UnsignedInt,
-                    ByteSize = 8
-                };
+            parser.ParserState.Typedefs.Add("PVOID");
+            parser.ParserState.Typedefs.Add("ULONG_PTR");
 
             var decl = parser.Parse_ExternalDecl();
             var sExp =
@@ -235,8 +222,8 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         [Test]
         public void CParser_IdList()
         {
-            parserState.Typedefs.Add("PVOID", new SerializedPrimitiveType { Domain = Core.Types.Domain.Void });
-            parserState.Typedefs.Add("BOOLEAN", new SerializedPrimitiveType { Domain = Core.Types.Domain.SignedInt, ByteSize = 8 });
+            parserState.Typedefs.Add("PVOID");
+            parserState.Typedefs.Add("BOOLEAN");
             Lex("typedef void (__stdcall * FOO) (PVOID, BOOLEAN );   ");
             var decl = parser.Parse_Decl();
             var sExp =
@@ -287,7 +274,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "typedef struct _M { int x; } M, *PM;" +
                 "typedef struct _M M, *PM;");
             var decl1 = parser.Parse_ExternalDecl();
-            Assert.IsTrue(parserState.Typedefs.ContainsKey("M"));
+            Assert.IsTrue(parserState.Typedefs.Contains("M"));
             var decl2 = parser.Parse_ExternalDecl();
         }
 
@@ -298,14 +285,14 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "typedef union _M { int x; } M, *PM;" +
                 "typedef union _M M, *PM;");
             var decl1 = parser.Parse_ExternalDecl();
-            Assert.IsTrue(parserState.Typedefs.ContainsKey("M"));
+            Assert.IsTrue(parserState.Typedefs.Contains("M"));
             var decl2 = parser.Parse_ExternalDecl();
         }
 
         [Test]
         public void CParser_Use_typedefname_As_variable()
         {
-            parserState.Typedefs.Add("Doc", new SerializedTypeReference { TypeName = "int" });
+            parserState.Typedefs.Add("Doc");
             Lex("typeof struct vtbl {\r\n" +
                 "int (__stdcall * method)(\r\n" +
                     "int ** Doc);\r\n" +
@@ -337,6 +324,16 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                         "((Int x)" +
                         " (bool (func (__Stdcall (ptr cont)))))))))) " +
                     "((init-decl myVtbl)))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_typedef_array()
+        {
+            Lex("typedef char (*array)[10];");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef Char ((init-decl (arr (ptr array) 10))))";
             Assert.AreEqual(sExp, decl.ToString());
         }
         private string windows_h =

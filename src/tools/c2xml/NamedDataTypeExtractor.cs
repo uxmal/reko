@@ -278,7 +278,7 @@ namespace Decompiler.Tools.C2Xml
                         parserState.StructsSeen.Add(str.Name, str);
                     }
                 }
-                if (!complexTypeSpec.IsForwardDeclaration())
+                if (!complexTypeSpec.IsForwardDeclaration() && str.Fields == null)
                 {
                     str.Fields.AddRange(ExpandStructFields(complexTypeSpec.DeclList));
                 }
@@ -289,15 +289,28 @@ namespace Decompiler.Tools.C2Xml
             }
             else if (complexTypeSpec.Type == CTokenType.Union)
             {
-                var un = new SerializedUnionType
+                SerializedUnionType un;
+                if (complexTypeSpec.Name == null ||
+                    !parserState.UnionsSeen.TryGetValue(complexTypeSpec.Name, out un))
                 {
-                    Name = complexTypeSpec.Name,
-                };
-                if (!complexTypeSpec.IsForwardDeclaration())
+                    un = new SerializedUnionType
+                    {
+                        Name = complexTypeSpec.Name
+                    };
+                    if (un.Name != null)
+                    {
+                        parserState.UnionsSeen.Add(un.Name, un);
+                    }
+                }
+                if (!complexTypeSpec.IsForwardDeclaration() && un.Alternatives == null)
                 {
                     un.Alternatives = ExpandUnionFields(complexTypeSpec.DeclList).ToArray();
                 }
-                return un;
+                return new SerializedUnionType
+                {
+                    Name = complexTypeSpec.Name,
+                };
+;
             }
             else
                 throw new NotImplementedException();
