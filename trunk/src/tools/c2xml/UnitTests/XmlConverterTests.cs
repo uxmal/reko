@@ -205,10 +205,25 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       <field offset=""0"" name=""type"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
-      <field offset=""4"" name=""type"">
-        <union name=""u"" />
+      <field offset=""4"">
+        <union name=""u"">
+          <alt name=""i"">
+            <prim domain=""SignedInt"" size=""4"" />
+          </alt>
+          <alt name=""s"">
+            <ptr>
+              <prim domain=""Character"" size=""1"" />
+            </ptr>
+          </alt>
+          <alt name=""f"">
+            <prim domain=""Real"" size=""4"" />
+          </alt>
+        </union>
       </field>
     </struct>
+    <typedef name=""Variant"">
+      <struct name=""tagVariant"" />
+    </typedef>
   </Types>
 </library>";
             RunTest(
@@ -220,6 +235,75 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                         "float f;" +
                     "};" +
                 "} Variant;",
+                sExp);
+        }
+
+        [Test]
+        public void C2X_SizedArray()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""PunchCard"">
+      <arr length=""80"">
+        <prim domain=""Character"" size=""1"" />
+      </arr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest(
+                "typedef char PunchCard[80];",
+                sExp);
+        }
+
+        [Test]
+        public void C2X_UnsizedArray()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""PunchCard"">
+      <arr length=""0"">
+        <prim domain=""Character"" size=""1"" />
+      </arr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest(
+                "typedef char PunchCard[];",
+                sExp);
+        }
+
+        [Test]
+        public void C2X_StructWithArray()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""byte"">
+      <prim domain=""UnsignedInt"" size=""1"" />
+    </typedef>
+    <struct name=""header"">
+      <field offset=""0"" name=""signature"">
+        <arr length=""16"">
+          <type>byte</type>
+        </arr>
+      </field>
+      <field offset=""16"" name=""length"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest(
+                "typedef unsigned char byte;" +
+                "typedef struct header {" +
+                    "byte signature[16];" + 
+                    "int length;" +
+                "};",
                 sExp);
         }
     }

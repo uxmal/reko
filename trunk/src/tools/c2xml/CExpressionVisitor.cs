@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +25,26 @@ using System.Text;
 
 namespace Decompiler.Tools.C2Xml
 {
-    public class NamedDataType
+    public interface CExpressionVisitor<T>
     {
-        public string Name { get; set; }
-        public int Size { get; set; } // in bytes.
-        public SerializedType DataType { get; set; }
+        T VisitConstant(ConstExp constant);
+
+        T VisitIdentifier(CIdentifier id);
+
+        T VisitApplication(Application application);
+
+        T VisitMember(MemberExpression member);
+
+        T VisitUnary(CUnaryExpression unary);
+
+        T VisitBinary(CBinaryExpression binary);
+
+        T VisitAssign(AssignExpression assign);
+
+        T VisitCast(CastExpression cast);
+
+        T VisitConditional(ConditionalExpression conditional);
+
+        T VisitIncremeent(IncrementExpression increment);
     }
 }

@@ -60,7 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CConstantEvaluator.cs" />
     <Compile Include="CDirectiveLexer.cs" />
+    <Compile Include="CExpressionVisitor.cs" />
     <Compile Include="CGrammar.cs" />
     <Compile Include="CLexer.cs" />
     <Compile Include="CParser.cs" />
@@ -73,6 +75,8 @@
     <Compile Include="ParserState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeSizer.cs" />
+    <Compile Include="UnitTests\CConstantEvaluatorTests.cs" />
     <Compile Include="UnitTests\CDirectiveLexerTests.cs" />
     <Compile Include="UnitTests\CLexerTests.cs" />
     <Compile Include="UnitTests\CParserTests.cs" />
@@ -82,7 +86,6 @@
     <Compile Include="UnitTests\XmlConverterTests.cs" />
     <Compile Include="UnitTests\XmlnsHidingWriter.cs" />
     <Compile Include="XmlConverter.cs" />
-    <Compile Include="XmlRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Transform.xslt" />

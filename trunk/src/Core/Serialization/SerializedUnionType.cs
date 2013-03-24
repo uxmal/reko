@@ -22,6 +22,7 @@ using Decompiler.Core.Types;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
@@ -30,17 +31,18 @@ namespace Decompiler.Core.Serialization
 {
     public class SerializedUnionType : SerializedType
     {
-		[XmlElement("name")]
+		[XmlAttribute("name")]
 		public string Name;
 
-		[XmlElement("size")]
+		[XmlAttribute("size")]
+        [DefaultValue(0)]
 		public int ByteSize;
 
         public SerializedUnionType()
 		{
 		}
 
-		[XmlElement("field", typeof (SerializedUnionAlternative))]
+		[XmlElement("alt", typeof (SerializedUnionAlternative))]
         public SerializedUnionAlternative[]  Alternatives;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
