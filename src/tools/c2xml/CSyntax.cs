@@ -493,28 +493,50 @@ namespace Decompiler.Tools.C2Xml
 
     public abstract class CExpression : CSyntax
     {
-        public override T Accept<T>(CSyntaxVisitor<T> visitor)
+        public sealed override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
             return visitor.VisitExpression(this);
         }
+
+        public abstract T Accept<T>(CExpressionVisitor<T> visitor);
     }
 
     public class ConstExp : CExpression
     {
         public object Const;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitConstant(this);
+        }
+
         public override string ToString() { return Const != null ? Const.ToString() : ""; }
+
     }
 
     public class CIdentifier : CExpression
     {
         public string Name;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitIdentifier(this);
+        }
+
         public override string ToString() { return Name; }
+
     }
 
     public class Application : CExpression
     {
         public CExpression Function;
         public List<CExpression> Arguments;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitApplication(this);
+        }
+
     }
 
     public class MemberExpression : CExpression
@@ -522,6 +544,12 @@ namespace Decompiler.Tools.C2Xml
         public CExpression Expression;
         public string FieldName;
         public bool Dereference;
+
+                public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitMember(this);
+        }
+
         public override string ToString() { return string.Format("({0} {1} {2}",
             Expression, 
             Dereference ? "->" : ".",
@@ -531,6 +559,12 @@ namespace Decompiler.Tools.C2Xml
     {
         public CTokenType Operation;
         public CExpression Expression;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitUnary(this);
+        }
+
         public override string ToString() { return string.Format("({0} {1})", Operation, Expression); }
     }
 
@@ -539,6 +573,13 @@ namespace Decompiler.Tools.C2Xml
         public CTokenType Operation;
         public CExpression Left;
         public CExpression Right;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitBinary(this);
+        }
+
+
         public override string ToString() { return string.Format("({0} {1} {2})", Operation, Left, Right); }
     }
 
@@ -547,12 +588,22 @@ namespace Decompiler.Tools.C2Xml
         public CTokenType AssingmentOp;
         public CExpression LValue;
         public CExpression RValue;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitAssign(this);
+        }
     }
 
     public class CastExpression : CExpression
     {
         public CType Type;
         public CExpression Expression;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitCast(this);
+        }
     }
 
     public class ConditionalExpression : CExpression
@@ -560,6 +611,11 @@ namespace Decompiler.Tools.C2Xml
         public CExpression Condition;
         public CExpression Consequent;
         public CExpression Alternative;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitConditional(this);
+        }
     }
 
     public class IncrementExpression : CExpression
@@ -567,6 +623,11 @@ namespace Decompiler.Tools.C2Xml
         public CTokenType Incrementor;
         public bool Prefix;
         public CExpression Expression;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitIncremeent(this);
+        }
     }
     #endregion
 

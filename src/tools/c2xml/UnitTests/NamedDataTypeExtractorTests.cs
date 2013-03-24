@@ -44,7 +44,8 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)
         {
-            this.nt = NamedDataTypeExtractor.GetNameAndType(declSpecs, decl, parserState);
+            var ndte = new NamedDataTypeExtractor(declSpecs, parserState);
+            this.nt = ndte.GetNameAndType(decl);
         }
 
         private TypeSpec SType(CTokenType type)
@@ -59,7 +60,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 new IdDeclarator { Name = "Bob" });
 
             Assert.AreEqual("Bob", nt.Name);
-            Assert.AreEqual(PrimitiveType.UInt32, nt.DataType);
+            Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
         }
 
         [Test]

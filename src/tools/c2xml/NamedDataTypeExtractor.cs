@@ -39,32 +39,32 @@ namespace Decompiler.Tools.C2Xml
         private int byteSize;
         private ParserState parserState;
         private CTokenType callingConvention;
+        private CConstantEvaluator eval;
 
         public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, ParserState parserState)
         {
             this.specs = specs;
             this.parserState = parserState;
             this.callingConvention = CTokenType.None;
+            this.eval = new CConstantEvaluator();
             foreach (var declspec in specs)
             {
                 dt = declspec.Accept(this);
             }
         }
 
-        public static NamedDataType GetNameAndType(IEnumerable<DeclSpec> declspecs, Declarator declarator, ParserState state)
+        public NamedDataType GetNameAndType(Declarator declarator)
         {
-            var ndte = new NamedDataTypeExtractor(declspecs, state);
             if (declarator != null)
-                return declarator.Accept(ndte);
+                return declarator.Accept(this);
             else
-                return new NamedDataType { DataType = ndte.dt };
+                return new NamedDataType { DataType = dt };
         }
 
         public NamedDataType VisitId(IdDeclarator id)
         {
             return new NamedDataType { Name = id.Name, DataType = dt };
         }
-
 
         public NamedDataType VisitArray(ArrayDeclarator array)
         {
@@ -75,7 +75,9 @@ namespace Decompiler.Tools.C2Xml
                 DataType = new SerializedArrayType
                 {
                     ElementType = nt.DataType,
-                    //Length = array.Size         //$TODO: evaluate c const exprs(!)
+                    Length = array.Size != null
+                        ? Convert.ToInt32(array.Size.Accept(eval))
+                        : 0
                 }
             };
         }
@@ -112,6 +114,7 @@ namespace Decompiler.Tools.C2Xml
                 DataType = nt.DataType,
                 //$BUG: architecture-specific type to go here.
             };
+            nt.Size = 4;            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
             return nt;
         }
 
@@ -138,33 +141,43 @@ namespace Decompiler.Tools.C2Xml
         {
             if (decl.IsEllipsis)
             {
-                return new SerializedArgument 
+                return new SerializedArgument
                 {
-                    Kind = new SerializedStackVariable {},
+                    Kind = new SerializedStackVariable { },
                     Name = "...",
                 };
             }
             else
             {
-                var nt = NamedDataTypeExtractor.GetNameAndType(decl.DeclSpecs, decl.Declarator, parserState);
+                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, parserState);
+                var nt = ntde.GetNameAndType(decl.Declarator);
                 return new SerializedArgument
                 {
-                    Kind = new SerializedStackVariable { ByteSize = 4, },     //$REVIEW: depends on type and call convention
+                    Kind = new SerializedStackVariable { ByteSize = ToStackSize(nt.Size), },
                     Name = nt.Name,
                     Type = nt.DataType
                 };
             }
         }
+
+        private int ToStackSize(int p)
+        {
+            const int align = 4;
+            //$REVIEW: depends on type and call convention + alignment
+            return ((p + 1) / align) * align;
+        }
+        
         public NamedDataType VisitCallConvention(CallConventionDeclarator conv)
         {
             return conv.Declarator.Accept(this);
         }
 
-
         public SerializedType VisitSimpleType(SimpleTypeSpec simpleType)
         {
             switch (simpleType.Type)
             {
+            default:
+                throw new NotImplementedException(string.Format("{0}", simpleType.Type));
             case CTokenType.Void:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'void' after '{0}'.", domain));
@@ -244,7 +257,6 @@ namespace Decompiler.Tools.C2Xml
                 byteSize = 8;       //$REVIEW: arch-specific.
                 return CreatePrimitive();
             }
-            throw new NotImplementedException(string.Format("{0}", simpleType.Type));
         }
 
         private SerializedPrimitiveType CreatePrimitive()
@@ -282,10 +294,7 @@ namespace Decompiler.Tools.C2Xml
                 {
                     str.Fields.AddRange(ExpandStructFields(complexTypeSpec.DeclList));
                 }
-                return str = new SerializedStructType
-                {
-                    Name = str.Name,
-                };
+                return str;
             }
             else if (complexTypeSpec.Type == CTokenType.Union)
             {
@@ -306,11 +315,7 @@ namespace Decompiler.Tools.C2Xml
                 {
                     un.Alternatives = ExpandUnionFields(complexTypeSpec.DeclList).ToArray();
                 }
-                return new SerializedUnionType
-                {
-                    Name = complexTypeSpec.Name,
-                };
-;
+                return un;
             }
             else
                 throw new NotImplementedException();
@@ -322,10 +327,11 @@ namespace Decompiler.Tools.C2Xml
             int offset = 0;
             foreach (var decl in decls)
             {
+                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, parserState);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
-                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, parserState);
-                    offset = Align(offset, nt.DataType, 8);
+                    var nt = ntde.GetNameAndType(declarator);
+                    offset = Align(offset, nt.DataType.GetSize(), 8);     //$BUG: disregards temp. alignment changes.
                     yield return new SerializedStructField
                     {
                         Offset = offset,
@@ -340,9 +346,10 @@ namespace Decompiler.Tools.C2Xml
         {
             foreach (var decl in decls)
             {
+                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, parserState);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
-                    var nt = GetNameAndType(decl.SpecQualifierList, declarator, parserState);
+                    var nt = ndte.GetNameAndType(declarator);
                     yield return new SerializedUnionAlternative
                     {
                         Name = nt.Name,
@@ -352,9 +359,9 @@ namespace Decompiler.Tools.C2Xml
             }
         }
 
-        private int Align(int offset, SerializedType dt, int maxAlign)
+        private int Align(int offset, int size, int maxAlign)
         {
-            var size = Math.Min(maxAlign, dt.GetSize());
+            size = Math.Min(maxAlign, size);
             if (size == 0)
                 size = maxAlign;
             return size * ((offset + (size - 1)) / size);

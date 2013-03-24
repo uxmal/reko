@@ -39,6 +39,7 @@ namespace Decompiler.Tools.C2Xml
         private ParserState parserState;
         private List<SerializedType> types;
         private List<SerializedProcedureBase> procs;
+        private TypeSizer sizer;
 
         public XmlConverter(TextReader rdr, XmlWriter writer)
         {
@@ -47,6 +48,7 @@ namespace Decompiler.Tools.C2Xml
             this.parserState = new ParserState();
             this.types = new List<SerializedType>();
             this.procs = new List<SerializedProcedureBase>();
+            this.sizer = new TypeSizer();
         }
 
         public void Convert()
@@ -102,12 +104,10 @@ namespace Decompiler.Tools.C2Xml
                     types.Add(ConvertUnion(t));
                 }
             }
+            var ntde = new NamedDataTypeExtractor(declspecs, parserState);
             foreach (var declarator in decl.init_declarator_list)
             {
-                var nt = NamedDataTypeExtractor.GetNameAndType(
-                    declspecs,
-                    declarator.Declarator,
-                    parserState);
+                var nt = ntde.GetNameAndType(declarator.Declarator);
                 var serType = nt.DataType;
 
                 var sSig = nt.DataType as SerializedSignature;
@@ -121,14 +121,16 @@ namespace Decompiler.Tools.C2Xml
                 }
                 if (isTypedef)
                 {
-                    //$REVIEW: make sure that if it already exists, types match
-                    // but a real compiler would have validated that.
+                    //$REVIEW: should make sure that if the typedef already exists, 
+                    // then the types match but a real compiler would have validated that.
                     parserState.Typedefs.Add(nt.Name);
-                    types.Add(new SerializedTypedef
+                    var typedef = new SerializedTypedef
                     {
                         Name = nt.Name,
                         DataType = serType
-                    });
+                    };
+                    typedef.Accept(sizer);
+                    types.Add(typedef);
                 }
             }
             return 0;
@@ -142,21 +144,19 @@ namespace Decompiler.Tools.C2Xml
                 Name = cpxSpec.Name
             };
             if (cpxSpec.DeclList == null)
-                return str;
+                return str;     // A lack of fields implies a forward declaration.
             var fields = str.Fields;
             foreach (var strspec in cpxSpec.DeclList)
             {
+                var ntde = new NamedDataTypeExtractor(strspec.SpecQualifierList, parserState);
                 foreach (var declarator in strspec.FieldDeclarators)
                 {
-                    var nt = NamedDataTypeExtractor.GetNameAndType(
-                        strspec.SpecQualifierList,
-                        declarator.Declarator,
-                        parserState);
+                    var nt = ntde.GetNameAndType(declarator.Declarator);
                     fields.Add(new SerializedStructField(
                         offset,
                         nt.Name,
                         nt.DataType));
-                    offset += nt.DataType.GetSize();
+                    offset += nt.DataType.Accept(sizer);
                 }
             }
             return str;
@@ -173,12 +173,10 @@ namespace Decompiler.Tools.C2Xml
             var alts = new List<SerializedUnionAlternative>();
             foreach (var uspec in cpxSpec.DeclList)
             {
+                var ntde = new NamedDataTypeExtractor (uspec.SpecQualifierList, parserState);
                 foreach (var declarator in uspec.FieldDeclarators)
                 {
-                    var nt = NamedDataTypeExtractor.GetNameAndType(
-                        uspec.SpecQualifierList,
-                        declarator.Declarator,
-                        parserState);
+                    var nt = ntde.GetNameAndType(declarator.Declarator);
                     alts.Add(new SerializedUnionAlternative
                     {
                         Name = nt.Name,
