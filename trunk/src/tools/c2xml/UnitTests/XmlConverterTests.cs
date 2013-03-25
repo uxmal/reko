@@ -128,6 +128,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
   <procedure name=""strlen"">
     <signature convention=""__cdecl"">
       <return>
+        <type>size_t</type>
         <reg>eax</reg>
       </return>
       <arg>
@@ -206,6 +207,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
   <procedure name=""bar"">
     <signature>
       <return>
+        <prim domain=""SignedInt"" size=""4"" />
         <reg>eax</reg>
       </return>
       <arg name=""pfoo"">
