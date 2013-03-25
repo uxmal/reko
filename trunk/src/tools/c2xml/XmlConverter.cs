@@ -104,6 +104,11 @@ namespace Decompiler.Tools.C2Xml
                     types.Add(ConvertUnion(t));
                 }
             }
+            var e = declspecs.First() as EnumeratorTypeSpec;
+            if (e != null)
+            {
+                types.Add(ConvertEnum(e));
+            }
             var ntde = new NamedDataTypeExtractor(declspecs, parserState);
             foreach (var declarator in decl.init_declarator_list)
             {
@@ -134,6 +139,27 @@ namespace Decompiler.Tools.C2Xml
                 }
             }
             return 0;
+        }
+
+        public SerializedType ConvertEnum(EnumeratorTypeSpec e)
+        {
+            var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(parserState.Constants));
+            var listMembers = new List<SerializedEnumValue>();
+            foreach (var item in e.Enums)
+            {
+                var ee = new SerializedEnumValue
+                {
+                    Name = item.Name,
+                    Value = enumEvaluator.GetValue(item.Value),
+                };
+                parserState.Constants.Add(ee.Name, ee.Value);
+                listMembers.Add(ee);
+            }
+            return new SerializedEnumType
+            {
+                Name = e.Tag,
+                Values = listMembers.ToArray()
+            };
         }
 
         private SerializedStructType ConvertStructure(ComplexTypeSpec cpxSpec)

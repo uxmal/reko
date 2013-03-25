@@ -83,6 +83,7 @@ namespace Decompiler.Core.Serialization
                     new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("ptr", typeof(SerializedPointerType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("union", typeof(SerializedUnionType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
@@ -102,6 +103,7 @@ namespace Decompiler.Core.Serialization
                     new XmlArrayItemAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlArrayItemAttribute("ptr", typeof(SerializedPointerType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("enum", typeof(SerializedEnumType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlArrayItemAttribute("union", typeof(SerializedUnionType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
@@ -112,5 +114,11 @@ namespace Decompiler.Core.Serialization
             return sertypeAttributes;
         }
         
+    }
+
+    public abstract class SerializedTaggedType : SerializedType
+    {
+        [XmlAttribute("name")]
+        public string Name;
     }
 }

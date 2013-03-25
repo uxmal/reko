@@ -32,11 +32,13 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     public class CConstantEvaluatorTests
     {
         private CConstantEvaluator eval;
+        private Dictionary<string, int> constants;
 
         [SetUp]
         public void Setup()
         {
-            eval = new CConstantEvaluator();
+            this.constants = new Dictionary<string,int>();
+            eval = new CConstantEvaluator(constants);
         }
 
         [Test]
