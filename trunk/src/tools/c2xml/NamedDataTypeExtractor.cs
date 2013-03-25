@@ -37,16 +37,16 @@ namespace Decompiler.Tools.C2Xml
         private SerializedType dt;
         private Domain domain;
         private int byteSize;
-        private ParserState parserState;
+        private XmlConverter converter;
         private CTokenType callingConvention;
         private CConstantEvaluator eval;
 
-        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, ParserState parserState)
+        public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, XmlConverter converter)
         {
             this.specs = specs;
-            this.parserState = parserState;
+            this.converter = converter;
             this.callingConvention = CTokenType.None;
-            this.eval = new CConstantEvaluator(parserState.Constants);
+            this.eval = new CConstantEvaluator(converter.Constants);
             foreach (var declspec in specs)
             {
                 dt = declspec.Accept(this);
@@ -149,7 +149,7 @@ namespace Decompiler.Tools.C2Xml
             }
             else
             {
-                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, parserState);
+                var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, converter);
                 var nt = ntde.GetNameAndType(decl.Declarator);
                 return new SerializedArgument
                 {
@@ -278,8 +278,7 @@ namespace Decompiler.Tools.C2Xml
             if (complexTypeSpec.Type == CTokenType.Struct)
             {
                 SerializedStructType str;
-                if (complexTypeSpec.Name == null ||
-                    !parserState.StructsSeen.TryGetValue(complexTypeSpec.Name, out str))
+                if (complexTypeSpec.Name == null || converter.StructsSeen.TryGetValue(complexTypeSpec.Name, out str))
                 {
                     str = new SerializedStructType
                     {
@@ -287,12 +286,22 @@ namespace Decompiler.Tools.C2Xml
                     };
                     if (str.Name != null)
                     {
-                        parserState.StructsSeen.Add(str.Name, str);
+                        converter.StructsSeen.Add(str.Name, str);
                     }
+                }
+                else
+                {
+                    str = new SerializedStructType { Name = complexTypeSpec.Name };
                 }
                 if (!complexTypeSpec.IsForwardDeclaration() && str.Fields == null)
                 {
-                    str.Fields.AddRange(ExpandStructFields(complexTypeSpec.DeclList));
+                    str.Fields = ExpandStructFields(complexTypeSpec.DeclList).ToArray();
+                    converter.Sizer.SetSize(str);
+                    if (str.Name != null)
+                    {
+                        converter.Types.Add(str);
+                        str = new SerializedStructType { Name = str.Name };
+                    }
                 }
                 return str;
             }
@@ -300,7 +309,7 @@ namespace Decompiler.Tools.C2Xml
             {
                 SerializedUnionType un;
                 if (complexTypeSpec.Name == null ||
-                    !parserState.UnionsSeen.TryGetValue(complexTypeSpec.Name, out un))
+                    !converter.UnionsSeen.TryGetValue(complexTypeSpec.Name, out un))
                 {
                     un = new SerializedUnionType
                     {
@@ -308,12 +317,18 @@ namespace Decompiler.Tools.C2Xml
                     };
                     if (un.Name != null)
                     {
-                        parserState.UnionsSeen.Add(un.Name, un);
+                        converter.UnionsSeen.Add(un.Name, un);
                     }
                 }
                 if (!complexTypeSpec.IsForwardDeclaration() && un.Alternatives == null)
                 {
                     un.Alternatives = ExpandUnionFields(complexTypeSpec.DeclList).ToArray();
+                    converter.Sizer.SetSize(un);
+                    if (un.Name != null)
+                    {
+                        converter.Types.Add(un);
+                        un = new SerializedUnionType { Name = un.Name };
+                    }
                 }
                 return un;
             }
@@ -321,23 +336,56 @@ namespace Decompiler.Tools.C2Xml
                 throw new NotImplementedException();
         }
 
-        
+        public SerializedType VisitEnum(EnumeratorTypeSpec e)
+        {
+            SerializedEnumType en;
+            if (e.Tag == null ||
+                !converter.EnumsSeen.TryGetValue(e.Tag, out en))
+            {
+                en = new SerializedEnumType { Name = e.Tag };
+            }
+            if (en.Values == null)
+            {
+                var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(converter.Constants));
+                var listMembers = new List<SerializedEnumValue>();
+                foreach (var item in e.Enums)
+                {
+                    var ee = new SerializedEnumValue
+                    {
+                        Name = item.Name,
+                        Value = enumEvaluator.GetValue(item.Value),
+                    };
+                    converter.Constants.Add(ee.Name, ee.Value);
+                    listMembers.Add(ee);
+                }
+                en.Values = listMembers.ToArray();
+                if (en.Name != null)
+                {
+                    converter.Types.Add(en);
+                    en = new SerializedEnumType { Name = e.Tag };
+                }
+            }
+            return en;
+        }
+
         private IEnumerable<SerializedStructField> ExpandStructFields(IEnumerable<StructDecl> decls)
         {
             int offset = 0;
             foreach (var decl in decls)
             {
-                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, parserState);
+                var ntde = new NamedDataTypeExtractor(decl.SpecQualifierList, converter);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
-                    offset = Align(offset, nt.DataType.GetSize(), 8);     //$BUG: disregards temp. alignment changes.
+                    var rawSize = nt.DataType.Accept(converter.Sizer);
+                    offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes.
                     yield return new SerializedStructField
                     {
                         Offset = offset,
                         Name = nt.Name,
                         Type = nt.DataType,
                     };
+                    offset += rawSize;
                 }
             }
         }
@@ -346,7 +394,7 @@ namespace Decompiler.Tools.C2Xml
         {
             foreach (var decl in decls)
             {
-                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, parserState);
+                var ndte = new NamedDataTypeExtractor(decl.SpecQualifierList, converter);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ndte.GetNameAndType(declarator);
@@ -390,22 +438,6 @@ namespace Decompiler.Tools.C2Xml
         public SerializedType VisitTypeQualifier(TypeQualifier typeQualifier)
         {
             return dt;      //$TODO: Ignoring 'const' and 'volatile' for now.
-        }
-
-        public SerializedType VisitEnum(EnumeratorTypeSpec e)
-        {
-            var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(parserState.Constants));
-            return new SerializedEnumType
-            {
-                Name = e.Tag,
-                Values = e.Enums
-                .Select(ee => new SerializedEnumValue
-                {
-                    Name = ee.Name,
-                    Value = enumEvaluator.GetValue(ee.Value),
-                })
-                .ToArray()
-            };
         }
     }
 }

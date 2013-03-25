@@ -42,8 +42,6 @@ namespace Decompiler.Core.Serialization
             return visitor.VisitPointer(this);
         }
 
-        public override int GetSize() { return 4; }//$BUG: hard-wired
-        
 		public override DataType BuildDataType(TypeFactory factory)
 		{
 			return factory.CreatePointer(DataType.BuildDataType(factory), 4);			//$REVIEW: that hard-wired 4 needs a better solution...

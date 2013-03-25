@@ -53,11 +53,5 @@ namespace Decompiler.Core.Serialization
         {
             return visitor.VisitTypeReference(this);
         }
-
-        public override int GetSize()
-        {
-            //$BUGGITY: needs a ParserState.
-            return 4;
-        }
     }
 }

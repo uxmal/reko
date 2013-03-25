@@ -51,8 +51,6 @@ namespace Decompiler.Core.Serialization
             return visitor.VisitPrimitive(this);
         }
 
-        public override int GetSize() { return ByteSize; }
-
 		public override DataType BuildDataType(TypeFactory factory)
 		{
 			return factory.CreatePrimitiveType(Domain, ByteSize);

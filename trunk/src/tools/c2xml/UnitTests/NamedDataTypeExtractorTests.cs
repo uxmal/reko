@@ -34,12 +34,12 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     public class NamedDataTypeExtractorTests
     {
         private NamedDataType nt;
-        private ParserState parserState;
+        private XmlConverter parserState;
 
         [SetUp]
         public void Setup()
         {
-            parserState = new ParserState();
+            parserState = new XmlConverter(null, null);
         }
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)

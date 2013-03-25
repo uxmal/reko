@@ -57,11 +57,6 @@ namespace Decompiler.Core.Serialization
             return visitor.VisitSignature(this);
         }
 
-        public override int GetSize()
-        {
-            return 0;
-        }
-
         public override Types.DataType BuildDataType(Types.TypeFactory factory)
         {
             throw new NotImplementedException();

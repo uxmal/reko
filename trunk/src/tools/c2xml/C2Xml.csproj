@@ -76,6 +76,7 @@
     <Compile Include="ParserState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializedTypeComparer.cs" />
     <Compile Include="TypeSizer.cs" />
     <Compile Include="UnitTests\CConstantEvaluatorTests.cs" />
     <Compile Include="UnitTests\CDirectiveLexerTests.cs" />
