@@ -123,15 +123,21 @@ namespace Decompiler.Tools.C2Xml
             var nt = function.Declarator.Accept(this);
             var parameters =
                 function.Parameters.Select(p => ConvertParameter(p));
+            SerializedArgument ret = null;
+            if (nt.DataType != null)
+            {
+                ret = new SerializedArgument
+                {
+                    Kind = new SerializedRegister { Name = "eax" },       //$REVIEW platform-specific.
+                    Type = nt.DataType,
+                }; 
+            }
             nt.DataType = new SerializedSignature
             {
                 Convention = callingConvention != CTokenType.None
                     ? callingConvention.ToString().ToLower()
                     : null,
-                ReturnValue = new SerializedArgument
-                {
-                    Kind = new SerializedRegister { Name="eax" },       //$REVIEW platform-specific.
-                },
+                    ReturnValue = ret,
                 Arguments = parameters.ToArray(),
             };
             return nt;
@@ -427,7 +433,7 @@ namespace Decompiler.Tools.C2Xml
                 callingConvention = storageClassSpec.Type;
                 break;
             }
-            return null;       //$TODO make use of CDECL.
+            return dt;       //$TODO make use of CDECL.
         }
 
         public SerializedType VisitExtendedDeclspec(ExtendedDeclspec declspec)
