@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Types;
 using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,30 +28,27 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    /// <summary>
-    /// Used for type defs: introduces a new name for a type.
-    /// </summary>
-    public class SerializedTypedef : SerializedType
+    public class SerializedEnumType : SerializedTaggedType
     {
-        [XmlAttribute("name")]
-        public string Name;
+        [XmlElement("member")]
+        public SerializedEnumValue[]  Values;
 
-        public SerializedType DataType;
-
-        public override DataType BuildDataType(TypeFactory factory)
+        public override DataType BuildDataType(Types.TypeFactory factory)
         {
-            var type = DataType.BuildDataType(factory);
             throw new NotImplementedException();
         }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
-            return visitor.VisitTypedef(this);
+            return visitor.VisitEnum(this);
         }
+    }
 
-        public override string ToString()
-        {
-            return string.Format("typedef({0}, {1})", Name, DataType);
-        }
+    public class SerializedEnumValue
+    {
+        [XmlAttribute("name")]
+        public string Name;
+        [XmlAttribute("value")]
+        public int Value;
     }
 }

@@ -44,19 +44,28 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void StWriteStruct()
 		{
-			SerializedStructType str = new SerializedStructType();
-			str.Fields.Add(new SerializedStructField(0, null, new SerializedPrimitiveType(Domain.UnsignedInt, 4)));
-			str.Fields.Add(new SerializedStructField(4, null, new SerializedPrimitiveType(Domain.Real, 8)));
+            SerializedStructType str = new SerializedStructType
+            {
+                Fields = new SerializedStructField[] {
+                    new SerializedStructField(0, null, new SerializedPrimitiveType(Domain.UnsignedInt, 4)),
+			        new SerializedStructField(4, null, new SerializedPrimitiveType(Domain.Real, 8)),
+                }
+            };
 			Assert.AreEqual("struct(0, (0, ?, prim(UnsignedInt,4)), (4, ?, prim(Real,8)))", str.ToString());
 		}
 
 		[Test]
 		public void StReadStruct()
 		{
-			SerializedStructType str = new SerializedStructType();
-			str.ByteSize = 32;
-			str.Fields.Add(new SerializedStructField(0, null, new SerializedPrimitiveType(Domain.SignedInt, 4)));
-			str.Fields.Add(new SerializedStructField(4, null, new SerializedPrimitiveType(Domain.Real, 8)));
+			SerializedStructType str = new SerializedStructType
+            {
+			    ByteSize = 32,
+			    Fields = new SerializedStructField []
+                {
+                    new SerializedStructField(0, null, new SerializedPrimitiveType(Domain.SignedInt, 4)),
+			        new SerializedStructField(4, null, new SerializedPrimitiveType(Domain.Real, 8)),
+                }
+            };
 			StringWriter writer = new StringWriter();
 			XmlTextWriter x = new XmlTextWriter(writer);
 			x.Formatting = Formatting.None;

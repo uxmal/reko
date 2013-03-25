@@ -40,7 +40,6 @@ namespace Decompiler.Core.Serialization
 
         public abstract DataType BuildDataType(TypeFactory factory);
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
-        [Obsolete] public abstract int GetSize();
 
         public static XmlAttributeOverrides GetAttributeOverrides(IEnumerable<Type> typesToDecorate)
         {

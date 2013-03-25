@@ -37,19 +37,30 @@ namespace Decompiler.Tools.C2Xml
         private TextReader rdr;
         private XmlWriter writer;
         private ParserState parserState;
-        private List<SerializedType> types;
         private List<SerializedProcedureBase> procs;
-        private TypeSizer sizer;
 
         public XmlConverter(TextReader rdr, XmlWriter writer)
         {
             this.rdr = rdr;
             this.writer = writer;
             this.parserState = new ParserState();
-            this.types = new List<SerializedType>();
+            this.Types = new List<SerializedType>();
             this.procs = new List<SerializedProcedureBase>();
-            this.sizer = new TypeSizer();
+            this.Sizer = new TypeSizer(this);
+            this.NamedTypes = new Dictionary<string, SerializedType>();
+            StructsSeen = new Dictionary<string, SerializedStructType>();
+            UnionsSeen = new Dictionary<string, SerializedUnionType>();
+            EnumsSeen = new Dictionary<string, SerializedEnumType>();
+            Constants = new Dictionary<string, int>();
         }
+
+        public List<SerializedType> Types { get; private set; }
+        public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
+        public Dictionary<string, SerializedUnionType> UnionsSeen { get; private set; }
+        public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
+        public Dictionary<string, int> Constants { get; private set; }
+        public Dictionary<string, SerializedType> NamedTypes { get; private set; }
+        public TypeSizer Sizer { get; private set; }
 
         public void Convert()
         {
@@ -63,7 +74,7 @@ namespace Decompiler.Tools.C2Xml
 
             var lib = new SerializedLibrary
             {
-                Types = types.ToArray(),
+                Types = Types.ToArray(),
                 Procedures = procs.ToList(),
             };
             var ser = SerializedLibrary.CreateSerializer();
@@ -92,24 +103,8 @@ namespace Decompiler.Tools.C2Xml
                 isTypedef = true;
             }
 
-            var t = declspecs.First() as ComplexTypeSpec;
-            if (t != null)
-            {
-                if (t.Type == CTokenType.Struct)
-                {
-                    types.Add(ConvertStructure(t));
-                }
-                else if (t.Type == CTokenType.Union)
-                {
-                    types.Add(ConvertUnion(t));
-                }
-            }
-            var e = declspecs.First() as EnumeratorTypeSpec;
-            if (e != null)
-            {
-                types.Add(ConvertEnum(e));
-            }
-            var ntde = new NamedDataTypeExtractor(declspecs, parserState);
+         
+            var ntde = new NamedDataTypeExtractor(declspecs, this);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);
@@ -134,84 +129,12 @@ namespace Decompiler.Tools.C2Xml
                         Name = nt.Name,
                         DataType = serType
                     };
-                    typedef.Accept(sizer);
-                    types.Add(typedef);
+                    Types.Add(typedef);
+                    //$REVIEW: do we really need to check for consistence?
+                    NamedTypes[typedef.Name] = serType;
                 }
             }
             return 0;
-        }
-
-        public SerializedType ConvertEnum(EnumeratorTypeSpec e)
-        {
-            var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(parserState.Constants));
-            var listMembers = new List<SerializedEnumValue>();
-            foreach (var item in e.Enums)
-            {
-                var ee = new SerializedEnumValue
-                {
-                    Name = item.Name,
-                    Value = enumEvaluator.GetValue(item.Value),
-                };
-                parserState.Constants.Add(ee.Name, ee.Value);
-                listMembers.Add(ee);
-            }
-            return new SerializedEnumType
-            {
-                Name = e.Tag,
-                Values = listMembers.ToArray()
-            };
-        }
-
-        private SerializedStructType ConvertStructure(ComplexTypeSpec cpxSpec)
-        {
-            int offset = 0;
-            var str = new SerializedStructType
-            {
-                Name = cpxSpec.Name
-            };
-            if (cpxSpec.DeclList == null)
-                return str;     // A lack of fields implies a forward declaration.
-            var fields = str.Fields;
-            foreach (var strspec in cpxSpec.DeclList)
-            {
-                var ntde = new NamedDataTypeExtractor(strspec.SpecQualifierList, parserState);
-                foreach (var declarator in strspec.FieldDeclarators)
-                {
-                    var nt = ntde.GetNameAndType(declarator.Declarator);
-                    fields.Add(new SerializedStructField(
-                        offset,
-                        nt.Name,
-                        nt.DataType));
-                    offset += nt.DataType.Accept(sizer);
-                }
-            }
-            return str;
-        }
-
-        private SerializedType ConvertUnion(ComplexTypeSpec cpxSpec)
-        {
-            var u = new SerializedUnionType
-            {
-                Name = cpxSpec.Name
-            };
-            if (cpxSpec.DeclList == null)
-                return u;
-            var alts = new List<SerializedUnionAlternative>();
-            foreach (var uspec in cpxSpec.DeclList)
-            {
-                var ntde = new NamedDataTypeExtractor (uspec.SpecQualifierList, parserState);
-                foreach (var declarator in uspec.FieldDeclarators)
-                {
-                    var nt = ntde.GetNameAndType(declarator.Declarator);
-                    alts.Add(new SerializedUnionAlternative
-                    {
-                        Name = nt.Name,
-                        Type = nt.DataType,
-                    });
-                }
-            }
-            u.Alternatives = alts.ToArray();
-            return u;
         }
 
         public int VisitDeclSpec(DeclSpec declSpec)

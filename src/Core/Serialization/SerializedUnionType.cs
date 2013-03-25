@@ -31,64 +31,60 @@ namespace Decompiler.Core.Serialization
 {
     public class SerializedUnionType : SerializedTaggedType
     {
-		[XmlAttribute("size")]
+        [XmlAttribute("size")]
         [DefaultValue(0)]
-		public int ByteSize;
+        public int ByteSize;
 
         public SerializedUnionType()
-		{
-		}
+        {
+        }
 
-		[XmlElement("alt", typeof (SerializedUnionAlternative))]
-        public SerializedUnionAlternative[]  Alternatives;
+        [XmlElement("alt", typeof(SerializedUnionAlternative))]
+        public SerializedUnionAlternative[] Alternatives;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitUnion(this);
         }
 
-        public override int GetSize()
+        public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
         {
-            return ByteSize;
-        }
-
-		public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
-		{
-			UnionType u = factory.CreateUnionType(Name, null);
-			foreach (var alt in Alternatives)
-			{
+            UnionType u = factory.CreateUnionType(Name, null);
+            foreach (var alt in Alternatives)
+            {
                 u.Alternatives.Add(new UnionAlternative(alt.Name, alt.Type.BuildDataType(factory)));
             }
-			return u;
-		}
+            return u;
+        }
 
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("struct({0}", ByteSize);
-			foreach (SerializedUnionAlternative alt in Alternatives)
-			{
-				sb.AppendFormat(", ({0}, {1})", alt.Name != null?alt.Name: "?", alt.Type);
-			}
-			sb.Append(")");
-			return sb.ToString();
-		}
-	}
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("union({0}", ByteSize);
+            foreach (SerializedUnionAlternative alt in Alternatives)
+            {
+                sb.AppendFormat(", ({0}, {1})", alt.Name != null ? alt.Name : "?", alt.Type);
+            }
+            sb.Append(")");
+            return sb.ToString();
+        }
+    }
 
-	public class SerializedUnionAlternative
-	{
-		[XmlAttribute("name")]
-		public string Name;
+    public class SerializedUnionAlternative
+    {
+        [XmlAttribute("name")]
+        public string Name;
 
-		public SerializedType Type;
+        public SerializedType Type;
 
         public SerializedUnionAlternative()
-		{
-		}
+        {
+        }
 
-		public SerializedUnionAlternative(string name, SerializedType type)
-		{
-			this.Name = name;
-			this.Type = type;
-		}
-	}}
+        public SerializedUnionAlternative(string name, SerializedType type)
+        {
+            this.Name = name;
+            this.Type = type;
+        }
+    }
+}

@@ -149,7 +149,6 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <struct name=""foo"" />
     <typedef name=""FOO"">
       <struct name=""foo"" />
     </typedef>
@@ -157,6 +156,36 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 </library>";
             RunTest("typedef struct foo FOO;", sExp);
         }
+
+        [Test]
+        public void C2X_ForwardDeclaration_ThenDeclaration()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""FOO"">
+      <struct name=""foo"" />
+    </typedef>
+    <struct name=""foo"">
+      <field offset=""0"" name=""x"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+      <field offset=""4"" name=""y"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+      <field offset=""8"" name=""z"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest(
+                "typedef struct foo FOO;" +
+                "struct foo { int x, y, z; };" 
+                , sExp);
+        }
+
 
         [Test]
         public void C2X_TypeReference()
@@ -201,24 +230,25 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
+    <union name=""u"">
+      <alt name=""i"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </alt>
+      <alt name=""s"">
+        <ptr>
+          <prim domain=""Character"" size=""1"" />
+        </ptr>
+      </alt>
+      <alt name=""f"">
+        <prim domain=""Real"" size=""4"" />
+      </alt>
+    </union>
     <struct name=""tagVariant"">
       <field offset=""0"" name=""type"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
       <field offset=""4"">
-        <union name=""u"">
-          <alt name=""i"">
-            <prim domain=""SignedInt"" size=""4"" />
-          </alt>
-          <alt name=""s"">
-            <ptr>
-              <prim domain=""Character"" size=""1"" />
-            </ptr>
-          </alt>
-          <alt name=""f"">
-            <prim domain=""Real"" size=""4"" />
-          </alt>
-        </union>
+        <union name=""u"" />
       </field>
     </struct>
     <typedef name=""Variant"">
@@ -350,6 +380,34 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                     "Quux = Bar, " +
                 "};",
                 sExp);
+        }
+
+        [Test]
+        public void C2X_AnonymousStruct()
+        {
+            var sExp =
+                @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""Foo"">
+      <field offset=""0"" name=""a"">
+        <struct>
+          <field offset=""0"" name=""x"">
+            <prim domain=""SignedInt"" size=""4"" />
+          </field>
+        </struct>
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest(
+                "struct Foo {" +
+                    "struct { " +
+                        "int x;" +
+                    "} a;" +
+                "};",
+                sExp);
+
         }
     }
 }

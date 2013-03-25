@@ -42,10 +42,5 @@ namespace Decompiler.Core.Serialization
         {
             return visitor.VisitArray(this);
         }
-
-        public override int GetSize()
-        {
-            return ElementType.GetSize() * Length;
-        }
     }
 }

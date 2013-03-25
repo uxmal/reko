@@ -29,37 +29,26 @@ namespace Decompiler.Core.Serialization
 {
 	public class SerializedStructType : SerializedTaggedType
 	{
-		private List<SerializedStructField> fields;
-
 		[XmlAttribute("size")]
         [DefaultValue(0)]
 		public int ByteSize;
 
 		public SerializedStructType()
 		{
-            fields = new List<SerializedStructField>();
 		}
 
 		[XmlElement("field", typeof (SerializedStructField))]
-		public List<SerializedStructField> Fields
-		{
-			get { return fields; }
-		}
+		public SerializedStructField[]  Fields;
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitStructure(this);
         }
 
-        public override int GetSize()
-        {
-            return ByteSize;
-        }
-
 		public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
 		{
 			StructureType str = factory.CreateStructureType(null, 0);
-			foreach (SerializedStructField f in fields)
+			foreach (SerializedStructField f in Fields)
 			{
 				str.Fields.Add(new StructureField(f.Offset, f.Type.BuildDataType(factory), f.Name));
 			}
@@ -74,7 +63,7 @@ namespace Decompiler.Core.Serialization
                 sb.AppendFormat("{0}, ", Name);
             if (ByteSize > 0)
                 sb.AppendFormat("{0}, ", ByteSize);
-			foreach (SerializedStructField f in fields)
+			foreach (SerializedStructField f in Fields)
 			{
 				sb.AppendFormat("({0}, {1}, {2})", f.Offset, f.Name != null?f.Name: "?", f.Type);
 			}
