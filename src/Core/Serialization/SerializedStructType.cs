@@ -27,12 +27,9 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	public class SerializedStructType : SerializedType
+	public class SerializedStructType : SerializedTaggedType
 	{
 		private List<SerializedStructField> fields;
-
-		[XmlAttribute("name")]
-		public string Name;
 
 		[XmlAttribute("size")]
         [DefaultValue(0)]

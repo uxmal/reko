@@ -35,5 +35,6 @@ namespace Decompiler.Core.Serialization
         T VisitTypedef(SerializedTypedef typedef);
         T VisitTypeReference(SerializedTypeReference typeReference);
         T VisitUnion(SerializedUnionType union);
+        T VisitEnum(SerializedEnumType serializedEnumType);
     }
 }

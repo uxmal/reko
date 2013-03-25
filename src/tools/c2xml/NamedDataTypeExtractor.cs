@@ -46,7 +46,7 @@ namespace Decompiler.Tools.C2Xml
             this.specs = specs;
             this.parserState = parserState;
             this.callingConvention = CTokenType.None;
-            this.eval = new CConstantEvaluator();
+            this.eval = new CConstantEvaluator(parserState.Constants);
             foreach (var declspec in specs)
             {
                 dt = declspec.Accept(this);
@@ -392,12 +392,19 @@ namespace Decompiler.Tools.C2Xml
             return dt;      //$TODO: Ignoring 'const' and 'volatile' for now.
         }
 
-        public SerializedType VisitEnum(EnumeratorTypeSpec enumeratorTypeSpec)
+        public SerializedType VisitEnum(EnumeratorTypeSpec e)
         {
-            //$BUGGITYBUG. Need a serialized enum. Gee whillikers.
-            return new SerializedTypeReference
+            var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(parserState.Constants));
+            return new SerializedEnumType
             {
-                TypeName = enumeratorTypeSpec.Tag
+                Name = e.Tag,
+                Values = e.Enums
+                .Select(ee => new SerializedEnumValue
+                {
+                    Name = ee.Name,
+                    Value = enumEvaluator.GetValue(ee.Value),
+                })
+                .ToArray()
             };
         }
     }

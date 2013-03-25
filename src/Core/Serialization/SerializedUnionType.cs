@@ -29,11 +29,8 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    public class SerializedUnionType : SerializedType
+    public class SerializedUnionType : SerializedTaggedType
     {
-		[XmlAttribute("name")]
-		public string Name;
-
 		[XmlAttribute("size")]
         [DefaultValue(0)]
 		public int ByteSize;

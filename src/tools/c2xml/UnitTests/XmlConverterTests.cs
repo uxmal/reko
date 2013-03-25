@@ -306,6 +306,51 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "};",
                 sExp);
         }
+
+        [Test]
+        public void C2X_TypedefEnum()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <enum name=""eFoo"">
+      <member name=""Bar"" value=""1"" />
+      <member name=""Fooie"" value=""2"" />
+    </enum>
+    <typedef name=""Foo"">
+      <enum name=""eFoo"" />
+    </typedef>
+  </Types>
+</library>";
+            RunTest(
+                "typedef enum eFoo {" +
+                    "Bar = 1," +
+                    "Fooie" +
+                "} Foo;",
+                sExp);
+        }
+
+        [Test]
+        public void C2X_ConvertEnum_DerivedValues()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <enum name=""Foo"">
+      <member name=""Bar"" value=""1"" />
+      <member name=""Quux"" value=""1"" />
+    </enum>
+  </Types>
+</library>";
+            RunTest(
+                "enum Foo {" +
+                    "Bar = 1, " +
+                    "Quux = Bar, " +
+                "};",
+                sExp);
+        }
     }
 }
 #endif

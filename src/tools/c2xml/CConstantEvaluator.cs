@@ -27,14 +27,21 @@ namespace Decompiler.Tools.C2Xml
 {
     public class CConstantEvaluator : CExpressionVisitor<object>
     {
+        private Dictionary<string, int> constants;
+
+        public CConstantEvaluator(Dictionary<string, int> constants)
+        {
+            this.constants = constants;
+        }
+    
         public object VisitConstant(ConstExp constExp)
         {
             return constExp.Const;
         }
 
-        public object VisitIdentifier(CIdentifier cIdentifier)
+        public object VisitIdentifier(CIdentifier id)
         {
-            throw new NotImplementedException();
+            return constants[id.Name];
         }
 
         public object VisitApplication(Application application)
@@ -60,8 +67,12 @@ namespace Decompiler.Tools.C2Xml
             {
             default:
                 throw new NotImplementedException("Operation " + bin.Operation);
+            case CTokenType.Pipe:
+                return (int) left | (int) right;
             case CTokenType.Plus:
                 return (int) left + (int) right;
+            case CTokenType.Shl:
+                return (int) left << (int) right;
             case CTokenType.Shr:
                 return (int) left >> (int) right;
             }

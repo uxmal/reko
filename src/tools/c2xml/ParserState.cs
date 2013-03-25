@@ -35,6 +35,8 @@ namespace Decompiler.Tools.C2Xml
             Typedefs = new HashSet<string>();
             StructsSeen = new Dictionary<string, SerializedStructType>();
             UnionsSeen = new Dictionary<string, SerializedUnionType>();
+            EnumsSeen = new Dictionary<string, SerializedEnumType>();
+            Constants = new Dictionary<string, int>();
             alignments = new Stack<int>();
             alignments.Push(8);
             Typedefs.Add("size_t");
@@ -44,6 +46,8 @@ namespace Decompiler.Tools.C2Xml
         public HashSet<string> Typedefs { get; private set; }
         public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
         public Dictionary<string, SerializedUnionType> UnionsSeen { get; private set; }
+        public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
+        public Dictionary<string, int> Constants { get; private set; }
 
         public int Alignment { get { return alignments.Peek(); } }
 
@@ -111,6 +115,11 @@ namespace Decompiler.Tools.C2Xml
                     return false;
                 y = aY.ElementType;
                 return aX.ElementType.Accept(this);
+            }
+
+            public bool VisitEnum(SerializedEnumType e)
+            {
+                throw new NotImplementedException();
             }
 
             public bool VisitSignature(SerializedSignature signature)

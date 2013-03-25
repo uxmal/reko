@@ -68,6 +68,7 @@
     <Compile Include="CParser.cs" />
     <Compile Include="CSyntax.cs" />
     <Compile Include="CSyntaxVisitor.cs" />
+    <Compile Include="EnumEvaluator.cs" />
     <Compile Include="LookaheadLexer.cs" />
     <Compile Include="NamedDataType.cs" />
     <Compile Include="NamedDataTypeExtractor.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="UnitTests\CDirectiveLexerTests.cs" />
     <Compile Include="UnitTests\CLexerTests.cs" />
     <Compile Include="UnitTests\CParserTests.cs" />
+    <Compile Include="UnitTests\EnumEvaluatorTests.cs" />
     <Compile Include="UnitTests\LookAheadLexerTests.cs" />
     <Compile Include="UnitTests\NamedDataTypeExtractorTests.cs" />
     <Compile Include="UnitTests\TypedefTests.cs" />
