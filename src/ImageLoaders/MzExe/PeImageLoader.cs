@@ -198,7 +198,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			short machine = rdr.ReadLeInt16();
             short expectedMagic = GetExpectedMagic(machine);
             arch = CreateArchitecture(machine);
-			platform = new Win32Platform(arch);
+			platform = new Win32Platform(Services, arch);
 
 			sections = rdr.ReadLeInt16();
 			sectionMap = new SortedDictionary<string, Section>();
@@ -397,13 +397,13 @@ namespace Decompiler.ImageLoaders.MzExe
 				if (rvaEntry == 0)
 					break;
 
-                ResolveImportedFunction(id, lib, rvaEntry, addrThunk);
+                ResolveImportedFunction(id, rvaEntry, addrThunk);
 			}
 			return id;
 		}
 
 
-        private void ResolveImportedFunction(ImportDescriptor id, SignatureLibrary lib, uint rvaEntry, Address addrThunk)
+        private void ResolveImportedFunction(ImportDescriptor id, uint rvaEntry, Address addrThunk)
         {
             if (!ImportedFunctionNameSpecified(rvaEntry))
             {
@@ -411,12 +411,7 @@ namespace Decompiler.ImageLoaders.MzExe
                 return;
             }
             string fnName = ReadAsciiString(rvaEntry + 2, 0);
-            if (lib == null)
-            {
-                AddUnresolvedImport(id, fnName);
-                return;
-            }
-            ProcedureSignature sig = lib.Lookup(fnName);
+            ProcedureSignature sig = platform.LookupProcedure(fnName);
             if (sig == null)
             {
                 AddUnresolvedImport(id, fnName);
@@ -437,6 +432,7 @@ namespace Decompiler.ImageLoaders.MzExe
             return (rvaEntry & 0x80000000) == 0;
         }
 
+        [Obsolete("Platform is now respsonisble for looking up functions")]
         protected virtual SignatureLibrary LoadSignatureLibrary(IProcessorArchitecture arch, string dllName)
         {
             try

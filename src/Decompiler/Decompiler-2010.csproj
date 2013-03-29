@@ -211,17 +211,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\ArchitectureElement.cs" />
-    <Compile Include="Configuration\ArchitectureElementCollection.cs" />
-    <Compile Include="Configuration\ArchitectureReferenceElement.cs" />
-    <Compile Include="Configuration\ArchitectureReferenceElementCollection.cs" />
-    <Compile Include="Configuration\DecompilerConfiguration.cs" />
-    <Compile Include="Configuration\OperatingEnvironmentElement.cs" />
-    <Compile Include="Configuration\OperatingEnvironmentElementCollection.cs" />
-    <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
-    <Compile Include="Configuration\LoaderElement.cs" />
-    <Compile Include="Configuration\LoaderElementCollection.cs" />
-    <Compile Include="Configuration\LoaderSectionHandler.cs" />
     <Compile Include="Decompiler.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -344,7 +333,6 @@
     <Compile Include="Gui\Windows\Forms\EditProjectDialog.Designer.cs">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
     <Compile Include="Gui\Windows\Forms\WorkerDialog.cs">
       <SubType>Form</SubType>
     </Compile>

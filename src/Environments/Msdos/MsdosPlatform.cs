@@ -45,6 +45,11 @@ namespace Decompiler.Environments.Msdos
 			return null;
 		}
 
+        public override ProcedureSignature LookupProcedure(string procName)
+        {
+            throw new NotImplementedException();
+        }
+
 		public void LoadRealmodeServices(IProcessorArchitecture arch)
 		{
 			string libPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/realmodeintservices.xml";

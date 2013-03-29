@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Configuration;
+using Decompiler.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +40,11 @@ namespace Decompiler.UnitTests.Mocks
         }
 
         public System.Collections.ICollection GetEnvironments()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OperatingEnvironment GetEnvironment(string envName)
         {
             throw new NotImplementedException();
         }

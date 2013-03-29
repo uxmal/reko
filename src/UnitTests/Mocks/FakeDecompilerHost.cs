@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Configuration;
+using Decompiler.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;

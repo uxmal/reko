@@ -57,6 +57,5 @@ namespace Decompiler.Core
 		/// <param name="addrLoad">The address at which the program image is loaded.</param>
 		/// <param name="entryPoints">Collection into which any found entry points found should be added.</param>
 		public abstract void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations);
-
     }
 }

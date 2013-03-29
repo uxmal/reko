@@ -21,7 +21,7 @@
 using Decompiler.Core.Services;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
-using Decompiler.Configuration;
+using Decompiler.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +44,7 @@ namespace Decompiler.Gui
         DecompilerEventListener CreateDecompilerEventListener();
         InitialPageInteractor CreateInitialPageInteractor();
         ILoadedPageInteractor CreateLoadedPageInteractor();
+        IFileSystemService CreateFileSystemService();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -95,5 +96,10 @@ namespace Decompiler.Gui
             return new LoadedPageInteractor();
         }
 
+        public IFileSystemService CreateFileSystemService()
+        {
+            return new FileSystemServiceImpl();
+        }
+        
     }
 }

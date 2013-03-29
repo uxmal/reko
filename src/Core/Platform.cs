@@ -30,6 +30,8 @@ namespace Decompiler.Core
 		public abstract SystemService FindService(int vector, ProcessorState state);
 
         public abstract string DefaultCallingConvention { get; }
+
+        public abstract ProcedureSignature LookupProcedure(string procName);
     }
 
     public class DefaultPlatform : Platform
@@ -46,6 +48,11 @@ namespace Decompiler.Core
         public override string DefaultCallingConvention
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public override ProcedureSignature LookupProcedure(string procName)
+        {
+            return null;
         }
     }
 

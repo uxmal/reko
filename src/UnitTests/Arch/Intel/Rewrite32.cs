@@ -19,13 +19,18 @@
 #endregion
 
 using Decompiler;
-using Decompiler.Core;
 using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
+using Decompiler.Core;
+using Decompiler.Core.Services;
+using Decompiler.Environments.Win32;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 
 namespace Decompiler.UnitTests.Arch.Intel
@@ -33,6 +38,23 @@ namespace Decompiler.UnitTests.Arch.Intel
 	[TestFixture]
 	public class Rewrite32
 	{
+        private MockRepository repository;
+        private Win32Platform win32;
+        private IntelArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            repository = new MockRepository();
+            var services = repository.Stub<IServiceProvider>();
+            var tlSvc = repository.Stub<ITypeLibraryLoaderService>();
+            services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
+            services.Replay();
+            tlSvc.Replay();
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            win32 = new Decompiler.Environments.Win32.Win32Platform(services, arch);
+        }
+
 		[Test]
 		public void RwAutoArray32()
 		{
@@ -103,8 +125,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 asm.Assemble(new Address(0x10000000), rdr);
                 prog.Image = asm.Image;
             }
-            prog.Platform = new Decompiler.Environments.Win32.Win32Platform(asm.Architecture);
-            prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            prog.Platform = win32;
+            prog.Architecture = arch;
             foreach (var item in asm.ImportThunks)
             {
                 prog.ImportThunks.Add(item.Key, item.Value);

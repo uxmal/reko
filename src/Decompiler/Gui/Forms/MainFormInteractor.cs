@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Configuration;
+using Decompiler.Core.Configuration;
 using Decompiler.Core;
 using Decompiler.Core.Services;
 using Decompiler.Core.Serialization;
@@ -163,6 +163,9 @@ namespace Decompiler.Gui.Forms
 
             srSvc = new SearchResultServiceImpl(new TabControlWindowFrame(form.TabControl, form.FindResultsPage), form.FindResultsList);
             sc.AddService(typeof(ISearchResultService), srSvc);
+
+            var fsSvc = svcFactory.CreateFileSystemService();
+            sc.AddService(typeof(IFileSystemService), fsSvc);
         }
 
         protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
