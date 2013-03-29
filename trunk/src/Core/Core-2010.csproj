@@ -78,6 +78,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -154,6 +155,18 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
+    <Compile Include="Configuration\ArchitectureElement.cs" />
+    <Compile Include="Configuration\ArchitectureElementCollection.cs" />
+    <Compile Include="Configuration\ArchitectureReferenceElement.cs" />
+    <Compile Include="Configuration\ArchitectureReferenceElementCollection.cs" />
+    <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
+    <Compile Include="Configuration\DecompilerConfiguration.cs" />
+    <Compile Include="Configuration\LoaderElement.cs" />
+    <Compile Include="Configuration\LoaderElementCollection.cs" />
+    <Compile Include="Configuration\LoaderSectionHandler.cs" />
+    <Compile Include="Configuration\OperatingEnvironmentElement.cs" />
+    <Compile Include="Configuration\OperatingEnvironmentElementCollection.cs" />
+    <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="Expressions\Application.cs" />
     <Compile Include="Expressions\ArrayAccess.cs" />
@@ -495,6 +508,8 @@
     </Compile>
     <Compile Include="Serialization\ProcedureSerializer.cs" />
     <Compile Include="Services\IArchiveBrowserService.cs" />
+    <Compile Include="Services\IFileSystemService.cs" />
+    <Compile Include="Services\ITypeLibraryLoaderService.cs" />
     <Compile Include="SignatureBuilder.cs" />
     <Compile Include="SignatureLibrary.cs">
       <SubType>Code</SubType>

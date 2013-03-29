@@ -37,7 +37,7 @@ namespace Decompiler.Core.Serialization
         [XmlElement("default")]
         public SerializedLibraryDefaults Defaults;
 
-        [XmlElement("types")]
+        [XmlArray("types")]
         public SerializedType[] Types;
 
         [XmlElement("procedure", typeof(SerializedProcedure))]

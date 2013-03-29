@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
 		[Test]
-		public void NextPhase_AdvanceToNextInteractor()
+		public void MainForm_NextPhase_AdvanceToNextInteractor()
 		{
             Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
 
         [Test]
-        public void Save()
+        public void MainForm_Save()
         {
             Given_MainFormInteractor();
             repository.ReplayAll();
@@ -235,7 +235,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void FindAllProcedures_NoLoadedProgram_QueryStatusDisnabled()
+        public void MainForm_FindAllProcedures_NoLoadedProgram_QueryStatusDisnabled()
         {
             Given_MainFormInteractor();
             repository.ReplayAll();
@@ -248,7 +248,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
 
         [Test]
-        public void FindAllProcedures_LoadedProgram_QueryStatusEnabled()
+        public void MainForm_FindAllProcedures_LoadedProgram_QueryStatusEnabled()
         {
             Given_MainFormInteractor();
             repository.ReplayAll();

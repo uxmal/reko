@@ -19,19 +19,25 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using System;
+using System.IO;
 
 namespace Decompiler.Environments.Win32
 {
 	public class Win32Platform : Platform
 	{
-		private IProcessorArchitecture arch;
+        private IServiceProvider services;
+        private IProcessorArchitecture arch;
 		private SystemService int3svc;
+        private SignatureLibrary TypeLib;
 
-		public Win32Platform(IProcessorArchitecture arch)
+		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch)
 		{
+            this.services = services;
 			this.arch = arch;
             int3svc = new SystemService
             {
@@ -44,7 +50,16 @@ namespace Decompiler.Environments.Win32
                 Signature = new ProcedureSignature(null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
-		}
+            var envCfg = services.RequireService<IDecompilerConfigurationService>().GetEnvironment("Win32");
+            this.TypeLib = services
+                .RequireService<ITypeLibraryLoaderService>()
+                .LoadLibrary(arch, envCfg.TypeLibraryName);
+        }
+
+        public override ProcedureSignature LookupProcedure(string procName)
+        {
+ 	        throw new NotImplementedException();
+        }
 
 		public override SystemService FindService(int vector, ProcessorState state)
 		{

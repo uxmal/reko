@@ -36,6 +36,11 @@ namespace Decompiler.UnitTests.Mocks
         {
             get { throw new NotImplementedException(); }
         }
+
+        public override ProcedureSignature LookupProcedure(string procName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
