@@ -47,7 +47,11 @@ namespace Decompiler.Tools.C2Xml
             this.Types = new List<SerializedType>();
             this.procs = new List<SerializedProcedureBase>();
             this.Sizer = new TypeSizer(this);
-            this.NamedTypes = new Dictionary<string, SerializedType>();
+            this.NamedTypes = new Dictionary<string, SerializedType>
+            {
+                { "size_t", new SerializedPrimitiveType { Domain=Domain.UnsignedInt, ByteSize=4 } },    //$BUGBUG: arch-dependent!
+                { "va_list", new SerializedPrimitiveType { Domain=Domain.Pointer, ByteSize=4 } }, //$BUGBUG: arch-dependent!
+            };
             StructsSeen = new Dictionary<string, SerializedStructType>();
             UnionsSeen = new Dictionary<string, SerializedUnionType>();
             EnumsSeen = new Dictionary<string, SerializedEnumType>();

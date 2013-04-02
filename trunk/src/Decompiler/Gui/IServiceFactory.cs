@@ -44,7 +44,7 @@ namespace Decompiler.Gui
         DecompilerEventListener CreateDecompilerEventListener();
         InitialPageInteractor CreateInitialPageInteractor();
         ILoadedPageInteractor CreateLoadedPageInteractor();
-        IFileSystemService CreateFileSystemService();
+        ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -96,10 +96,9 @@ namespace Decompiler.Gui
             return new LoadedPageInteractor();
         }
 
-        public IFileSystemService CreateFileSystemService()
+        public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()
         {
-            return new FileSystemServiceImpl();
+            return new TypeLibraryLoaderServiceImpl();
         }
-        
     }
 }

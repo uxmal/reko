@@ -34,10 +34,10 @@ namespace Decompiler.Tools.C2Xml
         DeclSpecVisitor<SerializedType>
     {
         private IEnumerable<DeclSpec> specs;
+        private XmlConverter converter;
         private SerializedType dt;
         private Domain domain;
         private int byteSize;
-        private XmlConverter converter;
         private CTokenType callingConvention;
         private CConstantEvaluator eval;
 
@@ -56,9 +56,13 @@ namespace Decompiler.Tools.C2Xml
         public NamedDataType GetNameAndType(Declarator declarator)
         {
             if (declarator != null)
+            {
                 return declarator.Accept(this);
+            }
             else
+            {
                 return new NamedDataType { DataType = dt };
+            }
         }
 
         public NamedDataType VisitId(IdDeclarator id)
@@ -103,7 +107,8 @@ namespace Decompiler.Tools.C2Xml
             NamedDataType nt;
             if (pointer.Pointee != null)
             {
-                nt = pointer.Pointee.Accept(this);
+                var ntde = new NamedDataTypeExtractor(specs, converter, false);
+                nt = pointer.Pointee.Accept(ntde);
             }
             else 
             {
@@ -384,7 +389,7 @@ namespace Decompiler.Tools.C2Xml
                 {
                     var nt = ntde.GetNameAndType(declarator);
                     var rawSize = nt.DataType.Accept(converter.Sizer);
-                    offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes.
+                    offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))
                     yield return new SerializedStructField
                     {
                         Offset = offset,

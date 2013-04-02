@@ -411,6 +411,35 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 sExp);
 
         }
+
+        [Test]
+        public void C2X_FunctionWithStackParameters()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""foo"">
+    <signature convention=""__stdcall"">
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+        <reg>eax</reg>
+      </return>
+      <arg name=""bar"">
+        <prim domain=""SignedInt"" size=""4"" />
+        <stack size=""4"" />
+      </arg>
+      <arg name=""foo"">
+        <ptr>
+          <prim domain=""Character"" size=""1"" />
+        </ptr>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest("int __stdcall foo(int bar, char * foo);",
+                sExp);
+        }
     }
 }
 #endif

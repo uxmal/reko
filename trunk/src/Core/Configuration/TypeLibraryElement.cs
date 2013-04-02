@@ -18,36 +18,26 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Core.Configuration
 {
-    public class SerializedEnumType : SerializedTaggedType
+    public interface TypeLibrary
     {
-        [XmlElement("member")]
-        public SerializedEnumValue[]  Values;
-
-        public override DataType BuildDataType(Types.TypeFactory factory)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
-        {
-            return visitor.VisitEnum(this);
-        }
+        string Name { get; }
     }
 
-    public class SerializedEnumValue
+    public class TypeLibraryElement : ConfigurationElement, TypeLibrary
     {
-        [XmlAttribute("name")]
-        public string Name;
-        [XmlAttribute("value")]
-        public int Value;
+        [ConfigurationProperty("Name", IsRequired = true)]
+        public string Name
+        {
+            get { return (string) this["Name"]; }
+            set { this["Name"] = value; }
+        }
     }
 }

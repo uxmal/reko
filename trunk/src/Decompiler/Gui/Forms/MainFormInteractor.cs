@@ -164,8 +164,8 @@ namespace Decompiler.Gui.Forms
             srSvc = new SearchResultServiceImpl(new TabControlWindowFrame(form.TabControl, form.FindResultsPage), form.FindResultsList);
             sc.AddService(typeof(ISearchResultService), srSvc);
 
-            var fsSvc = svcFactory.CreateFileSystemService();
-            sc.AddService(typeof(IFileSystemService), fsSvc);
+            var tlSvc = svcFactory.CreateTypeLibraryLoaderService();
+            sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
         }
 
         protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)

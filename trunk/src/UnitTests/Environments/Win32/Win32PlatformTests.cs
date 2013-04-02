@@ -94,10 +94,11 @@ namespace Decompiler.UnitTests.Environments.Win32
                 
             };
             var dcSvc = repository.Stub<IDecompilerConfigurationService>();
-            var opEnv = new OperatingEnvironmentElement
+            var opEnv = new OperatingEnvironmentElement();
+            opEnv.TypeLibraries.Add(new TypeLibraryElement
             {
-                TypeLibraryName = "win32.xml"
-            };
+                Name = "win32.xml"
+            });
             dcSvc.Expect(d => d.GetEnvironment("Win32")).Return(opEnv);
             sc.AddService<IDecompilerConfigurationService>(dcSvc);
         }
