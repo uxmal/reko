@@ -128,9 +128,11 @@ namespace Decompiler.Gui.Windows.Forms
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanProgram();
             });
-
-            var memSvc = Site.RequireService<IMemoryViewService>();
-            memSvc.ViewImage(Decompiler.Program.Image);
+            if (Decompiler.Program != null)
+            {
+                var memSvc = Site.RequireService<IMemoryViewService>();
+                memSvc.ViewImage(Decompiler.Program.Image);
+            }
             PopulateBrowserServiceWithSegments();
         }
 

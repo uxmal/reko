@@ -30,12 +30,16 @@ namespace Decompiler.Core.Configuration
         string Name { get; }
         string Description { get; }
         string TypeName { get; }
-        string TypeLibraryName { get; }
-        ArchitectureReferenceElementCollection ArchitectureReferences { get; }
+        TypeLibraryElementCollection TypeLibraries { get; }
     }
 
     public class OperatingEnvironmentElement : ConfigurationElement, OperatingEnvironment
     {
+        public OperatingEnvironmentElement()
+        {
+            this["TypeLibraries"] = new TypeLibraryElementCollection();
+        }
+
         [ConfigurationProperty("Name", IsRequired = true)]
         public string Name
         {
@@ -57,17 +61,12 @@ namespace Decompiler.Core.Configuration
             set { this["Type"] = value; }
         }
 
-        [ConfigurationProperty("TypeLibrary", IsRequired = false)]
-        public string TypeLibraryName
+        [ConfigurationProperty("TypeLibraries", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationCollection(typeof(TypeLibraryElement))]
+        public TypeLibraryElementCollection TypeLibraries
         {
-            get { return (string) this["TypeLibrary"]; }
-            set { this["TypeLibrary"] = value; }
-        }
-
-        [ConfigurationProperty("", IsDefaultCollection = true, IsRequired = true)]
-        public ArchitectureReferenceElementCollection ArchitectureReferences
-        {
-            get { return (ArchitectureReferenceElementCollection) this[""]; }
+            get { return (TypeLibraryElementCollection) this["TypeLibraries"]; }
+            set { this["TypeLibraries"] = value; }
         }
     }
 }

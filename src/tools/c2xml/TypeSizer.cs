@@ -72,9 +72,12 @@ namespace Decompiler.Tools.C2Xml
 
         public int VisitStructure(SerializedStructType structure)
         {
-            if (structure.Fields == null)
-                return this.tagSizes[structure];
             var size = 0;
+            if (structure.Fields == null)
+            {
+                this.tagSizes.TryGetValue(structure, out size);
+                return size;
+            }
             foreach (var field in structure.Fields)
             {
                 size += field.Type.Accept(this);

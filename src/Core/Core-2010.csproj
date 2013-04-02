@@ -167,6 +167,8 @@
     <Compile Include="Configuration\OperatingEnvironmentElement.cs" />
     <Compile Include="Configuration\OperatingEnvironmentElementCollection.cs" />
     <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
+    <Compile Include="Configuration\TypeLibraryElement.cs" />
+    <Compile Include="Configuration\TypeLibraryElementCollection.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="Expressions\Application.cs" />
     <Compile Include="Expressions\ArrayAccess.cs" />

@@ -25,6 +25,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Decompiler.Environments.Win32
 {
@@ -33,7 +34,7 @@ namespace Decompiler.Environments.Win32
         private IServiceProvider services;
         private IProcessorArchitecture arch;
 		private SystemService int3svc;
-        private SignatureLibrary TypeLib;
+        private SignatureLibrary [] TypeLibs;
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch)
 		{
@@ -50,10 +51,11 @@ namespace Decompiler.Environments.Win32
                 Signature = new ProcedureSignature(null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
-            var envCfg = services.RequireService<IDecompilerConfigurationService>().GetEnvironment("Win32");
-            this.TypeLib = services
-                .RequireService<ITypeLibraryLoaderService>()
-                .LoadLibrary(arch, envCfg.TypeLibraryName);
+            var envCfg = services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
+            var tlSvc = services.RequireService<ITypeLibraryLoaderService>();
+            this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
+                .OfType<TypeLibrary>()
+                .Select(tl => tlSvc.LoadLibrary(arch, tl.Name)).ToArray();
         }
 
         public override ProcedureSignature LookupProcedure(string procName)

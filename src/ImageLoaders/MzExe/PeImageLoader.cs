@@ -381,12 +381,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			id.DllName = ReadAsciiString(rdr.ReadLeUInt32(), 0);		// DLL name
 			id.RvaThunks = rdr.ReadLeUInt32();		// first thunk
 
-            SignatureLibrary lib = LoadSignatureLibrary(arch, id.DllName);
-            if (lib == null)
-            {
-                Services.GetService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
-                    new Diagnostic(string.Format("Unable to locate signature library for {0}.", id.DllName)));
-            }
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
 			ImageReader rdrThunks  = imgLoaded.CreateReader(id.RvaThunks);
 			for (;;)
