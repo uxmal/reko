@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Replay();
             tlSvc.Replay();
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             win32 = new Decompiler.Environments.Win32.Win32Platform(services, arch);
         }
 

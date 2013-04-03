@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildTest32(Action<IntelAssembler> m)
         {
-            BuildTest(new IntelArchitecture(ProcessorMode.ProtectedFlat), new Address(0x10000), new FakePlatform(), m);
+            BuildTest(new IntelArchitecture(ProcessorMode.Protected32), new Address(0x10000), new FakePlatform(), m);
         }
 
         private void BuildTest16(Action<IntelAssembler> m)
@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)
         {
-            this.arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            this.arch = new IntelArchitecture(ProcessorMode.Protected32);
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();

@@ -38,6 +38,57 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
 		}
 
+        private IntelInstruction Disassemble16(params byte[] bytes)
+        {
+            ProgramImage img = new ProgramImage(new Address(0xC00, 0), bytes);
+            ImageReader rdr = img.CreateReader(img.BaseAddress);
+            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            return dasm.Disassemble();
+        }
+
+        private IntelInstruction Disassemble32(params byte[] bytes)
+        {
+            var img = new ProgramImage(new Address(0x10000), bytes);
+            var rdr = img.CreateReader(img.BaseAddress);
+            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            return dasm.Disassemble();
+        }
+
+        private IntelInstruction Disassemble64(params byte[] bytes)
+        {
+            var img = new ProgramImage(new Address(0x10000), bytes);
+            var rdr = img.CreateReader(img.BaseAddress);
+            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+            return dasm.Disassemble();
+        }
+
+        private void CreateDisassembler16(IntelTextAssembler asm)
+        {
+            dasm = new IntelDisassembler(
+                asm.Image.CreateReader(asm.Image.BaseAddress),
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                false);
+        }
+
+        private void CreateDisassembler32(IntelTextAssembler asm)
+        {
+            dasm = new IntelDisassembler(
+                asm.Image.CreateReader(asm.Image.BaseAddress),
+                PrimitiveType.Word32,
+                PrimitiveType.Word32,
+                false);
+        }
+
+        private void CreateDisassembler16(ImageReader rdr)
+        {
+            dasm = new IntelDisassembler(
+                rdr,
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                false);
+        }
+
 		[Test]
 		public void DisassembleSequence()
 		{
@@ -53,7 +104,7 @@ foo:
 	jnz		foo
 ");
 
-            CreateDisassembler(asm, PrimitiveType.Word16);
+            CreateDisassembler16(asm);
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i != 5; ++i)
 			{
@@ -72,11 +123,6 @@ foo:
 				s);
 		}
 
-        private void CreateDisassembler(IntelTextAssembler asm, PrimitiveType width)
-        {
-            dasm = new IntelDisassembler(asm.Image.CreateReader(asm.Image.BaseAddress), width);
-        }
-
 		[Test]
 		public void SegmentOverrides()
 		{
@@ -89,7 +135,7 @@ foo:
 				"		mov	ax,[bx+4]\r\n" +
 				"		mov cx,cs:[si+4]\r\n");
 
-            CreateDisassembler(asm, PrimitiveType.Word16);
+            CreateDisassembler16(asm);
             IntelInstruction[] instrs = new IntelInstruction[3];
 			for (int i = 0; i != instrs.Length; ++i)
 			{
@@ -115,7 +161,7 @@ foo:
 				"rcl	ax,1\r\n");
 
             ProgramImage img = asm.Image;
-			IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
+			CreateDisassembler16(img.CreateReader(img.BaseAddress));
 			IntelInstruction [] instrs = new IntelInstruction[4];
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i != instrs.Length; ++i)
@@ -146,7 +192,7 @@ foo		proc
 		movsx	ebx,bx
 		movzx	ax,byte ptr [bp+04]
 ");
-            CreateDisassembler(asm, PrimitiveType.Word16);
+            CreateDisassembler16(asm);
             StringBuilder sb = new StringBuilder();
 			for (int i = 0; i != 4; ++i)
 			{
@@ -170,7 +216,7 @@ movzx	ax,byte ptr [bp+04]
 				@"	.i386
 	mov ebx,[edi*2]
 ");
-            CreateDisassembler(asm, PrimitiveType.Word32);
+            CreateDisassembler32(asm);
             IntelInstruction instr = dasm.Disassemble();
 			MemoryOperand mem = (MemoryOperand) instr.op2;
 			Assert.AreEqual(2, mem.Scale);
@@ -189,7 +235,7 @@ movzx	ax,byte ptr [bp+04]
                 {
                     asm.Assemble(new Address(0xC32, 0), rdr);
                 }
-				CreateDisassembler(asm, PrimitiveType.Word16);
+				CreateDisassembler16(asm);
 				while (asm.Image.IsValidAddress(dasm.Address))
 				{
 					IntelInstruction instr = dasm.Disassemble();
@@ -202,11 +248,7 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void DisSignedByte()
 		{
-			byte [] image = new byte [] { 0x83, 0xC6, 0x1 };   // add si,+01
-			ProgramImage img = new ProgramImage(new Address(0xC00, 0), image);
-			ImageReader rdr = img.CreateReader(img.BaseAddress);
-			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
-			IntelInstruction instr = dasm.Disassemble();
+            var instr = Disassemble16(0x83, 0xC6, 0x1);  // add si,+01
 			Assert.AreEqual("add\tsi,01", instr.ToString());
 			Assert.AreEqual(PrimitiveType.Word16, instr.op1.Width);
 			Assert.AreEqual(PrimitiveType.Byte, instr.op2.Width);
@@ -216,11 +258,7 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void DisLesBxStackArg()
 		{
-			byte [] image = new byte [] { 0xC4, 0x5E, 0x6 };		// les bx,[bp+06]
-			ProgramImage img = new ProgramImage(new Address(0x0C00, 0), image);
-			ImageReader rdr = img.CreateReader(img.BaseAddress);
-			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
-			IntelInstruction instr = dasm.Disassemble();
+			var instr = Disassemble16(0xC4, 0x5E, 0x6);		// les bx,[bp+06]
 			Assert.AreEqual("les\tbx,[bp+06]", instr.ToString());
 			Assert.AreSame(PrimitiveType.Pointer32, instr.op2.Width);
 		}
@@ -239,13 +277,9 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void Bswap()
 		{
-			byte [] image = new byte[] { 0x0F, 0xC8, 0x0F, 0xCF };		// bswap eax, bswap edi
-			ProgramImage img = new ProgramImage(new Address(0x01000000), image);
-			ImageReader rdr = img.CreateReader(img.BaseAddress);
-			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word32);
-			IntelInstruction instr = dasm.Disassemble();
+			var instr = Disassemble32(0x0F, 0xC8);;		// bswap eax
 			Assert.AreEqual("bswap\teax", instr.ToString());
-			instr = dasm.Disassemble();
+            instr = Disassemble32(0x0F, 0xCF);       //  bswap edi
 			Assert.AreEqual("bswap\tedi", instr.ToString());
 		}
 
@@ -256,7 +290,7 @@ movzx	ax,byte ptr [bp+04]
 			ProgramImage img = new ProgramImage(new Address(0x00100000), image);
 			img.Relocations.AddPointerReference(0x00100001u - img.BaseAddress.Linear, 0x12345678);
 			ImageReader rdr = img.CreateReader(img.BaseAddress);
-			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word32);
+            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
 			IntelInstruction instr = dasm.Disassemble();
 			Assert.AreEqual("mov\teax,12345678", instr.ToString());
 			Assert.AreEqual("ptr32", instr.op2.Width.ToString());
@@ -269,7 +303,7 @@ movzx	ax,byte ptr [bp+04]
 			ProgramImage img = new ProgramImage(new Address(0x900, 0), image);
 			img.Relocations.AddSegmentReference(5, 0x0800);
 			ImageReader rdr = img.CreateReader(img.BaseAddress);
-			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
+			CreateDisassembler16(rdr);
 			IntelInstruction instr = dasm.Disassemble();
 			Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());
 			Assert.AreEqual("selector", instr.op2.Width.ToString());
@@ -278,11 +312,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void TestWithImmediateOperands()
         {
-            byte[] image = new byte[] { 0xF6, 0x06, 0x26, 0x54, 0x01 };     // test byte ptr [5426],01
-            ProgramImage img = new ProgramImage(new Address(0x900, 0), image);
-            ImageReader rdr = img.CreateReader(img.BaseAddress);
-            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
-            IntelInstruction instr = dasm.Disassemble();
+            var instr = Disassemble16( 0xF6, 0x06, 0x26, 0x54, 0x01);     // test byte ptr [5426],01
             Assert.AreEqual("test\tbyte ptr [5426],01", instr.ToString());
             Assert.AreSame(PrimitiveType.Byte, instr.op1.Width);
             Assert.AreSame(PrimitiveType.Byte, instr.op2.Width);
@@ -292,11 +322,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void RelativeCallTest()
         {
-            byte []image = new byte[] { 0xE8, 0x00, 0xF0 };
-            ProgramImage img = new ProgramImage(new Address(0xC00, 0x0000), image);
-            ImageReader rdr = img.CreateReader(img.BaseAddress);
-            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
-            IntelInstruction instr = dasm.Disassemble();
+            var instr = Disassemble16( 0xE8, 0x00, 0xF0);
             Assert.AreEqual("call\tF003", instr.ToString());
             Assert.AreSame(PrimitiveType.Word16, instr.op1.Width);
         }
@@ -304,22 +330,14 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void FarCall()
         {
-            byte[] image = new byte[] { 0x9A, 0x78, 0x56, 0x34, 0x12, 0x90, 0x90 };
-            var img = new ProgramImage(new Address(0x0C00, 0x0000), image);
-            var rdr = img.CreateReader(img.BaseAddress);
-            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
-            var instr = dasm.Disassemble();
+            var instr = Disassemble16(0x9A, 0x78, 0x56, 0x34, 0x12, 0x90, 0x90 );
             Assert.AreEqual("call\tfar 1234:5678", instr.ToString());
         }
 
         [Test]
         public void Xlat16()
         {
-            byte[] image = new byte[] { 0xD7 };
-            var img = new ProgramImage(new Address(0x0C00, 0x0000), image);
-            var rdr = img.CreateReader(img.BaseAddress);
-            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
-            var instr = dasm.Disassemble();
+            var instr = Disassemble16(0xD7);
             Assert.AreEqual("xlat\t", instr.ToString());
             Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
             Assert.AreEqual(PrimitiveType.Word16, instr.addrWidth);
@@ -329,11 +347,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void Xlat32()
         {
-            byte[] image = new byte[] { 0xD7 };
-            var img = new ProgramImage(new Address(0x0C00, 0x0000), image);
-            var rdr = img.CreateReader(img.BaseAddress);
-            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32);
-            var instr = dasm.Disassemble();
+            var instr = Disassemble32( 0xD7 );
             Assert.AreEqual("xlat\t", instr.ToString());
             Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
             Assert.AreEqual(PrimitiveType.Word32, instr.addrWidth);
@@ -342,12 +356,43 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void Hlt()
         {
-            byte[] image = new byte[] { 0xF4 };
-            var img = new ProgramImage(new Address(0xC000, 0x0000), image);
-            var rdr = img.CreateReader(img.BaseAddress);
-            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32);
-            var instr = dasm.Disassemble();
+            var instr = Disassemble16(0xF4);
             Assert.AreEqual("hlt\t", instr.ToString());
+        }
+
+        [Test]
+        public void X86_64_rexW()
+        {
+            var instr = Disassemble64(0x48, 0x8D, 0x54, 0x24, 0x20);
+            Assert.AreEqual("lea\trdx,[rsp+20]", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_X86_64_rexWR()
+        {
+            var instr = Disassemble64(0x4C, 0x8D, 0x54, 0x24, 0x20);
+            Assert.AreEqual("lea\tr10,[rsp+20]", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_X86_64_rexWB()
+        {
+            var instr = Disassemble64(0x49, 0x8D, 0x54, 0x24, 0x20);
+            Assert.AreEqual("lea\trdx,[r12+20]", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_X86_64_rexR()
+        {
+            var instr = Disassemble64(0x44, 0x33, 0xC0);
+            Assert.AreEqual("xor\tr8d,eax", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_X86_64_rexRB()
+        {
+            var instr = Disassemble64(0x45, 0x33, 0xC0);
+            Assert.AreEqual("xor\tr8d,r8d", instr.ToString());
         }
 	}
 }

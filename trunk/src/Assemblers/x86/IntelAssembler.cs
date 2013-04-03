@@ -1036,7 +1036,7 @@ namespace Decompiler.Assemblers.x86
 
         public void i386()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             SetDefaultWordWidth(PrimitiveType.Word32);
         }
 

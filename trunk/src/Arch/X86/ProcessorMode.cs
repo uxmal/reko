@@ -37,7 +37,7 @@ namespace Decompiler.Arch.X86
         //public static readonly ProcessorMode None = new ProcessorMode(null, null, null);
         public static readonly ProcessorMode Real = new RealMode();
         public static readonly ProcessorMode ProtectedSegmented = new SegmentedMode();
-        public static readonly ProcessorMode ProtectedFlat = new FlatMode();
+        public static readonly ProcessorMode Protected32 = new FlatMode32();
         public static readonly ProcessorMode Protected64 = new FlatMode64();
 
         protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
@@ -81,14 +81,16 @@ namespace Decompiler.Arch.X86
             get { return Registers.sp; }
         }
 
+        public abstract IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses);
+
+        public abstract IntelDisassembler CreateDisassembler(ImageReader rdr);
+        
         public virtual Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             var sp = frame.EnsureRegister(Registers.sp);
             var ss = frame.EnsureRegister(Registers.ss);
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
-
-        public abstract IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses);
 
         public abstract Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state);
 
@@ -139,6 +141,11 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        {
+            return new IntelDisassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+        }
+
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
@@ -159,15 +166,20 @@ namespace Decompiler.Arch.X86
             throw new NotImplementedException();
         }
 
+        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        {
+            return new IntelDisassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+        }
+
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
     }
 
-    internal class FlatMode : ProcessorMode
+    internal class FlatMode32 : ProcessorMode
     {
-        internal FlatMode()
+        internal FlatMode32()
             : base(PrimitiveType.Word32, PrimitiveType.Pointer32, PrimitiveType.Pointer32)
         {
         }
@@ -197,6 +209,11 @@ namespace Decompiler.Arch.X86
                         yield return linAddrCall;
                 }
             }
+        }
+
+        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        {
+            return new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -236,6 +253,11 @@ namespace Decompiler.Arch.X86
         public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
         {
             throw new NotImplementedException();
+        }
+
+        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        {
+            return new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)

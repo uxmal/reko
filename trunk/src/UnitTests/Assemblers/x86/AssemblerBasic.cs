@@ -350,7 +350,11 @@ foo		endp
         {
             Address addr = new Address(0x0C00, 0);
             asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
-            Disassembler dasm = new IntelDisassembler(asm.Image.CreateReader(addr), PrimitiveType.Word16);
+            Disassembler dasm = new IntelDisassembler(
+                asm.Image.CreateReader(addr),
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                false);
             Assert.AreEqual("mov\tword ptr [0400],1234", dasm.DisassembleInstruction().ToString());
         }
 

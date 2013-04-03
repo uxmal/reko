@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Environments.Win32
         {
             repository = new MockRepository();
             sc = new ServiceContainer();
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
         }
 
         [Test]

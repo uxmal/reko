@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             asm = new IntelAssembler(arch, new Address(0x10000), new List<EntryPoint>());
             Procedure proc = new Procedure("test", arch.CreateFrame());
             orw = new OperandRewriter(arch, proc.Frame, null);
@@ -121,7 +121,11 @@ namespace Decompiler.UnitTests.Arch.Intel
         private FstswChainMatcher GetMatcher()
         {
             ProgramImage image = asm.GetImage();
-            IntelDisassembler dasm = new IntelDisassembler(image.CreateReader(0), PrimitiveType.Word32);
+            IntelDisassembler dasm = new IntelDisassembler(
+                image.CreateReader(0),
+                PrimitiveType.Word32,
+                PrimitiveType.Word32,
+                false);
             instrs = new List<IntelInstruction>();
             while (image.IsValidAddress(dasm.Address))
             {

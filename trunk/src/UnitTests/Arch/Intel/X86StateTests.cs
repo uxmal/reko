@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void OnBeforeCall_DecrementStackRegister()
         {
-            var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
             var state = new X86State(arch);
             var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void StackUnderflow_ReportError()
         {
-            var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
             string reportedError = null;
             var state = new X86State(arch)
             {

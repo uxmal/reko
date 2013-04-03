@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		public IntelRegisterTests()
 		{
-			arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+			arch = new IntelArchitecture(ProcessorMode.Protected32);
 		}
 
 		[Test]

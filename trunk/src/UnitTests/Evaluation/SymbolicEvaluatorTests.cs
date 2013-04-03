@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Evaluation
         [SetUp]
         public void Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             frame = new Frame(arch.FramePointerType);
         }
 

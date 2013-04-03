@@ -92,7 +92,7 @@ namespace Decompiler.Arch.X86
                 return new ProcedureConstant(arch.PointerType, ppp);
 
             Expression expr = EffectiveAddressExpression(mem, state);
-            if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+            if (arch.ProcessorMode != ProcessorMode.Protected32)
             {
                 Expression seg = ReplaceCodeSegment(mem.DefaultSegment, state);
                 if (seg == null)
@@ -112,7 +112,7 @@ namespace Decompiler.Arch.X86
 
         public MemoryAccess StackAccess(Expression expr, DataType dt)
         {
-            if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+            if (arch.ProcessorMode != ProcessorMode.Protected32)
             {
                 return new SegmentedAccess(MemoryIdentifier.GlobalMemory, AluRegister(Registers.ss), expr, dt);
             }

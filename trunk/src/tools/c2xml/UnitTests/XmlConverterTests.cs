@@ -540,6 +540,41 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "int foo(HANDLE bar);",
                 sExp);
         }
+
+        [Test]
+        public void C2X_fn_with_typedef_short()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""SHORT"">
+      <prim domain=""SignedInt"" size=""2"" />
+    </typedef>
+  </Types>
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <type>SHORT</type>
+        <reg>eax</reg>
+      </return>
+      <arg name=""inp"">
+        <type>SHORT</type>
+        <stack size=""4"" />
+      </arg>
+      <arg name=""outp"">
+        <ptr>
+          <type>SHORT</type>
+        </ptr>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(
+                "typedef short SHORT;" +
+                "SHORT foo(SHORT inp, SHORT * outp);",
+                sExp);
+        }
     }
 }
 #endif

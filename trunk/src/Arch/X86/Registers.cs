@@ -161,6 +161,23 @@ namespace Decompiler.Arch.X86
             rbp = new Intel64Register("rbp", 5, 13, -1, -1);
             rsi = new Intel64Register("rsi", 6, 14, -1, -1);
             rdi = new Intel64Register("rdi", 7, 15, -1, -1);
+            r8 = new Intel64Register("r8", 8, 12, -1, -1);
+            r9 = new Intel64Register("r9", 9, 13, -1, -1);
+            r10 = new Intel64Register("r10", 10, 14, -1, -1);
+            r11 = new Intel64Register("r11", 11, 15, -1, -1);
+            r12 = new Intel64Register("r12", 12, 15, -1, -1);
+            r13 = new Intel64Register("r13", 13, 15, -1, -1);
+            r14 = new Intel64Register("r14", 14, 15, -1, -1);
+            r15 = new Intel64Register("r15", 15, 15, -1, -1);
+            r8d = new Intel64Register("r8d", 8, 12, -1, -1);
+            r9d = new Intel64Register("r9d", 9, 13, -1, -1);
+            r10d = new Intel64Register("r10d", 10, 14, -1, -1);
+            r11d = new Intel64Register("r11d", 11, 15, -1, -1);
+            r12d = new Intel64Register("r12d", 12, 15, -1, -1);
+            r13d = new Intel64Register("r13d", 13, 15, -1, -1);
+            r14d = new Intel64Register("r14d", 14, 15, -1, -1);
+            r15d = new Intel64Register("r15d", 15, 15, -1, -1);
+
 
             regs = new RegisterStorage[] {
 				eax,

@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Analysis
 		[SetUp]
 		public void Setup()
 		{
-            var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
 			f = arch.CreateFrame();
             liveness = new IdentifierLiveness(arch);
 			isLiveHelper = new RegisterLiveness.IsLiveHelper();

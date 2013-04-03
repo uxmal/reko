@@ -689,7 +689,7 @@ namespace Decompiler.Arch.X86
 
         public MemoryAccess MemDi()
 		{
-			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+			if (arch.ProcessorMode != ProcessorMode.Protected32)
 			{
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, di.Instruction.dataWidth);
 			}
@@ -699,7 +699,7 @@ namespace Decompiler.Arch.X86
 
 		public MemoryAccess MemSi()
 		{
-			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+			if (arch.ProcessorMode != ProcessorMode.Protected32)
 			{
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.ds), RegSi, di.Instruction.dataWidth);
 			}
@@ -709,7 +709,7 @@ namespace Decompiler.Arch.X86
 
         public MemoryAccess Mem(Expression defaultSegment, Expression effectiveAddress)
         {
-            if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+            if (arch.ProcessorMode != ProcessorMode.Protected32)
             {
                 return new SegmentedAccess(MemoryIdentifier.GlobalMemory, defaultSegment, effectiveAddress, di.Instruction.dataWidth);
             }
