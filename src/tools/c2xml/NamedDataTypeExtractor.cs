@@ -280,6 +280,7 @@ namespace Decompiler.Tools.C2Xml
 
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
+            byteSize = converter.NamedTypes[typeDefName.Name].Accept(converter.Sizer);
             return new SerializedTypeReference(typeDefName.Name);
         }
 
