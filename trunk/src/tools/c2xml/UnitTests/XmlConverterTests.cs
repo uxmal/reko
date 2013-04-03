@@ -509,6 +509,37 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 </library>";
             RunTest("typedef struct { int bar; } Foo, *PFoo;", sExp);
         }
+
+        [Test]
+        public void C2X_typedef_stack_params()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""HANDLE"">
+      <ptr>
+        <prim domain=""Void"" size=""0"" />
+      </ptr>
+    </typedef>
+  </Types>
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+        <reg>eax</reg>
+      </return>
+      <arg name=""bar"">
+        <type>HANDLE</type>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(
+                "typedef void * HANDLE;" +
+                "int foo(HANDLE bar);",
+                sExp);
+        }
     }
 }
 #endif
