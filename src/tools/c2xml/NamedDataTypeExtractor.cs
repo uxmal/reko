@@ -67,7 +67,7 @@ namespace Decompiler.Tools.C2Xml
 
         public NamedDataType VisitId(IdDeclarator id)
         {
-            return new NamedDataType { Name = id.Name, DataType = dt };
+            return new NamedDataType { Name = id.Name, DataType = dt, Size = byteSize };
         }
 
         public NamedDataType VisitArray(ArrayDeclarator array)
@@ -107,8 +107,7 @@ namespace Decompiler.Tools.C2Xml
             NamedDataType nt;
             if (pointer.Pointee != null)
             {
-                var ntde = new NamedDataTypeExtractor(specs, converter, false);
-                nt = pointer.Pointee.Accept(ntde);
+                nt = pointer.Pointee.Accept(this);
             }
             else 
             {
@@ -284,56 +283,47 @@ namespace Decompiler.Tools.C2Xml
             return new SerializedTypeReference(typeDefName.Name);
         }
 
-        public SerializedType VisitComplexType(ComplexTypeSpec complexTypeSpec)
+        public SerializedType VisitComplexType(ComplexTypeSpec complexType)
         {
-            if (complexTypeSpec.Type == CTokenType.Struct)
+            if (complexType.Type == CTokenType.Struct)
             {
                 SerializedStructType str;
-                if (complexTypeSpec.Name == null || converter.StructsSeen.TryGetValue(complexTypeSpec.Name, out str))
+                if (complexType.Name == null || converter.StructsSeen.TryGetValue(complexType.Name, out str))
                 {
-                    str = new SerializedStructType
-                    {
-                        Name = complexTypeSpec.Name,
+                    str = new SerializedStructType {
+                        Name = complexType.Name != null
+                            ? complexType.Name
+                            : string.Format("struct_{0}", converter.StructsSeen.Count)
                     };
-                    if (str.Name != null)
-                    {
-                        converter.StructsSeen.Add(str.Name, str);
-                    }
+                    converter.StructsSeen.Add(str.Name, str);
                 }
                 else
                 {
-                    str = new SerializedStructType { Name = complexTypeSpec.Name };
+                    str = new SerializedStructType { Name = complexType.Name };
                 }
-                if (!complexTypeSpec.IsForwardDeclaration() && str.Fields == null)
+                if (!complexType.IsForwardDeclaration() && str.Fields == null)
                 {
-                    str.Fields = ExpandStructFields(complexTypeSpec.DeclList).ToArray();
+                    str.Fields = ExpandStructFields(complexType.DeclList).ToArray();
                     converter.Sizer.SetSize(str);
-                    if (str.Name != null)
-                    {
-                        converter.Types.Add(str);
-                        str = new SerializedStructType { Name = str.Name };
-                    }
+                    converter.Types.Add(str);
+                    str = new SerializedStructType { Name = str.Name };
                 }
                 return str;
             }
-            else if (complexTypeSpec.Type == CTokenType.Union)
+            else if (complexType.Type == CTokenType.Union)
             {
                 SerializedUnionType un;
-                if (complexTypeSpec.Name == null ||
-                    !converter.UnionsSeen.TryGetValue(complexTypeSpec.Name, out un))
+                if (complexType.Name == null || !converter.UnionsSeen.TryGetValue(complexType.Name, out un))
                 {
-                    un = new SerializedUnionType
-                    {
-                        Name = complexTypeSpec.Name
-                    };
+                    un = new SerializedUnionType { Name = complexType.Name };
                     if (un.Name != null)
                     {
                         converter.UnionsSeen.Add(un.Name, un);
                     }
                 }
-                if (!complexTypeSpec.IsForwardDeclaration() && un.Alternatives == null)
+                if (!complexType.IsForwardDeclaration() && un.Alternatives == null)
                 {
-                    un.Alternatives = ExpandUnionFields(complexTypeSpec.DeclList).ToArray();
+                    un.Alternatives = ExpandUnionFields(complexType.DeclList).ToArray();
                     converter.Sizer.SetSize(un);
                     if (un.Name != null)
                     {
@@ -350,13 +340,14 @@ namespace Decompiler.Tools.C2Xml
         public SerializedType VisitEnum(EnumeratorTypeSpec e)
         {
             SerializedEnumType en;
-            if (e.Tag == null ||
-                !converter.EnumsSeen.TryGetValue(e.Tag, out en))
+            if (e.Tag == null || !converter.EnumsSeen.TryGetValue(e.Tag, out en))
             {
-                en = new SerializedEnumType { Name = e.Tag };
-            }
-            if (en.Values == null)
-            {
+                en = new SerializedEnumType {
+                    Name = e.Tag != null 
+                        ? e.Tag 
+                        : string.Format("enum_{0}", converter.EnumsSeen.Count)
+                };
+                converter.EnumsSeen.Add(en.Name, en);
                 var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(converter.Constants));
                 var listMembers = new List<SerializedEnumValue>();
                 foreach (var item in e.Enums)
@@ -370,11 +361,12 @@ namespace Decompiler.Tools.C2Xml
                     listMembers.Add(ee);
                 }
                 en.Values = listMembers.ToArray();
-                if (en.Name != null)
-                {
-                    converter.Types.Add(en);
-                    en = new SerializedEnumType { Name = e.Tag };
-                }
+                converter.Types.Add(en);
+                en = new SerializedEnumType { Name = en.Name };
+            }
+            else
+            {
+                en = new SerializedEnumType { Name = e.Tag };
             }
             return en;
         }
