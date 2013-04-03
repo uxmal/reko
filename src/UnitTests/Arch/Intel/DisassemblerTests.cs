@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Arch.Intel
     [TestFixture]
     public class DisassemblerTests
     {
-        private IntelDisassembler dasm;
+        private X86Disassembler dasm;
 
         public DisassemblerTests()
         {
@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             ProgramImage img = new ProgramImage(new Address(0xC00, 0), bytes);
             ImageReader rdr = img.CreateReader(img.BaseAddress);
-            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            var dasm = new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
             return dasm.Disassemble();
         }
 
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             var img = new ProgramImage(new Address(0x10000), bytes);
             var rdr = img.CreateReader(img.BaseAddress);
-            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.Disassemble();
         }
 
@@ -58,13 +58,13 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             var img = new ProgramImage(new Address(0x10000), bytes);
             var rdr = img.CreateReader(img.BaseAddress);
-            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+            var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
             return dasm.Disassemble();
         }
 
         private void CreateDisassembler16(IntelTextAssembler asm)
         {
-            dasm = new IntelDisassembler(
+            dasm = new X86Disassembler(
                 asm.Image.CreateReader(asm.Image.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private void CreateDisassembler32(IntelTextAssembler asm)
         {
-            dasm = new IntelDisassembler(
+            dasm = new X86Disassembler(
                 asm.Image.CreateReader(asm.Image.BaseAddress),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
@@ -82,7 +82,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private void CreateDisassembler16(ImageReader rdr)
         {
-            dasm = new IntelDisassembler(
+            dasm = new X86Disassembler(
                 rdr,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
@@ -266,12 +266,12 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void SegFromBits()
         {
-            Assert.AreSame(Registers.es, IntelDisassembler.SegFromBits(0));
-            Assert.AreSame(Registers.cs, IntelDisassembler.SegFromBits(1));
-            Assert.AreSame(Registers.ss, IntelDisassembler.SegFromBits(2));
-            Assert.AreSame(Registers.ds, IntelDisassembler.SegFromBits(3));
-            Assert.AreSame(Registers.fs, IntelDisassembler.SegFromBits(4));
-            Assert.AreSame(Registers.gs, IntelDisassembler.SegFromBits(5));
+            Assert.AreSame(Registers.es, X86Disassembler.SegFromBits(0));
+            Assert.AreSame(Registers.cs, X86Disassembler.SegFromBits(1));
+            Assert.AreSame(Registers.ss, X86Disassembler.SegFromBits(2));
+            Assert.AreSame(Registers.ds, X86Disassembler.SegFromBits(3));
+            Assert.AreSame(Registers.fs, X86Disassembler.SegFromBits(4));
+            Assert.AreSame(Registers.gs, X86Disassembler.SegFromBits(5));
         }
 
         [Test]
@@ -290,7 +290,7 @@ movzx	ax,byte ptr [bp+04]
             ProgramImage img = new ProgramImage(new Address(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001u - img.BaseAddress.Linear, 0x12345678);
             ImageReader rdr = img.CreateReader(img.BaseAddress);
-            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            X86Disassembler dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             IntelInstruction instr = dasm.Disassemble();
             Assert.AreEqual("mov\teax,12345678", instr.ToString());
             Assert.AreEqual("ptr32", instr.op2.Width.ToString());

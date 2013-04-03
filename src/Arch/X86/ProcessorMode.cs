@@ -83,7 +83,7 @@ namespace Decompiler.Arch.X86
 
         public abstract IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses);
 
-        public abstract IntelDisassembler CreateDisassembler(ImageReader rdr);
+        public abstract X86Disassembler CreateDisassembler(ImageReader rdr);
         
         public virtual Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
@@ -141,9 +141,9 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new IntelDisassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            return new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
 
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
@@ -166,9 +166,9 @@ namespace Decompiler.Arch.X86
             throw new NotImplementedException();
         }
 
-        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new IntelDisassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            return new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
 
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
@@ -211,9 +211,9 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            return new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -255,9 +255,9 @@ namespace Decompiler.Arch.X86
             throw new NotImplementedException();
         }
 
-        public override IntelDisassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new IntelDisassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+            return new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)

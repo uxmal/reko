@@ -64,7 +64,7 @@ namespace Decompiler.Arch.X86
 
         protected IEnumerable<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
         {
-            var d = (IntelDisassembler) arch.CreateDisassembler(rdr);
+            var d = (X86Disassembler) arch.CreateDisassembler(rdr);
             while (rdr.IsValid)
             {
                 var addr = d.Address;
