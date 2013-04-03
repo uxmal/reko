@@ -550,4 +550,13 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 	}
+
+    public class SseRegister : RegisterStorage
+    {
+        public SseRegister(string name, int number)
+            : base(name, number, PrimitiveType.Word128)
+        {
+        }
+    }
+
 }

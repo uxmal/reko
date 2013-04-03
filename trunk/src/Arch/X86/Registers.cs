@@ -101,15 +101,44 @@ namespace Decompiler.Arch.X86
         public static readonly Intel64Register r14d;
         public static readonly Intel64Register r15d;
 
-        public static readonly Intel64Register r8b;
-        public static readonly Intel64Register r9b;
-        public static readonly Intel64Register r10b;
-        public static readonly Intel64Register r11b;
-        public static readonly Intel64Register r12b;
-        public static readonly Intel64Register r13b;
-        public static readonly Intel64Register r14b;
-        public static readonly Intel64Register r15b;
+        public static readonly Intel32Register r8w;
+        public static readonly Intel32Register r9w;
+        public static readonly Intel32Register r10w;
+        public static readonly Intel32Register r11w;
+        public static readonly Intel32Register r12w;
+        public static readonly Intel32Register r13w;
+        public static readonly Intel32Register r14w;
+        public static readonly Intel32Register r15w;
 
+        public static readonly IntelLoByteRegister spl;
+        public static readonly IntelLoByteRegister bpl;
+        public static readonly IntelLoByteRegister sil;
+        public static readonly IntelLoByteRegister dil;
+        public static readonly IntelLoByteRegister r8b;
+        public static readonly IntelLoByteRegister r9b;
+        public static readonly IntelLoByteRegister r10b;
+        public static readonly IntelLoByteRegister r11b;
+        public static readonly IntelLoByteRegister r12b;
+        public static readonly IntelLoByteRegister r13b;
+        public static readonly IntelLoByteRegister r14b;
+        public static readonly IntelLoByteRegister r15b;
+
+        public static readonly SseRegister xmm0;
+        public static readonly SseRegister xmm1;
+        public static readonly SseRegister xmm2;
+        public static readonly SseRegister xmm3;
+        public static readonly SseRegister xmm4;
+        public static readonly SseRegister xmm5;
+        public static readonly SseRegister xmm6;
+        public static readonly SseRegister xmm7;
+        public static readonly SseRegister xmm8;
+        public static readonly SseRegister xmm9;
+        public static readonly SseRegister xmm10;
+        public static readonly SseRegister xmm11;
+        public static readonly SseRegister xmm12;
+        public static readonly SseRegister xmm13;
+        public static readonly SseRegister xmm14;
+        public static readonly SseRegister xmm15;
 
         private static readonly RegisterStorage[] regs;
 
@@ -152,7 +181,8 @@ namespace Decompiler.Arch.X86
             O = new FlagRegister("O", 36);
             P = new FlagRegister("P", 37);
             FPUF = new RegisterStorage("FPUF", 38, PrimitiveType.Byte);
-            FPST = new RegisterStorage("FPST", 38, PrimitiveType.Byte);
+            FPST = new RegisterStorage("FPST", 38, PrimitiveType.Byte); 
+
             rax = new Intel64AccRegister("rax", 0, 8, 16, 20);
             rcx = new Intel64AccRegister("rcx", 1, 9, 17, 21);
             rdx = new Intel64AccRegister("rdx", 2, 10, 18, 22);
@@ -177,7 +207,45 @@ namespace Decompiler.Arch.X86
             r13d = new Intel64Register("r13d", 13, 15, -1, -1);
             r14d = new Intel64Register("r14d", 14, 15, -1, -1);
             r15d = new Intel64Register("r15d", 15, 15, -1, -1);
+            r8w = new Intel32Register("r8w", 8, 12, -1, -1);
+            r9w = new Intel32Register("r9w", 9, 13, -1, -1);
+            r10w = new Intel32Register("r10w", 10, 14, -1, -1);
+            r11w = new Intel32Register("r11w", 11, 15, -1, -1);
+            r12w = new Intel32Register("r12w", 12, 15, -1, -1);
+            r13w = new Intel32Register("r13w", 13, 15, -1, -1);
+            r14w = new Intel32Register("r14w", 14, 15, -1, -1);
+            r15w = new Intel32Register("r15w", 15, 15, -1, -1);
 
+            spl = new IntelLoByteRegister("spl", 8, 12, -1, -1, -1);
+            bpl = new IntelLoByteRegister("bpl", 9, 13, -1, -1, -1);
+            sil = new IntelLoByteRegister("sil", 8, 12, -1, -1, -1);
+            dil = new IntelLoByteRegister("dil", 9, 13, -1, -1, -1);
+
+            r8b = new IntelLoByteRegister("r8b", 8, 12, -1, -1, -1);
+            r9b = new IntelLoByteRegister("r9b", 9, 13, -1, -1, -1);
+            r10b = new IntelLoByteRegister("r10b", 10, 14, -1, -1, -1);
+            r11b = new IntelLoByteRegister("r11b", 11, 15, -1, -1, -1);
+            r12b = new IntelLoByteRegister("r12b", 12, 15, -1, -1, -1);
+            r13b = new IntelLoByteRegister("r13b", 13, 15, -1, -1, -1);
+            r14b = new IntelLoByteRegister("r14b", 14, 15, -1, -1, -1);
+            r15b = new IntelLoByteRegister("r15b", 15, 15, -1, -1, -1);
+
+        xmm0 = new SseRegister("xmm0", 0);
+xmm1 = new SseRegister("xmm1", 1);
+xmm2 = new SseRegister("xmm2", 2);
+xmm3 = new SseRegister("xmm3", 3);
+xmm4 = new SseRegister("xmm4", 4);
+xmm5 = new SseRegister("xmm5", 5);
+xmm6 = new SseRegister("xmm6", 6);
+xmm7 = new SseRegister("xmm7", 7);
+xmm8 = new SseRegister("xmm8", 8);
+xmm9 = new SseRegister("xmm9", 9);
+xmm10 = new SseRegister("xmm10", 10);
+xmm11 = new SseRegister("xmm11", 11);
+xmm12 = new SseRegister("xmm12", 12);
+xmm13 = new SseRegister("xmm13", 13);
+xmm14 = new SseRegister("xmm14", 14);
+xmm15 = new SseRegister("xmm15", 15);
 
             regs = new RegisterStorage[] {
 				eax,
