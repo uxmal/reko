@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
             fragment.Build(asm);
             ProgramImage img = asm.GetImage();
 
-            IntelDisassembler dasm = new IntelDisassembler(
+            X86Disassembler dasm = new X86Disassembler(
                 img.CreateReader(img.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,

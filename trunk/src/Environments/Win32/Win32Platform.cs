@@ -51,15 +51,18 @@ namespace Decompiler.Environments.Win32
                 Signature = new ProcedureSignature(null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
-            var envCfg = services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
-            var tlSvc = services.RequireService<ITypeLibraryLoaderService>();
-            this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
-                .OfType<TypeLibrary>()
-                .Select(tl => tlSvc.LoadLibrary(arch, tl.Name)).ToArray();
         }
 
         public override ProcedureSignature LookupProcedure(string procName)
         {
+            if (TypeLibs == null)
+            {
+                var envCfg = services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
+                var tlSvc = services.RequireService<ITypeLibraryLoaderService>();
+                this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
+                    .OfType<TypeLibrary>()
+                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name)).ToArray();
+            }
  	        throw new NotImplementedException();
         }
 

@@ -1,0 +1,116 @@
+﻿#region License
+/* 
+ * Copyright (C) 1999-2013 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Decompiler.Arch.X86
+{
+    public partial class X86Disassembler
+    {
+        private static OpRec [] CreateGroupOprecs()
+        {
+            return new SingleByteOpRec[] 
+			{
+				// group 1
+				new SingleByteOpRec(Opcode.add),
+				new SingleByteOpRec(Opcode.or),
+				new SingleByteOpRec(Opcode.adc),
+				new SingleByteOpRec(Opcode.sbb),
+				new SingleByteOpRec(Opcode.and),
+				new SingleByteOpRec(Opcode.sub),
+				new SingleByteOpRec(Opcode.xor),
+				new SingleByteOpRec(Opcode.cmp),
+
+				// group 2
+				new SingleByteOpRec(Opcode.rol),
+				new SingleByteOpRec(Opcode.ror),
+				new SingleByteOpRec(Opcode.rcl),
+				new SingleByteOpRec(Opcode.rcr),
+				new SingleByteOpRec(Opcode.shl),
+				new SingleByteOpRec(Opcode.shr),
+				new SingleByteOpRec(Opcode.shl),
+				new SingleByteOpRec(Opcode.sar),
+
+				// group 3
+				new SingleByteOpRec(Opcode.test, ",Ix"),
+				new SingleByteOpRec(Opcode.test, ",Ix", OpFlag.X),
+				new SingleByteOpRec(Opcode.not),
+				new SingleByteOpRec(Opcode.neg),
+				new SingleByteOpRec(Opcode.mul),
+				new SingleByteOpRec(Opcode.imul),
+				new SingleByteOpRec(Opcode.div),
+				new SingleByteOpRec(Opcode.idiv),
+				
+				// group 4
+				new SingleByteOpRec(Opcode.inc, "Eb"),
+				new SingleByteOpRec(Opcode.dec, "Eb"),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal), 
+
+				// group 5
+				new SingleByteOpRec(Opcode.inc, "Ev"),
+				new SingleByteOpRec(Opcode.dec, "Ev"),
+				new SingleByteOpRec(Opcode.call, "Ev"),
+				new SingleByteOpRec(Opcode.call, "Ep"),
+				new SingleByteOpRec(Opcode.jmp, "Ev"),
+				new SingleByteOpRec(Opcode.jmp, "Ep"),
+				new SingleByteOpRec(Opcode.push, "Ev"),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 6
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 7
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 8
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.bt),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+			};
+        }
+    }
+}
