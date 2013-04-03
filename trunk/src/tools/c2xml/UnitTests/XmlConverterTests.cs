@@ -391,13 +391,14 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
+    <struct name=""struct_0"">
+      <field offset=""0"" name=""x"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
     <struct name=""Foo"">
       <field offset=""0"" name=""a"">
-        <struct>
-          <field offset=""0"" name=""x"">
-            <prim domain=""SignedInt"" size=""4"" />
-          </field>
-        </struct>
+        <struct name=""struct_0"" />
       </field>
     </struct>
   </Types>
@@ -439,6 +440,74 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 </library>";
             RunTest("int __stdcall foo(int bar, char * foo);",
                 sExp);
+        }
+
+        [Test]
+        public void C2X_typedef_enum()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <enum name=""_foo"">
+      <member name=""Bar"" value=""1"" />
+    </enum>
+    <typedef name=""Foo"">
+      <enum name=""_foo"" />
+    </typedef>
+    <typedef name=""PFoo"">
+      <ptr>
+        <enum name=""_foo"" />
+      </ptr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest("typedef enum _foo { Bar = 1 } Foo, *PFoo;", sExp);
+        }
+
+        [Test]
+        public void C2x_typedef_anonymous_enum()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <enum name=""enum_0"">
+      <member name=""Bar"" value=""1"" />
+    </enum>
+    <typedef name=""Foo"">
+      <enum name=""enum_0"" />
+    </typedef>
+    <typedef name=""PFoo"">
+      <ptr>
+        <enum name=""enum_0"" />
+      </ptr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest("typedef enum { Bar = 1 } Foo, *PFoo;", sExp);
+        }
+
+        [Test]
+        public void C2X_typedef_anonymous_struct()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""struct_0"">
+      <field offset=""0"" name=""bar"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+    <typedef name=""Foo"">
+      <struct name=""struct_0"" />
+    </typedef>
+    <typedef name=""PFoo"">
+      <ptr>
+        <struct name=""struct_0"" />
+      </ptr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest("typedef struct { int bar; } Foo, *PFoo;", sExp);
         }
     }
 }

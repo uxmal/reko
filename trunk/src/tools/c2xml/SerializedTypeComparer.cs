@@ -26,7 +26,8 @@ using System.Text;
 
 namespace Decompiler.Tools.C2Xml
 {
-    public class SerializedTypeComparer : IEqualityComparer<SerializedType>,
+    public class SerializedTypeComparer :
+            IEqualityComparer<SerializedType>,
             ISerializedTypeVisitor<bool>
     {
         private SerializedType y;
