@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
-			arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+			arch = new IntelArchitecture(ProcessorMode.Protected32);
 			Assert.AreEqual(PrimitiveType.Word32, arch.WordWidth);
 			arch = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
@@ -244,7 +244,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void ReadCodeAddress_ProtectedFlatMode32()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));

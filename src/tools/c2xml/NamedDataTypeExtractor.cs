@@ -174,7 +174,7 @@ namespace Decompiler.Tools.C2Xml
         {
             const int align = 4;
             //$REVIEW: depends on type and call convention + alignment
-            return ((p + 1) / align) * align;
+            return ((p + (align-1)) / align) * align;
         }
         
         public NamedDataType VisitCallConvention(CallConventionDeclarator conv)

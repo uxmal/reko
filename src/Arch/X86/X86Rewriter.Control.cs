@@ -242,7 +242,7 @@ namespace Decompiler.Arch.X86
             ImmediateOperand imm = op as ImmediateOperand;
             if (imm != null)
             {
-                if (arch.ProcessorMode == ProcessorMode.ProtectedFlat)
+                if (arch.ProcessorMode == ProcessorMode.Protected32)
                 {
                     return new Address(imm.Value.ToUInt32());
                 }

@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Scanning
             var prog = new Program
             {
                 Image = image,
-                Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat),
+                Architecture = new IntelArchitecture(ProcessorMode.Protected32),
             };
             var hsc = new HeuristicScanner(prog);
 
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Scanning
             var prog = new Program
             {
                 Image = image,
-                Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat),
+                Architecture = new IntelArchitecture(ProcessorMode.Protected32),
             };
             var hsc = new HeuristicScanner(prog);
 

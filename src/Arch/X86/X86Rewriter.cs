@@ -59,12 +59,12 @@ namespace Decompiler.Arch.X86
             this.arch = arch;
             this.frame = frame;
             this.state = state;
-            this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr, arch.WordWidth));
+            this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr));
         }
 
-        protected virtual IEnumerable<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr, PrimitiveType defaultWordSize)
+        protected IEnumerable<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
         {
-            var d = new IntelDisassembler(rdr, defaultWordSize);
+            var d = (IntelDisassembler) arch.CreateDisassembler(rdr);
             while (rdr.IsValid)
             {
                 var addr = d.Address;

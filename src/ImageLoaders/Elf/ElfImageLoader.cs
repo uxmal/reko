@@ -189,7 +189,7 @@ namespace Decompiler.ImageLoaders.Elf
             {
             case EM_NONE: return null; // No machine
             case EM_SPARC: return new SparcArchitecture(); //SPARC
-            case EM_386: return new IntelArchitecture(ProcessorMode.ProtectedFlat); //Intel 80386
+            case EM_386: return new IntelArchitecture(ProcessorMode.Protected32); //Intel 80386
             case EM_68K: return new M68kArchitecture();//Motorola 68000
             case EM_M32: //AT&T WE 32100
             case EM_88K: //Motorola 88000

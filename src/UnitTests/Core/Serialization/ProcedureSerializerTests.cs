@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Core.Serialization
     [TestFixture]
     public class ProcedureSerializerTests
     {
-        private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+        private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Protected32);
 
         [SetUp]
         public void Setup()

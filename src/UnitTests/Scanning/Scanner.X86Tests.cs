@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildTest32(Action<IntelAssembler> asmProg)
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             BuildTest(new Address(0x00100000), new FakePlatform(), asmProg);
         }
 
@@ -73,11 +73,11 @@ namespace Decompiler.UnitTests.Scanning
 
         private void DumpProgram(Scanner scanner)
         {
-            var dasm = new IntelDisassembler(scanner.Image.CreateReader(0), arch.WordWidth);
+            var dasm = arch.CreateDisassembler(scanner.Image.CreateReader(0));
             while (scanner.Image.IsValidAddress(dasm.Address))
             {
                 var addr = dasm.Address;
-                var instr = dasm.Disassemble();
+                var instr = dasm.DisassembleInstruction();
                 Console.Out.WriteLine("{0} {1}", addr, instr);
             }
             

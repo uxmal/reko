@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         public X86RewriterTests()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            arch32 = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch32 = new IntelArchitecture(ProcessorMode.Protected32);
         }
 
         [SetUp]

@@ -124,7 +124,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			switch (peMachineType)
 			{
-			case MACHINE_i386: return new IntelArchitecture(ProcessorMode.ProtectedFlat);
+			case MACHINE_i386: return new IntelArchitecture(ProcessorMode.Protected32);
             case MACHINE_x86_64: return new IntelArchitecture(ProcessorMode.Protected64);
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}

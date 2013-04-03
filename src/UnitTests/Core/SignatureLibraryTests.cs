@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/SlKernel32.txt"))
 			{
-				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Protected32);
 				SignatureLibrary kernel32 = new SignatureLibrary(arch);
                 kernel32.Load(FileUnitTester.MapTestPath("../Environments/Win32/kernel32.xml"));
 				EmitSignature(kernel32, "GlobalHandle", fut.TextWriter);

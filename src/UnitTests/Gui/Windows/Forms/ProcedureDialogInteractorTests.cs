@@ -149,7 +149,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private class TestProcedureDialogInteractor : ProcedureDialogInteractor
         {
             public TestProcedureDialogInteractor(SerializedProcedure proc)
-                : base(new IntelArchitecture(ProcessorMode.ProtectedFlat), proc)
+                : base(new IntelArchitecture(ProcessorMode.Protected32), proc)
             {
             }
 

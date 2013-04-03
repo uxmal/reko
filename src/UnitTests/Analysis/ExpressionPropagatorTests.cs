@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Return();
             });
 
-            var ctx = new SymbolicEvaluationContext(new IntelArchitecture(ProcessorMode.ProtectedFlat), proc.Frame);
+            var ctx = new SymbolicEvaluationContext(new IntelArchitecture(ProcessorMode.Protected32), proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Return();
             });
 
-            var ctx = new SymbolicEvaluationContext(new IntelArchitecture(ProcessorMode.ProtectedFlat), proc.Frame);
+            var ctx = new SymbolicEvaluationContext(new IntelArchitecture(ProcessorMode.Protected32), proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 

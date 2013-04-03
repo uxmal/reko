@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Gui
     class SignatureParserTests
     {
         private SignatureParser sp;
-        private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+        private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Protected32);
 
         [SetUp]
         public void Setup()

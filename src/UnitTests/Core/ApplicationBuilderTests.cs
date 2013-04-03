@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Core
 
 		public ApplicationBuilderTests()
 		{
-			arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+			arch = new IntelArchitecture(ProcessorMode.Protected32);
             frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
 			arg04 = new Identifier("arg04", -1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));

@@ -51,11 +51,11 @@ namespace Decompiler.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
             expSimp = new ExpressionSimplifier(
-                    new IntelArchitecture(ProcessorMode.ProtectedFlat).CreateProcessorState());
+                    new IntelArchitecture(ProcessorMode.Protected32).CreateProcessorState());
             SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
         }
@@ -212,7 +212,7 @@ namespace Decompiler.UnitTests.Scanning
             //m.Label("dummy");
             //m.Dd(0);
 
-            RunTest(new IntelArchitecture(ProcessorMode.ProtectedFlat),
+            RunTest(new IntelArchitecture(ProcessorMode.Protected32),
                 new RtlGoto(m.LoadDw(m.Add(m.Mul(edx, 4), 0x10010))),
                 "Scanning/BwSwitch32.txt");
         }

@@ -42,22 +42,50 @@ namespace Decompiler.Arch.X86
 		private bool isModrmValid;
 		private RegisterStorage segmentOverride;
 		private ImageReader	rdr;
+        private bool useRexPrefix;
+        private byte rexPrefix;
+
+        [Obsolete("Use other ctor")]
+        public IntelDisassembler(ImageReader rdr, PrimitiveType defaultWordSize)
+            : this(rdr, defaultWordSize, defaultWordSize, false)
+        {
+        }
 
 		/// <summary>
 		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
         /// </summary>
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
-		public IntelDisassembler(ImageReader rdr, PrimitiveType defaultWordSize)
+		public IntelDisassembler(ImageReader rdr, PrimitiveType defaultWordSize, PrimitiveType defaultAddressSize, bool useRexPrefix)
 		{
 			this.rdr = rdr;
-			defaultDataWidth = defaultWordSize;
-			defaultAddressWidth = defaultWordSize;
-		}
+			this.defaultDataWidth = defaultWordSize;
+			this.defaultAddressWidth = defaultAddressSize;
+            this.useRexPrefix = useRexPrefix;
+        }
 
-		private static IntelRegister RegFromBits(int bits, PrimitiveType dataWidth)
+        private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
+        {
+            return RegFromBits_((bits & 7) | ((rexPrefix & 8)), dataWidth);
+        }
+
+        private IntelRegister RegFromBitsRexR(int bits, PrimitiveType dataWidth)
+        {
+            return RegFromBits_((bits & 7) | ((rexPrefix & 4) << 1), dataWidth);
+        }
+
+        private IntelRegister RegFromBitsRexX(int bits, PrimitiveType dataWidth)
+        {
+            return RegFromBits_((bits & 7) | ((rexPrefix & 2) << 2), dataWidth);
+        }
+
+        private IntelRegister RegFromBitsRexB(int bits, PrimitiveType dataWidth)
+        {
+            return RegFromBits_((bits & 7) | ((rexPrefix & 1) << 3), dataWidth);
+        }
+
+        private IntelRegister RegFromBits_(int bits, PrimitiveType dataWidth)
 		{
-			bits = bits & 0x7;
             int bitSize = dataWidth.BitSize;
 			switch (bitSize)
             {
@@ -98,7 +126,36 @@ namespace Decompiler.Arch.X86
 				case 5: return Registers.ebp;
 				case 6: return Registers.esi;
 				case 7: return Registers.edi;
-				}
+                case 8: return Registers.r8d;
+                case 9: return Registers.r9d;
+                case 10: return Registers.r10d;
+                case 11: return Registers.r11d;
+                case 12: return Registers.r12d;
+                case 13: return Registers.r13d;
+                case 14: return Registers.r14d;
+                case 15: return Registers.r15d;
+                }
+                break;
+            case 64:
+                switch (bits)
+                {
+                case 0: return Registers.rax;
+                case 1: return Registers.rcx;
+                case 2: return Registers.rdx;
+                case 3: return Registers.rbx;
+                case 4: return Registers.rsp;
+                case 5: return Registers.rbp;
+                case 6: return Registers.rsi;
+                case 7: return Registers.rdi;
+                case 8: return Registers.r8;
+                case 9: return Registers.r9;
+                case 10: return Registers.r10;
+                case 11: return Registers.r11;
+                case 12: return Registers.r12;
+                case 13: return Registers.r13;
+                case 14: return Registers.r14;
+                case 15: return Registers.r15;
+                }
                 break;
 			}
 			throw new ArgumentOutOfRangeException("Unsupported data width: " + dataWidth.ToString());
@@ -166,6 +223,28 @@ namespace Decompiler.Arch.X86
                 return disasm.DecodeOperands(opcode, op, opFormat + format);
 			}
 		}
+
+        public class Rex_SingleByteOpRec : SingleByteOpRec
+        {
+            public Rex_SingleByteOpRec(Opcode op, string fmt)
+                : base(op, fmt)
+            {
+            }
+
+            public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.useRexPrefix)
+                {
+                    disasm.rexPrefix = op;
+                    if ((op & 8) != 0)
+                        disasm.dataWidth = PrimitiveType.Word64;
+                    op = disasm.rdr.ReadByte();
+                    return s_aOpRec[op].Decode(disasm, op, opFormat);
+                }
+                else
+                    return base.Decode(disasm, op, opFormat);
+            }
+        }
 
 		public class SegmentOverrideOprec : OpRec
 		{
@@ -336,7 +415,7 @@ namespace Decompiler.Arch.X86
                     break;
                 case 'G':		// register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBits(EnsureModRM() >> 3, width));
+                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width));
                     break;
                 case 'I':		// Immediate operand.
                     if (strFormat[i] == 'x')
@@ -369,7 +448,7 @@ namespace Decompiler.Arch.X86
                     pOperand = new RegisterOperand(SegFromBits(EnsureModRM() >> 3));
                     break;
                 case 'a':		// Implicit use of accumulator.
-                    pOperand = new RegisterOperand(RegFromBits(0, OperandWidth(strFormat[i++])));
+                    pOperand = new RegisterOperand(RegFromBitsRexW(0, OperandWidth(strFormat[i++])));
                     break;
                 case 'b':
                     iWidth = PrimitiveType.Byte;
@@ -380,11 +459,11 @@ namespace Decompiler.Arch.X86
                     break;
                 case 'd':		// Implicit use of DX or EDX.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBits(2, width));
+                    pOperand = new RegisterOperand(RegFromBitsRexW(2, width));
                     break;
                 case 'r':		// Register encoded as last 3 bits of instruction.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBits(op, width));
+                    pOperand = new RegisterOperand(RegFromBitsRexW(op, width));
                     break;
                 case 's':		// Segment encoded as next byte of the format string.
                     pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
@@ -523,12 +602,12 @@ namespace Decompiler.Arch.X86
 					offsetWidth = PrimitiveType.Word16;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBits(rm, dataWidth));
+					return new RegisterOperand(RegFromBitsRexW(rm, dataWidth));
 				}
 			}
 			else 
 			{
-				b = RegFromBits(rm, addressWidth);
+				b = RegFromBitsRexR(rm, addressWidth);
 				idx = RegisterStorage.None;
 
 				switch (mod)
@@ -551,7 +630,7 @@ namespace Decompiler.Arch.X86
 					offsetWidth = PrimitiveType.Word32;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBits(rm, dataWidth));
+					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth));
 				}
 
 				// Handle possible s-i-b byte.
@@ -568,11 +647,11 @@ namespace Decompiler.Arch.X86
 					}
 					else
 					{
-						b = RegFromBits(sib, addressWidth);
+						b = RegFromBitsRexB(sib, addressWidth);
 					}
 			
 					int i = (sib >> 3) & 0x7;
-					idx = (i == 0x04) ? RegisterStorage.None : RegFromBits(i, addressWidth);
+					idx = (i == 0x04) ? RegisterStorage.None : RegFromBitsRexX(i, addressWidth);
 					scale = (byte) (1 << (sib >> 6));
 				}
 			}
@@ -692,23 +771,23 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.aas),
 
 				// 40
-				new SingleByteOpRec(Opcode.inc, "rv"),
-				new SingleByteOpRec(Opcode.inc, "rv"),
-				new SingleByteOpRec(Opcode.inc, "rv"),
-				new SingleByteOpRec(Opcode.inc, "rv"),
-				new SingleByteOpRec(Opcode.inc, "rv"),
-				new SingleByteOpRec(Opcode.inc, "rv"),
-				new SingleByteOpRec(Opcode.inc, "rv"),
-				new SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
 
-				new SingleByteOpRec(Opcode.dec, "rv"),
-				new SingleByteOpRec(Opcode.dec, "rv"),
-				new SingleByteOpRec(Opcode.dec, "rv"),
-				new SingleByteOpRec(Opcode.dec, "rv"),
-				new SingleByteOpRec(Opcode.dec, "rv"),
-				new SingleByteOpRec(Opcode.dec, "rv"),
-				new SingleByteOpRec(Opcode.dec, "rv"),
-				new SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
 
 				// 50
 				new SingleByteOpRec(Opcode.push, "rv"),

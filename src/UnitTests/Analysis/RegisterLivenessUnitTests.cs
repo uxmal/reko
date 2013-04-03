@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void Setup()
 		{
 			prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+			prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
 			m = new ProcedureBuilder();
 			proc = m.Procedure;
 			f = proc.Frame;

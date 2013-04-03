@@ -223,7 +223,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void CallingAllocaWithConstant()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new PseudoProcedure("alloca", sig);
             alloca.Characteristics = new ProcedureCharacteristics
@@ -253,7 +253,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void CallingAllocaWithNonConstant()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.Protected32);
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new PseudoProcedure("alloca", sig);
             alloca.Characteristics = new ProcedureCharacteristics

@@ -63,7 +63,7 @@ namespace Decompiler.ImageLoaders.Coff
             var magic = rdr.ReadLeUInt16();
             switch (magic)
             {
-            case 0x014C: arch = new IntelArchitecture(ProcessorMode.ProtectedFlat); break;
+            case 0x014C: arch = new IntelArchitecture(ProcessorMode.Protected32); break;
             default: throw new NotSupportedException();
             }
             return  new FileHeader

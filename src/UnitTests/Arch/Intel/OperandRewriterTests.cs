@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[TestFixtureSetUp]
 		public void GlobalSetup()
 		{
-			arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+			arch = new IntelArchitecture(ProcessorMode.Protected32);
 		}
 
 		[SetUp]

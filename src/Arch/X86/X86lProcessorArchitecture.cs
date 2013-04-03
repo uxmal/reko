@@ -78,7 +78,7 @@ namespace Decompiler.Arch.X86
 
 		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
 		{
-			if (mode == ProcessorMode.ProtectedFlat)
+			if (mode == ProcessorMode.Protected32)
 			{
 				return new Address(offset);
 			}
@@ -90,7 +90,7 @@ namespace Decompiler.Arch.X86
 
 		public virtual Disassembler CreateDisassembler(ImageReader imageReader)
 		{
-			return new IntelDisassembler(imageReader, WordWidth);
+            return mode.CreateDisassembler(imageReader);
 		}
 
         public virtual Frame CreateFrame()

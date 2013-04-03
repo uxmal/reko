@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Analysis
         private Program RewriteFile32(string relativePath, string configFile)
         {
             Program prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
