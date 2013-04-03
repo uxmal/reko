@@ -173,6 +173,8 @@ namespace Decompiler.Arch.X86
 		loope,
 		loopne,
 		mov,
+        movaps,
+        movdqa,
 		movs,
 		movsb,
 		movsx,

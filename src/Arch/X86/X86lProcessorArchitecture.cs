@@ -56,7 +56,7 @@ namespace Decompiler.Arch.X86
 
     /// <summary>
     /// Processor architecture definition for the Intel x86 family. Currently supported processors are 8086/7,
-    /// 80186/7, 80286/7, 80386/7, 80486, and Pentium. 
+    /// 80186/7, 80286/7, 80386/7, 80486, and Pentium. Also, beginning support for x86-64
     /// </summary>
 	public class IntelArchitecture : IProcessorArchitecture
 	{

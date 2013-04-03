@@ -101,7 +101,11 @@ namespace Decompiler.Arch.X86
 					s = "double ptr ";
 				else if (Width == PrimitiveType.Real80)
 					s = "tword ptr ";
-				else
+                else if (Width == PrimitiveType.Word128)
+                    s = "xmmword ptr ";
+                else if (Width == PrimitiveType.Word256)
+                    s = "ymmword ptr ";
+                else
 					throw new ArgumentOutOfRangeException();
 				sb.Append(s);
 			}

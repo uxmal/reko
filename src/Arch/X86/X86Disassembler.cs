@@ -66,25 +66,25 @@ namespace Decompiler.Arch.X86
 
         private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
-            return RegFromBits_((bits & 7) | ((rexPrefix & 8)), dataWidth);
+            return GpRegFromBits((bits & 7) | ((rexPrefix & 8)), dataWidth);
         }
 
-        private IntelRegister RegFromBitsRexR(int bits, PrimitiveType dataWidth)
+        private RegisterStorage RegFromBitsRexR(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
-            return RegFromBits_((bits & 7) | ((rexPrefix & 4) << 1), dataWidth);
+            return fnReg((bits & 7) | ((rexPrefix & 4) << 1), dataWidth);
         }
 
-        private IntelRegister RegFromBitsRexX(int bits, PrimitiveType dataWidth)
+        private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
-            return RegFromBits_((bits & 7) | ((rexPrefix & 2) << 2), dataWidth);
+            return fnReg((bits & 7) | ((rexPrefix & 2) << 2), dataWidth);
         }
 
-        private IntelRegister RegFromBitsRexB(int bits, PrimitiveType dataWidth)
+        private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
-            return RegFromBits_((bits & 7) | ((rexPrefix & 1) << 3), dataWidth);
+            return fnReg((bits & 7) | ((rexPrefix & 1) << 3), dataWidth);
         }
 
-        private IntelRegister RegFromBits_(int bits, PrimitiveType dataWidth)
+        private IntelRegister GpRegFromBits(int bits, PrimitiveType dataWidth)
 		{
             int bitSize = dataWidth.BitSize;
 			switch (bitSize)
@@ -96,10 +96,19 @@ namespace Decompiler.Arch.X86
 				case 1: return Registers.cl;
 				case 2: return Registers.dl;
 				case 3: return Registers.bl;
-				case 4: return Registers.ah;
-				case 5: return Registers.ch;
-				case 6: return Registers.dh;
-				case 7: return Registers.bh;
+				case 4: return rexPrefix != 0 ? Registers.spl : (IntelRegister) Registers.ah;
+                case 5: return rexPrefix != 0 ? Registers.bpl : (IntelRegister) Registers.ch;
+                case 6: return rexPrefix != 0 ? Registers.sil : (IntelRegister) Registers.dh;
+                case 7: return rexPrefix != 0 ? Registers.dil : (IntelRegister) Registers.bh;
+                case 8: return Registers.r8b;
+                case 9: return Registers.r9b;
+                case 10: return Registers.r10b;
+                case 11: return Registers.r11b;
+                case 12: return Registers.r12b;
+                case 13: return Registers.r13b;
+                case 14: return Registers.r14b;
+                case 15: return Registers.r15b;
+
 				}
                 break;
             case 16:
@@ -113,6 +122,14 @@ namespace Decompiler.Arch.X86
 				case 5: return Registers.bp;
 				case 6: return Registers.si;
 				case 7: return Registers.di;
+                case 8: return Registers.r8w;
+                case 9: return Registers.r9w;
+                case 10: return Registers.r10w;
+                case 11: return Registers.r11w;
+                case 12: return Registers.r12w;
+                case 13: return Registers.r13w;
+                case 14: return Registers.r14w;
+                case 15: return Registers.r15w;
 				}
 			    break;
             case 32:
@@ -160,6 +177,36 @@ namespace Decompiler.Arch.X86
 			}
 			throw new ArgumentOutOfRangeException("Unsupported data width: " + dataWidth.ToString());
 		}
+
+        private RegisterStorage XmmRegFromBits(int bits, PrimitiveType dataWidth)
+        {
+            switch (dataWidth.BitSize)
+            {
+            default: throw new NotImplementedException();
+            case 128:
+                switch (bits)
+                {
+                case 0: return Registers.xmm0;
+                case 1: return Registers.xmm1;
+                case 2: return Registers.xmm2;
+                case 3: return Registers.xmm3;
+                case 4: return Registers.xmm4;
+                case 5: return Registers.xmm5;
+                case 6: return Registers.xmm6;
+                case 7: return Registers.xmm7;
+                case 8: return Registers.xmm8;
+                case 9: return Registers.xmm9;
+                case 10: return Registers.xmm10;
+                case 11: return Registers.xmm11;
+                case 12: return Registers.xmm12;
+                case 13: return Registers.xmm13;
+                case 14: return Registers.xmm14;
+                case 15: return Registers.xmm15;
+                }
+                break;
+            }
+            throw new NotImplementedException();
+        }
 
 		public static IntelRegister SegFromBits(int bits)
 		{
@@ -368,6 +415,7 @@ namespace Decompiler.Arch.X86
 			dataWidth = defaultDataWidth;
 			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
+            rexPrefix = 0;
 			segmentOverride = RegisterStorage.None;
             if (!rdr.IsValid)
                 return null;
@@ -411,11 +459,11 @@ namespace Decompiler.Arch.X86
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = DecodeModRM(width, segmentOverride);
+                    pOperand = DecodeModRM(width, segmentOverride, GpRegFromBits);
                     break;
                 case 'G':		// register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width));
+                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, GpRegFromBits));
                     break;
                 case 'I':		// Immediate operand.
                     if (strFormat[i] == 'x')
@@ -436,7 +484,7 @@ namespace Decompiler.Arch.X86
                     break;
                 case 'M':		// modRM may only refer to memory.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = DecodeModRM(dataWidth, segmentOverride);
+                    pOperand = DecodeModRM(dataWidth, segmentOverride, GpRegFromBits);
                     break;
                 case 'O':		// Offset of the operand is encoded directly after the opcode.
                     width = OperandWidth(strFormat[i++]);
@@ -447,6 +495,15 @@ namespace Decompiler.Arch.X86
                     Debug.Assert(strFormat[i++] == 'w');
                     pOperand = new RegisterOperand(SegFromBits(EnsureModRM() >> 3));
                     break;
+                case 'V':		// XMM operand specified by the reg field of the modRM byte.
+                    width = SseOperandWidth(strFormat, ref i);
+                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, XmmRegFromBits));
+                    break;
+                case 'W':		// memory or XMM operand specified by mod & r/m fields.
+                    width = SseOperandWidth(strFormat, ref i);
+                    pOperand = DecodeModRM(width, segmentOverride, XmmRegFromBits);
+                    break;
+
                 case 'a':		// Implicit use of accumulator.
                     pOperand = new RegisterOperand(RegFromBitsRexW(0, OperandWidth(strFormat[i++])));
                     break;
@@ -519,12 +576,30 @@ namespace Decompiler.Arch.X86
 			case 'h':
 				dataWidth = PrimitiveType.Real80;
 				break;
-			case 'q':
-				dataWidth = PrimitiveType.Word64;
-				break;
-			}
+            case 'q':
+                dataWidth = PrimitiveType.Word64;
+                break;
+            }
 			return dataWidth;
 		}
+
+        private PrimitiveType SseOperandWidth(string fmt, ref int i)
+        {
+            switch (fmt[i++])
+            {
+            case 'p':
+                switch (fmt[i++])
+                {
+                case 's': return PrimitiveType.Word128;
+                default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
+                }
+            case 'x':
+                return defaultDataWidth != dataWidth
+                    ? PrimitiveType.Word128
+                    : PrimitiveType.Word256;
+            default: throw new NotImplementedException(string.Format("Unknown operand width {0}", fmt[i-1]));
+            }
+        }
 
 		public MachineInstruction DisassembleInstruction()
 		{
@@ -561,7 +636,7 @@ namespace Decompiler.Arch.X86
 			return new ImmediateOperand(rdr.ReadLe(immWidth));
 		}
 
-		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride)
+		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
 		{
 			EnsureModRM();
 
@@ -602,12 +677,12 @@ namespace Decompiler.Arch.X86
 					offsetWidth = PrimitiveType.Word16;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBitsRexW(rm, dataWidth));
+					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, GpRegFromBits));
 				}
 			}
 			else 
 			{
-				b = RegFromBitsRexR(rm, addressWidth);
+				b = RegFromBitsRexR(rm, addressWidth, GpRegFromBits);
 				idx = RegisterStorage.None;
 
 				switch (mod)
@@ -630,7 +705,7 @@ namespace Decompiler.Arch.X86
 					offsetWidth = PrimitiveType.Word32;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth));
+					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, regFn));
 				}
 
 				// Handle possible s-i-b byte.
@@ -647,11 +722,11 @@ namespace Decompiler.Arch.X86
 					}
 					else
 					{
-						b = RegFromBitsRexB(sib, addressWidth);
+						b = RegFromBitsRexB(sib, addressWidth, GpRegFromBits);
 					}
 			
 					int i = (sib >> 3) & 0x7;
-					idx = (i == 0x04) ? RegisterStorage.None : RegFromBitsRexX(i, addressWidth);
+					idx = (i == 0x04) ? RegisterStorage.None : RegFromBitsRexX(i, addressWidth, GpRegFromBits);
 					scale = (byte) (1 << (sib >> 6));
 				}
 			}
@@ -1050,7 +1125,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.movaps, "Vps,Wps"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -1152,7 +1227,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.movdqa, "Wx,Vx"),
 
 				// 80
 				new SingleByteOpRec(Opcode.jo,	"Jv"),

@@ -131,8 +131,16 @@ namespace Decompiler.Core.Types
                 w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real|Domain.PtrCode;
 				name = "word64";
 				break;
-			default:
-				throw new ArgumentException("Only primitives of sizes 1, 2, 4, or 8 bytes are supported.");
+            case 16:
+                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Real;
+                name = "word128";
+                break;
+            case 32:
+                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Real;
+                name = "word256";
+                break;
+            default:
+				throw new ArgumentException("Only primitives of sizes 1, 2, 4, 8, and 16 bytes are supported.");
 			}
 			return Create(w, (short) byteSize, name);
 		}
@@ -251,7 +259,9 @@ namespace Decompiler.Core.Types
 					case 1: return "b";
 					case 2: return "w";
 					case 4: return "dw";
-					case 8: return "qw";
+                    case 8: return "qw";
+                    case 16: return "ow";
+                    case 32: return "hw";
 					default: throw new ArgumentOutOfRangeException();
 					}
 				}
@@ -307,8 +317,11 @@ namespace Decompiler.Core.Types
 
 			Real80 = Create(Domain.Real, 10);
 
+            Word128 = CreateWord(16);
             Real128 = Create(Domain.Real, 16);
-		}
+        
+            Word256 = CreateWord(32);
+        }
 
 		public static PrimitiveType Void { get; private set; }
 		
@@ -343,7 +356,10 @@ namespace Decompiler.Core.Types
 
 		public static PrimitiveType Real80 {get; private set; }
 
+        public static PrimitiveType Word128 { get; private set; }
         public static PrimitiveType Real128 { get; private set; }
+
+        public static PrimitiveType Word256 { get; private set; }
 
         public static PrimitiveType WChar { get; private set; } 
     }
