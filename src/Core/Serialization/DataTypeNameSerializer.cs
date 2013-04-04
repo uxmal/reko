@@ -67,6 +67,11 @@ namespace Decompiler.Core.Serialization
             throw new NotImplementedException();
         }
 
+        public SerializedType VisitTypeReference(TypeReference typeref)
+        {
+            throw new NotImplementedException();
+        }
+
         public SerializedType VisitTypeVar(TypeVariable tv)
         {
             throw new NotImplementedException();

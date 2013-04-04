@@ -427,11 +427,11 @@ namespace Decompiler.ImageLoaders.MzExe
         }
 
         [Obsolete("Platform is now respsonisble for looking up functions")]
-        protected virtual SignatureLibrary LoadSignatureLibrary(IProcessorArchitecture arch, string dllName)
+        protected virtual TypeLibrary LoadSignatureLibrary(IProcessorArchitecture arch, string dllName)
         {
             try
             {
-                SignatureLibrary lib = new SignatureLibrary(arch);
+                TypeLibrary lib = new TypeLibrary(arch);
                 string libFileName = ImportFileLocation(dllName);
                 if (!File.Exists(libFileName))
                     return null;

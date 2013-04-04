@@ -289,6 +289,10 @@ namespace Decompiler.Typing
 			return dt;
 		}
 
+        public DataType VisitTypeReference(TypeReference typeref)
+        {
+            return typeref;
+        }
         public DataType VisitTypeVar(TypeVariable tv)
         {
             return tv;

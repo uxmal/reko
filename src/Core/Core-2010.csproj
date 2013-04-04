@@ -513,7 +513,7 @@
     <Compile Include="Services\IFileSystemService.cs" />
     <Compile Include="Services\ITypeLibraryLoaderService.cs" />
     <Compile Include="SignatureBuilder.cs" />
-    <Compile Include="SignatureLibrary.cs">
+    <Compile Include="TypeLibrary.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Statement.cs">
@@ -529,6 +529,7 @@
     </Compile>
     <Compile Include="TreeMatching\TreeMatcher.cs" />
     <Compile Include="TypedServiceProvider.cs" />
+    <Compile Include="TypeLibraryLoader.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -569,6 +570,7 @@
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\TypeReference.cs" />
     <Compile Include="Types\TypeStore.cs" />
     <Compile Include="Types\TypeVariable.cs">
       <SubType>Code</SubType>

@@ -18,26 +18,38 @@
  */
 #endregion
 
+using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Decompiler.Arch.Mos6502
 {
-    public interface ITypeLibraryElement
+    public class Instruction : MachineInstruction
     {
-        string Name { get; }
-    }
+        public Opcode Code;
+        public MachineOperand Operand;
 
-    public class TypeLibraryElement : ConfigurationElement, ITypeLibraryElement
-    {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
+        public override uint DefCc()
         {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
+            throw new NotImplementedException();
+        }
+
+        public override uint UseCc()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0}\t", Code);
+            if (Operand != null)
+            {
+                sb.Append(Operand);
+            }
+            return sb.ToString();
         }
     }
 }

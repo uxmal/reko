@@ -99,6 +99,11 @@ namespace Decompiler.Typing
             throw new NotImplementedException();
         }
 
+        public DataType VisitTypeReference(TypeReference typeref)
+        {
+            throw new NotImplementedException();
+        }
+
         public DataType VisitTypeVar(TypeVariable tv)
         {
             throw new NotImplementedException();

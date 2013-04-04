@@ -469,6 +469,11 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        public int VisitTypeReference(TypeReference typeref)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitTypeVar(TypeVariable tv)
         {
             throw new NotImplementedException();

@@ -48,7 +48,7 @@ namespace Decompiler.Assemblers.x86
         private AssembledSegment unknownSegment;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
-        private SortedDictionary<string, SignatureLibrary> importLibraries;
+        private SortedDictionary<string, TypeLibrary> importLibraries;
         private Dictionary<uint, PseudoProcedure> importThunks;
         private List<AssembledSegment> segments;
         private Dictionary<string, AssembledSegment> mpNameToSegment;
@@ -62,7 +62,7 @@ namespace Decompiler.Assemblers.x86
             this.entryPoints = entryPoints;
             this.defaultWordSize = arch.WordWidth;
             symtab = new SymbolTable();
-            importLibraries = new SortedDictionary<string, SignatureLibrary>();
+            importLibraries = new SortedDictionary<string, TypeLibrary>();
             importThunks = new Dictionary<uint, PseudoProcedure>();
             segments = new List<AssembledSegment>();
             mpNameToSegment = new Dictionary<string, AssembledSegment>();
@@ -1351,10 +1351,10 @@ namespace Decompiler.Assemblers.x86
         public void Import(string symbolName, string fnName, string dllName)
         {
             DefineSymbol(symbolName);
-            SignatureLibrary lib;
+            TypeLibrary lib;
             if (!importLibraries.TryGetValue(dllName, out lib))
             {
-                lib = new SignatureLibrary(arch);
+                lib = new TypeLibrary(arch);
                 lib.Load(Path.ChangeExtension(dllName, ".xml"));
                 importLibraries[dllName] = lib;
             }

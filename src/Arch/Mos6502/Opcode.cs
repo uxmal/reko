@@ -20,24 +20,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Decompiler.Arch.Mos6502
 {
-    public interface ITypeLibraryElement
+    public enum Opcode
     {
-        string Name { get; }
-    }
+        illegal,
 
-    public class TypeLibraryElement : ConfigurationElement, ITypeLibraryElement
-    {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
-        {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        asl,
+        bpl,
+        brk,
+        ora,
+        php,
     }
 }
