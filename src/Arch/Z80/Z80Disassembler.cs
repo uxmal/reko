@@ -97,6 +97,9 @@ namespace Decompiler.Arch.Z80
                 case 'W':
                     ops[iOp++] = new RegisterOperand(WordRegister(fmt[i++]));
                     break;
+                case 'C':
+                    ops[iOp++] = new ConditionOperand(ConditionCode(op >> 3));
+                    break;
                 }
             }
             return new Z80Instruction
@@ -105,6 +108,22 @@ namespace Decompiler.Arch.Z80
                 Op1 = ops[0],
                 Op2 = ops[1],
             };
+        }
+
+        private CondCode ConditionCode(int bits)
+        {
+            switch (bits & 7)
+            {
+            default: throw new NotImplementedException();
+            case 0: return CondCode.nz;
+            case 1: return CondCode.z;
+            case 2: return CondCode.nc;
+            case 3: return CondCode.c;
+            case 4: return CondCode.po;
+            case 5: return CondCode.pe;
+            case 6: return CondCode.p;
+            case 7: return CondCode.m;
+            }
         }
 
         private RegisterStorage ByteRegister(int bits)
@@ -196,7 +215,7 @@ namespace Decompiler.Arch.Z80
             new SingleByteOpRec(Opcode.nop, Opcode.nop, ""),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wb,Iw"),
             new SingleByteOpRec(Opcode.stax, Opcode.ld, "B,a"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wb"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
@@ -205,7 +224,7 @@ namespace Decompiler.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wb"),
             new SingleByteOpRec(Opcode.ldax, Opcode.ld, "a,B"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wb"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
@@ -215,7 +234,7 @@ namespace Decompiler.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wd,Iw"),
             new SingleByteOpRec(Opcode.stax, Opcode.ld, "D,a"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wd"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
@@ -224,7 +243,7 @@ namespace Decompiler.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wd"),
             new SingleByteOpRec(Opcode.ldax, Opcode.ld, "a,D"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wd"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
@@ -234,39 +253,39 @@ namespace Decompiler.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wh,Iw"),
             new SingleByteOpRec(Opcode.shld, Opcode.ld, "Ow,Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wh"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.daa, Opcode.daa, ""),
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wh"),
             new SingleByteOpRec(Opcode.lhld, Opcode.ld, "Wh,Ow"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wh"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.cma, Opcode.cpl, ""),
 
             // 30
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Ws,Iw"),
             new SingleByteOpRec(Opcode.sta, Opcode.ld, "Ob,a"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Ws"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "Mb"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "Mr"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "Mb,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.stc, Opcode.scf, ""),
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Ws"),
             new SingleByteOpRec(Opcode.lda, Opcode.ld, "a,Ob"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Ws"),
             new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
             new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.cmc, Opcode.ccf, ""),
 
             // 40
             new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
@@ -384,48 +403,48 @@ namespace Decompiler.Arch.Z80
             new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
 
             // A0
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,Mb"),
+            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,Mb"),
+            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
 
             // B0
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,Mb"),
+            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,Mb"),
+            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
 
             // C0
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.jnz, Opcode.jp, "C,Iw"),
+            new SingleByteOpRec(Opcode.jmp, Opcode.jp, "Iw"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.adi, Opcode.add, "a,Ib"),
@@ -433,7 +452,7 @@ namespace Decompiler.Arch.Z80
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.jz, Opcode.jp, "C,Iw"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
@@ -443,7 +462,7 @@ namespace Decompiler.Arch.Z80
             // D0
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.jnc, Opcode.jp, "C,Iw"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
@@ -452,7 +471,7 @@ namespace Decompiler.Arch.Z80
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.jc, Opcode.jp, "C,Iw"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new IndexPrefixOpRec(Registers.ix),
@@ -462,7 +481,7 @@ namespace Decompiler.Arch.Z80
             // E0
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.jpo, Opcode.jp, "C,Iw"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
@@ -470,8 +489,8 @@ namespace Decompiler.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.pchl, Opcode.jp, "Mw"),
+            new SingleByteOpRec(Opcode.jpe, Opcode.jp, "C,Iw"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
@@ -481,7 +500,7 @@ namespace Decompiler.Arch.Z80
             // F0
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.jp, Opcode.jp, "C,Iw"),
             new SingleByteOpRec(Opcode.di, Opcode.di, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
@@ -490,7 +509,7 @@ namespace Decompiler.Arch.Z80
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.sphl, Opcode.ld, "Ws,Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.jm, Opcode.jp, "C,Iw"),
             new SingleByteOpRec(Opcode.ei, Opcode.ei, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new IndexPrefixOpRec(Registers.iy),

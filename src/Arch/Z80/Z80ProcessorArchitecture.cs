@@ -147,4 +147,16 @@ namespace Decompiler.Arch.Z80
         public static readonly RegisterStorage ix = new RegisterStorage("ix", 12, PrimitiveType.Word16);
         public static readonly RegisterStorage iy = new RegisterStorage("iy", 13, PrimitiveType.Word16);
     }
+
+    public enum CondCode
+    {
+        nz,
+        z,
+        nc,
+        c,
+        po,
+        pe,
+        p,
+        m,
+    }
 }

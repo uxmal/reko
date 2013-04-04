@@ -221,5 +221,33 @@ namespace Decompiler.UnitTests.Arch.Z80
             var instr = RunTest(0x14);
             Assert.AreEqual("inc\td", instr.ToString());
         }
+
+        [Test]
+        public void Z80dis_inc_bc()
+        {
+            var instr = RunTest(0x03);
+            Assert.AreEqual("inc\tbc", instr.ToString());
+        }
+
+        [Test]
+        public void Z80dis_daa()
+        {
+            var instr = RunTest(0x27);
+            Assert.AreEqual("daa\t", instr.ToString());
+        }
+
+        [Test]
+        public void Z80dis_jm()
+        {
+            var instr = RunTest(0xFA, 0x34, 0x12);
+            Assert.AreEqual("jp\tm,1234", instr.ToString());
+        }
+
+         [Test]
+        public void Z80dis_jp_hl()
+        {
+            var instr = RunTest(0xE9);
+            Assert.AreEqual("jp\t(hl)", instr.ToString());
+        }
     }
 }
