@@ -479,7 +479,12 @@ namespace Decompiler.Tools.C2Xml
 
     public class ListInitializer : Initializer
     {
-        public List<Initializer> List;
+        public ListInitializer()
+        {
+            List = new List<Initializer>();
+        }
+
+        public List<Initializer> List { get; private set; }
     }
 
     public class ExpressionInitializer : Initializer

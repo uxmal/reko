@@ -93,7 +93,8 @@ namespace Decompiler.Core.Serialization
 		public Identifier Deserialize(SerializedArgument arg)
 		{
 			argCur = arg;
-			arg.Kind.Accept(this);
+            if (arg.Kind != null)
+                arg.Kind.Accept(this);
 			return idArg;
 		}
 

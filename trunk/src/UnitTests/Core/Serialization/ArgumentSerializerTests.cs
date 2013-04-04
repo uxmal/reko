@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         }
 
 		[Test]
-		public void DeserializeRegister()
+		public void ArgSer_DeserializeRegister()
 		{
 			SerializedRegister reg = new SerializedRegister("eax");
 			SerializedArgument arg = new SerializedArgument();
@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		}
 
         [Test]
-        public void SerializeOutArgument()
+        public void ArgSer_SerializeOutArgument()
         {
             Identifier id = new Identifier("qOut", 42, PrimitiveType.Word32,
                 new OutArgumentStorage(new Identifier("q", 33, PrimitiveType.Word32, new RegisterStorage("q", 4, PrimitiveType.Word32))));
@@ -93,6 +93,16 @@ namespace Decompiler.UnitTests.Core.Serialization
             Assert.IsTrue(arg.OutParameter);
             SerializedRegister sr = (SerializedRegister) arg.Kind;
             Assert.AreEqual("q", sr.Name);
+        }
+
+        [Test]
+        public void ArgSer_VoidReturn()
+        {
+            //$TODO: void foo(void);
+            var sArg = new SerializedArgument
+            {
+            };
+            throw new NotImplementedException();
         }
 	}
 }

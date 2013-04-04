@@ -44,6 +44,9 @@ namespace Decompiler.UnitTests.Environments.Win32
         private ServiceContainer sc;
         private Win32Platform win32;
         private IntelArchitecture arch;
+        private ProcedureSignature sig;
+        private OperatingEnvironment opEnv;
+        private IDecompilerConfigurationService dcSvc;
 
         [SetUp]
         public void Setup()
@@ -51,23 +54,35 @@ namespace Decompiler.UnitTests.Environments.Win32
             repository = new MockRepository();
             sc = new ServiceContainer();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
+            dcSvc = repository.StrictMock<IDecompilerConfigurationService>();
+            opEnv = repository.StrictMock<OperatingEnvironment>();
         }
 
-        [Test]
-        public void Win32_Create_OpensWin32_xml()
+        private void When_Lookup_Procedure(string procName)
         {
-            Given_Configuration_With_Win32_Element();
-            Given_TypeLibraryLoaderService();
-            Expect_CreateFileStream_PathEndsWith("win32.xml");
-            repository.ReplayAll();
+            this.sig = this.win32.LookupProcedure(procName);
+        }
 
-            When_Creating_Win32_Platform();
+        private void Given_Win32_TypeLibraries(string name)
+        {
+            var typelibs = new TypeLibraryElementCollection
+            {
+                new TypeLibraryElement
+                {
+                    Name = name
+                }
+            };
+            opEnv.Expect(o => o.TypeLibraries).Return(typelibs);
+        }
 
-            repository.VerifyAll();
+        private void Expect_GetEnvironment_Win32()
+        {
+            dcSvc.Expect(d => d.GetEnvironment("win32"))
+                .Return(opEnv);
         }
 
         [Test]
-        public void Win32_Create_ReadsConfiguration()
+        public void Win32_ProcedureLookup_ReadsConfiguration()
         {
             Given_Configuration_With_Win32_Element();
             Given_TypeLibraryLoaderService();
@@ -75,6 +90,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             repository.ReplayAll();
 
             When_Creating_Win32_Platform();
+            When_Lookup_Procedure("foo");
 
             repository.VerifyAll();
         }
@@ -89,17 +105,18 @@ namespace Decompiler.UnitTests.Environments.Win32
 
         private void Given_Configuration_With_Win32_Element()
         {
-            var envs = new ArrayList
-            {
-                
-            };
             var dcSvc = repository.Stub<IDecompilerConfigurationService>();
-            var opEnv = new OperatingEnvironmentElement();
-            opEnv.TypeLibraries.Add(new TypeLibraryElement
+            var opEnv = new OperatingEnvironmentElement 
             {
-                Name = "win32.xml"
-            });
-            dcSvc.Expect(d => d.GetEnvironment("Win32")).Return(opEnv);
+                TypeLibraries =
+                {
+                    new TypeLibraryElement
+                    {
+                        Name = "win32.xml"
+                    }
+                }
+            };
+            dcSvc.Expect(d => d.GetEnvironment("win32")).Return(opEnv);
             sc.AddService<IDecompilerConfigurationService>(dcSvc);
         }
 
