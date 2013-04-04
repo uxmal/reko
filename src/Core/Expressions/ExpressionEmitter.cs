@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Decompiler.Core.Expressions
 {
+    /// <summary>
+    /// Factory class that has the extra benefit of reducing the verbosity of the code.
+    /// </summary>
     public class ExpressionEmitter
     {
         public ArrayAccess Array(DataType elemType, Expression arrayPtr, Expression index)

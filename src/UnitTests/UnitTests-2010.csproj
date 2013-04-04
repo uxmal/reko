@@ -113,6 +113,7 @@
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
+    <Compile Include="Arch\Z80\DisassemblerTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
@@ -421,6 +422,10 @@
     <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>X86-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Z80\Z80.csproj">
+      <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
+      <Name>Z80</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\M68k\M68kAssembler-2010.csproj">
       <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>

@@ -28,16 +28,12 @@ namespace Decompiler.Core.Types
 	/// </summary>
 	public class StructureType : DataType
 	{
-		public StructureType() : base(null)
+		public StructureType() : this(null, 0)
 		{
-			this.Fields = new StructureFieldCollection();
-			this.Size = 0;
 		}
 
-		public StructureType(string name, int size, StructureField field) : base(name)
+		public StructureType(string name, int size, StructureField field) : this(name, size)
 		{
-			this.Fields = new StructureFieldCollection();
-			this.Size = size; 
 			Fields.Add(field);
 		}
 
