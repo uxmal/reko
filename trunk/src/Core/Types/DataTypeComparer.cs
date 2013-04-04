@@ -37,9 +37,10 @@ namespace Decompiler.Core.Types
 		private const int Array =  4;
 		private const int Struct = 5;
 		private const int Union =  6;
-		private const int TVar =   7;
-		private const int EqClass= 8;
-		private const int Unk =    9;
+        private const int TRef =   7;
+        private const int TVar =   8;
+		private const int EqClass= 9;
+		private const int Unk =    10;
 
 		public DataTypeComparer()
 		{
@@ -86,6 +87,16 @@ namespace Decompiler.Core.Types
 			{
 				return tx.Number - ty.Number;
 			}
+
+            TypeReference tr_x = x as TypeReference;
+            TypeReference tr_y = y as TypeReference;
+            if (tr_x != null && tr_y != null)
+            {
+                var d = StringComparer.InvariantCulture.Compare(tr_x.Name, tr_y.Name);
+                if (d != 0)
+                    return d;
+                return Compare(tr_x.Referent, tr_y.Referent, ++count);
+            }
 
 			EquivalenceClass ex = x as EquivalenceClass;
 			EquivalenceClass ey = y as EquivalenceClass;
@@ -226,6 +237,11 @@ namespace Decompiler.Core.Types
 		{
 			return Ptr;
 		}
+
+        public int VisitTypeReference(TypeReference typeref)
+        {
+            return TRef;
+        }
 
 		public int VisitTypeVar(TypeVariable tv)
 		{

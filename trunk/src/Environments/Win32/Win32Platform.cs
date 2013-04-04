@@ -34,7 +34,7 @@ namespace Decompiler.Environments.Win32
         private IServiceProvider services;
         private IProcessorArchitecture arch;
 		private SystemService int3svc;
-        private SignatureLibrary [] TypeLibs;
+        private TypeLibrary [] TypeLibs;
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch)
 		{
@@ -60,7 +60,7 @@ namespace Decompiler.Environments.Win32
                 var envCfg = services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
                 var tlSvc = services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
-                    .OfType<TypeLibrary>()
+                    .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(arch, tl.Name)).ToArray();
             }
             return TypeLibs.Select(t => t.Lookup(procName))

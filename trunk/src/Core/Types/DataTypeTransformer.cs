@@ -80,6 +80,11 @@ namespace Decompiler.Core.Types
 			return ptr;
 		}
 
+        public virtual DataType VisitTypeReference(TypeReference typeref)
+        {
+            return new TypeReference(typeref.Name, typeref.Referent.Accept(this));
+        }
+
         public virtual DataType VisitTypeVar(TypeVariable tv)
 		{
 			return tv;

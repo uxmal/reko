@@ -20,6 +20,8 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -37,7 +39,7 @@ namespace Decompiler.UnitTests.Core
 				foreach (string s in new string [] { "msvcrt.xml", "kernel32.xml", "user32.xml" })
 				{
 					fut.TextWriter.WriteLine("** {0} ****", s);
-					SignatureLibrary lib = new SignatureLibrary(new IntelArchitecture(ProcessorMode.Real));
+					TypeLibrary lib = new TypeLibrary(new IntelArchitecture(ProcessorMode.Real));
 					lib.Load(FileUnitTester.MapTestPath("../Environments/Win32/" + s));
 					lib.Write(fut.TextWriter);
 				}
@@ -51,10 +53,10 @@ namespace Decompiler.UnitTests.Core
 			using (FileUnitTester fut = new FileUnitTester("Core/SlLookup.txt"))
 			{
 				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-				SignatureLibrary kernel = new SignatureLibrary(arch);
+				TypeLibrary kernel = new TypeLibrary(arch);
 				kernel.Load(FileUnitTester.MapTestPath("../Environments/Win32/kernel32.xml"));
 
-				SignatureLibrary crt = new SignatureLibrary(arch);
+				TypeLibrary crt = new TypeLibrary(arch);
                 crt.Load(FileUnitTester.MapTestPath("../Environments/Win32/msvcrt.xml"));
 
 				kernel.Lookup("CreateFileA").Emit("CreateFileA", ProcedureSignature.EmitFlags.ArgumentKind, fut.TextWriter);
@@ -72,7 +74,7 @@ namespace Decompiler.UnitTests.Core
 			using (FileUnitTester fut = new FileUnitTester("Core/SlUser32.txt"))
 			{
 				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-				SignatureLibrary user32 = new SignatureLibrary(arch);
+				TypeLibrary user32 = new TypeLibrary(arch);
                 user32.Load(FileUnitTester.MapTestPath("../Environments/Win32/user32.xml"));
 				SortedList<string,ProcedureSignature> sigs = new SortedList<string,ProcedureSignature>(user32.Signatures);
 				foreach (KeyValuePair<string,ProcedureSignature> de in sigs)
@@ -89,16 +91,34 @@ namespace Decompiler.UnitTests.Core
 			using (FileUnitTester fut = new FileUnitTester("Core/SlKernel32.txt"))
 			{
 				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Protected32);
-				SignatureLibrary kernel32 = new SignatureLibrary(arch);
+				TypeLibrary kernel32 = new TypeLibrary(arch);
                 kernel32.Load(FileUnitTester.MapTestPath("../Environments/Win32/kernel32.xml"));
 				EmitSignature(kernel32, "GlobalHandle", fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
 
-		private void EmitSignature(SignatureLibrary lib, string fnName, System.IO.TextWriter tw)
+		private void EmitSignature(TypeLibrary lib, string fnName, System.IO.TextWriter tw)
 		{
 			lib.Lookup(fnName).Emit(fnName, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, tw);
 		}
+
+        [Test]
+        public void SlLookupType()
+        {
+            var slib = new SerializedLibrary
+            {
+                Types = new SerializedType[]
+                {
+                    new SerializedTypedef { 
+                        Name="int", 
+                        DataType=new SerializedPrimitiveType { Domain = Decompiler.Core.Types.Domain.SignedInt, ByteSize = 4 }
+                    }
+                }
+            };
+            var lib = new TypeLibrary(new IntelArchitecture(ProcessorMode.Protected32));
+            lib.Load(slib);
+            Assert.AreEqual(PrimitiveType.Int32, lib.LookupType("int"));
+        }
 	}
 }

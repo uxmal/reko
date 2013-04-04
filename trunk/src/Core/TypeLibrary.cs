@@ -18,8 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core.Serialization;
 using Decompiler.Core.Output;
+using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,24 +29,31 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core
 {
-	public class SignatureLibrary
+	public class TypeLibrary
 	{
 		private IProcessorArchitecture arch;
-		private bool caseInsensitive;
-		private Dictionary<string,ProcedureSignature> hash;
+        private Dictionary<string, DataType> typedefs;
 
-		private string defaultConvention;
-
-		public SignatureLibrary(IProcessorArchitecture arch)
+        [Obsolete]
+		public TypeLibrary(IProcessorArchitecture arch)
 		{
 			this.arch = arch;
-            this.hash = new Dictionary<string, ProcedureSignature>();
+            this.Signatures = new Dictionary<string, ProcedureSignature>();
         }
+
+        public TypeLibrary(IDictionary<string,DataType> types, IDictionary<string, ProcedureSignature> procedures)
+        {
+            this.Types = types;
+            this.Signatures = procedures;
+        }
+
+        public IDictionary<string, DataType> Types { get; private set; }
+        public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
 
 		public void Write(TextWriter writer)
 		{
             var sl = new SortedList<string, ProcedureSignature>(
-                hash,
+                Signatures,
                 StringComparer.InvariantCulture);
             Formatter f = new Formatter(writer);
 			foreach (KeyValuePair<string,ProcedureSignature> de in sl)
@@ -56,51 +64,36 @@ namespace Decompiler.Core
 			}
 		}
 
-		public void Load(string s)
+		public void Load(string fileName)
 		{
 			XmlSerializer ser = SerializedLibrary.CreateSerializer();
 			SerializedLibrary slib;
-			using (FileStream stm = new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (FileStream stm = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			caseInsensitive = slib.Case == "insensitive";
-			ReadDefaults(slib.Defaults);
-			foreach (object o in slib.Procedures)
-			{
-				SerializedProcedure sp = o as SerializedProcedure;
-				if (sp != null)
-				{
-					string key = caseInsensitive ? sp.Name.ToUpper() : sp.Name;
-					ProcedureSerializer sser = new ProcedureSerializer(arch, this.defaultConvention);
-                    hash[key] = sser.Deserialize(sp.Signature, arch.CreateFrame());
-				}
-			}
+            Load(slib);
 		}
 
-		public void ReadDefaults(SerializedLibraryDefaults defaults)
-		{
-			if (defaults == null)
-				return;
-			if (defaults.Signature != null)
-			{
-				defaultConvention = defaults.Signature.Convention;
-			}
-		}
+        [Obsolete]
+        public void Load(SerializedLibrary slib)
+        {
+        }
 
 		public ProcedureSignature Lookup(string procedureName)
 		{
-			if (caseInsensitive)
-				procedureName = procedureName.ToUpper();
 			ProcedureSignature sig;
-            if (!hash.TryGetValue(procedureName, out sig))
+            if (!Signatures.TryGetValue(procedureName, out sig))
                 return null;
 			return sig;
 		}
 
-		public IDictionary<string,ProcedureSignature> Signatures
-		{
-			get { return hash; }
-		}
-	}
+        public DataType LookupType(string typedefName)
+        {
+            DataType dt;
+            if (!Types.TryGetValue(typedefName, out dt))
+                return null;
+            return dt;
+        }
+    }
 }

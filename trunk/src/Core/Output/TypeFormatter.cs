@@ -284,6 +284,11 @@ namespace Decompiler.Core.Output
             return writer;
 		}
 
+        public Formatter VisitTypeReference(TypeReference typeref)
+        {
+            throw new NotImplementedException();
+        }
+
 		public Formatter VisitTypeVar(TypeVariable t)
 		{
 			throw new NotImplementedException("TypeFormatter.TypeVariable");

@@ -111,6 +111,7 @@
     <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
+    <Compile Include="Arch\Mos6502\DisassemblerTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\Z80\DisassemblerTests.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Core\Serialization\DataTypeSerializerTests.cs" />
+    <Compile Include="Core\TypeLibraryLoaderTests.cs" />
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
@@ -410,6 +412,10 @@
     <ProjectReference Include="..\Arch\M68k\M68k-2010.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Mos6502\Mos6502.csproj">
+      <Project>{dc11ed7f-97f6-4488-86b4-eec67dd1f511}</Project>
+      <Name>Mos6502</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11-2010.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>

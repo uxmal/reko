@@ -27,16 +27,16 @@ namespace Decompiler.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
-        SignatureLibrary LoadLibrary(IProcessorArchitecture arch, string name);
+        TypeLibrary LoadLibrary(IProcessorArchitecture arch, string name);
     }
 
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
     {
-        public SignatureLibrary LoadLibrary(IProcessorArchitecture arch, string name)
+        public TypeLibrary LoadLibrary(IProcessorArchitecture arch, string name)
         {
             try
             {
-                SignatureLibrary lib = new SignatureLibrary(arch);
+                TypeLibrary lib = new TypeLibrary(arch);
                 string libFileName = ImportFileLocation(name);
                 if (!File.Exists(libFileName))
                     return null;

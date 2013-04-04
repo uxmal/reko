@@ -25,20 +25,6 @@ namespace Decompiler.Core.Types
 	/// <summary>
 	/// Visitor methods for types.
 	/// </summary>
-	public interface IDataTypeVisitor
-	{
-		void VisitArray(ArrayType at);
-		void VisitEquivalenceClass(EquivalenceClass eq);
-		void VisitFunctionType(FunctionType ft);
-		void VisitPrimitive(PrimitiveType pt);
-		void VisitMemberPointer(MemberPointer memptr);
-		void VisitPointer(Pointer ptr);
-		void VisitStructure(StructureType str);
-		void VisitTypeVar(TypeVariable tv);
-		void VisitUnion(UnionType ut);
-		void VisitUnknownType(UnknownType ut);
-	}
-
     public interface IDataTypeVisitor<T>
     {
         T VisitArray(ArrayType at);
@@ -48,6 +34,7 @@ namespace Decompiler.Core.Types
         T VisitMemberPointer(MemberPointer memptr);
         T VisitPointer(Pointer ptr);
         T VisitStructure(StructureType str);
+        T VisitTypeReference(TypeReference typeref);
         T VisitTypeVar(TypeVariable tv);
         T VisitUnion(UnionType ut);
         T VisitUnknownType(UnknownType ut);

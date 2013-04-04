@@ -20,24 +20,41 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Decompiler.Core.Types
 {
-    public interface ITypeLibraryElement
+    /// <summary>
+    /// Refers to another type, perhaps by name
+    /// </summary>
+    public class TypeReference : DataType
     {
-        string Name { get; }
-    }
-
-    public class TypeLibraryElement : ConfigurationElement, ITypeLibraryElement
-    {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
+        public TypeReference(DataType dataType) 
         {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
+            this.Referent = dataType;
+        }
+
+        public TypeReference(string name, DataType dataType) : base(name)
+        {
+            this.Referent = dataType;
+        }
+
+        public DataType Referent { get; private set; }
+        public override int Size
+        {
+            get { return Referent.Size; }
+            set { ThrowBadSize(); }
+        }
+
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitTypeReference(this);
+        }
+
+        public override DataType Clone()
+        {
+            return new TypeReference(this.Name, this.Referent.Clone());
         }
     }
 }

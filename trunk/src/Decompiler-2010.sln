@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEF8CEB8-51B6-4D65-8F5B-35C5931E30E7}"
 	ProjectSection(SolutionItems) = preProject
 		devnotes.txt = devnotes.txt
@@ -66,6 +66,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Samples", "Samples\Samples.vcxproj", "{18501CAB-5F95-49E5-B92C-BF52A5D08609}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80", "Arch\Z80\Z80.csproj", "{66A00AB2-6964-4815-9140-F28FEE48E6D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mos6502", "Arch\Mos6502\Mos6502.csproj", "{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -461,6 +463,20 @@ Global
 		{66A00AB2-6964-4815-9140-F28FEE48E6D6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{66A00AB2-6964-4815-9140-F28FEE48E6D6}.Release|Win32.ActiveCfg = Release|Any CPU
 		{66A00AB2-6964-4815-9140-F28FEE48E6D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Release|.NET.ActiveCfg = Release|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Release|Win32.ActiveCfg = Release|Any CPU
+		{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

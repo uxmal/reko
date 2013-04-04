@@ -183,6 +183,10 @@ namespace Decompiler.Typing
             return c;
 		}
 
+        public Expression VisitTypeReference(TypeReference typeref)
+        {
+            throw new NotImplementedException();
+        }
 
 		public Expression VisitTypeVar(TypeVariable tv)
 		{
