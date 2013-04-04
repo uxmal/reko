@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
+    /// <summary>
+    /// Builder class that accumulates RtlInstructions.
+    /// </summary>
     public class RtlEmitter : ExpressionEmitter
     {
         private List<RtlInstruction> instrs;

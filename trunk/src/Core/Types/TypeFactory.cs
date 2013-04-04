@@ -112,6 +112,5 @@ namespace Decompiler.Core.Types
 		{
 			return new UnionType(name, preferred, alternatives);
 		}
-
 	}
  }

@@ -299,8 +299,6 @@ namespace Decompiler.Core.Types
 			{
 				return MakeUnion(a, b);
 			}
-
-
 			return MakeUnion(a, b);
 		}
 
