@@ -80,6 +80,11 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Assert.AreEqual(88, lib.Procedures.Count);
 		}
 
+        [Test]
+        public void SlibLoadVoidFn()
+        {
+
+        }
 		private SerializedProcedure MkMalloc()
 		{
 			SerializedProcedure proc = new SerializedProcedure();

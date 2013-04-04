@@ -63,7 +63,9 @@ namespace Decompiler.Environments.Win32
                     .OfType<TypeLibrary>()
                     .Select(tl => tlSvc.LoadLibrary(arch, tl.Name)).ToArray();
             }
- 	        throw new NotImplementedException();
+            return TypeLibs.Select(t => t.Lookup(procName))
+                .Where(sig => sig != null)
+                .FirstOrDefault();
         }
 
 		public override SystemService FindService(int vector, ProcessorState state)

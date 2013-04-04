@@ -78,6 +78,26 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             Assert.AreEqual(Domain.Character, p.Domain);
             Assert.AreEqual(1, p.ByteSize);
         }
+
+        [Test]
+        public void NamedDataTypeExtractor_Pfn()
+        {
+            Run(new [] { SType(CTokenType.Int) },
+                new FunctionDeclarator {
+                    Declarator = new PointerDeclarator { 
+                        Pointee = new IdDeclarator { Name="fn" },
+                    },
+                    Parameters = new List<ParamDecl>
+                    {
+                        new ParamDecl {
+                            DeclSpecs = new List<DeclSpec>{ SType(CTokenType.Char) },
+                            Declarator = new IdDeclarator { Name="ch" },
+                        }
+                    }
+                });
+                Assert.AreEqual("fn", nt.Name);
+            Assert.AreEqual("ptr(fn(arg(prim(SignedInt,4)),(arg(ch,prim(Character,1))))", nt.DataType.ToString());
+        }
     }
 }
 #endif

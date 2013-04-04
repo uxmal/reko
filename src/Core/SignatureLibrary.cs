@@ -38,8 +38,9 @@ namespace Decompiler.Core
 
 		public SignatureLibrary(IProcessorArchitecture arch)
 		{
-			this.arch = arch; 
-		}
+			this.arch = arch;
+            this.hash = new Dictionary<string, ProcedureSignature>();
+        }
 
 		public void Write(TextWriter writer)
 		{
@@ -57,8 +58,7 @@ namespace Decompiler.Core
 
 		public void Load(string s)
 		{
-            hash = new Dictionary<string, ProcedureSignature>();
-			XmlSerializer ser = new XmlSerializer(typeof (SerializedLibrary));
+			XmlSerializer ser = SerializedLibrary.CreateSerializer();
 			SerializedLibrary slib;
 			using (FileStream stm = new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{

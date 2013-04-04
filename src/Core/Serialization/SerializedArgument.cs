@@ -18,12 +18,9 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
 using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
@@ -46,7 +43,7 @@ namespace Decompiler.Core.Serialization
         [XmlAttribute("name")]
         public string Name { get; set; }
 
-        public SerializedType Type;		// Reference to a type
+        public SerializedType Type; // Reference to a type
 
         [XmlElement("reg", typeof(SerializedRegister))]
         [XmlElement("stack", typeof(SerializedStackVariable))]
@@ -60,5 +57,14 @@ namespace Decompiler.Core.Serialization
         [DefaultValue(false)]
         public bool OutParameter { get; set; }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder("arg(");
+            if (!string.IsNullOrEmpty(Name))
+                sb.AppendFormat("{0},", Name);
+            sb.Append(Type);
+            sb.Append(")");
+            return sb.ToString();
+        }
 	}
 }

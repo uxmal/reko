@@ -575,6 +575,67 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "SHORT foo(SHORT inp, SHORT * outp);",
                 sExp);
         }
+
+        [Test]
+        public void C2X_Void_fn()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <prim domain=""Void"" size=""0"" />
+      </return>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(
+                "void foo(void);",
+                sExp);
+
+        }
+
+        [Test]
+        public void C2X_pfn_arg()
+        {
+            var cCode =
+                "typedef int (__stdcall *PRTL_RUN_ONCE_INIT_FN) (" +
+                     "int RunOnce" +
+                ");" +
+                "void foo(PRTL_RUN_ONCE_INIT_FN q);";
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""PRTL_RUN_ONCE_INIT_FN"">
+      <ptr>
+        <fn>
+          <return>
+            <prim domain=""SignedInt"" size=""4"" />
+            <reg>eax</reg>
+          </return>
+          <arg name=""RunOnce"">
+            <prim domain=""SignedInt"" size=""4"" />
+            <stack size=""4"" />
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+  </Types>
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <prim domain=""Void"" size=""0"" />
+      </return>
+      <arg name=""q"">
+        <type>PRTL_RUN_ONCE_INIT_FN</type>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(cCode, sExp);
+        }
     }
 }
 #endif

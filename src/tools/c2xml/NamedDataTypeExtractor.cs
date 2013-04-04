@@ -29,8 +29,8 @@ using System.Text;
 
 namespace Decompiler.Tools.C2Xml
 {
-    public class NamedDataTypeExtractor : 
-        DeclaratorVisitor<NamedDataType>,
+    public class NamedDataTypeExtractor :
+        DeclaratorVisitor<Func<NamedDataType,NamedDataType>>,
         DeclSpecVisitor<SerializedType>
     {
         private IEnumerable<DeclSpec> specs;
@@ -55,96 +55,124 @@ namespace Decompiler.Tools.C2Xml
 
         public NamedDataType GetNameAndType(Declarator declarator)
         {
+            var nt = new NamedDataType { DataType = dt, Size = byteSize };
             if (declarator != null)
             {
-                return declarator.Accept(this);
+                nt = declarator.Accept(this)(nt);
             }
-            else
-            {
-                return new NamedDataType { DataType = dt };
-            }
+            return nt;
         }
 
-        public NamedDataType VisitId(IdDeclarator id)
+        public Func<NamedDataType, NamedDataType> VisitId(IdDeclarator id)
         {
-            return new NamedDataType { Name = id.Name, DataType = dt, Size = byteSize };
+            return (nt) => new NamedDataType { Name = id.Name, DataType = nt.DataType, Size = nt.Size};
         }
 
-        public NamedDataType VisitArray(ArrayDeclarator array)
+        public Func<NamedDataType, NamedDataType> VisitArray(ArrayDeclarator array)
         {
-            var nt = array.Declarator.Accept(this);
-            return new NamedDataType
-            {
-                Name = nt.Name,
-                DataType = new SerializedArrayType
+            return (nt) =>
                 {
-                    ElementType = nt.DataType,
-                    Length = array.Size != null
-                        ? Convert.ToInt32(array.Size.Accept(eval))
-                        : 0
-                }
-            };
+                    nt = array.Declarator.Accept(this)(nt);
+                    return new NamedDataType
+                    {
+                        Name = nt.Name,
+                        DataType = new SerializedArrayType
+                        {
+                            ElementType = nt.DataType,
+                            Length = array.Size != null
+                                ? Convert.ToInt32(array.Size.Accept(eval))
+                                : 0
+                        }
+                    };
+                };
         }
 
-        public NamedDataType VisitField(FieldDeclarator field)
+        public Func<NamedDataType, NamedDataType> VisitField(FieldDeclarator field)
         {
+            Func<NamedDataType, NamedDataType> fn;
             if (field.Declarator == null)
             {
-                return new NamedDataType
-                {
-                    DataType = dt,
-                    Name = null
-                };
-            }
-            else
-            {
-                return field.Declarator.Accept(this);
-            }
-        }
-
-        public NamedDataType VisitPointer(PointerDeclarator pointer)
-        {
-            NamedDataType nt;
-            if (pointer.Pointee != null)
-            {
-                nt = pointer.Pointee.Accept(this);
+                fn = (nt) => nt;
             }
             else 
             {
-                nt = new NamedDataType { DataType = dt };
+                fn = field.Declarator.Accept(this);
             }
-            nt.DataType = new SerializedPointerType
-            {
-                DataType = nt.DataType,
-                //$BUG: architecture-specific type to go here.
-            };
-            nt.Size = 4;            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
-            return nt;
+            return fn;
         }
 
-        public NamedDataType VisitFunction(FunctionDeclarator function)
+        public Func<NamedDataType,NamedDataType> VisitPointer(PointerDeclarator pointer)
         {
-            var nt = function.Declarator.Accept(this);
-            var parameters =
-                function.Parameters.Select(p => ConvertParameter(p));
-            SerializedArgument ret = null;
-            if (nt.DataType != null)
+            Func<NamedDataType, NamedDataType> fn;
+            if (pointer.Pointee != null)
             {
-                ret = new SerializedArgument
-                {
-                    Kind = new SerializedRegister { Name = "eax" },       //$REVIEW platform-specific.
-                    Type = nt.DataType,
-                }; 
+                fn = pointer.Pointee.Accept(this);
             }
-            nt.DataType = new SerializedSignature
+            else
             {
-                Convention = callingConvention != CTokenType.None
-                    ? callingConvention.ToString().ToLower()
-                    : null,
-                    ReturnValue = ret,
-                Arguments = parameters.ToArray(),
+                fn = f => f;
+            }
+            return (nt) =>
+            {
+                nt.DataType = new SerializedPointerType
+                {
+                    DataType = nt.DataType,
+                    //$BUG: architecture-specific type to go here.
+                };
+                nt.Size = 4;            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
+                return fn(nt);
             };
-            return nt;
+        }
+
+        public Func<NamedDataType, NamedDataType> VisitFunction(FunctionDeclarator function)
+        {
+            var fn = function.Declarator.Accept(this);
+            return (nt) =>
+            {
+                var parameters = function.Parameters
+                    .Select(p => ConvertParameter(p))
+                    .ToArray();
+
+                // Special case for C, where foo(void) means a function with no parameters,
+                // not a function with one parameter of type "void".
+                if (FirstParameterVoid(parameters))
+                    parameters = new SerializedArgument[0];
+
+                SerializedArgument ret = null;
+                if (nt.DataType != null)
+                {
+                    var kind = !IsVoid(nt.DataType)
+                        ? new SerializedRegister { Name = "eax" }       //$REVIEW platform-specific.
+                        : null;
+                    ret = new SerializedArgument
+                    {
+                        Kind = kind,
+                        Type = nt.DataType,
+                    };
+                }
+                nt.DataType = new SerializedSignature
+                {
+                    Convention = callingConvention != CTokenType.None
+                        ? callingConvention.ToString().ToLower()
+                        : null,
+                    ReturnValue = ret,
+                    Arguments = parameters.ToArray(),
+                };
+                return fn(nt);
+            };
+        }
+
+        private bool FirstParameterVoid(SerializedArgument[] parameters)
+        {
+            if (parameters == null || parameters.Length != 1)
+                return false;
+            return IsVoid(parameters[0].Type);
+        }
+
+        private bool IsVoid(SerializedType serializedType)
+        {
+            var sp = serializedType as SerializedPrimitiveType;
+            return sp != null && sp.Domain == Domain.Void;
         }
 
         private SerializedArgument ConvertParameter(ParamDecl decl)
@@ -177,9 +205,9 @@ namespace Decompiler.Tools.C2Xml
             return ((p + (align-1)) / align) * align;
         }
         
-        public NamedDataType VisitCallConvention(CallConventionDeclarator conv)
+        public Func<NamedDataType,NamedDataType> VisitCallConvention(CallConventionDeclarator conv)
         {
-            return conv.Declarator.Accept(this);
+            return (nt) => conv.Declarator.Accept(this)(nt);
         }
 
         public SerializedType VisitSimpleType(SimpleTypeSpec simpleType)

@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Lib;
 using System;
 using System.ComponentModel;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
@@ -60,6 +61,30 @@ namespace Decompiler.Core.Serialization
         public override Types.DataType BuildDataType(Types.TypeFactory factory)
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("fn(");
+            if (!string.IsNullOrEmpty(Convention))
+                sb.AppendFormat("{0},", Convention);
+            if (ReturnValue != null)
+            {
+                sb.Append(ReturnValue.ToString());
+            }
+            else 
+                sb.Append("void");
+            sb.Append(",(");
+            if (Arguments != null)
+            {
+                foreach (var arg in Arguments)
+                {
+                    sb.Append(arg.ToString());
+                }
+            }
+            sb.Append(")");
+            return sb.ToString();
         }
     }
 }
