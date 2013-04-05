@@ -42,6 +42,19 @@ namespace Decompiler.Arch.Pdp11
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0}\t", Opcode);
+            if (op1 != null)
+            {
+                sb.Append(op1);
+                if (op2 != null)
+                    sb.AppendFormat(",{0}", op2);
+            }
+            return sb.ToString();
+        }
     }
 
     public enum Opcodes
@@ -59,6 +72,7 @@ namespace Decompiler.Arch.Pdp11
         dec,
         clr,
         com,
+        div,
         inc,
         mark,
         mfpd,
@@ -68,6 +82,7 @@ namespace Decompiler.Arch.Pdp11
         mtpi,
         mtpd,
         mov,
+        mul,
         neg,
         rol,
         ror,
@@ -91,5 +106,6 @@ namespace Decompiler.Arch.Pdp11
         beq,
         ble,
         bpl,
+        xor,
     }
 }

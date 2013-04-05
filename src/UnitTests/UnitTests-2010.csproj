@@ -112,6 +112,7 @@
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
     <Compile Include="Arch\Mos6502\DisassemblerTests.cs" />
+    <Compile Include="Arch\Pdp11\DisassemblerTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\Z80\DisassemblerTests.cs" />

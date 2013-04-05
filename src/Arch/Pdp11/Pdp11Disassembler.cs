@@ -31,7 +31,7 @@ namespace Decompiler.Arch.Pdp11
     {
         private ImageReader rdr;
         private Pdp11Architecture arch;
-        private Pdp11Instruction instr;
+        private PrimitiveType dataWidth;
 
         public Pdp11Disassembler(ImageReader rdr, Pdp11Architecture arch)
         {
@@ -47,7 +47,7 @@ namespace Decompiler.Arch.Pdp11
         public MachineInstruction DisassembleInstruction()
         {
             ushort opcode = rdr.ReadLeUInt16();
-            var dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
+            dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
             switch ((opcode >> 0x0C) & 7)
             {
             case 0: return NonDoubleOperandInstruction(opcode);
@@ -100,6 +100,38 @@ namespace Decompiler.Arch.Pdp11
                     op2 = DecodeOperand(opcode >> 6),
                 };
             case 7:
+                switch ((opcode >> 0x09) & 7)
+                {
+                case 0:
+                    dataWidth = PrimitiveType.Word16;
+                    return new Pdp11Instruction
+                    {
+                        Opcode = Opcodes.mul,
+                        DataWidth = dataWidth,
+                        op1 = DecodeOperand(opcode),
+                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
+                    };
+                case 1:
+                    dataWidth = PrimitiveType.Word16;
+                    return new Pdp11Instruction
+                    {
+                        Opcode = Opcodes.div,
+                        DataWidth = dataWidth,
+                        op1 = DecodeOperand(opcode),
+                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
+                    };
+                case 4:
+                    dataWidth = PrimitiveType.Word16;
+                    return new Pdp11Instruction
+                    {
+                        Opcode = Opcodes.xor,
+                        DataWidth = dataWidth,
+                        op1 = DecodeOperand(opcode),
+                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
+                    };
+                }
+                throw new NotSupportedException();
+            default:
                 throw new NotSupportedException();
             }
             throw new NotImplementedException();
@@ -107,7 +139,7 @@ namespace Decompiler.Arch.Pdp11
 
         private PrimitiveType DataWidthFromSizeBit(uint p)
         {
-            throw new NotImplementedException();
+            return p != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
         }
 
         private MachineInstruction NonDoubleOperandInstruction(ushort opcode)
@@ -246,15 +278,15 @@ namespace Decompiler.Arch.Pdp11
             {
                 switch ((operandBits >> 3) & 7)
                 {
-                //case 0: return new RegisterOperand(reg);    //   Reg           Direct addressing of the register
-                //case 1: return new MemoryOperand(reg);      //   Reg Def       Contents of Reg is the address
-                //case 2:    //   AutoIncr      Contents of Reg is the address, then Reg incremented
+                case 0: return new RegisterOperand(reg);    //   Reg           Direct addressing of the register
+                case 1: return new MemoryOperand(AddressMode.RegDef, dataWidth, reg);      //   Reg Def       Contents of Reg is the address
+                case 2: return new MemoryOperand(AddressMode.AutoIncr, dataWidth, reg);   //   AutoIncr      Contents of Reg is the address, then Reg incremented
                 //case 3:    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
                 //case 4:    //   AutoDecr      Reg is decremented then contents is address
                 //case 5:    //   AutoDecrDef   Reg is decremented then contents is addr of addr
                 //case 6: return new MemoryOperand(reg, rdr.ReadLeUInt16());   //   Index         Contents of Reg + Following word is address
                 //case 7:   //   IndexDef      Contents of Reg + Following word is addr of addr
-                default: throw new NotSupportedException();
+                default: throw new NotSupportedException(string.Format("Address mode {0} not supported.", (operandBits >> 3) & 7));
                 }
             }
         }
