@@ -138,7 +138,56 @@ namespace Decompiler.UnitTests.Core
             var lib = tlLdr.Load(slib);
 
             repository.VerifyAll();
-            Assert.AreEqual("void ()()(ptr int32)", lib.Lookup("foo").ToString());
+            Assert.AreEqual(
+                "void foo()",
+                lib.Lookup("foo").ToString("foo"));
+        }
+
+        [Test]
+        public void Tlldr_fn_struct_param()
+        {
+            Given_ArchitectureStub();
+            repository.ReplayAll();
+
+            var tlLdr = new TypeLibraryLoader(arch);
+            var slib = new SerializedLibrary
+            {
+                Types = new SerializedType[]
+                {
+                    new SerializedStructType {
+                        Name = "tagFoo",
+                        Fields = new SerializedStructField [] 
+                        {
+                            new SerializedStructField { Name="Bob", Offset=3, Type=new SerializedPrimitiveType { Domain=Domain.SignedInt, ByteSize=4 } }
+                        }
+                    },
+                },
+                Procedures = {
+                    new SerializedProcedure { 
+                        Name="foo",
+                        Signature = new SerializedSignature
+                        {
+                            Convention="__cdecl",
+                            ReturnValue = new SerializedArgument {
+                                Type = new SerializedPrimitiveType { Domain = Domain.Void, ByteSize = 0}
+                            },
+                            Arguments = new SerializedArgument[] {
+                                new SerializedArgument {
+                                    Name = "bar",
+                                    Type = new SerializedStructType { Name="tagFoo" },
+                                    Kind = new SerializedStackVariable { ByteSize= 4 }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var lib = tlLdr.Load(slib);
+
+            repository.VerifyAll();
+            Assert.AreEqual(
+                "void foo(Stack (struct \"tagFoo\") bar)",
+                lib.Lookup("foo").ToString("foo"));
         }
     }
 }

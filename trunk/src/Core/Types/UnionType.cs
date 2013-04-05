@@ -130,7 +130,7 @@ namespace Decompiler.Core.Types
 				return this;
 		}
 
-		public override void Write(TextWriter writer)
+		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("(union");
 			if (Name != null)
@@ -138,13 +138,16 @@ namespace Decompiler.Core.Types
 				writer.Write(" \"{0}\"", Name);
 			}
 			int i = 0;
-			foreach (UnionAlternative alt in Alternatives.Values)
-			{
-				writer.Write(" (");
-				alt.DataType.Write(writer);
-				writer.Write(" {0})", alt.MakeName(i));
-				++i;
-			}
+            if (!reference)
+            {
+                foreach (UnionAlternative alt in Alternatives.Values)
+                {
+                    writer.Write(" (");
+                    alt.DataType.Write(writer, true);
+                    writer.Write(" {0})", alt.MakeName(i));
+                    ++i;
+                }
+            }
 			writer.Write(")");
 		}
 	}

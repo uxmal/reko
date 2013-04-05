@@ -83,7 +83,7 @@ namespace Decompiler.Core.Types
             return this;
         }
 
-		public override void Write(TextWriter writer)
+		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("({0}", IsSegment ? "segment" : "struct");
 			if (Name != null)
@@ -95,12 +95,12 @@ namespace Decompiler.Core.Types
 				writer.Write(" {0:X}", Size);
 			}
 
-			if (Fields != null)
+			if (!reference && Fields != null)
 			{
 				foreach (StructureField f in Fields)
 				{
 					writer.Write(" ({0:X} ", f.Offset);
-					f.DataType.Write(writer);
+					f.DataType.Write(writer, true);
 					writer.Write(" {0})", f.Name);
 				}
 			}

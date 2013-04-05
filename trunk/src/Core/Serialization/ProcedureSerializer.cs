@@ -33,18 +33,25 @@ namespace Decompiler.Core.Serialization
 	public class ProcedureSerializer
 	{
 		private IProcessorArchitecture arch;
-		private string defaultConvention;
+        private string defaultConvention;
 		private int identifierNumber;
 
-		public ProcedureSerializer(IProcessorArchitecture arch, string defaultConvention)
+        public ProcedureSerializer(IProcessorArchitecture arch, string defaultConvention)
+            : this(arch, new TypeLibraryLoader(arch), defaultConvention)
+        { }
+
+
+		public ProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader,  string defaultConvention)
 		{
 			this.arch = arch;
+            this.TypeLoader = typeLoader;
 			this.defaultConvention = defaultConvention;
 			this.identifierNumber = 0;
 		}
 
         public int FpuStackOffset { get; set; }
         public int StackOffset { get; set; }
+        public ISerializedTypeVisitor<DataType> TypeLoader { get; private set; }
 
 		public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
 		{
@@ -91,8 +98,6 @@ namespace Decompiler.Core.Serialization
 			ApplyConvention(ss, sig);
 			return sig;
 		}
-
-
 
         public SerializedSignature Serialize(ProcedureSignature sig)
         {

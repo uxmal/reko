@@ -45,7 +45,7 @@ namespace Decompiler.Core.Types
 			set { ThrowBadSize(); }
 		}
 
-		public override void Write(TextWriter writer)
+		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("<unknown>");
 		}

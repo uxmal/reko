@@ -70,11 +70,11 @@ namespace Decompiler.Core.Types
 			set { ThrowBadSize(); }
 		}
 
-		public override void Write(TextWriter writer)
+		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("(fn ");
 			if (ReturnType != null)
-				ReturnType.Write(writer);
+				ReturnType.Write(writer, true);
 			else 
 				writer.Write("void");
 			writer.Write(" (");
@@ -84,7 +84,7 @@ namespace Decompiler.Core.Types
 			{
 				writer.Write(separator);
 				separator = ", ";
-				ArgumentTypes[i].Write(writer);
+				ArgumentTypes[i].Write(writer, true);
 			}
 			writer.Write("))");
 		}

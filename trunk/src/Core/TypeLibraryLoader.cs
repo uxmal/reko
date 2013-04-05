@@ -35,6 +35,7 @@ namespace Decompiler.Core
     {
         private IProcessorArchitecture arch;
         private Dictionary<string, DataType> types;
+        private Dictionary<string, StructureType> structures;
         private Dictionary<string, ProcedureSignature> procedures;
         private bool caseInsensitive;
         private string defaultConvention;
@@ -50,6 +51,7 @@ namespace Decompiler.Core
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
             this.types = new Dictionary<string, DataType>(cmp);
             this.procedures = new Dictionary<string, ProcedureSignature>(cmp);
+            this.structures = new Dictionary<string, StructureType>(cmp);
             ReadDefaults(serializedLibrary.Defaults);
 
             if (serializedLibrary.Types != null)
@@ -67,7 +69,7 @@ namespace Decompiler.Core
                     if (sp != null)
                     {
                         string key = sp.Name;
-                        ProcedureSerializer sser = new ProcedureSerializer(arch, this.defaultConvention);
+                        ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
                         procedures.Add(key, sser.Deserialize(sp.Signature, arch.CreateFrame()));
                     }
                 }
@@ -107,7 +109,19 @@ namespace Decompiler.Core
 
         public DataType VisitStructure(SerializedStructType structure)
         {
-            throw new NotImplementedException();
+            StructureType str;
+            if (!structures.TryGetValue(structure.Name, out str))
+            {
+                 str = new StructureType(structure.Name, structure.ByteSize);
+                structures.Add(structure.Name, str);
+                var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));
+                str.Fields.AddRange(fields);
+                return str;
+            }
+            else
+            {
+                return new TypeReference(str);
+            }
         }
 
         public DataType VisitTypedef(SerializedTypedef typedef)

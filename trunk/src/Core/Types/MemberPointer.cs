@@ -88,12 +88,12 @@ namespace Decompiler.Core.Types
 			}
 		}
 
-		public override void Write(TextWriter writer)
+		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("(memptr ");
-			BasePointer.Write(writer);
+			BasePointer.Write(writer, true);
 			writer.Write(" ");
-			Pointee.Write(writer);
+			Pointee.Write(writer, true);
 			writer.Write(")");
 		}
 	}

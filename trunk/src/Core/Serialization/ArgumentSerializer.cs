@@ -40,7 +40,6 @@ namespace Decompiler.Core.Serialization
 			this.frame = frame;
 		}
 
-
 		public string ArgumentName(string argName, string argName2)
 		{
 			if (argName != null)
@@ -60,7 +59,7 @@ namespace Decompiler.Core.Serialization
 
 		public void Deserialize(SerializedStackVariable ss)
 		{
-			var dt = PrimitiveType.CreateWord(ss.ByteSize);
+			var dt = this.argCur.Type.Accept(ps.TypeLoader);
 			idArg = ps.CreateId(
 				argCur.Name ?? "arg" + ps.StackOffset, 
 				dt,
@@ -95,6 +94,7 @@ namespace Decompiler.Core.Serialization
 			argCur = arg;
             if (arg.Kind != null)
                 arg.Kind.Accept(this);
+            // else argByConvention();
 			return idArg;
 		}
 

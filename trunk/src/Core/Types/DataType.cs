@@ -59,11 +59,11 @@ namespace Decompiler.Core.Types
 		public sealed override string ToString()
 		{
 			var sw = new StringWriter();
-			Write(sw);
+			Write(sw, false);
  			return sw.ToString();
 		}
 
-		public virtual void Write(TextWriter writer)
+		public virtual void Write(TextWriter writer, bool reference)
 		{
             writer.Write(Name);
 		}
