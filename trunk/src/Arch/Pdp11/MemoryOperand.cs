@@ -29,13 +29,36 @@ namespace Decompiler.Arch.Pdp11
 {
     public class MemoryOperand : MachineOperand
     {
-        public MemoryOperand(PrimitiveType type, RegisterStorage reg) : base(type)
+        public MemoryOperand(AddressMode mode, PrimitiveType type, RegisterStorage reg) : base(type)
         {
+            Mode = mode;
             Register = reg;
         }
 
+        public AddressMode Mode { get; set; }
         public RegisterStorage Register { get;set;}
         public bool PreInc { get; set; }
         public bool PostInc { get; set; }
+
+        public override string ToString()
+        {
+            string fmt;
+            switch (Mode)
+            {
+            case AddressMode.RegDef: fmt = "({0})"; break;
+            case AddressMode.AutoIncr: fmt = "({0})+"; break;
+            case AddressMode.AutoDecr: fmt = "-({0})"; break;
+            default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));
+            }
+            return string.Format(fmt, Register);
+        }
     }
+
+    public enum AddressMode
+    {
+        RegDef,
+        AutoIncr,
+        AutoDecr,
+    }
+
 }
