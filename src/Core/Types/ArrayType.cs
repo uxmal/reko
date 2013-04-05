@@ -66,10 +66,10 @@ namespace Decompiler.Core.Types
 			set { ThrowBadSize(); }
 		}
 
-		public override void Write(TextWriter writer)
+		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("(arr ");
-			ElementType.Write(writer);
+			ElementType.Write(writer, reference);
 			if (Length != 0)
 			{
 				writer.Write(" {0}", Length);

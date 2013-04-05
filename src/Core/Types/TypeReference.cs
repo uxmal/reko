@@ -20,7 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Core.Types
@@ -55,6 +55,18 @@ namespace Decompiler.Core.Types
         public override DataType Clone()
         {
             return new TypeReference(this.Name, this.Referent.Clone());
+        }
+
+        public override void Write(TextWriter writer, bool reference)
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                Referent.Write(writer, true);
+            }
+            else
+            {
+                writer.Write(Name);
+            }
         }
     }
 }

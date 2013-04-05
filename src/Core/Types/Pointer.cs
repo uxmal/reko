@@ -75,10 +75,10 @@ namespace Decompiler.Core.Types
 			set { ThrowBadSize(); }
 		}
 
-		public override void Write(TextWriter writer)
+		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("(ptr ");
-			Pointee.Write(writer);
+			Pointee.Write(writer, true);
 			writer.Write(")");
 		}
 	}

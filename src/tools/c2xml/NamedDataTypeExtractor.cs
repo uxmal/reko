@@ -70,21 +70,22 @@ namespace Decompiler.Tools.C2Xml
 
         public Func<NamedDataType, NamedDataType> VisitArray(ArrayDeclarator array)
         {
+            var fn = array.Declarator.Accept(this);
             return (nt) =>
+            {
+                nt = new NamedDataType
                 {
-                    nt = array.Declarator.Accept(this)(nt);
-                    return new NamedDataType
+                    Name = nt.Name,
+                    DataType = new SerializedArrayType
                     {
-                        Name = nt.Name,
-                        DataType = new SerializedArrayType
-                        {
-                            ElementType = nt.DataType,
-                            Length = array.Size != null
-                                ? Convert.ToInt32(array.Size.Accept(eval))
-                                : 0
-                        }
-                    };
+                        ElementType = nt.DataType,
+                        Length = array.Size != null
+                            ? Convert.ToInt32(array.Size.Accept(eval))
+                            : 0
+                    }
                 };
+                return fn(nt);
+            };
         }
 
         public Func<NamedDataType, NamedDataType> VisitField(FieldDeclarator field)
@@ -117,7 +118,6 @@ namespace Decompiler.Tools.C2Xml
                 nt.DataType = new SerializedPointerType
                 {
                     DataType = nt.DataType,
-                    //$BUG: architecture-specific type to go here.
                 };
                 nt.Size = 4;            //$BUG: this is also architecture-specific (2 for PDP-11 for instance)
                 return fn(nt);
@@ -188,13 +188,42 @@ namespace Decompiler.Tools.C2Xml
             else
             {
                 var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, converter);
-                var nt = ntde.GetNameAndType(decl.Declarator);
+                var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 return new SerializedArgument
                 {
                     Kind = new SerializedStackVariable { ByteSize = ToStackSize(nt.Size), },
                     Name = nt.Name,
-                    Type = nt.DataType
+                    Type = nt.DataType,
                 };
+            }
+        }
+
+        /// <summary>
+        /// Converts any array parameters to pointer parameters.
+        /// </summary>
+        /// <remarks>The C language treats an array parameter as a pointer. Thus <code>
+        /// int foo(int arr[]);
+        /// </code> is equivalent to <code>
+        /// int foo(int * ptr);
+        /// </code>
+        /// </remarks>
+        /// <param name="nt"></param>
+        /// <returns></returns>
+        private NamedDataType ConvertArrayToPointer(NamedDataType nt)
+        {
+            var at = nt.DataType as SerializedArrayType;
+            if (at != null)
+            {
+                return new NamedDataType
+                {
+                    Name = nt.Name,
+                    DataType = new SerializedPointerType { DataType = at.ElementType },
+                    Size = 4   //$BUGBUG: this is different for z80 and x86-64
+                };
+            }
+            else
+            {
+                return nt;
             }
         }
 

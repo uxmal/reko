@@ -36,7 +36,6 @@ namespace Decompiler.Core.Serialization
 		[XmlElement("syscallinfo")]
 		public SerializedSyscallInfo SyscallInfo;
 
-
 		public SystemService Build(IProcessorArchitecture arch)
 		{
 			SystemService svc = new SystemService();
@@ -57,7 +56,8 @@ namespace Decompiler.Core.Serialization
 			{
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
-			ProcedureSerializer sser = new ProcedureSerializer(arch, "stdapi");
+            TypeLibraryLoader loader = new TypeLibraryLoader(arch);
+			ProcedureSerializer sser = new ProcedureSerializer(arch, loader, "stdapi");
             svc.Signature = sser.Deserialize(Signature, arch.CreateFrame());
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;
 			return svc;

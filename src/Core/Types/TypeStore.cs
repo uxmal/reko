@@ -239,10 +239,9 @@ namespace Decompiler.Core.Types
             writer.Write("{0}: ", tv);
             if (dt != null)
             {
-                dt.Write(writer);
+                dt.Write(writer, false);
                 WriteExpressionOf(tv, writer);
             }
-
             writer.WriteLine();
         }
 

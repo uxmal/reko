@@ -183,7 +183,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 </library>";
             RunTest(
                 "typedef struct foo FOO;" +
-                "struct foo { int x, y, z; };" 
+                "struct foo { int x, y, z; };"
                 , sExp);
         }
 
@@ -262,7 +262,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "typedef struct tagVariant { " +
                     "int type;" +
                     "union u {" +
-                        "int i;" + 
+                        "int i;" +
                         "char * s;" +
                         "float f;" +
                     "};" +
@@ -333,7 +333,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             RunTest(
                 "typedef unsigned char byte;" +
                 "typedef struct header {" +
-                    "byte signature[16];" + 
+                    "byte signature[16];" +
                     "int length;" +
                 "};",
                 sExp);
@@ -629,6 +629,111 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       </return>
       <arg name=""q"">
         <type>PRTL_RUN_ONCE_INIT_FN</type>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(cCode, sExp);
+        }
+
+        [Test]
+        public void C2X_fn_with_array_parameter()
+        {
+            var cCode = "int foo(char arr[]);";
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+        <reg>eax</reg>
+      </return>
+      <arg name=""arr"">
+        <ptr>
+          <prim domain=""Character"" size=""1"" />
+        </ptr>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(cCode, sExp);
+        }
+
+        [Test]
+        public void C2X_typedef_2d_array()
+        {
+            var cCode = "typedef float matrix[3][4];";
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""matrix"">
+      <arr length=""3"">
+        <arr length=""4"">
+          <prim domain=""Real"" size=""4"" />
+        </arr>
+      </arr>
+    </typedef>
+  </Types>
+</library>";
+            RunTest(cCode, sExp);
+        }
+
+        [Test]
+        public void C2X_fn_with_2d_array_parameter()
+        {
+            var cCode = "int foo(char matrix[3][4]);";
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""foo"">
+    <signature>
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+        <reg>eax</reg>
+      </return>
+      <arg name=""matrix"">
+        <ptr>
+          <arr length=""4"">
+            <prim domain=""Character"" size=""1"" />
+          </arr>
+        </ptr>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(cCode, sExp);
+        }
+
+        [Test]
+        public void C2X_fn_with_structref()
+        {
+            var cCode =
+                "struct foo { int x; };" +
+                "int bar(struct foo * pfoo);";
+
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""foo"">
+      <field offset=""0"" name=""x"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+  </Types>
+  <procedure name=""bar"">
+    <signature>
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+        <reg>eax</reg>
+      </return>
+      <arg name=""pfoo"">
+        <ptr>
+          <struct name=""foo"" />
+        </ptr>
         <stack size=""4"" />
       </arg>
     </signature>
