@@ -40,6 +40,22 @@ namespace Decompiler.Tools.C2Xml
         private int byteSize;
         private CTokenType callingConvention;
         private CConstantEvaluator eval;
+        private SimpleSize simpleSize;
+
+        private enum SimpleSize
+        {
+            None,
+            Char,
+            WChar_t,
+            Short,
+            Int,
+            Long,
+            LongLong,
+            Float,
+            Double,
+            LongDouble,
+            Int64,
+        }
 
         public NamedDataTypeExtractor(IEnumerable<DeclSpec> specs, XmlConverter converter)
         {
@@ -47,6 +63,7 @@ namespace Decompiler.Tools.C2Xml
             this.converter = converter;
             this.callingConvention = CTokenType.None;
             this.eval = new CConstantEvaluator(converter.Constants);
+            this.simpleSize = SimpleSize.None;
             foreach (var declspec in specs)
             {
                 dt = declspec.Accept(this);
@@ -239,6 +256,7 @@ namespace Decompiler.Tools.C2Xml
             return (nt) => conv.Declarator.Accept(this)(nt);
         }
 
+
         public SerializedType VisitSimpleType(SimpleTypeSpec simpleType)
         {
             switch (simpleType.Type)
@@ -249,7 +267,6 @@ namespace Decompiler.Tools.C2Xml
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'void' after '{0}'.", domain));
                 domain = Domain.Void;
-                byteSize = 0;
                 return CreatePrimitive();
             case CTokenType.__W64:
                 return dt;      // Used by Microsoft compilers for 32->64 bit transition, deprecated.
@@ -271,37 +288,35 @@ namespace Decompiler.Tools.C2Xml
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
-                    throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                byteSize = 1;
+                    throw new FormatException(string.Format("Unexpected domain {0}.", domain));
+                simpleSize = SimpleSize.Char;
                 return CreatePrimitive();
             case CTokenType.Wchar_t:
                 if (domain == Domain.None)
                     domain = Domain.Character;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                byteSize = 2;       //$TODO: this is different on Unix platforms.
+                simpleSize = SimpleSize.WChar_t;
                 return CreatePrimitive();
             case CTokenType.Short:
-                if (domain == Domain.None)
-                    domain = Domain.SignedInt;
-                else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
+                if (domain != Domain.None && domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                byteSize = 2;
+                simpleSize = SimpleSize.Short;
                 return CreatePrimitive();
             case CTokenType.Int:
                 if (domain == Domain.None)
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                byteSize = 4;
+                if (simpleSize == SimpleSize.None)
+                    simpleSize = SimpleSize.Int;
                 return CreatePrimitive();
             //$TODO: bitsize is platform-dependent. For instance, an 'int' is 32-bits on Windows x86-64 but 16-bits on MS-DOS
             case CTokenType.Long:
-                if (domain == Domain.None)
-                    domain = Domain.SignedInt;
-                else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
-                    throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                byteSize = 4;
+                if (simpleSize == SimpleSize.None)
+                    simpleSize = SimpleSize.Long;
+                else if (simpleSize == SimpleSize.Long)
+                    simpleSize = SimpleSize.LongLong;
                 return CreatePrimitive();
             //$TODO: bitsize is platform-dependent. For instance, a 'long' is 32-bits on Windows x86-64 but 64-bits on 64-bit Unix
             case CTokenType.__Int64:
@@ -309,25 +324,46 @@ namespace Decompiler.Tools.C2Xml
                     domain = Domain.SignedInt;
                 else if (domain != Domain.SignedInt && domain != Domain.UnsignedInt)
                     throw new FormatException(string.Format("Unexpected domain {0}", domain));
-                byteSize = 8;
+                simpleSize = SimpleSize.Int64;
                 return CreatePrimitive();
             case CTokenType.Float:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
                 domain = Domain.Real;
-                byteSize = 4;
+                simpleSize = SimpleSize.Float;
                 return CreatePrimitive();
             case CTokenType.Double:
-                if (domain != Domain.None)  //$REVIEW: short double? long double? long long double?
+                if (domain != Domain.None && domain != Domain.SignedInt)  //$REVIEW: short double? long double? long long double?
                     throw new FormatException(string.Format("Unexpected domain {0} before float.", domain));
                 domain = Domain.Real;
-                byteSize = 8;       //$REVIEW: arch-specific.
+                if (simpleSize == SimpleSize.None)
+                    simpleSize = SimpleSize.Double;
+                else if (simpleSize == SimpleSize.Long)
+                    simpleSize = SimpleSize.LongDouble;
                 return CreatePrimitive();
             }
         }
 
         private SerializedPrimitiveType CreatePrimitive()
         {
+            //$BUG: all these are architecture depeendent.
+            switch (simpleSize)
+            {
+            case SimpleSize.None: byteSize = 0; break;
+            case SimpleSize.Char: byteSize = 1; break;
+            case SimpleSize.WChar_t: byteSize = 2; break;
+            case SimpleSize.Short: byteSize = 2; break;
+            case SimpleSize.Int: byteSize = 4; break;
+            case SimpleSize.Long: byteSize = 4; break;
+            case SimpleSize.LongLong: byteSize = 8; break;
+            case SimpleSize.Int64: byteSize = 8; break;
+            case SimpleSize.Float: byteSize = 4; break;
+            case SimpleSize.Double: byteSize = 8; break;
+            case SimpleSize.LongDouble: byteSize = 8; break;
+            default: throw new NotImplementedException();
+            }
+            if (domain == Domain.None)
+                domain = Domain.SignedInt;
             return new SerializedPrimitiveType
             {
                 Domain = domain,

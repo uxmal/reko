@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Environments.Win32
                 {
                     new TypeLibraryElement
                     {
-                        Name = "win32.xml"
+                        Name = "windows.xml"
                     }
                 }
             };

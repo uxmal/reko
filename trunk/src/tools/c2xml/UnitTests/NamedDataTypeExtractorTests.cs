@@ -95,8 +95,25 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                         }
                     }
                 });
-                Assert.AreEqual("fn", nt.Name);
+            Assert.AreEqual("fn", nt.Name);
             Assert.AreEqual("ptr(fn(arg(prim(SignedInt,4)),(arg(ch,prim(Character,1))))", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_long_double_field()
+        {
+            Run(new[] { SType(CTokenType.Long), SType(CTokenType.Double) },
+                new IdDeclarator { Name = "foo" });
+            Assert.AreEqual("prim(Real,8)", nt.DataType.ToString());
+        }
+
+
+        [Test]
+        public void NamedDataTypeExtractor_unsigned_short()
+        {
+            Run(new[] { SType(CTokenType.Unsigned), SType(CTokenType.Short) },
+                new IdDeclarator { Name = "foo" });
+            Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
     }
 }

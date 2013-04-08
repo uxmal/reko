@@ -22,6 +22,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,7 @@ namespace Decompiler.Core
     {
         private IProcessorArchitecture arch;
         private Dictionary<string, DataType> types;
+        private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
         private Dictionary<string, ProcedureSignature> procedures;
         private bool caseInsensitive;
@@ -49,8 +51,13 @@ namespace Decompiler.Core
         {
             caseInsensitive = serializedLibrary.Case == "insensitive";
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
-            this.types = new Dictionary<string, DataType>(cmp);
+            this.types = new Dictionary<string, DataType>(cmp)
+            {
+                { "va_list", PrimitiveType.Pointer32 } ,        //$BUGBUG: hardwired
+                { "size_t", PrimitiveType.UInt32 },             //$BUGBUG: hardwired
+            };
             this.procedures = new Dictionary<string, ProcedureSignature>(cmp);
+            this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
             ReadDefaults(serializedLibrary.Defaults);
 
@@ -70,7 +77,7 @@ namespace Decompiler.Core
                     {
                         string key = sp.Name;
                         ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
-                        procedures.Add(key, sser.Deserialize(sp.Signature, arch.CreateFrame()));
+                        procedures[key] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?
                     }
                 }
             }
@@ -99,12 +106,14 @@ namespace Decompiler.Core
 
         public DataType VisitArray(SerializedArrayType array)
         {
-            throw new NotImplementedException();
+            var dt = array.ElementType.Accept(this);
+            return new ArrayType(dt, array.Length);
         }
 
         public DataType VisitSignature(SerializedSignature signature)
         {
-            throw new NotImplementedException();
+            //$BUGBUG: what we want is to unify FunctionType and ProcedureSignature....
+            return PrimitiveType.PtrCode32;
         }
 
         public DataType VisitStructure(SerializedStructType structure)
@@ -114,8 +123,13 @@ namespace Decompiler.Core
             {
                  str = new StructureType(structure.Name, structure.ByteSize);
                 structures.Add(structure.Name, str);
-                var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));
-                str.Fields.AddRange(fields);
+                if (structure.Fields != null)
+                {
+                    var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));
+                    str.Fields.AddRange(fields);
+                }
+                else
+                    Debug.Print("Huh? structure {0} has no fields?", structure.Name);
                 return str;
             }
             else
@@ -127,23 +141,36 @@ namespace Decompiler.Core
         public DataType VisitTypedef(SerializedTypedef typedef)
         {
             var dt = typedef.DataType.Accept(this);
-            types.Add(typedef.Name, dt);
+            types[typedef.Name] = dt;       //$BUGBUG: check for type equality if already exists.
             return null;
         }
 
         public DataType VisitTypeReference(SerializedTypeReference typeReference)
         {
-            throw new NotImplementedException();
+            return new TypeReference(typeReference.TypeName, types[typeReference.TypeName]);
         }
 
         public DataType VisitUnion(SerializedUnionType union)
         {
-            throw new NotImplementedException();
+            UnionType un;
+            if (union.Name == null || !unions.TryGetValue(union.Name, out un))
+            {
+                un = new UnionType { Name = union.Name };
+                if (union.Name != null)
+                    unions.Add(union.Name, un);
+                var alts = union.Alternatives.Select(a => new UnionAlternative(a.Name, a.Type.Accept(this)));
+                un.Alternatives.AddRange(alts);
+                return un;
+            }
+            else 
+            {
+                return new TypeReference(un);
+            }
         }
 
-        public DataType VisitEnum(SerializedEnumType serializedEnumType)
+        public DataType VisitEnum(SerializedEnumType enumType)
         {
-            throw new NotImplementedException();
+            return PrimitiveType.Word32;
         }
     }
 }

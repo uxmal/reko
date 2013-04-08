@@ -182,12 +182,28 @@ namespace Decompiler.Tools.C2Xml
 
     public class CType : CSyntax
     {
-        public Declarator Declarator;
         public List<DeclSpec> DeclSpecList;
+        public Declarator Declarator;
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
             return visitor.VisitType(this);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            var sep = "(";
+            foreach (var x in DeclSpecList)
+            {
+                sb.Append(sep);
+                sb.Append(x);
+                sep = " ";
+            }
+            sb.Append(sep);
+            sb.Append(Declarator);
+            sb.Append(")");
+            return sb.ToString();
         }
     }
 
@@ -542,6 +558,19 @@ namespace Decompiler.Tools.C2Xml
             return visitor.VisitApplication(this);
         }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("(");
+            sb.Append(Function);
+            foreach (var exp in Arguments)
+            {
+                sb.Append(" ");
+                sb.Append(exp);
+            }
+            sb.Append(")");
+            return sb.ToString();
+        }
     }
 
     public class MemberExpression : CExpression
@@ -609,6 +638,11 @@ namespace Decompiler.Tools.C2Xml
         {
             return visitor.VisitCast(this);
         }
+
+        public override string ToString()
+        {
+            return string.Format("(cast {0} {1})", Type, Expression);
+        }
     }
 
     public class ConditionalExpression : CExpression
@@ -620,6 +654,11 @@ namespace Decompiler.Tools.C2Xml
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitConditional(this);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("(cond {0} {1} {2})", Condition, Consequent, Alternative);
         }
     }
 
@@ -634,6 +673,24 @@ namespace Decompiler.Tools.C2Xml
             return visitor.VisitIncremeent(this);
         }
     }
+
+    public class SizeofExpression : CExpression
+    {
+        public CType Type;
+        public CExpression Expression;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitSizeof(this);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("(sizeof {0})",
+                Type != null ? (object)Type : (object)Expression);
+        }
+    }
+
     #endregion
 
     #region Statements
@@ -721,6 +778,12 @@ namespace Decompiler.Tools.C2Xml
     public class ExprStat : Stat
     {
         public CExpression Expression;
+        public override string ToString()
+        {
+            if (Expression == null)
+                return " ";
+            return string.Format("({0})", Expression.ToString());
+        }
     }
 
     public class CompoundStatement : Stat

@@ -68,8 +68,12 @@ namespace Decompiler.Tools.C2Xml
             { "__cdecl", CTokenType.__Cdecl },
             { "__declspec", CTokenType.__Declspec },
             { "__fastcall", CTokenType.__Fastcall },
+            { "__in", CTokenType.__In },
+            { "__in_opt", CTokenType.__In_Opt },
             { "__inline", CTokenType.__Inline },
             { "__int64", CTokenType.__Int64 },
+            { "__out", CTokenType.__Out},
+            { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
             { "__pragma", CTokenType.__Pragma },
             { "__ptr64", CTokenType.__Ptr64 },
             { "__stdcall", CTokenType.__Stdcall },
@@ -719,10 +723,12 @@ namespace Decompiler.Tools.C2Xml
                 rdr.Read();
                 if (ch == '\n')
                 {
+                    ++LineNumber;
                     return;
                 }
                 else if (ch == '\r')
                 {
+                    ++LineNumber;
                     c = rdr.Peek();
                     if (c < 0 || c != '\n')
                         return;
@@ -842,8 +848,12 @@ namespace Decompiler.Tools.C2Xml
         __Cdecl,
         __Declspec,
         __Fastcall,
+        __In,
+        __In_Opt,
         __Inline,
         __Int64,
+        __Out,
+        __Out_Bcount_Opt,
         __Pragma,
         __Ptr64,
         __Stdcall,
@@ -857,6 +867,5 @@ namespace Decompiler.Tools.C2Xml
         Break,
         If,
         Ellipsis,
-
     }
 }

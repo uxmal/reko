@@ -54,9 +54,14 @@ namespace Decompiler.Tools.C2Xml
             throw new NotImplementedException();
         }
 
-        public object VisitUnary(CUnaryExpression cUnaryExpression)
+        public object VisitUnary(CUnaryExpression unary)
         {
-            throw new NotImplementedException();
+            switch (unary.Operation)
+            {
+            case CTokenType.Ampersand:
+                return 0;
+            default: throw new NotImplementedException();
+            }
         }
 
         public object VisitBinary(CBinaryExpression bin)
@@ -67,6 +72,12 @@ namespace Decompiler.Tools.C2Xml
             {
             default:
                 throw new NotImplementedException("Operation " + bin.Operation);
+            case CTokenType.Ampersand:
+                return (int) left & (int) right;
+            case CTokenType.Eq:
+                return (int) left == (int) right;
+            case CTokenType.Minus:
+                return (int) left - (int) right;
             case CTokenType.Pipe:
                 return (int) left | (int) right;
             case CTokenType.Plus:
@@ -85,17 +96,29 @@ namespace Decompiler.Tools.C2Xml
 
         public object VisitCast(CastExpression castExpression)
         {
-            throw new NotImplementedException();
+            return castExpression.Expression.Accept(this);
         }
 
-        public object VisitConditional(ConditionalExpression conditionalExpression)
+        public object VisitConditional(ConditionalExpression cond)
         {
-            throw new NotImplementedException();
+            if (Convert.ToBoolean(cond.Condition.Accept(this)))
+            {
+                return cond.Consequent.Accept(this);
+            }
+            else
+            {
+                return cond.Alternative.Accept(this);
+            }
         }
 
         public object VisitIncremeent(IncrementExpression incrementExpression)
         {
             throw new NotImplementedException();
+        }
+
+        public object VisitSizeof(SizeofExpression sizeOf)
+        {
+            return 4;       //$BUGBUG:
         }
     }
 }

@@ -33,39 +33,96 @@ namespace Decompiler.Tools.C2Xml
     {
         private CLexer lexer;
         private ParserState state;
+        private CToken tokenPrev;
 
         public CDirectiveLexer(ParserState state, CLexer lexer)
         {
             this.state = state;
             this.lexer = lexer;
+            this.tokenPrev = new CToken(    CTokenType.EOF);
         }
 
         public int LineNumber { get { return lexer.LineNumber; } }
 
+        private enum State
+        {
+            Start = 0,
+            Strings = 1,
+        }
+
         public CToken Read()
         {
-            CToken token = lexer.Read();
+            if (tokenPrev.Type != CTokenType.EOF)
+            {
+                var t = tokenPrev;
+                tokenPrev = new CToken(CTokenType.EOF);
+                return t;
+            }
+
+            var token = lexer.Read();
+            string lastString = null;
+            var state = State.Start;
+            StringBuilder sb = null;
             for (; ; )
             {
-                if (token.Type == CTokenType.LineDirective)
+                switch (state)
                 {
-                    Expect(CTokenType.NumericLiteral);
-                    Expect(CTokenType.StringLiteral);
-                    token = lexer.Read();
-                }
-                else if (token.Type == CTokenType.PragmaDirective)
-                {
-                    token = ReadPragma((string) lexer.Read().Value);
-                }
-                else if (token.Type == CTokenType.__Pragma)
-                {
-                    Expect(CTokenType.LParen);
-                    token = ReadPragma((string) lexer.Read().Value);
-                    token = lexer.Read();
-                }
-                else
-                {
-                    return token;
+                case State.Start:
+                    if (token.Type == CTokenType.LineDirective)
+                    {
+                        Expect(CTokenType.NumericLiteral);
+                        Expect(CTokenType.StringLiteral);
+                        token = lexer.Read();
+                    }
+                    else if (token.Type == CTokenType.PragmaDirective)
+                    {
+                        token = ReadPragma((string) lexer.Read().Value);
+                    }
+                    else if (token.Type == CTokenType.__Pragma)
+                    {
+                        Expect(CTokenType.LParen);
+                        token = ReadPragma((string) lexer.Read().Value);
+                        token = lexer.Read();
+                    }
+                    else if (token.Type == CTokenType.StringLiteral)
+                    {
+                        state = State.Strings;
+                        lastString = (string) token.Value;
+                    }
+                    else
+                    {
+                        return token;
+                    }
+                    break;
+                case State.Strings:
+                    if (token.Type == CTokenType.StringLiteral)
+                    {
+                        if (lastString != null)
+                        {
+                            sb = new StringBuilder(lastString);
+                            lastString = null;
+                        }
+                        else
+                        {
+                            sb.Append(token.Value);
+                        }
+                        token = lexer.Read();
+                    }
+                    else
+                    {
+                        tokenPrev = token;
+                        if (lastString != null)
+                        {
+                            var tok = new CToken(CTokenType.StringLiteral, lastString);
+                            lastString = null;
+                            return tok;
+                        }
+                        else
+                        {
+                            return new CToken(CTokenType.StringLiteral, sb.ToString());
+                        }
+                    }
+                    break;
                 }
             }
         }
@@ -108,20 +165,35 @@ namespace Decompiler.Tools.C2Xml
             else if (pragma == "pack")
             {
                 Expect(CTokenType.LParen);
-                var verb = (string) Expect(CTokenType.Id);
-                if (verb == "push")
+                var token = lexer.Read();
+                switch (token.Type)
                 {
-                    Expect(CTokenType.Comma);
-                    int align = (int) Expect(CTokenType.NumericLiteral);
-                    this.state.PushAlignment(align);
-                }
-                else if (verb == "pop")
-                {
+                case CTokenType.NumericLiteral:
+                    this.state.PushAlignment((int) token.Value);
+                    Expect(CTokenType.RParen);
+                    break;
+                case CTokenType.RParen:
                     this.state.PopAlignment();
+                    break;
+                case CTokenType.Id:
+                    var verb = (string) token.Value;
+                    if (verb == "push")
+                    {
+                        Expect(CTokenType.Comma);
+                        this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral));
+                        Expect(CTokenType.RParen);
+                    }
+                    else if (verb == "pop")
+                    {
+                        this.state.PopAlignment();
+                        Expect(CTokenType.RParen);
+                    }
+                    else
+                        throw new FormatException(string.Format("Unknown verb {0}.", verb));
+                    break;
+                default:
+                    throw new FormatException(string.Format("Unexpected token {0}.", token.Type));
                 }
-                else
-                    throw new FormatException();
-                Expect(CTokenType.RParen);
                 return lexer.Read();
             }
             else if (pragma == "deprecated")
@@ -140,7 +212,12 @@ namespace Decompiler.Tools.C2Xml
                 Expect(CTokenType.RParen);
                 return lexer.Read();
             }
-            else
+            else if (pragma == "region" || pragma == "endregion")
+            {
+                lexer.SkipToNextLine();
+                return lexer.Read();
+            }
+            else 
             {
                 throw new FormatException(string.Format("Unknown #pragma {0}.", pragma));
             }
