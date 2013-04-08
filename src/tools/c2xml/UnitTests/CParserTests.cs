@@ -214,7 +214,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             var stat = parser.Parse_Stat();
             var sExp =
                 "(do \r\n" +
-                "(Decompiler.Tools.C2Xml.ExprStat)) " +
+                "(((__noop TagBase)))) " +
                 "(Comma 0 0))";
             Assert.AreEqual(sExp, stat.ToString());
         }
@@ -346,6 +346,98 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                 "(decl Typedef Char ((init-decl (arr (arr matrix 3) 4))))";
             Assert.AreEqual(sExp, decl.ToString());
         }
+
+        [Test]
+        public void CParser_declspec_deprecated_with_text()
+        {
+            Lex("__declspec(deprecated(\"foo\")) int bar(); ");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl (__declspec deprecated) Int ((init-decl (func bar)))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_array_with_complex_size_expression()
+        {
+            Lex(
+                "typedef long LONG;\n" + 
+                "typedef long LONG_PTR;\n" +
+                "typedef struct { int x; } XSAVE_AREA;\n"+
+                "typedef char __C_ASSERT__[((((LONG)(LONG_PTR)&(((XSAVE_AREA *)0)->Header)) & (64 - 1)) == 0)?1:-1];");
+            var decl = parser.Parse_ExternalDecl();
+            decl = parser.Parse_ExternalDecl();
+            decl = parser.Parse_ExternalDecl();
+            decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef Char ((init-decl " +
+                    "(arr __C_ASSERT__ " +
+                        "(cond (Eq (Ampersand (cast (LONG ) (cast (LONG_PTR ) " +
+                        "(Ampersand ((cast (XSAVE_AREA (ptr )) 0) -> Header))) " +
+                        "(Minus 64 1)) 0) 1 -1)))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_legal_duplicate_typedef()
+        {
+            Lex(
+                "typedef int FOO[1];\n" +
+                "typedef int FOO[1];\n");
+            var decl = parser.Parse_ExternalDecl();
+            decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef Int ((init-decl " +
+                    "(arr FOO 1))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_legal_duplicate_typedef2()
+        {
+            Lex(
+                "typedef __int64 __time64_t;\n" +
+                "typedef __time64_t time_t;\n");
+            var decl = parser.Parse_ExternalDecl();
+            decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef __time64_t ((init-decl time_t)))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_legal_duplicate_typedef3()
+        {
+            Lex(
+                "typedef wchar_t WCHAR;\n" +
+                "typedef const WCHAR *LPCWCH, *PCWCH;\n");
+            var decl = parser.Parse_ExternalDecl();
+            decl = parser.Parse_ExternalDecl();
+            var sExp =
+                "(decl Typedef Const WCHAR ((init-decl (ptr LPCWCH)) (init-decl (ptr PCWCH))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_application_empty_arglist()
+        {
+            Lex("void FOO(void) {\r\n" +
+                    "bar();\r\n" + 
+                "}");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(fndecl (decl Void ((init-decl (func FOO ((Void )))))) (((bar))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_abstract_fn_parameter()
+        {
+            Lex("int    __cdecl atexit(void (__cdecl *)(void));");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Int __Cdecl ((init-decl (func atexit ((Void (func (__Cdecl (ptr )) ((Void )))))))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
         private string windows_h =
 #region Windows.h
 @"#line 1 ""\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\windows.h""

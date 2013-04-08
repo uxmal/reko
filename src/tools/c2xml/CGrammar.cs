@@ -97,12 +97,12 @@ namespace Decompiler.Tools.C2Xml
 
         public CExpression Sizeof(CType type)
         {
-            throw new NotImplementedException();
+            return new SizeofExpression { Type = type };
         }
 
         public CExpression Sizeof(CExpression sexp)
         {
-            throw new NotImplementedException();
+            return new SizeofExpression { Expression = sexp };
         }
 
         public CExpression PreIncrement(CTokenType token, CExpression uexpr)

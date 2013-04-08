@@ -78,7 +78,6 @@ namespace Decompiler.UnitTests.Gui
             var sExp = @"void&nbsp;proc()<br />
 {<br />
 proc_entry:<br />
-l1:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">if</span>&nbsp;(r1&nbsp;&gt;&nbsp;r2)<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;greaterthan<br />
 greaterthan:<br />

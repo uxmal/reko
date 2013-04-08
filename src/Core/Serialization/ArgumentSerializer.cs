@@ -59,6 +59,11 @@ namespace Decompiler.Core.Serialization
 
 		public void Deserialize(SerializedStackVariable ss)
 		{
+            if (argCur.Name == "...")
+            {
+                idArg = ps.CreateId("...", new UnknownType(), new StackArgumentStorage(ps.StackOffset, new UnknownType()));
+                return;
+            }
 			var dt = this.argCur.Type.Accept(ps.TypeLoader);
 			idArg = ps.CreateId(
 				argCur.Name ?? "arg" + ps.StackOffset, 

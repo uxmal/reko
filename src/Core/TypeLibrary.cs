@@ -78,6 +78,10 @@ namespace Decompiler.Core
         [Obsolete]
         public void Load(SerializedLibrary slib)
         {
+            var tlldr = new TypeLibraryLoader(arch);
+            var tlib = tlldr.Load(slib);
+            Signatures = tlib.Signatures;
+            Types = tlib.Types;
         }
 
 		public ProcedureSignature Lookup(string procedureName)

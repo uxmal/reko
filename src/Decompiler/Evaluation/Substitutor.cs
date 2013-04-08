@@ -172,7 +172,10 @@ namespace Decompiler.Evaluation
 
         public Expression VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            var cond = tc.Expression.Accept(this);
+            if (cond == Constant.Invalid)
+                return tc;
+            return new TestCondition(tc.ConditionCode, cond);
         }
 
         public Expression VisitUnaryExpression(UnaryExpression unary)

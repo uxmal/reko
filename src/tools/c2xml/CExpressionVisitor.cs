@@ -46,5 +46,7 @@ namespace Decompiler.Tools.C2Xml
         T VisitConditional(ConditionalExpression conditional);
 
         T VisitIncremeent(IncrementExpression increment);
+
+        T VisitSizeof(SizeofExpression sizeOf);
     }
 }

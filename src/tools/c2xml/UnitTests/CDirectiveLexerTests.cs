@@ -111,6 +111,29 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             Lex("#pragma comment(lib, \"foo.lib\")\nx");
             Assert.AreEqual("x", lexer.Read().Value);
         }
+
+        [Test]
+        public void CDirectiveLexer_Pragma_region()
+        {
+            Lex("#pragma region stuf stuff stuff\r\nx");
+            Assert.AreEqual("x", lexer.Read().Value);
+        }
+
+        [Test]
+        public void CDirectiveLexer_Concatenate_string_literals()
+        {
+            Lex("\"foo\"    \"bar\"");
+            Assert.AreEqual("foobar", lexer.Read().Value);
+        }
+
+        [Test]
+        public void CDirectiveLexer_NewPackSyntax()
+        {
+            Lex(
+                "#pragma pack(4)\r\n" +
+                "#pragma pack()\r\nx");
+            Assert.AreEqual("x", lexer.Read().Value);
+        }
     }
 }
 #endif
