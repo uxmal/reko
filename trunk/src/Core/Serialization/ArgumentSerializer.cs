@@ -107,6 +107,8 @@ namespace Decompiler.Core.Serialization
         {
             if (arg == null)
                 return null;
+            if (arg.DataType == null)
+                throw new ArgumentNullException("arg.DataType");
             SerializedArgument sarg = new SerializedArgument 
             {
 			    Name = arg.Name,

@@ -161,7 +161,7 @@ namespace Decompiler.Gui.Forms
             sc.AddService(typeof(IMemoryViewService), svcFactory.CreateMemoryViewService());
             sc.AddService(typeof(IDisassemblyViewService), svcFactory.CreateDisassemblyViewService());
 
-            srSvc = new SearchResultServiceImpl(new TabControlWindowFrame(form.TabControl, form.FindResultsPage), form.FindResultsList);
+            srSvc = new SearchResultServiceImpl(sc, new TabControlWindowFrame(form.TabControl, form.FindResultsPage), form.FindResultsList);
             sc.AddService(typeof(ISearchResultService), srSvc);
 
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();

@@ -16,6 +16,7 @@
 
 	<menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxBrowser" cmdSet="Decompiler"/>
+  <menu type="ContextMenu" id="CtxProcedure" cmdSet="Decompiler"/>
 
   <!-- Toolbars -->
   <menu type="ToolStrip" id="MainToolbar" cmdSet="GuidCmdSet"/>
@@ -50,7 +51,9 @@
 
   <group id="GrpToolbarActions" cmdSet="Decompiler" container="MainToolbar" />
 
-	<!-- Commands ========================================================== -->
+  <group id="GrpProcedure" cmdSet="Decompiler" container="CtxProcedure "/>
+
+  <!-- Commands ========================================================== -->
 
 	<cmd id="FileOpen" cmdSet="Decompiler" container="FileOpen" image="0">_Open...</cmd>
   <cmd id="FileOpenAs" cmdSet="Decompiler" container="FileOpenAs">Op_en As...</cmd>
@@ -83,6 +86,8 @@
   
   <cmd id="HelpAbout" cmdSet="Decompiler" container="GrpHelp">_About Decompiler...</cmd>
 
+  <cmd id="ShowProcedureCallHierarchy" cmdSet="Decompiler" container="GrpProcedure">Call graph</cmd>
+  
 	<!-- Placements ======================================================= -->
 
   <placement item="FileOpen" container="GrpFile" />

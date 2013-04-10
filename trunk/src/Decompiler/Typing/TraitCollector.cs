@@ -192,7 +192,6 @@ namespace Decompiler.Typing
             return handler.DataTypeTrait(call.Callee, PrimitiveType.Create(Domain.PtrCode, call.Callee.DataType.Size));
         }
 
-
         public DataType VisitGotoInstruction(GotoInstruction g)
         {
             throw new NotImplementedException();

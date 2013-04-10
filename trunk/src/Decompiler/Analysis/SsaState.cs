@@ -147,11 +147,7 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		public SsaIdentifierCollection Identifiers
-		{
-			get { return ids; }
-		}
-
+		public SsaIdentifierCollection Identifiers { get { return ids; } }
 
 		public void ReplaceDefinitions(Statement stmOld, Statement stmNew)
 		{
@@ -179,7 +175,6 @@ namespace Decompiler.Analysis
 				uses.RemoveRange(jTo, uses.Count - jTo);
 			}
 		}
-
 
 		/// <summary>
 		/// Undoes the SSA renaming by replacing each ssa identifier with its original identifier.

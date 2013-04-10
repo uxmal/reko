@@ -35,7 +35,7 @@ namespace Decompiler.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ContextMenu CtxBrowser;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
+    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ContextMenu CtxBrowser;	public readonly System.Windows.Forms.ContextMenu CtxProcedure;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
     
         public DecompilerMenus(ICommandTarget target) : base(target)
         {
@@ -48,6 +48,7 @@ namespace Decompiler.Gui.Windows.Forms
 			SortedList slHelpMenu = CreatePriorityList();
 			SortedList slCtxMemoryControl = CreatePriorityList();
 			SortedList slCtxBrowser = CreatePriorityList();
+			SortedList slCtxProcedure = CreatePriorityList();
 			SortedList slMainToolbar = CreatePriorityList();
 			
 			// Create groups
@@ -84,6 +85,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slMainToolbar.Add(0, slGrpToolbarFileOps);
 			SortedList slGrpToolbarActions = CreatePriorityList();
 			slMainToolbar.Add(0, slGrpToolbarActions);
+			SortedList slGrpProcedure = CreatePriorityList();
+			slCtxProcedure .Add(0, slGrpProcedure);
     
 			// Create commands in containers.
             
@@ -156,6 +159,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slHelpAbout = new CommandMenuItem("_About Decompiler...", new Guid(CmdSets.Decompiler), CmdIds.HelpAbout);
             slHelpAbout.IsDynamic = false;
             slGrpHelp.Add(0, slHelpAbout);
+            CommandMenuItem slShowProcedureCallHierarchy = new CommandMenuItem("Call graph", new Guid(CmdSets.Decompiler), CmdIds.ShowProcedureCallHierarchy);
+            slShowProcedureCallHierarchy.IsDynamic = false;
+            slGrpProcedure.Add(0, slShowProcedureCallHierarchy);
 			
 			// Create submenus
 			
@@ -208,6 +214,9 @@ namespace Decompiler.Gui.Windows.Forms
 			this.CtxBrowser = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxBrowser, CtxBrowser.MenuItems);
   
+			this.CtxProcedure = new System.Windows.Forms.ContextMenu();
+			BuildMenu(slCtxProcedure, CtxProcedure.MenuItems);
+  
 			this.MainToolbar = new System.Windows.Forms.ToolStrip();
 			BuildMenu(slMainToolbar, MainToolbar.Items);
   
@@ -230,6 +239,7 @@ namespace Decompiler.Gui.Windows.Forms
 			{
 				case MenuIds.CtxMemoryControl: return this.CtxMemoryControl;
 				case MenuIds.CtxBrowser: return this.CtxBrowser;
+				case MenuIds.CtxProcedure: return this.CtxProcedure;
 			}
 			throw new ArgumentException(string.Format("There is no context menu with id {0}.", menuId));
 		}

@@ -125,20 +125,26 @@ namespace Decompiler.UnitTests.Core.Serialization
 
 		private SerializedSignature BuildSsigStack()
 		{
-			SerializedSignature ssig = new SerializedSignature();
-			
-			SerializedArgument sarg = new SerializedArgument();
-			sarg.Type = new SerializedTypeReference("int");
-			sarg.Kind = new SerializedRegister("ax");
-			ssig.ReturnValue = sarg;
-
-			ssig.Arguments = new SerializedArgument[2];
-			ssig.Arguments[0] = new SerializedArgument();
-			ssig.Arguments[0].Name = "lParam";
-			ssig.Arguments[0].Kind = new SerializedStackVariable(4);
-
-			ssig.Arguments[1] = new SerializedArgument();
-			ssig.Arguments[1].Kind = new SerializedStackVariable(2);
+            SerializedSignature ssig = new SerializedSignature()
+            {
+                ReturnValue = new SerializedArgument
+                {
+                    Type = new SerializedTypeReference("int"),
+                    Kind = new SerializedRegister("ax")
+                },
+                Arguments = new SerializedArgument[]
+                {
+                    new SerializedArgument
+                    {
+                        Name = "lParam",
+			            Kind = new SerializedStackVariable(4)
+                    },
+                    new SerializedArgument 
+                    {
+			            Kind = new SerializedStackVariable(2)
+                    }
+                }
+            };
 			return ssig;
 		}
 

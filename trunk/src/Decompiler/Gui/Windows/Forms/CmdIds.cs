@@ -46,7 +46,8 @@ namespace Decompiler.Gui
 		public const int HelpMenu = 7;
 		public const int CtxMemoryControl = 8;
 		public const int CtxBrowser = 9;
-		public const int MainToolbar = 10;
+		public const int CtxProcedure = 10;
+		public const int MainToolbar = 11;
 	}
 	
 	public class GroupIds
@@ -67,6 +68,7 @@ namespace Decompiler.Gui
 		public const int GrpBrowser = 14 + 1000;
 		public const int GrpToolbarFileOps = 15 + 1000;
 		public const int GrpToolbarActions = 16 + 1000;
+		public const int GrpProcedure = 17 + 1000;
 	}
 	
 	public class CmdIds
@@ -93,6 +95,7 @@ namespace Decompiler.Gui
 		public const int WindowsTileHorizontal = 20 + 2000;
 		public const int WindowsCloseAll = 21 + 2000;
 		public const int HelpAbout = 22 + 2000;
+		public const int ShowProcedureCallHierarchy = 23 + 2000;
 		public const int FileMru = 2200;
 	}
 

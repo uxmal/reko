@@ -4,16 +4,15 @@
 // r1:Local -0004
 // return address size: 0
 void ReturnMock()
-ReturnMock_entry:		// pred:
+ReturnMock_entry:
 	// succ:  l1
-l1:		// pred: ReturnMock_entry
+l1:
 	branch r1 == 0x00000000 zero
 	// succ:  l2 zero
-l2:		// pred: l1
+l2:
 	return 0x00000000
 	// succ:  ReturnMock_exit
-ReturnMock_exit:		// pred: l2 zero
-	// succ: 
-zero:		// pred: l1
+zero:
 	return 0x00000001
 	// succ:  ReturnMock_exit
+ReturnMock_exit:

@@ -18,9 +18,10 @@
  */
 #endregion
 
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
@@ -28,13 +29,17 @@ namespace Decompiler.Gui.Windows
     public class SearchResultServiceImpl : ISearchResultService
     {
         private ListView listView;
+        private IServiceProvider services;
         private ISearchResult result;
         private IWindowFrame frame;
 
-        public SearchResultServiceImpl(IWindowFrame frame, ListView listView)
+        public SearchResultServiceImpl(IServiceProvider services, IWindowFrame frame, ListView listView)
         {
+            if (services == null)
+                throw new ArgumentNullException("services");
             if (frame == null)
                 throw new ArgumentNullException("frame");
+            this.services = services;
             this.frame = frame;
             this.listView = listView;
             listView.VirtualMode = true;
@@ -43,7 +48,7 @@ namespace Decompiler.Gui.Windows
             this.listView.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(listView_RetrieveVirtualItem);
             this.listView.CacheVirtualItems += new CacheVirtualItemsEventHandler(listView_CacheVirtualItems);
             this.listView.DoubleClick += new EventHandler(listView_DoubleClick);
-
+            
             ShowSearchResults(new EmptyResult());
         }
 
@@ -55,6 +60,13 @@ namespace Decompiler.Gui.Windows
             listView.VirtualListSize = result.Count;
             var searchResultView = new SearchResultView(this.listView);
             result.CreateColumns(searchResultView);
+            var ctxMenuID = result.ContextMenuID;
+            if (ctxMenuID > 0)
+            {
+                listView.ContextMenu = services
+                    .RequireService<IDecompilerShellUiService>()
+                    .GetContextMenu(ctxMenuID);
+            }
             frame.Show();
         }
 
@@ -130,6 +142,8 @@ namespace Decompiler.Gui.Windows
             {
                 get { return 1; }
             }
+
+            public int ContextMenuID { get { return 0; } }
 
             public void CreateColumns(ISearchResultView view)
             {

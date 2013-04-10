@@ -1346,8 +1346,6 @@ namespace Decompiler.Assemblers.x86
             ProcessDiv(0x07, op);
         }
 
-
-
         public void Import(string symbolName, string fnName, string dllName)
         {
             DefineSymbol(symbolName);
