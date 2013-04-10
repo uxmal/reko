@@ -38,7 +38,7 @@ namespace Decompiler.Gui
 
     public interface IDecompilerShellUiService : IDecompilerUIService, ICommandTarget
     {
-        ContextMenu GetContextMenu(int p);
+        ContextMenu GetContextMenu(int menuID);
 
         IWindowFrame FindWindow(string windowType);
         IWindowFrame FindDocumentWindow(string documentType, object docItem);

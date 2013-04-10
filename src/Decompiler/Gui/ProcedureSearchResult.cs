@@ -22,6 +22,7 @@ using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -39,11 +40,12 @@ namespace Decompiler.Gui
             this.procs = procs;
         }
 
-
         public int Count
         {
             get { return procs.Count; }
         }
+
+        public int ContextMenuID { get { return MenuIds.CtxProcedure; } }
 
         public void CreateColumns(ISearchResultView view)
         {

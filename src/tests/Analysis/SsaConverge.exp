@@ -2,9 +2,9 @@ Mem0:Global memory
     def:  def Mem0
 fp:Temporary
     def:  def fp
-sp:Register sp
+sp:sp
     def:  def sp
-bx:Register bx
+bx:bx
     def:  def bx
     uses: SCZO_10 = cond(bx - 0x0000)
 SCZO:Flags
@@ -13,13 +13,11 @@ Z:Flags
     def:  def Z
 SZO:Flags
     def:  def SZO
-ax:Register ax
+ax:ax
     def:  def ax
-    uses: ax_22 = ax ^ ax
-          ax_22 = ax ^ ax
 C:Flags
     def:  def C
-ds:Register ds
+ds:ds
     def:  def ds
     uses: Mem19[ds:0x0100:word16] = ax_15
 SCZO_10: orig: SCZO
@@ -63,7 +61,7 @@ ax_21: orig: ax
     def:  ax_21 = 0x0001
     uses: ax_15 = PHI(ax_20, ax_22, ax_21)
 ax_22: orig: ax
-    def:  ax_22 = ax ^ ax
+    def:  ax_22 = 0x0000
     uses: SZO_23 = cond(ax_22)
           ax_15 = PHI(ax_20, ax_22, ax_21)
 SZO_23: orig: SZO
@@ -81,7 +79,7 @@ SCZO_26: orig: SCZO
     def:  SCZO_26 = C_25 (alias)
     uses: SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
 // fn0C00_0000
-void fn0C00_0000()
+void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	def Mem0
 	def fp
@@ -113,7 +111,7 @@ l0C00_000D:
 	goto l0C00_0015
 	// succ:  l0C00_0015
 l0C00_0013:
-	ax_22 = ax ^ ax
+	ax_22 = 0x0000
 	SZO_23 = cond(ax_22)
 	Z_24 = SZO_23 (alias)
 	C_25 = false

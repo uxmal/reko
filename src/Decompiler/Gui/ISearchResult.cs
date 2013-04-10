@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
@@ -34,9 +35,9 @@ namespace Decompiler.Gui
     public interface ISearchResult
     {
         int Count { get; }
+        int ContextMenuID { get; }      // Context menu to use.
 
         void CreateColumns(ISearchResultView view);
-
         int GetItemImageIndex(int i);
 
         string[] GetItemStrings(int i);

@@ -20,11 +20,12 @@
 
 using Decompiler.Gui;
 using Decompiler.Gui.Windows;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
-using NUnit.Framework;
 using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows
@@ -37,12 +38,14 @@ namespace Decompiler.UnitTests.Gui.Windows
         private ListView listSearchResults;
         private SearchResultServiceImpl svc;
         private IWindowFrame frame;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             repository = new MockRepository();
             frame = repository.DynamicMock<IWindowFrame>();
+            sc = new ServiceContainer();
         }
 
         private void CreateUI()
@@ -50,7 +53,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             form = new Form();
             listSearchResults = new ListView();
             form.Controls.Add(listSearchResults);
-            svc = new SearchResultServiceImpl(frame, listSearchResults);
+            svc = new SearchResultServiceImpl(sc, frame, listSearchResults);
         }
 
         [TearDown]
@@ -60,7 +63,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void Creation()
+        public void SRS_Creation()
         {
             repository.ReplayAll();
 
@@ -71,9 +74,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void ShowSingleItem()
+        public void SRS_ShowSingleItem()
         {
             var result = repository.StrictMock<ISearchResult>();
+            result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(1);
             result.Expect(s => s.CreateColumns(
                 Arg<ISearchResultView>.Is.NotNull));
@@ -102,9 +106,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void CreateColumns()
+        public void SRS_CreateColumns()
         {
             var result = repository.StrictMock<ISearchResult>();
+            result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(0);
             result.Expect(s => s.CreateColumns(
                 Arg<ISearchResultView>.Is.NotNull));
@@ -131,6 +136,24 @@ namespace Decompiler.UnitTests.Gui.Windows
             svc.DoubleClickItem(1);
 
             repository.VerifyAll();
+        }
+
+        [Test]
+        public void SRS_ShowResults_ChangesContextMenu()
+        {
+            var ctxMenu = new ContextMenu();
+            var result = repository.DynamicMock<ISearchResult>();
+            var uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
+            result.Expect(r => r.ContextMenuID).Return(42);
+            uiSvc.Expect(u => u.GetContextMenu(42)).Return(ctxMenu);
+            sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
+            repository.ReplayAll();
+
+            CreateUI();
+            form.Show(); svc.ShowSearchResults(result);
+
+            repository.VerifyAll();
+            Assert.AreEqual(ctxMenu, listSearchResults.ContextMenu);
         }
     }
 }

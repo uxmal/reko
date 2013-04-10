@@ -364,6 +364,7 @@ namespace Decompiler.UnitTests.Structure
                 "\t\t\treturn;" + nl +
                 "		grux = foo();" + nl +
                 "\t}" + nl +
+                "\textra();" + nl +
                 "	return;" + nl +
                 "}" + nl);
         }

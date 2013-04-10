@@ -81,7 +81,6 @@ namespace Decompiler.Evaluation
             }
         }
 
-
         #region EvaluationContext Members
         /// <summary>
         /// Used by the symbolic evaluator to obtain the symbolic value of <paramref name="id"/>.
@@ -325,10 +324,7 @@ namespace Decompiler.Evaluation
                 ctx.TemporaryState[temp] = value;
                 return temp;
             }
-
             #endregion
         }
-
-
     }
 }

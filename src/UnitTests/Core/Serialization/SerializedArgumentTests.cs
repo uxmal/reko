@@ -55,35 +55,39 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SargWriteNamelessRegisterArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument();
-			sarg.Type = new SerializedTypeReference("int");
-			sarg.Kind = new SerializedRegister("eax");
+			SerializedArgument sarg = new SerializedArgument
+            {
+			    Type = new SerializedTypeReference("int"),
+			    Kind = new SerializedRegister("eax"),
+            };
 			Verify(sarg, "Core/SargWriteNamelessRegisterArgument.txt");
 		}
-
 
 		[Test]
 		public void SargWriteStackArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument();
-			sarg.Name = "bar";
-			sarg.Type = new SerializedTypeReference("int");
-			sarg.Kind = new SerializedStackVariable(4);
+			SerializedArgument sarg = new SerializedArgument
+            {
+			    Name = "bar",
+			    Type = new SerializedTypeReference("int"),
+			    Kind = new SerializedStackVariable(4)
+            };
 			Verify(sarg, "Core/SargWriteStackArgument.txt");
 		}
 	
 		[Test]
 		public void SargWriteOutArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument();
-			sarg.Name = "bxOut";
-			sarg.Type = new SerializedTypeReference("int");
-			sarg.OutParameter = true;
-			sarg.Kind = new SerializedRegister("bx");
+			SerializedArgument sarg = new SerializedArgument
+            {
+			    Name = "bxOut",
+			    Type = new SerializedTypeReference("int"),
+			    OutParameter = true,
+			    Kind = new SerializedRegister("bx")
+            };
 			Verify(sarg, "Core/SargWriteOutArgument.txt");
 		}
 
-	
 		private void Verify(SerializedArgument sarg, string outputFilename)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
@@ -96,8 +100,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 				fut.AssertFilesEqual();
 			}
 		}
-
-
 	}
 
 	public class FilteringXmlWriter : XmlTextWriter

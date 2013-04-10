@@ -209,6 +209,17 @@ namespace Decompiler.Core.Expressions
                     return h;
                 });
 
+            Add(typeof(ProcedureConstant),
+                delegate(Expression ea, Expression eb)
+                {
+                    ProcedureConstant a = (ProcedureConstant) ea, b = (ProcedureConstant) eb;
+                    return a.Procedure == b.Procedure;
+                },
+                delegate(Expression obj)
+                {
+                    return ((ProcedureConstant) obj).GetHashCode();
+                });
+
             Add(typeof(SegmentedAccess),
                 delegate(Expression ea, Expression eb)
                 {
