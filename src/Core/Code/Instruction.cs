@@ -122,38 +122,6 @@ namespace Decompiler.Core.Code
 
 	}
 
-
-	public class SwitchInstruction : Instruction
-	{
-		public Block [] targets;
-
-		public SwitchInstruction(Expression expr, Block [] targets)
-		{
-			this.Expression = expr;
-			this.targets = targets;
-		}
-
-        public Expression Expression { get; set; }
-        public override bool IsControlFlow { get { return true; } }
-
-
-		public override Instruction Accept(InstructionTransformer xform)
-		{
-			return xform.TransformSwitchInstruction(this);
-		}
-
-        public override T Accept<T>(InstructionVisitor<T> visitor)
-        {
-            return visitor.VisitSwitchInstruction(this);
-        }
-
-		public override void Accept(InstructionVisitor v)
-		{
-			v.VisitSwitchInstruction(this);
-		}
-
-	}
-
 	/// <summary>
 	/// Used to force an expression to be live and to model out arguments.
 	/// </summary>

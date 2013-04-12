@@ -2,32 +2,34 @@ Mem0:Global memory
     def:  def Mem0
 fp:Temporary
     def:  def fp
-r0:Register r0
+r0:r0
     def:  def r0
-r1:Register r1
+r1:r1
     def:  def r1
-    uses: Z_9 = cond(r1 - 0x00000003)
+    uses: Z_10 = cond(r1 - 0x00000003)
 Z:Flags
     def:  def Z
-r0_5: orig: r0
-    def:  r0_5 = 0x00000000
-    uses: r0_6 = PHI(r0_5, r0_8)
+r63:r63
+    def:  def r63
 r0_6: orig: r0
-    def:  r0_6 = PHI(r0_5, r0_8)
-    uses: Z_7 = cond(r0_6 - 0x00000002)
-          r0_8 = PHI(r0_6, r0_10)
-Z_7: orig: Z
-    def:  Z_7 = cond(r0_6 - 0x00000002)
-    uses: branch Test(NE,Z_7) skip
-r0_8: orig: r0
-    def:  r0_8 = PHI(r0_6, r0_10)
-    uses: r0_6 = PHI(r0_5, r0_8)
-Z_9: orig: Z
-    def:  Z_9 = cond(r1 - 0x00000003)
-    uses: branch Test(NE,Z_9) top
-r0_10: orig: r0
-    def:  r0_10 = 0x00000000
-    uses: r0_8 = PHI(r0_6, r0_10)
+    def:  r0_6 = 0x00000000
+    uses: r0_7 = PHI(r0_6, r0_9)
+r0_7: orig: r0
+    def:  r0_7 = PHI(r0_6, r0_9)
+    uses: Z_8 = cond(r0_7 - 0x00000002)
+          r0_9 = PHI(r0_7, r0_11)
+Z_8: orig: Z
+    def:  Z_8 = cond(r0_7 - 0x00000002)
+    uses: branch Test(NE,Z_8) skip
+r0_9: orig: r0
+    def:  r0_9 = PHI(r0_7, r0_11)
+    uses: r0_7 = PHI(r0_6, r0_9)
+Z_10: orig: Z
+    def:  Z_10 = cond(r1 - 0x00000003)
+    uses: branch Test(NE,Z_10) top
+r0_11: orig: r0
+    def:  r0_11 = 0x00000000
+    uses: r0_9 = PHI(r0_7, r0_11)
 // SsaMock
 void SsaMock(word32 r1)
 SsaMock_entry:
@@ -36,28 +38,29 @@ SsaMock_entry:
 	def r0
 	def r1
 	def Z
+	def r63
 	// succ:  l1
 l1:
-	r0_5 = 0x00000000
+	r0_6 = 0x00000000
 	goto top
 	// succ:  top
 l2:
-	r0_10 = 0x00000000
+	r0_11 = 0x00000000
 	goto skip
 	// succ:  skip
 l3:
 	return
 	// succ:  SsaMock_exit
 skip:
-	r0_8 = PHI(r0_6, r0_10)
-	Z_9 = cond(r1 - 0x00000003)
-	branch Test(NE,Z_9) top
+	r0_9 = PHI(r0_7, r0_11)
+	Z_10 = cond(r1 - 0x00000003)
+	branch Test(NE,Z_10) top
 	goto l3
 	// succ:  l3 top
 top:
-	r0_6 = PHI(r0_5, r0_8)
-	Z_7 = cond(r0_6 - 0x00000002)
-	branch Test(NE,Z_7) skip
+	r0_7 = PHI(r0_6, r0_9)
+	Z_8 = cond(r0_7 - 0x00000002)
+	branch Test(NE,Z_8) skip
 	goto l2
 	// succ:  l2 skip
 SsaMock_exit:

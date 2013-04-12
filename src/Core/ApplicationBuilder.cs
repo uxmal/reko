@@ -49,8 +49,15 @@ namespace Decompiler.Core
         private CallSite site;
         private Expression callee;
         private ProcedureSignature sigCallee;
+        private bool ensureVariables;
 
-        public ApplicationBuilder(IProcessorArchitecture arch, Frame frame, CallSite site, Expression callee, ProcedureSignature sigCallee)
+        public ApplicationBuilder(
+            IProcessorArchitecture arch, 
+            Frame frame,
+            CallSite site,
+            Expression callee,
+            ProcedureSignature sigCallee,
+            bool ensureVariables)
         {
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				throw new InvalidOperationException("No signature available; application cannot be constructed.");
@@ -60,6 +67,7 @@ namespace Decompiler.Core
             this.frame = frame;
             this.callee = callee;
             this.sigCallee = sigCallee;
+            this.ensureVariables = ensureVariables;
         }
 
         private List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
@@ -162,12 +170,12 @@ namespace Decompiler.Core
 
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
         {
-            return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
-
-
-            //return frame.EnsureStackVariable(
-            //    stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
-            //    stack.DataType);
+            if (ensureVariables)
+                return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
+            else 
+                return frame.EnsureStackVariable(
+                    stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
+                    stack.DataType);
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

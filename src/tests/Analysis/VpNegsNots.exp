@@ -120,15 +120,18 @@ fn0C00_0000_entry:		// pred:
 	def cx
 	def SZO
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	eax_12 = -eax
-	C_13 = eax_12 == 0x00000000
-	eax_14 = 0x00000000 - C_13
-	Mem15[ds:0x0300:word32] = eax_14
-	v5_16 = Mem15[ds:0x0202:word16]
-	Mem17[ds:0x0202:word16] = -v5_16
-	C_18 = v5_16 == 0x0000
-	v6_19 = Mem17[ds:0x0200:word16]
+l0C00_0000:
+	eax_13 = -eax
+	SCZO_14 = cond(eax_13)
+	C_15 = eax_13 == 0x00000000
+	eax_16 = 0x00000000 - C_15
+	SCZO_17 = cond(eax_16)
+	Mem18[ds:0x0300:word32] = eax_16
+	v7_19 = Mem18[ds:0x0202:word16]
+	Mem20[ds:0x0202:word16] = -v7_19
+	SCZO_21 = cond(v7_19)
+	C_22 = v7_19 == 0x0000
+	v6_23 = Mem20[ds:0x0200:word16]
 	Mem20[ds:0x0200:word16] = -v6_19
 	C_21 = v6_19 == 0x0000
 	ecx_22 = 0x00000000 - C_21

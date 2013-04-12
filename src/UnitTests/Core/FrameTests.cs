@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Core
 
 			var cs = new CallSite(f.ReturnAddressSize, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig);
+			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig, false);
             Instruction instr = ab.CreateInstruction(); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{
@@ -158,7 +158,7 @@ namespace Decompiler.UnitTests.Core
 			
 			var cs = new CallSite(stack, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig);
+			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig, false);
             Instruction instr = ab.CreateInstruction();
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
 			{

@@ -3,88 +3,112 @@
 	MayUseIn:  ds
 	BypassIn: 
 	Trashed:   SCZO ax cx dx bx al cl dl bl ah ch dh bh
-	Preserved:
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0000_entry:
 // DataOut: ds
-l0C00_0000:		// block 1, pred: 0
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+l0C00_0000:
 	ax = 0x0001
 	cl = 0x00
 	bx = 0x0001
 	ch = 0x02
-	call fn0C00_001E (depth: 2;)
+	call fn0C00_001E (retsize: 2; depth: 2)
 	bx = 0x0005
 	ch = 0x03
-	call fn0C00_0032 (depth: 2;)
+	call fn0C00_0032 (retsize: 2; depth: 2)
 	Mem0[ds:0x0120:word16] = ax
 	Mem0[ds:0x0122:byte] = cl
 	return
-	// succ:  2
 // DataOut:
-fn0C00_0000_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+fn0C00_0000_exit:
 // DataOut:
+// DataOut (flags):
+// SymbolicIn: sp:fp ax:<invalid> cl:<invalid> bx:0x0005 ch:0x03 dx:<invalid>
+
 // fn0C00_001E /////////////////////
 	LiveOut:   ax cl ds
 	MayUseIn:  ax bx cl ch
 	BypassIn: 
 	Trashed:   SCZO ax cx bx al cl bl ah bh
-	Preserved:
+	Preserved: sp
 // fn0C00_001E
 void fn0C00_001E()
-fn0C00_001E_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_001E_entry:
 // DataOut: ax bx cl ch ds
-l0C00_001E:		// block 1, pred: 0
+// DataOut (flags):
+// SymbolicIn: sp:fp
+l0C00_001E:
 	cl = cl - ch
 	SCZO = cond(cl)
 	branch Test(ULT,C) l0C00_0027
-	// succ:  3 2
 // DataOut: ax bx cl ch ds
-l0C00_0027:		// block 2, pred: 1
-	cl = -cl
-	C = cl == 0x00
-	ax = ax >> cl
-	cl = -cl
-	SZO = cond(cl)
-	C = cl == 0x00
-	// succ:  4
-// DataOut: ax bx cl ch ds
-l0C00_0022:		// block 3, pred: 1
+// DataOut (flags):
+// SymbolicIn: sp:fp
+l0C00_0022:
 	bx = bx >> cl
 	SCZO = cond(bx)
-	// succ:  4
 // DataOut: ax bx cl ch ds
-l0C00_002D:		// block 4, pred: 2 3
+// DataOut (flags):
+// SymbolicIn: sp:fp cl:cl - ch
+
+l0C00_0027:
+	cl = -cl
+	SCZO = cond(cl)
+	C = cl == 0x00
+	ax = ax >> cl
+	SCZO = cond(ax)
+	cl = -cl
+	SCZO = cond(cl)
+	C = cl == 0x00
+// DataOut: ax bx cl ch ds
+// DataOut (flags):
+// SymbolicIn: sp:fp cl:cl - ch
+
+l0C00_002D:
 	ax = ax + bx
+	SCZO = cond(ax)
 	cl = cl + ch
 	SCZO = cond(cl)
 	return
-	// succ:  5
 // DataOut: ax cl ds
-fn0C00_001E_exit:		// block 5, pred: 4
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp cl:cl - ch ax:ax >> ch - cl bx:bx >> cl - ch
+fn0C00_001E_exit:
 // DataOut: ax cl ds
+// DataOut (flags):
+// SymbolicIn: sp:fp cl:cl - ch + ch ax:(ax >> ch - cl) + (bx >> cl - ch) bx:bx >> cl - ch
+
 // fn0C00_0032 /////////////////////
 	LiveOut:   ax cl ds
 	MayUseIn:  ax bx cl ch
 	BypassIn: 
 	Trashed:   SCZO ax cx dx al cl dl ah dh
-	Preserved:
+	Preserved: sp
 // fn0C00_0032
 void fn0C00_0032()
-fn0C00_0032_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0032_entry:
 // DataOut: ax bx cl ch ds
-l0C00_0032:		// block 1, pred: 0
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+l0C00_0032:
 	dx_ax = bx *s ax
+	SCZO = cond(dx_ax)
 	cl = cl + ch
 	SCZO = cond(cl)
 	return
-	// succ:  2
 // DataOut: ax cl ds
-fn0C00_0032_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+fn0C00_0032_exit:
 // DataOut: ax cl ds
+// DataOut (flags):
+// SymbolicIn: sp:fp Sequence dx:ax:bx *s ax cl:cl + ch

@@ -204,15 +204,16 @@ fn0C00_0000_entry:		// pred:
 	def SCZO
 	def es
 	def es_cx
+	def SZO
 	def cl
 	def v13
 	def C
 	def v15
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	ax_16 = Mem0[ds:0x0200:word16]
-	dx_17 = Mem0[ds:0x0202:word16]
-	dx_ax_18 = SEQ(dx_17, ax_16) (alias)
+l0C00_0000:
+	ax_14 = Mem0[ds:0x0200:word16]
+	dx_15 = Mem0[ds:0x0202:word16]
+	dx_ax_16 = SEQ(dx_15, ax_14) (alias)
 	cx_19 = Mem0[ds:0x0204:word16]
 	bx_20 = Mem0[ds:0x0206:word16]
 	bx_cx_21 = SEQ(bx_20, cx_19) (alias)

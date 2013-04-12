@@ -155,6 +155,7 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
+    <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />
     <Compile Include="Configuration\ArchitectureElementCollection.cs" />
     <Compile Include="Configuration\ArchitectureReferenceElement.cs" />

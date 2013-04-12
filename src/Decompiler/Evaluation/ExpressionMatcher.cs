@@ -228,7 +228,10 @@ namespace Decompiler.Evaluation
 
         bool ExpressionVisitor<bool>.VisitProcedureConstant(ProcedureConstant pc)
         {
-            throw new NotImplementedException();
+            var pcOther = p as ProcedureConstant;
+            if (pcOther == null)
+                return false;
+            return pcOther.Procedure == pc.Procedure;
         }
 
         bool ExpressionVisitor<bool>.VisitScopeResolution(ScopeResolution scopeResolution)
