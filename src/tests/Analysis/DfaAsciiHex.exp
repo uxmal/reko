@@ -1,75 +1,73 @@
 // void fn0C00_0000(Register byte al, Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  al ds
 // LiveOut:
 // Trashed: SCZO ax al
-// Preserved:
+// Preserved: sp
 // fn0C00_0000
 void fn0C00_0000(byte al, selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	byte al_5
-	branch fn0C00_000A(al, &al_5) l0C00_0009
+l0C00_0000:
+	byte al_6
+	branch fn0C00_000A(al, &al_6) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
-l0C00_0005:		// pred: l0C00_0000
-	Mem7[ds:0x0300:byte] = al_5
+l0C00_0005:
+	Mem8[ds:0x0300:byte] = al_6
 	// succ:  l0C00_0009
-l0C00_0009:		// pred: l0C00_0000 l0C00_0005
+l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0009
-	// succ: 
+fn0C00_0000_exit:
 
 // FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  al
 // LiveOut: C al
 // Trashed: SCZO ax al
-// Preserved:
+// Preserved: sp
 // fn0C00_000A
 byte fn0C00_000A(byte al, ptr16 alOut)
-fn0C00_000A_entry:		// pred:
+fn0C00_000A_entry:
 	Mem0[alOut:byte] = al
 	// succ:  l0C00_000A
-l0C00_000A:		// pred: fn0C00_000A_entry
+l0C00_000A:
 	branch al <u 0x30 l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
-l0C00_000E:		// pred: l0C00_000A
+l0C00_000E:
 	branch al <=u 0x39 l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
-l0C00_0012:		// pred: l0C00_000E
+l0C00_0012:
 	branch al <u 0x41 l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
-l0C00_0016:		// pred: l0C00_0012
+l0C00_0016:
 	branch al <=u 0x46 l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
-l0C00_001A:		// pred: l0C00_0016
+l0C00_001A:
 	branch al <u 0x61 l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
-l0C00_001E:		// pred: l0C00_001A
+l0C00_001E:
 	branch al >u 0x66 l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
-l0C00_0022:		// pred: l0C00_000E l0C00_0016 l0C00_001E
-	byte al_20 = al - 0x30
-	Mem0[alOut:byte] = al_20
-	branch al_20 <u 0x0A l0C00_0030
+l0C00_0022:
+	byte al_20
+	Mem0[alOut:byte] = al - 0x30
+	branch al <u 0x3A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
-l0C00_0028:		// pred: l0C00_0022
-	byte al_23 = al - 0x37
-	Mem0[alOut:byte] = al_23
-	branch al_23 <u 0x10 l0C00_0030
+l0C00_0028:
+	byte al_28
+	Mem0[alOut:byte] = al - 0x37
+	branch al <u 0x47 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
-l0C00_002E:		// pred: l0C00_0028
-	byte al_26
+l0C00_002E:
+	byte al_32
 	Mem0[alOut:byte] = al - 0x57
 	// succ:  l0C00_0030
-l0C00_0030:		// pred: l0C00_0022 l0C00_0028 l0C00_002E
+l0C00_0030:
 	return false
 	// succ:  fn0C00_000A_exit
-fn0C00_000A_exit:		// pred: l0C00_0032 l0C00_0030
-	// succ: 
-l0C00_0032:		// pred: l0C00_000A l0C00_0012 l0C00_001A l0C00_001E
+l0C00_0032:
 	return true
 	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:
 

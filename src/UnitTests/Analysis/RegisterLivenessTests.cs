@@ -155,29 +155,28 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/multiple/livenessaftercall.asm", "Analysis/RlLivenessAfterCall.txt");
 		}
 
-		[Test]
-		public void RlReg00010()
-		{
-			RunTest("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
-		}
-
         [Test]
         public void RlPushedRegisters()
         {
             RunTest("Fragments/multiple/pushed_registers.asm", "Analysis/RlPushedRegisters.txt");
         }
 
+        [Test]
+        public void RlReg00007()
+        {
+            RunTest("Fragments/regressions/r00007.asm", "Analysis/RlReg00007.txt");
+        }
+
+        [Test]
+        public void RlReg00010()
+        {
+            RunTest("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
+        }
 
         [Test]
         public void RlReg00015()
         {
             RunTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
-        }
-
-        [Test]
-        public void RlReg00007()
-        {
-            RunTest("Fragments/regressions/r00007.asm", "Analysis/RlReg00007.txt");
         }
 
         protected override void RunTest(Program prog, TextWriter writer)

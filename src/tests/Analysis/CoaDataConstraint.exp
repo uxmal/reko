@@ -1,13 +1,13 @@
 Mem0:Global memory
     def:  def Mem0
-    uses: ax_7 = Mem0[ds:si + 0x0200:word16]
+    uses: ax_8 = Mem0[ds:si + 0x0200:word16]
 fp:Temporary
 sp:sp
 si:si
     def:  def si
-    uses: ax_7 = Mem0[ds:si + 0x0200:word16]
-          Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
-          Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
+    uses: ax_8 = Mem0[ds:si + 0x0200:word16]
+          Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+          Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
 ds:ds
     def:  def ds
     uses: ax_8 = Mem0[ds:si + 0x0200:word16]
@@ -25,31 +25,31 @@ ax:ax
 v6:Temporary
 SCZO:Flags
 ax_8: orig: ax
-    def:  ax_7 = Mem0[ds:si + 0x0200:word16]
-    uses: Mem9[ds:0x0300:word16] = ax_7
-Mem8: orig: Mem0
-    def:  Mem8[ds:0x0200:word16] = 0x0000
+    def:  ax_8 = Mem0[ds:si + 0x0200:word16]
+    uses: Mem10[ds:0x0300:word16] = ax_8
 Mem9: orig: Mem0
-    def:  Mem9[ds:0x0300:word16] = ax_7
-    uses: Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
-ax_10: orig: ax
-    uses: Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
-Mem11: orig: Mem0
-    def:  Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
-    uses: Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
-          Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
-ax_12: orig: ax
-v5_13: orig: v5
-    uses: Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
-Mem14: orig: Mem0
-    def:  Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
-    uses: ax_16 = Mem14[ds:0x0200:word16]
-SCZO_15: orig: SCZO
-ax_16: orig: ax
-    def:  ax_16 = Mem14[ds:0x0200:word16]
-    uses: Mem17[ds:0x0200:word16] = ax_16
-Mem17: orig: Mem0
-    def:  Mem17[ds:0x0200:word16] = ax_16
+    def:  Mem9[ds:0x0200:word16] = 0x0000
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0300:word16] = ax_8
+    uses: Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+ax_11: orig: ax
+    uses: Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+    uses: Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+          Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+ax_13: orig: ax
+v6_14: orig: v6
+    uses: Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+    uses: ax_17 = Mem15[ds:0x0200:word16]
+SCZO_16: orig: SCZO
+ax_17: orig: ax
+    def:  ax_17 = Mem15[ds:0x0200:word16]
+    uses: Mem18[ds:0x0200:word16] = ax_17
+Mem18: orig: Mem0
+    def:  Mem18[ds:0x0200:word16] = ax_17
 // fn0C00_0000
 void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
@@ -58,37 +58,40 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_7 = Mem0[ds:si + 0x0200:word16]
-	Mem8[ds:0x0200:word16] = 0x0000
-	Mem9[ds:0x0300:word16] = ax_7
+	ax_8 = Mem0[ds:si + 0x0200:word16]
+	Mem9[ds:0x0200:word16] = 0x0000
+	Mem10[ds:0x0300:word16] = ax_8
 	Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
-	Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
+	Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
 	ax_17 = Mem15[ds:0x0200:word16]
 	fn0C00_002A(ds)
 	Mem18[ds:0x0200:word16] = ax_17
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	// succ: 
 
 Mem0:Global memory
 fp:Temporary
+sp:sp
 ax:ax
-wLoc04:Local -0004
+ss:ss
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x0200:word16] = 0xFFFF
-wLoc04_5: orig: wLoc04
-Mem6: orig: Mem0
-    def:  Mem6[ds:0x0200:word16] = 0xFFFF
-ax_7: orig: ax
+    uses: Mem9[ds:0x0200:word16] = 0xFFFF
+wLoc02:Local -0002
+sp_7: orig: sp
+wLoc02_8: orig: wLoc02
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0200:word16] = 0xFFFF
+ax_10: orig: ax
+sp_11: orig: sp
 // fn0C00_002A
 void fn0C00_002A(selector ds)
 fn0C00_002A_entry:
 	def ds
-	// succ: l0C00_002A
+	// succ:  l0C00_002A
 l0C00_002A:
-	Mem6[ds:0x0200:word16] = 0xFFFF
+	Mem9[ds:0x0200:word16] = 0xFFFF
 	return
 	// succ:  fn0C00_002A_exit
 fn0C00_002A_exit:

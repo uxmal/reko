@@ -171,7 +171,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
                 XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
                 x.Formatting = Formatting.Indented;
-                XmlSerializer ser = new XmlSerializer(ssig.GetType());
+                XmlSerializer ser = SerializedLibrary.CreateSerializer(ssig.GetType());
                 ser.Serialize(x, ssig);
                 fut.AssertFilesEqual();
             }

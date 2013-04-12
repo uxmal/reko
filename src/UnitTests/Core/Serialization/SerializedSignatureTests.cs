@@ -41,7 +41,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 			this.arch = new IntelArchitecture(ProcessorMode.Real);
 		}
 
-
 		[Test]
 		public void SsigCreate()
 		{
@@ -154,7 +153,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
 				x.Formatting = Formatting.Indented;
-				XmlSerializer ser = new XmlSerializer(ssig.GetType());
+				XmlSerializer ser = SerializedLibrary.CreateSerializer(ssig.GetType());
 				ser.Serialize(x, ssig);
 
 				fut.AssertFilesEqual();

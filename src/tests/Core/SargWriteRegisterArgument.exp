@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedArgument name="foo">
-  <type>int</type>
+  <type xmlns="http://schemata.jklnet.org/Decompiler">int</type>
   <reg>eax</reg>
 </SerializedArgument>

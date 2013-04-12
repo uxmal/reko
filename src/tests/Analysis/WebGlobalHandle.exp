@@ -1,12 +1,11 @@
 // fn10000000
-void fn10000000(word32 dwArg00)
-fn10000000_entry:		// pred:
+void fn10000000(word32 dwArg04)
+fn10000000_entry:
 	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
-	GlobalUnlock(GlobalHandle(dwArg00))
-	GlobalFree(GlobalHandle(dwArg00))
+l10000000:
+	GlobalUnlock(GlobalHandle(dwArg04))
+	GlobalFree(GlobalHandle(dwArg04))
 	return
 	// succ:  fn10000000_exit
-fn10000000_exit:		// pred: l10000000
-	// succ: 
+fn10000000_exit:
 
