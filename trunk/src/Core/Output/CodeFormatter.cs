@@ -463,7 +463,7 @@ namespace Decompiler.Core.Output
             writer.Write(" (");
 			si.Expression.Accept(this);
 			writer.Write(") { ");
-			foreach (Block b in si.targets)
+			foreach (Block b in si.Targets)
 			{
 				writer.Write("{0} ", b.Name);
 			}

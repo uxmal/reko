@@ -63,7 +63,7 @@ namespace Decompiler.Core
             if (sigCallee == null || !sigCallee.ArgumentsValid)
                 return false;
 
-            var ab = new ApplicationBuilder(arch, proc.Frame, call.CallSite, fn, sigCallee);
+            var ab = new ApplicationBuilder(arch, proc.Frame, call.CallSite, fn, sigCallee, true);
 			stm.Instruction = ab.CreateInstruction();
             return true;
 		}

@@ -3,87 +3,117 @@
 	MayUseIn:  dx
 	BypassIn: 
 	Trashed:   SCZO ax dx al dl ah dh
-	Preserved:
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0000_entry:
 // DataOut: dx
-l0C00_0000:		// block 1, pred: 0
-	call fn0C00_0004 (depth: 2;)
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0000:
+	call fn0C00_0004 (retsize: 2; depth: 2)
 	return
-	// succ:  2
 // DataOut:
-fn0C00_0000_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_0000_exit:
 // DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp ax:<invalid> dx:<invalid>
+
 // fn0C00_0004 /////////////////////
 	LiveOut:   ax dx
 	MayUseIn:  dx
 	BypassIn: 
 	Trashed:   SCZO ax dx al dl ah dh
-	Preserved:
+	Preserved: sp
 // fn0C00_0004
 void fn0C00_0004()
-fn0C00_0004_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0004_entry:
 // DataOut: dx
-l0C00_0004:		// block 1, pred: 0
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0004:
 	SCZO = cond(dx - 0x001E)
 	branch Test(NE,Z) l0C00_000F
-	// succ:  3 2
 // DataOut: dx
-l0C00_000F:		// block 2, pred: 1
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0009:
+	call fn0C00_0013 (retsize: 2; depth: 2)
+// DataOut: dx
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_000F:
 	dx = dx - 0x0001
 	SZO = cond(dx)
-	// succ:  4
 // DataOut: dx
-l0C00_0009:		// block 3, pred: 1
-	call fn0C00_0013 (depth: 2;)
-	// succ:  4
-// DataOut: dx
-l0C00_0010:		// block 4, pred: 2 3
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0010:
 	ax = dx
 	return
-	// succ:  5
 // DataOut: ax dx
-fn0C00_0004_exit:		// block 5, pred: 4
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
+
+fn0C00_0004_exit:
 // DataOut: ax dx
+// DataOut (flags): 
+// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
+
 // fn0C00_0013 /////////////////////
 	LiveOut:   dx
 	MayUseIn:  dx
 	BypassIn: 
 	Trashed:   SCZO ax dx al dl ah dh
-	Preserved:
+	Preserved: sp
 // fn0C00_0013
 void fn0C00_0013()
-fn0C00_0013_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0013_entry:
 // DataOut: dx
-l0C00_0013:		// block 1, pred: 0
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0013:
 	SCZO = cond(dx - 0x0014)
 	branch Test(LT,SO) l0C00_001F
-	// succ:  3 2
 // DataOut: dx
-l0C00_001F:		// block 2, pred: 1
-	dx = dx - 0x000A
-	SCZO = cond(dx)
-	call fn0C00_0004 (depth: 2;)
-	// succ:  4
-// DataOut: ax dx
-l0C00_0018:		// block 3, pred: 1
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0018:
 	dx = dx - 0x0001
 	SZO = cond(dx)
-	call fn0C00_0004 (depth: 2;)
-	// succ:  4
+	call fn0C00_0004 (retsize: 2; depth: 2)
 // DataOut: ax dx
-l0C00_0025:		// block 4, pred: 2 3
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_001F:
+	dx = dx - 0x000A
+	SCZO = cond(dx)
+	call fn0C00_0004 (retsize: 2; depth: 2)
+// DataOut: ax dx
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0025:
 	ax = ax + 0x0001
 	SZO = cond(ax)
 	return
-	// succ:  5
 // DataOut: dx
-fn0C00_0013_exit:		// block 5, pred: 4
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
+
+fn0C00_0013_exit:
 // DataOut: dx
+// DataOut (flags): 
+// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
+

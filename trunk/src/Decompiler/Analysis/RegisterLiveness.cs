@@ -512,7 +512,8 @@ namespace Decompiler.Analysis
                     proc.Frame, 
                     ci.CallSite,
                     new ProcedureConstant(prog.Architecture.PointerType, procCallee), 
-                    sig);
+                    sig, 
+                    false);
 				if (sig.ReturnValue != null)
 				{
                     varLive.Def(ab.Bind(sig.ReturnValue));

@@ -345,7 +345,7 @@ namespace Decompiler.Analysis
 
         public Instruction VisitSwitchInstruction(SwitchInstruction sw)
         {
-            throw new NotSupportedException();
+            return se.VisitSwitchInstruction(sw);
         }
 
         public Instruction VisitUseInstruction(UseInstruction u)

@@ -4,7 +4,7 @@
 // a:Local -0004
 // return address size: 0
 void NotMock()
-NotMock_entry:	
+NotMock_entry:
 	// succ:  l1
 l1:
 	a = !a

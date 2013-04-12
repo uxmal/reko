@@ -141,7 +141,11 @@ namespace Decompiler.Evaluation
 
         public bool VisitUseInstruction(UseInstruction u)
         {
-            throw new NotImplementedException();
+            var uPattern = pattern as UseInstruction;
+            if (uPattern == null)
+                return false;
+            matcher.Pattern = uPattern.Expression;
+            return matcher.Match(u.Expression);
         }
 
         #endregion

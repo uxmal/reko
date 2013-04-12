@@ -263,7 +263,7 @@ l0C00_000C:
 	di_18 = 0x7E0F
 	cx_19 = 0x000C
 	cl_20 = (byte) cx_19 (alias)
-	al_21 = al ^ al
+	al_21 = 0x00
 	ax_22 = DPB(ax, al_21, 0, 8) (alias)
 	SZO_23 = cond(al_21)
 	Z_24 = SZO_23 (alias)
@@ -300,19 +300,19 @@ l0C00_001D:
 	SZO_53 = SCZO_52 (alias)
 	C_54 = SCZO_52 (alias)
 	Z_55 = SCZO_52 (alias)
-	return
+	return bx_51
 	// succ:  fn0C00_000C_exit
 l0C00_002D:
-	bx_56 = bx ^ bx
+	bx_56 = 0x0000
 	SZO_57 = cond(bx_56)
 	C_58 = false
-	cl_59 = cl_20 ^ cl_20
+	cl_59 = 0x00
 	cx_60 = DPB(cx_19, cl_59, 0, 8) (alias)
 	SZO_61 = cond(cl_59)
 	Z_62 = SZO_61 (alias)
 	C_63 = false
 	SCZO_64 = C_63 (alias)
-	return
+	return bx_56
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
 	cl_34 = PHI(cl_48, cl_59)

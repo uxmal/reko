@@ -88,7 +88,7 @@ l0C00_000B:
 	bx_27 = PHI(bx_12, bx_28)
 	bx_28 = bx_27 + cx_26
 	cx_30 = cx_26 - 0x0001
-	branch cx_30 != 0x0000 l0C00_000B
+	branch cx_26 != 0x0001 l0C00_000B
 	// succ:  l0C00_000F l0C00_000B
 l0C00_000F:
 	goto l0C00_0016

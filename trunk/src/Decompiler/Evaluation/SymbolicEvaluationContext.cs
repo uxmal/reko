@@ -283,7 +283,7 @@ namespace Decompiler.Evaluation
 
             public Storage VisitFpuStackStorage(FpuStackStorage fpu)
             {
-                throw new NotImplementedException();
+                return fpu;
             }
 
             public Storage VisitMemoryStorage(MemoryStorage global)

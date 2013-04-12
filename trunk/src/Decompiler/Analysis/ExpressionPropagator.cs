@@ -201,7 +201,9 @@ namespace Decompiler.Analysis
 
         public Instruction VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new NotImplementedException();
+            return new SwitchInstruction(
+                si.Expression.Accept(this).PropagatedExpression,
+                si.Targets);
         }
 
         public Instruction VisitUseInstruction(UseInstruction u)

@@ -133,7 +133,8 @@ namespace Decompiler.Scanning
                 frame,
                 site,
                 callee,
-                sig);
+                sig, 
+                false);
             return ab;
         }
 
