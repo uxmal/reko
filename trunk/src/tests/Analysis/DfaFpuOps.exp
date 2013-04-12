@@ -13,7 +13,7 @@ l0C00_0000:
 	fn0C00_0037(ds)
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit: 
+fn0C00_0000_exit:
 
 // void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1

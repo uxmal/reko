@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Analysis
 		/// Tests using only part of a register.
 		/// </summary>
 		[Test]
-		public void SliceRegister()
+		public void Rl_SliceRegister()
 		{
 			Identifier eax = f.EnsureRegister(Registers.eax);
 			Identifier ax = f.EnsureRegister(Registers.ax);
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Analysis
 		/// that cx, not ecx should be live.
 		/// </summary>
 		[Test]
-		public void AlAhUses()
+		public void Rl_AlAhUses()
 		{
 			Identifier al = f.EnsureRegister(Registers.al);
 			Identifier ah = f.EnsureRegister(Registers.ah);
@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Analysis
 		/// that ah and al are live.
 		/// </summary>
 		[Test]
-		public void AlAhUses2()
+		public void Rl_AlAhUses2()
 		{
 			Identifier al = f.EnsureRegister(Registers.al);
 			Identifier ah = f.EnsureRegister(Registers.ah);
@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void MemLoad()
+		public void Rl_MemLoad()
 		{
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier eax = f.EnsureRegister(Registers.eax);
@@ -136,7 +136,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void Shift()
+		public void Rl_Shift()
 		{
 			Identifier cl = f.EnsureRegister(Registers.cl);
 			Identifier ax = f.EnsureRegister(Registers.ax);
@@ -147,7 +147,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CopyDeadRegister()
+		public void Rl_CopyDeadRegister()
 		{
 			Identifier bx = f.EnsureRegister(Registers.bx);
 			Identifier ax = f.EnsureRegister(Registers.ax);
@@ -157,7 +157,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CopyLiveRegister()
+		public void Rl_CopyLiveRegister()
 		{
 			Identifier bx = f.EnsureRegister(Registers.bx);
 			Identifier ax = f.EnsureRegister(Registers.ax);
@@ -168,7 +168,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void Locals()
+		public void Rl_Locals()
 		{
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier ecx = f.EnsureRegister(Registers.ecx);
@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void NarrowedStackParameters()
+		public void Rl_NarrowedStackParameters()
 		{
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier eax = f.EnsureRegister(Registers.eax);
@@ -194,7 +194,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void PushPop()
+		public void Rl_PushPop()
 		{
 			Identifier bp = f.EnsureRegister(Registers.bp);
 			Identifier loc = f.EnsureStackLocal(-4, PrimitiveType.Word16);
@@ -205,7 +205,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void PushPopLiveBp()
+		public void Rl_PushPopLiveBp()
 		{
 			Identifier bp = f.EnsureRegister(Registers.bp);
 			Identifier loc = f.EnsureStackLocal(-4, PrimitiveType.Word16);
@@ -217,7 +217,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CallToProcedureWithValidSignature()
+		public void Rl_CallToProcedureWithValidSignature()
 		{
 			Procedure callee = new Procedure("callee", null);
 			callee.Signature = new ProcedureSignature(
@@ -238,14 +238,16 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CallToProcedureWithStackArgs()
+		public void Rl_CallToProcedureWithStackArgs()
 		{
 			Procedure callee = new Procedure("callee", null);
 			BitSet trash = prog.Architecture.CreateRegisterBitset();
 			callee.Signature = new ProcedureSignature(
 				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
-				new Identifier[] { new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-								   new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte)) });
+				new Identifier[] {
+                    new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
+					new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte))
+                });
 
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
 			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
@@ -253,17 +255,16 @@ namespace Decompiler.UnitTests.Analysis
 
 			foreach (object o in rl.IdentifierLiveness.LiveStorages.Keys)
 			{
-				Console.WriteLine("{0} {1} {2}",o, Object.Equals(o, b04.Storage), Object.Equals(o, b04.Storage));
+				Console.WriteLine("{0} {1} {2}", o, Object.Equals(o, b04.Storage), Object.Equals(o, b04.Storage));
 			}
             Assert.AreEqual(2, rl.IdentifierLiveness.LiveStorages.Count, "Should have two accesses");
 
 			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(b04.Storage), "Should have storage for b04");
 			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(w08.Storage), "Should have storage for w08");
-
 		}
 
 		[Test]
-		public void MarkLiveStackParameters()
+		public void Rl_MarkLiveStackParameters()
 		{
             var callee = new Procedure("callee", prog.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
@@ -287,7 +288,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void PredefinedSignature()
+		public void Rl_PredefinedSignature()
 		{
 			Procedure callee = new Procedure("callee", null);
 			Identifier edx = new Identifier("edx", -1, PrimitiveType.Word32, Registers.edx);
@@ -312,7 +313,7 @@ namespace Decompiler.UnitTests.Analysis
 		/// We assume preserved registers are _never_ live out.
 		/// </summary>
 		[Test]
-		public void ProcedureWithTrashedAndPreservedRegisters()
+		public void Rl_ProcedureWithTrashedAndPreservedRegisters()
 		{
             Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
 			ProcedureFlow pf = new ProcedureFlow(proc, prog.Architecture);
@@ -334,7 +335,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		[Test]
         [Ignore("Not sure what this test is actually testing? Rather, test that procedure summaries are marked with the right liveness.")]
-		public void TerminatingProcedure()
+		public void Rl_TerminatingProcedure()
 		{
 			Procedure terminator = new Procedure("terminator", null);
 			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock, terminator.Frame);

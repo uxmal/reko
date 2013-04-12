@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
 				x.Formatting = Formatting.Indented;
-				XmlSerializer ser = new XmlSerializer(sarg.GetType());
+				XmlSerializer ser = SerializedLibrary.CreateSerializer(sarg.GetType());
 				ser.Serialize(x, sarg);
 
 				fut.AssertFilesEqual();

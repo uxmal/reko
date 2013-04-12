@@ -15,5 +15,5 @@
 10000021 FF 15 04 00 00 10 	call	dword ptr [10000004]
 10000027 83 C4 04        	add	esp,04
 1000002A C3              	ret	
-10000000: Register word32 malloc(Stack word32 arg0)
-10000004: void free(Stack word32 arg0)
+10000000: Register word32 malloc(Stack size_t arg0)
+10000004: void free(Stack (ptr void) arg0)

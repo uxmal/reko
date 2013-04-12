@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedSignature>
   <return>
-    <type>int</type>
+    <type xmlns="http://schemata.jklnet.org/Decompiler">int</type>
     <reg>ax</reg>
   </return>
   <arg>

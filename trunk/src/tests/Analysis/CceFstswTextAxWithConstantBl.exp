@@ -23,21 +23,20 @@ Mem21: orig: Mem0, def: {Mem21[ds:0x0300:byte] = 0x01}
 Mem22: orig: Mem0
 // fn0C00_0000
 void fn0C00_0000(word16 si, selector ds, real64 rArg0)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:
 	def Mem0
 	def rArg0
 	def si
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	branch (rArg0 < Mem0[ds:si:real32]) l0C00_0010
 	// succ:  2 3
-l0C00_000B:		// block 2, pred: 1
-	Mem21[ds:0x0300:byte] = 0x01
-	// succ:  3
-l0C00_0010:		// block 3, pred: 1 2
+l0C00_000B:
+	Mem22[ds:0x0300:byte] = 0x01
+	// succ:  l0C00_0010
+l0C00_0010:
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
-	// succ: 
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
 

@@ -121,7 +121,7 @@ namespace Decompiler.Analysis
                 Use(id);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("Use: " + ex);
         }
 
         /// <summary>

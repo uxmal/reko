@@ -112,7 +112,6 @@ namespace Decompiler.Core.Serialization
             };
             return sertypeAttributes;
         }
-        
     }
 
     public abstract class SerializedTaggedType : SerializedType

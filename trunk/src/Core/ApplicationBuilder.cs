@@ -171,11 +171,12 @@ namespace Decompiler.Core
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
         {
             if (ensureVariables)
-                return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
-            else 
                 return frame.EnsureStackVariable(
                     stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
                     stack.DataType);
+            else 
+                return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
+
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)
