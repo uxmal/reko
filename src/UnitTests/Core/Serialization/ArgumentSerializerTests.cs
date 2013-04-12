@@ -94,15 +94,5 @@ namespace Decompiler.UnitTests.Core.Serialization
             SerializedRegister sr = (SerializedRegister) arg.Kind;
             Assert.AreEqual("q", sr.Name);
         }
-
-        [Test]
-        public void ArgSer_VoidReturn()
-        {
-            //$TODO: void foo(void);
-            var sArg = new SerializedArgument
-            {
-            };
-            throw new NotImplementedException();
-        }
 	}
 }

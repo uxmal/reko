@@ -636,7 +636,6 @@ namespace Decompiler.Gui.Forms
             UpdateWindowTitle();
         }
 
-
         public virtual void Run()
         {
             Application.Run((Form)LoadForm());

@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Typing
         }
         
         [Test]
-        public void EmptyStruct()
+        public void StrFldMerger_EmptyStruct()
         {
             StructureType str = new StructureType("foo", 0);
             DataType dt = sfm.Merge(str);
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void SingleMember()
+        public void StrFldMerger_SingleMember()
         {
             StructureType str = new StructureType("foo", 0);
             str.Fields.Add(4, PrimitiveType.Word16);
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void TwoDisjointMembers()
+        public void StrFldMerger_TwoDisjointMembers()
         {
             StructureType str = new StructureType("foo", 0);
             str.Fields.Add(4, PrimitiveType.Word16);
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void FindOverlappingCluster()
+        public void StrFldMerger_FindOverlappingCluster()
         {
             StructureType str = new StructureType("foo", 0);
             str.Fields.Add(2, PrimitiveType.Word32);
@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void FindOverLappingClusterWithEqv()
+        public void StrFldMerger_FindOverLappingClusterWithEqv()
         {
             StructureType str = new StructureType("foo", 0);
             UnionType u = new UnionType(null, null, PrimitiveType.Pointer32, PrimitiveType.Word16);
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void BuildOverlappedStructure()
+        public void StrFldMerger_BuildOverlappedStructure()
         {
             List<StructureField> fields = new List<StructureField>();
             fields.Add(new StructureField(0, PrimitiveType.Pointer32));
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Typing
 
 
         [Test]
-        public void Merge()
+        public void StrFldMerger_Merge()
         {
             StructureType str = new StructureType("foo", 0);
             UnionType u = new UnionType(null, null, PrimitiveType.Pointer32, PrimitiveType.Word16);

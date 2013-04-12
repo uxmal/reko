@@ -76,7 +76,8 @@ namespace Decompiler.UnitTests.Core
             repository.ReplayAll();
 
             var tlLdr = new TypeLibraryLoader(arch);
-            var slib = new SerializedLibrary {
+            var slib = new SerializedLibrary
+            {
                 Types = new SerializedType[]
                 {
                     new SerializedTypedef { Name="int", DataType=new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize=4 }}

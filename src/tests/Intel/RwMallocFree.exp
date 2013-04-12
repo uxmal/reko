@@ -11,14 +11,14 @@ fn10000008_entry:
 l10000008:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = 0x00000008
-	eax = malloc(Mem0[esp:word32])
+	eax = malloc(Mem0[esp:size_t])
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
 	Mem0[eax:word32] = 0x00000000
 	Mem0[eax + 0x00000004:word32] = 0x00001024
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = eax
-	free(Mem0[esp:word32])
+	free(Mem0[esp:(ptr void)])
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
 	return

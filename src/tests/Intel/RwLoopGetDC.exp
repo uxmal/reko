@@ -23,11 +23,11 @@ l10000000:
 l10000016:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = Mem0[edi:word32]
-	eax = GetDC(Mem0[esp:word32])
+	eax = GetDC(Mem0[esp:HWND])
 	Mem0[edi:word32] = eax
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = 0x00000000
-	eax = GetDC(Mem0[esp:word32])
+	eax = GetDC(Mem0[esp:HWND])
 	Mem0[edi + 0x00000004:word32] = eax
 	esi = esi - 0x00000001
 	SZO = cond(esi)

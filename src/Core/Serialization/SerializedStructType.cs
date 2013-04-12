@@ -45,7 +45,7 @@ namespace Decompiler.Core.Serialization
             return visitor.VisitStructure(this);
         }
 
-		public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
+		public override DataType BuildDataType(TypeFactory factory)
 		{
 			StructureType str = factory.CreateStructureType(null, 0);
 			foreach (SerializedStructField f in Fields)
@@ -70,7 +70,6 @@ namespace Decompiler.Core.Serialization
 			sb.Append(")");
 			return sb.ToString();
 		}
-
 	}
 
 	public class SerializedStructField

@@ -64,6 +64,8 @@ namespace Decompiler.Core.Serialization
                 idArg = ps.CreateId("...", new UnknownType(), new StackArgumentStorage(ps.StackOffset, new UnknownType()));
                 return;
             }
+            if (argCur.Type == null)
+                throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));
 			var dt = this.argCur.Type.Accept(ps.TypeLoader);
 			idArg = ps.CreateId(
 				argCur.Name ?? "arg" + ps.StackOffset, 

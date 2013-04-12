@@ -155,7 +155,6 @@ namespace Decompiler.Analysis
             }
         }
 
-
 		/// <summary>
 		/// Creates a signature for this procedure, and ensures that all registers accessed by the procedure are in the procedure
 		/// Frame.
@@ -209,8 +208,9 @@ namespace Decompiler.Analysis
 				}
 			}
 
-			flow.Signature = sb.BuildSignature();
-			proc.Signature = flow.Signature;
+            var sig = sb.BuildSignature();
+            flow.Signature = sig;
+			proc.Signature = sig;
 		}
 
 		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)

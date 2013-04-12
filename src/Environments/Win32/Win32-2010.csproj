@@ -71,11 +71,16 @@
     <Content Include="advapi32.xml" />
     <Content Include="comdlg32.xml" />
     <Content Include="gdi32.xml" />
-    <Content Include="kernel32.xml" />
+    <Content Include="kernel32.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="msvcrt.xml" />
     <Content Include="shell32.xml" />
     <Content Include="user32.xml" />
     <Content Include="win32.xml" />
+    <Content Include="windows.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="wininet.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -126,10 +126,11 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ps = new ProcedureSerializer(arch, "stdapi");
             var sig = ps.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
+            Assert.AreEqual(8, sig.StackDelta);
         }
 
         [Test]
-        public void DeserializeFpuStackReturnValue()
+        public void ProcSer_DeserializeFpuStackReturnValue()
         {
             var ssig = new SerializedSignature
             {
@@ -144,7 +145,25 @@ namespace Decompiler.UnitTests.Core.Serialization
             var sig = ps.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(1, sig.FpuStackDelta);
         }
-    
+
+        [Test]
+        public void ProcSer_Load_cdecl()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "__cdecl",
+                Arguments = new SerializedArgument[] {
+                    new SerializedArgument
+                    {
+                        Name = "foo",
+                        Type = new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize = 4 },
+                    }
+                }
+            };
+            var ps = new ProcedureSerializer(arch, ssig.Convention);
+            var sig = ps.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual(4, sig.StackDelta);
+        }
 
         private void Verify(SerializedSignature ssig, string outputFilename)
         {

@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Structure
         private ProcedureStructure proc;
 
         [Test]
-        public void WhileGoto_TagNodes()
+        public void LoopFinder_WhileGoto_TagNodes()
         {
             RunTest(new MockWhileGoto());
             StringWriter sw = new StringWriter();
@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void WhileGoto2_TagNodes()
+        public void LoopFinder_WhileGoto2_TagNodes()
         {
             var sa = new StructureAnalysis(new MockWhileGoto2().Procedure);
             sa.BuildProcedureStructure();
@@ -62,14 +62,14 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void CaseJumpsBack_LatchNode()
+        public void LoopFinder_CaseJumpsBack_LatchNode()
         {
             RunTest(new MockCaseJumpsBack());
 
         }
 
         [Test]
-        public void Reg00013()
+        public void LoopFinder_Reg00013()
         {
             Program prog = RewriteProgram("Fragments/regressions/r00013.asm", new Address(0x800, 0));
             ProcedureStructureBuilder psb = new ProcedureStructureBuilder(prog.Procedures.Values[0]);

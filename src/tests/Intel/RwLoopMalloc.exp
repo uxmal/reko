@@ -23,7 +23,7 @@ l10000000:
 l10000015:
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = 0x00000008
-	eax = malloc(Mem0[esp:word32])
+	eax = malloc(Mem0[esp:size_t])
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
 	Mem0[eax:word32] = 0x00000000

@@ -50,7 +50,6 @@ namespace Decompiler.UnitTests
             decompiler = new TestDecompiler(loader, host, sp);
         }
 
-
         [Test]
         public void LoadIncompleteProject()
         {
