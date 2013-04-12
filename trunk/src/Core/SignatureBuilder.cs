@@ -84,7 +84,6 @@ namespace Decompiler.Core
 			}
 			args.Add(arg);
 		}
-	
 
 		public void AddStackArgument(int stackOffset, Identifier id)
 		{

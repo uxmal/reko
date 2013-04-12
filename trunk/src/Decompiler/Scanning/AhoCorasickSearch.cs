@@ -176,7 +176,6 @@ namespace Decompiler.Scanning
             public TreeNode Parent { get; private set; }
             public TreeNode Failure { get; set; }
 
-
             public void AddResult(TSymbol [] result)
             {
                 if (results.Contains(result)) return;

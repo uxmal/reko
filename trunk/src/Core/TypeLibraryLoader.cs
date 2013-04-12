@@ -75,15 +75,23 @@ namespace Decompiler.Core
                     SerializedProcedure sp = o as SerializedProcedure;
                     if (sp != null)
                     {
-                        string key = sp.Name;
-                        ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
-                        procedures[key] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?
+                        try
+                        {
+                            ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
+                            procedures[sp.Name] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ApplicationException(
+                                string.Format("An error occurred when loading the signature of procedure {0}.", sp.Name),
+                                ex);
+                        }
                     }
                 }
             }
             return new TypeLibrary(types, procedures);
         }
-
+        
         public void ReadDefaults(SerializedLibraryDefaults defaults)
         {
             if (defaults == null)

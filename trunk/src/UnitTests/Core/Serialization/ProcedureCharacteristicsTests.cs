@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Core.Serialization
     public class ProcedureCharacteristicsTests
     {
         [Test]
-        public void DeserializeIsMalloc()
+        public void ProcChar_DeserializeIsMalloc()
         {
             string x = "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
                 "<ProcedureCharacteristics>" +
@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void DeserializeArraySize()
+        public void ProcChar_DeserializeArraySize()
         {
             string x = "<?xml version=\"1.0\" encoding=\"utf-16\"?>"+ 
                 "<ProcedureCharacteristics>"+ 

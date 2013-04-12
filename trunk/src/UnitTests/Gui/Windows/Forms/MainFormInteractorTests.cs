@@ -52,6 +52,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IDisassemblyViewService disasmSvc;
         private IDiagnosticsService diagnosticSvc;
         private IDecompilerShellUiService uiSvc;
+        private ITypeLibraryLoaderService typeLibSvc;
 
 		[SetUp]
 		public void Setup()
@@ -235,9 +236,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void MainForm_FindAllProcedures_NoLoadedProgram_QueryStatusDisnabled()
+        public void MainForm_FindAllProcedures_NoLoadedProgram_QueryStatusDisabled()
         {
             Given_MainFormInteractor();
+            Given_UiSvc_ReturnsFalseOnQueryStatus();
             repository.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -246,11 +248,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(MenuStatus.Visible,  status.Status);
         }
 
+        private void Given_UiSvc_ReturnsFalseOnQueryStatus()
+        {
+            var cmdset = CmdSets.GuidDecompiler;
+            uiSvc.Stub(u => u.QueryStatus(ref cmdset, 0, null, null)).IgnoreArguments().Return(false);
+        }
 
         [Test]
         public void MainForm_FindAllProcedures_LoadedProgram_QueryStatusEnabled()
         {
             Given_MainFormInteractor();
+            Given_UiSvc_ReturnsFalseOnQueryStatus();
             repository.ReplayAll();
 
             CreateMainFormInteractorWithLoader();
@@ -374,6 +382,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             memSvc = repository.StrictMock<IMemoryViewService>();
             disasmSvc = repository.StrictMock<IDisassemblyViewService>();
             diagnosticSvc = repository.StrictMock<IDiagnosticsService>();
+            typeLibSvc = repository.StrictMock<ITypeLibraryLoaderService>();
 
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
@@ -385,7 +394,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateDecompilerEventListener()).Return(new FakeDecompilerEventListener());
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
             svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
-
+            svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 

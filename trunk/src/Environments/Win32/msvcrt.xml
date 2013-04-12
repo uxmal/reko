@@ -3,21 +3,31 @@
   <default>
 	<signature convention="cdecl"></signature>
   </default>
+  <Types>
+    <typedef name="time_t">
+      <prim domain="SignedInt" size="8" />
+    </typedef>
+  </Types>
   <procedure name="malloc">
 	<signature>
-	  <return type="void *">
-		<reg>eax</reg>
-	  </return>
-	  <arg type="size_t">
-		<stack size="4" />
+    <return>
+      <ptr>
+        <prim domain="Void" />
+      </ptr>
+      <reg>eax</reg>
+    </return>
+	  <arg>
+      <type>size_t</type>
+		  <stack size="4" />
 	  </arg>
 	</signature>
   </procedure>
   <procedure name="free">
 	<signature>
-	  <arg type="void *">
-		<stack size="4" />
-	  </arg>
+    <arg>
+      <ptr><prim domain="Void" /></ptr>
+      <stack size="4" />
+    </arg>
 	</signature>
   </procedure>
   <procedure name="_CIacos">
@@ -25,18 +35,23 @@
   </procedure>
   <procedure name="_ltoa">
 	<signature>
-	  <return>
-		<reg>eax</reg>
+    <return>
+      <ptr><prim domain="Character" size="1" /></ptr>
+		  <reg>eax</reg>
 	  </return>
-	  <arg type="int32 *">
-		<stack size="4" />
+ 
+	  <arg name="a">
+      <prim domain="SignedInt" size="4" />
+		  <stack size="4" />
 	  </arg>
-	  <arg type="char *">
-		<stack size="4" />
+	  <arg name="b">
+      <ptr><prim domain="Character" size="1" /></ptr>
+		  <stack size="4" />
 	  </arg>
-	  <arg type="int">
-		<stack size="4" />
-	  </arg>
+    <arg name="c">
+      <ptr><prim domain="SignedInt" size="4" /></ptr>
+      <stack size="4" />
+    </arg> 
 	</signature>
   </procedure>
   <procedure name="rand">
@@ -48,31 +63,38 @@
   </procedure>
   <procedure name="strncmp">
 	<signature>
-	  <return type="int">
-		<reg>eax</reg>
-	  </return>
-	  <arg type="const char *">
-		<stack size="4" />
-	  </arg>
-	  <arg type="const char *">
-		<stack size="4" />
-	  </arg>
-	  <arg type="size_t">
-		<stack size="4" />
-	  </arg>
+    <return>
+      <prim domain="SignedInt" size="4" />
+      <reg>eax</reg>
+    </return>
+    <arg name="dst">
+      <ptr><prim domain="Character" size="1" /></ptr>
+      <stack size="4" />
+    </arg>
+    <arg name="src">
+      <ptr><prim domain="Character" size="1" /></ptr>
+      <stack size="4" />
+    </arg>
+    <arg>
+      <type>size_t</type>
+      <stack size="4" />
+    </arg>
 	</signature>
   </procedure>
   <procedure name="calloc">
 	<signature>
-	  <return type="void *">
+	  <return>
+      <ptr><prim domain="Void" /></ptr>
 		<reg>eax</reg>
 	  </return>
-	  <arg type="size_t">
-		<stack size="4" />
-	  </arg>
-	  <arg type="size_t">
-		<stack size="4" />
-	  </arg>
+    <arg>
+      <type>size_t</type>
+      <stack size="4" />
+    </arg>
+    <arg>
+      <type>size_t</type>
+      <stack size="4" />
+    </arg>
 	</signature>
   </procedure>
   <procedure name="atol">
@@ -80,82 +102,99 @@
 	  <return type="long">
 		<reg>eax</reg>
 	  </return>
-	  <arg type="const char *">
-		<stack size="4" />
-	  </arg>
+    <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+      <stack size="4" />
+    </arg>
 	</signature>
   </procedure>
   <procedure name="time">
 	<signature>
-	  <return type="time_t">
-		<reg>eax</reg>
+	  <return>
+      <type>time_t</type>
+		  <reg>eax</reg>
 	  </return>
-	  <arg type="time_t *">
-		<stack size="4" />
+	  <arg>
+      <ptr><type>time_t</type></ptr>
+		  <stack size="4" />
 	  </arg>
 	</signature>
   </procedure>
   <procedure name="srand">
 	<signature>
-	  <return type="void">
-		<reg>eax</reg>
+	  <return>
+      <type domain="Void" />
+		  <reg>eax</reg>
 	  </return>
-	  <arg type="unsigned int">
-		<stack size="4" />
+	  <arg>
+      <prim domain="UnsignedInt" size="4" />
+		  <stack size="4" />
 	  </arg>
 	</signature>
   </procedure>
   <procedure name="_ftol">
 	<signature>
-	  <return type="long">
-		<reg>eax</reg>
+	  <return>
+      <prim domain="SignedInt" size="4" />
+		  <reg>eax</reg>
 	  </return>
-	  <arg type="double">
-		<fpustack />
+	  <arg>
+      <prim domain="Real" size="8" />
+		  <fpustack />
 	  </arg>
 	</signature>
   </procedure>
   <procedure name="sprintf">
 	<signature>
-	  <return type="int">
-		<reg>eax</reg>
+	  <return>
+      <prim domain="SignedInt" size="4" />
+		  <reg>eax</reg>
 	  </return>
-	  <arg type="char *">
-		<stack size="4" />
+	  <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+		  <stack size="4" />
 	  </arg>
-	  <arg type="const char *">
-		<stack size="4" />
+	  <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+		  <stack size="4" />
 	  </arg>
 	  <!-- // TODO: what about varargs functions -->
 	</signature>
   </procedure>
   <procedure name="_CIpow">
 	<signature>
-    <return type="double">
+    <return>
+      <prim domain="Real" size="8" />
       <fpustack />
     </return>
-    <arg type="double">
+    <arg>
+      <prim domain="Real" size="8" />
       <fpustack />
     </arg>
-    <arg type="double">
+    <arg>
+      <prim domain="Real" size="8" />
       <fpustack />
     </arg>
   </signature>
   </procedure>
   <procedure name="strncpy">
 	<signature>
-	  <return type="char *">
-		<reg>eax</reg>
+	  <return>
+      <ptr><prim domain="Character" size="1" /></ptr>
+		  <reg>eax</reg>
 	  </return>
-	  <arg type="char *">
-		<stack size="4" />
+	  <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+  		<stack size="4" />
 	  </arg>
-	  <arg type="const char *">
-		<stack size="4" />
+	  <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+  		<stack size="4" />
 	  </arg>
-	  <arg type="size_t">
-		<stack size="4" />
-	  </arg>
+    <arg>
+      <type>size_t</type>
+      <stack size="4" />
+    </arg>
 	</signature>
   </procedure>
 </library>

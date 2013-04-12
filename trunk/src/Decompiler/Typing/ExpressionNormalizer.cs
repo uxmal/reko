@@ -63,7 +63,6 @@ namespace Decompiler.Typing
             return bin;
         }
 
-
 		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
             access.EffectiveAddress = access.EffectiveAddress.Accept(this);
@@ -81,7 +80,6 @@ namespace Decompiler.Typing
                 return access;
             }
         }
-
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
         {
