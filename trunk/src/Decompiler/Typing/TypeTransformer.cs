@@ -293,7 +293,7 @@ namespace Decompiler.Typing
         {
             return typeref;
         }
-        public DataType VisitTypeVar(TypeVariable tv)
+        public DataType VisitTypeVariable(TypeVariable tv)
         {
             return tv;
         }

@@ -1,8 +1,8 @@
 // ProcedureBuilder
 void ProcedureBuilder()
-ProcedureBuilder_entry:		// pred:
+ProcedureBuilder_entry:
 	// succ:  l1
-l1:		// pred: ProcedureBuilder_entry
+l1:
 	ds->w0300 = ds->*ds->*bx;
 	// succ: 
 ProcedureBuilder_exit:

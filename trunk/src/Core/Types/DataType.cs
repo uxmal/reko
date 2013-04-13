@@ -58,14 +58,8 @@ namespace Decompiler.Core.Types
 
 		public sealed override string ToString()
 		{
-			var sw = new StringWriter();
-			Write(sw, false);
- 			return sw.ToString();
-		}
-
-		public virtual void Write(TextWriter writer, bool reference)
-		{
-            writer.Write(Name);
+            var typeGraphWriter = new TypeGraphWriter(new StringWriter());
+            return this.Accept(typeGraphWriter).ToString();
 		}
 	}
 }

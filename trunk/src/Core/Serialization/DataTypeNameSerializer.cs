@@ -72,7 +72,7 @@ namespace Decompiler.Core.Serialization
             throw new NotImplementedException();
         }
 
-        public SerializedType VisitTypeVar(TypeVariable tv)
+        public SerializedType VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }

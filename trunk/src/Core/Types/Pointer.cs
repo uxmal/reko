@@ -74,12 +74,5 @@ namespace Decompiler.Core.Types
 			get { return byteSize; }
 			set { ThrowBadSize(); }
 		}
-
-		public override void Write(TextWriter writer, bool reference)
-		{
-			writer.Write("(ptr ");
-			Pointee.Write(writer, reference);
-			writer.Write(")");
-		}
 	}
 }

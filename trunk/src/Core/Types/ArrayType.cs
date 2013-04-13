@@ -65,16 +65,5 @@ namespace Decompiler.Core.Types
 			get { return ElementType.Size * Length; }
 			set { ThrowBadSize(); }
 		}
-
-		public override void Write(TextWriter writer, bool reference)
-		{
-			writer.Write("(arr ");
-			ElementType.Write(writer, reference);
-			if (Length != 0)
-			{
-				writer.Write(" {0}", Length);
-			}
-			writer.Write(")");
-		}
 	}
 }

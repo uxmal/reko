@@ -12,7 +12,7 @@ ArrayAccess_exit:
 Eq_2: word32
 	T_2 (in 0x00000000 : word32)
 	T_9 (in (r + 0x00000014)[i * 0x0000000A] : word32)
-Eq_3: (ptr (struct (10 (arr (struct A (0 T_14 t0000))) a0010) (14 (arr (struct A (0 T_9 t0000))) a0014)))
+Eq_3: (ptr (struct (10 (arr (struct 000A (0 T_14 t0000))) a0010) (14 (arr (struct 000A (0 T_9 t0000))) a0014)))
 	T_3 (in r : word32)
 Eq_4: word32
 	T_4 (in 0x00000014 : word32)
@@ -45,8 +45,8 @@ T_2: (in 0x00000000 : word32)
   OrigDataType: word32
 T_3: (in r : word32)
   Class: Eq_3
-  DataType: (ptr (struct (10 (arr (struct A (0 T_14 t0000))) a0010) (14 (arr (struct A (0 T_9 t0000))) a0014)))
-  OrigDataType: (ptr (struct (10 (arr (struct A (0 T_14 t0000))) a0010) (14 (arr (struct A (0 T_9 t0000))) a0014)))
+  DataType: (ptr (struct (10 (arr (struct 000A (0 T_14 t0000))) a0010) (14 (arr (struct 000A (0 T_9 t0000))) a0014)))
+  OrigDataType: (ptr (struct (10 (arr (struct 000A (0 T_14 t0000))) a0010) (14 (arr (struct 000A (0 T_9 t0000))) a0014)))
 T_4: (in 0x00000014 : word32)
   Class: Eq_4
   DataType: word32

@@ -571,6 +571,7 @@
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\TypeGraphWriter.cs" />
     <Compile Include="Types\TypeReference.cs" />
     <Compile Include="Types\TypeStore.cs" />
     <Compile Include="Types\TypeVariable.cs">

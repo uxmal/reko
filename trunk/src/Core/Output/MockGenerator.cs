@@ -474,7 +474,7 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
-        public int VisitTypeVar(TypeVariable tv)
+        public int VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }

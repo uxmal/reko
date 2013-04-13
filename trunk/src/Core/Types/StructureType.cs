@@ -82,29 +82,5 @@ namespace Decompiler.Core.Types
             }
             return this;
         }
-
-		public override void Write(TextWriter writer, bool reference)
-		{
-			writer.Write("({0}", IsSegment ? "segment" : "struct");
-			if (Name != null)
-			{
-				writer.Write(" \"{0}\"", Name);
-			}
-			if (Size != 0)
-			{
-				writer.Write(" {0:X4}", Size);
-			}
-
-			if (!reference && Fields != null)
-			{
-				foreach (StructureField f in Fields)
-				{
-					writer.Write(" ({0:X} ", f.Offset);
-					f.DataType.Write(writer, true);
-					writer.Write(" {0})", f.Name);
-				}
-			}
-			writer.Write(")");
-		}
 	}
 }

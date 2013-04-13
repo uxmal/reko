@@ -89,7 +89,7 @@ namespace Decompiler.Core.Types
             return tr;
         }
 
-        public DataType VisitTypeVar(TypeVariable tv)
+        public DataType VisitTypeVariable(TypeVariable tv)
         {
             return tv;
         }

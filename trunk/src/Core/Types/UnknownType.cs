@@ -44,10 +44,5 @@ namespace Decompiler.Core.Types
 			get { return 0; }
 			set { ThrowBadSize(); }
 		}
-
-		public override void Write(TextWriter writer, bool reference)
-		{
-			writer.Write("<unknown>");
-		}
 	}
 }

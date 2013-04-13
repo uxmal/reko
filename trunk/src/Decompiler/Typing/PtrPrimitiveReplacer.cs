@@ -144,7 +144,7 @@ namespace Decompiler.Typing
             return eq;
         }
 
-		public override DataType VisitTypeVar(TypeVariable tv)
+		public override DataType VisitTypeVariable(TypeVariable tv)
 		{
 			throw new TypeInferenceException("Type variables mustn't occur at this stage.");
 		}
