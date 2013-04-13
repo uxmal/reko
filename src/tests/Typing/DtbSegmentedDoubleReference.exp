@@ -1,11 +1,12 @@
 // SegmentedDoubleReferenceMock
 void SegmentedDoubleReferenceMock()
-SegmentedDoubleReferenceMock_entry:		// pred:
+SegmentedDoubleReferenceMock_entry:
 	// succ:  l1
-l1:		// pred: SegmentedDoubleReferenceMock_entry
+l1:
 	Mem8[ds:0x0100:word16] = Mem0[ds:Mem0[ds:0x0300:word16] + 0x0004:word16]
 	Mem10[ds:0x0102:word16] = Mem8[ds:Mem8[ds:0x0300:word16] + 0x0004:word16]
 	// succ: 
+SegmentedDoubleReferenceMock_exit:
 
 // Equivalence classes ////////////
 Eq_2: (ptr (struct (100 T_9 t0100) (102 T_15 t0102) (300 T_4 t0300)))

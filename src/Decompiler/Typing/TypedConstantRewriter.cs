@@ -188,7 +188,7 @@ namespace Decompiler.Typing
             throw new NotImplementedException();
         }
 
-		public Expression VisitTypeVar(TypeVariable tv)
+		public Expression VisitTypeVariable(TypeVariable tv)
 		{
 			throw new NotImplementedException();
 		}

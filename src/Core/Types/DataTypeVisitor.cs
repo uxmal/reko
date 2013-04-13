@@ -35,7 +35,7 @@ namespace Decompiler.Core.Types
         T VisitPointer(Pointer ptr);
         T VisitStructure(StructureType str);
         T VisitTypeReference(TypeReference typeref);
-        T VisitTypeVar(TypeVariable tv);
+        T VisitTypeVariable(TypeVariable tv);
         T VisitUnion(UnionType ut);
         T VisitUnknownType(UnknownType ut);
     }

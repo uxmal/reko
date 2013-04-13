@@ -81,22 +81,31 @@ namespace Decompiler.Typing
 
         public DataType VisitFunctionType(FunctionType ft)
         {
-            throw new NotImplementedException();
+            foreach (var arg in ft.ArgumentTypes)
+            {
+                arg.Accept(this);
+            }
+            if (ft.ReturnType != null)
+                ft.ReturnType.Accept(this);
+            return ft;
         }
 
         public DataType VisitPrimitive(PrimitiveType pt)
         {
-            throw new NotImplementedException();
+            return pt;
         }
 
         public DataType VisitMemberPointer(MemberPointer memptr)
         {
-            throw new NotImplementedException();
+            memptr.BasePointer = memptr.BasePointer.Accept(this);
+            memptr.Pointee = memptr.Pointee.Accept(this);
+            return memptr;
         }
 
         public DataType VisitPointer(Pointer ptr)
         {
-            throw new NotImplementedException();
+            ptr.Pointee = ptr.Pointee.Accept(this);
+            return ptr;
         }
 
         public DataType VisitTypeReference(TypeReference typeref)
@@ -104,7 +113,7 @@ namespace Decompiler.Typing
             throw new NotImplementedException();
         }
 
-        public DataType VisitTypeVar(TypeVariable tv)
+        public DataType VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }

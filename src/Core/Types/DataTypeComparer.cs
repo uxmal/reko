@@ -243,7 +243,7 @@ namespace Decompiler.Core.Types
             return TRef;
         }
 
-		public int VisitTypeVar(TypeVariable tv)
+		public int VisitTypeVariable(TypeVariable tv)
 		{
 			return TVar;
 		}

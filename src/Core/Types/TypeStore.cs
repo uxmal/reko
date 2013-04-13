@@ -239,7 +239,7 @@ namespace Decompiler.Core.Types
             writer.Write("{0}: ", tv);
             if (dt != null)
             {
-                dt.Write(writer, false);
+                dt.Accept(new TypeGraphWriter(writer));
                 WriteExpressionOf(tv, writer);
             }
             writer.WriteLine();

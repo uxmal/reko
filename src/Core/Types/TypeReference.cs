@@ -56,17 +56,5 @@ namespace Decompiler.Core.Types
         {
             return new TypeReference(this.Name, this.Referent.Clone());
         }
-
-        public override void Write(TextWriter writer, bool reference)
-        {
-            if (string.IsNullOrEmpty(Name))
-            {
-                Referent.Write(writer, true);
-            }
-            else
-            {
-                writer.Write(Name);
-            }
-        }
     }
 }

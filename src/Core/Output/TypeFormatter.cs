@@ -289,7 +289,7 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
-		public Formatter VisitTypeVar(TypeVariable t)
+		public Formatter VisitTypeVariable(TypeVariable t)
 		{
 			throw new NotImplementedException("TypeFormatter.TypeVariable");
 		}

@@ -87,14 +87,5 @@ namespace Decompiler.Core.Types
 				basePtr = value;
 			}
 		}
-
-		public override void Write(TextWriter writer, bool reference)
-		{
-			writer.Write("(memptr ");
-			BasePointer.Write(writer, true);
-			writer.Write(" ");
-			Pointee.Write(writer, false);
-			writer.Write(")");
-		}
 	}
 }
