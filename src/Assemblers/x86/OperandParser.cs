@@ -185,7 +185,7 @@ namespace Decompiler.Assemblers.x86
 					if (totalInt != 0 || sym != null)
 					{
 						if (addrWidth == null || sym != null)
-							memOp.Offset = new Constant(defaultAddressWidth, totalInt);
+							memOp.Offset = Constant.Create(defaultAddressWidth, totalInt);
 						else
 							memOp.Offset = IntelAssembler.IntegralConstant(totalInt, addrWidth);
 					}
@@ -251,7 +251,7 @@ namespace Decompiler.Assemblers.x86
 			case Token.OFFSET:
 				Expect(Token.ID);
 				return new ParsedOperand(
-					new ImmediateOperand(new Constant(defaultWordWidth, addrBase.Offset)),
+					new ImmediateOperand(Constant.Create(defaultWordWidth, addrBase.Offset)),
 					symtab.CreateSymbol(lexer.StringLiteral));
 				
 			case Token.ID:
@@ -263,7 +263,7 @@ namespace Decompiler.Assemblers.x86
 					goto IntegerCommon;
 				}
 				return new ParsedOperand(
-							   new MemoryOperand(addrWidth, new Constant(defaultWordWidth, addrBase.Offset)),
+							   new MemoryOperand(addrWidth, Constant.Create(defaultWordWidth, addrBase.Offset)),
 							   symtab.CreateSymbol(lexer.StringLiteral));
 			}
 			case Token.WORD:

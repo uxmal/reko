@@ -38,7 +38,7 @@ namespace Decompiler.Evaluation
 
 		public Expression Transform()
 		{
-			return new Constant(slice.DataType, Slice(c.ToInt32()));
+			return Constant.Create(slice.DataType, Slice(c.ToInt32()));
 		}
 
 		public int Slice(int val)

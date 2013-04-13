@@ -73,7 +73,7 @@ namespace Decompiler.Evaluation
 		public Expression Transform()
 		{
             ctx.RemoveIdentifierUse(id);
-			return new BinaryExpression(bin.Operator, id.DataType, id, Operator.Add.ApplyConstants(cInner, new Constant(cInner.DataType, 1)));
+			return new BinaryExpression(bin.Operator, id.DataType, id, Operator.Add.ApplyConstants(cInner, Constant.Create(cInner.DataType, 1)));
 		}
 	}
 }

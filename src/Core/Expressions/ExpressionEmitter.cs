@@ -44,7 +44,7 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Add(Expression left, int right)
         {
-            return new BinaryExpression(Operator.Add, left.DataType, left, new Constant(left.DataType, right));
+            return new BinaryExpression(Operator.Add, left.DataType, left, Constant.Create(left.DataType, right));
         }
 
         public UnaryExpression AddrOf(Expression e)
@@ -54,7 +54,7 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression And(Expression left, int right)
         {
-            return And(left, new Constant(left.DataType, right));
+            return And(left, Constant.Create(left.DataType, right));
         }
 
         public BinaryExpression And(Expression left, Expression right)
@@ -77,9 +77,9 @@ namespace Decompiler.Core.Expressions
             return new ConditionOf(expr);
         }
 
-        public Constant Const(DataType dataType, int n)
+        public Constant Const<T>(DataType dataType, T n)
         {
-            return new Constant(dataType, n);
+            return new Constant<T>(dataType, n);
         }
 
         public Expression Cor(Expression a, Expression b)
@@ -92,7 +92,6 @@ namespace Decompiler.Core.Expressions
             return new DepositBits(dst, src, offset, bitCount);
         }
 
-
         public BinaryExpression Eq(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, a, b);
@@ -100,13 +99,12 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Eq(Expression a, int b)
         {
-            return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, a, new Constant(a.DataType, b));
+            return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, a, Constant.Create(a.DataType, b));
         }
-
 
         public BinaryExpression Eq0(Expression exp)
         {
-            return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, new Constant(exp.DataType, 0));
+            return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, Constant.Create(exp.DataType, 0));
         }
 
         public Application Fn(Expression e, params Expression[] exps)
@@ -131,7 +129,7 @@ namespace Decompiler.Core.Expressions
 
         public Expression Ge(Expression a, int b)
         {
-            return Ge(a, new Constant(a.DataType, b));
+            return Ge(a, Constant.Create(a.DataType, b));
         }
 
         public Expression Gt(Expression a, Expression b)
@@ -146,27 +144,27 @@ namespace Decompiler.Core.Expressions
 
         public Constant Int8(int n)
         {
-            return new Constant(PrimitiveType.Byte, n);
+            return Constant.SByte((sbyte)n);
         }
 
         public Constant Int16(short n)
         {
-            return new Constant(PrimitiveType.Word16, n);
+            return Constant.Word16((ushort)n);
         }
 
         public Constant Int16(uint n)
         {
-            return new Constant(PrimitiveType.Word16, n);
+            return Constant.Int16((short) n);
         }
 
         public Constant Int32(uint n)
         {
-            return new Constant(PrimitiveType.Word32, n);
+            return Constant.Word32(n);
         }
 
         public Constant Int32(int n)
         {
-            return new Constant(PrimitiveType.Word32, n);
+            return Constant.Word32(n);
         }
 
         public MemoryAccess Load(DataType dt, Expression ea)
@@ -197,7 +195,7 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Le(Expression a, int b)
         {
-            return Le(a, new Constant(a.DataType, b));
+            return Le(a, Constant.Create(a.DataType, b));
         }
 
         public BinaryExpression Lt(Expression a, Expression b)
@@ -207,7 +205,7 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Lt(Expression a, int b)
         {
-            return Lt(a, new Constant(a.DataType, b));
+            return Lt(a, Constant.Create(a.DataType, b));
         }
 
 
@@ -219,7 +217,7 @@ namespace Decompiler.Core.Expressions
         public BinaryExpression Ne0(Expression expr)
         {
             return new BinaryExpression(
-                Operator.Ne, PrimitiveType.Bool, expr, new Constant(expr.DataType, 0));
+                Operator.Ne, PrimitiveType.Bool, expr, Constant.Create(expr.DataType, 0));
         }
 
         public UnaryExpression Neg(Expression expr)
@@ -256,7 +254,7 @@ namespace Decompiler.Core.Expressions
 
         public Expression Mul(Expression left, int c)
         {
-            return new BinaryExpression(Operator.Mul, left.DataType, left, new Constant(left.DataType, c));
+            return new BinaryExpression(Operator.Mul, left.DataType, left, Constant.Create(left.DataType, c));
         }
 
         public Expression Muls(Expression left, Expression right)
@@ -266,7 +264,7 @@ namespace Decompiler.Core.Expressions
 
         public Expression Muls(Expression left, int c)
         {
-            return new BinaryExpression(Operator.Muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
+            return new BinaryExpression(Operator.Muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
         }
 
         public Expression Mulu(Expression left, Expression right)
@@ -276,7 +274,7 @@ namespace Decompiler.Core.Expressions
 
         public Expression Mulu(Expression left, int c)
         {
-            return new BinaryExpression(Operator.Mulu, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
+            return new BinaryExpression(Operator.Mulu, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
         }
 
         public BinaryExpression Ne(Expression a, Expression b)
@@ -286,7 +284,7 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Ne(Expression a, int n)
         {
-            return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, new Constant(a.DataType, n));
+            return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, Constant.Create(a.DataType, n));
         }
 
         public UnaryExpression Not(Expression exp)
@@ -306,18 +304,18 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Shl(Expression e, int sh)
         {
-            return new BinaryExpression(Operator.Shl, e.DataType, e, new Constant(e.DataType, sh));
+            return new BinaryExpression(Operator.Shl, e.DataType, e, Constant.Create(e.DataType, sh));
         }
 
         public BinaryExpression Shl(int c, Expression sh)
         {
-            Constant cc = new Constant(PrimitiveType.Word32, c);
+            Constant cc = Constant.Word32(c);
             return new BinaryExpression(Operator.Shl, cc.DataType, cc, sh);
         }
 
         public BinaryExpression Shr(Expression bx, byte c)
         {
-            Constant cc = new Constant(PrimitiveType.Byte, c);
+            Constant cc = Constant.Byte(c);
             return new BinaryExpression(Operator.Shr, bx.DataType, bx, cc);
         }
 
@@ -328,15 +326,13 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Sub(Expression left, int right)
         {
-            return Sub(left, new Constant(left.DataType, right));
+            return Sub(left, Constant.Create(left.DataType, right));
         }
 
         public Slice Slice(PrimitiveType primitiveType, Identifier value, uint bitOffset)
         {
             return new Slice(primitiveType, value, bitOffset);
         }
-
-
 
         public BinaryExpression Ugt(Expression a, Expression b)
         {
@@ -350,7 +346,7 @@ namespace Decompiler.Core.Expressions
 
         public BinaryExpression Uge(Expression a, int n)
         {
-            return new BinaryExpression(Operator.Uge, PrimitiveType.Bool, a, new Constant(a.DataType, n));
+            return new BinaryExpression(Operator.Uge, PrimitiveType.Bool, a, Constant.Create(a.DataType, n));
         }
 
         public BinaryExpression Ule(Expression a, Expression b)
@@ -365,37 +361,32 @@ namespace Decompiler.Core.Expressions
 
         public Expression Ult(Expression a, int b)
         {
-            return new BinaryExpression(Operator.Ult, PrimitiveType.Bool, a, new Constant(PrimitiveType.CreateWord(a.DataType.Size), b));
+            return new BinaryExpression(Operator.Ult, PrimitiveType.Bool, a, Constant.Create(PrimitiveType.CreateWord(a.DataType.Size), b));
         }
-
 
         public Constant Byte(byte b)
         {
-            return new Constant(PrimitiveType.Byte, b);
+            return Constant.Byte(b);
         }
 
-        public Constant Word16(short n)
+        public Constant Word16(ushort n)
         {
-            return new Constant(PrimitiveType.Word16, n);
+            return Constant.Word16(n);
         }
 
         public Constant Word16(uint n)
         {
-            return new Constant(PrimitiveType.Word16, n);
+            return Constant.Word16((ushort) n);
         }
 
         public Constant Word32(int n)
         {
-            return new Constant(PrimitiveType.Word32, n);
+            return Constant.Word32(n);
         }
 
         public Expression Xor(Identifier a, Expression b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, b);
         }
-
-
-
-
     }
 }

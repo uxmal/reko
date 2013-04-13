@@ -442,7 +442,7 @@ namespace Decompiler.Arch.X86
             MemoryOperand mem = (MemoryOperand)di.Instruction.op2;
             if (!mem.Offset.IsValid)
             {
-                mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, new Constant(di.Instruction.addrWidth, 0));
+                mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(di.Instruction.addrWidth, 0));
             }
 
             var ass = emitter.Assign(
@@ -617,7 +617,7 @@ namespace Decompiler.Arch.X86
             Constant c = expr as Constant;
             if (c != null && c.DataType != dataWidth)
             {
-                expr = new Constant(dataWidth, c.ToInt64());
+                expr = Constant.Create(dataWidth, c.ToInt64());
             }
 
             // Allocate an local variable for the push.
@@ -636,7 +636,7 @@ namespace Decompiler.Arch.X86
                 sh = new BinaryExpression(
                     Operator.Sub,
                     di.Instruction.op2.Width,
-                    new Constant(di.Instruction.op2.Width, di.Instruction.op1.Width.BitSize),
+                    Constant.Create(di.Instruction.op2.Width, di.Instruction.op1.Width.BitSize),
                     SrcOp(di.Instruction.op2));
             }
             else
@@ -646,7 +646,7 @@ namespace Decompiler.Arch.X86
             sh = new BinaryExpression(
                 Operator.Shl,
                 di.Instruction.op1.Width,
-                new Constant(di.Instruction.op1.Width, 1),
+                Constant.Create(di.Instruction.op1.Width, 1),
                 sh);
             t = frame.CreateTemporary(PrimitiveType.Bool);
             emitter.Assign(t, emitter.Ne0(emitter.And(SrcOp(di.Instruction.op1), sh)));
@@ -804,7 +804,7 @@ namespace Decompiler.Arch.X86
                     new BinaryExpression(incOperator,
                     di.Instruction.addrWidth,
                     RegSi,
-                    new Constant(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
+                    Constant.Create(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
             }
 
             if (incDi)
@@ -813,7 +813,7 @@ namespace Decompiler.Arch.X86
                     new BinaryExpression(incOperator,
                     di.Instruction.addrWidth,
                     RegDi,
-                    new Constant(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
+                    Constant.Create(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
             }
         }
 

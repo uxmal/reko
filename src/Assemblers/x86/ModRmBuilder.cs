@@ -52,7 +52,7 @@ namespace Decompiler.Assemblers.x86
 			{
 				reg |= 0x6;
 				emitter.EmitByte(reg);
-				return new Constant(PrimitiveType.Word16, memOp.Offset.ToUInt32());
+				return Constant.Create(PrimitiveType.Word16, memOp.Offset.ToUInt32());
 			}
 			else
 			{
@@ -112,7 +112,7 @@ namespace Decompiler.Assemblers.x86
 					else
 					{
 						reg |= 0x80;
-						offset = new Constant(defaultWordSize, memOp.Offset.ToInt32());
+						offset = Constant.Create(defaultWordSize, memOp.Offset.ToInt32());
 					}
 				}
 
@@ -132,7 +132,7 @@ namespace Decompiler.Assemblers.x86
 							if (memOp.Offset == null && memOp.Base == Registers.ebp)
 							{
 								reg |= 0x40;
-								offset = new Constant(PrimitiveType.Byte, 0);
+								offset = Constant.Byte(0);
 							}
 						}
 						else
@@ -162,7 +162,7 @@ namespace Decompiler.Assemblers.x86
 
 							if (memOp.Offset == null)
 							{
-								offset = new Constant(PrimitiveType.Word32, 0);
+								offset = Constant.Word32(0);
 							}
 						}
 						else
@@ -218,7 +218,7 @@ namespace Decompiler.Assemblers.x86
 				if (memOp.Offset == null || !memOp.Offset.IsValid)
 				{
 					mask |= 0x40;
-					offset = new Constant(PrimitiveType.Byte, 0);
+					offset = Constant.Byte(0);
 				}
 				return mask;
 			}

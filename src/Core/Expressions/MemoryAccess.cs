@@ -38,8 +38,6 @@ namespace Decompiler.Core.Expressions
         public MemoryAccess(MemoryIdentifier id, Expression ea, DataType dt)
             : base(dt)
         {
-            if (dt == null)
-                throw new ArgumentNullException("dt");
             this.MemoryId = id;
             this.EffectiveAddress = ea;
         }
@@ -72,7 +70,7 @@ namespace Decompiler.Core.Expressions
                 return new BinaryExpression(Operators.Operator.Add,
                     baseRegister.DataType,
                     baseRegister,
-                    new Constant(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.Size), offset));
+                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.Size), offset));
         }
     }
 
@@ -107,6 +105,5 @@ namespace Decompiler.Core.Expressions
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, segRegister, CreateEffectiveAddress(baseRegister, offset), dt);
         }
-
 	}
 }

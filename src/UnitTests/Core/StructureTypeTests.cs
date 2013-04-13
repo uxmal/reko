@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void CreateField()
         {
-            int off = StructureField.ToOffset(new Constant(PrimitiveType.Word16, 4));
+            int off = StructureField.ToOffset(Constant.Word16(4));
             Assert.AreEqual(4, off);
         }
 
@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Core
         public void CreateFieldWithLargeOffset()
         {
             ushort s = 0xC004;
-            int off = StructureField.ToOffset(new Constant(PrimitiveType.Word16, s));
+            int off = StructureField.ToOffset(Constant.Word16(s));
             Assert.AreEqual(0xC004, off);
         }
 	}

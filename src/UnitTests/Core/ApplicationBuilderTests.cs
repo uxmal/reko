@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Core
             {
                 StackDepthOnEntry = 6
             };
-            ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(null, callee), callee.Signature, false); 
+            ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), callee.Signature, false); 
             var instr = ab.CreateInstruction();
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }

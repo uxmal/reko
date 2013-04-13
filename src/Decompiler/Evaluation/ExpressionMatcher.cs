@@ -321,18 +321,28 @@ namespace Decompiler.Evaluation
 
         private class WildConstant : Constant, IWildExpression
         {
-            public WildConstant(string label) : base(0u)
+            public WildConstant(string label) : base(PrimitiveType.UInt32)
             {
                 this.Label = label;
             }
 
             public string Label { get; private set; }
+
+            public override Expression CloneExpression()
+            {
+                return new WildConstant(Label);
+            }
+
+            public override object GetValue()
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         private class WildExpression : Expression, IWildExpression
         {
             public WildExpression(string label)
-                : base(null)
+                : base(PrimitiveType.Void)
             {
                 this.Label = label;
             }
@@ -357,7 +367,7 @@ namespace Decompiler.Evaluation
 
         private class WildId : Identifier
         {
-            public WildId(string label) : base(label, 0, null, null)
+            public WildId(string label) : base(label, 0, PrimitiveType.Void, null)
             {
                 this.Label = label;
             }

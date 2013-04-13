@@ -38,19 +38,19 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Platform platform = new MsdosPlatform(arch);
 
 			var state = arch.CreateProcessorState();
-			state.SetRegister(Registers.ah, new Constant(PrimitiveType.Byte, 0x3E));
+			state.SetRegister(Registers.ah, Constant.Byte(0x3E));
 			SystemService svc = platform.FindService(0x21, state);
 			Assert.AreEqual("msdos_close_file", svc.Name);
 			Assert.AreEqual(1, svc.Signature.FormalArguments.Length);
 			Assert.IsFalse(svc.Characteristics.Terminates, "close() shouldn't terminate program");
 
-			state.SetRegister(Registers.ah, new Constant(PrimitiveType.Byte, 0x4C));
+			state.SetRegister(Registers.ah, Constant.Byte(0x4C));
 			svc = platform.FindService(0x21, state);
 			Assert.AreEqual("msdos_terminate", svc.Name);
 			Assert.AreEqual(1, svc.Signature.FormalArguments.Length);
 			Assert.IsTrue(svc.Characteristics.Terminates, "terminate() should terminate program");
 
-			state.SetRegister(Registers.ah, new Constant(PrimitiveType.Byte, 0x2F));
+			state.SetRegister(Registers.ah, Constant.Byte(0x2F));
 			svc = platform.FindService(0x21, state);
 			Assert.AreEqual("msdos_get_disk_transfer_area_address", svc.Name);
 			Assert.AreEqual(0, svc.Signature.FormalArguments.Length);
@@ -58,6 +58,5 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.AreEqual("es", seq.Head.Name);
 			Assert.AreEqual("bx", seq.Tail.Name);
 		}
-
 	}
 }

@@ -73,7 +73,7 @@ namespace Decompiler.Typing
 				Constant c = b.Right as Constant;
 				if (c != null)
 				{
-					elemSize = b.Operator.ApplyConstants(new Constant(b.Left.DataType, 1), c);
+					elemSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), c);
 					index = b.Left;
 					return true;
 				}

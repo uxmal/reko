@@ -80,9 +80,9 @@ namespace Decompiler.Arch.X86
         public Constant CreateConstant(ImmediateOperand imm, PrimitiveType dataWidth)
         {
             if (dataWidth.BitSize > imm.Width.BitSize)
-                return new Constant(dataWidth, imm.Value.ToInt32());
+                return Constant.Create(dataWidth, imm.Value.ToInt64());
             else
-                return new Constant(imm.Width, imm.Value.ToUInt32());
+                return Constant.Create(imm.Width, imm.Value.ToUInt32());
         }
 
         public Expression CreateMemoryAccess(MemoryOperand mem, DataType dt, X86State state)
@@ -161,7 +161,7 @@ namespace Decompiler.Arch.X86
                     }
 
                     DataType dt = (eBase != null) ? eBase.DataType : eIndex.DataType;
-                    Constant cOffset = new Constant(dt, l);
+                    Constant cOffset = Constant.Create(dt, l);
                     expr = new BinaryExpression(op, dt, expr, cOffset);
                 }
                 else
@@ -176,7 +176,7 @@ namespace Decompiler.Arch.X86
                 if (mem.Scale != 0 && mem.Scale != 1)
                 {
                     eIndex = new BinaryExpression(
-                        Operator.Mul, eIndex.DataType, eIndex, new Constant(mem.Width, mem.Scale));
+                        Operator.Mul, eIndex.DataType, eIndex, Constant.Create(mem.Width, mem.Scale));
                 }
                 expr = new BinaryExpression(Operator.Add, expr.DataType, expr, eIndex);
             }

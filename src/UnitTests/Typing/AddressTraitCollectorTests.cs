@@ -134,21 +134,21 @@ namespace Decompiler.UnitTests.Typing
 
         private static LinearInductionVariable Liv16(short stride)
         {
-            return new LinearInductionVariable(null, new Constant(PrimitiveType.Int16, stride), null, false);
+            return new LinearInductionVariable(null, Constant.Int16(stride), null, false);
         }
 
         private static LinearInductionVariable Liv16(short start, short stride, short end)
         {
             return new LinearInductionVariable(
-                new Constant(PrimitiveType.Word16, start),
-                new Constant(PrimitiveType.Int16, stride), 
-                new Constant(PrimitiveType.Word16, end),
+                Constant.Word16((ushort)start),
+                Constant.Int16(stride), 
+                Constant.Word16((ushort) end),
                 false);
         }
 
         private static LinearInductionVariable Liv32(short stride)
         {
-            return new LinearInductionVariable(null, new Constant(PrimitiveType.Int32, stride), null, false);
+            return new LinearInductionVariable(null, Constant.Int32(stride), null, false);
         }
 
 		[SetUp]

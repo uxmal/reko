@@ -97,8 +97,8 @@ namespace Decompiler.UnitTests.Typing
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
             SetupPreStages(prog.Architecture);
-			Constant r = new Constant(3.0F);
-			Constant i = new Constant(PrimitiveType.Int32, 1);
+			Constant r = Constant.Real32(3.0F);
+			Constant i = Constant.Int32(1);
 			Identifier x = new Identifier("x", 0, PrimitiveType.Word32, null);
 			Assignment ass = new Assignment(x, r);
 			TypeVariable tvR = r.TypeVariable = factory.CreateTypeVariable();
@@ -426,13 +426,12 @@ namespace Decompiler.UnitTests.Typing
 			Assign(ax, SegMemW(ds, Add(bx, 4)));
 		}
 	}
-
 	
 	public class SegMem3Mock : ProcedureBuilder
 	{
 		private Constant Seg(int seg)
 		{
-			return new Constant(PrimitiveType.SegmentSelector, seg);
+			return Constant.Create(PrimitiveType.SegmentSelector, seg);
 		}
 
 		protected override void BuildBody()

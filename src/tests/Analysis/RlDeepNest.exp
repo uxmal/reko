@@ -7,20 +7,22 @@
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
-	// DataOut: ds
-	// DataOut (flags):
-	// SymbolicIn: sp:fp
+// DataOut: ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 l0C00_0000:
 	si = 0x1234
-	call fn0C00_000B (retsize: 2;depth: 2)
+	call fn0C00_000B (retsize: 2; depth: 2)
 	Mem0[ds:0x5431:word16] = ax
 	return
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
+
 fn0C00_0000_exit:
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp si:0x1234 ax:<invalid>
 
 // fn0C00_000B /////////////////////
@@ -31,35 +33,50 @@ fn0C00_0000_exit:
 	Preserved: sp si
 // fn0C00_000B
 void fn0C00_000B()
-fn0C00_000B_entry:		// pred:
-	// succ:  l0C00_000B
+fn0C00_000B_entry:
 // DataOut: si ds
-l0C00_000B:		// pred: fn0C00_000B_entry
-	wLoc04 = si
-	call fn0C00_0011 (depth: 4;)
-	si = wLoc04
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Temporary(16)
+
+l0C00_000B:
+	sp = fp - 0x0002
+	wLoc02 = si
+	call fn0C00_0011 (retsize: 2; depth: 4)
+	si = wLoc02
+	sp = fp
 	return
-	// succ:  fn0C00_000B_exit
 // DataOut: ax ds
-fn0C00_000B_exit:		// pred: l0C00_000B
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_000B_exit:
 // DataOut: ax ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp si:si ax:<invalid> -2:si
+
 // fn0C00_0011 /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  si ds
 	BypassIn: 
 	Trashed:   ax al ah
-	Preserved:
+	Preserved: sp
 // fn0C00_0011
 void fn0C00_0011()
-fn0C00_0011_entry:		// pred:
-	// succ:  l0C00_0011
+fn0C00_0011_entry:
 // DataOut: si ds
-l0C00_0011:		// pred: fn0C00_0011_entry
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0011:
 	ax = Mem0[ds:si + 0x0004:word16]
 	return
-	// succ:  fn0C00_0011_exit
 // DataOut: ax ds
-fn0C00_0011_exit:		// pred: l0C00_0011
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_0011_exit:
 // DataOut: ax ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp ax:<invalid>
+

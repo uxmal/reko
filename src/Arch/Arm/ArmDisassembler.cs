@@ -1398,12 +1398,12 @@ namespace Decompiler.Arch.Arm
                 if (w < 6)
                 {
                     op.Append((char)('0' + w));
-                    return new ImmediateOperand(new DoubleConstant(w));
+                    return new ImmediateOperand(Constant.Real64(w));
                 }
                 else
                 {
                     append(op, w == 6 ? "0.5" : "10");
-                    return new ImmediateOperand(new DoubleConstant(w == 6 ? 0.5 : 10.0));
+                    return new ImmediateOperand(Constant.Real64(w == 6 ? 0.5 : 10.0));
                 }
             }
             else

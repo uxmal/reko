@@ -273,7 +273,7 @@ namespace Decompiler.Evaluation
                 {
                     //$REVIEW: this is fixed to 32 bits; need a general solution to it.
                     Changed = true;
-                    return new Constant(cast.DataType, c.ToUInt64());
+                    return Constant.Create(cast.DataType, c.ToUInt64());
                 }
             }
             return new Cast(cast.DataType, exp);
@@ -377,7 +377,7 @@ namespace Decompiler.Evaluation
                 else
                 {
                     t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
-                    return new Constant(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
+                    return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
                 }
             }
             return new MkSequence(seq.DataType, head, tail);
@@ -553,7 +553,7 @@ namespace Decompiler.Evaluation
 
 		private Constant MakeZero(DataType type)
 		{
-			return new Constant(type, 0);
+			return Constant.Create(type, 0);
 		}
 
 		private Constant PossibleConstant(Expression e)
@@ -631,7 +631,7 @@ namespace Decompiler.Evaluation
 				PrimitiveType p = c.DataType as PrimitiveType;
 				if (p != null && p.IsIntegral)
 				{
-					return new Constant(cast.DataType, c.ToInt32());
+					return Constant.Create(cast.DataType, c.ToInt32());
 				}
 			}
 			return cast;

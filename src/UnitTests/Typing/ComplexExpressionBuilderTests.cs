@@ -42,9 +42,13 @@ namespace Decompiler.UnitTests.Typing
 		{
 			store = new TypeStore();
 			factory = new TypeFactory();
-			StructureType point = new StructureType("Point", 0);
-			point.Fields.Add(0, PrimitiveType.Word32, null);
-			point.Fields.Add(4, PrimitiveType.Word32, null);
+            StructureType point = new StructureType("Point", 0)
+            {
+                Fields = {
+                    { 0, PrimitiveType.Word32, null },
+			        { 4, PrimitiveType.Word32, null }
+                }
+            };
 			TypeVariable tvPoint = store.EnsureExpressionTypeVariable(factory, null);
 			EquivalenceClass eq = new EquivalenceClass(tvPoint);
 			tvPoint.DataType = eq;

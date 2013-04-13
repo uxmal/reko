@@ -47,14 +47,14 @@ namespace Decompiler.Core
 
         public virtual Assignment Assign(Identifier dst, int n)
         {
-            var ass = new Assignment(dst, new Constant(dst.DataType, n));
+            var ass = new Assignment(dst, Constant.Create((PrimitiveType)dst.DataType, n));
             Emit(ass);
             return ass;
         }
 
         public virtual Assignment Assign(Identifier dst, bool f)
         {
-            return Assign(dst, new Constant(PrimitiveType.Bool, f ? 1 : 0));
+            return Assign(dst, f ? Constant.True() : Constant.False());
         }
 
         public Branch Branch(Expression condition, Block target)

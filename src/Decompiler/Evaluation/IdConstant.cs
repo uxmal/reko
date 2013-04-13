@@ -60,7 +60,7 @@ namespace Decompiler.Evaluation
                 return cSrc;
             DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
             if (dt is PrimitiveType)
-                return new Constant(dt, cSrc.ToInt64());
+                return Constant.Create(dt, cSrc.ToInt64());
             throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
         }
     }

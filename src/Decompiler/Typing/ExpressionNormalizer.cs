@@ -59,7 +59,7 @@ namespace Decompiler.Typing
                 Operator.Add,
                 PrimitiveType.CreateWord(ea.DataType.Size),
                 ea,
-                new Constant(PrimitiveType.CreateWord(ea.DataType.Size), 0));
+                Constant.Create(PrimitiveType.CreateWord(ea.DataType.Size), 0));
             return bin;
         }
 

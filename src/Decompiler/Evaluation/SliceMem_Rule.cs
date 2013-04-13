@@ -43,7 +43,7 @@ namespace Decompiler.Evaluation
 				return false;
 
 			b = acc.EffectiveAddress;
-			Constant offset = new Constant(b.DataType, 0);
+			Constant offset = Constant.Create(b.DataType, 0);
 			BinaryOperator op = Operator.Add;
 			BinaryExpression ea = b as BinaryExpression;
 			if (ea != null)
@@ -63,7 +63,7 @@ namespace Decompiler.Evaluation
 			int bitEnd = bitBegin + slice.DataType.BitSize;
 			if (0 <= bitBegin && bitEnd <= acc.DataType.BitSize)
 			{
-				offset = op.ApplyConstants(offset, new Constant(acc.EffectiveAddress.DataType, slice.Offset / 8));
+				offset = op.ApplyConstants(offset, Constant.Create(acc.EffectiveAddress.DataType, slice.Offset / 8));
 				b = new MemoryAccess(acc.MemoryId, new BinaryExpression(op, offset.DataType, b, offset), slice.DataType);
 				return true;
 			}

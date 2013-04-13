@@ -66,6 +66,8 @@ namespace Decompiler.Core.Types
 		{
 			if (dom == 0)
 				throw new ArgumentException("Domain is empty.");
+            if (dom == Domain.Void && byteSize > 0)
+                throw new ArgumentException("ByteSize must be > 0.");
 			this.Domain = dom;
 			this.byteSize = byteSize;
 			this.Name = name;

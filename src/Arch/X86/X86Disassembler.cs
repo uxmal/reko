@@ -480,7 +480,7 @@ namespace Decompiler.Arch.X86
                 case 'J':		// Relative jump.
                     width = OperandWidth(strFormat[i++]);
                     offset = rdr.ReadLeSigned(width);
-                    pOperand = new ImmediateOperand(new Constant(defaultDataWidth, (uint) (rdr.Address.Offset + offset)));
+                    pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, (uint) (rdr.Address.Offset + offset)));
                     break;
                 case 'M':		// modRM may only refer to memory.
                     width = OperandWidth(strFormat[i++]);

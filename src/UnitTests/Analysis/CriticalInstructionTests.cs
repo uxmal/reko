@@ -21,6 +21,7 @@
 using Decompiler.Analysis;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -31,7 +32,7 @@ namespace Decompiler.UnitTests.Analysis
 	public class CriticalInstructionTests
 	{
 		private CriticalInstruction ci;
-		private Identifier foo = new Identifier("foo", 1, null, null);
+        private Identifier foo = new Identifier("foo", 1, PrimitiveType.Word32, null);
 
 		[SetUp]
 		public void SetUp()
@@ -48,7 +49,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void ApplicationTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Application(new Identifier("foo", 0, null, null), null)));
+			Assert.IsTrue(ci.IsCritical(new Application(new Identifier("foo", 0, PrimitiveType.Word32, null), PrimitiveType.Bool)));
 		}
 
 		[Test]
@@ -72,15 +73,19 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void BinOpTestTrue()
 		{
-			Assert.IsTrue(ci.IsCritical(new BinaryExpression(null, null, 
-				new Application(null, null),
+			Assert.IsTrue(ci.IsCritical(new BinaryExpression(Operator.Add, PrimitiveType.Word32, 
+				new Application(null, PrimitiveType.Word32),
 				Constant.Word32(1))));
 		}
 
 		[Test]
 		public void BinOpTestFalse()
 		{
-			Assert.IsFalse(ci.IsCritical(new BinaryExpression(null, null, new Identifier(null, 0, null, null), Constant.Word32(3))));
+			Assert.IsFalse(ci.IsCritical(new BinaryExpression(
+                Operator.Add, 
+                PrimitiveType.Word32, 
+                new Identifier("id", 0, PrimitiveType.Word32, null), 
+                Constant.Word32(3))));
 		}
 
 		[Test]

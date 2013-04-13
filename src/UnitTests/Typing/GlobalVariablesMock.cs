@@ -31,8 +31,8 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier ptr = Local32("ptr");
 			Declare(ptr, Int32(0x10000004));
-			Store(ptr, new Constant(0.75F));
-			Store(Int32(0x10000000), new Constant(0.5F));
+			Store(ptr, Constant.Real32(0.75F));
+			Store(Int32(0x10000000), Constant.Real32(0.5F));
 		}
 	}
 }

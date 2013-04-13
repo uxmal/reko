@@ -53,7 +53,7 @@ namespace Decompiler.Evaluation
         public Expression Transform()
         {
             ctx.RemoveIdentifierUse(idLeft);
-            return new BinaryExpression(Operator.Mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
+            return new BinaryExpression(Operator.Mul, idLeft.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
         }
 	}
 }

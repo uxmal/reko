@@ -98,7 +98,6 @@ namespace Decompiler.UnitTests.Typing
 			RunTest("fragments/multiple/memaccesses.asm", "Typing/TrcoMemAccesses.txt");
 		}
 
-
 		[Test]
 		public void TrcoCmpMock()
 		{
@@ -130,9 +129,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoArrayExpression()
 		{
-			Identifier b = new Identifier("base", 0, PrimitiveType.Word32, null);
-			Identifier i = new Identifier("idx", 1, PrimitiveType.Word32, null);
-			Constant s = Constant.Word32(4);
+			var b = new Identifier("base", 0, PrimitiveType.Word32, null);
+			var i = new Identifier("idx", 1, PrimitiveType.Word32, null);
+			var s = Constant.Word32(4);
 
 			ProcedureBuilder m = new ProcedureBuilder();
 
@@ -563,24 +562,20 @@ namespace Decompiler.UnitTests.Typing
 
     public class MockTraitHandler : ITraitHandler
     {
-        private TraitMapping traits;
         private TypeFactory factory = new TypeFactory();
 
         public MockTraitHandler(TypeStore store)
         {
-            traits = new TraitMapping(store);
+            this.Traits = new TraitMapping(store);
         }
 
-        public TraitMapping Traits
-        {
-            get { return traits; }
-        }
+        public TraitMapping Traits { get; private set; }
 
         #region ITraitHandler Members
 
         public void ArrayTrait(TypeVariable tArray, int elementSize, int length)
         {
-            traits.AddTrait(tArray, new TraitArray(elementSize, length));
+            Traits.AddTrait(tArray, new TraitArray(elementSize, length));
         }
 
         public void BuildEquivalenceClassDataTypes()
@@ -589,39 +584,39 @@ namespace Decompiler.UnitTests.Typing
 
         public DataType DataTypeTrait(Expression exp, DataType p)
         {
-            return traits.AddTrait(exp.TypeVariable, new TraitDataType(p));
+            return Traits.AddTrait(exp.TypeVariable, new TraitDataType(p));
         }
 
         public DataType EqualTrait(Expression t1, Expression t2)
         {
             if (t1 != null && t2 != null)
-                traits.AddTrait(t1.TypeVariable, new TraitEqual(t2.TypeVariable));
+                Traits.AddTrait(t1.TypeVariable, new TraitEqual(t2.TypeVariable));
             return null;
         }
 
         public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable[] actuals)
         {
-            return traits.AddTrait(function.TypeVariable, new TraitFunc(function.TypeVariable, funcPtrSize, ret, actuals));
+            return Traits.AddTrait(function.TypeVariable, new TraitFunc(function.TypeVariable, funcPtrSize, ret, actuals));
         }
 
         public DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tAccess)
         {
-            return traits.AddTrait(tStruct.TypeVariable, new TraitMemArray(tBase.TypeVariable, structPtrSize, offset, elementSize, length, tAccess.TypeVariable));
+            return Traits.AddTrait(tStruct.TypeVariable, new TraitMemArray(tBase != null ? tBase.TypeVariable : null, structPtrSize, offset, elementSize, length, tAccess.TypeVariable));
         }
 
         public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
         {
-            return traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable: null, structPtrSize, tField.TypeVariable, offset));
+            return Traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable: null, structPtrSize, tField.TypeVariable, offset));
         }
 
         public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)
         {
-            return traits.AddTrait(tStruct.TypeVariable, new TraitMemSize(size));
+            return Traits.AddTrait(tStruct.TypeVariable, new TraitMemSize(size));
         }
 
         public DataType PointerTrait(Expression tPtr, int ptrSize, Expression tPointee)
         {
-            return traits.AddTrait(tPtr.TypeVariable, new TraitPointer(tPointee.TypeVariable));
+            return Traits.AddTrait(tPtr.TypeVariable, new TraitPointer(tPointee.TypeVariable));
         }
 
         #endregion

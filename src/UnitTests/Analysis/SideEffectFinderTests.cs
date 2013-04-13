@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SefConstant()
 		{
-			var c = new Constant(PrimitiveType.Byte, 3);
+			var c = Constant.Byte(3);
 			Assert.IsFalse(sef.HasSideEffect(c));
 		}
 

@@ -76,7 +76,7 @@ namespace Decompiler.Typing
 
         public DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
-            throw new NotImplementedException();
+            return eq;
         }
 
         public DataType VisitFunctionType(FunctionType ft)

@@ -46,13 +46,13 @@ namespace Decompiler.Core
 
 		public void AddPointerReference(uint imageOffset, uint pointer)
 		{
-			var c = new Constant(PrimitiveType.Pointer32, pointer);
+			var c = Constant.Create(PrimitiveType.Pointer32, pointer);
 			map.Add(imageOffset, c);
 		}
 
 		public void AddSegmentReference(uint imageOffset, ushort segmentSelector)
 		{
-			var c = new Constant(PrimitiveType.SegmentSelector, segmentSelector);
+            var c = Constant.Create(PrimitiveType.SegmentSelector, segmentSelector);
 			map.Add(imageOffset, c);
 		}
 

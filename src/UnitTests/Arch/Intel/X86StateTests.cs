@@ -82,8 +82,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var arch = new IntelArchitecture(ProcessorMode.Real);
 
             X86State st = new X86State(arch);
-            st.SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, 0xC00));
-            st.SetRegister(Registers.ax, new Constant(PrimitiveType.Word16, 0x1234));
+            st.SetRegister(Registers.cs, Constant.Word16(0xC00));
+            st.SetRegister(Registers.ax, Constant.Word16(0x1234));
             Assert.IsTrue(!st.GetRegister(Registers.bx).IsValid);
             Assert.IsTrue(st.GetRegister(Registers.ax).IsValid);
             Assert.IsTrue(st.GetRegister(Registers.al).IsValid);

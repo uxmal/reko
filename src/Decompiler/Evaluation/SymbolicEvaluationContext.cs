@@ -77,7 +77,7 @@ namespace Decompiler.Evaluation
             }
             foreach (var de in StackState)
             {
-                writer.Write(" {0}:{1}", de.Key, de.Value);
+                writer.Write(" {0}(fp):{1}", de.Key, de.Value);
             }
         }
 

@@ -52,7 +52,7 @@ namespace Decompiler.Evaluation
 				int bitMask = Mask(dpb.BitCount) << dpb.BitPosition;
 				int maskedVal = cSrc.ToInt32() & ~bitMask;
 				int newBits = cBits.ToInt32() << dpb.BitPosition;
-				return new Constant(cSrc.DataType, maskedVal | (newBits & bitMask));
+				return Constant.Create(cSrc.DataType, maskedVal | (newBits & bitMask));
 			}
 			else if (dpb.BitPosition == 0 && cSrc.ToInt32() == 0)
 			{
