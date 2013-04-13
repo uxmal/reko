@@ -93,7 +93,7 @@ namespace Decompiler.Core.Types
 			writer.Write("(memptr ");
 			BasePointer.Write(writer, true);
 			writer.Write(" ");
-			Pointee.Write(writer, true);
+			Pointee.Write(writer, false);
 			writer.Write(")");
 		}
 	}

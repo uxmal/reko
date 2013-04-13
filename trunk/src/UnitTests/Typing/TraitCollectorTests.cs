@@ -247,6 +247,21 @@ namespace Decompiler.UnitTests.Typing
 			Verify(null, "Typing/TrcoSegmentedDirectAddress.txt");
 		}
 
+        [Test]
+        public void TrcoMultiplication()
+        {
+            var prog = CreateProgram();
+            var m = new ProcedureBuilder();
+            var id = m.Local32("id");
+            var e = m.Mul(id, id);
+
+            coll = CreateCollector(prog);
+            e = e.Accept(en);
+            e.Accept(eqb);
+            e.Accept(coll);
+            Verify(null, "Typing/TrcoMultiplication.txt");
+        }
+
         private static Program CreateProgram()
         {
             Program prog = new Program();

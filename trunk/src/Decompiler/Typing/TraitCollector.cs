@@ -131,7 +131,7 @@ namespace Decompiler.Typing
             PrimitiveType p = dataType as PrimitiveType;
             if (p == null)
                 return null;
-            return p.MaskDomain(~Domain.Pointer);
+            return p.MaskDomain(~(Domain.Pointer | Domain.PtrCode));
         }
 
 		public PrimitiveType MakeNotSigned(DataType t)
@@ -139,7 +139,7 @@ namespace Decompiler.Typing
 			PrimitiveType p = t as PrimitiveType;
 			if (p == null)
 				return null;
-			return p.MaskDomain(~(Domain.SignedInt|Domain.Real));
+            return p.MaskDomain(~(Domain.SignedInt | Domain.Real));
 		}
 
 		public PrimitiveType MakeSigned(DataType t)
