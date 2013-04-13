@@ -60,7 +60,7 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstant(Constant c)
 		{
-			return new Constant(c.DataType, ~c.ToInt32());
+			return Constant.Create(c.DataType, ~c.ToInt32());
 		}
 
 		public override string ToString()

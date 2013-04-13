@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 
@@ -37,8 +38,8 @@ namespace Decompiler.Analysis
 		private SsaIdentifierCollection ssaIds;
 		private Dictionary<Identifier,Identifier> assocs;
 		private Dictionary<Identifier,Constant> consts;
-		private Identifier overAssociatedId = new Identifier("overAssociated", -1, null, null);
-        private Constant overAssociatedConst = new Constant(0.0);
+		private Identifier overAssociatedId = new Identifier("overAssociated", -1, PrimitiveType.Void, null);
+        private Constant overAssociatedConst = Constant.Real64(0.0);
 
 		private int sequencePoint;
 

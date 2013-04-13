@@ -145,9 +145,9 @@ namespace Decompiler.Core
 				return c;
 			switch (type.Size)
 			{
-			case 1: return new Constant(type, abImage[imageOffset]);
-			case 2: return new Constant(type, ReadLeUInt16(abImage, imageOffset));
-			case 4: return new Constant(type, ReadLeUInt32(abImage, imageOffset));
+			case 1: return Constant.Create(type, abImage[imageOffset]);
+            case 2: return Constant.Create(type, ReadLeUInt16(abImage, imageOffset));
+            case 4: return Constant.Create(type, ReadLeUInt32(abImage, imageOffset));
 			}
 			throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
 		}
@@ -159,9 +159,9 @@ namespace Decompiler.Core
                 return c;
             switch (type.Size)
             {
-            case 1: return new Constant(type, abImage[imageOffset]);
-            case 2: return new Constant(type, ReadBeUInt16(abImage, imageOffset));
-            case 4: return new Constant(type, ReadBeUInt32(abImage, imageOffset));
+            case 1: return Constant.Create(type, abImage[imageOffset]);
+            case 2: return Constant.Create(type, ReadBeUInt16(abImage, imageOffset));
+            case 4: return Constant.Create(type, ReadBeUInt32(abImage, imageOffset));
             }
             throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
         }

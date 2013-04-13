@@ -191,7 +191,7 @@ namespace Decompiler.Assemblers.x86
         public ParsedOperand BytePtr(int offset)
         {
             return new ParsedOperand(
-                new MemoryOperand(PrimitiveType.Byte, new Constant(emitter.AddressWidth, offset)));
+                new MemoryOperand(PrimitiveType.Byte, Constant.Create(emitter.AddressWidth, offset)));
         }
 
         internal PrimitiveType EnsureValidOperandSize(ParsedOperand op)
@@ -974,7 +974,7 @@ namespace Decompiler.Assemblers.x86
                 else
                     width = PrimitiveType.Word32;
             }
-            return new Constant(width, i);
+            return Constant.Create(width, i);
         }
 
         public static Constant IntegralConstant(int i)
@@ -986,7 +986,7 @@ namespace Decompiler.Assemblers.x86
                 width = PrimitiveType.Word16;
             else
                 width = PrimitiveType.Word32;
-            return new Constant(width, i);
+            return Constant.Create(width, i);
         }
 
 
@@ -2048,7 +2048,7 @@ namespace Decompiler.Assemblers.x86
             {
                 sym = symtab.CreateSymbol(offset);
                 val = (int)this.addrBase.Offset;
-                Constant off = new Constant(@base == null
+                Constant off = Constant.Create(@base == null
                     ? seg != null ? PrimitiveType.Word16 : PrimitiveType.Word32
                     : @base.DataType,
                     val);

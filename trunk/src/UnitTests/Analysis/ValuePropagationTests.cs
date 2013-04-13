@@ -253,9 +253,9 @@ namespace Decompiler.UnitTests.Analysis
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
 				new BinaryExpression(Operator.Add, t, 
-					new BinaryExpression(Operator.Muls, t, id, new Constant(t, 4)),
+					new BinaryExpression(Operator.Muls, t, id, Constant.Create(t, 4)),
 					id),
-				new Constant(t, 2));
+				Constant.Create(t, 2));
 			Expression e = vp.VisitBinaryExpression(b);
 			Assert.AreEqual("id *s 20", e.ToString());
 
@@ -277,7 +277,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Constant c = Constant.Word32(1);
 			ProcedureBuilder m = new ProcedureBuilder();
-			Expression e = m.Shl(1, m.Sub(new Constant(PrimitiveType.Byte, 32), 1));
+			Expression e = m.Shl(1, m.Sub(Constant.Byte(32), 1));
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 			e = e.Accept(vp);
 			Assert.AreEqual("0x80000000", e.ToString());
@@ -286,8 +286,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void VpSequenceOfConstants()
 		{
-			Constant pre = new Constant(PrimitiveType.Word16, 0x0001);
-			Constant fix = new Constant(PrimitiveType.Word16, 0x0002);
+			Constant pre = Constant.Word16(0x0001);
+			Constant fix = Constant.Word16(0x0002);
 			Expression e = new MkSequence(PrimitiveType.Word32, pre, fix);
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 			e = e.Accept(vp);
@@ -297,8 +297,8 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void SliceShift()
         {
-            Constant eight = new Constant(PrimitiveType.Word16, 8);
-            Constant ate = new Constant(PrimitiveType.Word32, 8);
+            Constant eight = Constant.Word16(8);
+            Constant ate = Constant.Word32(8);
             Identifier C = Reg8("C");
             Identifier ax = Reg16("ax");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
@@ -310,8 +310,8 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void MkSequenceToAddress()
         {
-            Constant seg = new Constant(PrimitiveType.SegmentSelector, 0x4711);
-            Constant off = new Constant(PrimitiveType.Word16, 0x4111);
+            Constant seg = Constant.Create(PrimitiveType.SegmentSelector, 0x4711);
+            Constant off = Constant.Word16(0x4111);
             Expression e = new MkSequence(PrimitiveType.Word32, seg, off);
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
             e = e.Accept(vp);

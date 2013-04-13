@@ -71,7 +71,7 @@ namespace Decompiler.Typing
 		private Expression CreateDereference(DataType dt, Expression e)
 		{
 			if (basePointer != null)
-				return new MemberPointerSelector(dt, new Dereference(null, basePointer), e);
+				return new MemberPointerSelector(dt, new Dereference(dt, basePointer), e);
 			else if (e != null)
 				return new Dereference(dt, e);
 			else
@@ -164,7 +164,7 @@ namespace Decompiler.Typing
         {
             BinaryOperator op = offset < 0 ? Operator.Sub : Operator.Add;
             offset = Math.Abs(offset);
-            Constant cOffset = new Constant(PrimitiveType.Create(Domain.SignedInt, pointerSize), offset);
+            Constant cOffset = Constant.Create(PrimitiveType.Create(Domain.SignedInt, pointerSize), offset);
             if (arrayIndex != null)
             {
                 if (offset != 0)

@@ -300,7 +300,11 @@ namespace Decompiler.Core.Expressions
         private static bool EqualsImpl(Expression x, Expression y)
         {
             Type tx = x.GetType();
+            if (typeof(Constant).IsAssignableFrom(tx))
+                tx = typeof(Constant);
             Type ty = y.GetType();
+            if (typeof(Constant).IsAssignableFrom(ty))
+                ty = typeof(Constant);
             if (tx != ty)
                 return false;
 
@@ -311,7 +315,11 @@ namespace Decompiler.Core.Expressions
         {
             if (obj == null)
                 throw new ArgumentNullException();
-            return hashes[obj.GetType()](obj);
+            var tc = typeof(Constant);
+            Type t = obj.GetType();
+            if (tc.IsAssignableFrom(t))
+                t = tc;
+            return hashes[t](obj);
         }
 
         public int GetHashCode(Expression obj)

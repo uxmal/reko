@@ -377,7 +377,7 @@ namespace Decompiler.Analysis
 			{ 
 				if (zero == null)
 				{
-					zero = new Constant(PrimitiveType.Byte, 0);
+					zero = Constant.Byte(0);
 				}
 				return zero;
 			}
@@ -502,16 +502,6 @@ namespace Decompiler.Analysis
 			{
 				stm.Instruction.Accept(this);
 				return inductive;
-			}
-
-			private int RegionConstant(Expression e, Block header)
-			{
-				Constant c = e as Constant;
-				if (c != null)
-				{
-                    return c.ToInt32();
-				}
-				return 0;
 			}
 
 			public override void VisitApplication(Application appl)

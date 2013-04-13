@@ -181,6 +181,4 @@ namespace Decompiler.Typing
 		}
 		#endregion
 	}
-
-
 }

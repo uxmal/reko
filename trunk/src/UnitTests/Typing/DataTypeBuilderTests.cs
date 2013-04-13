@@ -187,7 +187,6 @@ namespace Decompiler.UnitTests.Typing
 			Verify("Typing/DtbMems.txt");
 		}
 
-
 		[Test]
 		public void DtbRepeatedLoads()
 		{
@@ -203,8 +202,6 @@ namespace Decompiler.UnitTests.Typing
 			dtb.BuildEquivalenceClassDataTypes();
 
 			Verify("Typing/DtbRepeatedLoads.txt");
-
-
 		}
 
 		[Test]

@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Assign(Expression dst, int n)
         {
-             return Assign(dst, new Constant(dst.DataType, n));
+             return Assign(dst, Constant.Create(dst.DataType, n));
         }
 
         public RtlInstruction Assign(Expression dst, Expression src)

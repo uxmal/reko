@@ -71,7 +71,8 @@ namespace Decompiler.Analysis
                 new Assignment(
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op"), null,
+                        ExpressionMatcher.AnyOperator("op"), 
+                        PrimitiveType.Void,
                         ExpressionMatcher.AnyExpression("left"),
                         ExpressionMatcher.AnyExpression("right"))));
 
@@ -79,9 +80,11 @@ namespace Decompiler.Analysis
                 new Assignment(
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op1"), null,
+                        ExpressionMatcher.AnyOperator("op1"),
+                        PrimitiveType.Void,
                         new BinaryExpression(
-                            ExpressionMatcher.AnyOperator("op2"), null,
+                            ExpressionMatcher.AnyOperator("op2"),
+                            PrimitiveType.Void,
                             ExpressionMatcher.AnyExpression("left"),
                             ExpressionMatcher.AnyExpression("right")),
                         ExpressionMatcher.AnyExpression("cf"))));
@@ -89,7 +92,8 @@ namespace Decompiler.Analysis
             memOffset = new ExpressionMatcher(
                 new MemoryAccess(
                     new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op"), null,
+                        ExpressionMatcher.AnyOperator("op"),
+                        PrimitiveType.Void,
                         ExpressionMatcher.AnyExpression("base"),
                         ExpressionMatcher.AnyConstant("offset")),
                     ExpressionMatcher.AnyDataType("dt")));
@@ -99,7 +103,8 @@ namespace Decompiler.Analysis
                     null,
                     ExpressionMatcher.AnyId(),
                     new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op"), null,
+                        ExpressionMatcher.AnyOperator("op"),
+                        PrimitiveType.Void,
                         ExpressionMatcher.AnyExpression("base"),
                         ExpressionMatcher.AnyConstant("offset")),
                     ExpressionMatcher.AnyDataType("dt")));
@@ -271,7 +276,7 @@ namespace Decompiler.Analysis
             var immHi = expHi as Constant;
             if (immLo != null && immHi != null)
             {
-                return new Constant(totalSize, ((ulong)immHi.ToUInt32() << expLo.DataType.BitSize) | immLo.ToUInt32());
+                return Constant.Create(totalSize, ((ulong)immHi.ToUInt32() << expLo.DataType.BitSize) | immLo.ToUInt32());
             }
             return null;
         }

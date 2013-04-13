@@ -8,7 +8,7 @@
 void fn0C00_0000()
 fn0C00_0000_entry:
 // DataOut: ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0C00_0000:
@@ -24,12 +24,12 @@ l0C00_0000:
 	Mem0[ds:0x0122:byte] = cl
 	return
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn0C00_0000_exit:
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp ax:<invalid> cl:<invalid> bx:0x0005 ch:0x03 dx:<invalid>
 
 // fn0C00_001E /////////////////////
@@ -42,20 +42,22 @@ fn0C00_0000_exit:
 void fn0C00_001E()
 fn0C00_001E_entry:
 // DataOut: ax bx cl ch ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
+
 l0C00_001E:
 	cl = cl - ch
 	SCZO = cond(cl)
 	branch Test(ULT,C) l0C00_0027
 // DataOut: ax bx cl ch ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
+
 l0C00_0022:
 	bx = bx >> cl
 	SCZO = cond(bx)
 // DataOut: ax bx cl ch ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp cl:cl - ch
 
 l0C00_0027:
@@ -68,7 +70,7 @@ l0C00_0027:
 	SCZO = cond(cl)
 	C = cl == 0x00
 // DataOut: ax bx cl ch ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp cl:cl - ch
 
 l0C00_002D:
@@ -78,11 +80,12 @@ l0C00_002D:
 	SCZO = cond(cl)
 	return
 // DataOut: ax cl ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp cl:cl - ch ax:ax >> ch - cl bx:bx >> cl - ch
+
 fn0C00_001E_exit:
 // DataOut: ax cl ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp cl:cl - ch + ch ax:(ax >> ch - cl) + (bx >> cl - ch) bx:bx >> cl - ch
 
 // fn0C00_0032 /////////////////////
@@ -95,7 +98,7 @@ fn0C00_001E_exit:
 void fn0C00_0032()
 fn0C00_0032_entry:
 // DataOut: ax bx cl ch ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0C00_0032:
@@ -105,10 +108,11 @@ l0C00_0032:
 	SCZO = cond(cl)
 	return
 // DataOut: ax cl ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn0C00_0032_exit:
 // DataOut: ax cl ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp Sequence dx:ax:bx *s ax cl:cl + ch
+

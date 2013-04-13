@@ -25,24 +25,6 @@ using System.Globalization;
 
 namespace Decompiler.Core.Expressions
 {
-    public class ByteConstant : Constant
-    {
-        private byte b;
-        public ByteConstant(byte b) : base(PrimitiveType.Byte, b) { this.b = b; }
-    }
-
-    public class FloatConstant : Constant
-    {
-        private float f;
-        public FloatConstant(float f) : base(PrimitiveType.Real32, f) { this.f = f; }
-    }
-
-    public class DoubleConstant : Constant
-    {
-        private double d;
-        public DoubleConstant(double d) : base(PrimitiveType.Real64, d) { this.d = d; }
-    }
-
     public class StringConstant : Constant
     {
         private string str;
@@ -54,57 +36,72 @@ namespace Decompiler.Core.Expressions
 
         public int Length { get { return str.Length; } }
 
+        public override Expression CloneExpression()
+        {
+            return new StringConstant(DataType, str);
+        }
+
+        public override object GetValue()
+        {
+            return str;
+        }
+
         public override string ToString()
         {
             return str;
         }
     }
 
-
-	public class Constant : Expression
+	public abstract class Constant : Expression
 	{
-		private object c;
-
-        public Constant(DataType t)
+        protected Constant(DataType t)
             : base(t)
         {
         }
 
-		public Constant(DataType t, object v) : base(t)
-		{
-			PrimitiveType p = t as PrimitiveType;
-			if (p != null)
-			{
-				switch (p.Size)
-				{
-				case 1: 
-					v = p.Domain == Domain.SignedInt ? (object) (sbyte) Convert.ToInt64(v) : (object) (byte) (Convert.ToInt64(v) & 0xFF);
-					break;
-				case 2:
-					v = p.Domain == Domain.SignedInt ? (object) (short) Convert.ToInt64(v) : (object) (ushort) (Convert.ToInt64(v) & 0xFFFF);
-					break;
-				case 4:
-					v = p.Domain == Domain.SignedInt ? (object) (int) Convert.ToInt64(v) : (object) (uint) (Convert.ToInt64(v) & 0xFFFFFFFF);
-					break;
-				}
-			}
-			this.c = v;
-		}
+        public static Constant Create(DataType dt, ulong value)
+        {
+            return Create(dt, (long) value);
+        }
 
-		public Constant(ushort us) : base(PrimitiveType.Word16)
-		{
-			this.c = us;
-		}
-
-		public Constant(double d) : base(PrimitiveType.Real64)
-		{
-			this.c = d;
-		}
-
-		public Constant(float f) : base(PrimitiveType.Real32)
-		{
-			this.c = f;
-		}
+        public static Constant Create(DataType dt, long value)
+        {
+            PrimitiveType p = (PrimitiveType)dt;
+            object v;
+            switch (p.Size)
+            {
+            case 1:
+                switch (p.Domain)
+                {
+                case Domain.Boolean: return new Constant<bool>(p, value != 0);
+                case Domain.SignedInt: return new Constant<sbyte>(p, (sbyte) value);
+                case Domain.Character: return new Constant<char>(p,(char) (byte) value);
+                default: return new Constant<byte>(p, (byte) value);
+                }
+            case 2:
+                switch (p.Domain)
+                {
+                case Domain.SignedInt: return new Constant<short>(p, (short) value);
+                case Domain.Character: return new Constant<ushort>(p, (char) value);
+                default: return new Constant<ushort>(p, (ushort) value);
+                }
+            case 4:
+                switch (p.Domain)
+                {
+                case Domain.SignedInt: return new Constant<int>(p, (int) value);
+                case Domain.Real: throw new NotImplementedException();
+                default: return new Constant<uint>(p, (uint) value);
+                }
+            case 8:
+                switch (p.Domain)
+                {
+                case Domain.SignedInt: return new Constant<long>(p, (long) value);
+                case Domain.Real: return new Constant<ulong>(p, (ulong) value);
+                default: return new Constant<ulong>(p, (ulong) value);
+                }
+            }
+            throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
+        }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
@@ -118,13 +115,8 @@ namespace Decompiler.Core.Expressions
 
         public static Constant Byte(byte c)
         {
-            return new Constant(PrimitiveType.Byte, c);
+            return new Constant<byte>(PrimitiveType.Byte, c);
         }
-
-		public override Expression CloneExpression()
-		{
-			return new Constant(DataType, c);
-		}
 
 		public static Constant RealFromBitpattern(PrimitiveType dt, long bits)
 		{
@@ -142,13 +134,13 @@ namespace Decompiler.Core.Expressions
 			int exp =  (int) (bits >> 23) & 0xFF;
 			float sign = (bits < 0) ? -1.0F : 1.0F;
 			if (mant == 0 && exp == 0)
-				return new Constant(0.0F);
-			return new Constant(sign * (float) MakeReal(exp, 0x7F, mant, 23));
+				return Constant.Real32(0.0F);
+			return Constant.Real32(sign * (float) MakeReal(exp, 0x7F, mant, 23));
 		}
 
 		public static Constant DoubleFromBitpattern(long bits)
 		{
-            return new Constant(BitConverter.Int64BitsToDouble(bits));
+            return Constant.Real64(BitConverter.Int64BitsToDouble(bits));
 		}
 
 		private static double MakeReal(int exponent, int expBias, long mantissa, int mantissaSize)
@@ -180,15 +172,14 @@ namespace Decompiler.Core.Expressions
 
 		public static Constant False()
 		{
-			return new Constant(PrimitiveType.Bool, 0);
+			return new Constant<bool>(PrimitiveType.Bool, false);
 		}
 
-        internal object GetValue() { return c; }
-
-		private static double IntPow(double b, int e)
+        public abstract object GetValue();
+	
+        private static double IntPow(double b, int e)
 		{
 			double acc = 1.0;
-
 			while (e != 0)
 			{
 				if ((e & 1) == 1)
@@ -212,7 +203,7 @@ namespace Decompiler.Core.Expressions
 				PrimitiveType p = DataType as PrimitiveType;
 				if (p == null || p.Domain == Domain.Real)
 					return false; 
-				return Convert.ToInt64(c) == 0;
+				return Convert.ToInt64(GetValue()) == 0;
 			}
 		}
 
@@ -222,7 +213,7 @@ namespace Decompiler.Core.Expressions
 			{
 				PrimitiveType p = (PrimitiveType) DataType;
 				if (p.Domain == Domain.SignedInt)
-					return Convert.ToInt64(c) < 0;
+					return Convert.ToInt64(GetValue()) < 0;
 				else if (p == PrimitiveType.Real32)
 					return ToFloat() < 0.0F;
 				else if (p == PrimitiveType.Real64)
@@ -246,28 +237,28 @@ namespace Decompiler.Core.Expressions
 			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
 		}
 
-
 		public Constant Negate()
 		{
 			PrimitiveType p = (PrimitiveType) DataType;
+            var c = GetValue();
 			if ((p.Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0)
 			{
                 p = PrimitiveType.Create(Domain.SignedInt, p.Size);
 				if (p.BitSize <= 8)				
-					return new Constant(p, -Convert.ToSByte(c));
+					return Constant.Create(p, -Convert.ToSByte(c));
 				if (p.BitSize <= 16)
-					return new Constant(p, -Convert.ToInt32(c) & 0xFFFF);
+                    return Constant.Create(p, -Convert.ToInt32(c) & 0xFFFF);
 				if (p.BitSize <= 32)
-					return new Constant(p, -Convert.ToInt32(c));
-				return new Constant(p, -Convert.ToInt64(c));
+                    return Constant.Create(p, -Convert.ToInt32(c));
+                return Constant.Create(p, -Convert.ToInt64(c));
 			}
 			else if (p == PrimitiveType.Real32)
 			{
-				return new Constant(-ToFloat());
+                return Constant.Real32(-ToFloat());
 			}
 			else if (p == PrimitiveType.Real64)
 			{
-				return new Constant(-ToDouble());
+                return Constant.Real64(-ToDouble());
 			}
 			else 
 				throw new InvalidOperationException(string.Format("Type {0} doesn't support negation.", p));
@@ -275,64 +266,64 @@ namespace Decompiler.Core.Expressions
 
 		public static Constant Pi()
 		{
-            return new Constant(Math.PI);
+            return Constant.Real64(Math.PI);
 		}
 
         public static Constant Ln2()
         {
-            return new Constant(0.69314718055994530941723212145818);
+            return Constant.Real64(0.69314718055994530941723212145818);
         }
 
         public bool ToBoolean()
         {
-            return Convert.ToBoolean(c);
+            return Convert.ToBoolean(GetValue());
         }
 
 		public double ToDouble()
 		{
-			return Convert.ToDouble(c);
+			return Convert.ToDouble(GetValue());
 		}
 
 		public float ToFloat()
 		{
-			return Convert.ToSingle(c);
+			return Convert.ToSingle(GetValue());
 		}
 
         public ushort ToUInt16()
         {
-            return unchecked((ushort) Convert.ToInt64(c));
+            return unchecked(Convert.ToUInt16(GetValue()));
         }
 
         public short ToInt16()
         {
-            return unchecked((short)Convert.ToInt64(c));
+            return unchecked(Convert.ToInt16(GetValue()));
         }
 
 		public int ToInt32()
 		{
-			int q = (int) Convert.ToInt64(c);
- 			int mask = (0 - (q & (1 << (DataType.BitSize - 1)))) << 1;
-			return q | mask;
+			int q = (int)Convert.ToInt64(GetValue());
+            int mask = (0 - (q & (1 << (DataType.BitSize - 1)))) << 1;
+            return q | mask;
 		}
 
 		public uint ToUInt32()
 		{
-			return unchecked((uint) Convert.ToInt64(c));
+			return Convert.ToUInt32(GetValue());
 		}
 
 		public long ToInt64()
 		{
-			return Convert.ToInt64(c);
+            return Convert.ToInt64(GetValue());
 		}
 
 		public ulong ToUInt64()
 		{
-			return Convert.ToUInt64(c);
+            return Convert.ToUInt64(GetValue());
 		}
 
 		public static Constant True()
 		{
-			return new Constant(PrimitiveType.Bool, 1);
+			return new Constant<bool>(PrimitiveType.Bool, true);
 		}
 
         public static Constant Bool(bool f)
@@ -342,40 +333,70 @@ namespace Decompiler.Core.Expressions
 
         public static Constant SByte(sbyte p)
         {
-            return new Constant(PrimitiveType.SByte, p);
+            return new Constant<sbyte>(PrimitiveType.SByte, p);
         }
 
         public static Constant Int16(short s)
         {
-            return new Constant(PrimitiveType.Int16, s);
+            return new Constant<short>(PrimitiveType.Int16, s);
         }
 
         public static Constant Int32(int i)
         {
-            return new Constant(PrimitiveType.Int32, i);
+            return new Constant<Int32>(PrimitiveType.Int32, i);
+        }
+
+        public static Constant Real32(float f)
+        {
+            return new Constant<Single>(PrimitiveType.Real32, f);
+        }
+
+        public static Constant Real64(double d)
+        {
+            return new Constant<Double>(PrimitiveType.Real64, d);
         }
 
         public static Constant Word16(ushort n)
         {
-            return new Constant(PrimitiveType.Word16, n);
+            return new Constant<ushort>(PrimitiveType.Word16, n);
         }
 
 		public static Constant Word32(int n)
 		{
-			return new Constant(PrimitiveType.Word32, n); 
+			return new Constant<uint>(PrimitiveType.Word32, (uint) n); 
 		}
 
         public static Constant Word32(uint n)
         {
-            return new Constant(PrimitiveType.Word32, n);
+            return new Constant<uint>(PrimitiveType.Word32, n);
         }
 
         public static Constant Zero(DataType dataType)
         {
-            return new Constant(dataType, 0);
+            return Constant.Create(dataType, 0);
         }
 
-		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0xBADDCAFE);
-        public static readonly Constant Unknown = new Constant(PrimitiveType.Void, 0xDEADFACE);
+		public static readonly Constant Invalid = new Constant<uint>(PrimitiveType.Void, 0xBADDCAFE);
+        public static readonly Constant Unknown = new Constant<uint>(PrimitiveType.Void, 0xDEADFACE);
+    }
+
+    internal class Constant<T> : Constant
+    {
+        private T value;
+
+        public Constant(DataType dt, T value) : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new Constant<T>(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
     }
 }

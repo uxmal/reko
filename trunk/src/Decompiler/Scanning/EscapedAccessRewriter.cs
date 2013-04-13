@@ -66,7 +66,7 @@ namespace Decompiler.Scanning
 			}
 			PrimitiveType p = (PrimitiveType) fp.DataType;
 			Expression ea = new BinaryExpression(op, fp.DataType,
-				fp, new Constant(PrimitiveType.Create(Domain.SignedInt, p.Size), offset));
+				fp, Constant.Create(PrimitiveType.Create(Domain.SignedInt, p.Size), offset));
 			return ea;
 		}
 

@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			var m = new MemoryOperand(
 				PrimitiveType.Byte,
 				Registers.bx,
-				new Constant(PrimitiveType.Int32, 32));
+				Constant.Int32(32));
 			var e = orw.CreateMemoryAccess(m, state);
 			Assert.AreEqual("Mem0[ds:bx + 0x0020:byte]", e.ToString());
 		}

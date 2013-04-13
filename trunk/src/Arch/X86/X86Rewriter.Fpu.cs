@@ -144,7 +144,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFldConst(double constant)
         {
-            RewriteFldConst(new Constant(constant));
+            RewriteFldConst(Constant.Real64(constant));
         }
 
         private void RewriteFldConst(Constant c)
@@ -203,14 +203,14 @@ namespace Decompiler.Arch.X86
                 di.Instruction.op1,
                 new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
                         new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
-                        new Constant(PrimitiveType.Int16, 8)),
+                        Constant.Int16(8)),
                 false);
         }
 
         private void RewriteFtst()
         {
             emitter.Assign(orw.FlagGroup(FlagM.CF),
-                emitter.Sub(FpuRegister(0), new Constant(0.0)));
+                emitter.Sub(FpuRegister(0), Constant.Real64(0.0)));
         }
 
         private void RewriteFxam()

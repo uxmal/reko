@@ -111,11 +111,9 @@ namespace Decompiler.UnitTests.Mocks
 			Return(ax_88);
 		}
 
-        private MemoryAccess LoadW(int i)
+        private MemoryAccess LoadW(ushort i)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, new Constant(PrimitiveType.Word16, i), PrimitiveType.Word16);
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word16(i), PrimitiveType.Word16);
         }
-
-
 	}
 }

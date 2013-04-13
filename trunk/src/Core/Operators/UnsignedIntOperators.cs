@@ -34,7 +34,7 @@ namespace Decompiler.Core.Operators
 		{
 			uint v1 = c1.ToUInt32();
 			uint v2 = c2.ToUInt32();
-			return new Constant(PrimitiveType.Bool, v1 < v2);
+			return Constant.Bool(v1 < v2);
 		}
 
 		public override string ToString()
@@ -49,7 +49,7 @@ namespace Decompiler.Core.Operators
 		{
 			uint v1 = c1.ToUInt32();
 			uint v2 = c2.ToUInt32();
-			return new Constant(PrimitiveType.Bool, v1 <= v2);
+            return Constant.Bool(v1 <= v2);
 		}
 
 		public override string ToString()
@@ -64,7 +64,7 @@ namespace Decompiler.Core.Operators
 		{
 			uint v1 = (uint) c1.ToInt32();
 			uint v2 = (uint) c2.ToInt32();
-			return new Constant(PrimitiveType.Bool, v1 <= v2);
+            return Constant.Bool(v1 <= v2);
 		}
 
 		public override string ToString()
@@ -79,7 +79,7 @@ namespace Decompiler.Core.Operators
 		{
 			uint v1 = (uint) c1.ToUInt32();
 			uint v2 = (uint) c2.ToUInt32();
-			return new Constant(PrimitiveType.Bool, v1 >= v2);
+			return Constant.Bool(v1 >= v2);
 		}
 
 		public override string ToString()

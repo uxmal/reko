@@ -77,7 +77,7 @@ namespace Decompiler.Analysis
             IncrementedUse use = incrUses[0];
             if (ModifyInitialAssigment(use))
             {
-                use.Expression.Right = new Constant(use.Increment.DataType, 0);
+                use.Expression.Right = Constant.Create(use.Increment.DataType, 0);
                 ModifyTest(ctx, use);
                 liv.AddIncrement(use.Increment);
             }

@@ -33,6 +33,8 @@ namespace Decompiler.Core.Expressions
     {
         public Expression(DataType dataType)
         {
+            if (dataType == null)
+                throw new ArgumentNullException("dataType");
             this.DataType = dataType;
         }
         

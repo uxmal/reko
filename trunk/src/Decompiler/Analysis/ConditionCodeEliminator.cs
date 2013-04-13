@@ -144,7 +144,7 @@ namespace Decompiler.Analysis
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
-			return new BinaryExpression(Operator.Sub, e.DataType, e, new Constant(e.DataType, 0));
+			return new BinaryExpression(Operator.Sub, e.DataType, e, Constant.Create(e.DataType, 0));
 		}
 
 		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc)

@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Core
 				bl.Statements.Add(4,
 					new Assignment(
 					new Identifier("id4", 4, PrimitiveType.Word16, null),
-					new Constant(PrimitiveType.Word16, 3)));
+					Constant.Word16(3)));
 
 				bl.Write(fut.TextWriter);
 				fut.AssertFilesEqual();

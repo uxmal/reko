@@ -30,8 +30,8 @@ namespace Decompiler.UnitTests.Typing
 	{
 		protected override void BuildBody()
 		{
-			var i = new Constant(PrimitiveType.Int32, 3);		// signed integer
-			var r = new Constant(3.0F);						// single-precision real
+			var i = Constant.Int32(3);		// signed integer
+			var r = Constant.Real32(3.0F);						// single-precision real
 			var x = Local32("x");
 			Assign(x, i);
 			Assign(x, r);

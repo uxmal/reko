@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			mem.Base = Registers.esp;
 			mem.Index = Registers.eax;
 			mem.Scale = 4;
-			mem.Offset = new Constant(PrimitiveType.Byte, 0x02);
+			mem.Offset = Constant.Byte(0x02);
 			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
 			Assert.IsTrue(proc.Frame.Escapes);
 		}
@@ -146,7 +146,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void OrwIndexedAccess()
 		{
-			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, new Constant(PrimitiveType.Word32, 0x24));
+			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, Constant.Word32(0x24));
 			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[eax + 0x00000024 + edx * 0x00000004:word32]", expr.ToString());
 		}

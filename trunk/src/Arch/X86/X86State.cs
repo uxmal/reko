@@ -90,7 +90,7 @@ namespace Decompiler.Arch.X86
         public override Constant GetRegister(RegisterStorage reg)
         {
             if (valid[reg.Number])
-                return new Constant(reg.DataType, regs[reg.Number]);
+                return Constant.Create(reg.DataType, regs[reg.Number]);
             else
                 return Constant.Invalid;
         }
@@ -109,7 +109,7 @@ namespace Decompiler.Arch.X86
 
 		public override void SetInstructionPointer(Address addr)
 		{
-			SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, addr.Selector));
+			SetRegister(Registers.cs, Constant.Word16(addr.Selector));
 		}
 
         public override void OnProcedureEntered()
@@ -138,7 +138,7 @@ namespace Decompiler.Arch.X86
                         Operator.Sub,
                         spVal.DataType,
                         sp,
-                        new Constant(
+                        Constant.Create(
                             PrimitiveType.CreateWord(returnAddressSize),
                             returnAddressSize)));
             }
@@ -155,7 +155,7 @@ namespace Decompiler.Arch.X86
                     Operator.Add,
                     spVal.DataType,
                     sp,
-                    new Constant(
+                    Constant.Create(
                         PrimitiveType.CreateWord(spReg.DataType.Size),
                         sig.StackDelta)).Accept(eval));
             if (stackOffset.IsValid)

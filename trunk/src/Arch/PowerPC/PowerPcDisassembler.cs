@@ -101,7 +101,7 @@ namespace Decompiler.Arch.PowerPC
 
             private ImmediateOperand Imm(PrimitiveType type, uint bits)
             {
-                return new ImmediateOperand(new Constant(type, bits));
+                return new ImmediateOperand(Constant.Create(type, bits));
             }
         }
 

@@ -37,9 +37,9 @@ namespace Decompiler.UnitTests.Core
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/ConNegate.txt"))
 			{
-				Constant c1 = new Constant(1.0);
-				Constant c2 = new Constant(-2.0F);
-				Constant c3 = new Constant(PrimitiveType.Word16, 4);
+                Constant c1 = Constant.Real64(1.0);
+				Constant c2 = Constant.Real32(-2.0F);
+				Constant c3 = Constant.Word16(4);
 				Constant c4 = Constant.Word32(-8);
 				fut.TextWriter.WriteLine(c1);
 				fut.TextWriter.WriteLine(c2);
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void Negate()
 		{
-			Constant c1 = new Constant(PrimitiveType.Word16, 0xFFFF);
+			Constant c1 = Constant.Word16(0xFFFF);
             Constant c2 = c1.Negate();
 			Assert.AreEqual(1, c2.ToInt32(), "-(-1) == 1");
             Assert.AreSame(PrimitiveType.Int16, c2.DataType);
@@ -86,16 +86,16 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ToInt32()
 		{
-			Constant c2 = new Constant(PrimitiveType.Word16, 0xFFFF);
+			Constant c2 = Constant.Create(PrimitiveType.Word16, 0xFFFF);
 			Assert.AreEqual(-1, c2.ToInt32());
-			Constant c3 = new Constant(PrimitiveType.Word32, 0xFFFFFFFF);
+            Constant c3 = Constant.Create(PrimitiveType.Word32, 0xFFFFFFFF);
 			Assert.AreEqual(-1, c3.ToInt32());
 		}
 
 		[Test]
 		public void SignExtendSignedByte()
 		{
-			Constant c = new Constant(PrimitiveType.SByte, (sbyte)-2);
+			Constant c = Constant.SByte((sbyte)-2);
 			Assert.AreEqual(-2, c.ToInt32());
 		}
 	}

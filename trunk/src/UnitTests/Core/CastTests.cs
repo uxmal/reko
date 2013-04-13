@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			TypeFactory typef = new TypeFactory();
 			
-			var cast = new Cast(PrimitiveType.Word32, new Constant(PrimitiveType.Real32, 3.0F));
+			var cast = new Cast(PrimitiveType.Word32, Constant.Real32(3.0F));
 			var p = (PrimitiveType) cast.DataType;
 			Assert.AreEqual(PrimitiveType.Word32, p);
 			Assert.AreEqual(PrimitiveType.Real32, cast.Expression.DataType);

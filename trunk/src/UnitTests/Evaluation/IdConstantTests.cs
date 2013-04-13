@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Evaluation
 		public void ConstantPropagate()
 		{
 			Identifier ds = m.Frame.EnsureRegister(Registers.ds);
-            var c = new Constant(PrimitiveType.Word16, 0x1234);
+            var c = Constant.Word16(0x1234);
             m.Assign(ds, c);
 			m.SideEffect(ds);
             var def = m.Block.Statements[0];

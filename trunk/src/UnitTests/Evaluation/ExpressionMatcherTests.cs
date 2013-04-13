@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Types;
 using Decompiler.Evaluation;
 using NUnit.Framework;
 using System;
@@ -57,7 +58,7 @@ namespace Decompiler.UnitTests.Evaluation
 
         private static Identifier Id(string name)
         {
-            return new Identifier(name, 1, null, null);
+            return new Identifier(name, 1, PrimitiveType.Word32, null);
         }
 
         [Test]

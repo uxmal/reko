@@ -97,9 +97,8 @@ namespace Decompiler.Arch.M68k
             int v = ((int)opcode >> offset) & mask;
             if (v == 0)
                 v = zeroValue;
-            return new ImmediateOperand(new Constant(dataWidth, v));
+            return new ImmediateOperand(Constant.Create(dataWidth, v));
         }
-
 
         private static PrimitiveType SizeField(ushort opcode, int bitOffset)
         {
@@ -175,7 +174,7 @@ namespace Decompiler.Arch.M68k
             case 4:  // Address register indirect with predecrement.
                 return MemoryOperand.PreDecrement(AddressRegister(operandBits, 0));
             case 5: // Address register indirect with displacement.
-                offset = new Constant(PrimitiveType.Int16, rdr.ReadBeInt16());
+                offset = Constant.Int16(rdr.ReadBeInt16());
                 return MemoryOperand.Indirect(AddressRegister(operandBits, 0), offset);
             default: throw new NotImplementedException(string.Format("Address mode {0:X} not implemented.", addressMode));
             }
@@ -193,8 +192,7 @@ namespace Decompiler.Arch.M68k
 
         private static ImmediateOperand SignedImmediateByte(ushort opcode, int bitOffset, int mask)
         {
-            return new ImmediateOperand(new Constant(PrimitiveType.SByte, (opcode >> bitOffset) & mask));
+            return new ImmediateOperand(Constant.Create(PrimitiveType.SByte, (opcode >> bitOffset) & mask));
         }
-
     }
 }

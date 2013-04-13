@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(word16 ax, selector ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:

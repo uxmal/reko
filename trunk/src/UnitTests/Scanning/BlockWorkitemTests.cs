@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             repository = new MockRepository();
             prog = new Program();
-            proc = new Procedure("testProc", new Frame(null));
+            proc = new Procedure("testProc", new Frame(PrimitiveType.Word32));
             block = new Block(proc, "test");
             trace = new RtlTrace(0x1000);
             r0 = new Identifier("r0", 0, PrimitiveType.Word32, new RegisterStorage("r0", 0, PrimitiveType.Word32));
@@ -210,7 +210,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Matches(arg => arg.Offset == 0x1200),
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))
-                        .Return(new Procedure("fn1200", new Frame(null)));
+                        .Return(new Procedure("fn1200", new Frame(PrimitiveType.Word32)));
                 scanner.Stub(x=> x.Architecture).Return(arch);
             }
             var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));

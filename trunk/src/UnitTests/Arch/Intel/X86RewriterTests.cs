@@ -97,10 +97,10 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private MemoryOperand Mem16(RegisterOperand reg, int offset)
         {
-            return new MemoryOperand(PrimitiveType.Word16, reg.Register, new Constant(reg.Register.DataType, offset));
+            return new MemoryOperand(PrimitiveType.Word16, reg.Register, Constant.Create(reg.Register.DataType, offset));
         }
 
-        private ImmediateOperand Imm16(ushort u) { return new ImmediateOperand(new Constant(PrimitiveType.Word16, u)); }
+        private ImmediateOperand Imm16(ushort u) { return new ImmediateOperand(Constant.Word16(u)); }
 
         private PrimitiveType Word16 { get { return PrimitiveType.Word16; } }
 

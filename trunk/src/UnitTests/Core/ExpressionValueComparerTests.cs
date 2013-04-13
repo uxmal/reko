@@ -74,17 +74,14 @@ namespace Decompiler.UnitTests.Core
             BinaryExpression a2 = new BinaryExpression(Operator.Add, PrimitiveType.Word32, a, a);
             Assert.IsTrue(eq.Equals(a1, a2));
             Assert.AreEqual(eq.GetHashCode(a1), eq.GetHashCode(a2));
-
         }
 
         [Test]
         public void ConHash()
         {
-            Constant c1 = new Constant(PrimitiveType.Word32, 3);
-            Constant c2 = new Constant(PrimitiveType.Word32, 3);
+            Constant c1 = Constant.Word32(3);
+            Constant c2 = Constant.Word32(3);
             Assert.AreEqual(eq.GetHashCode(c1), eq.GetHashCode(c2));
         }
-
-
     }
 }

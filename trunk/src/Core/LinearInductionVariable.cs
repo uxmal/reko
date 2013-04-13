@@ -111,7 +111,7 @@ namespace Decompiler.Core
 				if (delta == 1)
 					return null;
 				else
-					return new LinearInductionVariable(null, new Constant(liv1.Delta.DataType, delta),
+					return new LinearInductionVariable(null, Constant.Create(liv1.Delta.DataType, delta),
                         null, liv1.IsSigned || liv2.IsSigned);
 			}
 		}

@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void ArrayAccess()
 		{
-			ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", 1, null, null), new Identifier("i", 1, null, null));
+            ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", 1, PrimitiveType.Pointer32, null), new Identifier("i", 1, PrimitiveType.Int32, null));
 			e.Accept(eqb);
 			Assert.AreEqual("T_3", e.TypeVariable.ToString());
 			Assert.AreEqual("T_1", e.Array.TypeVariable.ToString());
@@ -76,8 +76,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void SegmentConstants()
         {
-            Constant seg1 = new Constant(PrimitiveType.SegmentSelector, 0x1234);
-            Constant seg2 = new Constant(PrimitiveType.SegmentSelector, 0x1234);
+            Constant seg1 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
+            Constant seg2 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
 
             seg1.Accept(eqb);
             seg2.Accept(eqb);

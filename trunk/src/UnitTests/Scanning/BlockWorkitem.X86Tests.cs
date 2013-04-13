@@ -143,7 +143,7 @@ namespace Decompiler.UnitTests.Scanning
 
                 state.SetRegister(Registers.es, Constant.Word16(0));
                 state.SetRegister(Registers.bx, Constant.Word16(0));
-                state.SetRegister(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
+                state.SetRegister(Registers.ah, Constant.Word16(0x2F));
             });
 
             wi.Process();
@@ -160,7 +160,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Bswap(m.ebp);
             });
 
-            state.SetRegister(Registers.ebp, new Constant(PrimitiveType.Word32, 0x12345678));
+            state.SetRegister(Registers.ebp, Constant.Word32(0x12345678));
             wi.Process();
             Assert.AreSame(Constant.Invalid, state.GetRegister(Registers.ebp));
         }
@@ -172,7 +172,7 @@ namespace Decompiler.UnitTests.Scanning
             {
                 m.Mov(m.si, 0x606);
             });
-            state.SetRegister(Registers.esi, new Constant(PrimitiveType.Word32, 0x42424242));
+            state.SetRegister(Registers.esi, Constant.Word32(0x42424242));
             wi.Process();
             Assert.AreEqual(0x42420606, state.GetRegister(Registers.esi).ToInt32());
         }
