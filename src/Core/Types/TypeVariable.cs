@@ -30,9 +30,7 @@ namespace Decompiler.Core.Types
 	public class TypeVariable : DataType
 	{
 		private int number;
-		private EquivalenceClass eqClass;
 		private DataType dtOriginal;
-		private DataType dt;
 
 		public TypeVariable(int n) : base("T_" + n)
 		{
@@ -52,11 +50,7 @@ namespace Decompiler.Core.Types
 		/// <summary>
 		/// The equivalence class this type variable belongs to.
 		/// </summary>
-		public EquivalenceClass Class
-		{
-			get { return eqClass; }
-			set { eqClass = value; }
-		}
+		public EquivalenceClass Class { get; set; }
 		
 		public override DataType Clone()
 		{
@@ -67,11 +61,7 @@ namespace Decompiler.Core.Types
 		/// Inferred DataType corresponding to type variable when equivalence class 
 		/// is taken into consideration.
 		/// </summary>
-		public DataType DataType
-		{
-			get { return dt; }
-			set { dt = value; }
-		}
+		public DataType DataType { get; set; }
 
 		public int Number
 		{

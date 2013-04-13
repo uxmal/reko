@@ -253,6 +253,7 @@ namespace Decompiler.Core.Types
         public void SetDataTypeOf(Expression expr, DataType dt)
         {
             expr.TypeVariable.DataType = dt;
+            expr.TypeVariable.OriginalDataType = dt;
         }
     }
 }

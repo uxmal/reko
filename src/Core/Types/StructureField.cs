@@ -35,13 +35,17 @@ namespace Decompiler.Core.Types
 
 		public StructureField(int offset, DataType type)
 		{
+            if (type == null)
+                throw new ArgumentNullException("type");
 			this.Offset = offset; this.DataType = type;
 		}
 
 
 		public StructureField(int offset, DataType type, string name)
 		{
-			this.Offset = offset; this.DataType = type; this.name = name;
+            if (type == null)
+                throw new ArgumentNullException("type");
+            this.Offset = offset; this.DataType = type; this.name = name;
 		}
 
 		public StructureField Clone()

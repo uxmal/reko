@@ -32,7 +32,7 @@ Eq_5: word32
 	T_5 (in p + 0x00000004 : word32)
 Eq_7: (ptr (fn T_10 (T_3)))
 	T_7 (in Fn2 : ptr32)
-	T_8 (in signature of Fn2)
+	T_8 (in signature of Fn2 : void)
 Eq_10: word32
 	T_10 (in Fn2(p) : word32)
 Eq_11: word32
@@ -71,7 +71,7 @@ T_7: (in Fn2 : ptr32)
   Class: Eq_7
   DataType: (ptr (fn T_10 (T_3)))
   OrigDataType: (ptr (fn T_10 (T_3)))
-T_8: (in signature of Fn2)
+T_8: (in signature of Fn2 : void)
   Class: Eq_7
   DataType: (ptr (fn T_10 (T_3)))
   OrigDataType: 

@@ -140,7 +140,7 @@ namespace Decompiler.Typing
 		{
 			var element = factory.CreateStructureType(null, elementSize);
 			if (tField != null)
-				element.Fields.Add(0, store.GetDataTypeOf(tField), null);
+				element.Fields.Add(0, tField.TypeVariable, null);
 			var a = factory.CreateArrayType(element, length);
 
 			return MemoryAccessCommon(tBase, tStruct, offset, a, structPtrSize);
@@ -148,7 +148,7 @@ namespace Decompiler.Typing
 		
 		public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
 		{
-			return MemoryAccessCommon(tBase, tStruct, offset, store.GetDataTypeOf(tField), structPtrSize);
+			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable, structPtrSize);
 		}
 
         public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
@@ -158,7 +158,7 @@ namespace Decompiler.Typing
             s.Fields.Add(field);
 
             var pointer = tBase != null
-                ? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, structPtrSize)
+                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, structPtrSize)
                 : (DataType)factory.CreatePointer(s, structPtrSize);
             return MergeIntoDataType(tStruct, pointer);
         }

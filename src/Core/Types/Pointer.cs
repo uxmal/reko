@@ -78,7 +78,7 @@ namespace Decompiler.Core.Types
 		public override void Write(TextWriter writer, bool reference)
 		{
 			writer.Write("(ptr ");
-			Pointee.Write(writer, true);
+			Pointee.Write(writer, reference);
 			writer.Write(")");
 		}
 	}

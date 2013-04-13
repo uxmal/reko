@@ -92,7 +92,7 @@ namespace Decompiler.Core.Types
 			}
 			if (Size != 0)
 			{
-				writer.Write(" {0:X}", Size);
+				writer.Write(" {0:X4}", Size);
 			}
 
 			if (!reference && Fields != null)
