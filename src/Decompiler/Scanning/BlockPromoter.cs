@@ -35,18 +35,20 @@ namespace Decompiler.Scanning
     /// </summary>
     public class BlockPromoter
     {
-        Block blockToPromote;
-        Procedure procOld;
-        Procedure procNew;
-        private IProcessorArchitecture arch;
+        private Program program;
+        private Block blockToPromote;
+        private Procedure procOld;
+        private Procedure procNew;
+        private Program prog;
         private IdentifierReplacer replacer;
 
-        public BlockPromoter(Block blockToPromote, Procedure procNew, IProcessorArchitecture arch)
+        public BlockPromoter(Program program, Block blockToPromote, Procedure procNew)
         {
+            this.program = program;
             this.blockToPromote = blockToPromote;
             this.procOld = blockToPromote.Procedure;
             this.procNew = procNew;
-            this.arch = arch;
+            this.prog = prog;
             this.replacer = new IdentifierReplacer(procNew.Frame);
         }
 
@@ -105,8 +107,9 @@ namespace Decompiler.Scanning
         {
             var callRetThunkBlock = procOld.AddBlock(blockToPromote + "_tmp");
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
-                new ProcedureConstant(arch.PointerType, procNew),
+                new ProcedureConstant(program.Architecture.PointerType, procNew),
                 new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
+            program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
             callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
 
             Block.ReplaceJumpsTo(blockToPromote, callRetThunkBlock);

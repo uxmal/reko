@@ -41,8 +41,9 @@ namespace Decompiler.UnitTests.Scanning
             Block blockToPromote;
             BuildSimpleProc(out m, out blockToPromote);
 
+            var program = new Program { Architecture = new FakeArchitecture() };
             Procedure promotedProcedure = Procedure.Create(new Address(0x123450), new Frame(PrimitiveType.Word32));
-            var blockPromoter = new BlockPromoter(blockToPromote, promotedProcedure, new FakeArchitecture());
+            var blockPromoter = new BlockPromoter(program, blockToPromote, promotedProcedure);
             blockPromoter.Promote();
 
             var sw = new StringWriter();

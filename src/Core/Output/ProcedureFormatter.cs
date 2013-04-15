@@ -64,7 +64,7 @@ namespace Decompiler.Core.Output
                             WriteGoto(succ[0].Name);
                         }
                     }
-                    else if (succ.Count == 2)
+                    else if (succ.Count == 2 && block.Statements.Count > 0)
                     {
                         var br = block.Statements.Last.Instruction is Branch;
                         if (br && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))

@@ -76,14 +76,12 @@ namespace Decompiler.Scanning
     /// </remarks>
     public class Scanner : IScanner, IRewriterHost
     {
-        private IProcessorArchitecture arch;
+        private Program program;
         private PriorityQueue<WorkItem> queue;
         private ProgramImage image;
         private Map<uint, BlockRange> blocks;
         private Dictionary<Block, uint> blockStarts;
-        private CallGraph callgraph;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
-        private Platform platform;
         private IDictionary<Address, ProcedureSignature> callSigs;
         private IDictionary<Address, ImageMapVectorTable> vectors;
         private Dictionary<uint, PseudoProcedure> importThunks;
@@ -98,9 +96,8 @@ namespace Decompiler.Scanning
 
         public Scanner(Program program, IDictionary<Address, ProcedureSignature> callSigs, DecompilerEventListener eventListener)
         {
-            this.arch = program.Architecture;
+            this.program = program;
             this.image = program.Image;
-            this.platform = program.Platform;
             this.callSigs = callSigs;
             this.eventListener = eventListener;
 
@@ -108,7 +105,6 @@ namespace Decompiler.Scanning
             this.queue = new PriorityQueue<WorkItem>();
             this.blocks = new Map<uint, BlockRange>();
             this.blockStarts = new Dictionary<Block, uint>();
-            this.callgraph = program.CallGraph;
             this.pseudoProcs = program.PseudoProcedures;
             this.vectors = program.Vectors;
             this.VectorUses = new Dictionary<Address, VectorUse>();
@@ -116,10 +112,10 @@ namespace Decompiler.Scanning
             this.visitedProcs = new HashSet<Procedure>();
         }
 
-        public IProcessorArchitecture Architecture { get { return arch; } }
-        public CallGraph CallGraph { get { return callgraph; } }
+        public IProcessorArchitecture Architecture { get { return program.Architecture; } }
+        public CallGraph CallGraph { get { return program.CallGraph; } }
         public ProgramImage Image { get { return image; } }
-        public Platform Platform { get { return platform; } }
+        public Platform Platform { get { return program.Platform; } }
         public PriorityQueue<WorkItem> Queue { get { return queue; } }
         public SortedList<Address, Procedure> Procedures { get; private set; }
         public IDictionary<Address, VectorUse> VectorUses { get; private set; }
@@ -182,7 +178,11 @@ namespace Decompiler.Scanning
         {
             return new BlockWorkitem(
                 this,
-                this.arch.CreateRewriter(CreateReader(addrStart), stateOnEntry, proc.Frame, this),
+                this.program.Architecture.CreateRewriter(
+                    CreateReader(addrStart), 
+                    stateOnEntry, 
+                    proc.Frame,
+                    this),
                 stateOnEntry,
                 proc.Frame,
                 addrStart);
@@ -243,19 +243,19 @@ namespace Decompiler.Scanning
             Procedure procNew;
             if (!Procedures.TryGetValue(addrStart, out procNew))
             {
-                procNew = Procedure.Create(addrStart, arch.CreateFrame());
+                procNew = Procedure.Create(addrStart, program.Architecture.CreateFrame());
                 Procedures.Add(addrStart, procNew);
                 CallGraph.AddProcedure(procNew);
                 procNew.Frame.ReturnAddressSize = proc.Frame.ReturnAddressSize;
             }
-            var bp = new BlockPromoter(block, procNew, arch);
+            var bp = new BlockPromoter(program, block, procNew);
             bp.Promote();
             return block;
         }
 
         private Block FixInboundEdges(Block block, Procedure procNew)
         {
-            var bp = new BlockPromoter(block, procNew, arch);
+            var bp = new BlockPromoter(program, block, procNew);
             bp.FixInboundEdges();
             return bp.CallRetThunkBlock;
         }
@@ -297,7 +297,7 @@ namespace Decompiler.Scanning
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
             st.OnProcedureEntered();
-            st.SetValue(proc.Frame.EnsureRegister(arch.StackRegister), proc.Frame.FramePointer);
+            st.SetValue(proc.Frame.EnsureRegister(program.Architecture.StackRegister), proc.Frame.FramePointer);
             var block = EnqueueJumpTarget(addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
@@ -311,7 +311,7 @@ namespace Decompiler.Scanning
             Procedure proc;
             if (!Procedures.TryGetValue(addr, out proc))
             {
-                proc = Procedure.Create(procedureName, addr, arch.CreateFrame());
+                proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
                 Procedures.Add(addr, proc);
                 CallGraph.AddProcedure(proc);
             }
@@ -323,10 +323,10 @@ namespace Decompiler.Scanning
             var proc = (Procedure)ScanProcedure(
                 Address.ToAddress(sp.Address, 16),
                 sp.Name,
-                arch.CreateProcessorState());
+                program.Architecture.CreateProcessorState());
             if (sp.Signature != null)
             {
-                var sser = new ProcedureSerializer(arch, platform.DefaultCallingConvention);
+                var sser = new ProcedureSerializer(program.Architecture, program.Platform.DefaultCallingConvention);
                 proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
             }
             if (sp.Characteristics != null)
