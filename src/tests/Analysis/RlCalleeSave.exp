@@ -56,7 +56,7 @@ l0C00_000D:
 fn0C00_000D_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp si:si ax:<invalid> -2:si
+// SymbolicIn: sp:fp si:si ax:<invalid> -2(fp):si
 
 // fn0C00_001A /////////////////////
 	LiveOut:   ax ds
@@ -86,5 +86,5 @@ l0C00_001A:
 fn0C00_001A_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:<invalid> si:si -2:si
+// SymbolicIn: sp:fp ax:<invalid> si:si -2(fp):si
 

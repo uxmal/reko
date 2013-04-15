@@ -97,7 +97,7 @@ namespace Decompiler.Structure
 
             var intervalsInGraph = new List<Interval>();	// The sequence of intervals in this graph
             var headers = new WorkList<StructureNode>();	// The sequence of interval header nodes
-            var beenInH = new HashedSet<StructureNode>();	    // The set of nodes that have been in the above sequence at some stage
+            var beenInH = new HashSet<StructureNode>();	    // The set of nodes that have been in the above sequence at some stage
 
             headers.Add(entry);
             beenInH.Add(entry);

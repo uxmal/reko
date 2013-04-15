@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Typing
 			StructureType s2 = new StructureType(null, 20);
 			s2.Fields.Add(0, PrimitiveType.Real32);
 			DataType dt = trans.MergeOffsetStructures(s1, 4, s2, 8);
-			Assert.AreEqual("(struct 14 (0 int32 dw0000) (4 real32 r0004))", dt.ToString());
+			Assert.AreEqual("(struct 0014 (0 int32 dw0000) (4 real32 r0004))", dt.ToString());
 		}
 
 		[Test]
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			StructureType s = BuildStaggeredArrays();
 			trans.MergeStaggeredArrays(s);
-			Assert.AreEqual("(struct (4 (arr (struct 14 (0 int32 dw0000) (4 real64 r0004) (8 byte b0008))) a0004))", s.ToString());
+			Assert.AreEqual("(struct (4 (arr (struct 0014 (0 int32 dw0000) (4 real64 r0004) (8 byte b0008))) a0004))", s.ToString());
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Typing
 			AddArrayField(s, 0, 8, PrimitiveType.Int32);
 			AddArrayField(s, 4, 8, PrimitiveType.Int32);
 			trans.MergeStaggeredArrays(s);
-			Assert.AreEqual("(struct (0 (arr (struct 8 (0 int32 dw0000) (4 int32 dw0004))) a0000))", s.ToString());
+			Assert.AreEqual("(struct (0 (arr (struct 0008 (0 int32 dw0000) (4 int32 dw0004))) a0000))", s.ToString());
 		}
 
 		[Test]
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			StructureType s = BuildDistinctArrays();
 			trans.MergeStaggeredArrays(s);
-			Assert.AreEqual("(struct (0 (arr (struct 14 (0 int32 dw0000) (4 int32 dw0004))) a0000) (28 (arr (struct 14 (0 real32 r0000) (4 real32 r0004))) a0028))", s.ToString());
+			Assert.AreEqual("(struct (0 (arr (struct 0014 (0 int32 dw0000) (4 int32 dw0004))) a0000) (28 (arr (struct 0014 (0 real32 r0000) (4 real32 r0004))) a0028))", s.ToString());
 		}
 
 		private StructureType BuildStaggeredArrays()

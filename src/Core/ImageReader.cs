@@ -123,8 +123,6 @@ namespace Decompiler.Core
             throw new ArgumentOutOfRangeException();
         }
 
-
-
         public ushort ReadLeUInt16()
         {
             ushort u = ProgramImage.ReadLeUInt16(img, off);
@@ -147,8 +145,6 @@ namespace Decompiler.Core
         public short ReadLeInt16(uint offset) { return (short)ProgramImage.ReadLeUInt16(img, off); }
         public short ReadBeInt16(uint offset) { return (short)ProgramImage.ReadBeUInt16(img, off); }
 
-
-
         public uint ReadLeUInt32()
         {
             uint u = ProgramImage.ReadLeUInt32(img, off);
@@ -170,8 +166,6 @@ namespace Decompiler.Core
         public uint ReadBeUInt32(uint offset) { return ProgramImage.ReadBeUInt32(img, off); }
         public int ReadLeInt32(uint offset) { return (int)ProgramImage.ReadLeUInt32(img, off); }
         public int ReadBeInt32(uint offset) { return (int)ProgramImage.ReadBeUInt32(img, off); }
-
-
 
         public ulong ReadLeUint64()
         {
@@ -300,6 +294,5 @@ namespace Decompiler.Core
         public override ulong ReadUInt64(uint offset) { return ReadBeUInt64(offset); }
 
         public override Constant Read(PrimitiveType dataType) { return ReadBe(dataType); }
-
     }
 }

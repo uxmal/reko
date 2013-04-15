@@ -190,6 +190,7 @@ namespace Decompiler.Assemblers.x86
         }
         public ParsedOperand BytePtr(int offset)
         {
+            emitter.AddressWidth = emitter.SegmentAddressWidth;
             return new ParsedOperand(
                 new MemoryOperand(PrimitiveType.Byte, Constant.Create(emitter.AddressWidth, offset)));
         }

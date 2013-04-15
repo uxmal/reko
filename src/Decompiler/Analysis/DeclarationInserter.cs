@@ -39,7 +39,7 @@ namespace Decompiler.Analysis
 
 		public void InsertDeclaration(Web web)
 		{
-            var blocks = new HashedSet<Block>();
+            var blocks = new HashSet<Block>();
 			foreach (SsaIdentifier sid in web.Members)
 			{
 				if (sid.DefStatement != null)

@@ -35,6 +35,5 @@ namespace Decompiler.Gui
 		public abstract void BeginSubMenu();
 
 		public abstract void EndSubMenu();
-
 	}
 }

@@ -35,7 +35,7 @@ l0C00_0000:
 	Mem0[ds:0x020A:word16] = dx
 	ax = Mem0[ds:0x0210:word16]
 	dx = Mem0[ds:0x0212:word16]
-	es_cx = Mem0[ds:0x0214:ptr32]
+	es_cx = Mem0[ds:0x0214:segptr32]
 	cx = (word16) es_cx (alias)
 	es = SLICE(es_cx, selector, 16) (alias)
 	bx = es

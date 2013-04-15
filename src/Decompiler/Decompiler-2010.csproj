@@ -149,9 +149,6 @@
     <Compile Include="Analysis\LiveCopyInserter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\Liveness.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\LongAddRewriter.cs" />
     <Compile Include="Analysis\MemReplacer.cs">
       <SubType>Code</SubType>
@@ -239,7 +236,6 @@
     <Compile Include="Evaluation\Substitutor.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
-    <Compile Include="Evaluation\SymbolicValue.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
     <Compile Include="Gui\FindResult.cs" />

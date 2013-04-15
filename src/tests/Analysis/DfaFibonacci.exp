@@ -16,8 +16,7 @@ l1000000A:
 	return 0x00000001
 	// succ:  fn10000000_exit
 l10000011:
-	return fn10000000(dwArg00 - 0x00000001) + fn10000000(dwArg00 - 0x00000002)
+	return fn10000000(dwArg04 - 0x00000001) + fn10000000(dwArg04 - 0x00000002)
 	// succ:  fn10000000_exit
 fn10000000_exit:
-	// succ: 
 

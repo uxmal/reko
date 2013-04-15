@@ -209,9 +209,9 @@ namespace Decompiler.Core.Code
 
 		public virtual Expression VisitMkSequence(MkSequence seq)
 		{
-			seq.Head = seq.Head.Accept(this);
-			seq.Tail = seq.Tail.Accept(this);
-			return seq;
+			var head = seq.Head.Accept(this);
+            var tail = seq.Tail.Accept(this);
+			return new MkSequence(seq.DataType, head, tail);
 		}
 
 		public virtual Expression VisitPhiFunction(PhiFunction phi)

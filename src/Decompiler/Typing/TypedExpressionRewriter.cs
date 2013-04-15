@@ -283,24 +283,24 @@ namespace Decompiler.Typing
 
         public override Expression VisitMkSequence(MkSequence seq)
         {
-            seq.Head = seq.Head.Accept(this);
-            seq.Tail = seq.Tail.Accept(this);
-            Constant c = seq.Tail as Constant;
+            var head = seq.Head.Accept(this);
+            var tail = seq.Tail.Accept(this);
+            Constant c = tail as Constant;
             if (c == null)
                 return seq;
-            if (seq.Head.DataType is Pointer)
+            if (head.DataType is Pointer)
             {
                 ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                     seq.TypeVariable.DataType,
-                    seq.Head.DataType,
-                    seq.Head.TypeVariable.OriginalDataType,
+                    head.DataType,
+                    head.TypeVariable.OriginalDataType,
                     null,
-                    seq.Head,
+                    head,
                     null,
                     StructureField.ToOffset(c));
                 return ceb.BuildComplex();
             }
-            return seq;
+            return new MkSequence(seq.DataType, head, tail);
         }
 
 		#endregion

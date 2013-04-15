@@ -29,12 +29,12 @@ namespace Decompiler.Core.Lib
     public class DfsIterator<T>
     {
         private DirectedGraph<T> graph;
-        private HashedSet<T> visited = new HashedSet<T>();
+        private HashSet<T> visited = new HashSet<T>();
 
         public DfsIterator(DirectedGraph<T> graph)
         {
             this.graph = graph;
-            this.visited = new HashedSet<T>();
+            this.visited = new HashSet<T>();
         }
 
         public IEnumerable<T> PreOrder()

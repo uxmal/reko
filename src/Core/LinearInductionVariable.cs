@@ -30,38 +30,22 @@ namespace Decompiler.Core
 	/// </summary>
 	public class LinearInductionVariable
 	{
-        private Constant initial;	// First value used by induction variable 
-        private Constant delta;		// Amount incremented or decremented per interation
-        private Constant final;		// Value not attained by loop since it terminated.
-        private bool isSigned;
-
 		public LinearInductionVariable(
             Constant initial, 
             Constant delta, 
             Constant final,
             bool isSigned)
 		{
-			this.initial = initial;
-			this.delta = delta;
-			this.final = final;
-            this.isSigned = isSigned;
+			this.Initial = initial;
+			this.Delta = delta;
+			this.Final = final;
+            this.IsSigned = isSigned;
 		}
 
-        public Constant Initial
-        {
-            get { return initial; }
-        }
-
-        public Constant Delta
-        {
-            get { return delta; }
-        }
-
-
-        public Constant Final
-        {
-            get { return final; }
-        } 
+        public Constant Initial { get; private set; }   // First value used by induction variable 
+        public Constant Delta { get; private set; }		// Amount incremented or decremented per interation
+        public Constant Final { get; private set; }     // Value not attained by loop since it terminated.
+        public bool IsSigned { get; private set; }      // True if signed compares are used for the induction variable.
 
 		public static int Gcd(int a, int b)
 		{
@@ -73,14 +57,6 @@ namespace Decompiler.Core
 			}
 			return a;
 		}
-
-        /// <summary>
-        /// True if signed compares are used for the induction variable.
-        /// </summary>
-        public bool IsSigned
-        {
-            get { return isSigned; }
-        }
 
 		/// <summary>
 		/// Returns the number of times the loop iterates, or zero if this can't be determined.
@@ -118,10 +94,10 @@ namespace Decompiler.Core
 
         public void AddIncrement(Constant c)
         {
-            if (initial != null)
-                initial = Operator.Add.ApplyConstants(initial, c);
-            if (final != null)
-                final = Operator.Add.ApplyConstants(final, c);
+            if (Initial != null)
+                Initial = Operator.Add.ApplyConstants(Initial, c);
+            if (Final != null)
+                Final = Operator.Add.ApplyConstants(Final, c);
         }
 
 		public LinearInductionVariable Scale(Constant c)

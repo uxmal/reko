@@ -36,5 +36,5 @@ l0C00_0000:
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp bp:bp si:<invalid> ax:<invalid> -2:bp
+// SymbolicIn: sp:fp bp:bp si:<invalid> ax:<invalid> -2(fp):bp
 

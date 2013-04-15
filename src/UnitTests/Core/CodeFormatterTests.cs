@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Core
 		public void CfFieldAccessDeref()
 		{
 			Identifier id1 = new Identifier("v1", 1, PrimitiveType.Word32, null);
-			Expression e = new FieldAccess(null, new Dereference(null, id1),"foo");
+            Expression e = new FieldAccess(PrimitiveType.Pointer32, new Dereference(PrimitiveType.Word32, id1), "foo");
 			e.Accept(cf);
 
 			Assert.AreEqual("v1->foo", sw.ToString());
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Core
 		public void CfDerefFieldAccess()
 		{
 			Identifier id1 = new Identifier("v1", 1, PrimitiveType.Word32, null);
-			Expression e = new Dereference(null, new FieldAccess(null, id1, "foo"));
+			Expression e = new Dereference(PrimitiveType.Pointer32, new FieldAccess(PrimitiveType.Word32, id1, "foo"));
 			e.Accept(cf);
 
 			Assert.AreEqual("*v1.foo", sw.ToString());

@@ -47,7 +47,6 @@ namespace Decompiler.Assemblers.x86
 
         public RegisterStorage SegmentOverride { get; set; }
 
-
 		public void EmitOpcode(int b, PrimitiveType dataWidth)
 		{
 			if (SegmentOverride != RegisterStorage.None)
@@ -59,7 +58,7 @@ namespace Decompiler.Assemblers.x86
 				if (SegmentOverride == Registers.ds) bOv = 0x3E; else
 				if (SegmentOverride == Registers.fs) bOv = 0x64; else
 				if (SegmentOverride == Registers.gs) bOv = 0x65; else
-				throw new ArgumentOutOfRangeException("Invalid segment register: " + SegmentOverride);
+				throw new ArgumentOutOfRangeException(string.Format("Invalid segment register {0}." , SegmentOverride));
 				EmitByte(bOv);
 				SegmentOverride = RegisterStorage.None;
 			}

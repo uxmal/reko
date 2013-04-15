@@ -1,13 +1,19 @@
 // DpbMock
 void DpbMock()
-DpbMock_entry:		// pred:
+DpbMock_entry:
+	def Mem0
+	def fp
 	def dl
+	def dx
+	def edx
 	// succ:  l1
-l1:		// pred: DpbMock_entry
+l1:
+	edx_5 = 0x0AAA00AA
+	edx_6 = 0x0AAA55AA
 	Mem7[0x01000000:word32] = 0x0AAA55AA
+	edx_8 = 0x00000000
 	edx_9 = (word32) dl
 	return edx_9
 	// succ:  DpbMock_exit
-DpbMock_exit:		// pred: l1
-	// succ: 
+DpbMock_exit:
 

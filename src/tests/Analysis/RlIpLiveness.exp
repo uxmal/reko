@@ -3,74 +3,93 @@
 	MayUseIn:  ds
 	BypassIn: 
 	Trashed:   SCZO ax bx si di al bl ah bh
-	Preserved:
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0000_entry:
 // DataOut: ds
-l0C00_0000:		// block 1, pred: 0
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+l0C00_0000:
 	di = Mem0[ds:0x0100:word16]
 	si = Mem0[ds:di:word16]
-	call fn0C00_0026 (depth: 2;)
+	call fn0C00_0026 (retsize: 2; depth: 2)
 	Mem0[ds:di + 0x0002:word16] = ax
 	bx = Mem0[ds:0x0102:word16]
 	si = Mem0[ds:bx + 0x0004:word16]
-	call fn0C00_0026 (depth: 2;)
+	call fn0C00_0026 (retsize: 2; depth: 2)
 	Mem0[ds:bx + 0x0008:word16] = ax
 	di = Mem0[ds:0x0104:word16]
 	si = Mem0[ds:di:word16]
-	call fn0C00_0033 (depth: 2;)
+	call fn0C00_0033 (retsize: 2; depth: 2)
 	Mem0[ds:di + 0x0002:word16] = ax
 	return
-	// succ:  2
 // DataOut:
-fn0C00_0000_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+fn0C00_0000_exit:
 // DataOut:
+// DataOut (flags):
+// SymbolicIn: sp:fp di:<invalid> si:<invalid> bx:<invalid> ax:<invalid>
+
 // fn0C00_0026 /////////////////////
 	LiveOut:   ax bx ds
 	MayUseIn:  si ds
 	BypassIn: 
 	Trashed:   SCZO ax al ah
-	Preserved: di
+	Preserved: sp di
 // fn0C00_0026
 void fn0C00_0026()
-fn0C00_0026_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0026_entry:
 // DataOut: bx si ds
-l0C00_0026:		// block 1, pred: 0
-	wLoc04 = di
+// DataOut (flags):
+// SymbolicIn: sp:fp
+// LocalsOut: Temporary(16)
+l0C00_0026:
+	sp = fp - 0x0002
+	wLoc02 = di
 	di = Mem0[ds:0x0104:word16]
-	v5 = Mem0[ds:di + 0x0030:word16] + 0x0001
-	Mem0[ds:di + 0x0030:word16] = v5
+	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
+	Mem0[ds:di + 0x0030:word16] = v6
 	SZO = cond(v5)
-	call fn0C00_0033 (depth: 4;)
-	di = wLoc04
+	call fn0C00_0033 (retsize: 2; depth: 4)
+	di = wLoc02
+	sp = fp
 	return
-	// succ:  2
 // DataOut: ax bx ds
-fn0C00_0026_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+fn0C00_0026_exit:
 // DataOut: ax bx ds
+// DataOut (flags):
+// SymbolicIn: sp:fp di:di ax:<invalid> -2(fp):di
+
 // fn0C00_0033 /////////////////////
 	LiveOut:   ax bx di ds
 	MayUseIn:  si ds
 	BypassIn: 
 	Trashed:   SCZO ax al ah
-	Preserved:
+	Preserved: sp
 // fn0C00_0033
 void fn0C00_0033()
-fn0C00_0033_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0033_entry:
 // DataOut: bx si di ds
-l0C00_0033:		// block 1, pred: 0
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+l0C00_0033:
 	ax = Mem0[ds:si:word16]
 	ax = ax + ax
 	SCZO = cond(ax)
 	return
-	// succ:  2
 // DataOut: ax bx di ds
-fn0C00_0033_exit:		// block 2, pred: 1
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+fn0C00_0033_exit:
 // DataOut: ax bx di ds
+// DataOut (flags):
+// SymbolicIn: sp:fp ax:<invalid>

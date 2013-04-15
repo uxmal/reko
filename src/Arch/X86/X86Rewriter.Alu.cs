@@ -449,7 +449,7 @@ namespace Decompiler.Arch.X86
                 frame.EnsureSequence(orw.AluRegister(seg), orw.AluRegister(reg.Register),
                 PrimitiveType.Pointer32),
                 SrcOp(mem));
-            ass.Src.DataType = PrimitiveType.Pointer32;
+            ass.Src.DataType = PrimitiveType.SegPtr32;
         }
 
         private void RewriteMov()

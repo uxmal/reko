@@ -231,10 +231,15 @@ namespace Decompiler.UnitTests.Typing
             EquivalenceClass eq = new EquivalenceClass(
                 new TypeVariable(42),
                 new UnionType(null, null,
-                    PrimitiveType.Pointer32, PrimitiveType.Word16));
-            StructureType s = new StructureType(null, 0);
-            s.Fields.Add(0, eq);
-            s.Fields.Add(2, PrimitiveType.SegmentSelector);
+                    PrimitiveType.SegPtr32, PrimitiveType.Word16));
+            StructureType s = new StructureType(null, 0)
+            {
+                Fields =
+                { 
+                    { 0, eq},
+                    { 2, PrimitiveType.SegmentSelector }
+                }
+            };
             TypeTransformer trans = new TypeTransformer(factory, null, null);
             Assert.IsTrue(trans.HasCoincidentFields(s));
         }

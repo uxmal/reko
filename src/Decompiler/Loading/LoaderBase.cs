@@ -45,7 +45,6 @@ namespace Decompiler.Loading
             get { return entryPoints; }
         }
 
-
         public abstract Program Load(byte[] imageFile, Address userSpecifiedAddress);
 
         /// <summary>

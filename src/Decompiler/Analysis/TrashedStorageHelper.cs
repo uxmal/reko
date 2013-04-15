@@ -195,6 +195,5 @@ namespace Decompiler.Analysis
 		}
 
 		#endregion
-
     }
 }

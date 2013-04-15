@@ -119,11 +119,11 @@ namespace Decompiler.Structure
 
         public void Write(TextWriter writer)
         {
-            WriteNode(this.entryNode, new HashedSet<StructureNode>(), writer);
+            WriteNode(this.entryNode, new HashSet<StructureNode>(), writer);
         }
 
         [Conditional("DEBUG")]
-        private void WriteNode(StructureNode node, HashedSet<StructureNode> visited, TextWriter writer)
+        private void WriteNode(StructureNode node, HashSet<StructureNode> visited, TextWriter writer)
         {
             if (visited.Contains(node))
                 return;
