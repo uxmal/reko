@@ -1,29 +1,27 @@
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	Mem11[ds:0x9A2E:word16] = 0x0000
-	Mem13[ds:0x9A26:word16] = 0x0100
-	word16 si_16 = 0x0000
+l0C00_0000:
+	Mem13[ds:0x9A2E:word16] = 0x0000
+	Mem15[ds:0x9A26:word16] = 0x0100
+	word16 si_20 = 0x0000
 	// succ:  l0C00_0015
-l0C00_0015:		// pred: l0C00_0000 l0C00_0015
-	Mem19[0x5CE1:si_16 + 0x0000:word16] = 0xFFFF
-	word16 v8_22 = Mem19[ds:0x9A26:word16] - 0x0001
-	Mem23[ds:0x9A26:word16] = v8_22
-	si_16 = si_16 + 0x0026
-	branch v8_22 != 0x0000 l0C00_0015
+l0C00_0015:
+	Mem22[0x5CE1:si_20 + 0x0000:word16] = 0xFFFF
+	Mem26[ds:0x9A26:word16] = Mem22[ds:0x9A26:word16] - 0x0001
+	si_20 = si_20 + 0x0026
+	branch Mem26[ds:0x9A26:word16] != 0x0000 l0C00_0015
 	// succ:  l0C00_0023 l0C00_0015
-l0C00_0023:		// pred: l0C00_0015
+l0C00_0023:
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0023
-	// succ: 
+fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_2: word16
 	T_2 (in 0x0000 : word16)
-	T_5 (in Mem11[ds:0x9A2E:word16] : word16)
+	T_5 (in Mem13[ds:0x9A2E:word16] : word16)
 Eq_3: (ptr (segment (9A26 T_6 t9A26) (9A2E T_5 t9A2E)))
 	T_3 (in ds : selector)
 Eq_4: (memptr T_3 (struct (0 T_5 t0000)))
@@ -44,7 +42,7 @@ Eq_9: (memptr T_12 (struct 26 (0 T_15 t0000)))
 	T_23 (in si_16 + 0x0026 : word16)
 Eq_11: word16
 	T_11 (in 0xFFFF : word16)
-	T_15 (in Mem19[0x5CE1:si_16 + 0x0000:word16] : word16)
+	T_15 (in Mem22[0x5CE1:si_16 + 0x0000:word16] : word16)
 Eq_12: (ptr (segment (0 (arr (struct 26 (0 T_15 t0000))) a0000)))
 	T_12 (in 0x5CE1 : selector)
 Eq_13: word16
@@ -124,11 +122,11 @@ T_16: (in v8_22 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_17: (in 0x9A26 : word16)
-  Class: Eq_17
+T_16: (in 0x9A26 : word16)
+  Class: Eq_16
   DataType: (memptr T_3 (struct (0 T_6 t0000)))
   OrigDataType: (memptr T_3 (struct (0 T_6 t0000)))
-T_18: (in Mem19[ds:0x9A26:word16] : word16)
+T_17: (in Mem22[ds:0x9A26:word16] : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16

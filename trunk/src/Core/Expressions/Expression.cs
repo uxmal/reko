@@ -37,8 +37,10 @@ namespace Decompiler.Core.Expressions
                 throw new ArgumentNullException("dataType");
             this.DataType = dataType;
         }
-        
-        public DataType DataType { get; set; }              // Data type of this expression.
+
+        public DataType DataType { get { return dt; } set { if (value == null) new ArgumentNullException(); dt = value; } }             // Data type of this expression.
+        private DataType dt;
+
         public TypeVariable TypeVariable { get; set; } 		// index to high-level type of this expression.
         //$REVIEW: TypeVariable is only used for typing, perhaps move it to hashtable? Argument against: there may be a lot of these.
 

@@ -29,8 +29,6 @@ namespace Decompiler.Core.Types
 	/// </summary>
 	public class EquivalenceClass : DataType
 	{
-		private TypeVariable representative;
-		private DataType dataType;
 		private TypeVariableSet types = new TypeVariableSet();
 
 		public EquivalenceClass(TypeVariable rep) : this(rep, null)
@@ -39,8 +37,8 @@ namespace Decompiler.Core.Types
 
         public EquivalenceClass(TypeVariable rep, DataType dt)
         {
-            representative = rep;
-            dataType = dt;
+            Representative = rep;
+            DataType = dt;
             types.Add(rep);
         }
 
@@ -54,12 +52,7 @@ namespace Decompiler.Core.Types
 			return this;
 		}
 
-
-		public DataType DataType
-		{
-			get { return dataType; }
-            set { dataType = value; }
-		}
+		public DataType DataType { get; set; }
 
 		public override bool IsComplex
 		{
@@ -78,9 +71,9 @@ namespace Decompiler.Core.Types
 		{
 			if (class1 == class2)
 				return class1;
-			TypeVariable newRep = class1.representative.Number <= class2.representative.Number
-				? class1.representative
-				: class2.representative;
+			TypeVariable newRep = class1.Representative.Number <= class2.Representative.Number
+				? class1.Representative
+				: class2.Representative;
 
 			if (class1.types.Count < class2.types.Count)
 			{
@@ -94,18 +87,18 @@ namespace Decompiler.Core.Types
 				tv.Class = class1;
 				class1.types.Add(tv);
 			}
-			class1.representative = newRep;
+			class1.Representative = newRep;
 			return class1;
 		}
 
 		public override string Name
 		{
-			get { return "Eq_" + representative.Number; }
+			get { return "Eq_" + Representative.Number; }
 		}
 
 		public int Number
 		{
-			get { return representative.Number; }
+			get { return Representative.Number; }
 		}
 		
 		public override int Size
@@ -114,10 +107,7 @@ namespace Decompiler.Core.Types
 			set { ThrowBadSize(); }
 		}
 
-		public TypeVariable Representative
-		{
-			get { return representative; }
-		}
+		public TypeVariable Representative { get; private set; }
 
 		/// <summary>
 		/// The set of type variables that are members of this class.

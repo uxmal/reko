@@ -337,6 +337,13 @@ namespace Decompiler.UnitTests.Typing
 			Verify("Typing/DtbSegmentedAccess.txt");
 		}
 
+        [Test]
+        public void DtbSegmentedPointer()
+        {
+            var m = new ProgramBuilder();
+            m.Add(new SegmentedPointerProc());
+            RunTest(m.BuildProgram(), "Typing/DtbSegmentedPointer.txt");
+        }
 		[Test]
 		public void DtbSegmentedDirectAddress()
 		{
@@ -363,6 +370,7 @@ namespace Decompiler.UnitTests.Typing
 			m.Add(new SegmentedDoubleReferenceMock());
 			RunTest(m, "Typing/DtbSegmentedDoubleReference.txt");
 		}
+
 
 		[Test]
 		public void DtbReg00008()

@@ -490,7 +490,6 @@ namespace Decompiler.Typing
 			return handler.DataTypeTrait(mps, prog.Architecture.PointerType);
 		}
 
-
 		public DataType VisitMemoryAccess(MemoryAccess access)
 		{
             access.EffectiveAddress.Accept(this);
@@ -555,7 +554,6 @@ namespace Decompiler.Typing
         {
 
         }
-
 
         public DataType VisitScopeResolution(ScopeResolution sr)
         {

@@ -32,7 +32,6 @@ namespace Decompiler.Typing
 	/// Much of the type inference code in this namespace was inspired by the master's thesis
 	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
 	/// </remarks>
-
 	public class TypeTransformer : IDataTypeVisitor<DataType>
 	{
 		private bool changed;

@@ -1029,5 +1029,17 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "8|ax = Mem0[esi:word16]",
                 "9|esi = esi + 0x00000002");
         }
+
+        [Test]
+        public void X86RW_les_bx()
+        {
+            var e = Run16bitTest(m =>
+            {
+                m.Les(m.bx, m.DwordPtr(m.bx, 0));
+            });
+            AssertCode(e,
+                "0|0C00:0000(3): 1 instructions",
+                "1|es_bx = Mm0[ds:bx + 0x000:segptr32]");
+        }
     }
 }

@@ -76,6 +76,7 @@ namespace Decompiler.Core.Code
 
 		public virtual void VisitCallInstruction(CallInstruction ci)
 		{
+            ci.Callee.Accept(this);
 		}
 
 		public virtual void VisitDeclaration(Declaration decl)

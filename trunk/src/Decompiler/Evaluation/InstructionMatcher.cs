@@ -82,7 +82,7 @@ namespace Decompiler.Evaluation
 
         public bool VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VisitDefInstruction(DefInstruction def)

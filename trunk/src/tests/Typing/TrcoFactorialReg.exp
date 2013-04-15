@@ -6,7 +6,7 @@ l0C00_0000:
 	Mem8[ds:0x0064:word16] = fn0C00_000B(0x0005)
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit: 
+fn0C00_0000_exit:
 
 // fn0C00_000B
 word16 fn0C00_000B(word16 cx)
@@ -60,7 +60,9 @@ T_10 (in ax : word16)
 T_11 (in ax_18 : word16)
 	trait_primitive(word16)
 	trait_primitive(word16)
+	trait_primitive(word16)
 	trait_equal(T_14)
+	trait_primitive(word16)
 	trait_primitive(word16)
 	trait_equal(T_20)
 	trait_primitive(word16)

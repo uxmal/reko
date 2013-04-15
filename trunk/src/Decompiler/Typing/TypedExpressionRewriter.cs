@@ -290,15 +290,15 @@ namespace Decompiler.Typing
                 return seq;
             if (seq.Head.DataType is Pointer)
             {
-                    ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
-                        seq.TypeVariable.DataType,
-                        seq.Head.DataType,
-                        seq.Head.TypeVariable.OriginalDataType,
-                        null,
-                        seq.Head,
-                        null,
-                        StructureField.ToOffset(c));
-                    return ceb.BuildComplex();
+                ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                    seq.TypeVariable.DataType,
+                    seq.Head.DataType,
+                    seq.Head.TypeVariable.OriginalDataType,
+                    null,
+                    seq.Head,
+                    null,
+                    StructureField.ToOffset(c));
+                return ceb.BuildComplex();
             }
             return seq;
         }

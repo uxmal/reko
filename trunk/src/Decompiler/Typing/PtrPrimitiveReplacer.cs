@@ -139,8 +139,6 @@ namespace Decompiler.Typing
                 changed = true;
                 return eq2;
             }
-
-
             return eq;
         }
 

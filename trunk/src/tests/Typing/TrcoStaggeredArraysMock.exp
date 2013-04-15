@@ -1,11 +1,12 @@
 // StaggeredArraysMock
 void StaggeredArraysMock()
-StaggeredArraysMock_entry:		// pred:
+StaggeredArraysMock_entry:
 	// succ:  l1
-l1:		// pred: StaggeredArraysMock_entry
+l1:
 	x = p[i * 0x00000008]
 	x = (p + 4)[i * 0x00000008]
 	// succ: 
+StaggeredArraysMock_exit:
 
 T_2 (in p : word32)
 	trait_primitive(word32)
@@ -23,7 +24,9 @@ T_6 (in p[i * 0x00000008] : word32)
 	trait_primitive(word32)
 T_7 (in x : word32)
 	trait_primitive(word32)
+	trait_primitive(word32)
 	trait_equal(T_6)
+	trait_primitive(word32)
 	trait_primitive(word32)
 	trait_equal(T_12)
 T_8 (in 4 : int32)

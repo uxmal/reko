@@ -37,7 +37,6 @@ namespace Decompiler.Core.Types
         void SetDataTypeOf(Expression exp, DataType dt);
         EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2);
         void Write(TextWriter writer);
-
         void BuildEquivalenceClassDataTypes(TypeFactory factory);
     }
 
@@ -126,7 +125,6 @@ namespace Decompiler.Core.Types
                 return null;
         }
 
-
         public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
         {
             EquivalenceClass class1 = tv1.Class;
@@ -139,9 +137,6 @@ namespace Decompiler.Core.Types
             tv2.Class = merged;
             return merged;
         }
-
-
-
 
         /// <summary>
         /// For each equivalence class, ensures that all of its constituent type variables

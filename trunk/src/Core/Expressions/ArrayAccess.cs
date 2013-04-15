@@ -47,6 +47,5 @@ namespace Decompiler.Core.Expressions
 		{
 			return new ArrayAccess(DataType, Array.CloneExpression(), Index.CloneExpression());
 		}
-
 	}
 }
