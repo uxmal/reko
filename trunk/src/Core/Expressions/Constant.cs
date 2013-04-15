@@ -67,7 +67,6 @@ namespace Decompiler.Core.Expressions
         public static Constant Create(DataType dt, long value)
         {
             PrimitiveType p = (PrimitiveType)dt;
-            object v;
             switch (p.Size)
             {
             case 1:

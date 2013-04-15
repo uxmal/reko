@@ -1,41 +1,38 @@
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	fn0C00_0010(ds, 0x0300, 0x0320)
 	fn0C00_0037(ds)
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 // fn0C00_0010
-void fn0C00_0010(selector ds, word16 wArg00, word16 wArg02)
-fn0C00_0010_entry:		// pred:
+void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
+fn0C00_0010_entry:
 	// succ:  l0C00_0010
-l0C00_0010:		// pred: fn0C00_0010_entry
-	real64 rLoc1_12 = Mem0[ds:wArg00 + 0x0000:real64]
-	real64 rLoc2_14 = Mem0[ds:wArg00 + 0x0008:real64]
-	real64 rLoc2_17 = Mem0[ds:wArg00 + 0x0010:real64]
-	Mem21[ds:wArg02 + 0x0000:real64] = rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 + rLoc2_17 *s rLoc2_17
-	Mem23[ds:wArg02 + 0x0028:real64] = (real64) Mem21[ds:wArg02 + 0x0020:word16]
+l0C00_0010:
+	real64 rLoc1_16 = Mem0[ds:wArg02 + 0x0000:real64]
+	real64 rLoc2_18 = Mem0[ds:wArg02 + 0x0008:real64]
+	real64 rLoc2_21 = Mem0[ds:wArg02 + 0x0010:real64]
+	Mem25[ds:wArg04 + 0x0000:real64] = rLoc1_16 *s rLoc1_16 + rLoc2_18 *s rLoc2_18 + rLoc2_21 *s rLoc2_21
+	Mem27[ds:wArg04 + 0x0028:real64] = (real64) Mem25[ds:wArg04 + 0x0020:int16]
 	return
 	// succ:  fn0C00_0010_exit
-fn0C00_0010_exit:		// pred: l0C00_0010
-	// succ: 
+fn0C00_0010_exit:
 
 // fn0C00_0037
 void fn0C00_0037(selector ds)
-fn0C00_0037_entry:		// pred:
+fn0C00_0037_entry:
 	// succ:  l0C00_0037
-l0C00_0037:		// pred: fn0C00_0037_entry
-	Mem5[ds:0x0400:real64] = 0
-	Mem7[ds:0x0408:word32] = (word32) 1
+l0C00_0037:
+	Mem6[ds:0x0400:real64] = 0
+	Mem8[ds:0x0408:int32] = (int32) 1
 	return
 	// succ:  fn0C00_0037_exit
-fn0C00_0037_exit:		// pred: l0C00_0037
-	// succ: 
+fn0C00_0037_exit:
 
 T_2 (in fn0C00_0010 : ptr32)
 	trait_func(T_7, T_8, T_9 -> T_10)
@@ -47,9 +44,9 @@ T_4 (in ds : selector)
 	trait_primitive(selector)
 	trait_primitive(selector)
 	trait_primitive(selector)
-T_5 (in wArg00 : word16)
+T_5 (in wArg02 : word16)
 	trait_primitive(word16)
-T_6 (in wArg02 : word16)
+T_6 (in wArg04 : word16)
 	trait_primitive(word16)
 T_7 (in ds : selector)
 	trait_primitive(selector)
@@ -74,14 +71,14 @@ T_13 (in ds : selector)
 	trait_mem(T_50, 408)
 T_14 (in fn0C00_0037(ds) : void)
 	trait_primitive(void)
-T_15 (in rLoc1_12 : real64)
+T_15 (in rLoc1_16 : real64)
 	trait_primitive(real64)
 	trait_equal(T_19)
 	trait_primitive(real64)
 	trait_primitive(real64)
 	trait_primitive(real64)
 	trait_primitive(real64)
-T_16 (in wArg00 : word16)
+T_16 (in wArg02 : word16)
 	trait_primitive(word16)
 	trait_mem(T_4:T_19, 0)
 	trait_primitive(word16)
@@ -90,11 +87,11 @@ T_16 (in wArg00 : word16)
 	trait_mem(T_4:T_27, 10)
 T_17 (in 0x0000 : word16)
 	trait_primitive(word16)
-T_18 (in wArg00 + 0x0000 : word16)
+T_18 (in wArg02 + 0x0000 : word16)
 	trait_primitive(word16)
-T_19 (in Mem0[ds:wArg00 + 0x0000:real64] : real64)
+T_19 (in Mem0[ds:wArg02 + 0x0000:real64] : real64)
 	trait_primitive(real64)
-T_20 (in rLoc2_14 : real64)
+T_20 (in rLoc2_18 : real64)
 	trait_primitive(real64)
 	trait_equal(T_23)
 	trait_primitive(real64)
@@ -103,11 +100,11 @@ T_20 (in rLoc2_14 : real64)
 	trait_primitive(real64)
 T_21 (in 0x0008 : word16)
 	trait_primitive(word16)
-T_22 (in wArg00 + 0x0008 : word16)
+T_22 (in wArg02 + 0x0008 : word16)
 	trait_primitive(word16)
-T_23 (in Mem0[ds:wArg00 + 0x0008:real64] : real64)
+T_23 (in Mem0[ds:wArg02 + 0x0008:real64] : real64)
 	trait_primitive(real64)
-T_24 (in rLoc2_17 : real64)
+T_24 (in rLoc2_21 : real64)
 	trait_primitive(real64)
 	trait_equal(T_27)
 	trait_primitive(real64)
@@ -126,14 +123,14 @@ T_28 (in rLoc1_16 *s rLoc1_16 : real64)
 T_29 (in rLoc2_18 *s rLoc2_18 : real64)
 	trait_primitive(real64)
 	trait_primitive(real64)
-T_30 (in rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 : real64)
+T_30 (in rLoc1_16 *s rLoc1_16 + rLoc2_18 *s rLoc2_18 : real64)
 	trait_primitive(real64)
-T_31 (in rLoc2_17 *s rLoc2_17 : real64)
+T_31 (in rLoc2_21 *s rLoc2_21 : real64)
 	trait_primitive(real64)
 	trait_primitive(real64)
-T_32 (in rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 + rLoc2_17 *s rLoc2_17 : real64)
+T_32 (in rLoc1_16 *s rLoc1_16 + rLoc2_18 *s rLoc2_18 + rLoc2_21 *s rLoc2_21 : real64)
 	trait_primitive(real64)
-T_33 (in wArg02 : word16)
+T_33 (in wArg04 : word16)
 	trait_primitive(word16)
 	trait_mem(T_4:T_36, 0)
 	trait_primitive(word16)
@@ -142,24 +139,24 @@ T_33 (in wArg02 : word16)
 	trait_mem(T_4:T_43, 28)
 T_34 (in 0x0000 : word16)
 	trait_primitive(word16)
-T_35 (in wArg02 + 0x0000 : word16)
+T_35 (in wArg04 + 0x0000 : word16)
 	trait_primitive(word16)
-T_36 (in Mem21[ds:wArg02 + 0x0000:real64] : real64)
+T_36 (in Mem25[ds:wArg04 + 0x0000:real64] : real64)
 	trait_primitive(real64)
 	trait_equal(T_32)
 T_37 (in 0x0020 : word16)
 	trait_primitive(word16)
-T_38 (in wArg02 + 0x0020 : word16)
+T_38 (in wArg04 + 0x0020 : word16)
 	trait_primitive(word16)
-T_39 (in Mem21[ds:wArg02 + 0x0020:word16] : word16)
-	trait_primitive(word16)
-T_40 (in (real64) Mem21[ds:wArg02 + 0x0020:word16] : real64)
+T_39 (in Mem25[ds:wArg04 + 0x0020:int16] : int16)
+	trait_primitive(int16)
+T_40 (in (real64) Mem25[ds:wArg04 + 0x0020:int16] : real64)
 	trait_primitive(real64)
 T_41 (in 0x0028 : word16)
 	trait_primitive(word16)
-T_42 (in wArg02 + 0x0028 : word16)
+T_42 (in wArg04 + 0x0028 : word16)
 	trait_primitive(word16)
-T_43 (in Mem23[ds:wArg02 + 0x0028:real64] : real64)
+T_43 (in Mem27[ds:wArg04 + 0x0028:real64] : real64)
 	trait_primitive(real64)
 	trait_equal(T_40)
 T_44 (in 0 : real64)
@@ -167,16 +164,16 @@ T_44 (in 0 : real64)
 T_45 (in 0x0400 : word16)
 	trait_primitive(word16)
 	trait_mem(T_13:T_46, 0)
-T_46 (in Mem5[ds:0x0400:real64] : real64)
+T_46 (in Mem6[ds:0x0400:real64] : real64)
 	trait_primitive(real64)
 	trait_equal(T_44)
 T_47 (in 1 : real64)
 	trait_primitive(real64)
-T_48 (in (word32) 1 : word32)
-	trait_primitive(word32)
+T_48 (in (int32) 1 : int32)
+	trait_primitive(int32)
 T_49 (in 0x0408 : word16)
 	trait_primitive(word16)
 	trait_mem(T_13:T_50, 0)
-T_50 (in Mem7[ds:0x0408:word32] : word32)
-	trait_primitive(word32)
+T_50 (in Mem8[ds:0x0408:int32] : int32)
+	trait_primitive(int32)
 	trait_equal(T_48)

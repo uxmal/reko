@@ -51,7 +51,7 @@ l0C00_0020:
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	es_bx = Mem0[ss:bp + 0x0006:ptr32]
+	es_bx = Mem0[ss:bp + 0x0006:segptr32]
 	ax = Mem0[ss:bp + 0x000A:word16]
 	v9 = Mem0[es:bx:word16] + ax
 	Mem0[es:bx:word16] = v9
@@ -81,7 +81,7 @@ l0C00_002E:
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	es_bx = Mem0[ss:bp + 0x0006:ptr32]
+	es_bx = Mem0[ss:bp + 0x0006:segptr32]
 	ax = Mem0[ss:bp + 0x000A:word16]
 	v9 = Mem0[es:bx:word16] - ax
 	Mem0[es:bx:word16] = v9

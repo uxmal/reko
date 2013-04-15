@@ -115,7 +115,6 @@ namespace Decompiler.Core
 			#endregion
 		}
 
-
 		public List<Procedure> EntryPoints
 		{
 			get { return entryPoints; }

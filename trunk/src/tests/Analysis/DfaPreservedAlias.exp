@@ -1,36 +1,34 @@
 // void fn0C00_0000(Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds
 // LiveOut:
 // Trashed: ax al ah
-// Preserved:
+// Preserved: sp
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	word16 ax_4 = Mem0[ds:0x0100:word16]
+l0C00_0000:
+	word16 ax_5 = Mem0[ds:0x0100:word16]
 	fn0C00_000C(ds)
-	Mem5[ds:0x0102:word16] = ax_4
+	Mem6[ds:0x0102:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 // void fn0C00_000C(Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds
 // LiveOut:
 // Trashed: ax al
-// Preserved: ax
+// Preserved: ax sp
 // fn0C00_000C
 void fn0C00_000C(selector ds)
-fn0C00_000C_entry:		// pred:
+fn0C00_000C_entry:
 	// succ:  l0C00_000C
-l0C00_000C:		// pred: fn0C00_000C_entry
-	Mem8[ds:0x0105:byte] = Mem0[ds:0x0104:byte]
+l0C00_000C:
+	Mem11[ds:0x0105:byte] = Mem0[ds:0x0104:byte]
 	return
 	// succ:  fn0C00_000C_exit
-fn0C00_000C_exit:		// pred: l0C00_000C
-	// succ: 
+fn0C00_000C_exit:
 

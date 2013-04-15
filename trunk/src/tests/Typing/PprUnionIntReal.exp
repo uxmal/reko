@@ -32,7 +32,7 @@ T_2: (in i : int32)
 T_3: (in x : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: word32
+  OrigDataType: (union (int32 u0) (real32 u1))
 T_4: (in r : real32)
   Class: Eq_2
   DataType: Eq_2

@@ -47,7 +47,6 @@ namespace Decompiler.Analysis
 			this.critical = new CriticalInstruction();
 		}
 
-
 		/// <summary>
 		/// Cleanup statements of the type eax = Foo(); where eax is dead (has no uses),
 		/// turning them into side-effect functions calls like Foo();
@@ -136,8 +135,6 @@ namespace Decompiler.Analysis
 
 			AdjustApplicationsWithDeadReturnValues();
 		}
-
-
 
 		public override void VisitAssignment(Assignment a)
 		{

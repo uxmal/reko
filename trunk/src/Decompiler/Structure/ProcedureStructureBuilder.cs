@@ -138,7 +138,7 @@ namespace Decompiler.Structure
 
             // set the reverse parenthesis for the nodes
             time = 1;
-            curProc.EntryNode.SetRevLoopStamps(ref time, new HashedSet<StructureNode>());
+            curProc.EntryNode.SetRevLoopStamps(ref time, new HashSet<StructureNode>());
             Debug.Assert(curProc.ExitNode != null);
         }
 
@@ -287,8 +287,7 @@ namespace Decompiler.Structure
 
         private bool IsInfiniteLoop(DirectedGraph<StructureNode> graph, ICollection<StructureNode> scc)
         {
-            HashedSet<StructureNode> members = new HashedSet<StructureNode>();
-            members.AddRange(scc);
+            var members = new HashSet<StructureNode>(scc);
             foreach (StructureNode node in scc)
             {
                 foreach (StructureNode succ in graph.Successors(node))
@@ -299,6 +298,5 @@ namespace Decompiler.Structure
             }
             return true;
         }
-
     }
 }

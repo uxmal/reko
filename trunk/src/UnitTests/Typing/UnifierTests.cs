@@ -243,7 +243,7 @@ namespace Decompiler.UnitTests.Typing
 			ArrayType a1 = new ArrayType(new StructureType(null, 10, new StructureField(0, new TypeVariable(1), "t1")), 0);
 			ArrayType a2 = new ArrayType(new StructureType(null, 10, new StructureField(4, new TypeVariable(2), "t2")), 0);
 			DataType dt = un.Unify(a1, a2);
-			Assert.AreEqual("(arr (struct A (0 T_1 t1) (4 T_2 t2)))", dt.ToString());
+			Assert.AreEqual("(arr (struct 000A (0 T_1 t1) (4 T_2 t2)))", dt.ToString());
 		}
 
 		// If an array has a size but the other one doesn't, the one with a size wins.
@@ -262,7 +262,7 @@ namespace Decompiler.UnitTests.Typing
 			StructureType s1 = new StructureType(null, 30);
 			PrimitiveType p = PrimitiveType.Int32;
 			DataType dt = un.Unify(s1, p);
-			Assert.AreEqual("(struct 1E (0 int32 dw0000))", dt.ToString());
+			Assert.AreEqual("(struct 001E (0 int32 dw0000))", dt.ToString());
 		}
 
 		[Test]
@@ -279,7 +279,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			MemberPointer mp = new MemberPointer(new StructureType("foo", 4), PrimitiveType.Int32, 2);
 			DataType dt = un.Unify(mp, PrimitiveType.Word16);
-			Assert.AreEqual("(memptr (struct \"foo\" 4) int32)", dt.ToString());
+			Assert.AreEqual("(memptr (struct \"foo\" 0004) int32)", dt.ToString());
 		}
 
 		[Test]
@@ -312,7 +312,7 @@ namespace Decompiler.UnitTests.Typing
 			Pointer p = new Pointer(new StructureType(null, 32), 4);
 			PrimitiveType hybrid = PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 4);
 			DataType dt = un.Unify(p, hybrid);
-			Assert.AreEqual("(ptr (struct 20))", dt.ToString());
+			Assert.AreEqual("(ptr (struct 0020))", dt.ToString());
 		}
 
 		[Test]

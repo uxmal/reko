@@ -31,12 +31,14 @@ namespace Decompiler.Core.Expressions
 	{
 		public MkSequence(DataType dt, Expression head, Expression tail) : base(dt)
 		{
+            if (head == Constant.Invalid || tail == Constant.Invalid)
+                throw new ArgumentException();
 			Head = head;
 			Tail = tail;
 		}
 
-        public Expression Head { get; set; }
-        public Expression Tail { get; set; }
+        public Expression Head { get; private set; }
+        public Expression Tail { get; private set; }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {

@@ -36,12 +36,12 @@ namespace Decompiler.Gui.Windows.Controls
 	{
 		public event EventHandler IsDirtyChanged;
 
-		private HashedSet<object> trackedControls; 
+		private HashSet<object> trackedControls; 
 		private bool isDirty;
 
 		public DirtyManager()
 		{
-			trackedControls = new HashedSet<object>();
+			trackedControls = new HashSet<object>();
 		}
 
 		[DefaultValue(false)]

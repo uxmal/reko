@@ -90,7 +90,6 @@ namespace Decompiler.Core
         }
 
         public abstract void WriteUInt32(uint offset, uint w);
-
     }
 
     public class BeImageWriter : ImageWriter

@@ -32,7 +32,7 @@ l0C00_0008:
 	Mem0[ds:0x0302:word16] = ss
 	Mem0[ds:0x0308:word16] = bx
 	ax = Mem0[ds:0x0304:word16]
-	ss_sp = Mem0[ds:0x0300:ptr32]
+	ss_sp = Mem0[ds:0x0300:segptr32]
 	return
 	// succ:  fn0C00_0008_exit
 fn0C00_0008_exit:

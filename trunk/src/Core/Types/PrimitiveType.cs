@@ -178,6 +178,8 @@ namespace Decompiler.Core.Types
 				return "uint" + bitSize;
 			case Domain.Pointer:
 				return "ptr" + bitSize;
+            case Domain.SegPointer:
+                return "segptr" + bitSize;
 			case Domain.Real:
 				return "real" + bitSize;
 			case Domain.Selector:
@@ -308,7 +310,8 @@ namespace Decompiler.Core.Types
 			Int32 = Create(Domain.SignedInt, 4);
 			UInt32 = Create(Domain.UnsignedInt, 4);
 			Pointer32 = Create(Domain.Pointer, 4);
-			Real32 = Create(Domain.Real, 4);
+            SegPtr32 = Create(Domain.SegPointer, 4);
+            Real32 = Create(Domain.Real, 4);
             PtrCode32 = Create(Domain.PtrCode, 4);
 
 			Word64 = CreateWord(8);

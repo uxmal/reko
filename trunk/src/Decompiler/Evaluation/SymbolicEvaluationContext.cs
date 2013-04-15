@@ -127,6 +127,8 @@ namespace Decompiler.Evaluation
             Expression value;
             if (StackState.TryGetValue(offset, out value))
             {
+                if (value == Constant.Invalid)
+                    return value;
                 int excess = accessDataType.Size - value.DataType.Size;
                 if (excess == 0)
                     return value;

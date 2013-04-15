@@ -95,8 +95,6 @@ namespace Decompiler.Core
 			return new Procedure(addr.GenerateName("fn", ""), f);
 		}
 
-
-
         [Conditional("DEBUG")]
 		public void Dump(bool dump, bool emitFrame)
 		{

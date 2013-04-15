@@ -32,10 +32,6 @@ namespace Decompiler.Core.Lib
 
 		private const int InitialSize = 4;
 
-		public IntSet()
-		{
-		}
-
 		public IntSet(int cap)
 		{
 			rep = new int[cap];

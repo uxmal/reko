@@ -53,7 +53,7 @@ l0C00_000B:
 fn0C00_000B_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp si:si ax:<invalid> -2:si
+// SymbolicIn: sp:fp si:si ax:<invalid> -2(fp):si
 
 // fn0C00_0011 /////////////////////
 	LiveOut:   ax ds

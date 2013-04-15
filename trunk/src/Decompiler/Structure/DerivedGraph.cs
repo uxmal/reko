@@ -28,28 +28,17 @@ namespace Decompiler.Structure
 {
     public class DerivedGraph
     {
-        private StructureNode entry;
-        private List<Interval> intervals;
-        private DirectedGraph<StructureNode> graph;
-
-        public StructureNode Entry				// head of derived graph
-        {
-            get { return entry; }
-        }
-
         public DerivedGraph(DirectedGraph<StructureNode> graph, StructureNode entry, List<Interval> intervals)
         {
-            this.graph = graph;
-            this.entry = entry;
-            this.intervals = intervals;
+            this.Graph = graph;
+            this.Entry = entry;
+            this.Intervals = intervals;
         }
+
+        public StructureNode Entry { get; private set; }			// head of derived graph
+        public List<Interval> Intervals { get; private set; }
+        public DirectedGraph<StructureNode> Graph { get; private set; }
         
-        public List<Interval> Intervals
-        {
-            get { return intervals; }
-        }
-
-
         public void Dump()
         {
             Write(Console.Out);
@@ -57,10 +46,10 @@ namespace Decompiler.Structure
 
         public void Write(TextWriter writer)
         {
-            foreach (StructureNode node in new DfsIterator<StructureNode>(graph).PreOrder(entry))
+            foreach (StructureNode node in new DfsIterator<StructureNode>(Graph).PreOrder(Entry))
             {
                 writer.WriteLine("   Node {0}", node);
-                foreach (StructureNode succ in graph.Successors(node))
+                foreach (StructureNode succ in Graph.Successors(node))
                 {
                     writer.Write("     Succ: ");
                     writer.Write(" ");
@@ -68,15 +57,10 @@ namespace Decompiler.Structure
                     writer.WriteLine();
                 }
             }
-            foreach (Interval interval in intervals)
+            foreach (Interval interval in Intervals)
             {
                 writer.WriteLine("   Interval #{0}: {1}", interval.Number, interval.ToString());
             }
-        }
-
-        public DirectedGraph<StructureNode> Graph
-        {
-            get { return graph; }
         }
     }
 }

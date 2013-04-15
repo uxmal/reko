@@ -246,7 +246,7 @@ namespace Decompiler.Structure
 
         // Sets the reverse loop stamps for each node. The children are traversed in
         // reverse order.
-        public void SetRevLoopStamps(ref int time, HashedSet<StructureNode> visited)
+        public void SetRevLoopStamps(ref int time, HashSet<StructureNode> visited)
         {
             //timestamp the current node with the current time and set its traversed flag
             visited.Add(this);

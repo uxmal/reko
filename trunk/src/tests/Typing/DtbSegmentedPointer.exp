@@ -3,9 +3,9 @@ void SegmentedPointerProc()
 SegmentedPointerProc_entry:
 	// succ:  l1
 l1:
-	Mem0[0x0300:word16] = 0x0000
-	Mem0[0x0302:word16] = 0x0000
-	es_bx = Mem0[0x0300:ptr32]
+	Mem0[0x0300:word16] = 0x1234
+	Mem0[0x0302:word16] = 0x5550
+	es_bx = Mem0[0x0300:segptr32]
 	Mem0[0x0304:word16] = Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16]
 	// succ: 
 SegmentedPointerProc_exit:
@@ -14,14 +14,14 @@ SegmentedPointerProc_exit:
 Eq_1: (ptr (struct (300 T_2 t0300) (302 T_7 t0302) (304 T_17 t0304)))
 	Globals (in globals : ptr32)
 Eq_2: (struct (0 memptr16 mp0000) (2 segment seg0000))
-	T_2 (in 0x0000 : word16)
+	T_2 (in 0x1234 : word16)
 	T_4 (in Mem0[0x0300:word16] : word16)
-	T_9 (in Mem0[0x0300:ptr32] : ptr32)
-	T_10 (in es_bx : ptr32)
+	T_9 (in Mem0[0x0300:segptr32] : segptr32)
+	T_10 (in es_bx : segptr32)
 Eq_3: (ptr (struct (0 T_4 t0000)))
 	T_3 (in 0x0300 : word16)
 Eq_5: word16
-	T_5 (in 0x0000 : word16)
+	T_5 (in 0x5550 : word16)
 	T_7 (in Mem0[0x0302:word16] : word16)
 Eq_6: (ptr (struct (0 T_7 t0000)))
 	T_6 (in 0x0302 : word16)
@@ -45,9 +45,9 @@ Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: (ptr (struct (300 T_2 t0300) (302 T_7 t0302) (304 T_17 t0304)))
   OrigDataType: (ptr (struct (300 T_2 t0300) (302 T_7 t0302) (304 T_17 t0304)))
-T_2: (in 0x0000 : word16)
+T_2: (in 0x1234 : word16)
   Class: Eq_2
-  DataType: (union (ptr32 u0) (word16 u1))
+  DataType: (union (segptr32 u0) (word16 u1))
   OrigDataType: word16
 T_3: (in 0x0300 : word16)
   Class: Eq_3
@@ -55,9 +55,9 @@ T_3: (in 0x0300 : word16)
   OrigDataType: (ptr (struct (0 T_4 t0000)))
 T_4: (in Mem0[0x0300:word16] : word16)
   Class: Eq_2
-  DataType: (union (ptr32 u0) (word16 u1))
+  DataType: (union (segptr32 u0) (word16 u1))
   OrigDataType: word16
-T_5: (in 0x0000 : word16)
+T_5: (in 0x5550 : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
@@ -73,14 +73,14 @@ T_8: (in 0x0300 : word16)
   Class: Eq_8
   DataType: (ptr (struct (0 T_9 t0000)))
   OrigDataType: (ptr (struct (0 T_9 t0000)))
-T_9: (in Mem0[0x0300:ptr32] : ptr32)
+T_9: (in Mem0[0x0300:segptr32] : segptr32)
   Class: Eq_2
-  DataType: (union (ptr32 u0) (word16 u1))
-  OrigDataType: ptr32
-T_10: (in es_bx : ptr32)
+  DataType: (union (segptr32 u0) (word16 u1))
+  OrigDataType: segptr32
+T_10: (in es_bx : segptr32)
   Class: Eq_2
-  DataType: (union (ptr32 u0) (word16 u1))
-  OrigDataType: ptr32
+  DataType: (union (segptr32 u0) (word16 u1))
+  OrigDataType: segptr32
 T_11: (in SLICE(es_bx, selector, 16) : selector)
   Class: Eq_11
   DataType: (ptr (segment))

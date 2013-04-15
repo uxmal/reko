@@ -679,8 +679,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Les(m.bx, m.MemW(Registers.bp, 6));
             });
             var ass = (RtlAssignment) SingleInstruction(e);
-            Assert.AreEqual("es_bx = Mem0[ss:bp + 0x0006:ptr32]", ass.ToString());
-            Assert.AreSame(PrimitiveType.Pointer32, ass.Src.DataType);
+            Assert.AreEqual("es_bx = Mem0[ss:bp + 0x0006:segptr32]", ass.ToString());
+            Assert.AreSame(PrimitiveType.SegPtr32, ass.Src.DataType);
         }
 
         private RtlInstruction SingleInstruction(IEnumerator<RtlInstructionCluster> e)
@@ -1039,7 +1039,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode(e,
                 "0|0C00:0000(3): 1 instructions",
-                "1|es_bx = Mm0[ds:bx + 0x000:segptr32]");
+                "1|es_bx = Mem0[ds:bx + 0x0000:segptr32]");
         }
     }
 }

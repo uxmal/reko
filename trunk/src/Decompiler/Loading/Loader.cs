@@ -97,18 +97,18 @@ namespace Decompiler.Loading
 				addrLoad = loader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
 			}
 
-            Program prog = new Program();
-            prog.Image = loader.Load(addrLoad);
-            prog.Architecture = loader.Architecture;
-            prog.Platform = loader.Platform;
+            Program prog = new Program
+            {
+                Image = loader.Load(addrLoad),
+                Architecture = loader.Architecture,
+                Platform = loader.Platform,
+            };
 
-		    RelocationDictionary relocations = new RelocationDictionary();
+		    var relocations = new RelocationDictionary();
 			loader.Relocate(addrLoad, EntryPoints, relocations);
             CopyImportThunks(loader.ImportThunks, prog);
             return prog;
         }
-
-
 
         public bool ImageBeginsWithMagicNumber(byte [] image, string magicNumber)
         {
@@ -121,7 +121,6 @@ namespace Decompiler.Loading
                     return false;
             }
             return true;
-
         }
 
         private byte[] ConvertHexStringToBytes(string hexString)
