@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Typing
 			prog.Add(new RepeatedLoadsMock());
 			RunTest(prog.BuildProgram(), "Typing/TtranRepeatedLoads.txt");
 		}
-		
+
 		[Test]
 		public void TtranStaggeredArrays()
 		{
@@ -258,22 +258,10 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TtranSegmentedPointer()
         {
-            RunTest(delegate(ProcedureBuilder m)
-            {
-                Identifier es = m.Frame.EnsureRegister(new RegisterStorage("es", 1, PrimitiveType.SegmentSelector));
-                Identifier bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 2, PrimitiveType.Word16));
-                Identifier es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.Pointer32);
-                m.Store(m.Word16(0x300), m.Word16(0));
-                m.Store(m.Word16(0x302), m.Word16(0));
-                m.Assign(es_bx, m.Load(PrimitiveType.Pointer32, m.Word16(0x300)));
-                m.Store(m.Word16(0x304), m.SegMem(
-                    PrimitiveType.Word16,
-                    m.Slice(PrimitiveType.SegmentSelector, es_bx, 8),
-                    m.Add(m.Slice(PrimitiveType.Word16, es_bx, 0), 4)));
-            }, "Typing/TtranSegmentedPointer.txt");
+            var m = new ProgramBuilder();
+            m.Add(new SegmentedPointerProc());
+            RunTest(m.BuildProgram(), "Typing/TtranSegmentedPointer.txt");
         }
-
-
 
 		protected override void RunTest(Program prog, string outputFileName)
 		{

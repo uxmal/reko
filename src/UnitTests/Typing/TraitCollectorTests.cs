@@ -347,6 +347,14 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(m.BuildProgram(), "Typing/TrcoSegmentedDoubleReference.txt");
 		}
 
+        [Test]
+        public void TrcoSegmentedPointer()
+        {
+            var m = new ProgramBuilder();
+            m.Add(new SegmentedPointerProc());
+            RunTest(m.BuildProgram(), "Typing/TrcoSegmentedPointer.txt");
+        }
+
 		[Test]
 		public void TrcoIcall()
 		{
@@ -599,7 +607,10 @@ namespace Decompiler.UnitTests.Typing
 
         public DataType DataTypeTrait(Expression exp, DataType p)
         {
-            return Traits.AddTrait(exp.TypeVariable, new TraitDataType(p));
+            if (p == null)
+                throw new ArgumentNullException("p");
+            Traits.AddTrait(exp.TypeVariable, new TraitDataType(p));
+            return p;
         }
 
         public DataType EqualTrait(Expression t1, Expression t2)

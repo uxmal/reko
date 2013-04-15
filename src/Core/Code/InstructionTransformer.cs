@@ -265,6 +265,5 @@ namespace Decompiler.Core.Code
 		}
 
 		#endregion
-
     }
 }

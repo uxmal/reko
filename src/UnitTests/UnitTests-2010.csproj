@@ -128,6 +128,7 @@
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
+    <Compile Include="Mocks\SegmentedPointerProc.cs" />
     <Compile Include="Mocks\FakeDialogFactory.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />

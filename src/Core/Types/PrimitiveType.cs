@@ -25,7 +25,6 @@ using System.Text;
 
 namespace Decompiler.Core.Types
 {
-
     /// <summary>
     /// A Domain specifies the possible interpretation of a chunk of bytes.
     /// </summary>
@@ -47,7 +46,8 @@ namespace Decompiler.Core.Types
 		Real = 32,
 		Pointer = 64,
 		Selector = 128,
-        PtrCode = 256,      // Pointer to executable code.
+        SegPointer = 256,   // Segmented pointer (x86-style)
+        PtrCode = 512,      // Pointer to executable code.
 	}
 
 	/// <summary>
@@ -126,7 +126,7 @@ namespace Decompiler.Core.Types
 				name = "word16";
 				break;
 			case 4:
-                w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real|Domain.PtrCode;
+                w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real|Domain.PtrCode|Domain.SegPointer;
 				name = "word32";
 				break;
 			case 8:
@@ -250,6 +250,7 @@ namespace Decompiler.Core.Types
 				case Domain.Real:
 					return "r";
 				case Domain.Pointer:
+                case Domain.SegPointer:
 					return "ptr";
 				case Domain.Selector:
 					return "pseg";
@@ -348,6 +349,7 @@ namespace Decompiler.Core.Types
 		public static PrimitiveType Pointer32 {get; private set; }
 		public static PrimitiveType Real32 {get; private set; }
         public static PrimitiveType PtrCode32 { get; private set; }
+        public static PrimitiveType SegPtr32 { get; private set; }
 
 		public static PrimitiveType Word64 {get; private set; }
 		public static PrimitiveType Int64 {get; private set; }

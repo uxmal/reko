@@ -114,7 +114,6 @@ namespace Decompiler.Typing
 			store.MergeClasses(a.Dst.TypeVariable, a.Src.TypeVariable);
 		}
 
-
 		public override void VisitStore(Store s)
 		{
 			s.Src.Accept(this);
@@ -132,7 +131,6 @@ namespace Decompiler.Typing
 			}			
 			EnsureTypeVariable(binExp);
 		}
-
 
 		public override void VisitCast(Cast cast)
 		{

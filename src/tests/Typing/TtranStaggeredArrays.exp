@@ -11,7 +11,7 @@ StaggeredArraysMock_exit:
 // Equivalence classes ////////////
 Eq_2: (arr Eq_13)
 	T_2 (in p : word32)
-Eq_13: (struct 8 (0 word32 dw0000) (4 word32 dw0004))
+Eq_13: (struct 0008 (0 word32 dw0000) (4 word32 dw0004))
 	T_13
 // Type Variables ////////////
 Globals: (in globals : ptr32)
@@ -21,7 +21,7 @@ Globals: (in globals : ptr32)
 T_2: (in p : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)
-  OrigDataType: (ptr (struct (0 (arr (struct 8 (0 word32 dw0000))) a0000) (4 (arr (struct 8 (4 word32 dw0004))) a0004)))
+  OrigDataType: (ptr (struct (0 (arr (struct 0008 (0 word32 dw0000))) a0000) (4 (arr (struct 0008 (4 word32 dw0004))) a0004)))
 T_3: (in i : word32)
   Class: Eq_3
   DataType: word32

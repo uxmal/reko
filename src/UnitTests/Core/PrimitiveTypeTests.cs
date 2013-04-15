@@ -44,6 +44,7 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual("real32", PrimitiveType.Real32.ToString());
 			Assert.AreEqual("real64", PrimitiveType.Real64.ToString());
 			Assert.AreEqual("ptr32", PrimitiveType.Pointer32.ToString());
+            Assert.AreEqual("segptr32", PrimitiveType.SegPtr32.ToString());
 		}
 
 		[Test]
