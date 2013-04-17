@@ -119,311 +119,325 @@ namespace Decompiler.Arch.Mos6502
             new OpRec(Opcode.illegal, "A"),  // SLO
 
             // 10
-            new OpRec(Opcode.bpl, "j")
+            new OpRec(Opcode.bpl, "j"),
         };
     }
 
+
+    /*
+imm = #$00
+zp = $00
+zpx = $00,X
+zpy = $00,Y
+izx = ($00,X)
+izy = ($00),Y
+abs = $0000
+abx = $0000,X
+aby = $0000,Y
+ind = ($0000)
+rel = $0000 (PC-relative) 
+     */
     /*
 
 
 <tr>
-<td><b><font size="+1">1x</font></b></td>
-<td><b><font size="-1">BPL<br>rel 2*</font></b></td>
-<td><b><font size="-1">ORA<br>izy 5*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SLO<br>izy 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zpx 4</font></b></td>
-<td><b><font size="-1">ORA<br>zpx 4</font></b></td>
-<td><b><font size="-1">ASL<br>zpx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SLO<br>zpx 6</font></b></td>
-<td><b><font size="-1">CLC<br>2</font></b></td>
-<td><b><font size="-1">ORA<br>aby 4*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SLO<br>aby 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>abx 4*</font></b></td>
-<td><b><font size="-1">ORA<br>abx 4*</font></b></td>
-<td><b><font size="-1">ASL<br>abx 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SLO<br>abx 7</font></b></td>
+<td>font size="+1">1x
+<td>BPL<br>rel 2*
+<td>ORA<br>izy 5*
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">SLO<br>izy 8
+<td bgcolor="#E0E0E0">NOP<br>zpx 4
+<td>ORA<br>zpx 4
+<td>ASL<br>zpx 6
+<td bgcolor="#E0E0E0">SLO<br>zpx 6
+<td>CLC<br>2
+<td>ORA<br>aby 4*
+<td bgcolor="#E0E0E0">NOP<br>2
+<td bgcolor="#E0E0E0">SLO<br>aby 7
+<td bgcolor="#E0E0E0">NOP<br>abx 4*
+<td>ORA<br>abx 4*
+<td>ASL<br>abx 7
+<td bgcolor="#E0E0E0">SLO<br>abx 7
 </tr>
 
 <tr>
-<td><b><font size="+1">2x</font></b></td>
-<td><b><font size="-1">JSR<br>abs 6</font></b></td>
-<td><b><font size="-1">AND<br>izx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RLA<br>izx 8</font></b></td>
-<td><b><font size="-1">BIT<br>zp 3</font></b></td>
-<td><b><font size="-1">AND<br>zp 3</font></b></td>
-<td><b><font size="-1">ROL<br>zp 5</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RLA<br>zp 5</font></b></td>
-<td><b><font size="-1">PLP<br>4</font></b></td>
-<td><b><font size="-1">AND<br>imm 2</font></b></td>
-<td><b><font size="-1">ROL<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ANC<br>imm 2</font></b></td>
-<td><b><font size="-1">BIT<br>abs 4</font></b></td>
-<td><b><font size="-1">AND<br>abs 4</font></b></td>
-<td><b><font size="-1">ROL<br>abs 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RLA<br>abs 6</font></b></td>
+<td>font size="+1">2x
+<td>JSR<br>abs 6
+<td>AND<br>izx 6
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">RLA<br>izx 8
+<td>BIT<br>zp 3
+<td>AND<br>zp 3
+<td>ROL<br>zp 5
+<td bgcolor="#E0E0E0">RLA<br>zp 5
+<td>PLP<br>4
+<td>AND<br>imm 2
+<td>ROL<br>2
+<td bgcolor="#E0E0E0">ANC<br>imm 2
+<td>BIT<br>abs 4
+<td>AND<br>abs 4
+<td>ROL<br>abs 6
+<td bgcolor="#E0E0E0">RLA<br>abs 6
 </tr>
 
 <tr>
-<td><b><font size="+1">3x</font></b></td>
-<td><b><font size="-1">BMI<br>rel 2*</font></b></td>
-<td><b><font size="-1">AND<br>izy 5*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RLA<br>izy 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zpx 4</font></b></td>
-<td><b><font size="-1">AND<br>zpx 4</font></b></td>
-<td><b><font size="-1">ROL<br>zpx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RLA<br>zpx 6</font></b></td>
-<td><b><font size="-1">SEC<br>2</font></b></td>
-<td><b><font size="-1">AND<br>aby 4*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RLA<br>aby 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>abx 4*</font></b></td>
-<td><b><font size="-1">AND<br>abx 4*</font></b></td>
-<td><b><font size="-1">ROL<br>abx 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RLA<br>abx 7</font></b></td>
+<td>font size="+1">3x
+<td>BMI<br>rel 2*
+<td>AND<br>izy 5*
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">RLA<br>izy 8
+<td bgcolor="#E0E0E0">NOP<br>zpx 4
+<td>AND<br>zpx 4
+<td>ROL<br>zpx 6
+<td bgcolor="#E0E0E0">RLA<br>zpx 6
+<td>SEC<br>2
+<td>AND<br>aby 4*
+<td bgcolor="#E0E0E0">NOP<br>2
+<td bgcolor="#E0E0E0">RLA<br>aby 7
+<td bgcolor="#E0E0E0">NOP<br>abx 4*
+<td>AND<br>abx 4*
+<td>ROL<br>abx 7
+<td bgcolor="#E0E0E0">RLA<br>abx 7
 </tr>
 
 <tr>
-<td><b><font size="+1">4x</font></b></td>
-<td><b><font size="-1">RTI<br>6</font></b></td>
-<td><b><font size="-1">EOR<br>izx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SRE<br>izx 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zp 3</font></b></td>
-<td><b><font size="-1">EOR<br>zp 3</font></b></td>
-<td><b><font size="-1">LSR<br>zp 5</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SRE<br>zp 5</font></b></td>
-<td><b><font size="-1">PHA<br>3</font></b></td>
-<td><b><font size="-1">EOR<br>imm 2</font></b></td>
-<td><b><font size="-1">LSR<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ALR<br>imm 2</font></b></td>
-<td><b><font size="-1">JMP<br>abs 3</font></b></td>
-<td><b><font size="-1">EOR<br>abs 4</font></b></td>
-<td><b><font size="-1">LSR<br>abs 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SRE<br>abs 6</font></b></td>
+<td>font size="+1">4x
+<td>RTI<br>6
+<td>EOR<br>izx 6
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">SRE<br>izx 8
+<td bgcolor="#E0E0E0">NOP<br>zp 3
+<td>EOR<br>zp 3
+<td>LSR<br>zp 5
+<td bgcolor="#E0E0E0">SRE<br>zp 5
+<td>PHA<br>3
+<td>EOR<br>imm 2
+<td>LSR<br>2
+<td bgcolor="#E0E0E0">ALR<br>imm 2
+<td>JMP<br>abs 3
+<td>EOR<br>abs 4
+<td>LSR<br>abs 6
+<td bgcolor="#E0E0E0">SRE<br>abs 6
 </tr>
 
 <tr>
-<td><b><font size="+1">5x</font></b></td>
-<td><b><font size="-1">BVC<br>rel 2*</font></b></td>
-<td><b><font size="-1">EOR<br>izy 5*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SRE<br>izy 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zpx 4</font></b></td>
-<td><b><font size="-1">EOR<br>zpx 4</font></b></td>
-<td><b><font size="-1">LSR<br>zpx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SRE<br>zpx 6</font></b></td>
-<td><b><font size="-1">CLI<br>2</font></b></td>
-<td><b><font size="-1">EOR<br>aby 4*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SRE<br>aby 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>abx 4*</font></b></td>
-<td><b><font size="-1">EOR<br>abx 4*</font></b></td>
-<td><b><font size="-1">LSR<br>abx 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SRE<br>abx 7</font></b></td>
+<td>font size="+1">5x
+<td>BVC<br>rel 2*
+<td>EOR<br>izy 5*
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">SRE<br>izy 8
+<td bgcolor="#E0E0E0">NOP<br>zpx 4
+<td>EOR<br>zpx 4
+<td>LSR<br>zpx 6
+<td bgcolor="#E0E0E0">SRE<br>zpx 6
+<td>CLI<br>2
+<td>EOR<br>aby 4*
+<td bgcolor="#E0E0E0">NOP<br>2
+<td bgcolor="#E0E0E0">SRE<br>aby 7
+<td bgcolor="#E0E0E0">NOP<br>abx 4*
+<td>EOR<br>abx 4*
+<td>LSR<br>abx 7
+<td bgcolor="#E0E0E0">SRE<br>abx 7
 </tr>
 
 <tr>
-<td><b><font size="+1">6x</font></b></td>
-<td><b><font size="-1">RTS<br>6</font></b></td>
-<td><b><font size="-1">ADC<br>izx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RRA<br>izx 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zp 3</font></b></td>
-<td><b><font size="-1">ADC<br>zp 3</font></b></td>
-<td><b><font size="-1">ROR<br>zp 5</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RRA<br>zp 5</font></b></td>
-<td><b><font size="-1">PLA<br>4</font></b></td>
-<td><b><font size="-1">ADC<br>imm 2</font></b></td>
-<td><b><font size="-1">ROR<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ARR<br>imm 2</font></b></td>
-<td><b><font size="-1">JMP<br>ind 5</font></b></td>
-<td><b><font size="-1">ADC<br>abs 4</font></b></td>
-<td><b><font size="-1">ROR<br>abs 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RRA<br>abs 6</font></b></td>
+<td>font size="+1">6x
+<td>RTS<br>6
+<td>ADC<br>izx 6
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">RRA<br>izx 8
+<td bgcolor="#E0E0E0">NOP<br>zp 3
+<td>ADC<br>zp 3
+<td>ROR<br>zp 5
+<td bgcolor="#E0E0E0">RRA<br>zp 5
+<td>PLA<br>4
+<td>ADC<br>imm 2
+<td>ROR<br>2
+<td bgcolor="#E0E0E0">ARR<br>imm 2
+<td>JMP<br>ind 5
+<td>ADC<br>abs 4
+<td>ROR<br>abs 6
+<td bgcolor="#E0E0E0">RRA<br>abs 6
 </tr>
 
 <tr>
-<td><b><font size="+1">7x</font></b></td>
-<td><b><font size="-1">BVS<br>rel 2*</font></b></td>
-<td><b><font size="-1">ADC<br>izy 5*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RRA<br>izy 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zpx 4</font></b></td>
-<td><b><font size="-1">ADC<br>zpx 4</font></b></td>
-<td><b><font size="-1">ROR<br>zpx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RRA<br>zpx 6</font></b></td>
-<td><b><font size="-1">SEI<br>2</font></b></td>
-<td><b><font size="-1">ADC<br>aby 4*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RRA<br>aby 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>abx 4*</font></b></td>
-<td><b><font size="-1">ADC<br>abx 4*</font></b></td>
-<td><b><font size="-1">ROR<br>abx 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">RRA<br>abx 7</font></b></td>
+<td>font size="+1">7x
+<td>BVS<br>rel 2*
+<td>ADC<br>izy 5*
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">RRA<br>izy 8
+<td bgcolor="#E0E0E0">NOP<br>zpx 4
+<td>ADC<br>zpx 4
+<td>ROR<br>zpx 6
+<td bgcolor="#E0E0E0">RRA<br>zpx 6
+<td>SEI<br>2
+<td>ADC<br>aby 4*
+<td bgcolor="#E0E0E0">NOP<br>2
+<td bgcolor="#E0E0E0">RRA<br>aby 7
+<td bgcolor="#E0E0E0">NOP<br>abx 4*
+<td>ADC<br>abx 4*
+<td>ROR<br>abx 7
+<td bgcolor="#E0E0E0">RRA<br>abx 7
 </tr>
 
 <tr>
-<td><b><font size="+1">8x</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>imm 2</font></b></td>
-<td><b><font size="-1">STA<br>izx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>imm 2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SAX<br>izx 6</font></b></td>
-<td><b><font size="-1">STY<br>zp 3</font></b></td>
-<td><b><font size="-1">STA<br>zp 3</font></b></td>
-<td><b><font size="-1">STX<br>zp 3</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SAX<br>zp 3</font></b></td>
-<td><b><font size="-1">DEY<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>imm 2</font></b></td>
-<td><b><font size="-1">TXA<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font color="#FF0000" size="-1"><i>XAA<br>imm 2</i></font></b></td>
-<td><b><font size="-1">STY<br>abs 4</font></b></td>
-<td><b><font size="-1">STA<br>abs 4</font></b></td>
-<td><b><font size="-1">STX<br>abs 4</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SAX<br>abs 4</font></b></td>
+<td>font size="+1">8x
+<td bgcolor="#E0E0E0">NOP<br>imm 2
+<td>STA<br>izx 6
+<td bgcolor="#E0E0E0">NOP<br>imm 2
+<td bgcolor="#E0E0E0">SAX<br>izx 6
+<td>STY<br>zp 3
+<td>STA<br>zp 3
+<td>STX<br>zp 3
+<td bgcolor="#E0E0E0">SAX<br>zp 3
+<td>DEY<br>2
+<td bgcolor="#E0E0E0">NOP<br>imm 2
+<td>TXA<br>2
+<td bgcolor="#E0E0E0">font color="#FF0000" size="-1"><i>XAA<br>imm 2</i>
+<td>STY<br>abs 4
+<td>STA<br>abs 4
+<td>STX<br>abs 4
+<td bgcolor="#E0E0E0">SAX<br>abs 4
 </tr>
 
 <tr>
-<td><b><font size="+1">9x</font></b></td>
-<td><b><font size="-1">BCC<br>rel 2*</font></b></td>
-<td><b><font size="-1">STA<br>izy 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font color="#0000FF" size="-1"><i>AHX<br>izy 6</i></font></b></td>
-<td><b><font size="-1">STY<br>zpx 4</font></b></td>
-<td><b><font size="-1">STA<br>zpx 4</font></b></td>
-<td><b><font size="-1">STX<br>zpy 4</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SAX<br>zpy 4</font></b></td>
-<td><b><font size="-1">TYA<br>2</font></b></td>
-<td><b><font size="-1">STA<br>aby 5</font></b></td>
-<td><b><font size="-1">TXS<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font color="#0000FF" size="-1"><i>TAS<br>aby 5</i></font></b></td>
-<td bgcolor="#E0E0E0"><b><font color="#0000FF" size="-1"><i>SHY<br>abx 5</i></font></b></td>
-<td><b><font size="-1">STA<br>abx 5</font></b></td>
-<td bgcolor="#E0E0E0"><b><font color="#0000FF" size="-1"><i>SHX<br>aby 5</i></font></b></td>
-<td bgcolor="#E0E0E0"><b><font color="#0000FF" size="-1"><i>AHX<br>aby 5</i></font></b></td>
+<td>font size="+1">9x
+<td>BCC<br>rel 2*
+<td>STA<br>izy 6
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">font color="#0000FF" size="-1"><i>AHX<br>izy 6</i>
+<td>STY<br>zpx 4
+<td>STA<br>zpx 4
+<td>STX<br>zpy 4
+<td bgcolor="#E0E0E0">SAX<br>zpy 4
+<td>TYA<br>2
+<td>STA<br>aby 5
+<td>TXS<br>2
+<td bgcolor="#E0E0E0">font color="#0000FF" size="-1"><i>TAS<br>aby 5</i>
+<td bgcolor="#E0E0E0">font color="#0000FF" size="-1"><i>SHY<br>abx 5</i>
+<td>STA<br>abx 5
+<td bgcolor="#E0E0E0">font color="#0000FF" size="-1"><i>SHX<br>aby 5</i>
+<td bgcolor="#E0E0E0">font color="#0000FF" size="-1"><i>AHX<br>aby 5</i>
 </tr>
 
 <tr>
-<td><b><font size="+1">Ax</font></b></td>
-<td><b><font size="-1">LDY<br>imm 2</font></b></td>
-<td><b><font size="-1">LDA<br>izx 6</font></b></td>
-<td><b><font size="-1">LDX<br>imm 2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">LAX<br>izx 6</font></b></td>
-<td><b><font size="-1">LDY<br>zp 3</font></b></td>
-<td><b><font size="-1">LDA<br>zp 3</font></b></td>
-<td><b><font size="-1">LDX<br>zp 3</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">LAX<br>zp 3</font></b></td>
-<td><b><font size="-1">TAY<br>2</font></b></td>
-<td><b><font size="-1">LDA<br>imm 2</font></b></td>
-<td><b><font size="-1">TAX<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font color="#FF0000" size="-1"><i>LAX<br>imm 2</i></font></b></td>
-<td><b><font size="-1">LDY<br>abs 4</font></b></td>
-<td><b><font size="-1">LDA<br>abs 4</font></b></td>
-<td><b><font size="-1">LDX<br>abs 4</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">LAX<br>abs 4</font></b></td>
+<td>font size="+1">Ax
+<td>LDY<br>imm 2
+<td>LDA<br>izx 6
+<td>LDX<br>imm 2
+<td bgcolor="#E0E0E0">LAX<br>izx 6
+<td>LDY<br>zp 3
+<td>LDA<br>zp 3
+<td>LDX<br>zp 3
+<td bgcolor="#E0E0E0">LAX<br>zp 3
+<td>TAY<br>2
+<td>LDA<br>imm 2
+<td>TAX<br>2
+<td bgcolor="#E0E0E0">font color="#FF0000" size="-1"><i>LAX<br>imm 2</i>
+<td>LDY<br>abs 4
+<td>LDA<br>abs 4
+<td>LDX<br>abs 4
+<td bgcolor="#E0E0E0">LAX<br>abs 4
 </tr>
 
 <tr>
-<td><b><font size="+1">Bx</font></b></td>
-<td><b><font size="-1">BCS<br>rel 2*</font></b></td>
-<td><b><font size="-1">LDA<br>izy 5*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">LAX<br>izy 5*</font></b></td>
-<td><b><font size="-1">LDY<br>zpx 4</font></b></td>
-<td><b><font size="-1">LDA<br>zpx 4</font></b></td>
-<td><b><font size="-1">LDX<br>zpy 4</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">LAX<br>zpy 4</font></b></td>
-<td><b><font size="-1">CLV<br>2</font></b></td>
-<td><b><font size="-1">LDA<br>aby 4*</font></b></td>
-<td><b><font size="-1">TSX<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">LAS<br>aby 4*</font></b></td>
-<td><b><font size="-1">LDY<br>abx 4*</font></b></td>
-<td><b><font size="-1">LDA<br>abx 4*</font></b></td>
-<td><b><font size="-1">LDX<br>aby 4*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">LAX<br>aby 4*</font></b></td>
+<td>font size="+1">Bx
+<td>BCS<br>rel 2*
+<td>LDA<br>izy 5*
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">LAX<br>izy 5*
+<td>LDY<br>zpx 4
+<td>LDA<br>zpx 4
+<td>LDX<br>zpy 4
+<td bgcolor="#E0E0E0">LAX<br>zpy 4
+<td>CLV<br>2
+<td>LDA<br>aby 4*
+<td>TSX<br>2
+<td bgcolor="#E0E0E0">LAS<br>aby 4*
+<td>LDY<br>abx 4*
+<td>LDA<br>abx 4*
+<td>LDX<br>aby 4*
+<td bgcolor="#E0E0E0">LAX<br>aby 4*
 </tr>
 
 <tr>
-<td><b><font size="+1">Cx</font></b></td>
-<td><b><font size="-1">CPY<br>imm 2</font></b></td>
-<td><b><font size="-1">CMP<br>izx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>imm 2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">DCP<br>izx 8</font></b></td>
-<td><b><font size="-1">CPY<br>zp 3</font></b></td>
-<td><b><font size="-1">CMP<br>zp 3</font></b></td>
-<td><b><font size="-1">DEC<br>zp 5</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">DCP<br>zp 5</font></b></td>
-<td><b><font size="-1">INY<br>2</font></b></td>
-<td><b><font size="-1">CMP<br>imm 2</font></b></td>
-<td><b><font size="-1">DEX<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">AXS<br>imm 2</font></b></td>
-<td><b><font size="-1">CPY<br>abs 4</font></b></td>
-<td><b><font size="-1">CMP<br>abs 4</font></b></td>
-<td><b><font size="-1">DEC<br>abs 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">DCP<br>abs 6</font></b></td>
+<td>font size="+1">Cx
+<td>CPY<br>imm 2
+<td>CMP<br>izx 6
+<td bgcolor="#E0E0E0">NOP<br>imm 2
+<td bgcolor="#E0E0E0">DCP<br>izx 8
+<td>CPY<br>zp 3
+<td>CMP<br>zp 3
+<td>DEC<br>zp 5
+<td bgcolor="#E0E0E0">DCP<br>zp 5
+<td>INY<br>2
+<td>CMP<br>imm 2
+<td>DEX<br>2
+<td bgcolor="#E0E0E0">AXS<br>imm 2
+<td>CPY<br>abs 4
+<td>CMP<br>abs 4
+<td>DEC<br>abs 6
+<td bgcolor="#E0E0E0">DCP<br>abs 6
 </tr>
 
 <tr>
-<td><b><font size="+1">Dx</font></b></td>
-<td><b><font size="-1">BNE<br>rel 2*</font></b></td>
-<td><b><font size="-1">CMP<br>izy 5*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">DCP<br>izy 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zpx 4</font></b></td>
-<td><b><font size="-1">CMP<br>zpx 4</font></b></td>
-<td><b><font size="-1">DEC<br>zpx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">DCP<br>zpx 6</font></b></td>
-<td><b><font size="-1">CLD<br>2</font></b></td>
-<td><b><font size="-1">CMP<br>aby 4*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">DCP<br>aby 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>abx 4*</font></b></td>
-<td><b><font size="-1">CMP<br>abx 4*</font></b></td>
-<td><b><font size="-1">DEC<br>abx 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">DCP<br>abx 7</font></b></td>
+<td>font size="+1">Dx
+<td>BNE<br>rel 2*
+<td>CMP<br>izy 5*
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">DCP<br>izy 8
+<td bgcolor="#E0E0E0">NOP<br>zpx 4
+<td>CMP<br>zpx 4
+<td>DEC<br>zpx 6
+<td bgcolor="#E0E0E0">DCP<br>zpx 6
+<td>CLD<br>2
+<td>CMP<br>aby 4*
+<td bgcolor="#E0E0E0">NOP<br>2
+<td bgcolor="#E0E0E0">DCP<br>aby 7
+<td bgcolor="#E0E0E0">NOP<br>abx 4*
+<td>CMP<br>abx 4*
+<td>DEC<br>abx 7
+<td bgcolor="#E0E0E0">DCP<br>abx 7
 </tr>
 
 <tr>
-<td><b><font size="+1">Ex</font></b></td>
-<td><b><font size="-1">CPX<br>imm 2</font></b></td>
-<td><b><font size="-1">SBC<br>izx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>imm 2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ISC<br>izx 8</font></b></td>
-<td><b><font size="-1">CPX<br>zp 3</font></b></td>
-<td><b><font size="-1">SBC<br>zp 3</font></b></td>
-<td><b><font size="-1">INC<br>zp 5</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ISC<br>zp 5</font></b></td>
-<td><b><font size="-1">INX<br>2</font></b></td>
-<td><b><font size="-1">SBC<br>imm 2</font></b></td>
-<td><b><font size="-1">NOP<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">SBC<br>imm 2</font></b></td>
-<td><b><font size="-1">CPX<br>abs 4</font></b></td>
-<td><b><font size="-1">SBC<br>abs 4</font></b></td>
-<td><b><font size="-1">INC<br>abs 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ISC<br>abs 6</font></b></td>
+<td>font size="+1">Ex
+<td>CPX<br>imm 2
+<td>SBC<br>izx 6
+<td bgcolor="#E0E0E0">NOP<br>imm 2
+<td bgcolor="#E0E0E0">ISC<br>izx 8
+<td>CPX<br>zp 3
+<td>SBC<br>zp 3
+<td>INC<br>zp 5
+<td bgcolor="#E0E0E0">ISC<br>zp 5
+<td>INX<br>2
+<td>SBC<br>imm 2
+<td>NOP<br>2
+<td bgcolor="#E0E0E0">SBC<br>imm 2
+<td>CPX<br>abs 4
+<td>SBC<br>abs 4
+<td>INC<br>abs 6
+<td bgcolor="#E0E0E0">ISC<br>abs 6
 </tr>
 
 <tr>
-<td><b><font size="+1">Fx</font></b></td>
-<td><b><font size="-1">BEQ<br>rel 2*</font></b></td>
-<td><b><font size="-1">SBC<br>izy 5*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">KIL</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ISC<br>izy 8</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>zpx 4</font></b></td>
-<td><b><font size="-1">SBC<br>zpx 4</font></b></td>
-<td><b><font size="-1">INC<br>zpx 6</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ISC<br>zpx 6</font></b></td>
-<td><b><font size="-1">SED<br>2</font></b></td>
-<td><b><font size="-1">SBC<br>aby 4*</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>2</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ISC<br>aby 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">NOP<br>abx 4*</font></b></td>
-<td><b><font size="-1">SBC<br>abx 4*</font></b></td>
-<td><b><font size="-1">INC<br>abx 7</font></b></td>
-<td bgcolor="#E0E0E0"><b><font size="-1">ISC<br>abx 7</font></b></td>
+<td>font size="+1">Fx
+<td>BEQ<br>rel 2*
+<td>SBC<br>izy 5*
+<td bgcolor="#E0E0E0">KIL
+<td bgcolor="#E0E0E0">ISC<br>izy 8
+<td bgcolor="#E0E0E0">NOP<br>zpx 4
+<td>SBC<br>zpx 4
+<td>INC<br>zpx 6
+<td bgcolor="#E0E0E0">ISC<br>zpx 6
+<td>SED<br>2
+<td>SBC<br>aby 4*
+<td bgcolor="#E0E0E0">NOP<br>2
+<td bgcolor="#E0E0E0">ISC<br>aby 7
+<td bgcolor="#E0E0E0">NOP<br>abx 4*
+<td>SBC<br>abx 4*
+<td>INC<br>abx 7
+<td bgcolor="#E0E0E0">ISC<br>abx 7
 </tr>
 </tbody>
     */

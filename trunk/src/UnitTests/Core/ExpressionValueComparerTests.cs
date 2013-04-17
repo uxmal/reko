@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Core
         }
 
         [Test]
-        public void Identifiers()
+        public void EvcIdentifiers()
         {
             Identifier a = new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage());
             Identifier aa = new Identifier("aa", 1, PrimitiveType.Word32, new TemporaryStorage());
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Core
         }
 
         [Test]
-        public void TestCondition()
+        public void EvcTestCondition()
         {
             TestCondition tc1 = new TestCondition(ConditionCode.EQ, new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage()));
             TestCondition tc2 = new TestCondition(ConditionCode.EQ, new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage()));
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Core
         }
 
         [Test]
-        public void Application()
+        public void EvcApplication()
         {
             Identifier pfn = new Identifier("pfn", 1, PrimitiveType.Pointer32, new TemporaryStorage());
             Application a1 = new Application(pfn, PrimitiveType.Int32, pfn);
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Core
         }
 
         [Test]
-        public void BinaryExpression()
+        public void EvcBinaryExpression()
         {
             Identifier a = new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage());
             BinaryExpression a1 = new BinaryExpression(Operator.Add, PrimitiveType.Word32, a, a);
@@ -77,11 +77,19 @@ namespace Decompiler.UnitTests.Core
         }
 
         [Test]
-        public void ConHash()
+        public void EvcConHash()
         {
             Constant c1 = Constant.Word32(3);
             Constant c2 = Constant.Word32(3);
             Assert.AreEqual(eq.GetHashCode(c1), eq.GetHashCode(c2));
+        }
+
+        [Test]
+        public void EvcNegative1()
+        {
+            Constant c1 = Constant.Int32(-1);
+            Constant c2 = Constant.Int32(-1);
+            Assert.IsTrue(eq.Equals(c1, c2));
         }
     }
 }

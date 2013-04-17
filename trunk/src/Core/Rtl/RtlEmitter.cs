@@ -85,5 +85,10 @@ namespace Decompiler.Core.Rtl
         {
             instrs.Add(new RtlSideEffect(sideEffect));
         }
+
+        public Expression Const(DataType dataType, int p)
+        {
+            return Constant.Create(dataType, p);
+        }
     }
 }

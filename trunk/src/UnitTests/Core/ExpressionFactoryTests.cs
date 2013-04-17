@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CreateConst()
 		{
-			Constant c = factory.Const(PrimitiveType.Word32, 3);
+			Constant c = factory.Int32(PrimitiveType.Word32, 3);
 			Assert.AreEqual("0x00000003", c.ToString());
 		}
 

@@ -578,6 +578,14 @@ IGNORE tab + cr + lf
                     throw new FormatException(string.Format("Unknown __declspec '{0}'.", s));
                 ExpectToken(CTokenType.RParen);
                 return grammar.ExtendedDeclspec(s);
+            case CTokenType.__Success:
+                lexer.Read();
+                ExpectToken(CTokenType.LParen);
+                ExpectToken(CTokenType.Return);
+                lexer.Read();   //   >= 
+                lexer.Read();   // 0
+                ExpectToken(CTokenType.RParen);
+                return Parse_DeclSpecifier();
             default:
                 return Parse_TypeSpecifier();
             }

@@ -77,11 +77,6 @@ namespace Decompiler.Core.Expressions
             return new ConditionOf(expr);
         }
 
-        public Constant Const<T>(DataType dataType, T n)
-        {
-            return new Constant<T>(dataType, n);
-        }
-
         public Expression Cor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Cor, PrimitiveType.Bool, a, b);
