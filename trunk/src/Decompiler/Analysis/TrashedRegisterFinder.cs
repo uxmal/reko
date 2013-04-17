@@ -168,7 +168,21 @@ namespace Decompiler.Analysis
         {
             StartProcessingBlock(block);
             var propagator = new ExpressionPropagator(prog.Architecture, se.Simplifier, ctx, flow);
-            block.Statements.ForEach(stm => { stm.Instruction = stm.Instruction.Accept(propagator); });
+            foreach (Statement stm in block.Statements)
+            {
+                try
+                {
+                    stm.Instruction = stm.Instruction.Accept(propagator);
+                }
+                catch (Exception ex)
+                {
+                    var location = eventListener.CreateBlockNavigator(block);
+                    eventListener.AddDiagnostic(location,
+                        new ErrorDiagnostic(
+                            string.Format("An error occurred while rewriting at linear address {0:X}.", stm.LinearAddress),
+                            ex));
+                }
+            }
         }
 
         public void StartProcessingBlock(Block block)

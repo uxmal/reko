@@ -543,7 +543,10 @@ namespace Decompiler.Analysis
 
 				// Update trash information.
 
-				ProcedureFlow pi = mpprocData[(Procedure)((ProcedureConstant)ci.Callee).Procedure];
+                var pc = ci.Callee as ProcedureConstant;
+                if (pc == null)
+                    return;
+				ProcedureFlow pi = mpprocData[(Procedure)pc.Procedure];
 				ProcedureFlow item = mpprocData[proc];
 
 				// The registers that are still live before a call are those
