@@ -438,6 +438,15 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             Assert.AreEqual(sExp, decl.ToString());
         }
 
+        [Test]
+        public void CParser_typedef__success()
+        {
+            Lex("typedef __success(return >= 0) long HRESULT;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Typedef Long ((init-decl HRESULT)))"; 
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
         private string windows_h =
 #region Windows.h
 @"#line 1 ""\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\windows.h""

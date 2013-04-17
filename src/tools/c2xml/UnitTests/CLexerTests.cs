@@ -400,6 +400,13 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             Lex("...");
             AssertToken(CTokenType.Ellipsis);
         }
+
+        [Test]
+        public void CLexer__success()
+        {
+            Lex("__success");
+            AssertToken(CTokenType.__Success);
+        }
     }
 }
 #endif

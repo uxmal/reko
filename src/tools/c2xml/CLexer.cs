@@ -77,6 +77,7 @@ namespace Decompiler.Tools.C2Xml
             { "__pragma", CTokenType.__Pragma },
             { "__ptr64", CTokenType.__Ptr64 },
             { "__stdcall", CTokenType.__Stdcall },
+            { "__success", CTokenType.__Success },
             { "__w64", CTokenType.__W64 },
         };
 
@@ -857,6 +858,7 @@ namespace Decompiler.Tools.C2Xml
         __Pragma,
         __Ptr64,
         __Stdcall,
+        __Success,
         __W64,
         Switch,
         While,

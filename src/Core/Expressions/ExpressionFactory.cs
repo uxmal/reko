@@ -39,11 +39,6 @@ namespace Decompiler.Core.Expressions
 			return new Identifier(name, id, type, storage);
 		}
 
-		public Constant Const<T>(PrimitiveType type, T value)
-		{
-			return new Constant<T>(type, value);
-		}
-
 		public Constant False
 		{
 			get { return falseValue; }
@@ -53,5 +48,10 @@ namespace Decompiler.Core.Expressions
 		{
 			get { return trueValue; }
 		}
-	}
+
+        public Constant Int32(PrimitiveType primitiveType, int value)
+        {
+            return new ConstantInt32(primitiveType, value);
+        }
+    }
 }

@@ -72,31 +72,31 @@ namespace Decompiler.Core.Expressions
             case 1:
                 switch (p.Domain)
                 {
-                case Domain.Boolean: return new Constant<bool>(p, value != 0);
-                case Domain.SignedInt: return new Constant<sbyte>(p, (sbyte) value);
-                case Domain.Character: return new Constant<char>(p,(char) (byte) value);
-                default: return new Constant<byte>(p, (byte) value);
+                case Domain.Boolean: return new ConstantBool(p, value != 0);
+                case Domain.SignedInt: return new ConstantSByte(p, (sbyte) value);
+                case Domain.Character: return new ConstantChar(p,(char) (byte) value);
+                default: return new ConstantByte(p, (byte) value);
                 }
             case 2:
                 switch (p.Domain)
                 {
-                case Domain.SignedInt: return new Constant<short>(p, (short) value);
-                case Domain.Character: return new Constant<ushort>(p, (char) value);
-                default: return new Constant<ushort>(p, (ushort) value);
+                case Domain.SignedInt: return new ConstantInt16(p, (short) value);
+                case Domain.Character: return new ConstantChar(p, (char) value);
+                default: return new ConstantUInt16(p, (ushort) value);
                 }
             case 4:
                 switch (p.Domain)
                 {
-                case Domain.SignedInt: return new Constant<int>(p, (int) value);
+                case Domain.SignedInt: return new ConstantInt32(p, (int) value);
                 case Domain.Real: throw new NotImplementedException();
-                default: return new Constant<uint>(p, (uint) value);
+                default: return new ConstantUInt32(p, (uint) value);
                 }
             case 8:
                 switch (p.Domain)
                 {
-                case Domain.SignedInt: return new Constant<long>(p, (long) value);
-                case Domain.Real: return new Constant<ulong>(p, (ulong) value);
-                default: return new Constant<ulong>(p, (ulong) value);
+                case Domain.SignedInt: return new ConstantInt64(p, (long) value);
+                case Domain.Real: return new ConstantUInt64(p, (ulong) value);
+                default: return new ConstantUInt64(p, (ulong) value);
                 }
             }
             throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
@@ -114,7 +114,7 @@ namespace Decompiler.Core.Expressions
 
         public static Constant Byte(byte c)
         {
-            return new Constant<byte>(PrimitiveType.Byte, c);
+            return new ConstantByte(PrimitiveType.Byte, c);
         }
 
 		public static Constant RealFromBitpattern(PrimitiveType dt, long bits)
@@ -171,7 +171,7 @@ namespace Decompiler.Core.Expressions
 
 		public static Constant False()
 		{
-			return new Constant<bool>(PrimitiveType.Bool, false);
+			return new ConstantBool(PrimitiveType.Bool, false);
 		}
 
         public abstract object GetValue();
@@ -315,14 +315,14 @@ namespace Decompiler.Core.Expressions
             return Convert.ToInt64(GetValue());
 		}
 
-		public ulong ToUInt64()
+		public virtual ulong ToUInt64()
 		{
             return Convert.ToUInt64(GetValue());
 		}
 
 		public static Constant True()
 		{
-			return new Constant<bool>(PrimitiveType.Bool, true);
+			return new ConstantBool(PrimitiveType.Bool, true);
 		}
 
         public static Constant Bool(bool f)
@@ -332,42 +332,42 @@ namespace Decompiler.Core.Expressions
 
         public static Constant SByte(sbyte p)
         {
-            return new Constant<sbyte>(PrimitiveType.SByte, p);
+            return new ConstantSByte(PrimitiveType.SByte, p);
         }
 
         public static Constant Int16(short s)
         {
-            return new Constant<short>(PrimitiveType.Int16, s);
+            return new ConstantInt16(PrimitiveType.Int16, s);
         }
 
         public static Constant Int32(int i)
         {
-            return new Constant<Int32>(PrimitiveType.Int32, i);
+            return new ConstantInt32(PrimitiveType.Int32, i);
         }
 
         public static Constant Real32(float f)
         {
-            return new Constant<Single>(PrimitiveType.Real32, f);
+            return new ConstantReal32(PrimitiveType.Real32, f);
         }
 
         public static Constant Real64(double d)
         {
-            return new Constant<Double>(PrimitiveType.Real64, d);
+            return new ConstantReal64(PrimitiveType.Real64, d);
         }
 
         public static Constant Word16(ushort n)
         {
-            return new Constant<ushort>(PrimitiveType.Word16, n);
+            return new ConstantUInt16(PrimitiveType.Word16, n);
         }
 
 		public static Constant Word32(int n)
 		{
-			return new Constant<uint>(PrimitiveType.Word32, (uint) n); 
+			return new ConstantUInt32(PrimitiveType.Word32, (uint) n); 
 		}
 
         public static Constant Word32(uint n)
         {
-            return new Constant<uint>(PrimitiveType.Word32, n);
+            return new ConstantUInt32(PrimitiveType.Word32, n);
         }
 
         public static Constant Zero(DataType dataType)
@@ -375,27 +375,320 @@ namespace Decompiler.Core.Expressions
             return Constant.Create(dataType, 0);
         }
 
-		public static readonly Constant Invalid = new Constant<uint>(PrimitiveType.Void, 0xBADDCAFE);
-        public static readonly Constant Unknown = new Constant<uint>(PrimitiveType.Void, 0xDEADFACE);
+		public static readonly Constant Invalid = new ConstantUInt32(PrimitiveType.Void, 0xBADDCAFE);
+        public static readonly Constant Unknown = new ConstantUInt32(PrimitiveType.Void, 0xDEADFACE);
     }
 
-    internal class Constant<T> : Constant
-    {
-        private T value;
 
-        public Constant(DataType dt, T value) : base(dt)
+    internal class ConstantBool : Constant
+    {
+        private bool value;
+
+        public ConstantBool(DataType dt, bool value)
+            : base(dt)
         {
             this.value = value;
         }
 
         public override Expression CloneExpression()
         {
-            return new Constant<T>(DataType, value);
+            return new ConstantBool(DataType, value);
         }
 
         public override object GetValue()
         {
             return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return value ? 1u : 0u;
+        }
+    }
+
+    internal class ConstantSByte : Constant
+    {
+        private sbyte value;
+
+        public ConstantSByte(DataType dt, sbyte value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantSByte(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return (ulong)(long)value;
+        }
+    }
+
+    internal class ConstantChar : Constant
+    {
+        private char value;
+
+        public ConstantChar(DataType dt, char value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantChar(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return (ulong)value;
+        }
+    }
+
+    internal class ConstantByte : Constant
+    {
+        private byte value;
+
+        public ConstantByte(DataType dt, byte value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantByte(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return value;
+        }
+    }
+
+    internal class ConstantInt16 : Constant
+    {
+        private short value;
+
+        public ConstantInt16(DataType dt, short value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantInt16(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return (uint) value;
+        }
+    }
+
+    internal class ConstantUInt16 : Constant
+    {
+        private ushort value;
+
+        public ConstantUInt16(DataType dt, ushort value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantUInt16(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return value;
+        }
+    }
+
+    internal class ConstantInt32 : Constant
+    {
+        private int value;
+
+        public ConstantInt32(DataType dt, int value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantInt32(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return (uint) value;
+        }
+    }
+
+    internal class ConstantUInt32 : Constant
+    {
+        private uint value;
+
+        public ConstantUInt32(DataType dt, uint value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantUInt32(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return value;
+        }
+    }
+
+    internal class ConstantInt64 : Constant
+    {
+        private long value;
+
+        public ConstantInt64(DataType dt, long value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantInt64(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return (ulong) value;
+        }
+    }
+
+    internal class ConstantUInt64 : Constant
+    {
+        private ulong value;
+
+        public ConstantUInt64(DataType dt, ulong value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantUInt64(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return value;
+        }
+    }
+
+    internal class ConstantReal32 : Constant
+    {
+        private float value;
+
+        public ConstantReal32(DataType dt, float value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantReal32(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return Convert.ToUInt64(value);
+        }
+    }
+
+    internal class ConstantReal64 : Constant
+    {
+        private double value;
+
+        public ConstantReal64(DataType dt, double value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantReal64(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return Convert.ToUInt64(value);
         }
     }
 }
