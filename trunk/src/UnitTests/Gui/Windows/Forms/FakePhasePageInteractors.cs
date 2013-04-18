@@ -104,14 +104,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
         }
 
-        #region InitialPageInteractor Members
-
         public void OpenBinary(string file, DecompilerHost host)
         {
             OpenBinaryCalled = true;
 
         }
-        #endregion
+        public void OpenBinaryAs(string file, Decompiler.Core.IProcessorArchitecture arch, Decompiler.Core.Platform platform, Decompiler.Core.Address addrBase, DecompilerHost host)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class FakeLoadedPageInteractor : FakePhasePageInteractor, ILoadedPageInteractor

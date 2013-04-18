@@ -43,6 +43,14 @@ namespace Decompiler.Gui.Windows
         {
             return new MainForm();
         }
+
+        public IOpenAsDialog CreateOpenAsDialog()
+        {
+            return new OpenAsDialog
+            {
+                Services = services,
+            };
+        }
     }
 }
 

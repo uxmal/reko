@@ -42,9 +42,9 @@ namespace Decompiler.Arch.Z80
             this.Base = baseReg;
         }
 
-        public MemoryOperand(ushort offset, PrimitiveType type) : base(type)
+        public MemoryOperand(Constant offset, PrimitiveType type) : base(type)
         {
-            this.Offset = Constant.Word16(offset);
+            this.Offset = offset;
         }
 
         public MemoryOperand(RegisterStorage baseReg, sbyte offset, PrimitiveType type) : base(type)

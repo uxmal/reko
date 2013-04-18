@@ -33,6 +33,7 @@ namespace Decompiler.Gui.Windows.Forms
     public interface InitialPageInteractor : IPhasePageInteractor
     {
         void OpenBinary(string file, DecompilerHost host);
+        void OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host);
     }
 
     /// <summary>
@@ -125,6 +126,26 @@ namespace Decompiler.Gui.Windows.Forms
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 Decompiler.LoadProgram(file);
+                svc.SetCaption("Scanning source program.");
+                Decompiler.ScanProgram();
+            });
+            if (Decompiler.Program != null)
+            {
+                var memSvc = Site.RequireService<IMemoryViewService>();
+                memSvc.ViewImage(Decompiler.Program.Image);
+            }
+            PopulateBrowserServiceWithSegments();
+        }
+
+        public void OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host)
+        {
+            var sc = Site.RequireService<IServiceContainer>();
+            LoaderBase ldr = CreateLoader(sc);
+            Decompiler = CreateDecompiler(ldr, host, sc);
+            IWorkerDialogService svc = Site.RequireService<IWorkerDialogService>();
+            svc.StartBackgroundWork("Loading program", delegate()
+            {
+                Decompiler.LoadRawImage(file, arch, platform, addrBase);
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanProgram();
             });

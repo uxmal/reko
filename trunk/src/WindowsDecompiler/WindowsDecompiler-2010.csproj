@@ -143,6 +143,7 @@
     <PostBuildEvent>copy /y $(SolutionDir)Arch\Intel\$(OutDir)Decompiler.Arch.Intel.*
 copy /y $(SolutionDir)Arch\m68k\$(OutDir)Decompiler.Arch.M68*
 copy /y $(SolutionDir)Arch\Sparc\$(OutDir)Decompiler.Arch.Sparc*
+copy /y $(SolutionDir)Arch\Z80\$(OutDir)Decompiler.Arch.Z80*
 copy /y $(SolutionDir)Environments\MacOS\$(OutDir)Decompiler.Environments.MacOS.*
 copy /y $(SolutionDir)Environments\Msdos\$(OutDir)Decompiler.Environments.Msdos.*
 copy /y $(SolutionDir)Environments\Win32\$(OutDir)Decompiler.Environments.Win32.*

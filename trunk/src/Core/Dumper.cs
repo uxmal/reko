@@ -166,7 +166,6 @@ namespace Decompiler.Core
                 writer.WriteLine("\t{0}", instr.ToString());
             }
         }
-		
 
 		public void WriteByteRange(ProgramImage image, Address begin, Address addrEnd, TextWriter writer)
 		{

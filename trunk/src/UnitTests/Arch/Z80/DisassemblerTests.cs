@@ -243,11 +243,66 @@ namespace Decompiler.UnitTests.Arch.Z80
             Assert.AreEqual("jp\tm,1234", instr.ToString());
         }
 
-         [Test]
+        [Test]
         public void Z80dis_jp_hl()
         {
             var instr = RunTest(0xE9);
             Assert.AreEqual("jp\t(hl)", instr.ToString());
         }
+
+         [Test]
+         public void Z80dis_jr()
+         {
+             var instr = RunTest(0x18, 0xFE);
+             Assert.AreEqual("jr\t0100", instr.ToString());
+         }
+
+         [Test]
+         public void Z80dis_rst_18()
+         {
+             var instr = RunTest(0xDF);
+             Assert.AreEqual("rst\t18", instr.ToString());
+         }
+
+         [Test]
+         public void Z80dis_out_c_b()
+         {
+             var instr = RunTest(0xED, 0x41);
+             Assert.AreEqual("out\t(c),b", instr.ToString());
+         }
+
+         [Test]
+         public void Z80dis_inc_hl_ind()
+         {
+             var instr = RunTest(0x34);
+             Assert.AreEqual("inc\t(hl)", instr.ToString());
+         }
+         [Test]
+         public void Z80dis_dec_ix_ind()
+         {
+             var instr = RunTest(0xDD, 0x35);
+             Assert.AreEqual("dec\t(ix)", instr.ToString());
+         }
+
+         [Test]
+         public void Z80dis_set_7_m()
+         {
+             var instr = RunTest(0xCB, 0xFE);
+             Assert.AreEqual("set\t07,(hl)", instr.ToString());
+         }
+
+         [Test]
+         public void Z80dis_ex_stacktop_hl()
+         {
+             var instr = RunTest(0xE3);
+             Assert.AreEqual("ex\t(sp),hl", instr.ToString());
+         }
+
+         [Test]
+         public void Z80_Bit7_offset()
+         {
+             var instr = RunTest(0xFD, 0xCB, 0x3B, 0x7E);
+             Assert.AreEqual("bit\t7,(7E3B)", instr.ToString());
+         }
     }
 }
