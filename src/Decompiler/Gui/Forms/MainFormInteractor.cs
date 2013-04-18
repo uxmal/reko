@@ -206,12 +206,16 @@ namespace Decompiler.Gui.Forms
 
         public void OpenBinary(string file)
         {
+            OpenBinary(file, delegate { pageInitial.OpenBinary(file, this); });
+        }
+        public void OpenBinary(string file, Action openAction)
+        {
             try
             {
                 diagnosticsSvc.ClearDiagnostics();
                 form.CloseAllDocumentWindows();
                 SwitchInteractor(InitialPageInteractor);
-                pageInitial.OpenBinary(file, this);
+                openAction();
             }
             catch (Exception ex)
             {
@@ -226,8 +230,11 @@ namespace Decompiler.Gui.Forms
             {
                 if (form.ShowDialog(form.OpenFileDialog) == DialogResult.OK)
                 {
-                    OpenBinary(form.OpenFileDialog.FileName);
                     mru.Use(form.OpenFileDialog.FileName);
+                    OpenBinary(form.OpenFileDialog.FileName, delegate
+                    {
+                        pageInitial.OpenBinary(form.OpenFileDialog.FileName, this);
+                    });
                 }
             }
             finally
@@ -235,6 +242,39 @@ namespace Decompiler.Gui.Forms
                 Cursor.Current = Cursors.Arrow;
                 form.SetStatus("");
             }
+        }
+
+        public bool OpenBinaryAs()
+        {
+            using (var dlg = new OpenAsDialog())
+            {
+                dlg.Services = sc;
+                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                    return true;
+
+                mru.Use(dlg.FileName.Text);
+                IProcessorArchitecture arch = null;
+                Platform platform = null;
+
+                var typeName = (string) ((ListOption)dlg.Architectures.SelectedValue).Value;
+                Type t = Type.GetType(typeName);
+                arch = (IProcessorArchitecture) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+
+                typeName = (string) ((ListOption) dlg.Platforms.SelectedValue).Value;
+                t = Type.GetType(typeName);
+                platform = (Platform) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+
+                OpenBinary(dlg.FileName.Text, delegate
+                {
+                    pageInitial.OpenBinaryAs(
+                        dlg.FileName.Text,
+                        arch,
+                        platform,
+                        new Address(0x0000000),
+                        this);
+                });
+            }
+            return true;
         }
 
         public InitialPageInteractor InitialPageInteractor
@@ -483,6 +523,7 @@ namespace Decompiler.Gui.Forms
                 switch (cmdId)
                 {
                 case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
+                case CmdIds.FileOpenAs: return OpenBinaryAs();;
                 case CmdIds.FileSave: Save(); return true;
                 case CmdIds.FileExit: form.Close(); return true;
 
@@ -510,7 +551,10 @@ namespace Decompiler.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = (string)mru.Items[iMru];
-                OpenBinary(file);
+                OpenBinary(file, delegate
+                {
+                    pageInitial.OpenBinary(file, this);
+                });
                 mru.Use(file);
                 return true;
             }

@@ -18,45 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Z80
+namespace Decompiler.Gui
 {
-    public class Z80Instruction : MachineInstruction
+    public class ListOption
     {
-        public Opcode Code;
-        public MachineOperand Op1;
-        public MachineOperand Op2;
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
+        public string Text { get; set; }
+        public object Value { get; set; }
 
         public override string ToString()
         {
-            if (Code == Opcode.ex_af)
-                return "ex\taf,af'";
-            
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}\t", Code);
-            if (Op1 != null)
-            {
-                sb.Append(Op1);
-                if (Op2 != null)
-                {
-                    sb.AppendFormat(",{0}", Op2);
-                }
-            }
-            return sb.ToString();
+            return Text;
         }
     }
 }

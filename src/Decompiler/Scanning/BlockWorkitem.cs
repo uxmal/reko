@@ -70,6 +70,12 @@ namespace Decompiler.Scanning
             this.blockCur = null;
         }
 
+        /// <summary>
+        /// Processes the statements of a basic block by using the architecture-specific
+        /// Rewriter to obtain a stream of low-level RTL instructions. RTL assignments are 
+        /// simply added to the instruction list of the basic block. Jumps and returns result in the 
+        /// termination of processing.
+        /// </summary>
         public override void Process()
         {
             try
@@ -204,7 +210,7 @@ namespace Decompiler.Scanning
 
         private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
         {
-            Debug.Print("EnsureEdge: from {0} to {1} (in proc {2})", blockTo.Name, blockTo.Name, proc.Name);
+            Debug.Print("EnsureEdge: from {0} to {1} (in proc {2})", blockFrom.Name, blockTo.Name, proc.Name);
             if (blockFrom.Procedure == blockTo.Procedure)
             {
                 Debug.Print("    Simple edge");
@@ -551,19 +557,18 @@ namespace Decompiler.Scanning
                 for (int i = block.Statements.Count - 1; i >= 0; --i)
                 {
                     Assignment ass = block.Statements[i].Instruction as Assignment;
-                    if (ass != null)
+                    if (ass == null)
+                        continue;
+                    Identifier idAss = ass.Dst as Identifier;
+                    if (idAss != null && idAss == id)
                     {
-                        Identifier idAss = ass.Dst as Identifier;
-                        if (idAss != null && idAss == id)
+                        ProcedureConstant pc = ass.Src as ProcedureConstant;
+                        if (pc != null)
                         {
-                            ProcedureConstant pc = ass.Src as ProcedureConstant;
-                            if (pc != null)
-                            {
-                                return (PseudoProcedure)pc.Procedure;
-                            }
-                            else
-                                return null;
+                            return (PseudoProcedure) pc.Procedure;
                         }
+                        else
+                            return null;
                     }
                 }
                 var pred = block.Procedure.ControlGraph.Predecessors(block).ToArray();
@@ -672,7 +677,6 @@ namespace Decompiler.Scanning
             {
                 scanner.AddDiagnostic(addr, d);
             }
-
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {

@@ -68,5 +68,10 @@ namespace Decompiler.Core.Configuration
             get { return (TypeLibraryElementCollection) this["TypeLibraries"]; }
             set { this["TypeLibraries"] = value; }
         }
+
+        public override string ToString()
+        {
+            return Description;
+        }
     }
 }

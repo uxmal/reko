@@ -18,45 +18,30 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Arch.Z80
+namespace Decompiler.Gui.Windows
 {
-    public class Z80Instruction : MachineInstruction
+    public class TextBoxWrapper : ITextBox
     {
-        public Opcode Code;
-        public MachineOperand Op1;
-        public MachineOperand Op2;
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
+        private TextBox text;
 
-        public override uint UseCc()
+        public TextBoxWrapper(TextBox text)
         {
-            throw new NotImplementedException();
+            this.text = text;
         }
+    
+        public string Text { get { return text.Text; } set { text.Text = value;  } }
 
-        public override string ToString()
+        public event EventHandler TextChanged
         {
-            if (Code == Opcode.ex_af)
-                return "ex\taf,af'";
-            
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}\t", Code);
-            if (Op1 != null)
-            {
-                sb.Append(Op1);
-                if (Op2 != null)
-                {
-                    sb.AppendFormat(",{0}", Op2);
-                }
-            }
-            return sb.ToString();
+            add { text.TextChanged += value; }
+            remove { text.TextChanged -= value; }
         }
     }
 }

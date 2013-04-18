@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void NestedProcedures()
+        public void Scanx86NestedProcedures()
         {
             BuildTest16(delegate(IntelAssembler m)
             {
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void RepScasw()
+        public void Scanx86RepScasw()
         {
             BuildTest16(delegate(IntelAssembler m)
             {
@@ -141,7 +141,7 @@ fn0C00_0000_exit:
         /// a new procedure p3 should be created.
         /// </summary>
         [Test]
-        public void JumpIntoProc()
+        public void Scanx86JumpIntoProc()
         {
             BuildTest32(delegate(IntelAssembler m)
             {

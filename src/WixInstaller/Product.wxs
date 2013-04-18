@@ -84,7 +84,9 @@
         <File Source="$(var.Win32-2010.TargetPath)" />
         <File Source="$(var.WindowsDecompiler-2010.TargetPath)" />
         <File Source="$(var.X86-2010.TargetPath)" />
-        <File Source="$(var.Win32-2010.ProjectDir)win32.xml" />
+        <File Source="$(var.Z80.TargetPath)" />
+        <File Source="$(var.Win32-2010.ProjectDir)windows.xml" />
+        <File Source="$(var.Win32-2010.ProjectDir)commctrl.xml" />
       </Component>
     </ComponentGroup>
 

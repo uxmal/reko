@@ -18,45 +18,39 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Decompiler.Gui.Controls;
+using Decompiler.Gui.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Arch.Z80
+namespace Decompiler.Gui.Windows.Forms
 {
-    public class Z80Instruction : MachineInstruction
+    public partial class OpenAsDialog : Form, IOpenAsDialog
     {
-        public Opcode Code;
-        public MachineOperand Op1;
-        public MachineOperand Op2;
-        public override uint DefCc()
+        public OpenAsDialog()
         {
-            throw new NotImplementedException();
+            InitializeComponent();
+
+            Architectures = new ComboBoxWrapper(ddlArchitectures);
+            Platforms = new ComboBoxWrapper(ddlEnvironments);
+            FileName = new TextBoxWrapper(textBox1);
+            BrowseButton = new ButtonWrapper(btnBrowse);
+
+            new OpenAsInteractor().Attach(this);
         }
 
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
+        public IServiceProvider Services { get; set; }
 
-        public override string ToString()
-        {
-            if (Code == Opcode.ex_af)
-                return "ex\taf,af'";
-            
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}\t", Code);
-            if (Op1 != null)
-            {
-                sb.Append(Op1);
-                if (Op2 != null)
-                {
-                    sb.AppendFormat(",{0}", Op2);
-                }
-            }
-            return sb.ToString();
-        }
+        public ITextBox FileName { get; private set; }
+
+        public IComboBox Architectures { get; private set; }
+        public IComboBox Platforms { get; private set; }
+        public IButton BrowseButton { get; private set; } 
     }
 }

@@ -19,6 +19,8 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Lib;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -44,7 +46,7 @@ namespace Decompiler.Arch.Z80
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Core.Rtl.RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();
         }
@@ -94,7 +96,7 @@ namespace Decompiler.Arch.Z80
             throw new NotImplementedException();
         }
 
-        public Core.Lib.BitSet ImplicitArgumentRegisters
+        public BitSet ImplicitArgumentRegisters
         {
             get { throw new NotImplementedException(); }
         }
@@ -146,6 +148,11 @@ namespace Decompiler.Arch.Z80
         public static readonly RegisterStorage sp = new RegisterStorage("sp", 11, PrimitiveType.Word16);
         public static readonly RegisterStorage ix = new RegisterStorage("ix", 12, PrimitiveType.Word16);
         public static readonly RegisterStorage iy = new RegisterStorage("iy", 13, PrimitiveType.Word16);
+        public static readonly RegisterStorage af = new RegisterStorage("af", 14, PrimitiveType.Word16);
+
+        public static readonly RegisterStorage i = new RegisterStorage("i", 16, PrimitiveType.Byte);
+        public static readonly RegisterStorage r = new RegisterStorage("r", 17, PrimitiveType.Byte);
+
     }
 
     public enum CondCode

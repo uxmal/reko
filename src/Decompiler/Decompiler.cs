@@ -43,6 +43,7 @@ namespace Decompiler
         Project Project { get; }
 
         void LoadProgram(string fileName);
+        void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase);
         void ScanProgram();
         ProcedureBase ScanProcedure(Address procAddress);
         DataFlowAnalysis AnalyzeDataFlow();
@@ -185,8 +186,28 @@ namespace Decompiler
             }
             eventListener.ShowStatus("Source program loaded.");
         }
-        
 
+        /// <summary>
+        /// Loads a program into memory, but performs no relocations.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="arch"></param>
+        /// <param name="platform"></param>
+        public void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase)
+        {
+            eventListener.ShowStatus("Loading raw bytes.");
+            byte[] image = loader.LoadImageBytes(fileName, 0);
+            prog = new Program
+            {
+                Image = new ProgramImage(addrBase, image),
+                Architecture = arch,
+                Platform = platform
+            };
+            project = CreateDefaultProject(fileName, prog);
+            eventListener.ShowStatus("Raw bytes loaded.");
+        }
+
+        
         private Project DeserializeProject(byte[] image)
         {
             if (IsXmlFile(image))

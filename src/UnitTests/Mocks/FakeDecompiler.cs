@@ -96,5 +96,11 @@ namespace Decompiler.UnitTests.Mocks
         }
 
         #endregion
+
+
+        public void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

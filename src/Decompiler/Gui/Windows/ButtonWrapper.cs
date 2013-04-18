@@ -18,25 +18,30 @@
  */
 #endregion
 
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
+using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Decompiler.Gui.Windows
 {
-    public class FakeDialogFactory : IDialogFactory
+    public class ButtonWrapper : IButton
     {
-        public virtual IAddressPromptDialog CreateAddressPromptDialog()
+        private Button button;
+
+        public ButtonWrapper(Button button)
         {
-            throw new NotImplementedException();
+            this.button = button;
         }
 
-        public virtual IMainForm CreateMainForm()
+        public bool Enabled { get { return button.Enabled; } set { button.Enabled = value; } }
+
+        public event EventHandler Click
         {
-            throw new NotImplementedException();
+            add { button.Click += value; }
+            remove { button.Click -= value; }
         }
     }
 }
