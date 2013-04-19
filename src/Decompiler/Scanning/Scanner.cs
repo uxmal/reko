@@ -339,7 +339,16 @@ namespace Decompiler.Scanning
         {
             BlockRange b;
             if (blocks.TryGetLowerBound(address.Linear, out b) && address.Linear < b.End)
+            {
+                if (b.Block.Succ.Count == 0)
+                    return b.Block;
+                string succName = b.Block.Succ[0].Name;
+                if (succName != b.Block.Name &&
+                    succName.StartsWith(b.Block.Name) &&
+                    !succName.EndsWith("_tmp"))
+                    return b.Block.Succ[0];
                 return b.Block;
+            }
             else
                 return null;
         }
