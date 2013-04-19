@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Z80
 
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Z80ProcessorState(this);
         }
 
         public Core.Lib.BitSet CreateRegisterBitset()

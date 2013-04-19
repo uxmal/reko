@@ -74,6 +74,11 @@ namespace Decompiler.Core
             return b;
         }
 
+        public sbyte ReadSByte()
+        {
+            return (sbyte) ReadByte();
+        }
+
         /// <summary>
         /// Little-endian read.
         /// </summary>

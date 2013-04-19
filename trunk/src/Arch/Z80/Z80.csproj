@@ -46,6 +46,7 @@
     <Compile Include="Z80Disassembler.cs" />
     <Compile Include="Z80Instruction.cs" />
     <Compile Include="Z80ProcessorArchitecture.cs" />
+    <Compile Include="Z80ProcessorState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">

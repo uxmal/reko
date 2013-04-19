@@ -302,7 +302,7 @@ namespace Decompiler.UnitTests.Arch.Z80
          public void Z80_Bit7_offset()
          {
              var instr = RunTest(0xFD, 0xCB, 0x3B, 0x7E);
-             Assert.AreEqual("bit\t7,(7E3B)", instr.ToString());
+             Assert.AreEqual("bit\t07,(iy+3B)", instr.ToString());
          }
     }
 }

@@ -131,6 +131,7 @@ l0C00_0000_1:
 	// succ:  l0C00_0002 l0C00_0000
 l0C00_0002:
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 ";
             Assert.AreEqual(sExp, sw.ToString());

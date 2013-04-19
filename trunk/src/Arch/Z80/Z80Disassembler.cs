@@ -262,7 +262,26 @@ namespace Decompiler.Arch.Z80
             {
                 disasm.IndexRegister = this.IndexRegister;
                 op = disasm.rdr.ReadByte();
-                return oprecs[op].Decode(disasm, op, opFormat);
+                if (op == 0xCB)
+                {
+                    var offset = disasm.rdr.ReadSByte();
+                    op = disasm.rdr.ReadByte();
+                    switch (op >> 6)
+                    {
+                    default: throw new NotImplementedException();
+                    case 1:
+                        return new Z80Instruction
+                        {
+                            Code = Opcode.bit,
+                            Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
+                            Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
+                        };
+                    }
+                }
+                else
+                {
+                    return oprecs[op].Decode(disasm, op, opFormat);
+                }
             }
         }
 
@@ -299,15 +318,6 @@ namespace Decompiler.Arch.Z80
                         cbFormats[op & 0x07]);
                 case 1:
                     code = Opcode.bit;
-                    if (disasm.IndexRegister != null)
-                    {
-                        return new Z80Instruction
-                        {
-                            Code = code,
-                            Op1 = new ImmediateOperand(Constant.Byte((byte)((op >> 3) & 0x07))),
-                            Op2 = disasm.DirectOperand(PrimitiveType.Word16, PrimitiveType.Byte),
-                        };
-                    }
                     break;
                 case 2:
                     code = Opcode.res;

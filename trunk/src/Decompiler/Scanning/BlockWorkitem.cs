@@ -183,7 +183,6 @@ namespace Decompiler.Scanning
             return true;
         }
 
-
         public bool VisitBranch(RtlBranch b)
         {
             // We don't know the 'then' block yet, as the following statements may chop up the block
