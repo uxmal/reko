@@ -101,6 +101,7 @@ namespace Decompiler.Arch.M68k
         {
             this.Base = baseReg;
         }
+
         public MemoryOperand(RegisterStorage baseReg, Constant offset)
             : base(null)
         {

@@ -49,7 +49,7 @@ namespace Decompiler.Core.Machine
             writer.Write(ToString(fExplicit));
         }
 
-		public string FormatSignedValue(Constant c)
+		public static string FormatSignedValue(Constant c)
 		{
 			string s = "+";
 			int tmp = c.ToInt32();
@@ -61,7 +61,7 @@ namespace Decompiler.Core.Machine
 			return s + tmp.ToString(FormatString(c.DataType));
 		}
 
-        public string FormatValue(Constant c)
+        public static string FormatValue(Constant c)
         {
             if (((PrimitiveType)c.DataType).Domain == Domain.SignedInt)
                 return FormatSignedValue(c);
@@ -69,7 +69,7 @@ namespace Decompiler.Core.Machine
                 return FormatUnsignedValue(c);
         }
 
-		private string FormatString(DataType dt)
+		private static string FormatString(DataType dt)
 		{
 			switch (dt.Size)
 			{
@@ -81,7 +81,7 @@ namespace Decompiler.Core.Machine
 			}
 		}
 
-		public string FormatUnsignedValue(Constant c)
+		public static string FormatUnsignedValue(Constant c)
 		{
 			return c.ToUInt32().ToString(FormatString(c.DataType));
 		}

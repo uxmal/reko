@@ -35,6 +35,11 @@ namespace Decompiler.Arch.M68k
             this.Address = addr;
         }
 
+        public AddressOperand(uint addr)
+            : this(new Address(addr))
+        { 
+        }
+
         public override T Accept<T>(M68kOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);

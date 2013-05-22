@@ -194,10 +194,26 @@ namespace Decompiler.Arch.M68k
                     RegisterStorage index_reg = null;
                     PrimitiveType index_reg_width = null;
                     int index_scale = 1;
-                    var @base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? rdr.ReadBeUInt32() : rdr.ReadBeUInt16()) : 0;
-                    var outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? rdr.ReadBeUInt32() : rdr.ReadBeUInt16()) : 0;
+                    var b= EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? rdr.ReadBeUInt32() : rdr.ReadBeUInt16()) : 0;
+                    Constant @base = null;
+                    if (b != 0)
+                    {
+                        if (EXT_BASE_DISPLACEMENT_LONG(extension))
+                        {
+                            @base = Constant.Int32((int) b);
+                        }
+                        else
+                        {
+                            @base = Constant.Int16((short) b);
+                        }
+                    }
+
+                    var o = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? rdr.ReadBeUInt32() : rdr.ReadBeUInt16()) : 0;
+                    Constant outer = null;
+                    if (o != 0)
+                        outer = Constant.Int16((short)o);
                     if (EXT_BASE_REGISTER_PRESENT(extension))
-                        base_reg = Registers.AddressRegister(opcode & 7);
+                            base_reg = Registers.AddressRegister(opcode & 7);
                     if (EXT_INDEX_REGISTER_PRESENT(extension))
                     {
                         index_reg =  EXT_INDEX_AR(extension) 
@@ -209,7 +225,7 @@ namespace Decompiler.Arch.M68k
                     }
                     bool preindex = (extension & 7) > 0 && (extension & 7) < 4;
                     bool postindex = (extension & 7) > 4;
-                    return new IndexedOperand(dataWidth, base_reg, index_reg, index_reg_width, index_scale, preindex, postindex);
+                    return new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_reg_width, index_scale, preindex, postindex);
                 }
                 if (EXT_8BIT_DISPLACEMENT(extension) == 0)
                     mode = string.Format("(A{0},{1}{2}.{3}", opcode& 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
@@ -220,8 +236,116 @@ namespace Decompiler.Arch.M68k
                 mode += ")";
                 throw new NotImplementedException(string.Format("Address mode {0:X} not implemented.", addressMode));
                 break;
+            case 7:
+                switch (operandBits)
+                {
+                case 0: // Absolute short address
+                    return new AddressOperand(rdr.ReadBeUInt16());
+                case 1: // Absolute long address
+                    return new AddressOperand(rdr.ReadBeUInt32());
+                case 2: // Program counter with displacement
+                    return new MemoryOperand(Registers.pc, Constant.Int16(rdr.ReadBeInt16()));
+                //g_helper_str = string.Format("; (${0})", (make_int_16(temp_value) + g_cpu_pc - 2) & 0xffffffff);
+                //break;
+                case 3:
+                    throw new NotImplementedException();
+                    //// Program counter with index
+                    //ushort extension = rdr.ReadBeUInt16();
 
-            default: throw new NotImplementedException(string.Format("Address mode {0:X} not implemented.", addressMode));
+                    //if ((g_cpu_type & M68010_LESS) != 0 && EXT_INDEX_SCALE(extension) != 0)
+                    //{
+                    //    throw new NotSupportedException("Invalid address mode.");
+                    //}
+
+                    //if (EXT_FULL(extension))
+                    //{
+                    //    if ((g_cpu_type & M68010_LESS) != 0)
+                    //    {
+                    //        throw new NotSupportedException("Invalid address mode.");
+                    //    }
+
+                    //    if (EXT_EFFECTIVE_ZERO(extension))
+                    //    {
+                    //        mode = "0";
+                    //        break;
+                    //    }
+                    //    @base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+                    //    outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+                    //    if (EXT_BASE_REGISTER_PRESENT(extension))
+                    //        base_reg = "PC";
+                    //    else
+                    //        base_reg = "";
+                    //    if (EXT_INDEX_REGISTER_PRESENT(extension))
+                    //    {
+                    //        index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                    //        if (EXT_INDEX_SCALE(extension) != 0)
+                    //            index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+                    //    }
+                    //    else
+                    //        index_reg = "";
+                    //    preindex = (extension & 7) > 0 && (extension & 7) < 4;
+                    //    postindex = (extension & 7) > 4;
+
+                    //    mode = "(";
+                    //    if (preindex || postindex)
+                    //        mode += "[";
+                    //    if (@base != 0)
+                    //    {
+                    //        mode += make_signed_hex_str_16(@base);
+                    //        comma = true;
+                    //    }
+                    //    if (base_reg != "")
+                    //    {
+                    //        if (comma)
+                    //            mode += ",";
+                    //        mode += base_reg;
+                    //        comma = true;
+                    //    }
+                    //    if (postindex)
+                    //    {
+                    //        mode += "]";
+                    //        comma = true;
+                    //    }
+                    //    if (index_reg != "")
+                    //    {
+                    //        if (comma)
+                    //            mode += ",";
+                    //        mode += index_reg;
+                    //        comma = true;
+                    //    }
+                    //    if (preindex)
+                    //    {
+                    //        mode += "]";
+                    //        comma = true;
+                    //    }
+                    //    if (outer != 0)
+                    //    {
+                    //        if (comma)
+                    //            mode += ",";
+                    //        mode += make_signed_hex_str_16(outer);
+                    //    }
+                    //    mode += ")";
+                    //    break;
+                    //}
+
+                    //if (EXT_8BIT_DISPLACEMENT(extension) == 0)
+                    //    mode = string.Format("(PC,{0}%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                    //else
+                    //    mode = string.Format("({0},PC,%c%d.%c", make_signed_hex_str_8(extension), EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                    //if (EXT_INDEX_SCALE(extension) != 0)
+                    //    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+                    //mode += ")";
+                    //break;
+                case 4:
+                    /* Immediate */
+                    if (dataWidth.Size == 1)
+                        rdr.ReadByte();
+                    return new ImmediateOperand(rdr.ReadBe(dataWidth));
+                default:
+                    throw new NotImplementedException(string.Format("Address mode {0}:{1} not implemented.", addressMode, operandBits));
+                }
+            default: 
+                throw new NotImplementedException(string.Format("Address mode {0:X} not implemented.", addressMode));
             }
         }
 
