@@ -124,15 +124,17 @@ namespace Decompiler.Arch.M68k
 
         private MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
         {
-            byte operandBits = (byte)(opcode >> bitOffset);
-            byte addressMode = (byte)((operandBits >> 3) & 0x07u);
+            opcode >>= bitOffset;
+            byte operandBits = (byte)(opcode & 7);
+            byte addressMode = (byte)((opcode >> 3) & 7);
             return ParseOperandInner(addressMode, operandBits, dataWidth, rdr);
         }
 
         private MachineOperand ParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
         {
-            byte addressMode = (byte)((opcode >> bitOffset) & 7);
-            byte operandBits = (byte)(opcode >> (bitOffset + 3));
+            opcode >>= bitOffset;
+            byte addressMode = (byte)(opcode & 7);
+            byte operandBits = (byte)((opcode >> 3) & 7);
             return ParseOperandInner(addressMode, operandBits, dataWidth, rdr);
         }
 
@@ -338,7 +340,7 @@ namespace Decompiler.Arch.M68k
                     //break;
                 case 4:
                     /* Immediate */
-                    if (dataWidth.Size == 1)
+                    if (dataWidth.Size == 1)        // don't want the instruction stream to get misaligned!
                         rdr.ReadByte();
                     return new ImmediateOperand(rdr.ReadBe(dataWidth));
                 default:
