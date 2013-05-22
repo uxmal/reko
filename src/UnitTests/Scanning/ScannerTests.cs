@@ -430,7 +430,7 @@ fn00001100_exit:
         }
 
         [Test]
-        public void Interprocedural_JumpToOtherProcStart_PromoteJump()
+        public void Scanner_Interprocedural_JumpToOtherProcStart_PromoteJump()
         {
             var scan = CreateScanner(0x1000, 0x2000);
             arch.Test_AddTrace(new RtlTrace(0x1000)
@@ -453,28 +453,83 @@ fn00001100_exit:
 @"// fn00001000
 void fn00001000()
 fn00001000_entry:
-	// succ:  l00001000
 l00001000:
 	r1 = 0x00000000
 	Mem0[0x00001800:word32] = r1
 	return
-	// succ:  fn00001000_exit
 fn00001000_exit:
 
 // fn00001100
 void fn00001100()
 fn00001100_entry:
-	// succ:  l00001100
 l00001100:
 	r1 = 0x00000001
-	// succ:  l00001100_tmp
 l00001100_tmp:
 	call fn00001000 (retsize: 0;)
 	return
-	// succ:  fn00001100_exit
 fn00001100_exit:
 
 ";
+            AssertProgram(sExp, prog);
+        }
+
+        [Test]
+        public void Scanner_IsLinearReturning_EmptyBlock()
+        {
+            var scanner = CreateScanner(0x1000, 0x1000);
+            var proc = new Procedure("fn1000", arch.CreateFrame());
+            var block = new Block(proc, "l1000");
+            Assert.IsFalse(scanner.IsLinearReturning(block));
+        }
+
+        [Test]
+        public void Scanner_IsLinearReturn_EndsWithReturn()
+        {
+            var scanner = CreateScanner(0x1000, 0x1000);
+            var m = new ProcedureBuilder(arch, "fn1000");
+            m.Return();
+
+            var block = m.Procedure.ExitBlock.Pred[0];
+            Assert.IsTrue(scanner.IsLinearReturning(block));
+        }
+
+        [Test]
+        public void Scanner_IsLinearReturn_DoesntEndWithReturn()
+        {
+            var scanner = CreateScanner(0x1000, 0x1000);
+            var m = new ProcedureBuilder(arch, "fn1000");
+            m.Assign(m.Register("ax"), m.Register("bx"));
+
+            var block = m.Block;
+            Assert.IsFalse(scanner.IsLinearReturning(block));
+        }
+
+        [Test]
+        public void Scanner_Interprocedural_CloneBlocks()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            arch.Test_AddTrace(new RtlTrace(0x1000)
+            {
+                m => { m.Assign(reg1, m.Word32(0)); },
+                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Return(0, 0); }
+            });
+            arch.Test_AddTrace(new RtlTrace(0x1004)
+            {
+                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Return(0, 0); }
+            });
+            arch.Test_AddTrace(new RtlTrace(0x1100)
+            {
+                m => { m.Assign(reg1, m.Word32(1)); },
+                m => { m.Goto(new Address(0x1004)); },
+            });
+
+            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
+            scan.ProcessQueue();
+
+            var sExp = "@@@";
             AssertProgram(sExp, prog);
         }
     }

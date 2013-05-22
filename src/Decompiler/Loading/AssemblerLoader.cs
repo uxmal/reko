@@ -65,7 +65,5 @@ namespace Decompiler.Loading
         {
             return base.LoadImageBytes(fileName, offset);
         }
-
-
     }
 }

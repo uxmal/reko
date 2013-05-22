@@ -35,6 +35,7 @@ namespace Decompiler.Arch.PowerPC
     {
         private PrimitiveType wordWidth;
         private ReadOnlyCollection<RegisterStorage> regs;
+        private ReadOnlyCollection<RegisterStorage> fpregs;
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
@@ -83,11 +84,54 @@ namespace Decompiler.Arch.PowerPC
                 new RegisterStorage("r30", 30, wordWidth),
                 new RegisterStorage("r31", 31, wordWidth),
             });
+
+            fpregs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
+                new RegisterStorage("f0", 0, PrimitiveType.Real64),
+                new RegisterStorage("f1", 1, PrimitiveType.Real64),
+                new RegisterStorage("f2", 2, PrimitiveType.Real64),
+                new RegisterStorage("f3", 3, PrimitiveType.Real64),
+                new RegisterStorage("f4", 4, PrimitiveType.Real64),
+                new RegisterStorage("f5", 5, PrimitiveType.Real64),
+                new RegisterStorage("f6", 6, PrimitiveType.Real64),
+                new RegisterStorage("f7", 7, PrimitiveType.Real64),
+                new RegisterStorage("f8", 8, PrimitiveType.Real64),
+                new RegisterStorage("f9", 9, PrimitiveType.Real64),
+
+                new RegisterStorage("f10", 10, PrimitiveType.Real64),
+                new RegisterStorage("f11", 11, PrimitiveType.Real64),
+                new RegisterStorage("f12", 12, PrimitiveType.Real64),
+                new RegisterStorage("f13", 13, PrimitiveType.Real64),
+                new RegisterStorage("f14", 14, PrimitiveType.Real64),
+                new RegisterStorage("f15", 15, PrimitiveType.Real64),
+                new RegisterStorage("f16", 16, PrimitiveType.Real64),
+                new RegisterStorage("f17", 17, PrimitiveType.Real64),
+                new RegisterStorage("f18", 18, PrimitiveType.Real64),
+                new RegisterStorage("f19", 19, PrimitiveType.Real64),
+
+                new RegisterStorage("f20", 20, PrimitiveType.Real64),
+                new RegisterStorage("f21", 21, PrimitiveType.Real64),
+                new RegisterStorage("f22", 22, PrimitiveType.Real64),
+                new RegisterStorage("f23", 23, PrimitiveType.Real64),
+                new RegisterStorage("f24", 24, PrimitiveType.Real64),
+                new RegisterStorage("f25", 25, PrimitiveType.Real64),
+                new RegisterStorage("f26", 26, PrimitiveType.Real64),
+                new RegisterStorage("f27", 27, PrimitiveType.Real64),
+                new RegisterStorage("f28", 28, PrimitiveType.Real64),
+                new RegisterStorage("f29", 29, PrimitiveType.Real64),
+
+                new RegisterStorage("f30", 30, PrimitiveType.Real64),
+                new RegisterStorage("f31", 31, PrimitiveType.Real64),
+            });
         }
 
         public ReadOnlyCollection<RegisterStorage> Registers
         {
             get { return regs; }
+        }
+
+        public ReadOnlyCollection<RegisterStorage> FpRegisters
+        {
+            get { return fpregs; }
         }
 
         #region IProcessorArchitecture Members

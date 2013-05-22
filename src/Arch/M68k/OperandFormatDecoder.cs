@@ -71,6 +71,8 @@ namespace Decompiler.Arch.M68k
                 else if (offset == 0x00)
                     offset = rdr.ReadBeInt16();
                 return new M68kAddressOperand(addr + offset);
+            case 'M':
+                return new RegisterSetOperand(rdr.ReadBeUInt16());
             case 'q':
                 return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.SByte);
             case 'Q':

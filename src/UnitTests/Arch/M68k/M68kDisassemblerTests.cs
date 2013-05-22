@@ -23,6 +23,7 @@ using Decompiler.Arch.M68k;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Arch.M68k
@@ -32,6 +33,25 @@ namespace Decompiler.UnitTests.Arch.M68k
     {
         private M68kDisassembler2 dasm;
         private M68kInstruction instr;
+
+        private void DasmSingleInstruction(params byte[] bytes)
+        {
+            dasm = CreateDasm(bytes, 0x10000000);
+            instr = dasm.Disassemble();
+        }
+
+        private M68kDisassembler2 CreateDasm(byte[] bytes, uint address)
+        {
+            Address addr = new Address(address);
+            ProgramImage img = new ProgramImage(addr, bytes);
+            return new M68kDisassembler2(img.CreateReader(addr));
+        }
+
+        private M68kDisassembler2 CreateDasm(params ushort[] words)
+        {
+            byte[] bytes = words.SelectMany(w => new byte[] { (byte)(w >> 8), (byte)w }).ToArray();
+            return CreateDasm(bytes, 0x10000000);
+        }
 
         [Test]
         public void MoveQ()
@@ -123,9 +143,8 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void MoveM()
         {
             DasmSingleInstruction(0x48, 0xE7, 0x00, 0x04);
-            Assert.AreEqual("movem.l\t#$0004,-(a7)", instr.ToString());
+            Assert.AreEqual("movem.l\ta5,-(a7)", instr.ToString());
         }
-
 
         [Test]
         public void BraB()
@@ -174,17 +193,13 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("add.b\td2,d1", instr.ToString());
         }
 
-        private void DasmSingleInstruction(params byte[] bytes)
+        [Test]
+        public void Eor()
         {
-            dasm = CreateDasm(bytes, 0x10000000);
-            instr = dasm.Disassemble();
-        }
-
-        private M68kDisassembler2 CreateDasm(byte[] bytes, uint address)
-        {
-            Address addr = new Address(address);
-            ProgramImage img = new ProgramImage(addr, bytes);
-            return new M68kDisassembler2(img.CreateReader(addr));
+            dasm = CreateDasm(0xB103, 0xB143, 0xB183);
+            Assert.AreEqual("eor.b\td0,d3", dasm.Disassemble().ToString());
+            Assert.AreEqual("eor.w\td0,d3", dasm.Disassemble().ToString());
+            Assert.AreEqual("eor.l\td0,d3", dasm.Disassemble().ToString());
         }
     }
 }

@@ -39,7 +39,6 @@ namespace Decompiler.Scanning
         private Block blockToPromote;
         private Procedure procOld;
         private Procedure procNew;
-        private Program prog;
         private IdentifierReplacer replacer;
 
         public BlockPromoter(Program program, Block blockToPromote, Procedure procNew)
@@ -48,17 +47,13 @@ namespace Decompiler.Scanning
             this.blockToPromote = blockToPromote;
             this.procOld = blockToPromote.Procedure;
             this.procNew = procNew;
-            this.prog = prog;
             this.replacer = new IdentifierReplacer(procNew.Frame);
         }
 
         public void Promote()
         {
-            var movedBlocks = new HashSet<Block>();
-            foreach (var b in new DfsIterator<Block>(procOld.ControlGraph).PreOrder(blockToPromote))
-            {
-                movedBlocks.Add(b);
-            }
+            var movedBlocks = new HashSet<Block>(
+                new DfsIterator<Block>(procOld.ControlGraph).PreOrder(blockToPromote));
             movedBlocks.Remove(procOld.ExitBlock);
 
             foreach (var b in movedBlocks)

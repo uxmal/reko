@@ -34,11 +34,11 @@ namespace Decompiler.Core
 		private byte [] abImage;
 		private ImageMap map;
 
-		public ProgramImage(Address addrBase, byte [] ab)
+		public ProgramImage(Address addrBase, byte [] bytes)
 		{
 			this.BaseAddress = addrBase;
-			this.abImage = ab;
-			this.map = new ImageMap(addrBase, ab.Length);
+			this.abImage = bytes;
+			this.map = new ImageMap(addrBase, bytes.Length);
 			this.Relocations = new RelocationDictionary();
 		}
 
@@ -46,7 +46,6 @@ namespace Decompiler.Core
         public byte[] Bytes { get { return abImage; } }
         public ImageMap Map { get { return map; } }
         public RelocationDictionary Relocations { get; private set; }
-
 
         public static bool CompareArrays(byte[] src, int iSrc, byte[] dst, int cb)
         {
@@ -166,8 +165,6 @@ namespace Decompiler.Core
             throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
         }
 
-
-
         public static long ReadBeInt64(byte[] image, uint off)
         {
             return ((long)image[off] << 56) |
@@ -193,7 +190,6 @@ namespace Decompiler.Core
                 ((long)image[off+7] << 56);
         }
 
-
         public static int ReadBeInt32(byte[] abImage, uint off)
         {
             int u =
@@ -212,7 +208,6 @@ namespace Decompiler.Core
                 ((int)abImage[off + 3] << 24);
             return u;
         }
-
 
         public static short ReadBeInt16(byte[] img, uint offset)
         {
@@ -272,7 +267,6 @@ namespace Decompiler.Core
         public uint ReadLeUInt32(uint off) { return ReadLeUInt32(this.abImage, off); }
         public short ReadLeInt16(uint off) { return ReadLeInt16(this.abImage, off); }
         public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.abImage, off); }
-
 
         public Constant ReadLeDouble(Address addr) { return ReadLeDouble(abImage, ToOffset(addr)); }
         public Constant ReadLeFloat(Address addr) { return ReadLeFloat(abImage, ToOffset(addr)); }

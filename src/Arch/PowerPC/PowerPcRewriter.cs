@@ -16,6 +16,7 @@ namespace Decompiler.Arch.PowerPC
     {
         private IEnumerator<PowerPcInstruction> instrs;
         private Frame frame;
+        private RtlEmitter emitter;
 
         public PowerPcRewriter(IEnumerable<PowerPcInstruction> instrs, Frame frame)
         {
@@ -29,7 +30,11 @@ namespace Decompiler.Arch.PowerPC
                 yield break;
             var instr = instrs.Current;
             var cluster = new RtlInstructionCluster(instr.Address, 4);
-            var emitter = new RtlEmitter(cluster.Instructions);
+            this.emitter = new RtlEmitter(cluster.Instructions);
+            Expression op1;
+            Expression op2;
+            Expression op3;
+            Expression ea;
             switch (instrs.Current.Opcode)
             {
             default: throw new NotSupportedException(string.Format("PowerPC opcode {0} is not supported yet.", instr.Opcode));
@@ -50,6 +55,31 @@ namespace Decompiler.Arch.PowerPC
                     emitter.Or(
                         RewriteOperand(instrs.Current.op2),
                         Shift16(instrs.Current.op3)));
+                break;
+            case Opcode.lwz:
+                op1 = RewriteOperand(instrs.Current.op1);
+                ea = EffectiveAddress_r0(instrs.Current.op2, emitter);
+                emitter.Assign(op1, emitter.LoadDw(ea));
+                break;
+            case Opcode.lwzu:
+                op1 = RewriteOperand(instrs.Current.op1); 
+                ea = EffectiveAddress(instrs.Current.op2, emitter);
+                emitter.Assign(op1, emitter.LoadDw(ea));
+                emitter.Assign(UpdatedRegister(ea), ea);
+                break;
+            case Opcode.stbu:
+                op1 = RewriteOperand(instrs.Current.op1);
+                ea = EffectiveAddress(instrs.Current.op2, emitter);
+                emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
+                emitter.Assign(UpdatedRegister(ea), ea);
+                break;
+            case Opcode.stbux:
+                op1 = RewriteOperand(instrs.Current.op1);
+                op2 = RewriteOperand(instrs.Current.op2);
+                op3 = RewriteOperand(instrs.Current.op3);
+                ea = emitter.Add(op2, op3);
+                emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
+                emitter.Assign(op2, emitter.Add(op2, op3));
                 break;
             }
             yield return cluster;
@@ -72,6 +102,35 @@ namespace Decompiler.Arch.PowerPC
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)
+        {
+            var mop = (MemoryOperand) operand;
+            var reg = frame.EnsureRegister(mop.BaseRegister);
+            var offset = mop.Offset;
+            return emitter.Add(reg, offset);
+        }
+
+        private Expression EffectiveAddress_r0(MachineOperand operand, RtlEmitter emitter)
+        {
+            var mop = (MemoryOperand) operand;
+            if (mop.BaseRegister.Number == 0)
+            {
+                return Constant.Word32((int) mop.Offset.ToInt16());
+            }
+            else
+            {
+                var reg = frame.EnsureRegister(mop.BaseRegister);
+                var offset = mop.Offset;
+                return emitter.Add(reg, offset);
+            }
+        }
+
+        private Expression UpdatedRegister(Expression effectiveAddress)
+        {
+            var bin = (BinaryExpression) effectiveAddress;
+            return bin.Left;
         }
     }
 }

@@ -20,6 +20,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
@@ -131,7 +132,7 @@ namespace Decompiler.Scanning
                 this.End = end;
             }
 
-            public Block Block { get; set; }
+            public Block Block { get; private set; }
             public uint Start { get; set; }
             public uint End { get; set; }
         }
@@ -217,10 +218,38 @@ namespace Decompiler.Scanning
                 if (!BlockIsEntryBlock(block))
                 {
                     Debug.Print("Block {0} (proc {1}) is not entry block", block, block.Procedure);
-                    block = PromoteBlock(block, addrStart, proc);
+                    if (IsLinearReturning(block))
+                    {
+                        Debug.Print("Cloning {0} to {1}", block.Name, proc);
+                        block = new BlockCloner(block, proc, program.CallGraph).Execute();
+                    }
+                    else
+                    {
+                        block = PromoteBlock(block, addrStart, proc);
+                    }
                 }
             }
             return block;
+        }
+
+        /// <summary>
+        /// Determines whether a block is a linear sequence of assignments followed by a return 
+        /// statement.
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        public bool IsLinearReturning(Block block)
+        {
+            for (; ; )
+            {
+                if (block.Statements.Count == 0)
+                    return false;
+                if (block.Statements.Last.Instruction is ReturnInstruction)
+                    return true;
+                if (!(block.Statements.Last.Instruction is Assignment))
+                    return false;
+                block = block.Succ[0];
+            }
         }
 
         private bool BlockInDifferentProcedure(Block block, Procedure proc)
@@ -238,15 +267,23 @@ namespace Decompiler.Scanning
                 block.Pred[0] == block.Procedure.EntryBlock;
         }
 
-        private Block PromoteBlock(Block block, Address addrStart, Procedure proc)
+        /// <summary>
+        /// Promotes a block to being the entry of a procedure.
+        /// </summary>
+        /// <param name="block">Block to promote</param>
+        /// <param name="addrStart">Address at which the block starts</param>
+        /// <param name="proc">The procedure from which the block is called.</param>
+        /// <returns></returns>
+        public Block PromoteBlock(Block block, Address addrStart, Procedure proc)
         {
             Procedure procNew;
             if (!Procedures.TryGetValue(addrStart, out procNew))
             {
                 procNew = Procedure.Create(addrStart, program.Architecture.CreateFrame());
+                procNew.Frame.ReturnAddressSize = proc.Frame.ReturnAddressSize;
+                procNew.Characteristics = new ProcedureCharacteristics(proc.Characteristics);
                 Procedures.Add(addrStart, procNew);
                 CallGraph.AddProcedure(procNew);
-                procNew.Frame.ReturnAddressSize = proc.Frame.ReturnAddressSize;
             }
             var bp = new BlockPromoter(program, block, procNew);
             bp.Promote();

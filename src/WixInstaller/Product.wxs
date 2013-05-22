@@ -53,8 +53,8 @@
         <Shortcut Id="ApplicationStartMenuShortcut"
                   Name="Decompiler"
                   Description="Decompile binary executable files"
-                  Target="[APPLICATIONROOTDIRECTORY]WindowsDecompiler.exe"
-                  WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+                  Target="[INSTALLFOLDER]WindowsDecompiler.exe"
+                  WorkingDirectory="INSTALLFOLDER"/>
         <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
         <RegistryValue Root="HKCU" Key="Software\jklSoft\Decompiler" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
@@ -83,6 +83,7 @@
         <File Source="$(var.Sparc-2010.TargetPath)" />
         <File Source="$(var.Win32-2010.TargetPath)" />
         <File Source="$(var.WindowsDecompiler-2010.TargetPath)" />
+        <File Source="$(var.WindowsDecompiler-2010.TargetPath).config" />
         <File Source="$(var.X86-2010.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
         <File Source="$(var.Win32-2010.ProjectDir)windows.xml" />

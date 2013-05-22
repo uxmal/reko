@@ -22,6 +22,7 @@ using Decompiler.Arch.M68k;
 using Decompiler.Arch.Sparc;
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Types;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -188,7 +189,7 @@ namespace Decompiler.ImageLoaders.Elf
             switch (machineType)
             {
             case EM_NONE: return null; // No machine
-            case EM_SPARC: return new SparcArchitecture(); //SPARC
+            case EM_SPARC: return new SparcArchitecture(PrimitiveType.Word32); //SPARC
             case EM_386: return new IntelArchitecture(ProcessorMode.Protected32); //Intel 80386
             case EM_68K: return new M68kArchitecture();//Motorola 68000
             case EM_M32: //AT&T WE 32100

@@ -73,6 +73,12 @@ namespace Decompiler.Core
             WriteByte((byte) (us >> 8));
         }
 
+        public void WriteBeUint16(ushort us)
+        {
+            WriteByte((byte)(us >> 8));
+            WriteByte((byte)us);
+        }
+
         public void WriteBeUInt32(uint offset, uint ui)
         {
             Bytes[offset] = (byte)(ui >> 24);

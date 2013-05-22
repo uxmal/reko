@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressOperand.cs" />
     <Compile Include="ArmDisassembler.cs" />
     <Compile Include="ArmImmediateOperand.cs" />
     <Compile Include="ArmInstruction.cs" />

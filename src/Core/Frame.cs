@@ -348,7 +348,6 @@ namespace Decompiler.Core
 			return null;
 		}
 
-
 		public Identifier FindRegister(RegisterStorage reg)
 		{
 			foreach (Identifier id in identifiers)

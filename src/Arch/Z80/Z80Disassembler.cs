@@ -182,7 +182,7 @@ namespace Decompiler.Arch.Z80
         {
             switch (bits & 0x7)
             {
-            default: throw new NotImplementedException(string.Format("Unknown register {0}", bits & 7));
+            default: throw new NotImplementedException(string.Format("Unknown Z80 register {0}.", bits & 7));
             case 0: return Registers.b;
             case 1: return Registers.c;
             case 2: return Registers.d;
@@ -202,6 +202,7 @@ namespace Decompiler.Arch.Z80
             default: throw new NotImplementedException(string.Format("Unknown register {0}.", ch));
             }
         }
+
         private RegisterStorage WordRegister(char encoding)
         {
             switch (encoding)

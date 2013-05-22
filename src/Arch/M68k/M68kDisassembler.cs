@@ -170,7 +170,7 @@ namespace Decompiler.Arch.M68k
         }
     }
 
-    public class M68kDisassembler2 
+    public partial class M68kDisassembler2 : Disassembler
     {
         ImageReader g_cpu_pc;        /* program counter */
 
@@ -178,6 +178,13 @@ namespace Decompiler.Arch.M68k
         {
             GenTable();
             this.g_cpu_pc = rdr;
+        }
+
+        public Address Address { get { return g_cpu_pc.Address; } }
+
+        public MachineInstruction DisassembleInstruction()
+        {
+            return Disassemble();
         }
 
         public M68kInstruction Disassemble()
@@ -192,8 +199,9 @@ namespace Decompiler.Arch.M68k
             g_opcode_type = 0;
 
             instr = new M68kInstruction();
-            instr.code = g_instruction_table[g_cpu_ir].opcode;
-            var args = g_instruction_table[g_cpu_ir].operandFormat;
+            opcode_struct handler = g_instruction_table[g_cpu_ir];
+            instr.code = handler.opcode;
+            var args = handler.operandFormat;
             int i = 0;
             if (args[0] == 's')
             {
@@ -5285,9 +5293,9 @@ namespace Decompiler.Arch.M68k
 	new opcode_struct(d68000_divs         , 0xf1c0, 0x81c0, 0xbff),
 	new opcode_struct(d68000_divu         , 0xf1c0, 0x80c0, 0xbff),
 	new opcode_struct(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
-	new opcode_struct(d68000_eor_8        , 0xf1c0, 0xb100, 0xbf8),
-	new opcode_struct(d68000_eor_16       , 0xf1c0, 0xb140, 0xbf8),
-	new opcode_struct(d68000_eor_32       , 0xf1c0, 0xb180, 0xbf8),
+	new opcode_struct(0xf1c0, 0xb100, 0xbf8, Opcode.eor, "sb:D9,E0"),       // d68000_eor_8        
+	new opcode_struct(0xf1c0, 0xb140, 0xbf8, Opcode.eor, "sw:D9,E0"),   // d68000_eor_16       
+	new opcode_struct(0xf1c0, 0xb180, 0xbf8, Opcode.eor, "sl:D9,E0"),   //d68000_eor_32 
 	new opcode_struct(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
 	new opcode_struct(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
 	new opcode_struct(d68000_eori_8       , 0xffc0, 0x0a00, 0xbf8),
@@ -5313,8 +5321,8 @@ namespace Decompiler.Arch.M68k
 	new opcode_struct(d68000_lsr_r_16     , 0xf1f8, 0xe068, 0x000),
 	new opcode_struct(d68000_lsr_r_32     , 0xf1f8, 0xe0a8, 0x000),
 	new opcode_struct(d68000_lsr_ea       , 0xffc0, 0xe2c0, 0x3f8),
-	new opcode_struct(0xf1f8, 0xe108, 0x000, Opcode.lsl, "s6:q9,D0"),         // d68000_lsl_s_8      
-	new opcode_struct(d68000_lsl_s_16     , 0xf1f8, 0xe148, 0x000),
+	new opcode_struct(0xf1f8, 0xe108, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_8      
+	new opcode_struct(0xf1f8, 0xe148, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_16     
 	new opcode_struct(d68000_lsl_s_32     , 0xf1f8, 0xe188, 0x000),
 	new opcode_struct(d68000_lsl_r_8      , 0xf1f8, 0xe128, 0x000),
 	new opcode_struct(d68000_lsl_r_16     , 0xf1f8, 0xe168, 0x000),
@@ -5333,9 +5341,9 @@ namespace Decompiler.Arch.M68k
 	new opcode_struct(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
 	new opcode_struct(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
 	new opcode_struct(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
-	new opcode_struct(d68000_movem_pd_32  , 0xfff8, 0x48e0, 0x000),
+	new opcode_struct(0xfff8, 0x48e0, 0x000, Opcode.movem, "sl:M,E0"),         // d68000_movem_pd_32  
 	new opcode_struct(d68000_movem_re_16  , 0xffc0, 0x4880, 0x2f8),
-	new opcode_struct(0xffc0, 0x48c0, 0x2f8, Opcode.movem, "sl:Iw,E0"),     // d68000_movem_re_32   
+	new opcode_struct(0xffc0, 0x48c0, 0x2f8, Opcode.movem, "sl:M,E0"),     // d68000_movem_re_32   
 	new opcode_struct(d68000_movem_er_16  , 0xffc0, 0x4c80, 0x37b),
 	new opcode_struct(d68000_movem_er_32  , 0xffc0, 0x4cc0, 0x37b),
 	new opcode_struct(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),

@@ -40,8 +40,17 @@ namespace Decompiler.Core
         public abstract IProcessorArchitecture Architecture { get; }
         public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get { return null; } }
         public abstract Platform Platform { get; }
+
+        /// <summary>
+        /// If nothing else is specified, this is the address at which the image will be loaded.
+        /// </summary>
         public abstract Address PreferredBaseAddress { get; }
+
+        /// <summary>
+        /// The image as it appears on the storage medium before being loaded.
+        /// </summary>
         public byte[] RawImage { get { return imgRaw; } }
+
         public IServiceProvider Services { get; private set; }
 
         /// <summary>

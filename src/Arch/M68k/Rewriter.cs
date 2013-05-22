@@ -19,36 +19,75 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Rtl;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    public class Rewriter : IEnumerable<RtlInstructionCluster>
+    public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private M68kArchitecture arch;
+        internal M68kArchitecture arch;
         private M68kState state;
-        private Frame frame;
+        internal Frame frame;
         private IRewriterHost host;
+        private IEnumerator<DisassembledInstruction> dasm;
+        internal DisassembledInstruction di;
+        private RtlInstructionCluster ric;
+        internal RtlEmitter emitter;
+        private OperandRewriter orw;
 
-        public Rewriter(M68kArchitecture m68kArchitecture, M68kState m68kState, Frame frame, IRewriterHost host)
+        public Rewriter(M68kArchitecture m68kArchitecture, ImageReader rdr, M68kState m68kState, Frame frame, IRewriterHost host)
         {
             this.arch = m68kArchitecture;
             this.state = m68kState;
             this.frame = frame;
             this.host = host;
+            this.dasm = CreateDisassemblyStream(rdr);
+        }
+
+        protected IEnumerator<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
+        {
+            var d = (M68kDisassembler2) arch.CreateDisassembler(rdr);
+            while (rdr.IsValid)
+            {
+                var addr = d.Address;
+                var instr = d.Disassemble();
+                if (instr == null)
+                    yield break;
+                var length = (uint)(d.Address - addr);
+                yield return new DisassembledInstruction(addr, instr, length);
+            }
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            throw new NotImplementedException();
+            while (dasm.MoveNext())
+            {
+                di = dasm.Current;
+                ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
+                emitter = new RtlEmitter(ric.Instructions);
+                orw = new OperandRewriter(this);
+                switch (di.Instruction.code)
+                {
+                case Opcode.eor: RewriteEor(); break;
+                case Opcode.movea: RewriteMove(false); break;
+                default:
+                    throw new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
+                        di.Instruction.code),
+                        di.Address);
+                }
+                 yield return ric;
+
+            }
+            yield break;
         }
 
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

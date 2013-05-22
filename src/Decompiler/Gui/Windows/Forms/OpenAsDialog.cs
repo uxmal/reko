@@ -41,6 +41,7 @@ namespace Decompiler.Gui.Windows.Forms
             Platforms = new ComboBoxWrapper(ddlEnvironments);
             FileName = new TextBoxWrapper(textBox1);
             BrowseButton = new ButtonWrapper(btnBrowse);
+            OkButton = new ButtonWrapper(btnOk);
 
             new OpenAsInteractor().Attach(this);
         }
@@ -51,6 +52,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public IComboBox Architectures { get; private set; }
         public IComboBox Platforms { get; private set; }
-        public IButton BrowseButton { get; private set; } 
+        public IButton BrowseButton { get; private set; }
+        public IButton OkButton { get; private set; }
     }
 }

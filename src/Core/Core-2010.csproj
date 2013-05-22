@@ -442,7 +442,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RelocationDictionary.cs" />
-    <Compile Include="RewriterState.cs" />
     <Compile Include="Serialization\ArgumentSerializer.cs" />
     <Compile Include="Serialization\ArraySizeCharacteristic.cs" />
     <Compile Include="Serialization\DecompilerInput.cs">

@@ -225,6 +225,9 @@ namespace Decompiler.Core
 		}
 	}
 
+    /// <summary>
+    /// Used to represent a machine register.
+    /// </summary>
 	public class RegisterStorage : Storage
 	{
 		public RegisterStorage(string name, int number, PrimitiveType dt) : base("Register")

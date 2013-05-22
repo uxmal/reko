@@ -41,7 +41,7 @@ namespace Decompiler.Arch.Pdp11
 
         public Address Address
         {
-            get { throw new NotImplementedException(); }
+            get { return rdr.Address; }
         }
 
         public MachineInstruction DisassembleInstruction()

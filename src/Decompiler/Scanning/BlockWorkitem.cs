@@ -209,15 +209,14 @@ namespace Decompiler.Scanning
 
         private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
         {
-            Debug.Print("EnsureEdge: from {0} to {1} (in proc {2})", blockFrom.Name, blockTo.Name, proc.Name);
             if (blockFrom.Procedure == blockTo.Procedure)
             {
-                Debug.Print("    Simple edge");
                 if (!proc.ControlGraph.ContainsEdge(blockFrom, blockTo))
                     proc.ControlGraph.AddEdge(blockFrom, blockTo);
             }
             else
-            {
+            {          
+                Debug.Print("EnsureEdge: from {0} to {1} (in proc {2})", blockFrom.Name, blockTo.Name, proc.Name);
                 Debug.Print("    Thunking from {0} to {1}", blockFrom, blockTo);
                 Debug.Print("    Procs {0}, {1}", blockFrom.Procedure, blockTo.Procedure);
                 var callRetThunkBlock = proc.AddBlock(blockFrom + "_tmp");
