@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             Rewrite(0xB103);        // eorb %d0,%d3
             AssertCode("0|00010000(2): 5 instructions",
-                "1|v4 = (byte) d0 ^ (byte) d3",
+                "1|v4 = (byte) d3 ^ (byte) d0",
                 "2|d3 = DPB(d3, v4, 0, 8)",
                 "3|ZN = cond(v4)",
                 "4|C = false",
@@ -107,20 +107,33 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             Rewrite(0xB183);        // eorb %d0,%d3
             AssertCode("0|00010000(2): 4 instructions",
-                "1|d3 = d0 ^ d3",
+                "1|d3 = d3 ^ d0",
                 "2|ZN = cond(d3)",
                 "3|C = false",
                 "4|V = false");
-
         }
 
         [Test]
         public void M68krw_adda_l()
         {
             Rewrite(0xDBDC);
-            AssertCode("0|00010000(2): 1 instructions",
-                "1|a5 = a5 + Mem[a4:word32]",
+            AssertCode("0|00010000(2): 2 instructions",
+                "1|a5 = a5 + Mem0[a4:word32]",
                 "2|a4 = a4 + 0x00000004");
+        }
+
+        [Test]
+        public void M68krw_or_imm()
+        {
+            Rewrite(0x867c, 0x1123);    // or.w #$1123,d3
+            AssertCode("0|00010000(4): 5 instructions",
+                "1|v3 = (word16) d3 | 0x1123",
+                "2|d3 = DPB(d3, v3, 0, 16)",
+                "3|ZN = cond(v3)",
+                "4|C = false",
+                "5|V = false");
+
+
         }
     }
 }

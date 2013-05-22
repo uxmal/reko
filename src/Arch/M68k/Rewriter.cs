@@ -75,15 +75,15 @@ namespace Decompiler.Arch.M68k
                 switch (di.Instruction.code)
                 {
                 case Opcode.adda: RewriteAdda(); break;
-                case Opcode.eor: RewriteEor(); break;
+                case Opcode.eor: RewriteLogical(Operator.Xor); break;
                 case Opcode.movea: RewriteMove(false); break;
+                case Opcode.or: RewriteLogical(Operator.Or); break;
                 default:
                     throw new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
                         di.Instruction.code),
                         di.Address);
                 }
-                 yield return ric;
-
+                yield return ric;
             }
             yield break;
         }

@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,29 +30,39 @@ namespace Decompiler.Arch.M68k
 {
     public partial class Rewriter
     {
-        public void RewriteEor()
+        public void RewriteLogical(BinaryOperator op)
         {
             var width = di.Instruction.dataWidth;
             Expression result;
             if (width.Size < 4)
             {
-                var op1 = emitter.Cast(width, orw.Rewrite(di.Instruction.op1));
-                var op2 = emitter.Cast(width, orw.Rewrite(di.Instruction.op2));
-                var tmp = frame.CreateTemporary(di.Instruction.dataWidth);
-                emitter.Assign(tmp, emitter.Xor(op1, op2));
-                emitter.Assign(orw.Rewrite(di.Instruction.op2), emitter.Dpb(orw.Rewrite(di.Instruction.op2), tmp, 0, width.BitSize));
+                var opSrc = MaybeCast(width, orw.Rewrite(di.Instruction.op1));
+                var opDst = MaybeCast(width, orw.Rewrite(di.Instruction.op2));
+                var tmp = frame.CreateTemporary(width);
+                emitter.Assign(tmp, new BinaryExpression(op, width, opDst, opSrc));
+                emitter.Assign(
+                    orw.Rewrite(di.Instruction.op2),
+                    emitter.Dpb(orw.Rewrite(di.Instruction.op2), tmp, 0, width.BitSize));
                 result= tmp;
             }
             else
             {
-                var op1 = orw.Rewrite(di.Instruction.op1);
-                var op2 = orw.Rewrite(di.Instruction.op2);
-                emitter.Assign(op2, emitter.Xor(op1, op2));
-                result = op2;
+                var opSrc = orw.Rewrite(di.Instruction.op1);
+                var opDst = orw.Rewrite(di.Instruction.op2);
+                emitter.Assign(opDst, emitter.Xor(opDst, opSrc));
+                result = opDst;
             }
             emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(result));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
             emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+        }
+
+        private Expression MaybeCast(PrimitiveType width, Expression expr)
+        {
+            if (expr.DataType.Size == width.Size)
+                return expr;
+            else
+                return emitter.Cast(width, expr);
         }
 
         private void RewriteAdda()

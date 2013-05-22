@@ -34,11 +34,13 @@ namespace Decompiler.Arch.M68k
     {
         private Rewriter rewriter;
         private RtlEmitter m;
+        private Frame frame;
 
         public OperandRewriter(Rewriter rewriter)
         {
             this.rewriter = rewriter;
             this.m = rewriter.emitter;
+            this.frame = rewriter.frame;
         }
 
         public Expression Rewrite(MachineOperand operand)
@@ -46,6 +48,9 @@ namespace Decompiler.Arch.M68k
             var reg = operand as RegisterOperand;
             if (reg != null)
                 return rewriter.frame.EnsureRegister(reg.Register);
+            var imm = operand as ImmediateOperand;
+            if (imm != null)
+                return imm.Value;
             var pre = operand as PredecrementMemoryOperand;
             if (pre != null)
             {
@@ -53,7 +58,10 @@ namespace Decompiler.Arch.M68k
                 m.Assign(r, m.Sub(r, rewriter.di.Instruction.dataWidth.Size));
                 return m.Load(rewriter.di.Instruction.dataWidth, r);
             }
-            throw new NotImplementedException(operand.ToString());
+            var post = operand as PostIncrementMemoryOperand;
+            if (post != null)
+                return m.Load(rewriter.di.Instruction.dataWidth, frame.EnsureRegister(post.Register));
+            throw new NotImplementedException("Unimplemented rewrite for operand type " + operand.ToString());
         }
 
         public Identifier FlagGroup(FlagM flags)
