@@ -33,7 +33,6 @@ using BitSet = Decompiler.Core.Lib.BitSet;
 
 namespace Decompiler.UnitTests.Arch.Intel
 {
-
 	[TestFixture]
 	public class IntelArchitectureTests
 	{

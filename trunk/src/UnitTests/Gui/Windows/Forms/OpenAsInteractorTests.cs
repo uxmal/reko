@@ -97,7 +97,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private void Given_Dialog()
         {
             dlg = repository.DynamicMock<IOpenAsDialog>();
+            var btnBrowse = repository.Stub<IButton>();
+            var btnOk = repository.Stub<IButton>();
             dlg.Stub(d => d.Services).Return(sc);
+            dlg.Stub(d => d.BrowseButton).Return(btnBrowse);
+            dlg.Stub(d => d.OkButton).Return(btnOk);
         }
 
         private void Given_Architectures()
@@ -105,10 +109,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var arch1 = repository.Stub<Architecture>();
             arch1.Stub(a => a.Name).Return("ARCH1");
             arch1.Stub(a => a.Description).Return("Arch 1");
+            arch1.Stub(a => a.TypeName).Return("ArchSpace1.Arch");
 
             var arch2 = repository.Stub<Architecture>();
             arch2.Stub(a => a.Name).Return("ARCH2");
             arch2.Stub(a => a.Description).Return("Arch 2");
+            arch2.Stub(a => a.TypeName).Return("ArchSpace2.Arch");
 
             dcSvc.Stub(d => d.GetArchitectures()).Return(new List<Architecture> { arch1, arch2 });
         }
@@ -118,6 +124,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var env1 = repository.Stub<OperatingEnvironment>();
             env1.Stub(e  => e.Name).Return("TECH");
             env1.Stub(e => e.Description).Return("Friendly");
+            env1.Stub(a => a.TypeName).Return("Env1.Env");
 
             dcSvc.Stub(d => d.GetEnvironments()).Return(new List<OperatingEnvironment> { env1 });
         }
@@ -135,14 +142,39 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             var interactor = new OpenAsInteractor();
             interactor.Attach(dlg);
-            dlg.Raise(x => x.Load += null,
-                dlg,
-                EventArgs.Empty);
+
+            When_Dialog_Loaded();
 
             repository.VerifyAll();
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
             Assert.AreEqual("- None -", platformNames[0].Text);
+        }
+
+        private void When_Dialog_Loaded()
+        {
+            dlg.Raise(x => x.Load += null,
+                dlg,
+                EventArgs.Empty);
+        }
+
+        [Test]
+        public void Oai_NoFileSelected_OkDisabled()
+        {
+            Given_Dialog();
+            Given_Platforms();
+            Given_Architectures();
+            Expect_PlatformDataSourceSet();
+            Expect_ArchDatasourceSet();
+            repository.ReplayAll();
+
+            var interactor = new OpenAsInteractor();
+            interactor.Attach(dlg);
+
+            When_Dialog_Loaded();
+
+            Assert.IsFalse(dlg.OkButton.Enabled);
+            repository.VerifyAll();
         }
     }
 }

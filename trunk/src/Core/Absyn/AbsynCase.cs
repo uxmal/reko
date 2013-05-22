@@ -27,12 +27,10 @@ namespace Decompiler.Core.Absyn
 {
     public class AbsynCase : AbsynStatement
     {
-        private int i;
-
         //$REVIEW: Should take an expression.
         public AbsynCase(int i)
         {
-            this.i = i;
+            this.Number = i;
         }
 
         public override void Accept(IAbsynVisitor visitor)
@@ -40,9 +38,6 @@ namespace Decompiler.Core.Absyn
             visitor.VisitCase(this);
         }
 
-        public int Number
-        {
-            get { return i; }
-        }
+        public int Number { get; private set; }
     }
 }

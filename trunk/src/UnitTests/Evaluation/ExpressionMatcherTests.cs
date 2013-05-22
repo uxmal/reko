@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void Identifier()
+        public void Emt_Identifier()
         {
             string name = "foo";
             var id = Id(name);
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void MatchConstant()
+        public void Emt_MatchConstant()
         {
             var c = Constant.Word32(4);
             Create(Constant.Word32(4));
@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void MatchAnyConstant()
+        public void Emt_MatchAnyConstant()
         {
             var c = Constant.Word32(4);
             Create(ExpressionMatcher.AnyConstant("c"));
@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void MatchBinOp()
+        public void Emt_MatchBinOp()
         {
             var b = m.Add(Id("esp"), 4);
             Create(m.Add(Id("esp"), 4));
@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void BinOpMismatch()
+        public void Emt_BinOpMismatch()
         {
             var b = m.Add(Id("esp"), 4);
             Create(m.Sub(Id("esp"), 4));
@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void MemAccess()
+        public void Emt_MemAccess()
         {
             var mem = m.LoadW(m.Add(Id("ebx"), 4));
             Create(m.LoadW(m.Add(AnyId("idx"), AnyC("offset"))));
@@ -104,16 +104,16 @@ namespace Decompiler.UnitTests.Evaluation
         }
 
         [Test]
-        public void MatchAnyOp()
+        public void Emt_MatchAnyOp()
         {
             var sum = m.Add(Id("ebx"), Id("ecx"));
-            Create(new BinaryExpression(AnyOp("op"), null, AnyId("left"), AnyId("right")));
+            Create(new BinaryExpression(AnyOp("op"), sum.DataType, AnyId("left"), AnyId("right")));
             Assert.IsTrue(matcher.Match(sum));
             Assert.AreEqual(" + ", matcher.CapturedOperators("op").ToString());
         }
 
         [Test]
-        public void MatchCondOf()
+        public void Emt_MatchCondOf()
         {
             var e = m.Add(Id("ebx"), m.Cond(Id("ecx")));
             Create(m.Add(AnyId(""), m.Cond(AnyId("q"))));

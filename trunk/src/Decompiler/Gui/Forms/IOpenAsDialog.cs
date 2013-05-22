@@ -35,5 +35,6 @@ namespace Decompiler.Gui.Forms
         IComboBox Architectures { get; }
         IComboBox Platforms { get; }
         IButton BrowseButton { get; }
+        IButton OkButton { get; }
     }
 }

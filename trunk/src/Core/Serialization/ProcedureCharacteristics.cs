@@ -30,11 +30,17 @@ namespace Decompiler.Core.Serialization
 	/// </summary>
 	public class ProcedureCharacteristics
 	{
-        private ArraySizeCharacteristic arraySize;
-
 		public ProcedureCharacteristics()
 		{
 		}
+
+        public ProcedureCharacteristics(ProcedureCharacteristics old)
+        {
+            IsAlloca = old.IsAlloca;
+            Terminates = old.Terminates;
+            Allocator = old.Allocator;
+            ArraySize = old.ArraySize;
+        }
 
 		[XmlElement("is-alloca")]
 		[DefaultValue(false)]
@@ -49,11 +55,7 @@ namespace Decompiler.Core.Serialization
         public bool Allocator { get; set; }
 
         [XmlElement("array-size")]
-        public ArraySizeCharacteristic ArraySize
-        {
-            get { return arraySize; }
-            set { arraySize = value; }
-        }
+        public ArraySizeCharacteristic ArraySize { get; set; }
 
         public void Write()
         {

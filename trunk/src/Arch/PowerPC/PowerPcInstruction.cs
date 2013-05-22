@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -104,7 +105,21 @@ namespace Decompiler.Arch.PowerPC
         {
             throw new NotImplementedException();
         }
-
     }
 
+    public class AddressOperand : MachineOperand
+    {
+        public Address Address;
+
+        public AddressOperand(Address a)
+            : base(PrimitiveType.Pointer32)	//$BUGBUG: 64-bit pointers?
+        {
+            Address = a;
+        }
+
+        public override string ToString()
+        {
+            return "$" + Address.ToString();
+        }
+    }
 }

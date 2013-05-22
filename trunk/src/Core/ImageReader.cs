@@ -66,7 +66,6 @@ namespace Decompiler.Core
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(uint offset) { return 0 <= offset && offset < img.Length; }
 
-
         public byte ReadByte()
         {
             byte b = img[off];

@@ -61,16 +61,7 @@ namespace Decompiler.Core
         /// </summary>
         public IEnumerable<Statement> Statements
         {
-            get
-            {
-                foreach (Block b in blocks)
-                {
-                    foreach (Statement stm in b.Statements)
-                    {
-                        yield return stm;
-                    }
-                }
-            }
+            get { return blocks.SelectMany(b => b.Statements); }
         }
 
 		/// <summary>

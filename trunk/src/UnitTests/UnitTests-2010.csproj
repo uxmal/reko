@@ -111,10 +111,12 @@
     <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
+    <Compile Include="Arch\M68k\RewriterTests.cs" />
     <Compile Include="Arch\Mos6502\DisassemblerTests.cs" />
     <Compile Include="Arch\Pdp11\DisassemblerTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
+    <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Z80\DisassemblerTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
@@ -140,7 +142,6 @@
     <Compile Include="Arch\Intel\IntelAssemblerTests.cs" />
     <Compile Include="Arch\Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Arch\Intel\IntelRegisterTests.cs" />
-    <Compile Include="Arch\Intel\IntelRewriterTests.cs" />
     <Compile Include="Arch\Intel\MsDosPlatformTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterRealModeTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterTests.cs" />
@@ -336,6 +337,7 @@
     <Compile Include="Mocks\UnstructuredIfsMock.cs" />
     <Compile Include="Mocks\WhileLoopFragment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
@@ -427,6 +429,10 @@
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
       <Name>PowerPC-2010</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Sparc\Sparc-2010.csproj">
+      <Project>{454d9734-edf3-4646-8c7f-8449c68eb826}</Project>
+      <Name>Sparc-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>X86-2010</Name>
@@ -493,7 +499,9 @@
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Environments\Msdos\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

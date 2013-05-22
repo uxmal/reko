@@ -25,7 +25,7 @@ namespace Decompiler.Core.Expressions
 {
 	public class ProcedureConstant : Expression
 	{
-		public ProcedureConstant(PrimitiveType ptrType, ProcedureBase proc) : base(ptrType)
+		public ProcedureConstant(DataType ptrType, ProcedureBase proc) : base(ptrType)
 		{
             this.Procedure = proc;
 		}

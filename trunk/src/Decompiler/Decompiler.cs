@@ -306,7 +306,6 @@ namespace Decompiler
             }
         }
 
-
         /// <summary>
         /// Starts a scan at address <paramref name="addr"/> on the user's request.
         /// </summary>
@@ -349,6 +348,7 @@ namespace Decompiler
 			{
 				loader = null;
 				host.WriteDisassembly(prog.DumpAssembler);
+                host.WriteIntermediateCode((w) => { EmitProgram(null, w); });
 			}
 		}
 
@@ -363,7 +363,6 @@ namespace Decompiler
                      sser.Deserialize(sc.Signature, prog.Architecture.CreateFrame())
                  )).ToDictionary(item => item.Key, item => item.Value);
         }
-
 
         private IScanner CreateScanner(Program prog, DecompilerEventListener eventListener)
         {
@@ -402,7 +401,6 @@ namespace Decompiler
 			eventListener.ShowStatus("Rewriting complete.");
 		}
 
-
 		private void WriteDecompilerProducts()
 		{
 			host.WriteTypes(WriteDecompiledTypes);
@@ -413,7 +411,7 @@ namespace Decompiler
 		{
 			w.WriteLine("// {0}", filename);
 			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.InputFilename);
-			w.WriteLine("// using Decompiler.");
+			w.WriteLine("// using Decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}
 	}

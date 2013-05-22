@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="PowerPcArchitecture.cs" />
     <Compile Include="PowerPcDisassembler.cs" />

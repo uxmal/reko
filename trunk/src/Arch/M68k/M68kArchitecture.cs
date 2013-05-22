@@ -35,7 +35,7 @@ namespace Decompiler.Arch.M68k
     {
         public Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new M68kDisassembler(rdr);
+            return new M68kDisassembler2(rdr);
         }
 
         public ProcessorState CreateProcessorState()
@@ -89,7 +89,7 @@ namespace Decompiler.Arch.M68k
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Rewriter(this, (M68kState) state, frame, host);
+            return new Rewriter(this, rdr, (M68kState) state, frame, host);
         }
 
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -115,9 +115,23 @@ namespace Decompiler.Arch.M68k
             get { throw new NotImplementedException(); }
         }
 
+        private static RegisterStorage[] flagRegisters = {
+            new RegisterStorage("C", 0, PrimitiveType.Bool),
+            new RegisterStorage("V", 0, PrimitiveType.Bool),
+            new RegisterStorage("Z", 0, PrimitiveType.Bool),
+            new RegisterStorage("N", 0, PrimitiveType.Bool),
+            new RegisterStorage("X", 0, PrimitiveType.Bool),
+        };
+
         public string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            for (int r = 0; grf != 0; ++r, grf >>= 1)
+            {
+                if ((grf & 1) != 0)
+                    s.Append(flagRegisters[r].Name);
+            }
+            return s.ToString();
         }
 
         public PrimitiveType FramePointerType
@@ -135,7 +149,7 @@ namespace Decompiler.Arch.M68k
             get { return PrimitiveType.Word32; }
         }
 
-        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
+        public uint CarryFlagMask { get { return (uint) FlagM.CF; } }
         public RegisterStorage StackRegister { get { return Registers.a7; } }
 
 

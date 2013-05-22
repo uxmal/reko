@@ -97,9 +97,9 @@ namespace Decompiler.Core.Code
         {
         }
 
-        public ReturnInstruction(Expression v)
+        public ReturnInstruction(Expression exp)
         {
-            this.Expression = v;
+            this.Expression = exp;
         }
 
         public Expression Expression { get; set; }

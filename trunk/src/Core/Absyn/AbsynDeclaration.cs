@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using System;
 
@@ -25,7 +26,6 @@ namespace Decompiler.Core.Absyn
 {
 	public class AbsynDeclaration : AbsynStatement
 	{
-
 		public AbsynDeclaration(Identifier id, Expression expr)
 		{
 			this.Identifier = id;
@@ -39,6 +39,5 @@ namespace Decompiler.Core.Absyn
 		{
 			visitor.VisitDeclaration(this);
 		}
-
 	}
 }

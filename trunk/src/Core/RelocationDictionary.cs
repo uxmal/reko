@@ -32,6 +32,11 @@ namespace Decompiler.Core
     {
         private Dictionary<uint, Constant> map = new Dictionary<uint, Constant>();
 
+        /// <summary>
+        /// Retrieves a relocated value at the <paramref name="imageOffset"/>.
+        /// </summary>
+        /// <param name="imageOffset"></param>
+        /// <returns></returns>
         public Constant this[uint imageOffset]
         {
             get

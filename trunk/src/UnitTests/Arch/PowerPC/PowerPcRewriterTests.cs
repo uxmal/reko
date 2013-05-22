@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
 
         [Test]
-        public void Oris()
+        public void PPCRW_Oris()
         {
             RunTest((m) =>
             {
@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
 
         [Test]
-        public void Add()
+        public void PPCRW_Add()
         {
             RunTest((m) =>
             {
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void Add_()
+        public void PPCRW_Add_()
         {
             RunTest((m) =>
             {
@@ -77,6 +77,60 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 "0|01000000(4): 2 instructions",
                 "1|r4 = r1 + r3",
                 "2|SCZO = cond(r4)");
+        }
+
+        [Test]
+        public void PPCRW_lwzu()
+        {
+            RunTest((m) =>
+            {
+                m.Lwzu(m.r2, 4, m.r1); 
+            });
+            AssertCode(
+                "0|01000000(4): 2 instructions",
+                "1|r2 = Mem0[r1 + 4:word32]",
+                "2|r1 = r1 + 4"
+                );
+        }
+
+        [Test]
+        public void PPCRW_lwz_r0()
+        {
+            RunTest((m) =>
+            {
+                m.Lwz(m.r2, -4, m.r0);
+            });
+            AssertCode(
+                "0|01000000(4): 1 instructions",
+                "1|r2 = Mem0[0xFFFFFFFC:word32]"
+                );
+        }
+        [Test]
+        public void PPCRW_stbu()
+        {
+            RunTest((m) =>
+            {
+                m.Stbu(m.r2, 18, m.r3);
+            });
+            AssertCode(
+                "0|01000000(4): 2 instructions",
+                "1|Mem0[r3 + 18:byte] = (byte) r2",
+                "2|r3 = r3 + 18"
+                );
+        }
+
+        [Test]
+        public void PPCRW_stbux()
+        {
+            RunTest((m) =>
+            {
+                m.Stbux(m.r2, m.r3, m.r0);
+            });
+            AssertCode(
+                "0|01000000(4): 2 instructions",
+                "1|Mem0[r3 + r0:byte] = (byte) r2",
+                "2|r3 = r3 + r0"
+                );
         }
     }
 }

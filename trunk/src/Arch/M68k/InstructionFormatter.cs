@@ -135,8 +135,8 @@ namespace Decompiler.Arch.M68k
         public M68kOperand Visit(RegisterSetOperand registerSet)
         {
             uint bitSet = registerSet.BitSet;
-            WriteRegisterSet(bitSet, 0, 1, "D", writer);
-            WriteRegisterSet(bitSet, 8, 1, "A", writer);
+            WriteRegisterSet(bitSet, 15, -1, "d", writer);
+            WriteRegisterSet(bitSet, 7, -1, "a", writer);
             return registerSet;
         }
 

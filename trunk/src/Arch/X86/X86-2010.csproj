@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressOperand.cs" />
     <Compile Include="FstswChainMatcher.cs" />
     <Compile Include="OperandRewriter.cs">
       <SubType>Code</SubType>
@@ -124,9 +125,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcessorMode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="RewriterState.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="X86Rewriter.Alu.cs">

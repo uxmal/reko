@@ -379,7 +379,7 @@ namespace Decompiler.Core.Expressions
             return Constant.Word32(n);
         }
 
-        public Expression Xor(Identifier a, Expression b)
+        public Expression Xor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, b);
         }

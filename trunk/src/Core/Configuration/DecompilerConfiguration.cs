@@ -44,18 +44,24 @@ namespace Decompiler.Core.Configuration
         public virtual ICollection GetImageLoaders()
         {
             var handler = (LoaderSectionHandler) ConfigurationManager.GetSection("Decompiler/Loaders");
+            if (handler == null)
+                return new LoaderElement[0];
             return handler.ImageLoaders;
         }
 
         public virtual ICollection GetArchitectures()
         {
             var handler = (ArchitectureSectionHandler) ConfigurationManager.GetSection("Decompiler/Architectures");
+            if (handler == null)
+                return new ArchitectureElement[0];
             return handler.Architectures;
         }
 
         public virtual ICollection GetEnvironments()
         {
             var handler = (OperatingEnvironmentSectionHandler) ConfigurationManager.GetSection("Decompiler/Environments");
+            if (handler == null)
+                return new OperatingEnvironmentElement[0];
             return handler.Environments;
         }
 

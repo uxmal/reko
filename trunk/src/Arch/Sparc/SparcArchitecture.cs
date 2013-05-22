@@ -33,11 +33,18 @@ namespace Decompiler.Arch.Sparc
 {
     public class SparcArchitecture : IProcessorArchitecture
     {
+        private PrimitiveType primitiveType;
+
+        public SparcArchitecture(PrimitiveType primitiveType)
+        {
+            // TODO: Complete member initialization
+            this.primitiveType = primitiveType;
+        }
         #region IProcessorArchitecture Members
 
         public Disassembler CreateDisassembler(ImageReader imageReader)
         {
-            throw new NotImplementedException();
+            return new SparcDisassembler(this, imageReader);
         }
 
         public ProcessorState CreateProcessorState()

@@ -143,22 +143,6 @@ namespace Decompiler.Core.Machine
 
     }
 
-    //$TODO: move into intel assembly.
-	public class AddressOperand : MachineOperand
-	{
-		public Address Address;
-
-		public AddressOperand(Address a) : base(PrimitiveType.Pointer32)	//$BUGBUG: P6 pointers?
-		{
-			Address = a;
-		}
-
-		public override string ToString()
-		{
-			return "far " + Address.ToString();
-		}
-	}
-
 	public class FpuOperand : MachineOperand
 	{
 		private int fpuReg;
