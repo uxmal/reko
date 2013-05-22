@@ -133,6 +133,13 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void Addal()
+        {
+            dasm = CreateDasm(0xDBDC);
+            Assert.AreEqual("adda.l\t(a4)+,a5", dasm.Disassemble().ToString());
+        }
+
+        [Test]
         public void MoveA()
         {
             DasmSingleInstruction(0x20, 0x51, 0x00, 0x04);
@@ -201,5 +208,13 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("eor.w\td0,d3", dasm.Disassemble().ToString());
             Assert.AreEqual("eor.l\td0,d3", dasm.Disassemble().ToString());
         }
+
+        [Test]
+        public void bcs()
+        {
+            dasm = CreateDasm(0x6572);
+            Assert.AreEqual("bcs\t$00000074", dasm.Disassemble().ToString());
+        }
+
     }
 }

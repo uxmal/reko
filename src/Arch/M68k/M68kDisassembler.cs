@@ -26,6 +26,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Arch.M68k
@@ -199,20 +200,8 @@ namespace Decompiler.Arch.M68k
             g_opcode_type = 0;
 
             instr = new M68kInstruction();
-            opcode_struct handler = g_instruction_table[g_cpu_ir];
-            instr.code = handler.opcode;
-            var args = handler.operandFormat;
-            int i = 0;
-            if (args[0] == 's')
-            {
-                instr.dataWidth = OperandFormatDecoder.GetSizeType(g_cpu_ir, args[1], null);
-                i = 3;
-            }
-            var opTranslator = new OperandFormatDecoder(g_cpu_ir, args, i);
-            instr.op1 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
-            instr.op2 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
-            instr.op3 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
-            return instr;
+            OpRec handler = g_instruction_table[g_cpu_ir];
+            return handler.opcode_handler(this);
         }
 
 #if !NEVER
@@ -241,38 +230,38 @@ namespace Decompiler.Arch.M68k
 
 
         /* Bit Isolation Functions */
-        private static bool BIT_0(uint A) { return ((A) & 0x00000001) != 0; }
-        private static bool BIT_1(uint A) { return ((A) & 0x00000002) != 0; }
-        private static bool BIT_2(uint A) { return ((A) & 0x00000004) != 0; }
-        private static bool BIT_3(uint A) { return ((A) & 0x00000008) != 0; }
-        private static bool BIT_4(uint A) { return ((A) & 0x00000010) != 0; }
-        private static bool BIT_5(uint A) { return ((A) & 0x00000020) != 0; }
-        private static bool BIT_6(uint A) { return ((A) & 0x00000040) != 0; }
-        private static bool BIT_7(uint A) { return ((A) & 0x00000080) != 0; }
-        private static bool BIT_8(uint A) { return ((A) & 0x00000100) != 0; }
-        private static bool BIT_9(uint A) { return ((A) & 0x00000200) != 0; }
-        private static bool BIT_A(uint A) { return ((A) & 0x00000400) != 0; }
-        private static bool BIT_B(uint A) { return ((A) & 0x00000800) != 0; }
-        private static bool BIT_C(uint A) { return ((A) & 0x00001000) != 0; }
-        private static bool BIT_D(uint A) { return ((A) & 0x00002000) != 0; }
-        private static bool BIT_E(uint A) { return ((A) & 0x00004000) != 0; }
-        private static bool BIT_F(uint A) { return ((A) & 0x00008000) != 0; }
-        private static bool BIT_10(uint A) { return ((A) & 0x00010000) != 0; }
-        private static bool BIT_11(uint A) { return ((A) & 0x00020000) != 0; }
-        private static bool BIT_12(uint A) { return ((A) & 0x00040000) != 0; }
-        private static bool BIT_13(uint A) { return ((A) & 0x00080000) != 0; }
-        private static bool BIT_14(uint A) { return ((A) & 0x00100000) != 0; }
-        private static bool BIT_15(uint A) { return ((A) & 0x00200000) != 0; }
-        private static bool BIT_16(uint A) { return ((A) & 0x00400000) != 0; }
-        private static bool BIT_17(uint A) { return ((A) & 0x00800000) != 0; }
-        private static bool BIT_18(uint A) { return ((A) & 0x01000000) != 0; }
-        private static bool BIT_19(uint A) { return ((A) & 0x02000000) != 0; }
-        private static bool BIT_1A(uint A) { return ((A) & 0x04000000) != 0; }
-        private static bool BIT_1B(uint A) { return ((A) & 0x08000000) != 0; }
-        private static bool BIT_1C(uint A) { return ((A) & 0x10000000) != 0; }
-        private static bool BIT_1D(uint A) { return ((A) & 0x20000000) != 0; }
-        private static bool BIT_1E(uint A) { return ((A) & 0x40000000) != 0; }
-        private static bool BIT_1F(uint A) { return ((A) & 0x80000000) != 0; }
+        internal static bool BIT_0(uint A) { return ((A) & 0x00000001) != 0; }
+        internal static bool BIT_1(uint A) { return ((A) & 0x00000002) != 0; }
+        internal static bool BIT_2(uint A) { return ((A) & 0x00000004) != 0; }
+        internal static bool BIT_3(uint A) { return ((A) & 0x00000008) != 0; }
+        internal static bool BIT_4(uint A) { return ((A) & 0x00000010) != 0; }
+        internal static bool BIT_5(uint A) { return ((A) & 0x00000020) != 0; }
+        internal static bool BIT_6(uint A) { return ((A) & 0x00000040) != 0; }
+        internal static bool BIT_7(uint A) { return ((A) & 0x00000080) != 0; }
+        internal static bool BIT_8(uint A) { return ((A) & 0x00000100) != 0; }
+        internal static bool BIT_9(uint A) { return ((A) & 0x00000200) != 0; }
+        internal static bool BIT_A(uint A) { return ((A) & 0x00000400) != 0; }
+        internal static bool BIT_B(uint A) { return ((A) & 0x00000800) != 0; }
+        internal static bool BIT_C(uint A) { return ((A) & 0x00001000) != 0; }
+        internal static bool BIT_D(uint A) { return ((A) & 0x00002000) != 0; }
+        internal static bool BIT_E(uint A) { return ((A) & 0x00004000) != 0; }
+        internal static bool BIT_F(uint A) { return ((A) & 0x00008000) != 0; }
+        internal static bool BIT_10(uint A) { return ((A) & 0x00010000) != 0; }
+        internal static bool BIT_11(uint A) { return ((A) & 0x00020000) != 0; }
+        internal static bool BIT_12(uint A) { return ((A) & 0x00040000) != 0; }
+        internal static bool BIT_13(uint A) { return ((A) & 0x00080000) != 0; }
+        internal static bool BIT_14(uint A) { return ((A) & 0x00100000) != 0; }
+        internal static bool BIT_15(uint A) { return ((A) & 0x00200000) != 0; }
+        internal static bool BIT_16(uint A) { return ((A) & 0x00400000) != 0; }
+        internal static bool BIT_17(uint A) { return ((A) & 0x00800000) != 0; }
+        internal static bool BIT_18(uint A) { return ((A) & 0x01000000) != 0; }
+        internal static bool BIT_19(uint A) { return ((A) & 0x02000000) != 0; }
+        internal static bool BIT_1A(uint A) { return ((A) & 0x04000000) != 0; }
+        internal static bool BIT_1B(uint A) { return ((A) & 0x08000000) != 0; }
+        internal static bool BIT_1C(uint A) { return ((A) & 0x10000000) != 0; }
+        internal static bool BIT_1D(uint A) { return ((A) & 0x20000000) != 0; }
+        internal static bool BIT_1E(uint A) { return ((A) & 0x40000000) != 0; }
+        internal static bool BIT_1F(uint A) { return ((A) & 0x80000000) != 0; }
 
         /* These are the CPU types understood by this disassembler */
         private const uint TYPE_68000 = 1;
@@ -301,15 +290,15 @@ namespace Decompiler.Arch.M68k
 
         /* Extension word formats */
         private static uint EXT_8BIT_DISPLACEMENT(uint A) { return ((A) & 0xff); }
-        private static bool EXT_FULL(uint A) { return BIT_8(A); }
-        private static bool EXT_EFFECTIVE_ZERO(uint A) { return (((A) & 0xe4) == 0xc4 || ((A) & 0xe2) == 0xc0); }
+        internal static bool EXT_FULL(uint A) { return BIT_8(A); }
+        internal static bool EXT_EFFECTIVE_ZERO(uint A) { return (((A) & 0xe4) == 0xc4 || ((A) & 0xe2) == 0xc0); }
         private static bool EXT_BASE_REGISTER_PRESENT(uint A) { return !(BIT_7(A)); }
         private static bool EXT_INDEX_REGISTER_PRESENT(uint A) { return !(BIT_6(A)); }
         private static uint EXT_INDEX_REGISTER(uint A) { return (((A) >> 12) & 7); }
         private static bool EXT_INDEX_PRE_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && (A & 3) != 0); }
         private static bool EXT_INDEX_PRE(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) < 4 && ((A) & 7) != 0); }
         private static bool EXT_INDEX_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) > 4); }
-        private static int EXT_INDEX_SCALE(uint A) { return (int)(((A) >> 9) & 3); }
+        internal static int EXT_INDEX_SCALE(uint A) { return (int)(((A) >> 9) & 3); }
         private static bool EXT_INDEX_LONG(uint A) { return BIT_B(A); }
         private static bool EXT_INDEX_AR(uint A) { return BIT_F(A); }
         private static bool EXT_BASE_DISPLACEMENT_PRESENT(uint A) { return (((A) & 0x30) > 0x10); }
@@ -365,9 +354,9 @@ namespace Decompiler.Arch.M68k
         //static int  compare_nof_true_bits(const void aptr, const void *bptr);
 
         /* used to build opcode handler jump table */
-        class opcode_struct
+        private class OpRec
         {
-            public readonly Func<M68kInstruction> opcode_handler;
+            public readonly Func<M68kDisassembler2, M68kInstruction> opcode_handler;
             public readonly uint mask;                  // opcode mask
             public readonly uint match;                 // opcode bit patter (after mask)
             public readonly uint ea_mask;               // Permitted ea modes are allowed 
@@ -375,7 +364,7 @@ namespace Decompiler.Arch.M68k
             public readonly Opcode opcode;              // The decoded opcode.
             public readonly string operandFormat;       // Format string which when interpreted generates the operands of the instruction.
 
-            public opcode_struct(Func<M68kInstruction> handler, uint mask, uint match, uint ea_mask)
+            public OpRec(Func<M68kDisassembler2, M68kInstruction> handler, uint mask, uint match, uint ea_mask)
             {
                 this.opcode_handler = handler;
                 this.mask = mask;
@@ -386,21 +375,38 @@ namespace Decompiler.Arch.M68k
                 this.operandFormat = "$";
             }
 
-            public opcode_struct(uint mask, uint match, uint ea_mask, Opcode opcode, string opFormat)
+            public OpRec(uint mask, uint match, uint ea_mask, Opcode opcode, string opFormat)
             {
-                this.opcode_handler = null; 
+                this.opcode_handler = UseDecodeMethod; 
                 this.mask = mask;
                 this.match = match;
                 this.ea_mask = ea_mask;
 
                 this.opcode = opcode;
                 this.operandFormat = opFormat;
-                this.opcode_handler = UseDecodeMethod; 
             }
 
-            public M68kInstruction UseDecodeMethod()
+            public M68kInstruction UseDecodeMethod(M68kDisassembler2 dasm)
             {
-                throw new InvalidOperationException("Use the Decode method instead.");
+                var instr = dasm.instr;
+                instr.code = opcode;
+                if (opcode == Opcode.illegal)
+                {
+                    return dasm.instr;
+                }
+
+                var args = operandFormat;
+                int i = 0;
+                if (args[0] == 's')
+                {
+                    instr.dataWidth = OperandFormatDecoder.GetSizeType(dasm.g_cpu_ir, args[1], null);
+                    i = 3;
+                }
+                var opTranslator = new OperandFormatDecoder(dasm.g_cpu_ir, args, i);
+                instr.op1 = opTranslator.GetOperand(dasm.g_cpu_pc, instr.dataWidth);
+                instr.op2 = opTranslator.GetOperand(dasm.g_cpu_pc, instr.dataWidth);
+                instr.op3 = opTranslator.GetOperand(dasm.g_cpu_pc, instr.dataWidth);
+                return instr;
             }
         }
 
@@ -409,7 +415,7 @@ namespace Decompiler.Arch.M68k
         /* ================================= DATA ================================= */
 
         /* Opcode handler jump table */
-        static opcode_struct[] g_instruction_table = new opcode_struct[0x10000];
+        static OpRec[] g_instruction_table = new OpRec[0x10000];
         /* Flag if disassembler initialized */
         static bool g_initialized = false;
 
@@ -479,8 +485,8 @@ namespace Decompiler.Arch.M68k
             if ((g_cpu_type & ALLOWED_CPU_TYPES) == 0)
             {
                 if ((g_cpu_ir & 0xf000) == 0xf000)
-                    d68000_1111();
-                else d68000_illegal();
+                    d68000_1111(this);
+                else d68000_illegal(this);
                 return false;
             }
             return true;
@@ -595,7 +601,7 @@ namespace Decompiler.Arch.M68k
         }
 
         /* Get string representation of hex values */
-        Constant make_signed_hex_str_8(uint val)
+        internal static Constant make_signed_hex_str_8(uint val)
         {
             val &= 0xff;
 
@@ -1004,23 +1010,23 @@ namespace Decompiler.Arch.M68k
          * al  : absolute long
          */
 
-        private M68kInstruction d68000_illegal()
+        private M68kInstruction d68000_illegal(M68kDisassembler2 dasm)
         {
             throw new NotSupportedException(string.Format("dc.w    ${0:X}; ILLEGAL", g_cpu_ir));
         }
 
-        private M68kInstruction d68000_1010()
+        private M68kInstruction d68000_1010(M68kDisassembler2 dasm)
         {
             throw new NotSupportedException(string.Format("dc.w    $%04x; opcode 1010", g_cpu_ir));
         }
 
-        private M68kInstruction d68000_1111()
+        private M68kInstruction d68000_1111(M68kDisassembler2 dasm)
         {
             throw new NotSupportedException(string.Format("dc.w    $%04x; opcode 1111", g_cpu_ir));
         }
 
 
-        private M68kInstruction d68000_abcd_rr()
+        private M68kInstruction d68000_abcd_rr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1031,7 +1037,7 @@ namespace Decompiler.Arch.M68k
         }
 
 
-        private M68kInstruction d68000_abcd_mm()
+        private M68kInstruction d68000_abcd_mm(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1041,7 +1047,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_add_er_8()
+        private M68kInstruction d68000_add_er_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1053,7 +1059,7 @@ namespace Decompiler.Arch.M68k
         }
 
 
-        private M68kInstruction d68000_add_er_16()
+        private M68kInstruction d68000_add_er_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1064,7 +1070,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_add_er_32()
+        private M68kInstruction d68000_add_er_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1075,7 +1081,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_add_re_8()
+        private M68kInstruction d68000_add_re_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1086,7 +1092,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_add_re_16()
+        private M68kInstruction d68000_add_re_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1097,7 +1103,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_add_re_32()
+        private M68kInstruction d68000_add_re_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1108,7 +1114,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_adda_16()
+        private M68kInstruction d68000_adda_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1119,7 +1125,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_adda_32()
+        private M68kInstruction d68000_adda_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1130,7 +1136,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addi_8()
+        private M68kInstruction d68000_addi_8(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s8();
             return new M68kInstruction
@@ -1142,7 +1148,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addi_16()
+        private M68kInstruction d68000_addi_16(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s16();
             return new M68kInstruction
@@ -1154,7 +1160,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addi_32()
+        private M68kInstruction d68000_addi_32(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s32();
             return new M68kInstruction
@@ -1166,7 +1172,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addq_8()
+        private M68kInstruction d68000_addq_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1177,7 +1183,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addq_16()
+        private M68kInstruction d68000_addq_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1188,7 +1194,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addq_32()
+        private M68kInstruction d68000_addq_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1199,7 +1205,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addx_rr_8()
+        private M68kInstruction d68000_addx_rr_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1210,7 +1216,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addx_rr_16()
+        private M68kInstruction d68000_addx_rr_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1221,7 +1227,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addx_rr_32()
+        private M68kInstruction d68000_addx_rr_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1232,7 +1238,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addx_mm_8()
+        private M68kInstruction d68000_addx_mm_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1243,7 +1249,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addx_mm_16()
+        private M68kInstruction d68000_addx_mm_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1254,7 +1260,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_addx_mm_32()
+        private M68kInstruction d68000_addx_mm_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1265,7 +1271,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_and_er_8()
+        private M68kInstruction d68000_and_er_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1276,7 +1282,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_and_er_16()
+        private M68kInstruction d68000_and_er_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1287,7 +1293,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_and_er_32()
+        private M68kInstruction d68000_and_er_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1298,7 +1304,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_and_re_8()
+        private M68kInstruction d68000_and_re_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1309,7 +1315,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_and_re_16()
+        private M68kInstruction d68000_and_re_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1320,7 +1326,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_and_re_32()
+        private M68kInstruction d68000_and_re_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1331,7 +1337,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_andi_8()
+        private M68kInstruction d68000_andi_8(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u8();
             return new M68kInstruction
@@ -1343,7 +1349,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_andi_16()
+        private M68kInstruction d68000_andi_16(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u16();
             return new M68kInstruction
@@ -1355,7 +1361,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_andi_32()
+        private M68kInstruction d68000_andi_32(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u32();
             return new M68kInstruction
@@ -1367,7 +1373,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_andi_to_ccr()
+        private M68kInstruction d68000_andi_to_ccr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1377,7 +1383,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_andi_to_sr()
+        private M68kInstruction d68000_andi_to_sr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1387,7 +1393,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asr_s_8()
+        private M68kInstruction d68000_asr_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1398,7 +1404,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asr_s_16()
+        private M68kInstruction d68000_asr_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1409,7 +1415,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asr_s_32()
+        private M68kInstruction d68000_asr_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1420,7 +1426,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asr_r_8()
+        private M68kInstruction d68000_asr_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1431,7 +1437,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asr_r_16()
+        private M68kInstruction d68000_asr_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1442,7 +1448,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asr_r_32()
+        private M68kInstruction d68000_asr_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1453,7 +1459,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asr_ea()
+        private M68kInstruction d68000_asr_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1463,7 +1469,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asl_s_8()
+        private M68kInstruction d68000_asl_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1474,7 +1480,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asl_s_16()
+        private M68kInstruction d68000_asl_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1485,7 +1491,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asl_s_32()
+        private M68kInstruction d68000_asl_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1496,7 +1502,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asl_r_8()
+        private M68kInstruction d68000_asl_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1507,7 +1513,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asl_r_16()
+        private M68kInstruction d68000_asl_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1518,7 +1524,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asl_r_32()
+        private M68kInstruction d68000_asl_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1529,7 +1535,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_asl_ea()
+        private M68kInstruction d68000_asl_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1539,7 +1545,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bcc_8()
+        private M68kInstruction d68000_bcc_8(M68kDisassembler2 dasm)
         {
             var temp_pc = g_cpu_pc.Address;
             return new M68kInstruction
@@ -1549,7 +1555,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bcc_16()
+        private M68kInstruction d68000_bcc_16(M68kDisassembler2 dasm)
         {
             var temp_pc = g_cpu_pc.Address;
             return new M68kInstruction
@@ -1559,7 +1565,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_bcc_32()
+        private M68kInstruction d68020_bcc_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             var temp_pc = g_cpu_pc.Address;
@@ -1570,7 +1576,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bchg_r()
+        private M68kInstruction d68000_bchg_r(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1580,7 +1586,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bchg_s()
+        private M68kInstruction d68000_bchg_s(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u8();
             return new M68kInstruction
@@ -1591,7 +1597,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bclr_r()
+        private M68kInstruction d68000_bclr_r(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1601,7 +1607,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bclr_s()
+        private M68kInstruction d68000_bclr_s(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u8();
             return new M68kInstruction
@@ -1612,7 +1618,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68010_bkpt()
+        private M68kInstruction d68010_bkpt(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             return new M68kInstruction
@@ -1622,7 +1628,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_bfchg()
+        private M68kInstruction d68020_bfchg(M68kDisassembler2 dasm)
         {
             uint extension;
             MachineOperand offset;
@@ -1644,7 +1650,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_bfclr()
+        private M68kInstruction d68020_bfclr(M68kDisassembler2 dasm)
         {
             uint extension;
             string offset;
@@ -1666,7 +1672,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_bfexts()
+        private M68kInstruction d68020_bfexts(M68kDisassembler2 dasm)
         {
             uint extension;
             string offset; ;
@@ -1688,7 +1694,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_bfextu()
+        private M68kInstruction d68020_bfextu(M68kDisassembler2 dasm)
         {
             uint extension;
             string offset; ;
@@ -1710,7 +1716,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_bfffo()
+        private M68kInstruction d68020_bfffo(M68kDisassembler2 dasm)
         {
             uint extension;
             string offset; ;
@@ -1732,7 +1738,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_bfins()
+        private M68kInstruction d68020_bfins(M68kDisassembler2 dasm)
         {
             uint extension;
             string offset; ;
@@ -1754,7 +1760,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_bfset()
+        private M68kInstruction d68020_bfset(M68kDisassembler2 dasm)
         {
             uint extension;
             string offset; ;
@@ -1776,7 +1782,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_bftst()
+        private M68kInstruction d68020_bftst(M68kDisassembler2 dasm)
         {
             uint extension;
             string offset; ;
@@ -1798,7 +1804,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_bra_8()
+        private M68kInstruction d68000_bra_8(M68kDisassembler2 dasm)
         {
             Address temp_pc = g_cpu_pc.Address;
             return new M68kInstruction
@@ -1808,7 +1814,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bra_16()
+        private M68kInstruction d68000_bra_16(M68kDisassembler2 dasm)
         {
              Address temp_pc = g_cpu_pc.Address;
              return new M68kInstruction
@@ -1818,7 +1824,7 @@ namespace Decompiler.Arch.M68k
              };
         }
 
-        private M68kInstruction d68020_bra_32()
+        private M68kInstruction d68020_bra_32(M68kDisassembler2 dasm)
         {
             Address temp_pc = g_cpu_pc.Address;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -1829,7 +1835,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bset_r()
+        private M68kInstruction d68000_bset_r(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1839,7 +1845,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bset_s()
+        private M68kInstruction d68000_bset_s(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u8();
             return new M68kInstruction
@@ -1850,7 +1856,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bsr_8()
+        private M68kInstruction d68000_bsr_8(M68kDisassembler2 dasm)
         {
             Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -1861,7 +1867,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bsr_16()
+        private M68kInstruction d68000_bsr_16(M68kDisassembler2 dasm)
         {
             Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -1872,7 +1878,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_bsr_32()
+        private M68kInstruction d68020_bsr_32(M68kDisassembler2 dasm)
         {
             Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -1883,7 +1889,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_btst_r()
+        private M68kInstruction d68000_btst_r(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -1893,7 +1899,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_btst_s()
+        private M68kInstruction d68000_btst_s(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u8();
             return new M68kInstruction
@@ -1905,7 +1911,7 @@ namespace Decompiler.Arch.M68k
         }
 
         //$REVIEW: doesn't appear to be official opcode mnemonic?
-        private M68kInstruction d68020_callm()
+        private M68kInstruction d68020_callm(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_ONLY);
             var str = get_imm_str_u8();
@@ -1917,7 +1923,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cas_8()
+        private M68kInstruction d68020_cas_8(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -1932,7 +1938,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cas_16()
+        private M68kInstruction d68020_cas_16(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -1947,7 +1953,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cas_32()
+        private M68kInstruction d68020_cas_32(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -1962,7 +1968,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cas2_16()
+        private M68kInstruction d68020_cas2_16(M68kDisassembler2 dasm)
         {
             /* CAS2 Dc1:Dc2,Du1:Dc2:(Rn1):(Rn2)
             f e d c b a 9 8 7 6 5 4 3 2 1 0
@@ -1980,7 +1986,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cas2_32()
+        private M68kInstruction d68020_cas2_32(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -1993,7 +1999,7 @@ namespace Decompiler.Arch.M68k
 
         }
 
-        private M68kInstruction d68000_chk_16()
+        private M68kInstruction d68000_chk_16(M68kDisassembler2 dasm)
         {
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
             return new M68kInstruction
@@ -2005,7 +2011,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_chk_32()
+        private M68kInstruction d68020_chk_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -2018,7 +2024,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_chk2_cmp2_8()
+        private M68kInstruction d68020_chk2_cmp2_8(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -2032,7 +2038,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_chk2_cmp2_16()
+        private M68kInstruction d68020_chk2_cmp2_16(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -2046,7 +2052,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_chk2_cmp2_32()
+        private M68kInstruction d68020_chk2_cmp2_32(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -2060,7 +2066,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68040_cinv()
+        private M68kInstruction d68040_cinv(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             switch ((g_cpu_ir >> 3) & 3)
@@ -2081,7 +2087,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_clr_8()
+        private M68kInstruction d68000_clr_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2091,7 +2097,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_clr_16()
+        private M68kInstruction d68000_clr_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2101,7 +2107,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_clr_32()
+        private M68kInstruction d68000_clr_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2111,7 +2117,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmp_8()
+        private M68kInstruction d68000_cmp_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2122,7 +2128,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmp_16()
+        private M68kInstruction d68000_cmp_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2133,7 +2139,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmp_32()
+        private M68kInstruction d68000_cmp_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2144,7 +2150,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpa_16()
+        private M68kInstruction d68000_cmpa_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2155,7 +2161,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpa_32()
+        private M68kInstruction d68000_cmpa_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2166,7 +2172,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpi_8()
+        private M68kInstruction d68000_cmpi_8(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s8();
             return new M68kInstruction
@@ -2177,7 +2183,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cmpi_pcdi_8()
+        private M68kInstruction d68020_cmpi_pcdi_8(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             var str = get_imm_str_s8();
@@ -2189,7 +2195,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cmpi_pcix_8()
+        private M68kInstruction d68020_cmpi_pcix_8(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             var str = get_imm_str_s8();
@@ -2202,7 +2208,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpi_16()
+        private M68kInstruction d68000_cmpi_16(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s16();
             return new M68kInstruction
@@ -2214,20 +2220,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cmpi_pcdi_16()
-        {
-            LIMIT_CPU_TYPES(M68010_PLUS);
-            var str = get_imm_str_s16();
-            return new M68kInstruction
-            {
-                code = Opcode.cmpi,
-                dataWidth = PrimitiveType.Word16,
-                op1 = str,
-                op2 = get_ea_mode_str_16(g_cpu_ir)
-            };
-        }
-
-        private M68kInstruction d68020_cmpi_pcix_16()
+        private M68kInstruction d68020_cmpi_pcdi_16(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             var str = get_imm_str_s16();
@@ -2240,7 +2233,20 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpi_32()
+        private M68kInstruction d68020_cmpi_pcix_16(M68kDisassembler2 dasm)
+        {
+            LIMIT_CPU_TYPES(M68010_PLUS);
+            var str = get_imm_str_s16();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
+        }
+
+        private M68kInstruction d68000_cmpi_32(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s32();
             return new M68kInstruction
@@ -2252,7 +2258,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cmpi_pcdi_32()
+        private M68kInstruction d68020_cmpi_pcdi_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             var str = get_imm_str_s32();
@@ -2265,7 +2271,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cmpi_pcix_32()
+        private M68kInstruction d68020_cmpi_pcix_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             var str = get_imm_str_s32();
@@ -2278,7 +2284,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpm_8()
+        private M68kInstruction d68000_cmpm_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2289,7 +2295,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpm_16()
+        private M68kInstruction d68000_cmpm_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2300,7 +2306,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpm_32()
+        private M68kInstruction d68000_cmpm_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2311,7 +2317,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_cpbcc_16()
+        private M68kInstruction d68020_cpbcc_16(M68kDisassembler2 dasm)
         {
             uint extension;
             uint new_pc = g_cpu_pc.Address.Linear;
@@ -2322,7 +2328,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cpbcc_32()
+        private M68kInstruction d68020_cpbcc_32(M68kDisassembler2 dasm)
         {
             uint extension;
             uint new_pc = g_cpu_pc.Address.Linear;
@@ -2333,7 +2339,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cpdbcc()
+        private M68kInstruction d68020_cpdbcc(M68kDisassembler2 dasm)
         {
             uint extension1;
             uint extension2;
@@ -2346,14 +2352,14 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cpgen()
+        private M68kInstruction d68020_cpgen(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             g_dasm_str = string.Format("%dgen    %s; (2-3)", (g_cpu_ir >> 9) & 7, get_imm_str_u32());
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cprestore()
+        private M68kInstruction d68020_cprestore(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             if (((g_cpu_ir >> 9) & 7) == 1)
@@ -2367,7 +2373,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cpsave()
+        private M68kInstruction d68020_cpsave(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             if (((g_cpu_ir >> 9) & 7) == 1)
@@ -2381,7 +2387,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cpscc()
+        private M68kInstruction d68020_cpscc(M68kDisassembler2 dasm)
         {
             uint extension1;
             uint extension2;
@@ -2392,7 +2398,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cptrapcc_0()
+        private M68kInstruction d68020_cptrapcc_0(M68kDisassembler2 dasm)
         {
             uint extension1;
             uint extension2;
@@ -2403,7 +2409,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cptrapcc_16()
+        private M68kInstruction d68020_cptrapcc_16(M68kDisassembler2 dasm)
         {
             uint extension1;
             uint extension2;
@@ -2414,7 +2420,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68020_cptrapcc_32()
+        private M68kInstruction d68020_cptrapcc_32(M68kDisassembler2 dasm)
         {
             uint extension1;
             uint extension2;
@@ -2425,7 +2431,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68040_cpush()
+        private M68kInstruction d68040_cpush(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             switch ((g_cpu_ir >> 3) & 3)
@@ -2446,7 +2452,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_dbra()
+        private M68kInstruction d68000_dbra(M68kDisassembler2 dasm)
         {
             Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -2458,7 +2464,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_dbcc()
+        private M68kInstruction d68000_dbcc(M68kDisassembler2 dasm)
         {
             Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -2470,7 +2476,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_divs()
+        private M68kInstruction d68000_divs(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2481,7 +2487,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_divu()
+        private M68kInstruction d68000_divu(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2492,7 +2498,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_divl()
+        private M68kInstruction d68020_divl(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -2526,7 +2532,7 @@ namespace Decompiler.Arch.M68k
                 };
         }
 
-        private M68kInstruction d68000_eor_8()
+        private M68kInstruction d68000_eor_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2537,7 +2543,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eor_16()
+        private M68kInstruction d68000_eor_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2548,7 +2554,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eor_32()
+        private M68kInstruction d68000_eor_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2559,7 +2565,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eori_8()
+        private M68kInstruction d68000_eori_8(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u8();
             return new M68kInstruction
@@ -2571,7 +2577,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eori_16()
+        private M68kInstruction d68000_eori_16(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u16();
             return new M68kInstruction
@@ -2583,7 +2589,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eori_32()
+        private M68kInstruction d68000_eori_32(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u32();
             return new M68kInstruction
@@ -2595,7 +2601,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eori_to_ccr()
+        private M68kInstruction d68000_eori_to_ccr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2605,7 +2611,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eori_to_sr()
+        private M68kInstruction d68000_eori_to_sr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2616,7 +2622,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_exg_dd()
+        private M68kInstruction d68000_exg_dd(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2626,7 +2632,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_exg_aa()
+        private M68kInstruction d68000_exg_aa(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2636,7 +2642,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_exg_da()
+        private M68kInstruction d68000_exg_da(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2646,7 +2652,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ext_16()
+        private M68kInstruction d68000_ext_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2656,7 +2662,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ext_32()
+        private M68kInstruction d68000_ext_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2666,7 +2672,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_extb_32()
+        private M68kInstruction d68020_extb_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -2689,7 +2695,7 @@ namespace Decompiler.Arch.M68k
             null,                   //".p"
 	    };
 
-        private M68kInstruction d68040_fpu()
+        private M68kInstruction d68040_fpu(M68kDisassembler2 dasm)
         {
             Opcode mnemonic;
             uint w2, src, dst_reg;
@@ -2927,7 +2933,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_jmp()
+        private M68kInstruction d68000_jmp(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2936,7 +2942,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_jsr()
+        private M68kInstruction d68000_jsr(M68kDisassembler2 dasm)
         {
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
             return new M68kInstruction
@@ -2946,7 +2952,7 @@ namespace Decompiler.Arch.M68k
             }; 
         }
 
-        private M68kInstruction d68000_lea()
+        private M68kInstruction d68000_lea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction 
             {
@@ -2957,7 +2963,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_link_16()
+        private M68kInstruction d68000_link_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2967,7 +2973,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_link_32()
+        private M68kInstruction d68020_link_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -2978,7 +2984,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsr_s_8()
+        private M68kInstruction d68000_lsr_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -2989,7 +2995,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsr_s_16()
+        private M68kInstruction d68000_lsr_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3000,7 +3006,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsr_s_32()
+        private M68kInstruction d68000_lsr_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3011,7 +3017,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsr_r_8()
+        private M68kInstruction d68000_lsr_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3022,7 +3028,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsr_r_16()
+        private M68kInstruction d68000_lsr_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3033,7 +3039,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsr_r_32()
+        private M68kInstruction d68000_lsr_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3044,7 +3050,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsr_ea()
+        private M68kInstruction d68000_lsr_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3054,7 +3060,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsl_s_8()
+        private M68kInstruction d68000_lsl_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3065,7 +3071,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsl_s_16()
+        private M68kInstruction d68000_lsl_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3076,7 +3082,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsl_s_32()
+        private M68kInstruction d68000_lsl_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3087,7 +3093,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsl_r_8()
+        private M68kInstruction d68000_lsl_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3098,7 +3104,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsl_r_16()
+        private M68kInstruction d68000_lsl_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3109,7 +3115,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsl_r_32()
+        private M68kInstruction d68000_lsl_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3120,7 +3126,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_lsl_ea()
+        private M68kInstruction d68000_lsl_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3130,7 +3136,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_8()
+        private M68kInstruction d68000_move_8(M68kDisassembler2 dasm)
         {
             var str = get_ea_mode_str_8(g_cpu_ir);
             return new M68kInstruction
@@ -3142,7 +3148,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_16()
+        private M68kInstruction d68000_move_16(M68kDisassembler2 dasm)
         {
             var str = get_ea_mode_str_16(g_cpu_ir);
             return new M68kInstruction
@@ -3154,7 +3160,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_32()
+        private M68kInstruction d68000_move_32(M68kDisassembler2 dasm)
         {
             var str = get_ea_mode_str_32(g_cpu_ir);
             return new M68kInstruction
@@ -3166,7 +3172,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_movea_16()
+        private M68kInstruction d68000_movea_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3177,7 +3183,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_movea_32()
+        private M68kInstruction d68000_movea_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3188,7 +3194,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_to_ccr()
+        private M68kInstruction d68000_move_to_ccr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction 
             {
@@ -3198,7 +3204,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68010_move_fr_ccr()
+        private M68kInstruction d68010_move_fr_ccr(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             return new M68kInstruction
@@ -3209,7 +3215,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_fr_sr()
+        private M68kInstruction d68000_move_fr_sr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3219,7 +3225,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_to_sr()
+        private M68kInstruction d68000_move_to_sr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3229,7 +3235,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_fr_usp()
+        private M68kInstruction d68000_move_fr_usp(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3239,7 +3245,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_move_to_usp()
+        private M68kInstruction d68000_move_to_usp(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3249,7 +3255,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68010_movec()
+        private M68kInstruction d68010_movec(M68kDisassembler2 dasm)
         {
             uint extension;
             MachineOperand reg_name;
@@ -3353,7 +3359,7 @@ namespace Decompiler.Arch.M68k
             }
         }
 
-        private M68kInstruction d68000_movem_pd_16()
+        private M68kInstruction d68000_movem_pd_16(M68kDisassembler2 dasm)
         {
             uint data = read_imm_16();
             StringBuilder buffer = new StringBuilder();
@@ -3400,7 +3406,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_movem_pd_32()
+        private M68kInstruction d68000_movem_pd_32(M68kDisassembler2 dasm)
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -3447,7 +3453,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_movem_er_16()
+        private M68kInstruction d68000_movem_er_16(M68kDisassembler2 dasm)
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -3494,7 +3500,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_movem_er_32()
+        private M68kInstruction d68000_movem_er_32(M68kDisassembler2 dasm)
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -3541,7 +3547,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_movem_re_16()
+        private M68kInstruction d68000_movem_re_16(M68kDisassembler2 dasm)
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -3581,7 +3587,7 @@ namespace Decompiler.Arch.M68k
 
         }
 
-        private M68kInstruction d68000_movem_re_32()
+        private M68kInstruction d68000_movem_re_32(M68kDisassembler2 dasm)
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -3591,7 +3597,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_movep_re_16()
+        private M68kInstruction d68000_movep_re_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3604,7 +3610,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_movep_re_32()
+        private M68kInstruction d68000_movep_re_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3617,7 +3623,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_movep_er_16()
+        private M68kInstruction d68000_movep_er_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3630,7 +3636,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_movep_er_32()
+        private M68kInstruction d68000_movep_er_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3643,7 +3649,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68010_moves_8()
+        private M68kInstruction d68010_moves_8(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68010_PLUS);
@@ -3668,7 +3674,7 @@ namespace Decompiler.Arch.M68k
                 };
         }
 
-        private M68kInstruction d68010_moves_16()
+        private M68kInstruction d68010_moves_16(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68010_PLUS);
@@ -3691,7 +3697,7 @@ namespace Decompiler.Arch.M68k
                 };
         }
 
-        private M68kInstruction d68010_moves_32()
+        private M68kInstruction d68010_moves_32(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68010_PLUS);
@@ -3716,7 +3722,7 @@ namespace Decompiler.Arch.M68k
                 };
         }
 
-        private M68kInstruction d68000_moveq()
+        private M68kInstruction d68000_moveq(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3726,7 +3732,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68040_move16_pi_pi()
+        private M68kInstruction d68040_move16_pi_pi(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             return new M68kInstruction
@@ -3737,7 +3743,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68040_move16_pi_al()
+        private M68kInstruction d68040_move16_pi_al(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             return new M68kInstruction
@@ -3748,7 +3754,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68040_move16_al_pi()
+        private M68kInstruction d68040_move16_al_pi(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             return new M68kInstruction
@@ -3759,7 +3765,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68040_move16_ai_al()
+        private M68kInstruction d68040_move16_ai_al(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             return new M68kInstruction
@@ -3770,7 +3776,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68040_move16_al_ai()
+        private M68kInstruction d68040_move16_al_ai(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             return new M68kInstruction
@@ -3781,7 +3787,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_muls()
+        private M68kInstruction d68000_muls(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3792,7 +3798,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_mulu()
+        private M68kInstruction d68000_mulu(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3803,7 +3809,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_mull()
+        private M68kInstruction d68020_mull(M68kDisassembler2 dasm)
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -3821,7 +3827,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_nbcd()
+        private M68kInstruction d68000_nbcd(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3830,7 +3836,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_neg_8()
+        private M68kInstruction d68000_neg_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3840,7 +3846,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_neg_16()
+        private M68kInstruction d68000_neg_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3850,7 +3856,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_neg_32()
+        private M68kInstruction d68000_neg_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3860,7 +3866,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_negx_8()
+        private M68kInstruction d68000_negx_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3870,7 +3876,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_negx_16()
+        private M68kInstruction d68000_negx_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3880,7 +3886,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_negx_32()
+        private M68kInstruction d68000_negx_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3890,7 +3896,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_nop()
+        private M68kInstruction d68000_nop(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3898,7 +3904,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_not_8()
+        private M68kInstruction d68000_not_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3908,7 +3914,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_not_16()
+        private M68kInstruction d68000_not_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3918,7 +3924,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_not_32()
+        private M68kInstruction d68000_not_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3928,7 +3934,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_or_er_8()
+        private M68kInstruction d68000_or_er_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3939,7 +3945,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_or_er_16()
+        private M68kInstruction d68000_or_er_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3950,7 +3956,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_or_er_32()
+        private M68kInstruction d68000_or_er_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3961,7 +3967,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_or_re_8()
+        private M68kInstruction d68000_or_re_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3972,7 +3978,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_or_re_16()
+        private M68kInstruction d68000_or_re_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3983,7 +3989,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_or_re_32()
+        private M68kInstruction d68000_or_re_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -3994,7 +4000,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ori_8()
+        private M68kInstruction d68000_ori_8(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u8();
             return new M68kInstruction
@@ -4006,7 +4012,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ori_16()
+        private M68kInstruction d68000_ori_16(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u16();
             return new M68kInstruction
@@ -4018,7 +4024,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ori_32()
+        private M68kInstruction d68000_ori_32(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_u32();
             return new M68kInstruction
@@ -4030,7 +4036,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ori_to_ccr()
+        private M68kInstruction d68000_ori_to_ccr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4040,7 +4046,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ori_to_sr()
+        private M68kInstruction d68000_ori_to_sr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4050,7 +4056,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_pack_rr()
+        private M68kInstruction d68020_pack_rr(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4062,7 +4068,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_pack_mm()
+        private M68kInstruction d68020_pack_mm(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4074,7 +4080,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_pea()
+        private M68kInstruction d68000_pea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4084,7 +4090,7 @@ namespace Decompiler.Arch.M68k
         }
 
         // this is a 68040-specific form of PFLUSH
-        private M68kInstruction d68040_pflush()
+        private M68kInstruction d68040_pflush(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
 
@@ -4099,7 +4105,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68000_reset()
+        private M68kInstruction d68000_reset(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4107,7 +4113,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ror_s_8()
+        private M68kInstruction d68000_ror_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4118,7 +4124,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ror_s_16()
+        private M68kInstruction d68000_ror_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4129,7 +4135,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ror_s_32()
+        private M68kInstruction d68000_ror_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4140,7 +4146,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ror_r_8()
+        private M68kInstruction d68000_ror_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4151,7 +4157,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ror_r_16()
+        private M68kInstruction d68000_ror_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4162,7 +4168,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ror_r_32()
+        private M68kInstruction d68000_ror_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4173,7 +4179,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_ror_ea()
+        private M68kInstruction d68000_ror_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4182,7 +4188,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rol_s_8()
+        private M68kInstruction d68000_rol_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4193,7 +4199,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rol_s_16()
+        private M68kInstruction d68000_rol_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4204,7 +4210,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rol_s_32()
+        private M68kInstruction d68000_rol_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4215,7 +4221,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rol_r_8()
+        private M68kInstruction d68000_rol_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4226,7 +4232,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rol_r_16()
+        private M68kInstruction d68000_rol_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4237,7 +4243,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rol_r_32()
+        private M68kInstruction d68000_rol_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4248,7 +4254,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rol_ea()
+        private M68kInstruction d68000_rol_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4258,7 +4264,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxr_s_8()
+        private M68kInstruction d68000_roxr_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4269,7 +4275,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxr_s_16()
+        private M68kInstruction d68000_roxr_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4281,7 +4287,7 @@ namespace Decompiler.Arch.M68k
         }
 
 
-        private M68kInstruction d68000_roxr_s_32()
+        private M68kInstruction d68000_roxr_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4292,7 +4298,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxr_r_8()
+        private M68kInstruction d68000_roxr_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4303,7 +4309,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxr_r_16()
+        private M68kInstruction d68000_roxr_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4314,7 +4320,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxr_r_32()
+        private M68kInstruction d68000_roxr_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4325,7 +4331,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxr_ea()
+        private M68kInstruction d68000_roxr_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4335,7 +4341,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxl_s_8()
+        private M68kInstruction d68000_roxl_s_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4346,7 +4352,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxl_s_16()
+        private M68kInstruction d68000_roxl_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4357,7 +4363,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxl_s_32()
+        private M68kInstruction d68000_roxl_s_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4368,7 +4374,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxl_r_8()
+        private M68kInstruction d68000_roxl_r_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4379,7 +4385,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxl_r_16()
+        private M68kInstruction d68000_roxl_r_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4390,7 +4396,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_roxl_r_32()
+        private M68kInstruction d68000_roxl_r_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
              {
@@ -4401,7 +4407,7 @@ namespace Decompiler.Arch.M68k
              };
         }
 
-        private M68kInstruction d68000_roxl_ea()
+        private M68kInstruction d68000_roxl_ea(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4411,7 +4417,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68010_rtd()
+        private M68kInstruction d68010_rtd(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
@@ -4422,7 +4428,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rte()
+        private M68kInstruction d68000_rte(M68kDisassembler2 dasm)
         {
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
             return new M68kInstruction
@@ -4432,7 +4438,7 @@ namespace Decompiler.Arch.M68k
         }
 
 
-        private M68kInstruction d68020_rtm()
+        private M68kInstruction d68020_rtm(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_ONLY);
             int reg = g_cpu_ir & 7;
@@ -4446,7 +4452,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rtr()
+        private M68kInstruction d68000_rtr(M68kDisassembler2 dasm)
         {
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
             return new M68kInstruction
@@ -4455,7 +4461,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_rts()
+        private M68kInstruction d68000_rts(M68kDisassembler2 dasm)
         {
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
             return new M68kInstruction
@@ -4464,7 +4470,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sbcd_rr()
+        private M68kInstruction d68000_sbcd_rr(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4474,7 +4480,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sbcd_mm()
+        private M68kInstruction d68000_sbcd_mm(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4484,7 +4490,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_scc()
+        private M68kInstruction d68000_scc(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4493,7 +4499,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_stop()
+        private M68kInstruction d68000_stop(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4502,7 +4508,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sub_er_8()
+        private M68kInstruction d68000_sub_er_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4513,7 +4519,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sub_er_16()
+        private M68kInstruction d68000_sub_er_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4524,7 +4530,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sub_er_32()
+        private M68kInstruction d68000_sub_er_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4535,7 +4541,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sub_re_8()
+        private M68kInstruction d68000_sub_re_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4546,7 +4552,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sub_re_16()
+        private M68kInstruction d68000_sub_re_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4557,7 +4563,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_sub_re_32()
+        private M68kInstruction d68000_sub_re_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4568,7 +4574,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_suba_16()
+        private M68kInstruction d68000_suba_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4579,7 +4585,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_suba_32()
+        private M68kInstruction d68000_suba_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4590,7 +4596,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subi_8()
+        private M68kInstruction d68000_subi_8(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s8();
             return new M68kInstruction
@@ -4602,7 +4608,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subi_16()
+        private M68kInstruction d68000_subi_16(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s16();
             return new M68kInstruction
@@ -4614,7 +4620,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subi_32()
+        private M68kInstruction d68000_subi_32(M68kDisassembler2 dasm)
         {
             var str = get_imm_str_s32();
             return new M68kInstruction
@@ -4626,7 +4632,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subq_8()
+        private M68kInstruction d68000_subq_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4637,7 +4643,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subq_16()
+        private M68kInstruction d68000_subq_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4648,7 +4654,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subq_32()
+        private M68kInstruction d68000_subq_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4659,7 +4665,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subx_rr_8()
+        private M68kInstruction d68000_subx_rr_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4670,7 +4676,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subx_rr_16()
+        private M68kInstruction d68000_subx_rr_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4681,7 +4687,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subx_rr_32()
+        private M68kInstruction d68000_subx_rr_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4692,7 +4698,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subx_mm_8()
+        private M68kInstruction d68000_subx_mm_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4703,7 +4709,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subx_mm_16()
+        private M68kInstruction d68000_subx_mm_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4714,7 +4720,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_subx_mm_32()
+        private M68kInstruction d68000_subx_mm_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4725,7 +4731,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_swap()
+        private M68kInstruction d68000_swap(M68kDisassembler2 dasm)
         {
             return new M68kInstruction 
             {
@@ -4733,7 +4739,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_tas()
+        private M68kInstruction d68000_tas(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4742,7 +4748,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_trap()
+        private M68kInstruction d68000_trap(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4751,7 +4757,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_trapcc_0()
+        private M68kInstruction d68020_trapcc_0(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -4761,7 +4767,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_trapcc_16()
+        private M68kInstruction d68020_trapcc_16(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -4772,7 +4778,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_trapcc_32()
+        private M68kInstruction d68020_trapcc_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
@@ -4783,7 +4789,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_trapv()
+        private M68kInstruction d68000_trapv(M68kDisassembler2 dasm)
         {
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
             return new M68kInstruction
@@ -4792,7 +4798,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_tst_8()
+        private M68kInstruction d68000_tst_8(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4802,18 +4808,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_pcdi_8()
-        {
-            LIMIT_CPU_TYPES(M68020_PLUS);
-            return new M68kInstruction
-            {
-                code = Opcode.tst,
-                dataWidth = PrimitiveType.Byte,
-                op1 = get_ea_mode_str_8(g_cpu_ir)
-            };
-        }
-
-        private M68kInstruction d68020_tst_pcix_8()
+        private M68kInstruction d68020_tst_pcdi_8(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4824,7 +4819,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_i_8()
+        private M68kInstruction d68020_tst_pcix_8(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4835,30 +4830,19 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_tst_16()
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.tst,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_16(g_cpu_ir)
-            };
-        }
-
-        private M68kInstruction d68020_tst_a_16()
+        private M68kInstruction d68020_tst_i_8(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
             {
                 code = Opcode.tst,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_16(g_cpu_ir)
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
             };
         }
 
-        private M68kInstruction d68020_tst_pcdi_16()
+        private M68kInstruction d68000_tst_16(M68kDisassembler2 dasm)
         {
-            LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
             {
                 code = Opcode.tst,
@@ -4867,7 +4851,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_pcix_16()
+        private M68kInstruction d68020_tst_a_16(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4878,7 +4862,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_i_16()
+        private M68kInstruction d68020_tst_pcdi_16(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4889,7 +4873,29 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_tst_32()
+        private M68kInstruction d68020_tst_pcix_16(M68kDisassembler2 dasm)
+        {
+            LIMIT_CPU_TYPES(M68020_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
+        }
+
+        private M68kInstruction d68020_tst_i_16(M68kDisassembler2 dasm)
+        {
+            LIMIT_CPU_TYPES(M68020_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
+        }
+
+        private M68kInstruction d68000_tst_32(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4899,7 +4905,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_a_32()
+        private M68kInstruction d68020_tst_a_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4910,7 +4916,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_pcdi_32()
+        private M68kInstruction d68020_tst_pcdi_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4921,7 +4927,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_pcix_32()
+        private M68kInstruction d68020_tst_pcix_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4932,7 +4938,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_tst_i_32()
+        private M68kInstruction d68020_tst_i_32(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4943,7 +4949,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_unlk()
+        private M68kInstruction d68000_unlk(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
@@ -4952,7 +4958,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_unpk_rr()
+        private M68kInstruction d68020_unpk_rr(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4964,7 +4970,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68020_unpk_mm()
+        private M68kInstruction d68020_unpk_mm(M68kDisassembler2 dasm)
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             return new M68kInstruction
@@ -4986,7 +4992,7 @@ namespace Decompiler.Arch.M68k
         // PMOVE 3: 011xxxx000000000
         // PTEST:   100xxxxxxxxxxxxx
         // PFLUSHR: 1010000000000000
-        private M68kInstruction d68851_p000()
+        private M68kInstruction d68851_p000(M68kDisassembler2 dasm)
         {
             ushort modes = read_imm_16();
 
@@ -5111,21 +5117,21 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68851_pbcc16()
+        private M68kInstruction d68851_pbcc16(M68kDisassembler2 dasm)
         {
             uint temp_pc = g_cpu_pc.Address.Linear;
             g_dasm_str = string.Format("pb{0} %x", g_mmucond[g_cpu_ir & 0xf], temp_pc + make_int_16(read_imm_16()));
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68851_pbcc32()
+        private M68kInstruction d68851_pbcc32(M68kDisassembler2 dasm)
         {
             uint temp_pc = g_cpu_pc.Address.Linear;
             g_dasm_str = string.Format("pb{0} %x", g_mmucond[g_cpu_ir & 0xf], temp_pc + make_int_32(read_imm_32()));
             throw new NotImplementedException();
         }
 
-        private M68kInstruction d68851_pdbcc()
+        private M68kInstruction d68851_pdbcc(M68kDisassembler2 dasm)
         {
             uint temp_pc = g_cpu_pc.Address.Linear;
             ushort modes = read_imm_16();
@@ -5134,7 +5140,7 @@ namespace Decompiler.Arch.M68k
         }
 
         // PScc:  0000000000xxxxxx
-        private M68kInstruction d68851_p001()
+        private M68kInstruction d68851_p001(M68kDisassembler2 dasm)
         {
             g_dasm_str = string.Format("MMU 001 group");
             throw new NotImplementedException();
@@ -5159,327 +5165,327 @@ namespace Decompiler.Arch.M68k
           1 = pc idx
         */
 
-        static opcode_struct[] g_opcode_info;
+        static OpRec[] g_opcode_info;
 
 
         private void GenTable()
         {
             if (g_opcode_info != null)
                 return;
-         g_opcode_info = new opcode_struct[] 
+         g_opcode_info = new OpRec[] 
 {
 //  opcode handler             mask    match   ea mask 
-	new opcode_struct(d68000_1010         , 0xf000, 0xa000, 0x000),
-	new opcode_struct(d68000_1111         , 0xf000, 0xf000, 0x000),
-	new opcode_struct(d68000_abcd_rr      , 0xf1f8, 0xc100, 0x000),
-	new opcode_struct(d68000_abcd_mm      , 0xf1f8, 0xc108, 0x000),
-	new opcode_struct(0xf1c0, 0xd000, 0xbff, Opcode.add, "s6:E0,D9"),           // d68000_add_er_8   
-	new opcode_struct(d68000_add_er_16    , 0xf1c0, 0xd040, 0xfff),
-	new opcode_struct(d68000_add_er_32    , 0xf1c0, 0xd080, 0xfff),
-	new opcode_struct(0xf1c0, 0xd100, 0x3f8, Opcode.add, "D9,s6:E0"),           // d68000_add_re_8     
-	new opcode_struct(d68000_add_re_16    , 0xf1c0, 0xd140, 0x3f8),
-	new opcode_struct(d68000_add_re_32    , 0xf1c0, 0xd180, 0x3f8),
-	new opcode_struct(0xf1c0, 0xd0c0, 0xfff, Opcode.adda, "sw:E0,A9"),
-	new opcode_struct(0xf1c0, 0xd1c0, 0xfff, Opcode.adda, "sw:E0,A9"),
-	new opcode_struct(d68000_addi_8, 0xffc0, 0x0600, 0xbf8),
-	new opcode_struct(d68000_addi_16      , 0xffc0, 0x0640, 0xbf8),
-	new opcode_struct(d68000_addi_32      , 0xffc0, 0x0680, 0xbf8),
-	new opcode_struct(0xf1c0, 0x5000, 0xbf8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_8       , 
-	new opcode_struct(0xf1c0, 0x5040, 0xff8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_16      , 
-	new opcode_struct(0xf1c0, 0x5080, 0xff8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_32      , 
-	new opcode_struct(d68000_addx_rr_8    , 0xf1f8, 0xd100, 0x000),
-	new opcode_struct(d68000_addx_rr_16   , 0xf1f8, 0xd140, 0x000),
-	new opcode_struct(d68000_addx_rr_32   , 0xf1f8, 0xd180, 0x000),
-	new opcode_struct(d68000_addx_mm_8    , 0xf1f8, 0xd108, 0x000),
-	new opcode_struct(d68000_addx_mm_16   , 0xf1f8, 0xd148, 0x000),
-	new opcode_struct(d68000_addx_mm_32   , 0xf1f8, 0xd188, 0x000),
-	new opcode_struct(d68000_and_er_8     , 0xf1c0, 0xc000, 0xbff),
-	new opcode_struct(d68000_and_er_16    , 0xf1c0, 0xc040, 0xbff),
-	new opcode_struct(d68000_and_er_32    , 0xf1c0, 0xc080, 0xbff),
-	new opcode_struct(d68000_and_re_8     , 0xf1c0, 0xc100, 0x3f8),
-	new opcode_struct(d68000_and_re_16    , 0xf1c0, 0xc140, 0x3f8),
-	new opcode_struct(d68000_and_re_32    , 0xf1c0, 0xc180, 0x3f8),
-	new opcode_struct(d68000_andi_to_ccr  , 0xffff, 0x023c, 0x000),
-	new opcode_struct(d68000_andi_to_sr   , 0xffff, 0x027c, 0x000),
-	new opcode_struct(d68000_andi_8       , 0xffc0, 0x0200, 0xbf8),
-	new opcode_struct(d68000_andi_16      , 0xffc0, 0x0240, 0xbf8),
-	new opcode_struct(d68000_andi_32      , 0xffc0, 0x0280, 0xbf8),
-	new opcode_struct(d68000_asr_s_8      , 0xf1f8, 0xe000, 0x000),
-	new opcode_struct(d68000_asr_s_16     , 0xf1f8, 0xe040, 0x000),
-	new opcode_struct(d68000_asr_s_32     , 0xf1f8, 0xe080, 0x000),
-	new opcode_struct(d68000_asr_r_8      , 0xf1f8, 0xe020, 0x000),
-	new opcode_struct(d68000_asr_r_16     , 0xf1f8, 0xe060, 0x000),
-	new opcode_struct(d68000_asr_r_32     , 0xf1f8, 0xe0a0, 0x000),
-	new opcode_struct(d68000_asr_ea       , 0xffc0, 0xe0c0, 0x3f8),
-	new opcode_struct(d68000_asl_s_8      , 0xf1f8, 0xe100, 0x000),
-	new opcode_struct(d68000_asl_s_16     , 0xf1f8, 0xe140, 0x000),
-	new opcode_struct(d68000_asl_s_32     , 0xf1f8, 0xe180, 0x000),
-	new opcode_struct(d68000_asl_r_8      , 0xf1f8, 0xe120, 0x000),
-	new opcode_struct(d68000_asl_r_16     , 0xf1f8, 0xe160, 0x000),
-	new opcode_struct(d68000_asl_r_32     , 0xf1f8, 0xe1a0, 0x000),
-	new opcode_struct(d68000_asl_ea       , 0xffc0, 0xe1c0, 0x3f8),
-	new opcode_struct(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
-	new opcode_struct(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
-	new opcode_struct(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new opcode_struct(0xf1c0, 0x0140, 0xbf8, Opcode.bchg, "D9,E0"),          // d68000_bchg_r       
-	new opcode_struct(d68000_bchg_s       , 0xffc0, 0x0840, 0xbf8),
-	new opcode_struct(d68000_bclr_r       , 0xf1c0, 0x0180, 0xbf8),
-	new opcode_struct(d68000_bclr_s       , 0xffc0, 0x0880, 0xbf8),
-	new opcode_struct(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
-	new opcode_struct(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
-	new opcode_struct(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
-	new opcode_struct(d68020_bfextu       , 0xffc0, 0xe9c0, 0xa7b),
-	new opcode_struct(d68020_bfffo        , 0xffc0, 0xedc0, 0xa7b),
-	new opcode_struct(d68020_bfins        , 0xffc0, 0xefc0, 0xa78),
-	new opcode_struct(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
-	new opcode_struct(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
-	new opcode_struct(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
-	new opcode_struct(0xff00, 0x6000, 0x000, Opcode.bra, "J"),              // d68000_bra_8        
-	new opcode_struct(d68000_bra_16       , 0xffff, 0x6000, 0x000),
-	new opcode_struct(d68020_bra_32       , 0xffff, 0x60ff, 0x000),
-	new opcode_struct(d68000_bset_r       , 0xf1c0, 0x01c0, 0xbf8),
-	new opcode_struct(d68000_bset_s       , 0xffc0, 0x08c0, 0xbf8),
-	new opcode_struct(d68000_bsr_8        , 0xff00, 0x6100, 0x000),
-	new opcode_struct(d68000_bsr_16       , 0xffff, 0x6100, 0x000),
-	new opcode_struct(d68020_bsr_32       , 0xffff, 0x61ff, 0x000),
-	new opcode_struct(d68000_btst_r       , 0xf1c0, 0x0100, 0xbff),
-	new opcode_struct(d68000_btst_s       , 0xffc0, 0x0800, 0xbfb),
-	new opcode_struct(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
-	new opcode_struct(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
-	new opcode_struct(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
-	new opcode_struct(d68020_cas_32       , 0xffc0, 0x0ec0, 0x3f8),
-	new opcode_struct(d68020_cas2_16      , 0xffff, 0x0cfc, 0x000),
-	new opcode_struct(d68020_cas2_32      , 0xffff, 0x0efc, 0x000),
-	new opcode_struct(d68000_chk_16       , 0xf1c0, 0x4180, 0xbff),
-	new opcode_struct(d68020_chk_32       , 0xf1c0, 0x4100, 0xbff),
-	new opcode_struct(d68020_chk2_cmp2_8  , 0xffc0, 0x00c0, 0x27b),
-	new opcode_struct(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
-	new opcode_struct(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
-	new opcode_struct(d68040_cinv         , 0xff20, 0xf400, 0x000),
-	new opcode_struct(d68000_clr_8        , 0xffc0, 0x4200, 0xbf8),
-	new opcode_struct(d68000_clr_16       , 0xffc0, 0x4240, 0xbf8),
-	new opcode_struct(d68000_clr_32       , 0xffc0, 0x4280, 0xbf8),
-	new opcode_struct(d68000_cmp_8        , 0xf1c0, 0xb000, 0xbff),
-	new opcode_struct(d68000_cmp_16       , 0xf1c0, 0xb040, 0xfff),
-	new opcode_struct(d68000_cmp_32       , 0xf1c0, 0xb080, 0xfff),
-	new opcode_struct(d68000_cmpa_16      , 0xf1c0, 0xb0c0, 0xfff),
-	new opcode_struct(d68000_cmpa_32      , 0xf1c0, 0xb1c0, 0xfff),
-	new opcode_struct(d68000_cmpi_8       , 0xffc0, 0x0c00, 0xbf8),
-	new opcode_struct(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
-	new opcode_struct(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
-	new opcode_struct(d68000_cmpi_16      , 0xffc0, 0x0c40, 0xbf8),
-	new opcode_struct(d68020_cmpi_pcdi_16 , 0xffff, 0x0c7a, 0x000),
-	new opcode_struct(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
-	new opcode_struct(d68000_cmpi_32      , 0xffc0, 0x0c80, 0xbf8),
-	new opcode_struct(d68020_cmpi_pcdi_32 , 0xffff, 0x0cba, 0x000),
-	new opcode_struct(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
-	new opcode_struct(d68000_cmpm_8       , 0xf1f8, 0xb108, 0x000),
-	new opcode_struct(d68000_cmpm_16      , 0xf1f8, 0xb148, 0x000),
-	new opcode_struct(d68000_cmpm_32      , 0xf1f8, 0xb188, 0x000),
-	new opcode_struct(d68020_cpbcc_16     , 0xf1c0, 0xf080, 0x000),
-	new opcode_struct(d68020_cpbcc_32     , 0xf1c0, 0xf0c0, 0x000),
-	new opcode_struct(d68020_cpdbcc       , 0xf1f8, 0xf048, 0x000),
-	new opcode_struct(d68020_cpgen        , 0xf1c0, 0xf000, 0x000),
-	new opcode_struct(d68020_cprestore    , 0xf1c0, 0xf140, 0x37f),
-	new opcode_struct(d68020_cpsave       , 0xf1c0, 0xf100, 0x2f8),
-	new opcode_struct(d68020_cpscc        , 0xf1c0, 0xf040, 0xbf8),
-	new opcode_struct(d68020_cptrapcc_0   , 0xf1ff, 0xf07c, 0x000),
-	new opcode_struct(d68020_cptrapcc_16  , 0xf1ff, 0xf07a, 0x000),
-	new opcode_struct(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
-	new opcode_struct(d68040_cpush        , 0xff20, 0xf420, 0x000),
-    new opcode_struct(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
-    new opcode_struct(0xfff8, 0x51c8, 0x000, Opcode.dbf, "D0,Rw"),      // d68000_dbcc         
-	new opcode_struct(d68000_dbra         , 0xfff8, 0x51c8, 0x000),
-	new opcode_struct(d68000_divs         , 0xf1c0, 0x81c0, 0xbff),
-	new opcode_struct(d68000_divu         , 0xf1c0, 0x80c0, 0xbff),
-	new opcode_struct(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
-	new opcode_struct(0xf1c0, 0xb100, 0xbf8, Opcode.eor, "sb:D9,E0"),       // d68000_eor_8        
-	new opcode_struct(0xf1c0, 0xb140, 0xbf8, Opcode.eor, "sw:D9,E0"),   // d68000_eor_16       
-	new opcode_struct(0xf1c0, 0xb180, 0xbf8, Opcode.eor, "sl:D9,E0"),   //d68000_eor_32 
-	new opcode_struct(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
-	new opcode_struct(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
-	new opcode_struct(d68000_eori_8       , 0xffc0, 0x0a00, 0xbf8),
-	new opcode_struct(d68000_eori_16      , 0xffc0, 0x0a40, 0xbf8),
-	new opcode_struct(d68000_eori_32      , 0xffc0, 0x0a80, 0xbf8),
-	new opcode_struct(d68000_exg_dd       , 0xf1f8, 0xc140, 0x000),
-	new opcode_struct(d68000_exg_aa       , 0xf1f8, 0xc148, 0x000),
-	new opcode_struct(d68000_exg_da       , 0xf1f8, 0xc188, 0x000),
-	new opcode_struct(d68020_extb_32      , 0xfff8, 0x49c0, 0x000),
-	new opcode_struct(d68000_ext_16       , 0xfff8, 0x4880, 0x000),
-	new opcode_struct(d68000_ext_32       , 0xfff8, 0x48c0, 0x000),
-	new opcode_struct(d68040_fpu          , 0xffc0, 0xf200, 0x000),
-	new opcode_struct(d68000_illegal      , 0xffff, 0x4afc, 0x000),
-	new opcode_struct(d68000_jmp          , 0xffc0, 0x4ec0, 0x27b),
-	new opcode_struct(d68000_jsr          , 0xffc0, 0x4e80, 0x27b),
-	new opcode_struct(0xf1c0, 0x41c0, 0x27b, Opcode.lea, "E0,A9"),                  // d68000_lea          
-	new opcode_struct(d68000_link_16      , 0xfff8, 0x4e50, 0x000),
-	new opcode_struct(d68020_link_32      , 0xfff8, 0x4808, 0x000),
-	new opcode_struct(0xf1f8, 0xe008, 0x000, Opcode.lsr, "s6:q9,D0"),         // d68000_lsr_s_8      
-	new opcode_struct(d68000_lsr_s_16     , 0xf1f8, 0xe048, 0x000),
-	new opcode_struct(d68000_lsr_s_32     , 0xf1f8, 0xe088, 0x000),
-	new opcode_struct(d68000_lsr_r_8      , 0xf1f8, 0xe028, 0x000),
-	new opcode_struct(d68000_lsr_r_16     , 0xf1f8, 0xe068, 0x000),
-	new opcode_struct(d68000_lsr_r_32     , 0xf1f8, 0xe0a8, 0x000),
-	new opcode_struct(d68000_lsr_ea       , 0xffc0, 0xe2c0, 0x3f8),
-	new opcode_struct(0xf1f8, 0xe108, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_8      
-	new opcode_struct(0xf1f8, 0xe148, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_16     
-	new opcode_struct(d68000_lsl_s_32     , 0xf1f8, 0xe188, 0x000),
-	new opcode_struct(d68000_lsl_r_8      , 0xf1f8, 0xe128, 0x000),
-	new opcode_struct(d68000_lsl_r_16     , 0xf1f8, 0xe168, 0x000),
-	new opcode_struct(d68000_lsl_r_32     , 0xf1f8, 0xe1a8, 0x000),
-	new opcode_struct(d68000_lsl_ea       , 0xffc0, 0xe3c0, 0x3f8),
-	new opcode_struct(0xf000, 0x1000, 0xbff, Opcode.move, "sb:E0,e6"),      // d68000_move_8       
-	new opcode_struct(0xf000, 0x3000, 0xfff, Opcode.move, "sw:E0,e6"),      // d68000_move_16      , 
-	new opcode_struct(0xf000, 0x2000, 0xfff, Opcode.move, "sl:E0,e6"),      // d68000_move_32      , 
-	new opcode_struct(0xf1c0, 0x3040, 0xfff, Opcode.movea, "sw:E0,A9"),     // d68000_movea_16     ,
-	new opcode_struct(0xf1c0, 0x2040, 0xfff, Opcode.movea, "sl:E0,A9"),     // (d68000_movea_32     ,
-	new opcode_struct(d68000_move_to_ccr  , 0xffc0, 0x44c0, 0xbff),
-	new opcode_struct(d68010_move_fr_ccr  , 0xffc0, 0x42c0, 0xbf8),
-	new opcode_struct(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
-	new opcode_struct(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
-	new opcode_struct(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
-	new opcode_struct(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
-	new opcode_struct(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
-	new opcode_struct(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
-	new opcode_struct(0xfff8, 0x48e0, 0x000, Opcode.movem, "sl:M,E0"),         // d68000_movem_pd_32  
-	new opcode_struct(d68000_movem_re_16  , 0xffc0, 0x4880, 0x2f8),
-	new opcode_struct(0xffc0, 0x48c0, 0x2f8, Opcode.movem, "sl:M,E0"),     // d68000_movem_re_32   
-	new opcode_struct(d68000_movem_er_16  , 0xffc0, 0x4c80, 0x37b),
-	new opcode_struct(d68000_movem_er_32  , 0xffc0, 0x4cc0, 0x37b),
-	new opcode_struct(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
-	new opcode_struct(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
-	new opcode_struct(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
-	new opcode_struct(d68000_movep_re_32  , 0xf1f8, 0x01c8, 0x000),
-	new opcode_struct(d68010_moves_8      , 0xffc0, 0x0e00, 0x3f8),
-	new opcode_struct(d68010_moves_16     , 0xffc0, 0x0e40, 0x3f8),
-	new opcode_struct(d68010_moves_32     , 0xffc0, 0x0e80, 0x3f8),
-	new opcode_struct(0xf100, 0x7000, 0x000, Opcode.moveq, "Q0,D9"),        // d68000_moveq        
-	new opcode_struct(d68040_move16_pi_pi , 0xfff8, 0xf620, 0x000),
-	new opcode_struct(d68040_move16_pi_al , 0xfff8, 0xf600, 0x000),
-	new opcode_struct(d68040_move16_al_pi , 0xfff8, 0xf608, 0x000),
-	new opcode_struct(d68040_move16_ai_al , 0xfff8, 0xf610, 0x000),
-	new opcode_struct(d68040_move16_al_ai , 0xfff8, 0xf618, 0x000),
-	new opcode_struct(d68000_muls         , 0xf1c0, 0xc1c0, 0xbff),
-	new opcode_struct(d68000_mulu         , 0xf1c0, 0xc0c0, 0xbff),
-	new opcode_struct(d68020_mull         , 0xffc0, 0x4c00, 0xbff),
-	new opcode_struct(d68000_nbcd         , 0xffc0, 0x4800, 0xbf8),
-	new opcode_struct(d68000_neg_8        , 0xffc0, 0x4400, 0xbf8),
-	new opcode_struct(d68000_neg_16       , 0xffc0, 0x4440, 0xbf8),
-	new opcode_struct(d68000_neg_32       , 0xffc0, 0x4480, 0xbf8),
-	new opcode_struct(d68000_negx_8       , 0xffc0, 0x4000, 0xbf8),
-	new opcode_struct(d68000_negx_16      , 0xffc0, 0x4040, 0xbf8),
-	new opcode_struct(d68000_negx_32      , 0xffc0, 0x4080, 0xbf8),
-	new opcode_struct(d68000_nop          , 0xffff, 0x4e71, 0x000),
-	new opcode_struct(d68000_not_8        , 0xffc0, 0x4600, 0xbf8),
-	new opcode_struct(d68000_not_16       , 0xffc0, 0x4640, 0xbf8),
-	new opcode_struct(d68000_not_32       , 0xffc0, 0x4680, 0xbf8),
-	new opcode_struct(d68000_or_er_8      , 0xf1c0, 0x8000, 0xbff),
-	new opcode_struct(d68000_or_er_16     , 0xf1c0, 0x8040, 0xbff),
-	new opcode_struct(d68000_or_er_32     , 0xf1c0, 0x8080, 0xbff),
-	new opcode_struct(d68000_or_re_8      , 0xf1c0, 0x8100, 0x3f8),
-	new opcode_struct(d68000_or_re_16     , 0xf1c0, 0x8140, 0x3f8),
-	new opcode_struct(d68000_or_re_32     , 0xf1c0, 0x8180, 0x3f8),
-	new opcode_struct(0xffff, 0x003c, 0x000, Opcode.ori, "sb:Ib,c"),        // d68000_ori_to_ccr   
-	new opcode_struct(0xffff, 0x007c, 0x000, Opcode.ori, "sw:Iw,s"),        // d68000_ori_to_sr    
-	new opcode_struct(0xffc0, 0x0000, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_8        
-	new opcode_struct(0xffc0, 0x0040, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_16        
-	new opcode_struct(0xffc0, 0x0080, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_32       
-	new opcode_struct(d68020_pack_rr      , 0xf1f8, 0x8140, 0x000),
-	new opcode_struct(d68020_pack_mm      , 0xf1f8, 0x8148, 0x000),
-	new opcode_struct(d68000_pea          , 0xffc0, 0x4840, 0x27b),
-	new opcode_struct(d68040_pflush       , 0xffe0, 0xf500, 0x000),
-	new opcode_struct(d68000_reset        , 0xffff, 0x4e70, 0x000),
-	new opcode_struct(d68000_ror_s_8      , 0xf1f8, 0xe018, 0x000),
-	new opcode_struct(d68000_ror_s_16     , 0xf1f8, 0xe058, 0x000),
-	new opcode_struct(d68000_ror_s_32     , 0xf1f8, 0xe098, 0x000),
-	new opcode_struct(d68000_ror_r_8      , 0xf1f8, 0xe038, 0x000),
-	new opcode_struct(d68000_ror_r_16     , 0xf1f8, 0xe078, 0x000),
-	new opcode_struct(d68000_ror_r_32     , 0xf1f8, 0xe0b8, 0x000),
-	new opcode_struct(d68000_ror_ea       , 0xffc0, 0xe6c0, 0x3f8),
-	new opcode_struct(d68000_rol_s_8      , 0xf1f8, 0xe118, 0x000),
-	new opcode_struct(d68000_rol_s_16     , 0xf1f8, 0xe158, 0x000),
-	new opcode_struct(d68000_rol_s_32     , 0xf1f8, 0xe198, 0x000),
-	new opcode_struct(d68000_rol_r_8      , 0xf1f8, 0xe138, 0x000),
-	new opcode_struct(d68000_rol_r_16     , 0xf1f8, 0xe178, 0x000),
-	new opcode_struct(d68000_rol_r_32     , 0xf1f8, 0xe1b8, 0x000),
-	new opcode_struct(d68000_rol_ea       , 0xffc0, 0xe7c0, 0x3f8),
-	new opcode_struct(d68000_roxr_s_8     , 0xf1f8, 0xe010, 0x000),
-	new opcode_struct(d68000_roxr_s_16    , 0xf1f8, 0xe050, 0x000),
-	new opcode_struct(d68000_roxr_s_32    , 0xf1f8, 0xe090, 0x000),
-	new opcode_struct(d68000_roxr_r_8     , 0xf1f8, 0xe030, 0x000),
-	new opcode_struct(d68000_roxr_r_16    , 0xf1f8, 0xe070, 0x000),
-	new opcode_struct(d68000_roxr_r_32    , 0xf1f8, 0xe0b0, 0x000),
-	new opcode_struct(d68000_roxr_ea      , 0xffc0, 0xe4c0, 0x3f8),
-	new opcode_struct(d68000_roxl_s_8     , 0xf1f8, 0xe110, 0x000),
-	new opcode_struct(d68000_roxl_s_16    , 0xf1f8, 0xe150, 0x000),
-	new opcode_struct(d68000_roxl_s_32    , 0xf1f8, 0xe190, 0x000),
-	new opcode_struct(d68000_roxl_r_8     , 0xf1f8, 0xe130, 0x000),
-	new opcode_struct(d68000_roxl_r_16    , 0xf1f8, 0xe170, 0x000),
-	new opcode_struct(d68000_roxl_r_32    , 0xf1f8, 0xe1b0, 0x000),
-	new opcode_struct(d68000_roxl_ea      , 0xffc0, 0xe5c0, 0x3f8),
-	new opcode_struct(d68010_rtd          , 0xffff, 0x4e74, 0x000),
-	new opcode_struct(d68000_rte          , 0xffff, 0x4e73, 0x000),
-	new opcode_struct(d68020_rtm          , 0xfff0, 0x06c0, 0x000),
-	new opcode_struct(d68000_rtr          , 0xffff, 0x4e77, 0x000),
-	new opcode_struct(d68000_rts          , 0xffff, 0x4e75, 0x000),
-	new opcode_struct(d68000_sbcd_rr      , 0xf1f8, 0x8100, 0x000),
-	new opcode_struct(d68000_sbcd_mm      , 0xf1f8, 0x8108, 0x000),
-	new opcode_struct(d68000_scc          , 0xf0c0, 0x50c0, 0xbf8),
-	new opcode_struct(d68000_stop         , 0xffff, 0x4e72, 0x000),
-	new opcode_struct(d68000_sub_er_8     , 0xf1c0, 0x9000, 0xbff),
-	new opcode_struct(d68000_sub_er_16    , 0xf1c0, 0x9040, 0xfff),
-	new opcode_struct(d68000_sub_er_32    , 0xf1c0, 0x9080, 0xfff),
-	new opcode_struct(d68000_sub_re_8     , 0xf1c0, 0x9100, 0x3f8),
-	new opcode_struct(d68000_sub_re_16    , 0xf1c0, 0x9140, 0x3f8),
-	new opcode_struct(d68000_sub_re_32    , 0xf1c0, 0x9180, 0x3f8),
-	new opcode_struct(d68000_suba_16      , 0xf1c0, 0x90c0, 0xfff),
-	new opcode_struct(d68000_suba_32      , 0xf1c0, 0x91c0, 0xfff),
-	new opcode_struct(d68000_subi_8       , 0xffc0, 0x0400, 0xbf8),
-	new opcode_struct(d68000_subi_16      , 0xffc0, 0x0440, 0xbf8),
-	new opcode_struct(d68000_subi_32      , 0xffc0, 0x0480, 0xbf8),
-	new opcode_struct(d68000_subq_8       , 0xf1c0, 0x5100, 0xbf8),
-	new opcode_struct(d68000_subq_16      , 0xf1c0, 0x5140, 0xff8),
-	new opcode_struct(d68000_subq_32      , 0xf1c0, 0x5180, 0xff8),
-	new opcode_struct(d68000_subx_rr_8    , 0xf1f8, 0x9100, 0x000),
-	new opcode_struct(d68000_subx_rr_16   , 0xf1f8, 0x9140, 0x000),
-	new opcode_struct(d68000_subx_rr_32   , 0xf1f8, 0x9180, 0x000),
-	new opcode_struct(d68000_subx_mm_8    , 0xf1f8, 0x9108, 0x000),
-	new opcode_struct(d68000_subx_mm_16   , 0xf1f8, 0x9148, 0x000),
-	new opcode_struct(d68000_subx_mm_32   , 0xf1f8, 0x9188, 0x000),
-	new opcode_struct(d68000_swap         , 0xfff8, 0x4840, 0x000),
-	new opcode_struct(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
-	new opcode_struct(d68000_trap         , 0xfff0, 0x4e40, 0x000),
-	new opcode_struct(d68020_trapcc_0     , 0xf0ff, 0x50fc, 0x000),
-	new opcode_struct(d68020_trapcc_16    , 0xf0ff, 0x50fa, 0x000),
-	new opcode_struct(d68020_trapcc_32    , 0xf0ff, 0x50fb, 0x000),
-	new opcode_struct(d68000_trapv        , 0xffff, 0x4e76, 0x000),
-	new opcode_struct(d68000_tst_8        , 0xffc0, 0x4a00, 0xbf8),
-	new opcode_struct(d68020_tst_pcdi_8   , 0xffff, 0x4a3a, 0x000),
-	new opcode_struct(d68020_tst_pcix_8   , 0xffff, 0x4a3b, 0x000),
-	new opcode_struct(d68020_tst_i_8      , 0xffff, 0x4a3c, 0x000),
-	new opcode_struct(d68000_tst_16       , 0xffc0, 0x4a40, 0xbf8),
-	new opcode_struct(d68020_tst_a_16     , 0xfff8, 0x4a48, 0x000),
-	new opcode_struct(d68020_tst_pcdi_16  , 0xffff, 0x4a7a, 0x000),
-	new opcode_struct(d68020_tst_pcix_16  , 0xffff, 0x4a7b, 0x000),
-	new opcode_struct(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
-	new opcode_struct(d68000_tst_32       , 0xffc0, 0x4a80, 0xbf8),
-	new opcode_struct(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
-	new opcode_struct(d68020_tst_pcdi_32  , 0xffff, 0x4aba, 0x000),
-	new opcode_struct(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),
-	new opcode_struct(d68020_tst_i_32     , 0xffff, 0x4abc, 0x000),
-	new opcode_struct(d68000_unlk         , 0xfff8, 0x4e58, 0x000),
-	new opcode_struct(d68020_unpk_rr      , 0xf1f8, 0x8180, 0x000),
-	new opcode_struct(d68020_unpk_mm      , 0xf1f8, 0x8188, 0x000),
-	new opcode_struct(d68851_p000         , 0xffc0, 0xf000, 0x000),
-	new opcode_struct(d68851_pbcc16       , 0xffc0, 0xf080, 0x000),
-	new opcode_struct(d68851_pbcc32       , 0xffc0, 0xf0c0, 0x000),
-	new opcode_struct(d68851_pdbcc        , 0xfff8, 0xf048, 0x000),
-	new opcode_struct(d68851_p001         , 0xffc0, 0xf040, 0x000),
-	new opcode_struct(null, 0, 0, 0),
+	new OpRec(d68000_1010         , 0xf000, 0xa000, 0x000),
+	new OpRec(d68000_1111         , 0xf000, 0xf000, 0x000),
+	new OpRec(d68000_abcd_rr      , 0xf1f8, 0xc100, 0x000),
+	new OpRec(d68000_abcd_mm      , 0xf1f8, 0xc108, 0x000),
+	new OpRec(0xf1c0, 0xd000, 0xbff, Opcode.add, "s6:E0,D9"),           // d68000_add_er_8   
+	new OpRec(d68000_add_er_16    , 0xf1c0, 0xd040, 0xfff),
+	new OpRec(d68000_add_er_32    , 0xf1c0, 0xd080, 0xfff),
+	new OpRec(0xf1c0, 0xd100, 0x3f8, Opcode.add, "D9,s6:E0"),           // d68000_add_re_8     
+	new OpRec(d68000_add_re_16    , 0xf1c0, 0xd140, 0x3f8),
+	new OpRec(d68000_add_re_32    , 0xf1c0, 0xd180, 0x3f8),
+	new OpRec(0xf1c0, 0xd0c0, 0xfff, Opcode.adda, "sw:E0,A9"),
+	new OpRec(0xf1c0, 0xd1c0, 0xfff, Opcode.adda, "sl:E0,A9"),
+	new OpRec(d68000_addi_8, 0xffc0, 0x0600, 0xbf8),
+	new OpRec(d68000_addi_16      , 0xffc0, 0x0640, 0xbf8),
+	new OpRec(d68000_addi_32      , 0xffc0, 0x0680, 0xbf8),
+	new OpRec(0xf1c0, 0x5000, 0xbf8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_8       , 
+	new OpRec(0xf1c0, 0x5040, 0xff8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_16      , 
+	new OpRec(0xf1c0, 0x5080, 0xff8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_32      , 
+	new OpRec(d68000_addx_rr_8    , 0xf1f8, 0xd100, 0x000),
+	new OpRec(d68000_addx_rr_16   , 0xf1f8, 0xd140, 0x000),
+	new OpRec(d68000_addx_rr_32   , 0xf1f8, 0xd180, 0x000),
+	new OpRec(d68000_addx_mm_8    , 0xf1f8, 0xd108, 0x000),
+	new OpRec(d68000_addx_mm_16   , 0xf1f8, 0xd148, 0x000),
+	new OpRec(d68000_addx_mm_32   , 0xf1f8, 0xd188, 0x000),
+	new OpRec(d68000_and_er_8     , 0xf1c0, 0xc000, 0xbff),
+	new OpRec(d68000_and_er_16    , 0xf1c0, 0xc040, 0xbff),
+	new OpRec(d68000_and_er_32    , 0xf1c0, 0xc080, 0xbff),
+	new OpRec(d68000_and_re_8     , 0xf1c0, 0xc100, 0x3f8),
+	new OpRec(d68000_and_re_16    , 0xf1c0, 0xc140, 0x3f8),
+	new OpRec(d68000_and_re_32    , 0xf1c0, 0xc180, 0x3f8),
+	new OpRec(d68000_andi_to_ccr  , 0xffff, 0x023c, 0x000),
+	new OpRec(d68000_andi_to_sr   , 0xffff, 0x027c, 0x000),
+	new OpRec(d68000_andi_8       , 0xffc0, 0x0200, 0xbf8),
+	new OpRec(d68000_andi_16      , 0xffc0, 0x0240, 0xbf8),
+	new OpRec(d68000_andi_32      , 0xffc0, 0x0280, 0xbf8),
+	new OpRec(d68000_asr_s_8      , 0xf1f8, 0xe000, 0x000),
+	new OpRec(d68000_asr_s_16     , 0xf1f8, 0xe040, 0x000),
+	new OpRec(d68000_asr_s_32     , 0xf1f8, 0xe080, 0x000),
+	new OpRec(d68000_asr_r_8      , 0xf1f8, 0xe020, 0x000),
+	new OpRec(d68000_asr_r_16     , 0xf1f8, 0xe060, 0x000),
+	new OpRec(d68000_asr_r_32     , 0xf1f8, 0xe0a0, 0x000),
+	new OpRec(d68000_asr_ea       , 0xffc0, 0xe0c0, 0x3f8),
+	new OpRec(d68000_asl_s_8      , 0xf1f8, 0xe100, 0x000),
+	new OpRec(d68000_asl_s_16     , 0xf1f8, 0xe140, 0x000),
+	new OpRec(d68000_asl_s_32     , 0xf1f8, 0xe180, 0x000),
+	new OpRec(d68000_asl_r_8      , 0xf1f8, 0xe120, 0x000),
+	new OpRec(d68000_asl_r_16     , 0xf1f8, 0xe160, 0x000),
+	new OpRec(d68000_asl_r_32     , 0xf1f8, 0xe1a0, 0x000),
+	new OpRec(d68000_asl_ea       , 0xffc0, 0xe1c0, 0x3f8),
+	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
+	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
+	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
+	new OpRec(0xf1c0, 0x0140, 0xbf8, Opcode.bchg, "D9,E0"),          // d68000_bchg_r       
+	new OpRec(d68000_bchg_s       , 0xffc0, 0x0840, 0xbf8),
+	new OpRec(d68000_bclr_r       , 0xf1c0, 0x0180, 0xbf8),
+	new OpRec(d68000_bclr_s       , 0xffc0, 0x0880, 0xbf8),
+	new OpRec(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
+	new OpRec(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
+	new OpRec(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
+	new OpRec(d68020_bfextu       , 0xffc0, 0xe9c0, 0xa7b),
+	new OpRec(d68020_bfffo        , 0xffc0, 0xedc0, 0xa7b),
+	new OpRec(d68020_bfins        , 0xffc0, 0xefc0, 0xa78),
+	new OpRec(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
+	new OpRec(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
+	new OpRec(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
+	new OpRec(0xff00, 0x6000, 0x000, Opcode.bra, "J"),              // d68000_bra_8        
+	new OpRec(d68000_bra_16       , 0xffff, 0x6000, 0x000),
+	new OpRec(d68020_bra_32       , 0xffff, 0x60ff, 0x000),
+	new OpRec(d68000_bset_r       , 0xf1c0, 0x01c0, 0xbf8),
+	new OpRec(d68000_bset_s       , 0xffc0, 0x08c0, 0xbf8),
+	new OpRec(d68000_bsr_8        , 0xff00, 0x6100, 0x000),
+	new OpRec(d68000_bsr_16       , 0xffff, 0x6100, 0x000),
+	new OpRec(d68020_bsr_32       , 0xffff, 0x61ff, 0x000),
+	new OpRec(d68000_btst_r       , 0xf1c0, 0x0100, 0xbff),
+	new OpRec(d68000_btst_s       , 0xffc0, 0x0800, 0xbfb),
+	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
+	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
+	new OpRec(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
+	new OpRec(d68020_cas_32       , 0xffc0, 0x0ec0, 0x3f8),
+	new OpRec(d68020_cas2_16      , 0xffff, 0x0cfc, 0x000),
+	new OpRec(d68020_cas2_32      , 0xffff, 0x0efc, 0x000),
+	new OpRec(d68000_chk_16       , 0xf1c0, 0x4180, 0xbff),
+	new OpRec(d68020_chk_32       , 0xf1c0, 0x4100, 0xbff),
+	new OpRec(d68020_chk2_cmp2_8  , 0xffc0, 0x00c0, 0x27b),
+	new OpRec(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
+	new OpRec(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
+	new OpRec(d68040_cinv         , 0xff20, 0xf400, 0x000),
+	new OpRec(d68000_clr_8        , 0xffc0, 0x4200, 0xbf8),
+	new OpRec(d68000_clr_16       , 0xffc0, 0x4240, 0xbf8),
+	new OpRec(d68000_clr_32       , 0xffc0, 0x4280, 0xbf8),
+	new OpRec(d68000_cmp_8        , 0xf1c0, 0xb000, 0xbff),
+	new OpRec(d68000_cmp_16       , 0xf1c0, 0xb040, 0xfff),
+	new OpRec(d68000_cmp_32       , 0xf1c0, 0xb080, 0xfff),
+	new OpRec(d68000_cmpa_16      , 0xf1c0, 0xb0c0, 0xfff),
+	new OpRec(d68000_cmpa_32      , 0xf1c0, 0xb1c0, 0xfff),
+	new OpRec(d68000_cmpi_8       , 0xffc0, 0x0c00, 0xbf8),
+	new OpRec(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
+	new OpRec(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
+	new OpRec(d68000_cmpi_16      , 0xffc0, 0x0c40, 0xbf8),
+	new OpRec(d68020_cmpi_pcdi_16 , 0xffff, 0x0c7a, 0x000),
+	new OpRec(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
+	new OpRec(d68000_cmpi_32      , 0xffc0, 0x0c80, 0xbf8),
+	new OpRec(d68020_cmpi_pcdi_32 , 0xffff, 0x0cba, 0x000),
+	new OpRec(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
+	new OpRec(d68000_cmpm_8       , 0xf1f8, 0xb108, 0x000),
+	new OpRec(d68000_cmpm_16      , 0xf1f8, 0xb148, 0x000),
+	new OpRec(d68000_cmpm_32      , 0xf1f8, 0xb188, 0x000),
+	new OpRec(d68020_cpbcc_16     , 0xf1c0, 0xf080, 0x000),
+	new OpRec(d68020_cpbcc_32     , 0xf1c0, 0xf0c0, 0x000),
+	new OpRec(d68020_cpdbcc       , 0xf1f8, 0xf048, 0x000),
+	new OpRec(d68020_cpgen        , 0xf1c0, 0xf000, 0x000),
+	new OpRec(d68020_cprestore    , 0xf1c0, 0xf140, 0x37f),
+	new OpRec(d68020_cpsave       , 0xf1c0, 0xf100, 0x2f8),
+	new OpRec(d68020_cpscc        , 0xf1c0, 0xf040, 0xbf8),
+	new OpRec(d68020_cptrapcc_0   , 0xf1ff, 0xf07c, 0x000),
+	new OpRec(d68020_cptrapcc_16  , 0xf1ff, 0xf07a, 0x000),
+	new OpRec(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
+	new OpRec(d68040_cpush        , 0xff20, 0xf420, 0x000),
+    new OpRec(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
+    new OpRec(0xfff8, 0x51c8, 0x000, Opcode.dbf, "D0,Rw"),      // d68000_dbcc         
+	new OpRec(d68000_dbra         , 0xfff8, 0x51c8, 0x000),
+	new OpRec(d68000_divs         , 0xf1c0, 0x81c0, 0xbff),
+	new OpRec(d68000_divu         , 0xf1c0, 0x80c0, 0xbff),
+	new OpRec(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
+	new OpRec(0xf1c0, 0xb100, 0xbf8, Opcode.eor, "sb:D9,E0"),       // d68000_eor_8        
+	new OpRec(0xf1c0, 0xb140, 0xbf8, Opcode.eor, "sw:D9,E0"),   // d68000_eor_16       
+	new OpRec(0xf1c0, 0xb180, 0xbf8, Opcode.eor, "sl:D9,E0"),   //d68000_eor_32 
+	new OpRec(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
+	new OpRec(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
+	new OpRec(d68000_eori_8       , 0xffc0, 0x0a00, 0xbf8),
+	new OpRec(d68000_eori_16      , 0xffc0, 0x0a40, 0xbf8),
+	new OpRec(d68000_eori_32      , 0xffc0, 0x0a80, 0xbf8),
+	new OpRec(d68000_exg_dd       , 0xf1f8, 0xc140, 0x000),
+	new OpRec(d68000_exg_aa       , 0xf1f8, 0xc148, 0x000),
+	new OpRec(d68000_exg_da       , 0xf1f8, 0xc188, 0x000),
+	new OpRec(d68020_extb_32      , 0xfff8, 0x49c0, 0x000),
+	new OpRec(d68000_ext_16       , 0xfff8, 0x4880, 0x000),
+	new OpRec(d68000_ext_32       , 0xfff8, 0x48c0, 0x000),
+	new OpRec(d68040_fpu          , 0xffc0, 0xf200, 0x000),
+	new OpRec(d68000_illegal      , 0xffff, 0x4afc, 0x000),
+	new OpRec(d68000_jmp          , 0xffc0, 0x4ec0, 0x27b),
+	new OpRec(d68000_jsr          , 0xffc0, 0x4e80, 0x27b),
+	new OpRec(0xf1c0, 0x41c0, 0x27b, Opcode.lea, "E0,A9"),                  // d68000_lea          
+	new OpRec(d68000_link_16      , 0xfff8, 0x4e50, 0x000),
+	new OpRec(d68020_link_32      , 0xfff8, 0x4808, 0x000),
+	new OpRec(0xf1f8, 0xe008, 0x000, Opcode.lsr, "s6:q9,D0"),         // d68000_lsr_s_8      
+	new OpRec(d68000_lsr_s_16     , 0xf1f8, 0xe048, 0x000),
+	new OpRec(d68000_lsr_s_32     , 0xf1f8, 0xe088, 0x000),
+	new OpRec(d68000_lsr_r_8      , 0xf1f8, 0xe028, 0x000),
+	new OpRec(d68000_lsr_r_16     , 0xf1f8, 0xe068, 0x000),
+	new OpRec(d68000_lsr_r_32     , 0xf1f8, 0xe0a8, 0x000),
+	new OpRec(d68000_lsr_ea       , 0xffc0, 0xe2c0, 0x3f8),
+	new OpRec(0xf1f8, 0xe108, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_8      
+	new OpRec(0xf1f8, 0xe148, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_16     
+	new OpRec(d68000_lsl_s_32     , 0xf1f8, 0xe188, 0x000),
+	new OpRec(d68000_lsl_r_8      , 0xf1f8, 0xe128, 0x000),
+	new OpRec(d68000_lsl_r_16     , 0xf1f8, 0xe168, 0x000),
+	new OpRec(d68000_lsl_r_32     , 0xf1f8, 0xe1a8, 0x000),
+	new OpRec(d68000_lsl_ea       , 0xffc0, 0xe3c0, 0x3f8),
+	new OpRec(0xf000, 0x1000, 0xbff, Opcode.move, "sb:E0,e6"),      // d68000_move_8       
+	new OpRec(0xf000, 0x3000, 0xfff, Opcode.move, "sw:E0,e6"),      // d68000_move_16      , 
+	new OpRec(0xf000, 0x2000, 0xfff, Opcode.move, "sl:E0,e6"),      // d68000_move_32      , 
+	new OpRec(0xf1c0, 0x3040, 0xfff, Opcode.movea, "sw:E0,A9"),     // d68000_movea_16     ,
+	new OpRec(0xf1c0, 0x2040, 0xfff, Opcode.movea, "sl:E0,A9"),     // (d68000_movea_32     ,
+	new OpRec(d68000_move_to_ccr  , 0xffc0, 0x44c0, 0xbff),
+	new OpRec(d68010_move_fr_ccr  , 0xffc0, 0x42c0, 0xbf8),
+	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
+	new OpRec(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
+	new OpRec(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
+	new OpRec(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
+	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
+	new OpRec(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
+	new OpRec(0xfff8, 0x48e0, 0x000, Opcode.movem, "sl:M,E0"),         // d68000_movem_pd_32  
+	new OpRec(d68000_movem_re_16  , 0xffc0, 0x4880, 0x2f8),
+	new OpRec(0xffc0, 0x48c0, 0x2f8, Opcode.movem, "sl:M,E0"),     // d68000_movem_re_32   
+	new OpRec(d68000_movem_er_16  , 0xffc0, 0x4c80, 0x37b),
+	new OpRec(d68000_movem_er_32  , 0xffc0, 0x4cc0, 0x37b),
+	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
+	new OpRec(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
+	new OpRec(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
+	new OpRec(d68000_movep_re_32  , 0xf1f8, 0x01c8, 0x000),
+	new OpRec(d68010_moves_8      , 0xffc0, 0x0e00, 0x3f8),
+	new OpRec(d68010_moves_16     , 0xffc0, 0x0e40, 0x3f8),
+	new OpRec(d68010_moves_32     , 0xffc0, 0x0e80, 0x3f8),
+	new OpRec(0xf100, 0x7000, 0x000, Opcode.moveq, "Q0,D9"),        // d68000_moveq        
+	new OpRec(d68040_move16_pi_pi , 0xfff8, 0xf620, 0x000),
+	new OpRec(d68040_move16_pi_al , 0xfff8, 0xf600, 0x000),
+	new OpRec(d68040_move16_al_pi , 0xfff8, 0xf608, 0x000),
+	new OpRec(d68040_move16_ai_al , 0xfff8, 0xf610, 0x000),
+	new OpRec(d68040_move16_al_ai , 0xfff8, 0xf618, 0x000),
+	new OpRec(d68000_muls         , 0xf1c0, 0xc1c0, 0xbff),
+	new OpRec(d68000_mulu         , 0xf1c0, 0xc0c0, 0xbff),
+	new OpRec(d68020_mull         , 0xffc0, 0x4c00, 0xbff),
+	new OpRec(d68000_nbcd         , 0xffc0, 0x4800, 0xbf8),
+	new OpRec(d68000_neg_8        , 0xffc0, 0x4400, 0xbf8),
+	new OpRec(d68000_neg_16       , 0xffc0, 0x4440, 0xbf8),
+	new OpRec(d68000_neg_32       , 0xffc0, 0x4480, 0xbf8),
+	new OpRec(d68000_negx_8       , 0xffc0, 0x4000, 0xbf8),
+	new OpRec(d68000_negx_16      , 0xffc0, 0x4040, 0xbf8),
+	new OpRec(d68000_negx_32      , 0xffc0, 0x4080, 0xbf8),
+	new OpRec(d68000_nop          , 0xffff, 0x4e71, 0x000),
+	new OpRec(d68000_not_8        , 0xffc0, 0x4600, 0xbf8),
+	new OpRec(d68000_not_16       , 0xffc0, 0x4640, 0xbf8),
+	new OpRec(d68000_not_32       , 0xffc0, 0x4680, 0xbf8),
+	new OpRec(d68000_or_er_8      , 0xf1c0, 0x8000, 0xbff),
+	new OpRec(d68000_or_er_16     , 0xf1c0, 0x8040, 0xbff),
+	new OpRec(d68000_or_er_32     , 0xf1c0, 0x8080, 0xbff),
+	new OpRec(d68000_or_re_8      , 0xf1c0, 0x8100, 0x3f8),
+	new OpRec(d68000_or_re_16     , 0xf1c0, 0x8140, 0x3f8),
+	new OpRec(d68000_or_re_32     , 0xf1c0, 0x8180, 0x3f8),
+	new OpRec(0xffff, 0x003c, 0x000, Opcode.ori, "sb:Ib,c"),        // d68000_ori_to_ccr   
+	new OpRec(0xffff, 0x007c, 0x000, Opcode.ori, "sw:Iw,s"),        // d68000_ori_to_sr    
+	new OpRec(0xffc0, 0x0000, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_8        
+	new OpRec(0xffc0, 0x0040, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_16        
+	new OpRec(0xffc0, 0x0080, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_32       
+	new OpRec(d68020_pack_rr      , 0xf1f8, 0x8140, 0x000),
+	new OpRec(d68020_pack_mm      , 0xf1f8, 0x8148, 0x000),
+	new OpRec(d68000_pea          , 0xffc0, 0x4840, 0x27b),
+	new OpRec(d68040_pflush       , 0xffe0, 0xf500, 0x000),
+	new OpRec(d68000_reset        , 0xffff, 0x4e70, 0x000),
+	new OpRec(d68000_ror_s_8      , 0xf1f8, 0xe018, 0x000),
+	new OpRec(d68000_ror_s_16     , 0xf1f8, 0xe058, 0x000),
+	new OpRec(d68000_ror_s_32     , 0xf1f8, 0xe098, 0x000),
+	new OpRec(d68000_ror_r_8      , 0xf1f8, 0xe038, 0x000),
+	new OpRec(d68000_ror_r_16     , 0xf1f8, 0xe078, 0x000),
+	new OpRec(d68000_ror_r_32     , 0xf1f8, 0xe0b8, 0x000),
+	new OpRec(d68000_ror_ea       , 0xffc0, 0xe6c0, 0x3f8),
+	new OpRec(d68000_rol_s_8      , 0xf1f8, 0xe118, 0x000),
+	new OpRec(d68000_rol_s_16     , 0xf1f8, 0xe158, 0x000),
+	new OpRec(d68000_rol_s_32     , 0xf1f8, 0xe198, 0x000),
+	new OpRec(d68000_rol_r_8      , 0xf1f8, 0xe138, 0x000),
+	new OpRec(d68000_rol_r_16     , 0xf1f8, 0xe178, 0x000),
+	new OpRec(d68000_rol_r_32     , 0xf1f8, 0xe1b8, 0x000),
+	new OpRec(d68000_rol_ea       , 0xffc0, 0xe7c0, 0x3f8),
+	new OpRec(d68000_roxr_s_8     , 0xf1f8, 0xe010, 0x000),
+	new OpRec(d68000_roxr_s_16    , 0xf1f8, 0xe050, 0x000),
+	new OpRec(d68000_roxr_s_32    , 0xf1f8, 0xe090, 0x000),
+	new OpRec(d68000_roxr_r_8     , 0xf1f8, 0xe030, 0x000),
+	new OpRec(d68000_roxr_r_16    , 0xf1f8, 0xe070, 0x000),
+	new OpRec(d68000_roxr_r_32    , 0xf1f8, 0xe0b0, 0x000),
+	new OpRec(d68000_roxr_ea      , 0xffc0, 0xe4c0, 0x3f8),
+	new OpRec(d68000_roxl_s_8     , 0xf1f8, 0xe110, 0x000),
+	new OpRec(d68000_roxl_s_16    , 0xf1f8, 0xe150, 0x000),
+	new OpRec(d68000_roxl_s_32    , 0xf1f8, 0xe190, 0x000),
+	new OpRec(d68000_roxl_r_8     , 0xf1f8, 0xe130, 0x000),
+	new OpRec(d68000_roxl_r_16    , 0xf1f8, 0xe170, 0x000),
+	new OpRec(d68000_roxl_r_32    , 0xf1f8, 0xe1b0, 0x000),
+	new OpRec(d68000_roxl_ea      , 0xffc0, 0xe5c0, 0x3f8),
+	new OpRec(d68010_rtd          , 0xffff, 0x4e74, 0x000),
+	new OpRec(d68000_rte          , 0xffff, 0x4e73, 0x000),
+	new OpRec(d68020_rtm          , 0xfff0, 0x06c0, 0x000),
+	new OpRec(d68000_rtr          , 0xffff, 0x4e77, 0x000),
+	new OpRec(d68000_rts          , 0xffff, 0x4e75, 0x000),
+	new OpRec(d68000_sbcd_rr      , 0xf1f8, 0x8100, 0x000),
+	new OpRec(d68000_sbcd_mm      , 0xf1f8, 0x8108, 0x000),
+	new OpRec(d68000_scc          , 0xf0c0, 0x50c0, 0xbf8),
+	new OpRec(d68000_stop         , 0xffff, 0x4e72, 0x000),
+	new OpRec(d68000_sub_er_8     , 0xf1c0, 0x9000, 0xbff),
+	new OpRec(d68000_sub_er_16    , 0xf1c0, 0x9040, 0xfff),
+	new OpRec(d68000_sub_er_32    , 0xf1c0, 0x9080, 0xfff),
+	new OpRec(d68000_sub_re_8     , 0xf1c0, 0x9100, 0x3f8),
+	new OpRec(d68000_sub_re_16    , 0xf1c0, 0x9140, 0x3f8),
+	new OpRec(d68000_sub_re_32    , 0xf1c0, 0x9180, 0x3f8),
+	new OpRec(d68000_suba_16      , 0xf1c0, 0x90c0, 0xfff),
+	new OpRec(d68000_suba_32      , 0xf1c0, 0x91c0, 0xfff),
+	new OpRec(d68000_subi_8       , 0xffc0, 0x0400, 0xbf8),
+	new OpRec(d68000_subi_16      , 0xffc0, 0x0440, 0xbf8),
+	new OpRec(d68000_subi_32      , 0xffc0, 0x0480, 0xbf8),
+	new OpRec(d68000_subq_8       , 0xf1c0, 0x5100, 0xbf8),
+	new OpRec(d68000_subq_16      , 0xf1c0, 0x5140, 0xff8),
+	new OpRec(d68000_subq_32      , 0xf1c0, 0x5180, 0xff8),
+	new OpRec(d68000_subx_rr_8    , 0xf1f8, 0x9100, 0x000),
+	new OpRec(d68000_subx_rr_16   , 0xf1f8, 0x9140, 0x000),
+	new OpRec(d68000_subx_rr_32   , 0xf1f8, 0x9180, 0x000),
+	new OpRec(d68000_subx_mm_8    , 0xf1f8, 0x9108, 0x000),
+	new OpRec(d68000_subx_mm_16   , 0xf1f8, 0x9148, 0x000),
+	new OpRec(d68000_subx_mm_32   , 0xf1f8, 0x9188, 0x000),
+	new OpRec(d68000_swap         , 0xfff8, 0x4840, 0x000),
+	new OpRec(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
+	new OpRec(d68000_trap         , 0xfff0, 0x4e40, 0x000),
+	new OpRec(d68020_trapcc_0     , 0xf0ff, 0x50fc, 0x000),
+	new OpRec(d68020_trapcc_16    , 0xf0ff, 0x50fa, 0x000),
+	new OpRec(d68020_trapcc_32    , 0xf0ff, 0x50fb, 0x000),
+	new OpRec(d68000_trapv        , 0xffff, 0x4e76, 0x000),
+	new OpRec(d68000_tst_8        , 0xffc0, 0x4a00, 0xbf8),
+	new OpRec(d68020_tst_pcdi_8   , 0xffff, 0x4a3a, 0x000),
+	new OpRec(d68020_tst_pcix_8   , 0xffff, 0x4a3b, 0x000),
+	new OpRec(d68020_tst_i_8      , 0xffff, 0x4a3c, 0x000),
+	new OpRec(d68000_tst_16       , 0xffc0, 0x4a40, 0xbf8),
+	new OpRec(d68020_tst_a_16     , 0xfff8, 0x4a48, 0x000),
+	new OpRec(d68020_tst_pcdi_16  , 0xffff, 0x4a7a, 0x000),
+	new OpRec(d68020_tst_pcix_16  , 0xffff, 0x4a7b, 0x000),
+	new OpRec(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
+	new OpRec(d68000_tst_32       , 0xffc0, 0x4a80, 0xbf8),
+	new OpRec(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
+	new OpRec(d68020_tst_pcdi_32  , 0xffff, 0x4aba, 0x000),
+	new OpRec(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),
+	new OpRec(d68020_tst_i_32     , 0xffff, 0x4abc, 0x000),
+	new OpRec(d68000_unlk         , 0xfff8, 0x4e58, 0x000),
+	new OpRec(d68020_unpk_rr      , 0xf1f8, 0x8180, 0x000),
+	new OpRec(d68020_unpk_mm      , 0xf1f8, 0x8188, 0x000),
+	new OpRec(d68851_p000         , 0xffc0, 0xf000, 0x000),
+	new OpRec(d68851_pbcc16       , 0xffc0, 0xf080, 0x000),
+	new OpRec(d68851_pbcc32       , 0xffc0, 0xf0c0, 0x000),
+	new OpRec(d68851_pdbcc        , 0xfff8, 0xf048, 0x000),
+	new OpRec(d68851_p001         , 0xffc0, 0xf040, 0x000),
+	new OpRec(null, 0, 0, 0),
 };
         }
 
-        private static opcode_struct illegalOpcode = new opcode_struct(0, 0, 0, Opcode.illegal, "");
+        private static OpRec illegalOpcode = new OpRec(0, 0, 0, Opcode.illegal, "");
 
         /* Check if opcode is using a valid ea mode */
         static bool valid_ea(uint opcode, uint mask)
@@ -5567,7 +5573,7 @@ namespace Decompiler.Arch.M68k
 
         }
 
-        static int compare_nof_true_bits(opcode_struct aptr, opcode_struct bptr)
+        static int compare_nof_true_bits(OpRec aptr, OpRec bptr)
         {
             int a = (int) aptr.mask;
             int b = (int) bptr.mask;
@@ -5590,8 +5596,8 @@ namespace Decompiler.Arch.M68k
             uint i;
             uint opcode;
             int ostruct;
-            opcode_struct[] opcode_info = (opcode_struct[])g_opcode_info.Clone();
-            Array.Sort<opcode_struct>(opcode_info, compare_nof_true_bits);
+            OpRec[] opcode_info = (OpRec[])g_opcode_info.Clone();
+            Array.Sort<OpRec>(opcode_info, compare_nof_true_bits);
 
             for (i = 0; i < 0x10000; i++)
             {
@@ -5664,7 +5670,7 @@ namespace Decompiler.Arch.M68k
             g_helper_str = "";
             g_cpu_ir = read_imm_16();
             g_opcode_type = 0;
-            return g_instruction_table[g_cpu_ir].opcode_handler();
+            return g_instruction_table[g_cpu_ir].opcode_handler(this);
             //str_buff = string.Format("{0}{1}", g_dasm_str, g_helper_str);
             //return 0;
         }

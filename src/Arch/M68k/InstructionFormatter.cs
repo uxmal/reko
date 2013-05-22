@@ -165,5 +165,11 @@ namespace Decompiler.Arch.M68k
                 }
             }
         }
+
+        public M68kOperand Visit(IndexedOperand op)
+        {
+            writer.Write("$$INDEXED$$");
+            return op;
+        }
     }
 }

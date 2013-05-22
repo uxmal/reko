@@ -113,5 +113,14 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "4|V = false");
 
         }
+
+        [Test]
+        public void M68krw_adda_l()
+        {
+            Rewrite(0xDBDC);
+            AssertCode("0|00010000(2): 1 instructions",
+                "1|a5 = a5 + Mem[a4:word32]",
+                "2|a4 = a4 + 0x00000004");
+        }
     }
 }

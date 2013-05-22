@@ -149,7 +149,16 @@ namespace Decompiler.Core
             Address addrBegin = dasm.Address;
             if (ShowAddresses)
                 writer.Write("{0} ", addrBegin);
-            var instr = dasm.DisassembleInstruction();
+            Machine.MachineInstruction instr = null;
+            try
+            {
+                instr = dasm.DisassembleInstruction();
+            }
+            catch (Exception ex)
+            {
+                writer.WriteLine(ex.Message);
+                return;
+            }
             if (instr == null)
             {
                 writer.WriteLine();
