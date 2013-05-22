@@ -54,6 +54,22 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
 
+        private void RewriteAdda()
+        {
+            var width = di.Instruction.dataWidth;
+            var op1 = orw.Rewrite(di.Instruction.op1);
+            var op2 = orw.Rewrite(di.Instruction.op2);
+            emitter.Assign(op2, emitter.Add(op2, op1));
+            var postOp = di.Instruction.op1 as PostIncrementMemoryOperand;
+            if (postOp != null)
+                RewritePostOp(postOp);
+        }
+
+        private void RewritePostOp(PostIncrementMemoryOperand op)
+        {
+            var reg = frame.EnsureRegister(op.Register);
+            emitter.Assign(reg, emitter.Add(reg, di.Instruction.dataWidth.Size));
+        }
         public void RewriteMove(bool setFlag)
         {
             var op1 = orw.Rewrite(di.Instruction.op1);

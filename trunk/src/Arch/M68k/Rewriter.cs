@@ -74,6 +74,7 @@ namespace Decompiler.Arch.M68k
                 orw = new OperandRewriter(this);
                 switch (di.Instruction.code)
                 {
+                case Opcode.adda: RewriteAdda(); break;
                 case Opcode.eor: RewriteEor(); break;
                 case Opcode.movea: RewriteMove(false); break;
                 default:
@@ -86,6 +87,7 @@ namespace Decompiler.Arch.M68k
             }
             yield break;
         }
+
 
         IEnumerator IEnumerable.GetEnumerator()
         {
