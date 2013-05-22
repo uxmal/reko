@@ -80,7 +80,7 @@ namespace Decompiler.Arch.M68k
             if (imm != null)
             {
                 writer.Write("#$");
-                writer.Write(imm.FormatValue(imm.Value));
+                writer.Write(MachineOperand.FormatValue(imm.Value));
                 return;
             }
             MemoryOperand mop = op as MemoryOperand;
@@ -90,8 +90,8 @@ namespace Decompiler.Arch.M68k
                 {
                     writer.Write('$');
                     writer.Write(mop.Offset.IsNegative
-                        ? mop.FormatSignedValue(mop.Offset)
-                        : mop.FormatUnsignedValue(mop.Offset));
+                        ? MachineOperand.FormatSignedValue(mop.Offset)
+                        : MachineOperand.FormatUnsignedValue(mop.Offset));
                 }
                 writer.Write("(");
                 writer.Write(mop.Base.Name);
@@ -105,7 +105,7 @@ namespace Decompiler.Arch.M68k
         public M68kOperand Visit(M68kImmediateOperand imm)
         {
             writer.Write("#$");
-            writer.Write(imm.FormatValue(imm.Constant));
+            writer.Write(MachineOperand.FormatValue(imm.Constant));
             return imm;
         }
 
@@ -168,7 +168,62 @@ namespace Decompiler.Arch.M68k
 
         public M68kOperand Visit(IndexedOperand op)
         {
-            writer.Write("$$INDEXED$$");
+            //@base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+            //outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+            //if (EXT_BASE_REGISTER_PRESENT(extension))
+            //    base_reg = string.Format("A{0}", instruction & 7);
+            //else
+            //    base_reg = "";
+            //if (EXT_INDEX_REGISTER_PRESENT(extension))
+            //{
+            //    index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+            //    if (EXT_INDEX_SCALE(extension) != 0)
+            //        index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+            //}
+            //else
+            //    index_reg = "";
+            //preindex = (extension & 7) > 0 && (extension & 7) < 4;
+            //postindex = (extension & 7) > 4;
+
+            var mode = writer;
+            mode.Write("(");
+            if (op.preindex || op.postindex)
+                mode.Write("[");
+            var sep = "";
+            if (op.@base != null)
+            {
+                writer.Write(MachineOperand.FormatValue(op.@base));    
+                sep = ",";
+            }
+            if (op.base_reg != null)
+            {
+                mode.Write(sep);
+                mode.Write(op.base_reg);
+                sep = ",";
+            }
+            if (op.postindex)
+            {
+                mode.Write("]");
+                sep = ",";
+            }
+            if (op.index_reg != null)
+            {
+                mode.Write(sep);
+                if (op.index_scale > 1)
+                    mode.Write("*{0}", op.index_scale);
+                sep = ",";
+            }
+            if (op.preindex)
+            {
+                mode.Write("]");
+                sep = ",";
+            }
+            if (op.outer != null)
+            {
+                mode.Write(sep);
+                mode.Write(MachineOperand.FormatSignedValue(op.outer));
+            }
+            mode.Write(")");
             return op;
         }
     }
