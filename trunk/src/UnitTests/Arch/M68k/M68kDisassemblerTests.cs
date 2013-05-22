@@ -216,11 +216,18 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("bcs\t$00000074", dasm.Disassemble().ToString());
         }
 
-        [Test]
-        public void orb()
+        private void RunTest(string expected, params ushort[] words)
         {
-            dasm = CreateDasm(0x863c, 0x1123);
-            Assert.AreEqual("or.b\t#$23,d3", dasm.Disassemble().ToString());
+            dasm = CreateDasm(words);
+            Assert.AreEqual(expected, dasm.Disassemble().ToString());
+        }
+
+        [Test]
+        public void or_s_with_immediate()
+        {
+            RunTest("or.b\t#$23,d3", 0x863c, 0x1123);
+            RunTest("or.w\t#$1123,d3", 0x867c, 0x1123);
+            RunTest("or.l\t#$11234455,d3", 0x86Bc, 0x1123, 0x4455);
         }
 
     }

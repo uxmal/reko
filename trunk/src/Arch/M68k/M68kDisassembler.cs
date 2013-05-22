@@ -5380,8 +5380,8 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_not_16       , 0xffc0, 0x4640, 0xbf8),
 	new OpRec(d68000_not_32       , 0xffc0, 0x4680, 0xbf8),
 	new OpRec(0xf1c0, 0x8000, 0xbff, Opcode.or, "sb:E0,D9"),        // d68000_or_er_8      
-	new OpRec(d68000_or_er_16     , 0xf1c0, 0x8040, 0xbff),
-	new OpRec(d68000_or_er_32     , 0xf1c0, 0x8080, 0xbff),
+	new OpRec(0xf1c0, 0x8040, 0xbff, Opcode.or, "sw:E0,D9"),        // d68000_or_er_16     
+	new OpRec(0xf1c0, 0x8080, 0xbff, Opcode.or, "sl:E0,D9"),        // d68000_or_er_32   
 	new OpRec(d68000_or_re_8      , 0xf1c0, 0x8100, 0x3f8),
 	new OpRec(d68000_or_re_16     , 0xf1c0, 0x8140, 0x3f8),
 	new OpRec(d68000_or_re_32     , 0xf1c0, 0x8180, 0x3f8),
