@@ -216,5 +216,12 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("bcs\t$00000074", dasm.Disassemble().ToString());
         }
 
+        [Test]
+        public void orb()
+        {
+            dasm = CreateDasm(0x863c, 0x1123);
+            Assert.AreEqual("or.b\t#$23,d3", dasm.Disassemble().ToString());
+        }
+
     }
 }
