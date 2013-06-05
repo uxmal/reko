@@ -2,37 +2,46 @@
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	bx = si
 	goto l0C00_001A
+	// succ:  l0C00_001A
 l0C00_0005:
 	Mem0[ds:di:word16] = ax
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false
 	branch Test(NE,Z) l0C00_0011
+	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
 	ax = 0xFFFF
 	goto l0C00_0024
+	// succ:  l0C00_0024
 l0C00_0011:
 	SCZO = cond(ax - 0x000D)
 	branch Test(NE,Z) l0C00_001A
+	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
 	v12 = Mem0[ds:0x0302:word16] + 0x0001
 	Mem0[ds:0x0302:word16] = v12
 	SZO = cond(Mem0[ds:0x0302:word16])
+	// succ:  l0C00_001A
 l0C00_001A:
 	ax = Mem0[ds:si:word16]
 	si = si + 0x0002
 	SCZO = cond(ax - 0x0020)
 	branch Test(NE,Z) l0C00_0005
+	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
 	ax = si
 	ax = ax - bx
 	SCZO = cond(ax)
+	// succ:  l0C00_0024
 l0C00_0024:
 	Mem0[ds:0x0300:word16] = ax
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 == Predecessors
   fn0C00_0000_entry:
@@ -44,7 +53,7 @@ fn0C00_0000_exit:
   l0C00_0016: l0C00_0011
   l0C00_001A: l0C00_0000 l0C00_0011 l0C00_0016
   l0C00_0020: l0C00_001A
-  l0C00_0024: l0C00_000B l0C00_0020
+  l0C00_0024: l0C00_0020 l0C00_000B
 == Immediate dominators
 fn0C00_0000_entry: idom 
 fn0C00_0000_exit: idom l0C00_0024

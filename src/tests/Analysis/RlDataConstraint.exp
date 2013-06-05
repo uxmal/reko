@@ -3,10 +3,10 @@
 	MayUseIn:  si ds
 	BypassIn: 
 	Trashed:   SCZO ax al ah
-	Preserved:
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
 // DataOut: si ds
 l0C00_0000:		// pred: fn0C00_0000_entry
@@ -46,6 +46,10 @@ l0C00_002A:		// pred: fn0C00_002A_entry
 	return
 	// succ:  fn0C00_002A_exit
 // DataOut: ds
-fn0C00_002A_exit:		// pred: l0C00_002A
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp
+
+fn0C00_002A_exit:
 // DataOut: ds
+// DataOut (flags):
+// SymbolicIn: sp:fp ax:ax -2(fp):ax

@@ -1,116 +1,118 @@
 // fn0C00_0000
 void fn0C00_0000(byte al, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
-	byte al_5
-	branch fn0C00_000A(al, &al_5) l0C00_0009
-	// succ:  2 3
-l0C00_0005:		// block 2, pred: 1
-	Mem7[ds:0x0300:byte] = al_5
-	// succ:  3
-l0C00_0009:		// block 3, pred: 1 2
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	byte al_6
+	branch fn0C00_000A(al, &al_6) l0C00_0009
+	// succ:  l0C00_0005 l0C00_0009
+l0C00_0005:
+	Mem8[ds:0x0300:byte] = al_6
+	// succ:  l0C00_0009
+l0C00_0009:
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
-	// succ: 
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
 
 // fn0C00_0000
 void fn0C00_0000(byte al, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
-	byte al_5
-	branch fn0C00_000A(al, &al_5) l0C00_0009
-	// succ:  2 3
-l0C00_0005:		// block 2, pred: 1
-	Mem7[ds:0x0300:byte] = al_5
-	// succ:  3
-l0C00_0009:		// block 3, pred: 1 2
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	byte al_6
+	branch fn0C00_000A(al, &al_6) l0C00_0009
+	// succ:  l0C00_0005 l0C00_0009
+l0C00_0005:
+	Mem8[ds:0x0300:byte] = al_6
+	// succ:  l0C00_0009
+l0C00_0009:
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
-	// succ: 
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
 ================
 // fn0C00_000A
 byte fn0C00_000A(byte al, ptr16 alOut)
-fn0C00_000A_entry:		// block 0, pred:
+fn0C00_000A_entry:
 	Mem0[alOut:byte] = al
-	// succ:  1
-l0C00_000A:		// block 1, pred: 0
+	// succ:  l0C00_000A
+l0C00_000A:
 	branch al <u 0x30 l0C00_0032
-	// succ:  2 7
-l0C00_000E:		// block 2, pred: 1
+	// succ:  l0C00_000E l0C00_0032
+l0C00_000E:
 	branch al <=u 0x39 l0C00_0022
-	// succ:  3 8
-l0C00_0012:		// block 3, pred: 2
+	// succ:  l0C00_0012 l0C00_0022
+l0C00_0012:
 	branch al <u 0x41 l0C00_0032
-	// succ:  4 7
-l0C00_0016:		// block 4, pred: 3
+	// succ:  l0C00_0016 l0C00_0032
+l0C00_0016:
 	branch al <=u 0x46 l0C00_0022
-	// succ:  5 8
-l0C00_001A:		// block 5, pred: 4
+	// succ:  l0C00_001A l0C00_0022
+l0C00_001A:
 	branch al <u 0x61 l0C00_0032
-	// succ:  6 7
-l0C00_001E:		// block 6, pred: 5
+	// succ:  l0C00_001E l0C00_0032
+l0C00_001E:
 	branch al >u 0x66 l0C00_0032
-	// succ:  8 7
-l0C00_0032:		// block 7, pred: 1 3 5 6
-	return true
-	// succ:  12
-l0C00_0022:		// block 8, pred: 2 4 6
-	byte al_20 = al - 0x30
-	Mem0[alOut:byte] = al_20
-	branch al_20 <u 0x0A l0C00_0030
-	// succ:  9 11
-l0C00_0028:		// block 9, pred: 8
-	byte al_23 = al - 0x37
-	Mem0[alOut:byte] = al_23
-	branch al_23 <u 0x10 l0C00_0030
-	// succ:  10 11
-l0C00_002E:		// block 10, pred: 9
-	byte al_26
+	// succ:  l0C00_0022 l0C00_0032
+l0C00_0022:
+	byte al_20
+	Mem0[alOut:byte] = al - 0x30
+	branch al <u 0x3A l0C00_0030
+	// succ:  l0C00_0028 l0C00_0030
+l0C00_0028:
+	byte al_28
+	Mem0[alOut:byte] = al - 0x37
+	branch al <u 0x47 l0C00_0030
+	// succ:  l0C00_002E l0C00_0030
+l0C00_002E:
+	byte al_32
 	Mem0[alOut:byte] = al - 0x57
-	// succ:  11
-l0C00_0030:		// block 11, pred: 8 9 10
+	// succ:  l0C00_0030
+l0C00_0030:
 	return false
-	// succ:  12
-fn0C00_000A_exit:		// block 12, pred: 7 11
-	// succ: 
+	// succ:  fn0C00_000A_exit
+l0C00_0032:
+	return true
+	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:
 
 // fn0C00_000A
 byte fn0C00_000A(byte al, ptr16 alOut)
-fn0C00_000A_entry:		// block 0, pred:
+fn0C00_000A_entry:
 	Mem0[alOut:byte] = al
-	// succ:  1
-l0C00_000A:		// block 1, pred: 0
+	// succ:  l0C00_000A
+l0C00_000A:
 	branch al <u 0x30 || al >u 0x39 && (al <u 0x41 || al >u 0x46 && (al <u 0x61 || al >u 0x66)) l0C00_0032
-	// succ:  8 7
-l0C00_000E:		// block 2
-l0C00_0012:		// block 3
-l0C00_0016:		// block 4
-l0C00_001A:		// block 5
-l0C00_001E:		// block 6
-l0C00_0032:		// block 7, pred: 1
-	return true
-	// succ:  12
-l0C00_0022:		// block 8, pred: 1
-	byte al_20 = al - 0x30
-	Mem0[alOut:byte] = al_20
-	branch al_20 <u 0x0A l0C00_0030
-	// succ:  9 11
-l0C00_0028:		// block 9, pred: 8
-	byte al_23 = al - 0x37
-	Mem0[alOut:byte] = al_23
-	branch al_23 <u 0x10 l0C00_0030
-	// succ:  10 11
-l0C00_002E:		// block 10, pred: 9
-	byte al_26
-	Mem0[alOut:byte] = al - 0x57
-	// succ:  11
-l0C00_0030:		// block 11, pred: 8 9 10
-	return false
-	// succ:  12
-fn0C00_000A_exit:		// block 12, pred: 7 11
+	goto l0C00_0022
+	// succ:  l0C00_0022 l0C00_0032
+l0C00_000E:
 	// succ: 
+l0C00_0012:
+	// succ: 
+l0C00_0016:
+	// succ: 
+l0C00_001A:
+	// succ: 
+l0C00_001E:
+	// succ: 
+l0C00_0022:
+	byte al_20
+	Mem0[alOut:byte] = al - 0x30
+	branch al <u 0x3A l0C00_0030
+	// succ:  l0C00_0028 l0C00_0030
+l0C00_0028:
+	byte al_28
+	Mem0[alOut:byte] = al - 0x37
+	branch al <u 0x47 l0C00_0030
+	// succ:  l0C00_002E l0C00_0030
+l0C00_002E:
+	byte al_32
+	Mem0[alOut:byte] = al - 0x57
+	// succ:  l0C00_0030
+l0C00_0030:
+	return false
+	// succ:  fn0C00_000A_exit
+l0C00_0032:
+	return true
+	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:
 ================

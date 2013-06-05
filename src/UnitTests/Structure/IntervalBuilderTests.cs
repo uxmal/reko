@@ -16,7 +16,7 @@ namespace Decompiler.UnitTests.Structure
         private List<Interval> intervals;
 
         [Test]
-        public void SimpleGraph()
+        public void IvbSimpleGraph()
         {
             RunTest(delegate(ProcedureBuilder m)
             {
@@ -28,7 +28,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void IfThen()
+        public void IvbIfThen()
         {
             RunTest(delegate(ProcedureBuilder m)
             {
@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void Loop()
+        public void IvbLoop()
         {
             RunTest(delegate(ProcedureBuilder m)
             {
@@ -55,12 +55,12 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
             Assert.AreEqual(2, intervals.Count, "Expected 2 intervals");
-            Assert.AreEqual("Interval 0: [ProcedureMock_entry]", intervals[0].ToString());
-            Assert.AreEqual("Interval 1: [done,l1,loop,ProcedureMock_exit]", intervals[1].ToString());
+            Assert.AreEqual("Interval 0: [ProcedureBuilder_entry]", intervals[0].ToString());
+            Assert.AreEqual("Interval 1: [done,l1,loop,ProcedureBuilder_exit]", intervals[1].ToString());
         }
 
         [Test]
-        public void TwoLoops()
+        public void IvbTwoLoops()
         {
             RunTest(delegate(ProcedureBuilder m)
             {
@@ -80,9 +80,9 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
             Assert.AreEqual(3, intervals.Count);
-            Assert.AreEqual("Interval 0: [ProcedureMock_entry]", intervals[0].ToString());
+            Assert.AreEqual("Interval 0: [ProcedureBuilder_entry]", intervals[0].ToString());
             Assert.AreEqual("Interval 1: [l1,loop1]", intervals[1].ToString());
-            Assert.AreEqual("Interval 2: [done,l2,loop2,ProcedureMock_exit]", intervals[2].ToString());
+            Assert.AreEqual("Interval 2: [done,l2,loop2,ProcedureBuilder_exit]", intervals[2].ToString());
         }
 
         [Test]

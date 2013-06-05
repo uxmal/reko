@@ -2,20 +2,21 @@ void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
 // Trashed: SCZO ax bx si di al bl ah bh
-// Preserved:
+// Preserved: sp
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register ds
-// di:Register di
-// si:Register si
-// ax:Register ax
-// bx:Register bx
+// sp:sp
+// ds:ds
+// di:di
+// si:si
+// ax:ax
+// bx:bx
 // return address size: 2
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	di = Mem0[ds:0x0100:word16]
 	si = Mem0[ds:di:word16]
 	ax = fn0C00_0026(si, ds)
@@ -30,60 +31,62 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	Mem0[ds:di + 0x0002:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // MayUse:  si ds
 // LiveOut: ax
 // Trashed: SCZO ax al ah
-// Preserved: di
+// Preserved: sp di
 // fn0C00_0026
 // Mem0:Global memory
 // fp:Temporary
-// di:Register di
-// wLoc04:Local -0004
-// ds:Register ds
-// v5:Temporary
+// sp:sp
+// di:di
+// ss:ss
+// ds:ds
+// v6:Temporary
 // SZO:Flags
-// si:Register si
-// ax:Register ax
+// wLoc02:Local -0002
+// si:si
+// ax:ax
 // return address size: 2
 word16 fn0C00_0026(word16 si, selector ds)
-fn0C00_0026_entry:		// pred:
+fn0C00_0026_entry:
 	// succ:  l0C00_0026
-l0C00_0026:		// pred: fn0C00_0026_entry
-	wLoc04 = di
+l0C00_0026:
+	sp = fp - 0x0002
+	wLoc02 = di
 	di = Mem0[ds:0x0104:word16]
-	v5 = Mem0[ds:di + 0x0030:word16] + 0x0001
-	Mem0[ds:di + 0x0030:word16] = v5
-	SZO = cond(v5)
+	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
+	Mem0[ds:di + 0x0030:word16] = v6
+	SZO = cond(Mem0[ds:di + 0x0030:word16])
 	ax = fn0C00_0033(si, ds)
-	di = wLoc04
+	di = wLoc02
+	sp = fp
 	return ax
 	// succ:  fn0C00_0026_exit
-fn0C00_0026_exit:		// pred: l0C00_0026
-	// succ: 
+fn0C00_0026_exit:
 Register word16 fn0C00_0033(Register word16 si, Register selector ds)
 // MayUse:  si ds
 // LiveOut: ax
 // Trashed: SCZO ax al ah
-// Preserved:
+// Preserved: sp
 // fn0C00_0033
 // Mem0:Global memory
 // fp:Temporary
-// si:Register si
-// ds:Register ds
-// ax:Register ax
+// sp:sp
+// si:si
+// ds:ds
+// ax:ax
 // SCZO:Flags
 // return address size: 2
 word16 fn0C00_0033(word16 si, selector ds)
-fn0C00_0033_entry:		// pred:
+fn0C00_0033_entry:
 	// succ:  l0C00_0033
-l0C00_0033:		// pred: fn0C00_0033_entry
+l0C00_0033:
 	ax = Mem0[ds:si:word16]
 	ax = ax + ax
 	SCZO = cond(ax)
 	return ax
 	// succ:  fn0C00_0033_exit
-fn0C00_0033_exit:		// pred: l0C00_0033
-	// succ: 
+fn0C00_0033_exit:

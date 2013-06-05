@@ -210,10 +210,10 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void bcs()
+        public void Bcs()
         {
             dasm = CreateDasm(0x6572);
-            Assert.AreEqual("bcs\t$00000074", dasm.Disassemble().ToString());
+            Assert.AreEqual("bcs\t$10000074", dasm.Disassemble().ToString());
         }
 
         private void RunTest(string expected, params ushort[] words)

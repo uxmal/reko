@@ -421,7 +421,7 @@ namespace Decompiler.Arch.M68k
 
         string g_dasm_str; /* string to hold disassembly */
         string g_helper_str; /* string to hold helpful info */
-        ushort g_cpu_ir;        /* instruction register */
+        internal ushort g_cpu_ir;        /* instruction register */
         uint g_cpu_type = 0;
         uint g_opcode_type;
         string g_rawop;
@@ -544,9 +544,9 @@ namespace Decompiler.Arch.M68k
         private M68kImmediateOperand get_imm_str_u16() { return get_imm_str_u(1); }
         private M68kImmediateOperand get_imm_str_u32() { return get_imm_str_u(2); }
 
-        private RegisterOperand get_data_reg(int d) { return new RegisterOperand(Registers.DataRegister(d)); }
-        private RegisterOperand get_addr_reg(int a) { return new RegisterOperand(Registers.AddressRegister(a)); }
-        private RegisterOperand get_addr_or_data_reg(bool addrReg, int bits)
+        private static RegisterOperand get_data_reg(int d) { return new RegisterOperand(Registers.DataRegister(d)); }
+        private static RegisterOperand get_addr_reg(int a) { return new RegisterOperand(Registers.AddressRegister(a)); }
+        private static RegisterOperand get_addr_or_data_reg(bool addrReg, int bits)
         {
             return addrReg ? get_addr_reg(bits) : get_data_reg(bits);
         }
@@ -576,7 +576,7 @@ namespace Decompiler.Arch.M68k
             return (value & 0x40) != 0 ? (value | ~0x7F) : (value & 0x7f);
         }
 
-        private M68kImmediateOperand get_3bit_qdata(int bitPattern)
+        private static M68kImmediateOperand get_3bit_qdata(int bitPattern)
         {
             return new M68kImmediateOperand(Constant.Byte((byte) g_3bit_qdata_table[bitPattern]));
         }
@@ -1545,13 +1545,13 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_bcc_8(M68kDisassembler2 dasm)
+        private static M68kInstruction d68000_bcc_8(M68kDisassembler2 dasm)
         {
-            var temp_pc = g_cpu_pc.Address;
+            var temp_pc = dasm.g_cpu_pc.Address;
             return new M68kInstruction
             {
-                code = g_bcc[(g_cpu_ir >> 8) & 0xf], 
-                op1 = new AddressOperand(temp_pc + make_int_8(g_cpu_ir))
+                code = g_bcc[(dasm.g_cpu_ir >> 8) & 0xf], 
+                op1 = new AddressOperand(temp_pc + make_int_8(dasm.g_cpu_ir))
             };
         }
 
@@ -4250,7 +4250,7 @@ namespace Decompiler.Arch.M68k
                 code = Opcode.rol,
                 dataWidth = PrimitiveType.Word32,
                 op1 = get_data_reg((g_cpu_ir >> 9) & 7),
-                op2 = get_data_reg(g_cpu_ir & 7)
+                op2 = get_data_reg(dasm.g_cpu_ir & 7)
             };
         }
 
@@ -4260,7 +4260,7 @@ namespace Decompiler.Arch.M68k
             {
                 code = Opcode.rol,
                 dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_32(g_cpu_ir)
+                op1 = get_ea_mode_str_32(dasm.g_cpu_ir)
             };
         }
 
@@ -4270,19 +4270,19 @@ namespace Decompiler.Arch.M68k
             {
                 code = Opcode.roxr,
                 dataWidth = PrimitiveType.Byte,
-                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op1 = get_3bit_qdata((dasm.g_cpu_ir >> 9) & 7),
                 op2 = get_data_reg(g_cpu_ir & 7)
             };
         }
 
-        private M68kInstruction d68000_roxr_s_16(M68kDisassembler2 dasm)
+        private static M68kInstruction d68000_roxr_s_16(M68kDisassembler2 dasm)
         {
             return new M68kInstruction
             {
                 code = Opcode.roxr,
                 dataWidth = PrimitiveType.Word16,
-                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
-                op2 = get_data_reg(g_cpu_ir & 7)
+                op1 = get_3bit_qdata((dasm.g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(dasm.g_cpu_ir & 7)
             };
         }
 
