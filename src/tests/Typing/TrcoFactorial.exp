@@ -13,24 +13,24 @@ word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 ax_18
-	word16 ax_14 = wArg02 - 0x0001
-	branch ax_14 == 0x0000 l0C00_0026
+	word16 ax_27
+	branch wArg02 == 0x0001 l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_18 = (word16) (wArg00 *s fn0C00_000F(ax_14)) (alias)
+	ax_27 = (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) (alias)
+	goto l0C00_0029
+	// succ:  l0C00_0029
+l0C00_0026:
+	ax_27 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	return ax_18
+	return ax_27
 	// succ:  fn0C00_000F_exit
-l0C00_0026:
-	ax_18 = 0x0001
-	// succ:  l0C00_0029
 fn0C00_000F_exit:
 
 T_2 (in fn0C00_000F : ptr32)
 	trait_func(T_5 -> T_6)
-T_4 (in wArg00 : word16)
+T_4 (in wArg02 : word16)
 	trait_primitive(word16)
 	trait_primitive(word16)
 T_5 (in 0x0064 : word16)
@@ -45,48 +45,46 @@ T_7 (in ds : selector)
 T_8 (in 0x0064 : word16)
 	trait_primitive(word16)
 	trait_mem(T_7:T_9, 0)
-T_9 (in Mem9[ds:0x0064:word16] : word16)
+T_9 (in Mem15[ds:0x0064:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_6)
 T_10 (in ax : word16)
 	trait_primitive(word16)
 	trait_equal(T_11)
-T_11 (in ax_18 : word16)
+T_11 (in ax_27 : word16)
 	trait_primitive(word16)
 	trait_primitive(word16)
-	trait_equal(T_18)
-	trait_primitive(word16)
-	trait_equal(T_22)
-	trait_primitive(word16)
-T_12 (in ax_14 : word16)
 	trait_primitive(word16)
 	trait_equal(T_15)
 	trait_primitive(word16)
-	trait_equal(T_16)
 	trait_primitive(word16)
-	trait_equal(T_4)
-T_13 (in wArg00 : word16)
+	trait_equal(T_21)
+	trait_primitive(word16)
+T_12 (in wArg02 : word16)
+	trait_primitive(word16)
+	trait_equal(T_13)
 	trait_primitive(word16)
 	trait_primitive(word16)
 	trait_primitive(int16)
-T_14 (in 0x0001 : word16)
+T_13 (in 0x0001 : word16)
 	trait_primitive(word16)
-T_15 (in wArg00 - 0x0001 : word16)
-	trait_primitive(word16)
-T_16 (in 0x0000 : word16)
-	trait_primitive(word16)
-T_17 (in ax_14 == 0x0000 : bool)
+T_14 (in wArg02 == 0x0001 : bool)
 	trait_primitive(bool)
-T_18 (in 0x0001 : word16)
+T_15 (in 0x0001 : word16)
 	trait_primitive(word16)
-T_19 (in fn0C00_000F : ptr32)
-	trait_func(T_12 -> T_20)
-T_20 (in fn0C00_000F(ax_14) : word16)
+T_16 (in fn0C00_000F : ptr32)
+	trait_func(T_18 -> T_19)
+T_17 (in 0x0001 : word16)
+	trait_primitive(word16)
+T_18 (in wArg02 - 0x0001 : word16)
+	trait_primitive(word16)
+	trait_equal(T_4)
+T_19 (in fn0C00_000F(wArg02 - 0x0001) : word16)
 	trait_primitive(word16)
 	trait_equal(T_10)
 	trait_primitive(int16)
-T_21 (in wArg00 *s fn0C00_000F(ax_14) : int32)
+T_20 (in wArg02 *s fn0C00_000F(wArg02 - 0x0001) : int32)
 	trait_primitive(int32)
 	trait_primitive(int32)
-T_22 (in (word16) (wArg00 *s fn0C00_000F(ax_14)) : word16)
+T_21 (in (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) : word16)
 	trait_primitive(word16)
