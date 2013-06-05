@@ -319,8 +319,6 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("4711:4111", e.ToString());
         }
 
-        [Test]
-
 		private Identifier Reg32(string name)
 		{
 			var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);

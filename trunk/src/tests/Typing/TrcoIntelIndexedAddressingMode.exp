@@ -1,13 +1,12 @@
 // IntelIndexedAddressingMode
 void IntelIndexedAddressingMode()
-IntelIndexedAddressingMode_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+IntelIndexedAddressingMode_entry:
+	// succ:  l1
+l1:
 	(Mem0[0x0CA4:word16] + 0x000A)[Mem0[0x1C0A:word16] * 0x004A] = 0xF8
 	return
-	// succ:  2
-IntelIndexedAddressingMode_exit:		// block 2, pred: 1
-	// succ: 
+	// succ:  IntelIndexedAddressingMode_exit
+IntelIndexedAddressingMode_exit:
 
 Globals (in globals : ptr32)
 	trait_mem(T_4, CA4)

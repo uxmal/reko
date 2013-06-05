@@ -579,7 +579,7 @@ namespace Decompiler.UnitTests.Typing
 			Assign(ax, 0x4A);
 			Assign(si, Muls(ax, Load(PrimitiveType.Word16, Int16(0x1C0A))));
 			Load(bx, Int16(0x0CA4));
-			Store(Add(Add(bx, 10), si), Int8(0xF8));
+			Store(Add(Add(bx, 10), si), Byte(0xF8));
 			Return();
 		}
 	}
