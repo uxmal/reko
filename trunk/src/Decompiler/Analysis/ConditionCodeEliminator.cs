@@ -222,7 +222,6 @@ namespace Decompiler.Analysis
 		public override Expression VisitTestCondition(TestCondition tc)
 		{
 			SsaIdentifier sid = ssaIds[(Identifier) tc.Expression];
-		
 			sid.Uses.Remove(useStm);
 			Expression c = UseGrfConditionally(sid, tc.ConditionCode);
 			Use(c, useStm);

@@ -2,57 +2,69 @@ void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
 // Trashed: SCZO ax al ah
-// Preserved:
+// Preserved: sp
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
+// sp:sp
+// ss:ss
+// SCZO:Flags
+// ax:ax
+// ds:ds
+// wLoc02:Local -0002
 // wLoc04:Local -0004
 // wLoc06:Local -0006
-// wLoc08:Local -0008
-// ax:Register ax
-// ds:Register ds
 // return address size: 2
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	wLoc04 = 0x0003
-	wLoc06 = 0x0002
-	wLoc08 = 0x0001
-	ax = fn0C00_0011(wLoc08, wLoc06, wLoc04)
+l0C00_0000:
+	sp = fp - 0x0002
+	wLoc02 = 0x0003
+	sp = fp - 0x0004
+	wLoc04 = 0x0002
+	sp = fp - 0x0006
+	wLoc06 = 0x0001
+	ax = fn0C00_0011(wLoc06, wLoc04, wLoc02)
+	sp = fp
+	SCZO = cond(sp)
 	Mem0[ds:0x1300:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
-Register word16 fn0C00_0011(Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
+fn0C00_0000_exit:
+Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 // MayUse: 
 // LiveOut: ax
 // Trashed: SCZO ax al ah
-// Preserved: bp
-// Stack args: Stack +0000(16) Stack +0002(16) Stack +0004(16)
+// Preserved: sp bp
+// Stack args: Stack +0002(16) Stack +0004(16) Stack +0006(16)
 // fn0C00_0011
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
-// wLoc04:Local -0004
-// wArg00:Stack +0000
-// ax:Register ax
+// sp:sp
+// bp:bp
+// ss:ss
+// ax:ax
+// SCZO:Flags
+// wLoc02:Local -0002
 // wArg02:Stack +0002
 // wArg04:Stack +0004
-// SCZO:Flags
+// wArg06:Stack +0006
 // return address size: 2
-word16 fn0C00_0011(word16 wArg00, word16 wArg02, word16 wArg04)
-fn0C00_0011_entry:		// pred:
+word16 fn0C00_0011(word16 wArg02, word16 wArg04, word16 wArg06)
+fn0C00_0011_entry:
 	// succ:  l0C00_0011
-l0C00_0011:		// pred: fn0C00_0011_entry
-	wLoc04 = bp
-	ax = wArg00
-	ax = ax + wArg02
+l0C00_0011:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	ax = wArg02
 	ax = ax + wArg04
 	SCZO = cond(ax)
-	bp = wLoc04
+	ax = ax + wArg06
+	SCZO = cond(ax)
+	bp = wLoc02
+	sp = fp
 	return ax
 	// succ:  fn0C00_0011_exit
-fn0C00_0011_exit:		// pred: l0C00_0011
-	// succ: 
+fn0C00_0011_exit:

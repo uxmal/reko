@@ -1,35 +1,29 @@
 // fn0C00_0000
-void fn0C00_0000(word16 si, selector ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	word16 cx_8
-	Mem10[ds:0x0064:word16] = fn0C00_000B(0x0005, si, &cx_8)
+	Mem8[ds:0x0064:word16] = fn0C00_000B(0x0005)
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0000:
 	// succ: 
 fn0C00_0000_exit:
 
-void fn0C00_0000(word16 si, selector ds)
+void fn0C00_0000(selector ds)
 {
-	word16 cx_8;
-	Mem10[ds:0x0064:word16] = fn0C00_000B(0x0005, si, &cx_8);
+	Mem8[ds:0x0064:word16] = fn0C00_000B(0x0005);
 	return;
 }
 ===========================
 // fn0C00_000B
-word16 fn0C00_000B(word16 cx, word16 si, ptr16 cxOut)
+word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:
-	Mem0[cxOut:word16] = cx
 	// succ:  l0C00_000B
 l0C00_000B:
 	word16 ax_18
-	Mem13[ss:fp - 0x0002:word16] = si
 	branch cx <= 0x0001 l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	word16 cx_27
-	word16 ax_28 = fn0C00_000B(cx - 0x0001, cx, cxOut)
-	ax_18 = (word16) (cx_27 *s ax_28) (alias)
+	ax_18 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
@@ -40,17 +34,11 @@ l0C00_001F:
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
 
-word16 fn0C00_000B(word16 cx, word16 si, ptr16 cxOut)
+word16 fn0C00_000B(word16 cx)
 {
-	Mem0[cxOut:word16] = cx;
 	word16 ax_18;
-	Mem13[ss:fp - 0x0002:word16] = si;
 	if (cx > 0x0001)
-	{
-		word16 cx_27;
-		word16 ax_28 = fn0C00_000B(cx - 0x0001, cx, cxOut);
-		ax_18 = (word16) (cx_27 *s ax_28);
-	}
+		ax_18 = (word16) (cx *s fn0C00_000B(cx - 0x0001));
 	else
 		ax_18 = 0x0001;
 	return ax_18;

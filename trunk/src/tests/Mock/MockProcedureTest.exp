@@ -7,21 +7,23 @@
 // r1:Local -000C
 // return address size: 0
 void FactorialMock()
-FactorialMock_entry:		// pred:
+FactorialMock_entry:
+	goto l1
 	// succ:  l1
-l1:		// pred: FactorialMock_entry
+done:
+	return r3
+	// succ:  FactorialMock_exit
+l1:
 	r3 = 0x00000001
+	goto test
 	// succ:  test
-test:		// pred: l1 l2
-	Z = cond(r2 - 0x00000000)
-	branch Test(EQ,Z) done
-	// succ:  l2 done
-l2:		// pred: test
+l2:
 	r3 = r3 *s r2
 	r2 = r2 - 0x00000001
 	// succ:  test
-done:		// pred: test
-	return r3
-	// succ:  FactorialMock_exit
-FactorialMock_exit:		// pred: done
-	// succ: 
+test:
+	Z = cond(r2 - 0x00000000)
+	branch Test(EQ,Z) done
+	goto l2
+	// succ:  l2 done
+FactorialMock_exit:

@@ -2,7 +2,7 @@
 	LiveOut:  
 	MayUseIn:  eax si es ds
 	BypassIn: 
-	Trashed:   eax ax cx si di al cl ah ch
+	Trashed:   SCZO eax ax cx si di al cl ah ch
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
@@ -10,6 +10,7 @@ fn0C00_0000_entry:
 // DataOut: eax si es ds
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
 l0C00_0000:
 	eax = eax + eax * 0x00000004
 	Mem0[ds:0x02FC:word32] = eax
@@ -34,13 +35,13 @@ l0C00_0000:
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp eax:<invalid> si:si + 0x000C ax:<invalid> cx:<invalid> di:<invalid> al:0x00
+// SymbolicIn: sp:fp eax:<invalid> si:si + 0x0036 ax:<invalid> cx:<invalid> di:<invalid> al:0x00
 
 // fn0C00_0026 /////////////////////
 	LiveOut:  
 	MayUseIn:  es ds
 	BypassIn: 
-	Trashed:   ax cx di al cl ch
+	Trashed:   SCZO ax cx di al cl ch
 	Preserved: sp
 // fn0C00_0026
 void fn0C00_0026()
@@ -48,6 +49,7 @@ fn0C00_0026_entry:
 // DataOut: es ds
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
 l0C00_0026:
 	cx = Mem0[ds:0x0400:word16]
 	al = 0x00
@@ -67,18 +69,19 @@ l0C00_0030_1:
 	di = di + 0x0001
 	cx = cx - 0x0001
 	branch Test(NE,Z) l0C00_0030
-// DataOut:
+// DataOut: cx di al es ds
 // DataOut (flags): 
 // SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+
 l0C00_0032:
 	Mem0[ds:0x0404:word16] = di
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+// SymbolicIn: di:<invalid> cx:<invalid> sp:fp al:0x00
 
 fn0C00_0026_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+// SymbolicIn: di:<invalid> cx:<invalid> sp:fp al:0x00
 
