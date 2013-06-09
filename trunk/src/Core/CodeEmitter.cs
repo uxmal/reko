@@ -93,7 +93,7 @@ namespace Decompiler.Core
             return Emit(new PhiAssignment(idDst, new PhiFunction(idDst.DataType, ids)));
         }
 
-        public void Return()
+        public virtual void Return()
         {
             Emit(new ReturnInstruction());
         }

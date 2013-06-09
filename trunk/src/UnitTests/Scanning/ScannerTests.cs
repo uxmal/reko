@@ -489,7 +489,7 @@ fn00001100_exit:
             var m = new ProcedureBuilder(arch, "fn1000");
             m.Return();
 
-            var block = m.Procedure.ExitBlock.Pred[0];
+            var block = m.Procedure.ControlGraph.Blocks[2];
             Assert.IsTrue(scanner.IsLinearReturning(block));
         }
 
