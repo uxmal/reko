@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Typing
             ProgramBuilder mock = new ProgramBuilder();
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
-            m.SegStoreW(ds, m.Word32(7000), m.SegMemW(ds, m.SegMemW(ds, m.Word32(0x5321))));
+            m.SegStore(ds, m.Word32(7000), m.SegMemW(ds, m.SegMemW(ds, m.Word32(0x5321))));
             mock.Add(m);
             RunTest(mock.BuildProgram(), "typing/PprMemberPointers.txt");
         }

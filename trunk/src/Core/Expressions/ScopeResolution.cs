@@ -49,7 +49,5 @@ namespace Decompiler.Core.Expressions
 		{
 			return new ScopeResolution(DataType, TypeName);
 		}
-
 	}
-
 }

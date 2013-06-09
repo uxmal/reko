@@ -36,11 +36,11 @@ namespace Decompiler.Core.Services
         {
             try
             {
-                TypeLibrary lib = new TypeLibrary(arch);
+                TypeLibrary lib = new TypeLibrary();
                 string libFileName = ImportFileLocation(name);
                 if (!File.Exists(libFileName))
                     return null;
-                lib.Load(libFileName);
+                lib.Load(arch, libFileName);
                 return lib;
             }
             catch

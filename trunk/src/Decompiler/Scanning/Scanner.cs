@@ -72,7 +72,7 @@ namespace Decompiler.Scanning
     /// code are located, as are global data pointers.
     /// </summary>
     /// <remarks>
-    /// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
+    /// Callers feed the scanner by calling EnqueueXXX methods before calling ProcessQueue(). ProcessQueue() then
     /// processes the queues.
     /// </remarks>
     public class Scanner : IScanner, IRewriterHost
@@ -95,7 +95,7 @@ namespace Decompiler.Scanning
         private const int PriorityJumpTarget = 6;
         private const int PriorityVector = 7;
 
-        public Scanner(Program program, IDictionary<Address, ProcedureSignature> callSigs, DecompilerEventListener eventListener)
+        public  Scanner(Program program, IDictionary<Address, ProcedureSignature> callSigs, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.image = program.Image;

@@ -51,7 +51,7 @@ using System.Runtime.CompilerServices;
 
 namespace Decompiler
 {
-    public class AssemblyMetadata
+    public static class AssemblyMetadata
     {
         public const string AssemblyVersion = "0.2.4.*";
         public const string AssemblyFileVersion = "0.2.4.0";

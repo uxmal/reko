@@ -27,7 +27,7 @@ using System.IO;
 namespace Decompiler.Core.Rtl
 {
     /// <summary>
-    /// Models conditionally executed statements, like those that appear in ARM.
+    /// Models conditionally executed statements, like those that appear in the ARM architecture.
     /// </summary>
     public class RtlIf : RtlInstruction
     {

@@ -452,7 +452,6 @@ namespace Decompiler.Assemblers.x86
             EmitModRM(RegisterEncoding(opDst.Register), ops[1]);
         }
 
-
         internal void ProcessMov(params ParsedOperand[] ops)
         {
             PrimitiveType dataWidth = EnsureValidOperandSizes(ops, 2);
@@ -1353,8 +1352,8 @@ namespace Decompiler.Assemblers.x86
             TypeLibrary lib;
             if (!importLibraries.TryGetValue(dllName, out lib))
             {
-                lib = new TypeLibrary(arch);
-                lib.Load(Path.ChangeExtension(dllName, ".xml"));
+                lib = new TypeLibrary();
+                lib.Load(arch, Path.ChangeExtension(dllName, ".xml"));
                 importLibraries[dllName] = lib;
             }
             AddImport(fnName, lib.Lookup(fnName), PrimitiveType.Word32);
@@ -2091,7 +2090,6 @@ namespace Decompiler.Assemblers.x86
         {
             emitter.EmitByte(0xD7);
         }
-
     }
 }
 

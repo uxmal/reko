@@ -90,5 +90,10 @@ namespace Decompiler.Core.Rtl
         {
             return Constant.Create(dataType, p);
         }
+
+        public void If(Expression test, RtlInstruction rtl)
+        {
+            instrs.Add(new RtlIf(test, rtl));
+        }
     }
 }

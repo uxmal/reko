@@ -26,7 +26,8 @@ using System.Text;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// Utility class for eliminating redundant mentions of service types when getting and adding services.
+    /// Utility class for eliminating redundant mentions of service types when getting and adding services with
+    /// the IServiceProvider and IServiceContainer interfaces.
     /// </summary>
     /// <remarks>Instead of:
     /// <code>

@@ -140,7 +140,7 @@ namespace Decompiler.Typing
 		{
 			var element = factory.CreateStructureType(null, elementSize);
 			if (tField != null)
-				element.Fields.Add(0, tField.TypeVariable, null);
+				element.Fields.Add(0, tField.TypeVariable);
 			var a = factory.CreateArrayType(element, length);
 
 			return MemoryAccessCommon(tBase, tStruct, offset, a, structPtrSize);

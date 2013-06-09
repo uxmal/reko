@@ -32,11 +32,9 @@ namespace Decompiler.Core
             this.Block = block;
         }
 
-        public uint LinearAddress { get; private set; }
-
-        public Block Block {get; private set; }
-
+        public Block Block { get; private set; }
         public Instruction Instruction { get; set; }
+        public uint LinearAddress { get; private set; }
 
 		public override string ToString()
 		{

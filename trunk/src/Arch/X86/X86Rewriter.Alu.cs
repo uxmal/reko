@@ -191,6 +191,15 @@ namespace Decompiler.Arch.X86
             emitter.Assign(orw.FlagGroup(defFlags), new ConditionOf(expr.CloneExpression()));
         }
 
+        private void RewriteConditionalMove(ConditionCode cc, MachineOperand dst, MachineOperand src)
+        {
+            var opSrc = SrcOp(src);
+            var opDst = SrcOp(dst);
+            var test = CreateTestCondition(cc, di.Instruction.code);
+            emitter.If(test, new RtlAssignment(opDst, opSrc));
+        }
+
+
         private void RewriteCmp()
         {
             Expression op1 = SrcOp(di.Instruction.op1);
@@ -448,8 +457,7 @@ namespace Decompiler.Arch.X86
             var ass = emitter.Assign(
                 frame.EnsureSequence(orw.AluRegister(seg), orw.AluRegister(reg.Register),
                 PrimitiveType.Pointer32),
-                SrcOp(mem));
-            ass.Src.DataType = PrimitiveType.SegPtr32;
+                SrcOp(mem, PrimitiveType.SegPtr32));
         }
 
         private void RewriteMov()
@@ -666,7 +674,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteSet(ConditionCode cc)
         {
-            EmitCopy(di.Instruction.op1, new TestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), false);
+            EmitCopy(di.Instruction.op1, CreateTestCondition(cc, di.Instruction.code), false);
         }
 
         private void RewriteSetFlag(FlagM flagM, Constant value)

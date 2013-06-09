@@ -28,14 +28,14 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class MemberPointerSelector : Expression
 	{
-		public Expression BasePointer;
-		public Expression MemberPointer;
-
 		public MemberPointerSelector(DataType dt, Expression basePtr, Expression memberPtr) : base(dt)
 		{
 			BasePointer = basePtr;
 			MemberPointer = memberPtr;
 		}
+
+        public Expression BasePointer { get; set; }
+        public Expression MemberPointer { get; set; }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {

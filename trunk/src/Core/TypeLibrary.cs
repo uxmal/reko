@@ -31,14 +31,12 @@ namespace Decompiler.Core
 {
 	public class TypeLibrary
 	{
-		private IProcessorArchitecture arch;
         private Dictionary<string, DataType> typedefs;
 
-        [Obsolete]
-		public TypeLibrary(IProcessorArchitecture arch)
-		{
-			this.arch = arch;
-            this.Signatures = new Dictionary<string, ProcedureSignature>();
+		public TypeLibrary() : this(
+            new Dictionary<string, DataType>(),
+            new Dictionary<string, ProcedureSignature>())
+        {
         }
 
         public TypeLibrary(IDictionary<string,DataType> types, IDictionary<string, ProcedureSignature> procedures)
@@ -64,7 +62,7 @@ namespace Decompiler.Core
 			}
 		}
 
-		public void Load(string fileName)
+		public void Load(IProcessorArchitecture arch, string fileName)
 		{
 			XmlSerializer ser = SerializedLibrary.CreateSerializer();
 			SerializedLibrary slib;
@@ -72,11 +70,11 @@ namespace Decompiler.Core
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-            Load(slib);
+            Load(arch, slib);
 		}
 
         [Obsolete]
-        public void Load(SerializedLibrary slib)
+        public void Load(IProcessorArchitecture arch, SerializedLibrary slib)
         {
             var tlldr = new TypeLibraryLoader(arch);
             var tlib = tlldr.Load(slib);

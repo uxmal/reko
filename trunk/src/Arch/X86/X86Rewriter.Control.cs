@@ -31,10 +31,13 @@ namespace Decompiler.Arch.X86
 {
     public partial class X86Rewriter
     {
-        private TestCondition CreateTestCondition(ConditionCode cc, Identifier identifier)
+        private Expression CreateTestCondition(ConditionCode cc, Opcode opcode)
         {
-            var tc = new TestCondition(cc, identifier);
+            var grf = orw.FlagGroup(IntelInstruction.UseCc(opcode));
+            var tc = new TestCondition(cc, grf);
             return tc;
+        }
+
             /*
             if (i < 2)
                 return tc;
@@ -77,7 +80,6 @@ namespace Decompiler.Arch.X86
             throw new NotImplementedException(string.Format(
                 "FSTSW/TEST AH,0x{0:X2}/J{1} not implemented.", mask, cc));
              */
-        }
 
         private void RewriteCall(MachineOperand callTarget, PrimitiveType opsize)
         {
@@ -97,7 +99,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
-            emitter.Branch(CreateTestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), OperandAsCodeAddress(op1));
+            emitter.Branch(CreateTestCondition(cc, di.Instruction.code), OperandAsCodeAddress(op1));
         }
 
         private void RewriteInt()

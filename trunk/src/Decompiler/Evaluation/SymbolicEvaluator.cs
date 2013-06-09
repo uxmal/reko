@@ -149,5 +149,4 @@ namespace Decompiler.Evaluation
 
         #endregion
     }
-
 }

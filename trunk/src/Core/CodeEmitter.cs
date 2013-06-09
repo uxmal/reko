@@ -93,10 +93,9 @@ namespace Decompiler.Core
             return Emit(new PhiAssignment(idDst, new PhiFunction(idDst.DataType, ids)));
         }
 
-
         public void Return()
         {
-            Return(null);
+            Emit(new ReturnInstruction());
         }
 
         public virtual void Return(Expression exp)
@@ -114,15 +113,15 @@ namespace Decompiler.Core
             return Store(ea, Int32(n));
         }
 
-        public Statement Store(Expression ea, Expression expr)
+        public Statement Store(Expression ea, Expression src)
         {
-            Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, expr.DataType), expr);
+            Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, src.DataType), src);
             return Emit(s);
         }
 
-        public Statement SegStoreW(Expression basePtr, Expression ea, Expression src)
+        public Statement SegStore(Expression basePtr, Expression ea, Expression src)
         {
-            Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, PrimitiveType.Word16), src);
+            Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);
             return Emit(s);
         }
 
@@ -140,7 +139,6 @@ namespace Decompiler.Core
         {
             return Sub(diff, left, Int32(right));
         }
-
 
         public Identifier Local(PrimitiveType primitiveType, string name)
         {

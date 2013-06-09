@@ -39,7 +39,6 @@ namespace Decompiler.Core.Expressions
             return v.VisitFieldAccess(this);
         }
 
-
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitFieldAccess(this);
@@ -50,12 +49,9 @@ namespace Decompiler.Core.Expressions
 			return new FieldAccess(DataType, structure.CloneExpression(), FieldName);
 		}
 
-
 		public override Expression Invert()
 		{
 			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
 		}
-
 	}
-
 }

@@ -20,16 +20,12 @@
 
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-
+using System.Diagnostics;
 
 namespace Decompiler.Core.Output
 {
@@ -273,7 +269,8 @@ namespace Decompiler.Core.Output
 			writer.Write("[");
 			WriteExpression(access.EffectiveAddress);
 			writer.Write(":");
-			writer.Write((access.DataType != null) ? access.DataType.ToString() : "??");
+            Debug.Assert(access.DataType != null);
+			writer.Write(access.DataType.ToString());
 			writer.Write("]");
 		}
 
@@ -285,7 +282,8 @@ namespace Decompiler.Core.Output
 			writer.Write(":");
 			WriteExpression(access.EffectiveAddress);
 			writer.Write(":");
-			writer.Write((access.DataType != null) ? access.DataType.ToString() : "??");
+			Debug.Assert(access.DataType != null);
+            writer.Write(access.DataType.ToString());
 			writer.Write("]");
 		}
 
@@ -375,17 +373,10 @@ namespace Decompiler.Core.Output
 		public void VisitDeclaration(Declaration decl)
 		{
 			writer.Indent();
-			if (decl.Identifier.DataType != null)
-			{
-                TypeFormatter tf = new TypeFormatter(writer, true);
-                tf.Write(decl.Identifier.DataType, decl.Identifier.Name);
-			}
-			else
-			{
-                writer.Write("?unknown?");
-                writer.Write(" ");
-                decl.Identifier.Accept(this);
-            }
+            Debug.Assert(decl.Identifier.DataType != null, "The DataType property can't ever be null");
+
+            TypeFormatter tf = new TypeFormatter(writer, true);
+            tf.Write(decl.Identifier.DataType, decl.Identifier.Name);
 			if (decl.Expression != null)
 			{
 				writer.Write(" = ");

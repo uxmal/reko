@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             tlSvc.Expect(t => t.LoadLibrary(
                 Arg<IProcessorArchitecture>.Is.NotNull,
                 Arg<string>.Is.Equal(expected))).
-                Return(new TypeLibrary(arch));
+                Return(new TypeLibrary());
         }
 
         private void Given_Configuration_With_Win32_Element()
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Environments.Win32
 
         private TypeLibrary CreateFakeLib()
         {
-            return new TypeLibrary(arch);
+            return new TypeLibrary();
         }
 
         private void Given_TypeLibraryLoaderService()

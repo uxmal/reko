@@ -487,7 +487,7 @@ const eax:<invalid> ebx:0x01231313
                 var ss = m.Frame.EnsureRegister(Registers.ss);
                 var ax = m.Frame.EnsureRegister(Registers.ax);
                 m.Assign(sp, m.Sub(sp, 2));
-                m.SegStoreW(ss, sp, ax);
+                m.SegStore(ss, sp, ax);
                 m.Assign(ax, 1);
                 m.Assign(ax, m.SegMemW(ss, sp));
                 m.Assign(sp, m.Add(sp, 2));

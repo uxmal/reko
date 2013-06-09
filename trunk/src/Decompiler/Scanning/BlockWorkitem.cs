@@ -207,6 +207,30 @@ namespace Decompiler.Scanning
             return true;
         }
 
+        public bool VisitIf(RtlIf rtlIf)
+        {
+            var branch = new Branch(rtlIf.Condition.Invert(), null);
+            Emit(branch);
+
+            var proc = blockCur.Procedure;
+            var fallthruAddress = ric.Address + ric.Length;
+
+            var blockInstr = AddIntraStatementBlock(proc);
+            var blockFollow = scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+
+            blockCur = blockInstr;
+            rtlIf.Instruction.Accept(this);
+
+            var branchingBlock = scanner.FindContainingBlock(ric.Address);
+            branch.Target = blockFollow;
+            EnsureEdge(proc, branchingBlock, blockInstr);
+            EnsureEdge(proc, branchingBlock, blockFollow);
+            EnsureEdge(proc, blockInstr, blockFollow);
+
+            blockCur = blockFollow;
+            return true;
+        }
+
         private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
         {
             if (blockFrom.Procedure == blockTo.Procedure)
@@ -332,11 +356,6 @@ namespace Decompiler.Scanning
             sig = GuessProcedureSignature(ic);
             state.OnAfterCall(stackReg, sig, eval);
             return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
-        }
-
-        public bool VisitIf(RtlIf rtlIf)
-        {
-            throw new NotImplementedException();
         }
 
         public bool VisitReturn(RtlReturn ret)
@@ -521,14 +540,19 @@ namespace Decompiler.Scanning
                 // a label where there wouldn't be one normally, in the middle of the rtl sequence corresponding to
                 // the machine instruction.
 
-                var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
-                proc.ControlGraph.Blocks.Add(fallthru);
-                return fallthru;
+                return AddIntraStatementBlock(proc);
             }
             else
             {
                 return scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
             }
+        }
+
+        private Block AddIntraStatementBlock(Procedure proc)
+        {
+            var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
+            proc.ControlGraph.Blocks.Add(fallthru);
+            return fallthru;
         }
 
         /// <summary>

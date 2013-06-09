@@ -317,7 +317,7 @@ namespace Decompiler.Analysis
 					rename[a] = a;
 
 					// Variables that are used before defining are "predefined" by adding a 
-                    // DefInstruction in the dummy block. Any such variables that are found to be 
+                    // DefInstruction in the entry block for the procedure. Any such variables that are found to be 
                     // live correspond to the input parameters of the procedure.
 
 					id.DefStatement = new Statement(0, new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);

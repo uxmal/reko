@@ -44,6 +44,11 @@ namespace Decompiler.Core
     /// </remarks>
     public interface EvaluationContext
     {
+        /// <summary>
+        /// Gets the symbolic value of the identifier <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Expression GetValue(Identifier id);
         Expression GetValue(MemoryAccess access);
         Expression GetValue(SegmentedAccess access);

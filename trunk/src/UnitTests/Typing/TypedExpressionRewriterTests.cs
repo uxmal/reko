@@ -305,7 +305,7 @@ namespace Decompiler.UnitTests.Typing
             Identifier di = m.Local16("di");
             m.Assign(di, 0);
             m.Label("lupe");
-            m.SegStoreW(ds, m.Add(di, 0x5388), m.Word16(0));
+            m.SegStore(ds, m.Add(di, 0x5388), m.Word16(0));
             m.Assign(di, m.Add(di, 2));
             m.Assign(cx, m.Sub(cx, 1));
             m.BranchIf(m.Ne(cx, 0), "lupe");
@@ -322,7 +322,7 @@ namespace Decompiler.UnitTests.Typing
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Identifier bx = m.Local(PrimitiveType.Word16, "bx");
-            m.SegStoreW(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
+            m.SegStore(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
 
             ProgramBuilder pm = new ProgramBuilder();
             pm.Add(m);

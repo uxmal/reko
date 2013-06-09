@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
+using Decompiler.Core;
 using NUnit.Framework;
 using System;
 
@@ -103,7 +104,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void TestCallInstruction()
 		{
-			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(null, null), new CallSite(0, 0))));
+			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, null), new CallSite(0, 0))));
 		}
 
 		[Test]
@@ -121,14 +122,31 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void TestAssignFalse()
 		{
-			Assert.IsFalse(ci.IsCritical(new Assignment(new Identifier(null, 0, null, null), Constant.Word32(0))));
+			Assert.IsFalse(ci.IsCritical(new Assignment(Id32("ax"), Constant.Word32(0))));
 		}
 
 		[Test]
 		public void TestDbp()
 		{
-			Assert.IsFalse(ci.IsCritical(new DepositBits(new Identifier("eax", 0, null, null), new Identifier("ax", 0, null, null), 0, 16)));
+			Assert.IsFalse(ci.IsCritical(new DepositBits(Id32("eax"), Id16("ax"), 0, 16)));
 		}
-	}
 
+        private Identifier Id16(string name)
+        {
+            return new Identifier(
+                name,
+                0,
+                PrimitiveType.Word16,
+                new TemporaryStorage());
+        }
+
+        private Identifier Id32(string name)
+        {
+            return new Identifier(
+                name,
+                0,
+                PrimitiveType.Word32,
+                new TemporaryStorage());
+        }
+	}
 }

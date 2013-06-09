@@ -307,7 +307,6 @@ namespace Decompiler.Arch.Z80
             {
                 op = disasm.rdr.ReadByte();
                 Opcode code;
-                MachineOperand Op1;
                 MachineOperand Op2;
                 switch (op >> 6)
                 {

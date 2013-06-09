@@ -39,6 +39,7 @@ namespace Decompiler.Analysis
 
         public Statement Statement { get; set; }
 
+        [Obsolete("", true)]
         public void AddIdentifierUse(Identifier id)
         {
             ssaIds[id].Uses.Add(Statement);
