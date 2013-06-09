@@ -65,8 +65,8 @@ namespace Decompiler.UnitTests.Mocks
             if (arch == null)
                 throw new ArgumentNullException("arch");
             this.Architecture = arch;
-            this.blocks = new Dictionary<string, Block>();
             this.Procedure = new Procedure(name, arch.CreateFrame());
+            this.blocks = new Dictionary<string, Block>();
             this.unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
         }
@@ -270,11 +270,17 @@ namespace Decompiler.UnitTests.Mocks
             return Frame.EnsureRegister(Architecture.GetRegister(name));
         }
 
+        public override void Return()
+        {
+            base.Return();
+            Procedure.ControlGraph.AddEdge(Block, Procedure.ExitBlock);
+            TerminateBlock();
+        }
         public override void Return(Expression exp)
         {
             base.Return(exp);
             Procedure.ControlGraph.AddEdge(Block, Procedure.ExitBlock);
-            Block = null;
+            TerminateBlock();
         }
 
         public void Switch(Expression e, params string[] labels)
@@ -302,7 +308,6 @@ namespace Decompiler.UnitTests.Mocks
                 Block = null;
             }
         }
-
 
         public Identifier Reg32(string name)
         {
