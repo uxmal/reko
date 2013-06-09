@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Scanning
                 return p;
             }
 
-            public void SetCallSignatureAdAddress(Address addrCallInstruction, ProcedureSignature signature)
+            public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, ProcedureSignature signature)
             {
                 sigs.Add(addrCallInstruction.Linear, signature);
             }
@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void WalkX86ServiceCall()
+        public void BwiX86_WalkX86ServiceCall()
         {
             // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
             BuildTest16(delegate(IntelAssembler m)
@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void WalkBswap()
+        public void BwiX86_WalkBswap()
         {
             BuildTest32(delegate(IntelAssembler m)
             {
@@ -166,7 +166,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void WalkMovConst()
+        public void BwiX86_WalkMovConst()
         {
             BuildTest32(delegate(IntelAssembler m)
             {
@@ -178,7 +178,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void XorWithSelf()
+        public void BwiX86_XorWithSelf()
         {
             BuildTest32(delegate(IntelAssembler m)
             {
@@ -192,7 +192,7 @@ namespace Decompiler.UnitTests.Scanning
 
 
         [Test]
-        public void SubWithSelf()
+        public void BwiX86_SubWithSelf()
         {
             BuildTest32(delegate(IntelAssembler m)
             {
@@ -205,7 +205,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void PseudoProcsShouldNukeRecipientRegister()
+        public void BwiX86_PseudoProcsShouldNukeRecipientRegister()
         {
             BuildTest16(delegate(IntelAssembler m)
             {
@@ -218,7 +218,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void RewriteIndirectCall()
+        public void BwiX86_RewriteIndirectCall()
         {
             var addr = new Address(0xC00, 0x0000);
             BuildTest16(delegate(IntelAssembler m)
@@ -242,7 +242,7 @@ namespace Decompiler.UnitTests.Scanning
 
         [Test]
         //$TODO: big-endian version of this, please.
-        public void IndirectJumpGated()
+        public void BwiX86_IndirectJumpGated()
         {
             BuildTest16(delegate(IntelAssembler m)
             {
@@ -317,7 +317,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void RepMovsw()
+        public void BwiX86_RepMovsw()
         {
             var follow = new Block(proc, "follow");
             BuildTest16(delegate(IntelAssembler m)
@@ -350,7 +350,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void XorFlags()
+        public void BwiX86_XorFlags()
         {
             BuildTest16(delegate(IntelAssembler m)
             {
@@ -373,7 +373,7 @@ namespace Decompiler.UnitTests.Scanning
                 "testblock:" + nl +
                 "\tesi = esi ^ esi" + nl +
                 "\tSZO = cond(esi)" + nl +
-                "\tC = false" + nl +
+                "\tC = false" + nl + 
                 "\tesi = esi + 0x00000001" + nl +
                 "\tSZO = cond(esi)" + nl;
             var sw = new StringWriter();
@@ -382,7 +382,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void IndirectCallToConstant()
+        public void BwiX86_IndirectCallToConstant()
         {
             BuildTest32(delegate(IntelAssembler m)
             {
@@ -401,7 +401,7 @@ namespace Decompiler.UnitTests.Scanning
             var sExp =
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +
-                "\teax = GetDC(Mem0[esp:word32])" + nl +
+                "\teax = GetDC(Mem0[esp:HWND])" + nl +
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);

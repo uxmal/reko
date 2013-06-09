@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Scanning
             var r2 = m.Register("r2");
             var ass = m.Assign(r1, r2);
             m.Return();
-            var block = m.Procedure.ExitBlock.Pred[0];
+            var block = m.Procedure.ControlGraph.Blocks[2];
 
             m = new ProcedureBuilder(arch, "procCalling");
 
@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Assign(r1, m.Add(r1, r2));
                 m.Return();
             });
-            var block = proc.ExitBlock.Pred[0];
+            var block = proc.ControlGraph.Blocks[2];
             
             var blockCloner = new BlockCloner(block, procCalling, callgraph);
             var blockNew = blockCloner.Execute();
@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Assign(r1, m.LoadDw(r2));
                 m.Return();
             });
-            var block = proc.ExitBlock.Pred[0];
+            var block = proc.ControlGraph.Blocks[2];
 
             var blockCloner = new BlockCloner(block, procCalling, callgraph);
             var blockNew = blockCloner.Execute();
