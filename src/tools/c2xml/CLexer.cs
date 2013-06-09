@@ -406,14 +406,7 @@ namespace Decompiler.Tools.C2Xml
                         state = State.StringEscape;
                         break;
                     default:
-                        if (true)
-                        {
                             sb.Append(ch);
-                        }
-                        else
-                        {
-                            Nyi(state, ch);
-                        }
                         break;
                     }
                     break;

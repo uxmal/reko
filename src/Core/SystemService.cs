@@ -25,6 +25,10 @@ using System;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// Models a system service. The syscallinfo member indicates how the system service
+    /// is selected (typically by loading specific values in processor registers).
+    /// </summary>
 	public class SystemService
 	{
 		public string Name;
@@ -56,15 +60,20 @@ namespace Decompiler.Core
 		{
 			if (Vector != vector)
 				return false;
-			for (int i = 0; i < RegisterValues.Length; ++i)
-			{
-				Constant v = state.GetRegister(RegisterValues[i].Register);
-				if (v == null || v == Constant.Invalid)
-					return false;
-				if (v.ToUInt32() != RegisterValues[i].Value)
-					return false;
-			}
-			return true;
+            return Matches(state);
 		}
+
+        private bool Matches(ProcessorState state)
+        {
+            for (int i = 0; i < RegisterValues.Length; ++i)
+            {
+                Constant v = state.GetRegister(RegisterValues[i].Register);
+                if (v == null || v == Constant.Invalid)
+                    return false;
+                if (v.ToUInt32() != RegisterValues[i].Value)
+                    return false;
+            }
+            return true;
+        }
 	}	
 }

@@ -38,7 +38,8 @@ namespace Decompiler.Core.Expressions
             this.DataType = dataType;
         }
 
-        public DataType DataType { get { return dt; } set { if (value == null) new ArgumentNullException(); dt = value; } }             // Data type of this expression.
+        // Data type of this expression.
+        public DataType DataType { get { return dt; } set { if (value == null) new ArgumentNullException(); dt = value; } } 
         private DataType dt;
 
         public TypeVariable TypeVariable { get; set; } 		// index to high-level type of this expression.

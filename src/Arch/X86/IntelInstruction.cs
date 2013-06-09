@@ -240,51 +240,67 @@ namespace Decompiler.Arch.X86
 			case Opcode.stos:
 			case Opcode.stosb:
 				return FlagM.DF;
-			case Opcode.ja:
+            case Opcode.cmova:
+            case Opcode.ja:
 			case Opcode.seta:
 				return FlagM.CF|FlagM.ZF;
-			case Opcode.jbe:
+            case Opcode.cmovbe:
+            case Opcode.jbe:
 			case Opcode.setbe:
 				return FlagM.CF|FlagM.ZF;
-			case Opcode.jc:
+            case Opcode.cmovc:
+            case Opcode.jc:
 			case Opcode.setc:
 				return FlagM.CF;
-			case Opcode.jg:
+            case Opcode.cmovg:
+            case Opcode.jg:
 			case Opcode.setg:
 				return FlagM.SF|FlagM.OF|FlagM.ZF;
-			case Opcode.jge:
+            case Opcode.cmovge:
+            case Opcode.jge:
 			case Opcode.setge:
 				return FlagM.SF|FlagM.OF;
-			case Opcode.jl:
-			case Opcode.setl:
+			case Opcode.cmovl:
+            case Opcode.jl:
+            case Opcode.setl:
 				return FlagM.SF|FlagM.OF;
-			case Opcode.jle:
+            case Opcode.cmovle:
+            case Opcode.jle:
 			case Opcode.setle:
 				return FlagM.SF|FlagM.OF|FlagM.ZF;
-			case Opcode.jnc:
-			case Opcode.setnc:
+            case Opcode.cmovnc:
+            case Opcode.jnc:
+            case Opcode.setnc:
 				return FlagM.CF;
-			case Opcode.jno:
+            case Opcode.cmovno:
+            case Opcode.jno:
 			case Opcode.setno:
 				return FlagM.OF;
-			case Opcode.jns:
+            case Opcode.cmovns:
+            case Opcode.jns:
 			case Opcode.setns:
 				return FlagM.SF;
-			case Opcode.jnz:
+            case Opcode.cmovnz:
+            case Opcode.jnz:
 			case Opcode.setnz:
 				return FlagM.ZF;
-			case Opcode.jo:
+            case Opcode.cmovo:
+            case Opcode.jo:
 			case Opcode.seto:
 				return FlagM.OF;
-			case Opcode.jpe:
+            case Opcode.cmovpe:
+            case Opcode.jpe:
 			case Opcode.setpe:
-			case Opcode.jpo:
+            case Opcode.cmovpo:
+            case Opcode.jpo:
 			case Opcode.setpo:
                 return FlagM.PF;
-			case Opcode.js:
+            case Opcode.cmovs:
+            case Opcode.js:
 			case Opcode.sets:
 				return FlagM.SF;
-			case Opcode.jz:
+            case Opcode.cmovz:
+            case Opcode.jz:
 			case Opcode.setz:
 				return FlagM.ZF;
 			case Opcode.lahf:

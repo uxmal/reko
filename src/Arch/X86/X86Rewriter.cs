@@ -109,6 +109,22 @@ namespace Decompiler.Arch.X86
                 case Opcode.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
                 case Opcode.cli: break; //$TODO
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
+                case Opcode.cmova: RewriteConditionalMove(ConditionCode.UGT, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovbe: RewriteConditionalMove(ConditionCode.ULE, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovc: RewriteConditionalMove(ConditionCode.ULT, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovge: RewriteConditionalMove(ConditionCode.GE, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovg: RewriteConditionalMove(ConditionCode.GT, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovl: RewriteConditionalMove(ConditionCode.LT, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovle: RewriteConditionalMove(ConditionCode.LE, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovnc: RewriteConditionalMove(ConditionCode.UGE, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovno: RewriteConditionalMove(ConditionCode.NO, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovns: RewriteConditionalMove(ConditionCode.NS, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovnz: RewriteConditionalMove(ConditionCode.NE, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovo: RewriteConditionalMove(ConditionCode.OV, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovpe: RewriteConditionalMove(ConditionCode.PE, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovpo: RewriteConditionalMove(ConditionCode.PO, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovs: RewriteConditionalMove(ConditionCode.SG, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmovz: RewriteConditionalMove(ConditionCode.EQ, di.Instruction.op1, di.Instruction.op2); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmps: RewriteStringInstruction(); break;
                 case Opcode.cmpsb: RewriteStringInstruction(); break;

@@ -41,7 +41,6 @@ namespace Decompiler.Evaluation
             this.capturedOperators = new Dictionary<string, Operator>();
         }
 
-
         public Expression CapturedExpression(string label)
         {
             Expression value;

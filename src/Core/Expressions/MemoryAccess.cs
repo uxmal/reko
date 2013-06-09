@@ -25,9 +25,6 @@ namespace Decompiler.Core.Expressions
 {
     public class MemoryAccess : Expression
     {
-        public MemoryIdentifier MemoryId { get; set; }
-        public Expression EffectiveAddress { get; set; }
-
         public MemoryAccess(Expression ea, DataType dt)
             : base(dt)
         {
@@ -41,6 +38,9 @@ namespace Decompiler.Core.Expressions
             this.MemoryId = id;
             this.EffectiveAddress = ea;
         }
+
+        public MemoryIdentifier MemoryId { get; set; }
+        public Expression EffectiveAddress { get; set; }
 
         public override void Accept(IExpressionVisitor v)
         {

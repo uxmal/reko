@@ -426,24 +426,6 @@ namespace Decompiler.ImageLoaders.MzExe
             return (rvaEntry & 0x80000000) == 0;
         }
 
-        [Obsolete("Platform is now respsonisble for looking up functions")]
-        protected virtual TypeLibrary LoadSignatureLibrary(IProcessorArchitecture arch, string dllName)
-        {
-            try
-            {
-                TypeLibrary lib = new TypeLibrary(arch);
-                string libFileName = ImportFileLocation(dllName);
-                if (!File.Exists(libFileName))
-                    return null;
-                lib.Load(libFileName);
-                return lib;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
 		private void ReadImportDescriptors(Address addrLoad)
 		{
             unresolvedImports = new List<ImportedFunction>();

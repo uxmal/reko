@@ -122,6 +122,7 @@
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Core\Serialization\DataTypeSerializerTests.cs" />
+    <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
@@ -172,7 +173,7 @@
     <Compile Include="Core\Lib\DequeueTests.cs" />
     <Compile Include="Core\Lib\DfsIteratorTests.cs" />
     <Compile Include="Core\ExpressionFactoryTests.cs" />
-    <Compile Include="Core\ExpressionTests.cs" />
+    <Compile Include="Core\IdentifierTests.cs" />
     <Compile Include="Core\ExpressionValueComparerTests.cs" />
     <Compile Include="Core\ExternalProcedureTest.cs" />
     <Compile Include="Core\FieldCollectionTests.cs" />

@@ -28,12 +28,12 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class PhiFunction : Expression
 	{
-		public Expression [] Arguments;
-
 		public PhiFunction(DataType joinType, params Expression [] arguments) : base(joinType)
 		{
 			this.Arguments = arguments;
 		}
+
+        public Expression[] Arguments { get; private set; }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {

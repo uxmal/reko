@@ -124,9 +124,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 asm.Assemble(new Address(0x10000000), rdr);
                 prog.Image = asm.Image;
+                prog.Platform = win32;
+                prog.Architecture = arch;
             }
-            prog.Platform = win32;
-            prog.Architecture = arch;
             foreach (var item in asm.ImportThunks)
             {
                 prog.ImportThunks.Add(item.Key, item.Value);

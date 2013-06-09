@@ -35,8 +35,6 @@ namespace Decompiler.Core
 	public class Program
 	{
 		private ProgramImage image;
-		private IProcessorArchitecture arch;
-		private Platform platform;
 		private SortedList<Address,Procedure> procedures;
 		private CallGraph callGraph;
         private SortedList<Address, ImageMapVectorTable> vectors;
@@ -60,11 +58,7 @@ namespace Decompiler.Core
 			this.TypeStore = new TypeStore();
 		}
 
-		public IProcessorArchitecture Architecture
-		{
-			get { return arch; }
-			set { arch = value; }
-		}
+		public IProcessorArchitecture Architecture { get; set; }
 
 		public CallGraph CallGraph
 		{
@@ -73,9 +67,9 @@ namespace Decompiler.Core
 
 		public void DumpAssembler(TextWriter wr)
 		{
-			if (wr == null || arch == null)
+			if (wr == null || Architecture == null)
 				return;
-			Dumper dump = new Dumper(arch);
+			Dumper dump = new Dumper(Architecture);
 			dump.Dump(this, Image.Map, wr);
 		}
 
@@ -95,9 +89,9 @@ namespace Decompiler.Core
 			get {
                 if (globals == null)
                 {
-                    if (arch == null)
+                    if (Architecture == null)
                         throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
-                    globals = new Identifier("globals", 0, arch.PointerType, new MemoryStorage()); 
+                    globals = new Identifier("globals", 0, Architecture.PointerType, new MemoryStorage()); 
                 }
                 return globals; 
             } 
@@ -122,12 +116,7 @@ namespace Decompiler.Core
             get { return ivs; }
         }
 
-
-		public Platform Platform
-		{
-			get { return platform; }
-			set { platform = value; }
-		}
+		public Platform Platform { get; set; }
 
 		/// <summary>
 		/// Provides access to the program's procedures, indexed by address.
@@ -164,7 +153,6 @@ namespace Decompiler.Core
 		{
 			get { return vectors; }
 		}
-
     }
 
 	public class VectorUse

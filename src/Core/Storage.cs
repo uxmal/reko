@@ -30,7 +30,7 @@ using System.IO;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// Encapsulates architecture-dependent storage mechanism for an identifier.
+	/// Encapsulates architecture-dependent storage mechanisms for an identifier.
 	/// </summary>
 	public abstract class Storage
 	{
@@ -59,7 +59,10 @@ namespace Decompiler.Core
 		public abstract void Write(TextWriter writer);
     }
 
-
+    /// <summary>
+    /// This class represents groups of bits stored in flag registers. Typically, these are the
+    /// Carry, Zero, Overflow etc flags that are set after ALU operations.
+    /// </summary>
 	public class FlagGroupStorage : Storage
 	{
 		public FlagGroupStorage(uint grfMask, string name, DataType dataType) : base("FlagGroup")
@@ -112,7 +115,6 @@ namespace Decompiler.Core
 
 	public class FpuStackStorage : Storage
 	{
-
 		public FpuStackStorage(int depth, DataType dataType) : base("FpuStack")
 		{
 			this.FpuStackOffset = depth;
@@ -192,7 +194,6 @@ namespace Decompiler.Core
 			return visitor.VisitOutArgumentStorage(this);
 		}
 
-
 		public override bool Equals(object obj)
 		{
 			OutArgumentStorage oas = obj as OutArgumentStorage;
@@ -242,7 +243,17 @@ namespace Decompiler.Core
         /// </summary>
         /// <remarks>For instance, on i386 systems, AH would return 8 here, since it is located at that bit offset of EAX.</remarks>
         public virtual int AliasOffset { get { return 0; } }
+
+        /// <summary>
+        /// The name of the register.
+        /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// The size and domain of the register.
+        /// </summary>
+        /// <remarks>
+        /// General-purpose registers can use the Domain.Word </remarks>
         public PrimitiveType DataType { get; private set; }
 
         /// <summary>
@@ -350,12 +361,10 @@ namespace Decompiler.Core
         public static RegisterStorage None { get { return none; } }
 
         private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Void);
-
 	}
 
 	public class SequenceStorage : Storage
 	{
-		//$REFACTOR: make this params Identifier [], to support arbitrarily long identifiers
 		public SequenceStorage(Identifier head, Identifier tail) 
 			: base("Sequence")		
 		{
@@ -371,7 +380,6 @@ namespace Decompiler.Core
 			return visitor.VisitSequenceStorage(this);
 		}
 
-
 		public override bool Equals(object obj)
 		{
 			SequenceStorage ss = obj as SequenceStorage;
@@ -384,7 +392,6 @@ namespace Decompiler.Core
 		{
 			return GetType().GetHashCode() ^ Head.GetHashCode() ^ (3 * Tail.GetHashCode());
 		}
-
 
 		public override int OffsetOf(Storage stgSub)
 		{
@@ -526,6 +533,19 @@ namespace Decompiler.Core
         }
     }
 
+    /// <summary>
+    /// Temporary storage is used for expressing intermediate results that become exposed
+    /// when complex machine instructions are broken down into simpler RTL sequences.
+    /// </summary>
+    /// <remarks>
+    /// An example is the x86 instruction <code>shr ds:[0x41],3</code> which is 
+    /// rewritten into rtl as:
+    /// <code>
+    /// tmp = Mem0[0x0041] >> 3
+    /// Mem[0x0041] = tmp
+    /// SCZ = Cond(tmp)
+    /// </code>
+    /// </remarks>
 	public class TemporaryStorage : Storage
 	{
 		public TemporaryStorage() : base("Temporary")

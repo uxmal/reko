@@ -20,9 +20,7 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
-using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
@@ -30,9 +28,9 @@ using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.IO;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -49,6 +47,7 @@ namespace Decompiler.UnitTests.Scanning
         private Identifier r0;
         private Identifier r1;
         private Identifier r2;
+        private Identifier grf;
 
         [SetUp]
         public void Setup()
@@ -56,14 +55,16 @@ namespace Decompiler.UnitTests.Scanning
             repository = new MockRepository();
             prog = new Program();
             proc = new Procedure("testProc", new Frame(PrimitiveType.Word32));
-            block = new Block(proc, "test");
-            trace = new RtlTrace(0x1000);
+            block = proc.AddBlock("l00100000");
+            trace = new RtlTrace(0x00100000);
             r0 = new Identifier("r0", 0, PrimitiveType.Word32, new RegisterStorage("r0", 0, PrimitiveType.Word32));
             r1 = new Identifier("r1", 0, PrimitiveType.Word32, new RegisterStorage("r1", 0, PrimitiveType.Word32));
             r2 = new Identifier("r2", 0, PrimitiveType.Word32, new RegisterStorage("r2", 0, PrimitiveType.Word32));
+            grf = proc.Frame.EnsureFlagGroup(3, "SCZ", PrimitiveType.Byte);
 
-            scanner = repository.DynamicMock<IScanner>();
+            scanner = repository.StrictMock<IScanner>();
             arch = repository.DynamicMock<IProcessorArchitecture>();
+            scanner.Stub(s => s.Architecture).Return(arch);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -88,7 +89,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void RewriteReturn()
+        public void Bwi_RewriteReturn()
         {
             trace.Add(m => { m.Return(4, 0); });
             trace.Add(m => { m.Fn(m.Int32(0x49242)); });
@@ -108,7 +109,7 @@ namespace Decompiler.UnitTests.Scanning
 
 
         [Test]
-        public void StopOnGoto()
+        public void Bwi_StopOnGoto()
         {
             trace.Add(m =>
             {
@@ -150,7 +151,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void HandleBranch()
+        public void Bwi_HandleBranch()
         {
             trace.Add(m => { m.Branch(r1, new Address(0x4000)); });
             trace.Add(m => { m.Assign(r1, r2); });
@@ -189,7 +190,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void CallInstructionShouldAddNodeToCallgraph()
+        public void Bwi_CallInstructionShouldAddNodeToCallgraph()
         {
             trace.Add(m => { m.Call(new Address(0x1200), 4); });
             trace.Add(m => { m.Assign(m.Word32(0x4000), m.Word32(0)); });
@@ -221,7 +222,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void CallingAllocaWithConstant()
+        public void Bwi_CallingAllocaWithConstant()
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             var sig = CreateSignature(Registers.esp, Registers.eax);
@@ -251,7 +252,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void CallingAllocaWithNonConstant()
+        public void Bwi_CallingAllocaWithNonConstant()
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             var sig = CreateSignature(Registers.esp, Registers.eax);
@@ -280,7 +281,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void CallTerminatingProcedure_StopScanning()
+        public void Bwi_CallTerminatingProcedure_StopScanning()
         {
             var proc = Procedure.Create("proc", new Address(0x002000), new Frame(PrimitiveType.Pointer32));
             var terminator = Procedure.Create("terminator", new Address(0x0001000), new Frame(PrimitiveType.Pointer32));
@@ -311,6 +312,54 @@ namespace Decompiler.UnitTests.Scanning
 
             Assert.AreEqual(1, block.Statements.Count, "Should only have rewritten the Call to 'terminator'");
             repository.VerifyAll();
+        }
+
+        [Test]
+        public void Bwi_RtlIf()
+        {
+            var followBlock = proc.AddBlock("l00100004");
+            using (repository.Record())
+            {
+                arch.Stub(a => a.GetRegister(1)).Return((RegisterStorage)r1.Storage);
+                arch.Stub(a => a.GetRegister(2)).Return((RegisterStorage)r2.Storage);
+                arch.Stub(a => a.StackRegister).Return((RegisterStorage) r1.Storage);
+                scanner.Stub(s => s.FindContainingBlock(
+                    Arg<Address>.Matches(a => a.Linear == 0x00100000))).Return(block);
+                scanner.Stub(s => s.FindContainingBlock(
+                    Arg<Address>.Matches(a => a.Linear == 0x00100004))).Return(followBlock);
+                scanner.Stub(s => s.AddDiagnostic(null, null)).IgnoreArguments().WhenCalled(m =>
+                {
+                    var d = (Diagnostic) m.Arguments[1];
+                    Debug.Print("{0}: {1}", d.GetType().Name, d.Message);
+                });
+                scanner.Stub(s => s.EnqueueJumpTarget(
+                    Arg<Address>.Matches(a => a.Linear == 0x00100004),
+                    Arg<Procedure>.Is.NotNull,
+                    Arg<ProcessorState>.Is.Anything)).Return(followBlock);
+            }
+            trace.Add(m => m.If(new TestCondition(ConditionCode.GE, grf), new RtlAssignment(r2, r1)));
+            var wi = CreateWorkItem(new Address(0x00100000), new FakeProcessorState(arch));
+            wi.Process();
+
+            var sw = new StringWriter();
+            repository.VerifyAll();
+            proc.Write(false, sw);
+            var sExp =
+@"// testProc
+void testProc()
+testProc_entry:
+	// succ: 
+l00100000:
+	branch Test(LT,SCZ) l00100004
+	// succ:  l00100000_1 l00100004
+l00100000_1:
+	r2 = r1
+	// succ:  l00100004
+l00100004:
+	// succ: 
+testProc_exit:
+";
+            Assert.AreEqual(sExp, sw.ToString());
         }
     }
 }

@@ -33,6 +33,7 @@ namespace Decompiler.Core.Types
 	public class UnionType : DataType
 	{
 		public DataType PreferredType;
+
 		private UnionAlternativeCollection alts = new UnionAlternativeCollection();
 
 		public UnionType() : base(null)

@@ -81,14 +81,11 @@ namespace Decompiler.Analysis
 			foreach (Statement u in sid.Uses)
 				Uses.Add(u);
 		}
-
-
         
 		public LinearInductionVariable InductionVariable
 		{
 			get { return iv; }
 		}
-
 
 		public void Write(TextWriter writer)
 		{

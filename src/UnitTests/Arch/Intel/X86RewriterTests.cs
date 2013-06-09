@@ -39,6 +39,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelArchitecture arch32;
         private RewriterHost host;
         private X86State state;
+        private Address baseAddr32 = new Address(0x10000000);
 
         public X86RewriterTests()
         {
@@ -61,7 +62,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private IntelAssembler Create32bitAssembler()
         {
-            var asm = new IntelAssembler(arch32, new Address(0x10000000), new List<EntryPoint>());
+            var asm = new IntelAssembler(arch32, baseAddr32, new List<EntryPoint>());
             host = new RewriterHost(asm.ImportThunks);
             return asm;
         }
@@ -165,6 +166,12 @@ namespace Decompiler.UnitTests.Arch.Intel
         private X86Rewriter CreateRewriter32(IntelAssembler m)
         {
             return new X86Rewriter(arch32, host, state, m.GetImage().CreateReader(0), new Frame(arch32.WordWidth));
+        }
+
+        private X86Rewriter CreateRewriter32(byte [] bytes)
+        {
+            var image = new ProgramImage(baseAddr32, bytes);
+            return new X86Rewriter(arch32, host, state, new LeImageReader(image, 0), new Frame(arch32.WordWidth));
         }
 
         [Test]
@@ -280,6 +287,11 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create32bitAssembler();
             fn(m);
             return CreateRewriter32(m).GetEnumerator();
+        }
+
+        private IEnumerator<RtlInstructionCluster> Run32bitTest(params byte [] bytes)
+        {
+            return CreateRewriter32(bytes).GetEnumerator();
         }
 
         [Test]
@@ -1040,6 +1052,15 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode(e,
                 "0|0C00:0000(3): 1 instructions",
                 "1|es_bx = Mem0[ds:bx + 0x0000:segptr32]");
+        }
+
+        [Test]
+        public void X86RW_cmovz()
+        {
+            var e = Run32bitTest(0x0F, 0x44, 0xC8);
+           AssertCode(e,
+                "0|10000000(3): 1 instructions",
+                "1|if (Test(EQ,Z)) ecx = eax");
         }
     }
 }
