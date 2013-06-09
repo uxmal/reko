@@ -80,36 +80,41 @@ namespace Decompiler.Scanning
         {
             try
             {
-                rtlStream = rewriter.GetEnumerator();
-                state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
-                blockCur = scanner.FindContainingBlock(addrStart);
-                if (BlockHasBeenScanned(blockCur))
-                    return;
-                while (rtlStream.MoveNext())
-                {
-                    ric = rtlStream.Current;
-                    if (blockCur != scanner.FindContainingBlock(ric.Address))
-                        break;
-                    state.SetInstructionPointer(ric.Address);
-                    foreach (var rtlInstr in ric.Instructions)
-                    {
-                        ri = rtlInstr;
-                        if (!ri.Accept(this))
-                            return;
-                    }
-                    var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
-                    if (blNext != null)
-                    {
-                        EnsureEdge(blockCur.Procedure, blockCur, blNext);
-                        return;
-                    }
-                }
+                ProcessInternal();
             }
             catch (Exception ex)
             {
                 if (ric == null)
                     throw;
                 scanner.AddDiagnostic(ric.Address, new ErrorDiagnostic(ex.Message));
+            }
+        }
+
+        public void ProcessInternal()
+        {
+            rtlStream = rewriter.GetEnumerator();
+            state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
+            blockCur = scanner.FindContainingBlock(addrStart);
+            if (BlockHasBeenScanned(blockCur))
+                return;
+            while (rtlStream.MoveNext())
+            {
+                ric = rtlStream.Current;
+                if (blockCur != scanner.FindContainingBlock(ric.Address))
+                    break;
+                state.SetInstructionPointer(ric.Address);
+                foreach (var rtlInstr in ric.Instructions)
+                {
+                    ri = rtlInstr;
+                    if (!ri.Accept(this))
+                        return;
+                }
+                var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
+                if (blNext != null)
+                {
+                    EnsureEdge(blockCur.Procedure, blockCur, blNext);
+                    return;
+                }
             }
         }
 

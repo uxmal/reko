@@ -57,7 +57,7 @@ namespace Decompiler.Scanning
             if (blockOrig == blockOrig.Procedure.ExitBlock)
                 return null;
 
-            var succ = CloneBlock(blockOrig.Succ[0]);
+            var succ = blockOrig.Succ.Count > 0 ? CloneBlock(blockOrig.Succ[0]) : null;
             var blockNew = new Block(procCalling, blockOrig.Name + "_in_" + procCalling.Name);
             foreach (var stm in blockOrig.Statements)
             {
