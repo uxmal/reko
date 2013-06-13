@@ -9,7 +9,6 @@ l1:
 	ax = cs->*si2;
 	cs->w1234 = ax;
 	(cs->*si).w0002 = ax;
-	// succ: 
 SegmentedMemoryPointerMock_exit:
 
 // Equivalence classes ////////////

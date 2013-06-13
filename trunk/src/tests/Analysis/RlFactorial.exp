@@ -28,7 +28,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp cx:0x0064 ax:<invalid> dx:<invalid> -2:0x0064
+// SymbolicIn: sp:fp cx:0x0064 ax:<invalid> dx:<invalid> -2(fp):0x0064
 
 // fn0C00_000F /////////////////////
 	LiveOut:   ax ds
@@ -70,13 +70,13 @@ l0C00_0018:
 	SCZO = cond(dx_ax)
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2:bp
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2(fp):bp
 
 l0C00_0026:
 	ax = 0x0001
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2:bp
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2(fp):bp
 
 l0C00_0029:
 	bp = wLoc02
@@ -84,10 +84,10 @@ l0C00_0029:
 	return
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4:ax -2:bp
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4(fp):ax -2(fp):bp
 
 fn0C00_000F_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp bp:bp ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4:ax -2:bp
+// SymbolicIn: sp:fp bp:bp ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4(fp):ax -2(fp):bp
 

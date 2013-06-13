@@ -6,7 +6,6 @@ l1:
 	ds2 = ds;
 	ds->f5400 = ds->ptr5404->w0004 < 0x0014;
 	ds2->ptr5404->w0004 = 0x0000;
-	// succ: 
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////

@@ -1062,5 +1062,14 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "0|10000000(3): 1 instructions",
                 "1|if (Test(EQ,Z)) ecx = eax");
         }
+
+        [Test]
+        public void X86RW_cmp_Ev_Ib()
+        {
+            var e = Run32bitTest(0x83, 0x3F, 0xFF);
+            AssertCode(e,
+                "0|10000000(3): 1 instructions",
+                "1|SCZO = cond(Mem0[edi:word32] - 0xFFFFFFFF)");
+         }
     }
 }

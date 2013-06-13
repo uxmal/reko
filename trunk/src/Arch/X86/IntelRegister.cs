@@ -193,6 +193,8 @@ namespace Decompiler.Arch.X86
 		{
 			if (bits[Number])
 				return this;
+            if (bits[regDword])
+                return Registers.GetRegister(regDword);
 			if (bits[regWord])
 				return Registers.GetRegister(regWord);
 			if (bits[regHiByte] && bits[regLoByte])
@@ -229,9 +231,11 @@ namespace Decompiler.Arch.X86
 
     public class Intel64AccRegister : Intel64Register
     {
-        public Intel64AccRegister(string name, int number, int regWord, int regLoByte, int regHiByte)
+        private int regDword;
+        public Intel64AccRegister(string name, int number, int regDword, int regWord, int regLoByte, int regHiByte)
             : base(name, number, regWord, regLoByte, regHiByte)
         {
+            this.regDword = regDword;
         }
 
         public override RegisterStorage GetSubregister(int offset, int size)
@@ -243,7 +247,8 @@ namespace Decompiler.Arch.X86
                 if (size == 16)
                     return Registers.GetRegister(Number + Registers.ax.Number);
                 if (size == 32)
-                    return this;
+                    return Registers.GetRegister(Number + Registers.eax.Number);
+                return this;
             }
             if (offset == 8)
             {
@@ -272,6 +277,7 @@ namespace Decompiler.Arch.X86
         public override void SetAliases(BitSet bits, bool f)
         {
             bits[Number] = f;
+            bits[regDword] = f;
             bits[regWord] = f;
             bits[regLoByte] = f;
             bits[regHiByte] = f;
@@ -286,9 +292,7 @@ namespace Decompiler.Arch.X86
             r = regHiByte;
             registerFile[r] = (value >> 8) & 0xFFU;
             valid[r] = true;
-
         }
-
     }
 
 

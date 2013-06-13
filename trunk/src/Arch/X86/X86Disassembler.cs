@@ -108,7 +108,6 @@ namespace Decompiler.Arch.X86
                 case 13: return Registers.r13b;
                 case 14: return Registers.r14b;
                 case 15: return Registers.r15b;
-
 				}
                 break;
             case 16:
@@ -381,7 +380,6 @@ namespace Decompiler.Arch.X86
             }
         }
 
-
 		/// <summary>
 		/// Current address of the disassembler.
 		/// </summary>
@@ -403,7 +401,6 @@ namespace Decompiler.Arch.X86
 			}
 			return this.modrm;
 		}
-
 
 		/// <summary>
 		/// Disassembles the current instruction. The address is incremented

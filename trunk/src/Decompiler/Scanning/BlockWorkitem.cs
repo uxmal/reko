@@ -309,7 +309,7 @@ namespace Decompiler.Scanning
                 {
                     scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
-                state.OnAfterCall(stackReg, callee.Signature,eval);
+                state.OnAfterCall(stackReg, callee.Signature, eval);
                 return !callee.Characteristics.Terminates;
             }
 
@@ -367,7 +367,7 @@ namespace Decompiler.Scanning
         {
             var proc = blockCur.Procedure;
             Emit(new ReturnInstruction());
-            blockCur.Procedure.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
+            proc.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
 
             if (frame.ReturnAddressKnown)
             {

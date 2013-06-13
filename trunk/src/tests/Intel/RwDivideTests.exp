@@ -15,5 +15,4 @@ l0C00_0000:
 	dx = dx_ax % cx
 	ax = dx_ax /u cx
 	SCZO = cond(ax)
-	// succ: 
 fn0C00_0000_exit:

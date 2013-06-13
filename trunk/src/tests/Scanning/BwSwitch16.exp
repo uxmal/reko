@@ -4,7 +4,6 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 grox:
-	// succ: 
 l1:
 	sp = sp - 0x0002
 	Mem0[sp:selector] = cs
@@ -19,7 +18,6 @@ l2:
 	SCZO = cond(bh)
 	bx = bx + bx
 	SCZO = cond(bx)
-	// succ: 
 ProcedureBuilder_exit:
 cmp 2
 branch UGT

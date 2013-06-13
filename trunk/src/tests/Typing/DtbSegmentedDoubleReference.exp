@@ -5,7 +5,6 @@ SegmentedDoubleReferenceMock_entry:
 l1:
 	Mem8[ds:0x0100:word16] = Mem0[ds:Mem0[ds:0x0300:word16] + 0x0004:word16]
 	Mem10[ds:0x0102:word16] = Mem8[ds:Mem8[ds:0x0300:word16] + 0x0004:word16]
-	// succ: 
 SegmentedDoubleReferenceMock_exit:
 
 // Equivalence classes ////////////

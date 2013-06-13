@@ -49,13 +49,13 @@ l0C00_000C:
 	// succ:  l0C00_0019
 l0C00_0019:
 	branch cx == 0x0000 l0C00_001B
-	// succ:  l0C00_0019_1 l0C00_001B l0C00_0019
+	// succ:  l0C00_0019_1 l0C00_001B
 l0C00_0019_1:
 	SCZO = cond(al - Mem0[es:di:byte])
 	di = di + 0x0001
 	cx = cx - 0x0001
 	branch Test(NE,Z) l0C00_0019
-	// succ: 
+	// succ:  l0C00_001B l0C00_0019
 l0C00_001B:
 	branch Test(EQ,Z) l0C00_002D
 	// succ:  l0C00_001D l0C00_002D

@@ -85,15 +85,10 @@ l0C00_000A:
 	goto l0C00_0022
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_000E:
-	// succ: 
 l0C00_0012:
-	// succ: 
 l0C00_0016:
-	// succ: 
 l0C00_001A:
-	// succ: 
 l0C00_001E:
-	// succ: 
 l0C00_0022:
 	byte al_20
 	Mem0[alOut:byte] = al - 0x30

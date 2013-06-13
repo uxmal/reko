@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DereferenceTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Decompiler.Core.Expressions.Dereference(null, null)));
+			Assert.IsTrue(ci.IsCritical(new Decompiler.Core.Expressions.Dereference(PrimitiveType.Pointer32, Id32("foo"))));
 		}
 
 		[Test]

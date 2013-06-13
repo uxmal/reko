@@ -50,18 +50,26 @@ namespace Decompiler.UnitTests.Typing
                 }
             };
 			TypeVariable tvPoint = store.EnsureExpressionTypeVariable(factory, null);
-			EquivalenceClass eq = new EquivalenceClass(tvPoint);
+            EquivalenceClass eq = new EquivalenceClass(tvPoint)
+            {
+                DataType = point
+            };
 			tvPoint.DataType = eq;
-			eq.DataType = point;
 			ptrPoint = new Pointer(eq, 4);
 
-			UnionType u = new UnionType("RealInt", null);
-			u.Alternatives.Add(new UnionAlternative("w", PrimitiveType.Word32));
-			u.Alternatives.Add(new UnionAlternative("r", PrimitiveType.Real32));
+            UnionType u = new UnionType("RealInt", null)
+            {
+                Alternatives = {
+                    new UnionAlternative("w", PrimitiveType.Word32),
+			        new UnionAlternative("r", PrimitiveType.Real32),
+                }
+            };
 			TypeVariable tvUnion = store.EnsureExpressionTypeVariable(factory, null);
-			eq = new EquivalenceClass(tvUnion);
+            eq = new EquivalenceClass(tvUnion)
+            {
+                DataType = u
+            };
 			tvUnion.DataType = eq;
-			eq.DataType = u;
 			ptrUnion = new Pointer(eq, 4);
 
             ptrInt = new Pointer(PrimitiveType.Int32, 4);
@@ -70,7 +78,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void BuildPrimitive()
+        public void CEB_BuildPrimitive()
 		{
 			Identifier id = new Identifier("id", 3, PrimitiveType.Word32, null);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, PrimitiveType.Word32, PrimitiveType.Word32, null, id, null, 0);
@@ -78,7 +86,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void BuildPointer()
+        public void CEB_BuildPointer()
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
 			store.EnsureExpressionTypeVariable(factory, ptr);
@@ -87,7 +95,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void BuildPointerFetch()
+        public void CEB_BuildPointerFetch()
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
@@ -96,7 +104,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void BuildUnionFetch()
+        public void CEB_BuildUnionFetch()
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
@@ -109,17 +117,16 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void BuildByteArrayFetch()
+		public void CEB_BuildByteArrayFetch()
 		{
             Identifier globals = new Identifier("globals", 3, PrimitiveType.Word32, null);
             Identifier i = new Identifier("i", 4, PrimitiveType.Word32, null);
-            ProcedureBuilder m = new ProcedureBuilder();
             DataType arrayOfBytes = new ArrayType(PrimitiveType.Byte, 0);
             StructureType str = Struct(
                 Fld(0x01000, arrayOfBytes));
             CreateTv(globals, Ptr32(str), Ptr32(PrimitiveType.Byte));
             CreateTv(i, PrimitiveType.Int32, PrimitiveType.Word32);
-            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+            var ceb = new ComplexExpressionBuilder(
                 PrimitiveType.Byte,
                 globals.TypeVariable.DataType,
                 globals.TypeVariable.OriginalDataType,

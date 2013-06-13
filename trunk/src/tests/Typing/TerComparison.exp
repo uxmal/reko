@@ -4,7 +4,6 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	f = p->ptr0004 < 0x00000003;
-	// succ: 
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////

@@ -2,13 +2,13 @@ Mem0:Global memory
     def:  def Mem0
     uses: Mem13 = PHI(Mem0, Mem19, Mem27)
 fp:Temporary
-si:Register si
+si:si
     def:  def si
     uses: si_12 = PHI(si, si_15, si_15)
           ax_33 = si_15 - si
-bx:Register bx
-ax:Register ax
-ds:Register ds
+bx:bx
+ax:ax
+ds:ds
     def:  def ds
     uses: ax_14 = Mem13[ds:si_12:word16]
           Mem19[ds:di:word16] = ax_14
@@ -17,7 +17,7 @@ ds:Register ds
           Mem42[ds:0x0300:word16] = ax_40
 SCZO:Flags
 Z:Flags
-di:Register di
+di:di
     def:  def di
     uses: Mem19[ds:di:word16] = ax_14
 v9:Temporary
@@ -82,18 +82,24 @@ Mem41: orig: Mem0
 Mem42: orig: Mem0
     def:  Mem42[ds:0x0300:word16] = ax_40
 liveIn: 
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def si
 	def ds
 	def di
-	// succ:  l0C00_0000
 liveOut: Mem0 si ds di
 
 liveIn:  Mem0 si ds di
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	// succ:  l0C00_001A
 liveOut: Mem0 si ds di v9_26
+
+liveIn:  si ds di ax_14 si_15 v9_26
+l0C00_0005:
+	Mem19[ds:di:word16] = ax_14
+	branch ax_14 != 0x0000 l0C00_0011
+	// succ:  l0C00_000B l0C00_0011
+liveOut: si ds di ax_14 si_15 Mem19 v9_26
 
 liveIn:  si ds di v9_26
 l0C00_001A:		// pred: l0C00_0000 l0C00_0011 l0C00_0016
@@ -105,12 +111,6 @@ l0C00_001A:		// pred: l0C00_0000 l0C00_0011 l0C00_0016
 	// succ:  l0C00_0020 l0C00_0005
 liveOut: si ds di ax_14 si_15 v9_26
 
-liveIn:  si ds di ax_14 si_15 v9_26
-l0C00_0005:		// pred: l0C00_001A
-	Mem19[ds:di:word16] = ax_14
-	branch ax_14 != 0x0000 l0C00_0011
-	// succ:  l0C00_000B l0C00_0011
-liveOut: si ds di ax_14 si_15 Mem19 v9_26
 
 liveIn:  si ds di ax_14 si_15 Mem19 v9_26
 l0C00_0011:		// pred: l0C00_0005
@@ -125,19 +125,19 @@ l0C00_0016:		// pred: l0C00_0011
 liveOut: si ds di v9_26 Mem27
 
 liveIn:  ds
-l0C00_000B:		// pred: l0C00_0005
+l0C00_000B:
 	ax_31 = 0xFFFF
 	// succ:  l0C00_0024
 liveOut: ds ax_31
 
 liveIn:  si ds si_15
-l0C00_0020:		// pred: l0C00_001A
+l0C00_0020:
 	ax_33 = si_15 - si
 	// succ:  l0C00_0024
 liveOut: ds ax_33
 
 liveIn:  ds
-l0C00_0024:		// pred: l0C00_000B l0C00_0020
+l0C00_0024:
 	ax_40 = PHI(ax_31, ax_33)
 	Mem42[ds:0x0300:word16] = ax_40
 	return

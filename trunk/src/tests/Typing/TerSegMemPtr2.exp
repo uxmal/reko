@@ -5,7 +5,6 @@ SegmentedMemoryPointerMock2_entry:
 l1:
 	ax = (ds->*bx).w0000;
 	ax = (ds->*bx).w0004;
-	// succ: 
 SegmentedMemoryPointerMock2_exit:
 
 // Equivalence classes ////////////

@@ -5,7 +5,6 @@ ConstantUnionMock_entry:
 l1:
 	x.u0 = 3;
 	x.u1 = 3F;
-	// succ: 
 ConstantUnionMock_exit:
 
 // Equivalence classes ////////////

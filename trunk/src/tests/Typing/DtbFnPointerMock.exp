@@ -5,7 +5,6 @@ FnPointerMock_entry:
 l1:
 	Mem4[0x10000000:word32] = 0x01213130
 	call Mem0[0x10000000:word32] (retsize: 0;)
-	// succ: 
 FnPointerMock_exit:
 
 // Equivalence classes ////////////

@@ -135,7 +135,7 @@ namespace Decompiler.Core.Expressions
 
 		public void VisitFieldAccess(FieldAccess acc)
 		{
-			acc.structure.Accept(this);
+			acc.Structure.Accept(this);
 		}
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)

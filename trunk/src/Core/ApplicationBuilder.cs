@@ -51,6 +51,15 @@ namespace Decompiler.Core
         private ProcedureSignature sigCallee;
         private bool ensureVariables;
 
+        /// <summary>
+        /// Creates an application builder.
+        /// </summary>
+        /// <param name="arch">The processor architecture to use.</param>
+        /// <param name="frame">The Frame of the calling procedure.</param>
+        /// <param name="site">The call site of the calling instruction.</param>
+        /// <param name="callee">The pointer to the procedure being called.</param>
+        /// <param name="sigCallee">The signature of the procedure being called.</param>
+        /// <param name="ensureVariables">If true, creates variables in the <paramref name="frame"/> if needed.</param>
         public ApplicationBuilder(
             IProcessorArchitecture arch, 
             Frame frame,
@@ -176,7 +185,6 @@ namespace Decompiler.Core
                     stack.DataType);
             else 
                 return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
-
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

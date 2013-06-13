@@ -98,9 +98,9 @@ namespace Decompiler.UnitTests.Gui
             Assert.AreEqual(2, sp.Signature.Arguments.Length);
             Assert.IsAssignableFrom(typeof(SerializedRegister), sp.Signature.Arguments[0].Kind);
             Assert.AreEqual("eax", sp.Signature.Arguments[0].Name);
-            Assert.AreEqual("word32", sp.Signature.Arguments[0].Type);
+            Assert.AreEqual("word32", sp.Signature.Arguments[0].Type.ToString());
             Assert.AreEqual("cl", sp.Signature.Arguments[1].Name);
-            Assert.AreEqual("byte", sp.Signature.Arguments[1].Type);
+            Assert.AreEqual("byte", sp.Signature.Arguments[1].Type.ToString());
         }
 
         [Test]

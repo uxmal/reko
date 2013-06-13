@@ -149,7 +149,7 @@ namespace Decompiler.Typing
 
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex, bool dereferenced)
         {
-            arrayIndex = CreateArrayIndexExpression(offset, arrayIndex, dtPointer.Size);
+            arrayIndex = CreateArrayIndexExpression(offset, arrayIndex);
             if (dereferenced)
             {
                 return new ArrayAccess(dtPointee, complexExp, arrayIndex);
@@ -160,11 +160,11 @@ namespace Decompiler.Typing
             }
         }
 
-        private static Expression CreateArrayIndexExpression(int offset, Expression arrayIndex, int pointerSize)
+        private static Expression CreateArrayIndexExpression(int offset, Expression arrayIndex)
         {
             BinaryOperator op = offset < 0 ? Operator.Sub : Operator.Add;
             offset = Math.Abs(offset);
-            Constant cOffset = Constant.Create(PrimitiveType.Create(Domain.SignedInt, pointerSize), offset);
+            Constant cOffset = Constant.Create(PrimitiveType.Create(Domain.SignedInt, arrayIndex.DataType.Size), offset);
             if (arrayIndex != null)
             {
                 if (offset != 0)

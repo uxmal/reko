@@ -187,7 +187,6 @@ namespace Decompiler.Structure
             return true;
         }
 
-
         public Expression BranchCondition(StructureNode node)
         {
             if (node.Instructions.Count == 0)

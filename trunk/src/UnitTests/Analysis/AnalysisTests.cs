@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = RewriteFile("Fragments/diamond.asm");
 			Procedure proc = prog.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
-			var diamondTop = proc.ControlGraph.Blocks[1];
+			var diamondTop = proc.ControlGraph.Blocks[2];
             Assert.AreSame(diamondTop, doms.ImmediateDominator(diamondTop.ElseBlock));
             Assert.AreSame(diamondTop, doms.ImmediateDominator(diamondTop.ThenBlock));
 		}

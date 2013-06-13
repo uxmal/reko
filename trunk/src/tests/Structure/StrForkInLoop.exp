@@ -5,7 +5,6 @@ fn0C00_0000_entry:
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0000:
-	// succ: 
 l0C00_0005:
 	word16 si_22 = Mem0[ds:0x0300:word16]
 	branch si_22 == 0x0000 l0C00_0012

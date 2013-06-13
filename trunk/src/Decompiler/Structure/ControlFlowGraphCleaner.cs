@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Decompiler.Structure
 {
@@ -38,7 +39,6 @@ namespace Decompiler.Structure
 		{
 			this.proc = proc;
 		}
-
 
 		private bool BranchTargetsEqual(Block block)
 		{
@@ -89,7 +89,7 @@ namespace Decompiler.Structure
 			{
 				dirty = false;
 
-                foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PostOrder())
+                foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().ToList())
                 {
                     if (block == null)
                         continue;
