@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Core
 		public void StructureSizeInHex()
 		{
 			StructureType s = new StructureType(null, 0x42);
-			Assert.AreEqual("(struct 42)", s.ToString());
+			Assert.AreEqual("(struct 0042)", s.ToString());
 		}
 
 		[Test]

@@ -226,7 +226,7 @@ namespace Decompiler.Core.Output
 		public void VisitFieldAccess(FieldAccess acc)
 		{
 			int prec = SetPrecedence(PrecedenceFieldAccess);
-			Dereference d = acc.structure as Dereference;
+			Dereference d = acc.Structure as Dereference;
 			if (d != null)
 			{
 				d.Expression.Accept(this);
@@ -234,7 +234,7 @@ namespace Decompiler.Core.Output
 			}
 			else
 			{
-				acc.structure.Accept(this);
+				acc.Structure.Accept(this);
 				writer.Write(".{0}", acc.FieldName);
 			}
 			ResetPresedence(prec);
@@ -612,13 +612,12 @@ namespace Decompiler.Core.Output
                 case 1: return "0x{0:X2}";
                 case 2: return "0x{0:X4}";
                 case 4: return "0x{0:X8}";
-                case 5:
-                case 3: return "$$0x{0:X16}$$";
                 case 8: return "0x{0:X16}";
                 default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} are not supported.", type.Size));
                 }
             }
         }
+
         private bool IsSingleIfStatement(List<AbsynStatement> stms, out AbsynIf elseIf)
         {
             elseIf = null;

@@ -4,7 +4,6 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	Mem0[0x0100:ptr32] = SEQ(ds, 0x1234)
-	// succ: 
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////

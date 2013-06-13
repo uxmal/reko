@@ -26,12 +26,12 @@ namespace Decompiler.Core.Expressions
 {
 	public class FieldAccess : Expression
 	{
-		public Expression structure;
+		public Expression Structure;
 		public string FieldName;
 
 		public FieldAccess(DataType fieldType, Expression expr, string fieldName) : base(fieldType)
 		{
-			this.structure = expr; this.FieldName = fieldName;
+			this.Structure = expr; this.FieldName = fieldName;
 		}
 
         public override T Accept<T>(ExpressionVisitor<T> v)
@@ -46,7 +46,7 @@ namespace Decompiler.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new FieldAccess(DataType, structure.CloneExpression(), FieldName);
+			return new FieldAccess(DataType, Structure.CloneExpression(), FieldName);
 		}
 
 		public override Expression Invert()

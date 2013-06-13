@@ -53,5 +53,10 @@ namespace Decompiler.Core.Serialization
         {
             return visitor.VisitTypeReference(this);
         }
+
+        public override string ToString()
+        {
+            return TypeName;
+        }
     }
 }

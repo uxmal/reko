@@ -7,7 +7,6 @@ l1:
 	Mem0[ds:0x0100:word16] = Mem0[ds:si1 + 0x0004:word16]
 	si2 = Mem0[ds:0x0300:word16]
 	Mem0[ds:0x0102:word16] = Mem0[ds:si2 + 0x0004:word16]
-	// succ: 
 SegmentedDoubleReferenceMock_exit:
 
 T_2 (in ds : word16)
@@ -30,6 +29,7 @@ T_4 (in Mem0[ds:0x0300:word16] : word16)
 	trait_primitive(word16)
 T_5 (in si1 : word16)
 	trait_primitive(word16)
+	trait_primitive(word16)
 	trait_equal(T_4)
 	trait_primitive(word16)
 	trait_mem(T_2:T_8, 4)
@@ -48,6 +48,7 @@ T_10 (in Mem0[ds:0x0100:word16] : word16)
 T_11 (in Mem0[ds:0x0300:word16] : word16)
 	trait_primitive(word16)
 T_12 (in si2 : word16)
+	trait_primitive(word16)
 	trait_primitive(word16)
 	trait_equal(T_11)
 	trait_primitive(word16)

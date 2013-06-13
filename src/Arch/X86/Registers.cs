@@ -183,15 +183,15 @@ namespace Decompiler.Arch.X86
             FPUF = new RegisterStorage("FPUF", 38, PrimitiveType.Byte);
             FPST = new RegisterStorage("FPST", 38, PrimitiveType.Byte); 
 
-            rax = new Intel64AccRegister("rax", 0, 8, 16, 20);
-            rcx = new Intel64AccRegister("rcx", 1, 9, 17, 21);
-            rdx = new Intel64AccRegister("rdx", 2, 10, 18, 22);
-            rbx = new Intel64AccRegister("rbx", 3, 11, 19, 23);
+            rax = new Intel64AccRegister("rax", 40, 0, 8, 16, 20);
+            rcx = new Intel64AccRegister("rcx", 41, 1, 9, 17, 21);
+            rdx = new Intel64AccRegister("rdx", 42, 2, 10, 18, 22);
+            rbx = new Intel64AccRegister("rbx", 43, 3, 11, 19, 23);
             rsp = new Intel64Register("rsp", 4, 12, -1, -1);
-            rbp = new Intel64Register("rbp", 5, 13, -1, -1);
-            rsi = new Intel64Register("rsi", 6, 14, -1, -1);
-            rdi = new Intel64Register("rdi", 7, 15, -1, -1);
-            r8 = new Intel64Register("r8", 8, 12, -1, -1);
+            rbp = new Intel64Register("rbp",  5, 13, -1, -1);
+            rsi = new Intel64Register("rsi",  6, 14, -1, -1);
+            rdi = new Intel64Register("rdi",  7, 15, -1, -1);
+            r8 = new Intel64Register("r8",  8, 12, -1, -1);
             r9 = new Intel64Register("r9", 9, 13, -1, -1);
             r10 = new Intel64Register("r10", 10, 14, -1, -1);
             r11 = new Intel64Register("r11", 11, 15, -1, -1);
@@ -266,6 +266,7 @@ xmm15 = new SseRegister("xmm15", 15);
 				si ,
 				di ,
 
+                // 16
 				al ,
 				cl ,
 				dl ,
@@ -284,6 +285,7 @@ xmm15 = new SseRegister("xmm15", 15);
 				null,
 				null,
 
+                // 32
 				S ,
 				C ,
 				Z ,
@@ -292,6 +294,55 @@ xmm15 = new SseRegister("xmm15", 15);
 				O ,
                 P,
                 FPUF,
+                null,
+
+                // 40
+                            rax,            rcx,
+            rdx,
+            rbx,
+            rsp,
+            rbp,
+            rsi,
+            rdi,
+            r8,
+            r9,
+            r10,
+            r11,
+            r12,
+            r13,
+            r14,
+            r15,
+            r8d,
+            r9d,
+            r10d,
+            r11d,
+            r12d,
+            r13d,
+            r14d,
+            r15d,
+            r8w,
+            r9w,
+            r10w,
+            r11w,
+            r12w,
+            r13w,
+            r14w,
+            r15w,
+
+            spl,
+            bpl,
+            sil,
+            dil,
+
+            r8b,
+            r9b,
+            r10b,
+            r11b,
+            r12b,
+            r13b,
+            r14b,
+            r15b,
+
 			};
         }
 

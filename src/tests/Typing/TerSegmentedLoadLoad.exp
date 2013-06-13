@@ -4,7 +4,6 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	ds->w0300 = ds->*ds->*bx;
-	// succ: 
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////

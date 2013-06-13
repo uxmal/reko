@@ -383,6 +383,14 @@ namespace Decompiler.Core
 			return null;
 		}
 
+        public Identifier FindTemporary(string name)
+        {
+            return (from id in identifiers
+                   let tmp = id.Storage as TemporaryStorage
+                   where tmp != null && id.Name == name
+                   select id).SingleOrDefault();
+        }
+
 		public void Write(TextWriter text)
 		{
 			foreach (Identifier id in identifiers)

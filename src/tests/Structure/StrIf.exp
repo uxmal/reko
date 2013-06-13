@@ -6,7 +6,6 @@ fn0C00_0000_entry:
 	goto l0C00_0005
 	// succ:  l0C00_0005 l0C00_000B
 l0C00_0000:
-	// succ: 
 l0C00_0005:
 	bx_11 = 0x1234
 	goto l0C00_000E

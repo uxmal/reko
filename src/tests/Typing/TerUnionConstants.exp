@@ -6,7 +6,6 @@ l1:
 	bx = bx >>u 0x02;
 	f = bx < 0x0004;
 	bx.u0 = 0x0004;
-	// succ: 
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////

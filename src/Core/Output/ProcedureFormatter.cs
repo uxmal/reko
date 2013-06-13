@@ -72,7 +72,7 @@ namespace Decompiler.Core.Output
                             WriteGoto(succ[0].Name);
                         }
                     }
-                    if (showEdges)
+                    if (showEdges && succ.Count > 0)
                     {
                         StringBuilder sb = new StringBuilder();
                         sb.Append("// succ: ");

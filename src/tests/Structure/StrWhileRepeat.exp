@@ -5,7 +5,6 @@ fn0C00_0000_entry:
 	goto l0C00_000A
 	// succ:  l0C00_000A
 l0C00_0000:
-	// succ: 
 l0C00_0005:
 	ax_11 = ax_11 + Mem0[ds:bx:word16]
 	bx = Mem0[ds:bx + 0x0002:word16]

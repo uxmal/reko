@@ -6,7 +6,6 @@ l1:
 	real32 * ptr = &globals->r10000004
 	*ptr = 0.75F;
 	globals->r10000000 = 0.5F;
-	// succ: 
 GlobalVariablesMock_exit:
 
 // Equivalence classes ////////////

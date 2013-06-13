@@ -1,38 +1,45 @@
 // MockIfElseIf
 void MockIfElseIf()
-MockIfElseIf_entry:		// pred:
+MockIfElseIf_entry:
 	branch r != 0x00000000 not_0
+	goto l2
 	// succ:  l2 not_0
-l1:
-l2:		// pred: MockIfElseIf_entry
-	x = 0x00000000
-	// succ:  done
-done:		// pred: l2 l3 l4 l5 default
-	return x
-	// succ:  MockIfElseIf_exit
-MockIfElseIf_exit:		// pred: done
-	// succ: 
-not_0:		// pred: MockIfElseIf_entry
-	branch r != 0x00000001 not_1
-	// succ:  l3 not_1
-l3:		// pred: not_0
-	x = 0x00000001
-	// succ:  done
-not_1:		// pred: not_0
-	branch r != 0x00000002 not_2
-	// succ:  l4 not_2
-l4:		// pred: not_1
-	x = 0x00000002
-	// succ:  done
-not_2:		// pred: not_1
-	branch r != 0x00000003 default
-	// succ:  l5 default
-l5:		// pred: not_2
-	x = 0x00000003
-	// succ:  done
-default:		// pred: not_2
+default:
 	x = 0xFFFFFFFF
 	// succ:  done
+done:
+	return x
+	// succ:  MockIfElseIf_exit
+l1:
+l2:
+	x = 0x00000000
+	goto done
+	// succ:  done
+l3:
+	x = 0x00000001
+	goto done
+	// succ:  done
+l4:
+	x = 0x00000002
+	goto done
+	// succ:  done
+l5:
+	x = 0x00000003
+	goto done
+	// succ:  done
+not_0:
+	branch r != 0x00000001 not_1
+	goto l3
+	// succ:  l3 not_1
+not_1:
+	branch r != 0x00000002 not_2
+	goto l4
+	// succ:  l4 not_2
+not_2:
+	branch r != 0x00000003 default
+	goto l5
+	// succ:  l5 default
+MockIfElseIf_exit:
 
 void MockIfElseIf()
 {

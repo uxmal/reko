@@ -184,7 +184,7 @@ namespace Decompiler.Core.Code
 
 		public virtual void VisitFieldAccess(FieldAccess acc)
 		{
-			acc.structure.Accept(this);
+			acc.Structure.Accept(this);
 		}
 
 		public virtual void VisitMemberPointerSelector(MemberPointerSelector mps)

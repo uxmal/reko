@@ -239,40 +239,40 @@ l0C00_0251:
 	{
 		do
 			;
-		while (Mem66[0x0800:0x81B0:word16] == 0x0000 || Mem66[0x0800:0x5404:word16] >= 0x0020);
+		while (Mem77[0x0800:0x81B0:word16] == 0x0000 || Mem77[0x0800:0x5404:word16] >= 0x0020);
 		fn0C00_0283(0x5450, 0x0800);
-		Mem77[0x0800:0x5404:word16] = 0x0000;
+		Mem92[0x0800:0x5404:word16] = 0x0000;
 		fn0C00_0259();
-		if (Mem77[0x0800:0x53B8:word16] >= 0x0004)
+		if (Mem92[0x0800:0x53B8:word16] >= 0x0004)
 		{
-			word16 bx_80 = Mem77[0x0800:0x53B8:word16];
-			Mem82[0x0800:0x53BE:word16] = bx_80 - 0x0001;
-			Mem84[0x0800:0x53C0:word16] = bx_80 - 0x0002;
-			fn0C00_025A(Mem84[0x0800:0x53C0:word16], 0x0800);
-			selector es_86 = Mem84[0x0800:0x53C2:word16];
+			word16 bx_95 = Mem92[0x0800:0x53B8:word16];
+			Mem98[0x0800:0x53BE:word16] = bx_95 - 0x0001;
+			Mem101[0x0800:0x53C0:word16] = bx_95 - 0x0002;
+			fn0C00_025A(Mem101[0x0800:0x53C0:word16], 0x0800);
+			selector es_103 = Mem101[0x0800:0x53C2:word16];
 			word16 di_87 = 0x0000;
 			word16 si_91 = 0x0000;
-			word16 cx_93 = 0x4000;
-			while (cx_93 == 0x0000)
+			word16 cx_116 = 0x4000;
+			while (cx_116 != 0x0000)
 			{
-				Mem100[es_86:di_87:word32] = Mem97[0x6C34:si_91:word32];
-				cx_93 = cx_93 - 0x0001;
-				si_91 = si_91 + 0x0004;
-				di_87 = di_87 + 0x0004;
+				Mem121[es_103:di_104:word32] = Mem108[ds_109:si_113:word32];
+				si_113 = si_113 + 0x0004;
+				di_104 = di_104 + 0x0004;
+				cx_116 = cx_116 - 0x0001;
 			}
 			fn0C00_025A(Mem97[0x0800:0x53BE:word16], 0x0800);
 			selector es_106 = Mem97[0x0800:0x53C2:word16];
-			word16 di_107 = 0x0000;
-			word16 si_111 = 0x0000;
-			word16 cx_113 = 0x4000;
-			while (cx_113 == 0x0000)
+			word16 di_104 = 0x0000;
+			word16 si_113 = 0x0000;
+			word16 cx_116 = 0x4000;
+			while (cx_116 != 0x0000)
 			{
-				Mem120[es_106:di_107:word32] = Mem117[0x5D02:si_111:word32];
-				cx_113 = cx_113 - 0x0001;
-				si_111 = si_111 + 0x0004;
-				di_107 = di_107 + 0x0004;
+				Mem121[es_103:di_104:word32] = Mem108[ds_109:si_113:word32];
+				si_113 = si_113 + 0x0004;
+				di_104 = di_104 + 0x0004;
+				cx_116 = cx_116 - 0x0001;
 			}
-			Mem127[0x0800:0x7E52:word16] = Mem117[0x0800:0x53BE:word16];
+			Mem126[0x0800:0x7E52:word16] = Mem117[0x0800:0x53BE:word16];
 			word16 ax_128 = Mem127[0x0800:0x53C2:word16];
 			Mem129[0x0800:0x7E50:word16] = ax_128;
 			Mem130[0x0800:0x5380:word16] = ax_128;
@@ -283,14 +283,14 @@ l0C00_0251:
 			if (Mem139[0x0800:0x54A6:word16] != 0x0000)
 			{
 				fn0C00_027D();
-				word64 edx_eax_144 = (int32) Mem139[0x0800:0x5418:word16] *s 0x0000F000;
-				Mem151[0x0800:0x6FF0:ui64] = Mem139[0x0800:0x6FF0:ui64] - edx_eax_144;
+				word64 edx_290 = (int32) Mem171[0x0800:0x5418:word16] *s 0x0000F000;
+				Mem151[0x0800:0x6FF0:ui64] = Mem171[0x0800:0x6FF0:ui64] - edx_eax_144;
 				ax_132 = (word16) edx_eax_144;
 			}
 			fn0C00_0265();
 			do
 				;
-			while (Mem161[0x0800:0x81B0:word16] == 0x0000 || Mem161[0x0800:0x5404:word16] >= 0x0046);
+			while (Mem171[0x0800:0x81B0:word16] == 0x0000 || Mem171[0x0800:0x5404:word16] >= 0x0046);
 			fn0C00_028F(0x53E7, 0x0800);
 			fn0C00_028B();
 			fn0C00_027F();

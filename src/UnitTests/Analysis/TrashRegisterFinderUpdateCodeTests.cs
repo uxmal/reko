@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void UpdateAllStackReferences()
+        public void Trfu_UpdateAllStackReferences()
         {
             p.Add("main", m =>
             {
@@ -114,7 +114,7 @@ main_exit:
         }
 
         [Test]
-        public void CallToFunction()
+        public void Trfu_CallToFunction()
         {
             p.Add("main", m =>
             {
@@ -167,7 +167,7 @@ foo_exit:
         }
 
         [Test]
-        public void DontCopyRegistersUnlessFramepointer()
+        public void Trfu_DontCopyRegistersUnlessFramepointer()
         {
             p.Add("main", m =>
             {
@@ -224,7 +224,7 @@ foo_exit:
         }
 
         [Test]
-        public void PromoteMemoryAccessParametersToApiCalls()
+        public void Trfu_PromoteMemoryAccessParametersToApiCalls()
         {
             p.Add("main", m =>
             {
@@ -263,7 +263,7 @@ main_exit:
         }
 
         [Test]
-        public void PromoteMemoryAccessParametersToApiCallsWithLocalPushes()
+        public void Trfu_PromoteMemoryAccessParametersToApiCallsWithLocalPushes()
         {
             p.Add("main", m =>
             {
@@ -314,7 +314,7 @@ main_exit:
 
         [Test]
         [Ignore("Unhappy about this, but we probably want to do this later in the analysis")]
-        public void ReplaceLongAdds()
+        public void Trfu_ReplaceLongAdds()
         {
             p.Add("main", m =>
             {
@@ -348,9 +348,40 @@ main_exit:
         }
 
         [Test]
-        public void TrfuProcIsolation()
+        public void Trfu_ProcIsolation()
         {
             AnalysisTestBase.RunTest("Fragments/multiple/procisolation.asm", RunTest, "Analysis/TrfuProcIsolation.txt");
+        }
+
+        [Test]
+        public void Trfu_PushedRegisters()
+        {
+            AnalysisTestBase.RunTest("Fragments/multiple/pushed_registers.asm", RunTest, "Analysis/TrfuPushedRegisters.txt");
+        }
+
+        [Test]
+        public void Trfu_LiveLoopMock()
+        {
+            p.Add(new LiveLoopMock().Procedure);
+
+            var sExp = @"// LiveLoopMock
+void LiveLoopMock()
+LiveLoopMock_entry:
+	goto loop
+	// succ:  loop
+l1:
+	return y
+	// succ:  LiveLoopMock_exit
+loop:
+	y = i
+	i = i + 0x00000001
+	branch Mem0[i:byte] != 0 loop
+	goto l1
+	// succ:  l1 loop
+LiveLoopMock_exit:
+
+";
+            RunTest(sExp);
         }
     }
 }

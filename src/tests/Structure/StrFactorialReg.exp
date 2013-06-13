@@ -5,7 +5,6 @@ fn0C00_0000_entry:
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0000:
-	// succ: 
 fn0C00_0000_exit:
 
 void fn0C00_0000(selector ds)

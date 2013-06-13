@@ -132,8 +132,6 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "3|ZN = cond(v3)",
                 "4|C = false",
                 "5|V = false");
-
-
         }
     }
 }

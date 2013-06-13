@@ -32,9 +32,7 @@ l0C00_0000:
 	goto l0C00_0016
 	// succ:  l0C00_0016 l0C00_000F
 l0C00_0005:
-	// succ: 
 l0C00_000A:
-	// succ: 
 l0C00_000F:
 	Mem18[ds:0x0300:word16] = ax
 	goto l0C00_001A

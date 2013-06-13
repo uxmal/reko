@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Core
         }
 
 		[Test]
-		public void BindReturnValue()
+        public void AppBld_BindReturnValue()
 		{
             ab  = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig, false);
 			var r = ab.Bind(ret);
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Core
 		}
 
 		[Test]
-		public void BindOutParameter()
+        public void AppBld_BindOutParameter()
 		{
             ab = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig, false);
             var o = ab.Bind(regOut);
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Core
 		}
 
 		[Test]
-		public void BuildApplication()
+        public void AppBld_BuildApplication()
 		{
 			Assert.IsTrue(sig.FormalArguments[3].Storage is OutArgumentStorage);
             ab = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig, false);
@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Core
 		}
 
         [Test]
-        public void BindToCallingFrame()
+        public void AppBld_BindToCallingFrame()
         {
             var caller = new Procedure("caller", new Frame(PrimitiveType.Word16));
             caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Core
             {
                 StackDepthOnEntry = 6
             };
-            ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), callee.Signature, false); 
+            ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), callee.Signature, true); 
             var instr = ab.CreateInstruction();
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }

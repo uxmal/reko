@@ -81,10 +81,13 @@ namespace Decompiler.Scanning
             }
         }
 
+        /// <summary>
+        /// Walks backward along the <paramref name="block"/>, recording the operations done to the idx register.
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
         public List<BackwalkOperation> BackWalk(Block block)
         {
-            // Record the operations done to the idx register.
-
             if (Stride > 1)
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
@@ -145,7 +148,6 @@ namespace Decompiler.Scanning
                         Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
                         Index = Index.GetSubregister(0, 8);
                     }
-
                 }
 
                 var cof = ass.Src as ConditionOf;

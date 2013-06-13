@@ -5,7 +5,6 @@ RepeatedLoadsMock_entry:
 l1:
 	x = Mem0[pfoo + 0x00000004:word32]
 	x = Mem0[pfoo + 0x00000004:word32]
-	// succ: 
 RepeatedLoadsMock_exit:
 
 // Equivalence classes ////////////

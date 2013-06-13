@@ -2,10 +2,9 @@
 void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
 	word16 dx_13 = 0x0004
-	goto l0C00_0003 *** empty blocks should be removed
+	goto l0C00_0003
 	// succ:  l0C00_0003
 l0C00_0000:
-	// succ:
 l0C00_0003:
 	word16 cx_22 = 0x0004
 	// succ:  l0C00_0006

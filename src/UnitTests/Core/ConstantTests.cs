@@ -98,5 +98,14 @@ namespace Decompiler.UnitTests.Core
 			Constant c = Constant.SByte((sbyte)-2);
 			Assert.AreEqual(-2, c.ToInt32());
 		}
+
+        [Test]
+        public void ConstantByte_ToInt64()
+        {
+            Constant c2 = Constant.Byte(0xFF);
+            object o = c2.ToInt64();
+            Assert.AreSame(typeof(long), o.GetType());
+            Assert.AreEqual(-1L, o);
+        }
 	}
 }

@@ -312,7 +312,9 @@ namespace Decompiler.Core.Expressions
 
 		public long ToInt64()
 		{
-            return Convert.ToInt64(GetValue());
+            long q = Convert.ToInt64(GetValue());
+            long mask = (0L - (q & (1 << (DataType.BitSize - 1)))) << 1;
+            return q | mask;
 		}
 
 		public virtual ulong ToUInt64()

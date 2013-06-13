@@ -5,7 +5,6 @@ StaggeredArraysMock_entry:
 l1:
 	x = p[i * 0x00000008]
 	x = (p + 4)[i * 0x00000008]
-	// succ: 
 StaggeredArraysMock_exit:
 
 T_2 (in p : word32)

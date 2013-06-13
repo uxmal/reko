@@ -9,7 +9,6 @@ l1:
 	ax = Mem0[cs:si2 + 0x0000:word16]
 	Mem0[cs:0x1234:word16] = ax
 	Mem0[cs:si + 0x0002:word16] = ax
-	// succ: 
 SegmentedMemoryPointerMock_exit:
 
 T_2 (in 0x0001 : word16)

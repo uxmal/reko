@@ -184,7 +184,7 @@ namespace Decompiler.Core.Code
 
 		public virtual Expression VisitFieldAccess(FieldAccess acc)
 		{
-			acc.structure = acc.structure.Accept(this);
+			acc.Structure = acc.Structure.Accept(this);
 			return acc;
 		}
 

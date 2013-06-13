@@ -7,7 +7,6 @@ l1:
 	Mem0[0x0302:word16] = 0x5550
 	es_bx = Mem0[0x0300:segptr32]
 	Mem0[0x0304:word16] = Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16]
-	// succ: 
 SegmentedPointerProc_exit:
 
 Globals (in globals : ptr32)

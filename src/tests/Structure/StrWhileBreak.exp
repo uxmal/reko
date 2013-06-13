@@ -6,7 +6,6 @@ fn0C00_0000_entry:
 	goto l0C00_0006
 	// succ:  l0C00_0006
 l0C00_0000:
-	// succ: 
 l0C00_0006:
 	branch bx_13 == 0x0000 l0C00_001A
 	// succ:  l0C00_000A l0C00_001A
