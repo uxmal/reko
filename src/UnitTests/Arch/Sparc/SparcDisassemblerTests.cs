@@ -107,5 +107,71 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             AssertInstruction(0x8B204009, "mulscc\t%g1,%o1,%g5");
         }
+
+        [Test]
+        public void SparcDis_umul()
+        {
+            AssertInstruction(0x8A504009, "umul\t%g1,%o1,%g5");
+        }
+
+        [Test]
+        public void SparcDis_smulcc()
+        {
+            AssertInstruction(0x8A584009, "smul\t%g1,%o1,%g5");
+        }
+
+        [Test]
+        public void SparcDis_udivcc()
+        {
+            AssertInstruction(0x8AF04009, "udivcc\t%g1,%o1,%g5");
+        }
+
+        [Test]
+        public void SparcDis_sdiv()
+        {
+            AssertInstruction(0x8A784009, "sdiv\t%g1,%o1,%g5");
+        }
+
+        [Test]
+        public void SparcDis_save()
+        {
+            AssertInstruction(0x8BE04009, "save\t%g1,%o1,%g5");
+        }
+
+        [Test]
+        public void SparcDis_be()
+        {
+            AssertInstruction(0x02800001, "be\t00100004");
+        }
+
+        [Test]
+        public void SparcDis_fbne()
+        {
+            AssertInstruction(0x03800001, "fbne\t00100004");
+        }
+
+        [Test]
+        public void SparcDis_jmpl()
+        {
+            AssertInstruction(0x8FC07FFF, "jmpl\t%g1,-1,%g7");
+        }
+
+        [Test]
+        public void SparcDis_rett()
+        {
+            AssertInstruction(0x81C86009, "rett\t%g1,9");
+        }
+
+        [Test]
+        public void SparcDis_ta()
+        {
+            AssertInstruction(0x91D02999, "ta\t%g1,0x00000019");
+        }
+
+        [Test]
+        public void SparcDis_fitos()
+        {
+            AssertInstruction(0x8BA0188A, "fitos\t%f10,%f5");
+        }
     }
 }
