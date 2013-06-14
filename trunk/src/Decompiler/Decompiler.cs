@@ -94,7 +94,7 @@ namespace Decompiler
             {
                 eventListener.AddDiagnostic(
                     new NullCodeLocation(filename),
-                    new ErrorDiagnostic(string.Format("{0}{1}{2}", ex.Message + Environment.NewLine + ex.StackTrace)));
+                    new ErrorDiagnostic(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace)));
             }
             finally
             {
@@ -206,7 +206,6 @@ namespace Decompiler
             project = CreateDefaultProject(fileName, prog);
             eventListener.ShowStatus("Raw bytes loaded.");
         }
-
         
         private Project DeserializeProject(byte[] image)
         {
@@ -228,14 +227,12 @@ namespace Decompiler
                 return null;
         }
 
-
         private static bool IsXmlFile(byte[] image)
         {
             //$UTF-8-encoded BOM? UTF-16 BOM?
             bool isXmlFile = ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
             return isXmlFile;
         }
-
 
         protected Project CreateDefaultProject(string filename, Program prog)
         {

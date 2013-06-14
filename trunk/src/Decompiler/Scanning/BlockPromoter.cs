@@ -24,6 +24,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -111,6 +112,34 @@ namespace Decompiler.Scanning
 
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
             return callRetThunkBlock;
+        }
+
+        /*
+            if (BlockInDifferentProcedure(block, proc))
+            {
+                if (!BlockIsEntryBlock(block))
+                {
+                    Debug.Print("Block {0} (proc {1}) is not entry block", block, block.Procedure);
+                    if (IsLinearReturning(block))
+                    {
+                        Debug.Print("Cloning {0} to {1}", block.Name, proc);
+                        block = new BlockCloner(block, proc, program.CallGraph).Execute();
+                    }
+                    else
+                    {
+                        block = PromoteBlock(block, addrStart, proc);
+                    }
+                }
+            }
+         
+         */
+
+        private bool BlockInDifferentProcedure(Block block, Procedure proc)
+        {
+            if (block.Procedure == null)
+                throw new InvalidOperationException("Blocks must always be associated with a procedure.");
+            Debug.Print("{0} should be promoted: {1}", block.Name, block.Procedure != proc);
+            return (block.Procedure != proc);
         }
 
         public Block CallRetThunkBlock { get; private set; }

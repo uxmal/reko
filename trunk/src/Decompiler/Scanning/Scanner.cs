@@ -137,6 +137,13 @@ namespace Decompiler.Scanning
             public uint End { get; set; }
         }
 
+        /// <summary>
+        /// Adds a new basic block to the procedure <paramref name="proc"/>.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="proc"></param>
+        /// <param name="blockName"></param>
+        /// <returns></returns>
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName);
@@ -148,6 +155,11 @@ namespace Decompiler.Scanning
             return b;
         }
 
+        /// <summary>
+        /// Terminates the <paramref name="block"/> at 
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="addr"></param>
         public void TerminateBlock(Block block, Address addr)
         {
             BlockRange range;
@@ -175,6 +187,15 @@ namespace Decompiler.Scanning
             return image.CreateReader(addr);
         }
 
+        /// <summary>
+        /// Creates a work item which will process code starting at the address
+        /// <paramref name="addrStart"/>. The resulting block will belong to 
+        /// the procedure <paramref name="proc"/>.
+        /// </summary>
+        /// <param name="addrStart"></param>
+        /// <param name="proc"></param>
+        /// <param name="stateOnEntry"></param>
+        /// <returns></returns>
         public virtual BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState stateOnEntry)
         {
             return new BlockWorkitem(
@@ -189,14 +210,13 @@ namespace Decompiler.Scanning
                 addrStart);
         }
 
-
         public void EnqueueEntryPoint(EntryPoint ep)
         {
             queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, ep));
         }
 
         // Method is virtual because we want to peek into the parameters being passed to it.
-        public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
+        public Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
             Block block = FindExactBlock(addrStart);
             if (block == null)
@@ -212,22 +232,6 @@ namespace Decompiler.Scanning
                 }
                 var wi = CreateBlockWorkItem(addrStart, proc, state);
                 queue.Enqueue(PriorityJumpTarget, wi);
-            }
-            if (BlockInDifferentProcedure(block, proc))
-            {
-                if (!BlockIsEntryBlock(block))
-                {
-                    Debug.Print("Block {0} (proc {1}) is not entry block", block, block.Procedure);
-                    if (IsLinearReturning(block))
-                    {
-                        Debug.Print("Cloning {0} to {1}", block.Name, proc);
-                        block = new BlockCloner(block, proc, program.CallGraph).Execute();
-                    }
-                    else
-                    {
-                        block = PromoteBlock(block, addrStart, proc);
-                    }
-                }
             }
             return block;
         }
@@ -250,14 +254,6 @@ namespace Decompiler.Scanning
                     return false;
                 block = block.Succ[0];
             }
-        }
-
-        private bool BlockInDifferentProcedure(Block block, Procedure proc)
-        {
-            if (block.Procedure == null)
-                throw new InvalidOperationException("Blocks must always be associated with a procedure.");
-            Debug.Print("{0} should be promoted: {1}", block.Name, block.Procedure != proc);
-            return (block.Procedure != proc);
         }
 
         private bool BlockIsEntryBlock(Block block)

@@ -41,7 +41,6 @@ namespace Decompiler.Structure
             this.blockNodes = new Dictionary<Block, StructureNode>();
         }
 
-
         public ProcedureStructure Build()
         {
             BuildNodes();
@@ -68,22 +67,6 @@ namespace Decompiler.Structure
                 var cfgNode = new StructureNode(proc.ExitBlock, ++bId);
                 nodeList.Add(cfgNode);
                 blockNodes.Add(proc.ExitBlock, cfgNode);
-            }
-        }
-
-        private void DebugBuildNodes()
-        {
-            foreach (StructureNode newNode in nodeList)
-            {
-                List<Statement> ins = newNode.Instructions;
-                Debug.Write("Block #" + newNode.Number + " is of type " + newNode.BlockType);
-                Debug.WriteLine(" and contains:");
-
-                for (int i = 0; i < ins.Count; i++)
-                {
-                    Console.Error.WriteLine("\t");
-                    Console.Error.WriteLine(ins[i].ToString());
-                }
             }
         }
 

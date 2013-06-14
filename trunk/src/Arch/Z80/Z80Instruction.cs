@@ -31,6 +31,7 @@ namespace Decompiler.Arch.Z80
         public Opcode Code;
         public MachineOperand Op1;
         public MachineOperand Op2;
+
         public override uint DefCc()
         {
             throw new NotImplementedException();
