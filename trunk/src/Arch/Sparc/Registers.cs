@@ -67,8 +67,46 @@ namespace Decompiler.Arch.Sparc
         public static RegisterStorage i5;
         public static RegisterStorage i6;   // frame pointer
         public static RegisterStorage i7;   // return address - 8
-        
+
+        public static RegisterStorage f0; 
+        public static RegisterStorage f1;
+        public static RegisterStorage f2;
+        public static RegisterStorage f3;
+        public static RegisterStorage f4;
+        public static RegisterStorage f5;
+        public static RegisterStorage f6; 
+        public static RegisterStorage f7;
+
+        public static RegisterStorage f8;
+        public static RegisterStorage f9;
+        public static RegisterStorage f10;
+        public static RegisterStorage f11;
+        public static RegisterStorage f12;
+        public static RegisterStorage f13;
+        public static RegisterStorage f14;
+        public static RegisterStorage f15;
+
+        public static RegisterStorage f16;
+        public static RegisterStorage f17;
+        public static RegisterStorage f18;
+        public static RegisterStorage f19;
+        public static RegisterStorage f20;
+        public static RegisterStorage f21;
+        public static RegisterStorage f22;
+        public static RegisterStorage f23;
+
+        public static RegisterStorage f24;
+        public static RegisterStorage f25;
+        public static RegisterStorage f26;
+        public static RegisterStorage f27;
+        public static RegisterStorage f28;
+        public static RegisterStorage f29;
+        public static RegisterStorage f30;
+        public static RegisterStorage f31;
+
+
         private static RegisterStorage[] iRegs;
+        private static RegisterStorage[] fRegs;
 
         static Registers()
         {
@@ -108,6 +146,42 @@ namespace Decompiler.Arch.Sparc
             i6 = new RegisterStorage("i6", 0, PrimitiveType.Word32);   // frame pointer
             i7 = new RegisterStorage("i7", 0, PrimitiveType.Word32);   // return address - 8
 
+            f0 = new RegisterStorage("f0", 0,  PrimitiveType.Real32);
+            f1 = new RegisterStorage("f1", 1,  PrimitiveType.Real32);
+            f2 = new RegisterStorage("f2", 2,  PrimitiveType.Real32);
+            f3 = new RegisterStorage("f3", 3,  PrimitiveType.Real32);
+            f4 = new RegisterStorage("f4", 4,  PrimitiveType.Real32);
+            f5 = new RegisterStorage("f5", 5,  PrimitiveType.Real32);
+            f6 = new RegisterStorage("f6", 6,  PrimitiveType.Real32);
+            f7 = new RegisterStorage("f7", 7,  PrimitiveType.Real32);
+                
+            f8 = new RegisterStorage("f8", 8,  PrimitiveType.Real32);
+            f9 = new RegisterStorage("f9", 9,  PrimitiveType.Real32);
+            f10= new RegisterStorage("f10", 10, PrimitiveType.Real32);
+            f11= new RegisterStorage("f11", 11, PrimitiveType.Real32);
+            f12= new RegisterStorage("f12", 12, PrimitiveType.Real32);
+            f13= new RegisterStorage("f13", 13, PrimitiveType.Real32);
+            f14= new RegisterStorage("f14", 14, PrimitiveType.Real32);
+            f15= new RegisterStorage("f15", 15, PrimitiveType.Real32);
+                                              
+            f16= new RegisterStorage("f16", 16, PrimitiveType.Real32);
+            f17= new RegisterStorage("f17", 17, PrimitiveType.Real32);
+            f18= new RegisterStorage("f18", 18, PrimitiveType.Real32);
+            f19= new RegisterStorage("f19", 19, PrimitiveType.Real32);
+            f20= new RegisterStorage("f20", 20, PrimitiveType.Real32);
+            f21= new RegisterStorage("f21", 21, PrimitiveType.Real32);
+            f22= new RegisterStorage("f22", 22, PrimitiveType.Real32);
+            f23= new RegisterStorage("f23", 23, PrimitiveType.Real32);
+                                              
+            f24= new RegisterStorage("f24", 24, PrimitiveType.Real32);
+            f25= new RegisterStorage("f25", 25, PrimitiveType.Real32);
+            f26= new RegisterStorage("f26", 26, PrimitiveType.Real32);
+            f27= new RegisterStorage("f27", 27, PrimitiveType.Real32);
+            f28= new RegisterStorage("f28", 28, PrimitiveType.Real32);
+            f29= new RegisterStorage("f29", 29, PrimitiveType.Real32);
+            f30= new RegisterStorage("f30", 30, PrimitiveType.Real32);
+            f31= new RegisterStorage("f31", 31, PrimitiveType.Real32);
+
             iRegs = new RegisterStorage[]
             {
                 g0, 
@@ -146,11 +220,54 @@ namespace Decompiler.Arch.Sparc
                 i6, 
                 i7, 
             };
+
+            fRegs = new RegisterStorage[] {
+                f0 ,
+                f1 ,
+                f2 ,
+                f3 ,
+                f4 ,
+                f5 ,
+                f6 ,
+                f7 ,
+   
+                f8 ,
+                f9 ,
+                f10,
+                f11,
+                f12,
+                f13,
+                f14,
+                f15,
+   
+                f16,
+                f17,
+                f18,
+                f19,
+                f20,
+                f21,
+                f22,
+                f23,
+   
+                f24,
+                f25,
+                f26,
+                f27,
+                f28,
+                f29,
+                f30,
+                f31,
+            };
         }
 
         public static RegisterStorage GetRegister(uint r)
         {
             return iRegs[r];
+        }
+
+        public static RegisterStorage GetFpuRegister(uint f)
+        {
+            return fRegs[f];
         }
     }
 }

@@ -164,5 +164,6 @@ namespace Decompiler.Arch.Sparc
         fbue,
         fbe,
         fba,
+        fitos,
     }
 }

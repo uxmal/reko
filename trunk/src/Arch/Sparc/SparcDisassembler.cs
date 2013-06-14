@@ -75,17 +75,17 @@ namespace Decompiler.Arch.Sparc
             switch (wInstr >> 30)
             {
             case 0:
-                return opRecs_0[(wInstr >> 22) & 7].Decode(wInstr);
+                return opRecs_0[(wInstr >> 22) & 7].Decode(this, wInstr);
             case 1:
                 return new SparcInstruction
                 {
                     Opcode = Opcode.call,
-                    Op1 = new AddressOperand((imageReader.Address - 4) + (wInstr << 2)),
+                    Op1 = new AddressOperand((imageReader.Address - 4) + ((int)wInstr << 2)),
                 };
             case 2:
-                return opRecs_2[(wInstr >> 19) & 0x3F].Decode(wInstr);
+                return opRecs_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
             case 3:
-                return opRecs_2[(wInstr >> 19) & 0x3F].Decode(wInstr);
+                return opRecs_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
             }
             throw new InvalidOperationException("Impossible!");
         }
@@ -93,17 +93,17 @@ namespace Decompiler.Arch.Sparc
         private class OpRec
         {
             public Opcode code;
-            public string op;
+            public string fmt;
 
-            public virtual SparcInstruction Decode(uint wInstr)
+            public virtual SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                if (op == null)
+                if (fmt == null)
                     return new SparcInstruction { Opcode = code };
                 var ops = new List<MachineOperand>();
                 int i = 0;
-                while (i != op.Length)
+                while (i != fmt.Length)
                 {
-                    char c = op[i++];
+                    char c = fmt[i++];
                     if (c == ',')
                         continue;
                     switch (c)
@@ -112,15 +112,24 @@ namespace Decompiler.Arch.Sparc
                     case 'r':       // Register reference
                         ops.Add(GetRegisterOperand(wInstr, ref i));
                         break;
+                    case 'f':       // FPU register
+                        ops.Add(GetFpuRegisterOperand(wInstr, ref i));
+                        break;
                     case 'I':       // 22-bit immediate value
                         ops.Add(GetImmOperand(wInstr, 22));
                         break;
+                    case 'J':
+                        ops.Add(GetAddressOperand(dasm.imageReader.Address, wInstr));
+                        break;
                     case 'R':       // Register or simm13.
-                        ++i;        // skip unused 0
-                        ops.Add(GetRegImmOperand(wInstr, 13));
+                                   // if 's', return a signed immediate operand where relevant.
+                        ops.Add(GetRegImmOperand(wInstr, fmt[i++] == 's', 13));
                         break;
                     case 'S':       // Register or uimm5
-                        ops.Add(GetRegImmOperand(wInstr, 6));
+                        ops.Add(GetRegImmOperand(wInstr, false, 6));
+                        break;
+                    case 'T':       // trap number
+                        ops.Add(GetRegImmOperand(wInstr, false, 7));
                         break;
                     }
                 }
@@ -133,9 +142,34 @@ namespace Decompiler.Arch.Sparc
                 };
             }
 
+            private int SignExtend(uint word, int bits)
+            {
+                int imm = (int) word & ((1 << bits) - 1);
+                int mask = (0 - (imm & (1 << (bits - 1)))) << 1;
+                return imm | mask;
+            }
+
+            private AddressOperand GetAddressOperand(Address addr, uint wInstr)
+            {
+                int offset = SignExtend(wInstr, 22) << 2;
+                return new AddressOperand(addr + (offset - 4));
+            }
+
             private RegisterOperand GetRegisterOperand(uint wInstr, ref int i)
             {
                 return new RegisterOperand(GetRegister(wInstr, ref i));
+            }
+
+            private RegisterOperand GetFpuRegisterOperand(uint wInstr, ref int i)
+            {
+                // Register operand are followed by their bit offset within the instruction,
+                // expressed as decimal digits.
+                int offset = 0;
+                while (i < fmt.Length && Char.IsDigit(fmt[i]))
+                {
+                    offset = offset * 10 + (fmt[i++] - '0');
+                }
+                return new RegisterOperand(Registers.GetFpuRegister((wInstr >> offset) & 0x1F));
             }
 
             private RegisterStorage GetRegister(uint wInstr, ref int i)
@@ -143,22 +177,25 @@ namespace Decompiler.Arch.Sparc
                 // Register operand are followed by their bit offset within the instruction,
                 // expressed as decimal digits.
                 int offset = 0;
-                while (i < op.Length && Char.IsDigit(op[i]))
+                while (i < fmt.Length && Char.IsDigit(fmt[i]))
                 {
-                    offset = offset * 10 + (op[i++] - '0');
+                    offset = offset * 10 + (fmt[i++] - '0');
                 }
                 return Registers.GetRegister((wInstr >> offset) & 0x1F);
             }
 
-            private MachineOperand GetRegImmOperand(uint wInstr, int bits)
+            private MachineOperand GetRegImmOperand(uint wInstr, bool signed, int bits)
             {
                 if ((wInstr & (1 << 13)) != 0)
                 {
                     // Sign-extend the bastard.
                     int imm = (int) wInstr & ((1 << bits) - 1);
                     int mask = (0 - (imm & (1 << (bits - 1)))) << 1;
+                    imm |= mask;
                     return new ImmediateOperand(
-                        Constant.Word32(imm | mask));
+                        signed 
+                            ? Constant.Int32(imm)
+                            : Constant.Word32(imm));
                 }
                 else
                 {
@@ -178,7 +215,7 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.illegal, },
             new BrachOpRec { offset = 0x00 },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code= Opcode.sethi, op="I,r25" }, 
+            new OpRec { code= Opcode.sethi, fmt="I,r25" }, 
             new OpRec { code=Opcode.illegal, },
             new BrachOpRec { offset = 0x10 },
             new BrachOpRec { offset = 0x20 },
@@ -188,139 +225,139 @@ namespace Decompiler.Arch.Sparc
         {
             public uint offset;
 
-            public override SparcInstruction Decode(uint wInstr)
+            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                uint i = ((wInstr >> 24) & 0xF) + offset;
-                return branchOps[i].Decode(wInstr);
+                uint i = ((wInstr >> 25) & 0xF) + offset;
+                return branchOps[i].Decode(dasm, wInstr);
             }
         }
 
         private static OpRec[] branchOps = new OpRec[] {
             // 00
-            new OpRec { code=Opcode.bn, },
-            new OpRec { code=Opcode.be, },
-            new OpRec { code=Opcode.ble, },
-            new OpRec { code=Opcode.bl, },
-            new OpRec { code=Opcode.bleu, },
-            new OpRec { code=Opcode.bcs, },
-            new OpRec { code=Opcode.bneg, },
-            new OpRec { code=Opcode.bvs, },
+            new OpRec { code=Opcode.bn, fmt="J"},
+            new OpRec { code=Opcode.be, fmt="J"},
+            new OpRec { code=Opcode.ble,fmt="J" },
+            new OpRec { code=Opcode.bl, fmt="J" },
+            new OpRec { code=Opcode.bleu, fmt="J" },
+            new OpRec { code=Opcode.bcs, fmt="J" },
+            new OpRec { code=Opcode.bneg, fmt="J" },
+            new OpRec { code=Opcode.bvs, fmt="J" },
 
-            new OpRec { code=Opcode.ba, },
-            new OpRec { code=Opcode.bne, },
-            new OpRec { code=Opcode.bg, },
-            new OpRec { code=Opcode.bge, },
-            new OpRec { code=Opcode.bgu, },
-            new OpRec { code=Opcode.bcc, },
-            new OpRec { code=Opcode.bpos, },
-            new OpRec { code=Opcode.bvc, },
+            new OpRec { code=Opcode.ba, fmt="J" },
+            new OpRec { code=Opcode.bne, fmt="J" },
+            new OpRec { code=Opcode.bg, fmt="J" },
+            new OpRec { code=Opcode.bge, fmt="J" },
+            new OpRec { code=Opcode.bgu, fmt="J" },
+            new OpRec { code=Opcode.bcc, fmt="J" },
+            new OpRec { code=Opcode.bpos, fmt="J" },
+            new OpRec { code=Opcode.bvc, fmt="J" },
 
             // 10
-            new OpRec { code=Opcode.fbn, },
-            new OpRec { code=Opcode.fbne, },
-            new OpRec { code=Opcode.fblg, },
-            new OpRec { code=Opcode.fbul, },
-            new OpRec { code=Opcode.fbug, },
-            new OpRec { code=Opcode.fbg, },
-            new OpRec { code=Opcode.fbu, },
-            new OpRec { code=Opcode.fbug, },
+            new OpRec { code=Opcode.fbn, fmt="J" },
+            new OpRec { code=Opcode.fbne, fmt="J" },
+            new OpRec { code=Opcode.fblg, fmt="J" },
+            new OpRec { code=Opcode.fbul, fmt="J" },
+            new OpRec { code=Opcode.fbug, fmt="J" },
+            new OpRec { code=Opcode.fbg, fmt="J" }, 
+            new OpRec { code=Opcode.fbu, fmt="J"},
+            new OpRec { code=Opcode.fbug, fmt="J"},
 
-            new OpRec { code=Opcode.fba, },
-            new OpRec { code=Opcode.fbe, },
-            new OpRec { code=Opcode.fbue, },
-            new OpRec { code=Opcode.fbge, },
-            new OpRec { code=Opcode.fbuge, },
-            new OpRec { code=Opcode.fble, },
-            new OpRec { code=Opcode.fbule, },
-            new OpRec { code=Opcode.fbo, },
+            new OpRec { code=Opcode.fba, fmt="J"  },
+            new OpRec { code=Opcode.fbe, fmt="J" },
+            new OpRec { code=Opcode.fbue, fmt="J" },
+            new OpRec { code=Opcode.fbge, fmt="J" },
+            new OpRec { code=Opcode.fbuge, fmt="J" },
+            new OpRec { code=Opcode.fble, fmt="J" },
+            new OpRec { code=Opcode.fbule, fmt="J" },
+            new OpRec { code=Opcode.fbo, fmt="J" },
 
             // 20
-            new OpRec { code=Opcode.cbn, },
-            new OpRec { code=Opcode.cb123, },
-            new OpRec { code=Opcode.cb12, },
-            new OpRec { code=Opcode.cb13, },
-            new OpRec { code=Opcode.cb1, },
-            new OpRec { code=Opcode.cb23, },
-            new OpRec { code=Opcode.cb2, },
-            new OpRec { code=Opcode.cb3, },
+            new OpRec { code=Opcode.cbn, fmt="J" },
+            new OpRec { code=Opcode.cb123, fmt="J" },
+            new OpRec { code=Opcode.cb12, fmt="J" },
+            new OpRec { code=Opcode.cb13, fmt="J" },
+            new OpRec { code=Opcode.cb1, fmt="J" },
+            new OpRec { code=Opcode.cb23, fmt="J" },
+            new OpRec { code=Opcode.cb2, fmt="J" },
+            new OpRec { code=Opcode.cb3, fmt="J" },
 
-            new OpRec { code=Opcode.cba, },
-            new OpRec { code=Opcode.cb0, },
-            new OpRec { code=Opcode.cb03, },
-            new OpRec { code=Opcode.cb02, },
-            new OpRec { code=Opcode.cb023, },
-            new OpRec { code=Opcode.cb01, },
-            new OpRec { code=Opcode.cb013, },
-            new OpRec { code=Opcode.cb012, },
+            new OpRec { code=Opcode.cba, fmt="J" },
+            new OpRec { code=Opcode.cb0, fmt="J" },
+            new OpRec { code=Opcode.cb03, fmt="J" },
+            new OpRec { code=Opcode.cb02, fmt="J" },
+            new OpRec { code=Opcode.cb023, fmt="J" },
+            new OpRec { code=Opcode.cb01, fmt="J" },
+            new OpRec { code=Opcode.cb013, fmt="J" },
+            new OpRec { code=Opcode.cb012, fmt="J" },
 
             // 30
-            new OpRec { code=Opcode.tn, },
-            new OpRec { code=Opcode.te, },
-            new OpRec { code=Opcode.tle, },
-            new OpRec { code=Opcode.tl, },
-            new OpRec { code=Opcode.tleu, },
-            new OpRec { code=Opcode.tcs, },
-            new OpRec { code=Opcode.tneg, },
-            new OpRec { code=Opcode.tvs, },
+            new OpRec { code=Opcode.tn, fmt="T" },
+            new OpRec { code=Opcode.te, fmt="T" },
+            new OpRec { code=Opcode.tle, fmt="T" },
+            new OpRec { code=Opcode.tl, fmt="T" },
+            new OpRec { code=Opcode.tleu, fmt="T" },
+            new OpRec { code=Opcode.tcs, fmt="T" },
+            new OpRec { code=Opcode.tneg, fmt="T" },
+            new OpRec { code=Opcode.tvs, fmt="T" },
                                     
-            new OpRec { code=Opcode.ta, },
-            new OpRec { code=Opcode.tne, },
-            new OpRec { code=Opcode.tg, },
-            new OpRec { code=Opcode.tge, },
-            new OpRec { code=Opcode.tgu, },
-            new OpRec { code=Opcode.tcc, },
-            new OpRec { code=Opcode.tpos, },
-            new OpRec { code=Opcode.tvc, },
+            new OpRec { code=Opcode.ta, fmt="T" },
+            new OpRec { code=Opcode.tne, fmt="T" },
+            new OpRec { code=Opcode.tg, fmt="T" },
+            new OpRec { code=Opcode.tge, fmt="T" },
+            new OpRec { code=Opcode.tgu, fmt="T" },
+            new OpRec { code=Opcode.tcc, fmt="T" },
+            new OpRec { code=Opcode.tpos, fmt="T" },
+            new OpRec { code=Opcode.tvc, fmt="T" },
         };
 
         private static OpRec[] opRecs_2 = new OpRec[] {
             // 00
-            new OpRec { code=Opcode.add, op="r14,R0,r25" },
-            new OpRec { code=Opcode.and, op="r14,R0,r25" },
-            new OpRec { code=Opcode.or,  op="r14,R0,r25" },
-            new OpRec { code=Opcode.xor, op="r14,R0,r25" },
-            new OpRec { code=Opcode.sub, op="r14,R0,r25" },
-            new OpRec { code=Opcode.andn,op="r14,R0,r25" },
-            new OpRec { code=Opcode.orn, op="r14,R0,r25" },
-            new OpRec { code=Opcode.xnor,op="r14,R0,r25" },
+            new OpRec { code=Opcode.add, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.and, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.or,  fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.xor, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.sub, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.andn,fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.orn, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.xnor,fmt="r14,R0,r25" },
 
-            new OpRec { code=Opcode.addx, op="r14,R0,r25" },
+            new OpRec { code=Opcode.addx, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.illegal,  },
-            new OpRec { code=Opcode.umul, op="r14,R0,r25" },
-            new OpRec { code=Opcode.smul, op="r14,R0,r25" },
-            new OpRec { code=Opcode.subx, op="r14,R0,r25" },
+            new OpRec { code=Opcode.umul, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.smul, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.subx, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.udiv, op="r14,R0,r25" },
-            new OpRec { code=Opcode.sdiv, op="r14,R0,r25" },
+            new OpRec { code=Opcode.udiv, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.sdiv, fmt="r14,R0,r25" },
 
             // 10
-            new OpRec { code=Opcode.addcc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.andcc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.orcc,  op="r14,R0,r25" },
-            new OpRec { code=Opcode.xorcc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.subcc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.andncc,op="r14,R0,r25" },
-            new OpRec { code=Opcode.orncc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.xnorcc,op="r14,R0,r25" },
+            new OpRec { code=Opcode.addcc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.andcc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.orcc,  fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.xorcc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.subcc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.andncc,fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.orncc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.xnorcc,fmt="r14,R0,r25" },
 
-            new OpRec { code=Opcode.addxcc, op="r14,R0,r25" },
+            new OpRec { code=Opcode.addxcc, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.illegal,  },
-            new OpRec { code=Opcode.umulcc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.smulcc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.subxcc, op="r14,R0,r25" },
+            new OpRec { code=Opcode.umulcc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.smulcc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.subxcc, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.udivcc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.sdivcc, op="r14,R0,r25" },
+            new OpRec { code=Opcode.udivcc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.sdivcc, fmt="r14,R0,r25" },
 
             // 20
-            new OpRec { code=Opcode.taddcc, op="r14,R0,r25"},
-            new OpRec { code=Opcode.tsubcc, op="r14,R0,r25"},
-            new OpRec { code=Opcode.taddcctv, op="r14,R0,r25"},
-            new OpRec { code=Opcode.tsubcctv, op="r14,R0,r25"},
-            new OpRec { code=Opcode.mulscc, op="r14,R0,r25" },
-            new OpRec { code=Opcode.sll, op="r14,S,r25" },
-            new OpRec { code=Opcode.srl, op="r14,S,r25" },
-            new OpRec { code=Opcode.sra, op="r14,S,r25" },
+            new OpRec { code=Opcode.taddcc, fmt="r14,R0,r25"},
+            new OpRec { code=Opcode.tsubcc, fmt="r14,R0,r25"},
+            new OpRec { code=Opcode.taddcctv, fmt="r14,R0,r25"},
+            new OpRec { code=Opcode.tsubcctv, fmt="r14,R0,r25"},
+            new OpRec { code=Opcode.mulscc, fmt="r14,R0,r25" },
+            new OpRec { code=Opcode.sll, fmt="r14,S,r25" },
+            new OpRec { code=Opcode.srl, fmt="r14,S,r25" },
+            new OpRec { code=Opcode.sra, fmt="r14,S,r25" },
 
             new OpRec { code=Opcode.addx, },
             new OpRec { code=Opcode.rdpsr, },
@@ -341,62 +378,62 @@ namespace Decompiler.Arch.Sparc
             new CPop1 {  },
             new CPop2 {  },
 
-            new OpRec { code=Opcode.jmpl, },
-            new OpRec { code=Opcode.rett, },
+            new OpRec { code=Opcode.jmpl, fmt = "r14,Rs,r25"},
+            new OpRec { code=Opcode.rett, fmt = "r14,Rs" },
             new BrachOpRec { offset= 0x30, },
             new OpRec { code=Opcode.flush, },
-            new OpRec { code=Opcode.save, },
-            new OpRec { code=Opcode.restore, },
+            new OpRec { code=Opcode.save,    fmt ="r14,R0,r25" },
+            new OpRec { code=Opcode.restore, fmt= "r14,R0,r25" },
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.illegal, },
         };
 
         private static OpRec[] opRecs_3 = new OpRec[] {
             // 00
-            new OpRec { code=Opcode.ld,   op="r25,Ew" },
-            new OpRec { code=Opcode.ldub, op="r25,Eb" },
-            new OpRec { code=Opcode.lduh, op="r25,Eh" },
-            new OpRec { code=Opcode.ldd,  op="r25,Ed" },
-            new OpRec { code=Opcode.st,   op="r25,Ew"},
-            new OpRec { code=Opcode.stb,  op="r25,Eb"},
-            new OpRec { code=Opcode.sth,  op="r25,Eh"},
-            new OpRec { code=Opcode.std,  op="r25,Ed"},
+            new OpRec { code=Opcode.ld,   fmt="r25,Ew" },
+            new OpRec { code=Opcode.ldub, fmt="r25,Eb" },
+            new OpRec { code=Opcode.lduh, fmt="r25,Eh" },
+            new OpRec { code=Opcode.ldd,  fmt="r25,Ed" },
+            new OpRec { code=Opcode.st,   fmt="r25,Ew"},
+            new OpRec { code=Opcode.stb,  fmt="r25,Eb"},
+            new OpRec { code=Opcode.sth,  fmt="r25,Eh"},
+            new OpRec { code=Opcode.std,  fmt="r25,Ed"},
 
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.ldsb,    op="r25,Eb" },
-            new OpRec { code=Opcode.ldsh,    op="r25,Eh" },
+            new OpRec { code=Opcode.ldsb,    fmt="r25,Eb" },
+            new OpRec { code=Opcode.ldsh,    fmt="r25,Eh" },
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.ldstub,  },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.swap,    op="Ew,r25" },
+            new OpRec { code=Opcode.swap,    fmt="Ew,r25" },
 
             // 10
-            new OpRec { code=Opcode.lda,  op="r25,Aw" },
-            new OpRec { code=Opcode.lduba,op="r25,Ab" }, 
-            new OpRec { code=Opcode.lduha,op="r25,Ah" }, 
-            new OpRec { code=Opcode.ldda, op="r25,Ad" },
-            new OpRec { code=Opcode.sta,  op="r25,Aw"},
-            new OpRec { code=Opcode.stba, op="r25,Ab"},
-            new OpRec { code=Opcode.stha, op="r25,Ah"},
-            new OpRec { code=Opcode.stda, op="r25,Ad"},
+            new OpRec { code=Opcode.lda,  fmt="r25,Aw" },
+            new OpRec { code=Opcode.lduba,fmt="r25,Ab" }, 
+            new OpRec { code=Opcode.lduha,fmt="r25,Ah" }, 
+            new OpRec { code=Opcode.ldda, fmt="r25,Ad" },
+            new OpRec { code=Opcode.sta,  fmt="r25,Aw"},
+            new OpRec { code=Opcode.stba, fmt="r25,Ab"},
+            new OpRec { code=Opcode.stha, fmt="r25,Ah"},
+            new OpRec { code=Opcode.stda, fmt="r25,Ad"},
 
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.ldsba,   op="r25,Eb" },
-            new OpRec { code=Opcode.ldsha,   op="r25,Eh" },
+            new OpRec { code=Opcode.ldsba,   fmt="r25,Eb" },
+            new OpRec { code=Opcode.ldsha,   fmt="r25,Eh" },
             new OpRec { code=Opcode.illegal  },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.ldstuba, op="Eb,r25"},
+            new OpRec { code=Opcode.ldstuba, fmt="Eb,r25"},
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.swapa,  op="Ew,r25" },
+            new OpRec { code=Opcode.swapa,  fmt="Ew,r25" },
 
             // 20
-            new OpRec { code=Opcode.ldf,   op="Fw,f24", },
-            new OpRec { code=Opcode.ldfsr, op="Ew,%fsr" },
+            new OpRec { code=Opcode.ldf,   fmt="Fw,f24", },
+            new OpRec { code=Opcode.ldfsr, fmt="Ew,%fsr" },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.lddf,  op="Fd,f24" },
-            new OpRec { code=Opcode.stf,   op ="f24,Fw" },
-            new OpRec { code=Opcode.stfsr ,op="%fsr,Ew" },
+            new OpRec { code=Opcode.lddf,  fmt="Fd,f24" },
+            new OpRec { code=Opcode.stf,   fmt ="f24,Fw" },
+            new OpRec { code=Opcode.stfsr ,fmt="%fsr,Ew" },
             new OpRec { code=Opcode.stdfq, },
             new OpRec { code=Opcode.stdf, },
 
@@ -431,329 +468,42 @@ namespace Decompiler.Arch.Sparc
 
         private class FPop1Rec : OpRec
         {
-            public override SparcInstruction Decode(uint wInstr)
+            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 4) & 0xFF].Decode(wInstr);
+                return fpOprecs[(wInstr >> 5) & 0x1FF].Decode(dasm, wInstr);
             }
         }
 
         private class FPop2Rec : OpRec
         {
-            public override SparcInstruction Decode(uint wInstr)
+            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 4) & 0xFF].Decode(wInstr);
+                return fpOprecs[(wInstr >> 4) & 0x1FF].Decode(dasm, wInstr);
             }
         }
 
         private class CPop1 : OpRec
         {
-            public override SparcInstruction Decode(uint wInstr)
+            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 4) & 0xFF].Decode(wInstr);
+                return fpOprecs[(wInstr >> 4) & 0x1FF].Decode(dasm, wInstr);
             }
         }
         private class CPop2 : OpRec
         {
-            public override SparcInstruction Decode(uint wInstr)
+            public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
-                return fpOprecs[(wInstr >> 4) & 0xFF].Decode(wInstr);
+                return fpOprecs[(wInstr >> 4) & 0xFF].Decode(dasm, wInstr);
             }
         }
 
 
-        private static OpRec[] fpOprecs = 
+        private static Dictionary<uint, OpRec> fpOprecs = new Dictionary<uint,OpRec>
         {
             // 00 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.fmovs, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.fnegs, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            // 10 
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.illegal, },
-
+            { 1, new OpRec { code=Opcode.fmovs, } },
+            { 5, new OpRec { code=Opcode.fnegs, } },
+            { 0xC4, new OpRec { code=Opcode.fitos, fmt="f0,f25" } },
         };
-
     }
 }
