@@ -31,16 +31,16 @@ namespace Decompiler.Arch.Sparc
 {
     public class AddressOperand : MachineOperand
     {
-        private Address address;
+        public readonly Address Address;
 
         public AddressOperand(Address address) : base(PrimitiveType.Pointer32)
         {
-            this.address = address;
+            this.Address = address;
         }
 
         public override string ToString()
         {
-            return address.ToString();
+            return Address.ToString();
         }
     }
 }

@@ -253,6 +253,5 @@ namespace Decompiler.Arch.X86
             }
             return null;
         }
-
     }
 }
