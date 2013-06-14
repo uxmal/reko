@@ -173,5 +173,17 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             AssertInstruction(0x8BA0188A, "fitos\t%f10,%f5");
         }
+
+        [Test]
+        public void SparcDis_ldsb()
+        {
+            AssertInstruction(0xC248A044, "ldsb\t[%g2+68],%g1"); 
+        }
+
+        [Test]
+        public void SparcDis_sth()
+        {
+            AssertInstruction(0xC2307FF0, "sth\t[%g2+68],%g1"); 
+        }
     }
 }
