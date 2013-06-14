@@ -262,7 +262,7 @@ namespace Decompiler.Arch.Sparc
 
         public static RegisterStorage GetRegister(uint r)
         {
-            return iRegs[r];
+            return iRegs[r & 0x1F];
         }
 
         public static RegisterStorage GetFpuRegister(uint f)

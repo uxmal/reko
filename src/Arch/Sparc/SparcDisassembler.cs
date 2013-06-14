@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,8 +44,9 @@ namespace Decompiler.Arch.Sparc
 
         public MachineInstruction DisassembleInstruction()
         {
-            throw new NotImplementedException();
+            return Disassemble();
         }
+
         // Format 1 (op == 1)
         // +----+-------------------------------------------------------------+
         // | op | disp30                                                      |
@@ -85,7 +87,7 @@ namespace Decompiler.Arch.Sparc
             case 2:
                 return opRecs_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
             case 3:
-                return opRecs_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
+                return opRecs_3[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
             }
             throw new InvalidOperationException("Impossible!");
         }
@@ -121,6 +123,9 @@ namespace Decompiler.Arch.Sparc
                     case 'J':
                         ops.Add(GetAddressOperand(dasm.imageReader.Address, wInstr));
                         break;
+                    case 'M':
+                        ops.Add(GetMemoryOperand(wInstr, GetOperandSize(ref i)));
+                        break;
                     case 'R':       // Register or simm13.
                                    // if 's', return a signed immediate operand where relevant.
                         ops.Add(GetRegImmOperand(wInstr, fmt[i++] == 's', 13));
@@ -142,6 +147,24 @@ namespace Decompiler.Arch.Sparc
                 };
             }
 
+            private PrimitiveType GetOperandSize(ref int i)
+            {
+                int size = fmt[i++];
+                bool signed = (i < fmt.Length -1 && fmt[i] == '+');
+                if (signed)
+                    ++i;
+                {
+                    signed = true;
+                }
+                switch (size)
+                {
+                case 'b': return signed ? PrimitiveType.SByte : PrimitiveType.Byte;
+                case 'h': return signed ? PrimitiveType.Int16 : PrimitiveType.UInt16;
+                case 'w': return signed ? PrimitiveType.Int32 : PrimitiveType.UInt32;
+                }
+                throw new NotImplementedException(string.Format("Unknown format character {0}.", fmt[i-1]));
+            }
+
             private int SignExtend(uint word, int bits)
             {
                 int imm = (int) word & ((1 << bits) - 1);
@@ -153,6 +176,20 @@ namespace Decompiler.Arch.Sparc
             {
                 int offset = SignExtend(wInstr, 22) << 2;
                 return new AddressOperand(addr + (offset - 4));
+            }
+
+            private MachineOperand GetMemoryOperand(uint wInstr, PrimitiveType type)
+            {
+                RegisterStorage b = Registers.GetRegister(wInstr >> 14);
+                if ((wInstr & (1 << 13)) != 0)
+                {
+                    return new MemoryOperand(b, Constant.Int32(SignExtend(wInstr, 13)), type);
+                }
+                else
+                {
+                    RegisterStorage idx = Registers.GetRegister(wInstr);
+                    return new IndexedMemoryOperand(b, idx, type);
+                }
             }
 
             private RegisterOperand GetRegisterOperand(uint wInstr, ref int i)
@@ -210,12 +247,13 @@ namespace Decompiler.Arch.Sparc
             }
         }
 
-        private OpRec [] opRecs_0 = new OpRec[] {
-            new OpRec {code= Opcode.unimp, },
+        private OpRec[] opRecs_0 = new OpRec[]
+        {
+            new OpRec { code=Opcode.unimp, },
             new OpRec { code=Opcode.illegal, },
             new BrachOpRec { offset = 0x00 },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code= Opcode.sethi, fmt="I,r25" }, 
+            new OpRec { code=Opcode.sethi, fmt="I,r25" }, 
             new OpRec { code=Opcode.illegal, },
             new BrachOpRec { offset = 0x10 },
             new BrachOpRec { offset = 0x20 },
@@ -228,11 +266,15 @@ namespace Decompiler.Arch.Sparc
             public override SparcInstruction Decode(SparcDisassembler dasm, uint wInstr)
             {
                 uint i = ((wInstr >> 25) & 0xF) + offset;
-                return branchOps[i].Decode(dasm, wInstr);
+                SparcInstruction instr = branchOps[i].Decode(dasm, wInstr);
+                if ((wInstr & (1u << 29)) != 0)
+                    instr.Annul = true;
+                return instr;
             }
         }
 
-        private static OpRec[] branchOps = new OpRec[] {
+        private static OpRec[] branchOps = new OpRec[] 
+        {
             // 00
             new OpRec { code=Opcode.bn, fmt="J"},
             new OpRec { code=Opcode.be, fmt="J"},
@@ -259,10 +301,10 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.fbul, fmt="J" },
             new OpRec { code=Opcode.fbug, fmt="J" },
             new OpRec { code=Opcode.fbg, fmt="J" }, 
-            new OpRec { code=Opcode.fbu, fmt="J"},
-            new OpRec { code=Opcode.fbug, fmt="J"},
+            new OpRec { code=Opcode.fbu, fmt="J" },
+            new OpRec { code=Opcode.fbug, fmt="J" },
 
-            new OpRec { code=Opcode.fba, fmt="J"  },
+            new OpRec { code=Opcode.fba, fmt="J" },
             new OpRec { code=Opcode.fbe, fmt="J" },
             new OpRec { code=Opcode.fbue, fmt="J" },
             new OpRec { code=Opcode.fbge, fmt="J" },
@@ -310,7 +352,8 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.tvc, fmt="T" },
         };
 
-        private static OpRec[] opRecs_2 = new OpRec[] {
+        private static OpRec[] opRecs_2 = new OpRec[] 
+        {
             // 00
             new OpRec { code=Opcode.add, fmt="r14,R0,r25" },
             new OpRec { code=Opcode.and, fmt="r14,R0,r25" },
@@ -374,7 +417,7 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.wrwim, },
             new OpRec { code=Opcode.wrtbr, },
             new FPop1Rec { },
-            new FPop2Rec{  },
+            new FPop2Rec { },
             new CPop1 {  },
             new CPop2 {  },
 
@@ -388,20 +431,21 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.illegal, },
         };
 
-        private static OpRec[] opRecs_3 = new OpRec[] {
+        private static OpRec[] opRecs_3 = new OpRec[]
+        {
             // 00
-            new OpRec { code=Opcode.ld,   fmt="r25,Ew" },
-            new OpRec { code=Opcode.ldub, fmt="r25,Eb" },
-            new OpRec { code=Opcode.lduh, fmt="r25,Eh" },
-            new OpRec { code=Opcode.ldd,  fmt="r25,Ed" },
-            new OpRec { code=Opcode.st,   fmt="r25,Ew"},
-            new OpRec { code=Opcode.stb,  fmt="r25,Eb"},
-            new OpRec { code=Opcode.sth,  fmt="r25,Eh"},
-            new OpRec { code=Opcode.std,  fmt="r25,Ed"},
+            new OpRec { code=Opcode.ld,   fmt="Mw,r25" },
+            new OpRec { code=Opcode.ldub, fmt="Mb,r25" },
+            new OpRec { code=Opcode.lduh, fmt="Mh,r25" },
+            new OpRec { code=Opcode.ldd,  fmt="Md,r25" },
+            new OpRec { code=Opcode.st,   fmt="r25,Mw"},
+            new OpRec { code=Opcode.stb,  fmt="r25,Mb"},
+            new OpRec { code=Opcode.sth,  fmt="r25,Mh"},
+            new OpRec { code=Opcode.std,  fmt="r25,Md"},
 
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.ldsb,    fmt="r25,Eb" },
-            new OpRec { code=Opcode.ldsh,    fmt="r25,Eh" },
+            new OpRec { code=Opcode.ldsb,    fmt="Mb+,r25" },
+            new OpRec { code=Opcode.ldsh,    fmt="Mh+,r25" },
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.ldstub,  },
@@ -409,14 +453,14 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.swap,    fmt="Ew,r25" },
 
             // 10
-            new OpRec { code=Opcode.lda,  fmt="r25,Aw" },
-            new OpRec { code=Opcode.lduba,fmt="r25,Ab" }, 
-            new OpRec { code=Opcode.lduha,fmt="r25,Ah" }, 
-            new OpRec { code=Opcode.ldda, fmt="r25,Ad" },
-            new OpRec { code=Opcode.sta,  fmt="r25,Aw"},
-            new OpRec { code=Opcode.stba, fmt="r25,Ab"},
-            new OpRec { code=Opcode.stha, fmt="r25,Ah"},
-            new OpRec { code=Opcode.stda, fmt="r25,Ad"},
+            new OpRec { code=Opcode.lda,  fmt="Aw,r25" },
+            new OpRec { code=Opcode.lduba,fmt="Ab,r25" }, 
+            new OpRec { code=Opcode.lduha,fmt="Ah,r25" }, 
+            new OpRec { code=Opcode.ldda, fmt="Ad,r25" },
+            new OpRec { code=Opcode.sta,  fmt="r25,Aw" },
+            new OpRec { code=Opcode.stba, fmt="r25,Ab" },
+            new OpRec { code=Opcode.stha, fmt="r25,Ah" },
+            new OpRec { code=Opcode.stda, fmt="r25,Ad" },
 
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.ldsba,   fmt="r25,Eb" },
@@ -433,7 +477,7 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.lddf,  fmt="Fd,f24" },
             new OpRec { code=Opcode.stf,   fmt ="f24,Fw" },
-            new OpRec { code=Opcode.stfsr ,fmt="%fsr,Ew" },
+            new OpRec { code=Opcode.stfsr, fmt="%fsr,Ew" },
             new OpRec { code=Opcode.stdfq, },
             new OpRec { code=Opcode.stdf, },
 
@@ -501,9 +545,49 @@ namespace Decompiler.Arch.Sparc
         private static Dictionary<uint, OpRec> fpOprecs = new Dictionary<uint,OpRec>
         {
             // 00 
-            { 1, new OpRec { code=Opcode.fmovs, } },
-            { 5, new OpRec { code=Opcode.fnegs, } },
+            { 0x01, new OpRec { code=Opcode.fmovs, fmt="f0,f25" } },
+            { 0x05, new OpRec { code=Opcode.fnegs, fmt="f0,f25" } },
+            { 0x09, new OpRec { code=Opcode.fabss, fmt="f0,f25" } },
+            { 0x29, new OpRec { code=Opcode.fsqrts, fmt="f0,f25" } },
+            { 0x2A, new OpRec { code=Opcode.fsqrtd, fmt="f0,f25" } },
+            { 0x2B, new OpRec { code=Opcode.fsqrtq, fmt="f0,f25" } },
+
+            { 0x41, new OpRec { code=Opcode.fadds, fmt="f14,f0,f25" } },
+            { 0x42, new OpRec { code=Opcode.faddd, fmt="f14,f0,f25" } },
+            { 0x43, new OpRec { code=Opcode.faddq, fmt="f14,f0,f25" } },
+            { 0x45, new OpRec { code=Opcode.fsubs, fmt="f14,f0,f25" } },
+            { 0x46, new OpRec { code=Opcode.fsubd, fmt="f14,f0,f25" } },
+            { 0x47, new OpRec { code=Opcode.fsubq, fmt="f14,f0,f25" } },
+
             { 0xC4, new OpRec { code=Opcode.fitos, fmt="f0,f25" } },
+            { 0xC6, new OpRec { code=Opcode.fdtos, fmt="f0,f25" } },
+            { 0xC7, new OpRec { code=Opcode.fqtos, fmt="f0,f25" } },
+            { 0xC8, new OpRec { code=Opcode.fitod, fmt="f0,f25" } },
+            { 0xC9, new OpRec { code=Opcode.fstod, fmt="f0,f25" } },
+            { 0xCB, new OpRec { code=Opcode.fqtod, fmt="f0,f25" } },
+            { 0xCC, new OpRec { code=Opcode.fitoq, fmt="f0,f25" } },
+            { 0xCD, new OpRec { code=Opcode.fstoq, fmt="f0,f25" } },
+            { 0xCE, new OpRec { code=Opcode.fdtoq, fmt="f0,f25" } },
+            { 0xD1, new OpRec { code=Opcode.fstoi, fmt="f0,f25" } },
+            { 0xD2, new OpRec { code=Opcode.fdtoi, fmt="f0,f25" } },
+            { 0xD3, new OpRec { code=Opcode.fqtoi, fmt="f0,f25" } },
+
+            { 0x49, new OpRec { code=Opcode.fmuls, fmt="f14,f0,f25" } },
+            { 0x4A, new OpRec { code=Opcode.fmuld, fmt="f14,f0,f25" } },
+            { 0x4B, new OpRec { code=Opcode.fmulq, fmt="f14,f0,f25" } },
+            { 0x4D, new OpRec { code=Opcode.fdivs, fmt="f14,f0,f25" } },
+            { 0x4E, new OpRec { code=Opcode.fdivd, fmt="f14,f0,f25" } },
+            { 0x4F, new OpRec { code=Opcode.fdivq, fmt="f14,f0,f25" } },
+
+            { 0x69, new OpRec { code=Opcode.fsmuld, fmt="f14,f0,f25" } },
+            { 0x6E, new OpRec { code=Opcode.fdmulq, fmt="f14,f0,f25" } },
+
+            { 0x51, new OpRec { code=Opcode.fcmps, fmt="f14,f0" } },
+            { 0x52, new OpRec { code=Opcode.fcmpd, fmt="f14,f0" } },
+            { 0x53, new OpRec { code=Opcode.fcmpq, fmt="f14,f0" } },
+            { 0x55, new OpRec { code=Opcode.fcmpes, fmt="f14,f0" } },
+            { 0x56, new OpRec { code=Opcode.fcmped, fmt="f14,f0" } },
+            { 0x57, new OpRec { code=Opcode.fcmpeq, fmt="f14,f0" } },
         };
     }
 }

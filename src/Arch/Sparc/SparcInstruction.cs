@@ -30,6 +30,8 @@ namespace Decompiler.Arch.Sparc
     public class SparcInstruction : MachineInstruction
     {
         public Opcode Opcode;
+        public bool Annul;
+
         public MachineOperand Op1;
         public MachineOperand Op2;
         public MachineOperand Op3;
@@ -48,8 +50,8 @@ namespace Decompiler.Arch.Sparc
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Opcode);
-            //if (setsCR0)
-            //    sb.Append('.');
+            if (Annul)
+                sb.Append(",a");
             if (Op1 != null)
             {
                 sb.Append('\t');
@@ -82,7 +84,31 @@ namespace Decompiler.Arch.Sparc
                 sb.Append(imm.Value);
                 return;
             }
+            var mem = op as MemoryOperand;
+            if (mem != null)
+            {
+                sb.AppendFormat("[%{0}", mem.Base.Name);
+                if (!mem.Offset.IsNegative)
+                {
+                    sb.Append("+");
+                }
+                sb.Append(mem.Offset);
+                sb.Append("]");
+                return;
+            }
+            var idx = op as IndexedMemoryOperand;
+            if (idx != null)
+            {
+                sb.AppendFormat("[%{0}+%{1}]", idx.Base, idx.Index);
+                return;
+            }
             sb.Append(op);
+        }
+
+        [Flags]
+        public enum Flags
+        {
+            Annul = 1,
         }
     }
 }
