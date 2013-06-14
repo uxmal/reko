@@ -52,7 +52,6 @@ namespace Decompiler.Typing
 			return dt as UnionType;
 		}
 
-
 		public DataType DataTypeOf(Expression e)
 		{
 			if (e.TypeVariable != null)

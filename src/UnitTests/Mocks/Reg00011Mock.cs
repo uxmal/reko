@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Mocks
 		protected override void BuildBody()
 		{
 			Identifier ds = Local16("ds");
-			Store(Int16(0x8416), Add(LoadW(0x8416), 1));
+			Store(Word16(0x8416), Add(LoadW(0x8416), 1));
 			Identifier loc02_26 = Local16("loc02_26");
 			Assign(loc02_26, LoadW(0x53BA));
 			// succ:  2
@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Mocks
 			// DataOut: eax ecx edx esi ax cx bx sp bp di es cs ss ds fs
 			// LocalsOut: loc02(16)l1B96_2DB4:		// block 4, pred: 3
 			Identifier fs_41 = Local16("fs_41");
-			Assign(fs_41, LoadW(Int16(0x7E50)));
+            Assign(fs_41, LoadW(Word16(0x7E50)));
 			BranchIf(Ne(LoadW(0x7E50), LoadW(0x53C2)), "block6");
 			// succ:  5 6
 
@@ -70,10 +70,10 @@ namespace Decompiler.UnitTests.Mocks
 			SideEffect(Fn(LoadW(Add(Mulu(ax_36, 0x0002), 0x841A))));
 			Identifier loc04_63 = Local16("loc04_63");
 			Assign(loc04_63, LoadW(0x0048));
-			Store(Int16(0x004A), LoadW(0x004A));
-			Store(Int16(0x0048), loc04_63);
-			Store(Int16(0x8410), Int16(0x0000));
-			BranchIf(Eq(LoadW(0x8410), Int16(0)), "block2");
+			Store(Word16(0x004A), LoadW(0x004A));
+			Store(Word16(0x0048), loc04_63);
+			Store(Word16(0x8410), Word16(0x0000));
+            BranchIf(Eq(LoadW(0x8410), Word16(0)), "block2");
 			// succ:  7 2
 
 			// DataOut: eax ecx edx esi cx sp bp di es cs ss ds fs
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Mocks
 			Label("block7");
 			Identifier ax_80 = Local16("ax_80");
 			Assign(ax_80, LoadW(0x840E));
-			Store(Int16(0x8414), Or(LoadW(0x8414), ax_80));
+			Store(Word16(0x8414), Or(LoadW(0x8414), ax_80));
 			BranchIf(Ne(ax_80, 0x0000), "block2");
 			// succ:  8 2
 
@@ -93,13 +93,13 @@ namespace Decompiler.UnitTests.Mocks
 			Assign(ax_88, Fn("fn1B96_0540", loc02_26, ds));
 			Identifier v19_89 = Local16("v19_89");
 			Assign(v19_89, Sub(LoadW(0x8416), 0x0001));
-			Store(Int16(0x8416), v19_89);
+			Store(Word16(0x8416), v19_89);
 			BranchIf(Ne(v19_89, 0x0000), "block11");
 			// succ:  9 11
 
 			// DataOut: eax ecx edx esi ax dx bx sp bp di al dl dh es cs ss ds fsl1B96_2E0A:		// block 9, pred: 8
-			Store(Int16(0x8414), Int16(0x0000));
-			BranchIf(Eq(LoadW(0x8414), Int16(0x0000)), "block11");
+            Store(Word16(0x8414), Word16(0x0000));
+            BranchIf(Eq(LoadW(0x8414), Word16(0x0000)), "block11");
 			// succ:  11 10
 			// DataOut: eax ecx edx esi ax dx bx sp bp di al dl dh es cs ss ds fsl1B96_2E15_branch:		// block 10, pred: 9
 			Identifier ax_96 = Local16("ax_96");

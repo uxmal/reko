@@ -78,7 +78,7 @@ namespace Decompiler.Typing
         {
             ProcedureConstant pc = appl.Procedure as ProcedureConstant;
             if (pc == null)
-                throw new NotImplementedException("Indirect call");
+                throw new NotImplementedException("Indirect call.");
             if (pc.Procedure.Signature == null)
                 return;
 

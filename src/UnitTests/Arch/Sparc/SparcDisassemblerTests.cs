@@ -67,9 +67,45 @@ namespace Decompiler.UnitTests.Arch.Sparc
         }
 
         [Test]
-        public void SparcDis_addc()
+        public void SparcDis_addcc()
         {
-            AssertInstruction(0x80400004, "addc\t%g0,%g4,%g0");
+            AssertInstruction(0x8A800004, "addcc\t%g0,%g4,%g5");
+        }
+
+        [Test]
+        public void SparcDis_or_imm()
+        {
+            AssertInstruction(0xBE10E004, "or\t%g3,0x00000004,%i7");
+        }
+
+        [Test]
+        public void SparcDis_and_neg()
+        {
+            AssertInstruction(0x86087FFE, "and\t%g1,0xFFFFFFFE,%g3");
+        }
+
+        [Test]
+        public void SparcDis_sll_imm()
+        {
+            AssertInstruction(0xAB2EA01F, "sll\t%i2,0x0000001F,%l5");
+        }
+
+        [Test]
+        public void SparcDis_sethi()
+        {
+            AssertInstruction(0x0B00AAAA, "sethi\t0x0000AAAA,%g5");
+        }
+
+        [Test]
+        public void SparcDis_taddcc()
+        {
+            AssertInstruction(0x8B006001, "taddcc\t%g1,0x00000001,%g5");
+        }
+
+        [Test]
+        public void SparcDis_mulscc()
+        {
+            AssertInstruction(0x8B204009, "mulscc\t%g1,%o1,%g5");
         }
     }
 }

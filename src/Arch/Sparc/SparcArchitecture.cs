@@ -37,7 +37,6 @@ namespace Decompiler.Arch.Sparc
 
         public SparcArchitecture(PrimitiveType primitiveType)
         {
-            // TODO: Complete member initialization
             this.primitiveType = primitiveType;
         }
         #region IProcessorArchitecture Members

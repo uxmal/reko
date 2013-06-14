@@ -56,7 +56,6 @@ namespace Decompiler.Structure
 
         public HashSet<StructureNode> Nodes { get; private set; }
 
-
         public void GenerateCode(AbsynCodeGenerator codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
             if (Follow != null)

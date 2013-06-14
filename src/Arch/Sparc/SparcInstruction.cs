@@ -53,19 +53,36 @@ namespace Decompiler.Arch.Sparc
             if (Op1 != null)
             {
                 sb.Append('\t');
-                sb.Append(Op1);
+                Write(Op1, sb);
                 if (Op2 != null)
                 {
                     sb.Append(',');
-                    sb.Append(Op2);
+                    Write(Op2, sb);
                     if (Op3 != null)
                     {
                         sb.Append(',');
-                        sb.Append(Op3);
+                        Write(Op3, sb);
                     }
                 }
             }
             return sb.ToString();
+        }
+
+        private void Write(MachineOperand op, StringBuilder sb)
+        {
+            var reg = op as RegisterOperand;
+            if (reg != null)
+            {
+                sb.AppendFormat("%{0}", reg.Register.Name);
+                return;
+            }
+            var imm = op as ImmediateOperand;
+            if (imm != null)
+            {
+                sb.Append(imm.Value);
+                return;
+            }
+            sb.Append(op);
         }
     }
 }
