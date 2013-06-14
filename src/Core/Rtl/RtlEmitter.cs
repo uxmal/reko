@@ -64,6 +64,13 @@ namespace Decompiler.Core.Rtl
             instrs.Add(branch);
         }
 
+        /// <summary>
+        /// Called to generate a RtlCall instruction. The <paramref name="retSize"/> is the
+        /// size of the return value as placed on the stack. It will be 0 on machines
+        /// which use link registers to store the return address at a function call.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="retSize"></param>
         public void Call(Expression target, byte retSize)
         {
             instrs.Add(new RtlCall(target, retSize));

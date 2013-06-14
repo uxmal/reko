@@ -270,4 +270,13 @@ namespace Decompiler.Arch.Sparc
             return fRegs[f];
         }
     }
+
+
+    public enum FlagM
+    {
+        NF = 1,             // sign
+		ZF = 2,             // zero
+        VF = 4,            // overflow
+		CF = 8,             // carry
+    }
 }

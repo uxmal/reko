@@ -33,12 +33,15 @@ namespace Decompiler.Arch.Sparc
 {
     public class SparcArchitecture : IProcessorArchitecture
     {
-        private PrimitiveType primitiveType;
+        private PrimitiveType wordWidth;
+        private PrimitiveType pointerType;
 
-        public SparcArchitecture(PrimitiveType primitiveType)
+        public SparcArchitecture(PrimitiveType wordWidth)
         {
-            this.primitiveType = primitiveType;
+            this.wordWidth = wordWidth;
+            this.pointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
         }
+
         #region IProcessorArchitecture Members
 
         public Disassembler CreateDisassembler(ImageReader imageReader)
@@ -48,7 +51,7 @@ namespace Decompiler.Arch.Sparc
 
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new SparcProcessorState(this);
         }
 
         public BitSet CreateRegisterBitset()
@@ -58,7 +61,7 @@ namespace Decompiler.Arch.Sparc
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new SparcRewriter(this, rdr, (SparcProcessorState) state, frame, host);
         }
 
         public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
@@ -126,10 +129,7 @@ namespace Decompiler.Arch.Sparc
             get { throw new NotImplementedException(); }
         }
 
-        public PrimitiveType WordWidth
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public PrimitiveType WordWidth { get { return wordWidth; } }
 
         public RegisterStorage StackRegister
         {
