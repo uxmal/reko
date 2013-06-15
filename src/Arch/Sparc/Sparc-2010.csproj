@@ -70,6 +70,7 @@
     <Compile Include="SparcInstruction.cs" />
     <Compile Include="SparcProcessorState.cs" />
     <Compile Include="SparcRewriter.cs" />
+    <Compile Include="SparcRewriter.Fpu.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">

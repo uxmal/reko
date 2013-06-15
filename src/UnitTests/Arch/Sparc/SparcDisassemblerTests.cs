@@ -165,7 +165,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcDis_ta()
         {
-            AssertInstruction(0x91D02999, "ta\t%g1,0x00000019");
+            AssertInstruction(0x91D06999, "ta\t%g1,0x00000019");
         }
 
         [Test]
@@ -183,7 +183,13 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcDis_sth()
         {
-            AssertInstruction(0xC2307FF0, "sth\t%g1,[%g2+68]"); 
+            AssertInstruction(0xC230BFF0, "sth\t%g1,[%g2-16]"); 
+        }
+
+        [Test]
+        public void SparcDis_bg_a()
+        {
+            AssertInstruction(0x34800024, "bg,a\t00100090");
         }
     }
 }

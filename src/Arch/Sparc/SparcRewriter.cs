@@ -34,7 +34,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Sparc
 {
-    public class SparcRewriter : IEnumerable<RtlInstructionCluster>
+    public partial class SparcRewriter : IEnumerable<RtlInstructionCluster>
     {
         private SparcArchitecture arch;
         private ImageReader rdr;
@@ -99,6 +99,9 @@ namespace Decompiler.Arch.Sparc
                 case Opcode.and: RewriteAlu(Operator.And); break;
                 case Opcode.andcc: RewriteAluCc(Operator.And); break;
                 case Opcode.call: RewriteCall(); break;
+                case Opcode.fitod: RewriteFitod(); break;
+                case Opcode.fitoq: RewriteFitoq(); break;
+                case Opcode.fitos: RewriteFitos(); break;
                 case Opcode.ldsb: RewriteLoad(PrimitiveType.SByte); break;
                 case Opcode.or: RewriteAlu(Operator.Or); break;
                 case Opcode.orcc: RewriteAluCc(Operator.Or); break;
@@ -109,6 +112,8 @@ namespace Decompiler.Arch.Sparc
                 case Opcode.smul: RewriteAlu(Operator.Muls); break;
                 case Opcode.smulcc: RewriteAlu(Operator.Muls); break;
                 case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
+                case Opcode.udiv: RewriteAlu(Operator.Divu); break;
+                case Opcode.udivcc: RewriteAluCc(Operator.Divu); break;
                 case Opcode.umul: RewriteAlu(Operator.Mulu); break;
                 case Opcode.umulcc: RewriteAluCc(Operator.Mulu); break;
                 }

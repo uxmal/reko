@@ -213,8 +213,11 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_udivcc()
         {
-            BuildTest(0x8AF04009);
-            AssertCode("udivcc\t%g1,%o1,%g5");
+            BuildTest(0x8AF04009);  // udivcc\t%g1,%o1,%g5
+            AssertCode(
+               "0|00100000(4): 2 instructions",
+               "1|g5 = g1 /u o1",
+               "2|NZVC = cond(g5)");
         }
 
         [Test]
@@ -223,7 +226,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x8A784009); // sdiv\t%g1,%o1,%g5
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g5 = g1 /s o1");
+                "1|g5 = g1 / o1");
         }
 
         [Test]
@@ -236,8 +239,12 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_be()
         {
-            BuildTest(0x02800001);
-            AssertCode("be\t00100004");
+            BuildTest(
+                0x02800004,     // be      00100004
+                0x8A80C004);    // addcc   %g2,%g4,%g5"
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|);");
         }
 
         [Test]
@@ -271,8 +278,10 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_fitos()
         {
-            BuildTest(0x8BA0188A);
-            AssertCode("fitos\t%f10,%f5");
+            BuildTest(0x8BA0188A);  // fitos   %f10,%f5
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|f5 = (real32) f10");
         }
 
         [Test]
