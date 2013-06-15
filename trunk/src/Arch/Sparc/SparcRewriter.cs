@@ -46,7 +46,7 @@ namespace Decompiler.Arch.Sparc
         private RtlEmitter emitter;
         private RtlInstructionCluster ric;
 
-        private class DisassembledInstruction 
+        public class DisassembledInstruction 
         {
             public Address Address;
             public SparcInstruction Instr;
@@ -55,11 +55,19 @@ namespace Decompiler.Arch.Sparc
         public SparcRewriter(SparcArchitecture arch, ImageReader rdr, SparcProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
-            this.rdr = rdr;
             this.state = state;
             this.frame = frame;
             this.host = host;
             this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr));
+        }
+
+        public SparcRewriter(SparcArchitecture arch, IEnumerable<DisassembledInstruction> instrs, SparcProcessorState state, Frame frame, IRewriterHost host)
+        {
+            this.arch = arch;
+            this.state = state;
+            this.frame = frame;
+            this.host = host;
+            this.dasm = new LookaheadEnumerator<DisassembledInstruction>(instrs);
         }
 
         private IEnumerator<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
@@ -91,8 +99,18 @@ namespace Decompiler.Arch.Sparc
                 case Opcode.and: RewriteAlu(Operator.And); break;
                 case Opcode.andcc: RewriteAluCc(Operator.And); break;
                 case Opcode.call: RewriteCall(); break;
+                case Opcode.ldsb: RewriteLoad(PrimitiveType.SByte); break;
                 case Opcode.or: RewriteAlu(Operator.Or); break;
                 case Opcode.orcc: RewriteAluCc(Operator.Or); break;
+                case Opcode.sethi: RewriteSethi(); break;
+                case Opcode.sdiv: RewriteAlu(Operator.Divs); break;
+                case Opcode.sdivcc: RewriteAlu(Operator.Divs); break;
+                case Opcode.sll: RewriteAlu(Operator.Shl); break;
+                case Opcode.smul: RewriteAlu(Operator.Muls); break;
+                case Opcode.smulcc: RewriteAlu(Operator.Muls); break;
+                case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
+                case Opcode.umul: RewriteAlu(Operator.Mulu); break;
+                case Opcode.umulcc: RewriteAluCc(Operator.Mulu); break;
                 }
                 yield return ric;
             }
@@ -106,8 +124,8 @@ namespace Decompiler.Arch.Sparc
         private void RewriteAlu(Operator op)
         {
             var dst = RewriteOp(di.Instr.Op3);
-            var src1 = RewriteOp( di.Instr.Op1);
-            var src2 = RewriteOp( di.Instr.Op2);
+            var src1 = RewriteOp(di.Instr.Op1);
+            var src2 = RewriteOp(di.Instr.Op2);
             emitter.Assign(dst, new BinaryExpression(op, PrimitiveType.Word32, src1, src2));
         }
 
@@ -119,20 +137,84 @@ namespace Decompiler.Arch.Sparc
                 frame.EnsureFlagGroup(0xF, "NZVC", PrimitiveType.Byte),
                 emitter.Cond(dst));
         }
+
         private void RewriteCall()
         {
             emitter.Call(((AddressOperand) di.Instr.Op1).Address , 0);
+        }
+
+        private void RewriteLoad(PrimitiveType size)
+        {
+            var dst = RewriteOp(di.Instr.Op2);
+            var src = RewriteMemOp(di.Instr.Op1, size);
+            if (size.Size < dst.DataType.Size)
+            {
+                size = (size.Domain == Domain.SignedInt) ? PrimitiveType.Int32 : PrimitiveType.Word32;
+                src = emitter.Cast(size, src);
+            }
+            emitter.Assign(dst, src);
         }
 
         private Expression RewriteOp(MachineOperand op)
         {
             var r = op as RegisterOperand;
             if (r != null)
-                return frame.EnsureRegister(r.Register);
+            {
+                if (r.Register == Registers.g0)
+                    return Constant.Zero(PrimitiveType.Word32);
+                else 
+                    return frame.EnsureRegister(r.Register);
+            }
             var imm = op as ImmediateOperand;
             if (imm != null)
                 return imm.Value;
             throw new NotImplementedException(string.Format("Unsupported operand {0} ({1})", op, op.GetType().Name));
+        }
+
+        private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
+        {
+            var m = op as MemoryOperand;
+            Expression baseReg;
+            Expression offset;
+            if (m != null)
+            {
+                baseReg = m.Base != Registers.g0 ? null : frame.EnsureRegister(m.Base);
+                offset = m.Offset.IsIntegerZero ? null : m.Offset;
+            }
+            var i = op as IndexedMemoryOperand;
+            if (i != null)
+            {
+                baseReg = i.Base == Registers.g0 ? null : frame.EnsureRegister(i.Base);
+                offset = i.Index == Registers.g0 ? null : frame.EnsureRegister(i.Index);
+            }
+            else 
+                throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));
+            Expression ea;
+            if (baseReg == null && offset == null)
+                ea = Constant.Zero(PrimitiveType.Pointer32);
+            else if (baseReg == null)
+                ea = offset;
+            else if (offset == null)
+                ea = baseReg;
+            else
+                ea = emitter.Add(baseReg, offset);
+            return new MemoryAccess(ea, size);
+        }
+
+        private void RewriteSethi()
+        {
+            var dst = RewriteOp(di.Instr.Op2);
+            var src = (ImmediateOperand) di.Instr.Op1;
+            emitter.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
+        }
+
+        private void RewriteStore(PrimitiveType size)
+        {
+            var src = RewriteOp(di.Instr.Op1);
+            var dst = RewriteMemOp(di.Instr.Op2, size);
+            if (size.Size < src.DataType.Size)
+                src = emitter.Cast(size, src);
+            emitter.Assign(dst, src);
         }
     }
 }
