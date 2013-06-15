@@ -20,6 +20,8 @@
 
 using Decompiler.Arch.Sparc;
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using NUnit.Framework;
@@ -76,6 +78,51 @@ namespace Decompiler.UnitTests.Arch.Sparc
             e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host).GetEnumerator();
         }
 
+        private void BuildTest(params SparcInstruction[] instrs)
+        {
+            var addr = baseAddr;
+            var dis = instrs.Select(i =>
+                {
+                    var a = addr;
+                    addr += 4;
+                    return new SparcRewriter.DisassembledInstruction
+                    {
+                        Address = a,
+                        Instr = i,
+                    };
+                });
+            e = new SparcRewriter(arch, dis, state, new Frame(arch.WordWidth), host).GetEnumerator();
+        }
+
+        private SparcInstruction Instr(Opcode opcode, params object[] ops)
+        {
+            var instr = new SparcInstruction { Opcode = opcode };
+            if (ops.Length > 0)
+            {
+                instr.Op1 = Op(ops[0]);
+                if (ops.Length > 1)
+                {
+                    instr.Op2 = Op(ops[1]);
+                    if (ops.Length > 2)
+                    {
+                        instr.Op3 = Op(ops[2]);
+                    }
+                }
+            }
+            return instr;
+        }
+
+        private MachineOperand Op(object o)
+        {
+            var reg = o as RegisterStorage;
+            if (reg != null)
+                return new RegisterOperand(reg);
+            var c = o as Constant;
+            if (c != null)
+                return new ImmediateOperand(c);
+            throw new NotImplementedException(string.Format("Unsupported: {0} ({1})", o, o.GetType().Name));
+        }
+
         [Test]
         public void SparcRw_call()
         {
@@ -116,15 +163,19 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_sll_imm()
         {
-            BuildTest(0xAB2EA01F);
-            AssertCode( "sll\t%i2,0x0000001F,%l5");
+            BuildTest(0xAB2EA01F);// sll\t%i2,0x0000001F,%l5"
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|l5 = i2 << 0x0000001F");
         }
 
         [Test]
         public void SparcRw_sethi()
         {
-            BuildTest(0x0B00AAAA);
-            AssertCode( "sethi\t0x0000AAAA,%g5");
+            BuildTest(0x0B2AAAAA);  // sethi\t0x002AAAAA,%g5");
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|g5 = 0xAAAAA800");
         }
 
         [Test]
@@ -144,15 +195,19 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_umul()
         {
-            BuildTest(0x8A504009);
-            AssertCode("umul\t%g1,%o1,%g5");
+            BuildTest(0x8A504009); // umul %g1,%o1,%g5
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|g5 = g1 *u o1");
         }
 
         [Test]
-        public void SparcRw_smulcc()
+        public void SparcRw_smul()
         {
-            BuildTest(0x8A584009);
-            AssertCode("smul\t%g1,%o1,%g5");
+            BuildTest(0x8A584009);  // smul %g1,%o1,%g5
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|g5 = g1 *s o1");
         }
 
         [Test]
@@ -165,8 +220,10 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_sdiv()
         {
-            BuildTest(0x8A784009);
-            AssertCode("sdiv\t%g1,%o1,%g5");
+            BuildTest(0x8A784009); // sdiv\t%g1,%o1,%g5
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|g5 = g1 /s o1");
         }
 
         [Test]
@@ -221,15 +278,47 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_ldsb()
         {
-            BuildTest(0xC248A044);
-            AssertCode("ldsb\t[%g2+68],%g1"); 
+            BuildTest(0xC248A044); //ldsb\t[%g2+68],%g1");
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|g1 = (int32) Mem0[g2 + 68:int8]"); 
         }
 
         [Test]
         public void SparcRw_sth()
         {
-            BuildTest(0xC2307FF0);
-            AssertCode("sth\t[%g2+68],%g1"); 
+            BuildTest(0xC230BFF0);// sth\t%g1,[%g2+68]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|Mem0[g2 + -16:word16] = (word16) g1"); 
+        }
+
+        [Test]
+        public void SparcRw_sth_idx()
+        {
+            BuildTest(0xC230800C);//sth\t%g1,[%g2+%i4]");
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|Mem0[g2 + o4:word16] = (word16) g1");
+        }
+
+        [Test]
+        public void SparcRw_sth_idx_g0()
+        {
+            BuildTest(0xC2308000);//sth\t%g1,[%g2+%g0]");
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|Mem0[g2:word16] = (word16) g1");
+        }
+
+        [Test]
+        public void SparcRw_or_imm_g0()
+        {
+            BuildTest(
+                Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.g1));
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.
         }
     }
 }

@@ -115,7 +115,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         }
 
         [Test]
-        public void SparcDis_smulcc()
+        public void SparcDis_smul()
         {
             AssertInstruction(0x8A584009, "smul\t%g1,%o1,%g5");
         }
@@ -183,7 +183,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcDis_sth()
         {
-            AssertInstruction(0xC2307FF0, "sth\t[%g2+68],%g1"); 
+            AssertInstruction(0xC2307FF0, "sth\t%g1,[%g2+68]"); 
         }
     }
 }
