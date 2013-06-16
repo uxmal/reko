@@ -8,10 +8,10 @@ sp:sp
     def:  def sp
 bp:bp
     def:  def bp
-ss:ss
-    def:  def ss
 ax:ax
     def:  def ax
+ss:ss
+    def:  def ss
 SZO:Flags
     def:  def SZO
 C:Flags
@@ -53,8 +53,8 @@ fn0C00_0000_entry:
 	def fp
 	def sp
 	def bp
-	def ss
 	def ax
+	def ss
 	def SZO
 	def C
 	def Z

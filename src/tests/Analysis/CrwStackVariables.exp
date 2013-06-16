@@ -1,105 +1,129 @@
-void fn0C00_0000(Register selector ds, Stack ptr32 ptrArg02)
+void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // MayUse:  ds
 // LiveOut:
 // Trashed: SCZO ax bx al bl ah bh es
-// Preserved: bp
-// Stack args: Stack +0002(32)
+// Preserved: sp bp
+// Stack args: Stack +0004(32)
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
-// wLoc04:Local -0004
-// es:Register es
-// bx:Register bx
+// sp:sp
+// bp:bp
+// ss:ss
+// es:es
+// bx:bx
 // es_bx:Sequence es:bx
-// ptrArg02:Stack +0002
+// SCZO:Flags
+// ax:ax
+// ds:ds
+// wLoc02:Local -0002
+// ptrArg04:Stack +0004
+// wLoc04:Local -0004
 // wLoc06:Local -0006
 // wLoc08:Local -0008
-// ax:Register ax
-// wLoc0A:Local -000A
-// ds:Register ds
+// ptrLoc06:Local -0006
 // ptrLoc08:Local -0008
-// ptrLoc0A:Local -000A
 // return address size: 2
-void fn0C00_0000(selector ds, ptr32 ptrArg02)
-fn0C00_0000_entry:		// pred:
+void fn0C00_0000(selector ds, segptr32 ptrArg04)
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	wLoc04 = bp
-	es_bx = ptrArg02
+l0C00_0000:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	es_bx = ptrArg04
+	sp = fp - 0x0004
+	wLoc04 = es
+	sp = fp - 0x0006
+	wLoc06 = bx
+	ax = fn0C00_0020(ptrLoc06)
+	sp = fp - 0x0002
+	SCZO = cond(sp)
+	sp = fp - 0x0004
+	wLoc04 = ax
+	es_bx = ptrArg04
+	sp = fp - 0x0006
 	wLoc06 = es
+	sp = fp - 0x0008
 	wLoc08 = bx
-	ax = fn0C00_0020(ptrLoc08)
-	wLoc06 = ax
-	es_bx = ptrArg02
-	wLoc08 = es
-	wLoc0A = bx
-	ax = fn0C00_002E(ptrLoc0A, wLoc06)
+	ax = fn0C00_002E(ptrLoc08, wLoc04)
+	sp = fp - 0x0002
+	SCZO = cond(sp)
 	Mem0[ds:0x0200:word16] = ax
-	bp = wLoc04
+	bp = wLoc02
+	sp = fp
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
-Register word16 fn0C00_0020(Stack ptr32 ptrArg00)
+fn0C00_0000_exit:
+Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // MayUse: 
 // LiveOut: ax
 // Trashed: ax bx al bl ah bh es
-// Preserved: bp
-// Stack args: Stack +0000(32)
+// Preserved: sp bp
+// Stack args: Stack +0002(32)
 // fn0C00_0020
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
-// wLoc04:Local -0004
-// es:Register es
-// bx:Register bx
+// sp:sp
+// bp:bp
+// ss:ss
+// es:es
+// bx:bx
 // es_bx:Sequence es:bx
-// ptrArg00:Stack +0000
-// ax:Register ax
+// ax:ax
+// wLoc02:Local -0002
+// ptrArg02:Stack +0002
 // return address size: 2
-word16 fn0C00_0020(ptr32 ptrArg00)
-fn0C00_0020_entry:		// pred:
+word16 fn0C00_0020(segptr32 ptrArg02)
+fn0C00_0020_entry:
 	// succ:  l0C00_0020
-l0C00_0020:		// pred: fn0C00_0020_entry
-	wLoc04 = bp
-	es_bx = ptrArg00
+l0C00_0020:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	es_bx = ptrArg02
 	ax = Mem0[es:bx + 0x0004:word16]
-	bp = wLoc04
+	sp = fp - 0x0002
+	bp = wLoc02
+	sp = fp
 	return ax
 	// succ:  fn0C00_0020_exit
-fn0C00_0020_exit:		// pred: l0C00_0020
-	// succ: 
-Register word16 fn0C00_002E(Stack ptr32 ptrArg00, Stack word16 wArg04)
+fn0C00_0020_exit:
+Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // MayUse: 
 // LiveOut: ax
 // Trashed: SCZO ax bx al bl ah bh es
-// Preserved: bp
-// Stack args: Stack +0000(32) Stack +0004(16)
+// Preserved: sp bp
+// Stack args: Stack +0002(32) Stack +0006(16)
 // fn0C00_002E
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
-// wLoc04:Local -0004
-// es:Register es
-// bx:Register bx
+// sp:sp
+// bp:bp
+// ss:ss
+// es:es
+// bx:bx
 // es_bx:Sequence es:bx
-// ptrArg00:Stack +0000
-// wArg04:Stack +0004
-// ax:Register ax
+// ax:ax
 // SCZO:Flags
+// wLoc02:Local -0002
+// ptrArg02:Stack +0002
+// wArg06:Stack +0006
 // return address size: 2
-word16 fn0C00_002E(ptr32 ptrArg00, word16 wArg04)
-fn0C00_002E_entry:		// pred:
+word16 fn0C00_002E(segptr32 ptrArg02, word16 wArg06)
+fn0C00_002E_entry:
 	// succ:  l0C00_002E
-l0C00_002E:		// pred: fn0C00_002E_entry
-	wLoc04 = bp
-	es_bx = ptrArg00
-	ax = wArg04
+l0C00_002E:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	es_bx = ptrArg02
+	ax = wArg06
 	ax = ax + Mem0[es:bx + 0x0006:word16]
 	SCZO = cond(ax)
-	bp = wLoc04
+	sp = fp - 0x0002
+	bp = wLoc02
+	sp = fp
 	return ax
 	// succ:  fn0C00_002E_exit
-fn0C00_002E_exit:		// pred: l0C00_002E
-	// succ: 
+fn0C00_002E_exit:

@@ -21,15 +21,15 @@ SCZO:Flags
     def:  def SCZO
 SO:Flags
     def:  def SO
+si:si
+    def:  def si
+    uses: si_18 = PHI(si, si_26, si_38)
 ds:ds
     def:  def ds
     uses: si_25 = Mem0[ds:0x0300:word16]
           ax_32 = ax_19 + Mem0[ds:si_26:word16]
           si_38 = Mem0[ds:0x0302:word16]
           ax_39 = ax_19 + Mem0[ds:si_38 + 0x0004:word16]
-si:si
-    def:  def si
-    uses: si_18 = PHI(si, si_26, si_38)
 Z:Flags
     def:  def Z
 ax_12: orig: ax
@@ -146,8 +146,8 @@ fn0C00_0000_entry:
 	def bx
 	def SCZO
 	def SO
-	def ds
 	def si
+	def ds
 	def Z
 	// succ:  l0C00_0000
 l0C00_0000:

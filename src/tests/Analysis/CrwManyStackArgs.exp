@@ -9,8 +9,8 @@ void fn0C00_0000(Register selector ds)
 // sp:sp
 // ss:ss
 // SCZO:Flags
-// ax:ax
 // ds:ds
+// ax:ax
 // wLoc02:Local -0002
 // wLoc04:Local -0004
 // wLoc06:Local -0006

@@ -11,8 +11,8 @@ fn0C00_0000_entry:
 l0C00_0000:
 	Mem18[ds:0x0300:word32] = 0x00000000 - (-eax == 0x00000000)
 	Mem20[ds:0x0202:word16] = -Mem18[ds:0x0202:word16]
-	word16 v8_23 = Mem20[ds:0x0200:word16]
-	Mem24[ds:0x0200:word16] = -v8_23
+	word16 v8_23 = -Mem20[ds:0x0200:word16]
+	Mem24[ds:0x0200:word16] = v8_23
 	Mem29[ds:0x0308:word32] = 0x00000000 - (v8_23 == 0x0000)
 	Mem31[ds:0x0304:word16] = ~bx
 	Mem33[ds:0x0204:word16] = ~Mem31[ds:0x0204:word16]

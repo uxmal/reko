@@ -2,12 +2,12 @@ Mem0:Global memory
 fp:Temporary
 sp:sp
 C:Flags
-al:al
-    def:  def al
-    uses: C_7 = fn0C00_000A(al, &al_6)
 ds:ds
     def:  def ds
     uses: Mem8[ds:0x0300:byte] = al_6
+al:al
+    def:  def al
+    uses: C_7 = fn0C00_000A(al, &al_6)
 al_6: orig: al
     def:  C_7 = fn0C00_000A(al, &al_6)
     uses: Mem8[ds:0x0300:byte] = al_6
@@ -19,8 +19,8 @@ Mem8: orig: Mem0
 // fn0C00_0000
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
-	def al
 	def ds
+	def al
 	// succ:  l0C00_0000
 l0C00_0000:
 	C_7 = fn0C00_000A(al, &al_6)

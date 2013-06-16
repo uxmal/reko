@@ -3,11 +3,11 @@ Mem0:Global memory
     uses: ax_15 = Mem0[ds:si_14:word16]
 fp:Temporary
 sp:sp
+bx:bx
 si:si
     def:  def si
     uses: si_14 = PHI(si, si_16, si_16)
           ax_28 = si_14 + 0x0002 - si
-bx:bx
 ax:ax
 ds:ds
     def:  def ds

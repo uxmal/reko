@@ -38,8 +38,8 @@ fn0C00_0000_exit:
 // bp:bp
 // ss:ss
 // bx:bx
-// rArg0:FPU stack
 // ds:ds
+// rArg0:FPU stack
 // rArg1:FPU stack
 // return address size: 2
 void fn0C00_0024()

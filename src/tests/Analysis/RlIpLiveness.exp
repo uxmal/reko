@@ -8,7 +8,7 @@
 void fn0C00_0000()
 fn0C00_0000_entry:
 // DataOut: ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0C00_0000:
@@ -26,12 +26,12 @@ l0C00_0000:
 	Mem0[ds:di + 0x0002:word16] = ax
 	return
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn0C00_0000_exit:
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp di:<invalid> si:<invalid> bx:<invalid> ax:<invalid>
 
 // fn0C00_0026 /////////////////////
@@ -44,27 +44,28 @@ fn0C00_0000_exit:
 void fn0C00_0026()
 fn0C00_0026_entry:
 // DataOut: bx si ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
+
 l0C00_0026:
 	sp = fp - 0x0002
 	wLoc02 = di
 	di = Mem0[ds:0x0104:word16]
 	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
 	Mem0[ds:di + 0x0030:word16] = v6
-	SZO = cond(v5)
+	SZO = cond(v6)
 	call fn0C00_0033 (retsize: 2; depth: 4)
 	di = wLoc02
 	sp = fp
 	return
 // DataOut: ax bx ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn0C00_0026_exit:
 // DataOut: ax bx ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp di:di ax:<invalid> -2(fp):di
 
 // fn0C00_0033 /////////////////////
@@ -77,7 +78,7 @@ fn0C00_0026_exit:
 void fn0C00_0033()
 fn0C00_0033_entry:
 // DataOut: bx si di ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0C00_0033:
@@ -86,10 +87,11 @@ l0C00_0033:
 	SCZO = cond(ax)
 	return
 // DataOut: ax bx di ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn0C00_0033_exit:
 // DataOut: ax bx di ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp ax:<invalid>
+

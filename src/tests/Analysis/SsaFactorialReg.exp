@@ -6,11 +6,11 @@ sp:sp
     def:  def sp
 cx:cx
     def:  def cx
-ax:ax
-    def:  def ax
 ds:ds
     def:  def ds
     uses: Mem8[ds:0x0064:word16] = ax_7
+ax:ax
+    def:  def ax
 cx_6: orig: cx
     def:  cx_6 = 0x0005
     uses: ax_7 = fn0C00_000B(cx_6)
@@ -26,8 +26,8 @@ fn0C00_0000_entry:
 	def fp
 	def sp
 	def cx
-	def ax
 	def ds
+	def ax
 	// succ:  l0C00_0000
 l0C00_0000:
 	cx_6 = 0x0005

@@ -50,8 +50,8 @@ void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg
 // bp:bp
 // ss:ss
 // bx:bx
-// rArg0:FPU stack
 // ds:ds
+// rArg0:FPU stack
 // rArg1:FPU stack
 // wLoc02:Local -0002
 // wArg02:Stack +0002

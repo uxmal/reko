@@ -14,11 +14,11 @@ ss:ss
     def:  def ss
 ds:ds
     def:  def ds
+bl:bl
+    def:  def bl
 si:si
     def:  def si
     uses: bl_20 = Mem0[ds_18:si:byte]
-bl:bl
-    def:  def bl
 SCZO:Flags
     def:  def SCZO
 CZ:Flags
@@ -163,8 +163,8 @@ fn0C00_0000_entry:
 	def cs
 	def ss
 	def ds
-	def si
 	def bl
+	def si
 	def SCZO
 	def CZ
 	def bh

@@ -4,10 +4,10 @@ sp:sp
 cx:cx
 ss:ss
 SCZO:Flags
-ax:ax
 ds:ds
     def:  def ds
     uses: Mem15[ds:0x0064:word16] = ax_12
+ax:ax
 wLoc02:Local -0002
 cx_9: orig: cx
 sp_10: orig: sp

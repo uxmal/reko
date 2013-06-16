@@ -7,8 +7,8 @@ void fn0C00_0000(Register selector ds)
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
-// ds:ds
 // di:di
+// ds:ds
 // si:si
 // ax:ax
 // bx:bx
@@ -59,7 +59,7 @@ l0C00_0026:
 	di = Mem0[ds:0x0104:word16]
 	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
 	Mem0[ds:di + 0x0030:word16] = v6
-	SZO = cond(Mem0[ds:di + 0x0030:word16])
+	SZO = cond(v6)
 	ax = fn0C00_0033(si, ds)
 	di = wLoc02
 	sp = fp
@@ -75,9 +75,9 @@ Register word16 fn0C00_0033(Register word16 si, Register selector ds)
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
+// ax:ax
 // si:si
 // ds:ds
-// ax:ax
 // SCZO:Flags
 // return address size: 2
 word16 fn0C00_0033(word16 si, selector ds)

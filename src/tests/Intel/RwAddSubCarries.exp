@@ -2,8 +2,8 @@
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
-// ds:ds
 // ax:ax
+// ds:ds
 // dx:dx
 // cx:cx
 // bx:bx

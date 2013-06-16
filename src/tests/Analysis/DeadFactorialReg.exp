@@ -2,10 +2,10 @@ Mem0:Global memory
 fp:Temporary
 sp:sp
 cx:cx
-ax:ax
 ds:ds
     def:  def ds
     uses: Mem8[ds:0x0064:word16] = ax_7
+ax:ax
 cx_6: orig: cx
     def:  cx_6 = 0x0005
     uses: ax_7 = fn0C00_000B(cx_6)

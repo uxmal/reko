@@ -502,7 +502,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void Adc()
+        public void X86RW_Adc()
         {
             var e = Run16bitTest(delegate(IntelAssembler m)
             {

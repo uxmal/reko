@@ -37,9 +37,9 @@ void fn0C00_0010(Register word16 si, Register word16 di, Register selector ds)
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
+// ax:ax
 // si:si
 // ds:ds
-// ax:ax
 // di:di
 // return address size: 2
 void fn0C00_0010(word16 si, word16 di, selector ds)
@@ -64,8 +64,8 @@ void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
 // bp:bp
 // ss:ss
 // bx:bx
-// ds:ds
 // ax:ax
+// ds:ds
 // SCZO:Flags
 // wLoc02:Local -0002
 // wArg02:Stack +0002
@@ -100,9 +100,9 @@ void fn0C00_0029(Register word16 ax, Register word16 di, Register selector ds)
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
-// ax:ax
 // di:di
 // ds:ds
+// ax:ax
 // return address size: 2
 void fn0C00_0029(word16 ax, word16 di, selector ds)
 fn0C00_0029_entry:
