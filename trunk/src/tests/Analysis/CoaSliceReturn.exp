@@ -2,13 +2,13 @@ Mem0:Global memory
 fp:Temporary
 sp:sp
 si:si
-ax:ax
 ds:ds
     def:  def ds
     uses: Mem9[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
           Mem9[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
           Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
           Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+ax:ax
 al:al
 si_7: orig: si
 ax_8: orig: ax
@@ -38,13 +38,13 @@ Mem0:Global memory
     uses: return Mem0[ds:si:word16]
 fp:Temporary
 sp:sp
+ax:ax
 si:si
     def:  def si
     uses: return Mem0[ds:si:word16]
 ds:ds
     def:  def ds
     uses: return Mem0[ds:si:word16]
-ax:ax
 ax_6: orig: ax
     uses: return Mem0[ds:si:word16]
 // fn0C00_0015

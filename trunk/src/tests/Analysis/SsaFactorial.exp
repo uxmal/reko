@@ -12,11 +12,11 @@ ss:ss
     def:  def ss
 SCZO:Flags
     def:  def SCZO
-ax:ax
-    def:  def ax
 ds:ds
     def:  def ds
     uses: Mem15[ds:0x0064:word16] = ax_12
+ax:ax
+    def:  def ax
 wLoc02:Local -0002
     def:  def wLoc02
 cx_9: orig: cx
@@ -45,8 +45,8 @@ fn0C00_0000_entry:
 	def cx
 	def ss
 	def SCZO
-	def ax
 	def ds
+	def ax
 	def wLoc02
 	// succ:  l0C00_0000
 l0C00_0000:

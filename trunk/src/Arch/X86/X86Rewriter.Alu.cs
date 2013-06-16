@@ -70,7 +70,7 @@ namespace Decompiler.Arch.X86
         /// <param name="i"></param>
         /// <param name="next"></param>
         /// <returns></returns>
-        public Expression RewriteAddSub(BinaryOperator op)
+        public void RewriteAddSub(BinaryOperator op)
         {
             //LongAddRewriter larw = new LongAddRewriter(this.frame, orw, state);
             //int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
@@ -80,25 +80,21 @@ namespace Decompiler.Arch.X86
             //    larw.EmitInstruction(op, emitter);
             //    return larw.Dst;
             //}
-            RtlAssignment ass = EmitBinOp(
+            EmitBinOp(
                 op,
                 di.Instruction.op1,
                 di.Instruction.op1.Width,
                 SrcOp(di.Instruction.op1),
-                SrcOp(di.Instruction.op2));
-            var ccSrc = ass.Dst;
-            if (ccSrc is MemoryAccess)
-                ccSrc = ass.Src;
-            EmitCcInstr(ccSrc, IntelInstruction.DefCc(di.Instruction.code));
-            return ass.Dst;
+                SrcOp(di.Instruction.op2),
+                CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
-        public Expression RewriteAdcSbb(BinaryOperator opr)
+        public void RewriteAdcSbb(BinaryOperator opr)
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = orw.FlagGroup(FlagM.CF);       
-            var ass = EmitCopy(
+            EmitCopy(
                 di.Instruction.op1, 
                 new BinaryExpression(
                     opr, 
@@ -108,12 +104,8 @@ namespace Decompiler.Arch.X86
                         di.Instruction.dataWidth, 
                         SrcOp(di.Instruction.op1),
                         SrcOp(di.Instruction.op2)),
-                    c), true);
-            var ccSrc = ass.Dst;
-            if (ccSrc is MemoryAccess)
-                ccSrc = ass.Src;
-            EmitCcInstr(ccSrc, IntelInstruction.DefCc(di.Instruction.code));
-            return ass.Dst;
+                    c),
+                CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
         private void RewriteArpl()
@@ -128,15 +120,14 @@ namespace Decompiler.Arch.X86
 
         public void RewriteBinOp(BinaryOperator opr)
         {
-            var ass = EmitBinOp(opr, di.Instruction.op1, di.Instruction.dataWidth, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
-            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+            EmitBinOp(opr, di.Instruction.op1, di.Instruction.dataWidth, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2), CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
         private void RewriteBsr()
         {
             Expression src = SrcOp(di.Instruction.op2);
             emitter.Assign(orw.FlagGroup(FlagM.ZF), emitter.Eq0(src));
-            EmitCopy(di.Instruction.op1, PseudoProc("__bsr", di.Instruction.op1.Width, src), false);
+            emitter.Assign(SrcOp(di.Instruction.op1), PseudoProc("__bsr", di.Instruction.op1.Width, src));
         }
 
         private void RewriteBt()
@@ -168,7 +159,7 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        public RtlAssignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
+        public void EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right, CopyFlags flags)
         {
             Constant c = right as Constant;
             if (c != null)
@@ -178,7 +169,8 @@ namespace Decompiler.Arch.X86
                     right = emitter.Const(left.DataType, c.ToInt32());
                 }
             }
-            return EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), true);
+            //EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), true, emitCc);
+            EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), flags);
         }
 
         /// <summary>
@@ -265,17 +257,17 @@ namespace Decompiler.Arch.X86
                 regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word64);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported", di.Instruction.dataWidth.Size));
+                throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", di.Instruction.dataWidth.Size));
             };
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
             emitter.Assign(
                 regRemainder, new BinaryExpression(Operator.IMod, p,
                 regDividend,
                 SrcOp(di.Instruction.op1)));
-            var ass = emitter.Assign(
+            emitter.Assign(
                 regQuotient, new BinaryExpression(op, p, regDividend,
                 SrcOp(di.Instruction.op1)));
-            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+            EmitCcInstr(regQuotient, IntelInstruction.DefCc(di.Instruction.code));
         }
 
         private void RewriteEnter()
@@ -297,8 +289,8 @@ namespace Decompiler.Arch.X86
         {
             Identifier itmp = frame.CreateTemporary(di.Instruction.dataWidth);
             emitter.Assign(itmp, SrcOp(di.Instruction.op1));
-            EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2), false);
-            EmitCopy(di.Instruction.op2, itmp, false);
+            emitter.Assign(SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
+            emitter.Assign(SrcOp(di.Instruction.op2), itmp);
         }
 
         private void RewriteIncDec(int amount)
@@ -310,12 +302,12 @@ namespace Decompiler.Arch.X86
                 amount = -amount;
             }
 
-            var ass = EmitBinOp(op,
+            EmitBinOp(op,
                 di.Instruction.op1,
                 di.Instruction.op1.Width,
                 SrcOp(di.Instruction.op1),
-                emitter.Const(di.Instruction.op1.Width, amount));
-            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+                emitter.Const(di.Instruction.op1.Width, amount),
+                CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
         private void RewriteLogical(BinaryOperator op)
@@ -331,25 +323,26 @@ namespace Decompiler.Arch.X86
                 }
             }
 
-            var ass = EmitBinOp(
+            EmitBinOp(
                 op,
                 di.Instruction.op1,
                 di.Instruction.op1.Width,
                 SrcOp(di.Instruction.op1),
-                SrcOp(di.Instruction.op2));
-            EmitCcInstr(ass.Dst, (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
+                SrcOp(di.Instruction.op2),
+                CopyFlags.ForceBreak);
+            EmitCcInstr(SrcOp(di.Instruction.op1), (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
         private void RewriteMultiply(BinaryOperator op, Domain resultDomain)
         {
             RtlAssignment ass;
+            Expression product;
             switch (di.Instruction.Operands)
             {
             case 1:
                 {
                     Identifier multiplicator;
-                    Identifier product;
 
                     switch (di.Instruction.op1.Width.Size)
                     {
@@ -370,28 +363,36 @@ namespace Decompiler.Arch.X86
                     default:
                         throw new ApplicationException(string.Format("Unexpected operand size: {0}", di.Instruction.op1.Width));
                     };
-                    ass = emitter.Assign(product,
-                        new BinaryExpression(op, PrimitiveType.Create(resultDomain, product.DataType.Size), SrcOp(di.Instruction.op1), multiplicator));
+                    emitter.Assign(
+                        product,
+                        new BinaryExpression(
+                            op, 
+                            PrimitiveType.Create(resultDomain, product.DataType.Size),
+                            SrcOp(di.Instruction.op1),
+                            multiplicator));
+                    EmitCcInstr(product, IntelInstruction.DefCc(di.Instruction.code));
+                    return;
                 }
                 break;
             case 2:
-                ass = EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
-                break;
+                EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2), 
+                    CopyFlags.ForceBreak|CopyFlags.EmitCc);
+                return;
             case 3:
-                ass = EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op2), SrcOp(di.Instruction.op3));
-                break;
+                EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op2), SrcOp(di.Instruction.op3),
+                    CopyFlags.ForceBreak | CopyFlags.EmitCc);
+                return;
             default:
                 throw new ArgumentException("Invalid number of operands");
             }
-            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
         }
 
         private void RewriteIn()
         {
             var ppName = "__in" + IntelSizeSuffix(di.Instruction.op1.Width.Size);
-            EmitCopy(
-                di.Instruction.op1,
-                PseudoProc(ppName, di.Instruction.op1.Width, SrcOp(di.Instruction.op2)), false);
+            emitter.Assign(
+                SrcOp(di.Instruction.op1),
+                PseudoProc(ppName, di.Instruction.op1.Width, SrcOp(di.Instruction.op2)));
         }
 
         private string IntelSizeSuffix(int size)
@@ -432,7 +433,7 @@ namespace Decompiler.Arch.X86
                     src = orw.AddrOf(src);
                 }
             }
-            EmitCopy(di.Instruction.op1, src, false);
+            emitter.Assign(SrcOp(di.Instruction.op1), src);
         }
 
         private void RewriteLeave()
@@ -461,7 +462,23 @@ namespace Decompiler.Arch.X86
 
         private void RewriteMov()
         {
-            EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2, di.Instruction.op1.Width), false);
+            emitter.Assign(
+                SrcOp(di.Instruction.op1),
+                SrcOp(di.Instruction.op2, di.Instruction.op1.Width));
+        }
+
+        private void RewriteMovsx()
+        {
+            emitter.Assign(
+                SrcOp(di.Instruction.op1),
+                emitter.Cast(PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size), SrcOp(di.Instruction.op2)));
+        }
+
+        private void RewriteMovzx()
+        {
+            emitter.Assign(
+                SrcOp(di.Instruction.op1),
+                emitter.Cast(di.Instruction.op1.Width, SrcOp(di.Instruction.op2)));
         }
 
         private void RewritePush()
@@ -538,14 +555,12 @@ namespace Decompiler.Arch.X86
 
         private void RewriteNeg()
         {
-            Expression tmp = RewriteUnaryOperator(Operator.Neg, di.Instruction.op1, di.Instruction.op1);
-            EmitCcInstr(tmp, IntelInstruction.DefCc(di.Instruction.code));
-            emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(tmp));
+            RewriteUnaryOperator(Operator.Neg, di.Instruction.op1, di.Instruction.op1, CopyFlags.ForceBreak|CopyFlags.EmitCc|CopyFlags.SetCfIf0);
         }
 
         private void RewriteNot()
         {
-            Expression tmp = RewriteUnaryOperator(Operator.Comp, di.Instruction.op1, di.Instruction.op1);
+            RewriteUnaryOperator(Operator.Comp, di.Instruction.op1, di.Instruction.op1, CopyFlags.ForceBreak);
         }
 
         private void RewriteOut()
@@ -563,7 +578,7 @@ namespace Decompiler.Arch.X86
         private void RewritePop(MachineOperand op, PrimitiveType width)
         {
             var sp = StackPointer();
-            EmitCopy(op, orw.StackAccess(sp, width), false);
+            emitter.Assign(SrcOp(op), orw.StackAccess(sp, width));
             emitter.Assign(sp, emitter.IAdd(sp, width.Size));
         }
 
@@ -666,14 +681,14 @@ namespace Decompiler.Arch.X86
             {
                 p = PseudoProc(operation, di.Instruction.op1.Width, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
             }
-            EmitCopy(di.Instruction.op1, p, false);
+            emitter.Assign(SrcOp(di.Instruction.op1), p);
             if (t != null)
                 emitter.Assign(orw.FlagGroup(FlagM.CF), t);
         }
 
         private void RewriteSet(ConditionCode cc)
         {
-            EmitCopy(di.Instruction.op1, CreateTestCondition(cc, di.Instruction.code), false);
+            emitter.Assign(SrcOp(di.Instruction.op1), CreateTestCondition(cc, di.Instruction.code));
         }
 
         private void RewriteSetFlag(FlagM flagM, Constant value)
@@ -684,14 +699,16 @@ namespace Decompiler.Arch.X86
             emitter.Assign(id, value);
         }
 
-
         private void RewriteShxd(string name)
         {
             var ppp = host.EnsurePseudoProcedure(name, di.Instruction.op1.Width, 3);
-            EmitCopy(di.Instruction.op1, emitter.Fn(ppp,
-                            SrcOp(di.Instruction.op1),
-                            SrcOp(di.Instruction.op2),
-                            SrcOp(di.Instruction.op3)), false);
+            emitter.Assign(
+                SrcOp(di.Instruction.op1), 
+                emitter.Fn(
+                    ppp,
+                    SrcOp(di.Instruction.op1),
+                    SrcOp(di.Instruction.op2),
+                    SrcOp(di.Instruction.op3)));
         }
 
         public MemoryAccess MemDi()
@@ -846,22 +863,9 @@ namespace Decompiler.Arch.X86
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
-        private Expression RewriteUnaryOperator(UnaryOperator op, MachineOperand opDst, MachineOperand opSrc)
+        private void RewriteUnaryOperator(UnaryOperator op, MachineOperand opDst, MachineOperand opSrc, CopyFlags flags)
         {
-            Expression src = SrcOp(opSrc);
-            if (src is MemoryAccess)
-            {
-                Identifier tmp = frame.CreateTemporary(opDst.Width);
-                emitter.Assign(tmp, src);
-                var acc = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
-                emitter.Assign(acc, new UnaryExpression(op, opSrc.Width, tmp));
-                return tmp;
-            }
-            else
-            {
-                EmitCopy(opDst, new UnaryExpression(op, opSrc.Width, src), false);
-                return src;
-            }
+            EmitCopy(opDst, new UnaryExpression(op, opSrc.Width, SrcOp(opSrc)), flags);
         }
 
         private void RewriteXlat()

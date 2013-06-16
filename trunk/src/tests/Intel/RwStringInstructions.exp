@@ -33,8 +33,8 @@ fn0C00_0000_exit:
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
-// ds:ds
 // cx:cx
+// ds:ds
 // al:al
 // di:di
 // SCZO:Flags

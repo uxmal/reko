@@ -112,7 +112,7 @@ l0C00_0035:
 	wLoc02 = di
 	v7 = Mem0[ds:si + 0x0002:word16] + 0x0001
 	Mem0[ds:si + 0x0002:word16] = v7
-	SZO = cond(Mem0[ds:si + 0x0002:word16])
+	SZO = cond(v7)
 	ax = Mem0[ds:si + 0x0002:word16]
 	ax = ax << 0x0002
 	SCZO = cond(ax)

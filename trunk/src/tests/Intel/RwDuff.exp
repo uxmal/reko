@@ -2,8 +2,8 @@
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
-// ds:ds
 // bx:bx
+// ds:ds
 // cx:cx
 // SZO:Flags
 // C:Flags

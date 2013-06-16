@@ -8,8 +8,8 @@
 // ax:ax
 // bx:bx
 // SCZO:Flags
-// Z:Flags
 // cl:cl
+// Z:Flags
 // ds:ds
 // SO:Flags
 // return address size: 2

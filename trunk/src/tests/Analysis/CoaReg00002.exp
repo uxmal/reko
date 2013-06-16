@@ -1,14 +1,14 @@
 Mem0:Global memory
 fp:Temporary
 sp:sp
-edx:edx
-    def:  def edx
-    uses: Mem10[ds:0x7960:word32] = edx
-          Mem17[ds:si + 0x00C8:word32] = -edx
 ds:ds
     def:  def ds
     uses: Mem10[ds:0x7960:word32] = edx
           Mem11[ds:0x7964:byte] = cl
+          Mem17[ds:si + 0x00C8:word32] = -edx
+edx:edx
+    def:  def edx
+    uses: Mem10[ds:0x7960:word32] = edx
           Mem17[ds:si + 0x00C8:word32] = -edx
 cl:cl
     def:  def cl
@@ -34,8 +34,8 @@ Mem17: orig: Mem0
 // fn0C00_0000
 void fn0C00_0000(word32 edx, word16 si, byte cl, selector ds)
 fn0C00_0000_entry:
-	def edx
 	def ds
+	def edx
 	def cl
 	def si
 	// succ:  l0C00_0000

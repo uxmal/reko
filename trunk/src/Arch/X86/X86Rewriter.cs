@@ -220,8 +220,8 @@ namespace Decompiler.Arch.X86
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
-                case Opcode.movsx: EmitCopy(di.Instruction.op1, emitter.Cast(PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size), SrcOp(di.Instruction.op2)), false); break;
-                case Opcode.movzx: EmitCopy(di.Instruction.op1, emitter.Cast(di.Instruction.op1.Width, SrcOp(di.Instruction.op2)), false); break;
+                case Opcode.movsx: RewriteMovsx(); break;
+                case Opcode.movzx: RewriteMovzx();  break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.nop: continue;
@@ -299,6 +299,14 @@ namespace Decompiler.Arch.X86
             return GetEnumerator();
         }
 
+        [Flags]
+        public enum CopyFlags
+        {
+            ForceBreak = 1,
+            EmitCc = 2,
+            SetCfIf0 = 4,
+        }
+
         /// <summary>
         /// Breaks up very common case of x86:
         /// <code>
@@ -313,32 +321,33 @@ namespace Decompiler.Arch.X86
         /// <param name="opDst"></param>
         /// <param name="src"></param>
         /// <param name="forceBreak">if true, forcibly splits the assignments in two if the destination is a memory store.</param>
-        /// <returns></returns>
-        public RtlAssignment EmitCopy(MachineOperand opDst, Expression src, bool forceBreak)
+        /// <returns>Returns the destination of the copy.</returns>
+        public void EmitCopy(MachineOperand opDst, Expression src, CopyFlags flags)
         {
             Expression dst = SrcOp(opDst);
             Identifier idDst = dst as Identifier;
-            if (idDst != null || !forceBreak)
+            if (idDst != null || (flags & CopyFlags.ForceBreak) == 0)
             {
-                MemoryAccess acc = dst as MemoryAccess;
-                if (acc != null)
-                {
-                    return emitter.Assign(acc, src);
-                }
-                else
-                {
-                    return emitter.Assign(idDst, src);
-                }
+                emitter.Assign(dst, src);
             }
             else
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 emitter.Assign(tmp, src);
-                var ea = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
-                return emitter.Assign(ea, tmp);
+                var ea = orw.CreateMemoryAccess((MemoryOperand) opDst, state);
+                emitter.Assign(ea, tmp);
+                dst = tmp;
+            }
+            if ((flags & CopyFlags.EmitCc) != 0)
+            {
+                EmitCcInstr(dst, IntelInstruction.DefCc(di.Instruction.code));
+            }
+            if ((flags & CopyFlags.SetCfIf0) != 0)
+            {
+                emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(dst));
             }
         }
-
+    
         private Expression SrcOp(MachineOperand opSrc)
         {
             return orw.Transform(opSrc, opSrc.Width, state);

@@ -52,7 +52,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp cx:0x002A ax:<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):0x0002 -6(fp):0x0001 -4(fp):0x0002 -2(fp):0x0001
+// SymbolicIn: sp:fp - 0x0004 cx:0x002A ax:<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):0x0002 -6(fp):0x0001 -4(fp):0x0002 -2(fp):0x0001
 
 // fn0C00_0023 /////////////////////
 	LiveOut:   ds
@@ -64,7 +64,7 @@ fn0C00_0000_exit:
 void fn0C00_0023()
 fn0C00_0023_entry:
 // DataOut: ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: Stack +0002(16) Stack +0004(16) Temporary(16)
 
@@ -79,11 +79,10 @@ l0C00_0023:
 	ax = ax + cx
 	SCZO = cond(ax)
 	bp = wLoc04
- 	sp = fp - 0x0002
+	sp = fp - 0x0002
 	cx = wLoc02
 	sp = fp
 	return
-
 // DataOut: ds
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -175,7 +174,7 @@ fn0C00_005D_entry:
 // SymbolicIn: sp:fp
 // LocalsOut: Stack +0004(16) Temporary(16)
 
-l0C00_005D:		
+l0C00_005D:
 	sp = fp - 0x0002
 	wLoc02 = cx
 	sp = fp - 0x0004
@@ -197,7 +196,6 @@ fn0C00_005D_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp bp:bp ax:<invalid> cx:cx -4(fp):bp -2(fp):cx
-
 
 // fn0C00_0069 /////////////////////
 	LiveOut:  

@@ -1,8 +1,8 @@
 Mem0:Global memory (aliases:)
 fp:Temporary (aliases:)
 sp:sp (aliases:)
-ds:ds (aliases:)
 ax:ax (aliases:)
+ds:ds (aliases:)
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -20,8 +20,8 @@ fp:Temporary (aliases:)
 sp:sp (aliases:)
 ax:ax (aliases: al)
 ss:ss (aliases:)
-ds:ds (aliases:)
 al:al (aliases: ax)
+ds:ds (aliases:)
 wLoc02:Local -0002 (aliases:)
 // fn0C00_000C
 void fn0C00_000C()

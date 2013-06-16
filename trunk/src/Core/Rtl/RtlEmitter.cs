@@ -39,11 +39,11 @@ namespace Decompiler.Core.Rtl
             this.instrs = instrs;
         }
 
-        public RtlAssignment Assign(Expression dst, Expression src)
+        public RtlEmitter Assign(Expression dst, Expression src)
         {
             var ass = new RtlAssignment(dst, src);
             instrs.Add(ass);
-            return ass;
+            return this;
         }
 
         public void Branch(Expression condition, Address target)

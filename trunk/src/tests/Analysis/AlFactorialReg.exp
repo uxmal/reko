@@ -2,8 +2,8 @@ Mem0:Global memory (aliases:)
 fp:Temporary (aliases:)
 sp:sp (aliases:)
 cx:cx (aliases:)
-ax:ax (aliases:)
 ds:ds (aliases:)
+ax:ax (aliases:)
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:

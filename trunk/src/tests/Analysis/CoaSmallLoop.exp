@@ -6,6 +6,7 @@ sp:sp
 ax:ax
 SZO:Flags
 C:Flags
+cx:cx
 bx:bx
     def:  def bx
     uses: cx_14 = Mem0[ds:bx:word16]
@@ -13,7 +14,6 @@ ds:ds
     def:  def ds
     uses: cx_14 = Mem0[ds:bx:word16]
           Mem24[ds:0x0300:word16] = ax_19
-cx:cx
 SCZO:Flags
 ax_10: orig: ax
     def:  ax_10 = 0x0000

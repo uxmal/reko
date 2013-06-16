@@ -38,8 +38,8 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // Mem0:Global memory
 // fp:Temporary
 // sp:sp
-// ds:ds
 // si:si
+// ds:ds
 // SCZO:Flags
 // Z:Flags
 // ax:ax

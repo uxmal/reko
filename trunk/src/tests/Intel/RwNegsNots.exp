@@ -23,12 +23,12 @@ l0C00_0000:
 	eax = eax - eax - C
 	SCZO = cond(eax)
 	Mem0[ds:0x0300:word32] = eax
-	v7 = Mem0[ds:0x0202:word16]
-	Mem0[ds:0x0202:word16] = -v7
+	v7 = -Mem0[ds:0x0202:word16]
+	Mem0[ds:0x0202:word16] = v7
 	SCZO = cond(v7)
 	C = v7 == 0x0000
-	v8 = Mem0[ds:0x0200:word16]
-	Mem0[ds:0x0200:word16] = -v8
+	v8 = -Mem0[ds:0x0200:word16]
+	Mem0[ds:0x0200:word16] = v8
 	SCZO = cond(v8)
 	C = v8 == 0x0000
 	ecx = ecx - ecx - C
@@ -36,8 +36,8 @@ l0C00_0000:
 	Mem0[ds:0x0308:word32] = ecx
 	bx = ~bx
 	Mem0[ds:0x0304:word16] = bx
-	v11 = Mem0[ds:0x0204:word16]
-	Mem0[ds:0x0204:word16] = ~v11
+	v11 = ~Mem0[ds:0x0204:word16]
+	Mem0[ds:0x0204:word16] = v11
 	cx = Mem0[ds:0x0304:word16]
 	cx = cx - 0x03E8
 	SCZO = cond(cx)
