@@ -132,7 +132,7 @@ namespace Decompiler.Core
 
         public Statement Sub(Identifier diff, Expression left, Expression right)
         {
-            return Emit(new Assignment(diff, Sub(left, right)));
+            return Emit(new Assignment(diff, ISub(left, right)));
         }
 
         public Statement Sub(Identifier diff, Expression left, int right)

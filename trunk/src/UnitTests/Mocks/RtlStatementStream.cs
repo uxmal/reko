@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Call(Expression target)
         {
-            var call = new RtlCall(target, 4);
+            var call = new RtlCall(target, 4, true);
             return Emit(call);
         }
 
@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Goto(uint target)
         {
-            var g = new RtlGoto(new Address(target));
+            var g = new RtlGoto(new Address(target), true);
             return Emit(g);
         }
 

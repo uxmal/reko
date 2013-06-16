@@ -95,9 +95,9 @@ namespace Decompiler.Core
         public void AddIncrement(Constant c)
         {
             if (Initial != null)
-                Initial = Operator.Add.ApplyConstants(Initial, c);
+                Initial = Operator.IAdd.ApplyConstants(Initial, c);
             if (Final != null)
-                Final = Operator.Add.ApplyConstants(Final, c);
+                Final = Operator.IAdd.ApplyConstants(Final, c);
         }
 
 		public LinearInductionVariable Scale(Constant c)
@@ -107,10 +107,10 @@ namespace Decompiler.Core
 			Constant final = Final;
 
 			if (initial != null)
-				initial = Operator.Muls.ApplyConstants(initial, c);
-			delta = Operator.Muls.ApplyConstants(delta, c);
+				initial = Operator.SMul.ApplyConstants(initial, c);
+			delta = Operator.SMul.ApplyConstants(delta, c);
 			if (final != null)
-				final = Operator.Muls.ApplyConstants(final, c);
+				final = Operator.SMul.ApplyConstants(final, c);
 			return new LinearInductionVariable(initial, delta, final, IsSigned);
 		}
 

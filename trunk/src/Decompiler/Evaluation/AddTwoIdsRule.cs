@@ -47,13 +47,13 @@ namespace Decompiler.Evaluation
 			idRight = binExp.Right as Identifier;
 			if (idRight == null)
 				return false;
-			return (idLeft == idRight && binExp.Operator == Operator.Add);
+			return (idLeft == idRight && binExp.Operator == Operator.IAdd);
 		}
 
         public Expression Transform()
         {
             ctx.RemoveIdentifierUse(idLeft);
-            return new BinaryExpression(Operator.Mul, idLeft.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
+            return new BinaryExpression(Operator.IMul, idLeft.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
         }
 	}
 }

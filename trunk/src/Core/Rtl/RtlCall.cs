@@ -29,7 +29,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlCall : RtlTransfer
     {
-        public RtlCall(Expression target, byte stackPushedReturnAddressSize) : base(target)
+        public RtlCall(Expression target, byte stackPushedReturnAddressSize, bool annulled) : base(target, annulled)
         {
             this.ReturnAddressSize = stackPushedReturnAddressSize;
         }

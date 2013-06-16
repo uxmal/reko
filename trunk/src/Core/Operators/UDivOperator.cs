@@ -18,27 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
 using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Decompiler.Core.Operators
 {
-	public class ByteArrayLoopMock : ProcedureBuilder
+	public class UDivOperator : BinaryOperator
 	{
-		protected override void BuildBody()
+		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			var a = Local32("a");
-			var i = Local32("i");
-			Assign(i, 0);
-			Label("loop");
-			BranchIf(Lt(i,10), "body");
-			Return();
-			Label("body");
-			Store(IAdd(a, i), Int8(0));
-			Assign(i, IAdd(i, 1));
-			Jump("loop");
+            return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt32() / c2.ToUInt32()));
+		}
+
+		public override string ToString()
+		{
+			return " /u ";
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Evaluation
         [Test]
         public void Test1()
         {
-            BinaryExpression b = m.Add(m.Muls(id, 4), id);
+            BinaryExpression b = m.IAdd(m.SMul(id, 4), id);
             Assignment ass = new Assignment(x, b);
             Statement stm = new Statement(0, ass, null);
             ssaIds[id].Uses.Add(stm);
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Evaluation
         [Test]
         public void Test2()
         {
-            BinaryExpression b = m.Add(id, m.Mulu(id, 5));
+            BinaryExpression b = m.IAdd(id, m.UMul(id, 5));
             Assignment ass = new Assignment(x, b);
             Statement stm = new Statement(0, ass, null);
             Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(ssaIds));

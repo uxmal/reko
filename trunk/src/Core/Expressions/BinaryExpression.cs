@@ -74,11 +74,14 @@ namespace Decompiler.Core.Expressions
 
 		public static bool Commutes(Operator op)
 		{
-			return op == Operators.Operator.Add ||
+			return
+                op == Operators.Operator.IAdd ||
+                op == Operators.Operator.FAdd ||
                 op == Operators.Operator.And ||
-                op == Operators.Operator.Muls ||
-                op == Operators.Operator.Mulu ||
-                op == Operators.Operator.Mul ||
+                op == Operators.Operator.SMul ||
+                op == Operators.Operator.UMul ||
+                op == Operators.Operator.IMul ||
+                op == Operators.Operator.FMul ||
                 op == Operators.Operator.Or ||
                 op == Operators.Operator.Xor;
 		}

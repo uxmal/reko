@@ -140,7 +140,7 @@ namespace Decompiler.Arch.X86
                 eBase = AluRegister(mem.Base);
                 if (expr != null)
                 {
-                    expr = new BinaryExpression(Operator.Add, eBase.DataType, eBase, expr);
+                    expr = new BinaryExpression(Operator.IAdd, eBase.DataType, eBase, expr);
                 }
                 else
                 {
@@ -152,12 +152,12 @@ namespace Decompiler.Arch.X86
             {
                 if (expr != null)
                 {
-                    BinaryOperator op = Operator.Add;
+                    BinaryOperator op = Operator.IAdd;
                     long l = mem.Offset.ToInt64();
                     if (l < 0)
                     {
                         l = -l;
-                        op = Operator.Sub;
+                        op = Operator.ISub;
                     }
 
                     DataType dt = (eBase != null) ? eBase.DataType : eIndex.DataType;
@@ -176,9 +176,9 @@ namespace Decompiler.Arch.X86
                 if (mem.Scale != 0 && mem.Scale != 1)
                 {
                     eIndex = new BinaryExpression(
-                        Operator.Mul, eIndex.DataType, eIndex, Constant.Create(mem.Width, mem.Scale));
+                        Operator.IMul, eIndex.DataType, eIndex, Constant.Create(mem.Width, mem.Scale));
                 }
-                expr = new BinaryExpression(Operator.Add, expr.DataType, expr, eIndex);
+                expr = new BinaryExpression(Operator.IAdd, expr.DataType, expr, eIndex);
             }
             return expr;
         }

@@ -18,27 +18,31 @@
  */
 #endregion
 
-using Decompiler.Core;
 using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Decompiler.Core.Operators
 {
-	public class ByteArrayLoopMock : ProcedureBuilder
+	/// <summary>
+	/// Unsigned multiplication. 
+	/// </summary>
+	public class UMulOperator : IMulOperator
 	{
-		protected override void BuildBody()
+		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			var a = Local32("a");
-			var i = Local32("i");
-			Assign(i, 0);
-			Label("loop");
-			BranchIf(Lt(i,10), "body");
-			Return();
-			Label("body");
-			Store(IAdd(a, i), Int8(0));
-			Assign(i, IAdd(i, 1));
-			Jump("loop");
+			try
+			{
+				return BuildConstant(c1.DataType, c2.DataType, unchecked((int) (c1.ToUInt32() * c2.ToUInt32())));
+			}
+			catch	//$HACK: sometimes we get -ive numbers here, at which point .NET casts fail; attempt to use signed integers instead.
+			{
+				return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c1.ToInt32());
+			}
+		}
+
+		public override string ToString()
+		{
+			return " *u ";
 		}
 	}
 }

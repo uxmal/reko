@@ -23,16 +23,19 @@ using System;
 
 namespace Decompiler.Core.Operators
 {
-	public class DivuOperator : BinaryOperator
+	/// <summary>
+	/// Signed multiplication.
+	/// </summary>
+	public class SMulOperator : IMulOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-            return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt32() / c2.ToUInt32()));
+			return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c2.ToInt32());
 		}
-
+		
 		public override string ToString()
 		{
-			return " /u ";
+			return " *s ";
 		}
 	}
 }

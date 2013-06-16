@@ -177,7 +177,7 @@ namespace Decompiler.UnitTests.Analysis
 				Identifier b  = Local32("b");
 				Identifier c  = Local32("c");
 
-				Assign(c, Add(a, b));
+				Assign(c, IAdd(a, b));
 				Store(Int32(0x10000000), c);
 				Store(Int32(0x10000004), a);
 			}
@@ -192,21 +192,21 @@ namespace Decompiler.UnitTests.Analysis
 				
 				Label("loopTop");
 				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, Add(r0, 1));
+				Assign(r0, IAdd(r0, 1));
 				BranchIf(Ne(r1, base.Int8(1)), "not1");
 
 				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, Add(r0, 1));
+				Assign(r0, IAdd(r0, 1));
 				Store(Int32(0x33333330), r1);
 				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, Add(r0, 1));
+				Assign(r0, IAdd(r0, 1));
 				Store(Int32(0x33333331), r1);
 				Jump("loopTop");
 
 				Label("not1");
 				BranchIf(Ne(r1, base.Int8(2)), "done");
 				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, Add(r0, 1));
+				Assign(r0, IAdd(r0, 1));
 				Store(Int32(0x33333330), r1);
 				Jump("loopTop");
 

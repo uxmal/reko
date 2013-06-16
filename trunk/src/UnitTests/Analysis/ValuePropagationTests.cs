@@ -129,7 +129,7 @@ namespace Decompiler.UnitTests.Analysis
             var vp = CreatePropagatorWithDummyStatement();
 			BinaryExpression expr = 
 				new BinaryExpression(Operator.Eq, PrimitiveType.Bool, 
-				new BinaryExpression(Operator.Sub, PrimitiveType.Word32, foo,
+				new BinaryExpression(Operator.ISub, PrimitiveType.Word32, foo,
 				Constant.Word32(1)),
 				Constant.Word32(0));
 			Assert.AreEqual("foo - 0x00000001 == 0x00000000", expr.ToString());
@@ -151,7 +151,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier r = Reg32("r");
 			Identifier s = Reg32("s");
 
-            var sub = new BinaryExpression(Operator.Sub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
+            var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 			var exp = sub.Accept(vp);
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
@@ -193,7 +193,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier w = Reg32("w");
 			Statement stmX = new Statement(0, new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x10004000), PrimitiveType.Word32)), null);
 			Statement stmY = new Statement(1, new Assignment(y, x), null);
-			Statement stmZ = new Statement(2, new Assignment(z, new BinaryExpression(Operator.Add, PrimitiveType.Word32, y, Constant.Word32(2))), null);
+			Statement stmZ = new Statement(2, new Assignment(z, new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, y, Constant.Word32(2))), null);
 			Statement stmW = new Statement(3, new Assignment(w, y), null);
 			ssaIds[x].DefStatement = stmX;
 			ssaIds[y].DefStatement = stmY;
@@ -237,7 +237,7 @@ namespace Decompiler.UnitTests.Analysis
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 			Expression e = vp.VisitUnaryExpression(
 				new UnaryExpression(Operator.Neg, PrimitiveType.Word32, new BinaryExpression(
-				Operator.Sub, PrimitiveType.Word32, x, y)));
+				Operator.ISub, PrimitiveType.Word32, x, y)));
 			Assert.AreEqual("y - x", e.ToString());
 		}
 
@@ -252,8 +252,8 @@ namespace Decompiler.UnitTests.Analysis
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
-				new BinaryExpression(Operator.Add, t, 
-					new BinaryExpression(Operator.Muls, t, id, Constant.Create(t, 4)),
+				new BinaryExpression(Operator.IAdd, t, 
+					new BinaryExpression(Operator.SMul, t, id, Constant.Create(t, 4)),
 					id),
 				Constant.Create(t, 2));
 			Expression e = vp.VisitBinaryExpression(b);

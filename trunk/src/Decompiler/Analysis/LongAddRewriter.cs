@@ -351,7 +351,7 @@ namespace Decompiler.Analysis
             if (!IsCarryFlag(adcPattern.CapturedExpressions("cf")))
                 return null;
             var op = adcPattern.CapturedOperators("op2");
-            if (!IsAddOrSub(op))
+            if (!IsIAddOrISub(op))
                 return null;
             return new AddSubCandidate
             {
@@ -367,7 +367,7 @@ namespace Decompiler.Analysis
             if (!addPattern.Match(instr))
                 return null;
             var op = addPattern.CapturedOperators("op");
-            if (!IsAddOrSub(op))
+            if (!IsIAddOrISub(op))
                 return null;
             return new AddSubCandidate
             {
@@ -378,9 +378,9 @@ namespace Decompiler.Analysis
             };
         }
 
-        private static bool IsAddOrSub(Operator op)
+        private static bool IsIAddOrISub(Operator op)
         {
-            return (op == Operator.Add || op == Operator.Sub);
+            return (op == Operator.IAdd || op == Operator.ISub);
         }
 
         public IEnumerable<CarryLinkedInstructions> FindCarryLinkedInstructions(Block block)

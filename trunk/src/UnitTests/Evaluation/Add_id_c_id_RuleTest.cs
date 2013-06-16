@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Evaluation
 			var m = new ProcedureBuilder();
 			var id = m.Local32("id");
 			var x = m.Local32("x");
-			var stm = m.Assign(x, m.Add(m.Muls(id, 4), id));
+			var stm = m.Assign(x, m.IAdd(m.SMul(id, 4), id));
 		}
 	}
 }

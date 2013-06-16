@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Mocks
             m.Store(m.Word16(0x304), m.SegMem(
                 PrimitiveType.Word16,
                 m.Slice(PrimitiveType.SegmentSelector, es_bx, 16),
-                m.Add(m.Slice(PrimitiveType.Word16, es_bx, 0), 4)));
+                m.IAdd(m.Slice(PrimitiveType.Word16, es_bx, 0), 4)));
         }
     }
 }

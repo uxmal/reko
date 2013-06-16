@@ -46,8 +46,8 @@ namespace Decompiler.UnitTests.Core
 			Identifier id2 = new Identifier("v2", 2, PrimitiveType.Word16, null);
 
 			Expression e = new BinaryExpression(
-				Operator.Mul, PrimitiveType.Word16, new BinaryExpression(
-				Operator.Add, PrimitiveType.Word16, id1, id2), Constant.Word16(2));
+				Operator.IMul, PrimitiveType.Word16, new BinaryExpression(
+				Operator.IAdd, PrimitiveType.Word16, id1, id2), Constant.Word16(2));
 			e.Accept(cf);
 
 			Assert.AreEqual("(v1 + v2) * 0x0002", sw.ToString());
@@ -60,8 +60,8 @@ namespace Decompiler.UnitTests.Core
 			Identifier id2 = new Identifier("v2", 2, PrimitiveType.Word16, null);
 
 			Expression e = new BinaryExpression(
-				Operator.Add, PrimitiveType.Word16, new BinaryExpression(
-				Operator.Mul, PrimitiveType.Word16, id1, id2), Constant.Word16(2));
+				Operator.IAdd, PrimitiveType.Word16, new BinaryExpression(
+				Operator.IMul, PrimitiveType.Word16, id1, id2), Constant.Word16(2));
 			e.Accept(cf);
 
 			Assert.AreEqual("v1 * v2 + 0x0002", sw.ToString());

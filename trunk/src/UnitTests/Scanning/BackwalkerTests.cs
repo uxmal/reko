@@ -66,9 +66,9 @@ namespace Decompiler.UnitTests.Scanning
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var bw = new Backwalker(
                 host,
-                new RtlGoto(m.LoadDw(m.Add(eax, 0x10000))),
+                new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), true),
                 expSimp);
-            Assert.IsTrue(bw.BackwalkInstruction(m.Assign(eax, m.Add(eax, eax))));
+            Assert.IsTrue(bw.BackwalkInstruction(m.Assign(eax, m.IAdd(eax, eax))));
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual("* 2", bw.Operations[0].ToString());
             Assert.AreEqual(2, bw.Stride);
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Scanning
         public void BackwalkAndMask()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.Add(eax, 0x10000))), expSimp);
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), true), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x7))));
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual(0x10000, bw.VectorAddress.Linear);
@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF|FlagM.ZF|FlagM.CF|FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.Add(eax, 0x1000))), expSimp);
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), true), expSimp);
             Assert.IsTrue(
                 bw.BackwalkInstruction(
                     m.BranchIf(
@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.Add(eax, 0x1000))), expSimp);
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), true), expSimp);
             bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup((uint)FlagM.CF, "C", PrimitiveType.Byte);
             Assert.IsFalse(bw.BackwalkInstruction(
                 m.Assign(SCZO, new ConditionOf(m.Sub(eax, 3)))), "Encountering this comparison should terminate the backwalk");
@@ -117,7 +117,7 @@ namespace Decompiler.UnitTests.Scanning
         public void BackwalkAndMaskWithHoles()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.Add(eax, 0x10000))), expSimp);
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)),true), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x0A))));
             Assert.IsNull(bw.Index);
             Assert.AreEqual(0, bw.Operations.Count);
@@ -130,9 +130,9 @@ namespace Decompiler.UnitTests.Scanning
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var al = m.Frame.EnsureRegister(Registers.al);
             var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.Add(eax, 0x1000))), expSimp);
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), true), expSimp);
             Assert.IsTrue(bw.BackwalkInstruction(
-                m.Assign(al, m.LoadB(m.Add(edx, 0x1004)))));
+                m.Assign(al, m.LoadB(m.IAdd(edx, 0x1004)))));
             Assert.AreSame(Registers.edx, bw.Index);
         }
 
@@ -142,7 +142,7 @@ namespace Decompiler.UnitTests.Scanning
             var bx = m.Frame.EnsureRegister(Registers.bx);
             var bl = m.Frame.EnsureRegister(Registers.bl);
             var bh = m.Frame.EnsureRegister(Registers.bh);
-            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.Add(bx, 0x1000))), expSimp);
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(bx, 0x1000)), true), expSimp);
 
             Assert.IsTrue(bw.BackwalkInstruction(
                 m.Assign(bh, m.Xor(bh, bh))));
@@ -168,7 +168,7 @@ namespace Decompiler.UnitTests.Scanning
             //m.Ja("default");
 
             var block0 = m.CurrentBlock;
-            m.Assign(eax, m.LoadDw(m.Add(esp, 4)));
+            m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
             m.Assign(SCZO, new ConditionOf(m.Sub(eax, 3)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
 
@@ -181,7 +181,7 @@ namespace Decompiler.UnitTests.Scanning
 
             m.Assign(edx, m.Xor(edx, edx));
             m.Assign(SCZO, new ConditionOf(edx));
-            m.Assign(dl, m.LoadB(m.Add(eax, 0x10000)));
+            m.Assign(dl, m.LoadB(m.IAdd(eax, 0x10000)));
 
 
             //m.Label("bytes");
@@ -213,7 +213,7 @@ namespace Decompiler.UnitTests.Scanning
             //m.Dd(0);
 
             RunTest(new IntelArchitecture(ProcessorMode.Protected32),
-                new RtlGoto(m.LoadDw(m.Add(m.Mul(edx, 4), 0x10010))),
+                new RtlGoto(m.LoadDw(m.IAdd(m.IMul(edx, 4), 0x10010)), true),
                 "Scanning/BwSwitch32.txt");
         }
 
@@ -231,18 +231,18 @@ namespace Decompiler.UnitTests.Scanning
             m.Assign(sp, m.Sub(sp, 2));
             m.Store(sp, cs);
             m.Assign(ds, m.LoadW(sp));
-            m.Assign(sp, m.Add(sp, 2));
+            m.Assign(sp, m.IAdd(sp, 2));
             m.Assign(bl, m.LoadB(si));
             m.Assign(SCZO, new ConditionOf(m.Sub(bl, 2)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "grox");
 
             m.Assign(bh, m.Xor(bh, bh));
             m.Assign(SCZO, new ConditionOf(bh));
-            m.Assign(bx, m.Add(bx, bx));
+            m.Assign(bx, m.IAdd(bx, bx));
             m.Assign(SCZO, new ConditionOf(bx));
 
             RunTest(new IntelArchitecture(ProcessorMode.Real),
-                new RtlGoto(m.LoadW(m.Add(bx, 0x1234))),
+                new RtlGoto(m.LoadW(m.IAdd(bx, 0x1234)), true),
                 "Scanning/BwSwitch16.txt");
         }
 
@@ -251,10 +251,10 @@ namespace Decompiler.UnitTests.Scanning
 		{
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", 0, Registers.di.DataType, Registers.di);
-			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType)),
+			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType), true),
                 new ExpressionSimplifier(state));
 			var instrs = new StatementList(new Block(null, "foo"));
-			instrs.Add(0, new Assignment(di, new BinaryExpression(Operator.Add, di.DataType, di, Constant.Word16(1))));
+			instrs.Add(0, new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1))));
 			var r = bw.BackwalkInstructions(Registers.di, instrs);
 			Assert.AreSame(Registers.di, bw.Index);
 			Assert.AreEqual("+ 1", bw.Operations[0].ToString());
@@ -277,7 +277,7 @@ namespace Decompiler.UnitTests.Scanning
         public void DetectIndexRegister()
         {
             var edx = m.Frame.EnsureRegister(Registers.edx);
-            var xfer = new RtlGoto(m.LoadDw(m.Add(m.Word32(0x10001234), m.Mul(edx, 4))));
+            var xfer = new RtlGoto(m.LoadDw(m.IAdd(m.Word32(0x10001234), m.IMul(edx, 4))), true);
             var bw = new Backwalker(host, xfer, expSimp);
             Assert.AreSame(Registers.edx, bw.Index);
         }

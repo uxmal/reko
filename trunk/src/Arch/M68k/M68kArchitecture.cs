@@ -95,7 +95,7 @@ namespace Decompiler.Arch.M68k
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return new MemoryAccess(new BinaryExpression(
-                Operator.Add, FramePointerType,
+                Operator.IAdd, FramePointerType,
                 frame.EnsureRegister(StackRegister), Constant.Word32(offset)),
                 dataType);
         }

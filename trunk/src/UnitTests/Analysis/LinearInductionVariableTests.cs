@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Analysis
 			Statement stm_a1 = new Statement(0, new Assignment(a1, Constant.Word32(0)), null);
 			Statement stm_a2 = new Statement(0, new PhiAssignment(a2, new PhiFunction(a1.DataType,  a1, a3 )), null);
 			Statement stm_ex = new Statement(0, new Branch(new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a2, Constant.Word32(10)), b2), null);
-			Statement stm_a3 = new Statement(0, new Assignment(a3, new BinaryExpression(Operator.Add, a3.DataType, a2, Constant.Word32(4))), null);
+			Statement stm_a3 = new Statement(0, new Assignment(a3, new BinaryExpression(Operator.IAdd, a3.DataType, a2, Constant.Word32(4))), null);
 			b1.Statements.Add(stm_a1);
 			b2.Statements.Add(stm_a2);
 			b2.Statements.Add(stm_a3);
@@ -198,7 +198,7 @@ namespace Decompiler.UnitTests.Analysis
             ssaIds.Add(new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
 			liv.Context.DeltaStatement = new Statement(0, new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
-				new BinaryExpression(Operator.Add, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
+				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
 			ssaIds[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
@@ -231,7 +231,7 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds[id3].Uses.Add(use);
 
 			liv.Context.DeltaValue = m.Int32(1);
-            m.Assign(id4, m.Add(id3, liv.Context.DeltaValue));
+            m.Assign(id4, m.IAdd(id3, liv.Context.DeltaValue));
             liv.Context.DeltaStatement = m.Block.Statements.Last;
 			ssaIds[id3].Uses.Add(liv.Context.DeltaStatement);
 
@@ -249,7 +249,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Label("test");
                 m.BranchIf(m.Uge(i, 10), "done");
                 m.Store(m.Word32(0x4204), i);
-                m.Assign(i, m.Add(i, 1));
+                m.Assign(i, m.IAdd(i, 1));
                 m.Jump("test");
                 m.Label("done");
                 m.Store(m.Word32(0x4200), i);

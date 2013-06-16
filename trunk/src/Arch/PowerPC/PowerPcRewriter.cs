@@ -42,7 +42,7 @@ namespace Decompiler.Arch.PowerPC
                 var sum = RewriteOperand(instr.op1);
                 emitter.Assign(
                     sum,
-                    emitter.Add(
+                    emitter.IAdd(
                         RewriteOperand(instr.op2),
                         RewriteOperand(instr.op3)));
                 if (instr.DefCc() != 0)
@@ -77,9 +77,9 @@ namespace Decompiler.Arch.PowerPC
                 op1 = RewriteOperand(instrs.Current.op1);
                 op2 = RewriteOperand(instrs.Current.op2);
                 op3 = RewriteOperand(instrs.Current.op3);
-                ea = emitter.Add(op2, op3);
+                ea = emitter.IAdd(op2, op3);
                 emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
-                emitter.Assign(op2, emitter.Add(op2, op3));
+                emitter.Assign(op2, emitter.IAdd(op2, op3));
                 break;
             }
             yield return cluster;
@@ -109,7 +109,7 @@ namespace Decompiler.Arch.PowerPC
             var mop = (MemoryOperand) operand;
             var reg = frame.EnsureRegister(mop.BaseRegister);
             var offset = mop.Offset;
-            return emitter.Add(reg, offset);
+            return emitter.IAdd(reg, offset);
         }
 
         private Expression EffectiveAddress_r0(MachineOperand operand, RtlEmitter emitter)
@@ -123,7 +123,7 @@ namespace Decompiler.Arch.PowerPC
             {
                 var reg = frame.EnsureRegister(mop.BaseRegister);
                 var offset = mop.Offset;
-                return emitter.Add(reg, offset);
+                return emitter.IAdd(reg, offset);
             }
         }
 

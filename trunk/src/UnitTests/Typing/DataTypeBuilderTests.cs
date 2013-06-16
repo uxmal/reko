@@ -71,9 +71,9 @@ namespace Decompiler.UnitTests.Typing
 				Identifier i = Local32("i");
 				Identifier r = Local32("r");
 				Identifier r2 = Local16("r2");
-				Store(Add(Add(r, 20), Muls(i, 10)), 0);
+				Store(IAdd(IAdd(r, 20), SMul(i, 10)), 0);
 				Return(Load(PrimitiveType.Word16, 
-					Add(Add(r, 16), Muls(i, 10))));
+					IAdd(IAdd(r, 16), SMul(i, 10))));
 			}
 		}
 
@@ -138,7 +138,7 @@ namespace Decompiler.UnitTests.Typing
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Identifier bx = m.Local16("bx");
-            Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.Mul(bx, 8));
+            Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.IMul(bx, 8));
             e.Accept(eqb);
 
             TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
@@ -287,7 +287,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier i = m.Local32("i");
-			Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
+			Expression ea = m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000));
 			Expression e = m.Load(PrimitiveType.Int32, ea);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			e = e.Accept(aen);
@@ -326,7 +326,7 @@ namespace Decompiler.UnitTests.Typing
 
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			Expression e = m.SegMem(bx.DataType, ds, m.Add(bx, 4));
+			Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
             Program prog = new Program();
             prog.Architecture = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
@@ -424,7 +424,7 @@ namespace Decompiler.UnitTests.Typing
                 Identifier ret = m.Register(1);
                 m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
                 m.Procedure.Signature.FormalArguments[0] = arg1;
-                m.Assign(ret, m.Add(arg1, 1));
+                m.Assign(ret, m.IAdd(arg1, 1));
                 m.Return(ret);
             });
             RunTest(pp.BuildProgram(), "Typing/DtbFn1CallFn2.txt");
@@ -437,7 +437,7 @@ namespace Decompiler.UnitTests.Typing
             pp.Add("Fn1", m =>
             {
                 Identifier p = m.Local32("p");
-                m.Store(m.Add(p, 4), m.Word32(0x42));
+                m.Store(m.IAdd(p, 4), m.Word32(0x42));
                 m.SideEffect(m.Fn("Fn2", p));
                 m.Return();
             });
@@ -446,7 +446,7 @@ namespace Decompiler.UnitTests.Typing
             {
                 Identifier arg1 = m.Local32("arg1");
                 m.Procedure.Signature = new ProcedureSignature(null, new Identifier[] { arg1 });
-                m.Store(m.Add(arg1, 8), m.Int32(0x23));
+                m.Store(m.IAdd(arg1, 8), m.Int32(0x23));
                 m.Return();
             });
 			RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");

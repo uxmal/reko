@@ -37,5 +37,13 @@ namespace Decompiler.Core.Operators
 			int size = Math.Max(p1.Size, p2.Size);
 			return Constant.Create(PrimitiveType.Create(p1.Domain&p2.Domain, size), val);
 		}
+
+        protected Constant BuildConstant(DataType t1, DataType t2, double val)
+        {
+            PrimitiveType p1 = (PrimitiveType) t1;
+            PrimitiveType p2 = (PrimitiveType) t2;
+            int size = Math.Max(p1.Size, p2.Size);
+            return ConstantReal.Create(PrimitiveType.Create(p1.Domain & p2.Domain, size), val);
+        }
 	}
 }

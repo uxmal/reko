@@ -314,7 +314,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier frame = Declare(new StructureType("frame_t", 0), "frame");
 			Identifier fp = Local32("fp");
 			Assign(fp, AddrOf(frame));
-			Store(Add(fp, 4), Load(PrimitiveType.Word32, Add(fp, 8)));
+			Store(IAdd(fp, 4), Load(PrimitiveType.Word32, IAdd(fp, 8)));
 		}
 	}
 
@@ -324,8 +324,8 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier pfoo = Local32("pfoo");
 			Identifier x = Local32("x");
-			Load(x, Add(pfoo, 4));
-			Load(x, Add(pfoo, 4));
+			Load(x, IAdd(pfoo, 4));
+			Load(x, IAdd(pfoo, 4));
 		}
 	}
 
@@ -336,8 +336,8 @@ namespace Decompiler.UnitTests.Typing
 			Identifier p = Local32("p");
 			Identifier x = Local32("x");
 			Identifier i = Local32("i");
-			Load(x, Add(p, Muls(i, 8)));
-			Load(x, Add(p, Add(Muls(i, 8), 4)));
+			Load(x, IAdd(p, SMul(i, 8)));
+			Load(x, IAdd(p, IAdd(SMul(i, 8), 4)));
 		}
 	}
 

@@ -24,25 +24,18 @@ using System;
 namespace Decompiler.Core.Operators
 {
 	/// <summary>
-	/// Unsigned multiplication. 
+	/// Integer multiplication where the signedness is unknown.
 	/// </summary>
-	public class MuluOperator : MulOperator
+	public class IMulOperator : BinaryOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			try
-			{
-				return BuildConstant(c1.DataType, c2.DataType, unchecked((int) (c1.ToUInt32() * c2.ToUInt32())));
-			}
-			catch	//$HACK: sometimes we get -ive numbers here, at which point .NET casts fail; attempt to use signed integers instead.
-			{
-				return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c1.ToInt32());
-			}
+			return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c2.ToInt32());
 		}
-
+		
 		public override string ToString()
 		{
-			return " *u ";
+			return " * ";
 		}
 	}
 }

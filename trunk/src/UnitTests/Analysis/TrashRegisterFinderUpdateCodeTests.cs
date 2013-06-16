@@ -88,9 +88,9 @@ namespace Decompiler.UnitTests.Analysis
                 m.Assign(esp, m.Sub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
-                m.Assign(eax, m.LoadDw(m.Add(ebp, 8)));
+                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
                 m.Assign(ebp, m.LoadDw(esp));
-                m.Assign(esp, m.Add(esp, 4));
+                m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
 
@@ -175,7 +175,7 @@ foo_exit:
                 var esi = m.Frame.EnsureRegister(Registers.esi);
                 m.Assign(esi, ecx);
                 m.Call("foo");
-                m.Assign(esi, m.Add(esi, 1));
+                m.Assign(esi, m.IAdd(esi, 1));
                 m.Return();
             });
 
@@ -189,7 +189,7 @@ foo_exit:
                 m.Store(esp, esi);
                 m.Assign(ecx, m.Sub(ecx, 1));
                 m.Assign(esi, m.LoadDw(esp));
-                m.Assign(esp, m.Add(esp, 4));
+                m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
 
@@ -235,10 +235,10 @@ foo_exit:
                 m.Assign(ebp, esp);
                 m.SideEffect(m.Fn(
                     new ProcedureConstant(PrimitiveType.Word32, new ExternalProcedure("strcpy", null)),
-                    m.LoadDw(m.Add(ebp, 8)),
-                    m.LoadDw(m.Add(ebp, 12))));
+                    m.LoadDw(m.IAdd(ebp, 8)),
+                    m.LoadDw(m.IAdd(ebp, 12))));
                 m.Assign(ebp, m.LoadDw(esp));
-                m.Assign(esp, m.Add(esp, 4));
+                m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
 
@@ -281,10 +281,10 @@ main_exit:
                     m.Fn(
                         new ProcedureConstant(PrimitiveType.Word32, new ExternalProcedure("add", null)),
                         m.LoadDw(esp),
-                        m.LoadDw(m.Add(esp, 4))));
-                m.Assign(esp, m.Add(esp, 8));
+                        m.LoadDw(m.IAdd(esp, 4))));
+                m.Assign(esp, m.IAdd(esp, 8));
                 m.Assign(ebp, m.LoadDw(esp));
-                m.Assign(esp, m.Add(esp, 4));
+                m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
 
@@ -325,9 +325,9 @@ main_exit:
                 var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF), "SCZO", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup((uint)(FlagM.CF), "SCZO", PrimitiveType.Bool);
 
-                m.Assign(eax, m.Add(eax, ecx));
+                m.Assign(eax, m.IAdd(eax, ecx));
                 m.Assign(SCZO, m.Cond(eax));
-                m.Assign(edx, m.Add(m.Add(edx, ebx), C));
+                m.Assign(edx, m.IAdd(m.IAdd(edx, ebx), C));
                 m.Assign(SCZO, m.Cond(edx));
                 m.Return();
             });

@@ -476,11 +476,12 @@ namespace Decompiler.Analysis
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			if (binExp.Operator is ConditionalOperator ||
-				binExp.Operator == BinaryOperator.Mul ||
-				binExp.Operator == BinaryOperator.Muls ||
-				binExp.Operator == BinaryOperator.Mulu ||
-				binExp.Operator == BinaryOperator.Divs ||
-				binExp.Operator == BinaryOperator.Divu)
+                binExp.Operator == BinaryOperator.IMul ||
+                binExp.Operator == BinaryOperator.FMul ||
+				binExp.Operator == BinaryOperator.SMul ||
+				binExp.Operator == BinaryOperator.UMul ||
+				binExp.Operator == BinaryOperator.SDiv ||
+				binExp.Operator == BinaryOperator.UDiv)
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;
@@ -489,11 +490,12 @@ namespace Decompiler.Analysis
 
 			if (binExp.Operator == BinaryOperator.Shl ||
 				binExp.Operator == BinaryOperator.Sar ||
-				binExp.Operator == BinaryOperator.Mul ||
-				binExp.Operator == BinaryOperator.Muls ||
-				binExp.Operator == BinaryOperator.Mulu ||
-				binExp.Operator == BinaryOperator.Divs ||
-				binExp.Operator == BinaryOperator.Divu)
+                binExp.Operator == BinaryOperator.IMul ||
+                binExp.Operator == BinaryOperator.FMul ||
+				binExp.Operator == BinaryOperator.SMul ||
+				binExp.Operator == BinaryOperator.UMul ||
+				binExp.Operator == BinaryOperator.SDiv ||
+				binExp.Operator == BinaryOperator.UDiv)
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;

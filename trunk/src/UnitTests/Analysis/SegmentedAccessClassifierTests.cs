@@ -137,7 +137,7 @@ namespace Decompiler.UnitTests.Analysis
 				Identifier ax = this.Local16("ax");
 				Identifier bx = this.Local16("bx");
 
-				Load(ax, SegMem(PrimitiveType.Word16, ds, Add(bx, Int16(4))));
+				Load(ax, SegMem(PrimitiveType.Word16, ds, IAdd(bx, Int16(4))));
 			}
 		}
 
@@ -150,8 +150,8 @@ namespace Decompiler.UnitTests.Analysis
 				Identifier ax = this.Local16("ax");
 				Identifier bx = this.Local16("bx");
 
-				Load(ax, SegMem(PrimitiveType.Word16, ds, Add(bx, Int16(4))));
-				Load(ax, SegMem(PrimitiveType.Word16, ds, Add(bx, Int16(8))));
+				Load(ax, SegMem(PrimitiveType.Word16, ds, IAdd(bx, Int16(4))));
+				Load(ax, SegMem(PrimitiveType.Word16, ds, IAdd(bx, Int16(8))));
 			}
 		}
 
@@ -165,7 +165,7 @@ namespace Decompiler.UnitTests.Analysis
 				Identifier ds = Local16("ds");
 				Identifier ax = Local16("ax");
 				Identifier bx = Local16("bx");
-				Load(ax, MembPtrW(ds, Add(bx, Int16(4))));
+				Load(ax, MembPtrW(ds, IAdd(bx, Int16(4))));
 				Load(ax, MembPtrW(ds, Int16(0x3000)));
 			}
 		}

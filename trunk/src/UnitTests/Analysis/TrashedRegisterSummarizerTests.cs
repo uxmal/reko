@@ -76,11 +76,11 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void s()
+        public void Trs_s()
         {
             var r4 = arch.GetRegister(4);
             var id = proc.Frame.EnsureRegister(r4);
-            ctx.RegisterState[r4] = new BinaryExpression(Operator.Add, PrimitiveType.Word32, id, Constant.Word32(1));
+            ctx.RegisterState[r4] = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, id, Constant.Word32(1));
             trs.PropagateToProcedureSummary();
             ctx.RegisterState[r4] = Constant.Word32(3);
             trs.PropagateToProcedureSummary();
@@ -89,13 +89,13 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void t()
+        public void Trs_t()
         {
             var r4 = arch.GetRegister(4);
             var id = proc.Frame.EnsureRegister(r4);
             ctx.RegisterState[r4] = Constant.Word32(3);
             trs.PropagateToProcedureSummary();
-            ctx.RegisterState[r4] = new BinaryExpression(Operator.Add, PrimitiveType.Word32, id, Constant.Word32(1));
+            ctx.RegisterState[r4] = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, id, Constant.Word32(1));
             trs.PropagateToProcedureSummary();
 
             Assert.AreEqual("<invalid>", flow.ConstantRegisters[r4].ToString());

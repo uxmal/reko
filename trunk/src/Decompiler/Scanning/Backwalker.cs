@@ -122,9 +122,9 @@ namespace Decompiler.Scanning
                     {
                         regSrc = RegisterOf(binSrc.Left as Identifier);
                         var immSrc = binSrc.Right as Constant;
-                        if (binSrc.Operator == Operator.Add || binSrc.Operator == Operator.Sub)
+                        if (binSrc.Operator == Operator.IAdd || binSrc.Operator == Operator.ISub)
                         {
-                            Index = HandleAddition(Index, Index, regSrc, immSrc, binSrc.Operator == Operator.Add);
+                            Index = HandleAddition(Index, Index, regSrc, immSrc, binSrc.Operator == Operator.IAdd);
                             return true;
                         }
                         if (binSrc.Operator == Operator.And)
@@ -158,7 +158,7 @@ namespace Decompiler.Scanning
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
-                    if (binCmp != null && binCmp.Operator is SubOperator)
+                    if (binCmp != null && binCmp.Operator is ISubOperator)
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
                         if (idLeft != RegisterStorage.None &&
@@ -265,7 +265,7 @@ namespace Decompiler.Scanning
             var bin = exp as BinaryExpression;
             if (bin == null)
                 return 1;
-            if (bin.Operator is MulOperator)
+            if (bin.Operator is IMulOperator)
             {
                 var scale = bin.Right as Constant;
                 if (scale == null)
@@ -336,7 +336,7 @@ namespace Decompiler.Scanning
 
         private bool IsScaledIndex(BinaryExpression bin)
         {
-            return bin != null && bin.Operator is MulOperator && bin.Right is Constant;
+            return bin != null && bin.Operator is IMulOperator && bin.Right is Constant;
         }
 
         private RegisterStorage DetermineVectorWithScaledIndex(MemoryAccess mem, Expression possibleVector, BinaryExpression scaledIndex)

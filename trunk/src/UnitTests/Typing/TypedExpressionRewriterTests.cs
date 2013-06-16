@@ -168,7 +168,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier a = m.Local32("a");
 			Identifier i = m.Local32("i");
 			m.Assign(a, 0x00123456);		// array pointer
-			m.Store(m.Add(a, m.Mul(i, 8)), m.Int32(42));
+			m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
 			pp.Add(m);
 
 			RunTest(pp.BuildProgram(), "Typing/TerArrayConstantPointers.txt");
@@ -200,8 +200,8 @@ namespace Decompiler.UnitTests.Typing
             Identifier p = m.Local16("p");
 
             m.Store(p, m.Word16(4));
-            m.Store(m.Add(p, 4), m.Word16(4));
-            m.Assign(p, m.Add(p, i));
+            m.Store(m.IAdd(p, 4), m.Word16(4));
+            m.Assign(p, m.IAdd(p, i));
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
 
@@ -241,9 +241,9 @@ namespace Decompiler.UnitTests.Typing
             m.Store(
                 m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
                 m.Lt(
-                    m.SegMemW(ds, m.Add(m.SegMemW(ds, m.Word16(0x5404)), 4)),
+                    m.SegMemW(ds, m.IAdd(m.SegMemW(ds, m.Word16(0x5404)), 4)),
                     m.Word16(20)));
-            m.Store(m.SegMemW(ds2, m.Add(m.SegMemW(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
+            m.Store(m.SegMemW(ds2, m.IAdd(m.SegMemW(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
 
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
@@ -258,11 +258,11 @@ namespace Decompiler.UnitTests.Typing
             Identifier ds2 = m.Local32("ds2");
             m.Assign(ds2, ds);
             m.Store(
-                m.Add(ds, m.Word32(0x5400)),
+                m.IAdd(ds, m.Word32(0x5400)),
                 m.Lt(
-                    m.LoadW(m.Add(m.LoadDw(m.Add(ds, m.Word32(0x5404))), 4)),
+                    m.LoadW(m.IAdd(m.LoadDw(m.IAdd(ds, m.Word32(0x5404))), 4)),
                     m.Word16(20)));
-            m.Store(m.Add(m.LoadDw(m.Add(ds2, m.Word32(0x5404))), 4), m.Word16(0));
+            m.Store(m.IAdd(m.LoadDw(m.IAdd(ds2, m.Word32(0x5404))), 4), m.Word16(0));
 
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
@@ -274,7 +274,7 @@ namespace Decompiler.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier p = m.Local32("p");
-            Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.Add(p, 4));
+            Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
             m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(3)));
 
             ProgramBuilder prog = new ProgramBuilder();
@@ -305,8 +305,8 @@ namespace Decompiler.UnitTests.Typing
             Identifier di = m.Local16("di");
             m.Assign(di, 0);
             m.Label("lupe");
-            m.SegStore(ds, m.Add(di, 0x5388), m.Word16(0));
-            m.Assign(di, m.Add(di, 2));
+            m.SegStore(ds, m.IAdd(di, 0x5388), m.Word16(0));
+            m.Assign(di, m.IAdd(di, 2));
             m.Assign(cx, m.Sub(cx, 1));
             m.BranchIf(m.Ne(cx, 0), "lupe");
             m.Return();
@@ -410,7 +410,7 @@ namespace Decompiler.UnitTests.Typing
 			Assign(si2, Int16(0x0005));
 			Assign(ax, SegMemW(cs, si2));
 			Store(SegMemW(cs, Int16(0x1234)), ax);
-			Store(SegMemW(cs, Add(si, 2)), ax);
+			Store(SegMemW(cs, IAdd(si, 2)), ax);
 		}
 	}
 
@@ -423,7 +423,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ax = Local16("ax");
 			Identifier bx = Local16("bx");
 			Assign(ax, SegMemW(ds, bx));
-			Assign(ax, SegMemW(ds, Add(bx, 4)));
+			Assign(ax, SegMemW(ds, IAdd(bx, 4)));
 		}
 	}
 	

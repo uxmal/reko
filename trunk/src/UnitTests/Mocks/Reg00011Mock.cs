@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Mocks
 		protected override void BuildBody()
 		{
 			Identifier ds = Local16("ds");
-			Store(Word16(0x8416), Add(LoadW(0x8416), 1));
+			Store(Word16(0x8416), IAdd(LoadW(0x8416), 1));
 			Identifier loc02_26 = Local16("loc02_26");
 			Assign(loc02_26, LoadW(0x53BA));
 			// succ:  2
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Mocks
 			// DataOut: eax ecx edx esi ax cx sp bp di es cs ss ds fs
 			// LocalsOut: loc02(16)l1B96_2DCF:		// block 6, pred: 5 4
 			Label("block6");
-			SideEffect(Fn(LoadW(Add(Mulu(ax_36, 0x0002), 0x841A))));
+			SideEffect(Fn(LoadW(IAdd(UMul(ax_36, 0x0002), 0x841A))));
 			Identifier loc04_63 = Local16("loc04_63");
 			Assign(loc04_63, LoadW(0x0048));
 			Store(Word16(0x004A), LoadW(0x004A));

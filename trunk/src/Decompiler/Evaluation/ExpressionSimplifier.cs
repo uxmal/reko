@@ -79,7 +79,7 @@ namespace Decompiler.Evaluation
 
         private bool IsAddOrSub(Operator op)
         {
-            return op == Operator.Add || op == Operator.Sub;
+            return op == Operator.IAdd || op == Operator.ISub;
         }
 
         private bool IsComparison(Operator op)
@@ -203,21 +203,21 @@ namespace Decompiler.Evaluation
                 Constant c;
                 if (binLeft.Operator == binOperator)
                 {
-                    c = Operator.Add.ApplyConstants(cLeftRight, cRight);
+                    c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
                 }
                 else
                 {
                     if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
                     {
-                        c = Operator.Sub.ApplyConstants(cRight, cLeftRight);
+                        c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
                     }
                     else
                     {
                         binOperator = 
-                            binOperator == Operator.Add 
-                                ? Operator.Sub 
-                                : Operator.Add;
-                        c = Operator.Sub.ApplyConstants(cLeftRight, cRight);
+                            binOperator == Operator.IAdd 
+                                ? Operator.ISub 
+                                : Operator.IAdd;
+                        c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
                     }
                 }
                 if (c.IsIntegerZero)
@@ -233,7 +233,7 @@ namespace Decompiler.Evaluation
             {
                 Changed = true;
                 ctx.RemoveIdentifierUse(idLeft);
-                var op = binLeft.Operator == Operator.Add ? Operator.Sub : Operator.Add;
+                var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
                 var c = ExpressionSimplifierOld.SimplifyTwoConstants(op, cLeftRight, cRight);
                 return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
             }
@@ -502,13 +502,13 @@ namespace Decompiler.Evaluation
 			}
 
 			//$REVIEW: identity on binaryoperators
-
-			if (binOp == Operator.Add)
+            // DO NOT simplify floating-point ops!
+			if (binOp == Operator.IAdd)
 			{
 				if (IsZero(cRight))
 					return left;
 			} 
-			else if (binOp == Operator.Sub)
+			else if (binOp == Operator.ISub)
 			{
 				if (left == right)
 					return MakeZero(left.DataType);
@@ -542,7 +542,7 @@ namespace Decompiler.Evaluation
 			if (binLeft != null)
 			{
 				Constant cLeftRight = binLeft.Right as Constant;
-				if (cLeftRight != null && cRight != null && binLeft.Operator == Operator.Add && binOp == Operator.Add)
+				if (cLeftRight != null && cRight != null && binLeft.Operator == Operator.IAdd && binOp == Operator.IAdd)
 				{
 					return new BinaryExpression(binOp, valType, binLeft.Left, SimplifyTwoConstants(binOp, cLeftRight, cRight));
 				}

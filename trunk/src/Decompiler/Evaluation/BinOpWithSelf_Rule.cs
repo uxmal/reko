@@ -32,16 +32,16 @@ namespace Decompiler.Evaluation
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.Operator != Operator.Sub && binExp.Operator != Operator.Xor && binExp.Operator != Operator.And && binExp.Operator != Operator.Or)
+            if (binExp.Operator != Operator.ISub && binExp.Operator != Operator.Xor && binExp.Operator != Operator.And && binExp.Operator != Operator.Or)
                 return false;
             this.binExp = binExp;
             id = binExp.Left as Identifier;
-            return (id != null&& binExp.Left == binExp.Right);
+            return (id != null && binExp.Left == binExp.Right);
         }
 
         public Expression Transform(EvaluationContext ctx)
         {
-            if (binExp.Operator == Operator.Sub || binExp.Operator == Operator.Xor)
+            if (binExp.Operator == Operator.ISub || binExp.Operator == Operator.Xor)
             {
                 ctx.RemoveIdentifierUse(id);
                 ctx.RemoveIdentifierUse(id);

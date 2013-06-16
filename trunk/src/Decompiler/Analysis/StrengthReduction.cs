@@ -96,7 +96,7 @@ namespace Decompiler.Analysis
             Constant c = exp.Right as Constant;
             if (c != null)
             {
-                exp.Right = Operator.Sub.ApplyConstants(c, use.Increment);
+                exp.Right = Operator.ISub.ApplyConstants(c, use.Increment);
             }
         }
 
@@ -111,13 +111,13 @@ namespace Decompiler.Analysis
             Constant c = ass.Src as Constant;
             if (c != null)
             {
-                ass.Src = Operator.Add.ApplyConstants(c, use.Increment);
+                ass.Src = Operator.IAdd.ApplyConstants(c, use.Increment);
             }
             else
             {
                 // Change expression d = x to d = x + c.
                 ass.Src = new BinaryExpression(
-                    Operator.Add,
+                    Operator.IAdd,
                     ass.Src.DataType,
                     ass.Src,
                     use.Increment);
@@ -177,7 +177,7 @@ namespace Decompiler.Analysis
             public override void VisitBinaryExpression(BinaryExpression binExp)
             {
                 base.VisitBinaryExpression(binExp);
-                if (binExp.Operator != Operator.Add)
+                if (binExp.Operator != Operator.IAdd)
                     return;
                 if (binExp.Left != id)
                     return;

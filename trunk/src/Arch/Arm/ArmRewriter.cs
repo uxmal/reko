@@ -73,12 +73,12 @@ namespace Decompiler.Arch.Arm
                 {
                 default:
                     throw NYI();
-                case Opcode.add: RewriteBinOp(Operator.Add); break;
+                case Opcode.add: RewriteBinOp(Operator.IAdd); break;
                 case Opcode.b: RewriteB(false); break;
                 case Opcode.mov:
                     emitter.Assign(Operand(di.Instruction.Dst), Operand(di.Instruction.Src1)); break;
                 case Opcode.orr: RewriteBinOp(Operator.Or); break;
-                case Opcode.sub: RewriteBinOp(Operator.Sub); break;
+                case Opcode.sub: RewriteBinOp(Operator.ISub); break;
                 }
                 yield return ric;
             }
@@ -102,7 +102,7 @@ namespace Decompiler.Arch.Arm
             {
                 if (di.Instruction.Cond == Condition.al)
                 {
-                    emitter.Goto(addr);
+                    emitter.Goto(addr, true);
                 }
                 else
                 {
@@ -120,7 +120,7 @@ namespace Decompiler.Arch.Arm
         {
             if (di.Instruction.Cond != Condition.al)
             {
-                instr = new RtlIf(TestCond(di.Instruction.Cond), instr);
+                instr = new RtlIf(TestCond(di.Instruction.Cond), instr, true);
             }
             ric.Instructions.Add(instr);
         }

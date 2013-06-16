@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void BinOpTestTrue()
 		{
-			Assert.IsTrue(ci.IsCritical(new BinaryExpression(Operator.Add, PrimitiveType.Word32, 
+			Assert.IsTrue(ci.IsCritical(new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
 				new Application(null, PrimitiveType.Word32),
 				Constant.Word32(1))));
 		}
@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void BinOpTestFalse()
 		{
 			Assert.IsFalse(ci.IsCritical(new BinaryExpression(
-                Operator.Add, 
+                Operator.IAdd, 
                 PrimitiveType.Word32, 
                 new Identifier("id", 0, PrimitiveType.Word32, null), 
                 Constant.Word32(3))));

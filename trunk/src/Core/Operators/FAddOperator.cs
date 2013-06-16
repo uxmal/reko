@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2013 John Källén.
+ * Copyright (C) 1999-2013 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +23,16 @@ using System;
 
 namespace Decompiler.Core.Operators
 {
-	/// <summary>
-	/// Signed multiplication.
-	/// </summary>
-	public class MulsOperator : MulOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c2.ToInt32());
-		}
-		
-		public override string ToString()
-		{
-			return " *s ";
-		}
-	}
+    public class FAddOperator : BinaryOperator
+    {
+        public override Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            return BuildConstant(c1.DataType, c2.DataType, c1.ToReal64() + c2.ToReal64());
+        }
+
+        public override string ToString()
+        {
+            return " + ";
+        }
+    }
 }

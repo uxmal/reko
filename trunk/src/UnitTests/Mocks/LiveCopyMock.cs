@@ -37,10 +37,10 @@ namespace Decompiler.UnitTests.Mocks
 			Assign(tmp, reg);
 			BranchIf(Eq(And(reg,1), 0), "even");
 
-			Assign(reg, Add(reg, 2));
+			Assign(reg, IAdd(reg, 2));
 			
 			Label("even");
-			Return(Sub(reg, tmp));
+			Return(ISub(reg, tmp));
 		}
 	}
 }

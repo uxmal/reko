@@ -28,11 +28,13 @@ namespace Decompiler.Core.Rtl
 {
     public abstract class RtlTransfer : RtlInstruction
     {
-        public RtlTransfer(Expression target)
+        public RtlTransfer(Expression target, bool annulled)
         {
             this.Target = target;
+            this.Annulled = annulled;
         }
 
+        public bool Annulled { get; private set; }
         public Expression Target { get; private set; }
     }
 }

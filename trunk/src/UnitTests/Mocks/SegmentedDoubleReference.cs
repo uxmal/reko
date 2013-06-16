@@ -38,9 +38,9 @@ namespace Decompiler.UnitTests.Mocks
 			Identifier ax2 = Local16("ax2");
 
 			Assign(si1, SegMemW(ds, offset));
-			Store(SegMemW(ds, Int16(0x100)), SegMemW(ds, Add(si1, 0x0004)));
+			Store(SegMemW(ds, Int16(0x100)), SegMemW(ds, IAdd(si1, 0x0004)));
 			Assign(si2, SegMemW(ds, offset));
-			Store(SegMemW(ds, Int16(0x102)), SegMemW(ds, Add(si2, 0x0004)));
+			Store(SegMemW(ds, Int16(0x102)), SegMemW(ds, IAdd(si2, 0x0004)));
 		}
 	}
 }

@@ -145,9 +145,9 @@ namespace Decompiler.UnitTests.Analysis
             m.Assign(esp, m.Sub(esp, 4));
             m.Store(esp, ebp);
             m.Assign(ebp, esp);
-            m.Assign(eax, m.LoadDw(m.Add(ebp, 8)));  // dwArg04
+            m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));  // dwArg04
             m.Assign(ebp, m.LoadDw(esp));
-            m.Assign(esp, m.Add(esp,4));
+            m.Assign(esp, m.IAdd(esp,4));
             m.Return();
 
             RunUnitTest(m, "Analysis/SsaPushAndPop.txt");

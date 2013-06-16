@@ -25,21 +25,26 @@ namespace Decompiler.Core.Operators
 {
 	public class Operator
 	{
-		public static readonly BinaryOperator Add = new AddOperator();
-		public static readonly BinaryOperator And = new AndOperator();
-		public static readonly BinaryOperator Divs = new DivsOperator();
-		public static readonly BinaryOperator Divu = new DivuOperator();
-		public static readonly BinaryOperator Mod = new ModOperator();
-		public static readonly BinaryOperator Mul = new MulOperator();
-		public static readonly BinaryOperator Muls = new MulsOperator();
-		public static readonly BinaryOperator Mulu = new MuluOperator();
+		public static readonly BinaryOperator IAdd = new IAddOperator();
+        public static readonly BinaryOperator ISub = new ISubOperator();
+        public static readonly BinaryOperator IMul = new IMulOperator();
+        public static readonly BinaryOperator SMul = new SMulOperator();
+        public static readonly BinaryOperator UMul = new UMulOperator();
+        public static readonly BinaryOperator SDiv = new SDivOperator();
+        public static readonly BinaryOperator UDiv = new UDivOperator();
+		public static readonly BinaryOperator IMod = new IModOperator();
 
+        public static readonly BinaryOperator FAdd = new FAddOperator();
+        public static readonly BinaryOperator FSub = new FSubOperator();
+        public static readonly BinaryOperator FMul = new FMulOperator();
+        public static readonly BinaryOperator FDiv = new FDivOperator();
+
+        public static readonly BinaryOperator And = new AndOperator();
 		public static readonly BinaryOperator Or = new OrOperator();
 		public static readonly BinaryOperator Shr = new ShrOperator();
 		public static readonly BinaryOperator Sar = new SarOperator();
 
 		public static readonly BinaryOperator Shl = new ShlOperator();
-		public static readonly BinaryOperator Sub = new SubOperator();
 		public static readonly BinaryOperator Xor = new XorOperator();
 
 		public static readonly BinaryOperator Cand = new CandOperator();

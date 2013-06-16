@@ -63,7 +63,7 @@ namespace Decompiler.Evaluation
 				op,
 				e.DataType,
 				e,
-				Operator.Add.ApplyConstants(c1, c2));
+				Operator.IAdd.ApplyConstants(c1, c2));
 		}
 	}
 }

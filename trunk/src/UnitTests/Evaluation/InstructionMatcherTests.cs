@@ -51,11 +51,11 @@ namespace Decompiler.UnitTests.Evaluation
         public void MatchAssignment()
         {
             var ax = RegW("ax");
-            var pattern = m.Assign(ax, m.Add(ax, ExpressionMatcher.AnyConstant("c")));
+            var pattern = m.Assign(ax, m.IAdd(ax, ExpressionMatcher.AnyConstant("c")));
 
             var instrmatcher = new InstructionMatcher(pattern);
             Assert.IsTrue(instrmatcher.Match(
-                m.Assign(ax, m.Add(ax, m.Word16(42)))));
+                m.Assign(ax, m.IAdd(ax, m.Word16(42)))));
 
             Assert.AreEqual("0x002A", instrmatcher.CapturedExpressions("c").ToString());
         }

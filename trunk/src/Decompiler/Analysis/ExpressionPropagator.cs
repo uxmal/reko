@@ -133,7 +133,7 @@ namespace Decompiler.Analysis
             var bin = spVal as BinaryExpression;
             if (bin == null || !ctx.IsFramePointer(bin.Left))
                 return 0;
-            if (bin.Operator != Operator.Sub)
+            if (bin.Operator != Operator.ISub)
                 throw new NotImplementedException();
             var c = bin.Right as Constant;
             if (c == null)
@@ -262,7 +262,7 @@ namespace Decompiler.Analysis
             var binExp = e as BinaryExpression;
             if (binExp == null)
                 return false;
-            if (binExp.Operator != Operator.Add && binExp.Operator != Operator.Sub)
+            if (binExp.Operator != Operator.IAdd && binExp.Operator != Operator.ISub)
                 return false;
             return ctx.IsFramePointer(binExp.Left);
         }
@@ -289,7 +289,7 @@ namespace Decompiler.Analysis
             if (c == null)
                 return res;
             int cc = c.ToInt32();
-            if (bin.Operator == Operator.Sub)
+            if (bin.Operator == Operator.ISub)
                 cc = -cc;
             var sv = ctx.Frame.EnsureStackVariable(cc, res.PropagatedExpression.DataType);
             if (sv.DataType.Size > res.PropagatedExpression.DataType.Size)
