@@ -52,7 +52,9 @@ namespace Decompiler.Core.Rtl
         }
 
         /// <summary>
-        /// Called when we need to generate an RtlBranch in the middle of an operation. Normally 
+        /// Called when we need to generate an RtlBranch in the middle of an operation.
+        /// Normally, branches are at the end of the Rtl's of a translated instruction,
+        /// but in some cases, they are not.
         /// </summary>
         /// <param name="condition"></param>
         /// <param name="target"></param>
@@ -71,14 +73,15 @@ namespace Decompiler.Core.Rtl
         /// </summary>
         /// <param name="target"></param>
         /// <param name="retSize"></param>
-        public void Call(Expression target, byte retSize)
+        /// <param name="annulled"></param>
+        public void Call(Expression target, byte retSize, bool annulled)
         {
-            instrs.Add(new RtlCall(target, retSize));
+            instrs.Add(new RtlCall(target, retSize, annulled));
         }
 
-        public void Goto(Expression target)
+        public void Goto(Expression target, bool annulled)
         {
-            instrs.Add(new RtlGoto(target));
+            instrs.Add(new RtlGoto(target, annulled));
         }
 
         public void Return(
@@ -98,9 +101,9 @@ namespace Decompiler.Core.Rtl
             return Constant.Create(dataType, p);
         }
 
-        public void If(Expression test, RtlInstruction rtl)
+        public void If(Expression test, RtlInstruction rtl, bool annulled)
         {
-            instrs.Add(new RtlIf(test, rtl));
+            instrs.Add(new RtlIf(test, rtl, annulled));
         }
     }
 }

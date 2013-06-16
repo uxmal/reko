@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Structure
             Jump("done");
 
             Label("case1");
-            Assign(n, Add(n, 1));
+            Assign(n, IAdd(n, 1));
             Jump("JumpBack");           // The odd jump!
 
             Label("case2");

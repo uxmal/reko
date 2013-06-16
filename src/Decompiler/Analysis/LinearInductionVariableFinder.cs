@@ -80,7 +80,7 @@ namespace Decompiler.Analysis
 				if (IsIdUsedOnlyBy(ctx.PhiIdentifier, ctx.TestStatement, ctx.DeltaStatement))
 				{
 					// The only use inside the loop is the increment, so we never see the initial value.
-					ctx.InitialValue = Operator.Add.ApplyConstants(ctx.InitialValue, ctx.DeltaValue);
+					ctx.InitialValue = Operator.IAdd.ApplyConstants(ctx.InitialValue, ctx.DeltaValue);
 				}
 			}
 
@@ -88,8 +88,6 @@ namespace Decompiler.Analysis
 
             return ctx.CreateInductionVariable();
 		}
-
-
 
         public Constant AdjustTestValue(Constant testValue)
         {
@@ -102,7 +100,7 @@ namespace Decompiler.Analysis
                 DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier) &&
                 BranchTrueIntoLoop())
             {
-                testValue = Operator.Add.ApplyConstants(testValue, ctx.DeltaValue);
+                testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue);
             }
             Identifier idNew = (Identifier) ((Assignment) ctx.DeltaStatement.Instruction).Dst;
             if (!IsSingleUsingStatement(ctx.TestStatement, idNew))
@@ -111,7 +109,7 @@ namespace Decompiler.Analysis
                     DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier)))
                 {
                     // A use is made of the variable between increment and test.
-                    testValue = Operator.Add.ApplyConstants(testValue, ctx.DeltaValue);
+                    testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue);
                 }
             }
             return testValue;
@@ -218,7 +216,7 @@ namespace Decompiler.Analysis
                 if (ass == null)
                     continue;
                 BinaryExpression bin = ass.Src as BinaryExpression;
-                if (bin != null && (bin.Operator == Operator.Add || bin.Operator == Operator.Sub))
+                if (bin != null && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
                 {
                     Identifier idLeft = bin.Left as Identifier;
                     if (idLeft != null && IsSccMember(idLeft, sids))
@@ -227,7 +225,7 @@ namespace Decompiler.Analysis
                         if (c != null)
                         {
                             ctx.DeltaStatement = sid.DefStatement;
-                            ctx.DeltaValue = (bin.Operator == Operator.Sub)
+                            ctx.DeltaValue = (bin.Operator == Operator.ISub)
                                 ? c.Negate()
                                 : c;
                             return ctx.DeltaValue;

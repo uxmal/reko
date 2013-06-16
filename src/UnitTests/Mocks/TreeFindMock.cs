@@ -39,11 +39,11 @@ namespace Decompiler.UnitTests.Mocks
 			Assign(vv, Load(PrimitiveType.Word32, t));
 			BranchIf(Eq(v, vv), "l5_found");
 			BranchIf(Lt(v, vv), "l4_lt");
-			Assign(t, Load(PrimitiveType.Word32, Add(t, 8)));
+			Assign(t, Load(PrimitiveType.Word32, IAdd(t, 8)));
 			Jump("l0_seek");
 
 			Label("l4_lt");
-			Assign(t, Load(PrimitiveType.Word32, Add(t, 4)));
+			Assign(t, Load(PrimitiveType.Word32, IAdd(t, 4)));
 
 			Label("l5_found");
 			Return(t);

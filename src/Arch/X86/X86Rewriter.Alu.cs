@@ -196,9 +196,8 @@ namespace Decompiler.Arch.X86
             var opSrc = SrcOp(src);
             var opDst = SrcOp(dst);
             var test = CreateTestCondition(cc, di.Instruction.code);
-            emitter.If(test, new RtlAssignment(opDst, opSrc));
+            emitter.If(test, new RtlAssignment(opDst, opSrc), true);
         }
-
 
         private void RewriteCmp()
         {
@@ -206,7 +205,7 @@ namespace Decompiler.Arch.X86
             Expression op2 = SrcOp(di.Instruction.op2, di.Instruction.op1.Width);
             emitter.Assign(
                 orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
-                new ConditionOf(emitter.Sub(op1, op2)));
+                new ConditionOf(emitter.ISub(op1, op2)));
         }
 
         private void RewriteCwd()
@@ -270,7 +269,7 @@ namespace Decompiler.Arch.X86
             };
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
             emitter.Assign(
-                regRemainder, new BinaryExpression(Operator.Mod, p,
+                regRemainder, new BinaryExpression(Operator.IMod, p,
                 regDividend,
                 SrcOp(di.Instruction.op1)));
             var ass = emitter.Assign(
@@ -304,10 +303,10 @@ namespace Decompiler.Arch.X86
 
         private void RewriteIncDec(int amount)
         {
-            var op = Operator.Add;
+            var op = Operator.IAdd;
             if (amount < 0)
             {
-                op= Operator.Sub;
+                op= Operator.ISub;
                 amount = -amount;
             }
 
@@ -442,7 +441,7 @@ namespace Decompiler.Arch.X86
             var bp = orw.AluRegister(Registers.ebp.GetPart(arch.StackRegister.DataType));
             emitter.Assign(sp, bp);
             emitter.Assign(bp, orw.StackAccess(sp, bp.DataType));
-            emitter.Assign(sp, emitter.Add(sp, bp.DataType.Size));
+            emitter.Assign(sp, emitter.IAdd(sp, bp.DataType.Size));
         }
 
         private void RewriteLxs(RegisterStorage seg)
@@ -565,14 +564,14 @@ namespace Decompiler.Arch.X86
         {
             var sp = StackPointer();
             EmitCopy(op, orw.StackAccess(sp, width), false);
-            emitter.Assign(sp, emitter.Add(sp, width.Size));
+            emitter.Assign(sp, emitter.IAdd(sp, width.Size));
         }
 
         private void RewritePop(Identifier dst, PrimitiveType width)
         {
             var sp = StackPointer();
             emitter.Assign(dst, orw.StackAccess(sp, width));
-            emitter.Assign(sp, emitter.Add(sp, width.Size));
+            emitter.Assign(sp, emitter.IAdd(sp, width.Size));
         }
 
         private void EmitPop(IntelRegister reg)
@@ -589,7 +588,7 @@ namespace Decompiler.Arch.X86
                 EmitPop(Registers.di);
                 EmitPop(Registers.si);
                 EmitPop(Registers.bp);
-                emitter.Assign(sp, emitter.Add(sp, di.Instruction.dataWidth.Size));
+                emitter.Assign(sp, emitter.IAdd(sp, di.Instruction.dataWidth.Size));
                 EmitPop(Registers.bx);
                 EmitPop(Registers.dx);
                 EmitPop(Registers.cx);
@@ -600,7 +599,7 @@ namespace Decompiler.Arch.X86
                 EmitPop(Registers.edi);
                 EmitPop(Registers.esi);
                 EmitPop(Registers.ebp);
-                emitter.Assign(sp, emitter.Add(sp, di.Instruction.dataWidth.Size));
+                emitter.Assign(sp, emitter.IAdd(sp, di.Instruction.dataWidth.Size));
                 EmitPop(Registers.ebx);
                 EmitPop(Registers.edx);
                 EmitPop(Registers.ecx);
@@ -617,7 +616,7 @@ namespace Decompiler.Arch.X86
                     "SCZDOP",
                     PrimitiveType.Byte),
                     orw.StackAccess(sp, width));
-            emitter.Assign(sp, emitter.Add(sp, width.Size));
+            emitter.Assign(sp, emitter.IAdd(sp, width.Size));
         }
 
         private void RewritePush(PrimitiveType dataWidth, Expression expr)
@@ -642,7 +641,7 @@ namespace Decompiler.Arch.X86
             if (left)
             {
                 sh = new BinaryExpression(
-                    Operator.Sub,
+                    Operator.ISub,
                     di.Instruction.op2.Width,
                     Constant.Create(di.Instruction.op2.Width, di.Instruction.op1.Width.BitSize),
                     SrcOp(di.Instruction.op2));
@@ -757,7 +756,7 @@ namespace Decompiler.Arch.X86
                 emitter.Assign(
                     orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
                     new ConditionOf(
-                    new BinaryExpression(Operator.Sub, di.Instruction.dataWidth, MemSi(), MemDi())));
+                    new BinaryExpression(Operator.ISub, di.Instruction.dataWidth, MemSi(), MemDi())));
                 incSi = true;
                 incDi = true;
                 break;
@@ -793,7 +792,7 @@ namespace Decompiler.Arch.X86
                 emitter.Assign(
                     orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
                     new ConditionOf(
-                    new BinaryExpression(Operator.Sub,
+                    new BinaryExpression(Operator.ISub,
                     di.Instruction.dataWidth,
                     RegAl,
                     MemDi())));
@@ -830,10 +829,10 @@ namespace Decompiler.Arch.X86
             Constant direction = state.GetFlagGroup((uint)FlagM.DF);
             Debug.Print("dir: " + direction);
             if (direction == null || !direction.IsValid)
-                return Operator.Add;        // Better safe than sorry.
+                return Operator.IAdd;        // Better safe than sorry.
             return direction.ToBoolean()
-                ? Operator.Sub
-                : Operator.Add;
+                ? Operator.ISub
+                : Operator.IAdd;
         }
 
         private void RewriteTest()
@@ -874,7 +873,7 @@ namespace Decompiler.Arch.X86
                 al,
                 Mem(
                     orw.AluRegister(Registers.ds),
-                    emitter.Add(
+                    emitter.IAdd(
                         bx,
                         emitter.Cast(offsetType, al))));
         }

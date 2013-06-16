@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Structure
             Identifier i = Local32("i");
             Label("loopHeader");
             Identifier v = Declare(PrimitiveType.Byte, "v", Load(PrimitiveType.Byte, i));
-            Assign(i, Add(i, 1));
+            Assign(i, IAdd(i, 1));
             BranchIf(Eq(v, 0x20), "exit_loop");
 
             Store(Word32(0x00300000), v);

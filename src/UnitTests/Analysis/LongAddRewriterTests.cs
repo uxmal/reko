@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void FindCond()
         {
-            m.Assign(ax, m.Add(ax, cx));
+            m.Assign(ax, m.IAdd(ax, cx));
             m.Assign(SCZ, m.Cond(ax));
             var block = m.CurrentBlock;
             m.Return();
@@ -119,10 +119,10 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void FindInstructionUsesCond()
         {
-            m.Assign(ax, m.Add(ax, cx));
+            m.Assign(ax, m.IAdd(ax, cx));
             m.Assign(SCZ, m.Cond(ax));
             var block = m.CurrentBlock;
-            m.Assign(dx, m.Add(m.Add(dx, bx), CF));
+            m.Assign(dx, m.IAdd(m.IAdd(dx, bx), CF));
             m.Return();
 
             var cm = rw.FindConditionOf(block.Statements, 0, ax);
@@ -133,13 +133,13 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void Match_AddRegMem()
         {
-            var addAxMem = m.Assign(ax, m.Add(ax, m.LoadW(m.Add(bx, 0x300))));
+            var addAxMem = m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
             var adcDxMem = m.Assign(
                 dx,
-                m.Add(
-                    m.Add(
+                m.IAdd(
+                    m.IAdd(
                         dx,
-                        m.LoadDw(m.Add(bx, 0x302))),
+                        m.LoadDw(m.IAdd(bx, 0x302))),
                     CF));
 
             var instr = CreateLongInstruction(addAxMem, adcDxMem);
@@ -149,9 +149,9 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void Match_AddRecConst()
         {
-            var i1 = m.Assign(ax, m.Add(ax, 0x5678));
+            var i1 = m.Assign(ax, m.IAdd(ax, 0x5678));
             var i2 = m.Assign(CF, m.Cond(ax));
-            var i3 = m.Assign(dx, m.Add(m.Add(dx, 0x1234), CF));
+            var i3 = m.Assign(dx, m.IAdd(m.IAdd(dx, 0x1234), CF));
             var instr = CreateLongInstruction(i1, i3);
             Assert.AreEqual("dx_ax = dx_ax + 0x12345678", instr.ToString());
         }
@@ -159,9 +159,9 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void Match_AddConstant()
         {
-            var in1 = m.Assign(ax, m.Add(ax, 1));
+            var in1 = m.Assign(ax, m.IAdd(ax, 1));
             var in2 = m.Assign(CF, m.Cond(ax));
-            var in3 = m.Assign(dx, m.Add(m.Add(dx, 0), CF));
+            var in3 = m.Assign(dx, m.IAdd(m.IAdd(dx, 0), CF));
             var instr = CreateLongInstruction(in1, in3);
             Assert.AreEqual("dx_ax = dx_ax + 0x00000001", instr.ToString());
         }
@@ -169,13 +169,13 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void Match_RegMem()
         {
-            var addAxMem = m.Assign(ax, m.Add(ax, m.LoadW(m.Add(bx, 0x300))));
+            var addAxMem = m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
             var adcDxMem = m.Assign(
                 dx,
-                m.Add(
-                    m.Add(
+                m.IAdd(
+                    m.IAdd(
                         dx,
-                        m.LoadW(m.Add(bx, 0x302))),
+                        m.LoadW(m.IAdd(bx, 0x302))),
                     CF));
 
             var instr = CreateLongInstruction(addAxMem, adcDxMem);
@@ -185,7 +185,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void MatchAdcSbc()
         {
-            var adc = m.Assign(ax, m.Add(m.Add(ax, cx), CF));
+            var adc = m.Assign(ax, m.IAdd(m.IAdd(ax, cx), CF));
             var regPair = rw.MatchAdcSbc(adc);
             Assert.AreSame(ax, regPair.Left);
             Assert.AreSame(cx, regPair.Right);
@@ -194,7 +194,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void MatchAddSub()
         {
-            var add = m.Assign(ax, m.Add(ax, cx));
+            var add = m.Assign(ax, m.IAdd(ax, cx));
             var regPair = rw.MatchAddSub(add);
             Assert.AreSame(ax, regPair.Left);
             Assert.AreSame(cx, regPair.Right);
@@ -203,9 +203,9 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void Replace_AddReg()
         {
-            m.Assign(ax, m.Add(ax, m.LoadW(m.Add(bx, 0x300))));
+            m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
             m.Assign(CF, m.Cond(ax));
-            m.Assign(dx, m.Add(m.Add(dx, m.LoadW(m.Add(bx, 0x302))), CF));
+            m.Assign(dx, m.IAdd(m.IAdd(dx, m.LoadW(m.IAdd(bx, 0x302))), CF));
             m.Assign(CF, m.Cond(dx));
             var block = m.Block;
             m.Return();
@@ -230,11 +230,11 @@ namespace Decompiler.UnitTests.Analysis
         public void Avoid()
         {
             m.Assign(SCZ, m.Cond(m.Sub(cx, 0x0030)));
-        	m.Assign(ax, m.Add(m.Word16(0x0000) ,CF));
+        	m.Assign(ax, m.IAdd(m.Word16(0x0000) ,CF));
             m.Assign(SCZ, m.Cond(ax));
             m.Assign(SCZ, m.Cond(m.Sub(cx , 0x003A)));
             m.Assign(CF, m.Not(CF));
-            m.Assign(ax, m.Add(m.Add(ax, ax),CF));
+            m.Assign(ax, m.IAdd(m.IAdd(ax, ax),CF));
             m.Assign(SCZ, m.Cond(ax));
             var block = m.Block;
             m.Return();

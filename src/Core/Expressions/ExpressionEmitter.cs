@@ -37,14 +37,14 @@ namespace Decompiler.Core.Expressions
             return new ArrayAccess(elemType, arrayPtr, index);
         }
 
-        public BinaryExpression Add(Expression left, Expression right)
+        public BinaryExpression IAdd(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.Add, left.DataType, left, right);
+            return new BinaryExpression(Operator.IAdd, left.DataType, left, right);
         }
 
-        public BinaryExpression Add(Expression left, int right)
+        public BinaryExpression IAdd(Expression left, int right)
         {
-            return new BinaryExpression(Operator.Add, left.DataType, left, Constant.Create(left.DataType, right));
+            return new BinaryExpression(Operator.IAdd, left.DataType, left, Constant.Create(left.DataType, right));
         }
 
         public UnaryExpression AddrOf(Expression e)
@@ -242,34 +242,34 @@ namespace Decompiler.Core.Expressions
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, PrimitiveType.Word16);
         }
 
-        public Expression Mul(Expression left, Expression right)
+        public Expression IMul(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.Mul, left.DataType, left, right);
+            return new BinaryExpression(Operator.IMul, left.DataType, left, right);
         }
 
-        public Expression Mul(Expression left, int c)
+        public Expression IMul(Expression left, int c)
         {
-            return new BinaryExpression(Operator.Mul, left.DataType, left, Constant.Create(left.DataType, c));
+            return new BinaryExpression(Operator.IMul, left.DataType, left, Constant.Create(left.DataType, c));
         }
 
-        public Expression Muls(Expression left, Expression right)
+        public Expression SMul(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.Muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, right);
+            return new BinaryExpression(Operator.SMul, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, right);
         }
 
-        public Expression Muls(Expression left, int c)
+        public Expression SMul(Expression left, int c)
         {
-            return new BinaryExpression(Operator.Muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
+            return new BinaryExpression(Operator.SMul, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
         }
 
-        public Expression Mulu(Expression left, Expression right)
+        public Expression UMul(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.Mulu, left.DataType, left, right);
+            return new BinaryExpression(Operator.UMul, left.DataType, left, right);
         }
 
-        public Expression Mulu(Expression left, int c)
+        public Expression UMul(Expression left, int c)
         {
-            return new BinaryExpression(Operator.Mulu, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
+            return new BinaryExpression(Operator.UMul, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
         }
 
         public BinaryExpression Ne(Expression a, Expression b)
@@ -314,14 +314,14 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Shr, bx.DataType, bx, cc);
         }
 
-        public BinaryExpression Sub(Expression left, Expression right)
+        public BinaryExpression ISub(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.Sub, left.DataType, left, right);
+            return new BinaryExpression(Operator.ISub, left.DataType, left, right);
         }
 
         public BinaryExpression Sub(Expression left, int right)
         {
-            return Sub(left, Constant.Create(left.DataType, right));
+            return ISub(left, Constant.Create(left.DataType, right));
         }
 
         public Slice Slice(PrimitiveType primitiveType, Identifier value, uint bitOffset)

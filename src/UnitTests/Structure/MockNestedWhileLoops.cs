@@ -40,11 +40,11 @@ namespace Decompiler.UnitTests.Structure
                 Label("inner");
                 BranchIf(Ge(j, 10), "done_inner");
 
-                Store(Word32(0x1234), Add(Load(PrimitiveType.Int32, Word32(0x1234)), j));
-                    Assign(j,Add(j,1));
+                Store(Word32(0x1234), IAdd(Load(PrimitiveType.Int32, Word32(0x1234)), j));
+                    Assign(j,IAdd(j,1));
                     Jump("inner");
                 Label("done_inner");
-                Assign(i, Add(i, 1));
+                Assign(i, IAdd(i, 1));
                 Jump("outer");
             Label("done");
             Return();

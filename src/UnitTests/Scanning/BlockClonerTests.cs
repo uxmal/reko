@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Scanning
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
-                m.Assign(r1, m.Add(r1, r2));
+                m.Assign(r1, m.IAdd(r1, r2));
                 m.Return();
             });
             var block = proc.ControlGraph.Blocks[2];

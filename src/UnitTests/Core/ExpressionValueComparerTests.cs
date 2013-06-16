@@ -70,8 +70,8 @@ namespace Decompiler.UnitTests.Core
         public void EvcBinaryExpression()
         {
             Identifier a = new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage());
-            BinaryExpression a1 = new BinaryExpression(Operator.Add, PrimitiveType.Word32, a, a);
-            BinaryExpression a2 = new BinaryExpression(Operator.Add, PrimitiveType.Word32, a, a);
+            BinaryExpression a1 = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, a, a);
+            BinaryExpression a2 = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, a, a);
             Assert.IsTrue(eq.Equals(a1, a2));
             Assert.AreEqual(eq.GetHashCode(a1), eq.GetHashCode(a2));
         }

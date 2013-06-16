@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void AddApplyConstants()
 		{
-			RunApply(1, 2, new AddOperator(), 3);
+			RunApply(1, 2, new IAddOperator(), 3);
 		}
 
 		[Test]
@@ -81,25 +81,25 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void SubApplyConstants()
 		{
-			RunApply(0x1, 0x2, new SubOperator(), -1);
+			RunApply(0x1, 0x2, new ISubOperator(), -1);
 		}
 
 		[Test]
 		public void MulsApplyConstants()
 		{
-			RunApply(0x1, 0x2, new MulsOperator(), 2);
+			RunApply(0x1, 0x2, new SMulOperator(), 2);
 		}
 
 		[Test]
 		public void DivuApplyConstants()
 		{
-			RunApply(10, 3, new DivuOperator(), 3);
+			RunApply(10, 3, new UDivOperator(), 3);
 		}
 
 		[Test]
 		public void ModApplyConstants()
 		{
-			RunApply(0x5, 0x3, new ModOperator(), 2);
+			RunApply(0x5, 0x3, new IModOperator(), 2);
 		}
 
 		[Test]

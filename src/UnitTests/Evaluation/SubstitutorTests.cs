@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Evaluation
         public void Bin_LeftInvalid()
         {
             var id = m.Register(3);
-            var e = m.Add(id, m.Word32(12));
+            var e = m.IAdd(id, m.Word32(12));
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
             ctx.Replay();
 
@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Evaluation
         public void Bin_BothValid()
         {
             var id = m.Register(3);
-            var e = m.Add(id, id);
+            var e = m.IAdd(id, id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
             ctx.Replay();
 

@@ -273,7 +273,7 @@ namespace Decompiler.Core.Expressions
             return Constant.Real64(0.69314718055994530941723212145818);
         }
 
-        public bool ToBoolean()
+        public virtual bool ToBoolean()
         {
             return Convert.ToBoolean(GetValue());
         }
@@ -321,6 +321,11 @@ namespace Decompiler.Core.Expressions
 		{
             return Convert.ToUInt64(GetValue());
 		}
+
+        public virtual double ToReal64()
+        {
+            return Convert.ToDouble(GetValue());
+        }
 
 		public static Constant True()
 		{
@@ -398,6 +403,11 @@ namespace Decompiler.Core.Expressions
         }
 
         public override object GetValue()
+        {
+            return value;
+        }
+
+        public override bool ToBoolean()
         {
             return value;
         }
@@ -642,7 +652,24 @@ namespace Decompiler.Core.Expressions
         }
     }
 
-    internal class ConstantReal32 : Constant
+    internal abstract class ConstantReal : Constant
+    {
+        public ConstantReal(DataType dt) : base(dt)
+        {
+        }
+
+        public static ConstantReal Create(DataType dt, double value)
+        {
+            switch (dt.BitSize)
+            {
+            case 32: return new ConstantReal32(dt, (float)value);
+            case 64: return new ConstantReal64(dt, value);
+            }
+            throw new NotSupportedException(string.Format("Data type {0} not supported.", dt));
+        }
+    }
+
+    internal class ConstantReal32 : ConstantReal
     {
         private float value;
 
@@ -668,7 +695,7 @@ namespace Decompiler.Core.Expressions
         }
     }
 
-    internal class ConstantReal64 : Constant
+    internal class ConstantReal64 : ConstantReal
     {
         private double value;
 

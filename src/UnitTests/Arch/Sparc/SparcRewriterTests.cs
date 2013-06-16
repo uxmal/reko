@@ -241,10 +241,11 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             BuildTest(
                 0x02800004,     // be      00100004
-                0x8A80C004);    // addcc   %g2,%g4,%g5"
+                0x8A04C004);    // add   %l3,%g4,%g5"
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|);");
+                "1|if (Test(Z,Z) goto 00100004) *;",
+                "2|00100004(4): 1 instructions"); 
         }
 
         [Test]

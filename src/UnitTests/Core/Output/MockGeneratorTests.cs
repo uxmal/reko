@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Core.Output
             {
                 Identifier a = m.Local(PrimitiveType.Word32, "a");
                 Identifier b = m.Local(PrimitiveType.Word32, "b");
-                m.Assign(a, m.Muls(m.Mulu(a, b), m.Add(a, m.Sub(b, m.Mul(a, b)))));
+                m.Assign(a, m.SMul(m.UMul(a, b), m.IAdd(a, m.ISub(b, m.IMul(a, b)))));
                 m.Return();
             });
             string sExp =
@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests.Core.Output
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Assign(a, Muls(Mulu(a, b), Add(a, Sub(b, Mul(a, b)))));" + nl +
+                "    Assign(a, SMul(UMul(a, b), IAdd(a, ISub(b, IMul(a, b)))));" + nl +
                 "    Return();" + nl +
                 "}" + nl +
                 "" + nl;

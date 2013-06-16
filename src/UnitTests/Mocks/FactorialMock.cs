@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Mocks
 			Compare("Z", n, Int32(0));
 			BranchCc(ConditionCode.EQ, "done");
 
-			Assign(acc, Muls(acc, n));
+			Assign(acc, SMul(acc, n));
 			Sub(n, n, Int32(1));
 			Jump("test");
 

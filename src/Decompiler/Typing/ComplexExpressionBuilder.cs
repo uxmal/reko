@@ -156,13 +156,13 @@ namespace Decompiler.Typing
             }
             else
             {
-                return new BinaryExpression(Operator.Add, dtPointer, complexExp, arrayIndex);
+                return new BinaryExpression(Operator.IAdd, dtPointer, complexExp, arrayIndex);
             }
         }
 
         private static Expression CreateArrayIndexExpression(int offset, Expression arrayIndex)
         {
-            BinaryOperator op = offset < 0 ? Operator.Sub : Operator.Add;
+            BinaryOperator op = offset < 0 ? Operator.ISub : Operator.IAdd;
             offset = Math.Abs(offset);
             Constant cOffset = Constant.Create(PrimitiveType.Create(Domain.SignedInt, arrayIndex.DataType.Size), offset);
             if (arrayIndex != null)

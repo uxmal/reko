@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier globals = m.Local32("globals");
 			Identifier i = m.Local32("idx");
-			Expression ea = m.Add(globals, m.Add(m.Shl(i, 4), 0x30000));
+			Expression ea = m.IAdd(globals, m.IAdd(m.Shl(i, 4), 0x30000));
 			Expression e = m.Load(PrimitiveType.Int32, ea);
 			e = e.Accept(aen);
 			Assert.AreEqual("(globals + 0x00030000)[idx * 0x00000010]", e.ToString());
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier p = m.Local32("p");
 			Identifier i = m.Local32("i");
 			Expression e = m.Load(PrimitiveType.Int32, 
-				m.Add(p, m.Add(m.Muls(i, 8), 4)));
+				m.IAdd(p, m.IAdd(m.SMul(i, 8), 4)));
 			e = e.Accept(aen);
 			Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
 		}
@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Typing
         {
             Identifier bx = m.Local16("bx");
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
-            Expression e = m.SegMem(PrimitiveType.Int32, ds, m.Add(m.Mul(bx, 2), 0x42));
+            Expression e = m.SegMem(PrimitiveType.Int32, ds, m.IAdd(m.IMul(bx, 2), 0x42));
             e = e.Accept(aen);
             Assert.AreEqual("SEQ(ds, 0x0042)[bx * 0x0002]", e.ToString());
         }

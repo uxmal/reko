@@ -39,7 +39,7 @@ namespace Decompiler.Core.Output
         {
             this.writer = new IndentingTextWriter(writer, false, 4);
             this.mpopstr = new Dictionary<Operator, string>();
-            mpopstr.Add(Operator.Add, "Add");
+            mpopstr.Add(Operator.IAdd, "IAdd");
             mpopstr.Add(Operator.And, "And");
             mpopstr.Add(Operator.Cand, "Cand");
             mpopstr.Add(Operator.Cor, "Cor");
@@ -49,11 +49,11 @@ namespace Decompiler.Core.Output
             mpopstr.Add(Operator.Gt, "Gt");
             mpopstr.Add(Operator.Le, "Le");
             mpopstr.Add(Operator.Lt, "Lt");
-            mpopstr.Add(Operator.Mul, "Mul");
-            mpopstr.Add(Operator.Muls, "Muls");
-            mpopstr.Add(Operator.Mulu, "Mulu");
+            mpopstr.Add(Operator.IMul, "IMul");
+            mpopstr.Add(Operator.SMul, "SMul");
+            mpopstr.Add(Operator.UMul, "UMul");
             mpopstr.Add(Operator.Or, "Or");
-            mpopstr.Add(Operator.Sub, "Sub");
+            mpopstr.Add(Operator.ISub, "ISub");
             mpopstr.Add(Operator.Uge, "Uge");
             mpopstr.Add(Operator.Ugt, "Ugt");
             mpopstr.Add(Operator.Ule, "Ule");

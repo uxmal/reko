@@ -75,7 +75,7 @@ namespace Decompiler.Analysis
 			if (b != null)
 			{
 				c = b.Right as Constant;
-				if (c != null && b.Operator == Operator.Add)
+				if (c != null && b.Operator == Operator.IAdd)
 					return new FieldAccess(type, new Dereference(type, b.Left), string.Format("{0}{1:X8}", type.Prefix, c.ToUInt32()));
 			}
 			return new Dereference(null, ea);
@@ -93,7 +93,7 @@ namespace Decompiler.Analysis
                 return new FieldAccess(type, new Dereference(type, basePtr), string.Format("{0}{1:X4}", type.Prefix, c.ToInt16()));
             }
             BinaryExpression b = ea as BinaryExpression;
-            if (b != null && b.Operator == Operator.Add)
+            if (b != null && b.Operator == Operator.IAdd)
             {
                 c = b.Right as Constant;
                 if (c != null)

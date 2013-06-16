@@ -138,8 +138,8 @@ namespace Decompiler.UnitTests.Typing
 			// e ::= Mem[(b+0x1003000)+(i*s):word16]
 			Expression e = m.Load(
 				PrimitiveType.Word16,
-				m.Add(m.Add(b, Constant.Word32(0x10030000)),
-				m.Muls(i, s)));
+				m.IAdd(m.IAdd(b, Constant.Word32(0x10030000)),
+				m.SMul(i, s)));
             coll = CreateCollector();
 			e = e.Accept(en);
 			e.Accept(eqb);
@@ -186,7 +186,7 @@ namespace Decompiler.UnitTests.Typing
             Program prog = CreateProgram();
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier i = m.Local32("i");
-            Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
+            Expression ea = m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000));
             Expression e = m.Load(PrimitiveType.Int32, ea);
 
             coll = CreateCollector(prog);
@@ -203,7 +203,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
-			MemberPointerSelector mps = m.MembPtrW(ds, m.Add(bx, 4));
+			MemberPointerSelector mps = m.MembPtrW(ds, m.IAdd(bx, 4));
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
             coll = CreateCollector();
@@ -221,7 +221,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
-			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.Add(bx, 4));
+			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.IAdd(bx, 4));
 
             coll = CreateCollector();
 			e = e.Accept(en);
@@ -253,7 +253,7 @@ namespace Decompiler.UnitTests.Typing
             var prog = CreateProgram();
             var m = new ProcedureBuilder();
             var id = m.Local32("id");
-            var e = m.Mul(id, id);
+            var e = m.IMul(id, id);
 
             coll = CreateCollector(prog);
             e = e.Accept(en);
@@ -425,7 +425,7 @@ namespace Decompiler.UnitTests.Typing
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Identifier bx = m.Local16("bx");
-            Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.Mul(bx, 8));
+            Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.IMul(bx, 8));
             coll = CreateCollector();
             e.Accept(eqb);
             e.Accept(coll);
@@ -578,9 +578,9 @@ namespace Decompiler.UnitTests.Typing
 			Identifier si = Local16("si");
 			Assign(es, Load(PrimitiveType.Word16, Int16(0x7070)));
 			Assign(ax, 0x4A);
-			Assign(si, Muls(ax, Load(PrimitiveType.Word16, Int16(0x1C0A))));
+			Assign(si, SMul(ax, Load(PrimitiveType.Word16, Int16(0x1C0A))));
 			Load(bx, Int16(0x0CA4));
-			Store(Add(Add(bx, 10), si), Byte(0xF8));
+			Store(IAdd(IAdd(bx, 10), si), Byte(0xF8));
 			Return();
 		}
 	}

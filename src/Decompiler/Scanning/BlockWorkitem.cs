@@ -455,7 +455,7 @@ namespace Decompiler.Scanning
             Constant c = state.GetValue(id) as Constant;
             if (c != null && c.IsValid)
             {
-                Emit(new Assignment(stackReg, new BinaryExpression(Operator.Sub, stackReg.DataType, stackReg, c)));
+                Emit(new Assignment(stackReg, new BinaryExpression(Operator.ISub, stackReg.DataType, stackReg, c)));
             }
             else
             {

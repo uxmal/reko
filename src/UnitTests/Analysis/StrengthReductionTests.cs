@@ -77,8 +77,8 @@ namespace Decompiler.UnitTests.Analysis
 
             m.Label("loop");
             m.BranchIf(m.Eq(p, 0x4000), "done");
-            m.Store(m.Add(p, 0x3000), m.Int32(0));
-            m.Assign(p, m.Add(p, 4));
+            m.Store(m.IAdd(p, 0x3000), m.Int32(0));
+            m.Assign(p, m.IAdd(p, 4));
             m.Jump("loop");
 
             m.Label("done");

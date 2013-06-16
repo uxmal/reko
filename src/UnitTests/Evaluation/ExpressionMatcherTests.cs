@@ -81,15 +81,15 @@ namespace Decompiler.UnitTests.Evaluation
         [Test]
         public void Emt_MatchBinOp()
         {
-            var b = m.Add(Id("esp"), 4);
-            Create(m.Add(Id("esp"), 4));
+            var b = m.IAdd(Id("esp"), 4);
+            Create(m.IAdd(Id("esp"), 4));
             Assert.IsTrue(matcher.Match(b));
         }
 
         [Test]
         public void Emt_BinOpMismatch()
         {
-            var b = m.Add(Id("esp"), 4);
+            var b = m.IAdd(Id("esp"), 4);
             Create(m.Sub(Id("esp"), 4));
             Assert.IsFalse(matcher.Match(b));
         }
@@ -97,8 +97,8 @@ namespace Decompiler.UnitTests.Evaluation
         [Test]
         public void Emt_MemAccess()
         {
-            var mem = m.LoadW(m.Add(Id("ebx"), 4));
-            Create(m.LoadW(m.Add(AnyId("idx"), AnyC("offset"))));
+            var mem = m.LoadW(m.IAdd(Id("ebx"), 4));
+            Create(m.LoadW(m.IAdd(AnyId("idx"), AnyC("offset"))));
             Assert.IsTrue(matcher.Match(mem));
             Assert.AreEqual("ebx", matcher.CapturedExpression("idx").ToString());
         }
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Evaluation
         [Test]
         public void Emt_MatchAnyOp()
         {
-            var sum = m.Add(Id("ebx"), Id("ecx"));
+            var sum = m.IAdd(Id("ebx"), Id("ecx"));
             Create(new BinaryExpression(AnyOp("op"), sum.DataType, AnyId("left"), AnyId("right")));
             Assert.IsTrue(matcher.Match(sum));
             Assert.AreEqual(" + ", matcher.CapturedOperators("op").ToString());
@@ -115,8 +115,8 @@ namespace Decompiler.UnitTests.Evaluation
         [Test]
         public void Emt_MatchCondOf()
         {
-            var e = m.Add(Id("ebx"), m.Cond(Id("ecx")));
-            Create(m.Add(AnyId(""), m.Cond(AnyId("q"))));
+            var e = m.IAdd(Id("ebx"), m.Cond(Id("ecx")));
+            Create(m.IAdd(AnyId(""), m.Cond(AnyId("q"))));
             Assert.IsTrue(matcher.Match(e));
             Assert.AreEqual("ecx", matcher.CapturedExpression("q").ToString());
         }

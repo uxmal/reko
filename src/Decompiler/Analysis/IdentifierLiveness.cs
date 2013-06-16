@@ -77,7 +77,7 @@ namespace Decompiler.Analysis
         public bool Def(MemoryAccess mem)
         {
             var bin = mem.EffectiveAddress as BinaryExpression;
-            if (bin == null ||(bin.Operator != Operator.Add && bin.Operator != Operator.Sub))
+            if (bin == null ||(bin.Operator != Operator.IAdd && bin.Operator != Operator.ISub))
                 return false;
 
             var idLeft = bin.Left as Identifier;
@@ -87,7 +87,7 @@ namespace Decompiler.Analysis
             if (cRight == null || !cRight.IsValid)
                 return false;
             int val = cRight.ToInt32();
-            if (bin.Operator == Operator.Sub)
+            if (bin.Operator == Operator.ISub)
             {
                 VisitStackLocalStorage(new StackLocalStorage(-val, bin.DataType));
             }

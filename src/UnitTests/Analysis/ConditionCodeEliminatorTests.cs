@@ -212,7 +212,7 @@ done:
 			Identifier f = Reg32("f");
 
             
-			Statement stmZ = new Statement(0, new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.Sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
+			Statement stmZ = new Statement(0, new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.ISub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
 			ssaIds[Z].DefStatement = stmZ;
 			Statement stmF = new Statement(0, new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
 			ssaIds[f].DefStatement = stmF;
@@ -236,7 +236,7 @@ done:
 		public void SignedIntComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
-			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
+			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
@@ -246,7 +246,7 @@ done:
 		public void RealComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
-			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
+			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("RltOperator", b.Operator.GetType().Name);
@@ -270,9 +270,9 @@ done:
                 var SCZ = m.Frame.EnsureFlagGroup(0x7, "SZC", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(0x4, "C", PrimitiveType.Byte);
 
-                m.Assign(r1, m.Add(r1, r2));
+                m.Assign(r1, m.IAdd(r1, r2));
                 m.Assign(SCZ, m.Cond(r1));
-                m.Assign(r3, m.Add(m.Add(r3, r4), C));
+                m.Assign(r3, m.IAdd(m.IAdd(r3, r4), C));
                 m.Store(m.Word32(0x0444400), r1);
                 m.Store(m.Word32(0x0444404), r3);
                 m.Return();

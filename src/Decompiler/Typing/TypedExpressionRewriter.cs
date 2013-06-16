@@ -218,7 +218,7 @@ namespace Decompiler.Typing
 
 			DataType dtLeft = DataTypeOf(binExp.Left);
 			DataType dtRight = DataTypeOf(binExp.Right);
-            if (binExp.Operator == Operator.Add)
+            if (binExp.Operator == Operator.IAdd)
             {
                 return TransformSum(binExp, dtLeft, dtRight);
             }

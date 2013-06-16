@@ -94,8 +94,8 @@ namespace Decompiler.Arch.Sparc
                     throw new AddressCorrelatedException(string.Format("Rewriting SPARC opcode '{0}' is not supported yet.",
                         di.Instr.Opcode),
                         di.Address);
-                case Opcode.add: RewriteAlu(Operator.Add); break;
-                case Opcode.addcc: RewriteAluCc(Operator.Add); break;
+                case Opcode.add: RewriteAlu(Operator.IAdd); break;
+                case Opcode.addcc: RewriteAluCc(Operator.IAdd); break;
                 case Opcode.and: RewriteAlu(Operator.And); break;
                 case Opcode.andcc: RewriteAluCc(Operator.And); break;
                 case Opcode.call: RewriteCall(); break;
@@ -106,16 +106,16 @@ namespace Decompiler.Arch.Sparc
                 case Opcode.or: RewriteAlu(Operator.Or); break;
                 case Opcode.orcc: RewriteAluCc(Operator.Or); break;
                 case Opcode.sethi: RewriteSethi(); break;
-                case Opcode.sdiv: RewriteAlu(Operator.Divs); break;
-                case Opcode.sdivcc: RewriteAlu(Operator.Divs); break;
+                case Opcode.sdiv: RewriteAlu(Operator.SDiv); break;
+                case Opcode.sdivcc: RewriteAlu(Operator.SDiv); break;
                 case Opcode.sll: RewriteAlu(Operator.Shl); break;
-                case Opcode.smul: RewriteAlu(Operator.Muls); break;
-                case Opcode.smulcc: RewriteAlu(Operator.Muls); break;
+                case Opcode.smul: RewriteAlu(Operator.SMul); break;
+                case Opcode.smulcc: RewriteAlu(Operator.SMul); break;
                 case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
-                case Opcode.udiv: RewriteAlu(Operator.Divu); break;
-                case Opcode.udivcc: RewriteAluCc(Operator.Divu); break;
-                case Opcode.umul: RewriteAlu(Operator.Mulu); break;
-                case Opcode.umulcc: RewriteAluCc(Operator.Mulu); break;
+                case Opcode.udiv: RewriteAlu(Operator.UDiv); break;
+                case Opcode.udivcc: RewriteAluCc(Operator.UDiv); break;
+                case Opcode.umul: RewriteAlu(Operator.UMul); break;
+                case Opcode.umulcc: RewriteAluCc(Operator.UMul); break;
                 }
                 yield return ric;
             }
@@ -145,7 +145,7 @@ namespace Decompiler.Arch.Sparc
 
         private void RewriteCall()
         {
-            emitter.Call(((AddressOperand) di.Instr.Op1).Address , 0);
+            emitter.Call(((AddressOperand) di.Instr.Op1).Address , 0, false);
         }
 
         private void RewriteLoad(PrimitiveType size)
@@ -183,17 +183,20 @@ namespace Decompiler.Arch.Sparc
             Expression offset;
             if (m != null)
             {
-                baseReg = m.Base != Registers.g0 ? null : frame.EnsureRegister(m.Base);
+                baseReg = m.Base == Registers.g0 ? null : frame.EnsureRegister(m.Base);
                 offset = m.Offset.IsIntegerZero ? null : m.Offset;
             }
-            var i = op as IndexedMemoryOperand;
-            if (i != null)
+            else
             {
-                baseReg = i.Base == Registers.g0 ? null : frame.EnsureRegister(i.Base);
-                offset = i.Index == Registers.g0 ? null : frame.EnsureRegister(i.Index);
+                var i = op as IndexedMemoryOperand;
+                if (i != null)
+                {
+                    baseReg = i.Base == Registers.g0 ? null : frame.EnsureRegister(i.Base);
+                    offset = i.Index == Registers.g0 ? null : frame.EnsureRegister(i.Index);
+                }
+                else
+                    throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));
             }
-            else 
-                throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));
             Expression ea;
             if (baseReg == null && offset == null)
                 ea = Constant.Zero(PrimitiveType.Pointer32);
@@ -202,7 +205,7 @@ namespace Decompiler.Arch.Sparc
             else if (offset == null)
                 ea = baseReg;
             else
-                ea = emitter.Add(baseReg, offset);
+                ea = emitter.IAdd(baseReg, offset);
             return new MemoryAccess(ea, size);
         }
 

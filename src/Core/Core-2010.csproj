@@ -200,6 +200,10 @@
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
     </Compile>
+    <Compile Include="Operators\FAddOperator.cs" />
+    <Compile Include="Operators\FDivOperator.cs" />
+    <Compile Include="Operators\FMulOperator.cs" />
+    <Compile Include="Operators\FSubOperator.cs" />
     <Compile Include="Output\ProcedureFormatter.cs" />
     <Compile Include="Rtl\RtlAssignment.cs" />
     <Compile Include="Rtl\RtlBranch.cs" />
@@ -346,7 +350,7 @@
     <Compile Include="LinearInductionVariable.cs" />
     <Compile Include="Machine\MachineInstruction.cs" />
     <Compile Include="Machine\MachineOperand.cs" />
-    <Compile Include="Operators\AddOperator.cs">
+    <Compile Include="Operators\IAddOperator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\AndOperator.cs">
@@ -358,20 +362,20 @@
     <Compile Include="Operators\ConditionalOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\DivsOperator.cs">
+    <Compile Include="Operators\SDivOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\DivuOperator.cs">
+    <Compile Include="Operators\UDivOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\ModOperator.cs">
+    <Compile Include="Operators\IModOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\MulOperator.cs" />
-    <Compile Include="Operators\MulsOperator.cs">
+    <Compile Include="Operators\IMulOperator.cs" />
+    <Compile Include="Operators\SMulOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\MuluOperator.cs">
+    <Compile Include="Operators\UMulOperator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\Operator.cs">
@@ -391,7 +395,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\SignedIntOperators.cs" />
-    <Compile Include="Operators\SubOperator.cs">
+    <Compile Include="Operators\ISubOperator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\UnaryOperator.cs">

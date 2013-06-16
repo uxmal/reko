@@ -36,7 +36,7 @@ namespace Decompiler.Core.Rtl
         /// hideous example).
         /// </summary>
         public bool NextStatementRequiresLabel { get; set; }
-
+        
         public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
 
         public override string ToString()

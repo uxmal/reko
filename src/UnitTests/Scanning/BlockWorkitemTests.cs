@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Scanning
             trace.Add(m =>
             {
                 m.Assign(r0, m.Word32(3));
-                m.Goto(new Address(0x4000));
+                m.Goto(new Address(0x4000), true);
             });
 
             Block next = block.Procedure.AddBlock("next");
@@ -193,7 +193,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Bwi_CallInstructionShouldAddNodeToCallgraph()
         {
-            trace.Add(m => { m.Call(new Address(0x1200), 4); });
+            trace.Add(m => { m.Call(new Address(0x1200), 4, true); });
             trace.Add(m => { m.Assign(m.Word32(0x4000), m.Word32(0)); });
             trace.Add(m => { m.Return(4, 0); });
 
@@ -239,7 +239,7 @@ namespace Decompiler.UnitTests.Scanning
                 IsAlloca = true
             };
 
-            trace.Add(m => { m.Call(new Address(0x2000), 4); });
+            trace.Add(m => { m.Call(new Address(0x2000), 4, true); });
             using (repository.Record())
             {
                 scanner.Stub(x => x.Architecture).Return(arch);
@@ -272,7 +272,7 @@ namespace Decompiler.UnitTests.Scanning
                 IsAlloca = true
             };
 
-            trace.Add(m => { m.Call(new Address(0x2000), 4); });
+            trace.Add(m => { m.Call(new Address(0x2000), 4, true); });
 
             using (repository.Record())
             {
@@ -315,7 +315,7 @@ namespace Decompiler.UnitTests.Scanning
             arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
             repository.ReplayAll();
 
-            trace.Add(m => { m.Call(new Address(0x0001000), 4); });
+            trace.Add(m => { m.Call(new Address(0x0001000), 4, true); });
             trace.Add(m => { m.SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0))); });
 
             var wi = CreateWorkItem(new Address(0x2000), new FakeProcessorState(arch));
@@ -348,7 +348,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Procedure>.Is.NotNull,
                     Arg<ProcessorState>.Is.Anything)).Return(followBlock);
             }
-            trace.Add(m => m.If(new TestCondition(ConditionCode.GE, grf), new RtlAssignment(r2, r1)));
+            trace.Add(m => m.If(new TestCondition(ConditionCode.GE, grf), new RtlAssignment(r2, r1), true));
             var wi = CreateWorkItem(new Address(0x00100000), new FakeProcessorState(arch));
             wi.ProcessInternal();
 

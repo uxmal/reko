@@ -44,7 +44,7 @@ namespace Decompiler.Evaluation
 
 			b = acc.EffectiveAddress;
 			Constant offset = Constant.Create(b.DataType, 0);
-			BinaryOperator op = Operator.Add;
+			BinaryOperator op = Operator.IAdd;
 			BinaryExpression ea = b as BinaryExpression;
 			if (ea != null)
 			{

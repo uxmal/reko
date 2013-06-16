@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Typing
 		public void AtrcoTestIdPlusConst()
 		{
 			var r = m.Local32("r");
-			var mem = m.Load(PrimitiveType.Word32, m.Add(r, 4));
+			var mem = m.Load(PrimitiveType.Word32, m.IAdd(r, 4));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoTestIdPlusConst.txt");
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier r = m.Local32("r");
 			Identifier s = m.Local32("s");
-			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.Add(r, s));
+			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.IAdd(r, s));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 		}
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Typing
 			LinearInductionVariable iv = Liv32(1);
             prog.InductionVariables.Add(id, iv);
             Constant zero = m.Word32(0);
-			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.Add(id, zero));
+			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.IAdd(id, zero));
 			mem.Accept(eqb);
             atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoInductionVariableIncr.txt");

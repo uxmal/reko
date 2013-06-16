@@ -43,12 +43,12 @@ namespace Decompiler.Evaluation
 
 		public bool Match(BinaryExpression exp)
 		{
-			if (exp.Operator != Operator.Add)
+			if (exp.Operator != Operator.IAdd)
 				return false;
 			id = exp.Left as Identifier;
 			
 			bin = exp.Right as BinaryExpression;
-			if ((id == null || bin == null) && exp.Operator  == Operator.Add)
+			if ((id == null || bin == null) && exp.Operator  == Operator.IAdd)
 			{
 				id = exp.Right as Identifier;
 				bin = exp.Left as BinaryExpression;
@@ -56,7 +56,7 @@ namespace Decompiler.Evaluation
 			if (id == null || bin == null)
 				return false;
 
-			if (bin.Operator != Operator.Muls && bin.Operator != Operator.Mulu && bin.Operator != Operator.Mul)
+			if (bin.Operator != Operator.SMul && bin.Operator != Operator.UMul && bin.Operator != Operator.IMul)
 				return false;
 
 			Identifier idInner = bin.Left as Identifier;
@@ -73,7 +73,7 @@ namespace Decompiler.Evaluation
 		public Expression Transform()
 		{
             ctx.RemoveIdentifierUse(id);
-			return new BinaryExpression(bin.Operator, id.DataType, id, Operator.Add.ApplyConstants(cInner, Constant.Create(cInner.DataType, 1)));
+			return new BinaryExpression(bin.Operator, id.DataType, id, Operator.IAdd.ApplyConstants(cInner, Constant.Create(cInner.DataType, 1)));
 		}
 	}
 }

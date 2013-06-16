@@ -37,8 +37,8 @@ namespace Decompiler.UnitTests.Mocks
 
             Label("loopHeader");
             BranchIf(Ge(i, 100), "done");
-                Assign(sum, Add(sum, i));
-                Assign(i, Add(i, 1));
+                Assign(sum, IAdd(sum, i));
+                Assign(i, IAdd(i, 1));
                 Jump("loopHeader");
 
             Label("done");

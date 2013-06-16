@@ -106,7 +106,7 @@ namespace Decompiler.Arch.X86
             emitter.Assign(
                 orw.FlagGroup(FlagM.FPUF),
                 new ConditionOf(
-                    new BinaryExpression(Operator.Sub, di.Instruction.dataWidth, op1, op2)));
+                    new BinaryExpression(Operator.FSub, di.Instruction.dataWidth, op1, op2)));
             state.ShrinkFpuStack(pops);
         }
 
@@ -210,7 +210,7 @@ namespace Decompiler.Arch.X86
         private void RewriteFtst()
         {
             emitter.Assign(orw.FlagGroup(FlagM.CF),
-                emitter.Sub(FpuRegister(0), Constant.Real64(0.0)));
+                emitter.ISub(FpuRegister(0), Constant.Real64(0.0)));
         }
 
         private void RewriteFxam()
@@ -225,7 +225,7 @@ namespace Decompiler.Arch.X86
             //$REVIEW: Candidate for idiom search.
             Identifier op1 = FpuRegister(0);
             Identifier op2 = FpuRegister(1);
-            emitter.Assign(op1, emitter.Sub(op2, PseudoProc("lg2", PrimitiveType.Real64, op1)));
+            emitter.Assign(op1, emitter.ISub(op2, PseudoProc("lg2", PrimitiveType.Real64, op1)));
             state.ShrinkFpuStack(1);
             WriteFpuStack(0);
         }

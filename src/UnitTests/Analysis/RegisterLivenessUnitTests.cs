@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			m.Store(m.Int32(0x01F3004), ax).Instruction.Accept(rl);	// use al and ah
 			Assert.AreEqual(" ax", Dump(rl.IdentifierLiveness));
-			m.Assign(ah, m.Add(ah, 3)).Accept(rl);
+			m.Assign(ah, m.IAdd(ah, 3)).Accept(rl);
 			Assert.AreEqual(" al ah", Dump(rl.IdentifierLiveness));
 		}
 

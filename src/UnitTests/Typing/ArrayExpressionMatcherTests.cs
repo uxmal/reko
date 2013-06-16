@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void Pattern1()
 		{
-			Expression e = m.Muls(i, c);
+			Expression e = m.SMul(i, c);
 			Assert.IsTrue(aem.Match(e));
 			Assert.AreSame(c, aem.ElementSize);
 		}
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void Pattern2()
 		{
-			Expression e = m.Add(m.Muls(c, i), c);
+			Expression e = m.IAdd(m.SMul(c, i), c);
 			Assert.IsTrue(aem.Match(e));
 			Assert.AreSame(c, aem.ArrayPointer);
 		}
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void Pattern3()
 		{
-			Expression e = m.Add(r, m.Add(m.Muls(c, i), off));
+			Expression e = m.IAdd(r, m.IAdd(m.SMul(c, i), off));
 			Assert.IsTrue(aem.Match(e));
 			Assert.AreEqual("r + 0x0000002A", aem.ArrayPointer.ToString());
 			Assert.AreEqual("0x00000010 *s i + r + 0x0000002A", e.ToString());
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void Pattern4()
 		{
-			Expression e = m.Add(m.Add(r, off), m.Muls(i, c));
+			Expression e = m.IAdd(m.IAdd(r, off), m.SMul(i, c));
 			Assert.IsTrue(aem.Match(e));
 			Assert.AreEqual("r + 0x0000002A", aem.ArrayPointer.ToString());
 			Assert.AreEqual("r + 0x0000002A + i *s 0x00000010", e.ToString());

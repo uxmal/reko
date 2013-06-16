@@ -135,7 +135,7 @@ namespace Decompiler.Arch.X86
                 SetValue(
                     arch.StackRegister,
                     new BinaryExpression(
-                        Operator.Sub,
+                        Operator.ISub,
                         spVal.DataType,
                         sp,
                         Constant.Create(
@@ -152,7 +152,7 @@ namespace Decompiler.Arch.X86
             var stackOffset = SetValue(
                 spReg,
                 new BinaryExpression(
-                    Operator.Add,
+                    Operator.IAdd,
                     spVal.DataType,
                     sp,
                     Constant.Create(

@@ -141,7 +141,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public void Compare(string flags, Expression a, Expression b)
         {
-            Assign(Flags(flags), new ConditionOf(Sub(a, b)));
+            Assign(Flags(flags), new ConditionOf(ISub(a, b)));
         }
 
         public Block CurrentBlock

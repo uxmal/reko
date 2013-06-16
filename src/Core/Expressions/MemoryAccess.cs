@@ -67,7 +67,7 @@ namespace Decompiler.Core.Expressions
             if (offset == 0)
                 return baseRegister;
             else
-                return new BinaryExpression(Operators.Operator.Add,
+                return new BinaryExpression(Operators.Operator.IAdd,
                     baseRegister.DataType,
                     baseRegister,
                     Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.Size), offset));

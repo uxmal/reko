@@ -244,7 +244,7 @@ namespace Decompiler.Evaluation
                 var o = ea.Right as Constant;
                 if (o == null) return false;
                 offset = o.ToInt32();
-                if (ea.Operator == Operator.Sub)
+                if (ea.Operator == Operator.ISub)
                     offset = -offset;
                 return true;
             }

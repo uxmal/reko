@@ -45,7 +45,7 @@ namespace Decompiler.Evaluation
 
 		private bool IsAddOrSub(Operator op)
 		{
-			return op == Operator.Add || op == Operator.Sub;
+			return op == Operator.IAdd || op == Operator.ISub;
 		}
 
 		public bool Match(BinaryExpression binExp, Expression left, Expression right)
@@ -67,17 +67,17 @@ namespace Decompiler.Evaluation
 
 		public Expression Transform(Statement stm)
 		{
-			if (binLeft.Operator == Operator.Sub)
+			if (binLeft.Operator == Operator.ISub)
 				cLeftRight = cLeftRight.Negate();
-			if (bin.Operator == Operator.Sub)
+			if (bin.Operator == Operator.ISub)
 				cRight = cRight.Negate();
 
-			BinaryOperator op = Operator.Add;
+			BinaryOperator op = Operator.IAdd;
 			Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
 			if (c.IsNegative)
 			{
 				c = c.Negate();
-				op = Operator.Sub;
+				op = Operator.ISub;
 			}
 			return new BinaryExpression(op, bin.DataType, binLeft.Left, c);
 		}

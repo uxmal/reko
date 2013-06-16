@@ -31,10 +31,21 @@ namespace Decompiler.Core.Rtl
     /// </summary>
     public class RtlIf : RtlInstruction
     {
-        public RtlIf(Expression condition, RtlInstruction instr)
+        /// <summary>
+        /// Builds an RTL If instruction, which executes the specified statement
+        /// only if the condition is satisfied. The annulled flag is used to model
+        /// processor architectures like SPARC, where there is a delay slot after a
+        /// branch, and annullment allows the delay slot to not be executed if the
+        /// branch is not taken.
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <param name="instr"></param>
+        /// <param name="annulled"></param>
+        public RtlIf(Expression condition, RtlInstruction instr, bool annulled)
         {
             this.Condition = condition;
             this.Instruction = instr;
+            this.Annulled = annulled;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
@@ -42,6 +53,7 @@ namespace Decompiler.Core.Rtl
             return visitor.VisitIf(this);
         }
 
+        public bool Annulled { get; private set; }
         public Expression Condition { get; private set; }
         public RtlInstruction Instruction { get; private set; }
 

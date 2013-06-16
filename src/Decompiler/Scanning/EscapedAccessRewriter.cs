@@ -58,11 +58,11 @@ namespace Decompiler.Scanning
 			if (offset < 0)
 			{
 				offset = -offset;
-				op = Operator.Sub;
+				op = Operator.ISub;
 			}
 			else
 			{
-				op = Operator.Add;
+				op = Operator.IAdd;
 			}
 			PrimitiveType p = (PrimitiveType) fp.DataType;
 			Expression ea = new BinaryExpression(op, fp.DataType,

@@ -111,7 +111,7 @@ namespace Decompiler.UnitTests.Evaluation
         {
             esp = Tmp32("esp");
             CreateSymbolicEvaluator(frame);
-            var ass = new Assignment(esp, new BinaryExpression(BinaryOperator.Add, esp.DataType, esp, Constant.Word32(4)));
+            var ass = new Assignment(esp, new BinaryExpression(BinaryOperator.IAdd, esp.DataType, esp, Constant.Word32(4)));
             se.Evaluate(ass);
             Assert.AreEqual("fp + 0x00000004", ctx.TemporaryState[esp.Storage].ToString());
         }
@@ -154,7 +154,7 @@ namespace Decompiler.UnitTests.Evaluation
                 m.Store(esp, eax);
                 m.Assign(eax, m.Word32(1));
                 m.Assign(eax, m.LoadDw(esp));
-                m.Assign(esp, m.Add(esp, 4));
+                m.Assign(esp, m.IAdd(esp, 4));
             });
             Assert.AreEqual("eax", GetRegisterState(se, eax).ToString());
         }
@@ -173,12 +173,12 @@ namespace Decompiler.UnitTests.Evaluation
                 m.Assign(ebp, esp);
                 m.Assign(esp, m.Sub(esp, 20));
 
-                m.Store(m.Add(ebp, 8), m.Word32(1));
-                m.Assign(eax, m.LoadDw(m.Add(esp, 28)));
+                m.Store(m.IAdd(ebp, 8), m.Word32(1));
+                m.Assign(eax, m.LoadDw(m.IAdd(esp, 28)));
 
-                m.Assign(esp, m.Add(esp, 20));
+                m.Assign(esp, m.IAdd(esp, 20));
                 m.Assign(ebp, m.LoadDw(esp));
-                m.Assign(esp, m.Add(esp, 4));
+                m.Assign(esp, m.IAdd(esp, 4));
             });
             Assert.AreEqual("ebp", GetRegisterState(se, ebp).ToString());
             Assert.AreEqual("0x00000001", GetRegisterState(se, eax).ToString());
@@ -283,7 +283,7 @@ namespace Decompiler.UnitTests.Evaluation
                 si = m.Frame.EnsureRegister(Registers.si);
 
                 m.Assign(si,m.LoadW(m.Word16(0x0032)));
-                m.Assign(si, m.Add(si,2));
+                m.Assign(si, m.IAdd(si,2));
             });
             Assert.AreEqual("<invalid>", ctx.RegisterState[(RegisterStorage)si.Storage].ToString());
         }

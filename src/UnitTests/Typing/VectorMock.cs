@@ -35,9 +35,9 @@ namespace Decompiler.UnitTests.Typing
 			var sum = Local32("mod");
 			PrimitiveType fl = PrimitiveType.Real32;
 
-			Assign(sum, Add(Load(fl, v),
-						Add(Load(fl, Add(v, 4)),
-							Load(fl, Add(v, 8)))));
+			Assign(sum, IAdd(Load(fl, v),
+						IAdd(Load(fl, IAdd(v, 4)),
+							Load(fl, IAdd(v, 8)))));
 
 		}
 	}

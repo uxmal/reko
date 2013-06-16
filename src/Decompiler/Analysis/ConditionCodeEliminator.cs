@@ -144,7 +144,7 @@ namespace Decompiler.Analysis
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
-			return new BinaryExpression(Operator.Sub, e.DataType, e, Constant.Create(e.DataType, 0));
+			return new BinaryExpression(Operator.ISub, e.DataType, e, Constant.Create(e.DataType, 0));
 		}
 
 		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc)
@@ -230,7 +230,7 @@ namespace Decompiler.Analysis
 
 		private static bool IsAddOrSub(Operator op)
 		{
-			return op == Operator.Add || op == Operator.Sub;
+			return op == Operator.IAdd || op == Operator.ISub;
 		}
 
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
@@ -264,7 +264,7 @@ namespace Decompiler.Analysis
 			}
 
 			Expression e;
-			if (bin.Operator == Operator.Sub)
+			if (bin.Operator == Operator.ISub)
 			{
 				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
 			}

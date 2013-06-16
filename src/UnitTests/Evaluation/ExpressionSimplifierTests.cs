@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Evaluation
 		public void ExsConstants()
 		{
 			BuildExpressionSimplifier();
-			Expression expr = new BinaryExpression(Operator.Add, PrimitiveType.Word32, 
+			Expression expr = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
 				Constant.Word32(1), Constant.Word32(2));
 			Constant c = (Constant) expr.Accept(simplifier);
 
@@ -65,10 +65,10 @@ namespace Decompiler.UnitTests.Evaluation
         {
             BuildExpressionSimplifier();
             var expr = new BinaryExpression(
-                Operator.Add,
+                Operator.IAdd,
                 foo.DataType,
                 new BinaryExpression(
-                    Operator.Sub,
+                    Operator.ISub,
                     foo.DataType,
                     foo,
                     Constant.Word32(4)),

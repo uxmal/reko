@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Typing
 			Assign(x, i);
 			Assign(x, r);
 			Store(ptr, i);
-			Store(Add(ptr, Int32(4)), r);
+			Store(IAdd(ptr, Int32(4)), r);
 			Return();
 		}
 	}

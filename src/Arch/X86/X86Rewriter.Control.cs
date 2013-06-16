@@ -86,14 +86,14 @@ namespace Decompiler.Arch.X86
             Address addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
-                emitter.Call(addr, (byte) opsize.Size);
+                emitter.Call(addr, (byte) opsize.Size, true);
             }
             else
             {
                 var target = SrcOp(callTarget);
                 if (target.DataType.Size == 2)
                     target = emitter.Seq(orw.AluRegister(Registers.cs), target);
-                emitter.Call(target, (byte) opsize.Size);
+                emitter.Call(target, (byte) opsize.Size, true);
             }
         }
 
@@ -126,10 +126,10 @@ namespace Decompiler.Arch.X86
 			if (di.Instruction.op1 is ImmediateOperand)
 			{
 				Address addr = OperandAsCodeAddress(di.Instruction.op1);
-                emitter.Goto(addr);
+                emitter.Goto(addr, true);
 				return;
 			}
-            emitter.Goto(SrcOp(di.Instruction.op1));
+            emitter.Goto(SrcOp(di.Instruction.op1), true);
         }
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
@@ -198,7 +198,7 @@ namespace Decompiler.Arch.X86
                     break;
                 }
             default:
-                emitter.Goto(topOfLoop);
+                emitter.Goto(topOfLoop, true);
                 break;
             }
         }

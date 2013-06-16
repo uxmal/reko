@@ -273,7 +273,7 @@ namespace Decompiler.Typing
 			acc.Array.Accept(this);
 			acc.Index.Accept(this);
 			BinaryExpression b = acc.Index as BinaryExpression;
-			if (b != null && b.Operator == Operator.Mul)
+			if (b != null && b.Operator == Operator.IMul)
 			{
 				Constant c = b.Right as Constant;
 				if (c != null)
@@ -322,21 +322,22 @@ namespace Decompiler.Typing
 			ivCur = null;
 			if (ivLeft != null)
 			{
-				if (binExp.Operator == Operator.Muls || binExp.Operator == Operator.Mulu || binExp.Operator == Operator.Mul || binExp.Operator == Operator.Shl)
+				if (binExp.Operator == Operator.SMul || binExp.Operator == Operator.UMul || binExp.Operator == Operator.IMul || binExp.Operator == Operator.Shl)
 					ivCur = MergeInductionVariableConstant(ivLeft, binExp.Operator, binExp.Right as Constant);
 			} 
 
 			TypeVariable tvExp = binExp.TypeVariable;
-			if (binExp.Operator == Operator.Add || 
-				binExp.Operator == Operator.Sub ||
+            //$BUGBUG: This needs to be redone because the domain of the operation is now in the OPERATOR, not the operands.
+			if (binExp.Operator == Operator.IAdd || 
+				binExp.Operator == Operator.ISub ||
 				binExp.Operator == Operator.And ||
 				binExp.Operator == Operator.Or  ||
 				binExp.Operator == Operator.Xor)
 			{
                 return handler.DataTypeTrait(binExp, binExp.DataType);
 			} 
-			else if (binExp.Operator == Operator.Muls ||
-				binExp.Operator == Operator.Divs)
+			else if (binExp.Operator == Operator.SMul ||
+				binExp.Operator == Operator.SDiv)
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
                 var dt = handler.DataTypeTrait(binExp, binExp.DataType);
@@ -344,8 +345,8 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.Size));
                 return dt;
 			}
-			else if (binExp.Operator == Operator.Mulu ||
-				binExp.Operator == Operator.Divu ||
+			else if (binExp.Operator == Operator.UMul ||
+				binExp.Operator == Operator.UDiv ||
 				binExp.Operator == Operator.Shr)
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
@@ -354,10 +355,10 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, MakeUnsigned(binExp.Right.DataType));
                 return dt;
 			}
-			else if (binExp.Operator == Operator.Mul)
+			else if (binExp.Operator == Operator.IMul)
 			{
+                //$REVIEW: even more detailed knowledge!
                 return handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
-				
 			}
 			else if (binExp.Operator == Operator.Sar)
 			{
@@ -370,7 +371,7 @@ namespace Decompiler.Typing
 			{
 				return handler.DataTypeTrait(binExp, binExp.DataType);
 			}
-			else if (binExp.Operator == Operator.Mod)
+			else if (binExp.Operator == Operator.IMod)
 			{
 				var dt = handler.DataTypeTrait(binExp, binExp.DataType);
 				handler.DataTypeTrait(binExp.Left, binExp.Left.DataType);

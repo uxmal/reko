@@ -44,7 +44,7 @@ namespace Decompiler.Evaluation
 		public Expression Transform()
 		{
 			return new BinaryExpression(
-				BinaryOperator.Add,
+				BinaryOperator.IAdd,
 				mps.DataType,
 				null, // mps.Ptr,
 				null); // c

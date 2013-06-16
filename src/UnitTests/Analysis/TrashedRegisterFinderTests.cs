@@ -490,7 +490,7 @@ const eax:<invalid> ebx:0x01231313
                 m.SegStore(ss, sp, ax);
                 m.Assign(ax, 1);
                 m.Assign(ax, m.SegMemW(ss, sp));
-                m.Assign(sp, m.Add(sp, 2));
+                m.Assign(sp, m.IAdd(sp, 2));
                 m.Return();
             });
 
@@ -507,7 +507,7 @@ const eax:<invalid> ebx:0x01231313
             p.Add("main", m =>
             {
                 var eax = m.Frame.EnsureRegister(Registers.eax);
-                m.Assign(eax, m.Add(eax, 4));
+                m.Assign(eax, m.IAdd(eax, 4));
                 m.Assign(m.Flags("SZCO"), m.Cond(eax));
                 m.Return();
             });
@@ -534,7 +534,7 @@ const eax:<invalid>
                 m.Assign(m.Flags("SCZO"), m.Cond(eax));
                 m.Store(m.Word32(0x12340000), eax);
                 m.Assign(eax, m.LoadDw(esp));
-                m.Assign(esp, m.Add(esp, 4));
+                m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
 
@@ -555,8 +555,8 @@ const eax:<invalid>
                 var ebx = m.Frame.EnsureRegister(Registers.ebx);
                 m.Assign(eax, 1);
                 m.Label("Lupe");
-                m.Store(m.Add(ebx, eax), m.Word16(0));
-                m.Assign(eax, m.Add(eax, 2));
+                m.Store(m.IAdd(ebx, eax), m.Word16(0));
+                m.Assign(eax, m.IAdd(eax, 2));
                 m.BranchIf(m.Le(eax, 10), "Lupe");
                 m.Return();
             });

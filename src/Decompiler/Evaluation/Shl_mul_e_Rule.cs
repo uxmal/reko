@@ -49,7 +49,7 @@ namespace Decompiler.Evaluation
 			if (b == null)
 				return false;
 
-			if (b.Operator != Operator.Muls && b.Operator != Operator.Mulu && b.Operator != Operator.Mul)
+			if (b.Operator != Operator.SMul && b.Operator != Operator.UMul && b.Operator != Operator.IMul)
 				return false;
 			op = b.Operator;
 			cMul = b.Right as Constant;
