@@ -414,6 +414,17 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, MakeNotSigned(binExp.Right.DataType));
                 return dt;
 			}
+            else if (binExp.Operator == Operator.FAdd ||
+                binExp.Operator == Operator.FSub ||
+                binExp.Operator == Operator.FMul ||
+                binExp.Operator == Operator.FDiv)
+            {
+                var dt = PrimitiveType.Create(Domain.Real, binExp.DataType.Size);
+                handler.DataTypeTrait(binExp, dt);
+				handler.DataTypeTrait(binExp.Left, dt);
+				handler.DataTypeTrait(binExp.Right, dt);
+                return dt;
+            }
 			throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
 		}
 

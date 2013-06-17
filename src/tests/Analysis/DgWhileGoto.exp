@@ -25,7 +25,7 @@ l0C00_0011:
 l0C00_0016:
 	v12 = Mem0[ds:0x0302:word16] + 0x0001
 	Mem0[ds:0x0302:word16] = v12
-	SZO = cond(Mem0[ds:0x0302:word16])
+	SZO = cond(v12)
 	// succ:  l0C00_001A
 l0C00_001A:
 	ax = Mem0[ds:si:word16]

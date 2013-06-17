@@ -59,7 +59,7 @@ l0C00_000C:
 l0C00_0010:
 	v7 = Mem0[ds:0x0201:word16] + 0x0001
 	Mem0[ds:0x0201:word16] = v7
-	SZO = cond(Mem0[ds:0x0201:word16])
+	SZO = cond(v7)
 // DataOut: ds
 // DataOut (flags): C
 // SymbolicIn: sp:fp

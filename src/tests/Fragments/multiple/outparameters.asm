@@ -4,9 +4,9 @@
 
 main	proc
 		mov si,[0x200]
-		call proc1
+		call proc25
 		mov [0x310],ax
-		call proc2
+		call proc27
 		mov [0x320],ax
 		call proc3
 		mov [0x330],ax
@@ -18,7 +18,7 @@ main	proc
 		
 ;;; Straight-line output parameter scenario.
 
-proc1	proc
+proc25	proc
 		lodsw
 		ret
 		endp
@@ -26,12 +26,12 @@ proc1	proc
 ;;; There are two paths to the returned siOut parameter, one directly from the caller and one modified
 ;;; by the lodsb instruction.
 
-proc2	proc
+proc27	proc
 		xor ax,ax
 		or si,si
-		jz proc2_done
+		jz proc27_done
 		lodsw
-proc2_done:
+proc27_done:
 		ret
 		endp
 
@@ -48,7 +48,7 @@ proc3	proc
 
 proc4	proc
 		lodsw
-		call proc1
+		call proc25
 		ret
 		endp
 

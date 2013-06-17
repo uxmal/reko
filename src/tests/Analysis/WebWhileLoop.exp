@@ -13,8 +13,8 @@ l0C00_0009:
 l0C00_000B:
 	bx_12 = bx_12 + cx_41
 	cx_27 = cx_41 - 0x0001
-	word15 cx_41 = cx_27 ***
-	word15 cx_42 = cx_27 ***
+	word16 cx_41 = cx_27
+	word16 cx_42 = cx_27
 	branch cx_41 != 0x0001 l0C00_000B
 	// succ:  l0C00_000F l0C00_000B
 l0C00_000F:
