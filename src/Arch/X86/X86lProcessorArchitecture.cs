@@ -184,7 +184,7 @@ namespace Decompiler.Arch.X86
 			get { return implicitRegs; }
 		}
 
-		public virtual string GrfToString(uint grf)
+		public string GrfToString(uint grf)
 		{
 			StringBuilder s = new StringBuilder();
 			for (int r = Registers.S.Number; grf != 0; ++r, grf >>= 1)

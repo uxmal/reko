@@ -116,7 +116,18 @@ namespace Decompiler.Arch.Sparc
 
         public string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & Registers.N.FlagGroupBits) != 0) s.Append(Registers.N.Name);
+            if ((grf & Registers.Z.FlagGroupBits) != 0) s.Append(Registers.Z.Name);
+            if ((grf & Registers.V.FlagGroupBits) != 0) s.Append(Registers.V.Name);
+            if ((grf & Registers.C.FlagGroupBits) != 0) s.Append(Registers.C.Name);
+
+            if ((grf & Registers.E.FlagGroupBits) != 0) s.Append(Registers.E.Name);
+            if ((grf & Registers.L.FlagGroupBits) != 0) s.Append(Registers.L.Name);
+            if ((grf & Registers.G.FlagGroupBits) != 0) s.Append(Registers.G.Name);
+            if ((grf & Registers.U.FlagGroupBits) != 0) s.Append(Registers.U.Name);
+
+            return s.ToString();
         }
 
         public PrimitiveType FramePointerType

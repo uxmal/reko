@@ -46,9 +46,10 @@ namespace Decompiler.Core.Rtl
             return this;
         }
 
-        public void Branch(Expression condition, Address target)
+        public RtlEmitter Branch(Expression condition, Address target, RtlClass rtlClass)
         {
-            instrs.Add(new RtlBranch(condition, target));
+            instrs.Add(new RtlBranch(condition, target, rtlClass));
+            return this;
         }
 
         /// <summary>
@@ -59,9 +60,9 @@ namespace Decompiler.Core.Rtl
         /// <param name="condition"></param>
         /// <param name="target"></param>
         /// <param name="?"></param>
-        public void BranchInMiddleOfInstruction(Expression condition, Address target)
+        public void BranchInMiddleOfInstruction(Expression condition, Address target, RtlClass rtlClass)
         {
-            var branch = new RtlBranch(condition, target);
+            var branch = new RtlBranch(condition, target, rtlClass);
             branch.NextStatementRequiresLabel = true;
             instrs.Add(branch);
         }
@@ -73,27 +74,52 @@ namespace Decompiler.Core.Rtl
         /// </summary>
         /// <param name="target"></param>
         /// <param name="retSize"></param>
-        /// <param name="annulled"></param>
-        public void Call(Expression target, byte retSize, bool annulled)
+        /// <param name="rtlClass"></param>
+        public RtlEmitter Call(Expression target, byte retSize)
         {
-            instrs.Add(new RtlCall(target, retSize, annulled));
+            instrs.Add(new RtlCall(target, retSize, RtlClass.Transfer));
+            return this;
         }
 
-        public void Goto(Expression target, bool annulled)
+        public RtlEmitter CallD(Expression target, byte retSize)
         {
-            instrs.Add(new RtlGoto(target, annulled));
+            instrs.Add(new RtlCall(target, retSize, RtlClass.Transfer|RtlClass.Delay));
+            return this;
         }
 
-        public void Return(
+        public RtlEmitter Goto(Expression target)
+        {
+            instrs.Add(new RtlGoto(target, RtlClass.Transfer));
+            return this;
+        }
+
+        public RtlEmitter GotoD(Expression target)
+        {
+            instrs.Add(new RtlGoto(target, RtlClass.Transfer|RtlClass.Delay));
+            return this;
+        }
+
+        public RtlEmitter Return(
             int returnAddressBytes,
             int extraBytesPopped)
         {
-            instrs.Add(new RtlReturn(returnAddressBytes, extraBytesPopped));
+            instrs.Add(new RtlReturn(returnAddressBytes, extraBytesPopped, RtlClass.Transfer));
+            return this;
         }
 
-        public void SideEffect(Expression sideEffect)
+        public RtlEmitter ReturnD(
+            int returnAddressBytes,
+            int extraBytesPopped)
+        {
+            var ret = new RtlReturn(returnAddressBytes, extraBytesPopped, RtlClass.Transfer | RtlClass.Delay);
+            instrs.Add(ret);
+            return this;
+        }
+
+        public RtlEmitter SideEffect(Expression sideEffect)
         {
             instrs.Add(new RtlSideEffect(sideEffect));
+            return this;
         }
 
         public Expression Const(DataType dataType, int p)
@@ -101,9 +127,10 @@ namespace Decompiler.Core.Rtl
             return Constant.Create(dataType, p);
         }
 
-        public void If(Expression test, RtlInstruction rtl, bool annulled)
+        public RtlEmitter If(Expression test, RtlInstruction rtl)
         {
-            instrs.Add(new RtlIf(test, rtl, annulled));
+            instrs.Add(new RtlIf(test, rtl));
+            return this;
         }
     }
 }

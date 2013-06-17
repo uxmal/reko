@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -86,20 +87,20 @@ namespace Decompiler.Arch.X86
             Address addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
-                emitter.Call(addr, (byte) opsize.Size, true);
+                emitter.Call(addr, (byte) opsize.Size);
             }
             else
             {
                 var target = SrcOp(callTarget);
                 if (target.DataType.Size == 2)
                     target = emitter.Seq(orw.AluRegister(Registers.cs), target);
-                emitter.Call(target, (byte) opsize.Size, true);
+                emitter.Call(target, (byte) opsize.Size);
             }
         }
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
-            emitter.Branch(CreateTestCondition(cc, di.Instruction.code), OperandAsCodeAddress(op1));
+            emitter.Branch(CreateTestCondition(cc, di.Instruction.code), OperandAsCodeAddress(op1), RtlClass.ConditionalTransfer);
         }
 
         private void RewriteInt()
@@ -109,7 +110,10 @@ namespace Decompiler.Arch.X86
 
         private void RewriteJcxz()
         {
-            emitter.Branch(emitter.Eq0(orw.AluRegister(Registers.ecx, di.Instruction.dataWidth)), OperandAsCodeAddress(di.Instruction.op1));
+            emitter.Branch(
+                emitter.Eq0(orw.AluRegister(Registers.ecx, di.Instruction.dataWidth)),
+                OperandAsCodeAddress(di.Instruction.op1),
+                RtlClass.ConditionalTransfer);
         }
 
         private void RewriteJmp()
@@ -126,10 +130,10 @@ namespace Decompiler.Arch.X86
 			if (di.Instruction.op1 is ImmediateOperand)
 			{
 				Address addr = OperandAsCodeAddress(di.Instruction.op1);
-                emitter.Goto(addr, true);
+                emitter.Goto(addr);
 				return;
 			}
-            emitter.Goto(SrcOp(di.Instruction.op1), true);
+            emitter.Goto(SrcOp(di.Instruction.op1));
         }
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
@@ -138,10 +142,12 @@ namespace Decompiler.Arch.X86
             emitter.Assign(cx, emitter.Sub(cx, 1));
             if (useFlags != 0)
             {
-                emitter.Branch(new BinaryExpression(Operator.Cand, PrimitiveType.Bool,
-                    new TestCondition(cc, orw.FlagGroup(useFlags)),
-                    emitter.Ne0(cx)),
-                    OperandAsCodeAddress(di.Instruction.op1));
+                emitter.Branch(
+                    new BinaryExpression(Operator.Cand, PrimitiveType.Bool,
+                        new TestCondition(cc, orw.FlagGroup(useFlags)),
+                        emitter.Ne0(cx)),
+                    OperandAsCodeAddress(di.Instruction.op1),
+                    RtlClass.ConditionalTransfer);
                 // new TestCondition(ConditionCode.NE, orw.FlagGroup(FlagM.ZF)
                 //CodeEmitter e = emitter;
 
@@ -156,7 +162,7 @@ namespace Decompiler.Arch.X86
             }
             else
             {
-                emitter.Branch(emitter.Ne0(cx), OperandAsCodeAddress(di.Instruction.op1));
+                emitter.Branch(emitter.Ne0(cx), OperandAsCodeAddress(di.Instruction.op1), RtlClass.ConditionalTransfer);
             }
         }
 
@@ -180,7 +186,7 @@ namespace Decompiler.Arch.X86
             di = dasm.Current;
             ric.Length += (byte) di.Length;
             var strFollow = dasm.Peek(1);
-            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address);
+            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address, RtlClass.ConditionalTransfer);
             RewriteStringInstruction();
             emitter.Assign(regCX, emitter.Sub(regCX, 1));
 
@@ -194,11 +200,11 @@ namespace Decompiler.Arch.X86
                     var cc = (di.Instruction.code == Opcode.repne)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
-                    emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop);
+                    emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, RtlClass.ConditionalTransfer);
                     break;
                 }
             default:
-                emitter.Goto(topOfLoop, true);
+                emitter.Goto(topOfLoop);
                 break;
             }
         }

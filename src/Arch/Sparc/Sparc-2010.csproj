@@ -69,6 +69,8 @@
     <Compile Include="SparcDisassembler.cs" />
     <Compile Include="SparcInstruction.cs" />
     <Compile Include="SparcProcessorState.cs" />
+    <Compile Include="SparcRewriter.Alu.cs" />
+    <Compile Include="SparcRewriter.Control.cs" />
     <Compile Include="SparcRewriter.cs" />
     <Compile Include="SparcRewriter.Fpu.cs" />
   </ItemGroup>

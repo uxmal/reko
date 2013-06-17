@@ -41,11 +41,11 @@ namespace Decompiler.Core.Rtl
         /// <param name="condition"></param>
         /// <param name="instr"></param>
         /// <param name="annulled"></param>
-        public RtlIf(Expression condition, RtlInstruction instr, bool annulled)
+        public RtlIf(Expression condition, RtlInstruction instr)
         {
             this.Condition = condition;
             this.Instruction = instr;
-            this.Annulled = annulled;
+            this.Class = instr.Class | RtlClass.Conditional;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
@@ -53,7 +53,6 @@ namespace Decompiler.Core.Rtl
             return visitor.VisitIf(this);
         }
 
-        public bool Annulled { get; private set; }
         public Expression Condition { get; private set; }
         public RtlInstruction Instruction { get; private set; }
 

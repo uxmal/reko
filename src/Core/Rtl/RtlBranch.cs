@@ -28,10 +28,11 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlBranch : RtlInstruction
     {
-        public RtlBranch(Expression condition, Address target) 
+        public RtlBranch(Expression condition, Address target, RtlClass rtlClass) 
         {
             this.Condition = condition;
             this.Target = target;
+            this.Class = rtlClass;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)

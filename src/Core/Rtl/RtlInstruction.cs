@@ -31,6 +31,11 @@ namespace Decompiler.Core.Rtl
     public abstract class RtlInstruction
     {
         /// <summary>
+        /// The RtlClass of this instruction.
+        /// </summary>
+        public virtual RtlClass Class { get; internal set; }
+
+        /// <summary>
         /// If true, the next statement needs a label. This is required in cases where the original machine code 
         /// maps to many RtlInstructions, some of which are branches (see the X86 REP instruction for a particularly
         /// hideous example).
@@ -52,6 +57,36 @@ namespace Decompiler.Core.Rtl
         }
 
         protected abstract void WriteInner(TextWriter writer);
+
+        public string FormatClass()
+        {
+            var sb = new StringBuilder();
+            var rtlClass = Class;
+            switch (rtlClass & RtlClass.Transfer)
+            {
+            case RtlClass.Linear: sb.Append('L'); break;
+            case RtlClass.Transfer: sb.Append('T'); break;
+            default: throw new NotImplementedException();
+            }
+            sb.Append((rtlClass & RtlClass.Delay) != 0 ? 'D' : '-');
+            sb.Append((rtlClass & RtlClass.Annul) != 0 ? 'A' : '-');
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Classifies an RTL instruction based on certain architectural features involving
+    /// delay slots on architectures like MIPS and SPARC.
+    /// </summary>
+    [Flags]
+    public enum RtlClass
+    {
+        Linear = 0,         // non-transfer instruction, e.g. ALU operation.
+        Transfer = 1,       // transfer instruction.
+        Conditional = 2,    // Instuction is gated on a condition.
+        Delay = 4,          // next instruction is in the delay slot and may be executed.
+        Annul = 8,          // next instruction is annulled (see SPARC architecture)
+        ConditionalTransfer  = Conditional|Transfer,
     }
 
     /// <summary>

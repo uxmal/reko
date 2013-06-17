@@ -32,6 +32,7 @@ namespace Decompiler.Core.Rtl
         {
             this.Dst = dst;
             this.Src = src;
+            this.Class = RtlClass.Linear;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)

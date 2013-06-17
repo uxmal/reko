@@ -28,10 +28,11 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlReturn : RtlInstruction
     {
-        public RtlReturn(int returnAddressBytes, int extraBytesPopped)
+        public RtlReturn(int returnAddressBytes, int extraBytesPopped, RtlClass rtlClass)
         {
             this.ReturnAddressBytes = returnAddressBytes;
             this.ExtraBytesPopped = extraBytesPopped;
+            this.Class = rtlClass;
         }
 
         /// <summary>

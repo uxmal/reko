@@ -200,5 +200,6 @@ namespace Decompiler.Arch.Sparc
         fcmpq,
         fcmpd,
         fcmps,
+        rd,
     }
 }

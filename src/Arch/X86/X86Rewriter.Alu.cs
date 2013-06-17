@@ -188,7 +188,7 @@ namespace Decompiler.Arch.X86
             var opSrc = SrcOp(src);
             var opDst = SrcOp(dst);
             var test = CreateTestCondition(cc, di.Instruction.code);
-            emitter.If(test, new RtlAssignment(opDst, opSrc), true);
+            emitter.If(test, new RtlAssignment(opDst, opSrc));
         }
 
         private void RewriteCmp()
@@ -336,7 +336,6 @@ namespace Decompiler.Arch.X86
 
         private void RewriteMultiply(BinaryOperator op, Domain resultDomain)
         {
-            RtlAssignment ass;
             Expression product;
             switch (di.Instruction.Operands)
             {

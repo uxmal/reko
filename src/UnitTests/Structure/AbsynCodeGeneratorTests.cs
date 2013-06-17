@@ -43,6 +43,43 @@ namespace Decompiler.UnitTests.Structure
             sb = new StringWriter();
         }
 
+        private void CompileTest(ProcedureBuilder mock)
+        {
+            proc = mock.Procedure;
+            StructureAnalysis sa = new StructureAnalysis(mock.Procedure);
+            sa.BuildProcedureStructure();
+            sa.FindStructures();
+            curProc = sa.ProcedureStructure;
+        }
+
+        private void RunTest(string sExp)
+        {
+            try
+            {
+                AbsynCodeGenerator acg = new AbsynCodeGenerator();
+                acg.GenerateCode(curProc, proc.Body);
+                GenCode(proc, sb);
+                Assert.AreEqual(sExp, sb.ToString());
+            }
+            catch
+            {
+                curProc.Dump();
+                Console.WriteLine(sb.ToString());
+                throw;
+            }
+        }
+
+        private void GenCode(Procedure proc, StringWriter sb)
+        {
+            sb.WriteLine("{0}()", proc.Name);
+            sb.WriteLine("{");
+
+            CodeFormatter cf = new CodeFormatter(new Formatter(sb));
+            cf.WriteStatementList(proc.Body);
+
+            sb.WriteLine("}");
+        }
+
         [Test]
         public void Return()
         {
@@ -339,7 +376,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void WhileReturn()
+        public void AcgWhileReturn()
         {
             CompileTest(delegate(ProcedureBuilder m)
             {
@@ -371,7 +408,7 @@ namespace Decompiler.UnitTests.Structure
 
 
         [Test]
-        public void WhileWithDeclarations()
+        public void AcgWhileWithDeclarations()
         {
             CompileTest(new MockWhileWithDeclarations());
             RunTest(
@@ -390,7 +427,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void BranchesToReturns()
+        public void AcgBranchesToReturns()
         {
             CompileTest(delegate(ProcedureBuilder m)
             {
@@ -439,7 +476,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void InfiniteLoop()
+        public void AcgInfiniteLoop()
         {
             CompileTest(new MockInfiniteLoop());
             RunTest(
@@ -451,7 +488,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void InfiniteLoop2()
+        public void AcgInfiniteLoop2()
         {
             CompileTest(delegate(ProcedureBuilder m)
             {
@@ -483,43 +520,6 @@ namespace Decompiler.UnitTests.Structure
             ProcedureBuilder mock = new ProcedureBuilder();
             gen(mock);
             CompileTest(mock);
-        }
-
-        private void CompileTest(ProcedureBuilder mock)
-        {
-            proc = mock.Procedure;
-            StructureAnalysis sa = new StructureAnalysis(mock.Procedure);
-            sa.BuildProcedureStructure();
-            sa.FindStructures();
-            curProc = sa.ProcedureStructure;
-        }
-
-        private void RunTest(string sExp)
-        {
-            try
-            {
-                AbsynCodeGenerator acg = new AbsynCodeGenerator();
-                acg.GenerateCode(curProc, proc.Body);
-                GenCode(proc, sb);
-                Assert.AreEqual(sExp, sb.ToString());
-            }
-            catch
-            {
-                curProc.Dump();
-                Console.WriteLine(sb.ToString());
-                throw;
-            }
-        }
-
-        private void GenCode(Procedure proc, StringWriter sb)
-        {
-            sb.WriteLine("{0}()", proc.Name);
-            sb.WriteLine("{");
-
-            CodeFormatter cf = new CodeFormatter(new Formatter(sb));
-            cf.WriteStatementList(proc.Body);
-
-            sb.WriteLine("}");
         }
     }
 }

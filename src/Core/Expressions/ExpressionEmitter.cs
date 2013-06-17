@@ -329,6 +329,11 @@ namespace Decompiler.Core.Expressions
             return new Slice(primitiveType, value, bitOffset);
         }
 
+        public TestCondition Test(ConditionCode cc, Expression expr)
+        {
+            return new TestCondition(cc, expr);
+        }
+
         public BinaryExpression Ugt(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Ugt, PrimitiveType.Bool, a, b);

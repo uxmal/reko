@@ -68,6 +68,8 @@ namespace Decompiler.Arch.Sparc
         public static RegisterStorage i6;   // frame pointer
         public static RegisterStorage i7;   // return address - 8
 
+        public static RegisterStorage y;
+
         public static RegisterStorage f0; 
         public static RegisterStorage f1;
         public static RegisterStorage f2;
@@ -104,6 +106,15 @@ namespace Decompiler.Arch.Sparc
         public static RegisterStorage f30;
         public static RegisterStorage f31;
 
+        public static FlagGroupStorage N;
+        public static FlagGroupStorage Z;
+        public static FlagGroupStorage V;
+        public static FlagGroupStorage C;
+
+        public static FlagGroupStorage E;
+        public static FlagGroupStorage L;
+        public static FlagGroupStorage G;
+        public static FlagGroupStorage U;
 
         private static RegisterStorage[] iRegs;
         private static RegisterStorage[] fRegs;
@@ -111,40 +122,42 @@ namespace Decompiler.Arch.Sparc
         static Registers()
         {
             g0 = new RegisterStorage("g0", 0, PrimitiveType.Word32);
-            g1 = new RegisterStorage("g1", 0, PrimitiveType.Word32);
-            g2 = new RegisterStorage("g2", 0, PrimitiveType.Word32);
-            g3 = new RegisterStorage("g3", 0, PrimitiveType.Word32);
-            g4 = new RegisterStorage("g4", 0, PrimitiveType.Word32);
-            g5 = new RegisterStorage("g5", 0, PrimitiveType.Word32);
-            g6 = new RegisterStorage("g6", 0, PrimitiveType.Word32);
-            g7 = new RegisterStorage("g7", 0, PrimitiveType.Word32);
+            g1 = new RegisterStorage("g1", 1, PrimitiveType.Word32);
+            g2 = new RegisterStorage("g2", 2, PrimitiveType.Word32);
+            g3 = new RegisterStorage("g3", 3, PrimitiveType.Word32);
+            g4 = new RegisterStorage("g4", 4, PrimitiveType.Word32);
+            g5 = new RegisterStorage("g5", 5, PrimitiveType.Word32);
+            g6 = new RegisterStorage("g6", 6, PrimitiveType.Word32);
+            g7 = new RegisterStorage("g7", 7, PrimitiveType.Word32);
 
-            o0 = new RegisterStorage("o0", 0, PrimitiveType.Word32);   // outgoing paramter 0 / return valie from callee
-            o1 = new RegisterStorage("o1", 0, PrimitiveType.Word32);
-            o2 = new RegisterStorage("o2", 0, PrimitiveType.Word32);
-            o3 = new RegisterStorage("o3", 0, PrimitiveType.Word32);
-            o4 = new RegisterStorage("o4", 0, PrimitiveType.Word32);
-            o5 = new RegisterStorage("o5", 0, PrimitiveType.Word32);
-            sp = new RegisterStorage("sp", 0, PrimitiveType.Word32);   // stack pointer
-            o7 = new RegisterStorage("o7", 0, PrimitiveType.Word32);
+            o0 = new RegisterStorage("o0", 8, PrimitiveType.Word32);   // outgoing paramter 0 / return valie from callee
+            o1 = new RegisterStorage("o1", 9, PrimitiveType.Word32);
+            o2 = new RegisterStorage("o2", 10, PrimitiveType.Word32);
+            o3 = new RegisterStorage("o3", 11, PrimitiveType.Word32);
+            o4 = new RegisterStorage("o4", 12, PrimitiveType.Word32);
+            o5 = new RegisterStorage("o5", 13, PrimitiveType.Word32);
+            sp = new RegisterStorage("sp", 14, PrimitiveType.Word32);   // stack pointer
+            o7 = new RegisterStorage("o7", 15, PrimitiveType.Word32);
 
-            l0 = new RegisterStorage("l0", 0, PrimitiveType.Word32);
-            l1 = new RegisterStorage("l1", 0, PrimitiveType.Word32);
-            l2 = new RegisterStorage("l2", 0, PrimitiveType.Word32);
-            l3 = new RegisterStorage("l3", 0, PrimitiveType.Word32);
-            l4 = new RegisterStorage("l4", 0, PrimitiveType.Word32);
-            l5 = new RegisterStorage("l5", 0, PrimitiveType.Word32);
-            lp = new RegisterStorage("lp", 0, PrimitiveType.Word32);
-            l7 = new RegisterStorage("l7", 0, PrimitiveType.Word32);
+            l0 = new RegisterStorage("l0", 16, PrimitiveType.Word32);
+            l1 = new RegisterStorage("l1", 17, PrimitiveType.Word32);
+            l2 = new RegisterStorage("l2", 18, PrimitiveType.Word32);
+            l3 = new RegisterStorage("l3", 19, PrimitiveType.Word32);
+            l4 = new RegisterStorage("l4", 20, PrimitiveType.Word32);
+            l5 = new RegisterStorage("l5", 21, PrimitiveType.Word32);
+            lp = new RegisterStorage("lp", 22, PrimitiveType.Word32);
+            l7 = new RegisterStorage("l7", 23, PrimitiveType.Word32);
 
-            i0 = new RegisterStorage("i0", 0, PrimitiveType.Word32);   // incoming parameters / return value to caller
-            i1 = new RegisterStorage("i1", 0, PrimitiveType.Word32);
-            i2 = new RegisterStorage("i2", 0, PrimitiveType.Word32);
-            i3 = new RegisterStorage("i3", 0, PrimitiveType.Word32);
-            i4 = new RegisterStorage("i4", 0, PrimitiveType.Word32);
-            i5 = new RegisterStorage("i5", 0, PrimitiveType.Word32);
-            i6 = new RegisterStorage("i6", 0, PrimitiveType.Word32);   // frame pointer
-            i7 = new RegisterStorage("i7", 0, PrimitiveType.Word32);   // return address - 8
+            i0 = new RegisterStorage("i0", 24, PrimitiveType.Word32);   // incoming parameters / return value to caller
+            i1 = new RegisterStorage("i1", 25, PrimitiveType.Word32);
+            i2 = new RegisterStorage("i2", 26, PrimitiveType.Word32);
+            i3 = new RegisterStorage("i3", 27, PrimitiveType.Word32);
+            i4 = new RegisterStorage("i4", 28, PrimitiveType.Word32);
+            i5 = new RegisterStorage("i5", 29, PrimitiveType.Word32);
+            i6 = new RegisterStorage("i6", 30, PrimitiveType.Word32);   // frame pointer
+            i7 = new RegisterStorage("i7", 31, PrimitiveType.Word32);   // return address - 8
+
+            y = new RegisterStorage("y", 32, PrimitiveType.Word32);
 
             // Sparc floating point registers can contain integers, which is 
             // why they can't be real32. This also forces our hand into
@@ -186,6 +199,16 @@ namespace Decompiler.Arch.Sparc
             f30= new RegisterStorage("f30", 30, PrimitiveType.Word32);
             f31= new RegisterStorage("f31", 31, PrimitiveType.Word32);
 
+            N = new FlagGroupStorage((uint) FlagM.NF, "N", PrimitiveType.Bool);
+            Z = new FlagGroupStorage((uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            V = new FlagGroupStorage((uint) FlagM.VF, "V", PrimitiveType.Bool);
+            C = new FlagGroupStorage((uint) FlagM.CF, "C", PrimitiveType.Bool);
+
+            E = new FlagGroupStorage((uint) FlagM.EF, "E", PrimitiveType.Bool);
+            L = new FlagGroupStorage((uint) FlagM.LF, "L", PrimitiveType.Bool);
+            G = new FlagGroupStorage((uint) FlagM.GF, "G", PrimitiveType.Bool);
+            U = new FlagGroupStorage((uint) FlagM.UF, "U", PrimitiveType.Bool);
+
             iRegs = new RegisterStorage[]
             {
                 g0, 
@@ -223,6 +246,8 @@ namespace Decompiler.Arch.Sparc
                 i5, 
                 i6, 
                 i7, 
+
+                y,
             };
 
             fRegs = new RegisterStorage[] {
@@ -280,12 +305,17 @@ namespace Decompiler.Arch.Sparc
         }
     }
 
-
-    public enum FlagM
+    [Flags]
+    public enum FlagM : uint
     {
-        NF = 1,             // sign
-		ZF = 2,             // zero
-        VF = 4,            // overflow
-		CF = 8,             // carry
+        NF = 8,             // sign
+        ZF = 4,             // zero
+        VF = 2,             // overflow
+        CF = 1,             // carry
+        
+        EF = 0x80,          // FPU equality
+        LF = 0x40,          // FPU less than
+        GF = 0x20,          // FPU greater than
+        UF = 0x10,          // FPU unordered
     }
 }

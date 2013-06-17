@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Scanning
             var traces = new RtlTraceBuilder
             {
                 { 
-                    new RtlTrace(0x1000) 
+                    new RtlTrace(0x1000)
                     {
                         (m) => {
                             m.Assign(reg, m.Word32(0));
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Scanning
                             m.Assign(reg, m.Word32(1));
                         },
                         (m) => {
-                            m.Goto(new Address(0x1004), true);
+                            m.Goto(new Address(0x1004));
                         }
                     }
                 },
