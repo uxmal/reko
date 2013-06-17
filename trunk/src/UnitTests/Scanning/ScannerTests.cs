@@ -381,7 +381,7 @@ fn0C00_0000_exit:
             arch.Test_AddTrace(new RtlTrace(0x1100)
             {
                 m => { m.Assign(reg1, m.Word32(1)); },
-                m => { m.Goto(new Address(0x1004), true); },
+                m => { m.Goto(new Address(0x1004)); },
             });
 
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
@@ -442,7 +442,7 @@ fn00001100_exit:
             arch.Test_AddTrace(new RtlTrace(0x1100)
             {
                 m => { m.Assign(reg1, m.Word32(1)); },
-                m => { m.Goto(new Address(0x1000), true); },
+                m => { m.Goto(new Address(0x1000)); },
             });
 
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
@@ -522,7 +522,7 @@ fn00001100_exit:
             arch.Test_AddTrace(new RtlTrace(0x1100)
             {
                 m => { m.Assign(reg1, m.Word32(1)); },
-                m => { m.Goto(new Address(0x1004), true); },
+                m => { m.Goto(new Address(0x1004)); },
             });
 
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));

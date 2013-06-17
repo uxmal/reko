@@ -211,6 +211,12 @@ namespace Decompiler.Arch.Sparc
 
             private RegisterStorage GetRegister(uint wInstr, ref int i)
             {
+                if (fmt[i] == 'y')
+                {
+                    ++i;
+                    return Registers.y;
+                }
+
                 // Register operand are followed by their bit offset within the instruction,
                 // expressed as decimal digits.
                 int offset = 0;
@@ -402,7 +408,7 @@ namespace Decompiler.Arch.Sparc
             new OpRec { code=Opcode.srl, fmt="r14,S,r25" },
             new OpRec { code=Opcode.sra, fmt="r14,S,r25" },
 
-            new OpRec { code=Opcode.addx, },
+            new OpRec { code=Opcode.rd, fmt="ry,r25" },
             new OpRec { code=Opcode.rdpsr, },
             new OpRec { code=Opcode.rdtbr, },
             new OpRec { code=Opcode.illegal, },

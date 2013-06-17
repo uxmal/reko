@@ -45,10 +45,9 @@ namespace Decompiler.Scanning
         private Frame frame;
         private RtlInstruction ri;
         private RtlInstructionCluster ric;
-        private IEnumerable<RtlInstructionCluster> rewriter;
+        private IEnumerator<RtlInstructionCluster> rtlStream;
         private ProcessorState state;
         private ExpressionSimplifier eval;
-        private IEnumerator<RtlInstructionCluster> rtlStream;
         private int extraLabels;
         private Identifier stackReg;
 
@@ -61,7 +60,7 @@ namespace Decompiler.Scanning
         {
             this.scanner = scanner;
             this.arch = scanner.Architecture;   // cached since it's used heavily.
-            this.rewriter = rewriter;
+            this.rtlStream = rewriter.GetEnumerator();
             this.state = state;
             this.eval = new ExpressionSimplifier(state);
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
@@ -92,7 +91,6 @@ namespace Decompiler.Scanning
 
         public void ProcessInternal()
         {
-            rtlStream = rewriter.GetEnumerator();
             state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
             blockCur = scanner.FindContainingBlock(addrStart);
             if (BlockHasBeenScanned(blockCur))

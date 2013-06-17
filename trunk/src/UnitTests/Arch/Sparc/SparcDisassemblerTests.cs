@@ -191,5 +191,11 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             AssertInstruction(0x34800024, "bg,a\t00100090");
         }
+
+        [Test]
+        public void SparcDis_rdy()
+        {
+            AssertInstruction(0xA3400000, "rd\t%y,%l1");
+        }
     }
 }

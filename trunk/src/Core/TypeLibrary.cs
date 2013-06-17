@@ -31,8 +31,6 @@ namespace Decompiler.Core
 {
 	public class TypeLibrary
 	{
-        private Dictionary<string, DataType> typedefs;
-
 		public TypeLibrary() : this(
             new Dictionary<string, DataType>(),
             new Dictionary<string, ProcedureSignature>())

@@ -102,11 +102,11 @@ namespace Decompiler.Arch.Arm
             {
                 if (di.Instruction.Cond == Condition.al)
                 {
-                    emitter.Goto(addr, true);
+                    emitter.Goto(addr);
                 }
                 else
                 {
-                    emitter.Branch(TestCond(di.Instruction.Cond), addr);
+                    emitter.Branch(TestCond(di.Instruction.Cond), addr, RtlClass.ConditionalTransfer);
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace Decompiler.Arch.Arm
         {
             if (di.Instruction.Cond != Condition.al)
             {
-                instr = new RtlIf(TestCond(di.Instruction.Cond), instr, true);
+                instr = new RtlIf(TestCond(di.Instruction.Cond), instr);
             }
             ric.Instructions.Add(instr);
         }

@@ -25,6 +25,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,11 +41,14 @@ namespace Decompiler.UnitTests.Arch.Sparc
         private SparcProcessorState state;
         private IRewriterHost host;
         private IEnumerator<RtlInstructionCluster> e;
+        private MockRepository repository;
 
         [SetUp]
         public void Setup()
         {
             state = (SparcProcessorState) arch.CreateProcessorState();
+            repository = new MockRepository();
+            host = repository.StrictMock<IRewriterHost>();
         }
 
         private void AssertCode( params string[] expected)
@@ -57,7 +61,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
                 var ee = e.Current.Instructions.GetEnumerator();
                 while (i < expected.Length && ee.MoveNext())
                 {
-                    Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, ee.Current));
+                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, ee.Current.FormatClass(), ee.Current));
                     ++i;
                 }
             }
@@ -67,6 +71,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
 
         private void BuildTest(params uint[] words)
         {
+            repository.ReplayAll();
             byte[] bytes = words.SelectMany(w => new byte[]
             {
                 (byte) (w >> 24),
@@ -129,7 +134,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x7FFFFFFF);  // "call\t000FFFFC"
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|call 000FFFFC (0)");
+                "1|TD-|call 000FFFFC (0)");
         }
 
         [Test]
@@ -138,8 +143,8 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x8A804004); // "addcc\t%g0,%g4,%g5"
             AssertCode(
                 "0|00100000(4): 2 instructions",
-                "1|g5 = g1 + g4",
-                "2|NZVC = cond(g5)");
+                "1|L--|g5 = g1 + g4",
+                "2|L--|NZVC = cond(g5)");
         }
 
         [Test]
@@ -148,7 +153,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0xBE10E004);//"or\t%g3,0x00000004,%i7");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|i7 = g3 | 0x00000004");
+                "1|L--|i7 = g3 | 0x00000004");
         }
 
         [Test]
@@ -157,7 +162,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x86087FFE); // "and\t%g1,0xFFFFFFFE,%g3")
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g3 = g1 & 0xFFFFFFFE");
+                "1|L--|g3 = g1 & 0xFFFFFFFE");
         }
 
         [Test]
@@ -166,7 +171,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0xAB2EA01F);// sll\t%i2,0x0000001F,%l5"
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|l5 = i2 << 0x0000001F");
+                "1|L--|l5 = i2 << 0x0000001F");
         }
 
         [Test]
@@ -175,10 +180,11 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x0B2AAAAA);  // sethi\t0x002AAAAA,%g5");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g5 = 0xAAAAA800");
+                "1|L--|g5 = 0xAAAAA800");
         }
 
         [Test]
+        [Ignore]
         public void SparcRw_taddcc()
         {
             BuildTest(0x8B006001);
@@ -188,8 +194,14 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_mulscc()
         {
-            BuildTest(0x8B204009);
-            AssertCode("mulscc\t%g1,%o1,%g5");
+            host.Stub(h => h.EnsurePseudoProcedure("__mulscc", PrimitiveType.Int32, 2))
+                .Return(new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2));
+
+            BuildTest(0x8B204009);  // mulscc  %g1,%o1,%g5
+            AssertCode(
+                "0|00100000(4): 2 instructions",
+                "1|L--|g5 = __mulscc(g1, o1)",
+                "2|L--|NZVC = cond(g5)");
         }
 
         [Test]
@@ -198,7 +210,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x8A504009); // umul %g1,%o1,%g5
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g5 = g1 *u o1");
+                "1|L--|g5 = g1 *u o1");
         }
 
         [Test]
@@ -207,7 +219,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x8A584009);  // smul %g1,%o1,%g5
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g5 = g1 *s o1");
+                "1|L--|g5 = g1 *s o1");
         }
 
         [Test]
@@ -216,8 +228,8 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x8AF04009);  // udivcc\t%g1,%o1,%g5
             AssertCode(
                "0|00100000(4): 2 instructions",
-               "1|g5 = g1 /u o1",
-               "2|NZVC = cond(g5)");
+               "1|L--|g5 = g1 /u o1",
+               "2|L--|NZVC = cond(g5)");
         }
 
         [Test]
@@ -226,10 +238,11 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x8A784009); // sdiv\t%g1,%o1,%g5
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g5 = g1 / o1");
+                "1|L--|g5 = g1 / o1");
         }
 
         [Test]
+        [Ignore]
         public void SparcRw_save()
         {
             BuildTest(0x8BE04009);
@@ -240,40 +253,65 @@ namespace Decompiler.UnitTests.Arch.Sparc
         public void SparcRw_be()
         {
             BuildTest(
-                0x02800004,     // be      00100004
+                0x02800004,     // be      00100010
                 0x8A04C004);    // add   %l3,%g4,%g5"
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|if (Test(Z,Z) goto 00100004) *;",
-                "2|00100004(4): 1 instructions"); 
+                "1|TD-|if (Test(EQ,Z)) branch 00100010",
+                "2|00100004(4): 1 instructions",
+                "3|L--|g5 = l3 + g4");
+        }
+
+        [Test]
+        public void SparcRw_be_a()
+        {
+            BuildTest(
+                0x22800004,     // be,a    00100004
+                0x8A04C004);    // add     %l3,%g4,%g5"
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|TDA|if (Test(EQ,Z)) branch 00100010",
+                "2|00100004(4): 1 instructions",
+                "3|L--|g5 = l3 + g4");
         }
 
         [Test]
         public void SparcRw_fbne()
         {
-            BuildTest(0x03800001);
-            AssertCode("fbne\t00100004");
+            BuildTest(0x03800001);  // fbne    00100004
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|TD-|if (Test(NE,LG)) branch 00100004");
         }
 
         [Test]
-        public void SparcRw_jmpl()
+        public void SparcRw_jmpl_goto()
         {
-            BuildTest(0x8FC07FFF);
-            AssertCode("jmpl\t%g1,-1,%g7");
+            BuildTest(0x8FC07FF0);  // jmpl    %g1,-16,%g7
+            AssertCode(
+                "0|00100000(4): 2 instructions",
+                "1|L--|g7 = 00100000",
+                "2|TD-|goto g1 + -16");
         }
 
         [Test]
-        public void SparcRw_rett()
+        public void SparcRw_jmpl_call()
         {
-            BuildTest(0x81C86009);
-            AssertCode("rett\t%g1,9");
+            BuildTest(0x9FC07FF0);  // jmpl    %g1,-16,%o7
+            AssertCode(
+                "0|00100000(4): 2 instructions",
+                "1|L--|o7 = 00100000",
+                "2|TD-|call g1 + -16 (0)");
         }
 
         [Test]
         public void SparcRw_ta()
         {
-            BuildTest(0x91D02999);
-            AssertCode("ta\t%g1,0x00000019");
+            host.Stub(h => h.EnsurePseudoProcedure("__syscall", PrimitiveType.Void, 1)).Return(new PseudoProcedure("__syscall", PrimitiveType.Void, 1));
+            BuildTest(0x91D02999);  // ta\t%g1,0x00000019"
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|if (true) __syscall(0x00000019)");
         }
 
         [Test]
@@ -282,7 +320,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0x8BA0188A);  // fitos   %f10,%f5
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|f5 = (real32) f10");
+                "1|L--|f5 = (real32) f10");
         }
 
         [Test]
@@ -291,7 +329,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0xC248A044); //ldsb\t[%g2+68],%g1");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g1 = (int32) Mem0[g2 + 68:int8]"); 
+                "1|L--|g1 = (int32) Mem0[g2 + 68:int8]"); 
         }
 
         [Test]
@@ -300,7 +338,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0xC230BFF0);// sth\t%g1,[%g2+68]
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|Mem0[g2 + -16:word16] = (word16) g1"); 
+                "1|L--|Mem0[g2 + -16:word16] = (word16) g1"); 
         }
 
         [Test]
@@ -309,7 +347,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0xC230800C);//sth\t%g1,[%g2+%i4]");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|Mem0[g2 + o4:word16] = (word16) g1");
+                "1|L--|Mem0[g2 + o4:word16] = (word16) g1");
         }
 
         [Test]
@@ -318,7 +356,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
             BuildTest(0xC2308000);//sth\t%g1,[%g2+%g0]");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|Mem0[g2:word16] = (word16) g1");
+                "1|L--|Mem0[g2:word16] = (word16) g1");
         }
 
         [Test]
@@ -328,7 +366,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
                 Instr(Opcode.or, Registers.g0, Constant.Word32(3), Registers.g1));
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.
+                "1|L--|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.
         }
     }
 }

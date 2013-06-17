@@ -28,7 +28,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlGoto : RtlTransfer
     {
-        public RtlGoto(Expression target, bool annulled) : base(target, annulled)
+        public RtlGoto(Expression target, RtlClass rtlClass) : base(target, rtlClass)
         {
         }
 

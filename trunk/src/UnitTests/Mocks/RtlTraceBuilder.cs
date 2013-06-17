@@ -76,6 +76,13 @@ namespace Decompiler.UnitTests.Mocks
             addr += 4;
         }
 
+        public RtlEmitter Cluster()
+        {
+            var cluster = new RtlInstructionCluster(addr, 4);
+            addr += 4;
+            return new RtlEmitter(cluster.Instructions);
+        }
+
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             return clusters.GetEnumerator();

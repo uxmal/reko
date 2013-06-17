@@ -59,15 +59,22 @@ namespace Decompiler.UnitTests.Mocks
             return Emit(ass);
         }
 
-        public RtlInstruction Branch(Expression cond, Address target)
+        public RtlInstruction Branch(Expression cond, Address target, RtlClass rtlClass)
         {
-            var br = new RtlBranch(cond, target);
+            var br = new RtlBranch(cond, target, rtlClass);
             return Emit(br);
         }
 
         public RtlInstruction Call(Expression target)
         {
-            var call = new RtlCall(target, 4, true);
+            var call = new RtlCall(target, 4, RtlClass.Transfer);
+            return Emit(call);
+        }
+
+        // Delayed call (for SPARC / MIPS)
+        public RtlInstruction CallD(Expression target)
+        {
+            var call = new RtlCall(target, 4, RtlClass.Transfer|RtlClass.Delay);
             return Emit(call);
         }
 
@@ -79,7 +86,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Goto(uint target)
         {
-            var g = new RtlGoto(new Address(target), true);
+            var g = new RtlGoto(new Address(target), RtlClass.Transfer);
             return Emit(g);
         }
 
@@ -90,7 +97,13 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Return()
         {
-            var ret = new RtlReturn(0, 0);
+            var ret = new RtlReturn(0, 0, RtlClass.Transfer);
+            return Emit(ret);
+        }
+
+        public RtlInstruction ReturnD()
+        {
+            var ret = new RtlReturn(0, 0, RtlClass.Transfer|RtlClass.Delay);
             return Emit(ret);
         }
 
