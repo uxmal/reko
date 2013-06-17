@@ -175,8 +175,6 @@ namespace Decompiler.UnitTests.Analysis
 
 		private class IdentifierComparer : IComparer
 		{
-			#region IComparer Members
-
 			public int Compare(object x, object y)
 			{
 				if (x == null && y == null)
@@ -185,10 +183,6 @@ namespace Decompiler.UnitTests.Analysis
 				Identifier b = (Identifier) y;
 				return a.Name.CompareTo(b.Name);
 			}
-
-			#endregion
-
 		}
-
 	}
 }

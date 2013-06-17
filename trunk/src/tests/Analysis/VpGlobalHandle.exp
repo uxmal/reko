@@ -122,15 +122,29 @@ eax_20: orig: eax
 edi_21: orig: edi
 esi_22: orig: esi
 // fn10000000
-void fn10000000(word32 dwArg00)
-fn10000000_entry:		// pred:
-	def dwArg00
+void fn10000000(word32 dwArg04)
+fn10000000_entry:
+	def dwArg04
 	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
-	eax_14 = GlobalHandle(dwArg00)
+l10000000:
+	esp_13 = fp - 0x00000004
+	dwLoc04_14 = esi
+	esi_15 = dwArg04
+	esp_16 = fp - 0x00000008
+	dwLoc08_17 = edi
+	edi_18 = GlobalHandle
+	esp_19 = fp - 0x0000000C
+	dwLoc0C_20 = dwArg04
+	eax_21 = GlobalHandle(dwArg04)
+	esp_22 = fp - 0x00000008
+	dwLoc10_23 = eax_21
 	GlobalUnlock(eax_14)
 	eax_18 = GlobalHandle(dwArg00)
-	GlobalFree(eax_18)
+	eax_30 = GlobalFree(eax_27)
+	edi_31 = eax_27
+	esp_32 = fp - 0x00000008
+	esi_33 = dwArg04
+	esp_34 = fp
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:		// pred: l10000000
