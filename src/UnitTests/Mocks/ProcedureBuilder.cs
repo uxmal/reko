@@ -275,12 +275,14 @@ namespace Decompiler.UnitTests.Mocks
             base.Return();
             Procedure.ControlGraph.AddEdge(Block, Procedure.ExitBlock);
             TerminateBlock();
+            lastBlock = null;
         }
         public override void Return(Expression exp)
         {
             base.Return(exp);
             Procedure.ControlGraph.AddEdge(Block, Procedure.ExitBlock);
             TerminateBlock();
+            lastBlock = null;
         }
 
         public void Switch(Expression e, params string[] labels)

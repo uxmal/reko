@@ -8,8 +8,8 @@ void fn0C00_0000(Register byte al, Register selector ds)
 // fp:Temporary
 // sp:sp
 // C:Flags
-// al:al
 // ds:ds
+// al:al
 // return address size: 2
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
@@ -25,7 +25,6 @@ l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-
 FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // MayUse:  al
 // LiveOut: C al
@@ -70,11 +69,13 @@ l0C00_001E:
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
 	al = al - 0x30
+	SCZO = cond(al)
 	SCZO = cond(al - 0x0A)
 	branch Test(ULT,C) l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
 	al = al - 0x07
+	SCZO = cond(al)
 	SCZO = cond(al - 0x10)
 	branch Test(ULT,C) l0C00_0030
 	// succ:  l0C00_002E l0C00_0030

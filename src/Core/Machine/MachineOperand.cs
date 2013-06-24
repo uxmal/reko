@@ -88,7 +88,10 @@ namespace Decompiler.Core.Machine
 
 	}
 
-
+    /// <summary>
+    /// Represents a register operand of a <code>MachineInstruction</code>. Most
+    /// modern architectures support this.
+    /// </summary>
 	public class RegisterOperand : MachineOperand
 	{
 		private RegisterStorage reg;
@@ -110,6 +113,9 @@ namespace Decompiler.Core.Machine
 		}
 	}
 
+    /// <summary>
+    /// Represents an immediate constant value used by a MachineInstruction.
+    /// </summary>
 	public class ImmediateOperand : MachineOperand
 	{
 		private Constant value;
@@ -143,6 +149,9 @@ namespace Decompiler.Core.Machine
 
     }
 
+    /// <summary>
+    /// Represents a FPU operand.
+    /// </summary>
 	public class FpuOperand : MachineOperand
 	{
 		private int fpuReg;

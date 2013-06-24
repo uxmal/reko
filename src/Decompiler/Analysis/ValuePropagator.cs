@@ -147,7 +147,6 @@ namespace Decompiler.Analysis
 
         public Instruction VisitUseInstruction(UseInstruction u)
         {
-            u.Expression = u.Expression.Accept(eval);
             return u;
         }
 
