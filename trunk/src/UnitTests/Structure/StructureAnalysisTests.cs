@@ -45,7 +45,7 @@ Node 5: Block: unstructuredexit
     Order: 2
     Structure type: Seq
     Unstructured type: Structured
-ProcedureMock_exit
+ProcedureBuilder_exit
 Node 6: Block: ProcedureBuilder_exit
     Order: 1
     Structure type: Seq

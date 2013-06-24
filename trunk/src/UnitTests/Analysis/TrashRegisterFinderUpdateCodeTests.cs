@@ -360,6 +360,12 @@ main_exit:
         }
 
         [Test]
+        public void Trfu_WhileLoop()
+        {
+            AnalysisTestBase.RunTest("fragments/while_loop.asm", RunTest, "Analysis/TrfuWhileLoop.txt");
+        }
+
+        [Test]
         public void Trfu_LiveLoopMock()
         {
             p.Add(new LiveLoopMock().Procedure);

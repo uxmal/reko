@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void FindPhi()
+		public void Liv_FindPhi()
 		{
 			List<SsaIdentifier> a = BuildScc();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void FindLinearIncrement()
+		public void Liv_FindLinearIncrement()
 		{
             List<SsaIdentifier> a = BuildScc();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void FindInitialValue()
+		public void Liv_FindInitialValue()
 		{
 			List<SsaIdentifier> a = BuildScc();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
@@ -128,19 +128,19 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void WhileLtIncMock()
+		public void Liv_WhileLtIncMock()
 		{
 			RunTest(new WhileLtIncMock().Procedure, "Analysis/LivWhileLtInc.txt");
 		}
 
 		[Test]
-		public void WhileGeDecMock()
+		public void Liv_WhileGeDecMock()
 		{
 			RunTest(new WhileGtDecMock().Procedure, "Analysis/LivWhileGtDec.txt");
 		}
 
         [Test]
-        public void ArrayLoopMock()
+        public void Liv_ArrayLoopMock()
         {
             RunTest(new ArrayLoopMock().Procedure, "Analysis/LivArrayLoopMock.txt");
         }

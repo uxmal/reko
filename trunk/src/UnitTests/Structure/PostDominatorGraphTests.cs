@@ -42,8 +42,31 @@ namespace Decompiler.UnitTests.Structure
         {
         }
 
+        private void FindPostDominators(ProcedureBuilder m)
+        {
+            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
+            h = graphs.Build();
+            sw = new StringWriter();
+            graphs.AnalyzeGraph().Write(sw);
+
+        }
+
+        private string PostDom(string s)
+        {
+            foreach (StructureNode node in h.Ordering)
+            {
+                if (s == node.Block.Name)
+                    return PostDom(node);
+            }
+            throw new InvalidOperationException("Unknown node: " + s);
+        }
+
+        private string PostDom(StructureNode node)
+        {
+            return string.Format("{0} PD> {1}", node.Block.Name, node.ImmPDom.Block.Name);
+        }
         [Test]
-        public void PostDominateIfElse()
+        public void Pdg_PostDominateIfElse()
         {
             ProcedureBuilder m = new ProcedureBuilder();
             m.BranchIf(m.Local32("a"), "then");
@@ -59,7 +82,7 @@ namespace Decompiler.UnitTests.Structure
 
 
         [Test]
-        public void PostdominateLoop()
+        public void Pdg_PostdominateLoop()
         {
             ProcedureBuilder m = new ProcedureBuilder();
             m.Jump("test");
@@ -72,10 +95,19 @@ namespace Decompiler.UnitTests.Structure
             m.Return();
 
             FindPostDominators(m);
+            string sExp = 
+                "body (4): idom test (3)" + nl +
+                "done (5): idom ProcedureBuilder_exit (6)" + nl +
+                "l1 (2): idom test (3)" + nl +
+                "ProcedureBuilder_entry (1): idom l1 (2)" + nl +
+                "ProcedureBuilder_exit (6): idom " + nl +
+                "test (3): idom done (5)" + nl;
+            Console.WriteLine(sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
         }
 
         [Test]
-        public void LoopWithIfElse()
+        public void Pdg_LoopWithIfElse()
         {
             var m = new ProcedureBuilder();
             var c = m.Declare(PrimitiveType.Word32, "c");
@@ -95,18 +127,18 @@ namespace Decompiler.UnitTests.Structure
             FindPostDominators(m);
 
             string sExp =
-                "done (6): idom ProcedureMock_exit (7)" + nl +
+                "done (6): idom ProcedureBuilder_exit (7)" + nl +
                 "else (4): idom loopHead (2)" + nl +
                 "l1 (3): idom loopHead (2)" + nl +
                 "loopHead (2): idom done (6)" + nl +
-                "ProcedureMock_entry (1): idom loopHead (2)" + nl +
-                "ProcedureMock_exit (7): idom " + nl +
+                "ProcedureBuilder_entry (1): idom loopHead (2)" + nl +
+                "ProcedureBuilder_exit (7): idom " + nl +
                 "then (5): idom loopHead (2)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
         [Test]
-        public void InfiniteLoop()
+        public void Pdg_InfiniteLoop()
         {
             ProcedureBuilder m = new ProcedureBuilder();
             m.Label("Infinity");
@@ -120,37 +152,15 @@ namespace Decompiler.UnitTests.Structure
 
             FindPostDominators(m);
             string sExp = 
-                "hop (4): idom ProcedureMock_exit (6)" + nl +
+                "hop (4): idom ProcedureBuilder_exit (6)" + nl +
                 "Infinity (2): idom hop (4)" + nl +
                 "l1 (3): idom hop (4)" + nl +
-                "l2 (5): idom ProcedureMock_exit (6)" + nl +
-                "ProcedureMock_entry (1): idom Infinity (2)" + nl +
-                "ProcedureMock_exit (6): idom " + nl;
+                "l2 (5): idom ProcedureBuilder_exit (6)" + nl +
+                "ProcedureBuilder_entry (1): idom Infinity (2)" + nl +
+                "ProcedureBuilder_exit (6): idom " + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-        private void FindPostDominators(ProcedureBuilder m)
-        {
-            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
-            h = graphs.Build();
-            sw = new StringWriter();
-            graphs.AnalyzeGraph().Write(sw);
-            
-        }
-
-        private string PostDom(string s)
-        {
-            foreach (StructureNode node in h.Ordering)
-            {
-                if (s == node.Block.Name)
-                    return PostDom(node);
-            }
-            throw new InvalidOperationException("Unknown node: " + s);
-        }
-
-        private string PostDom(StructureNode node)
-        {
-            return string.Format("{0} PD> {1}", node.Block.Name, node.ImmPDom.Block.Name);
-        }
+       
     }
 }

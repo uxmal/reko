@@ -43,7 +43,6 @@ namespace Decompiler.Analysis
 		private Procedure proc;
 		private SsaState ssa;
 		private SideEffectFinder sef;
-		private bool coalesced;
         private Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
 
 		private static TraceSwitch trace = new TraceSwitch("Coalescer", "Traces the progress of identifier coalescing");
@@ -110,11 +109,7 @@ namespace Decompiler.Analysis
 			return true;
 		}
 
-		public bool Coalesced
-		{
-			get { return coalesced; }
-			set { coalesced = value; }
-		}
+		public bool Coalesced { get; set; }
 
 		/// <summary>
 		/// Coalesces the single use and the single definition of an identifier.
@@ -126,14 +121,7 @@ namespace Decompiler.Analysis
 		/// <returns></returns>
 		public bool CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use)
 		{
-			if (trace.TraceInfo)
-			{
-				Debug.WriteLineIf(trace.TraceInfo, "Coalescing on " + sid.Identifier.ToString());
-				Debug.Indent();
-				Debug.WriteLineIf(trace.TraceInfo, def.Instruction.ToString());
-				Debug.WriteLineIf(trace.TraceInfo, use.Instruction.ToString());
-				Debug.Unindent();
-			}
+            PreCoalesceDump(sid, def, use);
 			UsedIdentifierAdjuster uia = new UsedIdentifierAdjuster(def, ssa.Identifiers, use);
 			def.Instruction.Accept(uia);
 			IdentifierReplacer ir = new IdentifierReplacer(sid.Identifier, defExpr);
@@ -152,16 +140,33 @@ namespace Decompiler.Analysis
                 }
             }
 			ssa.DeleteStatement(def);
-
-			if (trace.TraceInfo)
-			{
-				Debug.WriteLineIf(trace.TraceInfo, "  ; coalesced to");
-				Debug.Indent();
-				Debug.WriteLineIf(trace.TraceInfo, use.Instruction.ToString());
-				Debug.Unindent();
-			}
+            PostCoalesceDump(use);
 			return true;
 		}
+
+        private static void PreCoalesceDump(SsaIdentifier sid, Statement def, Statement use)
+        {
+            if (trace.TraceInfo)
+            {
+                Debug.WriteLineIf(trace.TraceInfo, "Coalescing on " + sid.Identifier.ToString());
+                Debug.Indent();
+                Debug.WriteLineIf(trace.TraceInfo, def.Instruction.ToString());
+                Debug.WriteLineIf(trace.TraceInfo, use.Instruction.ToString());
+                Debug.Unindent();
+            }
+        }
+
+        private static void PostCoalesceDump(Statement use)
+        {
+
+            if (trace.TraceInfo)
+            {
+                Debug.WriteLineIf(trace.TraceInfo, "  ; coalesced to");
+                Debug.Indent();
+                Debug.WriteLineIf(trace.TraceInfo, use.Instruction.ToString());
+                Debug.Unindent();
+            }
+        }
 
 		private bool MoveAssignment(int initPos, int newPos, Block block)
 		{

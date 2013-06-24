@@ -1,4 +1,6 @@
 .i86 
+	push bp
+	mov bp, sp
 	xor	bx,bx
 	mov ax,[bp+0x06]
 	or	ax,ax
@@ -14,4 +16,5 @@ negative:
 	mov bx,ax
 done: 
 	mov [0x300],bx
+	pop bp
 	ret

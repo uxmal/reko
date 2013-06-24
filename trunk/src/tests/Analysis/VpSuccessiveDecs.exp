@@ -20,20 +20,20 @@ Mem6: orig: Mem0
     def:  Mem6[ds:0x0302:word16] = ax_5
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def fp
-	def ds
+	def sp
 	def ax
+	def ds
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	ax_4 = Mem0[ds:0x0300:word16]
-	ax_5 = fn0C00_000C(ax_4)
-	Mem6[ds:0x0302:word16] = ax_5
+l0C00_0000:
+	ax_5 = Mem0[ds:0x0300:word16]
+	ax_6 = fn0C00_000C(ax_5)
+	Mem7[ds:0x0302:word16] = ax_6
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 Mem0:Global memory
     def:  def Mem0
@@ -54,18 +54,18 @@ Mem6: orig: Mem0
     def:  Mem6[ds:0x0302:word16] = ax_5
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def ds
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	ax_4 = Mem0[ds:0x0300:word16]
 	ax_5 = fn0C00_000C(ax_4)
 	Mem6[ds:0x0302:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
+
 = fn0C00_000C ========================
 Mem0:Global memory
     def:  def Mem0
@@ -162,25 +162,26 @@ SCZO_27: orig: SCZO
     def:  SCZO_27 = PHI(SCZO_18, SCZO_15, SCZO_11, SCZO_6)
 // fn0C00_000C
 word16 fn0C00_000C(word16 ax)
-fn0C00_000C_entry:		// pred:
+fn0C00_000C_entry:
 	def Mem0
 	def fp
-	def SCZO
+	def sp
 	def ax
-	def Z
 	def SZO
+	def C
+	def Z
 	// succ:  l0C00_000C
-l0C00_000C:		// pred: fn0C00_000C_entry
+l0C00_000C:
 	SCZO_6 = cond(ax - 0x0000)
 	Z_7 = SCZO_6 (alias)
 	SZO_8 = SCZO_6 (alias)
 	branch Test(NE,Z_7) l0C00_0014
 	// succ:  l0C00_0010 l0C00_0014
-l0C00_0010:		// pred: l0C00_000C
+l0C00_0010:
 	ax_23 = 0x0123
 	return ax_23
 	// succ:  fn0C00_000C_exit
-fn0C00_000C_exit:		// pred: l0C00_0022 l0C00_001E l0C00_0017 l0C00_0010
+fn0C00_000C_exit:
 	SZO_24 = PHI(SZO_20, SZO_14, SZO_10, SZO_8)
 	Z_25 = PHI(Z_19, Z_16, Z_12, Z_7)
 	ax_26 = PHI(ax_17, ax_21, ax_22, ax_23)
@@ -193,18 +194,18 @@ l0C00_0014:		// pred: l0C00_000C
 	Z_12 = SZO_10 (alias)
 	branch Test(NE,Z_12) l0C00_001B
 	// succ:  l0C00_0017 l0C00_001B
-l0C00_0017:		// pred: l0C00_0014
+l0C00_0017:
 	ax_22 = 0x0125
 	return ax_22
 	// succ:  fn0C00_000C_exit
-l0C00_001B:		// pred: l0C00_0014
+l0C00_001B:
 	ax_13 = ax_9 - 0x0001
 	SZO_14 = cond(ax_13)
 	SCZO_15 = SZO_14 (alias)
 	Z_16 = SZO_14 (alias)
 	branch Test(NE,Z_16) l0C00_0022
 	// succ:  l0C00_001E l0C00_0022
-l0C00_001E:		// pred: l0C00_001B
+l0C00_001E:
 	ax_21 = 0x0127
 	return ax_21
 	// succ:  fn0C00_000C_exit
