@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcDisassembler : Disassembler
+    public class PowerPcDisassembler : IDisassembler
     {
         private PowerPcArchitecture arch;
         private ImageReader rdr;

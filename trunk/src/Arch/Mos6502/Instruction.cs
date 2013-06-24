@@ -29,16 +29,16 @@ namespace Decompiler.Arch.Mos6502
     public class Instruction : MachineInstruction
     {
         public Opcode Code;
-        public MachineOperand Operand;
+        public Operand Operand;
 
         public override uint DefCc()
         {
-            throw new NotImplementedException();
+            return (uint) DefCc(Code);
         }
 
         public override uint UseCc()
         {
-            throw new NotImplementedException();
+            return (uint) UseCc(Code);
         }
 
         public override string ToString()
@@ -50,6 +50,89 @@ namespace Decompiler.Arch.Mos6502
                 sb.Append(Operand);
             }
             return sb.ToString();
+        }
+
+        // http://www.obelisk.demon.co.uk/6502/instructions.html
+        public static FlagM DefCc(Opcode code)
+        {
+            switch (code)
+            {
+            case Opcode.clc:
+            case Opcode.sec:
+                return FlagM.CF;
+            case Opcode.cld:
+            case Opcode.sed:
+                return FlagM.DF;
+            case Opcode.cli:
+            case Opcode.sei:
+                return FlagM.IF;
+            case Opcode.clv:
+                return FlagM.VF;
+            case Opcode.and:
+            case Opcode.dec:
+            case Opcode.dex:
+            case Opcode.dey:
+            case Opcode.eor:
+            case Opcode.inc:
+            case Opcode.inx:
+            case Opcode.iny:
+            case Opcode.lda:
+            case Opcode.ldx:
+            case Opcode.ldy:
+            case Opcode.ora:
+            case Opcode.tax:
+            case Opcode.tay:
+            case Opcode.txa:
+            case Opcode.tya:
+            case Opcode.tsx:
+            case Opcode.pla:
+                return FlagM.NF | FlagM.ZF;
+            case Opcode.bit:
+                return FlagM.NF | FlagM.VF | FlagM.ZF;
+            case Opcode.adc:
+            case Opcode.sbc:
+                return FlagM.NF | FlagM.VF | FlagM.ZF | FlagM.CF;
+            case Opcode.asl:
+            case Opcode.cmp:
+            case Opcode.cpx:
+            case Opcode.cpy:
+            case Opcode.lsr:
+            case Opcode.rol:
+            case Opcode.ror:
+                return FlagM.NF | FlagM.ZF | FlagM.CF;
+
+            case Opcode.txs:
+            case Opcode.pha:
+            case Opcode.php:
+            case Opcode.jmp:
+            case Opcode.jsr:
+            case Opcode.rts:
+            case Opcode.nop:
+                return 0;
+            case Opcode.plp:
+            case Opcode.rti:
+                return FlagM.CF |
+                    FlagM.ZF |
+                    FlagM.IF |
+                    FlagM.DF |
+                    FlagM.BF |
+                    FlagM.VF |
+                    FlagM.NF;
+            case Opcode.brk:
+                return FlagM.BF;
+            }
+            throw new NotImplementedException("DefCc for " + code);
+        }
+
+        public static FlagM UseCc(Opcode code)
+        {
+            switch (code)
+            {
+            case Opcode.adc:
+            case Opcode.sbc:
+                return FlagM.CF;
+            }
+            return 0;
         }
     }
 }

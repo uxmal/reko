@@ -268,7 +268,7 @@ namespace Decompiler.UnitTests.Analysis
                 Identifier id = m.Local32("id");
                 m.Assign(id, Constant.Word32(10));
                 m.Label("loop");
-                m.Assign(id, m.Sub(id, 1));
+                m.Assign(id, m.ISub(id, 1));
                 m.BranchIf(m.Ge(id, 0), "loop");
                 m.Store(m.Word32(0x4232), id);
                 m.Return(id);

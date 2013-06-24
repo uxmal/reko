@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Mocks
 			Identifier bx_87 = Local16("bx_87");
 			Assign(ax_88, Fn("fn1B96_0540", loc02_26, ds));
 			Identifier v19_89 = Local16("v19_89");
-			Assign(v19_89, Sub(LoadW(0x8416), 0x0001));
+			Assign(v19_89, ISub(LoadW(0x8416), 0x0001));
 			Store(Word16(0x8416), v19_89);
 			BranchIf(Ne(v19_89, 0x0000), "block11");
 			// succ:  9 11

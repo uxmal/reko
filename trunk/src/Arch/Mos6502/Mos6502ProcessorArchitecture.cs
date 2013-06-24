@@ -19,7 +19,10 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Rtl;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Types;
+using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +32,9 @@ namespace Decompiler.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : IProcessorArchitecture
     {
-        public Disassembler CreateDisassembler(ImageReader imageReader)
+        public IDisassembler CreateDisassembler(ImageReader imageReader)
         {
-            throw new NotImplementedException();
+            return new Disassembler(imageReader.CreateLeReader());
         }
 
         public ProcessorState CreateProcessorState()
@@ -39,14 +42,14 @@ namespace Decompiler.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public Core.Lib.BitSet CreateRegisterBitset()
+        public BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Core.Rtl.RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Rewriter(this, rdr.CreateLeReader(), state, frame);
         }
 
         public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
@@ -84,7 +87,7 @@ namespace Decompiler.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -94,7 +97,7 @@ namespace Decompiler.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public Core.Lib.BitSet ImplicitArgumentRegisters
+        public BitSet ImplicitArgumentRegisters
         {
             get { throw new NotImplementedException(); }
         }
@@ -106,27 +109,27 @@ namespace Decompiler.Arch.Mos6502
 
         public PrimitiveType FramePointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Byte; }      // Yup, stack pointer is a byte register (!)
         }
 
         public PrimitiveType PointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Ptr16; }
         }
 
         public PrimitiveType WordWidth
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Byte; }      // 8-bit, baby!
         }
 
         public RegisterStorage StackRegister
         {
-            get { throw new NotImplementedException(); }
+            get { return Registers.s; }
         }
 
         public uint CarryFlagMask
         {
-            get { throw new NotImplementedException(); }
+            get { return (uint) FlagM.CF; }
         }
     }
 

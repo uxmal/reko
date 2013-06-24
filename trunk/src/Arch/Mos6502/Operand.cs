@@ -65,16 +65,16 @@ namespace Decompiler.Arch.Mos6502
 
     public enum AddressMode
     {
-        Immediate,
-        ZeroPage,
-        ZeroPageX,
-        ZeroPageY,
-        Relative,
-        Absolute,
-        AbsoluteX,
-        AbsoluteY,
-        Indirect,
-        IndexedIndirect,
-        IndirectIndexed,
+        Immediate,          // #$AA
+        ZeroPage,           // $AA
+        ZeroPageX,          // $AA,x
+        ZeroPageY,          // $AA,y
+        Relative,           // $AABB
+        Absolute,           // $AABB
+        AbsoluteX,          // $AABB,x
+        AbsoluteY,          // $AABB,y
+        Indirect,           // ($AABB)
+        IndexedIndirect,    // $(AA,x)
+        IndirectIndexed,    // $(AA),y
     }
 }

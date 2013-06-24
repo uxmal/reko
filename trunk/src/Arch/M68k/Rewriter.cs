@@ -76,6 +76,7 @@ namespace Decompiler.Arch.M68k
                 {
                 case Opcode.adda: RewriteAdda(); break;
                 case Opcode.eor: RewriteLogical(Operator.Xor); break;
+                case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.or: RewriteLogical(Operator.Or); break;
                 default:

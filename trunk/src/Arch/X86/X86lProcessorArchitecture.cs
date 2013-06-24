@@ -88,7 +88,7 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
-		public virtual Disassembler CreateDisassembler(ImageReader imageReader)
+		public virtual IDisassembler CreateDisassembler(ImageReader imageReader)
 		{
             return mode.CreateDisassembler(imageReader);
 		}

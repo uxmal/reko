@@ -30,6 +30,16 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
+    /// <summary>
+    /// Rewrites M68k operands into sequences of RTL expressions and possibly instructions.
+    /// </summary>
+    /// <remarks>
+    /// Some of the operands, like (A6)+ and -(A5), have side effects that need to be expressed
+    /// as separate instructions. We must therefore insert RTL instructions into the stream as these
+    /// operands are rewritten. Because of these side effects, it is critical that we don't call
+    /// Rewrite twice on the same operand, as this will cause two side effect instructions to be
+    /// generated.
+    /// </remarks>
     public class OperandRewriter
     {
         private Rewriter rewriter;
@@ -43,7 +53,12 @@ namespace Decompiler.Arch.M68k
             this.frame = rewriter.frame;
         }
 
-        public Expression Rewrite(MachineOperand operand)
+        /// <summary>
+        /// Rewrite operands being used as sources.
+        /// </summary>
+        /// <param name="operand"></param>
+        /// <returns></returns>
+        public Expression RewriteSrc(MachineOperand operand)
         {
             var reg = operand as RegisterOperand;
             if (reg != null)
@@ -51,19 +66,32 @@ namespace Decompiler.Arch.M68k
             var imm = operand as ImmediateOperand;
             if (imm != null)
                 return imm.Value;
+            var mem = operand as MemoryOperand;
+            if (mem != null)
+            {
+                var ea = rewriter.frame.EnsureRegister(mem.Base);
+                var tmp = rewriter.frame.CreateTemporary(rewriter.di.Instruction.dataWidth);
+                m.Assign(tmp, m.Load(rewriter.di.Instruction.dataWidth, ea));
+                return tmp;
+            }
             var pre = operand as PredecrementMemoryOperand;
             if (pre != null)
             {
                 var r = rewriter.frame.EnsureRegister(pre.Register);
-                m.Assign(r, m.Sub(r, rewriter.di.Instruction.dataWidth.Size));
+                m.Assign(r, m.ISub(r, rewriter.di.Instruction.dataWidth.Size));
                 return m.Load(rewriter.di.Instruction.dataWidth, r);
             }
             var post = operand as PostIncrementMemoryOperand;
             if (post != null)
                 return m.Load(rewriter.di.Instruction.dataWidth, frame.EnsureRegister(post.Register));
-            throw new NotImplementedException("Unimplemented rewrite for operand type " + operand.ToString());
+            throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.ToString());
         }
 
+        public Expression RewriteDst(MachineOperand operand)
+        {
+            throw new NotImplementedException("Unimplemented RewriteDst for operand type " + operand.ToString());
+
+        }
         public Identifier FlagGroup(FlagM flags)
         {
             return rewriter.frame.EnsureFlagGroup((uint)flags, rewriter.arch.GrfToString((uint)flags), PrimitiveType.Byte);

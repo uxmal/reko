@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Analysis.Fragments
             var m = new ProcedureBuilder("even");
             var r1 = m.Register(1);
             m.BranchIf(m.Eq0(r1), "done");
-            m.Assign(r1, m.Sub(r1, 1));
+            m.Assign(r1, m.ISub(r1, 1));
             m.Call("odd");
             m.Assign(r1, m.Not(r1));
             m.Return();
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis.Fragments
             m = new ProcedureBuilder("odd");
             r1 = m.Register(1);
             m.BranchIf(m.Eq(r1, 1), "done");
-            m.Assign(r1, m.Sub(r1, 1));
+            m.Assign(r1, m.ISub(r1, 1));
             m.Call("event");
             m.Assign(r1, m.Not(r1));
             m.Return();

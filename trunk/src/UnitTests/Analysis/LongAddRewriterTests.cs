@@ -229,10 +229,10 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void Avoid()
         {
-            m.Assign(SCZ, m.Cond(m.Sub(cx, 0x0030)));
+            m.Assign(SCZ, m.Cond(m.ISub(cx, 0x0030)));
         	m.Assign(ax, m.IAdd(m.Word16(0x0000) ,CF));
             m.Assign(SCZ, m.Cond(ax));
-            m.Assign(SCZ, m.Cond(m.Sub(cx , 0x003A)));
+            m.Assign(SCZ, m.Cond(m.ISub(cx , 0x003A)));
             m.Assign(CF, m.Not(CF));
             m.Assign(ax, m.IAdd(m.IAdd(ax, ax),CF));
             m.Assign(SCZ, m.Cond(ax));

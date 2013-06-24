@@ -36,19 +36,19 @@ namespace Decompiler.Arch.M68k
             Expression result;
             if (width.Size < 4)
             {
-                var opSrc = MaybeCast(width, orw.Rewrite(di.Instruction.op1));
-                var opDst = MaybeCast(width, orw.Rewrite(di.Instruction.op2));
+                var opSrc = MaybeCast(width, orw.RewriteSrc(di.Instruction.op1));
+                var opDst = MaybeCast(width, orw.RewriteDst(di.Instruction.op2));
                 var tmp = frame.CreateTemporary(width);
                 emitter.Assign(tmp, new BinaryExpression(op, width, opDst, opSrc));
                 emitter.Assign(
-                    orw.Rewrite(di.Instruction.op2),
-                    emitter.Dpb(orw.Rewrite(di.Instruction.op2), tmp, 0, width.BitSize));
-                result= tmp;
+                    orw.RewriteSrc(di.Instruction.op2),
+                    emitter.Dpb(orw.RewriteSrc(di.Instruction.op2), tmp, 0, width.BitSize));
+                result = tmp;
             }
             else
             {
-                var opSrc = orw.Rewrite(di.Instruction.op1);
-                var opDst = orw.Rewrite(di.Instruction.op2);
+                var opSrc = orw.RewriteSrc(di.Instruction.op1);
+                var opDst = orw.RewriteSrc(di.Instruction.op2);
                 emitter.Assign(opDst, emitter.Xor(opDst, opSrc));
                 result = opDst;
             }
@@ -68,29 +68,47 @@ namespace Decompiler.Arch.M68k
         private void RewriteAdda()
         {
             var width = di.Instruction.dataWidth;
-            var op1 = orw.Rewrite(di.Instruction.op1);
-            var op2 = orw.Rewrite(di.Instruction.op2);
-            emitter.Assign(op2, emitter.IAdd(op2, op1));
-            var postOp = di.Instruction.op1 as PostIncrementMemoryOperand;
-            if (postOp != null)
-                RewritePostOp(postOp);
+            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var op2 = orw.RewriteSrc(di.Instruction.op2);
+            emitter.Assign(op2, emitter.IAdd(op2, opSrc));
         }
 
         private void RewritePostOp(PostIncrementMemoryOperand op)
         {
+            var postOp = di.Instruction.op1 as PostIncrementMemoryOperand;
+            if (postOp == null)
+                return;
             var reg = frame.EnsureRegister(op.Register);
             emitter.Assign(reg, emitter.IAdd(reg, di.Instruction.dataWidth.Size));
         }
+
         public void RewriteMove(bool setFlag)
         {
-            var op1 = orw.Rewrite(di.Instruction.op1);
-            var op2 = orw.Rewrite(di.Instruction.op2);
-            Copy(op1, op2);
+            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var opDst = orw.RewriteSrc(di.Instruction.op2);
+            Copy(opDst, opSrc, di.Instruction.dataWidth.BitSize);
+            if (setFlag)
+            {
+                emitter.Assign(
+                    frame.EnsureFlagGroup(
+                        (uint)(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.ZF),
+                        "CVZN",
+                        PrimitiveType.Byte),
+                    emitter.Cond(opSrc));
+            }
         }
 
-        private void Copy(Expression op1, Expression op2)
+        private void Copy(Expression dst, Expression src, int bitSize)
         {
-            emitter.Assign(op1, op2);
+            if (dst is Identifier && dst.DataType.BitSize > bitSize)
+            {
+                var dpb = emitter.Dpb(dst, src, 0, bitSize);
+                emitter.Assign(dst, dpb);
+            }
+            else
+            {
+                emitter.Assign(dst, src);
+            }
         }
     }
 }

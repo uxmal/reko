@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Typing
 		public void AtrcoIdMinusConst()
 		{
 			Identifier r = m.Local32("r");
-			MemoryAccess mem = m.Load(PrimitiveType.Word32, m.Sub(r, 4));
+			MemoryAccess mem = m.Load(PrimitiveType.Word32, m.ISub(r, 4));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoIdMinusConst.txt");

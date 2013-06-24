@@ -139,7 +139,7 @@ namespace Decompiler.Arch.X86
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
         {
             Identifier cx = orw.AluRegister(Registers.ecx, di.Instruction.dataWidth);
-            emitter.Assign(cx, emitter.Sub(cx, 1));
+            emitter.Assign(cx, emitter.ISub(cx, 1));
             if (useFlags != 0)
             {
                 emitter.Branch(
@@ -188,7 +188,7 @@ namespace Decompiler.Arch.X86
             var strFollow = dasm.Peek(1);
             emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address, RtlClass.ConditionalTransfer);
             RewriteStringInstruction();
-            emitter.Assign(regCX, emitter.Sub(regCX, 1));
+            emitter.Assign(regCX, emitter.ISub(regCX, 1));
 
             switch (di.Instruction.code)
             {

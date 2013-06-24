@@ -39,12 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisassembledInstruction.cs" />
+    <Compile Include="FlagM.cs" />
     <Compile Include="Instruction.cs" />
-    <Compile Include="Mos6502Disassembler.cs" />
+    <Compile Include="Disassembler.cs" />
     <Compile Include="Mos6502ProcessorArchitecture.cs" />
+    <Compile Include="Mos6502ProcessorState.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Operand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rewriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">

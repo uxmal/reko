@@ -307,7 +307,7 @@ namespace Decompiler.UnitTests.Typing
             m.Label("lupe");
             m.SegStore(ds, m.IAdd(di, 0x5388), m.Word16(0));
             m.Assign(di, m.IAdd(di, 2));
-            m.Assign(cx, m.Sub(cx, 1));
+            m.Assign(cx, m.ISub(cx, 1));
             m.BranchIf(m.Ne(cx, 0), "lupe");
             m.Return();
 

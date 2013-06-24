@@ -172,7 +172,7 @@ namespace Decompiler.UnitTests.Analysis
             ProcedureBuilder m = new ProcedureBuilder();
             var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
 			ssaIds[x].DefStatement = m.Block.Statements.Last;
-            var stmY = m.Assign(y, m.Sub(x, 2));
+            var stmY = m.Assign(y, m.ISub(x, 2));
 			ssaIds[y].DefStatement = m.Block.Statements.Last;
 			var stm = m.BranchIf(m.Eq(y, 0), "test");
 			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.ToString());
@@ -277,7 +277,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Constant c = Constant.Word32(1);
 			ProcedureBuilder m = new ProcedureBuilder();
-			Expression e = m.Shl(1, m.Sub(Constant.Byte(32), 1));
+			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 			e = e.Accept(vp);
 			Assert.AreEqual("0x80000000", e.ToString());

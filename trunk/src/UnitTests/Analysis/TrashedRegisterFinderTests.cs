@@ -227,9 +227,9 @@ namespace Decompiler.UnitTests.Analysis
             var tmp = m.Local32("tmp");
             var esp = m.Frame.EnsureRegister(Registers.esp);
             var r2 = m.Register(2);
-            var stm1 = m.Store(m.Sub(esp, 0x10), r2);
+            var stm1 = m.Store(m.ISub(esp, 0x10), r2);
             var stm2 = m.Assign(r2, m.Int32(0));
-            var stm3 = m.Assign(r2, m.LoadDw(m.Sub(esp, 0x10)));
+            var stm3 = m.Assign(r2, m.LoadDw(m.ISub(esp, 0x10)));
 
             trf = CreateTrashedRegisterFinder();
             var flow = CreateBlockFlow(m.Block, m.Frame);
@@ -414,9 +414,9 @@ namespace Decompiler.UnitTests.Analysis
         {
             Identifier eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
             Identifier esp = m.Procedure.Frame.EnsureRegister(Registers.esp);
-            m.Store(m.Sub(esp, 4), eax);
+            m.Store(m.ISub(esp, 4), eax);
             m.Assign(eax, m.Int32(3));
-            m.Assign(eax, m.LoadDw(m.Sub(esp, 4)));
+            m.Assign(eax, m.LoadDw(m.ISub(esp, 4)));
 
             flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
             flow[m.Block].SymbolicIn.SetValue(esp, m.Frame.FramePointer);
@@ -486,7 +486,7 @@ const eax:<invalid> ebx:0x01231313
                 var sp = m.Frame.EnsureRegister(Registers.sp);
                 var ss = m.Frame.EnsureRegister(Registers.ss);
                 var ax = m.Frame.EnsureRegister(Registers.ax);
-                m.Assign(sp, m.Sub(sp, 2));
+                m.Assign(sp, m.ISub(sp, 2));
                 m.SegStore(ss, sp, ax);
                 m.Assign(ax, 1);
                 m.Assign(ax, m.SegMemW(ss, sp));
@@ -528,7 +528,7 @@ const eax:<invalid>
             {
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var esp = m.Frame.EnsureRegister(Registers.esp);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
                 m.Assign(eax, 1);
                 m.Assign(m.Flags("SCZO"), m.Cond(eax));

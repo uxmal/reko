@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Evaluation
             {
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 ebp = m.Frame.EnsureRegister(Registers.ebp );
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
             });
@@ -150,7 +150,7 @@ namespace Decompiler.UnitTests.Evaluation
             {
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 eax = m.Frame.EnsureRegister(Registers.eax);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
                 m.Assign(eax, m.Word32(1));
                 m.Assign(eax, m.LoadDw(esp));
@@ -168,10 +168,10 @@ namespace Decompiler.UnitTests.Evaluation
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 ebp = m.Frame.EnsureRegister(Registers.ebp);
                 eax = m.Frame.EnsureRegister(Registers.eax);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
-                m.Assign(esp, m.Sub(esp, 20));
+                m.Assign(esp, m.ISub(esp, 20));
 
                 m.Store(m.IAdd(ebp, 8), m.Word32(1));
                 m.Assign(eax, m.LoadDw(m.IAdd(esp, 28)));
@@ -221,9 +221,9 @@ namespace Decompiler.UnitTests.Evaluation
                 ax = m.Frame.EnsureRegister(Registers.ax);
                 eax = m.Frame.EnsureRegister(Registers.eax);
                 esp = m.Frame.EnsureRegister(Registers.esp);
-                m.Store(m.Sub(esp, 4), ax);
-                m.Store(m.Sub(esp, 2), ds);
-                m.Assign(eax, m.LoadDw(m.Sub(esp, 4)));
+                m.Store(m.ISub(esp, 4), ax);
+                m.Store(m.ISub(esp, 2), ds);
+                m.Assign(eax, m.LoadDw(m.ISub(esp, 4)));
             });
             Assert.AreEqual("SEQ(ds, ax)", GetRegisterState(se, eax).ToString());
         }
@@ -241,9 +241,9 @@ namespace Decompiler.UnitTests.Evaluation
                 ebx = m.Frame.EnsureRegister(Registers.ebx);
                 esp = m.Frame.EnsureRegister(Registers.esp);
 
-                m.Store(m.Sub(esp, 4), ebx);
-                m.Assign(ax, m.LoadW(m.Sub(esp, 4)));
-                m.Assign(cx, m.LoadW(m.Sub(esp, 2)));
+                m.Store(m.ISub(esp, 4), ebx);
+                m.Assign(ax, m.LoadW(m.ISub(esp, 4)));
+                m.Assign(cx, m.LoadW(m.ISub(esp, 2)));
             });
             Assert.AreEqual("ebx", ctx.StackState[-4].ToString());
             Assert.AreEqual("(word16) ebx", GetRegisterState(se, ax).ToString());

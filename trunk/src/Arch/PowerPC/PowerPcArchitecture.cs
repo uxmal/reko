@@ -136,7 +136,7 @@ namespace Decompiler.Arch.PowerPC
 
         #region IProcessorArchitecture Members
 
-        public Disassembler CreateDisassembler(ImageReader rdr)
+        public IDisassembler CreateDisassembler(ImageReader rdr)
         {
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }

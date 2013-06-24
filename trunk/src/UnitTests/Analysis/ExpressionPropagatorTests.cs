@@ -138,7 +138,7 @@ namespace Decompiler.UnitTests.Analysis
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 var r1 = m.Register(1);
-                m.Assign(sp, m.Sub(sp, 4));
+                m.Assign(sp, m.ISub(sp, 4));
                 m.Assign(r1, m.LoadDw(m.IAdd(sp, 8)));
                 m.Return();
             });

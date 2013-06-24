@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
 			var id = new Identifier("id", 0, PrimitiveType.Word16, null);
             var emitter = new CodeEmitterImpl();
-			var add = emitter.Sub(id, 3);
+			var add = emitter.ISub(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
 			Assert.AreEqual(PrimitiveType.Word16, add.Right.DataType);
 			Assert.AreEqual("id - 0x0003", add.ToString());

@@ -200,6 +200,7 @@
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
     </Compile>
+    <Compile Include="Machine\RegisterOperand.cs" />
     <Compile Include="Operators\FAddOperator.cs" />
     <Compile Include="Operators\FDivOperator.cs" />
     <Compile Include="Operators\FMulOperator.cs" />
@@ -282,7 +283,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Diagnostic.cs" />
-    <Compile Include="Disassembler.cs">
+    <Compile Include="IDisassembler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dumper.cs">

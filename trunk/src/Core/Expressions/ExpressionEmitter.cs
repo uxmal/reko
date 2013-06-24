@@ -319,7 +319,7 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.ISub, left.DataType, left, right);
         }
 
-        public BinaryExpression Sub(Expression left, int right)
+        public BinaryExpression ISub(Expression left, int right)
         {
             return ISub(left, Constant.Create(left.DataType, right));
         }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeDisassembler : Disassembler
+    public class FakeDisassembler : IDisassembler
     {
         private IEnumerator<MachineInstruction> instrs;
         private Address addr;
