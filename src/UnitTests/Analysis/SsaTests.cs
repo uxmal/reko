@@ -142,7 +142,7 @@ namespace Decompiler.UnitTests.Analysis
             var esp = EnsureRegister32(m, "esp");
             var ebp = EnsureRegister32(m, "ebp");
             var eax = EnsureRegister32(m, "eax");
-            m.Assign(esp, m.Sub(esp, 4));
+            m.Assign(esp, m.ISub(esp, 4));
             m.Store(esp, ebp);
             m.Assign(ebp, esp);
             m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));  // dwArg04

@@ -281,7 +281,7 @@ namespace Decompiler.Arch.X86
                 ((ImmediateOperand)di.Instruction.op1).Value.ToInt32();
             if (cbExtraSavedBytes != 0)
             {
-                emitter.Assign(sp, emitter.Sub(sp, cbExtraSavedBytes));
+                emitter.Assign(sp, emitter.ISub(sp, cbExtraSavedBytes));
             }
         }
 
@@ -489,7 +489,7 @@ namespace Decompiler.Arch.X86
                     dasm.Peek(1).Instruction.op1.Width == PrimitiveType.Word16)
                 {
                     dasm.MoveNext();
-                    emitter.Assign(StackPointer(), emitter.Sub(StackPointer(), reg.Register.DataType.Size));
+                    emitter.Assign(StackPointer(), emitter.ISub(StackPointer(), reg.Register.DataType.Size));
                     RewriteCall(dasm.Current.Instruction.op1, dasm.Current.Instruction.op1.Width);
                     return;
                 }
@@ -644,7 +644,7 @@ namespace Decompiler.Arch.X86
             // Allocate an local variable for the push.
 
             var sp = StackPointer();
-            emitter.Assign(sp, emitter.Sub(sp, dataWidth.Size));
+            emitter.Assign(sp, emitter.ISub(sp, dataWidth.Size));
             emitter.Assign(orw.StackAccess(sp, dataWidth), expr);
         }
 

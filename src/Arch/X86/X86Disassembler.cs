@@ -32,7 +32,7 @@ namespace Decompiler.Arch.X86
 	/// <summary>
 	/// Intel x86 opcode disassembler 
 	/// </summary>
-	public partial class X86Disassembler : Disassembler
+	public partial class X86Disassembler : IDisassembler
 	{
 		private PrimitiveType dataWidth;
 		private PrimitiveType addressWidth;
@@ -45,18 +45,16 @@ namespace Decompiler.Arch.X86
         private bool useRexPrefix;
         private byte rexPrefix;
 
-        [Obsolete("Use other ctor")]
-        public X86Disassembler(ImageReader rdr, PrimitiveType defaultWordSize)
-            : this(rdr, defaultWordSize, defaultWordSize, false)
-        {
-        }
-
 		/// <summary>
 		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
         /// </summary>
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
-		public X86Disassembler(ImageReader rdr, PrimitiveType defaultWordSize, PrimitiveType defaultAddressSize, bool useRexPrefix)
+		public X86Disassembler(
+            ImageReader rdr,
+            PrimitiveType defaultWordSize,
+            PrimitiveType defaultAddressSize,
+            bool useRexPrefix)
 		{
 			this.rdr = rdr;
 			this.defaultDataWidth = defaultWordSize;

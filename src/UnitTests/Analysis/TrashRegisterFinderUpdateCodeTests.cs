@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Analysis
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 var ebp = m.Frame.EnsureRegister(Registers.ebp);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
                 m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
@@ -123,7 +123,7 @@ main_exit:
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 m.Assign(eax, 0x1234);
                 m.Assign(ebx, 0x1234);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
                 m.Call("foo");
                 m.Assign(ebx, eax);
@@ -185,9 +185,9 @@ foo_exit:
                 var esi = m.Frame.EnsureRegister(Registers.esi);
                 var ecx = m.Frame.EnsureRegister(Registers.ecx);
 
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, esi);
-                m.Assign(ecx, m.Sub(ecx, 1));
+                m.Assign(ecx, m.ISub(ecx, 1));
                 m.Assign(esi, m.LoadDw(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
@@ -230,7 +230,7 @@ foo_exit:
             {
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 var ebp = m.Frame.EnsureRegister(Registers.ebp);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
                 m.SideEffect(m.Fn(
@@ -270,11 +270,11 @@ main_exit:
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 var ebp = m.Frame.EnsureRegister(Registers.ebp);
                 var eax = m.Frame.EnsureRegister(Registers.eax);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, m.Word32(55));
-                m.Assign(esp, m.Sub(esp, 4));
+                m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, m.Word32(45));
                 m.Assign(
                     eax,

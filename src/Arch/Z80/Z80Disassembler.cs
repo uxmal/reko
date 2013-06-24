@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Z80
 {
-    public class Z80Disassembler : Disassembler
+    public class Z80Disassembler : IDisassembler
     {
         private ImageReader rdr;
         private RegisterStorage IndexRegister;

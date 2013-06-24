@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
         {
             var image = new ProgramImage(new Address(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var dasm = new Mos6502Disassembler(rdr);
+            var dasm = new Disassembler(rdr);
             return dasm.DisassembleInstruction();
         }
 
@@ -59,6 +59,13 @@ namespace Decompiler.UnitTests.Arch.Mos6502
         {
             var instr = RunTest(0x0D, 0x34, 0x12);
             Assert.AreEqual("ora\t$1234", instr.ToString());
+        }
+
+        [Test]
+        public void Dis6502_inc_absx()
+        {
+            var instr = RunTest(0xFE, 0x34, 0x12);
+            Assert.AreEqual("inc\t$1234,x", instr.ToString());
         }
     }
 }

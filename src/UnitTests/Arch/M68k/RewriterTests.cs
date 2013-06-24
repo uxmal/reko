@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0x2261);        // movea.l   (a1)-,a1
             AssertCode("0|00010000(2): 2 instructions",
                 "1|a1 = a1 - 0x00000004",
-                "2|Mem0[a1:word32] = a1");
+                "2|a1 = Mem0[a1:word32]");
         }
 
         [Test]
@@ -132,6 +132,16 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "3|ZN = cond(v3)",
                 "4|C = false",
                 "5|V = false");
+        }
+
+        [Test]
+        public void M68krw_movew_indirect()
+        {
+            Rewrite(0x3410);    // move.w (A0),D2
+            AssertCode("0|00010000(2): 3 instructions",
+                "1|v3 = Mem0[a0:word16]",
+                "2|d2 = DPB(d2, v3, 0, 16)",
+                "3|CVZN = cond(v3)");
         }
     }
 }

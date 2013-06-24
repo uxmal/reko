@@ -144,7 +144,7 @@ namespace Decompiler.Core
             }
         }
 
-        public void DumpAssemblerLine(ProgramImage image, Disassembler dasm, TextWriter writer)
+        public void DumpAssemblerLine(ProgramImage image, IDisassembler dasm, TextWriter writer)
         {
             Address addrBegin = dasm.Address;
             if (ShowAddresses)

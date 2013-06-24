@@ -278,6 +278,11 @@ namespace Decompiler.Core.Expressions
             return Convert.ToBoolean(GetValue());
         }
 
+        public ushort ToByte()
+        {
+            return Convert.ToByte(GetValue());
+        }
+
 		public double ToDouble()
 		{
 			return Convert.ToDouble(GetValue());

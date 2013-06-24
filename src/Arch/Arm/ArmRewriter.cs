@@ -48,6 +48,7 @@ namespace Decompiler.Arch.Arm
             this.frame = frame;
         }
 
+        //$REVIEW: move the DisassembledInstruction fields into the MachineInstruction class.
         private IEnumerable<DisassembledInstruction> CreateInstructionStream(ImageReader rdr)
         {
             var d = new ArmDisassembler2(arch, rdr);

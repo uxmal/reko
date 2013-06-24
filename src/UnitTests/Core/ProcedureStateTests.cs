@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void SetValue()
         {
-            sce.SetValue(idSp, m.Sub(idSp, 4));
+            sce.SetValue(idSp, m.ISub(idSp, 4));
 
             Assert.AreEqual("sp - 0x00000004", sce.GetValue(idSp).ToString());
         }
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void PushValueOnstack()
         {
-            sce.SetValue(idSp, m.Sub(idSp, 4));
+            sce.SetValue(idSp, m.ISub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
             Assert.AreEqual("0x12345678", sce.GetValue(m.LoadDw(idSp)).ToString());
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Core
         {
             #region IProcessorArchitecture Members
 
-            public Disassembler CreateDisassembler(ImageReader imageReader)
+            public IDisassembler CreateDisassembler(ImageReader imageReader)
             {
                 throw new NotImplementedException();
             }

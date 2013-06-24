@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2013 John Källén.
+ * Copyright (C) 1999-2013 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,29 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Decompiler.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Arch.Mos6502
 {
-	public interface Disassembler
-	{
-        Address Address { get; }
+    public class DisassembledInstruction
+    {
+        private Address addr;
+        private Instruction instr;
+        private uint length;
 
-        MachineInstruction DisassembleInstruction();
-	}
+        public DisassembledInstruction(Address addr, Instruction instr, uint length)
+        {
+            this.addr = addr;
+            this.instr = instr;
+            this.length = length;
+        }
+
+        public Address Address { get { return addr; } }
+        public Instruction Instruction { get { return instr; } }
+        public uint Length { get { return length; } }
+    }
 }

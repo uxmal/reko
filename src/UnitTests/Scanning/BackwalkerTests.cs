@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Scanning
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup((uint)FlagM.CF, "C", PrimitiveType.Byte);
             Assert.IsFalse(bw.BackwalkInstruction(
-                m.Assign(SCZO, new ConditionOf(m.Sub(eax, 3)))), "Encountering this comparison should terminate the backwalk");
+                m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)))), "Encountering this comparison should terminate the backwalk");
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual("cmp 3", bw.Operations[0].ToString());
         }
@@ -169,7 +169,7 @@ namespace Decompiler.UnitTests.Scanning
 
             var block0 = m.CurrentBlock;
             m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
-            m.Assign(SCZO, new ConditionOf(m.Sub(eax, 3)));
+            m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
 
 
@@ -228,12 +228,12 @@ namespace Decompiler.UnitTests.Scanning
             var bx = m.Frame.EnsureRegister(Registers.bx);
             var si = m.Frame.EnsureRegister(Registers.si);
 
-            m.Assign(sp, m.Sub(sp, 2));
+            m.Assign(sp, m.ISub(sp, 2));
             m.Store(sp, cs);
             m.Assign(ds, m.LoadW(sp));
             m.Assign(sp, m.IAdd(sp, 2));
             m.Assign(bl, m.LoadB(si));
-            m.Assign(SCZO, new ConditionOf(m.Sub(bl, 2)));
+            m.Assign(SCZO, new ConditionOf(m.ISub(bl, 2)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "grox");
 
             m.Assign(bh, m.Xor(bh, bh));

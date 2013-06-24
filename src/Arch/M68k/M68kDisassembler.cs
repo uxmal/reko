@@ -33,7 +33,7 @@ namespace Decompiler.Arch.M68k
 {
     // M68k opcode map in http://www.freescale.com/files/archives/doc/ref_manual/M68000PRM.pdf
 
-    public class M68kDisassembler : Disassembler
+    public class M68kDisassembler : IDisassembler
     {
         private ImageReader rdr;
 
@@ -171,7 +171,7 @@ namespace Decompiler.Arch.M68k
         }
     }
 
-    public partial class M68kDisassembler2 : Disassembler
+    public partial class M68kDisassembler2 : IDisassembler
     {
         ImageReader g_cpu_pc;        /* program counter */
 

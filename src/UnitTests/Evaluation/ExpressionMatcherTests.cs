@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Evaluation
         public void Emt_BinOpMismatch()
         {
             var b = m.IAdd(Id("esp"), 4);
-            Create(m.Sub(Id("esp"), 4));
+            Create(m.ISub(Id("esp"), 4));
             Assert.IsFalse(matcher.Match(b));
         }
 

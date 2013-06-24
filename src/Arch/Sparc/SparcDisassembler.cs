@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Sparc
 {
-    public class SparcDisassembler : Disassembler
+    public class SparcDisassembler : IDisassembler
     {
         private SparcArchitecture arch;
         private ImageReader imageReader;

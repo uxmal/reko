@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Arm
     using address = UInt32;
     using addrdiff = UInt32;
 
-    public class ArmDisassembler2 : Disassembler
+    public class ArmDisassembler2 : IDisassembler
     {
         private ArmProcessorArchitecture arch;
         private ImageReader rdr;
@@ -418,7 +418,7 @@ namespace Decompiler.Arch.Arm
         }
     }
 
-    public class ArmDisassembler3 : Disassembler
+    public class ArmDisassembler3 : IDisassembler
     {
 
         /* (*This* comment is NOT part of the notice mentioned in the
@@ -1559,7 +1559,7 @@ namespace Decompiler.Arch.Arm
     }
 
     #region Broken
-    public class ArmDisassembler : Disassembler
+    public class ArmDisassembler : IDisassembler
     {
         private ImageReader rdr;
 
