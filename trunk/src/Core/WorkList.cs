@@ -28,31 +28,27 @@ namespace Decompiler.Core
 	/// </summary>
 	public class WorkList<T>
 	{
-		private Dictionary<T,T> inQ;
+		private HashSet<T> inQ;
 		private Queue<T> q;
 
 		public WorkList()
 		{
 			q = new Queue<T>();
-			inQ = new Dictionary<T,T>();
+			inQ = new HashSet<T>();
 		}
 
 		public WorkList(ICollection<T> coll)
 		{
 			q = new Queue<T>(coll);
-			inQ = new Dictionary<T,T>(coll.Count);
-			foreach (T t in coll)
-			{
-				Add(t);
-			}
+			inQ = new HashSet<T>(coll);
 		}
 
 		public void Add(T  t)
 		{
-			if (!inQ.ContainsKey(t))
+			if (!inQ.Contains(t))
 			{
 				q.Enqueue(t);
-				inQ.Add(t, t);
+				inQ.Add(t);
 			}
 		}
 
@@ -77,7 +73,7 @@ namespace Decompiler.Core
 			while (!IsEmpty)
 			{
 				T t = q.Dequeue();
-				if (inQ.ContainsKey(t))
+				if (inQ.Contains(t))
 				{
 					inQ.Remove(t);
                     item = t;

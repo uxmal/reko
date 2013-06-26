@@ -211,23 +211,19 @@ namespace Decompiler.Arch.X86
 
         public void RewriteRet()
         {
-            EmitReturnInstruction(
-                this.arch.WordWidth.Size + (di.Instruction.code == Opcode.retf ? PrimitiveType.Word16.Size : 0),
+            emitter.Return(
+                this.arch.WordWidth.Size + (di.Instruction.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
                 di.Instruction.Operands == 1 ? ((ImmediateOperand)di.Instruction.op1).Value.ToInt32() : 0);
         }
-
 
         public void RewriteIret()
         {
             RewritePop(
                 orw.FlagGroup(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), di.Instruction.dataWidth);
-            //$BUGBUG: what if in 32-bit mode?
-            EmitReturnInstruction(4, 0);
-        }
-
-        private void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
-        {
-            emitter.Return(cbReturnAddress, cbBytesPop);
+            emitter.Return(
+                Registers.cs.DataType.Size +
+                arch.WordWidth.Size, 
+                0);
         }
 
         /// <summary>

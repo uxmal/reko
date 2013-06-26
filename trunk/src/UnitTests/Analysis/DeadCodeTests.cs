@@ -31,7 +31,7 @@ using System.IO;
 namespace Decompiler.UnitTests.Analysis
 {
 	/// <summary>
-	/// Tests to make sure DeadCodeEliminiation works.
+	/// Tests to make sure DeadCodeElimination works.
 	/// </summary>
 	[TestFixture]
 	public class DeadCodeTests : AnalysisTestBase

@@ -167,9 +167,6 @@
     <Compile Include="Analysis\SegmentedAccessClassifier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\SequenceFinder.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\SideEffectFinder.cs">
       <SubType>Code</SubType>
     </Compile>

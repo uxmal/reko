@@ -24,6 +24,11 @@ using System.Text;
 
 namespace Decompiler.Core.Lib
 {
+    /// <summary>
+    /// Maintains the dominator graph of the blocks in a procedure, along with an extra
+    /// method for determine the dominance relation between two statements, which must always live in 
+    /// blocks.
+    /// </summary>
    public class BlockDominatorGraph : DominatorGraph<Block>
    {
        public BlockDominatorGraph(DirectedGraph<Block> graph, Block entry) : base(graph, entry)

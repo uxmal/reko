@@ -48,6 +48,7 @@ namespace Decompiler.UnitTests.Scanning
         private Identifier r1;
         private Identifier r2;
         private Identifier grf;
+        private CallGraph callGraph;
 
         [SetUp]
         public void Setup()
@@ -61,6 +62,7 @@ namespace Decompiler.UnitTests.Scanning
             r1 = new Identifier("r1", 0, PrimitiveType.Word32, new RegisterStorage("r1", 0, PrimitiveType.Word32));
             r2 = new Identifier("r2", 0, PrimitiveType.Word32, new RegisterStorage("r2", 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(3, "SCZ", PrimitiveType.Byte);
+            callGraph = new CallGraph();
 
             scanner = repository.StrictMock<IScanner>();
             arch = repository.DynamicMock<IProcessorArchitecture>();
@@ -154,10 +156,10 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Bwi_HandleBranch()
         {
-            trace.Cluster()
-                .Branch(r1, new Address(0x4000), RtlClass.ConditionalTransfer); 
-            trace.Cluster()
-                .Assign(r1, r2);
+            trace.Add(m =>
+                m.Branch(r1, new Address(0x4000), RtlClass.ConditionalTransfer)); 
+            trace.Add(m => 
+                m.Assign(r1, r2));
             var blockElse = new Block(proc, "else");
             var blockThen = new Block(proc, "then");
             ProcessorState s1 = null;
@@ -184,7 +186,7 @@ namespace Decompiler.UnitTests.Scanning
             }
             var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
-            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual(1, block.Statements.Count, "Expected a branch statement in the block");
             Assert.AreNotSame(s1, s2);
             Assert.IsNotNull(s1);
             Assert.IsNotNull(s2);
@@ -241,7 +243,6 @@ namespace Decompiler.UnitTests.Scanning
                 IsAlloca = true
             };
 
-            trace.Cluster().Call(new Address(0x2000), 4);
             using (repository.Record())
             {
                 scanner.Stub(x => x.Architecture).Return(arch);
@@ -251,6 +252,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<uint>.Is.Equal(0x2000u))).Return(alloca);
                     
             }
+            trace.Add(m => m.Call(new Address(0x2000), 4));
             var state = new FakeProcessorState(arch);
             state.SetRegister(Registers.eax, Constant.Word32(0x0400));
             var wi = CreateWorkItem(new Address(0x1000), state);
@@ -274,7 +276,7 @@ namespace Decompiler.UnitTests.Scanning
                 IsAlloca = true
             };
 
-            trace.Cluster().Call(new Address(0x2000), 4);
+            trace.Add(m => m.Call(new Address(0x2000), 4));
 
             using (repository.Record())
             {
@@ -317,8 +319,8 @@ namespace Decompiler.UnitTests.Scanning
             arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
             repository.ReplayAll();
 
-            trace.Cluster().Call(new Address(0x0001000), 4); 
-            trace.Cluster().SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0))); 
+            trace.Add(m => m.Call(new Address(0x0001000), 4)); 
+            trace.Add(m => m.SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0)))); 
 
             var wi = CreateWorkItem(new Address(0x2000), new FakeProcessorState(arch));
             wi.ProcessInternal();
@@ -368,7 +370,47 @@ l00100000_1:
 	r2 = r1
 	// succ:  l00100004
 l00100004:
-	// succ: 
+testProc_exit:
+";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void Bwi_CallProcedureWithSignature()
+        {
+            var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
+            var sig = new ProcedureSignature(
+                proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Word32)),
+                proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, PrimitiveType.Word32)),
+                proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, PrimitiveType.Word32)));
+            proc2.Signature = sig;
+            var block2 = new Block(proc, "l00100008");
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            scanner.Expect(s => s.FindContainingBlock(new Address(0x00001000))).IgnoreArguments().Return(block).Repeat.Times(2);
+            scanner.Expect(s => s.FindContainingBlock(new Address(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
+            scanner.Expect(s => s.GetImportedProcedure(0)).IgnoreArguments().Return(null);
+            scanner.Expect(s => s.ScanProcedure(
+                Arg<Address>.Is.Equal(new Address(0x2000)),
+                Arg<string>.Is.Null,
+                Arg<ProcessorState>.Is.NotNull)).Return(proc2);
+            scanner.Stub(s => s.CallGraph).Return(callGraph);
+            repository.ReplayAll();
+
+            trace.Add(m => m.Call(new Address(0x2000), 0));
+            trace.Add(m => m.Return(0, 0));
+            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
+            wi.ProcessInternal();
+
+            repository.VerifyAll();
+            var sw = new StringWriter();
+            proc.Write(false, sw);
+            var sExp = @"// testProc
+void testProc()
+testProc_entry:
+l00100000:
+	r1 = fn2000(r2, r3)
+	goto l00100008
+	// succ:  l00100008
 testProc_exit:
 ";
             Assert.AreEqual(sExp, sw.ToString());

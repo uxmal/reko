@@ -29,6 +29,11 @@ using System.IO;
 
 namespace Decompiler.Analysis
 {
+    /// <summary>
+    /// Builds the alias graph for a procedure. The idea is to discover relationships like
+    /// (on the x86 architecture) eax <=> ax, eax <=> ah, etc. Similarly, relationships 
+    /// like the one between the sequence edx:eax and dh are discovered.
+    /// </summary>
 	public class Aliases : InstructionVisitorBase
 	{
 		private Procedure proc;

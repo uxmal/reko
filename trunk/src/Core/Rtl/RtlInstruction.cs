@@ -58,10 +58,9 @@ namespace Decompiler.Core.Rtl
 
         protected abstract void WriteInner(TextWriter writer);
 
-        public string FormatClass()
+        public static string FormatClass(RtlClass rtlClass)
         {
             var sb = new StringBuilder();
-            var rtlClass = Class;
             switch (rtlClass & RtlClass.Transfer)
             {
             case RtlClass.Linear: sb.Append('L'); break;
@@ -83,14 +82,14 @@ namespace Decompiler.Core.Rtl
     {
         Linear = 0,         // non-transfer instruction, e.g. ALU operation.
         Transfer = 1,       // transfer instruction.
-        Conditional = 2,    // Instuction is gated on a condition.
-        Delay = 4,          // next instruction is in the delay slot and may be executed.
-        Annul = 8,          // next instruction is annulled (see SPARC architecture)
+        Conditional = 2,    // Instruction is gated on a condition.
+        Delay = 4,          // Next instruction is in the delay slot and may be executed.
+        Annul = 8,          // Next instruction is annulled (see SPARC architecture)
         ConditionalTransfer  = Conditional|Transfer,
     }
 
     /// <summary>
-    /// A RtlInstructionCluster contains the RtlInstrctions that are generated when 
+    /// A RtlInstructionCluster contains the RtlInstructions that are generated when 
     /// a machine instruction is rewritten.
     /// </summary>
     public class RtlInstructionCluster

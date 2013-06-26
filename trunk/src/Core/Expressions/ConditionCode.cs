@@ -41,5 +41,8 @@ namespace Decompiler.Core.Expressions
         EQ,		// ==	
         PE,     // Parity even
         PO,     // parity odd
+
+        ALWAYS, // Some architectures have this.
+        NEVER, 
     }
 }

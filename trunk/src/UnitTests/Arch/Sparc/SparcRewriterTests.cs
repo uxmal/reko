@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
                 var ee = e.Current.Instructions.GetEnumerator();
                 while (i < expected.Length && ee.MoveNext())
                 {
-                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, ee.Current.FormatClass(), ee.Current));
+                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));
                     ++i;
                 }
             }

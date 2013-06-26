@@ -42,18 +42,34 @@ namespace Decompiler.Core
         public string IntermediateFilename { get; set; }
         public string OutputFilename { get; set; }
         public string TypesFilename { get; set; }
+        /// <summary>
+        /// Locations that have been identified as Procedures by the user.
+        /// </summary>
         public SortedList<Address, SerializedProcedure> UserProcedures { get; private set; }
+
+        /// <summary>
+        /// Locations that have been identified as calls by the user, complete with 
+        /// their signatures.
+        /// </summary>
         public SortedList<Address, SerializedCall> UserCalls { get; private set; }
 
         public SerializedProject Save()
         {
-            var sp = new SerializedProject();
-            sp.Input.Address = BaseAddress.ToString();
-            sp.Input.Filename = InputFilename;
-            sp.Output.DisassemblyFilename = DisassemblyFilename;
-            sp.Output.IntermediateFilename = IntermediateFilename;
-            sp.Output.OutputFilename = OutputFilename;
-            sp.Output.TypesFilename = TypesFilename;
+            var sp = new SerializedProject()
+            {
+                Input = new DecompilerInput
+                {
+                    Address = BaseAddress.ToString(),
+                    Filename = InputFilename,
+                },
+                Output = new DecompilerOutput
+                {
+                    DisassemblyFilename = DisassemblyFilename,
+                    IntermediateFilename = IntermediateFilename,
+                    OutputFilename = OutputFilename,
+                    TypesFilename = TypesFilename,
+                }
+            };
             foreach (var de in UserProcedures)
             {
                 de.Value.Address = de.Key.ToString();

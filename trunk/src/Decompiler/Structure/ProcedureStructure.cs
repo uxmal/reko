@@ -50,7 +50,6 @@ namespace Decompiler.Structure
     /// </summary>
     public class ProcedureStructure
     {
-        private string name;
         private List<StructureNode> nodes;
         private StructureNode exitNode;
         private StructureNode entryNode;
@@ -59,12 +58,13 @@ namespace Decompiler.Structure
 
         public ProcedureStructure(string name, List<StructureNode> nodes)
         {
-            this.name = name;
+            this.Name = name;
             this.nodes = nodes;
             this.derivedGraphs = new List<DerivedGraph>();
             this.ordering = new List<StructureNode>();
         }
 
+        public string Name { get; set; }
 
         public StructureNode FindNodeByName(string nodeName)
         {
@@ -93,11 +93,6 @@ namespace Decompiler.Structure
             set { exitNode = value; }
         }
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
 
         public List<DerivedGraph> DerivedGraphs
         {
