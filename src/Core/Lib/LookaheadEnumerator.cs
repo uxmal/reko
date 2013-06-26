@@ -27,7 +27,7 @@ namespace Decompiler.Core.Lib
 {
     /// <summary>
     /// An extension of IEnumerator&lt;T&gt; that wraps an IEnumerator and 
-    /// which lets the caller look ahead in the underlying enumeration.
+    /// which lets the caller peek ahead in the underlying enumeration.
     /// </summary>
     public class LookaheadEnumerator<T> : IEnumerator<T>
     {

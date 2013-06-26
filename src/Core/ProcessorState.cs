@@ -71,6 +71,7 @@ namespace Decompiler.Core
         /// <param name="returnAddressSize">The size of the return address on stack.</param>
         /// <returns>A CallSite object that abstracts the processor state right before the call.</returns>
         public abstract CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize);
+
         /// <summary>
         /// Perform any adjustments to the processor's state after returning from a procedure call with the
         /// specified signature.

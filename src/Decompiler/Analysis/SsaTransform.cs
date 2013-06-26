@@ -307,7 +307,7 @@ namespace Decompiler.Analysis
 				this.rename = new int[varsOrig.Length];
 				this.wasonentry = new int[varsOrig.Length];
 				this.stmCur = null;
-				proc = p;
+				this.proc = p;
 
 				Block entryBlock = p.EntryBlock;
 				Debug.Assert(entryBlock.Statements.Count == 0);
@@ -317,8 +317,9 @@ namespace Decompiler.Analysis
 					rename[a] = a;
 
 					// Variables that are used before defining are "predefined" by adding a 
-                    // DefInstruction in the entry block for the procedure. Any such variables that are found to be 
-                    // live correspond to the input parameters of the procedure.
+                    // DefInstruction in the entry block for the procedure. Any such variables 
+                    // that are found to be live correspond to the input parameters of the 
+                    // procedure.
 
 					id.DefStatement = new Statement(0, new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);
 					entryBlock.Statements.Add(id.DefStatement);

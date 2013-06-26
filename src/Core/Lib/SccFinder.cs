@@ -27,8 +27,8 @@ namespace Decompiler.Core.Lib
 	/// Encapsulates Tarjan's algorithm for finding strongly connected components in a directed graph.
 	/// </summary>
 	/// <remarks>
-	/// The algorithm itself is generic, and uses the graph and processScc procedures to perform the actual work.
-	/// nodes.
+	/// The algorithm itself is generic, and uses the graph and processScc procedures to perform the 
+    /// actual work.
 	/// </remarks>
 	public class SccFinder<T>
 	{
@@ -39,7 +39,10 @@ namespace Decompiler.Core.Lib
 		private Stack<Node> stack = new Stack<Node>();
 		private Dictionary<T,Node> map = new Dictionary<T,Node>();
 
-        public SccFinder(DirectedGraph<T> graph, Action<IList<T>> processScc) : this(graph, x => { }, processScc) { }
+        public SccFinder(DirectedGraph<T> graph, Action<IList<T>> processScc) :
+            this(graph, x => { }, processScc) 
+        {
+        }
 
         public SccFinder(DirectedGraph<T> graph, Action<T> firstVisit, Action<IList<T>> processScc)
         {

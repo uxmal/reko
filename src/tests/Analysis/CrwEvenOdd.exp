@@ -8,8 +8,8 @@ void fn0C00_0000(Register selector ds)
 // fp:Temporary
 // sp:sp
 // ax:ax
-// al:al
 // ds:ds
+// al:al
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
@@ -43,7 +43,9 @@ byte fn0C00_0015(word16 ax)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
-	SCZO = cond(ax - 0x0000)
+	ax = ax | ax
+	C = false
+	SZO = cond(ax)
 	branch Test(EQ,Z) l0C00_001D
 	// succ:  l0C00_0019 l0C00_001D
 l0C00_0019:
@@ -61,7 +63,7 @@ l0C00_001D:
 Register byte fn0C00_0020(Register word16 ax)
 // MayUse:  ax
 // LiveOut: al
-// Trashed: SCZO ax sp al ah
+// Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_0020
 // Mem0:Global memory
@@ -77,7 +79,9 @@ byte fn0C00_0020(word16 ax)
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
-	SCZO = cond(ax - 0x0000)
+	ax = ax | ax
+	SZO = cond(ax)
+	C = false
 	branch Test(EQ,Z) l0C00_0028
 	// succ:  l0C00_0024 l0C00_0028
 l0C00_0024:

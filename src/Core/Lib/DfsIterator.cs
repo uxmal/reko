@@ -111,7 +111,6 @@ namespace Decompiler.Core.Lib
                 {
                     yield return cur.Item;
                 }
-
             }
         }
     }

@@ -95,7 +95,10 @@ namespace Decompiler.Scanning
         private const int PriorityJumpTarget = 6;
         private const int PriorityVector = 7;
 
-        public  Scanner(Program program, IDictionary<Address, ProcedureSignature> callSigs, DecompilerEventListener eventListener)
+        public Scanner(
+            Program program, 
+            IDictionary<Address, ProcedureSignature> callSigs,
+            DecompilerEventListener eventListener)
         {
             this.program = program;
             this.image = program.Image;
@@ -196,7 +199,10 @@ namespace Decompiler.Scanning
         /// <param name="proc"></param>
         /// <param name="stateOnEntry"></param>
         /// <returns></returns>
-        public virtual BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState stateOnEntry)
+        public virtual BlockWorkitem CreateBlockWorkItem(
+            Address addrStart,
+            Procedure proc, 
+            ProcessorState stateOnEntry)
         {
             return new BlockWorkitem(
                 this,
@@ -215,7 +221,6 @@ namespace Decompiler.Scanning
             queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, ep));
         }
 
-        // Method is virtual because we want to peek into the parameters being passed to it.
         public Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
             Block block = FindExactBlock(addrStart);
@@ -312,14 +317,21 @@ namespace Decompiler.Scanning
             queue.Enqueue(PriorityVector, wi);
         }
 
+        /// <summary>
+        /// Performs a scan of the blocks that constitute a procedure named <paramref name="procedureName"/>
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="procedureName"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
+            TerminateAnyBlockAt(addr);
             var pb = GetImportedProcedure(addr.Linear);
             if (pb != null)
                 return pb;
 
             Procedure proc = EnsureProcedure(addr, procedureName);
-            TerminateAnyBlockAt(addr);
             if (visitedProcs.Contains(proc))
                 return proc;
             visitedProcs.Add(proc);
@@ -368,6 +380,8 @@ namespace Decompiler.Scanning
             }
         }
 
+        public const string CallRetThunkSuffix = "_tmp";
+
         public Block FindContainingBlock(Address address)
         {
             BlockRange b;
@@ -378,7 +392,7 @@ namespace Decompiler.Scanning
                 string succName = b.Block.Succ[0].Name;
                 if (succName != b.Block.Name &&
                     succName.StartsWith(b.Block.Name) &&
-                    !succName.EndsWith("_tmp"))
+                    !succName.EndsWith(CallRetThunkSuffix))
                     return b.Block.Succ[0];
                 return b.Block;
             }
@@ -458,9 +472,14 @@ namespace Decompiler.Scanning
             return p;
         }
 
-        private static string GenerateBlockName(Address addrStart)
+        /// <summary>
+        /// Generates the name for a block stating at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>The name as a string.</returns>
+        private static string GenerateBlockName(Address addr)
         {
-            return addrStart.GenerateName("l", "");
+            return addr.GenerateName("l", "");
         }
 
         public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)

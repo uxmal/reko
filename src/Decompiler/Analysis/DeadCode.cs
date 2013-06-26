@@ -28,8 +28,9 @@ using System.Diagnostics;
 namespace Decompiler.Analysis
 {
 	/// <summary>
-	/// Performs dead code elimination. An identifier that has no uses are removed, along
-	/// with the statement that defined it.
+	/// Performs dead code elimination. Statements that define an identifier that has no uses are removed,
+	/// unless they are marked as critical. Critical statemets are always retained, even if they define dead 
+    /// identifiers.
 	/// </summary>
 	public class DeadCode : InstructionVisitorBase
 	{
@@ -83,7 +84,7 @@ namespace Decompiler.Analysis
 		private void Eliminate()
 		{
 			liveIds = new WorkList<SsaIdentifier>();
-			Dictionary<Statement,Statement> marks = new Dictionary<Statement, Statement>();
+			HashSet<Statement> marks = new HashSet<Statement>();
 
 			// Initially, just mark those statements that contain critical statements.
 			// These are calls to other functions, functions (which have side effects) and use statements.
@@ -94,7 +95,7 @@ namespace Decompiler.Analysis
                 if (critical.IsCritical(stm.Instruction))
                 {
                     if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Critical: {0}", stm.Instruction));
-                    marks[stm] = stm;
+                    marks.Add(stm);
                     stm.Instruction.Accept(this);		// mark all used identifiers as live.
                 }
             }
@@ -107,10 +108,10 @@ namespace Decompiler.Analysis
 				Statement def = sid.DefStatement;
 				if (def != null)
 				{
-					if (!marks.ContainsKey(def))
+					if (!marks.Contains(def))
 					{
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("Marked: {0}", def.Instruction));
-						marks[sid.DefStatement] = def;
+                        marks.Add(def);
 						sid.DefStatement.Instruction.Accept(this);
 					}
 				}
@@ -124,7 +125,7 @@ namespace Decompiler.Analysis
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{
 					Statement stm = b.Statements[iStm];
-					if (!marks.ContainsKey(stm))
+					if (!marks.Contains(stm))
 					{
 						if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Deleting: {0}", stm.Instruction));
 						ssa.DeleteStatement(stm);

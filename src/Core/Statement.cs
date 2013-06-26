@@ -23,6 +23,9 @@ using Decompiler.Core.Code;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// Statements constitute the contents basic blocks.
+    /// </summary>
 	public class Statement
 	{
         public Statement(uint linearAddress, Instruction instr, Block block)

@@ -246,10 +246,11 @@ namespace Decompiler.Scanning
                 Debug.Print("EnsureEdge: from {0} to {1} (in proc {2})", blockFrom.Name, blockTo.Name, proc.Name);
                 Debug.Print("    Thunking from {0} to {1}", blockFrom, blockTo);
                 Debug.Print("    Procs {0}, {1}", blockFrom.Procedure, blockTo.Procedure);
-                var callRetThunkBlock = proc.AddBlock(blockFrom + "_tmp");
+                var callRetThunkBlock = proc.AddBlock(blockFrom + Scanner.CallRetThunkSuffix);
                 callRetThunkBlock.Statements.Add(0, new CallInstruction(
                     new ProcedureConstant(arch.PointerType, blockTo.Procedure),
                     new CallSite(blockTo.Procedure.Signature.ReturnAddressOnStack, 0)));
+                scanner.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, blockTo.Procedure);
                 callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
                 proc.ControlGraph.AddEdge(blockFrom, callRetThunkBlock);
                 proc.ControlGraph.AddEdge(callRetThunkBlock, proc.ExitBlock);
@@ -280,7 +281,7 @@ namespace Decompiler.Scanning
                     return false;
                 }
             }
-            ProcessVector(ric.Address, g);
+            ProcessIndirectControlTransfer(ric.Address, g);
             return false;
         }
 
@@ -301,7 +302,15 @@ namespace Decompiler.Scanning
                     return ProcessAlloca(site, impProc);
 
                 var callee = scanner.ScanProcedure(addr, null, state);
-                Emit(new CallInstruction(CreateProcedureConstant(callee), site));
+                var pcCallee = CreateProcedureConstant(callee);
+                if (callee.Signature != null && callee.Signature.ArgumentsValid)
+                {
+                    Emit(BuildApplication(pcCallee, callee.Signature, site));
+                }
+                else 
+                {
+                    Emit(new CallInstruction(pcCallee, site));
+                }
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
@@ -330,8 +339,6 @@ namespace Decompiler.Scanning
                 return true;
             }
 
-            if (ric.Address.Linear == 0x01001E95)
-                ric.ToString();         //$DEBUG
             var id = call.Target as Identifier;
             if (id != null)
             {
@@ -352,7 +359,7 @@ namespace Decompiler.Scanning
                 return !imp.Characteristics.Terminates;
             }
 
-            ProcessVector(ric.Address, call);
+            ProcessIndirectControlTransfer(ric.Address, call);
 
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
@@ -464,7 +471,7 @@ namespace Decompiler.Scanning
 
         #endregion
 
-        private void ProcessVector(Address addrSwitch, RtlTransfer xfer)
+        private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
             var bw = new Backwalker(new BackwalkerHost(scanner), xfer, eval);
             if (!bw.CanBackwalk())

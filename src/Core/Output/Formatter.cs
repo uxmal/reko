@@ -30,18 +30,14 @@ namespace Decompiler.Core.Output
 	public class Formatter
 	{
 		protected TextWriter writer;
-		private int indentation;
-		private int tabSize;
-		private bool useTabs;
-		private string terminator;
 
 		public Formatter(TextWriter writer)
 		{
 			this.writer = writer;
-			this.useTabs = true;
-			this.tabSize = 4;
-			this.indentation = 4;
-			this.terminator = Environment.NewLine;
+			this.UseTabs = true;
+			this.TabSize = 4;
+			this.Indentation = 4;
+			this.Terminator = Environment.NewLine;
 		}
 
 		public void Indent()
@@ -62,40 +58,20 @@ namespace Decompiler.Core.Output
 			WriteSpaces(n);
 		}
 
+		public int Indentation { get; set; }
+		public int TabSize  {get; set; }
+        public string Terminator { get; set; }
+        public bool UseTabs { get; set; }
 
-		public int Indentation
+        public void Terminate()
 		{
-			get { return indentation; }
-			set { indentation = value; }
-		}
-
-		public int TabSize
-		{
-			get { return tabSize; }
-			set { tabSize = value; }
-		}
-
-		public void Terminate()
-		{
-			writer.Write(terminator);
+			writer.Write(Terminator);
 		}
 
 		public void Terminate(string s)
 		{
 			Write(s);
-			writer.Write(terminator);
-		}
-
-		public string Terminator
-		{
-			get { return terminator; }
-			set { terminator = value; }
-		}
-
-		public bool UseTabs
-		{
-			get { return useTabs; }
-			set { useTabs = value; }
+			writer.Write(Terminator);
 		}
 
         public virtual void Write(string s)

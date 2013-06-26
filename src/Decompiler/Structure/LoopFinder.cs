@@ -80,7 +80,6 @@ namespace Decompiler.Structure
                 return succ;
             }
 
-
             public ICollection<StructureNode> Nodes
             {
                 get { throw new NotImplementedException(); }

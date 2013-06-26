@@ -26,6 +26,11 @@ using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
+    /// <summary>
+    /// Inserts declaration statements for local variables so they appear as close to all the
+    /// uses and definitions. If a single definition dominates all others, then it is enough to
+    /// use one definition.
+    /// </summary>
 	public class DeclarationInserter
 	{
 		private SsaIdentifierCollection ssaIds;

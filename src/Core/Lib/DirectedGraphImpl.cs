@@ -156,7 +156,8 @@ namespace Decompiler.Core.Lib
 		{
             int iNode;
             if (!mpobjectNode.TryGetValue(o, out iNode))
-				return new EdgeCollection(this, -1, fSuccessors);
+                throw new ArgumentException(string.Format("Unknown node {0}.", o));
+                //return new EdgeCollection(this, -1, fSuccessors);
 			return new EdgeCollection(this, iNode, fSuccessors);
 		}
 
@@ -263,6 +264,8 @@ namespace Decompiler.Core.Lib
 
 			public EdgeCollection(DirectedGraphImpl<T> graph, int iNode, bool fSuccessor)
 			{
+                if (iNode < 0)
+                    throw new ArgumentException("Invalid node.");
 				this.graph = graph;
 				this.iNode = iNode;
 				this.fSuccessor = fSuccessor;

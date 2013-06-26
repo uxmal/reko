@@ -101,7 +101,7 @@ namespace Decompiler.Scanning
 
         public Block FixInboundEdges(Block blockToPromote, Procedure procOld, Procedure procNew)
         {
-            var callRetThunkBlock = procOld.AddBlock(blockToPromote + "_tmp");
+            var callRetThunkBlock = procOld.AddBlock(blockToPromote + Scanner.CallRetThunkSuffix);
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
                 new ProcedureConstant(program.Architecture.PointerType, procNew),
                 new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));

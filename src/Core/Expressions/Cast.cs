@@ -23,6 +23,9 @@ using System;
 
 namespace Decompiler.Core.Expressions
 {
+    /// <summary>
+    /// Models a C-style cast. The specified expression is cast to the data type <code>dt</code>.
+    /// </summary>
 	public class Cast : Expression
 	{
 		public Cast(DataType dt, Expression expr) : base(dt)

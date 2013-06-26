@@ -32,7 +32,7 @@ namespace Decompiler.Core.Lib
     /// </summary>
     public class DominatorGraph<T> where T : class
     {
-        private Dictionary<T, T> idoms;
+        private Dictionary<T, T> idoms;             // immediate dominators for each vertex.
         private Dictionary<T, List<T>> domFrontier;
         private Dictionary<T, int> reversePostOrder;
 
@@ -72,9 +72,9 @@ namespace Decompiler.Core.Lib
         /// </summary>
         /// <param name="blocks"></param>
         /// <returns></returns>
-        public T CommonDominator(ICollection<T> blocks)
+        public T CommonDominator(IEnumerable<T> blocks)
         {
-            if (blocks == null || blocks.Count == 0)
+            if (blocks == null)
                 return null;
 
             T dominator = null;

@@ -25,7 +25,7 @@ using System.IO;
 namespace Decompiler.Core.Code
 {
 	/// <summary>
-	/// Represents a typical "if"-statement.
+	/// Models a typical "if"-statement.
 	/// </summary>
 	public class Branch : Instruction
 	{

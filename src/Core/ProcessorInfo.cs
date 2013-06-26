@@ -39,9 +39,7 @@ namespace Decompiler.Core
 
 		[XmlElement("heuristics")]
 		public Heuristics heuristics;
-
 	}
-
 
 	public class Heuristics
 	{

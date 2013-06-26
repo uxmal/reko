@@ -1,5 +1,6 @@
 .i86
 
+;;; termination.asm
 ;;; Used to test termination scenarios. For instance, a terminating function has no live-out registers!
 
 main proc 
