@@ -18,74 +18,38 @@
  */
 #endregion
 
+using Decompiler.Core;
+using Decompiler.Scanning;
+using Decompiler.UnitTests.Mocks;
+using NUnit.Framework;  
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Decompiler.UnitTests.Scanning
 {
-    public enum Opcode
+    [TestFixture]
+    public class CrossProcedureAnalyzerTests
     {
-        illegal,
+        [Test]
+        public void Crpa_Analyze_SimpleProc()
+        {
+            var prog = Given_Simple_Proc();
 
-        adc,
-        and,
-        asl,
-        bcc,
-        bcs,
-        beq,
-        bit,
-        bmi,
-        bne,
-        bpl,
-        brk,
-        bvc,
-        bvs,
-        clc,
-        cld,
-        cli,
-        clv,
-        cmp,
-        cpx,
-        cpy,
-        dec,
-        dex,
-        dey,
-        eor,
-        inc,
-        inx,
-        iny,
-        jmp,
-        kil,
-        lda,
-        ldx,
-        ldy,
-        lsr,
-        nop,
-        ora,
-        php,
-        jsr,
-        rol,
-        pha,
-        pla,
-        plp,
-        ror,
-        rti,
-        rts,
-        sbc,
-        sec,
-        sed,
-        sei,
-        slo,
-        sta,
-        stx,
-        sty,
-        tax,
-        tay,
-        txa,
-        tsx,
-        txs,
-        tya,
+            var crpa = new CrossProcedureAnalyzer();
+            crpa.Analyze(prog.Procedures.Values.First());
+        }
+
+        private Program Given_Simple_Proc()
+        {
+            var b = new ProgramBuilder();
+            b.Add("bob", m =>
+            {
+                m.Label("Zlon");
+                m.Return();
+            });
+            return b.BuildProgram();
+        }
     }
 }

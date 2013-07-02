@@ -45,12 +45,14 @@ namespace Decompiler.Arch.M68k
         private Rewriter rewriter;
         private RtlEmitter m;
         private Frame frame;
+        private PrimitiveType dataWidth;
 
-        public OperandRewriter(Rewriter rewriter)
+        public OperandRewriter(Rewriter rewriter, PrimitiveType dataWidth)
         {
             this.rewriter = rewriter;
             this.m = rewriter.emitter;
             this.frame = rewriter.frame;
+            this.dataWidth = dataWidth;
         }
 
         /// <summary>
@@ -83,15 +85,41 @@ namespace Decompiler.Arch.M68k
             }
             var post = operand as PostIncrementMemoryOperand;
             if (post != null)
-                return m.Load(rewriter.di.Instruction.dataWidth, frame.EnsureRegister(post.Register));
+            {
+                var r = frame.EnsureRegister(post.Register);
+                var tmp = rewriter.frame.CreateTemporary(dataWidth);
+                m.Assign(tmp, m.Load(dataWidth, r));
+                m.Assign(r, m.IAdd(r, dataWidth.Size));
+                return tmp;
+            }
             throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.ToString());
         }
 
-        public Expression RewriteDst(MachineOperand operand)
+        public Expression RewriteDst(MachineOperand operand, Expression src)
         {
+            var reg = operand as RegisterOperand;
+            if (reg != null)
+            {
+                var r = frame.EnsureRegister(reg.Register);
+                if (reg.Width.BitSize > dataWidth.BitSize)
+                {
+                    src = m.Dpb(r, src, 0, dataWidth.BitSize);
+                }
+                m.Assign(r, src);
+                return r;
+            }
+            var post = operand as PostIncrementMemoryOperand;
+            if (post != null)
+            {
+                var r = frame.EnsureRegister(post.Register);
+                m.Assign(m.Load(dataWidth, r), src);
+                m.Assign(r, m.IAdd(r, dataWidth.Size));
+                return r;
+            }
             throw new NotImplementedException("Unimplemented RewriteDst for operand type " + operand.ToString());
 
         }
+
         public Identifier FlagGroup(FlagM flags)
         {
             return rewriter.frame.EnsureFlagGroup((uint)flags, rewriter.arch.GrfToString((uint)flags), PrimitiveType.Byte);

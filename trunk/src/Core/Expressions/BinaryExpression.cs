@@ -38,7 +38,6 @@ namespace Decompiler.Core.Expressions
         public Expression Left { get; set; }
         public Expression Right { get; set; }
 
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitBinaryExpression(this);
@@ -114,6 +113,5 @@ namespace Decompiler.Core.Expressions
                 return new BinaryExpression(Operators.Operator.Eq, this.DataType, Left, Right);
 			throw new NotImplementedException();
 		}
-
 	}
 }

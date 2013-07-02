@@ -1,24 +1,23 @@
 // void fn0C00_0000(Register selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds
 // LiveOut:
 // Trashed: SCZO ax cx dx bx di al cl dl bl ah ch dh bh es gs
-// Preserved: ds
+// Preserved: spds
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	word16 dx_18 = Mem0[ds:Mem0[ds:0x9CFD:word16] * 0x0002 + 0x99F8:word16]
-	Mem19[ds:0x9CFF:word16] = dx_18
-	word16 ax_28
-	msdos_read_file(Mem19[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_18), &ax_28)
-	msdos_close_file(Mem19[ds:0x99D0:word16])
-	Mem38[ds:0xC36A:word16] = Mem19[ds:Mem19[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
-	Mem44[ds:0x0100:word16] = ds
-	Mem46[ds:0x0102:word16] = 0x6041
+l0C00_0000:
+	word16 dx_21 = Mem0[ds:Mem0[ds:0x9CFD:word16] * 0x0002 + 0x99F8:word16]
+	Mem22[ds:0x9CFF:word16] = dx_21
+	word16 ax_34
+	msdos_read_file(Mem22[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_21), &ax_34)
+	msdos_close_file(Mem22[ds:0x99D0:word16])
+	Mem45[ds:0xC36A:word16] = Mem22[ds:Mem22[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
+	Mem53[ds:0x0100:word16] = ds
+	Mem55[ds:0x0102:word16] = 0x6041
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 

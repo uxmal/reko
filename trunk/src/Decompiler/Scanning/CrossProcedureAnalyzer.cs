@@ -18,74 +18,31 @@
  */
 #endregion
 
+using Decompiler.Core;
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Mos6502
+namespace Decompiler.Scanning
 {
-    public enum Opcode
+    /// <summary>
+    /// Classifies blocks in a program as being either:
+    /// * nothing special
+    /// * blocks that need to be moved to another, possibly new, procedure.
+    /// * blocks that need to be cloned into other procedures.
+    /// </summary>
+    public class CrossProcedureAnalyzer
     {
-        illegal,
-
-        adc,
-        and,
-        asl,
-        bcc,
-        bcs,
-        beq,
-        bit,
-        bmi,
-        bne,
-        bpl,
-        brk,
-        bvc,
-        bvs,
-        clc,
-        cld,
-        cli,
-        clv,
-        cmp,
-        cpx,
-        cpy,
-        dec,
-        dex,
-        dey,
-        eor,
-        inc,
-        inx,
-        iny,
-        jmp,
-        kil,
-        lda,
-        ldx,
-        ldy,
-        lsr,
-        nop,
-        ora,
-        php,
-        jsr,
-        rol,
-        pha,
-        pla,
-        plp,
-        ror,
-        rti,
-        rts,
-        sbc,
-        sec,
-        sed,
-        sei,
-        slo,
-        sta,
-        stx,
-        sty,
-        tax,
-        tay,
-        txa,
-        tsx,
-        txs,
-        tya,
+        public void Analyze(Procedure proc)
+        {
+            HashSet<Block> blocksInSameProc = new HashSet<Block>();
+            foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
+            {
+                if (block.Procedure == proc)
+                    blocksInSameProc.Add(block);
+            }
+        }
     }
 }

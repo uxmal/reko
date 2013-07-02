@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 				Dumper dump = new Dumper(prog.Architecture);
 				dump.Dump(prog, prog.Image.Map, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-				prog.CallGraph.Emit(fut.TextWriter);
+				prog.CallGraph.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}

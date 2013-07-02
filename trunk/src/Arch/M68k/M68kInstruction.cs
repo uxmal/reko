@@ -35,7 +35,6 @@ namespace Decompiler.Arch.M68k
         public MachineOperand op2;
         public MachineOperand op3;
 
-
         public override uint DefCc()
         {
             throw new NotImplementedException();

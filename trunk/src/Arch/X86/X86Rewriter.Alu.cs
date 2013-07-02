@@ -72,14 +72,6 @@ namespace Decompiler.Arch.X86
         /// <returns></returns>
         public void RewriteAddSub(BinaryOperator op)
         {
-            //LongAddRewriter larw = new LongAddRewriter(this.frame, orw, state);
-            //int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
-            //if (iUse >= 0 && larw.Match(di.Instruction, instrs[iUse]))
-            //{
-            //    instrs[iUse].code = Opcode.nop;
-            //    larw.EmitInstruction(op, emitter);
-            //    return larw.Dst;
-            //}
             EmitBinOp(
                 op,
                 di.Instruction.op1,

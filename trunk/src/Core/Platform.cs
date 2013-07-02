@@ -23,7 +23,8 @@ using System;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// A Platform is an abstraction of the operating environment, say MS-DOS, Win32, or Posix.
+	/// A Platform is an abstraction of the operating environment,
+    /// say MS-DOS, Win32, or Posix.
 	/// </summary>
 	public abstract class Platform
 	{
@@ -34,6 +35,10 @@ namespace Decompiler.Core
         public abstract ProcedureSignature LookupProcedure(string procName);
     }
 
+
+    /// <summary>
+    /// The default platform is used when a specific platform cannot be determind.
+    /// </summary>
     public class DefaultPlatform : Platform
     {
         public DefaultPlatform()

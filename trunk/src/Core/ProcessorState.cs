@@ -212,6 +212,5 @@ namespace Decompiler.Core
             if (GetStackOffset(ea, out stackOffset))
                 stackState[stackOffset] = value;
         }
-
     }
 }

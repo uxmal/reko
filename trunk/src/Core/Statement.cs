@@ -35,7 +35,7 @@ namespace Decompiler.Core
             this.Block = block;
         }
 
-        public Block Block { get; private set; }
+        public Block Block { get; set; }
         public Instruction Instruction { get; set; }
         public uint LinearAddress { get; private set; }
 

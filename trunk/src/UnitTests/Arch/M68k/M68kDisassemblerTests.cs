@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Arch.M68k
     [TestFixture]
     public class M68kDisassemblerTests
     {
-        private M68kDisassembler2 dasm;
+        private M68kDisassembler dasm;
         private M68kInstruction instr;
 
         private void DasmSingleInstruction(params byte[] bytes)
@@ -40,14 +40,14 @@ namespace Decompiler.UnitTests.Arch.M68k
             instr = dasm.Disassemble();
         }
 
-        private M68kDisassembler2 CreateDasm(byte[] bytes, uint address)
+        private M68kDisassembler CreateDasm(byte[] bytes, uint address)
         {
             Address addr = new Address(address);
             ProgramImage img = new ProgramImage(addr, bytes);
-            return new M68kDisassembler2(img.CreateReader(addr));
+            return new M68kDisassembler(img.CreateReader(addr));
         }
 
-        private M68kDisassembler2 CreateDasm(params ushort[] words)
+        private M68kDisassembler CreateDasm(params ushort[] words)
         {
             byte[] bytes = words.SelectMany(w => new byte[] { (byte)(w >> 8), (byte)w }).ToArray();
             return CreateDasm(bytes, 0x10000000);
@@ -230,5 +230,10 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("or.l\t#$11234455,d3", 0x86Bc, 0x1123, 0x4455);
         }
 
+        [Test]
+        public void M68kdis_Pre_and_post_dec()
+        {
+            RunTest("move.w\t-(a3),(a3)+", 0x36E3);
+        }
     }
 }

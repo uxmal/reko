@@ -25,18 +25,24 @@ using System.Collections.Generic;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// Abstract base class for image loaders. These examine a raw image, and generate a new, relocated image.
+	/// Abstract base class for image loaders. These examine a raw image, and generate a new,
+    /// relocated image.
 	/// </summary>
 	public abstract class ImageLoader
 	{
-		private byte [] imgRaw;
-
         public ImageLoader(IServiceProvider services, byte[] imgRaw)
         {
             this.Services = services;
-            this.imgRaw = imgRaw;
+            this.RawImage = imgRaw;
         }
 
+        /// <summary>
+        /// The processor architecture encoded by the image format.
+        /// </summary>
+        /// <remarks>
+        /// Some image formats are hard-wired to a particular processor architecture,
+        /// while other, like ELF or PE, have support for varying architectures.
+        /// </remarks>
         public abstract IProcessorArchitecture Architecture { get; }
         public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get { return null; } }
         public abstract Platform Platform { get; }
@@ -49,7 +55,7 @@ namespace Decompiler.Core
         /// <summary>
         /// The image as it appears on the storage medium before being loaded.
         /// </summary>
-        public byte[] RawImage { get { return imgRaw; } }
+        public byte[] RawImage { get; private set; }
 
         public IServiceProvider Services { get; private set; }
 

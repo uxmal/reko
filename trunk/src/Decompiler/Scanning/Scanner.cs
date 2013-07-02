@@ -34,12 +34,14 @@ namespace Decompiler.Scanning
 {
     public interface IScanner
     {
+        void ProcessQueue();
+        void ResolveCrossProcedureJumps();
+
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
-        void ProcessQueue();
 
         CallGraph CallGraph { get; }
         ProgramImage Image { get; }
@@ -67,7 +69,7 @@ namespace Decompiler.Scanning
     }
 
     /// <summary>
-    /// Scans the binary, locating procedures and basic blocks by following calls, jumps,
+    /// Scans the binary, locating and creating procedures and basic blocks by following calls, jumps,
     /// and branches. Simple data type analysis is done as well: for instance, pointers to
     /// code are located, as are global data pointers.
     /// </summary>
@@ -126,6 +128,13 @@ namespace Decompiler.Scanning
 
         private class BlockRange
         {
+            /// <summary>
+            /// Creates a block range. A (linear) address addr is considered part of the block if it
+            /// satisifies the conditions Start <= addr < End.
+            /// </summary>
+            /// <param name="block"></param>
+            /// <param name="start">Linear start address of the block</param>
+            /// <param name="end">Linear address of the byte/word beyond the block's end.</param>
             public BlockRange(Block block, uint start, uint end)
             {
                 if (block == null)
@@ -439,15 +448,18 @@ namespace Decompiler.Scanning
             }
 
             var linAddr = addr.Linear;
-            foreach (var stm in blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr))
-            {
-                blockNew.Statements.Add(stm.LinearAddress, stm.Instruction);
-            }
+            var stmsToMove = blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr).ToArray();
             if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements.Last.LinearAddress >= linAddr)
             {
                 graph.AddEdge(blockToSplit, blockNew);
                 blockToSplit.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
             }
+            blockNew.Statements.AddRange(stmsToMove);
+            foreach (var stm in stmsToMove)
+            {
+                stm.Block = blockNew;
+            }
+
             blocks[blockStarts[blockToSplit]].End = linAddr;
             return blockNew;
         }
@@ -496,6 +508,10 @@ namespace Decompiler.Scanning
                 return ppp;
             else
                 return null;
+        }
+
+        public void ResolveCrossProcedureJumps()
+        {
         }
     }
 }

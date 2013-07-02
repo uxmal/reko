@@ -39,21 +39,22 @@ namespace Decompiler.Core
     /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move these into processor-specific subclasses
     /// </para>
 	/// </remarks>
-	public class ProcedureSignature
-	{
-		public ProcedureSignature()
-		{
+    public class ProcedureSignature
+    {
+        public ProcedureSignature()
+        {
             this.FpuStackArgumentMax = -1;
-		}
+        }
 
-		public ProcedureSignature(Identifier returnId, params Identifier [] formalArguments) : this()
-		{
-			this.ReturnValue = returnId;
-			this.FormalArguments = formalArguments;
-		}
+        public ProcedureSignature(Identifier returnId, params Identifier[] formalArguments)
+            : this()
+        {
+            this.ReturnValue = returnId;
+            this.FormalArguments = formalArguments;
+        }
 
         public TypeVariable TypeVariable { get; set; }
-		public Identifier [] FormalArguments { get; private set; }
+        public Identifier[] FormalArguments { get; private set; }
         public Identifier ReturnValue { get; private set; }
         public int ReturnAddressOnStack { get; set; }           // The size of the return address if pushed on stack.
 
@@ -65,16 +66,18 @@ namespace Decompiler.Core
         /// This is x86-specific.
         /// </remarks>
         public int FpuStackDelta { get; set; }
+
         /// <summary>
         /// Number of bytes to add to the stack pointer after returning from the procedure.
         /// Note that this does include the return address size, if the return address is 
         /// passed on the stack. 
         /// </summary>
         public int StackDelta { get; set; }
+
         /// <summary>
         /// The index of the 'deepest' FPU stack argument used. -1 means no stack parameters are used.
         /// </summary>
-        public int FpuStackArgumentMax { get;set; }
+        public int FpuStackArgumentMax { get; set; }
 
         /// <summary>
         /// True if the medium-level arguments have been discovered. Otherwise, the signature just contains the net effect
@@ -88,7 +91,7 @@ namespace Decompiler.Core
         /// <summary>
         /// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are used.
         /// </summary>
-        public int FpuStackOutArgumentMax { get;set ; }
+        public int FpuStackOutArgumentMax { get; set; }
 
         #region Output methods
         public void Emit(string fnName, EmitFlags f, TextWriter writer)
@@ -96,10 +99,10 @@ namespace Decompiler.Core
             Emit(fnName, f, new Formatter(writer));
         }
 
-		public void Emit(string fnName, EmitFlags f, Formatter fmt)
-		{
+        public void Emit(string fnName, EmitFlags f, Formatter fmt)
+        {
             Emit(fnName, f, fmt, new CodeFormatter(fmt), new TypeFormatter(fmt, true));
-		}
+        }
 
         public void Emit(string fnName, EmitFlags f, Formatter fmt, CodeFormatter w, TypeFormatter t)
         {
@@ -138,7 +141,7 @@ namespace Decompiler.Core
                 }
             }
             fmt.Write(")");
-            
+
             if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
             {
                 fmt.WriteLine();
@@ -147,35 +150,33 @@ namespace Decompiler.Core
             }
         }
 
-
-		public override string ToString()
-		{
-			StringWriter w = new StringWriter();
+        public override string ToString()
+        {
+            StringWriter w = new StringWriter();
             Formatter f = new Formatter(w);
             CodeFormatter cf = new CodeFormatter(f);
             TypeFormatter tf = new TypeFormatter(f, false);
-			Emit("()", EmitFlags.ArgumentKind|EmitFlags.LowLevelInfo, f, cf, tf);
-			return w.ToString();
-		}
+            Emit("()", EmitFlags.ArgumentKind | EmitFlags.LowLevelInfo, f, cf, tf);
+            return w.ToString();
+        }
 
-		public string ToString(string name)
-		{
-			StringWriter sw = new StringWriter();
+        public string ToString(string name)
+        {
+            StringWriter sw = new StringWriter();
             Formatter f = new Formatter(sw);
             CodeFormatter cf = new CodeFormatter(f);
             TypeFormatter tf = new TypeFormatter(f, false);
             Emit(name, EmitFlags.ArgumentKind, f, cf, tf);
-			return sw.ToString();
-		}
+            return sw.ToString();
+        }
 
-
-		[Flags]
-		public enum EmitFlags
-		{
-			None = 0,
-			ArgumentKind = 1,
-			LowLevelInfo = 2,
+        [Flags]
+        public enum EmitFlags
+        {
+            None = 0,
+            ArgumentKind = 1,
+            LowLevelInfo = 2,
         }
         #endregion
-        }
+    }
 }

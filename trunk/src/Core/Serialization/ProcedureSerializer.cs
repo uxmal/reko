@@ -71,7 +71,7 @@ namespace Decompiler.Core.Serialization
 
 		public ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
 		{
-			var argser = new ArgumentSerializer(this, arch, frame);
+			var argser = new ArgumentSerializer(this, arch, frame, ss.Convention);
 			Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
@@ -104,7 +104,7 @@ namespace Decompiler.Core.Serialization
             SerializedSignature ssig = new SerializedSignature();
             if (!sig.ArgumentsValid)
                 return ssig;
-            ArgumentSerializer argSer = new ArgumentSerializer(this, arch, null);
+            ArgumentSerializer argSer = new ArgumentSerializer(this, arch, null, null);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
             ssig.Arguments = new SerializedArgument[sig.FormalArguments.Length];
             for (int i = 0; i < sig.FormalArguments.Length; ++i)
