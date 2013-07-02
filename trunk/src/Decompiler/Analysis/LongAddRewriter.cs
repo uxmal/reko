@@ -72,7 +72,7 @@ namespace Decompiler.Analysis
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
                         ExpressionMatcher.AnyOperator("op"), 
-                        PrimitiveType.Void,
+                        VoidType.Instance,
                         ExpressionMatcher.AnyExpression("left"),
                         ExpressionMatcher.AnyExpression("right"))));
 
@@ -81,10 +81,10 @@ namespace Decompiler.Analysis
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
                         ExpressionMatcher.AnyOperator("op1"),
-                        PrimitiveType.Void,
+                        VoidType.Instance,
                         new BinaryExpression(
                             ExpressionMatcher.AnyOperator("op2"),
-                            PrimitiveType.Void,
+                            VoidType.Instance,
                             ExpressionMatcher.AnyExpression("left"),
                             ExpressionMatcher.AnyExpression("right")),
                         ExpressionMatcher.AnyExpression("cf"))));
@@ -93,7 +93,7 @@ namespace Decompiler.Analysis
                 new MemoryAccess(
                     new BinaryExpression(
                         ExpressionMatcher.AnyOperator("op"),
-                        PrimitiveType.Void,
+                        VoidType.Instance,
                         ExpressionMatcher.AnyExpression("base"),
                         ExpressionMatcher.AnyConstant("offset")),
                     ExpressionMatcher.AnyDataType("dt")));
@@ -104,7 +104,7 @@ namespace Decompiler.Analysis
                     ExpressionMatcher.AnyId(),
                     new BinaryExpression(
                         ExpressionMatcher.AnyOperator("op"),
-                        PrimitiveType.Void,
+                        VoidType.Instance,
                         ExpressionMatcher.AnyExpression("base"),
                         ExpressionMatcher.AnyConstant("offset")),
                     ExpressionMatcher.AnyDataType("dt")));

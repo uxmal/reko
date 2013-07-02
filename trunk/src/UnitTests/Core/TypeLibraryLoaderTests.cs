@@ -130,7 +130,7 @@ namespace Decompiler.UnitTests.Core
                         {
                             Convention="__cdecl",
                             ReturnValue = new SerializedArgument {
-                                Type = new SerializedPrimitiveType { Domain = Domain.Void, ByteSize = 0}
+                                Type = new SerializedVoidType()
                             },
                         }
                     }
@@ -170,7 +170,7 @@ namespace Decompiler.UnitTests.Core
                         {
                             Convention="__cdecl",
                             ReturnValue = new SerializedArgument {
-                                Type = new SerializedPrimitiveType { Domain = Domain.Void, ByteSize = 0}
+                                Type = new SerializedVoidType {}
                             },
                             Arguments = new SerializedArgument[] {
                                 new SerializedArgument {

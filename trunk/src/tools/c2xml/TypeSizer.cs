@@ -110,6 +110,11 @@ namespace Decompiler.Tools.C2Xml
             return size;
         }
 
+        public int VisitVoidType(SerializedVoidType voidType)
+        {
+            return 0;
+        }
+
         public void SetSize(SerializedTaggedType str)
         {
             var size = str.Accept(this);

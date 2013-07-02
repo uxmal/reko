@@ -212,7 +212,7 @@ namespace Decompiler.Typing
         public DataType VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression == null)
-                return PrimitiveType.Void;
+                return VoidType.Instance;
 
             var dt = ret.Expression.Accept(this);
             if (proc.Signature != null && proc.Signature.ReturnValue != null)
@@ -225,13 +225,13 @@ namespace Decompiler.Typing
         public DataType VisitSideEffect(SideEffect sideEffect)
         {
             sideEffect.Expression.Accept(this);
-            return PrimitiveType.Void;
+            return VoidType.Instance;
         }
 
         public DataType VisitSwitchInstruction(SwitchInstruction si)
 		{
 			si.Expression.Accept(this);
-            return PrimitiveType.Void;
+            return VoidType.Instance;
 		}
 
 		public DataType VisitUseInstruction(UseInstruction u)

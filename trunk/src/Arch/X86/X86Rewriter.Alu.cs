@@ -47,12 +47,12 @@ namespace Decompiler.Arch.X86
 
         private void RewriteHlt()
         {
-            var ppp = host.EnsurePseudoProcedure("__hlt", PrimitiveType.Void, 0);
+            var ppp = host.EnsurePseudoProcedure("__hlt", VoidType.Instance, 0);
             ppp.Characteristics = new ProcedureCharacteristics
             {
                 Terminates = true,
             };
-            emitter.SideEffect(PseudoProc(ppp, PrimitiveType.Void));
+            emitter.SideEffect(PseudoProc(ppp, VoidType.Instance));
         }
 
         private void RewriteAam()
@@ -310,7 +310,7 @@ namespace Decompiler.Arch.X86
                 if (r != null && r.Register == arch.StackRegister &&
                     di.Instruction.op2 is ImmediateOperand)
                 {
-                    emitter.SideEffect(PseudoProc("__align", PrimitiveType.Void, SrcOp(di.Instruction.op1)));
+                    emitter.SideEffect(PseudoProc("__align", VoidType.Instance, SrcOp(di.Instruction.op1)));
                     return;
                 }
             }
@@ -556,7 +556,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteOut()
         {
-            var ppp = host.EnsurePseudoProcedure("__out" + di.Instruction.op2.Width.Prefix, PrimitiveType.Void, 2);
+            var ppp = host.EnsurePseudoProcedure("__out" + di.Instruction.op2.Width.Prefix, VoidType.Instance, 2);
             emitter.SideEffect(emitter.Fn(ppp, 
                 SrcOp(di.Instruction.op1),
                 SrcOp(di.Instruction.op2)));
@@ -791,7 +791,7 @@ namespace Decompiler.Arch.X86
             case Opcode.outs:
             case Opcode.outsb:
                 regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, PrimitiveType.Void, 2);
+                ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, 2);
                 emitter.SideEffect(emitter.Fn(ppp, regDX, RegAl));
                 incSi = true;
                 break;

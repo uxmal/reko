@@ -103,6 +103,11 @@ namespace Decompiler.Core.Types
 		{
 			return unk;
 		}
+
+        public virtual DataType VisitVoidType(VoidType ut)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }
 

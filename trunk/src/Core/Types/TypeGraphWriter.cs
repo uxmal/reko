@@ -176,5 +176,11 @@ namespace Decompiler.Core.Types
             writer.Write("<unknown>");
             return writer;
         }
+
+        public TextWriter VisitVoidType(VoidType vt)
+        {
+            writer.Write("void");
+            return writer;
+        }
     }
 }

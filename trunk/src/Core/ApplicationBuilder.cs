@@ -121,7 +121,7 @@ namespace Decompiler.Core
             var actuals = BindArguments(frame, sigCallee);
             var appl = new Application(
                 callee,
-                (idOut == null ? PrimitiveType.Void : idOut.DataType),
+                (idOut == null ? VoidType.Instance : idOut.DataType),
                 actuals.ToArray());
 
 			if (idOut == null)

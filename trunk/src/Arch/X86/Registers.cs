@@ -31,7 +31,7 @@ namespace Decompiler.Arch.X86
     /// <summary>
     /// The registers of an Intel ia32 machine.
     /// </summary>
-    public class Registers
+    public static class Registers
     {
         public static readonly Intel32AccRegister eax;
         public static readonly Intel32AccRegister ecx;
@@ -230,22 +230,22 @@ namespace Decompiler.Arch.X86
             r14b = new IntelLoByteRegister("r14b", 14, 15, -1, -1, -1);
             r15b = new IntelLoByteRegister("r15b", 15, 15, -1, -1, -1);
 
-        xmm0 = new SseRegister("xmm0", 0);
-xmm1 = new SseRegister("xmm1", 1);
-xmm2 = new SseRegister("xmm2", 2);
-xmm3 = new SseRegister("xmm3", 3);
-xmm4 = new SseRegister("xmm4", 4);
-xmm5 = new SseRegister("xmm5", 5);
-xmm6 = new SseRegister("xmm6", 6);
-xmm7 = new SseRegister("xmm7", 7);
-xmm8 = new SseRegister("xmm8", 8);
-xmm9 = new SseRegister("xmm9", 9);
-xmm10 = new SseRegister("xmm10", 10);
-xmm11 = new SseRegister("xmm11", 11);
-xmm12 = new SseRegister("xmm12", 12);
-xmm13 = new SseRegister("xmm13", 13);
-xmm14 = new SseRegister("xmm14", 14);
-xmm15 = new SseRegister("xmm15", 15);
+            xmm0 = new SseRegister("xmm0", 0);
+            xmm1 = new SseRegister("xmm1", 1);
+            xmm2 = new SseRegister("xmm2", 2);
+            xmm3 = new SseRegister("xmm3", 3);
+            xmm4 = new SseRegister("xmm4", 4);
+            xmm5 = new SseRegister("xmm5", 5);
+            xmm6 = new SseRegister("xmm6", 6);
+            xmm7 = new SseRegister("xmm7", 7);
+            xmm8 = new SseRegister("xmm8", 8);
+            xmm9 = new SseRegister("xmm9", 9);
+            xmm10 = new SseRegister("xmm10", 10);
+            xmm11 = new SseRegister("xmm11", 11);
+            xmm12 = new SseRegister("xmm12", 12);
+            xmm13 = new SseRegister("xmm13", 13);
+            xmm14 = new SseRegister("xmm14", 14);
+            xmm15 = new SseRegister("xmm15", 15);
 
             regs = new RegisterStorage[] {
 				eax,
@@ -297,51 +297,53 @@ xmm15 = new SseRegister("xmm15", 15);
                 null,
 
                 // 40
-                            rax,            rcx,
-            rdx,
-            rbx,
-            rsp,
-            rbp,
-            rsi,
-            rdi,
-            r8,
-            r9,
-            r10,
-            r11,
-            r12,
-            r13,
-            r14,
-            r15,
-            r8d,
-            r9d,
-            r10d,
-            r11d,
-            r12d,
-            r13d,
-            r14d,
-            r15d,
-            r8w,
-            r9w,
-            r10w,
-            r11w,
-            r12w,
-            r13w,
-            r14w,
-            r15w,
+                rax,
+                rcx,
+                rdx,
+                rbx,
+                rsp,
+                rbp,
+                rsi,
+                rdi,
+                r8,
+                r9,
+                r10,
+                r11,
+                r12,
+                r13,
+                r14,
+                r15,
+                r8d,
+                r9d,
+                r10d,
+                r11d,
+                r12d,
+                r13d,
+                r14d,
+                r15d,
 
-            spl,
-            bpl,
-            sil,
-            dil,
+                r8w,
+                r9w,
+                r10w,
+                r11w,
+                r12w,
+                r13w,
+                r14w,
+                r15w,
 
-            r8b,
-            r9b,
-            r10b,
-            r11b,
-            r12b,
-            r13b,
-            r14b,
-            r15b,
+                spl,
+                bpl,
+                sil,
+                dil,
+
+                r8b,
+                r9b,
+                r10b,
+                r11b,
+                r12b,
+                r13b,
+                r14b,
+                r15b,
 
 			};
         }

@@ -122,5 +122,10 @@ namespace Decompiler.Typing
         {
             throw new NotImplementedException();
         }
+
+        public DataType VisitVoidType(VoidType vt)
+        {
+            return vt;
+        }
     }
 }

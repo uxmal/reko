@@ -33,7 +33,7 @@ namespace Decompiler.Arch.Arm
     {
         private uint instr;
 
-        public RegisterRangeOperand(uint instr): base(PrimitiveType.Void)
+        public RegisterRangeOperand(uint instr): base(PrimitiveType.Word32)
         {
             this.instr = instr;
         }

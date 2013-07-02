@@ -283,5 +283,10 @@ namespace Decompiler.Typing
         {
             throw new NotImplementedException();
         }
+
+        public Expression VisitVoidType(VoidType vt)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }

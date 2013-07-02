@@ -319,8 +319,8 @@ namespace Decompiler.UnitTests.Scanning
             arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
             repository.ReplayAll();
 
-            trace.Add(m => m.Call(new Address(0x0001000), 4)); 
-            trace.Add(m => m.SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0)))); 
+            trace.Add(m => m.Call(new Address(0x0001000), 4));
+            trace.Add(m => m.SideEffect(new ProcedureConstant(VoidType.Instance, new PseudoProcedure("shouldnt_decompile_this", VoidType.Instance, 0)))); 
 
             var wi = CreateWorkItem(new Address(0x2000), new FakeProcessorState(arch));
             wi.ProcessInternal();

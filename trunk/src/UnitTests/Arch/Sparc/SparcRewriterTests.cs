@@ -307,7 +307,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_ta()
         {
-            host.Stub(h => h.EnsurePseudoProcedure("__syscall", PrimitiveType.Void, 1)).Return(new PseudoProcedure("__syscall", PrimitiveType.Void, 1));
+            host.Stub(h => h.EnsurePseudoProcedure("__syscall", VoidType.Instance, 1)).Return(new PseudoProcedure("__syscall", VoidType.Instance, 1));
             BuildTest(0x91D02999);  // ta\t%g1,0x00000019"
             AssertCode(
                 "0|00100000(4): 1 instructions",

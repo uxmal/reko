@@ -105,7 +105,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteInt()
         {
-            emitter.SideEffect(PseudoProc("__syscall", PrimitiveType.Void, SrcOp(di.Instruction.op1)));
+            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance, SrcOp(di.Instruction.op1)));
         }
 
         private void RewriteJcxz()
@@ -120,10 +120,10 @@ namespace Decompiler.Arch.X86
         {
             if (IsRealModeReboot(di.Instruction))
 			{
-                PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", PrimitiveType.Void, 0);
+                PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", VoidType.Instance, 0);
                 reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
                 reboot.Characteristics.Terminates = true;
-                emitter.SideEffect(PseudoProc(reboot, PrimitiveType.Void));
+                emitter.SideEffect(PseudoProc(reboot, VoidType.Instance));
 				return;
 			}
 				

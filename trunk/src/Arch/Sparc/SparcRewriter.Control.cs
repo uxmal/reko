@@ -89,7 +89,7 @@ namespace Decompiler.Arch.Sparc
                 new RtlSideEffect(
                     PseudoProc(
                         "__syscall", 
-                        PrimitiveType.Void, 
+                        VoidType.Instance, 
                         SimplifySum(src1, src2))));
         }
     }

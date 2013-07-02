@@ -41,6 +41,7 @@ namespace Decompiler.Core.Types
         private const int TVar =   8;
 		private const int EqClass= 9;
 		private const int Unk =    10;
+        private const int Void =   11;
 
 		public DataTypeComparer()
 		{
@@ -258,6 +259,10 @@ namespace Decompiler.Core.Types
 			return Unk;
 		}
 
+        public int VisitVoidType(VoidType vt)
+        {
+            return Void;
+        }
 		#endregion
 	}
 }

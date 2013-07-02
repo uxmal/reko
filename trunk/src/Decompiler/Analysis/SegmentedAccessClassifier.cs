@@ -38,7 +38,7 @@ namespace Decompiler.Analysis
 		private SsaIdentifierCollection ssaIds;
 		private Dictionary<Identifier,Identifier> assocs;
 		private Dictionary<Identifier,Constant> consts;
-		private Identifier overAssociatedId = new Identifier("overAssociated", -1, PrimitiveType.Void, null);
+		private Identifier overAssociatedId = new Identifier("overAssociated", -1, VoidType.Instance, null);
         private Constant overAssociatedConst = Constant.Real64(0.0);
 
 		private int sequencePoint;

@@ -171,6 +171,7 @@
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\TypeLibraryElementCollection.cs" />
     <Compile Include="EvaluationContext.cs" />
+    <Compile Include="EventEx.cs" />
     <Compile Include="Expressions\Application.cs" />
     <Compile Include="Expressions\ArrayAccess.cs" />
     <Compile Include="Expressions\BinaryExpression.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Serialization\SerializedTypedef.cs" />
     <Compile Include="Serialization\SerializedTypeReference.cs" />
     <Compile Include="Serialization\SerializedUnionType.cs" />
+    <Compile Include="Serialization\SerializedVoidType.cs" />
     <Compile Include="Services\DecompilerEventListener.cs" />
     <Compile Include="Lib\BlockDominatorGraph.cs" />
     <Compile Include="Lib\Dequeue.cs" />
@@ -588,6 +590,7 @@
     <Compile Include="Types\UnknownType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\VoidType.cs" />
     <Compile Include="WorkList.cs">
       <SubType>Code</SubType>
     </Compile>

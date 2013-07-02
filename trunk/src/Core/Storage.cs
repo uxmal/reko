@@ -360,7 +360,7 @@ namespace Decompiler.Core
 
         public static RegisterStorage None { get { return none; } }
 
-        private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Void);
+        private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Create(Domain.None, 0));
 	}
 
 	public class SequenceStorage : Storage

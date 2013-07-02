@@ -38,7 +38,6 @@ namespace Decompiler.Core.Types
 	public enum Domain
 	{
 		None = 0,
-		Void = 1,
 		Boolean = 2,
 		Character = 4,
 		SignedInt = 8,
@@ -66,8 +65,6 @@ namespace Decompiler.Core.Types
 		{
 			if (dom == 0)
 				throw new ArgumentException("Domain is empty.");
-            if (dom == Domain.Void && byteSize > 0)
-                throw new ArgumentException("ByteSize must be > 0.");
 			this.Domain = dom;
 			this.byteSize = byteSize;
 			this.Name = name;
@@ -162,8 +159,6 @@ namespace Decompiler.Core.Types
 			StringBuilder sb;
 			switch (dom)
 			{
-			case Domain.Void:
-				return "void";
 			case Domain.Boolean:
 				return "bool";
 			case Domain.Character:
@@ -245,7 +240,6 @@ namespace Decompiler.Core.Types
 				switch (Domain)
 				{
 				case Domain.None:
-                case Domain.Void:
 					return "v";
 				case Domain.Boolean:
 					return "f";
@@ -290,8 +284,6 @@ namespace Decompiler.Core.Types
 			cache = new Dictionary<PrimitiveType,PrimitiveType>();
             lookupByName = new Dictionary<string, PrimitiveType>();
 
-			Void = Create(Domain.Void, 0);
-
 			Byte = CreateWord(1);
 			Bool = Create(Domain.Boolean, 1);
 		    Char = Create(Domain.Character, 1);
@@ -329,8 +321,6 @@ namespace Decompiler.Core.Types
             Word256 = CreateWord(32);
         }
 
-		public static PrimitiveType Void { get; private set; }
-		
 		public static PrimitiveType Bool {get; private set; }
 
 		public static PrimitiveType Byte {get; private set; }

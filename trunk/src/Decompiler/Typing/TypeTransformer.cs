@@ -324,6 +324,11 @@ namespace Decompiler.Typing
             return unk;
         }
 
+        public DataType VisitVoidType(VoidType vt)
+        {
+            return vt;
+        }
+
 		#endregion
 	}
 }

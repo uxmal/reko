@@ -329,7 +329,6 @@ namespace Decompiler.Arch.X86
 			int r = regDword;
 			registerFile[r] = (uint) (registerFile[r] & ~0xFFFFU) | (value & 0xFFFFU);
 		}
-
 	}
 
 	public class Intel16AccRegister : Intel16Register
@@ -562,5 +561,4 @@ namespace Decompiler.Arch.X86
         {
         }
     }
-
 }

@@ -158,7 +158,7 @@ namespace Decompiler.Tools.C2Xml
                 SerializedArgument ret = null;
                 if (nt.DataType != null)
                 {
-                    var kind = !IsVoid(nt.DataType)
+                    var kind = !(nt.DataType is SerializedVoidType)
                         ? new SerializedRegister { Name = "eax" }       //$REVIEW platform-specific.
                         : null;
                     ret = new SerializedArgument
@@ -183,13 +183,7 @@ namespace Decompiler.Tools.C2Xml
         {
             if (parameters == null || parameters.Length != 1)
                 return false;
-            return IsVoid(parameters[0].Type);
-        }
-
-        private bool IsVoid(SerializedType serializedType)
-        {
-            var sp = serializedType as SerializedPrimitiveType;
-            return sp != null && sp.Domain == Domain.Void;
+            return parameters[0].Type is SerializedVoidType;
         }
 
         private SerializedArgument ConvertParameter(ParamDecl decl)
@@ -266,8 +260,7 @@ namespace Decompiler.Tools.C2Xml
             case CTokenType.Void:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'void' after '{0}'.", domain));
-                domain = Domain.Void;
-                return CreatePrimitive();
+                return new SerializedVoidType();
             case CTokenType.__W64:
                 return dt;      // Used by Microsoft compilers for 32->64 bit transition, deprecated.
             case CTokenType.Signed:

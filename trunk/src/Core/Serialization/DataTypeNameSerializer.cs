@@ -86,5 +86,10 @@ namespace Decompiler.Core.Serialization
         {
             throw new NotImplementedException();
         }
+
+        public SerializedType VisitVoidType(VoidType ut)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -55,8 +55,8 @@ namespace Decompiler.Arch.X86
             ImageReader rdr, 
             Frame frame)
         {
-            this.host = host;
             this.arch = arch;
+            this.host = host;
             this.frame = frame;
             this.state = state;
             this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr));
@@ -276,13 +276,13 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        public Expression PseudoProc(string name, PrimitiveType retType, params Expression[] args)
+        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
         {
             var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
             return PseudoProc(ppp, retType, args);
         }
 
-        public Expression PseudoProc(PseudoProcedure ppp, PrimitiveType retType, params Expression[] args)
+        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
         {
             if (args.Length != ppp.Arity)
                 throw new ArgumentOutOfRangeException(

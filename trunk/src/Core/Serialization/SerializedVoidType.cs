@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2013 John Källén.
+ * Copyright (C) 1999-2013 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,24 @@
  */
 #endregion
 
+using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Decompiler.Core.Types
+namespace Decompiler.Core.Serialization
 {
-	/// <summary>
-	/// Visitor methods for types.
-	/// </summary>
-    public interface IDataTypeVisitor<T>
+    public class SerializedVoidType :  SerializedType
     {
-        T VisitArray(ArrayType at);
-        T VisitEquivalenceClass(EquivalenceClass eq);
-        T VisitFunctionType(FunctionType ft);
-        T VisitPrimitive(PrimitiveType pt);
-        T VisitMemberPointer(MemberPointer memptr);
-        T VisitPointer(Pointer ptr);
-        T VisitStructure(StructureType str);
-        T VisitTypeReference(TypeReference typeref);
-        T VisitTypeVariable(TypeVariable tv);
-        T VisitUnion(UnionType ut);
-        T VisitUnknownType(UnknownType ut);
-        T VisitVoidType(VoidType voidType);
+        public override DataType BuildDataType(TypeFactory factory)
+        {
+            return VoidType.Instance;
+        }
+
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitVoidType(this);
+        }
     }
 }
