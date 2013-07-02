@@ -23,19 +23,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Core.Types
 {
-    public interface ISerializedTypeVisitor<T>
+    public class VoidType : DataType
     {
-        T VisitPrimitive(SerializedPrimitiveType primitive);
-        T VisitPointer(SerializedPointerType pointer);
-        T VisitArray(SerializedArrayType array);
-        T VisitSignature(SerializedSignature signature);
-        T VisitStructure(SerializedStructType structure);
-        T VisitTypedef(SerializedTypedef typedef);
-        T VisitTypeReference(SerializedTypeReference typeReference);
-        T VisitUnion(SerializedUnionType union);
-        T VisitEnum(SerializedEnumType serializedEnumType);
-        T VisitVoidType(SerializedVoidType serializedVoidType);
+        private VoidType() : base("void")
+        {
+        }
+
+        static VoidType instance = new VoidType();
+
+        public static VoidType Instance { get { return instance; } }
+
+        public override int Size
+        {
+            get { return 0; }
+            set { throw new NotSupportedException(); }
+        }
+
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitVoidType(this);
+        }
+
+        public override DataType Clone()
+        {
+            return this;
+        }
+
+        public override string Prefix
+        {
+            get { return "v"; }
+        }
     }
 }

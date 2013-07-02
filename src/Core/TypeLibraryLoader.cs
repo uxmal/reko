@@ -180,5 +180,9 @@ namespace Decompiler.Core
         {
             return PrimitiveType.Word32;
         }
+        public DataType VisitVoidType(SerializedVoidType voidType)
+        {
+            return VoidType.Instance;
+        }
     }
 }

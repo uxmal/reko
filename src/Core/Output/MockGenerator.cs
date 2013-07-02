@@ -489,6 +489,12 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        public int VisitVoidType(VoidType vt)
+        {
+            throw new NotImplementedException();
+        }
+
+
         #endregion
     }
 }

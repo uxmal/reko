@@ -97,7 +97,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFclex()
         {
-            emitter.SideEffect(PseudoProc("__fclex", PrimitiveType.Void));
+            emitter.SideEffect(PseudoProc("__fclex", VoidType.Instance));
         }
 
         private void RewriteFcom(int pops)
@@ -160,7 +160,7 @@ namespace Decompiler.Arch.X86
         {
             emitter.SideEffect(PseudoProc(
                 "__fldcw",
-                PrimitiveType.Void,
+                VoidType.Instance,
                 SrcOp(di.Instruction.op1)));
         }
 

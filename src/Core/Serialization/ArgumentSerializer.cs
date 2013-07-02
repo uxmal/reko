@@ -69,6 +69,11 @@ private  string convention;
             if (argCur.Type == null)
                 throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));
 			var dt = this.argCur.Type.Accept(ps.TypeLoader);
+            if (dt is VoidType)
+            {
+                idArg = new Identifier(argCur.Name, 0, dt, new TemporaryStorage());
+                return;
+            }
 			idArg = ps.CreateId(
 				argCur.Name ?? "arg" + ps.StackOffset, 
 				dt,

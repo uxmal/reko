@@ -119,7 +119,6 @@ namespace Decompiler.ImageLoaders.Elf
             this.fileVersion = rdr.ReadByte();
         }
 
-
         private ProgramImage LoadImageBytes(Address addrPreferred, Address addrMax)
         {
             var bytes = new byte[addrMax - addrPreferred];
@@ -138,7 +137,6 @@ namespace Decompiler.ImageLoaders.Elf
             }
             return image;
         }
-
 
         public void LoadProgramHeaderTable()
         {
@@ -212,7 +210,6 @@ namespace Decompiler.ImageLoaders.Elf
             }
         }
 
-
         public string GetStringTableEntry(uint idxString)
         {
             var offset = (int)(SectionHeaders[Header.e_shstrndx].sh_offset + idxString);
@@ -265,7 +262,6 @@ namespace Decompiler.ImageLoaders.Elf
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
 
-
         public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
         {
             if (image == null) 
@@ -290,7 +286,7 @@ namespace Decompiler.ImageLoaders.Elf
                 if (ps.sh_type == SectionHeaderType.SHT_REL)
                 {
                     // A section such as .rel.dyn or .rel.plt (without an addend field).
-                    // Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
+                    // Each entry has 2 words: r_offset and r_info. The r_offset is just the offset from the beginning
                     // of the section (section given by the section header's sh_info) to the word to be modified.
                     // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
                     // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
@@ -312,8 +308,7 @@ namespace Decompiler.ImageLoaders.Elf
                     uint pStrSection = SectionHeaders[strSection].sh_offset;
                     var symOrigin = SectionHeaders[symSection].sh_offset;
                                                 var relocR = CreateReader(0);
-                            var relocW = CreateWriter(0);
-
+                    var relocW = CreateWriter(0);
                     for (uint u = 0; u < size; u += 2 * sizeof(uint))
                     {
                         uint r_offset = pReloc.ReadUInt32();

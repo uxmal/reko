@@ -121,7 +121,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
         {
-            stms.Add(new AbsynSideEffect(new Application(ci.Callee, PrimitiveType.Void)));
+            stms.Add(new AbsynSideEffect(new Application(ci.Callee, VoidType.Instance)));
         }
 
         void InstructionVisitor.VisitDeclaration(Declaration decl)

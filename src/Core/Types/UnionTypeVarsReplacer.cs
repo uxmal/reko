@@ -123,5 +123,10 @@ namespace Decompiler.Core.Types
         {
             return unk;
         }
+
+        public DataType VisitVoidType(VoidType v)
+        {
+            return v;
+        }
     }
 }

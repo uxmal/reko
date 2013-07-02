@@ -176,7 +176,7 @@ namespace Decompiler.Arch.Sparc
                 emitter.Cond(dst));
         }
 
-        private Application PseudoProc(string name, PrimitiveType ret, params Expression[] exprs)
+        private Application PseudoProc(string name, DataType ret, params Expression[] exprs)
         {
             var ppp = host.EnsurePseudoProcedure(name, ret, exprs.Length);
             var fn = emitter.Fn(ppp, exprs);

@@ -39,7 +39,7 @@ namespace Decompiler.Core.Types
             if (argumentTypes == null)
                 throw new ArgumentNullException("argumentTypes");
 			if (returnType == null)
-				returnType = PrimitiveType.Void;
+				returnType = VoidType.Instance;
 			this.ReturnType = returnType; 
 			this.ArgumentTypes = argumentTypes; 
 			this.ArgumentNames = argumentNames;

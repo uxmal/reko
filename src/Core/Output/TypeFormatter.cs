@@ -327,6 +327,14 @@ namespace Decompiler.Core.Output
             return writer;
 		}
 
+        public Formatter VisitVoidType(VoidType vt)
+        {
+            if (mode == Mode.Writing)
+            {
+                writer.Write("void");
+            }
+            return writer;
+        }
 		#endregion
 
 		public void Write(DataType dt, string name)

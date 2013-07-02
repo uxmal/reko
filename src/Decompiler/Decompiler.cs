@@ -60,8 +60,6 @@ namespace Decompiler
 	/// </remarks>
 	public class DecompilerDriver : IDecompiler
 	{
-		private Program prog;
-		private Project project;
 		private DecompilerHost host;
 		private LoaderBase loader;
 		private IScanner scanner;
@@ -75,6 +73,14 @@ namespace Decompiler
             this.services = services;
             this.eventListener = (DecompilerEventListener)services.GetService(typeof(DecompilerEventListener));
         }
+
+        public Program Program { get { return prog; } set { prog = value; ProgramChanged.Fire(this); } }
+        public event EventHandler ProgramChanged;
+        private Program prog;
+
+        public Project Project { get { return project; } set { project = value; ProjectChanged.Fire(this); } }
+        public event EventHandler ProjectChanged;
+        private Project project;
 
         /// <summary>
         /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
@@ -106,26 +112,23 @@ namespace Decompiler
         /// Determines the signature of the procedures,
 		/// the locations and types of all the values in the program.
 		///</summary>
-		public virtual DataFlowAnalysis AnalyzeDataFlow()
-		{
+        public virtual DataFlowAnalysis AnalyzeDataFlow()
+        {
             eventListener.ShowStatus("Performing interprocedural analysis.");
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, eventListener);
-			dfa.UntangleProcedures();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(Program, eventListener);
+            dfa.UntangleProcedures();
 
-			dfa.BuildExpressionTrees();
-            host.WriteIntermediateCode(delegate(TextWriter writer)
-            {
-                EmitProgram(dfa, writer);
-            });
-			eventListener.ShowStatus("Analysis complete.");
+            dfa.BuildExpressionTrees();
+            host.WriteIntermediateCode(writer => { EmitProgram(dfa, writer); });
+            eventListener.ShowStatus("Analysis complete.");
             return dfa;
-		}
+        }
 
         private void EmitProgram(DataFlowAnalysis dfa, TextWriter output)
         {
             if (output == null)
                 return;
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in Program.Procedures.Values)
             {
                 if (dfa != null)
                 {
@@ -138,17 +141,16 @@ namespace Decompiler
                     else
                         output.Write("Warning: no signature found for {0}", proc.Name);
                     output.WriteLine();
-                    flow.Emit(prog.Architecture, output);
+                    flow.Emit(Program.Architecture, output);
                     foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                     {
                         if (block == null)
                             continue;
-
                         block.Write(output); output.Flush();
                         BlockFlow bf = dfa.ProgramDataFlow[block];
                         if (bf != null)
                         {
-                            bf.Emit(prog.Architecture, output);
+                            bf.Emit(Program.Architecture, output);
                             output.WriteLine();
                         }
                     }
@@ -172,17 +174,17 @@ namespace Decompiler
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            project = DeserializeProject(image);
-            if (project != null)
+            Project = DeserializeProject(image);
+            if (Project != null)
             {
-                prog = loader.Load(
-                    loader.LoadImageBytes(project.InputFilename, 0),
-                    project.BaseAddress);
+                Program = loader.Load(
+                    loader.LoadImageBytes(Project.InputFilename, 0),
+                    Project.BaseAddress);
             }
             else
             {
-                prog = loader.Load(image, null);
-                project = CreateDefaultProject(fileName, prog);
+                Program = loader.Load(image, null);
+                Project = CreateDefaultProject(fileName, Program);
             }
             eventListener.ShowStatus("Source program loaded.");
         }
@@ -197,13 +199,13 @@ namespace Decompiler
         {
             eventListener.ShowStatus("Loading raw bytes.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            prog = new Program
+            Program = new Program
             {
                 Image = new ProgramImage(addrBase, image),
                 Architecture = arch,
                 Platform = platform
             };
-            project = CreateDefaultProject(fileName, prog);
+            Project = CreateDefaultProject(fileName, Program);
             eventListener.ShowStatus("Raw bytes loaded.");
         }
         
@@ -242,17 +244,6 @@ namespace Decompiler
             return project;
         }
 
-		public Program Program
-		{
-            get { return prog; }
-            set { prog = value; } 
-		}
-
-		public Project Project
-		{
-			get { return project; }
-		}
-
 		/// <summary>
 		/// Extracts type information from the typeless rewritten program.
 		/// </summary>
@@ -260,18 +251,18 @@ namespace Decompiler
 		/// <param name="ivs"></param>
         public void ReconstructTypes()
         {
-            TypeAnalyzer analyzer = new TypeAnalyzer(prog, eventListener);
+            TypeAnalyzer analyzer = new TypeAnalyzer(Program, eventListener);
             analyzer.RewriteProgram();
             host.WriteTypes(analyzer.WriteTypes);
         }
 
         public void WriteDecompiledProcedures(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(project.OutputFilename), w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(project.TypesFilename));
+            WriteHeaderComment(Path.GetFileName(Project.OutputFilename), w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(Project.TypesFilename));
             w.WriteLine();
             var fmt = new CodeFormatter(new Formatter(w));
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in Program.Procedures.Values)
             {
                 try
                 {
@@ -288,10 +279,10 @@ namespace Decompiler
 
         public void WriteDecompiledTypes(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(project.TypesFilename), w);
-            w.WriteLine("/*"); prog.TypeStore.Write(w); w.WriteLine("*/");
+            WriteHeaderComment(Path.GetFileName(Project.TypesFilename), w);
+            w.WriteLine("/*"); Program.TypeStore.Write(w); w.WriteLine("*/");
             TypeFormatter fmt = new TypeFormatter(new Formatter(w), false);
-            foreach (EquivalenceClass eq in prog.TypeStore.UsedEquivalenceClasses)
+            foreach (EquivalenceClass eq in Program.TypeStore.UsedEquivalenceClasses)
             {
                 if (eq.DataType != null)
                 {
@@ -312,8 +303,8 @@ namespace Decompiler
 		public ProcedureBase ScanProcedure(Address addr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = CreateScanner(prog, eventListener);
-			return scanner.ScanProcedure(addr, null, prog.Architecture.CreateProcessorState());
+				scanner = CreateScanner(Program, eventListener);
+			return scanner.ScanProcedure(addr, null, Program.Architecture.CreateProcessorState());
 		}
 
 		/// <summary>
@@ -329,12 +320,12 @@ namespace Decompiler
 			try
 			{
                 eventListener.ShowStatus("Rewriting reachable machine code.");
-                scanner = CreateScanner(prog, eventListener) ;
+                scanner = CreateScanner(Program, eventListener) ;
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
 					scanner.EnqueueEntryPoint(ep);
 				}
-				foreach (SerializedProcedure sp in project.UserProcedures.Values)
+				foreach (SerializedProcedure sp in Project.UserProcedures.Values)
 				{
 					scanner.EnqueueUserProcedure(sp);
 				}
@@ -344,7 +335,7 @@ namespace Decompiler
 			finally
 			{
 				loader = null;
-				host.WriteDisassembly(prog.DumpAssembler);
+				host.WriteDisassembly(Program.DumpAssembler);
                 host.WriteIntermediateCode((w) => { EmitProgram(null, w); });
 			}
 		}
@@ -354,10 +345,10 @@ namespace Decompiler
             return
                 (from sc in serializedCalls
                  where sc != null && sc.Signature != null
-                 let sser = new ProcedureSerializer(prog.Architecture, "stdapi")
+                 let sser = new ProcedureSerializer(Program.Architecture, "stdapi")
                  select new KeyValuePair<Address, ProcedureSignature>(
                      Address.ToAddress(sc.InstructionAddress, 16),
-                     sser.Deserialize(sc.Signature, prog.Architecture.CreateFrame())
+                     sser.Deserialize(sc.Signature, Program.Architecture.CreateFrame())
                  )).ToDictionary(item => item.Key, item => item.Value);
         }
 
@@ -365,7 +356,7 @@ namespace Decompiler
         {
             return new Scanner(
                 prog, 
-                LoadCallSignatures(project.UserCalls.Values),
+                LoadCallSignatures(Project.UserCalls.Values),
                 eventListener);
         }
 
@@ -377,11 +368,11 @@ namespace Decompiler
         public void StructureProgram()
 		{
             int i = 0;
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in Program.Procedures.Values)
 			{
                 try
                 {
-                    eventListener.ShowProgress("Rewriting procedures to high-level language.", i, prog.Procedures.Values.Count);
+                    eventListener.ShowProgress("Rewriting procedures to high-level language.", i, Program.Procedures.Values.Count);
                     ++i;
 
                     StructureAnalysis sa = new StructureAnalysis(proc);
@@ -407,7 +398,7 @@ namespace Decompiler
 		public void WriteHeaderComment(string filename, TextWriter w)
 		{
 			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.InputFilename);
+			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, Project.InputFilename);
 			w.WriteLine("// using Decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}

@@ -88,6 +88,7 @@ namespace Decompiler.Core.Serialization
                     new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("typedef", typeof(SerializedTypedef)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("type", typeof(SerializedTypeReference)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("void", typeof(SerializedVoidType)) { Namespace = SerializedLibrary.Namespace },
                 }
             };
             return sertypeAttributes;
@@ -108,6 +109,7 @@ namespace Decompiler.Core.Serialization
                     new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
                     new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef)) { Namespace = SerializedLibrary.Namespace },
                     new XmlArrayItemAttribute("type", typeof(SerializedTypeReference)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("void", typeof(SerializedVoidType)) { Namespace = SerializedLibrary.Namespace },
                 }
             };
             return sertypeAttributes;

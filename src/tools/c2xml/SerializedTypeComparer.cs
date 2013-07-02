@@ -68,6 +68,12 @@ namespace Decompiler.Tools.C2Xml
             return pX.Domain == pY.Domain && pX.ByteSize == pY.ByteSize;
         }
 
+        public bool VisitVoidType(SerializedVoidType vX)
+        {
+            var vY = (SerializedVoidType) y;
+            return vX == vY && vX != null;
+        }
+
         public bool VisitPointer(SerializedPointerType pX)
         {
             y = ((SerializedPointerType) y).DataType;

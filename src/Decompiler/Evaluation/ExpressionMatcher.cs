@@ -341,7 +341,7 @@ namespace Decompiler.Evaluation
         private class WildExpression : Expression, IWildExpression
         {
             public WildExpression(string label)
-                : base(PrimitiveType.Void)
+                : base(VoidType.Instance)
             {
                 this.Label = label;
             }
@@ -366,7 +366,7 @@ namespace Decompiler.Evaluation
 
         private class WildId : Identifier
         {
-            public WildId(string label) : base(label, 0, PrimitiveType.Void, null)
+            public WildId(string label) : base(label, 0, VoidType.Instance, null)
             {
                 this.Label = label;
             }

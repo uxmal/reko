@@ -359,8 +359,8 @@ namespace Decompiler.Core.Expressions
             return Constant.Create(dataType, 0);
         }
 
-		public static readonly Constant Invalid = new ConstantUInt32(PrimitiveType.Void, 0xBADDCAFE);
-        public static readonly Constant Unknown = new ConstantUInt32(PrimitiveType.Void, 0xDEADFACE);
+		public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
+        public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
     }
 
 

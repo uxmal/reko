@@ -61,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressOperand.cs" />
-    <Compile Include="Decoder.cs" />
     <Compile Include="DisassembledInstruction.cs" />
     <Compile Include="IndexedOperand.cs" />
     <Compile Include="InstructionFormatter.cs" />
