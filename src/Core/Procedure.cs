@@ -97,7 +97,6 @@ namespace Decompiler.Core
 			Debug.WriteLine(sb.ToString());
 		}
 
-
         public BlockDominatorGraph CreateBlockDominatorGraph()
         {
             return new BlockDominatorGraph(new BlockGraph(blocks), EntryBlock);
@@ -145,7 +144,6 @@ namespace Decompiler.Core
 				Frame.Write(writer);
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
 			writer.WriteLine();
-
             new ProcedureFormatter(this, writer).WriteProcedureBlocks(showEdges);
 		}
 

@@ -91,12 +91,14 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
         public void SerializeProcedureWithSignature()
         {
-            Procedure proc = new Procedure("foo", arch.CreateFrame());
-            proc.Signature = new ProcedureSignature(
-                new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
-                new Identifier[] {
-                    new Identifier("arg00", 0, PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32))
-                });
+            Procedure proc = new Procedure("foo", arch.CreateFrame())
+            {
+                Signature = new ProcedureSignature(
+                    new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
+                    new Identifier[] {
+                        new Identifier("arg00", 0, PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32))
+                    })
+            };
             
             Address addr = new Address(0x567A0C);
             ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
@@ -152,6 +154,25 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ssig = new SerializedSignature
             {
                 Convention = "__cdecl",
+                Arguments = new SerializedArgument[] {
+                    new SerializedArgument
+                    {
+                        Name = "foo",
+                        Type = new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize = 4 },
+                    }
+                }
+            };
+            var ps = new ProcedureSerializer(arch, ssig.Convention);
+            var sig = ps.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual(0, sig.StackDelta);
+        }
+
+        [Test]
+        public void ProcSer_Load_stdcall()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "stdapi",
                 Arguments = new SerializedArgument[] {
                     new SerializedArgument
                     {

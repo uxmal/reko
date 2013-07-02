@@ -114,12 +114,13 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_adda_l()
+        public void M68krw_adda_postinc() // addal (a4)+,%a5
         {
             Rewrite(0xDBDC);
-            AssertCode("0|00010000(2): 2 instructions",
-                "1|a5 = a5 + Mem0[a4:word32]",
-                "2|a4 = a4 + 0x00000004");
+            AssertCode("0|00010000(2): 3 instructions",
+                "1|v3 = Mem0[a4:word32]",
+                "2|a4 = a4 + 0x00000004",
+                "3|a5 = a5 + v3");
         }
 
         [Test]
@@ -142,6 +143,18 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|v3 = Mem0[a0:word16]",
                 "2|d2 = DPB(d2, v3, 0, 16)",
                 "3|CVZN = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_pre_and_postdec()
+        {
+            Rewrite(0x36E3);    // move.w-(a3),(a3)+
+            AssertCode("0|00010000(2): 5 instructions",
+                "1|a3 = a3 - 0x00000002",
+                "2|v3 = Mem0[a3:word16]",
+                "3|Mem0[a3:word16] = v3",
+                "4|a3 = a3 + 0x00000002",
+                "5|CVZN = cond(v3)");
         }
     }
 }

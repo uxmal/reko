@@ -35,7 +35,7 @@ namespace Decompiler.Arch.M68k
     {
         public IDisassembler CreateDisassembler(ImageReader rdr)
         {
-            return new M68kDisassembler2(rdr);
+            return new M68kDisassembler(rdr);
         }
 
         public ProcessorState CreateProcessorState()

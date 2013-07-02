@@ -27,6 +27,7 @@ using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
@@ -195,6 +196,7 @@ namespace Decompiler.UnitTests.Analysis
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
+            Dump(prog.CallGraph);
             var rl = RegisterLiveness.Compute(prog, flow, eventListener);
             GlobalCallRewriter.Rewrite(prog, flow);
 
@@ -210,5 +212,12 @@ namespace Decompiler.UnitTests.Analysis
 				writer.WriteLine();
 			}
 		}
+
+        private void Dump(CallGraph cg)
+        {
+            var sw = new StringWriter();
+            cg.Write(sw);
+            Debug.Print("{0}", sw.ToString());
+        }
 	}
 }

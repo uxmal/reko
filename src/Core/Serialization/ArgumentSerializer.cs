@@ -32,12 +32,14 @@ namespace Decompiler.Core.Serialization
 		private Frame frame;
 		private SerializedArgument argCur;
 		private Identifier idArg;
+private  string convention;
 
-		public ArgumentSerializer(ProcedureSerializer sig, IProcessorArchitecture arch, Frame frame)
+		public ArgumentSerializer(ProcedureSerializer sig, IProcessorArchitecture arch, Frame frame, string callingConvention)
 		{
 			this.ps = sig;
 			this.arch = arch;
 			this.frame = frame;
+            this.convention = callingConvention;
 		}
 
 		public string ArgumentName(string argName, string argName2)
@@ -101,7 +103,14 @@ namespace Decompiler.Core.Serialization
 			argCur = arg;
             if (arg.Kind != null)
                 arg.Kind.Accept(this);
-            // else argByConvention();
+            else
+            {
+                //$PLATFORM-specifiC!!! We're encoding x86 conventions here.
+                if (convention == "stdapi" || convention == "__cdecl")
+                {
+                    Deserialize(new SerializedStackVariable{});
+                }
+            }
 			return idArg;
 		}
 

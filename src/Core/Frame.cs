@@ -226,7 +226,6 @@ namespace Decompiler.Core
 			return id;
 		}
 
-        [Obsolete("stack variables are not created at Rewrite time anymore. Remove this when the new Scanner is in place.")]
 		public Identifier EnsureStackVariable(Constant imm, int cbOffset, DataType type)
 		{
 			if (imm.IsValid)
@@ -292,7 +291,6 @@ namespace Decompiler.Core
 				return nameOverride;
 			else return FormatStackAccessName(type, prefix, cbOffset);
 		}
-
 
 		/// <summary>
 		/// Returns the number of bytes the stack arguments consume on the stack.

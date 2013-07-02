@@ -28,6 +28,9 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
+    /// <summary>
+    /// Rewrites ALU instructions.
+    /// </summary>
     public partial class Rewriter
     {
         public void RewriteLogical(BinaryOperator op)
@@ -37,7 +40,7 @@ namespace Decompiler.Arch.M68k
             if (width.Size < 4)
             {
                 var opSrc = MaybeCast(width, orw.RewriteSrc(di.Instruction.op1));
-                var opDst = MaybeCast(width, orw.RewriteDst(di.Instruction.op2));
+                var opDst = MaybeCast(width, orw.RewriteDst(di.Instruction.op2, opSrc));
                 var tmp = frame.CreateTemporary(width);
                 emitter.Assign(tmp, new BinaryExpression(op, width, opDst, opSrc));
                 emitter.Assign(

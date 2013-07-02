@@ -55,7 +55,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public ushort   e_oemid;                     // OEM identifier (for e_oeminfo)
 		public ushort   e_oeminfo;                   // OEM information; e_oemid specific
 		public ushort [] e_res2;                     // Reserved words
-		public uint      e_lfanew;                    // File address of new exe header
+		public uint     e_lfanew;                    // File address of new exe header
 
 		private const int MarkZbikowski = (('Z' << 8) | 'M');		// 'MZ' magic number expressed in little-endian.
 
@@ -133,7 +133,6 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			get { return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'P' && RawImage[e_lfanew+1] == 'E'; }
 		}
-
 
 		/// <summary>
 		/// Loads a Microsoft .EXE file. There are several widely varying sub-formats,

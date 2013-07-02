@@ -31,14 +31,15 @@ namespace Decompiler.Arch.M68k
 {
     public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
+        // These field are internal so that the OperandRewriter can use them.
         internal M68kArchitecture arch;
-        private M68kState state;
         internal Frame frame;
+        internal DisassembledInstruction di;
+        internal RtlEmitter emitter;
+        private M68kState state;
         private IRewriterHost host;
         private IEnumerator<DisassembledInstruction> dasm;
-        internal DisassembledInstruction di;
         private RtlInstructionCluster ric;
-        internal RtlEmitter emitter;
         private OperandRewriter orw;
 
         public Rewriter(M68kArchitecture m68kArchitecture, ImageReader rdr, M68kState m68kState, Frame frame, IRewriterHost host)
@@ -52,7 +53,7 @@ namespace Decompiler.Arch.M68k
 
         protected IEnumerator<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
         {
-            var d = (M68kDisassembler2) arch.CreateDisassembler(rdr);
+            var d = (M68kDisassembler) arch.CreateDisassembler(rdr);
             while (rdr.IsValid)
             {
                 var addr = d.Address;
@@ -71,7 +72,7 @@ namespace Decompiler.Arch.M68k
                 di = dasm.Current;
                 ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
                 emitter = new RtlEmitter(ric.Instructions);
-                orw = new OperandRewriter(this);
+                orw = new OperandRewriter(this, di.Instruction.dataWidth);
                 switch (di.Instruction.code)
                 {
                 case Opcode.adda: RewriteAdda(); break;
@@ -88,7 +89,6 @@ namespace Decompiler.Arch.M68k
             }
             yield break;
         }
-
 
         IEnumerator IEnumerable.GetEnumerator()
         {

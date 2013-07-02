@@ -23,6 +23,7 @@ using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Decompiler.Core
 {
@@ -86,14 +87,10 @@ namespace Decompiler.Core
 			return graphStms.Predecessors(proc);
 		}
 
-		public void Emit(TextWriter wri)
+		public void Write(TextWriter wri)
 		{
-            SortedList<Procedure, Procedure> sl = new SortedList<Procedure, Procedure>(new ProcedureComparer());
-			foreach (Procedure proc in graphProcs.Nodes)
-			{
-				sl.Add(proc, proc);
-			}
-			foreach (Procedure proc in sl.Values)
+            var sl = graphProcs.Nodes.OrderBy(n => n, new ProcedureComparer());
+			foreach (Procedure proc in sl)
 			{
 				wri.WriteLine("Procedure {0} calls:", proc.Name);
 				foreach (Procedure p in graphProcs.Successors(proc))
@@ -101,6 +98,16 @@ namespace Decompiler.Core
 					wri.WriteLine("\t{0}", p.Name);
 				}
 			}
+
+            var st = graphStms.Nodes.OfType<Statement>().OrderBy(n => n, new StmComparer());
+            foreach (var stm in st)
+            {
+                wri.WriteLine("Statement {0:X8} {1} calls:", stm.LinearAddress, stm.Instruction);
+                foreach (Procedure p in graphStms.Successors(stm).OfType<Procedure>())
+                {
+                    wri.WriteLine("\t{0}", p.Name);
+                }
+            }
 		}
 
 		private class ProcedureComparer : IComparer<Procedure>
@@ -114,6 +121,18 @@ namespace Decompiler.Core
 
 			#endregion
 		}
+
+        private class StmComparer : IComparer<Statement>
+        {
+            public int Compare(Statement a, Statement b)
+            {
+                return a.LinearAddress < b.LinearAddress
+                    ? -1
+                    : a.LinearAddress > b.LinearAddress
+                        ? 1
+                        : 0;
+            }
+        }
 
 		public List<Procedure> EntryPoints
 		{

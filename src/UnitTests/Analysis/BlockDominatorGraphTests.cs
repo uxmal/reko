@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DiamondMock().Procedure;
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
-            var topDiamond = proc.ControlGraph.Blocks[1];
+            var topDiamond = proc.ControlGraph.Blocks[2];
             Assert.IsTrue(doms.DominatesStrictly(topDiamond, topDiamond.ElseBlock));
             Assert.IsTrue(doms.DominatesStrictly(topDiamond, topDiamond.ThenBlock));
             Assert.IsTrue(doms.DominatesStrictly(topDiamond, topDiamond.ThenBlock.Succ[0]));

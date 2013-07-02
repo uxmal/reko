@@ -216,9 +216,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFxam()
         {
-            //$TODO: need to make this an assignment to C0|C1|C2|C3 = __fxam();
-            // idiomatically followed by fstsw &c.
-            emitter.SideEffect(PseudoProc("__fxam", PrimitiveType.Byte));
+            emitter.Assign(orw.FlagGroup(FlagM.FPUF), emitter.Cond(FpuRegister(0)));
         }
 
         private void RewriteFyl2x()

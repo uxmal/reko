@@ -86,9 +86,13 @@ namespace Decompiler.UnitTests.Gui
         {
             var sp = repository.StrictMock<IServiceProvider>();
             var mvs = repository.StrictMock<IMemoryViewService>();
-            
+            var cvs = repository.StrictMock<ICodeViewerService>();
+
+            sp.Expect(s => s.GetService(
+                Arg<Type>.Is.Same(typeof(ICodeViewerService)))).Return(cvs);
             sp.Expect(s => s.GetService(
                 Arg<Type>.Is.Same(typeof (IMemoryViewService)))).Return(mvs);
+            cvs.Stub(c => c.DisplayProcedure(null)).IgnoreArguments();
             mvs.Expect(s => s.ShowMemoryAtAddress(
                 Arg<Address>.Is.Equal(new Address(0x4234))));
             repository.ReplayAll();

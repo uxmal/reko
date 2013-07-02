@@ -25,17 +25,12 @@ namespace Decompiler.Core
 {
     public class Diagnostic
     {
-        private string message;
-
         public Diagnostic(string message)
         {
-            this.message = message;
+            this.Message = message;
         }
 
-        public string Message
-        {
-            get { return message; }
-        }
+        public string Message { get; private set; }
 
         public virtual string ImageKey
         {

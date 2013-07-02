@@ -43,6 +43,10 @@ namespace Decompiler.Core
 			inQ = new HashSet<T>(coll);
 		}
 
+        /// <summary>
+        /// Adds an item to the work list, but only if it isn't there already.
+        /// </summary>
+        /// <param name="t"></param>
 		public void Add(T  t)
 		{
 			if (!inQ.Contains(t))

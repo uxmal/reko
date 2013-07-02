@@ -34,10 +34,6 @@ namespace Decompiler.Core.Serialization
 		[XmlElement("filename")]
 		public string Filename;
 
-		[XmlElement("file-format")]
-		[DefaultValue(InputFormat.None)]
-		public InputFormat FileFormat;
-
 		[XmlElement("address")]
 		public string Address;
     }

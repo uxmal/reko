@@ -187,7 +187,7 @@ namespace Decompiler.Arch.M68k
                     throw new FormatException("Illegal address mode.");
                 if (EXT_FULL(extension))
                 {
-                    if (M68kDisassembler2.EXT_EFFECTIVE_ZERO(extension))
+                    if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
                     {
                         return new ImmediateOperand(Constant.Zero(dataWidth));
                     }
@@ -232,7 +232,7 @@ namespace Decompiler.Arch.M68k
                 if (EXT_8BIT_DISPLACEMENT(extension) == 0)
                     mode = string.Format("(A{0},{1}{2}.{3}", opcode& 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
                 else
-                    mode = string.Format("({0},A{1},{2}{3}.{4}", M68kDisassembler2.make_signed_hex_str_8(extension), opcode & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                    mode = string.Format("({0},A{1},{2}{3}.{4}", M68kDisassembler.make_signed_hex_str_8(extension), opcode & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
                 if (EXT_INDEX_SCALE(extension) != 0)
                     mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
                 mode += ")";
@@ -353,17 +353,17 @@ namespace Decompiler.Arch.M68k
 
                 /* Extension word formats */
         private static uint EXT_8BIT_DISPLACEMENT(uint A) { return ((A) & 0xff); }
-        internal static bool EXT_FULL(uint A) { return M68kDisassembler2.BIT_8(A); }
+        internal static bool EXT_FULL(uint A) { return M68kDisassembler.BIT_8(A); }
         internal static bool EXT_EFFECTIVE_ZERO(uint A) { return (((A) & 0xe4) == 0xc4 || ((A) & 0xe2) == 0xc0); }
-        private static bool EXT_BASE_REGISTER_PRESENT(uint A) { return !(M68kDisassembler2.BIT_7(A)); }
-        private static bool EXT_INDEX_REGISTER_PRESENT(uint A) { return !(M68kDisassembler2.BIT_6(A)); }
+        private static bool EXT_BASE_REGISTER_PRESENT(uint A) { return !(M68kDisassembler.BIT_7(A)); }
+        private static bool EXT_INDEX_REGISTER_PRESENT(uint A) { return !(M68kDisassembler.BIT_6(A)); }
         private static uint EXT_INDEX_REGISTER(uint A) { return (((A) >> 12) & 7); }
         private static bool EXT_INDEX_PRE_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && (A & 3) != 0); }
         private static bool EXT_INDEX_PRE(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) < 4 && ((A) & 7) != 0); }
         private static bool EXT_INDEX_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) > 4); }
         internal static int EXT_INDEX_SCALE(uint A) { return (int)(((A) >> 9) & 3); }
-        private static bool EXT_INDEX_LONG(uint A) { return M68kDisassembler2.BIT_B(A); }
-        private static bool EXT_INDEX_AR(uint A) { return M68kDisassembler2.BIT_F(A); }
+        private static bool EXT_INDEX_LONG(uint A) { return M68kDisassembler.BIT_B(A); }
+        private static bool EXT_INDEX_AR(uint A) { return M68kDisassembler.BIT_F(A); }
         private static bool EXT_BASE_DISPLACEMENT_PRESENT(uint A) { return (((A) & 0x30) > 0x10); }
         private static bool EXT_BASE_DISPLACEMENT_WORD(uint A) { return (((A) & 0x30) == 0x20); }
         private static bool EXT_BASE_DISPLACEMENT_LONG(uint A) { return (((A) & 0x30) == 0x30); }

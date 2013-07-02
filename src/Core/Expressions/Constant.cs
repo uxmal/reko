@@ -25,33 +25,6 @@ using System.Globalization;
 
 namespace Decompiler.Core.Expressions
 {
-    public class StringConstant : Constant
-    {
-        private string str;
-
-        public StringConstant(DataType type, string str) : base(type) 
-        {
-            this.str = str;
-        }
-
-        public int Length { get { return str.Length; } }
-
-        public override Expression CloneExpression()
-        {
-            return new StringConstant(DataType, str);
-        }
-
-        public override object GetValue()
-        {
-            return str;
-        }
-
-        public override string ToString()
-        {
-            return str;
-        }
-    }
-
 	public abstract class Constant : Expression
 	{
         protected Constant(DataType t)
@@ -167,7 +140,6 @@ namespace Decompiler.Core.Expressions
 			}
 			return mantissa * IntPow(m, exponent);
 		}
-
 
 		public static Constant False()
 		{
@@ -723,6 +695,34 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return Convert.ToUInt64(value);
+        }
+    }
+
+    public class StringConstant : Constant
+    {
+        private string str;
+
+        public StringConstant(DataType type, string str)
+            : base(type)
+        {
+            this.str = str;
+        }
+
+        public int Length { get { return str.Length; } }
+
+        public override Expression CloneExpression()
+        {
+            return new StringConstant(DataType, str);
+        }
+
+        public override object GetValue()
+        {
+            return str;
+        }
+
+        public override string ToString()
+        {
+            return str;
         }
     }
 }

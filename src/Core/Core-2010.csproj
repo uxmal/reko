@@ -458,9 +458,6 @@
     <Compile Include="Serialization\SerializedProject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\InputFormat.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Serialization\ProcedureCharacteristics.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    public partial class M68kDisassembler2
+    public partial class M68kDisassembler
     {
 
     }
