@@ -82,7 +82,7 @@
 
     <typedef name="LPVOID">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
@@ -100,43 +100,43 @@
 
     <typedef name="HBRUSH">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="HWND">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
     <typedef name="HMENU">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
     <typedef name="HDC">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
     <typedef name="HINSTANCE">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="HICON">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
     <typedef name="HCURSOR">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
@@ -172,13 +172,13 @@
 
     <typedef name="DLGPROC">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="TIMERPROC">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
   </Types>

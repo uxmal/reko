@@ -47,6 +47,8 @@ namespace Decompiler.Core.Types
 		Selector = 128,
         SegPointer = 256,   // Segmented pointer (x86-style)
         PtrCode = 512,      // Pointer to executable code.
+
+        Any = Boolean|Character|SignedInt|UnsignedInt|Real|Pointer|Selector|SegPointer
 	}
 
 	/// <summary>

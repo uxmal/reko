@@ -30,7 +30,7 @@
     </typedef>
     
     <typedef name="VOID">
-        <prim domain="Void" />
+        <void />
     </typedef>
     
     <typedef name="INT">
@@ -43,55 +43,55 @@
     
     <typedef name="LPTOP_LEVEL_EXCEPTION_FILTER">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>  
     
      <typedef name="LPSTARTUPINFOA">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>  
     
      <typedef name="LPSECURITY_ATTRIBUTES">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>  
     
     <typedef name="LPOSVERSIONINFOA">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="FARPROC">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="PEXCEPTION_RECORD">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
     <typedef name="PVOID">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="LPVOID">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="LPCVOID">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
@@ -169,42 +169,42 @@
 
     <typedef name="LPOVERLAPPED">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>    
     
     <typedef name="LPSYSTEMTIME">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>    
 
     <typedef name="HANDLE">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
 
     <typedef name="HMODULE">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
   
     <typedef name="HRSRC">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
     
     <typedef name="HGLOBAL">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>    
     <typedef name="PCPINFO">
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
     </typedef>
   </Types>
@@ -231,7 +231,7 @@
       </arg>
       <arg name="lpSecurityAttributes">
         <ptr>
-          <prim domain="Void" />
+          <void />
         </ptr>
         <stack size="4" />
       </arg>

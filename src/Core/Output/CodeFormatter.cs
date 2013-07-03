@@ -47,6 +47,7 @@ namespace Decompiler.Core.Output
 		private const int PrecedenceMemberPointerSelector = 3;
 		private const int PrecedenceCase = 2;
 		private const int PrecedenceLeast = 20;
+        private TypeGraphWriter typeWriter;
 
 		public CodeFormatter(Formatter writer)
 		{
@@ -757,7 +758,8 @@ namespace Decompiler.Core.Output
                     writer.Write(" ");
                 }
             }
-            writer.Write(arg.DataType.ToString());
+            typeWriter = new TypeGraphWriter(writer.TextWriter);
+            typeWriter.WriteReference(arg.DataType);
         }
 
 		public void WriteIndentedStatement(AbsynStatement stm)

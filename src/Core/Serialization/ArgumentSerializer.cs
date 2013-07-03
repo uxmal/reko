@@ -71,7 +71,7 @@ private  string convention;
 			var dt = this.argCur.Type.Accept(ps.TypeLoader);
             if (dt is VoidType)
             {
-                idArg = new Identifier(argCur.Name, 0, dt, new TemporaryStorage());
+                idArg = null;
                 return;
             }
 			idArg = ps.CreateId(

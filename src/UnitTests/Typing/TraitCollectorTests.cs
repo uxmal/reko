@@ -92,6 +92,12 @@ namespace Decompiler.UnitTests.Typing
 			RunTest("Fragments/Type/unknown.asm", "Typing/TrcoUnknown.txt");
 		}
 
+        [Test]
+        public void TrcoReals()
+        {
+            RunTest("Fragments/fpuops.asm", "Typing/TrcoReals.txt");
+        }
+
 		[Test]
 		public void TrcoMemAccesses()
 		{

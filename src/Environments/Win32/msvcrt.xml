@@ -12,7 +12,7 @@
 	<signature>
     <return>
       <ptr>
-        <prim domain="Void" />
+        <void />
       </ptr>
       <reg>eax</reg>
     </return>
@@ -25,7 +25,7 @@
   <procedure name="free">
 	<signature>
     <arg>
-      <ptr><prim domain="Void" /></ptr>
+      <ptr><void /></ptr>
       <stack size="4" />
     </arg>
 	</signature>
@@ -84,7 +84,7 @@
   <procedure name="calloc">
 	<signature>
 	  <return>
-      <ptr><prim domain="Void" /></ptr>
+      <ptr><void /></ptr>
 		<reg>eax</reg>
 	  </return>
     <arg>
@@ -123,7 +123,9 @@
   <procedure name="srand">
 	<signature>
 	  <return>
-      <type domain="Void" />
+      <type>
+        <void />
+      </type>
 		  <reg>eax</reg>
 	  </return>
 	  <arg>

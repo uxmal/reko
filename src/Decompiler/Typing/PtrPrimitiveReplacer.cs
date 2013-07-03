@@ -39,7 +39,7 @@ namespace Decompiler.Typing
 		private TypeFactory factory;
 		private TypeStore store; 
 		private bool changed;
-        private Dictionary<EquivalenceClass, EquivalenceClass> classesVisited;
+        private HashSet<EquivalenceClass> classesVisited;
 
 		public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store)
 		{
@@ -57,13 +57,13 @@ namespace Decompiler.Typing
 		public bool ReplaceAll()
 		{
 			changed = false;
-			classesVisited  = new Dictionary<EquivalenceClass,EquivalenceClass>();
+			classesVisited  = new HashSet<EquivalenceClass>();
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				EquivalenceClass eq = tv.Class;
-				if (!classesVisited.ContainsKey(eq))
+				if (!classesVisited.Contains(eq))
 				{
-					classesVisited.Add(eq, eq);
+					classesVisited.Add(eq);
 					eq.DataType = Replace(eq.DataType);
 				}
 			}
@@ -73,9 +73,10 @@ namespace Decompiler.Typing
                 tv.DataType = Replace(tv.DataType);
 			}
 
-			foreach (EquivalenceClass eq in classesVisited.Values)
+			foreach (EquivalenceClass eq in classesVisited)
 			{
 				if (eq.DataType is PrimitiveType ||
+                    eq.DataType is VoidType ||
 					eq.DataType is EquivalenceClass)
 				{
 					eq.DataType = null;
@@ -105,9 +106,9 @@ namespace Decompiler.Typing
 
         public override DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
-            if (!classesVisited.ContainsKey(eq))
+            if (!classesVisited.Contains(eq))
             {
-                classesVisited.Add(eq, eq);
+                classesVisited.Add(eq);
                 if (eq.DataType != null)
                 {
                     eq.DataType = eq.DataType.Accept(this);
@@ -120,6 +121,11 @@ namespace Decompiler.Typing
             {
                 changed = true;
                 return pr;
+            }
+            if (dt is VoidType)
+            {
+                changed = true;
+                return dt;
             }
             Pointer ptr = dt as Pointer;
             if (ptr != null)
@@ -146,7 +152,6 @@ namespace Decompiler.Typing
 		{
 			throw new TypeInferenceException("Type variables mustn't occur at this stage.");
 		}
-
 
 		#endregion
 	}

@@ -228,16 +228,16 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void HasCoincidentUnion()
         {
-            EquivalenceClass eq = new EquivalenceClass(
+            var eq = new EquivalenceClass(
                 new TypeVariable(42),
                 new UnionType(null, null,
                     PrimitiveType.SegPtr32, PrimitiveType.Word16));
-            StructureType s = new StructureType(null, 0)
+            var s = new StructureType(null, 0)
             {
                 Fields =
                 { 
-                    { 0, eq},
-                    { 2, PrimitiveType.SegmentSelector }
+                    { 0, eq },
+                    { 0, PrimitiveType.SegmentSelector }
                 }
             };
             TypeTransformer trans = new TypeTransformer(factory, null, null);

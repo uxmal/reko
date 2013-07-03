@@ -32,10 +32,10 @@ namespace Decompiler.UnitTests.Core.Serialization
     public class DataTypeSerializerTests
     {
         [Test]
-        public void DTS_Primitive()
+        public void DTS_Primitive_Int32()
         {
-            var pt = PrimitiveType.Word32.Accept(new DataTypeSerializer());
-            Assert.AreEqual("word32", pt.ToString());
+            var pt = PrimitiveType.Int32.Accept(new DataTypeSerializer());
+            Assert.AreEqual("prim(SignedInt,4)", pt.ToString());
         }
     }
 }

@@ -112,23 +112,40 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ssig = new SerializedSignature
             {
                 Convention = "stdapi",
-                ReturnValue = new SerializedArgument {
-                    Type = new SerializedTypeReference("int"), 
-                    Kind = new SerializedRegister { Name = "eax" },
-                },
+                ReturnValue = RegArg(Type("int"), "eax"),
                 Arguments = new SerializedArgument[] {
-                    new SerializedArgument {
-                        Type = new SerializedTypeReference("double"), 
-                        Kind = new SerializedFpuStackVariable {
-                            ByteSize = 8
-                        }
-                    }
+                    FpuArg(Type("double"),  null)
                 }
             };
             var ps = new ProcedureSerializer(arch, "stdapi");
             var sig = ps.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
-            Assert.AreEqual(8, sig.StackDelta);
+            Assert.AreEqual(0, sig.StackDelta);
+            Assert.AreEqual("Register word32 test(FpuStack real64 fpArg0)", sig.ToString("test"));
+        }
+
+        private SerializedType Type(string typeName)
+        {
+            return new SerializedTypeReference(typeName);
+        }
+
+        private SerializedArgument RegArg(SerializedType type, string regName)
+        {
+            return new SerializedArgument
+            {
+                Type = type,
+                Kind = new SerializedRegister { Name = "eax" },
+                Name = regName
+            };
+        }
+
+        private SerializedArgument FpuArg(SerializedType type, string name)
+        {
+            return new SerializedArgument(
+                name, 
+                type, 
+                new SerializedFpuStackVariable { ByteSize = 8 },
+                false);
         }
 
         [Test]

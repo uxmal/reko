@@ -518,7 +518,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
   <Types>
     <typedef name=""HANDLE"">
       <ptr>
-        <prim domain=""Void"" size=""0"" />
+        <void />
       </ptr>
     </typedef>
   </Types>
@@ -585,7 +585,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
   <procedure name=""foo"">
     <signature>
       <return>
-        <prim domain=""Void"" size=""0"" />
+        <void />
       </return>
     </signature>
   </procedure>
@@ -625,7 +625,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
   <procedure name=""foo"">
     <signature>
       <return>
-        <prim domain=""Void"" size=""0"" />
+        <void />
       </return>
       <arg name=""q"">
         <type>PRTL_RUN_ONCE_INIT_FN</type>
