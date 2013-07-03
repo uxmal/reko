@@ -87,7 +87,6 @@ namespace Decompiler.Typing
 			throw new NotImplementedException(string.Format("Don't know how to handle pointers to {0}.", fieldType));
 		}
 
-
 		public Identifier Globals
 		{
 			get 

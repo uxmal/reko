@@ -104,9 +104,9 @@ namespace Decompiler.Core.Types
 			return unk;
 		}
 
-        public virtual DataType VisitVoidType(VoidType ut)
+        public virtual DataType VisitVoidType(VoidType vt)
         {
-            throw new NotImplementedException();
+            return vt;
         }
 	}
 }

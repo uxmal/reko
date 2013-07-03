@@ -253,19 +253,13 @@ namespace Decompiler.Typing
 				appl.Arguments[i].Accept(this);
 				paramTypes[i] = appl.Arguments[i].TypeVariable;
 			}
-			var dt = handler.DataTypeTrait(appl, appl.DataType as PrimitiveType); 
+			var dt = handler.DataTypeTrait(appl, appl.DataType); 
 			handler.FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
 
 			BindActualTypesToFormalTypes(appl);
 
 			ivCur = null;
             return dt;
-		}
-
-		public class ArrayContext
-		{
-			public int ElementSize;
-			public int Length;
 		}
 
 		public DataType VisitArrayAccess(ArrayAccess acc)
@@ -427,7 +421,6 @@ namespace Decompiler.Typing
             }
 			throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
 		}
-
 
 		public DataType VisitBranch(Branch b)
 		{

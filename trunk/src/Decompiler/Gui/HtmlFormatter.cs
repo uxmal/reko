@@ -50,12 +50,12 @@ namespace Decompiler.Gui
                 char ch = text[i];
                 switch (ch)
                 {
-                case '<': writer.Write("&lt;"); break;
-                case '>': writer.Write("&gt;"); break;
-                case '&': writer.Write("&amp;"); break;
-                case '"': writer.Write("&quot;"); break;
-                case ' ': writer.Write("&nbsp;"); break;
-                default: writer.Write(ch); break;
+                case '<': base.TextWriter.Write("&lt;"); break;
+                case '>': base.TextWriter.Write("&gt;"); break;
+                case '&': base.TextWriter.Write("&amp;"); break;
+                case '"': base.TextWriter.Write("&quot;"); break;
+                case ' ': base.TextWriter.Write("&nbsp;"); break;
+                default: base.TextWriter.Write(ch); break;
                 }
             }
         }
@@ -71,39 +71,39 @@ namespace Decompiler.Gui
         {
             if (string.IsNullOrEmpty(comment))
                 return;
-            writer.Write("<span class=\"comment\">");
+            TextWriter.Write("<span class=\"comment\">");
             Write(comment);
-            writer.Write("</span>");
+            TextWriter.Write("</span>");
         }
 
         public override void WriteKeyword(string keyword)
         {
             if (keyword == null)
                 return;
-            writer.Write("<span class=\"kw\">");
+            TextWriter.Write("<span class=\"kw\">");
             Write(keyword);
-            writer.Write("</span>");
+            TextWriter.Write("</span>");
         }
 
         public override void WriteLine()
         {
-            writer.WriteLine("<br />");
+            TextWriter.WriteLine("<br />");
         }
 
         public void WriteHyperlink(string text, string href)
         {
             if (text == null)
                 return;
-            writer.Write("<a");
+            TextWriter.Write("<a");
             if (!string.IsNullOrEmpty(href))
             {
-                writer.Write(" href=\"");
+                TextWriter.Write(" href=\"");
                 WriteEntityEscaped(href);
-                writer.Write("\"");
+                TextWriter.Write("\"");
             }
-            writer.Write(">");
+            TextWriter.Write(">");
             WriteEntityEscaped(text);
-            writer.Write("</a>");
+            TextWriter.Write("</a>");
         }
     }
 }

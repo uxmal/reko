@@ -29,6 +29,7 @@ namespace Decompiler.Core.Types
     {
         private HashSet<DataType> visited;
         private TextWriter writer;
+        private bool reference;
 
         public TypeGraphWriter(TextWriter writer)
         {
@@ -92,7 +93,7 @@ namespace Decompiler.Core.Types
         public TextWriter VisitPointer(Pointer ptr)
         {
 			writer.Write("(ptr ");
-			ptr.Pointee.Accept(this);
+			WriteReference(ptr.Pointee);
 			writer.Write(")");
             return writer;
 		}        
@@ -112,7 +113,7 @@ namespace Decompiler.Core.Types
                 writer.Write(" {0:X4}", str.Size);
             }
 
-            if (!visited.Contains(str))
+            if (!visited.Contains(str) && (!reference || str.Name == null))
             {
                 visited.Add(str);
                 foreach (StructureField f in str.Fields)
@@ -156,7 +157,7 @@ namespace Decompiler.Core.Types
                 writer.Write(" \"{0}\"", ut.Name);
             }
             int i = 0;
-            if (!visited.Contains(ut))
+            if (!visited.Contains(ut) && (!reference || ut.Name == null))
             {
                 visited.Add(ut);
                 foreach (UnionAlternative alt in ut.Alternatives.Values)
@@ -181,6 +182,20 @@ namespace Decompiler.Core.Types
         {
             writer.Write("void");
             return writer;
+        }
+
+        internal void WriteReference(DataType dataType)
+        {
+            var old = reference;
+            reference = true;
+            try
+            {
+                dataType.Accept(this);
+            }
+            finally
+            {
+                reference = old;
+            }
         }
     }
 }

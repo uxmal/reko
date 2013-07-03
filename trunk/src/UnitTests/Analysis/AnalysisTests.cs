@@ -37,8 +37,8 @@ namespace Decompiler.UnitTests.Analysis
 	public class AnalysisTests : AnalysisTestBase
 	{
 		[Test]
-		public void DiamondDominatorTest()
-		{
+        public void DiamondDominatorTest()
+        {
 			Program prog = RewriteFile("Fragments/diamond.asm");
 			Procedure proc = prog.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();

@@ -29,11 +29,9 @@ namespace Decompiler.Core.Output
 	/// </summary>
 	public class Formatter
 	{
-		protected TextWriter writer;
-
 		public Formatter(TextWriter writer)
 		{
-			this.writer = writer;
+			this.TextWriter = writer;
 			this.UseTabs = true;
 			this.TabSize = 4;
 			this.Indentation = 4;
@@ -62,41 +60,42 @@ namespace Decompiler.Core.Output
 		public int TabSize  {get; set; }
         public string Terminator { get; set; }
         public bool UseTabs { get; set; }
+        public TextWriter TextWriter { get; private set; }
 
         public void Terminate()
 		{
-			writer.Write(Terminator);
+			TextWriter.Write(Terminator);
 		}
 
 		public void Terminate(string s)
 		{
 			Write(s);
-			writer.Write(Terminator);
+			TextWriter.Write(Terminator);
 		}
 
         public virtual void Write(string s)
         {
-            writer.Write(s);
+            TextWriter.Write(s);
         }
 
         public virtual void Write(string format, params object[] arguments)
         {
-            writer.Write(format, arguments);
+            TextWriter.Write(format, arguments);
         }
 
         public virtual void WriteComment(string comment)
         {
-            writer.Write(comment);
+            TextWriter.Write(comment);
         }
 
         public virtual void WriteKeyword(string keyword)
         {
-            writer.Write(keyword);
+            TextWriter.Write(keyword);
         }
 
         public virtual void WriteLine()
         {
-            writer.WriteLine();
+            TextWriter.WriteLine();
         }
 
 		public void WriteSpaces(int n)

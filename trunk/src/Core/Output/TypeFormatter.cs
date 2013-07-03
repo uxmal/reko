@@ -65,7 +65,6 @@ namespace Decompiler.Core.Output
 			writer.Write(s);
 		}
 
-
 		public void EndLine()
 		{
 			EndLine("", null);
