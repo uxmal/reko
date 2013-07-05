@@ -247,8 +247,11 @@ namespace Decompiler.Scanning
                 var wi = CreateBlockWorkItem(addrStart, proc, state);
                 queue.Enqueue(PriorityJumpTarget, wi);
             }
-            return block;
+
+            return new BlockPromoter(program).MaybePromote(block, addrStart, proc);
         }
+
+
 
         /// <summary>
         /// Determines whether a block is a linear sequence of assignments followed by a return 
@@ -270,39 +273,9 @@ namespace Decompiler.Scanning
             }
         }
 
-        private bool BlockIsEntryBlock(Block block)
-        {
-            return 
-                block.Pred.Count == 1 &&
-                block.Pred[0] == block.Procedure.EntryBlock;
-        }
-
-        /// <summary>
-        /// Promotes a block to being the entry of a procedure.
-        /// </summary>
-        /// <param name="block">Block to promote</param>
-        /// <param name="addrStart">Address at which the block starts</param>
-        /// <param name="proc">The procedure from which the block is called.</param>
-        /// <returns></returns>
-        public Block PromoteBlock(Block block, Address addrStart, Procedure proc)
-        {
-            Procedure procNew;
-            if (!Procedures.TryGetValue(addrStart, out procNew))
-            {
-                procNew = Procedure.Create(addrStart, program.Architecture.CreateFrame());
-                procNew.Frame.ReturnAddressSize = proc.Frame.ReturnAddressSize;
-                procNew.Characteristics = new ProcedureCharacteristics(proc.Characteristics);
-                Procedures.Add(addrStart, procNew);
-                CallGraph.AddProcedure(procNew);
-            }
-            var bp = new BlockPromoter(program, block, procNew);
-            bp.Promote();
-            return block;
-        }
-
         private Block FixInboundEdges(Block block, Procedure procNew)
         {
-            var bp = new BlockPromoter(program, block, procNew);
+            var bp = new BlockPromoter(program);
             bp.FixInboundEdges();
             return bp.CallRetThunkBlock;
         }

@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Scanning
 
             var program = new Program { Architecture = new FakeArchitecture() };
             Procedure promotedProcedure = Procedure.Create(new Address(0x123450), new Frame(PrimitiveType.Word32));
-            var blockPromoter = new BlockPromoter(program, blockToPromote, promotedProcedure);
+            var blockPromoter = new BlockPromoter(program);
             blockPromoter.Promote();
 
             var sw = new StringWriter();

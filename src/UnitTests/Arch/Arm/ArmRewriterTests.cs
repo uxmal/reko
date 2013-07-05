@@ -35,6 +35,11 @@ namespace Decompiler.UnitTests.Arch.Arm
     {
         private IEnumerator<RtlInstructionCluster> eCluster;
 
+        protected override IProcessorArchitecture CreateArchitecture()
+        {
+            return new ArmProcessorArchitecture();
+        }
+
         protected void RewriteBits(string bitPattern)
         {
             var arch = new ArmProcessorArchitecture();
