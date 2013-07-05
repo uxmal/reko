@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.Arm;
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch.Arm
 {
-    public class ArmTestBase
+    public abstract class ArmTestBase
     {
         protected static ArmInstruction Disassemble(byte[] bytes)
         {
@@ -47,15 +48,18 @@ namespace Decompiler.UnitTests.Arch.Arm
             return dasm.Disassemble();
         }
 
-        protected static ArmInstruction DisassembleBits(string bitPattern)
+        protected MachineInstruction DisassembleBits(string bitPattern)
         {
             var image = new ProgramImage(new Address(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);
-            var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateReader(0));
-            return dasm.Disassemble();
+            var arch = CreateArchitecture();
+            var dasm = arch.CreateDisassembler(image.CreateReader(0));
+            return dasm.DisassembleInstruction();
         }
+
+        protected abstract IProcessorArchitecture CreateArchitecture();
 
         protected static uint ParseBitPattern(string bitPattern)
         {
@@ -81,6 +85,11 @@ namespace Decompiler.UnitTests.Arch.Arm
     [TestFixture]
     public class ArmDisassemblerTests : ArmTestBase
     {
+        protected override IProcessorArchitecture CreateArchitecture()
+        {
+            return new ArmProcessorArchitecture();
+        }
+
         [Test]
         public void Cond_Eq()
         {

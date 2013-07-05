@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,21 +43,71 @@ namespace Decompiler.Scanning
         private Procedure procNew;
         private IdentifierReplacer replacer;
 
-        public BlockPromoter(Program program, Block blockToPromote, Procedure procNew)
+        public BlockPromoter(Program program)
         {
             this.program = program;
-            this.blockToPromote = blockToPromote;
+        }
+
+        public Block MaybePromote(Block block, Address addrStart, Procedure proc)
+        {
+            if (BlockInDifferentProcedure(block, proc))
+            {
+                if (!BlockIsEntryBlock(block))
+                {
+                    Debug.Print("Block {0} (proc {1}) is not entry block", block, block.Procedure);
+                    block = PromoteBlock(block, addrStart);
+                }
+            }
+            return block;
+        }
+
+        public bool BlockInDifferentProcedure(Block block, Procedure proc)
+        {
+            if (block.Procedure == null)
+                throw new InvalidOperationException("Blocks must always be associated with a procedure.");
+            Debug.Print("{0} should be promoted: {1}", block.Name, block.Procedure != proc);
+            return (block.Procedure != proc);
+        }
+
+        private bool BlockIsEntryBlock(Block block)
+        {
+            return
+                block.Pred.Count == 1 &&
+                block.Pred[0] == block.Procedure.EntryBlock;
+        }
+
+        /// <summary>
+        /// Promotes a block to being the entry of a procedure.
+        /// </summary>
+        /// <param name="block">Block to promote</param>
+        /// <param name="addrStart">Address at which the block starts</param>
+        /// <param name="proc">The procedure from which the block is called.</param>
+        /// <returns></returns>
+        public Block PromoteBlock(Block block, Address addrStart)
+        {
+            this.blockToPromote = block ;
             this.procOld = blockToPromote.Procedure;
-            this.procNew = procNew;
-            this.replacer = new IdentifierReplacer(procNew.Frame);
+            if (!program.Procedures.TryGetValue(addrStart, out procNew))
+            {
+                procNew = Procedure.Create(addrStart, program.Architecture.CreateFrame());
+                procNew.Frame.ReturnAddressSize = procOld.Frame.ReturnAddressSize;
+                procNew.Characteristics = new ProcedureCharacteristics(procOld.Characteristics);
+                program.Procedures.Add(addrStart, procNew);
+                program.CallGraph.AddProcedure(procNew);
+            }
+            Promote();
+            return block;
         }
 
         public void Promote()
         {
             var movedBlocks = new HashSet<Block>(
-                new DfsIterator<Block>(procOld.ControlGraph).PreOrder(blockToPromote));
+                new DfsIterator<Block>(procOld.ControlGraph)
+                .PreOrder(blockToPromote)
+                .Where(b => b.Procedure == blockToPromote.Procedure));
             movedBlocks.Remove(procOld.ExitBlock);
 
+            this.replacer = new IdentifierReplacer(procNew.Frame);
             foreach (var b in movedBlocks)
             {
                 procOld.RemoveBlock(b);
@@ -70,9 +121,14 @@ namespace Decompiler.Scanning
 
             ReplaceJumpsToExitBlock(movedBlocks);
             FixInboundEdges();
-
+            foreach (var b in movedBlocks)
+            {
+                FixOutboundEdges(b);
+            }
             procNew.ControlGraph.AddEdge(procNew.EntryBlock, blockToPromote);
         }
+
+        
 
         private void ReplaceJumpsToExitBlock(HashSet<Block> movedBlocks)
         {
@@ -101,16 +157,34 @@ namespace Decompiler.Scanning
 
         public Block FixInboundEdges(Block blockToPromote, Procedure procOld, Procedure procNew)
         {
-            var callRetThunkBlock = procOld.AddBlock(blockToPromote + Scanner.CallRetThunkSuffix);
-            callRetThunkBlock.Statements.Add(0, new CallInstruction(
-                new ProcedureConstant(program.Architecture.PointerType, procNew),
-                new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
-            program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
-            callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
-
+            var callRetThunkBlock = CreateCallRetThunk(blockToPromote, procOld, procNew);
             Block.ReplaceJumpsTo(blockToPromote, callRetThunkBlock);
-
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
+            return callRetThunkBlock;
+        }
+
+        private void FixOutboundEdges(Block b)
+        {
+            for (int i = 0; i < b.Succ.Count; ++i)
+            {
+                var s= b.Succ[i];
+                if (b.Procedure != s.Procedure)
+                {
+                    var thunk = CreateCallRetThunk(b, b.Procedure, s.Procedure);
+                    Block.ReplaceJumpsTo(s, thunk);
+                    procOld.ControlGraph.AddEdge(thunk, b.Procedure.ExitBlock);
+                }
+            }
+        }
+
+        private Block CreateCallRetThunk(Block block, Procedure procOld, Procedure procNew)
+        {
+            var callRetThunkBlock = procOld.AddBlock(block.Name + Scanner.CallRetThunkSuffix);
+                callRetThunkBlock.Statements.Add(0, new CallInstruction(
+                        new ProcedureConstant(program.Architecture.PointerType, procNew),
+                        new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
+                    program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
+                    callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
             return callRetThunkBlock;
         }
 
@@ -133,14 +207,6 @@ namespace Decompiler.Scanning
             }
          
          */
-
-        private bool BlockInDifferentProcedure(Block block, Procedure proc)
-        {
-            if (block.Procedure == null)
-                throw new InvalidOperationException("Blocks must always be associated with a procedure.");
-            Debug.Print("{0} should be promoted: {1}", block.Name, block.Procedure != proc);
-            return (block.Procedure != proc);
-        }
 
         public Block CallRetThunkBlock { get; private set; }
 

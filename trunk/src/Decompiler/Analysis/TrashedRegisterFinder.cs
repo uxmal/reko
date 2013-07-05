@@ -172,7 +172,18 @@ namespace Decompiler.Analysis
             {
                 try
                 {
-                    stm.Instruction = stm.Instruction.Accept(propagator);
+                    Instruction instr = stm.Instruction.Accept(propagator);
+#if DEBUG
+                    string sInstr = stm.Instruction.ToString();
+                    string sInstrNew = instr.ToString();
+                    if (sInstr != sInstrNew)
+                    {
+                        Debug.Print("Changed: ");
+                        Debug.Print("\t{0}", sInstr);
+                        Debug.Print("\t{0}", sInstrNew);
+                    }
+#endif
+                    stm.Instruction = instr;
                 }
                 catch (Exception ex)
                 {
