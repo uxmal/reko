@@ -47,12 +47,12 @@ namespace Decompiler.Core
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public override ProcedureSignature LookupProcedure(string procName)
@@ -60,5 +60,4 @@ namespace Decompiler.Core
             return null;
         }
     }
-
 }

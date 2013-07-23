@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             site.AddService(typeof(IStatusBarService), new FakeStatusBarService());
-            TestLoader ldr = new TestLoader(new SerializedProject(), prog);
+            TestLoader ldr = new TestLoader(new SerializedProject_v1(), prog);
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), site);
             decSvc.Decompiler.LoadProgram("test.exe");
 
@@ -247,10 +247,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestLoader : LoaderBase
         {
-            private SerializedProject project;
+            private SerializedProject_v1 project;
             private Program prog;
 
-            public TestLoader(SerializedProject project, Program prog)
+            public TestLoader(SerializedProject_v1 project, Program prog)
             {
                 this.project = project;
                 this.prog = prog;

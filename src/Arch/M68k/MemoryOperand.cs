@@ -46,6 +46,8 @@ namespace Decompiler.Arch.M68k
         T Visit(RegisterSetOperand registerSet);
 
         T Visit(IndexedOperand indexedOperand);
+
+        T Visit(IndirectIndexedOperand indirectIndexedOperand);
     }
 
     public abstract class M68kOperandImpl : MachineOperand, M68kOperand
@@ -88,7 +90,6 @@ namespace Decompiler.Arch.M68k
         {
             throw new NotImplementedException();
         }
-
     }
 
     public class MemoryOperand : MachineOperand
@@ -155,6 +156,29 @@ namespace Decompiler.Arch.M68k
             : base(null)
         {
             this.Register = areg;
+        }
+
+        public override T Accept<T>(M68kOperandVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+    }
+
+    public class IndirectIndexedOperand : M68kOperandImpl
+    {
+        public readonly sbyte Imm8;
+        public readonly RegisterStorage ARegister;
+        public readonly RegisterStorage XRegister;
+        public readonly PrimitiveType XWidth;
+        public readonly byte Scale;
+
+        public IndirectIndexedOperand(sbyte imm8, RegisterStorage a, RegisterStorage x, PrimitiveType width, int scale)
+            : base(null)
+        {
+            this.Imm8 = imm8;
+            this.ARegister = a;
+            this.XRegister = x;
+            this.Scale = (byte) scale;
         }
 
         public override T Accept<T>(M68kOperandVisitor<T> visitor)

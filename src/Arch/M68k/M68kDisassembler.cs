@@ -62,7 +62,15 @@ namespace Decompiler.Arch.M68k
 
             instr = new M68kInstruction();
             OpRec handler = g_instruction_table[instruction];
-            return handler.opcode_handler(this);
+            try
+            {
+                return handler.opcode_handler(this);
+            }
+            catch (Exception)
+            {
+                instr.code = Opcode.illegal;
+                return instr;
+            }
         }
 
 #if !NEVER
@@ -492,8 +500,6 @@ namespace Decompiler.Arch.M68k
 
         Constant make_signed_hex_str_32(uint val)
         {
-            val &= 0xffffffff;
-
             int s;
             if (val == 0x80000000)
                 s = (int)-0x80000000;
@@ -504,9 +510,9 @@ namespace Decompiler.Arch.M68k
             return Constant.Int32(s);
         }
 
-        private static byte read_imm_8() { throw new NotImplementedException("2"); }
-        private static ushort read_imm_16() { throw new NotImplementedException("2"); }
-        private static uint read_imm_32() { throw new NotImplementedException("4"); }
+        private byte read_imm_8() { return (byte) rdr.ReadBeInt16(); }
+        private ushort read_imm_16() { return rdr.ReadBeUInt16(); }
+        private uint read_imm_32() { return rdr.ReadBeUInt32(); }
 
         /// <summary>
         /// Build an immediate operand from the instruction stream.
@@ -2432,42 +2438,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_eori_8(M68kDisassembler dasm)
-        {
-            var str = get_imm_str_u8();
-            return new M68kInstruction
-            {
-                code = Opcode.eori,
-                dataWidth = PrimitiveType.Byte,
-                op1 = str,
-                op2 = get_ea_mode_str_8(instruction)
-            };
-        }
-
-        private M68kInstruction d68000_eori_16(M68kDisassembler dasm)
-        {
-            var str = get_imm_str_u16();
-            return new M68kInstruction
-            {
-                code = Opcode.eori,
-                dataWidth = PrimitiveType.Word16,
-                op1 = str,
-                op2 = get_ea_mode_str_16(instruction)
-            };
-        }
-
-        private M68kInstruction d68000_eori_32(M68kDisassembler dasm)
-        {
-            var str = get_imm_str_u32();
-            return new M68kInstruction
-            {
-                code = Opcode.eori,
-                dataWidth = PrimitiveType.Word32,
-                op1 = str,
-                op2 = get_ea_mode_str_32(instruction)
-            };
-        }
-
         private M68kInstruction d68000_eori_to_ccr(M68kDisassembler dasm)
         {
             return new M68kInstruction
@@ -3039,28 +3009,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_movea_16(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.movea,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_16(instruction),
-                op2 = get_addr_reg((instruction >> 9) & 7)
-            };
-        }
-
-        private M68kInstruction d68000_movea_32(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.movea,
-                dataWidth = PrimitiveType.Word32,
-                op1 = get_ea_mode_str_32(instruction),
-                op2 = get_addr_reg((instruction >> 9) & 7)
-            };
-        }
-
         private M68kInstruction d68000_move_to_ccr(M68kDisassembler dasm)
         {
             return new M68kInstruction 
@@ -3126,8 +3074,6 @@ namespace Decompiler.Arch.M68k
         {
             uint extension;
             MachineOperand reg_name;
-            string processor;
-            LIMIT_CPU_TYPES(M68010_PLUS);
             extension = read_imm_16();
 
             int regNumber = (int)extension & 0xfff;
@@ -3135,71 +3081,54 @@ namespace Decompiler.Arch.M68k
             {
             case 0x000:
                 reg_name = get_ctrl_reg("SFC", regNumber);
-                processor = "1+";
                 break;
             case 0x001:
                 reg_name = get_ctrl_reg("DFC", regNumber);
-                processor = "1+";
                 break;
             case 0x800:
                 reg_name = get_ctrl_reg("USP", regNumber);
-                processor = "1+";
                 break;
             case 0x801:
                 reg_name = get_ctrl_reg("VBR", regNumber);
-                processor = "1+";
                 break;
             case 0x002:
                 reg_name = get_ctrl_reg("CACR", regNumber);
-                processor = "2+";
                 break;
             case 0x802:
                 reg_name = get_ctrl_reg("CAAR", regNumber);
-                processor = "2,3";
                 break;
             case 0x803:
                 reg_name = get_ctrl_reg("MSP", regNumber);
-                processor = "2+";
                 break;
             case 0x804:
                 reg_name = get_ctrl_reg("ISP", regNumber);
-                processor = "2+";
                 break;
             case 0x003:
                 reg_name = get_ctrl_reg("TC", regNumber);
-                processor = "4+";
                 break;
             case 0x004:
                 reg_name = get_ctrl_reg("ITT0", regNumber);
-                processor = "4+";
                 break;
             case 0x005:
                 reg_name = get_ctrl_reg("ITT1", regNumber);
-                processor = "4+";
                 break;
             case 0x006:
                 reg_name = get_ctrl_reg("DTT0", regNumber);
-                processor = "4+";
                 break;
             case 0x007:
                 reg_name = get_ctrl_reg("DTT1", regNumber);
-                processor = "4+";
                 break;
             case 0x805:
                 reg_name = get_ctrl_reg("MMUSR", regNumber);
-                processor = "4+";
                 break;
             case 0x806:
                 reg_name = get_ctrl_reg("URP", regNumber);
-                processor = "4+";
                 break;
             case 0x807:
                 reg_name = get_ctrl_reg("SRP", regNumber);
-                processor = "4+";
                 break;
             default:
                 reg_name = new M68kImmediateOperand(make_signed_hex_str_16(extension & 0xfff));
-                processor = "?";
                 break;
             }
 
@@ -5171,9 +5100,9 @@ namespace Decompiler.Arch.M68k
 	new OpRec(0xf1c0, 0xb180, 0xbf8, Opcode.eor, "sl:D9,E0"),   //d68000_eor_32 
 	new OpRec(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
 	new OpRec(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
-	new OpRec(d68000_eori_8       , 0xffc0, 0x0a00, 0xbf8),
-	new OpRec(d68000_eori_16      , 0xffc0, 0x0a40, 0xbf8),
-	new OpRec(d68000_eori_32      , 0xffc0, 0x0a80, 0xbf8),
+	new OpRec(0xffc0, 0x0a00, 0xbf8, Opcode.eori, "sb:Ib,E0"),     // d68000_eori_8
+	new OpRec(0xffc0, 0x0a40, 0xbf8, Opcode.eori, "sw:Iw,E0"),     // d68000_eori_16
+	new OpRec(0xffc0, 0x0a80, 0xbf8, Opcode.eori, "sl:Il,E0"),     // d68000_eori_32
 	new OpRec(d68000_exg_dd       , 0xf1f8, 0xc140, 0x000),
 	new OpRec(d68000_exg_aa       , 0xf1f8, 0xc148, 0x000),
 	new OpRec(d68000_exg_da       , 0xf1f8, 0xc188, 0x000),

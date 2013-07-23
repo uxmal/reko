@@ -142,7 +142,7 @@ namespace Decompiler.Core
 		}
 
 		/// <summary>
-		/// Converts a string representation of an Address to an address.
+		/// Converts a string representation of an address to an Address.
 		/// </summary>
 		/// <param name="s">The string representation of the Address</param>
 		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
@@ -164,7 +164,11 @@ namespace Decompiler.Core
 			}
 		}
 
+        /// <summary>
+        /// Converts a hexadecimal string representation of an address to an Address.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static Address ToAddress(string s) { return ToAddress(s, 16); }
-
 	}
 }

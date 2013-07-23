@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SudWrite()
 		{
-			SerializedProject ud = new SerializedProject();
+			SerializedProject_v1 ud = new SerializedProject_v1();
 			ud.Input.Address = "0x1000:0x0";
 			ud.Output.DisassemblyFilename = "foo.asm";
 			ud.Output.IntermediateFilename = "foo.cod";
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 			    var writer = new FilteringXmlWriter(fut.TextWriter);
 				writer.Formatting = System.Xml.Formatting.Indented;
-				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject));
+				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject_v1));
 				ser.Serialize(writer, ud);
 				fut.AssertFilesEqual();
 			}
@@ -87,8 +87,8 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
-                SerializedProject ud = project.Save();
+                XmlSerializer ser = new XmlSerializer(typeof(SerializedProject_v1));
+                SerializedProject_v1 ud = project.Save();
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -97,11 +97,11 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
 		public void SudRead()
 		{
-			SerializedProject proj = null;
+			SerializedProject_v1 proj = null;
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/SudRead.xml"), FileMode.Open))
 			{
-				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject));
-				proj = (SerializedProject) ser.Deserialize(stm);
+				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject_v1));
+				proj = (SerializedProject_v1) ser.Deserialize(stm);
 			}
 			Assert.AreEqual("10003330", proj.Input.Address);
 			Assert.AreEqual(2, proj.UserProcedures.Count);
@@ -139,14 +139,13 @@ namespace Decompiler.UnitTests.Core.Serialization
     </signature>
   </procedure>
 </project>";
-            SerializedProject proj = null;
+            SerializedProject_v1 proj = null;
             using (StringReader rdr = new StringReader(input))
             {
-                var ser = new XmlSerializer(typeof(SerializedProject));
-                proj = (SerializedProject)ser.Deserialize(rdr);
+                var ser = new XmlSerializer(typeof(SerializedProject_v1));
+                proj = (SerializedProject_v1)ser.Deserialize(rdr);
             }
-            var project = new Project();
-            project.Load(proj);
+            var project = new ProjectSerializer().LoadProject(proj);
             Assert.AreEqual(0x10003330, project.BaseAddress.Linear);
             Assert.AreEqual("foo.cod", project.IntermediateFilename);
             Assert.AreEqual(2, proj.UserProcedures.Count);
@@ -160,8 +159,12 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SudReadAlloca()
 		{
-			SerializedProject proj = SerializedProject.Load(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"));
-			SerializedProcedure proc = (SerializedProcedure) proj.UserProcedures[0];
+			Project proj;
+            using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"), FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                proj = new ProjectSerializer().LoadProject(stm);
+            }
+			SerializedProcedure proc = (SerializedProcedure) proj.UserProcedures.Values[0];
 			Assert.AreEqual("alloca", proc.Name);
 			Assert.IsTrue(proc.Characteristics.IsAlloca);
 		}

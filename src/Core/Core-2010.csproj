@@ -170,6 +170,7 @@
     <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\TypeLibraryElementCollection.cs" />
+    <Compile Include="EnumerableEx.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="EventEx.cs" />
     <Compile Include="Expressions\Application.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Rtl\RtlTransfer.cs" />
     <Compile Include="Serialization\DataTypeNameSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
+    <Compile Include="Serialization\ProjectSerializer.cs" />
     <Compile Include="Serialization\SerializedArrayType.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
@@ -457,7 +459,7 @@
     <Compile Include="Serialization\DecompilerOutput.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedProject.cs">
+    <Compile Include="Serialization\SerializedProject_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\ProcedureCharacteristics.cs">

@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Decompiler.Core
+{
+    /// <summary>
+    /// Extension methods for Enumerable classes
+    /// </summary>
+    public static class EnumerableEx
+    {
+        public static SortedList<TKey, TSource> ToSortedList<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector)
+        {
+            SortedList<TKey, TSource> list = new SortedList<TKey, TSource>();
+            foreach (TSource item in source)
+            {
+                list.Add(keySelector(item), item);
+            }
+            return list;
+        }
+
+        public static SortedList<TKey, TElement> ToSortedList<TSource, TKey, TElement>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TElement> elementSelector)
+        {
+            SortedList<TKey, TElement> list = new SortedList<TKey, TElement>();
+            foreach (TSource item in source)
+            {
+                list.Add(keySelector(item), elementSelector(item));
+            }
+            return list;
+        }
+
+        public static SortedList<TKey, TSource> ToSortedList<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            IComparer<TKey> comparer)
+        {
+            SortedList<TKey, TSource> list = new SortedList<TKey, TSource>(comparer);
+            foreach (TSource item in source)
+            {
+                list.Add(keySelector(item), item);
+            }
+            return list;
+        }
+
+        public static SortedList<TKey, TValue> ToSortedList<TSource, TKey, TValue>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TValue> valueSelector,
+            IComparer<TKey> comparer)
+        {
+            SortedList<TKey, TValue> list = new SortedList<TKey, TValue>(comparer);
+            foreach (TSource item in source)
+            {
+                list.Add(keySelector(item), valueSelector(item));
+            }
+            return list;
+        }
+    }
+}

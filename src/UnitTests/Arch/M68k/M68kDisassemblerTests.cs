@@ -235,5 +235,11 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             RunTest("move.w\t-(a3),(a3)+", 0x36E3);
         }
+
+        [Test]
+        public void M68kdis_eori()
+        {
+            RunTest("eori.b\t#$34,d0", 0x0A00, 0x1234);
+        }
     }
 }

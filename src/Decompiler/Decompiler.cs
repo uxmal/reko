@@ -215,9 +215,8 @@ namespace Decompiler
             {
                 try
                 {
-                    var project = new Project();
                     Stream stm = new MemoryStream(image);
-                    project.Load(SerializedProject.Load(stm));
+                    Project project = new ProjectSerializer().LoadProject(stm);
                     return project;
                 }
                 catch (XmlException)
@@ -229,11 +228,19 @@ namespace Decompiler
                 return null;
         }
 
+        /// <summary>
+        /// Peeks at the beginning of the image to determine if it's an XML file.
+        /// </summary>
+        /// <remarks>
+        /// We do not attempt to handle UTF-8 encoded Unicode BOM characters.
+        /// </remarks>
+        /// <param name="image"></param>
+        /// <returns></returns>
         private static bool IsXmlFile(byte[] image)
         {
-            //$UTF-8-encoded BOM? UTF-16 BOM?
-            bool isXmlFile = ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
-            return isXmlFile;
+            if (ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
+                return true;
+            return false;
         }
 
         protected Project CreateDefaultProject(string filename, Program prog)

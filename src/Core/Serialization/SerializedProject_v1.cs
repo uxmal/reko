@@ -27,11 +27,11 @@ using System.Xml.Serialization;
 namespace Decompiler.Core.Serialization
 {
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler")]
-    public class SerializedProject
+    public class SerializedProject_v1
     {
         public const string FileExtension = ".dcproject";
 
-        public SerializedProject()
+        public SerializedProject_v1()
         {
             this.Input = new DecompilerInput();
             this.Output = new DecompilerOutput();
@@ -51,24 +51,13 @@ namespace Decompiler.Core.Serialization
         [XmlElement("call", typeof(SerializedCall))]
         public List<SerializedCall> UserCalls;
 
-        public static SerializedProject Load(string file)
+        public static Project Load(string file)
         {
             using (FileStream stm = new FileStream(file, FileMode.Open))
             {
-                return Load(stm);
+                ProjectSerializer serializer = new ProjectSerializer();
+                return serializer.LoadProject(stm);
             }
-        }
-
-        public static SerializedProject Load(Stream stm)
-        {
-            XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
-            return (SerializedProject) ser.Deserialize(stm);
-        }
-
-        public void Save(TextWriter sw)
-        {
-            XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
-            ser.Serialize(sw, this);
         }
     }
 }

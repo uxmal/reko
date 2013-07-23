@@ -387,7 +387,7 @@ namespace Decompiler.Gui.Forms
                 string newName = PromptForFilename(
                     Path.ChangeExtension(
                         decompilerSvc.Decompiler.Project.InputFilename,
-                        SerializedProject.FileExtension));
+                        SerializedProject_v1.FileExtension));
                 if (newName == null)
                     return;
                 ProjectFileName = newName;
@@ -398,7 +398,7 @@ namespace Decompiler.Gui.Forms
             {
                 //$REFACTOR: rule of demeter, push this into a Save() method.
                 var sp = decompilerSvc.Decompiler.Project.Save();
-                sp.Save(sw);
+                new ProjectSerializer().Save(sw);
             }
         }
 

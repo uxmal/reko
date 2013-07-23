@@ -71,6 +71,9 @@ namespace Decompiler.Core.Types
 			if (dPrio != 0)
 				return dPrio;
 
+            if (x is VoidType)
+                return 0;
+
 			PrimitiveType ix = x as PrimitiveType;
 			PrimitiveType iy = y as PrimitiveType;
 			if (ix != null && iy != null)

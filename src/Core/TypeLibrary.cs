@@ -71,7 +71,6 @@ namespace Decompiler.Core
             Load(arch, slib);
 		}
 
-        [Obsolete]
         public void Load(IProcessorArchitecture arch, SerializedLibrary slib)
         {
             var tlldr = new TypeLibraryLoader(arch);

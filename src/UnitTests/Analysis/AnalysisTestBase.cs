@@ -145,11 +145,11 @@ namespace Decompiler.UnitTests.Analysis
             var scan = new Scanner(prog, 
                 new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             var project = string.IsNullOrEmpty(configFile)
-                ? new SerializedProject()
-                :  SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
+                ? new Project()
+                : new ProjectSerializer().LoadProject(FileUnitTester.MapTestPath(configFile));
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
-            foreach (var sp in project.UserProcedures)
+            foreach (var sp in project.UserProcedures.Values)
             {
                 scan.EnqueueUserProcedure(sp);
             }

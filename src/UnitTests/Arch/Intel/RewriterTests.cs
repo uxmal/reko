@@ -73,17 +73,32 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private void DoRewriteCore()
         {
-            SerializedProject project = (configFile != null)
-                ? SerializedProject.Load(FileUnitTester.MapTestPath(configFile))
-                : new SerializedProject();
+            Project project = LoadProject();
             scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
-            foreach (SerializedProcedure sp in project.UserProcedures)
+            foreach (SerializedProcedure sp in project.UserProcedures.Values)
             {
                 scanner.EnqueueUserProcedure(sp);
             }
             scanner.ProcessQueue();
+        }
+
+        private Project LoadProject()
+        {
+            Project project = null;
+            if (configFile != null)
+            {
+                using (Stream stm = new FileStream(FileUnitTester.MapTestPath(configFile), FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    project = new ProjectSerializer().LoadProject(stm);
+                }
+            }
+            else
+            {
+                project = new Project();
+            }
+            return project;
         }
 
 		protected void DoRewriteFile(string relativePath)

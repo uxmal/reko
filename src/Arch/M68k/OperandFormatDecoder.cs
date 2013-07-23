@@ -96,7 +96,7 @@ namespace Decompiler.Arch.M68k
 
         private MachineOperand GetQuickImmediate(int offset, int mask, int zeroValue, PrimitiveType dataWidth)
         {
-            int v = ((int)opcode >> offset) & mask;
+            int v = ((int) opcode >> offset) & mask;
             if (v == 0)
                 v = zeroValue;
             return new ImmediateOperand(Constant.Create(dataWidth, v));
@@ -117,7 +117,7 @@ namespace Decompiler.Arch.M68k
         {
             if (type.Size == 1)
             {
-                rdr.ReadByte();
+                rdr.ReadByte();     // skip a byte so we get the appropriate bit.
             }
             return new ImmediateOperand(rdr.ReadBe(type));
         }
@@ -125,16 +125,16 @@ namespace Decompiler.Arch.M68k
         private MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
         {
             opcode >>= bitOffset;
-            byte operandBits = (byte)(opcode & 7);
-            byte addressMode = (byte)((opcode >> 3) & 7);
+            byte operandBits = (byte) (opcode & 7);
+            byte addressMode = (byte) ((opcode >> 3) & 7);
             return ParseOperandInner(addressMode, operandBits, dataWidth, rdr);
         }
 
         private MachineOperand ParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
         {
             opcode >>= bitOffset;
-            byte addressMode = (byte)(opcode & 7);
-            byte operandBits = (byte)((opcode >> 3) & 7);
+            byte addressMode = (byte) (opcode & 7);
+            byte operandBits = (byte) ((opcode >> 3) & 7);
             return ParseOperandInner(addressMode, operandBits, dataWidth, rdr);
         }
 
@@ -161,11 +161,9 @@ namespace Decompiler.Arch.M68k
             }
         }
 
-
         private MachineOperand ParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, ImageReader rdr)
         {
             Constant offset;
-            string mode;
             switch (addressMode)
             {
             case 0: // Data register direct.
@@ -182,62 +180,7 @@ namespace Decompiler.Arch.M68k
                 offset = Constant.Int16(rdr.ReadBeInt16());
                 return MemoryOperand.Indirect(AddressRegister(operandBits, 0), offset);
             case 6: // Address register indirect with index
-                ushort extension = rdr.ReadBeUInt16();
-                if (EXT_INDEX_SCALE(extension) != 0)
-                    throw new FormatException("Illegal address mode.");
-                if (EXT_FULL(extension))
-                {
-                    if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
-                    {
-                        return new ImmediateOperand(Constant.Zero(dataWidth));
-                    }
-
-                    RegisterStorage base_reg = null;
-                    RegisterStorage index_reg = null;
-                    PrimitiveType index_reg_width = null;
-                    int index_scale = 1;
-                    var b= EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? rdr.ReadBeUInt32() : rdr.ReadBeUInt16()) : 0;
-                    Constant @base = null;
-                    if (b != 0)
-                    {
-                        if (EXT_BASE_DISPLACEMENT_LONG(extension))
-                        {
-                            @base = Constant.Int32((int) b);
-                        }
-                        else
-                        {
-                            @base = Constant.Int16((short) b);
-                        }
-                    }
-
-                    var o = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? rdr.ReadBeUInt32() : rdr.ReadBeUInt16()) : 0;
-                    Constant outer = null;
-                    if (o != 0)
-                        outer = Constant.Int16((short)o);
-                    if (EXT_BASE_REGISTER_PRESENT(extension))
-                            base_reg = Registers.AddressRegister(opcode & 7);
-                    if (EXT_INDEX_REGISTER_PRESENT(extension))
-                    {
-                        index_reg =  EXT_INDEX_AR(extension) 
-                            ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
-                            : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
-                        index_reg_width = EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16;
-                        if (EXT_INDEX_SCALE(extension) != 0)
-                            index_scale = 1 << EXT_INDEX_SCALE(extension);
-                    }
-                    bool preindex = (extension & 7) > 0 && (extension & 7) < 4;
-                    bool postindex = (extension & 7) > 4;
-                    return new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_reg_width, index_scale, preindex, postindex);
-                }
-                if (EXT_8BIT_DISPLACEMENT(extension) == 0)
-                    mode = string.Format("(A{0},{1}{2}.{3}", opcode& 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                else
-                    mode = string.Format("({0},A{1},{2}{3}.{4}", M68kDisassembler.make_signed_hex_str_8(extension), opcode & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                if (EXT_INDEX_SCALE(extension) != 0)
-                    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
-                mode += ")";
-                throw new NotImplementedException(string.Format("Address mode {0:X} not implemented.", addressMode));
-                break;
+                return AddressRegisterIndirectWithIndex(dataWidth, rdr);
             case 7:
                 switch (operandBits)
                 {
@@ -248,98 +191,55 @@ namespace Decompiler.Arch.M68k
                 case 2: // Program counter with displacement
                     return new MemoryOperand(Registers.pc, Constant.Int16(rdr.ReadBeInt16()));
                 //g_helper_str = string.Format("; (${0})", (make_int_16(temp_value) + g_cpu_pc - 2) & 0xffffffff);
-                //break;
                 case 3:
-                    throw new NotImplementedException();
                     //// Program counter with index
-                    //ushort extension = rdr.ReadBeUInt16();
+                    ushort extension = rdr.ReadBeUInt16();
 
-                    //if ((g_cpu_type & M68010_LESS) != 0 && EXT_INDEX_SCALE(extension) != 0)
-                    //{
-                    //    throw new NotSupportedException("Invalid address mode.");
-                    //}
+                    if (EXT_FULL(extension))
+                    {
+                        if (EXT_EFFECTIVE_ZERO(extension))
+                        {
+                            return new ImmediateOperand(Constant.Word32(0));
+                        }
+                        Constant @base = null;
+                        Constant outer = null;
+                        if (EXT_BASE_DISPLACEMENT_PRESENT(extension)) 
+                            @base = EXT_BASE_DISPLACEMENT_LONG(extension) 
+                                ? rdr.ReadBe(PrimitiveType.Word32)
+                                : rdr.ReadBe(PrimitiveType.Int16);
+                        if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
+                            outer = EXT_OUTER_DISPLACEMENT_LONG(extension)
+                                ? rdr.ReadBe(PrimitiveType.Word32)
+                                : rdr.ReadBe(PrimitiveType.Int16);
+                        RegisterStorage base_reg = EXT_BASE_REGISTER_PRESENT(extension)
+                            ? Registers.pc
+                            : null;
+                        RegisterStorage index_reg = null;
+                        PrimitiveType index_width = null;
+                        int index_scale = 0;
+                        if (EXT_INDEX_REGISTER_PRESENT(extension))
+                        {
+                            index_reg = EXT_INDEX_AR(extension)
+                                ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                                : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
+                            index_width = EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16;
+                            index_scale = (EXT_INDEX_SCALE(extension) != 0)
+                                ? 1 << EXT_INDEX_SCALE(extension)
+                                : 0;
+                        }
+                       return new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_width, index_scale, 
+                           (extension & 7) > 0 && (extension & 7) < 4,
+                           (extension & 7) > 4);
+                    }
+                    return new IndirectIndexedOperand(
+                        EXT_8BIT_DISPLACEMENT(extension), 
+                        Registers.pc,
+                        EXT_INDEX_AR(extension) ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension)) : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
+                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        1 << EXT_INDEX_SCALE(extension));
 
-                    //if (EXT_FULL(extension))
-                    //{
-                    //    if ((g_cpu_type & M68010_LESS) != 0)
-                    //    {
-                    //        throw new NotSupportedException("Invalid address mode.");
-                    //    }
-
-                    //    if (EXT_EFFECTIVE_ZERO(extension))
-                    //    {
-                    //        mode = "0";
-                    //        break;
-                    //    }
-                    //    @base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-                    //    outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-                    //    if (EXT_BASE_REGISTER_PRESENT(extension))
-                    //        base_reg = "PC";
-                    //    else
-                    //        base_reg = "";
-                    //    if (EXT_INDEX_REGISTER_PRESENT(extension))
-                    //    {
-                    //        index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                    //        if (EXT_INDEX_SCALE(extension) != 0)
-                    //            index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
-                    //    }
-                    //    else
-                    //        index_reg = "";
-                    //    preindex = (extension & 7) > 0 && (extension & 7) < 4;
-                    //    postindex = (extension & 7) > 4;
-
-                    //    mode = "(";
-                    //    if (preindex || postindex)
-                    //        mode += "[";
-                    //    if (@base != 0)
-                    //    {
-                    //        mode += make_signed_hex_str_16(@base);
-                    //        comma = true;
-                    //    }
-                    //    if (base_reg != "")
-                    //    {
-                    //        if (comma)
-                    //            mode += ",";
-                    //        mode += base_reg;
-                    //        comma = true;
-                    //    }
-                    //    if (postindex)
-                    //    {
-                    //        mode += "]";
-                    //        comma = true;
-                    //    }
-                    //    if (index_reg != "")
-                    //    {
-                    //        if (comma)
-                    //            mode += ",";
-                    //        mode += index_reg;
-                    //        comma = true;
-                    //    }
-                    //    if (preindex)
-                    //    {
-                    //        mode += "]";
-                    //        comma = true;
-                    //    }
-                    //    if (outer != 0)
-                    //    {
-                    //        if (comma)
-                    //            mode += ",";
-                    //        mode += make_signed_hex_str_16(outer);
-                    //    }
-                    //    mode += ")";
-                    //    break;
-                    //}
-
-                    //if (EXT_8BIT_DISPLACEMENT(extension) == 0)
-                    //    mode = string.Format("(PC,{0}%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                    //else
-                    //    mode = string.Format("({0},PC,%c%d.%c", make_signed_hex_str_8(extension), EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                    //if (EXT_INDEX_SCALE(extension) != 0)
-                    //    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
-                    //mode += ")";
-                    //break;
                 case 4:
-                    /* Immediate */
+                    //  Immediate
                     if (dataWidth.Size == 1)        // don't want the instruction stream to get misaligned!
                         rdr.ReadByte();
                     return new ImmediateOperand(rdr.ReadBe(dataWidth));
@@ -351,8 +251,63 @@ namespace Decompiler.Arch.M68k
             }
         }
 
-                /* Extension word formats */
-        private static uint EXT_8BIT_DISPLACEMENT(uint A) { return ((A) & 0xff); }
+        private MachineOperand AddressRegisterIndirectWithIndex(PrimitiveType dataWidth, ImageReader rdr)
+        {
+            ushort extension = rdr.ReadBeUInt16();
+            if (EXT_INDEX_SCALE(extension) != 0)
+                throw new FormatException("Illegal address mode.");
+            if (EXT_FULL(extension))
+            {
+                if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
+                {
+                    return new ImmediateOperand(Constant.Zero(dataWidth));
+                }
+
+                RegisterStorage base_reg = null;
+                RegisterStorage index_reg = null;
+                PrimitiveType index_reg_width = null;
+                int index_scale = 1;
+                Constant @base = null;
+                if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
+                {
+                    @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32: PrimitiveType.Int16);
+                }
+
+                Constant outer = null;
+                if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
+                {
+                    outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32: PrimitiveType.Int16);
+                }
+                if (EXT_BASE_REGISTER_PRESENT(extension))
+                    base_reg = Registers.AddressRegister(opcode & 7);
+                if (EXT_INDEX_REGISTER_PRESENT(extension))
+                {
+                    index_reg = EXT_INDEX_AR(extension)
+                        ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension));
+                    index_reg_width = EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16;
+                    if (EXT_INDEX_SCALE(extension) != 0)
+                        index_scale = 1 << EXT_INDEX_SCALE(extension);
+                }
+                bool preindex = (extension & 7) > 0 && (extension & 7) < 4;
+                bool postindex = (extension & 7) > 4;
+                return new IndexedOperand(dataWidth, @base, outer, base_reg, index_reg, index_reg_width, index_scale, preindex, postindex);
+            }
+            else
+            {
+                return new IndirectIndexedOperand(
+                    EXT_8BIT_DISPLACEMENT(extension),
+                    Registers.AddressRegister(opcode & 7),
+                    EXT_INDEX_AR(extension)
+                        ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension)),
+                    EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                    EXT_INDEX_SCALE(extension));
+            }
+        }
+
+        // Extension word formats
+        private static sbyte EXT_8BIT_DISPLACEMENT(uint A) { return (sbyte) ((A) & 0xff); }
         internal static bool EXT_FULL(uint A) { return M68kDisassembler.BIT_8(A); }
         internal static bool EXT_EFFECTIVE_ZERO(uint A) { return (((A) & 0xe4) == 0xc4 || ((A) & 0xe2) == 0xc0); }
         private static bool EXT_BASE_REGISTER_PRESENT(uint A) { return !(M68kDisassembler.BIT_7(A)); }
@@ -361,7 +316,7 @@ namespace Decompiler.Arch.M68k
         private static bool EXT_INDEX_PRE_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && (A & 3) != 0); }
         private static bool EXT_INDEX_PRE(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) < 4 && ((A) & 7) != 0); }
         private static bool EXT_INDEX_POST(uint A) { return (EXT_INDEX_REGISTER_PRESENT(A) && ((A) & 7) > 4); }
-        internal static int EXT_INDEX_SCALE(uint A) { return (int)(((A) >> 9) & 3); }
+        internal static int EXT_INDEX_SCALE(uint A) { return (int) (((A) >> 9) & 3); }
         private static bool EXT_INDEX_LONG(uint A) { return M68kDisassembler.BIT_B(A); }
         private static bool EXT_INDEX_AR(uint A) { return M68kDisassembler.BIT_F(A); }
         private static bool EXT_BASE_DISPLACEMENT_PRESENT(uint A) { return (((A) & 0x30) > 0x10); }
