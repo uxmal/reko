@@ -187,9 +187,9 @@ namespace Decompiler.ImageLoaders.Elf
             switch (machineType)
             {
             case EM_NONE: return null; // No machine
-            case EM_SPARC: return new SparcArchitecture(PrimitiveType.Word32); //SPARC
-            case EM_386: return new IntelArchitecture(ProcessorMode.Protected32); //Intel 80386
-            case EM_68K: return new M68kArchitecture();//Motorola 68000
+            case EM_SPARC: return new SparcArchitecture(PrimitiveType.Word32);
+            case EM_386: return new IntelArchitecture(ProcessorMode.Protected32);
+            case EM_68K: return new M68kArchitecture();
             case EM_M32: //AT&T WE 32100
             case EM_88K: //Motorola 88000
             case EM_860: //Intel 80860
@@ -427,7 +427,7 @@ namespace Decompiler.ImageLoaders.Elf
     }
 
 #if ZLON
-    public class ElfObslete
+    public class ElfObsolete
     {
         private long m_lImageSize; // Size of image in bytes
         private byte[] m_pImage; // Pointer to the loaded image

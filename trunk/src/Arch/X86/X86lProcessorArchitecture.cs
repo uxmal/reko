@@ -214,4 +214,20 @@ namespace Decompiler.Arch.X86
         
         public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
     }
+
+    public class X86ArchitectureReal : IntelArchitecture
+    {
+        public X86ArchitectureReal()
+            : base(ProcessorMode.Real)
+        {
+        }
+    }
+
+    public class X86ArchitectureFlat32 : IntelArchitecture
+    {
+        public X86ArchitectureFlat32()
+            : base(ProcessorMode.Protected32)
+        {
+        }
+    }
 }

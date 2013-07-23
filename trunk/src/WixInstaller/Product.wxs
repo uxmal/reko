@@ -83,12 +83,12 @@
         <File Source="$(var.PowerPC-2010.TargetPath)" />
         <File Source="$(var.Sparc-2010.TargetPath)" />
         <File Source="$(var.Win32-2010.TargetPath)" />
+        <File Source="$(var.Win32-2010.ProjectDir)windows.xml" />
+        <File Source="$(var.Win32-2010.ProjectDir)commctrl.xml" />
         <File Source="$(var.WindowsDecompiler-2010.TargetPath)" Id="DecompilerExecutable"/>
         <File Source="$(var.WindowsDecompiler-2010.TargetPath).config" />
         <File Source="$(var.X86-2010.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
-        <File Source="$(var.Win32-2010.ProjectDir)windows.xml" />
-        <File Source="$(var.Win32-2010.ProjectDir)commctrl.xml" />
       </Component>
     </ComponentGroup>
 

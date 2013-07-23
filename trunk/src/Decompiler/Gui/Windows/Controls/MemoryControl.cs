@@ -46,13 +46,13 @@ namespace Decompiler.Gui.Windows.Controls
 	{
 		public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
+        private MemoryControlPainter mcp;
 		private Address addrTopVisible;		// address of topmost visible row.
 		private uint wordSize;
 		private uint cbRow;
 		private ProgramImage image;
 		private Address addrSelected;
         private Address addrAnchor;
-        private int iCtrl;          //$DEBUG
 
 		private int cRows;				// total number of rows.
 		private int yTopRow;			// index of topmost visible row
@@ -61,10 +61,12 @@ namespace Decompiler.Gui.Windows.Controls
 		private Point ptDown;			 // point at which mouse was clicked.
 		private VScrollBar vscroller;
 
-        static int ctrlCount;
+        private bool isMouseClicked;
+        private bool isDragging;
 
 		public MemoryControl()
 		{
+            mcp = new MemoryControlPainter(this);
 			SetStyle(ControlStyles.DoubleBuffer, true);
 			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			SetStyle(ControlStyles.UserPaint, true);
@@ -74,7 +76,6 @@ namespace Decompiler.Gui.Windows.Controls
 			vscroller.Scroll += new ScrollEventHandler(vscroller_Scroll);
 			wordSize = 1;
 			cbRow = 16;
-            this.iCtrl = ctrlCount++;
 		}
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace Decompiler.Gui.Windows.Controls
         /// </summary>
         public AddressRange GetAddressRange()
         {
-            Debug.WriteLine(string.Format("GetAddressRange: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
+            Debug.Print("GetAddressRange: sel: {0}, anchor {1}", addrSelected, addrAnchor);
 
             if (addrSelected == null || addrAnchor == null)
             {
@@ -128,24 +129,6 @@ namespace Decompiler.Gui.Windows.Controls
 			get { return cellSize; }
 		}
 
-		private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
-		{
-			if (selected)
-				return SystemBrushes.Highlight;
-			if (item is ImageMapBlock)
-				return Brushes.Pink;
-            if (item.DataType != null && !(item.DataType is UnknownType))
-                return Brushes.LightBlue;
-			return SystemBrushes.Window;
-		} 
-
-		private Brush GetForegroundBrush(ImageMapItem item, bool selected)
-		{
-			if (selected)
-				return SystemBrushes.HighlightText;
-			return SystemBrushes.WindowText;
-		}
-
 		protected override bool IsInputKey(Keys keyData)
 		{
 			switch (keyData & ~Keys.Modifiers)
@@ -159,8 +142,6 @@ namespace Decompiler.Gui.Windows.Controls
 				return base.IsInputKey (keyData);
 			}
 		}
-
-
 
         public Point AddressToPoint(Address addr)
         {
@@ -245,6 +226,7 @@ namespace Decompiler.Gui.Windows.Controls
 		{
             if (image == null)
                 return;
+            this.isMouseClicked = true;
             ptDown = new Point(e.X, e.Y);
             Focus();
             CacheCellSize();
@@ -253,28 +235,50 @@ namespace Decompiler.Gui.Windows.Controls
             base.OnMouseDown(e);
 		}
 
-        protected override void OnMouseUp(MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (image == null)
+            if (!isMouseClicked)
                 return;
+            if (Math.Abs(ptDown.X - e.X) < 3 && Math.Abs(ptDown.Y - e.Y) < 3)
+                return;
+            Debug.Print("We be draggin'");
+            isDragging = true;
+            Capture = true;
             AffectSelection(e);
-            base.OnMouseUp(e);
+            base.OnMouseMove(e);
         }
 
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                Capture = false;
+            }
+            isMouseClicked = false;
+            if (image != null)
+            {
+                AffectSelection(e);
+            }
+            isDragging = false;
+            base.OnMouseUp(e);
+        }
 
         private void AffectSelection(MouseEventArgs e)
         {
             using (Graphics g = this.CreateGraphics())
             {
-                var addrClicked = PaintWindow(g, false);
+                var addrClicked = mcp.PaintWindow(g, cellSize, new Point(e.X, e.Y), false);
                 if (ShouldChangeSelection(e, addrClicked))
                 {
-                    addrSelected = addrClicked;
-                    if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift)
+                    if (!isDragging || addrClicked != null)
+                        addrSelected = addrClicked;
+                    if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift &&
+                        !isDragging)
                     {
+                        Debug.Print("Trakkie");
                         addrAnchor = addrSelected;
                     }
-                    Debug.WriteLine(string.Format("MouseDown: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
+                    Debug.Print("Selection: {0}-{1}", addrAnchor, addrSelected);
                     Invalidate();
                     OnSelectionChanged();
                 }
@@ -310,14 +314,14 @@ namespace Decompiler.Gui.Windows.Controls
 
 		protected override void OnPaint(PaintEventArgs pea)
 		{
-            CacheCellSize();
 			if (image == null)
 			{
 				pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
 			}
 			else
 			{
-				PaintWindow(pea.Graphics, true);
+                CacheCellSize();
+                mcp.PaintWindow(pea.Graphics, cellSize, ptDown, true);
 			}
 		}
 
@@ -334,146 +338,6 @@ namespace Decompiler.Gui.Windows.Controls
 			UpdateScroll();
 		}
 		
-		/// <summary>
-		/// Paints a line of the memory control, starting with the address. 
-		/// </summary>
-		/// <remarks>
-		/// The strategy is to find any items present at the current address, and try
-		/// to paint as many adjacent items as possible.
-		/// </remarks>
-		/// <param name="g"></param>
-		/// <param name="rc"></param>
-		/// <param name="rdr"></param>
-		private Address PaintLine(Graphics g, Rectangle rc, ImageReader rdr, bool render)
-		{
-			StringBuilder sbCode = new StringBuilder(" ");
-
-			// Draw the address part.
-
-			rc.X = 0;
-			string s = string.Format("{0}", rdr.Address);
-			int cx = (int) g.MeasureString(s + "X", Font, rc.Width, StringFormat.GenericTypographic).Width;
-			if (!render && new Rectangle(rc.X, rc.Y, cx, rc.Height).Contains(ptDown))
-			{
-				return rdr.Address;
-			}
-			else
-			{
-				g.FillRectangle(SystemBrushes.Window, rc.X, rc.Y, cx, rc.Height);
-				g.DrawString(s, Font, SystemBrushes.ControlText, rc.X, rc.Y, StringFormat.GenericTypographic);
-			}
-			cx -= cellSize.Width / 2;
-			rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
-
-			uint rowBytesLeft = cbRow;
-			uint linearSelected = addrSelected != null ? addrSelected.Linear : ~0U;
-            uint linearAnchor = addrAnchor != null ? addrAnchor.Linear : ~0U;
-            uint linearBeginSelection = Math.Min(linearSelected, linearAnchor);
-            uint linearEndSelection = Math.Max(linearSelected, linearAnchor);
-
-			do 
-			{
-				Address addr = rdr.Address;
-				uint linear = addr.Linear;
-
-				ImageMapItem item;
-                if (!ProgramImage.Map.TryFindItem(addr, out item))
-					break;
-				uint cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
-				uint cbToDraw = 16; // item.Size - cbIn;
-
-				// See if the chunk goes off the edge of the line. If so, clip it.
-				if (cbToDraw > rowBytesLeft)
-					cbToDraw = rowBytesLeft;
-
-				// Now paint the bytes in this span.
-
-				for (int i = 0; i < cbToDraw; ++i)
-				{
-					Address addrByte = rdr.Address;
-					ProgramImage.Map.TryFindItem(addrByte, out item);
-					bool isSelected = linearBeginSelection <= addrByte.Linear && addrByte.Linear <= linearEndSelection;
-                    bool isCursor = addrByte.Linear == linearSelected;
-					Brush fg = GetForegroundBrush(item, isSelected);
-					Brush bg = GetBackgroundBrush(item, isSelected);
-
-                    if (rdr.IsValid)
-                    {
-                        byte b = rdr.ReadByte();
-                        s = string.Format("{0:X2}", b);
-                        char ch = (char)b;
-                        sbCode.Append(Char.IsControl(ch) ? '.' : ch);
-                    }
-                    else
-                    {
-                        s = "??";
-                        sbCode.Append(' ');
-                    }
-
-					cx = cellSize.Width * 3;
-					Rectangle rcByte = new Rectangle(
-						rc.Left,
-						rc.Top,
-						cx,
-						rc.Height);
-	
-					if (!render && rcByte.Contains(ptDown))
-						return addrByte;
-
-					g.FillRectangle(bg, rc.Left, rc.Top, cx, rc.Height);
-					g.DrawString(s, Font, fg, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
-                    if (isCursor)
-                    {
-                        ControlPaint.DrawFocusRectangle(g, rc);
-                    }
-					rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
-				}
-				rowBytesLeft -= cbToDraw;
-			} while (rowBytesLeft > 0);
-
-			if (render)
-			{
-				g.FillRectangle(SystemBrushes.Window, rc);
-				g.DrawString(sbCode.ToString(), Font, SystemBrushes.WindowText, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
-			}
-			return null;
-		}
-
-		/// <summary>
-		/// Paints the control's window area. Strategy is to find the spans that make up
-		/// the whole segment, and paint them one at a time.
-		/// </summary>
-		/// <param name="g"></param>
-		public Address PaintWindow(Graphics g, bool render)
-		{
-			// Enumerate all segments visible on screen.
-
-			ImageReader rdr = image.CreateReader(addrTopVisible);
-			Rectangle rc = ClientRectangle;
-			Size cell = CellSize;
-			rc.Height = cell.Height;
-
-			uint laEnd = image.BaseAddress.Linear + (uint) image.Bytes.Length;
-
-			uint laSegEnd = 0;
-			while (rc.Top < this.Height && rdr.Address.Linear < laEnd)
-			{
-                ImageMapSegment seg;
-                if (!ProgramImage.Map.TryFindSegment(addrTopVisible, out seg))
-                    return null;
-                if (rdr.Address.Linear >= laSegEnd)
-				{
-					laSegEnd = seg.Address.Linear + seg.Size;
-					rdr = image.CreateReader(seg.Address + (rdr.Address - seg.Address));
-				}
-				Address addr = PaintLine(g, rc, rdr, render);
-				if (addr != null)
-					return addr;
-				rc.Offset(0, CellSize.Height);
-			}
-			return null;
-		}
-
 
 		[Browsable(false)]
 		public ProgramImage ProgramImage
@@ -594,6 +458,177 @@ namespace Decompiler.Gui.Windows.Controls
                 TopAddress = newTopAddress;
             }
 		}
+
+        public class MemoryControlPainter
+        {
+            private MemoryControl ctrl;
+            private Size cellSize;
+
+            public MemoryControlPainter(MemoryControl ctrl)
+            {
+                this.ctrl = ctrl;
+            }
+
+            /// <summary>
+            /// Paints the control's window area. Strategy is to find the spans that make up
+            /// the whole segment, and paint them one at a time.
+            /// </summary>
+            /// <param name="g"></param>
+            public Address PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
+            {
+                this.cellSize = cellSize;
+
+                // Enumerate all segments visible on screen.
+
+                ImageReader rdr = ctrl.ProgramImage.CreateReader(ctrl.addrTopVisible);
+                Rectangle rc = ctrl.ClientRectangle;
+                Size cell = ctrl.CellSize;
+                rc.Height = cell.Height;
+
+                uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
+
+                uint laSegEnd = 0;
+                while (rc.Top < ctrl.Height && rdr.Address.Linear < laEnd)
+                {
+                    ImageMapSegment seg;
+                    if (!ctrl.ProgramImage.Map.TryFindSegment(ctrl.addrTopVisible, out seg))
+                        return null;
+                    if (rdr.Address.Linear >= laSegEnd)
+                    {
+                        laSegEnd = seg.Address.Linear + seg.Size;
+                        rdr = ctrl.ProgramImage.CreateReader(seg.Address + (rdr.Address - seg.Address));
+                    }
+                    Address addr = PaintLine(g, rc, rdr, ptAddr, render);
+                    if (addr != null)
+                        return addr;
+                    rc.Offset(0, ctrl.CellSize.Height);
+                }
+                return null;
+            }
+
+            /// <summary>
+            /// Paints a line of the memory control, starting with the address. 
+            /// </summary>
+            /// <remarks>
+            /// The strategy is to find any items present at the current address, and try
+            /// to paint as many adjacent items as possible.
+            /// </remarks>
+            /// <param name="g"></param>
+            /// <param name="rc"></param>
+            /// <param name="rdr"></param>
+            private Address PaintLine(Graphics g, Rectangle rc, ImageReader rdr, Point ptAddr, bool render)
+            {
+                StringBuilder sbCode = new StringBuilder(" ");
+
+                // Draw the address part.
+
+                rc.X = 0;
+                string s = string.Format("{0}", rdr.Address);
+                int cx = (int) g.MeasureString(s + "X", ctrl.Font, rc.Width, StringFormat.GenericTypographic).Width;
+                if (!render && new Rectangle(rc.X, rc.Y, cx, rc.Height).Contains(ctrl.ptDown))
+                {
+                    return rdr.Address;
+                }
+                else
+                {
+                    g.FillRectangle(SystemBrushes.Window, rc.X, rc.Y, cx, rc.Height);
+                    g.DrawString(s, ctrl.Font, SystemBrushes.ControlText, rc.X, rc.Y, StringFormat.GenericTypographic);
+                }
+                cx -= cellSize.Width / 2;
+                rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
+
+                uint rowBytesLeft = ctrl.cbRow;
+                uint linearSelected = ctrl.addrSelected != null ? ctrl.addrSelected.Linear : ~0U;
+                uint linearAnchor = ctrl.addrAnchor != null ? ctrl.addrAnchor.Linear : ~0U;
+                uint linearBeginSelection = Math.Min(linearSelected, linearAnchor);
+                uint linearEndSelection = Math.Max(linearSelected, linearAnchor);
+
+                do
+                {
+                    Address addr = rdr.Address;
+                    uint linear = addr.Linear;
+
+                    ImageMapItem item;
+                    if (!ctrl.ProgramImage.Map.TryFindItem(addr, out item))
+                        break;
+                    uint cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
+                    uint cbToDraw = 16; // item.Size - cbIn;
+
+                    // See if the chunk goes off the edge of the line. If so, clip it.
+                    if (cbToDraw > rowBytesLeft)
+                        cbToDraw = rowBytesLeft;
+
+                    // Now paint the bytes in this span.
+
+                    for (int i = 0; i < cbToDraw; ++i)
+                    {
+                        Address addrByte = rdr.Address;
+                        ctrl.ProgramImage.Map.TryFindItem(addrByte, out item);
+                        bool isSelected = linearBeginSelection <= addrByte.Linear && addrByte.Linear <= linearEndSelection;
+                        bool isCursor = addrByte.Linear == linearSelected;
+                        Brush fg = GetForegroundBrush(item, isSelected);
+                        Brush bg = GetBackgroundBrush(item, isSelected);
+
+                        if (rdr.IsValid)
+                        {
+                            byte b = rdr.ReadByte();
+                            s = string.Format("{0:X2}", b);
+                            char ch = (char) b;
+                            sbCode.Append(Char.IsControl(ch) ? '.' : ch);
+                        }
+                        else
+                        {
+                            s = "??";
+                            sbCode.Append(' ');
+                        }
+
+                        cx = cellSize.Width * 3;
+                        Rectangle rcByte = new Rectangle(
+                            rc.Left,
+                            rc.Top,
+                            cx,
+                            rc.Height);
+
+                        if (!render && rcByte.Contains(ptAddr))
+                            return addrByte;
+
+                        g.FillRectangle(bg, rc.Left, rc.Top, cx, rc.Height);
+                        g.DrawString(s, ctrl.Font, fg, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
+                        if (isCursor)
+                        {
+                            ControlPaint.DrawFocusRectangle(g, rc);
+                        }
+                        rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
+                    }
+                    rowBytesLeft -= cbToDraw;
+                } while (rowBytesLeft > 0);
+
+                if (render)
+                {
+                    g.FillRectangle(SystemBrushes.Window, rc);
+                    g.DrawString(sbCode.ToString(), ctrl.Font, SystemBrushes.WindowText, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
+                }
+                return null;
+            }
+
+            private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
+            {
+                if (selected)
+                    return SystemBrushes.Highlight;
+                if (item is ImageMapBlock)
+                    return Brushes.Pink;
+                if (item.DataType != null && !(item.DataType is UnknownType))
+                    return Brushes.LightBlue;
+                return SystemBrushes.Window;
+            }
+
+            private Brush GetForegroundBrush(ImageMapItem item, bool selected)
+            {
+                if (selected)
+                    return SystemBrushes.HighlightText;
+                return SystemBrushes.WindowText;
+            }
+        }
 
     }
 }

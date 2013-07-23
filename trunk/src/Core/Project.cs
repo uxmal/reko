@@ -33,7 +33,8 @@ namespace Decompiler.Core
         public Project()
         {
             UserProcedures = new SortedList<Address, SerializedProcedure>();
-            UserCalls = new SortedList<Address, SerializedCall>(); 
+            UserCalls = new SortedList<Address, SerializedCall>();
+            UserGlobalData = new SortedList<Address, SerializedType>();
         }
 
         public Address BaseAddress { get; set; }
@@ -42,10 +43,11 @@ namespace Decompiler.Core
         public string IntermediateFilename { get; set; }
         public string OutputFilename { get; set; }
         public string TypesFilename { get; set; }
+
         /// <summary>
         /// Locations that have been identified as Procedures by the user.
         /// </summary>
-        public SortedList<Address, SerializedProcedure> UserProcedures { get; private set; }
+        public SortedList<Address, SerializedProcedure> UserProcedures { get;  set; }
 
         /// <summary>
         /// Locations that have been identified as calls by the user, complete with 
@@ -53,9 +55,14 @@ namespace Decompiler.Core
         /// </summary>
         public SortedList<Address, SerializedCall> UserCalls { get; private set; }
 
-        public SerializedProject Save()
+        /// <summary>
+        /// Global data identified by the user.
+        /// </summary>
+        public SortedList<Address, SerializedType> UserGlobalData { get; private set; }
+
+        public SerializedProject_v1 Save()
         {
-            var sp = new SerializedProject()
+            var sp = new SerializedProject_v1()
             {
                 Input = new DecompilerInput
                 {
@@ -79,33 +86,17 @@ namespace Decompiler.Core
             {
                 sp.UserCalls.Add(de.Value);
             }
+            foreach (var de in UserGlobalData)
+            {
+            }
             return sp;
         }
 
-        public void Load(SerializedProject sp)
+        public void Load(SerializedProject_v1 sp)
         {
-            BaseAddress = Address.ToAddress(sp.Input.Address, 16);
-            InputFilename = sp.Input.Filename;
-            DisassemblyFilename = sp.Output.DisassemblyFilename;
-            IntermediateFilename = sp.Output.IntermediateFilename;
-            OutputFilename = sp.Output.OutputFilename;
-            TypesFilename = sp.Output.TypesFilename;
-            foreach (var up in sp.UserProcedures)
-            {
-                var addr = Address.ToAddress(up.Address, 16);
-                if (addr != null)
-                {
-                    UserProcedures.Add(addr, up);
-                }
-            }
-            foreach (var uc in sp.UserCalls)
-            {
-                var addr = Address.ToAddress(uc.InstructionAddress, 16);
-                if (addr != null)
-                    UserCalls.Add(addr, uc);
-            }
+            var serializer = new ProjectSerializer();
+            var project = serializer.LoadProject(sp);
         }
-
         public void SetDefaultFileNames(string inputFilename)
         {
             InputFilename = inputFilename;

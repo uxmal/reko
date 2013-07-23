@@ -9,13 +9,14 @@ namespace Decompiler.Core.Output
     {
         private const string Tab = "\tab";
         
-        public RtfCodeFormatter(TextWriter writer) : base(new InnerFormatter(writer))
+        public RtfCodeFormatter(TextWriter writer) : base(new KeywordFormatter(writer))
         {
         }
 
-        private class InnerFormatter : Formatter
+        private class KeywordFormatter : Formatter
         {
-            public InnerFormatter(TextWriter writer) : base(writer)
+            public KeywordFormatter(TextWriter writer)
+                : base(writer)
             {
             }
 

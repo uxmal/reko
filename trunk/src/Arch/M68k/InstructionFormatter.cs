@@ -140,6 +140,25 @@ namespace Decompiler.Arch.M68k
             return registerSet;
         }
 
+        public M68kOperand Visit(IndirectIndexedOperand op)
+        {
+            writer.Write("(");
+            if (op.Imm8 < 0)
+            {
+                writer.Write("-{0:X2},", -op.Imm8);
+            }
+            else if (op.Imm8 > 0)
+            {
+                writer.Write("{0:X2},", op.Imm8);
+            }
+            writer.Write(op.ARegister.Name);
+            writer.Write(",");
+            writer.Write(op.XRegister.Name);
+            if (op.Scale > 1)
+                writer.Write("*{0}", op.Scale);
+            writer.Write(")");
+            return op;
+        }
         private static bool bit(uint data, int pos) { return (data & (1 << pos)) != 0; }
 
         public void WriteRegisterSet(uint data, int bitPos, int incr, string regType, TextWriter writer)

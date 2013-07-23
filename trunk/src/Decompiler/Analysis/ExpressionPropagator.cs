@@ -134,10 +134,10 @@ namespace Decompiler.Analysis
             if (bin == null || !ctx.IsFramePointer(bin.Left))
                 return 0;
             if (bin.Operator != Operator.ISub)
-                throw new NotImplementedException();
+                throw new NotImplementedException("Expected stack depth to be negative.");
             var c = bin.Right as Constant;
             if (c == null)
-                throw new NotImplementedException();
+                throw new NotImplementedException("Expected stack depth to be known.");
             return c.ToInt32();
         }
 
