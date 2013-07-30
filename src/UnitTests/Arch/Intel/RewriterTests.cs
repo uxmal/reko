@@ -65,8 +65,9 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		protected Procedure DoRewrite(string code)
 		{
-            asm.AssembleFragment(baseAddress, code);
-            prog.Image = asm.Image;
+            var lr = asm.AssembleFragment(baseAddress, code);
+            prog.Image = lr.Image;
+            prog.ImageMap = lr.ImageMap;
 			DoRewriteCore();
 			return scanner.Procedures.Values[0];
 		}
@@ -105,10 +106,11 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
             using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                asm.Assemble(baseAddress, stm);
+                var lr = asm.Assemble(baseAddress, stm);
+                prog.Image = lr.Image;
+                prog.ImageMap = lr.ImageMap;
+                prog.Platform = lr.Platform;
             }
-            prog.Image = asm.Image;
-            prog.Platform = asm.Platform;
 			DoRewriteCore();
 		}
 	}

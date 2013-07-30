@@ -98,8 +98,9 @@ namespace Decompiler.UnitTests.Analysis
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                asm.Assemble(new Address(0xC00, 0), rdr);
-                prog.Image = asm.Image;
+                var lr = asm.Assemble(new Address(0xC00, 0), rdr);
+                prog.Image = lr.Image;
+                prog.ImageMap = lr.ImageMap;
             }
             Rewrite(prog, asm, configFile);
             return prog;
@@ -117,10 +118,11 @@ namespace Decompiler.UnitTests.Analysis
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                asm.Assemble(new Address(0x10000000), rdr);
+                var lr = asm.Assemble(new Address(0x10000000), rdr);
+                prog.Image = lr.Image;
+                prog.ImageMap = lr.ImageMap;
+                prog.Architecture = lr.Architecture;
             }
-            prog.Image = asm.Image;
-            prog.Architecture = asm.Architecture;
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
             {
                 prog.ImportThunks.Add(item.Key, item.Value);
@@ -134,8 +136,9 @@ namespace Decompiler.UnitTests.Analysis
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             Assembler asm = new IntelTextAssembler();
-            asm.AssembleFragment(new Address(0xC00, 0), s);
-            prog.Image = asm.Image;
+            var lr = asm.AssembleFragment(new Address(0xC00, 0), s);
+            prog.Image = lr.Image;
+            prog.ImageMap = lr.ImageMap;
             Rewrite(prog, asm, null);
             return prog;
         }

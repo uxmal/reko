@@ -120,14 +120,14 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private FstswChainMatcher GetMatcher()
         {
-            LoadedImage image = asm.GetImage();
+            LoaderResults lr = asm.GetImage();
             X86Disassembler dasm = new X86Disassembler(
-                image.CreateReader(0),
+                lr.Image.CreateReader(0),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
             instrs = new List<IntelInstruction>();
-            while (image.IsValidAddress(dasm.Address))
+            while (lr.Image.IsValidAddress(dasm.Address))
             {
                 instrs.Add(dasm.Disassemble());
             }

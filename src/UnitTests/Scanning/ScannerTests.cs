@@ -85,8 +85,10 @@ namespace Decompiler.UnitTests.Scanning
             var addr = new Address(0xC00, 0);
             var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             test(m);
-            prog.Image = m.GetImage();
-            prog.Architecture = m.Architecture;
+            var lr = m.GetImage();
+            prog.Image = lr.Image;
+            prog.ImageMap = lr.ImageMap;
+            prog.Architecture = lr.Architecture;
             prog.Platform = new FakePlatform();
             scan = new TestScanner(prog);
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
@@ -249,9 +251,10 @@ namespace Decompiler.UnitTests.Scanning
             m.Jmp("foo");
             m.Endp("baz");
 
-
-            prog.Image = m.GetImage();
-            prog.Architecture = m.Architecture;
+            var lr = m.GetImage();
+            prog.Image = lr.Image;
+            prog.ImageMap = lr.ImageMap;
+            prog.Architecture = lr.Architecture;
             prog.Platform = new FakePlatform();
             var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());

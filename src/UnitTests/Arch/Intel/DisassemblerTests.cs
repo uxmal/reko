@@ -62,19 +62,19 @@ namespace Decompiler.UnitTests.Arch.Intel
             return dasm.Disassemble();
         }
 
-        private void CreateDisassembler16(IntelTextAssembler asm)
+        private void CreateDisassembler16(LoadedImage image)
         {
             dasm = new X86Disassembler(
-                asm.Image.CreateReader(asm.Image.BaseAddress),
+                image.CreateReader(image.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
         }
 
-        private void CreateDisassembler32(IntelTextAssembler asm)
+        private void CreateDisassembler32(LoadedImage image)
         {
             dasm = new X86Disassembler(
-                asm.Image.CreateReader(asm.Image.BaseAddress),
+                image.CreateReader(image.BaseAddress),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
-            asm.AssembleFragment(
+            var lr = asm.AssembleFragment(
                 new Address(0xB96, 0),
                 @"	mov	ax,0
 	cwd
@@ -104,7 +104,7 @@ foo:
 	jnz		foo
 ");
 
-            CreateDisassembler16(asm);
+            CreateDisassembler16(lr.Image);
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i != 5; ++i)
             {
@@ -128,14 +128,14 @@ foo:
         {
             Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
-            asm.AssembleFragment(
+            var lr = asm.AssembleFragment(
                 new Address(0xB96, 0),
                 "foo	proc\r\n" +
                 "		mov	bx,[bp+4]\r\n" +
                 "		mov	ax,[bx+4]\r\n" +
                 "		mov cx,cs:[si+4]\r\n");
 
-            CreateDisassembler16(asm);
+            CreateDisassembler16(lr.Image);
             IntelInstruction[] instrs = new IntelInstruction[3];
             for (int i = 0; i != instrs.Length; ++i)
             {
@@ -152,7 +152,7 @@ foo:
         {
             Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
-            asm.AssembleFragment(
+            var lr = asm.AssembleFragment(
                 new Address(0xB96, 0),
                 "foo	proc\r\n" +
                 "rol	ax,cl\r\n" +
@@ -160,7 +160,7 @@ foo:
                 "rcr	word ptr [bp+4],4\r\n" +
                 "rcl	ax,1\r\n");
 
-            LoadedImage img = asm.Image;
+            LoadedImage img = lr.Image;
             CreateDisassembler16(img.CreateReader(img.BaseAddress));
             IntelInstruction[] instrs = new IntelInstruction[4];
             StringBuilder sb = new StringBuilder();
@@ -183,7 +183,7 @@ foo:
         {
             Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
-            asm.AssembleFragment(
+            var lr = asm.AssembleFragment(
                 new Address(0xA14, 0),
 @"		.i86
 foo		proc
@@ -192,7 +192,7 @@ foo		proc
 		movsx	ebx,bx
 		movzx	ax,byte ptr [bp+04]
 ");
-            CreateDisassembler16(asm);
+            CreateDisassembler16(lr.Image);
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i != 4; ++i)
             {
@@ -212,11 +212,11 @@ movzx	ax,byte ptr [bp+04]
         public void DisEdiTimes2()
         {
             Program prog = new Program(); IntelTextAssembler asm = new IntelTextAssembler();
-            asm.AssembleFragment(new Address(0x0B00, 0),
+            var lr = asm.AssembleFragment(new Address(0x0B00, 0),
                 @"	.i386
 	mov ebx,[edi*2]
 ");
-            CreateDisassembler32(asm);
+            CreateDisassembler32(lr.Image);
             IntelInstruction instr = dasm.Disassemble();
             MemoryOperand mem = (MemoryOperand) instr.op2;
             Assert.AreEqual(2, mem.Scale);
@@ -231,12 +231,12 @@ movzx	ax,byte ptr [bp+04]
             {
                 Program prog = new Program();
                 IntelTextAssembler asm = new IntelTextAssembler();
+                LoaderResults lr;
                 using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
                 {
-                    asm.Assemble(new Address(0xC32, 0), rdr);
+                    lr = asm.Assemble(new Address(0xC32, 0), rdr);
                 }
-                CreateDisassembler16(asm);
-                while (asm.Image.IsValidAddress(dasm.Address))
+                while (lr.Image.IsValidAddress(dasm.Address))
                 {
                     IntelInstruction instr = dasm.Disassemble();
                     fut.TextWriter.WriteLine("{0}", instr.ToString());

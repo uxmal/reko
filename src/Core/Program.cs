@@ -118,7 +118,7 @@ namespace Decompiler.Core
 
         public ImageMap ImageMap
         {
-            get { return ImageMap; }
+            get { return imageMap; }
             set { imageMap = value; }
         }
 

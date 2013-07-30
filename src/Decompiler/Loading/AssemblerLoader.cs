@@ -50,11 +50,12 @@ namespace Decompiler.Loading
 
         public override Program Load(byte[] image, Address addrLoad)
         {
-            asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
+            var lr = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             Program prog = new Program();
-            prog.Image = asm.Image;
-            prog.Architecture = asm.Architecture;
-            prog.Platform = asm.Platform;
+            prog.Image = lr.Image;
+            prog.ImageMap = new ImageMap(prog.Image);
+            prog.Architecture = lr.Architecture;
+            prog.Platform = lr.Platform;
             EntryPoints.AddRange(asm.EntryPoints);
             EntryPoints.Add(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
             CopyImportThunks(asm.ImportThunks, prog);

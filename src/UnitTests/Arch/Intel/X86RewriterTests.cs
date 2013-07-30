@@ -160,12 +160,12 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private X86Rewriter CreateRewriter(IntelAssembler m)
         {
-            return new X86Rewriter(arch, host, state, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
+            return new X86Rewriter(arch, host, state, m.GetImage().Image.CreateReader(0), new Frame(arch.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(IntelAssembler m)
         {
-            return new X86Rewriter(arch32, host, state, m.GetImage().CreateReader(0), new Frame(arch32.WordWidth));
+            return new X86Rewriter(arch32, host, state, m.GetImage().Image.CreateReader(0), new Frame(arch32.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(byte [] bytes)

@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Types;
 using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
@@ -28,6 +29,7 @@ namespace Decompiler.Core.Serialization
 	{
 		public SerializedType DataType;
         [XmlAttribute("size")]
+        [DefaultValue(0)]
         public int PointerSize;
 
 		public SerializedPointerType()
@@ -46,7 +48,7 @@ namespace Decompiler.Core.Serialization
 
 		public override DataType BuildDataType(TypeFactory factory)
 		{
-			return factory.CreatePointer(DataType.BuildDataType(factory), PointerSize);			//$REVIEW: that hard-wired 4 needs a better solution...
+			return factory.CreatePointer(DataType.BuildDataType(factory), PointerSize);
 		}
 
 		public override string ToString()

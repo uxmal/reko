@@ -99,13 +99,13 @@ namespace Decompiler.Assemblers.x86
             get { return importThunks; }
         }
 
-        public LoadedImage GetImage()
+        public LoaderResults GetImage()
         {
             var stm = new MemoryStream();
             LoadSegments(stm);
             var image = new LoadedImage(addrBase, stm.ToArray());
             RelocateSegmentReferences(image);
-            return image;
+            return new LoaderResults(image, arch, platform);
         }
 
         private void LoadSegments(MemoryStream stm)

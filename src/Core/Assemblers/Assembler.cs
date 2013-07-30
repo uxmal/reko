@@ -27,14 +27,10 @@ namespace Decompiler.Core.Assemblers
 {
 	public interface Assembler
 	{
-        void Assemble(Address baseAddress, TextReader reader);
-        void AssembleFragment(Address baseAddress, string fragment);
-        LoadedImage Image { get; }
+        LoaderResults Assemble(Address baseAddress, TextReader reader);
+        LoaderResults AssembleFragment(Address baseAddress, string fragment);
 		Address StartAddress { get; }
         ICollection<EntryPoint> EntryPoints { get; }
-        IProcessorArchitecture Architecture { get; }
-        Platform Platform { get; }
         Dictionary<uint, PseudoProcedure> ImportThunks { get; }
-
     }
 }

@@ -51,7 +51,7 @@ namespace Decompiler.Assemblers.x86
             this.entryPoints = new List<EntryPoint>();
         }
 
-        public void Assemble(Address addr, TextReader rdr)
+        public LoaderResults Assemble(Address addr, TextReader rdr)
         {
             addrBase = addr;
             lexer = new Lexer(rdr);
@@ -70,12 +70,12 @@ namespace Decompiler.Assemblers.x86
 
             asm.ReportUnresolvedSymbols();
             addrStart = addrBase;
-            image = asm.GetImage();
+            return asm.GetImage();
         }
 
-		public void AssembleFragment(Address addr, string fragment)
+		public LoaderResults AssembleFragment(Address addr, string fragment)
 		{
-			Assemble(addr, new StringReader(fragment));
+			return Assemble(addr, new StringReader(fragment));
 		}
 
         public IProcessorArchitecture Architecture
@@ -88,12 +88,6 @@ namespace Decompiler.Assemblers.x86
             get { return entryPoints; }
         }
 
-
-        public LoadedImage Image
-        {
-            get { return image; }
-        }
-
         public Address StartAddress
         {
             get { return addrStart; }
@@ -103,8 +97,6 @@ namespace Decompiler.Assemblers.x86
         {
             get { return asm.ImportThunks; }
         }
-
-
 
 		private bool Error(string pstr)
 		{
