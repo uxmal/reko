@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Scanning
                 new Dictionary<Address, ProcedureSignature>(),
                 new FakeDecompilerEventListener());
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
-            scanner.ProcessQueue();
+            scanner.ScanImage();
         }
 
         private void DumpProgram(Scanner scanner)

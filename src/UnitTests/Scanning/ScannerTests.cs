@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Scanning
             var prog = new Program
             {
                 Architecture = arch,
-                Image = new ProgramImage(new Address(0x12314), new byte[1]),
+                Image = new LoadedImage(new Address(0x12314), new byte[1]),
                 Platform = new FakePlatform()
             };
             var sc = new Scanner(prog, null, new FakeDecompilerEventListener());
@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Scanning
                 new EntryPoint(
                     new Address(0x12314),
                     arch.CreateProcessorState()));
-            sc.ProcessQueue();
+            sc.ScanImage();
 
             Assert.AreEqual(1, sc.Procedures.Count);
             Assert.AreEqual(0x12314, sc.Procedures.Keys[0].Offset);
@@ -152,7 +152,7 @@ namespace Decompiler.UnitTests.Scanning
             prog = new Program();
             prog.Architecture = arch;
             prog.Platform = new FakePlatform();
-            prog.Image = new ProgramImage(new Address(startAddress), new byte[imageSize]);
+            prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
             return new TestScanner(prog);
         }
 
@@ -161,7 +161,7 @@ namespace Decompiler.UnitTests.Scanning
             this.prog = prog;
             prog.Architecture = arch;
             prog.Platform = new FakePlatform();
-            prog.Image = new ProgramImage(new Address(startAddress), new byte[imageSize]);
+            prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
             return new TestScanner(prog);
         }
 
@@ -256,7 +256,7 @@ namespace Decompiler.UnitTests.Scanning
             var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
-            scan.ProcessQueue();
+            scan.ScanImage();
 
             Assert.AreEqual(4, prog.Procedures.Count);
         }
@@ -275,7 +275,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Jnz("lupe");
                 m.Ret();
             });
-            scan.ProcessQueue();
+            scan.ScanImage();
             Assert.AreEqual(1, scan.Procedures.Count);
             var sExp = @"// fn0C00_0000
 void fn0C00_0000()
@@ -386,7 +386,7 @@ fn0C00_0000_exit:
 
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
-            scan.ProcessQueue();
+            scan.ScanImage();
 
             var sExp =
 @"// fn00001000
@@ -447,7 +447,7 @@ fn00001100_exit:
 
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
-            scan.ProcessQueue();
+            scan.ScanImage();
 
             var sExp =
 @"// fn00001000
@@ -527,7 +527,7 @@ fn00001100_exit:
 
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
-            scan.ProcessQueue();
+            scan.ScanImage();
 
             var sExp = "@@@";
             AssertProgram(sExp, prog);

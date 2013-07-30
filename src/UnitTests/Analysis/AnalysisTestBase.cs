@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Analysis
             {
                 scan.EnqueueUserProcedure(sp);
             }
-            scan.ProcessQueue();
+            scan.ScanImage();
         }
 
         public static void RunTest(string sourceFile, Action<Program, TextWriter> test, string outputFile)

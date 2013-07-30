@@ -48,7 +48,7 @@ namespace Decompiler.ImageLoaders.MzExe
         private ushort ss;				// 000A
         private ushort cpUncompressed;	// 000C
 
-        private ProgramImage imgU;
+        private LoadedImage imgU;
 
         public ExePackLoader(IServiceProvider services, ExeImageLoader exe, byte[] imgRaw)
             : base(services, imgRaw)
@@ -68,11 +68,11 @@ namespace Decompiler.ImageLoaders.MzExe
             this.cpUncompressed = rdr.ReadLeUInt16();
 
             int offset = ExePackHeaderOffset(exe);
-            if (ProgramImage.CompareArrays(imgRaw, offset, signature, signature.Length))
+            if (LoadedImage.CompareArrays(imgRaw, offset, signature, signature.Length))
             {
                 relocationsOffset = 0x012D;
             }
-            else if (ProgramImage.CompareArrays(imgRaw, offset, signature2, signature2.Length))
+            else if (LoadedImage.CompareArrays(imgRaw, offset, signature2, signature2.Length))
             {
                 relocationsOffset = 0x0125;
             }
@@ -80,21 +80,11 @@ namespace Decompiler.ImageLoaders.MzExe
                 throw new ApplicationException("Not a recognized EXEPACK image.");
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return new IntelArchitecture(ProcessorMode.Real); }
-        }
-
-        public override Platform Platform
-        {
-            get { return platform; }
-        }
-
         static public bool IsCorrectUnpacker(ExeImageLoader exe, byte[] rawImg)
         {
             int offset = ExePackHeaderOffset(exe);
-            return ProgramImage.CompareArrays(rawImg, offset, signature, signature.Length) ||
-                   ProgramImage.CompareArrays(rawImg, offset, signature2, signature2.Length);
+            return LoadedImage.CompareArrays(rawImg, offset, signature, signature.Length) ||
+                   LoadedImage.CompareArrays(rawImg, offset, signature2, signature2.Length);
         }
 
         private static int ExePackHeaderOffset(ExeImageLoader exe)
@@ -102,13 +92,12 @@ namespace Decompiler.ImageLoaders.MzExe
             return (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
         }
 
-
-        public override ProgramImage Load(Address addr)
+        public override LoaderResults Load(Address addr)
         {
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
             Array.Copy(abC, exeHdrSize, abU, ExeImageLoader.CbPsp, abC.Length - exeHdrSize);
-            imgU = new ProgramImage(addr, abU);
+            imgU = new LoadedImage(addr, abU);
 
             uint SI = hdrOffset - 1;
             while (abC[SI] == 0xFF)
@@ -121,7 +110,7 @@ namespace Decompiler.ImageLoaders.MzExe
             do
             {
                 op = abC[SI];
-                int cx = ProgramImage.ReadLeUInt16(abC, SI - 2);
+                int cx = LoadedImage.ReadLeUInt16(abC, SI - 2);
                 SI -= 3;
                 if ((op & 0xFE) == 0xB0)
                 {
@@ -143,7 +132,8 @@ namespace Decompiler.ImageLoaders.MzExe
                     }
                 }
             } while ((op & 1) == 0);
-            return imgU;
+            imageMap = new ImageMap(imgU);
+            return new LoaderResults(imgU, new X86ArchitectureReal(), platform);
         }
 
         public override Address PreferredBaseAddress
@@ -153,7 +143,6 @@ namespace Decompiler.ImageLoaders.MzExe
 
         public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
         {
-            ImageMap imageMap = imgU.Map;
             ImageReader rdr = new ImageReader(RawImage, hdrOffset + relocationsOffset);
             ushort segCode = (ushort)(addrLoad.Selector + (ExeImageLoader.CbPsp >> 4));
             ushort dx = 0;
@@ -218,5 +207,6 @@ namespace Decompiler.ImageLoaders.MzExe
             0x03, 0xF0, 0x01, 0x06, 0x02, 0x00, 0x2D, 0x10, 0x00, 0x8E, 0xD8, 0x8E, 0xC0, 0xBB, 0x00, 0x00,
             0xFA, 0x8E, 0xD6, 0x8B, 0xE7, 0xFB, 0x2E, 0xFF, 0x2F,        
         };
+        private ImageMap imageMap;
     }
 }

@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             repository.ReplayAll();
 
             CreateInteractor();
-            interactor.ProgramImage = new ProgramImage(new Address(0x12345670), new byte[16]);
+            interactor.ProgramImage = new LoadedImage(new Address(0x12345670), new byte[16]);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
 
             repository.VerifyAll();
@@ -97,12 +97,14 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void MarkAreaWithType()
         {
             CreateInteractor();
-            var image = new ProgramImage(addrBase, new byte[0x100]);
+            var image = new LoadedImage(addrBase, new byte[0x100]);
+            var imageMap = new ImageMap(image);
             interactor.ProgramImage = image;
+            interactor.ImageMap = imageMap;
             interactor.SetTypeAtAddressRange(addrBase, "i32");
 
             ImageMapItem item;
-            Assert.IsTrue(image.Map.TryFindItemExact(addrBase, out item));
+            Assert.IsTrue(imageMap.TryFindItemExact(addrBase, out item));
             Assert.AreEqual(addrBase, item.Address);
             Assert.AreEqual("int32", item.DataType.ToString());
         }

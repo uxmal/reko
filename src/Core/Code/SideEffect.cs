@@ -34,7 +34,7 @@ namespace Decompiler.Core.Code
 			this.Expression = expr;
 		}
 
-		public Expression Expression { get;set;}
+		public Expression Expression { get;set; }
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{

@@ -26,10 +26,12 @@ using System.Text;
 
 namespace Decompiler.Core.Code
 {
+    /// <summary>
+    /// Models a computed n-way GOTO instruction, which picks one of its <paramref>Targets</paramref> depending
+    /// on the evaluated value of the <paramref name="Expression"/>.
+    /// </summary>
     public class SwitchInstruction : Instruction
     {
-        public Block[] Targets;
-
         public SwitchInstruction(Expression expr, Block[] targets)
         {
             this.Expression = expr;
@@ -38,6 +40,7 @@ namespace Decompiler.Core.Code
 
         public Expression Expression { get; set; }
         public override bool IsControlFlow { get { return true; } }
+        public Block[] Targets { get; set; }
 
         public override Instruction Accept(InstructionTransformer xform)
         {

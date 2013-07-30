@@ -24,7 +24,7 @@ using System.IO;
 namespace Decompiler.Core.Code
 {
 	/// <summary>
-	/// Represents an assignment of an identifier from a phi expression.
+	/// Represents an assignment of an identifier from an SSA phi expression.
 	/// </summary>
 	public class PhiAssignment : Instruction
 	{

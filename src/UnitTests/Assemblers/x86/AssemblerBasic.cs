@@ -118,7 +118,7 @@ hello	proc
 		mov	bx,0x40
 hello	endp
 ");
-            ProgramImage img = asm.Image;
+            LoadedImage img = asm.Image;
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
 				prog.Image = img;

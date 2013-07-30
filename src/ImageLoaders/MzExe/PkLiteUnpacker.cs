@@ -38,7 +38,8 @@ namespace Decompiler.ImageLoaders.MzExe
         private Platform platform;
 
 		private byte [] abU;
-		private ProgramImage imgU;
+		private LoadedImage imgU;
+        private ImageMap imageMap;
 		private ushort pklCs;
 		private ushort pklIp;
 		private BitStream bitStm;
@@ -55,7 +56,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}.", pkLiteHdrOffset));
-			uint cparUncompressed = ProgramImage.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
+			uint cparUncompressed = LoadedImage.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
 			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
@@ -64,25 +65,15 @@ namespace Decompiler.ImageLoaders.MzExe
 			bitStm = new BitStream(RawImage, (int) offCompressedData);
 		}
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
-
-        public override Platform Platform
-        {
-            get { return platform; }
-        }
-
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
 			if (exe.e_ovno != 0)
 				return false;
 
-			return ProgramImage.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
+			return LoadedImage.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
 		{
 			uint dst = PspSize;
 
@@ -212,8 +203,9 @@ l01C8:
 2DE9:01CB 83C310        ADD	BX,+10				// BX => unpackedBase + 0x100
 */
 			l01C8:
-			imgU = new ProgramImage(addrLoad, abU);
-			return imgU;
+			imgU = new LoadedImage(addrLoad, abU);
+            imageMap = new ImageMap(imgU);
+			return new LoaderResults(imgU, imageMap, arch, platform);
 		}
 
 		public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)
@@ -233,7 +225,6 @@ l01C8:
 			return CopyDictionaryWord(abU, BX, bytes, stm, dst);
 		}
 
-
 		public override Address PreferredBaseAddress
 		{
 			get { return new Address(0x800, 0); }
@@ -241,7 +232,6 @@ l01C8:
 
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
-			ImageMap imageMap = imgU.Map;
 			ushort segCode = (ushort) (addrLoad.Selector + (PspSize >> 4));
 			for (;;)
 			{

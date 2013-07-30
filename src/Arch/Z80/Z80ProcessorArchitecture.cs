@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
@@ -41,14 +42,14 @@ namespace Decompiler.Arch.Z80
             return new Z80ProcessorState(this);
         }
 
-        public Core.Lib.BitSet CreateRegisterBitset()
+        public BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Z80Rewriter(this, rdr, state, frame, host);
         }
 
         public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
@@ -129,6 +130,41 @@ namespace Decompiler.Arch.Z80
         public uint CarryFlagMask
         {
             get { throw new NotImplementedException(); }
+        }
+    }
+
+    public abstract class Z80Register : RegisterStorage
+    {
+        public readonly int FileSlot;
+        
+        public Z80Register(string name, int id, int fileSlot, PrimitiveType dataType) :
+            base(name, id, dataType)
+        {
+            this.FileSlot = fileSlot;
+        }
+    }
+
+    public class LowByteRegister : Z80Register
+    {
+        public LowByteRegister(string name, int id, int fileSlot) :
+            base(name, id, fileSlot,PrimitiveType.Byte)
+        {
+        }
+    }
+
+    public class HighByteRegister : Z80Register
+    {
+        public HighByteRegister(string name, int id, int fileSlot) :
+            base(name, id, fileSlot, PrimitiveType.Byte)
+        {
+        }
+    }
+
+    public class WordRegister : Z80Register
+    {
+        public WordRegister(string name, int id, int fileSlot) : 
+            base(name, id, fileSlot, PrimitiveType.Word32)
+        {
         }
     }
 

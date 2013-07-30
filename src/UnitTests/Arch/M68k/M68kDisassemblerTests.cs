@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         private M68kDisassembler CreateDasm(byte[] bytes, uint address)
         {
             Address addr = new Address(address);
-            ProgramImage img = new ProgramImage(addr, bytes);
+            LoadedImage img = new LoadedImage(addr, bytes);
             return new M68kDisassembler(img.CreateReader(addr));
         }
 

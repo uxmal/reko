@@ -29,7 +29,7 @@ namespace Decompiler.ImageLoaders.Coff
 {
     public class CoffLoader : ImageLoader
     {
-        private  IProcessorArchitecture arch;
+        private IProcessorArchitecture arch;
 
         public CoffLoader(IServiceProvider services, byte[] rawBytes)
             : base(services, rawBytes)
@@ -37,22 +37,12 @@ namespace Decompiler.ImageLoaders.Coff
             this.header = LoadHeader();
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
-
-        public override Platform Platform
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public override Address PreferredBaseAddress
         {
             get { throw new NotImplementedException(); }
         }
 
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
         {
             throw new NotImplementedException();
         }

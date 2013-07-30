@@ -136,7 +136,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 scan.EnqueueEntryPoint(ep);
             }
-            scan.ProcessQueue();
+            scan.ScanImage();
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Mocks
     {
         internal byte[] ImageBytes;
         private IProcessorArchitecture arch;
-        private ProgramImage image;
+        private LoadedImage image;
         private Exception onLoadImageException;
         private int exceptionDelay;
 
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Mocks
             }
             if (image == null)
             {
-                image = new ProgramImage(addrLoad, imageFile);
+                image = new LoadedImage(addrLoad, imageFile);
             }
             prog.Image = image;
             return prog;

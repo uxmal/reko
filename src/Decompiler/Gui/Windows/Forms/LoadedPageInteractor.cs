@@ -119,7 +119,7 @@ namespace Decompiler.Gui.Windows.Forms
             browserSvc.Caption = "Segments";
             memSvc.SelectionChanged += memSvc_SelectionChanged;
 
-            memSvc.ViewImage(Decompiler.Program.Image);
+            memSvc.ViewImage(Decompiler.Program);
             disSvc.ShowWindow();
             disSvc.Clear();
 
@@ -150,7 +150,7 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public void PopulateBrowser()
 		{
-            browserSvc.Populate(Decompiler.Program.Image.Map.Segments.Values, delegate(object item, IListViewItem listItem)
+            browserSvc.Populate(Decompiler.Program.ImageMap.Segments.Values, delegate(object item, IListViewItem listItem)
             {
                 listItem.Text = ((ImageMapSegment) item).Name;
             });

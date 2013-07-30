@@ -29,22 +29,19 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Contains the bytes that are present in memory when a program is loaded.
 	/// </summary>
-	public class ProgramImage
+	public class LoadedImage
 	{
 		private byte [] abImage;
-		private ImageMap map;
 
-		public ProgramImage(Address addrBase, byte [] bytes)
+		public LoadedImage(Address addrBase, byte [] bytes)
 		{
 			this.BaseAddress = addrBase;
 			this.abImage = bytes;
-			this.map = new ImageMap(addrBase, bytes.Length);
 			this.Relocations = new RelocationDictionary();
 		}
 
         public Address BaseAddress { get; set; }        // Address of start of image.
         public byte[] Bytes { get { return abImage; } }
-        public ImageMap Map { get { return map; } }
         public RelocationDictionary Relocations { get; private set; }
 
         public static bool CompareArrays(byte[] src, int iSrc, byte[] dst, int cb)

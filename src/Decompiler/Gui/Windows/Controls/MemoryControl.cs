@@ -50,7 +50,8 @@ namespace Decompiler.Gui.Windows.Controls
 		private Address addrTopVisible;		// address of topmost visible row.
 		private uint wordSize;
 		private uint cbRow;
-		private ProgramImage image;
+		private LoadedImage image;
+        private ImageMap imageMap;
 		private Address addrSelected;
         private Address addrAnchor;
 
@@ -173,7 +174,7 @@ namespace Decompiler.Gui.Windows.Controls
             uint linAddr = (uint)(SelectedAddress.Linear + offset);
             if (!image.IsValidLinearAddress(linAddr))
                 return;
-            Address addr = image.Map.MapLinearAddressToAddress(linAddr);
+            Address addr = imageMap.MapLinearAddressToAddress(linAddr);
 			if (!IsVisible(SelectedAddress))
 			{
                 Address newTopAddress = TopAddress + offset;
@@ -340,7 +341,7 @@ namespace Decompiler.Gui.Windows.Controls
 		
 
 		[Browsable(false)]
-		public ProgramImage ProgramImage
+		public LoadedImage ProgramImage
 		{
 			get { return image; }
 			set { 
@@ -358,10 +359,17 @@ namespace Decompiler.Gui.Windows.Controls
 			}
 		}
 
+        [Browsable(false)]
+        public ImageMap ImageMap
+        {
+            get { return imageMap; }
+            set { imageMap = value; Invalidate(); }
+        }
+
 		private Address RoundToNearestRow(Address addr)
 		{
 			uint rows = addr.Linear / cbRow;
-			return image.Map.MapLinearAddressToAddress(rows * cbRow);
+			return imageMap.MapLinearAddressToAddress(rows * cbRow);
 		}
 
 		[Browsable(false)]
@@ -447,7 +455,7 @@ namespace Decompiler.Gui.Windows.Controls
             Address newTopAddress;
 			if (image.BaseAddress.Selector != 0)
 			{
-				newTopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint)e.NewValue * cbRow);
+				newTopAddress = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint)e.NewValue * cbRow);
 			}
 			else
 			{
@@ -491,7 +499,7 @@ namespace Decompiler.Gui.Windows.Controls
                 while (rc.Top < ctrl.Height && rdr.Address.Linear < laEnd)
                 {
                     ImageMapSegment seg;
-                    if (!ctrl.ProgramImage.Map.TryFindSegment(ctrl.addrTopVisible, out seg))
+                    if (!ctrl.ImageMap.TryFindSegment(ctrl.addrTopVisible, out seg))
                         return null;
                     if (rdr.Address.Linear >= laSegEnd)
                     {
@@ -549,7 +557,7 @@ namespace Decompiler.Gui.Windows.Controls
                     uint linear = addr.Linear;
 
                     ImageMapItem item;
-                    if (!ctrl.ProgramImage.Map.TryFindItem(addr, out item))
+                    if (!ctrl.ImageMap.TryFindItem(addr, out item))
                         break;
                     uint cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
                     uint cbToDraw = 16; // item.Size - cbIn;
@@ -563,7 +571,7 @@ namespace Decompiler.Gui.Windows.Controls
                     for (int i = 0; i < cbToDraw; ++i)
                     {
                         Address addrByte = rdr.Address;
-                        ctrl.ProgramImage.Map.TryFindItem(addrByte, out item);
+                        ctrl.ImageMap.TryFindItem(addrByte, out item);
                         bool isSelected = linearBeginSelection <= addrByte.Linear && addrByte.Linear <= linearEndSelection;
                         bool isCursor = addrByte.Linear == linearSelected;
                         Brush fg = GetForegroundBrush(item, isSelected);

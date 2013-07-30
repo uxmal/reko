@@ -190,7 +190,7 @@ namespace Decompiler.Scanning
         {
             // We don't know the 'then' block yet, as the following statements may chop up the block
             // we're presently in. Back-patch in when the block target is obtained.
-            var branch = new Branch(b.Condition, null);
+            var branch = new Branch(b.Condition, new Block(blockCur.Procedure, "TMP!"));
             Emit(branch);
 
             // The following statements may chop up the blockCur, so hang on to the essentials.
@@ -247,6 +247,7 @@ namespace Decompiler.Scanning
                 Debug.Print("    Thunking from {0} to {1}", blockFrom, blockTo);
                 Debug.Print("    Procs {0}, {1}", blockFrom.Procedure, blockTo.Procedure);
                 var callRetThunkBlock = proc.AddBlock(blockFrom + Scanner.CallRetThunkSuffix);
+                callRetThunkBlock.IsSynthesized = true;
                 callRetThunkBlock.Statements.Add(0, new CallInstruction(
                     new ProcedureConstant(arch.PointerType, blockTo.Procedure),
                     new CallSite(blockTo.Procedure.Signature.ReturnAddressOnStack, 0)));
@@ -512,7 +513,7 @@ namespace Decompiler.Scanning
                 Emit(new SwitchInstruction(idIndex, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
-            scanner.Image.Map.AddItem(bw.VectorAddress,
+            scanner.ImageMap.AddItem(bw.VectorAddress,
                 new ImageMapVectorTable(xfer is RtlCall, vector.ToArray(), builder.TableByteSize));
         }
 
@@ -549,7 +550,6 @@ namespace Decompiler.Scanning
                 // Some machine instructions, like the X86 'rep cmps' instruction, force the need to generate 
                 // a label where there wouldn't be one normally, in the middle of the rtl sequence corresponding to
                 // the machine instruction.
-
                 return AddIntraStatementBlock(proc);
             }
             else
@@ -674,7 +674,6 @@ namespace Decompiler.Scanning
                 TrashVariable(seq.Tail);
             }
         }
-
 
         private SystemService MatchSyscallToService(RtlSideEffect side)
         {

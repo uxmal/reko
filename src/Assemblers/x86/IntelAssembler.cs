@@ -99,11 +99,11 @@ namespace Decompiler.Assemblers.x86
             get { return importThunks; }
         }
 
-        public ProgramImage GetImage()
+        public LoadedImage GetImage()
         {
             var stm = new MemoryStream();
             LoadSegments(stm);
-            var image = new ProgramImage(addrBase, stm.ToArray());
+            var image = new LoadedImage(addrBase, stm.ToArray());
             RelocateSegmentReferences(image);
             return image;
         }
@@ -123,7 +123,7 @@ namespace Decompiler.Assemblers.x86
             }
         }
 
-        private void RelocateSegmentReferences(ProgramImage image)
+        private void RelocateSegmentReferences(LoadedImage image)
         {
             foreach (var seg in segments)
             {

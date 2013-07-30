@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
         private void BuildTest(params byte[] bytes)
         {
             var arch = new Mos6502ProcessorArchitecture();
-            var image = new ProgramImage(new Address(0x200), bytes);
+            var image = new LoadedImage(new Address(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Disassembler(rdr);
             var rewriter = new Rewriter(arch, image.CreateReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType));

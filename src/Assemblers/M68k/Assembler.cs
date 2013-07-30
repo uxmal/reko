@@ -57,12 +57,12 @@ namespace Decompiler.Assemblers.M68k
         }
 
 
-        public ProgramImage GetImage()
+        public LoadedImage GetImage()
         {
-            return new ProgramImage(addrBase, emitter.Bytes);
+            return new LoadedImage(addrBase, emitter.Bytes);
         }
 
-        public ProgramImage Image
+        public LoadedImage Image
         {
             get { return GetImage(); }
         }

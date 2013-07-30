@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             {
                 writer.WriteBeUint16(opcode);
             }
-            var image = new ProgramImage(new Address(0x00010000), bytes);
+            var image = new LoadedImage(new Address(0x00010000), bytes);
 
             var arch = new M68kArchitecture();
             rw = arch.CreateRewriter(image.CreateReader(0), arch.CreateProcessorState(), arch.CreateFrame(), new RewriterHost());

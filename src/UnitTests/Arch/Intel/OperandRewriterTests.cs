@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void Setup()
 		{
             prog = new Program();
-            prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
+            prog.Image = new LoadedImage(new Address(0x10000), new byte[4]);
             var procAddress = new Address(0x10000000);
             proc = Procedure.Create(procAddress, arch.CreateFrame());
 			state = (X86State) arch.CreateProcessorState();
@@ -244,7 +244,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public ProgramImage Image
+		public LoadedImage Image
 		{
 			get { throw new NotImplementedException(); }
 		}

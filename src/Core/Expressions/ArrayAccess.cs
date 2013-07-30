@@ -23,6 +23,9 @@ using System;
 
 namespace Decompiler.Core.Expressions
 {
+    /// <summary>
+    /// Models an array access.
+    /// </summary>
 	public class ArrayAccess : Expression
 	{
 		public Expression Array;

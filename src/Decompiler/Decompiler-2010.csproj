@@ -289,7 +289,6 @@
     <Compile Include="Gui\Windows\Controls\MemoryControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Controls\MemoryControlPainter.cs" />
     <Compile Include="Gui\Windows\Controls\MenuSystem.cs" />
     <Compile Include="Gui\Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>

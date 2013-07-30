@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Scanning
     [TestFixture]
     public class HeuristicScannerTests
     {
-        private ProgramImage CreateImage(Address addr, params uint[] opcodes)
+        private LoadedImage CreateImage(Address addr, params uint[] opcodes)
         {
             byte[] bytes = new byte[0x20];
             var writer = new LeImageWriter(bytes);
@@ -42,13 +42,13 @@ namespace Decompiler.UnitTests.Scanning
             {
                 writer.WriteLeUInt32(offset, opcodes[i]);
             }
-            return new ProgramImage(addr, bytes);
+            return new LoadedImage(addr, bytes);
         }
 
         [Test]
         public void HSC_x86_FindCallOpcode()
         {
-            var image = new ProgramImage(new Address(0x001000), new byte[] {
+            var image = new LoadedImage(new Address(0x001000), new byte[] {
                 0xE8, 0x03, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
                 0xC3
             });
@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void HSC_x86_FindCallsToProcedure()
         {
-            var image = new ProgramImage(new Address(0x001000), new byte[] {
+            var image = new LoadedImage(new Address(0x001000), new byte[] {
                 0xE8, 0x0B, 0x00, 0x00,  0x00, 0xE8, 0x07, 0x00,
                 0x00, 0x00, 0xC3, 0x00,  0x00, 0x00, 0x00, 0x00,
                 0xC3, 0xC3                                      // 1010, 1011
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void HSC_x86_16bitNearCall()
         {
-            var image = new ProgramImage(new Address(0xC00, 0), new byte[] {
+            var image = new LoadedImage(new Address(0xC00, 0), new byte[] {
                 0xC3, 0x90, 0xE8, 0xFB, 0xFF, 0xC3, 
             });
             var prog = new Program
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void HSC_x86_16bitFarCall()
         {
-            var image = new ProgramImage(new Address(0xC00, 0), new byte[] {
+            var image = new LoadedImage(new Address(0xC00, 0), new byte[] {
                 0xC3, 0x90, 0x9A, 0x00, 0x00, 0x00, 0x0C, 0xC3 
             });
             var prog = new Program

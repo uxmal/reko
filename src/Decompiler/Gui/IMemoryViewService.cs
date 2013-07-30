@@ -42,7 +42,7 @@ namespace Decompiler.Gui
         event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         void ShowWindow();
-        void ViewImage(ProgramImage image);
+        void ViewImage(Program program);
         void ShowMemoryAtAddress(Address addr);
         AddressRange GetSelectedAddressRange();
         void InvalidateWindow();

@@ -33,7 +33,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace Decompiler
 {
@@ -201,7 +200,7 @@ namespace Decompiler
             byte[] image = loader.LoadImageBytes(fileName, 0);
             Program = new Program
             {
-                Image = new ProgramImage(addrBase, image),
+                Image = new LoadedImage(addrBase, image),
                 Architecture = arch,
                 Platform = platform
             };
@@ -238,7 +237,7 @@ namespace Decompiler
         /// <returns></returns>
         private static bool IsXmlFile(byte[] image)
         {
-            if (ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
+            if (LoadedImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
                 return true;
             return false;
         }
@@ -327,7 +326,7 @@ namespace Decompiler
 			try
 			{
                 eventListener.ShowStatus("Rewriting reachable machine code.");
-                scanner = CreateScanner(Program, eventListener) ;
+                scanner = CreateScanner(Program, eventListener);
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
 					scanner.EnqueueEntryPoint(ep);
@@ -336,7 +335,7 @@ namespace Decompiler
 				{
 					scanner.EnqueueUserProcedure(sp);
 				}
-				scanner.ProcessQueue();
+				scanner.ScanImage();
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
 			}
 			finally

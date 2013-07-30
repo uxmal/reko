@@ -97,11 +97,13 @@ namespace Decompiler.Loading
 				addrLoad = loader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
 			}
 
+            var result = loader.Load(addrLoad);
             Program prog = new Program
             {
-                Image = loader.Load(addrLoad),
-                Architecture = loader.Architecture,
-                Platform = loader.Platform,
+                Image = result.Image,
+                ImageMap = result.ImageMap,
+                Architecture = result.Architecture,
+                Platform = result.Platform,
             };
 
 		    var relocations = new RelocationDictionary();

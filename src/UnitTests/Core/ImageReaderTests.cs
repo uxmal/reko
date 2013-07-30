@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Core
         {
             var img =
                 new LeImageReader(
-                    new ProgramImage(
+                    new LoadedImage(
                         new Address(0x10000),
                         new byte[] { 0x12, 0x34, 0x03, 0x00, 0x00, 0x00, 0x46, 0x00, 0x6f, 0x00, 0x6f, 0x00, 0x02, 0x02}),
                     2);

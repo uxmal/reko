@@ -56,12 +56,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
+            prog.Image = new LoadedImage(new Address(0xC00, 0), new byte[10000]);
+            prog.ImageMap = new ImageMap(prog.Image);
 
-            prog.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
-            prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
-            mapSegment1 = prog.Image.Map.Segments.Values[0];
-            mapSegment2 = prog.Image.Map.Segments.Values[1];
+            prog.ImageMap.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
+            prog.ImageMap.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
+            mapSegment1 = prog.ImageMap.Segments.Values[0];
+            mapSegment2 = prog.ImageMap.Segments.Values[1];
 
             interactor = new LoadedPageInteractor();
             site = new FakeComponentSite(interactor);
@@ -220,7 +221,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var decSvc = AddService<IDecompilerService>();
             var decompiler = repository.Stub<IDecompiler>();
             var prog = new Program();
-            prog.Image = new ProgramImage(new Address(0x3000), new byte[10]);
+            prog.Image = new LoadedImage(new Address(0x3000), new byte[10]);
             decompiler.Stub(x => x.Program).Return(prog);
             decSvc.Stub(x => x.Decompiler).Return(decompiler);
             AddService<IDecompilerShellUiService>();

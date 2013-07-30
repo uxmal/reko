@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Typing
             var ep = new EntryPoint(prog.Image.BaseAddress, prog.Architecture.CreateProcessorState());
 			var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
 			scan.EnqueueEntryPoint(ep);
-			scan.ProcessQueue();
+			scan.ScanImage();
 
 			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();

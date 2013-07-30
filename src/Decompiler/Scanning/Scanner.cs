@@ -34,8 +34,7 @@ namespace Decompiler.Scanning
 {
     public interface IScanner
     {
-        void ProcessQueue();
-        void ResolveCrossProcedureJumps();
+        void ScanImage();
 
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
@@ -44,7 +43,8 @@ namespace Decompiler.Scanning
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
         CallGraph CallGraph { get; }
-        ProgramImage Image { get; }
+        LoadedImage Image { get; }
+        ImageMap ImageMap { get; }  //$REVIEW: don't expose this?
         IProcessorArchitecture Architecture { get; }
         Platform Platform { get; }
         IDictionary<Address, VectorUse> VectorUses { get; }
@@ -81,7 +81,8 @@ namespace Decompiler.Scanning
     {
         private Program program;
         private PriorityQueue<WorkItem> queue;
-        private ProgramImage image;
+        private LoadedImage image;
+        private ImageMap imageMap;
         private Map<uint, BlockRange> blocks;
         private Dictionary<Block, uint> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
@@ -104,6 +105,7 @@ namespace Decompiler.Scanning
         {
             this.program = program;
             this.image = program.Image;
+            this.imageMap = program.ImageMap;
             this.callSigs = callSigs;
             this.eventListener = eventListener;
 
@@ -120,7 +122,8 @@ namespace Decompiler.Scanning
 
         public IProcessorArchitecture Architecture { get { return program.Architecture; } }
         public CallGraph CallGraph { get { return program.CallGraph; } }
-        public ProgramImage Image { get { return image; } }
+        public LoadedImage Image { get { return image; } }
+        public ImageMap ImageMap { get { return imageMap; } } //$REVIEW: don't expose this?
         public Platform Platform { get { return program.Platform; } }
         public PriorityQueue<WorkItem> Queue { get { return queue; } }
         public SortedList<Address, Procedure> Procedures { get; private set; }
@@ -163,7 +166,7 @@ namespace Decompiler.Scanning
             blockStarts.Add(b, addr.Linear);
             proc.ControlGraph.Blocks.Add(b);
 
-            image.Map.AddItem(addr, new ImageMapBlock { Block = b }); 
+            imageMap.AddItem(addr, new ImageMapBlock { Block = b }); 
             return b;
         }
 
@@ -177,7 +180,7 @@ namespace Decompiler.Scanning
             BlockRange range;
             if (blocks.TryGetLowerBound(addr.Linear, out range) && range.Start < addr.Linear)
                 range.End = addr.Linear;
-            image.Map.TerminateItem(addr);
+            imageMap.TerminateItem(addr);
         }
 
         private void TerminateAnyBlockAt(Address addr)
@@ -247,11 +250,8 @@ namespace Decompiler.Scanning
                 var wi = CreateBlockWorkItem(addrStart, proc, state);
                 queue.Enqueue(PriorityJumpTarget, wi);
             }
-
-            return new BlockPromoter(program).MaybePromote(block, addrStart, proc);
+            return block;
         }
-
-
 
         /// <summary>
         /// Determines whether a block is a linear sequence of assignments followed by a return 
@@ -273,13 +273,6 @@ namespace Decompiler.Scanning
             }
         }
 
-        private Block FixInboundEdges(Block block, Procedure procNew)
-        {
-            var bp = new BlockPromoter(program);
-            bp.FixInboundEdges();
-            return bp.CallRetThunkBlock;
-        }
-        
         public void EnqueueVectorTable(Address addrFrom, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
         {
             ImageMapVectorTable table;
@@ -294,7 +287,7 @@ namespace Decompiler.Scanning
             wi.Table = table;
             wi.AddrFrom = addrFrom;
 
-            image.Map.AddItem(addrTable, table);
+            imageMap.AddItem(addrTable, table);
             vectors[addrTable] = table;
             queue.Enqueue(PriorityVector, wi);
         }
@@ -327,7 +320,7 @@ namespace Decompiler.Scanning
             st.SetValue(proc.Frame.EnsureRegister(program.Architecture.StackRegister), proc.Frame.FramePointer);
             var block = EnqueueJumpTarget(addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
-            ProcessQueue();
+            ScanImage();
             queue = oldQueue;
 
             return proc;
@@ -372,9 +365,8 @@ namespace Decompiler.Scanning
                 if (b.Block.Succ.Count == 0)
                     return b.Block;
                 string succName = b.Block.Succ[0].Name;
-                if (succName != b.Block.Name &&
-                    succName.StartsWith(b.Block.Name) &&
-                    !succName.EndsWith(CallRetThunkSuffix))
+                if (succName != b.Block.Name && succName.StartsWith(b.Block.Name) &&
+                    !b.Block.Succ[0].IsSynthesized)
                     return b.Block.Succ[0];
                 return b.Block;
             }
@@ -437,12 +429,21 @@ namespace Decompiler.Scanning
             return blockNew;
         }
 
-        public void ProcessQueue()
+        /// <summary>
+        /// Performs the work of scanning the image and resolving any 
+        /// cross procedure jumps after the scan is done.
+        /// </summary>
+        public void ScanImage()
         {
             while (queue.Count > 0)
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
+            }
+            CrossProcedureAnalyzer crpa = new CrossProcedureAnalyzer(program);
+            foreach (Procedure proc in program.Procedures.Values)
+            {
+                crpa.Analyze(proc);
             }
         }
 
@@ -481,10 +482,6 @@ namespace Decompiler.Scanning
                 return ppp;
             else
                 return null;
-        }
-
-        public void ResolveCrossProcedureJumps()
-        {
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Scanning
         private MockRepository repository;
         private ProcessorState state;
         private BlockWorkitem wi;
-        private ProgramImage image;
+        private LoadedImage image;
         private string nl = Environment.NewLine;
 
         [SetUp]
@@ -282,7 +282,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1236))).Return(block1236);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1238))).Return(block1238);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x123A))).Return(block123A);
-                scanner.Stub(x => x.Image).Return(new ProgramImage(new Address(0xc00, 0), new byte[100]));
+                scanner.Stub(x => x.Image).Return(new LoadedImage(new Address(0xc00, 0), new byte[100]));
                 
             });
 

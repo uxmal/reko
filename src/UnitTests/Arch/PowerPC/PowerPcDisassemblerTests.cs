@@ -40,14 +40,14 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 (rb << 11) |
                 (xo << 1) |
                 rc;
-            ProgramImage img = new ProgramImage(new Address(0x00100000), new byte[4]);
+            LoadedImage img = new LoadedImage(new Address(0x00100000), new byte[4]);
             img.WriteBeUint32(0, w);
             return Disassemble(img);
         }
 
         private static PowerPcInstruction DisassembleWord(byte[] a)
         {
-            ProgramImage img = new ProgramImage(new Address(0x00100000), a);
+            LoadedImage img = new LoadedImage(new Address(0x00100000), a);
             return Disassemble(img);
         }
 
@@ -55,11 +55,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             var bytes = new byte[4];
             new BeImageWriter(bytes).WriteBeUInt32(0, instr);
-            var img = new ProgramImage(new Address(0x00100000), bytes);
+            var img = new LoadedImage(new Address(0x00100000), bytes);
             return Disassemble(img);
         }
 
-        private static PowerPcInstruction Disassemble(ProgramImage img)
+        private static PowerPcInstruction Disassemble(LoadedImage img)
         {
             var arch = new PowerPcArchitecture(PrimitiveType.Word32);
             var dasm = new PowerPcDisassembler(arch, img.CreateReader(0U), arch.WordWidth);

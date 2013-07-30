@@ -45,10 +45,11 @@ namespace Decompiler.Gui.Windows
             mvi.InvalidateControl();
         }
 
-        public void ViewImage(ProgramImage image)
+        public void ViewImage(Program program)
         {
             ShowWindow();
-            mvi.ProgramImage = image;
+            mvi.ProgramImage = program.Image;
+            mvi.ImageMap = program.ImageMap;
         }
 
         public void ShowMemoryAtAddress(Address addr)

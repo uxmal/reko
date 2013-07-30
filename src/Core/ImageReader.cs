@@ -30,13 +30,13 @@ namespace Decompiler.Core
     /// </summary>
     public class ImageReader
     {
-        private ProgramImage image;
+        private LoadedImage image;
         protected byte[] bytes;
         private uint offStart;
         private uint off;
         private Address addrStart;
 
-        public ImageReader(ProgramImage img, Address addr)
+        public ImageReader(LoadedImage img, Address addr)
         {
             int o = addr - img.BaseAddress;
             if (o < 0 || o >= img.Bytes.Length)
@@ -47,7 +47,7 @@ namespace Decompiler.Core
             this.off = offStart = (uint)o;
         }
 
-        public ImageReader(ProgramImage img, uint off)
+        public ImageReader(LoadedImage img, uint off)
         {
             this.image = img;
             this.bytes = img.Bytes;
@@ -139,14 +139,14 @@ namespace Decompiler.Core
 
         public ushort ReadLeUInt16()
         {
-            ushort u = ProgramImage.ReadLeUInt16(bytes, off);
+            ushort u = LoadedImage.ReadLeUInt16(bytes, off);
             off += 2;
             return u;
         }
 
         public ushort ReadBeUInt16()
         {
-            ushort u = ProgramImage.ReadBeUInt16(bytes, off);
+            ushort u = LoadedImage.ReadBeUInt16(bytes, off);
             off += 2;
             return u;
         }
@@ -154,21 +154,21 @@ namespace Decompiler.Core
         public short ReadBeInt16() { return (short)ReadBeUInt16(); }
         public short ReadLeInt16() { return (short)ReadLeUInt16(); }
 
-        public ushort ReadLeUInt16(uint offset) { return ProgramImage.ReadLeUInt16(bytes, off); }
-        public ushort ReadBeUInt16(uint offset) { return ProgramImage.ReadBeUInt16(bytes, off); }
-        public short ReadLeInt16(uint offset) { return (short)ProgramImage.ReadLeUInt16(bytes, off); }
-        public short ReadBeInt16(uint offset) { return (short)ProgramImage.ReadBeUInt16(bytes, off); }
+        public ushort ReadLeUInt16(uint offset) { return LoadedImage.ReadLeUInt16(bytes, off); }
+        public ushort ReadBeUInt16(uint offset) { return LoadedImage.ReadBeUInt16(bytes, off); }
+        public short ReadLeInt16(uint offset) { return (short)LoadedImage.ReadLeUInt16(bytes, off); }
+        public short ReadBeInt16(uint offset) { return (short)LoadedImage.ReadBeUInt16(bytes, off); }
 
         public uint ReadLeUInt32()
         {
-            uint u = ProgramImage.ReadLeUInt32(bytes, off);
+            uint u = LoadedImage.ReadLeUInt32(bytes, off);
             off += 4;
             return u;
         }
 
         public uint ReadBeUInt32()
         {
-            uint u = ProgramImage.ReadBeUInt32(bytes, off);
+            uint u = LoadedImage.ReadBeUInt32(bytes, off);
             off += 4;
             return u;
         }
@@ -176,21 +176,21 @@ namespace Decompiler.Core
         public int ReadBeInt32() { return (int)ReadBeUInt32(); }
         public int ReadLeInt32() { return (int)ReadLeUInt32(); }
 
-        public uint ReadLeUInt32(uint offset) { return ProgramImage.ReadLeUInt32(bytes, off); }
-        public uint ReadBeUInt32(uint offset) { return ProgramImage.ReadBeUInt32(bytes, off); }
-        public int ReadLeInt32(uint offset) { return (int)ProgramImage.ReadLeUInt32(bytes, off); }
-        public int ReadBeInt32(uint offset) { return (int)ProgramImage.ReadBeUInt32(bytes, off); }
+        public uint ReadLeUInt32(uint offset) { return LoadedImage.ReadLeUInt32(bytes, off); }
+        public uint ReadBeUInt32(uint offset) { return LoadedImage.ReadBeUInt32(bytes, off); }
+        public int ReadLeInt32(uint offset) { return (int)LoadedImage.ReadLeUInt32(bytes, off); }
+        public int ReadBeInt32(uint offset) { return (int)LoadedImage.ReadBeUInt32(bytes, off); }
 
         public ulong ReadLeUint64()
         {
-            ulong u = ProgramImage.ReadLeUInt64(bytes, off);
+            ulong u = LoadedImage.ReadLeUInt64(bytes, off);
             off += 8;
             return u;
         }
 
         public ulong ReadBeUInt64()
         {
-            ulong u = ProgramImage.ReadBeUInt64(bytes, off);
+            ulong u = LoadedImage.ReadBeUInt64(bytes, off);
             off += 8;
             return u;
         }
@@ -198,10 +198,10 @@ namespace Decompiler.Core
         public long ReadBeInt64() { return (long)ReadBeUInt64(); }
         public long ReadLeInt64() { return (long)ReadLeUint64(); }
 
-        public ulong ReadLeUint64(uint offset) { return ProgramImage.ReadLeUInt64(bytes, off); }
-        public ulong ReadBeUInt64(uint offset) { return ProgramImage.ReadBeUInt64(bytes, off); }
-        public long ReadLeInt64(uint offset) { return (long)ProgramImage.ReadLeUInt64(bytes, off); }
-        public long ReadBeInt64(uint offset) { return (long)ProgramImage.ReadBeUInt64(bytes, off); }
+        public ulong ReadLeUint64(uint offset) { return LoadedImage.ReadLeUInt64(bytes, off); }
+        public ulong ReadBeUInt64(uint offset) { return LoadedImage.ReadBeUInt64(bytes, off); }
+        public long ReadLeInt64(uint offset) { return (long)LoadedImage.ReadLeUInt64(bytes, off); }
+        public long ReadBeInt64(uint offset) { return (long)LoadedImage.ReadBeUInt64(bytes, off); }
 
         public virtual short ReadInt16() { throw new NotSupportedException(); }
         public virtual int ReadInt32() { throw new NotSupportedException(); }
@@ -272,7 +272,7 @@ namespace Decompiler.Core
     public class LeImageReader : ImageReader
     {
         public LeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
-        public LeImageReader(ProgramImage image, uint offset) : base(image, offset) { }
+        public LeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
         public override short ReadInt16() { return ReadLeInt16(); }
         public override int ReadInt32() { return ReadLeInt32(); }
         public override long ReadInt64() { return ReadLeInt64(); }

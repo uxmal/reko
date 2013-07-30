@@ -132,7 +132,7 @@ namespace Decompiler.Gui.Windows.Forms
             if (Decompiler.Program != null)
             {
                 var memSvc = Site.RequireService<IMemoryViewService>();
-                memSvc.ViewImage(Decompiler.Program.Image);
+                memSvc.ViewImage(Decompiler.Program);
             }
             PopulateBrowserServiceWithSegments();
         }
@@ -152,7 +152,7 @@ namespace Decompiler.Gui.Windows.Forms
             if (Decompiler.Program != null)
             {
                 var memSvc = Site.RequireService<IMemoryViewService>();
-                memSvc.ViewImage(Decompiler.Program.Image);
+                memSvc.ViewImage(Decompiler.Program);
             }
             PopulateBrowserServiceWithSegments();
         }
@@ -160,7 +160,7 @@ namespace Decompiler.Gui.Windows.Forms
         private void PopulateBrowserServiceWithSegments()
         {
             var browserSvc = Site.RequireService<IProgramImageBrowserService>();
-            browserSvc.Populate(Decompiler.Program.Image.Map.Segments.Values, delegate(object item, IListViewItem listItem)
+            browserSvc.Populate(Decompiler.Program.ImageMap.Segments.Values, delegate(object item, IListViewItem listItem)
             {
                 var ims = (ImageMapSegment)item;
                 listItem.Text = ims.Name;

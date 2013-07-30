@@ -37,6 +37,9 @@ namespace Decompiler.Core.Expressions
             return new ArrayAccess(elemType, arrayPtr, index);
         }
 
+        /// <summary>
+        /// Integer addition.
+        /// </summary>
         public BinaryExpression IAdd(Expression left, Expression right)
         {
             return new BinaryExpression(Operator.IAdd, left.DataType, left, right);

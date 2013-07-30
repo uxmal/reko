@@ -34,18 +34,14 @@ namespace Decompiler.ImageLoaders.BinHex
     public class BinHexImageLoader : ImageLoader
     {
         private ResourceFork rsrcFork;
-        private ProgramImage image;
+        private LoadedImage image;
+        private ImageMap imageMap;
 
         public BinHexImageLoader(IServiceProvider services, byte [] imgRaw) : base(services, imgRaw)
         {
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return new M68kArchitecture(); }
-        }
-
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
         {
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
@@ -53,6 +49,8 @@ namespace Decompiler.ImageLoaders.BinHex
             byte[] dataFork = LoadFork(hdr.DataForkLength, stm);
             byte[] rsrcFork = LoadFork(hdr.ResourceForkLength, stm);
 
+            var arch = new M68kArchitecture();
+            var platform = new MacOSClassic();
             if (hdr.FileType == "PACT")
             {
                 Cpt.CompactProArchive archive = new Cpt.CompactProArchive();
@@ -63,14 +61,15 @@ namespace Decompiler.ImageLoaders.BinHex
                     byte[] image = abSvc.UserSelectFileFromArchive(items);
                     if (image != null)
                     {
-                        this.rsrcFork = new ResourceFork(image, Architecture);
-                        this.image = new ProgramImage(addrLoad, image);
-                        return this.image;
+                        this.rsrcFork = new ResourceFork(image, arch);
+                        this.image = new LoadedImage(addrLoad, image);
+                        this.imageMap = new ImageMap(addrLoad, image.Length);
+                        return new LoaderResults(this.image, arch, platform);
                     }
                 }
             }
 
-            return new ProgramImage(addrLoad, dataFork);
+            return new LoaderResults(new LoadedImage(addrLoad, dataFork), arch, platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)
@@ -86,11 +85,6 @@ namespace Decompiler.ImageLoaders.BinHex
             return fork;
         }
 
-        public override Platform Platform
-        {
-            get { return new MacOSClassic(); }        
-        }
-
         public override Address PreferredBaseAddress
         {
             get { return new Address(0x10000000); }
@@ -101,7 +95,7 @@ namespace Decompiler.ImageLoaders.BinHex
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, image.Map, entryPoints);
+                rsrcFork.AddResourcesToImageMap(addrLoad, imageMap, entryPoints);
             }
         }
 

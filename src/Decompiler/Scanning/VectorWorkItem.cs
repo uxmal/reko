@@ -31,7 +31,7 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            var builder = new VectorBuilder(scanner.Architecture,  scanner.Image, new DirectedGraphImpl<object>());
+            var builder = new VectorBuilder(scanner, new DirectedGraphImpl<object>());
             var vector = builder.Build(Table.TableAddress, AddrFrom, State);
             if (vector.Count == 0)
             {
@@ -39,7 +39,7 @@ namespace Decompiler.Scanning
                 if (scanner.Image.IsValidAddress(addrNext))
                 {
                     // Can't determine the size of the table, but surely it has one entry?
-                   scanner.Image.Map.AddItem(addrNext, new ImageMapItem());
+                   scanner.ImageMap.AddItem(addrNext, new ImageMapItem());
                 }
                 return;
             }
@@ -58,7 +58,7 @@ namespace Decompiler.Scanning
                 }
             }
             vectorUses[AddrFrom] = new VectorUse(Table.TableAddress, builder.IndexRegister);
-            scanner.Image.Map.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
+            scanner.ImageMap.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
         }
 
     }
