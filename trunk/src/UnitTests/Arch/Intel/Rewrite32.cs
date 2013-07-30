@@ -122,8 +122,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var asm = new IntelTextAssembler();
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                asm.Assemble(new Address(0x10000000), rdr);
-                prog.Image = asm.Image;
+                var lr = asm.Assemble(new Address(0x10000000), rdr);
+                prog.Image = lr.Image;
                 prog.Platform = win32;
                 prog.Architecture = arch;
             }

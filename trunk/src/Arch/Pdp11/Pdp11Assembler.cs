@@ -29,32 +29,17 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Assembler : Assembler
     {
-        public void Assemble(Address baseAddress, TextReader rdr)
+        public LoaderResults Assemble(Address baseAddress, TextReader rdr)
         {
             throw new NotImplementedException();
         }
 
-        public void AssembleFragment(Address baseAddress, string fragment)
+        public LoaderResults AssembleFragment(Address baseAddress, string fragment)
         {
             throw new NotImplementedException();
-        }
-
-        public IProcessorArchitecture Architecture
-        {
-            get { return new Pdp11Architecture(); }
         }
 
         public ICollection<EntryPoint> EntryPoints
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public LoadedImage Image
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Platform Platform
         {
             get { throw new NotImplementedException(); }
         }

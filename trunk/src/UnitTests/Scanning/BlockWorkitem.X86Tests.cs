@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Scanning
         private MockRepository repository;
         private ProcessorState state;
         private BlockWorkitem wi;
-        private LoadedImage image;
+        private LoaderResults lr;
         private string nl = Environment.NewLine;
 
         [SetUp]
@@ -122,8 +122,8 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             }
-            image = asm.GetImage();
-            var rw = arch.CreateRewriter(new ImageReader(image, addr), this.state, proc.Frame, host);
+            lr = asm.GetImage();
+            var rw = arch.CreateRewriter(new ImageReader(lr.Image, addr), this.state, proc.Frame, host);
             wi = new BlockWorkitem(scanner, rw, state, proc.Frame, addr);
         }
 

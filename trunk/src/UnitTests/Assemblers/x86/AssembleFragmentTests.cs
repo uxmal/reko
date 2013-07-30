@@ -70,17 +70,17 @@ namespace Decompiler.UnitTests.Assemblers.x86
             Program prog = new Program();
             IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
-            LoadedImage img = asm.GetImage();
+            LoaderResults lr = asm.GetImage();
 
             X86Disassembler dasm = new X86Disassembler(
-                img.CreateReader(img.BaseAddress),
+                lr.Image.CreateReader(lr.Image.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
             StringBuilder sb = new StringBuilder();
             try
             {
-                for (Address addr = dasm.Address; img.IsValidAddress(dasm.Address); addr = dasm.Address)
+                for (Address addr = dasm.Address; lr.Image.IsValidAddress(dasm.Address); addr = dasm.Address)
                 {
                     IntelInstruction instr = dasm.Disassemble();
                     sb.AppendFormat("{0}\t{1}", addr, instr);

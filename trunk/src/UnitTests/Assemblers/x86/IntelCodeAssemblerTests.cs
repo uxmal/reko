@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
         public void MovRegReg()
         {
             m.Mov(Reg(Registers.ax), Reg(Registers.bx));
-            AssertEqualBytes("8BC3", m.GetImage().Bytes);
+            AssertEqualBytes("8BC3", m.GetImage().Image.Bytes);
         }
 
         private ParsedOperand Reg(IntelRegister reg)
@@ -58,14 +58,14 @@ namespace Decompiler.UnitTests.Assemblers.x86
         public void MovRegConst()
         {
             m.Mov(Reg(Registers.ax), 0x300);
-            AssertEqualBytes("B80003", m.GetImage().Bytes);
+            AssertEqualBytes("B80003", m.GetImage().Image.Bytes);
         }
 
         [Test]
         public void MovMemReg()
         {
             m.Mov(m.BytePtr(0x0300), 0x12);
-            AssertEqualBytes("C606000312", m.GetImage().Bytes);
+            AssertEqualBytes("C606000312", m.GetImage().Image.Bytes);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
             m.Segment("DATA");
             m.Dd(4);
 
-            var bytes = m.GetImage().Bytes;
+            var bytes = m.GetImage().Image.Bytes;
             Assert.AreEqual(0x10 + 4, bytes.Length);        // len(CODE) + alignment padding + len(DATA)
         }
     }

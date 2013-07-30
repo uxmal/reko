@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		public void StringTest()
 		{
 			Program prog = new Program();
-			asm.AssembleFragment(
+			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"	.i86
 foo		proc
@@ -45,7 +45,7 @@ foo		proc
 foo		endp
 data	db	'Hello',0
 ");
-			Assert.IsTrue(Compare(asm.Image.Bytes, new byte []
+			Assert.IsTrue(Compare(lr.Image.Bytes, new byte []
 					{
 						0xbe,0x08,0x00,0x32,0xc0,0xf3,0xae,0xc3,
 						0x48,0x65,0x6c,0x6c,0x6f,0x0 }));
@@ -55,7 +55,7 @@ data	db	'Hello',0
 		public void SwitchStatement()
 		{
 			Program prog = new Program();
-			asm.AssembleFragment(
+			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"	.i86
 foo		proc
@@ -78,7 +78,7 @@ three:
 		ret
 foo		endp
 ");
-            Assert.IsTrue(Compare(asm.Image.Bytes, new byte[]
+            Assert.IsTrue(Compare(lr.Image.Bytes, new byte[]
 			{
 				0x8a,0x1c,0x32,0xff,
 				0xff,0xa7,0x08,0x00,
@@ -97,7 +97,7 @@ foo		endp
 		public void MemOperandTest()
 		{
 			Program prog = new Program();
-			asm.AssembleFragment(
+			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"	.i86
 		mov word ptr [bx+2],3
@@ -106,7 +106,7 @@ foo		endp
 		add word ptr [bx+2],3
 		add byte ptr [bx+4],3
 ");
-			Assert.IsTrue(Compare(asm.Image.Bytes, new byte []
+			Assert.IsTrue(Compare(lr.Image.Bytes, new byte []
 			{
 				0xC7, 0x47, 0x02, 0x03, 0x00,
 				0xC6, 0x47, 0x04, 0x03,
@@ -120,7 +120,7 @@ foo		endp
 		public void AssignPseudo()
 		{
 			Program prog = new Program();
-			asm.AssembleFragment(
+			var lr = asm.AssembleFragment(
                 new Address(0xC00, 0), 
 				@".i86
 		f = 4
@@ -128,7 +128,7 @@ foo		endp
 		f= 8
 		mov byte ptr [bx + f],3
 ");
-			Assert.IsTrue(Compare(asm.Image.Bytes, new byte[]
+			Assert.IsTrue(Compare(lr.Image.Bytes, new byte[]
 			{
 				0xC6, 0x47, 0x4, 0x3,
 				0xC6, 0x47, 0x8, 0x3, 

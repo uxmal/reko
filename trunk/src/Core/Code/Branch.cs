@@ -32,16 +32,13 @@ namespace Decompiler.Core.Code
         public Branch(Expression cond, Block target)
         {
             this.Condition = cond;
-            if (target == null)
-                throw new ArgumentNullException("target");
             this.Target = target;
         }
 
         public Expression Condition { get; set; }
         public override bool IsControlFlow { get { return true; } }
-        
-        public Block Target { get { return target; } set { if (value == null) throw new ArgumentNullException(); target = value; } }
-        private Block target;
+
+        public Block Target { get; set; }
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{

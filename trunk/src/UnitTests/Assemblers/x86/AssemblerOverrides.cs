@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		public void DataOverrides()
 		{
 			Program prog = new Program();
-			asm.AssembleFragment(
+			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@".86
 		mov	eax,32
@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		add	eax,0x12345678
 		add ebx,0x87654321
 ");
-			Assert.IsTrue(Compare(asm.Image.Bytes, new byte[]
+			Assert.IsTrue(Compare(lr.Image.Bytes, new byte[]
 				{	0x66,0xb8,0x20,0x00,0x00,0x00,0xbe,0x34,
 					0x22,0x66,0xbb,0x34,0x22,0x00,0x00,0x66,
 					0x05,0x78,0x56,0x34,0x12,0x66,0x81,0xC3,
