@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         protected void RewriteBits(string bitPattern)
         {
             var arch = new ArmProcessorArchitecture();
-            var image = new ProgramImage(new Address(0x00100000), new byte[4]);
+            var image = new LoadedImage(new Address(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);

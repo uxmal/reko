@@ -25,6 +25,9 @@ using System.IO;
 
 namespace Decompiler.Core.Expressions
 {
+    /// <summary>
+    /// Models binary expresions like integer add, floating point divide etc.
+    /// </summary>
 	public class BinaryExpression : Expression
 	{
 		public BinaryExpression(Operator op, DataType dtResult, Expression left, Expression right) : base(dtResult)

@@ -27,6 +27,9 @@ namespace Decompiler.Core.Code
 	/// <summary>
 	/// Base class for rebuilding instructions -- and expressions therein.
 	/// </summary>
+    /// <remarks>Use this class if most of your transformations will be simple copies, but you need to make 
+    /// exceptions for a few types of expressions. If your transformation will affect most or all of the instruction
+    /// and/or expression types, use <code>ExpressionVisitor</code> directly instead.</remarks>
 	public class InstructionTransformer : ExpressionVisitor<Expression>
 	{
 		public InstructionTransformer()

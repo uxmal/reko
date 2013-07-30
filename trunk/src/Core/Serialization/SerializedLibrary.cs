@@ -42,13 +42,13 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("procedure", typeof(SerializedProcedure))]
         [XmlElement("service", typeof(SerializedService))]
-        public List<SerializedProcedureBase> Procedures;
+        public List<SerializedProcedureBase_v1> Procedures;
 
         private static XmlSerializer serializer;
 
         public SerializedLibrary()
         {
-            this.Procedures = new List<SerializedProcedureBase>();
+            this.Procedures = new List<SerializedProcedureBase_v1>();
         }
 
         public static SerializedLibrary LoadFromStream(Stream stm)

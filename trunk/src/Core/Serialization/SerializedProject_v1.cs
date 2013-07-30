@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -26,6 +27,14 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
+    /// <summary>
+    /// Seralization format for decompiler projects.
+    /// </summary>
+    /// <remarks>
+    /// Note that you may safely *add* attributes and elements to the serialization
+    /// format. However, should *rename* or delete XML nodes, you must copy the serialization
+    /// file format into a new file, bump the namespace identifier and the class name. You will
+    /// also have to modify the ProjectSerializer to handle the new format.</remarks>
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler")]
     public class SerializedProject_v1
     {
@@ -33,31 +42,89 @@ namespace Decompiler.Core.Serialization
 
         public SerializedProject_v1()
         {
-            this.Input = new DecompilerInput();
-            this.Output = new DecompilerOutput();
+            this.Input = new DecompilerInput_v1();
+            this.Output = new DecompilerOutput_v1();
             this.UserProcedures = new List<SerializedProcedure>();
             this.UserCalls = new List<SerializedCall>();
         }
 
         [XmlElement("input")]
-        public DecompilerInput Input;
+        public DecompilerInput_v1 Input;
 
         [XmlElement("output")]
-        public DecompilerOutput Output;
+        public DecompilerOutput_v1 Output;
 
         [XmlElement("procedure", typeof(SerializedProcedure))]
         public List<SerializedProcedure> UserProcedures;
 
         [XmlElement("call", typeof(SerializedCall))]
         public List<SerializedCall> UserCalls;
+    }
 
-        public static Project Load(string file)
+    public class DecompilerInput_v1
+    {
+        public DecompilerInput_v1()
         {
-            using (FileStream stm = new FileStream(file, FileMode.Open))
-            {
-                ProjectSerializer serializer = new ProjectSerializer();
-                return serializer.LoadProject(stm);
-            }
         }
+
+        [XmlElement("filename")]
+        public string Filename;
+
+        [XmlElement("address")]
+        public string Address;
+    }
+
+    public class DecompilerOutput_v1
+    {
+        [XmlElement("disassembly")]
+        public string DisassemblyFilename;
+
+        /// <summary>
+        /// If not null, specifies the file name for intermediate code.
+        /// </summary>
+        [XmlElement("intermediate-code")]
+        public string IntermediateFilename;
+
+        [XmlElement("output")]
+        public string OutputFilename;
+
+        [XmlElement("types-file")]
+        public string TypesFilename;
+    }
+
+    public abstract class SerializedProcedureBase_v1
+    {
+        /// <summary>
+        /// The name of a procedure.
+        /// </summary>
+        [XmlAttribute("name")]
+        public string Name;
+
+        /// <summary>
+        /// Procedure signature. If non-null, the user has specified a signature. If null, the
+        /// signature is unknown.
+        /// </summary>
+        [XmlElement("signature")]
+        public SerializedSignature Signature;
+
+        [XmlElement("characteristics")]
+        public ProcedureCharacteristics Characteristics;
+    }
+
+    public class SerializedProcedure : SerializedProcedureBase_v1
+    {
+        /// <summary>
+        /// Address of the procedure.
+        /// </summary>
+        [XmlElement("address")]
+        public string Address;
+
+        /// <summary>
+        /// Property that indicated whether the procedure body is to be decompiled or not. If false, it is recommended
+        /// that the Signature property be set.
+        /// </summary>
+        [XmlElement("decompile")]
+        [DefaultValue(true)]
+        public bool Decompile = true;
     }
 }

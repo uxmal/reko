@@ -34,7 +34,8 @@ namespace Decompiler.ImageLoaders.MzExe
         private IProcessorArchitecture arch;
         private Platform platform;
 		private ExeImageLoader exe;
-		private ProgramImage imgLoaded;
+		private LoadedImage imgLoaded;
+        private ImageMap imgLoadedMap;
 
 		public MsdosImageLoader(IServiceProvider services, ExeImageLoader exe) : base(services, exe.RawImage)
 		{
@@ -43,35 +44,26 @@ namespace Decompiler.ImageLoaders.MzExe
             this.platform = new MsdosPlatform(arch);
 		}
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
-
-        public override Platform Platform
-        {
-            get { return platform; }
-        }
-
 		public override Address PreferredBaseAddress
 		{
 			get { return new Address(0x800, 0); }
 		}
 
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
         {
             int iImageStart = (exe.e_cparHeader * 0x10);
             int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
-            imgLoaded = new ProgramImage(addrLoad, bytes);
-            return imgLoaded;
+            imgLoaded = new LoadedImage(addrLoad, bytes);
+            imgLoadedMap = new ImageMap(imgLoaded);
+            return new LoaderResults(imgLoaded, arch, platform);
         }
 
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
-			ImageMap imageMap = imgLoaded.Map;
+			ImageMap imageMap = imgLoadedMap;
 			ImageReader rdr = new ImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
 			int i = exe.e_cRelocations;
 			while (i != 0)

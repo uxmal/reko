@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Arch.Arm
     {
         protected static ArmInstruction Disassemble(byte[] bytes)
         {
-            var image = new ProgramImage(new Address(0x00100000), bytes);
+            var image = new LoadedImage(new Address(0x00100000), bytes);
             var dasm = new ArmDisassembler3(new ArmProcessorArchitecture(), image.CreateReader(0));
             var instr = dasm.Disassemble();
             return instr;
@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Arch.Arm
 
         protected static ArmInstruction Disassemble(uint instr)
         {
-            var image = new ProgramImage(new Address(0x00100000), new byte[4]);
+            var image = new LoadedImage(new Address(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             w.WriteLeUInt32(0, instr);
             var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateReader(0));
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Arch.Arm
 
         protected MachineInstruction DisassembleBits(string bitPattern)
         {
-            var image = new ProgramImage(new Address(0x00100000), new byte[4]);
+            var image = new LoadedImage(new Address(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);

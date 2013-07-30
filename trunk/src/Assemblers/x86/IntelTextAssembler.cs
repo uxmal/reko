@@ -43,7 +43,7 @@ namespace Decompiler.Assemblers.x86
 		private Address addrStart;
         private List<EntryPoint> entryPoints;
         private IntelAssembler asm;
-        private ProgramImage image;
+        private LoadedImage image;
         private IntelEmitter emitter;
 
 		public IntelTextAssembler()
@@ -89,7 +89,7 @@ namespace Decompiler.Assemblers.x86
         }
 
 
-        public ProgramImage Image
+        public LoadedImage Image
         {
             get { return image; }
         }

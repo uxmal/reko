@@ -46,10 +46,10 @@ namespace Decompiler.Environments.MacOS
             this.image = bytes;
             this.arch = arch;
 
-            rsrcDataOff = ProgramImage.ReadBeUInt32(bytes, 0);
-            rsrcMapOff = ProgramImage.ReadBeUInt32(bytes, 4);
-            dataSize = ProgramImage.ReadBeUInt32(bytes, 8);
-            mapSize = ProgramImage.ReadBeUInt32(bytes, 0x0C);
+            rsrcDataOff = LoadedImage.ReadBeUInt32(bytes, 0);
+            rsrcMapOff = LoadedImage.ReadBeUInt32(bytes, 4);
+            dataSize = LoadedImage.ReadBeUInt32(bytes, 8);
+            mapSize = LoadedImage.ReadBeUInt32(bytes, 0x0C);
 
             rsrcTypes = new ResourceTypeCollection(image, rsrcMapOff, mapSize);
         }
@@ -109,9 +109,9 @@ namespace Decompiler.Environments.MacOS
             public ResourceTypeCollection(byte [] bytes, uint offset, uint size)
             {
                 this.bytes = bytes;
-                rsrcTypeListOff = offset + ProgramImage.ReadBeUInt16(bytes, offset + 0x18) + 2u;
-                rsrcNameListOff = offset + ProgramImage.ReadBeUInt16(bytes, offset + 0x1A);
-                crsrcTypes = ProgramImage.ReadBeUInt16(bytes, offset + 0x1C) + 1;
+                rsrcTypeListOff = offset + LoadedImage.ReadBeUInt16(bytes, offset + 0x18) + 2u;
+                rsrcNameListOff = offset + LoadedImage.ReadBeUInt16(bytes, offset + 0x1A);
+                crsrcTypes = LoadedImage.ReadBeUInt16(bytes, offset + 0x1C) + 1;
             }
 
             #region ICollection<ResourceType> Members
@@ -161,8 +161,8 @@ namespace Decompiler.Environments.MacOS
                 for (int i = 0; i < crsrcTypes; ++i)
                 {
                     string rsrcTypeName = Encoding.ASCII.GetString(bytes, (int)offset, 4);
-                    int crsrc = ProgramImage.ReadBeUInt16(bytes, offset + 4) + 1;
-                    uint rsrcReferenceListOffset = rsrcTypeListOff + ProgramImage.ReadBeUInt16(bytes, offset + 6) - 2;
+                    int crsrc = LoadedImage.ReadBeUInt16(bytes, offset + 4) + 1;
+                    uint rsrcReferenceListOffset = rsrcTypeListOff + LoadedImage.ReadBeUInt16(bytes, offset + 6) - 2;
                     yield return new ResourceType(bytes, rsrcTypeName, rsrcReferenceListOffset, rsrcNameListOff, crsrc);
                     offset += 8;
                 }
@@ -241,9 +241,9 @@ namespace Decompiler.Environments.MacOS
                 var offset = this.offset;
                 for (int i = 0; i < count; ++i)
                 {
-                    ushort rsrcID = ProgramImage.ReadBeUInt16(bytes, offset);
-                    string name = ReadName(ProgramImage.ReadBeUInt16(bytes, offset + 2));
-                    uint dataOff = ProgramImage.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
+                    ushort rsrcID = LoadedImage.ReadBeUInt16(bytes, offset);
+                    string name = ReadName(LoadedImage.ReadBeUInt16(bytes, offset + 2));
+                    uint dataOff = LoadedImage.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
                     yield return new ResourceReference(rsrcID, name, dataOff);
 
                     offset += 0x0C;

@@ -28,7 +28,7 @@ using System.Linq;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// Describes the structure of the graph: what nodes call what others.
+	/// Describes the call structure of the program: what nodes call what others.
 	/// </summary>
 	public class CallGraph
 	{

@@ -39,6 +39,10 @@ namespace Decompiler.Core.Expressions
     /// </code>
     /// which models the fact that the SZCO condition codes are set by the ADD instruction
     /// that produced eax.
+    /// <para>
+    /// ConditionOf instances only exist early in the decompilation process, and are replaced
+    /// with boolean conditions as the decompiler starts building expressions. Any surviving 
+    /// ConditionOf instances at the end of the decompilation are considered bugs.</para>
     /// </remarks>
 	public class ConditionOf : Expression
 	{

@@ -1,3 +1,4 @@
+
 #region License
 /* 
  * Copyright (C) 1999-2013 John Källén.
@@ -38,7 +39,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		private int lzHdrOffset;
 		private bool isLz91;
-		private ProgramImage imgLoaded;
+		private LoadedImage imgLoaded;
+        private ImageMap imageMap;
 		private ushort lzIp;
 		private ushort lzCs;
 
@@ -55,13 +57,13 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			byte [] abC = RawImage;
 			int entry = lzHdrOffset + exe.e_ip;
-			if (ProgramImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
+			if (LoadedImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
 			{
 				// Untested binary version
 				isLz91 = false;
 				throw new NotImplementedException("Untested");
 			}			
-			else if (ProgramImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
+			else if (LoadedImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
 			{
 				isLz91 = true;
 			}			
@@ -70,16 +72,6 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new ApplicationException("Image is not an LzExe-compressed binary");
 			}
 		}
-
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
-
-        public override Platform Platform
-        {
-            get { return platform; }
-        }
 
 		// EXE header test (is it LZEXE file?) 
 
@@ -90,8 +82,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			int lzHdrOffset = ((int) exe.e_cparHeader + (int) exe.e_cs) << 4;
 			int entry = lzHdrOffset + exe.e_ip;
-			return (ProgramImage.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
-					ProgramImage.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
+			return (LoadedImage.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
+					LoadedImage.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
 		}
 
 		// Fix up the relocations.
@@ -113,7 +105,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		}
 
 		// for LZEXE ver 0.90 
-		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, ProgramImage pgmImgNew, RelocationDictionary relocations)
+		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, LoadedImage pgmImgNew, RelocationDictionary relocations)
 		{
 			int ifile = lzHdrOffset + 0x19D;
 
@@ -145,9 +137,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, ProgramImage pgmImgNew, RelocationDictionary relocations)
+		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, LoadedImage pgmImgNew, RelocationDictionary relocations)
 		{
-			ImageMap imageMap = pgmImgNew.Map;
             const int CompressedRelocationTableAddress = 0x0158;
 			int ifile = lzHdrOffset + CompressedRelocationTableAddress;
 
@@ -180,10 +171,10 @@ namespace Decompiler.ImageLoaders.MzExe
 		}
 
 
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
 		{
 			Unpack(RawImage, addrLoad);
-			return imgLoaded;
+            return new LoaderResults(imgLoaded, imageMap, arch, platform);
 		}
 
 		public override Address PreferredBaseAddress
@@ -191,7 +182,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			get { return new Address(0x0800, 0); }
 		}
 
-		public ProgramImage Unpack(byte [] abC, Address addrLoad)
+		public LoadedImage Unpack(byte [] abC, Address addrLoad)
 		{
 			// Extract the LZ stuff.
 
@@ -264,7 +255,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			// Create a new image based on the uncompressed data.
 
-			this.imgLoaded = new ProgramImage(addrLoad, abU);
+			this.imgLoaded = new LoadedImage(addrLoad, abU);
+            this.imageMap = new ImageMap(imgLoaded);
 			return imgLoaded;
 		}
 

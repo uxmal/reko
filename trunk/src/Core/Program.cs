@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -34,27 +35,29 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Program
 	{
-		private ProgramImage image;
+		private LoadedImage image;
 		private SortedList<Address,Procedure> procedures;
 		private CallGraph callGraph;
         private SortedList<Address, ImageMapVectorTable> vectors;
         private Dictionary<uint, PseudoProcedure> mpuintfn;
         private Dictionary<uint, PseudoProcedure> trampolines;
 		private Identifier globals;
+        private StructureType globalFields;
 		private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Identifier, LinearInductionVariable> ivs;
 		private TypeFactory typefactory;
+        private ImageMap imageMap;
 
 		public Program()
 		{
-			procedures = new SortedList<Address,Procedure>();
-            vectors = new SortedList<Address, ImageMapVectorTable>();
-			callGraph = new CallGraph();
-            mpuintfn = new Dictionary<uint, PseudoProcedure>();		// uint (offset) -> string
-			trampolines = new Dictionary<uint, PseudoProcedure>();	// linear address -> string
-            pseudoProcs = new Dictionary<string, PseudoProcedure>();
-            ivs = new Dictionary<Identifier, LinearInductionVariable>();
-			typefactory = new TypeFactory();
+			this.procedures = new SortedList<Address,Procedure>();
+            this.vectors = new SortedList<Address, ImageMapVectorTable>();
+			this.callGraph = new CallGraph();
+            this.mpuintfn = new Dictionary<uint, PseudoProcedure>();		// uint (offset) -> string
+			this.trampolines = new Dictionary<uint, PseudoProcedure>();	// linear address -> string
+            this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
+            this.ivs = new Dictionary<Identifier, LinearInductionVariable>();
+			this.typefactory = new TypeFactory();
 			this.TypeStore = new TypeStore();
 		}
 
@@ -70,7 +73,7 @@ namespace Decompiler.Core
 			if (wr == null || Architecture == null)
 				return;
 			Dumper dump = new Dumper(Architecture);
-			dump.Dump(this, Image.Map, wr);
+			dump.Dump(this, ImageMap, wr);
 		}
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
@@ -89,23 +92,36 @@ namespace Decompiler.Core
 			get {
                 if (globals == null)
                 {
-                    if (Architecture == null)
-                        throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
-                    globals = new Identifier("globals", 0, Architecture.PointerType, new MemoryStorage()); 
+                    EnsureGlobals();
                 }
                 return globals; 
             } 
 		}
+
+        private void EnsureGlobals()
+        {
+            if (Architecture == null)
+                throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
+            globalFields = TypeFactory.CreateStructureType("Globals", 0);
+            var ptrGlobals = TypeFactory.CreatePointer(globalFields, Architecture.PointerType.Size);
+            globals = new Identifier("globals", 0,  ptrGlobals, new MemoryStorage());
+        }
 		
         /// <summary>
         /// The unpacked, relocated, in-memory image of the program to be decompiled.
         /// </summary>
-		public ProgramImage Image
+		public LoadedImage Image
 		{
 			get { return image; }
-			set { image = value; }
+            set { image = value; }
 		}
-		
+
+        public ImageMap ImageMap
+        {
+            get { return ImageMap; }
+            set { imageMap = value; }
+        }
+
 		public Dictionary<uint, PseudoProcedure> ImportThunks
 		{
 			get { return mpuintfn; }

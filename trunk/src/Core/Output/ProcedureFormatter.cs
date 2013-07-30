@@ -74,8 +74,7 @@ namespace Decompiler.Core.Output
                     }
                     if (showEdges && succ.Count > 0)
                     {
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append("// succ: ");
+                        StringBuilder sb = new StringBuilder("// succ: ");
                         foreach (var s in succ)
                             sb.AppendFormat(" {0}", s.Name);
                         formatter.InnerFormatter.Indent();

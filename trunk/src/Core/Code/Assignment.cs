@@ -24,7 +24,7 @@ using Decompiler.Core.Expressions;
 namespace Decompiler.Core.Code
 {
 	/// <summary>
-	/// An Assignment copies data from Src to Dst.
+	/// An <Assignment copies data from <paramref name="Src" /> to <paramref name="Dst"/>.
 	/// </summary>
 	public class Assignment : Instruction
 	{
@@ -38,7 +38,6 @@ namespace Decompiler.Core.Code
 
         public Identifier Dst { get; set; }
         public Expression Src { get; set; }
-
         public virtual bool IsAlias { get { return false; } }
         public override bool IsControlFlow { get { return false; } }
         

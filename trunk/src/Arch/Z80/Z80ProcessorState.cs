@@ -28,20 +28,24 @@ using System.Text;
 
 namespace Decompiler.Arch.Z80
 {
-    public class Z80ProcessorState  : ProcessorState
+    public class Z80ProcessorState : ProcessorState
     {
+        const int RegisterFileItems = 8;        // AF, BC, DE, HL, IX, IY, IR
         private Z80ProcessorArchitecture arch;
         private ushort[] registerFile;
+        private bool[] isValid;
 
         public Z80ProcessorState(Z80ProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.registerFile = new ushort[RegisterFileItems];
         }
 
         public Z80ProcessorState(Z80ProcessorState state)
             : base(state)
         {
             this.arch = state.arch;
+            this.registerFile = (ushort[])state.registerFile.Clone();
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }

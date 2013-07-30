@@ -36,25 +36,17 @@ namespace Decompiler.Scanning
     {
         private IProcessorArchitecture arch;
         private IScanner scanner;
-        private ProgramImage image;
+        private LoadedImage image;
         private ImageMap imageMap;
         private int cbTable;
         private Backwalker bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
-        [Obsolete]
-        public VectorBuilder(Program prog, ImageMap imageMap, DirectedGraphImpl<object> jumpGraph)
+        public VectorBuilder(IScanner scanner, DirectedGraphImpl<object> jumpGraph)
         {
-            this.arch = prog.Architecture;
-            this.imageMap = imageMap;
-            this.jumpGraph = jumpGraph;
-        }
-
-        public VectorBuilder(IProcessorArchitecture arch, ProgramImage image, DirectedGraphImpl<object> jumpGraph)
-        {
-            this.arch = arch;
-            this.image = image;
-            this.imageMap = image.Map;
+            this.arch = scanner.Architecture;
+            this.image = scanner.Image;
+            this.imageMap = scanner.ImageMap;
             this.jumpGraph = jumpGraph;
         }
 

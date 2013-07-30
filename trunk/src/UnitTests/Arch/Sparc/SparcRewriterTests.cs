@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
                 (byte) (w >> 8),
                 (byte) w
             }).ToArray();
-            var image = new ProgramImage(baseAddr, bytes);
+            var image = new LoadedImage(baseAddr, bytes);
             e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host).GetEnumerator();
         }
 

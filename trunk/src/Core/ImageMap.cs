@@ -43,6 +43,11 @@ namespace Decompiler.Core
 		public event ItemSplitHandler ItemCoincides;
 		public event SegmentSplitHandler SegmentSplit;
 
+        public ImageMap(LoadedImage image)
+            : this(image.BaseAddress, image.Bytes.Length)
+        {
+        }
+
 		public ImageMap(Address addrBase, int imageSize)
 		{
             if (addrBase == null)

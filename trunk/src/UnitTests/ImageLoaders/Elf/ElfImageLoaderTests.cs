@@ -343,8 +343,8 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         public void Load()
         {
             var el = new ElfImageLoader(null, rawImg);
-            el.Load(new Address(0));
-            Assert.IsInstanceOf<IntelArchitecture>(el.Architecture);
+            var lr = el.Load(new Address(0));
+            Assert.IsInstanceOf<IntelArchitecture>(lr.Architecture);
         }
 
         [Test]

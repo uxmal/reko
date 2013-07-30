@@ -36,16 +36,7 @@ namespace Decompiler.Core
             this.RawImage = imgRaw;
         }
 
-        /// <summary>
-        /// The processor architecture encoded by the image format.
-        /// </summary>
-        /// <remarks>
-        /// Some image formats are hard-wired to a particular processor architecture,
-        /// while other, like ELF or PE, have support for varying architectures.
-        /// </remarks>
-        public abstract IProcessorArchitecture Architecture { get; }
         public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get { return null; } }
-        public abstract Platform Platform { get; }
 
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.
@@ -64,7 +55,7 @@ namespace Decompiler.Core
 		/// </summary>
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
-        public abstract ProgramImage Load(Address addrLoad);
+        public abstract LoaderResults Load(Address addrLoad);
 
 		/// <summary>
 		/// Performs fix-ups of the loaded image, adding findings to the supplied collections.

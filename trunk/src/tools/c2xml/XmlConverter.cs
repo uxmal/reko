@@ -37,7 +37,7 @@ namespace Decompiler.Tools.C2Xml
         private TextReader rdr;
         private XmlWriter writer;
         private ParserState parserState;
-        private List<SerializedProcedureBase> procs;
+        private List<SerializedProcedureBase_v1> procs;
 
         public XmlConverter(TextReader rdr, XmlWriter writer)
         {
@@ -45,7 +45,7 @@ namespace Decompiler.Tools.C2Xml
             this.writer = writer;
             this.parserState = new ParserState();
             this.Types = new List<SerializedType>();
-            this.procs = new List<SerializedProcedureBase>();
+            this.procs = new List<SerializedProcedureBase_v1>();
             this.Sizer = new TypeSizer(this);
             this.NamedTypes = new Dictionary<string, SerializedType>
             {

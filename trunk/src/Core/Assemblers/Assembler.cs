@@ -29,7 +29,7 @@ namespace Decompiler.Core.Assemblers
 	{
         void Assemble(Address baseAddress, TextReader reader);
         void AssembleFragment(Address baseAddress, string fragment);
-        ProgramImage Image { get; }
+        LoadedImage Image { get; }
 		Address StartAddress { get; }
         ICollection<EntryPoint> EntryPoints { get; }
         IProcessorArchitecture Architecture { get; }

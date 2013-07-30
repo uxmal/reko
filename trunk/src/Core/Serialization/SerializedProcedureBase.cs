@@ -25,22 +25,4 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    public abstract class SerializedProcedureBase
-    {
-        /// <summary>
-        /// The name of a procedure.
-        /// </summary>
-        [XmlAttribute("name")]
-        public string Name;
-
-        /// <summary>
-        /// Procedure signature. If non-null, the user has specified a signature. If null, the
-        /// signature is unknown.
-        /// </summary>
-        [XmlElement("signature")]
-        public SerializedSignature Signature;
-
-        [XmlElement("characteristics")]
-        public ProcedureCharacteristics Characteristics;
-    }
 }

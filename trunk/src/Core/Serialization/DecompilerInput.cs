@@ -25,16 +25,4 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	public class DecompilerInput
-	{
-		public DecompilerInput()
-		{
-		}
-
-		[XmlElement("filename")]
-		public string Filename;
-
-		[XmlElement("address")]
-		public string Address;
-    }
 }

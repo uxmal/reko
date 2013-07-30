@@ -25,7 +25,7 @@ using System.Text;
 namespace Decompiler.Core.Expressions
 {
     /// <summary>
-    /// Deep-compare expressions.
+    /// Deep-compares expressions.
     /// </summary>
     public class ExpressionValueComparer : IEqualityComparer<Expression>
     {

@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	public class SerializedService : SerializedProcedureBase
+	public class SerializedService : SerializedProcedureBase_v1
 	{
 		public SerializedService()
 		{

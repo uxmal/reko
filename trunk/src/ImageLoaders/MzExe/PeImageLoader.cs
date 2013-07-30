@@ -43,7 +43,8 @@ namespace Decompiler.ImageLoaders.MzExe
 		private short optionalHeaderSize;
 		private int sections;
 		private uint sectionOffset;
-		private ProgramImage imgLoaded;
+		private LoadedImage imgLoaded;
+        private ImageMap imageMap;
 		private uint preferredBaseOfImage;
 		private SortedDictionary<string, Section> sectionMap;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
@@ -70,16 +71,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			short expectedMagic = ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr, expectedMagic);
 		}
-
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
-
-        public override Platform Platform
-        {
-            get { return platform; }
-        }
 
 		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
 		{
@@ -140,14 +131,14 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
         }
 
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
 		{
 			if (sections > 0)
 			{
 				LoadSections(addrLoad, sectionOffset, sections);
 			}
 			imgLoaded.BaseAddress = addrLoad;
-			return imgLoaded;
+			return new LoaderResults(imgLoaded, arch, platform);
 		}
 
 
@@ -176,7 +167,8 @@ namespace Decompiler.ImageLoaders.MzExe
 					sectionMax = section;
 			}
 
-			imgLoaded = new ProgramImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
+			imgLoaded = new LoadedImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
+            imageMap = new ImageMap(imgLoaded);
 
 			foreach (Section s in sectionMap.Values)
 			{
@@ -270,7 +262,6 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
-			ImageMap imageMap = imgLoaded.Map;
             AddSectionsToImageMap(addrLoad, imageMap);
 			
 			Section relocSection;

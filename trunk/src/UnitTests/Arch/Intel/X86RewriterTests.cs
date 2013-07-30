@@ -170,7 +170,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private X86Rewriter CreateRewriter32(byte [] bytes)
         {
-            var image = new ProgramImage(baseAddr32, bytes);
+            var image = new LoadedImage(baseAddr32, bytes);
             return new X86Rewriter(arch32, host, state, new LeImageReader(image, 0), new Frame(arch32.WordWidth));
         }
 

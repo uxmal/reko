@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Structure
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
-			scan.ProcessQueue();
+			scan.ScanImage();
 
             DecompilerEventListener eventListener = new FakeDecompilerEventListener();
 			DataFlowAnalysis da = new DataFlowAnalysis(prog, eventListener);

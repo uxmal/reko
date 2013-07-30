@@ -80,22 +80,20 @@ namespace Decompiler.ImageLoaders.Elf
         private byte fileVersion;
         private IProcessorArchitecture arch;
         private Address addrPreferred;
-        private ProgramImage image;
+        private LoadedImage image;
+        private ImageMap imageMap;
 
         public ElfImageLoader(IServiceProvider services, byte[] rawBytes)
             : base(services, rawBytes)
         {
         }
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
         public Elf32_EHdr Header { get; set; }
         public List<Elf32_SHdr> SectionHeaders { get; private set; }
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public override Address PreferredBaseAddress { get { return addrPreferred; } }
 
-        public override Platform Platform { get { return new DefaultPlatform(); } }
-
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
         {
             LoadElfIdentification();
             LoadHeader();
@@ -104,8 +102,7 @@ namespace Decompiler.ImageLoaders.Elf
             LoadSectionHeaders();
             addrPreferred = ComputeBaseAddress();
             var addrMax = ComputeMaxAddress();
-            this.image = LoadImageBytes(addrPreferred, addrMax);
-            return image;
+            return LoadImageBytes(addrPreferred, addrMax);
         }
 
         public void LoadElfIdentification()
@@ -119,7 +116,7 @@ namespace Decompiler.ImageLoaders.Elf
             this.fileVersion = rdr.ReadByte();
         }
 
-        private ProgramImage LoadImageBytes(Address addrPreferred, Address addrMax)
+        private LoaderResults LoadImageBytes(Address addrPreferred, Address addrMax)
         {
             var bytes = new byte[addrMax - addrPreferred];
             var v_base = addrPreferred.Linear;
@@ -128,14 +125,19 @@ namespace Decompiler.ImageLoaders.Elf
                 if (ph.p_vaddr > 0 && ph.p_filesz > 0)
                     Array.Copy(RawImage, ph.p_offset, bytes, ph.p_vaddr - v_base, ph.p_filesz);
             }
-            var image = new ProgramImage(addrPreferred, bytes);
+            var image = new LoadedImage(addrPreferred, bytes);
             foreach (var segment in SectionHeaders)
             {
                 if (segment.sh_name == 0 || segment.sh_addr == 0)
                     continue;
-                image.Map.AddSegment(new Address(segment.sh_addr), GetStringTableEntry(segment.sh_name), AccessMode.Read);
+                imageMap.AddSegment(new Address(segment.sh_addr), GetStringTableEntry(segment.sh_name), AccessMode.Read);
             }
-            return image;
+            return new LoaderResults(
+                this.image,
+                this.imageMap,
+                this.arch,
+                new DefaultPlatform());
+
         }
 
         public void LoadProgramHeaderTable()

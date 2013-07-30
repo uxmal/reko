@@ -296,7 +296,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);       //$REVIEW: this shouldn't be necessary -- only if user explicitly asks for it.
             memSvc.Expect(x => x.ShowWindow());
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
-            memSvc.Expect(m => m.ViewImage(Arg<ProgramImage>.Is.NotNull));
+            memSvc.Expect(m => m.ViewImage(Arg<Program>.Is.NotNull));
             repository.ReplayAll();
 
             CreateMainFormInteractorWithLoader();
@@ -304,7 +304,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             {
                 Program = new Program
                 {
-                    Image = new ProgramImage(new Address(0x0004), new byte[0x100])
+                    Image = new LoadedImage(new Address(0x0004), new byte[0x100])
                 }
             };
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewMemory);
@@ -369,7 +369,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[300]);
+            prog.Image = new LoadedImage(new Address(0xC00, 0), new byte[300]);
             return prog; 
         }
 

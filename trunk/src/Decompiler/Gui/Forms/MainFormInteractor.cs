@@ -376,7 +376,7 @@ namespace Decompiler.Gui.Forms
         public void ViewMemoryWindow()
         {
             var memService = GetService<IMemoryViewService>();
-            memService.ViewImage(this.decompilerSvc.Decompiler.Program.Image);
+            memService.ViewImage(this.decompilerSvc.Decompiler.Program);
             memService.ShowWindow();
         }
 

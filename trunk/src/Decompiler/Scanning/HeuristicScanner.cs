@@ -49,11 +49,10 @@ namespace Decompiler.Scanning
         /// instructions are.</returns>
         public IEnumerable<uint> FindCallOpcodes(IEnumerable<Address> knownProcedureAddresses)
         {
-            var procEntryLinearAddresses = knownProcedureAddresses
+            var procEntryLinearAddresses = 
+                knownProcedureAddresses
                 .Select(addr => addr.Linear)
-                .Aggregate(
-                    new HashSet<uint>(),
-                    (set, linear) => { set.Add(linear); return set; });
+                .ToHashSet();
             return prog.Architecture.CreateCallInstructionScanner(
                 prog.Image.CreateReader(0),
                 procEntryLinearAddresses);

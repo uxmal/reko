@@ -62,11 +62,18 @@ namespace Decompiler.Core.Output
         public bool UseTabs { get; set; }
         public TextWriter TextWriter { get; private set; }
 
+        /// <summary>
+        /// Terminate a line using the terminator string.
+        /// </summary>
         public void Terminate()
 		{
 			TextWriter.Write(Terminator);
 		}
 
+        /// <summary>
+        /// Write the string <paramref name="s"/>, then terminate the line.
+        /// </summary>
+        /// <param name="s"></param>
 		public void Terminate(string s)
 		{
 			Write(s);

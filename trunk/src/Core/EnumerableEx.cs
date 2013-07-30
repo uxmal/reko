@@ -61,5 +61,11 @@ namespace Decompiler.Core
             }
             return list;
         }
+
+        public static HashSet<TElement> ToHashSet<TElement>(
+            this IEnumerable<TElement> source)
+        {
+            return new HashSet<TElement>(source);
+        }
     }
 }

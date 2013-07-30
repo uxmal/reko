@@ -49,7 +49,7 @@ namespace Decompiler.Arch.Pdp11
             get { throw new NotImplementedException(); }
         }
 
-        public ProgramImage Image
+        public LoadedImage Image
         {
             get { throw new NotImplementedException(); }
         }

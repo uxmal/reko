@@ -25,6 +25,9 @@ using System.Globalization;
 
 namespace Decompiler.Core.Expressions
 {
+    /// <summary>
+    /// Models a constant value.
+    /// </summary>
 	public abstract class Constant : Expression
 	{
         protected Constant(DataType t)

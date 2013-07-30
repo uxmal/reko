@@ -19,37 +19,35 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Scanning;
-using Decompiler.UnitTests.Mocks;
-using NUnit.Framework;  
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Decompiler.Core
 {
-    [TestFixture]
-    public class CrossProcedureAnalyzerTests
+    public class LoaderResults
     {
-        [Test]
-        public void Crpa_Analyze_SimpleProc()
-        {
-            var prog = Given_Simple_Proc();
+        public readonly LoadedImage Image;
+        public readonly ImageMap ImageMap;
+        public readonly IProcessorArchitecture Architecture;
+        public readonly Platform Platform;
 
-            var crpa = new CrossProcedureAnalyzer(null);
-            crpa.Analyze(prog.Procedures.Values.First());
+        public LoaderResults(LoadedImage image, IProcessorArchitecture arch, Platform platform)
+        {
+            this.Image = image;
+            this.ImageMap = new ImageMap(image.BaseAddress, image.Bytes.Length);
+            this.Architecture = arch;
+            this.Platform = platform;
         }
 
-        private Program Given_Simple_Proc()
+        public LoaderResults(LoadedImage image, ImageMap  map, IProcessorArchitecture arch, Platform platform)
         {
-            var b = new ProgramBuilder();
-            b.Add("bob", m =>
-            {
-                m.Label("Zlon");
-                m.Return();
-            });
-            return b.BuildProgram();
+            this.Image = image;
+            this.ImageMap = map;
+            this.Architecture = arch;
+            this.Platform = platform;
         }
+
     }
 }

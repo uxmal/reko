@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 scanner.EnqueueUserProcedure(sp);
             }
-            scanner.ProcessQueue();
+            scanner.ScanImage();
         }
 
         private Project LoadProject()

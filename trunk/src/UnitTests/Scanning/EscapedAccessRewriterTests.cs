@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Scanning
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
-			scan.ProcessQueue();
+			scan.ScanImage();
 			return prog;
 		}
 

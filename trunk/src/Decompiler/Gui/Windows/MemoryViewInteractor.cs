@@ -64,10 +64,16 @@ namespace Decompiler.Gui.Windows
         {
         }
 
-        public ProgramImage ProgramImage
+        public LoadedImage ProgramImage
         {
             get { return Control.ProgramImage; }
             set { Control.ProgramImage = value; }
+        }
+
+        public ImageMap ImageMap
+        {
+            get { return Control.ImageMap; }
+            set { Control.ImageMap = value; }
         }
 
         void ctl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -136,7 +142,7 @@ namespace Decompiler.Gui.Windows
            var dataType = parser.Parse(userText);
            if (dataType == null)
                return;
-            ProgramImage.Map.AddItem(address, new ImageMapItem
+            ImageMap.AddItem(address, new ImageMapItem
             {
                 Size = (uint) dataType.Size,
                 DataType = dataType,

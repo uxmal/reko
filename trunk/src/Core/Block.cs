@@ -45,6 +45,7 @@ namespace Decompiler.Core
 
         public string Name { get; private set; }
         public Procedure Procedure { get; set; }
+        public bool IsSynthesized { get; set; }
        
         public Block ElseBlock
         {
@@ -76,7 +77,6 @@ namespace Decompiler.Core
 			next.Succ.Clear();
 		}
 
-
 		public static bool ReplaceJumpsFrom(Block block, Block next)
 		{
 			bool change = false;
@@ -95,7 +95,7 @@ namespace Decompiler.Core
 		}
 
 		/// <summary>
-		/// Replaces all jumps to <paramref name="block"/> with jumps to <paramref name="next"/>.
+		/// Replaces all edges incoming to <paramref name="block"/> with edges to <paramref name="next"/>.
 		/// </summary>
 		/// <param name="block"></param>
 		/// <param name="next"></param>

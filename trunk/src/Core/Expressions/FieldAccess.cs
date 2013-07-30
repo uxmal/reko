@@ -27,7 +27,7 @@ namespace Decompiler.Core.Expressions
     /// <summary>
     /// Models an access to the field of a record, like the Pascal expression a.field.
     /// The <paramref name="expr"/> is expected to be a structure type. If it is a pointer type,
-    /// that is the expression shoild be a^.field (in Pascal), remember to first "wrap" it in
+    /// that is the expression should be a^.field (as expressed in Pascal), remember to first "wrap" it in
     /// a <code>Dereference</code> instance.
     /// </summary>
 	public class FieldAccess : Expression

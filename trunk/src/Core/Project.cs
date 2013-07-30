@@ -64,12 +64,12 @@ namespace Decompiler.Core
         {
             var sp = new SerializedProject_v1()
             {
-                Input = new DecompilerInput
+                Input = new DecompilerInput_v1
                 {
                     Address = BaseAddress.ToString(),
                     Filename = InputFilename,
                 },
-                Output = new DecompilerOutput
+                Output = new DecompilerOutput_v1
                 {
                     DisassemblyFilename = DisassemblyFilename,
                     IntermediateFilename = IntermediateFilename,

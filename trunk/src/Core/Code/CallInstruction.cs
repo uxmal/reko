@@ -24,6 +24,11 @@ using System;
 
 namespace Decompiler.Core.Code
 {
+    /// <summary>
+    /// Models a low-level call instruction.
+    /// </summary>
+    /// <remarks>CallInstructions only exist right after scanning. Subsequent decompiler
+    /// phases will replace them with <code>Application</code> expressions.</remarks>
     public class CallInstruction : Instruction
     {
         public CallInstruction(Expression callee, CallSite site)

@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
             Program prog = new Program();
             IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
-            ProgramImage img = asm.GetImage();
+            LoadedImage img = asm.GetImage();
 
             X86Disassembler dasm = new X86Disassembler(
                 img.CreateReader(img.BaseAddress),

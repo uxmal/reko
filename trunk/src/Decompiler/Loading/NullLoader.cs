@@ -38,20 +38,14 @@ namespace Decompiler.Loading
             this.imageBytes = image;
         }
 
-        public override IProcessorArchitecture Architecture
+        public override LoaderResults Load(Address addrLoad)
         {
-            get { return null; }
+            return new LoaderResults(
+                new LoadedImage(addrLoad, imageBytes),
+                null,
+                new DefaultPlatform());
         }
 
-        public override ProgramImage Load(Address addrLoad)
-        {
-            return new ProgramImage(addrLoad, imageBytes);
-        }
-
-        public override Platform Platform
-        {
-            get { return null; }
-        }
         public override Address PreferredBaseAddress
         {
             get { return new Address(0); }

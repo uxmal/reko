@@ -43,6 +43,5 @@ namespace Decompiler.Core.Serialization
 		{
 			sser.Deserialize(this);
 		}
-
 	}
 }

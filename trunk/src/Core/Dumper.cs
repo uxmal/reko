@@ -88,14 +88,14 @@ namespace Decompiler.Core
 			}
 		}
 
-        public void DumpData(ProgramImage image, Address address, int cbBytes, TextWriter stm)
+        public void DumpData(LoadedImage image, Address address, int cbBytes, TextWriter stm)
         {
             if (cbBytes < 0)
                 throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
             DumpData(image, address, (uint)cbBytes, stm);
         }
 
-		public void DumpData(ProgramImage image, Address address, uint cbBytes, TextWriter stm)
+		public void DumpData(LoadedImage image, Address address, uint cbBytes, TextWriter stm)
 		{
 			uint cSkip = address.Linear & 0x0F;
 			ImageReader rdr = image.CreateReader(address);
@@ -135,7 +135,7 @@ namespace Decompiler.Core
 			}
 		}
 
-        public void DumpAssembler(ProgramImage image, Address addrStart, Address addrLast, TextWriter writer)
+        public void DumpAssembler(LoadedImage image, Address addrStart, Address addrLast, TextWriter writer)
         {
             var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
             while (dasm.Address < addrLast)
@@ -144,7 +144,7 @@ namespace Decompiler.Core
             }
         }
 
-        public void DumpAssemblerLine(ProgramImage image, IDisassembler dasm, TextWriter writer)
+        public void DumpAssemblerLine(LoadedImage image, IDisassembler dasm, TextWriter writer)
         {
             Address addrBegin = dasm.Address;
             if (ShowAddresses)
@@ -176,7 +176,7 @@ namespace Decompiler.Core
             }
         }
 
-		public void WriteByteRange(ProgramImage image, Address begin, Address addrEnd, TextWriter writer)
+		public void WriteByteRange(LoadedImage image, Address begin, Address addrEnd, TextWriter writer)
 		{
 			ImageReader rdr = image.CreateReader(begin);
 			while (rdr.Address < addrEnd)

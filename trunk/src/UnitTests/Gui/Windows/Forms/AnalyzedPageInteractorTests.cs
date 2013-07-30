@@ -183,7 +183,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             public override Program Load(byte[] imageFile, Address userSpecifiedAddress)
             {
                 Program prog = new Program();
-                prog.Image = new ProgramImage(new Address(0x00100000), imageFile);
+                prog.Image = new LoadedImage(new Address(0x00100000), imageFile);
                 prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
                 return prog;
             }

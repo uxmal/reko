@@ -23,21 +23,5 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	public class DecompilerOutput
-	{
-		[XmlElement("disassembly")]
-		public string DisassemblyFilename;
 
-		/// <summary>
-		/// If not null, specifies the file name for intermediate code.
-		/// </summary>
-		[XmlElement("intermediate-code")]
-		public string IntermediateFilename;
-
-		[XmlElement("output")]
-		public string OutputFilename;
-
-		[XmlElement("types-file")]
-		public string TypesFilename;
-	}
 }

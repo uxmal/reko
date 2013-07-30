@@ -44,12 +44,17 @@ namespace Decompiler.Arch.Z80
             get { return rdr.Address; }
         }
 
-        public MachineInstruction DisassembleInstruction()
+        public Z80Instruction Disassemble()
         {
             var op = rdr.ReadByte();
             var opRef = oprecs[op];
             this.IndexRegister = null;
             return opRef.Decode(this, op, "");
+        }
+
+        public MachineInstruction DisassembleInstruction()
+        {
+            return Disassemble();
         }
 
         public Z80Instruction DecodeOperands(Opcode opcode, byte op, string fmt)

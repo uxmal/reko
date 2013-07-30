@@ -101,6 +101,8 @@ namespace Decompiler.Scanning
 
         public void Promote()
         {
+            FixInboundEdges();
+
             var movedBlocks = new HashSet<Block>(
                 new DfsIterator<Block>(procOld.ControlGraph)
                 .PreOrder(blockToPromote)
@@ -120,15 +122,12 @@ namespace Decompiler.Scanning
             }
 
             ReplaceJumpsToExitBlock(movedBlocks);
-            FixInboundEdges();
             foreach (var b in movedBlocks)
             {
                 FixOutboundEdges(b);
             }
             procNew.ControlGraph.AddEdge(procNew.EntryBlock, blockToPromote);
         }
-
-        
 
         private void ReplaceJumpsToExitBlock(HashSet<Block> movedBlocks)
         {

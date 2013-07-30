@@ -71,16 +71,6 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new FormatException("Image is not an MS-DOS executable image.");
 		}
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return GetDeferredLoader().Architecture; }
-        }
-
-        public override Platform Platform
-        {
-            get { return GetDeferredLoader().Platform; }
-        }
-
         private ImageLoader CreateRealModeLoader(byte[] image)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
@@ -138,7 +128,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// Loads a Microsoft .EXE file. There are several widely varying sub-formats,
 		/// so we need to discover what flavour it is before we can proceed.
 		/// </summary>
-        public override ProgramImage Load(Address addrLoad)
+        public override LoaderResults Load(Address addrLoad)
 		{
 			return GetDeferredLoader().Load(addrLoad);
 		}
