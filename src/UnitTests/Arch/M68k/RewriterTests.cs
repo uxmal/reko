@@ -25,6 +25,7 @@ using Decompiler.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -146,15 +147,21 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_pre_and_postdec()
+        public void M68krw_move_pre_and_postdec()
         {
-            Rewrite(0x36E3);    // move.w-(a3),(a3)+
+            Rewrite(0x36E3);    // move.w -(a3),(a3)+
             AssertCode("0|00010000(2): 5 instructions",
                 "1|a3 = a3 - 0x00000002",
                 "2|v3 = Mem0[a3:word16]",
                 "3|Mem0[a3:word16] = v3",
                 "4|a3 = a3 + 0x00000002",
                 "5|CVZN = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_add_pre()
+        {
+            Rewrite(0xadd); // add -(r3),r3
         }
     }
 }

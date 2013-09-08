@@ -42,7 +42,7 @@ namespace Decompiler.Core.Expressions
 		void VisitIdentifier(Identifier id);
 		void VisitMemberPointerSelector(MemberPointerSelector mps);
 		void VisitMemoryAccess(MemoryAccess access);
-		void VisitMkSequence(MkSequence seq);
+        void VisitMkSequence(MkSequence seq);
 		void VisitPhiFunction(PhiFunction phi);
 		void VisitPointerAddition(PointerAddition pa);
 		void VisitProcedureConstant(ProcedureConstant pc);

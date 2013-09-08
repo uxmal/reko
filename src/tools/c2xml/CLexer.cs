@@ -648,11 +648,11 @@ namespace Decompiler.Tools.C2Xml
         {
             throw new NotImplementedException(string.Format("State {0}, ch: {1}", state, ch));
         }
+
         private void ClearBuffer()
         {
             sb.Remove(0, sb.Length);
         }
-
 
         private CToken Tok(CTokenType type)
         {

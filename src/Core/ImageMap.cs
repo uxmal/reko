@@ -271,7 +271,9 @@ namespace Decompiler.Core
                         return new Address((uint)linearAddress);
                 }
 			}			
-			throw new ArgumentOutOfRangeException("Linear address {0:X8} exceeeds known address range.");
+			throw new ArgumentOutOfRangeException(
+                string.Format("Linear address {0:X8} exceeeds known address range.",
+                linearAddress));
 		}
 
 		private void OnItemCoincides(ImageMapItem item, ImageMapItem itemNew)

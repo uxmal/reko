@@ -30,11 +30,12 @@ namespace Decompiler.UnitTests.Mocks
 	/// <summary>
 	/// Supports building a intermediate code program directly without having to first generate machine code and scanning it.
 	/// </summary>
-	public class ProgramBuilder 
+	public class ProgramBuilder
 	{
 		private Program prog;
 		private uint procCount;
         private Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
+        private Dictionary<string, Block> blocks = new Dictionary<string, Block>();
 		private List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
 
 		public ProgramBuilder() : this(new FakeArchitecture())
@@ -65,8 +66,9 @@ namespace Decompiler.UnitTests.Mocks
 
         public Procedure Add(string procName, Action<ProcedureBuilder> testCodeBuilder)
         {
-            var mock = new ProcedureBuilder(prog.Architecture, procName);
+            var mock = new ProcedureBuilder(prog.Architecture, procName, blocks);
             mock.ProgramMock = this;
+            mock.LinearAddress = (uint)((procCount + 1) * 0x1000);
             testCodeBuilder(mock);
             Add(mock.Procedure);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
@@ -103,9 +105,11 @@ namespace Decompiler.UnitTests.Mocks
             prog.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
+            prog.ImageMap = new ImageMap(new Address(0x1000), prog.Procedures.Count * 0x1000);
+            var seg = prog.ImageMap.AddSegment(new Address(0x1000), ".text", AccessMode.Execute);
+            seg.Size = (uint)(prog.Procedures.Count * 0x1000);
 			return prog;
 		}
-
 
 		public void ResolveUnresolved()
 		{

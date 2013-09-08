@@ -26,7 +26,8 @@ using System.Xml.Serialization;
 namespace Decompiler.Core.Serialization
 {
 	/// <summary>
-	/// Extra characteristics that describe extra-lingustiic semantics of a procedure.
+	/// Extra characteristics that describe extra-lingustic semantics of a procedure.
+    /// These are often helpful when decompiling.
 	/// </summary>
 	public class ProcedureCharacteristics
 	{

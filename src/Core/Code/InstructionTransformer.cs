@@ -147,7 +147,6 @@ namespace Decompiler.Core.Code
 			return acc;
 		}
 
-
 		public virtual Expression VisitBinaryExpression(BinaryExpression binExp)
 		{
 			binExp.Left = binExp.Left.Accept(this);

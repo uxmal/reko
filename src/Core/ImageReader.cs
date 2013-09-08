@@ -89,10 +89,10 @@ namespace Decompiler.Core
         }
 
         /// <summary>
-        /// Little-endian read.
+        /// Reads a chunk of bytes in Little-Endian mode.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">Enough bytes read </param>
+        /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public Constant ReadLe(PrimitiveType type)
         {
             Constant c = image.ReadLe(off, type);
@@ -100,6 +100,11 @@ namespace Decompiler.Core
             return c;
         }
 
+        /// <summary>
+        /// Reads a chunk of bytes in Big-Endian mode.
+        /// </summary>
+        /// <param name="type">Enough bytes read </param>
+        /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public Constant ReadBe(PrimitiveType type)
         {
             Constant c = image.ReadBe(off, type);
@@ -227,7 +232,7 @@ namespace Decompiler.Core
             {
             case 1: return (char)ReadByte();
             case 2: return (char)ReadUInt16();
-            default: throw new NotSupportedException(string.Format("Character size {0} not supported."));
+            default: throw new NotSupportedException(string.Format("Character size {0} not supported.", charType.Size));
             }
         }
 
@@ -269,6 +274,9 @@ namespace Decompiler.Core
         }
     }
 
+    /// <summary>
+    /// Use this reader when the processor is in Little-Endian mode to read multi-byte quantities from memory.
+    /// </summary>
     public class LeImageReader : ImageReader
     {
         public LeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
@@ -290,6 +298,9 @@ namespace Decompiler.Core
         public override Constant Read(PrimitiveType dataType) { return ReadLe(dataType); }
     }
 
+    /// <summary>
+    /// Use this reader when the processor is in Big-Endian mode to read multi-byte quantities from memory.
+    /// </summary>
     public class BeImageReader : ImageReader
     {
         public BeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }

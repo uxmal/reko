@@ -44,6 +44,7 @@ namespace Decompiler.Scanning
             this.procCalling = procCalling;
             this.callGraph = callGraph;
         }
+
         public Statement Statement { get; set; }
         public Identifier Identifier { get; set; }
 

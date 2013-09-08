@@ -244,15 +244,16 @@ namespace Decompiler.Arch.M68k
                 this.operandFormat = "$";
             }
 
-            public OpRec(uint mask, uint match, uint ea_mask, Opcode opcode, string opFormat)
+            public OpRec(string opFormat, uint mask, uint match, uint ea_mask, Opcode opcode)
             {
+                this.operandFormat = opFormat;
+
                 this.opcode_handler = UseDecodeMethod; 
                 this.mask = mask;
                 this.match = match;
                 this.ea_mask = ea_mask;
 
                 this.opcode = opcode;
-                this.operandFormat = opFormat;
             }
 
             public M68kInstruction UseDecodeMethod(M68kDisassembler dasm)
@@ -4975,20 +4976,20 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_1111         , 0xf000, 0xf000, 0x000),
 	new OpRec(d68000_abcd_rr      , 0xf1f8, 0xc100, 0x000),
 	new OpRec(d68000_abcd_mm      , 0xf1f8, 0xc108, 0x000),
-	new OpRec(0xf1c0, 0xd000, 0xbff, Opcode.add, "s6:E0,D9"),           // d68000_add_er_8   
+	new OpRec("s6:E0,D9", 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8   
 	new OpRec(d68000_add_er_16    , 0xf1c0, 0xd040, 0xfff),
 	new OpRec(d68000_add_er_32    , 0xf1c0, 0xd080, 0xfff),
-	new OpRec(0xf1c0, 0xd100, 0x3f8, Opcode.add, "D9,s6:E0"),           // d68000_add_re_8     
+	new OpRec("D9,s6:E0", 0xf1c0, 0xd100, 0x3f8, Opcode.add),           // d68000_add_re_8     
 	new OpRec(d68000_add_re_16    , 0xf1c0, 0xd140, 0x3f8),
 	new OpRec(d68000_add_re_32    , 0xf1c0, 0xd180, 0x3f8),
-	new OpRec(0xf1c0, 0xd0c0, 0xfff, Opcode.adda, "sw:E0,A9"),
-	new OpRec(0xf1c0, 0xd1c0, 0xfff, Opcode.adda, "sl:E0,A9"),
+	new OpRec("sw:E0,A9", 0xf1c0, 0xd0c0, 0xfff, Opcode.adda),
+	new OpRec("sl:E0,A9", 0xf1c0, 0xd1c0, 0xfff, Opcode.adda),
 	new OpRec(d68000_addi_8, 0xffc0, 0x0600, 0xbf8),
 	new OpRec(d68000_addi_16      , 0xffc0, 0x0640, 0xbf8),
 	new OpRec(d68000_addi_32      , 0xffc0, 0x0680, 0xbf8),
-	new OpRec(0xf1c0, 0x5000, 0xbf8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_8       , 
-	new OpRec(0xf1c0, 0x5040, 0xff8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_16      , 
-	new OpRec(0xf1c0, 0x5080, 0xff8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_32      , 
+	new OpRec("s6:q9,E0", 0xf1c0, 0x5000, 0xbf8, Opcode.addq),          // d68000_addq_8       , 
+	new OpRec("s6:q9,E0", 0xf1c0, 0x5040, 0xff8, Opcode.addq),          // d68000_addq_16      , 
+	new OpRec("s6:q9,E0", 0xf1c0, 0x5080, 0xff8, Opcode.addq),          // d68000_addq_32      , 
 	new OpRec(d68000_addx_rr_8    , 0xf1f8, 0xd100, 0x000),
 	new OpRec(d68000_addx_rr_16   , 0xf1f8, 0xd140, 0x000),
 	new OpRec(d68000_addx_rr_32   , 0xf1f8, 0xd180, 0x000),
@@ -5023,7 +5024,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
 	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
 	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new OpRec(0xf1c0, 0x0140, 0xbf8, Opcode.bchg, "D9,E0"),          // d68000_bchg_r       
+	new OpRec("D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r       
 	new OpRec(d68000_bchg_s       , 0xffc0, 0x0840, 0xbf8),
 	new OpRec(d68000_bclr_r       , 0xf1c0, 0x0180, 0xbf8),
 	new OpRec(d68000_bclr_s       , 0xffc0, 0x0880, 0xbf8),
@@ -5036,7 +5037,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
 	new OpRec(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
 	new OpRec(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
-	new OpRec(0xff00, 0x6000, 0x000, Opcode.bra, "J"),              // d68000_bra_8        
+	new OpRec("J", 0xff00, 0x6000, 0x000, Opcode.bra),              // d68000_bra_8        
 	new OpRec(d68000_bra_16       , 0xffff, 0x6000, 0x000),
 	new OpRec(d68020_bra_32       , 0xffff, 0x60ff, 0x000),
 	new OpRec(d68000_bset_r       , 0xf1c0, 0x01c0, 0xbf8),
@@ -5090,19 +5091,19 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
 	new OpRec(d68040_cpush        , 0xff20, 0xf420, 0x000),
     new OpRec(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
-    new OpRec(0xfff8, 0x51c8, 0x000, Opcode.dbf, "D0,Rw"),      // d68000_dbcc         
+    new OpRec("D0,Rw", 0xfff8, 0x51c8, 0x000, Opcode.dbf),      // d68000_dbcc         
 	new OpRec(d68000_dbra         , 0xfff8, 0x51c8, 0x000),
 	new OpRec(d68000_divs         , 0xf1c0, 0x81c0, 0xbff),
 	new OpRec(d68000_divu         , 0xf1c0, 0x80c0, 0xbff),
 	new OpRec(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
-	new OpRec(0xf1c0, 0xb100, 0xbf8, Opcode.eor, "sb:D9,E0"),       // d68000_eor_8        
-	new OpRec(0xf1c0, 0xb140, 0xbf8, Opcode.eor, "sw:D9,E0"),   // d68000_eor_16       
-	new OpRec(0xf1c0, 0xb180, 0xbf8, Opcode.eor, "sl:D9,E0"),   //d68000_eor_32 
+	new OpRec("sb:D9,E0", 0xf1c0, 0xb100, 0xbf8, Opcode.eor),       // d68000_eor_8        
+	new OpRec("sw:D9,E0", 0xf1c0, 0xb140, 0xbf8, Opcode.eor),   // d68000_eor_16       
+	new OpRec("sl:D9,E0", 0xf1c0, 0xb180, 0xbf8, Opcode.eor),   //d68000_eor_32 
 	new OpRec(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
 	new OpRec(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
-	new OpRec(0xffc0, 0x0a00, 0xbf8, Opcode.eori, "sb:Ib,E0"),     // d68000_eori_8
-	new OpRec(0xffc0, 0x0a40, 0xbf8, Opcode.eori, "sw:Iw,E0"),     // d68000_eori_16
-	new OpRec(0xffc0, 0x0a80, 0xbf8, Opcode.eori, "sl:Il,E0"),     // d68000_eori_32
+	new OpRec("sb:Ib,E0", 0xffc0, 0x0a00, 0xbf8, Opcode.eori),     // d68000_eori_8
+	new OpRec("sw:Iw,E0", 0xffc0, 0x0a40, 0xbf8, Opcode.eori),     // d68000_eori_16
+	new OpRec("sl:Il,E0", 0xffc0, 0x0a80, 0xbf8, Opcode.eori),     // d68000_eori_32
 	new OpRec(d68000_exg_dd       , 0xf1f8, 0xc140, 0x000),
 	new OpRec(d68000_exg_aa       , 0xf1f8, 0xc148, 0x000),
 	new OpRec(d68000_exg_da       , 0xf1f8, 0xc188, 0x000),
@@ -5113,28 +5114,28 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_illegal      , 0xffff, 0x4afc, 0x000),
 	new OpRec(d68000_jmp          , 0xffc0, 0x4ec0, 0x27b),
 	new OpRec(d68000_jsr          , 0xffc0, 0x4e80, 0x27b),
-	new OpRec(0xf1c0, 0x41c0, 0x27b, Opcode.lea, "E0,A9"),                  // d68000_lea          
+	new OpRec("E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),                  // d68000_lea          
 	new OpRec(d68000_link_16      , 0xfff8, 0x4e50, 0x000),
 	new OpRec(d68020_link_32      , 0xfff8, 0x4808, 0x000),
-	new OpRec(0xf1f8, 0xe008, 0x000, Opcode.lsr, "s6:q9,D0"),         // d68000_lsr_s_8      
+	new OpRec("s6:q9,D0", 0xf1f8, 0xe008, 0x000, Opcode.lsr),         // d68000_lsr_s_8      
 	new OpRec(d68000_lsr_s_16     , 0xf1f8, 0xe048, 0x000),
 	new OpRec(d68000_lsr_s_32     , 0xf1f8, 0xe088, 0x000),
 	new OpRec(d68000_lsr_r_8      , 0xf1f8, 0xe028, 0x000),
 	new OpRec(d68000_lsr_r_16     , 0xf1f8, 0xe068, 0x000),
 	new OpRec(d68000_lsr_r_32     , 0xf1f8, 0xe0a8, 0x000),
 	new OpRec(d68000_lsr_ea       , 0xffc0, 0xe2c0, 0x3f8),
-	new OpRec(0xf1f8, 0xe108, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_8      
-	new OpRec(0xf1f8, 0xe148, 0x000, Opcode.lsl, "s6:q9,D0"),       // d68000_lsl_s_16     
+	new OpRec("s6:q9,D0", 0xf1f8, 0xe108, 0x000, Opcode.lsl),       // d68000_lsl_s_8      
+	new OpRec("s6:q9,D0", 0xf1f8, 0xe148, 0x000, Opcode.lsl),       // d68000_lsl_s_16     
 	new OpRec(d68000_lsl_s_32     , 0xf1f8, 0xe188, 0x000),
 	new OpRec(d68000_lsl_r_8      , 0xf1f8, 0xe128, 0x000),
 	new OpRec(d68000_lsl_r_16     , 0xf1f8, 0xe168, 0x000),
 	new OpRec(d68000_lsl_r_32     , 0xf1f8, 0xe1a8, 0x000),
 	new OpRec(d68000_lsl_ea       , 0xffc0, 0xe3c0, 0x3f8),
-	new OpRec(0xf000, 0x1000, 0xbff, Opcode.move, "sb:E0,e6"),      // d68000_move_8       
-	new OpRec(0xf000, 0x3000, 0xfff, Opcode.move, "sw:E0,e6"),      // d68000_move_16      , 
-	new OpRec(0xf000, 0x2000, 0xfff, Opcode.move, "sl:E0,e6"),      // d68000_move_32      , 
-	new OpRec(0xf1c0, 0x3040, 0xfff, Opcode.movea, "sw:E0,A9"),     // d68000_movea_16     ,
-	new OpRec(0xf1c0, 0x2040, 0xfff, Opcode.movea, "sl:E0,A9"),     // (d68000_movea_32     ,
+	new OpRec("sb:E0,e6", 0xf000, 0x1000, 0xbff, Opcode.move),      // d68000_move_8       
+	new OpRec("sw:E0,e6", 0xf000, 0x3000, 0xfff, Opcode.move),      // d68000_move_16      , 
+	new OpRec("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32      , 
+	new OpRec("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16     ,
+	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // (d68000_movea_32     ,
 	new OpRec(d68000_move_to_ccr  , 0xffc0, 0x44c0, 0xbff),
 	new OpRec(d68010_move_fr_ccr  , 0xffc0, 0x42c0, 0xbf8),
 	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
@@ -5143,9 +5144,9 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
 	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
 	new OpRec(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
-	new OpRec(0xfff8, 0x48e0, 0x000, Opcode.movem, "sl:M,E0"),         // d68000_movem_pd_32  
+	new OpRec("sl:M,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),         // d68000_movem_pd_32  
 	new OpRec(d68000_movem_re_16  , 0xffc0, 0x4880, 0x2f8),
-	new OpRec(0xffc0, 0x48c0, 0x2f8, Opcode.movem, "sl:M,E0"),     // d68000_movem_re_32   
+	new OpRec("sl:M,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),     // d68000_movem_re_32   
 	new OpRec(d68000_movem_er_16  , 0xffc0, 0x4c80, 0x37b),
 	new OpRec(d68000_movem_er_32  , 0xffc0, 0x4cc0, 0x37b),
 	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
@@ -5155,7 +5156,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68010_moves_8      , 0xffc0, 0x0e00, 0x3f8),
 	new OpRec(d68010_moves_16     , 0xffc0, 0x0e40, 0x3f8),
 	new OpRec(d68010_moves_32     , 0xffc0, 0x0e80, 0x3f8),
-	new OpRec(0xf100, 0x7000, 0x000, Opcode.moveq, "Q0,D9"),        // d68000_moveq        
+	new OpRec("Q0,D9", 0xf100, 0x7000, 0x000, Opcode.moveq),        // d68000_moveq        
 	new OpRec(d68040_move16_pi_pi , 0xfff8, 0xf620, 0x000),
 	new OpRec(d68040_move16_pi_al , 0xfff8, 0xf600, 0x000),
 	new OpRec(d68040_move16_al_pi , 0xfff8, 0xf608, 0x000),
@@ -5171,21 +5172,21 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_negx_8       , 0xffc0, 0x4000, 0xbf8),
 	new OpRec(d68000_negx_16      , 0xffc0, 0x4040, 0xbf8),
 	new OpRec(d68000_negx_32      , 0xffc0, 0x4080, 0xbf8),
-	new OpRec(0xffff, 0x4e71, 0x000, Opcode.nop, ""),
+	new OpRec("", 0xffff, 0x4e71, 0x000, Opcode.nop),
 	new OpRec(d68000_not_8        , 0xffc0, 0x4600, 0xbf8),
 	new OpRec(d68000_not_16       , 0xffc0, 0x4640, 0xbf8),
 	new OpRec(d68000_not_32       , 0xffc0, 0x4680, 0xbf8),
-	new OpRec(0xf1c0, 0x8000, 0xbff, Opcode.or, "sb:E0,D9"),        // d68000_or_er_8      
-	new OpRec(0xf1c0, 0x8040, 0xbff, Opcode.or, "sw:E0,D9"),        // d68000_or_er_16     
-	new OpRec(0xf1c0, 0x8080, 0xbff, Opcode.or, "sl:E0,D9"),        // d68000_or_er_32   
+	new OpRec("sb:E0,D9", 0xf1c0, 0x8000, 0xbff, Opcode.or),        // d68000_or_er_8      
+	new OpRec("sw:E0,D9", 0xf1c0, 0x8040, 0xbff, Opcode.or),        // d68000_or_er_16     
+	new OpRec("sl:E0,D9", 0xf1c0, 0x8080, 0xbff, Opcode.or),        // d68000_or_er_32   
 	new OpRec(d68000_or_re_8      , 0xf1c0, 0x8100, 0x3f8),
 	new OpRec(d68000_or_re_16     , 0xf1c0, 0x8140, 0x3f8),
 	new OpRec(d68000_or_re_32     , 0xf1c0, 0x8180, 0x3f8),
-	new OpRec(0xffff, 0x003c, 0x000, Opcode.ori, "sb:Ib,c"),        // d68000_ori_to_ccr   
-	new OpRec(0xffff, 0x007c, 0x000, Opcode.ori, "sw:Iw,s"),        // d68000_ori_to_sr    
-	new OpRec(0xffc0, 0x0000, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_8        
-	new OpRec(0xffc0, 0x0040, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_16        
-	new OpRec(0xffc0, 0x0080, 0xbf8, Opcode.ori, "s6:Iv,e0"),       // d68000_ori_32       
+	new OpRec("sb:Ib,c", 0xffff, 0x003c, 0x000, Opcode.ori),        // d68000_ori_to_ccr   
+	new OpRec("sw:Iw,s", 0xffff, 0x007c, 0x000, Opcode.ori),        // d68000_ori_to_sr    
+	new OpRec("s6:Iv,e0", 0xffc0, 0x0000, 0xbf8, Opcode.ori),       // d68000_ori_8        
+	new OpRec("s6:Iv,e0", 0xffc0, 0x0040, 0xbf8, Opcode.ori),       // d68000_ori_16        
+	new OpRec("s6:Iv,e0", 0xffc0, 0x0080, 0xbf8, Opcode.ori),       // d68000_ori_32       
 	new OpRec(d68020_pack_rr      , 0xf1f8, 0x8140, 0x000),
 	new OpRec(d68020_pack_mm      , 0xf1f8, 0x8148, 0x000),
 	new OpRec(d68000_pea          , 0xffc0, 0x4840, 0x27b),
@@ -5281,7 +5282,7 @@ namespace Decompiler.Arch.M68k
 };
         }
 
-        private static OpRec illegalOpcode = new OpRec(0, 0, 0, Opcode.illegal, "");
+        private static OpRec illegalOpcode = new OpRec("", 0, 0, 0, Opcode.illegal);
 
         /* Check if opcode is using a valid ea mode */
         static bool valid_ea(uint opcode, uint mask)
