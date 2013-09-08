@@ -76,10 +76,10 @@ namespace Decompiler.Arch.M68k
                 switch (di.Instruction.code)
                 {
                 case Opcode.adda: RewriteAdda(); break;
-                case Opcode.eor: RewriteLogical(Operator.Xor); break;
+                case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
-                case Opcode.or: RewriteLogical(Operator.Or); break;
+                case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 default:
                     throw new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
                         di.Instruction.code),

@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace Decompiler.Arch.M68k
     /// </summary>
     public partial class Rewriter
     {
-        public void RewriteLogical(BinaryOperator op)
+        public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
         {
             var width = di.Instruction.dataWidth;
             Expression result;
@@ -42,7 +43,7 @@ namespace Decompiler.Arch.M68k
                 var opSrc = MaybeCast(width, orw.RewriteSrc(di.Instruction.op1));
                 var opDst = MaybeCast(width, orw.RewriteDst(di.Instruction.op2, opSrc));
                 var tmp = frame.CreateTemporary(width);
-                emitter.Assign(tmp, new BinaryExpression(op, width, opDst, opSrc));
+                emitter.Assign(tmp, binOpGen(opSrc, opDst));
                 emitter.Assign(
                     orw.RewriteSrc(di.Instruction.op2),
                     emitter.Dpb(orw.RewriteSrc(di.Instruction.op2), tmp, 0, width.BitSize));
@@ -71,18 +72,57 @@ namespace Decompiler.Arch.M68k
         private void RewriteAdda()
         {
             var width = di.Instruction.dataWidth;
-            var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var op2 = orw.RewriteSrc(di.Instruction.op2);
-            emitter.Assign(op2, emitter.IAdd(op2, opSrc));
+            var opSrc = RewriteSrcOperand(di.Instruction.op1);
+            var opDst = RewriteDstOperand(di.Instruction.op2, opSrc, (s, d) => { emitter.Assign(d, emitter.IAdd(d, s)); });
         }
 
-        private void RewritePostOp(PostIncrementMemoryOperand op)
+        private Expression RewriteSrcOperand(MachineOperand mop)
         {
-            var postOp = di.Instruction.op1 as PostIncrementMemoryOperand;
-            if (postOp == null)
-                return;
-            var reg = frame.EnsureRegister(op.Register);
-            emitter.Assign(reg, emitter.IAdd(reg, di.Instruction.dataWidth.Size));
+            return RewriteDstOperand(mop, null, (s, d) => { });
+        }
+
+        private bool NeedsSpilling(Expression op)
+        {
+            //$REVIEW: May not need to spill here if opSrc is immediate / register other than reg
+            if (op == null)
+                return false;
+            if (op is Constant)
+                return false;
+            return true;
+        }
+
+        private Expression RewriteDstOperand(MachineOperand mop, Expression opSrc, Action<Expression, Expression> m)
+        {
+            var preDec = mop as PredecrementMemoryOperand;
+            if (preDec != null)
+            {
+                var reg = frame.EnsureRegister(preDec.Register);
+                var t = frame.CreateTemporary(opSrc.DataType);
+                if (NeedsSpilling(opSrc))
+                {
+                    emitter.Assign(t, opSrc);
+                    opSrc = t;
+                }
+                emitter.Assign(reg, emitter.ISub(reg, di.Instruction.dataWidth.Size));
+                var op = emitter.Load(di.Instruction.dataWidth, reg);
+                m(opSrc, op);
+                return op;
+            }
+            var postInc = mop as PostIncrementMemoryOperand;
+            if (postInc != null)
+            {
+                var reg = frame.EnsureRegister(postInc.Register);
+                var t = frame.CreateTemporary(di.Instruction.dataWidth);
+                if (NeedsSpilling(opSrc))
+                {
+                    emitter.Assign(t, opSrc);
+                    opSrc = t;
+                }
+                m(opSrc, emitter.Load(di.Instruction.dataWidth, reg));
+                emitter.Assign(reg, emitter.IAdd(reg, di.Instruction.dataWidth.Size));
+                return t;
+            }
+            return orw.RewriteSrc(mop);
         }
 
         public void RewriteMove(bool setFlag)

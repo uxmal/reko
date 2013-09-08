@@ -33,22 +33,22 @@ namespace Decompiler.Core
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
 	{
-		private string name;
-
 		public ProcedureBase(string name)
 		{
-			this.name = name;
+			this.Name = name;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
-		public string Name 
-        {
-			get { return name; }
-		}
+        /// <summary>
+        /// The name of the procedure.
+        /// </summary>
+		public string Name { get; private set; }
 
 		public abstract ProcedureSignature Signature { get; set; }
 
 		public ProcedureCharacteristics Characteristics { get; set; }
+
+        public TypeVariable TypeVariable { get; set; }
 
         public override string ToString()
         {
@@ -57,6 +57,5 @@ namespace Decompiler.Core
             return sw.ToString();
         }
 
-		public TypeVariable TypeVariable { get; set; }
 	}
 }

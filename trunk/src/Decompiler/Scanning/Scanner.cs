@@ -29,6 +29,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Decompiler.Scanning
 {
@@ -269,6 +270,8 @@ namespace Decompiler.Scanning
                     return true;
                 if (!(block.Statements.Last.Instruction is Assignment))
                     return false;
+                if (block.Succ.Count == 0)
+                    return false;
                 block = block.Succ[0];
             }
         }
@@ -302,17 +305,17 @@ namespace Decompiler.Scanning
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
-            var pb = GetImportedProcedure(addr.Linear);
-            if (pb != null)
-                return pb;
-
+            PseudoProcedure imp = GetImportedProcedure(addr.Linear);
+            if (imp != null)
+                return imp;
             Procedure proc = EnsureProcedure(addr, procedureName);
             if (visitedProcs.Contains(proc))
                 return proc;
-            visitedProcs.Add(proc);
 
+            visitedProcs.Add(proc);
             Debug.WriteLineIf(trace.TraceInfo, string.Format("Scanning procedure at {0}", addr));
 
+            //$REFACTOR: make the stack explicit?
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
@@ -320,7 +323,7 @@ namespace Decompiler.Scanning
             st.SetValue(proc.Frame.EnsureRegister(program.Architecture.StackRegister), proc.Frame.FramePointer);
             var block = EnqueueJumpTarget(addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
-            ScanImage();
+            ProcessQueue();
             queue = oldQueue;
 
             return proc;
@@ -435,15 +438,27 @@ namespace Decompiler.Scanning
         /// </summary>
         public void ScanImage()
         {
+            ProcessQueue();
+            HandleCrossProcedureJumps();
+        }
+
+        private void HandleCrossProcedureJumps()
+        {
+            CrossProcedureAnalyzer crpa = new CrossProcedureAnalyzer(program);
+            foreach (Procedure proc in program.Procedures.Values.ToArray())
+            {
+                crpa.Analyze(proc);
+            }
+            crpa.PromoteBlocksToProcedures(crpa.BlocksNeedingPromotion);
+            crpa.CloneBlocksIntoOtherProcedures(crpa.BlocksNeedingCloning);
+        }
+
+        private void ProcessQueue()
+        {
             while (queue.Count > 0)
             {
                 var workitem = queue.Dequeue();
                 workitem.Process();
-            }
-            CrossProcedureAnalyzer crpa = new CrossProcedureAnalyzer(program);
-            foreach (Procedure proc in program.Procedures.Values)
-            {
-                crpa.Analyze(proc);
             }
         }
 

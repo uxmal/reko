@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void AddEntryPoint()
+        public void Scanner_AddEntryPoint()
         {
             arch.DisassemblyStream = new MachineInstruction[] {
                 new FakeInstruction(Operation.Add,
@@ -123,10 +123,13 @@ namespace Decompiler.UnitTests.Scanning
             {
                 m => { m.Return(4, 0); }
             });
+            var image = new LoadedImage(new Address(0x12314), new byte[1]);
+            var imageMap = new ImageMap(image);
             var prog = new Program
             {
                 Architecture = arch,
-                Image = new LoadedImage(new Address(0x12314), new byte[1]),
+                Image = image,
+                ImageMap = imageMap,
                 Platform = new FakePlatform()
             };
             var sc = new Scanner(prog, null, new FakeDecompilerEventListener());
@@ -151,10 +154,10 @@ namespace Decompiler.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            prog = new Program();
-            prog.Architecture = arch;
-            prog.Platform = new FakePlatform();
-            prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
+            prog = new Program(
+                new LoadedImage(new Address(startAddress), new byte[imageSize]),
+                arch,
+                new FakePlatform());
             return new TestScanner(prog);
         }
 
@@ -340,116 +343,33 @@ fn0C00_0000_exit:
             Assert.AreEqual("bx", proc.Signature.FormalArguments[0].Name);
         }
 
-
-
-        //        [Test(Description="When entrypoints are added they should end up in the top-level scanner queue")]
-        //public void EntryPointsAddedToScanQueue()
-        //{
-        //    scan.EnqueueEntryPoint(new EntryPoint(new Address(0x3123), new IntelState()));
-        //    Assert.AreEqual(1, scan.Queue.Count);
-        //    Assert.AreEqual(0, scan.Stack.Count);
-        //}
-
-        //[Test(Description="Pulling a queue item should create a ProcedureScanner and push it on the stack.")]
-        //public void DequeueingItemShouldPutProcedureScannerOnStack()
-        //{
-        //    scan.EnqueueEntryPoint(new EntryPoint(new Address(0x3123), new IntelState()));
-        //    scan.ProcessQueueItem();
-        //    Assert.AreEqual(1, scan.Stack.Count);
-        //}
-
-        //        [Test(Description="Dequeueing a procedure item should put a block in the scanner queue")] 
-        //public void DequeueingItemShouldPutBlockworkitemOnProcedureScannerQueue()
-        //{
-        //    scan.EnqueueEntryPoint(new EntryPoint(new Address(0x3123), new IntelState()));
-        //    scan.ProcessQueueItem();
-        //    Assert.AreEqual(1, scan.Stack.Peek().Queue.Count);
-        //}
-
-        [Test]
-        public void Interprocedural_JumpIntoOtherProc_PromoteJumpTarget()
+        private void EnqueueEntryPoint(uint address)
         {
-            var scan = CreateScanner(0x1000, 0x2000);
-            arch.Test_AddTrace(new RtlTrace(0x1000)
-            {
-                m => { m.Assign(reg1, m.Word32(0)); },
-                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
-                m => { m.Return(0, 0); }
-            });
-            arch.Test_AddTrace(new RtlTrace(0x1004)
-            {
-                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
-                m => { m.Return(0, 0); }
-            });
-            arch.Test_AddTrace(new RtlTrace(0x1100)
-            {
-                m => { m.Assign(reg1, m.Word32(1)); },
-                m => { m.Goto(new Address(0x1004)); },
-            });
-
-            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
-            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
-            scan.ScanImage();
-
-            var sExp =
-@"// fn00001000
-void fn00001000()
-fn00001000_entry:
-	// succ:  l00001000
-l00001000:
-	r1 = 0x00000000
-	// succ:  l00001004_tmp
-l00001004_tmp:
-	call fn00001004 (retsize: 0;)
-	return
-	// succ:  fn00001000_exit
-fn00001000_exit:
-
-// fn00001004
-void fn00001004()
-fn00001004_entry:
-	// succ:  l00001004
-l00001004:
-	Mem0[0x00001800:word32] = r1
-	return
-	// succ:  fn00001004_exit
-fn00001004_exit:
-
-// fn00001100
-void fn00001100()
-fn00001100_entry:
-	// succ:  l00001100
-l00001100:
-	r1 = 0x00000001
-	// succ:  l00001100_tmp
-l00001100_tmp:
-	call fn00001004 (retsize: 0;)
-	return
-	// succ:  fn00001100_exit
-fn00001100_exit:
-
-";
-            AssertProgram(sExp, prog);
+            scan.EnqueueEntryPoint(new EntryPoint(new Address(address), arch.CreateProcessorState()));
         }
 
         [Test]
         public void Scanner_Interprocedural_JumpToOtherProcStart_PromoteJump()
         {
-            var scan = CreateScanner(0x1000, 0x2000);
+            scan = CreateScanner(0x1000, 0x2000);
             arch.Test_AddTrace(new RtlTrace(0x1000)
             {
                 m => { m.Assign(reg1, m.Word32(0)); },
                 m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Branch(reg1, new Address(0x1000), RtlClass.ConditionalTransfer); },
+            });
+            arch.Test_AddTrace(new RtlTrace(0x100C)
+            {   
                 m => { m.Return(0, 0); }
             });
             arch.Test_AddTrace(new RtlTrace(0x1100)
             {
                 m => { m.Assign(reg1, m.Word32(1)); },
-                m => { m.Goto(new Address(0x1000)); },
+                m => { m.Goto(new Address(0x1000)); },  // Expect this to be promoted to a call/ret thunk.
             });
 
-            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
-            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
+            EnqueueEntryPoint(0x1000);
+            EnqueueEntryPoint(0x1100);
             scan.ScanImage();
 
             var sExp =
@@ -459,6 +379,8 @@ fn00001000_entry:
 l00001000:
 	r1 = 0x00000000
 	Mem0[0x00001800:word32] = r1
+	branch r1 l00001000
+l0000100C:
 	return
 fn00001000_exit:
 
@@ -532,7 +454,30 @@ fn00001100_exit:
             scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
             scan.ScanImage();
 
-            var sExp = "@@@";
+            var sExp =
+@"// fn00001000
+void fn00001000()
+fn00001000_entry:
+l00001000:
+	r1 = 0x00000000
+l00001004:
+	Mem0[0x00001800:word32] = r1
+	return
+fn00001000_exit:
+
+// fn00001100
+void fn00001100()
+fn00001100_entry:
+	goto l00001100
+l00001004_in_fn00001100:
+	Mem0[0x00001800:word32] = r1
+	return
+l00001100:
+	r1 = 0x00000001
+	goto l00001004_in_fn00001100
+fn00001100_exit:
+
+";
             AssertProgram(sExp, prog);
         }
     }

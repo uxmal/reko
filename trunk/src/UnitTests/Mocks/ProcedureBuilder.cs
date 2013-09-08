@@ -38,35 +38,40 @@ namespace Decompiler.UnitTests.Mocks
         private Block lastBlock;
         private int numBlock;
         private List<ProcUpdater> unresolvedProcedures;
-        private uint iStmt;
+        public uint LinearAddress;
 
         public ProcedureBuilder()
         {
-            Init(new FakeArchitecture(), this.GetType().Name);
+            Init(new FakeArchitecture(), this.GetType().Name, null);
         }
 
         public ProcedureBuilder(string name)
         {
-            Init(new FakeArchitecture(), name);
+            Init(new FakeArchitecture(), name, null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch)
         {
-            Init(arch, this.GetType().Name);
+            Init(arch, this.GetType().Name, null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch, string name)
         {
-            Init(arch,name);
+            Init(arch,name,null);
         }
 
-        private void Init(IProcessorArchitecture arch, string name)
+        public ProcedureBuilder(IProcessorArchitecture arch, string name, Dictionary<string, Block> blocks)
+        {
+            Init(arch, name, blocks);
+        }
+
+        private void Init(IProcessorArchitecture arch, string name, Dictionary<string, Block> blocks)
         {
             if (arch == null)
                 throw new ArgumentNullException("arch");
             this.Architecture = arch;
             this.Procedure = new Procedure(name, arch.CreateFrame());
-            this.blocks = new Dictionary<string, Block>();
+            this.blocks = blocks ?? new Dictionary<string, Block>();
             this.unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
         }
@@ -169,7 +174,7 @@ namespace Decompiler.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             EnsureBlock(null);
-            Block.Statements.Add(iStmt++, instr);
+            Block.Statements.Add(LinearAddress++, instr);
             return Block.Statements.Last;
         }
 

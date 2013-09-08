@@ -61,6 +61,19 @@ namespace Decompiler.Core
 			this.TypeStore = new TypeStore();
 		}
 
+        public Program(LoadedImage image, IProcessorArchitecture arch, Platform platform)
+            : this(image, new ImageMap(image), arch, platform)
+        {
+        }
+
+        public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
+        {
+            this.Image = image;
+            this.ImageMap = imageMap;
+            this.Architecture = arch;
+            this.Platform = platform;
+        }
+
 		public IProcessorArchitecture Architecture { get; set; }
 
 		public CallGraph CallGraph

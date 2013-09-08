@@ -236,26 +236,8 @@ namespace Decompiler.Scanning
 
         private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
         {
-            if (blockFrom.Procedure == blockTo.Procedure)
-            {
-                if (!proc.ControlGraph.ContainsEdge(blockFrom, blockTo))
-                    proc.ControlGraph.AddEdge(blockFrom, blockTo);
-            }
-            else
-            {          
-                Debug.Print("EnsureEdge: from {0} to {1} (in proc {2})", blockFrom.Name, blockTo.Name, proc.Name);
-                Debug.Print("    Thunking from {0} to {1}", blockFrom, blockTo);
-                Debug.Print("    Procs {0}, {1}", blockFrom.Procedure, blockTo.Procedure);
-                var callRetThunkBlock = proc.AddBlock(blockFrom + Scanner.CallRetThunkSuffix);
-                callRetThunkBlock.IsSynthesized = true;
-                callRetThunkBlock.Statements.Add(0, new CallInstruction(
-                    new ProcedureConstant(arch.PointerType, blockTo.Procedure),
-                    new CallSite(blockTo.Procedure.Signature.ReturnAddressOnStack, 0)));
-                scanner.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, blockTo.Procedure);
-                callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
-                proc.ControlGraph.AddEdge(blockFrom, callRetThunkBlock);
-                proc.ControlGraph.AddEdge(callRetThunkBlock, proc.ExitBlock);
-            }
+            if (!proc.ControlGraph.ContainsEdge(blockFrom, blockTo))
+                proc.ControlGraph.AddEdge(blockFrom, blockTo);
         }
 
         public bool VisitGoto(RtlGoto g)

@@ -66,6 +66,11 @@ namespace Decompiler.Core
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
 		
+        /// <summary>
+        /// Creates a Frame instance for maintaining the local variables and arguments.
+        /// </summary>
+        /// <param name="framePointerSize">The size of the frame pointer must match the size of the 
+        /// stack register, if any, or at the least the size of a pointer.</param>
 		public Frame(PrimitiveType framePointerSize)
 		{
 			identifiers = new List<Identifier>();
@@ -228,7 +233,7 @@ namespace Decompiler.Core
 
 		public Identifier EnsureStackVariable(Constant imm, int cbOffset, DataType type)
 		{
-			if (imm.IsValid)
+			if (imm != null && imm.IsValid)
 			{
 				cbOffset = imm.ToInt32() - cbOffset;
 			}
