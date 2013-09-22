@@ -31,21 +31,29 @@ namespace Decompiler.Arch.M68k
 {
     public class IndexedOperand : MachineOperand, M68kOperand
     {
-        public Constant @base;
+        public Constant Base;
         public Constant outer;
         public RegisterStorage base_reg;
         public RegisterStorage index_reg;
         public PrimitiveType index_reg_width;
         public int index_scale;
-        public  bool preindex;
-        public  bool postindex;
+        public bool preindex;
+        public bool postindex;
 
-        public IndexedOperand(PrimitiveType width, Constant @base, Constant outer, Core.RegisterStorage base_reg, Core.RegisterStorage index_reg, Core.Types.PrimitiveType index_reg_width, int index_scale, bool preindex, bool postindex)
+        public IndexedOperand(
+            PrimitiveType width,
+            Constant baseReg,
+            Constant outer,
+            RegisterStorage base_reg,
+            RegisterStorage index_reg,
+            PrimitiveType index_reg_width,
+            int index_scale,
+            bool preindex,
+            bool postindex)
             : base(width)
         {
-            // TODO: Complete member initialization
-        this.@base = @base;
-        this.outer = outer;
+            this.Base = baseReg;
+            this.outer = outer;
             this.base_reg = base_reg;
             this.index_reg = index_reg;
             this.index_reg_width = index_reg_width;

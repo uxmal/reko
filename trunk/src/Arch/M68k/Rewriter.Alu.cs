@@ -37,26 +37,9 @@ namespace Decompiler.Arch.M68k
         public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
         {
             var width = di.Instruction.dataWidth;
-            Expression result;
-            if (width.Size < 4)
-            {
-                var opSrc = MaybeCast(width, orw.RewriteSrc(di.Instruction.op1));
-                var opDst = MaybeCast(width, orw.RewriteDst(di.Instruction.op2, opSrc));
-                var tmp = frame.CreateTemporary(width);
-                emitter.Assign(tmp, binOpGen(opSrc, opDst));
-                emitter.Assign(
-                    orw.RewriteSrc(di.Instruction.op2),
-                    emitter.Dpb(orw.RewriteSrc(di.Instruction.op2), tmp, 0, width.BitSize));
-                result = tmp;
-            }
-            else
-            {
-                var opSrc = orw.RewriteSrc(di.Instruction.op1);
-                var opDst = orw.RewriteSrc(di.Instruction.op2);
-                emitter.Assign(opDst, emitter.Xor(opDst, opSrc));
-                result = opDst;
-            }
-            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(result));
+            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, binOpGen);
+            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(opDst));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
             emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
@@ -72,8 +55,8 @@ namespace Decompiler.Arch.M68k
         private void RewriteAdda()
         {
             var width = di.Instruction.dataWidth;
-            var opSrc = RewriteSrcOperand(di.Instruction.op1);
-            var opDst = RewriteDstOperand(di.Instruction.op2, opSrc, (s, d) => { emitter.Assign(d, emitter.IAdd(d, s)); });
+            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, (s, d) => emitter.IAdd(d, s));
         }
 
         private Expression RewriteSrcOperand(MachineOperand mop)
@@ -128,8 +111,7 @@ namespace Decompiler.Arch.M68k
         public void RewriteMove(bool setFlag)
         {
             var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var opDst = orw.RewriteSrc(di.Instruction.op2);
-            Copy(opDst, opSrc, di.Instruction.dataWidth.BitSize);
+            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, (s, d) => s);
             if (setFlag)
             {
                 emitter.Assign(
@@ -137,7 +119,7 @@ namespace Decompiler.Arch.M68k
                         (uint)(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.ZF),
                         "CVZN",
                         PrimitiveType.Byte),
-                    emitter.Cond(opSrc));
+                    emitter.Cond(opDst));
             }
         }
 

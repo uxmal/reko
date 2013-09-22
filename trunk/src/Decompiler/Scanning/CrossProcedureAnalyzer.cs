@@ -40,17 +40,28 @@ namespace Decompiler.Scanning
     public class CrossProcedureAnalyzer
     {
         private Program prog;
-        private Block block;
+        private Dictionary<Block, Procedure> procMap;
 
         public CrossProcedureAnalyzer(Program prog)
         {
             this.prog = prog;
             this.BlocksNeedingCloning = new HashSet<Block>();
             this.BlocksNeedingPromotion = new HashSet<Block>();
+            InitializeProcMap();
         }
 
         public HashSet<Block> BlocksNeedingCloning { get; private set; }
         public HashSet<Block> BlocksNeedingPromotion { get; private set; }
+
+        private void InitializeProcMap()
+        {
+            procMap = new Dictionary<Block, Procedure>();
+            foreach (var proc in prog.Procedures.Values)
+            {
+                Debug.Assert(proc.EntryBlock.Succ.Count == 1);
+                procMap.Add(proc.EntryBlock.Succ[0], proc);
+            }
+        }
 
         /// <summary>
         /// Analyzes the blocks in a procedure to determine if they are being reached from
@@ -59,11 +70,53 @@ namespace Decompiler.Scanning
         /// <param name="proc"></param>
         public void Analyze(Procedure proc)
         {
+            Stack<Block> stack = new Stack<Block>();
+            stack.Push(proc.EntryBlock.Succ[0]);
+            while (stack.Count != 0)
+            {
+                var block = stack.Pop();
+
+                // We never modify first blocks of procedures.
+                if (!IsFirstBlockOfProcedure(block))
+                {
+                    Procedure blockProc;
+                    if (!procMap.TryGetValue(block, out blockProc))
+                    {
+                        // Easy case; block has never been seen before. Add it to the current procedure.
+                        procMap.Add(block, proc);
+                    }
+                    else
+                    {
+                        // We've seen this block before. If we're in the same procedure as the block was registered to before,
+                        // don't even add its successors to the stack; instead go get next item on the stack.
+                        if (proc == blockProc)
+                            continue;
+
+                        // The block was previously associated with another procedure!
+                        if (IsBlockLinearProcedureExit(block))
+                        {
+                            BlocksNeedingCloning.Add(block);
+                        }
+                        else
+                        {
+                            BlocksNeedingPromotion.Add(block);
+                            var procNew = PromoteBlockToProcedure(block);
+                            Analyze(procNew);
+                            continue;
+                        }
+                    }
+                }
+
+                foreach (var s in block.Succ)
+                {
+                    stack.Push(s);
+                }
+            }
+
             foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
             {
                 if (block.Statements.Count == 0)
                     continue;
-                this.block = block;
                 if (IsBlockEnteredFromOtherProcedures(block, proc))
                 {
                     if (IsBlockLinearProcedureExit(block))
@@ -79,6 +132,14 @@ namespace Decompiler.Scanning
                     }
                 }
             }
+        }
+
+        private bool IsFirstBlockOfProcedure(Block block)
+        {
+ 	        Procedure proc;
+            if (!procMap.TryGetValue(block, out proc))
+                return false;
+            return  proc.EntryBlock.Succ[0] == block;
         }
 
         public void ReplaceInboundEdgesWithCalls(Block block)
@@ -159,11 +220,12 @@ namespace Decompiler.Scanning
                 CloneBlockIntoOtherProcedures(block);
         }
 
-        private void PromoteBlockToProcedure(Block block)
+        private Procedure PromoteBlockToProcedure(Block block)
         {
             var procOld = block.Procedure;
             var procNew = PromoteBlockToProcedureEntry(block, procOld);
             Promote(block, procOld, procNew);
+            return procNew;
         }
 
         public void CloneBlockIntoOtherProcedures(Block block)

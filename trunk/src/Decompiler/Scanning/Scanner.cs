@@ -109,7 +109,8 @@ namespace Decompiler.Scanning
             this.imageMap = program.ImageMap;
             this.callSigs = callSigs;
             this.eventListener = eventListener;
-
+            if (imageMap == null)
+                throw new InvalidOperationException("Program must have an image map.");
             this.Procedures = program.Procedures;
             this.queue = new PriorityQueue<WorkItem>();
             this.blocks = new Map<uint, BlockRange>();
@@ -447,10 +448,23 @@ namespace Decompiler.Scanning
             CrossProcedureAnalyzer crpa = new CrossProcedureAnalyzer(program);
             foreach (Procedure proc in program.Procedures.Values.ToArray())
             {
+                proc.Dump(true, false);
                 crpa.Analyze(proc);
             }
+            Dump("Blocks needing promotion", crpa.BlocksNeedingPromotion);
+            Dump("Blocks needing cloning", crpa.BlocksNeedingCloning);
             crpa.PromoteBlocksToProcedures(crpa.BlocksNeedingPromotion);
             crpa.CloneBlocksIntoOtherProcedures(crpa.BlocksNeedingCloning);
+        }
+
+        [Conditional("DEBUG")]
+        private void Dump(string title, IEnumerable<Block> blocks)
+        {
+            Debug.WriteLine(title);
+            foreach (var block in blocks.OrderBy(b => b.Name))
+            {
+                Debug.Print("    {0}");
+            }
         }
 
         private void ProcessQueue()

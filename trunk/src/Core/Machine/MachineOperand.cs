@@ -36,6 +36,9 @@ namespace Decompiler.Core.Machine
 
 		protected MachineOperand(PrimitiveType width)
 		{
+            if (width == null)
+                throw new ArgumentNullException("width");
+
 			Width = width;
 		}
 

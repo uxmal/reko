@@ -422,12 +422,12 @@ namespace Decompiler.Arch.M68k
 
         private PredecrementMemoryOperand get_pre_dec(int a)
         {
-            return new PredecrementMemoryOperand(Registers.AddressRegister(a & 7));
+            return new PredecrementMemoryOperand(instr.dataWidth, Registers.AddressRegister(a & 7));
         }
 
         private PostIncrementMemoryOperand get_post_inc(int a)
         {
-            return new PostIncrementMemoryOperand(Registers.AddressRegister(a & 7));
+            return new PostIncrementMemoryOperand(instr.dataWidth, Registers.AddressRegister(a & 7));
         }
 
         private RegisterOperand get_ctrl_reg(string regName, int number)
@@ -598,7 +598,7 @@ namespace Decompiler.Arch.M68k
             case 0x16:
             case 0x17:
                 // address register indirect
-                return MemoryOperand.Indirect(Registers.AddressRegister((int)instruction & 7));
+                return MemoryOperand.Indirect(get_dataWidth(size), Registers.AddressRegister((int)instruction & 7));
             case 0x18:
             case 0x19:
             case 0x1a:
@@ -608,7 +608,7 @@ namespace Decompiler.Arch.M68k
             case 0x1e:
             case 0x1f:
                 // address register indirect with postincrement
-                return new PostIncrementMemoryOperand(Registers.AddressRegister((int)instruction & 7));
+                return new PostIncrementMemoryOperand(get_dataWidth(size), Registers.AddressRegister((int)instruction & 7));
             case 0x20:
             case 0x21:
             case 0x22:
@@ -618,7 +618,7 @@ namespace Decompiler.Arch.M68k
             case 0x26:
             case 0x27:
                 // address register indirect with predecrement
-                return new PredecrementMemoryOperand(Registers.AddressRegister((int)instruction & 7));
+                return new PredecrementMemoryOperand(instr.dataWidth, Registers.AddressRegister((int)instruction & 7));
             case 0x28:
             case 0x29:
             case 0x2a:
@@ -629,6 +629,7 @@ namespace Decompiler.Arch.M68k
             case 0x2f:
                 // address register indirect with displacement
                 return MemoryOperand.Indirect(
+                    instr.dataWidth,
                     Registers.AddressRegister((int)instruction & 7),
                     make_signed_hex_str_16(read_imm_16()));
             case 0x30:
@@ -745,7 +746,7 @@ namespace Decompiler.Arch.M68k
             case 0x3A:
                 // Program counter with displacement
                 temp_value = read_imm_16();
-                return new MemoryOperand(Registers.pc, make_signed_hex_str_16(temp_value));
+                return new MemoryOperand(instr.dataWidth, Registers.pc, make_signed_hex_str_16(temp_value));
                 //g_helper_str = string.Format("; (${0})", (make_int_16(temp_value) + g_cpu_pc - 2) & 0xffffffff);
             case 0x3B:
                 // Program counter with index
@@ -842,6 +843,11 @@ namespace Decompiler.Arch.M68k
                 throw new NotSupportedException(string.Format("INVALID {0}", instruction & 0x3f));
             }
             throw new NotImplementedException();
+        }
+
+        private PrimitiveType get_dataWidth(uint size)
+        {
+            throw new NotImplementedException("switch size");
         }
 
 
@@ -3402,6 +3408,7 @@ namespace Decompiler.Arch.M68k
                 dataWidth = PrimitiveType.Word16,
                 op1 = get_data_reg((instruction >> 9) & 7),
                 op2 = new MemoryOperand(
+                        PrimitiveType.Word16,
                         Registers.AddressRegister(instruction & 7),
                         Constant.Int16((short)read_imm_16()))
             };
@@ -3415,6 +3422,7 @@ namespace Decompiler.Arch.M68k
                 dataWidth = PrimitiveType.Word32,
                 op1 = get_data_reg((instruction >> 9) & 7),
                 op2 = new MemoryOperand(
+                        PrimitiveType.Word32,
                         Registers.AddressRegister(instruction & 7),
                         Constant.Int16((short)read_imm_16()))
             };
@@ -3427,6 +3435,7 @@ namespace Decompiler.Arch.M68k
                 code = Opcode.movep,
                 dataWidth = PrimitiveType.Word16,
                 op1 = new MemoryOperand(
+                        PrimitiveType.Word16,
                         Registers.AddressRegister(instruction & 7),
                         Constant.Int16((short)read_imm_16())),
                 op2 = get_data_reg((instruction >> 9) & 7),
@@ -3440,6 +3449,7 @@ namespace Decompiler.Arch.M68k
                 code = Opcode.movep,
                 dataWidth = PrimitiveType.Word32,
                 op1 = new MemoryOperand(
+                        PrimitiveType.Word32,
                         Registers.AddressRegister(instruction & 7),
                         Constant.Int16((short)read_imm_16())),
                 op2 = get_data_reg((instruction >> 9) & 7),
@@ -3568,7 +3578,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move16,
-                op1 = new MemoryOperand(Registers.AddressRegister(instruction & 7)),
+                op1 = new MemoryOperand(instr.dataWidth, Registers.AddressRegister(instruction & 7)),
                 op2 = get_imm_str_u32()
             };
         }
@@ -3580,7 +3590,7 @@ namespace Decompiler.Arch.M68k
             {
                 code = Opcode.move16,
                 op1 = get_imm_str_u32(),
-                op2 = new MemoryOperand(Registers.AddressRegister(instruction & 7)),
+                op2 = new MemoryOperand(instr.dataWidth, Registers.AddressRegister(instruction & 7)),
             };
         }
 

@@ -41,13 +41,12 @@ namespace Decompiler.Core
             this.Platform = platform;
         }
 
-        public LoaderResults(LoadedImage image, ImageMap  map, IProcessorArchitecture arch, Platform platform)
+        public LoaderResults(LoadedImage image, ImageMap map, IProcessorArchitecture arch, Platform platform)
         {
             this.Image = image;
             this.ImageMap = map;
             this.Architecture = arch;
             this.Platform = platform;
         }
-
     }
 }

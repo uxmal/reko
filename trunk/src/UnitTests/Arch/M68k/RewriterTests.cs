@@ -56,8 +56,6 @@ namespace Decompiler.UnitTests.Arch.M68k
             int i = 0;
             while (i < expected.Length && e.MoveNext())
             {
-                Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, e.Current));
-                ++i;
                 var ee = e.Current.Instructions.GetEnumerator();
                 while (i < expected.Length && ee.MoveNext())
                 {
@@ -83,79 +81,79 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68KRW_Movea_l()
+        public void M68krw_Movea_l()
         {
             Rewrite(0x2261);        // movea.l   (a1)-,a1
-            AssertCode("0|00010000(2): 2 instructions",
-                "1|a1 = a1 - 0x00000004",
-                "2|a1 = Mem0[a1:word32]");
+            AssertCode(
+                "0|a1 = a1 - 0x00000004",
+                "1|a1 = Mem0[a1:word32]");
         }
 
         [Test]
         public void M68krw_Eor_b()
         {
             Rewrite(0xB103);        // eorb %d0,%d3
-            AssertCode("0|00010000(2): 5 instructions",
-                "1|v4 = (byte) d3 ^ (byte) d0",
-                "2|d3 = DPB(d3, v4, 0, 8)",
-                "3|ZN = cond(v4)",
-                "4|C = false",
-                "5|V = false");
-        }
+            AssertCode(
+                "0|v4 = (byte) d3 ^ (byte) d0",
+                "1|d3 = DPB(d3, v4, 0, 8)",
+                "2|ZN = cond(v4)",
+                "3|C = false",
+                "4|V = false");
+        }        
 
         [Test]
         public void M68krw_Eor_l()
         {
-            Rewrite(0xB183);        // eorb %d0,%d3
-            AssertCode("0|00010000(2): 4 instructions",
-                "1|d3 = d3 ^ d0",
-                "2|ZN = cond(d3)",
-                "3|C = false",
-                "4|V = false");
+            Rewrite(0xB183);        // eorl %d0,%d3
+            AssertCode(
+                "0|d3 = d3 ^ d0",
+                "1|ZN = cond(d3)",
+                "2|C = false",
+                "3|V = false");
         }
 
         [Test]
         public void M68krw_adda_postinc() // addal (a4)+,%a5
         {
             Rewrite(0xDBDC);
-            AssertCode("0|00010000(2): 3 instructions",
-                "1|v3 = Mem0[a4:word32]",
-                "2|a4 = a4 + 0x00000004",
-                "3|a5 = a5 + v3");
+            AssertCode(
+                "0|v3 = Mem0[a4:word32]",
+                "1|a4 = a4 + 0x00000004",
+                "2|a5 = a5 + v3");
         }
 
         [Test]
         public void M68krw_or_imm()
         {
             Rewrite(0x867c, 0x1123);    // or.w #$1123,d3
-            AssertCode("0|00010000(4): 5 instructions",
-                "1|v3 = (word16) d3 | 0x1123",
-                "2|d3 = DPB(d3, v3, 0, 16)",
-                "3|ZN = cond(v3)",
-                "4|C = false",
-                "5|V = false");
+            AssertCode(
+                "0|v3 = (word16) d3 | 0x1123",
+                "1|d3 = DPB(d3, v3, 0, 16)",
+                "2|ZN = cond(v3)",
+                "3|C = false",
+                "4|V = false");
         }
 
         [Test]
         public void M68krw_movew_indirect()
         {
             Rewrite(0x3410);    // move.w (A0),D2
-            AssertCode("0|00010000(2): 3 instructions",
-                "1|v3 = Mem0[a0:word16]",
-                "2|d2 = DPB(d2, v3, 0, 16)",
-                "3|CVZN = cond(v3)");
+            AssertCode(
+                "0|v4 = Mem0[a0:word16]",
+                "1|d2 = DPB(d2, v4, 0, 16)",
+                "2|CVZN = cond(v4)");
         }
 
         [Test]
         public void M68krw_move_pre_and_postdec()
         {
             Rewrite(0x36E3);    // move.w -(a3),(a3)+
-            AssertCode("0|00010000(2): 5 instructions",
-                "1|a3 = a3 - 0x00000002",
-                "2|v3 = Mem0[a3:word16]",
-                "3|Mem0[a3:word16] = v3",
-                "4|a3 = a3 + 0x00000002",
-                "5|CVZN = cond(v3)");
+            AssertCode(
+                "0|a3 = a3 - 0x00000002",
+                "1|v3 = Mem0[a3:word16]",
+                "2|Mem0[a3:word16] = v3",
+                "3|a3 = a3 + 0x00000002",
+                "4|CVZN = cond(v3)");
         }
 
         [Test]

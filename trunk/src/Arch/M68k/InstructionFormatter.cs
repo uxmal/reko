@@ -209,9 +209,9 @@ namespace Decompiler.Arch.M68k
             if (op.preindex || op.postindex)
                 mode.Write("[");
             var sep = "";
-            if (op.@base != null)
+            if (op.Base != null)
             {
-                writer.Write(MachineOperand.FormatValue(op.@base));    
+                writer.Write(MachineOperand.FormatValue(op.Base));    
                 sep = ",";
             }
             if (op.base_reg != null)
