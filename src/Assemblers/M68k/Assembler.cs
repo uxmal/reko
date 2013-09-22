@@ -46,12 +46,12 @@ namespace Decompiler.Assemblers.M68k
 
         #region Assembler Members
 
-        public void Assemble(Address baseAddress, TextReader rdr)
+        public LoaderResults Assemble(Address baseAddress, TextReader rdr)
         {
             throw new NotImplementedException();
         }
 
-        public void AssembleFragment(Address baseAddress, string fragment)
+        public LoaderResults AssembleFragment(Address baseAddress, string fragment)
         {
             throw new NotImplementedException();
         }

@@ -171,14 +171,14 @@ namespace Decompiler.Arch.M68k
             case 1: // Address register direct
                 return new RegisterOperand(AddressRegister(operandBits, 0));
             case 2:  // Address register indirect
-                return MemoryOperand.Indirect(AddressRegister(operandBits, 0));
+                return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0));
             case 3:  // Address register indirect with postincrement.
-                return MemoryOperand.PostIncrement(AddressRegister(operandBits, 0));
+                return MemoryOperand.PostIncrement(dataWidth, AddressRegister(operandBits, 0));
             case 4:  // Address register indirect with predecrement.
-                return MemoryOperand.PreDecrement(AddressRegister(operandBits, 0));
+                return MemoryOperand.PreDecrement(dataWidth, AddressRegister(operandBits, 0));
             case 5: // Address register indirect with displacement.
                 offset = Constant.Int16(rdr.ReadBeInt16());
-                return MemoryOperand.Indirect(AddressRegister(operandBits, 0), offset);
+                return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0), offset);
             case 6: // Address register indirect with index
                 return AddressRegisterIndirectWithIndex(dataWidth, rdr);
             case 7:
@@ -189,7 +189,7 @@ namespace Decompiler.Arch.M68k
                 case 1: // Absolute long address
                     return new AddressOperand(rdr.ReadBeUInt32());
                 case 2: // Program counter with displacement
-                    return new MemoryOperand(Registers.pc, Constant.Int16(rdr.ReadBeInt16()));
+                    return new MemoryOperand(dataWidth, Registers.pc, Constant.Int16(rdr.ReadBeInt16()));
                 //g_helper_str = string.Format("; (${0})", (make_int_16(temp_value) + g_cpu_pc - 2) & 0xffffffff);
                 case 3:
                     //// Program counter with index

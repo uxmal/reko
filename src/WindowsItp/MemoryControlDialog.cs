@@ -40,7 +40,7 @@ namespace Decompiler.WindowsItp
         {
             if (chkShowData.Checked)
             {
-                var img = new ProgramImage(new Address(0x0100000), new byte[256]);
+                var img = new LoadedImage(new Address(0x0100000), new byte[256]);
                 memoryControl1.ProgramImage = img;
             }
             else

@@ -81,7 +81,7 @@ namespace Decompiler.Arch.M68k
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 default:
-                    throw new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
+                    throw new AddressCorrelatedException(string.Format("Rewriting M68k opcode '{0}' is not supported yet.",
                         di.Instruction.code),
                         di.Address);
                 }

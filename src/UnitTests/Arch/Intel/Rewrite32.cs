@@ -124,6 +124,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 var lr = asm.Assemble(new Address(0x10000000), rdr);
                 prog.Image = lr.Image;
+                prog.ImageMap = lr.ImageMap;
                 prog.Platform = win32;
                 prog.Architecture = arch;
             }

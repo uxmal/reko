@@ -236,6 +236,7 @@ movzx	ax,byte ptr [bp+04]
                 {
                     lr = asm.Assemble(new Address(0xC32, 0), rdr);
                 }
+                CreateDisassembler16(lr.Image);
                 while (lr.Image.IsValidAddress(dasm.Address))
                 {
                     IntelInstruction instr = dasm.Disassemble();
