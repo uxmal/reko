@@ -211,5 +211,108 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "4|C = false",
                 "5|V = false");
         }
+
+        [Test]
+        public void M68krw_and_re()
+        {
+            Rewrite(0xC363);    // and.w d1,-(a3)
+            AssertCode(
+                "0|a3 = a3 - 0x00000002",
+                "1|v4 = (word16) d1 & Mem0[a3:word16]",
+                "2|Mem0[a3:word16] = v4",
+                "3|ZN = cond(v4)",
+                "4|C = false",
+                "5|V = false");
+        }
+
+        [Test]
+        public void M68krw_andi_32()
+        {
+            Rewrite(0x029C, 0x0001, 0x0000);    // and.l #00010000,(a4)+
+            AssertCode(
+                "0|v3 = Mem0[a4:word32] & 0x00010000",
+                "1|Mem0[a4:word32] = v3",
+                "2|a4 = a4 + 0x00000004",
+                "3|ZN = cond(v3)",
+                "4|C = false",
+                "5|V = false");
+        }
+
+        [Test]
+        public void M68krw_andi_8()
+        {
+            Rewrite(0x0202, 0x00F0);     // and.l #F0,d2"
+            AssertCode(
+                "0|v3 = (byte) d2 & 0xF0",
+                "1|d2 = DPB(d2, v3, 0, 8)",
+                "2|ZN = cond(v3)",
+                "3|C = false",
+                "4|V = false");
+        }
+
+        [Test]
+        public void M68krw_asrb_qb()
+        {
+            Rewrite(0xEE00);        // asr.b\t#7,d0
+            AssertCode(
+                "0|v3 = (byte) d0 >> 0x07",
+                "1|d0 = DPB(d0, v3, 0, 8)",
+                "2|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_neg_w_post()
+        {
+            Rewrite( 0x445B);
+            AssertCode(
+                "0|v3 = -Mem0[a3:word16]",
+                "1|Mem0[a3:word16] = v3",
+                "2|a3 = a3 + 0x00000002",
+                "3|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_neg_w_mem()
+        {
+            Rewrite(0x4453);
+            AssertCode(
+                "0|v3 = -Mem0[a3:word16]",
+                "1|Mem0[a3:word16] = v3",
+                "2|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_negx_8()
+        {
+            Rewrite(0x4021);        // negx.b -(a1)
+ 
+            AssertCode(
+                "0|a1 = a1 - 0x00000001",
+                "1|v3 = -Mem0[a1:byte] - X",
+                "2|Mem0[a1:byte] = v3",
+                "3|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_sub_er_16()
+        {
+            Rewrite(0x9064);        // sub.w -(a4),d0
+            AssertCode(
+                "0|a4 = a4 - 0x00000002",
+                "1|v4 = (word16) d0 - Mem0[a4:word16]",
+                "2|d0 = DPB(d0, v4, 0, 16)",
+                "3|CVZNX = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_suba_16()
+        {
+            Rewrite(0x90DC);      // suba.w (a4)+,a0
+            AssertCode(
+                "0|v3 = Mem0[a4:word16]",
+                "1|a4 = a4 + 0x00000002",
+                "2|v5 = (word16) a0 - v3",
+                "3|a0 = DPB(a0, v5, 0, 16)");
+        }
     }
 }

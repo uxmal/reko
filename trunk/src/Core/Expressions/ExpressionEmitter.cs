@@ -305,6 +305,16 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Or, a.DataType, a, b);
         }
 
+        public BinaryExpression Sar(Expression e, byte sh)
+        {
+            return new BinaryExpression(Operator.Sar, e.DataType, e, Constant.Byte(sh));
+        }
+
+        public BinaryExpression Sar(Expression e, Expression sh)
+        {
+            return new BinaryExpression(Operator.Sar, e.DataType, e, sh);
+        }
+
         public BinaryExpression Shl(Expression e, Expression sh)
         {
             return new BinaryExpression(Operator.Shl, e.DataType, e, sh);
