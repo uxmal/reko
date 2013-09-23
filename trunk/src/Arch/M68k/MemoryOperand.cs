@@ -37,6 +37,8 @@ namespace Decompiler.Arch.M68k
     {
         T Visit(M68kImmediateOperand imm);
 
+        T Visit(MemoryOperand mem);
+
         T Visit(PredecrementMemoryOperand pre);
 
         T Visit(AddressOperand addressOperand);
@@ -94,7 +96,7 @@ namespace Decompiler.Arch.M68k
         }
     }
 
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : M68kOperandImpl
     {
         public RegisterStorage Base;
         public Constant Offset;
@@ -110,6 +112,11 @@ namespace Decompiler.Arch.M68k
         {
             this.Base = baseReg;
             this.Offset = offset;
+        }
+
+        public override T Accept<T>(M68kOperandVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
         }
 
         public static MemoryOperand Indirect(PrimitiveType width, RegisterStorage baseReg)

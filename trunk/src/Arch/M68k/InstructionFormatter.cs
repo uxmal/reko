@@ -109,6 +109,19 @@ namespace Decompiler.Arch.M68k
             return imm;
         }
 
+        public M68kOperand Visit(MemoryOperand mem)
+        {
+            if (mem.Offset != null)
+            {
+                writer.Write("$");
+                writer.Write(MachineOperand.FormatSignedValue(mem.Offset));
+            }
+            writer.Write("(");
+            writer.Write(mem.Base);
+            writer.Write(")");
+            return mem;
+        }
+
         public M68kOperand Visit(PredecrementMemoryOperand pre)
         {
             writer.Write("-(");

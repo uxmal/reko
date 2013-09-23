@@ -313,5 +313,18 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             RunTest("suba.w\t(a4)+,a0", 0x90DC);
         }
+
+        [Test]
+        public void M68kdis_clrw_ea_off()
+        {
+            RunTest("clr.w\t$0008(a0)", 0x4268, 0x0008);
+        }
+
+        [Test]
+        public void M68kdis_clrw_ea()
+        {
+            RunTest("clr.w\t(a0)+", 0x4258);
+        }
+
     }
 }

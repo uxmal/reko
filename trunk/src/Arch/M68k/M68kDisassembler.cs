@@ -1875,16 +1875,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_clr_16(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.clr,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_8(instruction)
-            };
-        }
-
         private M68kInstruction d68000_clr_32(M68kDisassembler dasm)
         {
             return new M68kInstruction
@@ -4946,7 +4936,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
 	new OpRec(d68040_cinv         , 0xff20, 0xf400, 0x000),
 	new OpRec(d68000_clr_8        , 0xffc0, 0x4200, 0xbf8),
-	new OpRec(d68000_clr_16       , 0xffc0, 0x4240, 0xbf8),
+	new OpRec("sw:E0", 0xffc0, 0x4240, 0xbf8, Opcode.clr),      // d68000_clr_16
 	new OpRec(d68000_clr_32       , 0xffc0, 0x4280, 0xbf8),
 	new OpRec(d68000_cmp_8        , 0xf1c0, 0xb000, 0xbff),
 	new OpRec(d68000_cmp_16       , 0xf1c0, 0xb040, 0xfff),

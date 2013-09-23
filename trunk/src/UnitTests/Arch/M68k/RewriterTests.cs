@@ -314,5 +314,17 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "2|v5 = (word16) a0 - v3",
                 "3|a0 = DPB(a0, v5, 0, 16)");
         }
+
+        [Test]
+        public void M68krw_clrw_ea_off()
+        {
+            Rewrite(0x4268, 0xFFF8);    // clr.w\t$0008(a0)
+            AssertCode(
+                "0|Mem0[a0 + -8:word16] = 0x0000",
+                "1|Z = true",
+                "2|C = false",
+                "3|N = false",
+                "4|V = false");
+        }
     }
 }
