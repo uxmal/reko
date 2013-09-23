@@ -75,14 +75,21 @@ namespace Decompiler.Arch.M68k
                 orw = new OperandRewriter(this, di.Instruction.dataWidth);
                 switch (di.Instruction.code)
                 {
-                case Opcode.adda: RewriteAdda(); break;
+                case Opcode.and: RewriteLogical((s, d) => emitter.And(d, s)); break;
+                case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
+                case Opcode.asr: RewriteArithmetic((s, d) => emitter.Sar(d, s)); break;
+                case Opcode.adda: RewriteBinOp((s,d)=>emitter.IAdd(d, s)); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.muls: RewriteMul((s, d) => emitter.SMul(d, s)); break;
                 case Opcode.mulu: RewriteMul((s, d) => emitter.UMul(d, s)); break;
-                case Opcode.not: RewriteUnary(s => emitter.Comp(s)); break;
+                case Opcode.neg: RewriteUnary(s => emitter.Neg(s), AllConditions); break;
+                case Opcode.negx: RewriteUnary(RewriteNegx, AllConditions); break;
+                case Opcode.not: RewriteUnary(s => emitter.Comp(s), LogicalConditions); break;
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
+                case Opcode.sub: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
+                case Opcode.suba: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 default:
                     throw new AddressCorrelatedException(string.Format("Rewriting M68k opcode '{0}' is not supported yet.",
                         di.Instruction.code),

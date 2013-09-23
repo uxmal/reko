@@ -72,7 +72,7 @@ namespace Decompiler.Arch.M68k
             case 'M':
                 return new RegisterSetOperand(rdr.ReadBeUInt16());
             case 'q':
-                return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.SByte);
+                return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.Byte);
             case 'Q':
                 return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
             case 'R': // relative 
@@ -97,7 +97,7 @@ namespace Decompiler.Arch.M68k
             int v = ((int) opcode >> offset) & mask;
             if (v == 0)
                 v = zeroValue;
-            return new ImmediateOperand(Constant.Create(dataWidth, v));
+            return new M68kImmediateOperand(Constant.Create(dataWidth, v));
         }
 
         private static PrimitiveType SizeField(ushort opcode, int bitOffset)
@@ -111,13 +111,13 @@ namespace Decompiler.Arch.M68k
             }
         }
 
-        private static ImmediateOperand GetImmediate(ImageReader rdr, PrimitiveType type)
+        private static M68kImmediateOperand GetImmediate(ImageReader rdr, PrimitiveType type)
         {
             if (type.Size == 1)
             {
-                rdr.ReadByte();     // skip a byte so we get the appropriate bit.
+                rdr.ReadByte();     // skip a byte so we get the appropriate bit and align the byte stream.
             }
-            return new ImmediateOperand(rdr.ReadBe(type));
+            return new M68kImmediateOperand(rdr.ReadBe(type));
         }
 
         public MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
@@ -197,7 +197,7 @@ namespace Decompiler.Arch.M68k
                     {
                         if (EXT_EFFECTIVE_ZERO(extension))
                         {
-                            return new ImmediateOperand(Constant.Word32(0));
+                            return new M68kImmediateOperand(Constant.Word32(0));
                         }
                         Constant @base = null;
                         Constant outer = null;
@@ -240,7 +240,7 @@ namespace Decompiler.Arch.M68k
                     //  Immediate
                     if (dataWidth.Size == 1)        // don't want the instruction stream to get misaligned!
                         rdr.ReadByte();
-                    return new ImmediateOperand(rdr.ReadBe(dataWidth));
+                    return new M68kImmediateOperand(rdr.ReadBe(dataWidth));
                 default:
                     throw new NotImplementedException(string.Format("Address mode {0}:{1} not implemented.", addressMode, operandBits));
                 }
@@ -258,7 +258,7 @@ namespace Decompiler.Arch.M68k
             {
                 if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
                 {
-                    return new ImmediateOperand(Constant.Zero(dataWidth));
+                    return new M68kImmediateOperand(Constant.Zero(dataWidth));
                 }
 
                 RegisterStorage base_reg = null;
@@ -335,9 +335,9 @@ namespace Decompiler.Arch.M68k
             return new RegisterOperand(Registers.GetRegister((opcode >> bitOffset) & 0x7));
         }
 
-        private static ImmediateOperand SignedImmediateByte(ushort opcode, int bitOffset, int mask)
+        private static M68kImmediateOperand SignedImmediateByte(ushort opcode, int bitOffset, int mask)
         {
-            return new ImmediateOperand(Constant.Create(PrimitiveType.SByte, (opcode >> bitOffset) & mask));
+            return new M68kImmediateOperand(Constant.Create(PrimitiveType.SByte, (opcode >> bitOffset) & mask));
         }
     }
 }

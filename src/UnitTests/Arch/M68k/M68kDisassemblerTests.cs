@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Arch.M68k
 
         private M68kDisassembler CreateDasm(params ushort[] words)
         {
-            byte[] bytes = words.SelectMany(w => new byte[] { (byte)(w >> 8), (byte)w }).ToArray();
+            byte[] bytes = words.SelectMany(w => new byte[] { (byte) (w >> 8), (byte) w }).ToArray();
             return CreateDasm(bytes, 0x10000000);
         }
 
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Arch.M68k
                 0x5E, 0x92
             };
             DasmSingleInstruction(bytes);
-            Assert.AreEqual( "addq.l\t#$+07,(a2)", instr.ToString());
+            Assert.AreEqual("addq.l\t#$+07,(a2)", instr.ToString());
         }
 
         [Test]
@@ -258,6 +258,60 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kdis_not()
         {
             RunTest("not.b\td7", 0x4607);
+        }
+
+        [Test]
+        public void M68kdis_and()
+        {
+            RunTest("and.l\t-(a3),d1", 0xC2A3);
+        }
+
+        [Test]
+        public void M68kdis_and_rev()
+        {
+            RunTest("and.l\td1,-(a3)", 0xC3A3);
+        }
+
+        [Test]
+        public void M68dis_andi_32()
+        {
+            RunTest("andi.l\t#$00010000,(a4)+", 0x029C, 0x0001, 0x0000);
+        }
+
+        [Test]
+        public void M68dis_andi_8()
+        {
+            RunTest("andi.b\t#$F0,d2", 0x0202, 0x00F0);
+        }
+
+        [Test]
+        public void M68kdis_asrb_qb()
+        {
+            RunTest("asr.b\t#$07,d0", 0xEE00);
+        }
+
+        [Test]
+        public void M68kdis_neg_w()
+        {
+            RunTest("neg.w\t(a3)+", 0x445B);
+        }
+
+        [Test]
+        public void M68kdis_negx_8()
+        {
+            RunTest("negx.w\td0", 0x4040);
+        }
+
+        [Test]
+        public void M68kdis_sub_er_16()
+        {
+            RunTest("sub.w\t-(a4),d0", 0x9064);
+        }
+
+        [Test]
+        public void M68kdis_suba_16()
+        {
+            RunTest("suba.w\t(a4)+,a0", 0x90DC);
         }
     }
 }

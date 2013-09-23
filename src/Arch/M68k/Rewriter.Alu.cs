@@ -34,14 +34,19 @@ namespace Decompiler.Arch.M68k
     /// </summary>
     public partial class Rewriter
     {
+        public void RewriteArithmetic(Func<Expression, Expression, Expression> binOpGen)
+        {
+            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, binOpGen);
+            AllConditions(opDst);
+        }
+
         public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
         {
             var width = di.Instruction.dataWidth;
             var opSrc = orw.RewriteSrc(di.Instruction.op1);
             var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, binOpGen);
-            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(opDst));
-            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            LogicalConditions(opDst);
         }
 
         public void RewriteMul(Func<Expression, Expression, Expression> binOpGen)
@@ -52,12 +57,10 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
-        public void RewriteUnary(Func<Expression, Expression> unaryOpGen)
+        public void RewriteUnary(Func<Expression, Expression> unaryOpGen, Action<Expression> generateFlags)
         {
             var op = orw.RewriteUnary(di.Instruction.op1, di.Instruction.dataWidth, unaryOpGen);
-            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(op));
-            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            generateFlags(op);
         }
 
         private Expression MaybeCast(PrimitiveType width, Expression expr)
@@ -68,11 +71,10 @@ namespace Decompiler.Arch.M68k
                 return emitter.Cast(width, expr);
         }
 
-        private void RewriteAdda()
+        private void RewriteBinOp(Func<Expression,Expression,Expression> opGen)
         {
-            var width = di.Instruction.dataWidth;
             var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, (s, d) => emitter.IAdd(d, s));
+            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, opGen);
         }
 
         private Expression RewriteSrcOperand(MachineOperand mop)
@@ -139,6 +141,12 @@ namespace Decompiler.Arch.M68k
             }
         }
 
+        private Expression RewriteNegx(Expression expr)
+        {
+            expr = emitter.Neg(expr);
+            return emitter.ISub(expr, orw.FlagGroup(FlagM.XF));
+        }
+
         private void Copy(Expression dst, Expression src, int bitSize)
         {
             if (dst is Identifier && dst.DataType.BitSize > bitSize)
@@ -150,6 +158,19 @@ namespace Decompiler.Arch.M68k
             {
                 emitter.Assign(dst, src);
             }
+        }
+
+        private void AllConditions(Expression expr)
+        {
+            var f = orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.XF | FlagM.ZF);
+            emitter.Assign(f, emitter.Cond(expr));
+        }
+
+        private void LogicalConditions(Expression expr)
+        {
+            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(expr));
+            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
     }
 }

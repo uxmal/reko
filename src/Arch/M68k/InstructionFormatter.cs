@@ -76,11 +76,11 @@ namespace Decompiler.Arch.M68k
                 writer.Write(reg.Register.Name);
                 return;
             }
-            ImmediateOperand imm = op as ImmediateOperand;
+            M68kImmediateOperand imm = op as M68kImmediateOperand;
             if (imm != null)
             {
                 writer.Write("#$");
-                writer.Write(MachineOperand.FormatValue(imm.Value));
+                writer.Write(MachineOperand.FormatValue(imm.Constant));
                 return;
             }
             MemoryOperand mop = op as MemoryOperand;
