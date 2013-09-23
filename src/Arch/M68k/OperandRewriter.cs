@@ -239,7 +239,20 @@ namespace Decompiler.Arch.M68k
                 return tmp;
             }
             throw new NotImplementedException("Unimplemented RewriteUnary for operand type " + operand.ToString());
+        }
 
+        public Expression RewriteMoveDst(MachineOperand operand, PrimitiveType dataWidth, Expression src)
+        {
+            var mem = operand as MemoryOperand;
+            if (mem != null)
+            {
+                src = Spill(src, frame.EnsureRegister(mem.Base));
+                var load = RewriteMemoryAccess(mem);
+                var tmp = rewriter.frame.CreateTemporary(dataWidth);
+                m.Assign(load, src);
+                return tmp;
+            }
+            throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + operand.ToString());
         }
 
         private Expression Spill(Expression src, Identifier r)

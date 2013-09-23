@@ -79,6 +79,7 @@ namespace Decompiler.Arch.M68k
                 case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.asr: RewriteArithmetic((s, d) => emitter.Sar(d, s)); break;
                 case Opcode.adda: RewriteBinOp((s,d)=>emitter.IAdd(d, s)); break;
+                case Opcode.clr: RewriteClr(); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;

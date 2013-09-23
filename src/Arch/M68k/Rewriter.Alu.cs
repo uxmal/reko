@@ -77,6 +77,16 @@ namespace Decompiler.Arch.M68k
             var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, opGen);
         }
 
+        private void RewriteClr()
+        {
+            var src = Constant.Create(di.Instruction.dataWidth, 0);
+            var opDst = orw.RewriteMoveDst(di.Instruction.op1, di.Instruction.dataWidth, src);
+            emitter.Assign(orw.FlagGroup(FlagM.ZF), Constant.True());
+            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            emitter.Assign(orw.FlagGroup(FlagM.NF), Constant.False());
+            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+        }
+
         private Expression RewriteSrcOperand(MachineOperand mop)
         {
             return RewriteDstOperand(mop, null, (s, d) => { });
