@@ -159,6 +159,13 @@ namespace Decompiler.Arch.M68k
             writer.Write(")");
             return op;
         }
+
+        public M68kOperand Visit(DoubleRegisterOperand d)
+        {
+            writer.Write("{0},{1}", d.Register1.Name, d.Register2.Name);
+            return d;
+        }
+
         private static bool bit(uint data, int pos) { return (data & (1 << pos)) != 0; }
 
         public void WriteRegisterSet(uint data, int bitPos, int incr, string regType, TextWriter writer)

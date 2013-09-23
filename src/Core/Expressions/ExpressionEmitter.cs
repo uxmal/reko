@@ -75,6 +75,11 @@ namespace Decompiler.Core.Expressions
             return new Cast(dataType, expr);
         }
 
+        public Expression Comp(Expression expr)
+        {
+            return new UnaryExpression(Operator.Comp, expr.DataType, expr); 
+        }
+
         public ConditionOf Cond(Expression expr)
         {
             return new ConditionOf(expr);
@@ -285,6 +290,11 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, Constant.Create(a.DataType, n));
         }
 
+        /// <summary>
+        /// Logical not operation
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
         public UnaryExpression Not(Expression exp)
         {
             return new UnaryExpression(Operator.Not, PrimitiveType.Bool, exp);

@@ -48,6 +48,8 @@ namespace Decompiler.Arch.M68k
         T Visit(IndexedOperand indexedOperand);
 
         T Visit(IndirectIndexedOperand indirectIndexedOperand);
+
+        T Visit(DoubleRegisterOperand doubleRegisterOperand);
     }
 
     public abstract class M68kOperandImpl : MachineOperand, M68kOperand
@@ -77,7 +79,7 @@ namespace Decompiler.Arch.M68k
 
     public class DoubleRegisterOperand : M68kOperandImpl
     {
-        public DoubleRegisterOperand(RegisterStorage reg1, RegisterStorage reg2) : base(null)
+        public DoubleRegisterOperand(RegisterStorage reg1, RegisterStorage reg2) : base(PrimitiveType.Word64)
         {
             this.Register1 = reg1;
             this.Register2 = reg2;
@@ -88,7 +90,7 @@ namespace Decompiler.Arch.M68k
 
         public override T Accept<T>(M68kOperandVisitor<T> visitor)
         {
-            throw new NotImplementedException();
+            return visitor.Visit(this);
         }
     }
 

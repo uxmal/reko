@@ -32,17 +32,15 @@ namespace Decompiler.Arch.M68k
     public class OperandFormatDecoder
     {
         ushort opcode;
-        string args;
         int i;
 
-        public OperandFormatDecoder(ushort opcode, string args, int i)
+        public OperandFormatDecoder(ushort opcode, int i)
         {
             this.opcode = opcode;
-            this.args = args;
             this.i = i;
         }
 
-        public MachineOperand GetOperand(ImageReader rdr, PrimitiveType dataWidth)
+        public MachineOperand GetOperand(ImageReader rdr, string args, PrimitiveType dataWidth)
         {
             if (i >= args.Length)
                 return null;
@@ -122,7 +120,7 @@ namespace Decompiler.Arch.M68k
             return new ImmediateOperand(rdr.ReadBe(type));
         }
 
-        private MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
+        public MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr)
         {
             opcode >>= bitOffset;
             byte operandBits = (byte) (opcode & 7);

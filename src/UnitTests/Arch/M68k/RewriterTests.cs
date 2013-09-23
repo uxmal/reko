@@ -157,9 +157,59 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_add_pre()
+        public void M68krw_muls_w()
         {
-            Rewrite(0xadd); // add -(r3),r3
+            Rewrite(0xC1E3); // muls.w -(a3),r3
+            AssertCode(
+                "0|a3 = a3 - 0x00000002",
+                "1|d0 = d0 *s Mem0[a3:word16]",
+                "2|VZN = cond(d0)",
+                "3|C = false");
+        }
+
+        [Test]
+        public void M68krw_mulu_l()
+        {
+            Rewrite(0x4c00, 0x7406); // mulu.l d0,d6,d7
+            AssertCode(
+                "0|d6_d7 = d7 *u d0",
+                "1|VZN = cond(d6_d7)",
+                "2|C = false");
+        }
+
+        [Test]
+        public void M68krw_not_w()
+        {
+            Rewrite(0x4643); // not.w d3
+            AssertCode(
+                "0|v3 = ~(word16) d3",
+                "1|d3 = DPB(d3, v3, 0, 16)",
+                "2|ZN = cond(v3)",
+                "3|C = false",
+                "4|V = false");
+        }
+
+        public void M68krw_not_l_reg()
+        {
+            Rewrite(0x4684);    // not.l d4
+            AssertCode(
+                "0|d4 = ~d4",
+                "2|ZN = cond(d4)",
+                "3|C = false",
+                "4|V = false");
+        }
+
+        [Test]
+        public void M68krw_not_l_pre()
+        {
+            Rewrite(0x46A4);    // not.l -(a4)
+            AssertCode(
+                "0|a4 = a4 - 0x00000004",
+                "1|v3 = ~Mem0[a4:word32]",
+                "2|Mem0[a4:word32] = v3",
+                "3|ZN = cond(v3)",
+                "4|C = false",
+                "5|V = false");
         }
     }
 }
