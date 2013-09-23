@@ -326,5 +326,102 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "3|N = false",
                 "4|V = false");
         }
+
+        [Test]
+        public void M68krw_cmpib_d()
+        {
+            Rewrite(0x0C18, 0x0042);    // cmpi.b #$42,(a0)+
+            AssertCode(
+                "0|v3 = Mem0[a0:byte]",
+                "1|a0 = a0 + 0x00000001",
+                "2|v4 = v3 - 0x42",
+                "3|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_cmpw_d()
+        {
+            Rewrite(0xB041);        // cmp.w d1,d0
+            AssertCode(
+                "0|v4 = (word16) d0 - (word16) d1",
+                "1|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_cmpw_pre_pre()
+        {
+            Rewrite(0xB066);        // cmp.w -(a6),d0
+            AssertCode(
+                "0|a6 = a6 - 0x00000002",
+                "1|v4 = (word16) d0 - Mem0[a6:word16]",
+                "2|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_cmpaw()
+        {
+            Rewrite(0xB0EC, 0x0022);    // cmpa.w $22(a4),a0
+            AssertCode(
+                "0|v4 = (word16) a0 - Mem0[a4 + 34:word16]",
+                "1|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_cmpal()
+        {
+            Rewrite(0xB1EC, 0x0010);    // cmpa.l $10(a4),a0
+            AssertCode(
+                "0|v4 = a0 - Mem0[a4 + 16:word32]",
+                "1|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_jsr_mem()
+        {
+            Rewrite(0x4E90);    // jsr (a0)
+            AssertCode(
+                "0|call Mem0[a0:word32] (4)");
+        }
+
+        [Test]
+        public void M68krw_jsr()
+        {
+            Rewrite(
+                0x4EB9, 0x0018, 0x5050, // jsr $00185050
+                0x4EB8, 0xFFFA);        // jsr $FFFFFFFA
+            AssertCode(
+                "0|call 00185050 (4)",
+                "1|call 0000FFFA (4)");
+        }
+
+        [Test]
+        public void M68krw_or_rev()
+        {
+            Rewrite(0x81A8, 0xFFF8);
+            AssertCode(
+                "0|v4 = d0 | Mem0[a0 + -8:word32]",
+                "1|Mem0[a0 + -8:word32] = v4",
+                "2|ZN = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_lsl_w()
+        {
+            Rewrite(0xE148);    // lsl.w #$01,d0"
+            AssertCode(
+                "0|v3 = (word16) d0 << 0x08",
+                "1|d0 = DPB(d0, v3, 0, 16)",
+                "2|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_subiw()
+        {
+            Rewrite(0x0440, 0x0140);    // subiw #320,%d0
+            AssertCode(
+                "0|v3 = (word16) d0 - 0x0140",
+                "1|d0 = DPB(d0, v3, 0, 16)",
+                "2|CVZNX = cond(v3)");
+        }
     }
 }

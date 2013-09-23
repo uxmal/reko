@@ -77,6 +77,7 @@
     <Compile Include="Registers.cs" />
     <Compile Include="RegisterSetOperand.cs" />
     <Compile Include="Rewriter.Alu.cs" />
+    <Compile Include="Rewriter.Control.cs" />
     <Compile Include="Rewriter.cs" />
   </ItemGroup>
   <ItemGroup>
