@@ -241,5 +241,23 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             RunTest("eori.b\t#$34,d0", 0x0A00, 0x1234);
         }
+
+        [Test]
+        public void M68kdis_muls_w()
+        {
+            RunTest("muls.w\t-(a3),d0", 0xC1E3);
+        }
+
+        [Test]
+        public void M68kdis_mulu_l()
+        {
+            RunTest("mulu.l\td0,d6,d7", 0x4c00, 0x7406);
+        }
+
+        [Test]
+        public void M68kdis_not()
+        {
+            RunTest("not.b\td7", 0x4607);
+        }
     }
 }

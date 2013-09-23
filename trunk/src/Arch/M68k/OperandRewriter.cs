@@ -100,7 +100,12 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.ToString());
         }
 
-        public Expression RewriteDst(MachineOperand operand, Expression src, Func<Expression ,Expression, Expression> opGen)
+        public Expression RewriteDst(MachineOperand operand, Expression src, Func<Expression, Expression, Expression> opGen)
+        {
+            return RewriteDst(operand, this.dataWidth, src, opGen);
+        }
+
+        public Expression RewriteDst(MachineOperand operand, PrimitiveType dataWidth, Expression src, Func<Expression ,Expression, Expression> opGen)
         {
             var reg = operand as RegisterOperand;
             if (reg != null)
@@ -129,12 +134,22 @@ namespace Decompiler.Arch.M68k
                 m.Assign(r, src);
                 return tmp;
             }
+            var dbl = operand as DoubleRegisterOperand;
+            if (dbl != null)
+            {
+                Identifier h = frame.EnsureRegister(dbl.Register1);
+                Identifier l = frame.EnsureRegister( dbl.Register2);
+                var d = frame.EnsureSequence(h, l, PrimitiveType.Word64);
+                var result = opGen(src, l);
+                m.Assign(d, result);
+                return d;
+            }
             var mem = operand as MemoryOperand;
             if (mem != null)
             {
                 var bReg = rewriter.frame.EnsureRegister(mem.Base);
                 var load = m.Load(mem.Width, m.IAdd(bReg, mem.Offset));
-                var tmp = rewriter.frame.CreateTemporary(mem.Width);
+                var tmp = rewriter.frame.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(load, src));
                 m.Assign(load, tmp);
                 return tmp;
@@ -149,7 +164,52 @@ namespace Decompiler.Arch.M68k
                 m.Assign(r, m.IAdd(r, dataWidth.Size));
                 return load;
             }
+            var pre = operand as PredecrementMemoryOperand;
+            if (pre != null)
+            {
+                src = Spill(src);
+                var r = frame.EnsureRegister(pre.Register);
+                m.Assign(r, m.ISub(r, dataWidth.Size));
+                var load = m.Load(dataWidth, r);
+                var tmp = frame.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(load, src));
+                m.Assign(m.Load(dataWidth, r), tmp);
+                return tmp;
+            }
             throw new NotImplementedException("Unimplemented RewriteDst for operand type " + operand.ToString());
+
+        }
+
+        public Expression RewriteUnary(MachineOperand operand, PrimitiveType dataWidth, Func<Expression ,Expression> opGen)
+        {
+            var reg = operand as RegisterOperand;
+            if (reg != null)
+            {
+                Expression r = frame.EnsureRegister(reg.Register);
+                if (r.DataType.Size > dataWidth.Size)
+                {
+                    var tmp = frame.CreateTemporary(dataWidth);
+                    m.Assign(tmp, opGen(m.Cast(dataWidth, r)));
+                    m.Assign(r, m.Dpb(r, tmp, 0, dataWidth.BitSize));
+                    return tmp;
+                }
+                else 
+                {
+                    m.Assign(r, opGen(r));
+                    return r;
+                }
+            }
+            var pre = operand as PredecrementMemoryOperand;
+            if (pre != null)
+            {
+                var r = frame.EnsureRegister(pre.Register);
+                m.Assign(r, m.ISub(r, dataWidth.Size));
+                var tmp = frame.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(m.Load(dataWidth, r)));
+                m.Assign(m.Load(dataWidth, r), tmp);
+                return tmp;
+            }
+            throw new NotImplementedException("Unimplemented RewriteUnary for operand type " + operand.ToString());
 
         }
 

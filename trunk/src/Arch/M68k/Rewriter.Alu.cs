@@ -44,6 +44,22 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
 
+        public void RewriteMul(Func<Expression, Expression, Expression> binOpGen)
+        {
+            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var opDst = orw.RewriteDst(di.Instruction.op2, PrimitiveType.Int32, opSrc, binOpGen);
+            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF), emitter.Cond(opDst));
+            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+        }
+
+        public void RewriteUnary(Func<Expression, Expression> unaryOpGen)
+        {
+            var op = orw.RewriteUnary(di.Instruction.op1, di.Instruction.dataWidth, unaryOpGen);
+            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(op));
+            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+        }
+
         private Expression MaybeCast(PrimitiveType width, Expression expr)
         {
             if (expr.DataType.Size == width.Size)

@@ -79,6 +79,9 @@ namespace Decompiler.Arch.M68k
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
+                case Opcode.muls: RewriteMul((s, d) => emitter.SMul(d, s)); break;
+                case Opcode.mulu: RewriteMul((s, d) => emitter.UMul(d, s)); break;
+                case Opcode.not: RewriteUnary(s => emitter.Comp(s)); break;
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 default:
                     throw new AddressCorrelatedException(string.Format("Rewriting M68k opcode '{0}' is not supported yet.",
