@@ -35,8 +35,8 @@ namespace Decompiler.Arch.M68k
 
     public partial class M68kDisassembler : IDisassembler
     {
-        ImageReader rdr;        // program counter 
-        M68kInstruction instr;  // instruction being built
+        private ImageReader rdr;        // program counter 
+        private M68kInstruction instr;  // instruction being built
 
         public M68kDisassembler(ImageReader rdr)
         {
@@ -215,7 +215,6 @@ namespace Decompiler.Arch.M68k
         //static int   valid_ea(uint opcode, uint mask);
         //static int  compare_nof_true_bits(const void aptr, const void *bptr);
 
-        /* used to build opcode handler jump table */
         private class OpRec
         {
             public readonly Func<M68kDisassembler, M68kInstruction> opcode_handler;
@@ -1490,7 +1489,7 @@ namespace Decompiler.Arch.M68k
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            g_dasm_str = string.Format("bfextu  D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, get_ea_mode_str_8(instruction), offset, width);
+            g_dasm_str = string.Format("bfextu  D{0},{1} {{{2}:{3}}}; (2+)", (extension >> 12) & 7, get_ea_mode_str_8(instruction), offset, width);
             throw new NotImplementedException();
         }
 
@@ -1853,102 +1852,16 @@ namespace Decompiler.Arch.M68k
                 g_dasm_str = string.Format("cinv (illegal scope); (4)");
                 break;
             case 1:
-                g_dasm_str = string.Format("cinvl   {0}, (A%d); (4)", (instruction >> 6) & 3, instruction & 7);
+                g_dasm_str = string.Format("cinvl   {0}, (A{1}); (4)", (instruction >> 6) & 3, instruction & 7);
                 break;
             case 2:
-                g_dasm_str = string.Format("cinvp   {0}, (A%d); (4)", (instruction >> 6) & 3, instruction & 7);
+                g_dasm_str = string.Format("cinvp   {0}, (A{1}); (4)", (instruction >> 6) & 3, instruction & 7);
                 break;
             case 3:
                 g_dasm_str = string.Format("cinva   {0}; (4)", (instruction >> 6) & 3);
                 break;
             }
             throw new NotImplementedException();
-        }
-
-        private M68kInstruction d68000_clr_8(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.clr,
-                dataWidth = PrimitiveType.Byte,
-                op1 = get_ea_mode_str_8(instruction)
-            };
-        }
-
-        private M68kInstruction d68000_clr_32(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.clr,
-                dataWidth = PrimitiveType.Word32,
-                op1 = get_ea_mode_str_8(instruction)
-            };
-        }
-
-        private M68kInstruction d68000_cmp_8(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.cmp,
-                dataWidth = PrimitiveType.Byte,
-                op1 = get_ea_mode_str_8(instruction),
-                op2 = get_data_reg((instruction >> 9) & 7)
-            };
-        }
-
-        private M68kInstruction d68000_cmp_16(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.cmp,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_16(instruction),
-                op2 = get_data_reg((instruction >> 9) & 7)
-            };
-        }
-
-        private M68kInstruction d68000_cmp_32(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.cmp,
-                dataWidth = PrimitiveType.Word32,
-                op1 = get_ea_mode_str_32(instruction),
-                op2 = get_data_reg((instruction >> 9) & 7)
-            };
-        }
-
-        private M68kInstruction d68000_cmpa_16(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.cmpa,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_16(instruction),
-                op2 = get_addr_reg((instruction >> 9) & 7)
-            };
-        }
-
-        private M68kInstruction d68000_cmpa_32(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.cmpa,
-                dataWidth = PrimitiveType.Word32,
-                op1 = get_ea_mode_str_32(instruction),
-                op2 = get_addr_reg((instruction >> 9) & 7)
-            };
-        }
-
-        private M68kInstruction d68000_cmpi_8(M68kDisassembler dasm)
-        {
-            var str = get_imm_str_s8();
-            return new M68kInstruction
-            {
-                code = Opcode.cmpi,
-                op1 = str,
-                op2 = get_ea_mode_str_8(instruction)
-            };
         }
 
         private M68kInstruction d68020_cmpi_pcdi_8(M68kDisassembler dasm)
@@ -1973,18 +1886,6 @@ namespace Decompiler.Arch.M68k
                 dataWidth = PrimitiveType.Byte,
                 op1 = str,
                 op2 = get_ea_mode_str_8(instruction)
-            };
-        }
-
-        private M68kInstruction d68000_cmpi_16(M68kDisassembler dasm)
-        {
-            var str = get_imm_str_s16();
-            return new M68kInstruction
-            {
-                code = Opcode.cmpi,
-                dataWidth = PrimitiveType.Word16,
-                op1 = str,
-                op2 = get_ea_mode_str_16(instruction)
             };
         }
 
@@ -2014,21 +1915,8 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_cmpi_32(M68kDisassembler dasm)
-        {
-            var str = get_imm_str_s32();
-            return new M68kInstruction
-            {
-                code = Opcode.cmpi,
-                dataWidth = PrimitiveType.Word32,
-                op1 = str,
-                op2 = get_ea_mode_str_32(instruction) 
-            };
-        }
-
         private M68kInstruction d68020_cmpi_pcdi_32(M68kDisassembler dasm)
         {
-            LIMIT_CPU_TYPES(M68010_PLUS);
             var str = get_imm_str_s32();
             return new M68kInstruction
             {
@@ -2298,39 +2186,6 @@ namespace Decompiler.Arch.M68k
                     op1 = ea,
                     op2 = get_double_data_reg(extension, (extension >> 12) & 7),
                 };
-        }
-
-        private M68kInstruction d68000_eor_8(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.eor,
-                dataWidth = PrimitiveType.Byte,
-                op1 = get_data_reg((instruction >> 9) & 7),
-                op2 = get_ea_mode_str_8(instruction)
-            };
-        }
-
-        private M68kInstruction d68000_eor_16(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.eor,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_data_reg((instruction >> 9) & 7),
-                op2 = get_ea_mode_str_16(instruction)
-            };
-        }
-
-        private M68kInstruction d68000_eor_32(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.eor,
-                dataWidth = PrimitiveType.Word32,
-                op1 = get_data_reg((instruction >> 9) & 7),
-                op2 = get_ea_mode_str_32(instruction)
-            };
         }
 
         private M68kInstruction d68000_eori_to_ccr(M68kDisassembler dasm)
@@ -2676,7 +2531,6 @@ namespace Decompiler.Arch.M68k
 
         private M68kInstruction d68000_jsr(M68kDisassembler dasm)
         {
-            SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
             return new M68kInstruction
             {
                 code = Opcode.jsr,
@@ -4247,28 +4101,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private M68kInstruction d68000_suba_16(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.suba,
-                dataWidth = PrimitiveType.Word16,
-                op1 = get_ea_mode_str_16(instruction),
-                op2 = get_addr_reg((instruction >> 9) & 7)
-            };
-        }
-
-        private M68kInstruction d68000_suba_32(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.suba,
-                dataWidth = PrimitiveType.Word32,
-                op1 = get_ea_mode_str_32(instruction),
-                op2 = get_addr_reg((instruction >> 9) & 7)
-            };
-        }
-
         private M68kInstruction d68000_subi_8(M68kDisassembler dasm)
         {
             var str = get_imm_str_s8();
@@ -4846,20 +4678,20 @@ namespace Decompiler.Arch.M68k
             if (g_opcode_info != null)
                 return;
          g_opcode_info = new OpRec[] 
-{
+        {
 //  opcode handler             mask    match   ea mask 
 	new OpRec(d68000_1010         , 0xf000, 0xa000, 0x000),
 	new OpRec(d68000_1111         , 0xf000, 0xf000, 0x000),
 	new OpRec(d68000_abcd_rr      , 0xf1f8, 0xc100, 0x000),
 	new OpRec(d68000_abcd_mm      , 0xf1f8, 0xc108, 0x000),
-	new OpRec("s6:E0,D9", 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8   
-	new OpRec(d68000_add_er_16    , 0xf1c0, 0xd040, 0xfff),
-	new OpRec(d68000_add_er_32    , 0xf1c0, 0xd080, 0xfff),
-	new OpRec("D9,s6:E0", 0xf1c0, 0xd100, 0x3f8, Opcode.add),           // d68000_add_re_8     
-	new OpRec(d68000_add_re_16    , 0xf1c0, 0xd140, 0x3f8),
-	new OpRec(d68000_add_re_32    , 0xf1c0, 0xd180, 0x3f8),
-	new OpRec("sw:E0,A9", 0xf1c0, 0xd0c0, 0xfff, Opcode.adda),
-	new OpRec("sl:E0,A9", 0xf1c0, 0xd1c0, 0xfff, Opcode.adda),
+	new OpRec("s6:E0,D9", 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8
+	new OpRec("sw:E0,D9", 0xf1c0, 0xd040, 0xfff, Opcode.add),           // d68000_add_er_16
+	new OpRec("sl:E0,D9", 0xf1c0, 0xd080, 0xfff, Opcode.add),           // d68000_add_er_32
+	new OpRec("s6:D9,E0", 0xf1c0, 0xd100, 0x3f8, Opcode.add),           // d68000_add_re_8
+	new OpRec("sw:D9,E0", 0xf1c0, 0xd140, 0x3f8, Opcode.add),           // d68000_add_re_16
+	new OpRec("sl:D9,E0", 0xf1c0, 0xd180, 0x3f8, Opcode.add),           // d68000_add_re_32
+	new OpRec("sw:E0,A9", 0xf1c0, 0xd0c0, 0xfff, Opcode.adda),          // d68000_adda_16
+	new OpRec("sl:E0,A9", 0xf1c0, 0xd1c0, 0xfff, Opcode.adda),          // d68000_adda_32
 	new OpRec(d68000_addi_8, 0xffc0, 0x0600, 0xbf8),
 	new OpRec(d68000_addi_16      , 0xffc0, 0x0640, 0xbf8),
 	new OpRec(d68000_addi_32      , 0xffc0, 0x0680, 0xbf8),
@@ -4935,21 +4767,21 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
 	new OpRec(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
 	new OpRec(d68040_cinv         , 0xff20, 0xf400, 0x000),
-	new OpRec(d68000_clr_8        , 0xffc0, 0x4200, 0xbf8),
+	new OpRec("sb:E0", 0xffc0, 0x4200, 0xbf8, Opcode.clr),      // d68000_clr_8
 	new OpRec("sw:E0", 0xffc0, 0x4240, 0xbf8, Opcode.clr),      // d68000_clr_16
-	new OpRec(d68000_clr_32       , 0xffc0, 0x4280, 0xbf8),
-	new OpRec(d68000_cmp_8        , 0xf1c0, 0xb000, 0xbff),
-	new OpRec(d68000_cmp_16       , 0xf1c0, 0xb040, 0xfff),
-	new OpRec(d68000_cmp_32       , 0xf1c0, 0xb080, 0xfff),
-	new OpRec(d68000_cmpa_16      , 0xf1c0, 0xb0c0, 0xfff),
-	new OpRec(d68000_cmpa_32      , 0xf1c0, 0xb1c0, 0xfff),
-	new OpRec(d68000_cmpi_8       , 0xffc0, 0x0c00, 0xbf8),
+	new OpRec("sl:E0", 0xffc0, 0x4280, 0xbf8, Opcode.clr),      // d68000_clr_32
+	new OpRec("sb:E0,D9", 0xf1c0, 0xb000, 0xbff, Opcode.cmp),   // d68000_cmp_8
+	new OpRec("sw:E0,D9", 0xf1c0, 0xb040, 0xfff, Opcode.cmp),   // d68000_cmp_16
+	new OpRec("sl:E0,D9", 0xf1c0, 0xb080, 0xfff, Opcode.cmp),   // d68000_cmp_32
+	new OpRec("sw:E0,A9", 0xf1c0, 0xb0c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_16
+	new OpRec("sl:E0,A9", 0xf1c0, 0xb1c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_32
+	new OpRec("sb:Ib,E0", 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),     // d68000_cmpi_8
 	new OpRec(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
 	new OpRec(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
-	new OpRec(d68000_cmpi_16      , 0xffc0, 0x0c40, 0xbf8),
+	new OpRec("sw:Iw,E0", 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16
 	new OpRec(d68020_cmpi_pcdi_16 , 0xffff, 0x0c7a, 0x000),
 	new OpRec(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
-	new OpRec(d68000_cmpi_32      , 0xffc0, 0x0c80, 0xbf8),
+	new OpRec("sl:Il,E0", 0xffc0, 0x0c80, 0xbf8, Opcode.cmpi),      // d68000_cmpi_32
 	new OpRec(d68020_cmpi_pcdi_32 , 0xffff, 0x0cba, 0x000),
 	new OpRec(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
 	new OpRec(d68000_cmpm_8       , 0xf1f8, 0xb108, 0x000),
@@ -4989,8 +4821,8 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68040_fpu          , 0xffc0, 0xf200, 0x000),
 	new OpRec(d68000_illegal      , 0xffff, 0x4afc, 0x000),
 	new OpRec(d68000_jmp          , 0xffc0, 0x4ec0, 0x27b),
-	new OpRec(d68000_jsr          , 0xffc0, 0x4e80, 0x27b),
-	new OpRec("E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),                  // d68000_lea          
+	new OpRec("sl:E0", 0xffc0, 0x4e80, 0x27b, Opcode.jsr),         // d68000_jsr
+	new OpRec("E0,A9", 0xf1c0, 0x41c0, 0x27b, Opcode.lea),      // d68000_lea          
 	new OpRec(d68000_link_16      , 0xfff8, 0x4e50, 0x000),
 	new OpRec(d68020_link_32      , 0xfff8, 0x4808, 0x000),
 	new OpRec("s6:q9,D0", 0xf1f8, 0xe008, 0x000, Opcode.lsr),         // d68000_lsr_s_8      
@@ -5057,7 +4889,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec("sl:E0,D9", 0xf1c0, 0x8080, 0xbff, Opcode.or),        // d68000_or_er_32   
 	new OpRec(d68000_or_re_8      , 0xf1c0, 0x8100, 0x3f8),
 	new OpRec(d68000_or_re_16     , 0xf1c0, 0x8140, 0x3f8),
-	new OpRec(d68000_or_re_32     , 0xf1c0, 0x8180, 0x3f8),
+	new OpRec("sl:D9,E0", 0xf1c0, 0x8180, 0x3f8, Opcode.or),        // d68000_or_re_32
 	new OpRec("sb:Ib,c", 0xffff, 0x003c, 0x000, Opcode.ori),        // d68000_ori_to_ccr   
 	new OpRec("sw:Iw,s", 0xffff, 0x007c, 0x000, Opcode.ori),        // d68000_ori_to_sr    
 	new OpRec("s6:Iv,e0", 0xffc0, 0x0000, 0xbf8, Opcode.ori),       // d68000_ori_8        
@@ -5114,7 +4946,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec("sw:E0,A9", 0xf1c0, 0x90c0, 0xfff, Opcode.suba),      // d68000_suba_16
 	new OpRec("sl:E0,A9", 0xf1c0, 0x91c0, 0xfff, Opcode.suba),      // d68000_suba_32
 	new OpRec(d68000_subi_8       , 0xffc0, 0x0400, 0xbf8),
-	new OpRec(d68000_subi_16      , 0xffc0, 0x0440, 0xbf8),
+	new OpRec("sw:Iw,E0", 0xffc0, 0x0440, 0xbf8, Opcode.subi),      // d68000_subi_16
 	new OpRec(d68000_subi_32      , 0xffc0, 0x0480, 0xbf8),
 	new OpRec(d68000_subq_8       , 0xf1c0, 0x5100, 0xbf8),
 	new OpRec(d68000_subq_16      , 0xf1c0, 0x5140, 0xff8),

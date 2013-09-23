@@ -78,8 +78,12 @@ namespace Decompiler.Arch.M68k
             var mem = operand as MemoryOperand;
             if (mem != null)
             {
-                var ea = rewriter.frame.EnsureRegister(mem.Base);
-                return m.Load(rewriter.di.Instruction.dataWidth, ea);
+                return RewriteMemoryAccess(mem);
+            }
+            var addr = operand as AddressOperand;
+            if (addr != null)
+            {
+                return addr.Address;
             }
             var pre = operand as PredecrementMemoryOperand;
             if (pre != null)

@@ -326,5 +326,34 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("clr.w\t(a0)+", 0x4258);
         }
 
+        [Test]
+        public void M68kdis_cmpib()
+        {
+            RunTest("cmpi.b\t#$42,d0", 0x0C00, 0x0042);
+        }
+
+        [Test]
+        public void M68kdis_cmpw_d_d()
+        {
+            RunTest("cmp.w\td1,d0", 0xB041);
+        }
+
+        [Test]
+        public void M68kdis_jsr_mem()
+        {
+            RunTest("jsr.l\t(a0)", 0x4E90);
+        }
+
+        [Test]
+        public void M68kdis_or_rev()
+        {
+            RunTest("or.l\td0,$-0008(a0)", 0x81A8, 0xFFF8);
+        }
+
+        [Test]
+        public void M68kdis_lsl_w()
+        {
+            RunTest("lsl.w\t#$08,d0", 0xE148);
+        }
     }
 }
