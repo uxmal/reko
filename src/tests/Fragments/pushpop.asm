@@ -5,6 +5,7 @@ main proc
 	mov cx,0x14
 	call foo
 	mov [si],ax
+	;; fall thru.
 	endp
 	
 foo proc
