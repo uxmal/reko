@@ -183,11 +183,11 @@ namespace Decompiler.Assemblers.x86
             ProcessBinop(0x05, minuend, subtrahend);
         }
 
-
         public void Test(ParsedOperand op1, ParsedOperand op2)
         {
             ProcessTest(new ParsedOperand[] { op1, op2 });
         }
+
         public ParsedOperand BytePtr(int offset)
         {
             emitter.AddressWidth = emitter.SegmentAddressWidth;

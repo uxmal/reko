@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2013 John Källén.
+ * Copyright (C) 1999-2013 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -168,7 +168,7 @@ namespace Decompiler.Assemblers.x86
 
 		private ParsedOperand ParseMemoryOperand(RegisterStorage segOver)
 		{
-			MemoryOperand memOp = new MemoryOperand(null);
+            MemoryOperand memOp = new MemoryOperand(Decompiler.Core.Types.PrimitiveType.Create(Domain.Any, 0));
 			memOp.SegOverride = segOver;
 			this.segOverride = segOver;
 

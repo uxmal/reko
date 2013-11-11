@@ -41,6 +41,7 @@ namespace Decompiler.Scanning
     {
         private Program prog;
         private Dictionary<Block, Procedure> procMap;
+        private HashSet<Procedure> procsVisited;
 
         public CrossProcedureAnalyzer(Program prog)
         {
@@ -70,55 +71,33 @@ namespace Decompiler.Scanning
         /// <param name="proc"></param>
         public void Analyze(Procedure proc)
         {
+            if (procsVisited.Contains(proc))
+                return;
+            procsVisited.Add(proc);
             Stack<Block> stack = new Stack<Block>();
             stack.Push(proc.EntryBlock.Succ[0]);
             while (stack.Count != 0)
             {
                 var block = stack.Pop();
 
-                // We never modify first blocks of procedures.
-                if (!IsFirstBlockOfProcedure(block))
-                {
-                    Procedure blockProc;
-                    if (!procMap.TryGetValue(block, out blockProc))
-                    {
-                        // Easy case; block has never been seen before. Add it to the current procedure.
-                        procMap.Add(block, proc);
-                    }
-                    else
-                    {
-                        // We've seen this block before. If we're in the same procedure as the block was registered to before,
-                        // don't even add its successors to the stack; instead go get next item on the stack.
-                        if (proc == blockProc)
-                            continue;
-
-                        // The block was previously associated with another procedure!
-                        if (IsBlockLinearProcedureExit(block))
-                        {
-                            BlocksNeedingCloning.Add(block);
-                        }
-                        else
-                        {
-                            BlocksNeedingPromotion.Add(block);
-                            var procNew = PromoteBlockToProcedure(block);
-                            Analyze(procNew);
-                            continue;
-                        }
-                    }
-                }
-
-                foreach (var s in block.Succ)
-                {
-                    stack.Push(s);
-                }
-            }
-
-            foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
-            {
-                if (block.Statements.Count == 0)
+                // We never modify nor proceed past first blocks of procedures.
+                if (IsFirstBlockOfProcedure(block))
                     continue;
-                if (IsBlockEnteredFromOtherProcedures(block, proc))
+
+                Procedure blockProc;
+                if (!procMap.TryGetValue(block, out blockProc))
                 {
+                    // Easy case; block has never been seen before. Add it to the current procedure.
+                    procMap.Add(block, proc);
+                }
+                else
+                {
+                    // We've seen this block before. If we're in the same procedure as the block was registered to before,
+                    // don't even add its successors to the stack; instead go get next item on the stack.
+                    if (proc == blockProc)
+                        continue;
+
+                    // The block was previously associated with another procedure!
                     if (IsBlockLinearProcedureExit(block))
                     {
                         BlocksNeedingCloning.Add(block);
@@ -126,10 +105,14 @@ namespace Decompiler.Scanning
                     else
                     {
                         BlocksNeedingPromotion.Add(block);
-                        //var procNew = PromoteBlockToProcedureEntry(block);
-                        //CloneBlockIntoOtherProcedures(block, proc);
-                        //ReplaceInboundEdgesWithCalls(block);
+                        var procNew = PromoteBlockToProcedure(block);
+                        Analyze(procNew);
+                        continue;
                     }
+                }
+                foreach (var s in block.Succ)
+                {
+                    stack.Push(s);
                 }
             }
         }
@@ -139,7 +122,7 @@ namespace Decompiler.Scanning
  	        Procedure proc;
             if (!procMap.TryGetValue(block, out proc))
                 return false;
-            return  proc.EntryBlock.Succ[0] == block;
+            return proc.EntryBlock.Succ[0] == block;
         }
 
         public void ReplaceInboundEdgesWithCalls(Block block)
@@ -195,7 +178,8 @@ namespace Decompiler.Scanning
 
         public void Analyze(Program prog)
         {
-            Analyze(prog.Procedures.Values);
+            procsVisited = new HashSet<Procedure>();
+            Analyze(prog.Procedures.Values.ToArray());
             PromoteBlocksToProcedures(this.BlocksNeedingPromotion);
             CloneBlocksIntoOtherProcedures(this.BlocksNeedingCloning);
         }
@@ -415,5 +399,31 @@ namespace Decompiler.Scanning
             }
         }
 
+        public void ReplaceCrossJumpsWithCalls(Program program)
+        {
+            var q = program.Procedures.Values.SelectMany(p => p.ControlGraph.Blocks)
+                .Select(b => new
+                {
+                    Block = b,
+                    Promotees = b.Succ.Where(s => s.Procedure != b.Procedure).ToArray()
+                }).ToArray();
+            foreach (var item in q)
+            {
+                foreach (var succ in item.Promotees)
+                {
+                    var thunk = CreateCallRetThunk(item.Block, item.Block.Procedure, succ.Procedure);
+                    for (int i = 0; i < item.Block.Succ.Count; ++i)
+                    {
+                        if (item.Block.Succ[i] == succ)
+                        {
+                            item.Block.Succ[i] = thunk;
+                        }
+                    }
+                    succ.Pred.Remove(item.Block);
+                    thunk.Pred.Add(item.Block);
+                    item.Block.Procedure.ControlGraph.AddEdge(thunk, item.Block.Procedure.ExitBlock);
+                }
+            }
+        }
     }
 }

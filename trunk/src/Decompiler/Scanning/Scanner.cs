@@ -446,15 +446,12 @@ namespace Decompiler.Scanning
         private void HandleCrossProcedureJumps()
         {
             CrossProcedureAnalyzer crpa = new CrossProcedureAnalyzer(program);
-            foreach (Procedure proc in program.Procedures.Values.ToArray())
-            {
-                proc.Dump(true, false);
-                crpa.Analyze(proc);
-            }
+            crpa.Analyze(program);
             Dump("Blocks needing promotion", crpa.BlocksNeedingPromotion);
             Dump("Blocks needing cloning", crpa.BlocksNeedingCloning);
             crpa.PromoteBlocksToProcedures(crpa.BlocksNeedingPromotion);
             crpa.CloneBlocksIntoOtherProcedures(crpa.BlocksNeedingCloning);
+            crpa.ReplaceCrossJumpsWithCalls(program);
         }
 
         [Conditional("DEBUG")]
@@ -463,7 +460,7 @@ namespace Decompiler.Scanning
             Debug.WriteLine(title);
             foreach (var block in blocks.OrderBy(b => b.Name))
             {
-                Debug.Print("    {0}");
+                Debug.Print("    {0}", block.Name);
             }
         }
 

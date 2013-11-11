@@ -63,7 +63,6 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("moveq\t#$+01,d1", instr.ToString());
         }
 
-
         [Test]
         public void AddQ()
         {
