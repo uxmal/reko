@@ -8,7 +8,7 @@ l1:
 	// succ:  IntelIndexedAddressingMode_exit
 IntelIndexedAddressingMode_exit:
 
-Globals (in globals : ptr32)
+Globals (in globals : (ptr (struct "Globals")))
 	trait_mem(T_4, CA4)
 	trait_mem(T_8, 1C0A)
 T_2 (in 0xF8 : byte)

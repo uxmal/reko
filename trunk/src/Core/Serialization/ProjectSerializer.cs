@@ -9,12 +9,10 @@ namespace Decompiler.Core.Serialization
 {
     public class ProjectSerializer
     {
-
-
-        public void Save(TextWriter sw)
+        public void Save(SerializedProject_v1 project, TextWriter sw)
         {
             XmlSerializer ser = new XmlSerializer(typeof(SerializedProject_v1));
-            ser.Serialize(sw, this);
+            ser.Serialize(sw, project);
         }
 
         public Project LoadProject(string filename)

@@ -9,7 +9,7 @@ l1:
 	Mem0[0x0304:word16] = Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16]
 SegmentedPointerProc_exit:
 
-Globals (in globals : ptr32)
+Globals (in globals : (ptr (struct "Globals")))
 	trait_mem(T_4, 300)
 	trait_mem(T_7, 302)
 	trait_mem(T_9, 300)

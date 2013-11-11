@@ -168,7 +168,7 @@ namespace Decompiler.Assemblers.x86
 
 		private ParsedOperand ParseMemoryOperand(RegisterStorage segOver)
 		{
-            MemoryOperand memOp = new MemoryOperand(Decompiler.Core.Types.PrimitiveType.Create(Domain.Any, 0));
+            MemoryOperand memOp = new MemoryOperand(null);
 			memOp.SegOverride = segOver;
 			this.segOverride = segOver;
 
@@ -202,7 +202,6 @@ namespace Decompiler.Assemblers.x86
 				ParseMemoryFactor(memOp);
 			} 
 		}
-
 
 		public ParsedOperand ParseOperand()
 		{

@@ -18,7 +18,7 @@ Eq_6: (segment "Eq_6")
 	T_6 (in ds : selector)
 	T_8 (in Mem0[0x0800:0x5422:word16] : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

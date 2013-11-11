@@ -64,17 +64,17 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void AddQ()
+        public void M68kdis_AddQ()
         {
             byte[] bytes = new byte[] {
                 0x5E, 0x92
             };
             DasmSingleInstruction(bytes);
-            Assert.AreEqual("addq.l\t#$+07,(a2)", instr.ToString());
+            Assert.AreEqual("addq.l\t#$07,(a2)", instr.ToString());
         }
 
         [Test]
-        public void Ori()
+        public void M68kdis_Ori()
         {
             byte[] bytes = new byte[] {
                 0x00, 0x00, 0x00, 0x12
@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void OriCcr()
+        public void M68kdis_OriCcr()
         {
             byte[] bytes = new byte[] {
                 0x00, 0x3C, 0x00, 0x42
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void OriSr()
+        public void M68kdis_OriSr()
         {
             byte[] bytes = new byte[] {
                 0x00, 0x7C, 0x00, 0x42
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void MoveW()
+        public void M68kdis_MoveW()
         {
             DasmSingleInstruction(0x30, 0x2F, 0x47, 0x11);
             Assert.AreEqual("move.w\t$4711(a7),d0", instr.ToString());

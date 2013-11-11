@@ -167,10 +167,9 @@ namespace Decompiler.UnitTests.Scanning
             prog.Architecture = arch;
             prog.Platform = new FakePlatform();
             prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
+            prog.ImageMap = new ImageMap(prog.Image);
             return new TestScanner(prog);
         }
-
-
 
         [Test]
         public void SplitBlock()

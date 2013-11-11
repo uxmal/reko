@@ -398,7 +398,7 @@ namespace Decompiler.Gui.Forms
             {
                 //$REFACTOR: rule of demeter, push this into a Save() method.
                 var sp = decompilerSvc.Decompiler.Project.Save();
-                new ProjectSerializer().Save(sw);
+                new ProjectSerializer().Save(sp, sw);
             }
         }
 

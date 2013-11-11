@@ -100,16 +100,17 @@ namespace Decompiler.Core
 			return p;
 		}
 
-		public Identifier Globals
-		{
-			get {
+        public Identifier Globals
+        {
+            get
+            {
                 if (globals == null)
                 {
                     EnsureGlobals();
                 }
-                return globals; 
-            } 
-		}
+                return globals;
+            }
+        }
 
         private void EnsureGlobals()
         {
