@@ -16,7 +16,7 @@ Eq_4: (struct (0 word16 w0000))
 Eq_6: (struct (0 word16 w0000))
 	T_6 (in 0x00001B58 : word32)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

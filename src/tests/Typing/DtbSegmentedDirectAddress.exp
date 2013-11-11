@@ -6,7 +6,7 @@ Eq_3: (memptr T_2 (struct (0 T_4 t0000)))
 Eq_4: byte
 	T_4 (in Mem0[ds:0x0200:byte] : byte)
 // Type Variables ////////////
-T_1: (in globals : ptr32)
+T_1: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: 
   OrigDataType: 

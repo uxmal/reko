@@ -11,7 +11,7 @@ l1:
 SegmentedPointerProc_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct (300 T_2 t0300) (302 T_7 t0302) (304 T_17 t0304)))
+Eq_1: (ptr (struct (300 T_2 t0300) (304 T_17 t0304)))
 	Globals (in globals : ptr32)
 Eq_2: (struct (0 memptr16 mp0000) (2 segment seg0000))
 	T_2 (in 0x1234 : word16)

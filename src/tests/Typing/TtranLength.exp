@@ -27,7 +27,7 @@ Eq_9: (struct (4 (memptr Eq_4 Eq_9) ptr0004))
 	T_12 (in Mem0[ds:bx + 0x0004:word16] : word16)
 	T_13 (in 0x0000 : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

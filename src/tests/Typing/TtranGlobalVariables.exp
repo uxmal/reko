@@ -6,18 +6,17 @@ l1:
 	word32 ptr = 0x10000004
 	Mem0[ptr + 0x00000000:real32] = 0.75F
 	Mem0[0x10000000:real32] = 0.5F
-	// succ: 
 GlobalVariablesMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct (10000000 real32 r10000000) (10000004 real32 r10000004))
-	Globals (in globals : ptr32)
+	Globals (in globals : (ptr (struct "Globals")))
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (10000000 T_10 t10000000) (10000004 T_7 t10000004)))
-T_2: (in ptr : (ptr real32))
+T_2: (in ptr : word32)
   Class: Eq_2
   DataType: (ptr real32)
   OrigDataType: (ptr (struct (0 T_7 t0000)))

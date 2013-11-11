@@ -14,9 +14,9 @@ IntelIndexedAddressingMode_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct (CA4 word16 w0CA4) (1C0A int16 w1C0A) (7070 word16 w7070))
-	Globals (in globals : ptr32)
+	Globals (in globals : (ptr (struct "Globals")))
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (CA4 T_12 t0CA4) (1C0A T_8 t1C0A) (7070 T_3 t7070)))
@@ -55,7 +55,7 @@ T_9: (in ax *s Mem0[0x1C0A:word16] : int16)
 T_10: (in si : word16)
   Class: Eq_9
   DataType: int16
-  OrigDataType: word16
+  OrigDataType: int16
 T_11: (in 0x0CA4 : word16)
   Class: Eq_11
   DataType: (ptr word16)

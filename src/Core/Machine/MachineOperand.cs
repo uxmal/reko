@@ -32,14 +32,15 @@ namespace Decompiler.Core.Machine
     /// </summary>
 	public abstract class MachineOperand
 	{
-		public PrimitiveType Width;
+        public PrimitiveType Width { get { return width; } set { width = value; } }
+        private PrimitiveType width;
 
 		protected MachineOperand(PrimitiveType width)
 		{
-            if (width == null)
-                throw new ArgumentNullException("width");
+            //if (width == null)
+            //    throw new ArgumentNullException("width");
 
-			Width = width;
+			this.width = width;
 		}
 
 		public virtual string ToString(bool fExplicit)

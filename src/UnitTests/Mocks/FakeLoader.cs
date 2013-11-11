@@ -60,6 +60,7 @@ namespace Decompiler.UnitTests.Mocks
                 image = new LoadedImage(addrLoad, imageFile);
             }
             prog.Image = image;
+            prog.ImageMap = new ImageMap(image);
             return prog;
         }
 

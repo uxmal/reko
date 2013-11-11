@@ -121,7 +121,7 @@ Eq_48: int32
 Eq_49: (memptr T_13 (struct (0 T_50 t0000)))
 	T_49 (in 0x0408 : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: 
   OrigDataType: 
