@@ -87,12 +87,22 @@ namespace Decompiler.Core.Rtl
             return this;
         }
 
+        /// <summary>
+        /// Standard goto, for architectures where there are no delay slots.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public RtlEmitter Goto(Expression target)
         {
             instrs.Add(new RtlGoto(target, RtlClass.Transfer));
             return this;
         }
 
+        /// <summary>
+        /// Delayed goto (for RISC architectures with delay slots)
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public RtlEmitter GotoD(Expression target)
         {
             instrs.Add(new RtlGoto(target, RtlClass.Transfer|RtlClass.Delay));
