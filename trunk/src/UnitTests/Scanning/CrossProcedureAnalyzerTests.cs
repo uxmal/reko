@@ -39,8 +39,8 @@ namespace Decompiler.UnitTests.Scanning
         {
             var prog = Given_Simple_Proc();
 
-            var crpa = new CrossProcedureAnalyzer(null);
-            crpa.Analyze(prog.Procedures.Values);
+            var crpa = new CrossProcedureAnalyzer(prog);
+            crpa.Analyze(prog);
             Assert.AreEqual(0, crpa.BlocksNeedingPromotion.Count);
         }
 
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             var prog = Given_CrossJump_Prog();
             var crpa = new CrossProcedureAnalyzer(prog);
-            crpa.Analyze(prog.Procedures.Values);
+            crpa.Analyze(prog);
             Assert.AreEqual(1, crpa.BlocksNeedingPromotion.Count);
         }
 
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             var prog = Given_CrossJumpLinearReturn_Prog();
             var crpa = new CrossProcedureAnalyzer(prog);
-            crpa.Analyze(prog.Procedures.Values);
+            crpa.Analyze(prog);
             Assert.AreEqual(1, crpa.BlocksNeedingCloning.Count);
             Assert.AreEqual(0, crpa.BlocksNeedingPromotion.Count);
         }
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             var prog = Given_CrossJump_Prog();
             var crpa = new CrossProcedureAnalyzer(prog);
-            crpa.Analyze(prog.Procedures.Values);
+            crpa.Analyze(prog);
             crpa.PromoteBlocksToProcedures(crpa.BlocksNeedingPromotion);
             Assert.AreEqual(3, prog.Procedures.Count);
             var proc = prog.Procedures.Values[1];

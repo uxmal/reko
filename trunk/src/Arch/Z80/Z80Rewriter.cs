@@ -41,7 +41,6 @@ namespace Decompiler.Arch.Z80
 
         public Z80Rewriter(Z80ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            // TODO: Complete member initialization
             this.arch = arch;
             this.state = state;
             this.frame = frame;
@@ -80,7 +79,10 @@ namespace Decompiler.Arch.Z80
                 emitter = new RtlEmitter(rtlc.Instructions);
                 switch (dasm.Current.Instruction.Code)
                 {
-                default: throw new NotImplementedException(string.Format("Rewriting of Z80 instruction {0} not implemented yet.", dasm.Current.Instruction.Code));
+                default: throw new AddressCorrelatedException(
+                    dasm.Current.Address,
+                    "Rewriting of Z80 instruction {0} not implemented yet.",
+                    dasm.Current.Instruction.Code);
                 case Opcode.jp: RewriteJp(dasm.Current.Instruction); break;
                 case Opcode.ld: emitter.Assign(
                     RewriteOp(dasm.Current.Instruction.Op1),
@@ -119,7 +121,6 @@ namespace Decompiler.Arch.Z80
                 Address.Ptr16(dst.Value.ToUInt16()),
                 RtlClass.Transfer);
         }
-
 
         private void RewriteJp(Z80Instruction instr)
         {

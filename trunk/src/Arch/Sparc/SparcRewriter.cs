@@ -90,9 +90,10 @@ namespace Decompiler.Arch.Sparc
                 switch (di.Instr.Opcode)
                 {
                 default: 
-                    throw new AddressCorrelatedException(string.Format("Rewriting SPARC opcode '{0}' is not supported yet.",
-                        di.Instr.Opcode),
-                        di.Address);
+                    throw new AddressCorrelatedException(
+                        di.Address,
+                        "Rewriting SPARC opcode '{0}' is not supported yet.",
+                        di.Instr.Opcode);
                 case Opcode.add: RewriteAlu(Operator.IAdd); break;
                 case Opcode.addcc: RewriteAluCc(Operator.IAdd); break;
                 case Opcode.and: RewriteAlu(Operator.And); break;

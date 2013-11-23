@@ -34,7 +34,7 @@ namespace Decompiler.Arch.M68k
         ushort opcode;
         int i;
 
-        public OperandFormatDecoder(ushort opcode, int i)
+        public  OperandFormatDecoder(ushort opcode, int i)
         {
             this.opcode = opcode;
             this.i = i;
@@ -115,7 +115,7 @@ namespace Decompiler.Arch.M68k
         {
             if (type.Size == 1)
             {
-                rdr.ReadByte();     // skip a byte so we get the appropriate bit and align the byte stream.
+                rdr.ReadByte();     // skip a byte so we get the appropriate lsb byte and align the word stream.
             }
             return new M68kImmediateOperand(rdr.ReadBe(type));
         }
@@ -323,7 +323,6 @@ namespace Decompiler.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_PRESENT(uint A) { return (((A) & 3) > 1 && ((A) & 0x47) < 0x44); }
         private static bool EXT_OUTER_DISPLACEMENT_WORD(uint A) { return (((A) & 3) == 2 && ((A) & 0x47) < 0x44); }
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
-
 
         private static RegisterStorage AddressRegister(ushort opcode, int bitOffset)
         {

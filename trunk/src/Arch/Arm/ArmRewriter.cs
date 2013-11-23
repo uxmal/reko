@@ -88,9 +88,9 @@ namespace Decompiler.Arch.Arm
         private AddressCorrelatedException NYI()
         {
             return new AddressCorrelatedException(
-                string.Format("Rewriting ARM opcode '{0}' is not supported yet.",
-                di.Instruction.Opcode),
-                di.Address);
+                di.Address,
+                "Rewriting ARM opcode '{0}' is not supported yet.",
+                di.Instruction.Opcode);
         }
 
         private void RewriteB(bool link)

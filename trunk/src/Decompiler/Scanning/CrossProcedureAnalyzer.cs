@@ -45,6 +45,8 @@ namespace Decompiler.Scanning
 
         public CrossProcedureAnalyzer(Program prog)
         {
+            if (prog == null)
+                throw new ArgumentNullException("prog");
             this.prog = prog;
             this.BlocksNeedingCloning = new HashSet<Block>();
             this.BlocksNeedingPromotion = new HashSet<Block>();
@@ -81,38 +83,41 @@ namespace Decompiler.Scanning
                 var block = stack.Pop();
 
                 // We never modify nor proceed past first blocks of procedures.
-                if (IsFirstBlockOfProcedure(block))
-                    continue;
-
-                Procedure blockProc;
-                if (!procMap.TryGetValue(block, out blockProc))
+                if (!IsFirstBlockOfProcedure(block))
                 {
-                    // Easy case; block has never been seen before. Add it to the current procedure.
-                    procMap.Add(block, proc);
-                }
-                else
-                {
-                    // We've seen this block before. If we're in the same procedure as the block was registered to before,
-                    // don't even add its successors to the stack; instead go get next item on the stack.
-                    if (proc == blockProc)
-                        continue;
-
-                    // The block was previously associated with another procedure!
-                    if (IsBlockLinearProcedureExit(block))
+                    Procedure blockProc;
+                    if (!procMap.TryGetValue(block, out blockProc))
                     {
-                        BlocksNeedingCloning.Add(block);
+                        // Easy case; block has never been seen before. Add it to the current procedure.
+                        procMap.Add(block, proc);
                     }
                     else
                     {
-                        BlocksNeedingPromotion.Add(block);
-                        var procNew = PromoteBlockToProcedure(block);
-                        Analyze(procNew);
-                        continue;
+                        // We've seen this block before. If we're in the same procedure as the block was registered to before,
+                        // don't even add its successors to the stack; instead go get next item on the stack.
+                        if (proc == blockProc)
+                            continue;
+
+                        // The block was previously associated with another procedure!
+                        if (IsBlockLinearProcedureExit(block))
+                        {
+                            BlocksNeedingCloning.Add(block);
+                        }
+                        else
+                        {
+                            BlocksNeedingPromotion.Add(block);
+                            var procNew = PromoteBlockToProcedureEntry(block, blockProc);
+                            Analyze(procNew);
+                            continue;
+                        }
                     }
                 }
-                foreach (var s in block.Succ)
+                if (block.Procedure == proc)
                 {
-                    stack.Push(s);
+                    foreach (var s in block.Succ)
+                    {
+                        stack.Push(s);
+                    }
                 }
             }
         }
@@ -219,6 +224,7 @@ namespace Decompiler.Scanning
                 Debug.Print("Cloning {0} to {1}", block.Name, pred.Procedure);
                 var clonedBlock = new BlockCloner(block, pred.Procedure, prog.CallGraph).Execute();
                 ReplaceSuccessorsWith(pred, block, clonedBlock);
+                pred.Procedure.ControlGraph.Blocks.Remove(block);
             }
         }
 
