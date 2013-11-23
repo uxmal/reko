@@ -121,7 +121,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void LslD()
         {
             DasmSingleInstruction(0xE5, 0x49, 0x00, 0x04);
-            Assert.AreEqual("lsl.w\t#$+02,d1", instr.ToString());
+            Assert.AreEqual("lsl.w\t#$02,d1", instr.ToString());
         }
 
         [Test]

@@ -624,7 +624,6 @@ namespace Decompiler.Arch.X86
 			RegisterStorage.None,
 		};
 
-
 		public ImmediateOperand CreateImmediateOperand(PrimitiveType immWidth, PrimitiveType instrWidth)
 		{
 			return new ImmediateOperand(rdr.ReadLe(immWidth));
@@ -753,7 +752,6 @@ namespace Decompiler.Arch.X86
 		// r - register is encoded in the last 3 bits of the instruction.
 
 		// 'X' means the opcode hasn't been tested in the disassembler.
-
 
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;

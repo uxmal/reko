@@ -65,9 +65,9 @@ namespace Decompiler.Arch.Mos6502
         private AddressCorrelatedException NYI()
         {
             return new AddressCorrelatedException(
-                string.Format("Rewriting 6502 opcode '{0}' is not supported yet.",
-                di.Instruction.Code),
-                di.Address);
+                di.Address,
+                "Rewriting 6502 opcode '{0}' is not supported yet.",
+                di.Instruction.Code);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

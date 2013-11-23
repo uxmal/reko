@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
+    /// <summary>
+    /// Rewrites <seealso cref="M68kInstruntion"/>s to <see cref="RtlInstructionCluster"/>s.
+    /// </summary>
     public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
         // These field are internal so that the OperandRewriter can use them.
@@ -99,9 +102,10 @@ namespace Decompiler.Arch.M68k
                 case Opcode.suba: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 default:
-                    throw new AddressCorrelatedException(string.Format("Rewriting M68k opcode '{0}' is not supported yet.",
-                        di.Instruction.code),
-                        di.Address);
+                    throw new AddressCorrelatedException(
+                        di.Address,
+                        "Rewriting M68k opcode '{0}' is not supported yet.",
+                        di.Instruction.code);
                 }
                 yield return ric;
             }

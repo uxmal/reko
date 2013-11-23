@@ -547,7 +547,6 @@ namespace Decompiler.Arch.Sparc
             }
         }
 
-
         private static Dictionary<uint, OpRec> fpOprecs = new Dictionary<uint,OpRec>
         {
             // 00 

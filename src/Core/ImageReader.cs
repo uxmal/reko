@@ -272,6 +272,8 @@ namespace Decompiler.Core
         {
             off = (uint)(off + offset);
         }
+
+
     }
 
     /// <summary>

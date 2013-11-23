@@ -67,15 +67,6 @@ namespace Decompiler.Arch.X86
             get { return wordSize; }
         }
 
-        public virtual bool IsPointerRegister(RegisterStorage machineRegister)
-        {
-            return machineRegister == Registers.bx ||
-                machineRegister == Registers.sp ||
-                machineRegister == Registers.bp ||
-                machineRegister == Registers.si ||
-                machineRegister == Registers.di;
-        }
-
         public virtual RegisterStorage StackRegister
         {
             get { return Registers.sp; }
@@ -222,11 +213,6 @@ namespace Decompiler.Arch.X86
             return MemoryAccess.Create(esp, offset, dataType);
         }
 
-        public override bool IsPointerRegister(RegisterStorage machineRegister)
-        {
-            return machineRegister.DataType.BitSize == PointerType.BitSize;
-        }
-
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return new Address(rdr.ReadLeUInt32());
@@ -266,14 +252,9 @@ namespace Decompiler.Arch.X86
             return MemoryAccess.Create(rsp, offset, dataType);
         }
 
-        public override bool IsPointerRegister(RegisterStorage machineRegister)
-        {
-            return machineRegister.DataType.BitSize == PointerType.BitSize;
-        }
-
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException("Address constants need to be 64-bit //return new Address(rdr.ReadLeUInt64());");
+            return Address.Ptr64(rdr.ReadLeUint64());
         }
     }
 }

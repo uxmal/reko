@@ -37,7 +37,10 @@ namespace Decompiler.Arch.PowerPC
             Expression ea;
             switch (instrs.Current.Opcode)
             {
-            default: throw new NotSupportedException(string.Format("PowerPC opcode {0} is not supported yet.", instr.Opcode));
+            default: throw new AddressCorrelatedException(
+                instr.Address,
+                "PowerPC opcode {0} is not supported yet.", 
+                instr.Opcode);
             case Opcode.add:
                 var sum = RewriteOperand(instr.op1);
                 emitter.Assign(

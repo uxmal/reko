@@ -91,9 +91,10 @@ namespace Decompiler.Arch.X86
                 switch (di.Instruction.code)
                 {
                 default:
-                    throw new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
-                        di.Instruction.code),
-                        di.Address);
+                    throw new AddressCorrelatedException(
+                        di.Address,
+                        "Rewriting x86 opcode '{0}' is not supported yet.",
+                        di.Instruction.code);
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aam: RewriteAam(); break;
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.IAdd); break;

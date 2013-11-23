@@ -30,8 +30,14 @@ namespace Decompiler.Core
     /// </summary>
     public class AddressCorrelatedException : Exception
     {
-        public AddressCorrelatedException(string message, Address addr)
-            : base(message)
+        public AddressCorrelatedException(Address addr, string format, params object[] args)
+            : base(string.Format(format, args))
+        {
+            this.Address = addr;
+        }
+
+        public AddressCorrelatedException(Address addr, Exception innerException, string format, params object[] args)
+            : base(string.Format(format, args), innerException)
         {
             this.Address = addr;
         }

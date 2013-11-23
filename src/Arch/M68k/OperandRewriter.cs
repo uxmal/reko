@@ -193,7 +193,7 @@ namespace Decompiler.Arch.M68k
             return m.Load(mem.Width, ea);
         }
 
-        public Expression RewriteUnary(MachineOperand operand, PrimitiveType dataWidth, Func<Expression ,Expression> opGen)
+        public Expression RewriteUnary(MachineOperand operand, PrimitiveType dataWidth, Func<Expression, Expression> opGen)
         {
             var reg = operand as RegisterOperand;
             if (reg != null)

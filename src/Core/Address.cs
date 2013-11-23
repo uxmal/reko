@@ -45,6 +45,12 @@ namespace Decompiler.Core
             return new Address(PrimitiveType.Ptr16, addr);
         }
 
+        public static Address Ptr64(ulong addr)
+        {
+            throw new NotImplementedException("We need separate classes for addresses.");
+        }
+
+
 		public Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = seg;
@@ -201,5 +207,5 @@ namespace Decompiler.Core
         /// <param name="s"></param>
         /// <returns></returns>
         public static Address ToAddress(string s) { return ToAddress(s, 16); }
-	}
+    }
 }
