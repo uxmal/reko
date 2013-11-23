@@ -35,6 +35,16 @@ namespace Decompiler.Core
 			this.Offset = off;
 		}
 
+        private Address(PrimitiveType size, uint bitPattern) : base(size)
+        {
+            this.Offset = bitPattern;
+        }
+
+        public static Address Ptr16(ushort addr)
+        {
+            return new Address(PrimitiveType.Ptr16, addr);
+        }
+
 		public Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = seg;
@@ -75,18 +85,39 @@ namespace Decompiler.Core
 
 		public string GenerateName(string prefix, string suffix)
 		{
-			return string.Format(
-				(Selector == 0)
-				? "{0}{2:X8}{3}" 
-				: "{0}{1:X4}_{2:X4}{3}", 
-				prefix, Selector, Offset, suffix);
+            string strFmt;
+            if (Selector == 0)
+            {
+                switch (base.DataType.Size)
+                {
+                case 2: strFmt = "{0}{2:X4}{3}"; break;
+                case 4: strFmt = "{0}{2:X8}{3}"; break;
+                default: throw new NotSupportedException(string.Format("Address size of {0} bytes not supported.", DataType.Size));
+                }
+            }
+            else
+            {
+                strFmt = "{0}{1:X4}_{2:X4}{3}"; 
+            }
+			return string.Format(strFmt, prefix, Selector, Offset, suffix);
 		}
 
 		public override string ToString()
 		{
-			string strFmt = (Selector == 0)
-				? "{1:X8}"
-				: "{0:X4}:{1:X4}";
+			string strFmt;
+            if (Selector == 0)
+            {
+                switch (base.DataType.Size)
+                {
+                    case 2: strFmt = "{1:X4}"; break;
+                    case 4: strFmt = "{1:X8}"; break;
+                    default: throw new NotSupportedException(string.Format("Address size of {0} bytes not supported.", DataType.Size));
+                }
+            }
+            else 
+            {
+                strFmt = "{0:X4}:{1:X4}";
+            }
 			return string.Format(strFmt, Selector, Offset);
 		}
 

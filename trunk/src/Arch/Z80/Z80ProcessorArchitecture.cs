@@ -119,7 +119,7 @@ namespace Decompiler.Arch.Z80
 
         public PrimitiveType WordWidth
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Word16; }
         }
 
         public RegisterStorage StackRegister
@@ -188,7 +188,15 @@ namespace Decompiler.Arch.Z80
 
         public static readonly RegisterStorage i = new RegisterStorage("i", 16, PrimitiveType.Byte);
         public static readonly RegisterStorage r = new RegisterStorage("r", 17, PrimitiveType.Byte);
+    }
 
+    [Flags]
+    public enum FlagM : byte
+    {
+        SF = 1,             // sign
+        ZF = 2,             // zero
+        PF = 4,             // overflow / parity
+        CF = 8,             // carry
     }
 
     public enum CondCode
