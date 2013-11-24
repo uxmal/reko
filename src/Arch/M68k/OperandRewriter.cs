@@ -45,7 +45,7 @@ namespace Decompiler.Arch.M68k
         private Rewriter rewriter;
         private RtlEmitter m;
         private Frame frame;
-        private PrimitiveType dataWidth;
+        private PrimitiveType dataWidth;     // the data width of the current instruction being rewritten.
 
         public OperandRewriter(Rewriter rewriter, PrimitiveType dataWidth)
         {
@@ -73,7 +73,10 @@ namespace Decompiler.Arch.M68k
             var imm = operand as M68kImmediateOperand;
             if (imm != null)
             {
-                return imm.Constant;
+               if (dataWidth.BitSize > imm.Width.BitSize)
+                    return Constant.Create(dataWidth, imm.Constant.ToInt64());
+                else
+                    return Constant.Create(imm.Width, imm.Constant.ToUInt32());
             }
             var mem = operand as MemoryOperand;
             if (mem != null)
@@ -175,8 +178,23 @@ namespace Decompiler.Arch.M68k
                 m.Assign(r, m.ISub(r, dataWidth.Size));
                 var load = m.Load(dataWidth, r);
                 var tmp = frame.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(load, src));
+                m.Assign(tmp, opGen(src, load));
                 m.Assign(m.Load(dataWidth, r), tmp);
+                return tmp;
+            }
+            var indidx = operand as IndirectIndexedOperand;
+            if (indidx != null)
+            {
+                Expression ea = frame.EnsureRegister(indidx.ARegister);
+                if (indidx.Imm8 != 0)
+                    ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+                Expression ix = frame.EnsureRegister(indidx.XRegister);
+                if (indidx.Scale > 1)
+                    ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                var load = m.Load(dataWidth, m.IAdd(ea, ix));
+                var tmp = rewriter.frame.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(src, load));
+                m.Assign(load, tmp);
                 return tmp;
             }
             throw new NotImplementedException("Unimplemented RewriteDst for operand type " + operand.ToString());

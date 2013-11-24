@@ -41,6 +41,22 @@ namespace Decompiler.Arch.M68k
             AllConditions(opDst);
         }
 
+        public void RewriteAsr(Func<Expression, Expression, Expression> binOpGen)
+        {
+            Expression opDst;
+            if (di.Instruction.op2 != null)
+            {
+                var opSrc = orw.RewriteSrc(di.Instruction.op1);
+                opDst = orw.RewriteDst(di.Instruction.op2, opSrc, binOpGen);
+            }
+            else
+            {
+                var opSrc = Constant.Int32(1);
+                opDst = orw.RewriteDst(di.Instruction.op1, opSrc, binOpGen);
+            }
+            AllConditions(opDst);
+        }
+
         public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
         {
             var width = di.Instruction.dataWidth;

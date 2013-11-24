@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void MoveQ()
+        public void M68kdis_moveQ()
         {
             byte[] bytes = new byte[] {
                 0x72, 0x01
@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68kdis_AddQ()
+        public void M68kdis_addQ()
         {
             byte[] bytes = new byte[] {
                 0x5E, 0x92
@@ -272,13 +272,13 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68dis_andi_32()
+        public void M68kdis_andi_32()
         {
             RunTest("andi.l\t#$00010000,(a4)+", 0x029C, 0x0001, 0x0000);
         }
 
         [Test]
-        public void M68dis_andi_8()
+        public void M68kdis_andi_8()
         {
             RunTest("andi.b\t#$F0,d2", 0x0202, 0x00F0);
         }
@@ -353,6 +353,77 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kdis_lsl_w()
         {
             RunTest("lsl.w\t#$08,d0", 0xE148);
+        }
+
+        [Test]
+        public void M68kdis_subq_b()
+        {
+            RunTest("subq.b\t#$04,d6", 0x5906);
+            RunTest("subq.b\t#$08,(a2)", 0x5112);
+        }
+
+        [Test]
+        public void M68kdis_subq_w()
+        {
+            RunTest("subq.w\t#$07,-(a6)", 0x5F66);
+            RunTest("subq.w\t#$01,(34,a0,d1)", 0x5370, 0x1034);
+        }
+
+        [Test]
+        public void M68kdis_subq_l()
+        {
+            RunTest("subq.l\t#$06,$12345678", 0x5DB9, 0x1234, 0x5678);
+            RunTest("subq.l\t#$01,$1234(a1)", 0x53A9, 0x1234);
+        }
+
+        [Test]
+        public void M68kdis_subi()
+        {
+            RunTest("subi.b\t#$34,d0", 0x0400, 0x1234);
+            RunTest("subi.w\t#$1234,d0", 0x0440, 0x1234);
+            RunTest("subi.l\t#$12345678,d0", 0x0480, 0x1234, 0x5678);
+        }
+
+        [Test]
+        public void M68kdis_sub_re()
+        {
+            RunTest("sub.l\td0,(a7)+", 0x919F);
+        }
+
+        [Test]
+        public void M68kdis_rts()
+        {
+            RunTest("rts\t", 0x4E75);
+        }
+
+        [Test]
+        public void M68kdis_asr_r()
+        {
+            RunTest("asr.b\td3,d4", 0xE624);
+            RunTest("asr.w\td3,d4", 0xE664);
+            RunTest("asr.l\td3,d4", 0xE6A4);
+        }
+
+        [Test]
+        public void M68kdis_asr_ea()
+        {
+            RunTest("asr.w\t-(a5)", 0xE0E5, 1234);
+        }
+
+        [Test]
+        public void M68kdis_subx_mm()
+        {
+            RunTest("subx.b\t-(a1),-(a0)", 0x9109);
+            RunTest("subx.w\t-(a1),-(a0)", 0x9149);
+            RunTest("subx.l\t-(a1),-(a0)", 0x9189);
+        }
+
+        [Test]
+        public void M68kdis_subx_rr()
+        {
+            RunTest("subx.b\td1,d0", 0x9101);
+            RunTest("subx.w\td1,d0", 0x9141);
+            RunTest("subx.l\td1,d3", 0x9781);
         }
     }
 }

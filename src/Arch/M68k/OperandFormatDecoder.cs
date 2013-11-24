@@ -49,19 +49,19 @@ namespace Decompiler.Arch.M68k
             Address addr;
             switch (args[i++])
             {
-            case 'A':
+            case 'A':   // Address register A0-A7 encoded in in instrution
                 return new RegisterOperand(AddressRegister(opcode, GetOpcodeOffset(args[i++])));
-            case 'c':
+            case 'c':   // CCR register 
                 return new RegisterOperand(Registers.ccr);
-            case 'D':
+            case 'D':   // Data register D0-D7 encoded in instruction
                 return DataRegisterOperand(opcode, GetOpcodeOffset(args[i++]));
-            case 'E':
+            case 'E':   // Effective address (EA) 
                 return ParseOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
-            case 'e':
+            case 'e':   // Effective address with 3-bit halves swapped
                 return ParseSwappedOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
-            case 'I':
+            case 'I':   // Immediate operand
                 return GetImmediate(rdr, GetSizeType(0, args[i++], dataWidth));
-            case 'J':
+            case 'J':   // PC Relative jump 
                 addr = rdr.Address;
                 int offset = opcode & 0xFF;
                 if (offset == 0xFF)
@@ -69,13 +69,13 @@ namespace Decompiler.Arch.M68k
                 else if (offset == 0x00)
                     offset = rdr.ReadBeInt16();
                 return new M68kAddressOperand(addr + offset);
-            case 'M':
+            case 'M':   // Register bitset
                 return new RegisterSetOperand(rdr.ReadBeUInt16());
-            case 'q':
+            case 'q':   // "Small" quick constant (3-bit part of the opcode)
                 return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.Byte);
-            case 'Q':
+            case 'Q':   // "Large" quick constant (8-bit part of the opcode)
                 return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
-            case 'R': // relative 
+            case 'R': // relative -- //$TODO: seems like a duplicate with 'J'?
                 addr = rdr.Address;
                 int relative = 0;
                 switch (args[i++])
@@ -85,9 +85,10 @@ namespace Decompiler.Arch.M68k
                 default: throw new NotImplementedException();
                 }
                 return new M68kAddressOperand(addr + relative);
-            case 's':
+            case 's':   // SR register
                 return new RegisterOperand(Registers.sr);
-
+            case '-':   // Predecrement operator; following character specifies bit offset of the address register code.
+                return new PredecrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
             default: throw new FormatException(string.Format("Unknown argument type {0}.", args[--i]));
             }
         }
