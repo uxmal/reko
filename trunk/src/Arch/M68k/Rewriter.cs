@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace Decompiler.Arch.M68k
                 case Opcode.and: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.asl: RewriteArithmetic((s, d) => emitter.Shl(d, s)); break;
-                case Opcode.asr: RewriteArithmetic((s, d) => emitter.Sar(d, s)); break;
+                case Opcode.asr: RewriteAsr((s, d) => emitter.Sar(d, s)); break;
                 case Opcode.adda: RewriteBinOp((s,d)=>emitter.IAdd(d, s)); break;
                 case Opcode.clr: RewriteClr(); break;
                 case Opcode.cmp: RewriteCmp(); break;
@@ -98,9 +99,12 @@ namespace Decompiler.Arch.M68k
                 case Opcode.negx: RewriteUnary(RewriteNegx, AllConditions); break;
                 case Opcode.not: RewriteUnary(s => emitter.Comp(s), LogicalConditions); break;
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
+                case Opcode.rts: emitter.Return(4, 0); break;
                 case Opcode.sub: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.suba: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
+                case Opcode.subq: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
+                case Opcode.subx: RewriteArithmetic((s, d) => emitter.ISub(emitter.ISub(d, s), frame.EnsureFlagGroup((uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 default:
                     throw new AddressCorrelatedException(
                         di.Address,

@@ -218,7 +218,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0xC363);    // and.w d1,-(a3)
             AssertCode(
                 "0|a3 = a3 - 0x00000002",
-                "1|v4 = (word16) d1 & Mem0[a3:word16]",
+                "1|v4 = Mem0[a3:word16] & (word16) d1",
                 "2|Mem0[a3:word16] = v4",
                 "3|ZN = cond(v4)",
                 "4|C = false",
@@ -409,7 +409,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             Rewrite(0xE148);    // lsl.w #$01,d0"
             AssertCode(
-                "0|v3 = (word16) d0 << 0x08",
+                "0|v3 = (word16) d0 << 0x0008",
                 "1|d0 = DPB(d0, v3, 0, 16)",
                 "2|CVZNX = cond(v3)");
         }
@@ -423,5 +423,65 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|d0 = DPB(d0, v3, 0, 16)",
                 "2|CVZNX = cond(v3)");
         }
+
+        [Test]
+        public void M68krw_sub_re()
+        {
+            Rewrite(0x919F);    // sub.l\td0,(a7)+
+            AssertCode(
+                "0|v4 = Mem0[a7:word32] - d0",
+                "1|Mem0[a7:word32] = v4",
+                "2|a7 = a7 + 0x00000004",
+                "3|CVZNX = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_subq_w()
+        {
+            Rewrite(0x5F66);    // subq.w\t#$07,-(a6)
+            AssertCode(
+                "0|a6 = a6 - 0x00000002",
+                "1|v3 = Mem0[a6:word16] - 0x0007",
+                "2|Mem0[a6:word16] = v3",
+                "3|CVZNX = cond(v3)");
+            Rewrite(0x5370, 0x1034);    // subq.w\t#$01,(34,a0,d1)
+            AssertCode(
+                "0|v4 = Mem0[a0 + 52 + d1:word16] - 0x0001",
+                "1|Mem0[a0 + 52 + d1:word16] = v4",
+                "2|CVZNX = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_rts()
+        {
+            Rewrite(0x4E75);    // rts
+            AssertCode(
+                "0|return (4,0)");
+        }
+
+        [Test]
+        public void M68krw_asr_ea()
+        {
+            Rewrite(0xE0E5);    // asr.w\t-(a5)
+            AssertCode(
+                "0|a5 = a5 - 0x00000002",
+                "1|v3 = Mem0[a5:word16] >> 1",
+                "2|Mem0[a5:word16] = v3",
+                "3|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_subx_mm()
+        {
+            Rewrite(0x9149);   // subx.w\t-(a1),-(a0)
+            AssertCode(
+                "0|a1 = a1 - 0x00000002",
+                "1|v4 = Mem0[a1:word16]",
+                "2|a0 = a0 - 0x00000002",
+                "3|v5 = Mem0[a0:word16] - v4 - X",
+                "4|Mem0[a0:word16] = v5",
+                "5|CVZNX = cond(v5)");
+        }
+
     }
 }

@@ -41,7 +41,6 @@ namespace Decompiler.Arch.X86
             this.host = host;
         }
 
-
         public Expression Transform(MachineOperand op, PrimitiveType opWidth, X86State state)
         {
             var reg = op as RegisterOperand;
