@@ -325,9 +325,9 @@ namespace Decompiler.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_WORD(uint A) { return (((A) & 3) == 2 && ((A) & 0x47) < 0x44); }
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
 
-        private static RegisterStorage AddressRegister(ushort opcode, int bitOffset)
+        private static AddressRegister AddressRegister(ushort opcode, int bitOffset)
         {
-            return Registers.GetRegister(8 + ((opcode >> bitOffset) & 0x7));
+            return (AddressRegister)Registers.GetRegister(8 + ((opcode >> bitOffset) & 0x7));
         }
 
         private static RegisterOperand DataRegisterOperand(ushort opcode, int bitOffset)

@@ -87,7 +87,6 @@ namespace Decompiler.Core.Assemblers
 			}
 		}
 
-
 		public void EmitString(string pstr)
 		{
 			for (int i = 0; i != pstr.Length; ++i)
@@ -108,7 +107,6 @@ namespace Decompiler.Core.Assemblers
             stmOut.WriteByte((byte)(s & 0xFF));
         }
 
-
 		public int Length
 		{
 			get { return (int) stmOut.Length; }
@@ -119,7 +117,6 @@ namespace Decompiler.Core.Assemblers
         {
             PatchLe(offsetPatch, offsetRef, width);
         }
-
 
 		/// <summary>
 		/// Patches a value by fetching it from the stream and adding an offset.
@@ -165,7 +162,6 @@ namespace Decompiler.Core.Assemblers
 			}
 			stmOut.Position = posOrig;
 		}
-
 
 		public int Position
 		{

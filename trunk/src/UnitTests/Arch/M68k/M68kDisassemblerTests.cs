@@ -425,5 +425,23 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("subx.w\td1,d0", 0x9141);
             RunTest("subx.l\td1,d3", 0x9781);
         }
+
+        [Test]
+        public void M68kdis_addi()
+        {
+            RunTest("addi.b\t#$34,(a1)", 0x0611, 0x1234);
+            RunTest("addi.w\t#$1234,(a1)", 0x0651, 0x1234);
+            RunTest("addi.l\t#$12345678,(a1)", 0x0691, 0x1234, 0x5678);
+        }
+
+        [Test]
+        public void M68kdis_lsl()
+        {
+            RunTest("lsl.l\t#$03,d2", 0xE78A);
+            RunTest("lsl.b\td1,d3", 0xE32B);
+            RunTest("lsl.w\td1,d4", 0xE36C);
+            RunTest("lsl.l\td1,d4", 0xE3AC);
+            RunTest("lsl.w\t(a1)", 0xE3D1);
+        }
     }
 }

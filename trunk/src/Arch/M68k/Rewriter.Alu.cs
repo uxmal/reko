@@ -41,7 +41,7 @@ namespace Decompiler.Arch.M68k
             AllConditions(opDst);
         }
 
-        public void RewriteAsr(Func<Expression, Expression, Expression> binOpGen)
+        public void RewriteShift(Func<Expression, Expression, Expression> binOpGen)
         {
             Expression opDst;
             if (di.Instruction.op2 != null)
@@ -52,7 +52,7 @@ namespace Decompiler.Arch.M68k
             else
             {
                 var opSrc = Constant.Int32(1);
-                opDst = orw.RewriteDst(di.Instruction.op1, opSrc, binOpGen);
+                opDst = orw.RewriteDst(di.Instruction.op1, PrimitiveType.Word16, opSrc, binOpGen);
             }
             AllConditions(opDst);
         }

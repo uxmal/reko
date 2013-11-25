@@ -29,14 +29,14 @@ using System.Text;
 
 namespace Decompiler.Assemblers.M68k
 {
-    public class AssemblerImpl : Assembler
+    public class M86TextAssembler : Assembler
     {
         private Address addrBase;
         private Emitter emitter;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
 
-        public AssemblerImpl(Address addr, Emitter emitter)
+        public M86TextAssembler(Address addr, Emitter emitter)
         {
             this.addrBase = addr;
             this.emitter = emitter;
@@ -55,7 +55,6 @@ namespace Decompiler.Assemblers.M68k
         {
             throw new NotImplementedException();
         }
-
 
         public LoadedImage GetImage()
         {

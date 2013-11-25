@@ -82,7 +82,7 @@ namespace Decompiler.Arch.M68k
                 case Opcode.and: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.asl: RewriteArithmetic((s, d) => emitter.Shl(d, s)); break;
-                case Opcode.asr: RewriteAsr((s, d) => emitter.Sar(d, s)); break;
+                case Opcode.asr: RewriteShift((s, d) => emitter.Sar(d, s)); break;
                 case Opcode.adda: RewriteBinOp((s,d)=>emitter.IAdd(d, s)); break;
                 case Opcode.clr: RewriteClr(); break;
                 case Opcode.cmp: RewriteCmp(); break;
@@ -90,7 +90,7 @@ namespace Decompiler.Arch.M68k
                 case Opcode.cmpi: RewriteCmp(); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.jsr: RewriteJsr(); break;
-                case Opcode.lsl: RewriteArithmetic((s, d) => emitter.Shl(d, s)); break;
+                case Opcode.lsl: RewriteShift((s, d) => emitter.Shl(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.muls: RewriteMul((s, d) => emitter.SMul(d, s)); break;

@@ -98,16 +98,16 @@ namespace Decompiler.Arch.M68k
 
     public class MemoryOperand : M68kOperandImpl
     {
-        public RegisterStorage Base;
+        public AddressRegister Base;
         public Constant Offset;
 
-        public MemoryOperand(PrimitiveType width, RegisterStorage baseReg)
+        public MemoryOperand(PrimitiveType width, AddressRegister baseReg)
             : base(width)
         {
             this.Base = baseReg;
         }
 
-        public MemoryOperand(PrimitiveType width, RegisterStorage baseReg, Constant offset)
+        public MemoryOperand(PrimitiveType width, AddressRegister baseReg, Constant offset)
             : base(width)
         {
             this.Base = baseReg;
@@ -119,22 +119,22 @@ namespace Decompiler.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public static MemoryOperand Indirect(PrimitiveType width, RegisterStorage baseReg)
+        public static MemoryOperand Indirect(PrimitiveType width, AddressRegister baseReg)
         {
             return new MemoryOperand(width, baseReg);
         }
 
-        public static MachineOperand Indirect(PrimitiveType width, RegisterStorage baseReg, Constant offset)
+        public static MachineOperand Indirect(PrimitiveType width, AddressRegister baseReg, Constant offset)
         {
             return new MemoryOperand(width, baseReg, offset);
         }
 
-        public static MachineOperand PreDecrement(PrimitiveType dataWidth, RegisterStorage baseReg)
+        public static MachineOperand PreDecrement(PrimitiveType dataWidth, AddressRegister baseReg)
         {
             return new PredecrementMemoryOperand(dataWidth, baseReg);
         }
 
-        public static MachineOperand PostIncrement(PrimitiveType dataWidth, RegisterStorage baseReg)
+        public static MachineOperand PostIncrement(PrimitiveType dataWidth, AddressRegister baseReg)
         {
             return new PostIncrementMemoryOperand(dataWidth, baseReg);
         }
@@ -142,9 +142,9 @@ namespace Decompiler.Arch.M68k
 
     public class PredecrementMemoryOperand : M68kOperandImpl
     {
-        public readonly RegisterStorage Register;
+        public readonly AddressRegister Register;
 
-        public PredecrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
+        public PredecrementMemoryOperand(PrimitiveType dataWidth, AddressRegister areg)
             : base(dataWidth)
         {
             this.Register = areg;
