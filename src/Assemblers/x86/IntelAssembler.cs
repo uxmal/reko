@@ -185,7 +185,7 @@ namespace Decompiler.Assemblers.x86
 
         public void Test(ParsedOperand op1, ParsedOperand op2)
         {
-            ProcessTest(new ParsedOperand[] { op1, op2 });
+            ProcessTest( op1, op2 );
         }
 
         public ParsedOperand BytePtr(int offset)
@@ -1750,7 +1750,6 @@ namespace Decompiler.Assemblers.x86
                 DefineWord(PrimitiveType.Word32, n);
             }
         }
-
 
         internal void Leave()
         {

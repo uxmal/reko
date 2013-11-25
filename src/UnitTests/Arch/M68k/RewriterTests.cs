@@ -399,7 +399,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             Rewrite(0x81A8, 0xFFF8);
             AssertCode(
-                "0|v4 = d0 | Mem0[a0 + -8:word32]",
+                "0|v4 = Mem0[a0 + -8:word32] | d0",
                 "1|Mem0[a0 + -8:word32] = v4",
                 "2|ZN = cond(v4)");
         }
@@ -481,6 +481,26 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "3|v5 = Mem0[a0:word16] - v4 - X",
                 "4|Mem0[a0:word16] = v5",
                 "5|CVZNX = cond(v5)");
+        }
+
+        [Test]
+        public void M68krw_lsl_ea()
+        {
+            Rewrite(0xE3D1);    // lsl.w\t(a1)
+            AssertCode(
+                "0|v3 = Mem0[a1:word16] << 1",
+                "1|Mem0[a1:word16] = v3",
+                "2|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_lsl_r()
+        {
+            Rewrite(0xE36C);    // lsl.w\td1,d4
+            AssertCode(
+                "0|v4 = (word16) d4 << (word16) d1",
+                "1|d4 = DPB(d4, v4, 0, 16)",
+                "2|CVZNX = cond(v4)");
         }
 
     }

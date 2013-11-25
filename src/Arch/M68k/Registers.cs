@@ -59,7 +59,7 @@ namespace Decompiler.Arch.M68k
         public static readonly RegisterStorage ccr;
         public static readonly RegisterStorage sr;
         public static readonly RegisterStorage usp;
-        public static readonly RegisterStorage pc;
+        public static readonly AddressRegister pc;
 
         private static RegisterStorage[] regs;
 
@@ -95,7 +95,7 @@ namespace Decompiler.Arch.M68k
             ccr = new RegisterStorage("ccr", 24, PrimitiveType.Byte);
             sr = new RegisterStorage("sr", 25, PrimitiveType.Word16);
             usp = new RegisterStorage("usp", 26, PrimitiveType.Word32);
-            pc = new RegisterStorage("pc", 27, PrimitiveType.Pointer32);
+            pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
 
             regs = new RegisterStorage[] { 
                 d0, 
@@ -137,9 +137,9 @@ namespace Decompiler.Arch.M68k
             return regs[reg];
         }
 
-        public static RegisterStorage AddressRegister(int reg)
+        public static AddressRegister AddressRegister(int reg)
         {
-            return regs[reg + 8];
+            return (AddressRegister)regs[reg + 8];
         }
 
         public static RegisterStorage FpRegister(int reg)

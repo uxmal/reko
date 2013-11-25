@@ -81,7 +81,7 @@ namespace Decompiler.Arch.M68k
             var mem = operand as MemoryOperand;
             if (mem != null)
             {
-                return RewriteMemoryAccess(mem);
+                return RewriteMemoryAccess(mem, dataWidth);
             }
             var addr = operand as AddressOperand;
             if (addr != null)
@@ -154,9 +154,9 @@ namespace Decompiler.Arch.M68k
             var mem = operand as MemoryOperand;
             if (mem != null)
             {
-                var load = RewriteMemoryAccess(mem);
+                var load = RewriteMemoryAccess(mem, dataWidth);
                 var tmp = rewriter.frame.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(load, src));
+                m.Assign(tmp, opGen(src, load));
                 m.Assign(load, tmp);
                 return tmp;
             }
@@ -200,7 +200,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException("Unimplemented RewriteDst for operand type " + operand.ToString());
         }
 
-        private MemoryAccess RewriteMemoryAccess(MemoryOperand mem)
+        private MemoryAccess RewriteMemoryAccess(MemoryOperand mem, PrimitiveType dataWidth)
         {
             var bReg = rewriter.frame.EnsureRegister(mem.Base);
             Expression ea = bReg;
@@ -208,7 +208,7 @@ namespace Decompiler.Arch.M68k
             {
                 ea = m.IAdd(bReg, mem.Offset);
             }
-            return m.Load(mem.Width, ea);
+            return m.Load(dataWidth, ea);
         }
 
         public Expression RewriteUnary(MachineOperand operand, PrimitiveType dataWidth, Func<Expression, Expression> opGen)
@@ -233,10 +233,10 @@ namespace Decompiler.Arch.M68k
             var mem = operand as MemoryOperand;
             if (mem != null)
             {
-                var load = RewriteMemoryAccess(mem);
+                var load = RewriteMemoryAccess(mem, dataWidth);
                 var tmp = rewriter.frame.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(load));
-                m.Assign(RewriteMemoryAccess(mem), tmp);
+                m.Assign(RewriteMemoryAccess(mem,dataWidth), tmp);
                 return tmp;
 
             }
@@ -269,7 +269,7 @@ namespace Decompiler.Arch.M68k
             if (mem != null)
             {
                 src = Spill(src, frame.EnsureRegister(mem.Base));
-                var load = RewriteMemoryAccess(mem);
+                var load = RewriteMemoryAccess(mem, dataWidth);
                 var tmp = rewriter.frame.CreateTemporary(dataWidth);
                 m.Assign(load, src);
                 return tmp;
