@@ -415,6 +415,14 @@ namespace Decompiler.Analysis
 
         public Result VisitUnaryExpression(UnaryExpression unary)
         {
+            if (unary.Operator == Operator.AddrOf &&
+                unary.Expression is Identifier)
+                return new Result
+                {
+                    PropagatedExpression = unary,
+                    Value = unary,
+                };
+
             return SimplifyExpression(
                 new UnaryExpression(unary.Operator, unary.DataType,
                     SimplifyExpression(unary.Expression).PropagatedExpression));
