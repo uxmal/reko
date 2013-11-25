@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Win32 environment for decompiler.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Win32")]
+[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
 [assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
