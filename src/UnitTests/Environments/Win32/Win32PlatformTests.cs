@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Environments.Win32
         {
             Given_Configuration_With_Win32_Element();
             Given_TypeLibraryLoaderService();
-            Expect_TypeLibraryLoaderService_LoadLibrary("win32.xml");
+            Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml");
             repository.ReplayAll();
 
             When_Creating_Win32_Platform();

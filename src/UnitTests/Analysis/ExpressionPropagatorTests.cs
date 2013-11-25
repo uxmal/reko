@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Analysis
     public class ExpressionPropagatorTests
     {
         [Test]
-        public void TestCondition()
+        public void EP_TestCondition()
         {
             var p = new ProgramBuilder();
             var proc = p.Add("main", (m) =>
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Analysis
     
 
         [Test]
-        public void ConditionOf()
+        public void EP_ConditionOf()
         {
             var p = new ProgramBuilder();
             var proc = p.Add("main", (m) =>
@@ -82,7 +82,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void Application()
+        public void EP_Application()
         {
             var p = new ProgramBuilder();
             var proc = p.Add("main", (m) =>
@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void IndirectCall()
+        public void EP_IndirectCall()
         {
             var arch = new FakeArchitecture();
             var p = new ProgramBuilder(arch);
@@ -130,7 +130,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void StackReference()
+        public void EP_StackReference()
         {
             var arch = new FakeArchitecture();
             var p = new ProgramBuilder(arch);
@@ -154,6 +154,41 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("r63 = fp - 0x00000004", newInstr.ToString());
             newInstr = stms[1].Instruction.Accept(ep);
             Assert.AreEqual("r1 = dwArg04", newInstr.ToString());
+        }
+
+        [Test]
+        public void EP_AddrOf()
+        {
+            var arch = new FakeArchitecture();
+            var p = new ProgramBuilder(arch);
+            Identifier r2 = null, r3 = null;
+            var proc = p.Add("main", (m) =>
+            {
+                r2 = m.Register("r2");
+                r3 = m.Register("r3");
+                m.Assign(r2, 0x1234);
+                m.SideEffect(m.Fn("Foo", m.AddrOf(r2)));
+                m.Assign(r3, r2);
+            });
+
+            var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
+            var simplifier = new ExpressionSimplifier(ctx);
+            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
+
+            ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
+
+            var stms = proc.EntryBlock.Succ[0].Statements;
+            var instr1 = stms[0].Instruction.Accept(ep);
+            Assert.AreEqual("0x00001234", ctx.GetValue(r2).ToString());
+            var instr2 = stms[1].Instruction.Accept(ep);
+            Assert.AreEqual("Foo(&r2)", instr2.ToString());
+            Assert.AreEqual("<invalid>", ctx.GetValue(r2).ToString());
+            var instr3 = stms[2].Instruction.Accept(ep);
+            Assert.AreEqual("r3 = r2", instr3.ToString());
+            Assert.AreEqual("<invalid>", ctx.GetValue(r2).ToString());
+            Assert.AreEqual("<invalid>", ctx.GetValue(r3).ToString());
+
+
         }
     }
 }

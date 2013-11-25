@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Gui
             m.Assign(r3,r2);
             m.Assign(r2, r1);
             m.Assign(r1, r3);
-            m.Label("greatherthan");
+            m.Label("greaterthan");
             m.Return(r1);
 
             hcf.Write(m.Procedure);
@@ -78,16 +78,16 @@ namespace Decompiler.UnitTests.Gui
             var sExp = @"void&nbsp;proc()<br />
 {<br />
 proc_entry:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">if</span>&nbsp;(r1&nbsp;&gt;&nbsp;r2)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;greaterthan<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;l1<br />
 greaterthan:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">return</span>&nbsp;r1<br />
+l1:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">branch</span>&nbsp;r1&nbsp;&gt;&nbsp;r2&nbsp;greaterthan<br />
 l2:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;r3&nbsp;=&nbsp;r2<br />
 &nbsp;&nbsp;&nbsp;&nbsp;r2&nbsp;=&nbsp;r1<br />
 &nbsp;&nbsp;&nbsp;&nbsp;r1&nbsp;=&nbsp;r3<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;greatherthan<br />
-greatherthan:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">return</span>&nbsp;r1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;greaterthan<br />
 proc_exit:<br />
 }<br />
 ";
