@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void DgWhileGoto()
         {
-            RunTest("fragments/while_goto.asm", "Analysis/DgWhileGoto.txt");
+			RunTest("Fragments/while_goto.asm", "Analysis/DgWhileGoto.txt");
         }
 
         protected override void RunTest(Program prog, TextWriter writer)

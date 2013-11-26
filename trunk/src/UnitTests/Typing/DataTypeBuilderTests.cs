@@ -375,19 +375,19 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbReg00008()
 		{
-			RunTest("fragments/regressions/r00008.asm", "Typing/DtbReg00008.txt");
+			RunTest("Fragments/regressions/r00008.asm", "Typing/DtbReg00008.txt");
 		}
 
         [Test]
         public void DtbReg00011()
         {
-            RunTest("fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
+			RunTest("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
         }
 
         [Test]
         public void DtbReg00012()
         {
-            RunTest("fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
+			RunTest("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
         }
 
 

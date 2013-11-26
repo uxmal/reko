@@ -131,13 +131,13 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void CceFrame32()
 		{
-			RunTest32("fragments/multiple/frame32.asm", "Analysis/CceFrame32.txt");
+			RunTest32("Fragments/multiple/frame32.asm", "Analysis/CceFrame32.txt");
 		}
 
 		[Test]
 		public void CceWhileLoop()
 		{
-			RunTest("fragments/while_loop.asm", "Analysis/CceWhileLoop.txt");
+			RunTest("Fragments/while_loop.asm", "Analysis/CceWhileLoop.txt");
 		}
 
 		[Test]

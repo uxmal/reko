@@ -31,25 +31,25 @@ namespace Decompiler.UnitTests.Structure
 		[Test]
 		public void CccTest1()
 		{
-			RunTest("fragments/compound1.asm", "structure/CccTest1.txt");
+			RunTest("Fragments/compound1.asm", "structure/CccTest1.txt");
 		}
 
 		[Test]
 		public void CccTest2()
 		{
-			RunTest("fragments/compound_non.asm", "structure/CccTest2.txt");
+			RunTest("Fragments/compound_non.asm", "structure/CccTest2.txt");
 		}
 
 		[Test]
 		public void CccComplexTest()
 		{
-			RunTest("fragments/compound_complex.asm", "structure/CccComplexText.txt");
+			RunTest("Fragments/compound_complex.asm", "structure/CccComplexText.txt");
 		}
 
 		[Test]
 		public void CccAsciiHex()
 		{
-			RunTest("fragments/ascii_hex.asm", "Structure/CccAsciiHex.txt");
+			RunTest("Fragments/ascii_hex.asm", "Structure/CccAsciiHex.txt");
 		}
 
 		private void RunTest(string sourceFilename, string outFilename)

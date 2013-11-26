@@ -41,13 +41,13 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void WebNestedRepeats()
 		{
-			RunTest("fragments/nested_repeats.asm", "Analysis/WebNestedRepeats.txt");
+			RunTest("Fragments/nested_repeats.asm", "Analysis/WebNestedRepeats.txt");
 		}
 
 		[Test]
 		public void WebWhileLoop()
 		{
-			RunTest("fragments/while_loop.asm", "Analysis/WebWhileLoop.txt");
+			RunTest("Fragments/while_loop.asm", "Analysis/WebWhileLoop.txt");
 		}
 
 		[Test]
