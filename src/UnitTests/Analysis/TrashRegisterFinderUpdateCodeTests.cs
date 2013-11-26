@@ -362,7 +362,7 @@ main_exit:
         [Test]
         public void Trfu_WhileLoop()
         {
-            AnalysisTestBase.RunTest("fragments/while_loop.asm", RunTest, "Analysis/TrfuWhileLoop.txt");
+			AnalysisTestBase.RunTest("Fragments/while_loop.asm", RunTest, "Analysis/TrfuWhileLoop.txt");
         }
 
         [Test]

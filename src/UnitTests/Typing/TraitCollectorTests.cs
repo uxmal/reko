@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoMemAccesses()
 		{
-			RunTest("fragments/multiple/memaccesses.asm", "Typing/TrcoMemAccesses.txt");
+			RunTest("Fragments/multiple/memaccesses.asm", "Typing/TrcoMemAccesses.txt");
 		}
 
 		[Test]
@@ -303,25 +303,25 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoReg00008()
 		{
-			RunTest("fragments/regressions/r00008.asm", "Typing/TrcoReg00008.txt");
+			RunTest("Fragments/regressions/r00008.asm", "Typing/TrcoReg00008.txt");
 		}
 
         [Test]
         public void TrcoReg00011()
         {
-            RunTest("fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
+            RunTest("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
         }
 
         [Test]
         public void TrcoReg00012()
         {
-            RunTest("fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
+            RunTest("Fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
         }
 
         [Test]
         public void TrcoReg00014()
         {
-            RunTest("fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
+            RunTest("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
         }
 
         [Test]

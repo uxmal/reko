@@ -156,13 +156,13 @@ foo		endp
 		[Test]
 		public void AsFrame32()
 		{
-			RunTest("fragments/multiple/frame32.asm", "Intel/AsFrame32.txt", new Address(0x10000000));
+			RunTest("Fragments/multiple/frame32.asm", "Intel/AsFrame32.txt", new Address(0x10000000));
 		}
 
 		[Test]
 		public void AsSwitch32()
 		{
-			RunTest("fragments/switch32.asm", "Intel/AsSwitch32.txt", new Address(0x10000000));
+			RunTest("Fragments/switch32.asm", "Intel/AsSwitch32.txt", new Address(0x10000000));
 		}
 
 		[Test]

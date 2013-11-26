@@ -85,13 +85,13 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Constant segment selectors should be part of globals?")]
 		public void TtranReg00008()
 		{
-			RunTest("fragments/regressions/r00008.asm", "Typing/TtranReg00008.txt");
+			RunTest("Fragments/regressions/r00008.asm", "Typing/TtranReg00008.txt");
 		}
 
 		[Test]
 		public void TtranMemAccesses()
 		{
-			RunTest("fragments/multiple/memaccesses.asm", "Typing/TtranMemAccesses.txt");
+			RunTest("Fragments/multiple/memaccesses.asm", "Typing/TtranMemAccesses.txt");
 		}
 
 		[Test]

@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Structure
 		[Test]
 		public void CfgcIf()
 		{
-			RunTest("fragments/if.asm", "Structure/CfgcIf.txt");
+			RunTest("Fragments/if.asm", "Structure/CfgcIf.txt");
 		}
 
 		[Test]

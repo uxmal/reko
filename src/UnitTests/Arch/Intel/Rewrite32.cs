@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void RwFrame32()
 		{
-			RunTest("fragments/multiple/frame32.asm", "Intel/RwFrame32.txt");
+			RunTest("Fragments/multiple/frame32.asm", "Intel/RwFrame32.txt");
 		}
 
 		[Test]
