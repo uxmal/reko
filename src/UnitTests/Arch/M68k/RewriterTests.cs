@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Arch.M68k;
+using Decompiler.Assemblers.M68k;
 using Decompiler.Core;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Machine;
@@ -35,6 +36,8 @@ namespace Decompiler.UnitTests.Arch.M68k
     public class RewriterTests
     {
         private IEnumerable<RtlInstructionCluster> rw;
+        private M68kArchitecture arch = new M68kArchitecture();
+        private Address addrBase = new Address(0x00010000);
 
         private void Rewrite(params ushort[] opcodes)
         {
@@ -44,9 +47,16 @@ namespace Decompiler.UnitTests.Arch.M68k
             {
                 writer.WriteBeUint16(opcode);
             }
-            var image = new LoadedImage(new Address(0x00010000), bytes);
+            var image = new LoadedImage(addrBase, bytes);
 
-            var arch = new M68kArchitecture();
+            rw = arch.CreateRewriter(image.CreateReader(0), arch.CreateProcessorState(), arch.CreateFrame(), new RewriterHost());
+        }
+
+        private void Rewrite(Action<M68kAssembler> build)
+        {
+            var asm = new M68kAssembler(arch, addrBase, new List<EntryPoint>());
+            build(asm);
+            var image = asm.GetImage();
             rw = arch.CreateRewriter(image.CreateReader(0), arch.CreateProcessorState(), arch.CreateFrame(), new RewriterHost());
         }
 
@@ -503,5 +513,13 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "2|CVZNX = cond(v4)");
         }
 
+        [Test]
+        public void M68krw_asl_w()
+        {
+            Rewrite((m) => { m.Asl_l(3, m.d1); });   // asl.l #$03,d0"
+            AssertCode(
+                "0|d1 = d1 << 0x00000003",
+                "1|CVZNX = cond(d1)");
+        }
     }
 }

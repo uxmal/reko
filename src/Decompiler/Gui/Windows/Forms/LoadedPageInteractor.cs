@@ -60,7 +60,6 @@ namespace Decompiler.Gui.Windows.Forms
 			return mc;
 		}
 
-
 		public override bool Execute(ref Guid cmdSet, int cmdId)
 		{
 			if (cmdSet == CmdSets.GuidDecompiler)
@@ -110,6 +109,8 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
+            workerDialogSvc.SetCaption("Scanning source program.");
+            Decompiler.ScanProgram();
         }
 
         public override void EnterPage()

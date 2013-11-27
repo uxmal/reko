@@ -97,6 +97,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
+      <Name>AmigaOS</Name>
+      <Project>{0b2dcd75-44ff-4af6-aa08-aaf4ea30c402}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\MacOS\MacOS-2010.csproj">
       <Name>MacOS-2010</Name>
       <Project>{d0d1798c-08f7-4de6-94e9-cc382e1fbec8}</Project>
@@ -140,6 +148,14 @@
     <ProjectReference Include="..\ImageLoaders\Elf\Elf-2010.csproj">
       <Name>Elf-2010</Name>
       <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Hunk\Hunk.csproj">
+      <Name>Hunk</Name>
+      <Project>{f1b0c3c9-1c64-4744-9217-c25fbc5d0dcc}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

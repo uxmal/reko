@@ -115,6 +115,11 @@ namespace Decompiler.Tools.C2Xml
             return 0;
         }
 
+        public int VisitTemplate(SerializedTemplate template)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetSize(SerializedTaggedType str)
         {
             var size = str.Accept(this);

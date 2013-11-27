@@ -86,6 +86,11 @@ namespace Decompiler.Assemblers.M68k
             return new LoadedImage(BaseAddress, emitter.Bytes);
         }
 
+        private int Ea(MachineOperand op, int shift)
+        {
+            return Ea(op) << shift;
+        }
+
         private int Ea(MachineOperand op)
         {
             var rop = op as RegisterOperand;
@@ -93,20 +98,41 @@ namespace Decompiler.Assemblers.M68k
             {
                 var dReg = rop.Register as DataRegister;
                 if (dReg != null)
-                    return dReg.Number & 7;
+                    return (dReg.Number & 7);
+                var aReg = rop.Register as AddressRegister;
+                if (aReg != null)
+                    return (aReg.Number & 7);
+                throw new NotImplementedException(op.ToString());
             }
             var mop = op as MemoryOperand;
             if (mop != null)
             {
                 var aReg = mop.Base;
                 if (mop.Offset == null || mop.Offset.ToInt32() == 0)
-                    return aReg.Number & 7 | 0x10;
+                    return (aReg.Number & 7 | 0x10);
             }
 
             var preOp = op as PredecrementMemoryOperand;
             if (preOp != null)
             {
-                return preOp.Register.Number & 7 | 0x20;
+                return (preOp.Register.Number & 7 | 0x20);
+            }
+
+            var immOp = op as M68kImmediateOperand;
+            if (immOp != null)
+            {
+                int size = immOp.Width.Size;
+                switch (size)
+                {
+                case 1: constants.Add(immOp.Constant.ToByte()); break;
+                case 2: constants.Add(immOp.Constant.ToUInt16()); break;
+                case 4:
+                    constants.Add((ushort) (immOp.Constant.ToUInt32() >> 16));
+                    constants.Add((ushort) (immOp.Constant.ToUInt32()));
+                    break;
+                default: throw new InvalidOperationException();
+                }
+                return 0x3C;
             }
             throw new NotImplementedException(op.ToString());
         }
@@ -167,10 +193,62 @@ namespace Decompiler.Assemblers.M68k
             constants.Clear();
         }
 
+        public void Add_b(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xD000 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+        public void Add_w(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xD040 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+        public void Add_l(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xD080 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
 
+        public void Add_b(RegisterOperand dSrc, MachineOperand eaDst)
+        {
+            Emit(0xD000 | Ea(eaDst, 0) | DReg(dSrc) << 9);
+        }
+        public void Add_w(RegisterOperand dSrc, MachineOperand eaDst)
+        {
+            Emit(0xD040 | Ea(eaDst, 0) | DReg(dSrc) << 9);
+        }
+        public void Add_l(RegisterOperand dSrc, MachineOperand eaDst)
+        {
+            Emit(0xD080 | Ea(eaDst, 0) | DReg(dSrc) << 9);
+        }
+
+        public void Cmp_b(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xB000 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+        public void Cmp_w(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xB040 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+        public void Cmp_l(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xB080 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+
+        public void Cmpa_w(MachineOperand eaSrc, RegisterOperand aDst)
+        {
+            Emit(0xB0C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
+        }
+        public void Cmpa_l(MachineOperand eaSrc, RegisterOperand aDst)
+        {
+            Emit(0xB1C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
+        }
+
+
+        public void Adda_w(MachineOperand eaSrc, RegisterOperand aDst)
+        {
+            Emit(0xD0C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
+        }
         public void Adda_l(MachineOperand eaSrc, RegisterOperand aDst)
         {
-            Emit(0xD1C0 | Ea(eaSrc) | AReg(aDst) << 9);
+            Emit(0xD1C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
         }
 
         public void Addi_w(int c, MachineOperand eaDst)
@@ -179,9 +257,43 @@ namespace Decompiler.Assemblers.M68k
             Emit(0x0640 | Ea(eaDst));
         }
 
+        public void Addq_b(int c, MachineOperand eaDst)
+        {
+            Emit(0x5000 | Ea(eaDst) & 0x3F | (SmallQ(c) << 9));
+        }
+        public void Addq_w(int c, MachineOperand eaDst)
+        {
+            Emit(0x5040 | Ea(eaDst) & 0x3F | (SmallQ(c) << 9));
+        }
         public void Addq_l(int c, MachineOperand eaDst)
         {
             Emit(0x5080 | Ea(eaDst) & 0x3F | (SmallQ(c) << 9));
+        }
+
+        public void Asl_l(int c, RegisterOperand dDst)
+        {
+            Emit(0xE180 | SmallQ(c) << 9 | DReg(dDst));
+        }
+
+
+            //Opcode.bt, Opcode.bf, Opcode.bhi, Opcode.bls, Opcode.bcc, Opcode.bcs, Opcode.bne, Opcode.beq, 
+            //Opcode.bvc, Opcode.bvs, Opcode.bpl, Opcode.bmi, Opcode.bge, Opcode.blt, Opcode.bgt, Opcode.ble };
+
+        public void Beq(uint address)
+        {
+            Bcc(address, 7);
+        }
+        public void Bge(uint address)
+        {
+            Bcc(address, 0xC);
+        }
+        public void Bra(uint address)
+        {
+            Bcc(address, 0x0);
+        }
+        private void Bcc(uint address, int flags)
+        {
+            Emit(0x6000 | (flags << 16) | (int)(address & 7)); //$TODO should be offset.
         }
 
         public void Move_b(MachineOperand src, MachineOperand dst)
@@ -190,10 +302,71 @@ namespace Decompiler.Assemblers.M68k
             var eaDst = SwapEa(dst);
             Emit(0x1000 | eaSrc | (eaDst << 6));
         }
+        public void Move_w(MachineOperand src, MachineOperand dst)
+        {
+            var eaSrc = Ea(src);
+            var eaDst = SwapEa(dst);
+            Emit(0x3000 | eaSrc | (eaDst << 6));
+        }
+        public void Move_l(MachineOperand src, MachineOperand dst)
+        {
+            var eaSrc = Ea(src);
+            var eaDst = SwapEa(dst);
+            Emit(0x2000 | eaSrc | (eaDst << 6));
+        }
+
+        public void Movem_w(RegisterSetOperand src, PredecrementMemoryOperand dst)
+        {
+            constants.Add((ushort)src.BitSet);
+            Emit(0x48A0 | dst.Register.Number & 7);
+        }
+        public void Movem_l(RegisterSetOperand src, PredecrementMemoryOperand dst)
+        {
+            constants.Add((ushort) src.BitSet);
+            Emit(0x48E0 | dst.Register.Number & 7);
+        }
+
+        public void Jsr(uint address)
+        {
+            Jsr(new M68kImmediateOperand(Constant.Word32(address)));
+        }
+        public void Jsr(MachineOperand op)
+        {
+            Emit(0x4E0 | Ea(op, 0));
+        }
+
+        public void Lea(MachineOperand ea, RegisterOperand aReg)
+        {
+            Emit(0x41C0 | Ea(ea, 0) | AReg(aReg) << 9);
+        }
 
         public void Lsl_l(int c, RegisterOperand dDst)
         {
             Emit(0xE188 | SmallQ(c) << 9 | DReg(dDst));
+        }
+
+        internal void Pea(MachineOperand ea)
+        {
+            //$BUG: check for valid ea's
+            Emit(0x4840 | Ea(ea));
+        }
+
+        internal void Rts()
+        {
+            Emit(0x4E75);
+        }
+
+        public void Subq_b(int q, MachineOperand eaDst)
+        {
+            Emit(0x5100 | SmallQ(q) << 9 | Ea(eaDst));
+        }
+        public void Subq_w(int q, MachineOperand eaDst)
+        {
+            Emit(0x5140 | SmallQ(q) << 9 | Ea(eaDst));
+        }
+        public void Subq_l(int q, MachineOperand eaDst)
+        {
+            Emit(0x5180 | SmallQ(q) << 9 | Ea(eaDst));
         }
 
         private void Emit(int opcode)
@@ -201,5 +374,16 @@ namespace Decompiler.Assemblers.M68k
             emitter.EmitBeUint16(opcode);
             EmitConstants();
         }
+
+        internal void ReportUnresolvedSymbols()
+        {
+        }
+
+        internal void Label(string text)
+        {
+            //$TODO: remember this;
+        }
+
+
     }
 }

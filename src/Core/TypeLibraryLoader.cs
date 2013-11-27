@@ -180,6 +180,12 @@ namespace Decompiler.Core
         {
             return PrimitiveType.Word32;
         }
+
+        public DataType VisitTemplate(SerializedTemplate sTemplate)
+        {
+            throw new NotImplementedException();
+        }
+
         public DataType VisitVoidType(SerializedVoidType voidType)
         {
             return VoidType.Instance;
