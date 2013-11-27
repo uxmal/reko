@@ -402,12 +402,19 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("asr.b\td3,d4", 0xE624);
             RunTest("asr.w\td3,d4", 0xE664);
             RunTest("asr.l\td3,d4", 0xE6A4);
+            RunTest("asr.w\t-(a5)", 0xE0E5, 1234);
         }
 
         [Test]
-        public void M68kdis_asr_ea()
+        public void M68kdis_asl()
         {
-            RunTest("asr.w\t-(a5)", 0xE0E5, 1234);
+            RunTest("asl.b\t#$08,d1", 0xe101);
+            RunTest("asl.w\t#$08,d1", 0xe141);
+            RunTest("asl.l\t#$08,d1", 0xe181);
+            RunTest("asl.b\td0,d1", 0xe121);
+            RunTest("asl.w\td0,d1", 0xe161);
+            RunTest("asl.l\td0,d1", 0xe1a1);
+            RunTest("asl.w\t(a1)", 0xe1D1);
         }
 
         [Test]
@@ -424,6 +431,22 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("subx.b\td1,d0", 0x9101);
             RunTest("subx.w\td1,d0", 0x9141);
             RunTest("subx.l\td1,d3", 0x9781);
+        }
+
+        [Test]
+        public void M68kdis_addx_mm()
+        {
+            RunTest("addx.b\t-(a1),-(a0)", 0xD109);
+            RunTest("addx.w\t-(a1),-(a0)", 0xD149);
+            RunTest("addx.l\t-(a1),-(a0)", 0xD189);
+        }
+
+        [Test]
+        public void M68kdis_addx_rr()
+        {
+            RunTest("addx.b\td1,d0", 0xD101);
+            RunTest("addx.w\td1,d0", 0xD141);
+            RunTest("addx.l\td1,d3", 0xD781);
         }
 
         [Test]

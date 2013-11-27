@@ -285,7 +285,8 @@ namespace Decompiler.Core.Output
 
         public Formatter VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            writer.Write(typeref.Name);
+            return writer;
         }
 
 		public Formatter VisitTypeVariable(TypeVariable t)

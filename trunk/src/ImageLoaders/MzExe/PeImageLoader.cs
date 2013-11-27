@@ -399,6 +399,23 @@ namespace Decompiler.ImageLoaders.MzExe
             ProcedureSignature sig = platform.LookupProcedure(fnName);
             if (sig == null)
             {
+                // Can we guess at the signature?
+                var pmnp = new PeMangledNameParser();
+                Decompiler.Core.Serialization.SerializedProcedure sproc = null;
+                try
+                {
+                    sproc = pmnp.Parse(fnName);
+                }
+                catch
+                {
+                    pmnp.ToString();
+                }
+                if (sproc != null)
+                {
+                    var sser = new Decompiler.Core.Serialization.ProcedureSerializer(arch, "__cdecl");
+                    sig = sser.Deserialize(sproc.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+                    importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));   //$BUGBUG: mangled name!
+                }
                 AddUnresolvedImport(id, fnName);
                 return;
             }

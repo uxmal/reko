@@ -98,6 +98,11 @@ namespace Decompiler.Gui.Windows
             }
         }
 
+        /// <summary>
+        /// Intended to be call by a worker thread; uses Invoke to make sure the delegate is invoked
+        /// on the UI thread.
+        /// </summary>
+        /// <param name="newCaption"></param>
         public void SetCaption(string newCaption)
         {
             dlg.Invoke(new Action<string>(delegate(string c)
@@ -184,7 +189,6 @@ namespace Decompiler.Gui.Windows
                 dlg.Invoke(new Action<ICodeLocation, Diagnostic>(diagnosticSvc.AddDiagnostic), location, d);
             else
                 diagnosticSvc.AddDiagnostic(location, d);
-                    
         }
 
         void DecompilerEventListener.ShowStatus(string caption)

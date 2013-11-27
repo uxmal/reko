@@ -18,60 +18,36 @@
  */
 #endregion
 
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    /// <summary>
-    /// Refers to another type by name only. Requires an external symbol table to
-    /// resolve the type.
-    /// </summary>
-    public class SerializedTypeReference : SerializedType
+    public class SerializedTemplate : SerializedType
     {
-        [XmlText]
-        public string TypeName;
-
-
-        [XmlElement]
         public string[] Scope;
-        
-        [XmlElement("tyArg")]
-        public SerializedType TypeArguments;
+        public string Name;
+        public SerializedType[] TypeArguments;
 
-        public SerializedTypeReference()
+        public SerializedTemplate(string[] scope, string name, SerializedType[] typeArguments)
         {
+            this.Scope = scope;
+            this.Name = name;
+            this.TypeArguments = typeArguments;
         }
 
-        public SerializedTypeReference(string typeName)
+        public override DataType BuildDataType(TypeFactory factory)
         {
-            this.TypeName = typeName;
-        }
-
-        public SerializedTypeReference(string[] scope, string typeName, SerializedType[] typeArgs)
-        {
-        }
-        public SerializedTypeReference(string [] scope, string typeName)
-        {
-            this.TypeName = typeName;
-        }
-
-        public override Types.DataType BuildDataType(Types.TypeFactory factory)
-        {
+            //$TODO: type system needs to support this too.
             throw new NotImplementedException();
         }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
-            return visitor.VisitTypeReference(this);
-        }
-
-        public override string ToString()
-        {
-            return TypeName;
+            return visitor.VisitTemplate(this);
         }
     }
 }

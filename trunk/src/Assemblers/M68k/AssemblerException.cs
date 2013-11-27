@@ -23,20 +23,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Assemblers.M68k
 {
-    public interface ISerializedTypeVisitor<T>
+    public class AssemblerException : Exception
     {
-        T VisitPrimitive(SerializedPrimitiveType primitive);
-        T VisitPointer(SerializedPointerType pointer);
-        T VisitArray(SerializedArrayType array);
-        T VisitSignature(SerializedSignature signature);
-        T VisitStructure(SerializedStructType structure);
-        T VisitTypedef(SerializedTypedef typedef);
-        T VisitTypeReference(SerializedTypeReference typeReference);
-        T VisitUnion(SerializedUnionType union);
-        T VisitEnum(SerializedEnumType serializedEnumType);
-        T VisitTemplate(SerializedTemplate serializedTemplate);
-        T VisitVoidType(SerializedVoidType serializedVoidType);
+        private string p;
+
+        public AssemblerException(string message) : base(message)
+        {
+        }
     }
 }

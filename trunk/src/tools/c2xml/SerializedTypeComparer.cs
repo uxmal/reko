@@ -110,6 +110,11 @@ namespace Decompiler.Tools.C2Xml
             throw new NotImplementedException();
         }
 
+        public bool VisitTemplate(SerializedTemplate template)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitTypeReference(SerializedTypeReference typeReference)
         {
             throw new NotImplementedException();
@@ -120,6 +125,5 @@ namespace Decompiler.Tools.C2Xml
             var uY = (SerializedUnionType) y;
             return uX.Name == uY.Name && uX.Name != null;
         }
-
     }
 }

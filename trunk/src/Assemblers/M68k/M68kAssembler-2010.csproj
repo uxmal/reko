@@ -58,9 +58,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblerException.cs" />
+    <Compile Include="Lexer.cs" />
     <Compile Include="M68kAssembler.cs" />
     <Compile Include="M68kTextAssembler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k-2010.csproj">

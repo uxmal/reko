@@ -126,8 +126,6 @@ namespace Decompiler.Gui.Windows.Forms
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 Decompiler.LoadProgram(file);
-                svc.SetCaption("Scanning source program.");
-                Decompiler.ScanProgram();
             });
             if (Decompiler.Program != null)
             {

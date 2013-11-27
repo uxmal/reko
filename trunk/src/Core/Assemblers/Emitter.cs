@@ -107,6 +107,14 @@ namespace Decompiler.Core.Assemblers
             stmOut.WriteByte((byte)(s & 0xFF));
         }
 
+        public void EmitBeUint32(int s)
+        {
+            stmOut.WriteByte((byte) (s >> 24));
+            stmOut.WriteByte((byte) (s >> 16));
+            stmOut.WriteByte((byte) (s >> 8));
+            stmOut.WriteByte((byte) (s & 0xFF));
+        }
+
 		public int Length
 		{
 			get { return (int) stmOut.Length; }
