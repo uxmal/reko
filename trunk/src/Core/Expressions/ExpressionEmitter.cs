@@ -331,10 +331,15 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Shl, cc.DataType, cc, sh);
         }
 
-        public BinaryExpression Shr(Expression bx, byte c)
+        public BinaryExpression Shr(Expression exp, Expression sh)
+        {
+            return new BinaryExpression(Operator.Shr, exp.DataType, exp, sh);
+        }
+
+        public BinaryExpression Shr(Expression exp, byte c)
         {
             Constant cc = Constant.Byte(c);
-            return new BinaryExpression(Operator.Shr, bx.DataType, bx, cc);
+            return new BinaryExpression(Operator.Shr, exp.DataType, exp, cc);
         }
 
         public BinaryExpression ISub(Expression left, Expression right)

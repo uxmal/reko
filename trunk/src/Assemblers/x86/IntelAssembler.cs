@@ -757,7 +757,7 @@ namespace Decompiler.Assemblers.x86
         private void DefineSymbol(string pstr)
         {
             var sym = symtab.DefineSymbol(pstr, emitter.Position);
-            sym.Resolve(emitter);
+            sym.ResolveLe(emitter);
             ResolveSegmentForwardReferences(sym);
             symbolSegments[sym] = currentSegment;
         }

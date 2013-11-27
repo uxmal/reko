@@ -254,7 +254,11 @@ namespace Decompiler.Scanning
 
         public Expression VisitSegmentedAccess(SegmentedAccess access)
         {
-            throw new NotImplementedException();
+            return new SegmentedAccess(
+                access.MemoryId,
+                access.BasePointer.Accept(this),
+                access.EffectiveAddress.Accept(this),
+                access.DataType);
         }
 
         public Expression VisitSlice(Slice slice)

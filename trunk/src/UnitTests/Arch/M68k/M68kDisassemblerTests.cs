@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             Address addr = new Address(address);
             LoadedImage img = new LoadedImage(addr, bytes);
-            return new M68kDisassembler(img.CreateReader(addr));
+            return M68kDisassembler.Create68020(img.CreateReader(addr));
         }
 
         private M68kDisassembler CreateDasm(params ushort[] words)
@@ -344,8 +344,10 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68kdis_or_rev()
+        public void M68kdis_or()
         {
+            RunTest("or.b\td0,$-0008(a0)", 0x8128, 0xFFF8);
+            RunTest("or.w\td0,$-0008(a0)", 0x8168, 0xFFF8);
             RunTest("or.l\td0,$-0008(a0)", 0x81A8, 0xFFF8);
         }
 
@@ -465,6 +467,62 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("lsl.w\td1,d4", 0xE36C);
             RunTest("lsl.l\td1,d4", 0xE3AC);
             RunTest("lsl.w\t(a1)", 0xE3D1);
+        }
+
+        [Test]
+        public void M68kdis_bcc()
+        {
+            RunTest("bra\t$0FFFFFFE", 0x60FC);
+            RunTest("bhi\t$0FFFFFFE", 0x62FC);
+            RunTest("bcc\t$0FFFFFFE", 0x6400, 0xFFFC);
+            RunTest("bge\t$0FFFFFFE", 0x6CFF, 0xFFFF, 0xFFFC);
+        }
+
+        [Test]
+        public void M68kdis_ext()
+        {
+            RunTest("ext.w\td4", 0x4884);
+            RunTest("ext.l\td4", 0x48C4);
+            RunTest("extb.l\td4", 0x49C4);
+        }
+
+        [Test]
+        public void M68kdis_lsr()
+        {
+            RunTest("lsr.w\t#$08,d1", 0xE049);
+            RunTest("lsr.l\t#$08,d1", 0xE089);
+            RunTest("lsr.b\td0,d1", 0xE029);
+            RunTest("lsr.w\td0,d1", 0xE069);
+            RunTest("lsr.l\td0,d1", 0xE0A9);
+            RunTest("lsr.w\t(a1)", 0xE2D1);
+        }
+
+        [Test]
+        public void M68kdis_unlk()
+        {
+            RunTest("unlk\ta7", 0x4E5F);
+        }
+
+        [Test]
+        public void M68kdis_cmpm()
+        {
+            RunTest("cmpm.b\t(a2)+,(a3)+", 0xB70A);
+            RunTest("cmpm.w\t(a2)+,(a3)+", 0xB74A);
+            RunTest("cmpm.l\t(a2)+,(a3)+", 0xB78A);
+        }
+
+        [Test]
+        public void M68kdis_bsr()
+        {
+            RunTest("bsr\t$0FFFFFFE", 0x61FC);
+            RunTest("bsr\t$0FFFFFFE", 0x6100, 0xFFFC);
+            RunTest("bsr\t$0FFFFFFE", 0x61FF, 0xFFFF, 0xFFFC);
+        }
+
+        [Test]
+        public void M68kdis_pea()
+        {
+            RunTest("pea\t$0004(a2)", 0x486A, 0x0004);
         }
     }
 }

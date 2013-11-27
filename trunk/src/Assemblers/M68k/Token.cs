@@ -67,10 +67,13 @@ namespace Decompiler.Assemblers.M68k
 
         add,
         addq,
-        bra,
         beq,
         bge,
+        bne,
+        bra,
+        clr,
         cmp,
+
         jsr,
         lea,
         move,

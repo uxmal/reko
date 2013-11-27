@@ -68,6 +68,8 @@ namespace Decompiler.Arch.M68k
                     offset = rdr.ReadBeInt32();
                 else if (offset == 0x00)
                     offset = rdr.ReadBeInt16();
+                else
+                    offset = (sbyte) offset;
                 return new M68kAddressOperand(addr + offset);
             case 'M':   // Register bitset
                 return new RegisterSetOperand(rdr.ReadBeUInt16());
@@ -87,6 +89,8 @@ namespace Decompiler.Arch.M68k
                 return new M68kAddressOperand(addr + relative);
             case 's':   // SR register
                 return new RegisterOperand(Registers.sr);
+            case '+':   // Postincrement operator; following character specifies bit offset of the address register code.
+                return new PostIncrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
             case '-':   // Predecrement operator; following character specifies bit offset of the address register code.
                 return new PredecrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
             default: throw new FormatException(string.Format("Unknown argument type {0}.", args[--i]));

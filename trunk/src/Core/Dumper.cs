@@ -140,11 +140,12 @@ namespace Decompiler.Core
             var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
             while (dasm.Address < addrLast)
             {
-                DumpAssemblerLine(image, dasm, writer);
+                if (!DumpAssemblerLine(image, dasm, writer))
+                    break;
             }
         }
 
-        public void DumpAssemblerLine(LoadedImage image, IDisassembler dasm, TextWriter writer)
+        public bool DumpAssemblerLine(LoadedImage image, IDisassembler dasm, TextWriter writer)
         {
             Address addrBegin = dasm.Address;
             if (ShowAddresses)
@@ -157,12 +158,12 @@ namespace Decompiler.Core
             catch (Exception ex)
             {
                 writer.WriteLine(ex.Message);
-                return;
+                return false;
             }
             if (instr == null)
             {
                 writer.WriteLine();
-                return;
+                return false;
             }
             if (ShowCodeBytes)
             {
@@ -174,6 +175,7 @@ namespace Decompiler.Core
             {
                 writer.WriteLine("\t{0}", instr.ToString());
             }
+            return true;
         }
 
 		public void WriteByteRange(LoadedImage image, Address begin, Address addrEnd, TextWriter writer)
