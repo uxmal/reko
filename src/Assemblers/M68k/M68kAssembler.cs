@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Core.Assemblers;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,9 +52,11 @@ namespace Decompiler.Assemblers.M68k
 
         public M68kAssembler(M68kArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
         {
+            this.arch = arch;
             BaseAddress = addrBase;
             emitter = new Emitter();
             constants = new List<ushort>();
+            symtab = new SymbolTable();
         }
 
         public Address BaseAddress { get; private set; }
@@ -76,14 +79,22 @@ namespace Decompiler.Assemblers.M68k
         public RegisterOperand a6 { get { return new RegisterOperand(Registers.a6); } }
         public RegisterOperand a7 { get { return new RegisterOperand(Registers.a7); } }
 
-        public void Nop()
-        {
-            emitter.EmitBeUint16(0x4E71);
-        }
+        public Emitter Emitter { get { return emitter; } }
+
 
         public LoadedImage GetImage()
         {
             return new LoadedImage(BaseAddress, emitter.Bytes);
+        }
+
+        internal void Cnop(int extra, int align)
+        {
+            emitter.Align(extra, align);
+        }
+
+        public void Label(string label)
+        {
+            symtab.DefineSymbol(label, emitter.Position).ResolveBe(emitter);
         }
 
         private int Ea(MachineOperand op, int shift)
@@ -101,7 +112,7 @@ namespace Decompiler.Assemblers.M68k
                     return (dReg.Number & 7);
                 var aReg = rop.Register as AddressRegister;
                 if (aReg != null)
-                    return (aReg.Number & 7);
+                    return (aReg.Number & 7) | 8;
                 throw new NotImplementedException(op.ToString());
             }
             var mop = op as MemoryOperand;
@@ -112,29 +123,45 @@ namespace Decompiler.Assemblers.M68k
                     return (aReg.Number & 7 | 0x10);
             }
 
+            var postOp = op as PostIncrementMemoryOperand;
+            if (postOp != null)
+            {
+                return (postOp.Register.Number & 7 | 0x18);
+            }
             var preOp = op as PredecrementMemoryOperand;
             if (preOp != null)
             {
                 return (preOp.Register.Number & 7 | 0x20);
             }
 
+            var addrOp = op as AddressOperand;
+            if (addrOp != null)
+            {
+                Imm(addrOp.Width.Size, addrOp.Address.Linear);
+                return 0x39;
+            }
+
             var immOp = op as M68kImmediateOperand;
             if (immOp != null)
             {
-                int size = immOp.Width.Size;
-                switch (size)
-                {
-                case 1: constants.Add(immOp.Constant.ToByte()); break;
-                case 2: constants.Add(immOp.Constant.ToUInt16()); break;
-                case 4:
-                    constants.Add((ushort) (immOp.Constant.ToUInt32() >> 16));
-                    constants.Add((ushort) (immOp.Constant.ToUInt32()));
-                    break;
-                default: throw new InvalidOperationException();
-                }
+                Imm(immOp.Width.Size, immOp.Constant.ToUInt32());
                 return 0x3C;
             }
             throw new NotImplementedException(op.ToString());
+        }
+
+        private void Imm(int size, uint c)
+        {
+            switch (size)
+            {
+            case 1: constants.Add((ushort)(c & 0xFF)); break;
+            case 2: constants.Add((ushort)(c & 0xFFFF)); break;
+            case 4:
+                constants.Add((ushort) (c >> 16));
+                constants.Add((ushort) (c & 0xFFFF));
+                break;
+            default: throw new InvalidOperationException();
+            }
         }
 
         public MachineOperand Mem(RegisterOperand rop)
@@ -179,6 +206,11 @@ namespace Decompiler.Assemblers.M68k
             return data.Number & 7;
         }
 
+        public PostIncrementMemoryOperand Post(RegisterOperand a)
+        {
+            return new PostIncrementMemoryOperand(null, (AddressRegister) a.Register);
+        }
+
         public PredecrementMemoryOperand Pre(RegisterOperand a)
         {
             return new PredecrementMemoryOperand(null, (AddressRegister) a.Register);
@@ -191,6 +223,18 @@ namespace Decompiler.Assemblers.M68k
                 emitter.EmitBeUint16(c);
             }
             constants.Clear();
+        }
+
+        private void ReferToSymbol(Symbol psym, int off, DataType width)
+        {
+            if (psym.fResolved)
+            {
+                emitter.PatchBe(off, psym.offset, width);
+            }
+            else
+            {
+                psym.AddForwardReference(off, width);
+            }
         }
 
         public void Add_b(MachineOperand eaSrc, RegisterOperand dDst)
@@ -287,13 +331,58 @@ namespace Decompiler.Assemblers.M68k
         {
             Bcc(address, 0xC);
         }
+        public void Bne(string target)
+        {
+            Bcc(target, 6);
+        }
+
         public void Bra(uint address)
         {
             Bcc(address, 0x0);
         }
+        public void Bcc(string target, int flags)
+        {
+            constants.Add((ushort)-(emitter.Position + 2));
+            Emit(0x6000 | (flags << 8));
+            ReferToSymbol(symtab.CreateSymbol(target), emitter.Position - 2, PrimitiveType.Word16);
+        }
+
         private void Bcc(uint address, int flags)
         {
-            Emit(0x6000 | (flags << 16) | (int)(address & 7)); //$TODO should be offset.
+            Emit(0x6000 | (flags << 8) | (int)(address & 7)); //$BUG should be offset.
+        }
+
+        public void Clr_b(MachineOperand ea)
+        {
+            Emit(0x4200 | Ea(ea, 0));
+        }
+        public void Clr_w(MachineOperand ea)
+        {
+            Emit(0x4240 | Ea(ea, 0));
+        }
+        public void Clr_l(MachineOperand ea)
+        {
+            Emit(0x4280 | Ea(ea, 0));
+        }
+
+
+        public void Jsr(uint address)
+        {
+            Jsr(new AddressOperand(new Address(address)));
+        }
+        public void Jsr(MachineOperand op)
+        {
+            Emit(0x4E80 | Ea(op, 0));
+        }
+
+        public void Lea(MachineOperand ea, RegisterOperand aReg)
+        {
+            Emit(0x41C0 | Ea(ea, 0) | AReg(aReg) << 9);
+        }
+
+        public void Lsl_l(int c, RegisterOperand dDst)
+        {
+            Emit(0xE188 | SmallQ(c) << 9 | DReg(dDst));
         }
 
         public void Move_b(MachineOperand src, MachineOperand dst)
@@ -326,23 +415,9 @@ namespace Decompiler.Assemblers.M68k
             Emit(0x48E0 | dst.Register.Number & 7);
         }
 
-        public void Jsr(uint address)
+        public void Nop()
         {
-            Jsr(new M68kImmediateOperand(Constant.Word32(address)));
-        }
-        public void Jsr(MachineOperand op)
-        {
-            Emit(0x4E0 | Ea(op, 0));
-        }
-
-        public void Lea(MachineOperand ea, RegisterOperand aReg)
-        {
-            Emit(0x41C0 | Ea(ea, 0) | AReg(aReg) << 9);
-        }
-
-        public void Lsl_l(int c, RegisterOperand dDst)
-        {
-            Emit(0xE188 | SmallQ(c) << 9 | DReg(dDst));
+            emitter.EmitBeUint16(0x4E71);
         }
 
         internal void Pea(MachineOperand ea)
@@ -378,12 +453,5 @@ namespace Decompiler.Assemblers.M68k
         internal void ReportUnresolvedSymbols()
         {
         }
-
-        internal void Label(string text)
-        {
-            //$TODO: remember this;
-        }
-
-
     }
 }

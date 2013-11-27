@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Assemblers.M68k
         private void BuildTest(Action<M68kAssembler> builder)
         {
             builder(asm);
-            dasm = new M68kDisassembler(new ImageReader(asm.GetImage(), asm.BaseAddress));
+            dasm = M68kDisassembler.Create68020(new ImageReader(asm.GetImage(), asm.BaseAddress));
         }
 
         private void Expect(string expectedInstr)
@@ -113,6 +113,21 @@ namespace Decompiler.UnitTests.Assemblers.M68k
                 m.Lsl_l(0x04, m.d1);
             });
             Expect("lsl.l\t#$04,d1");
+        }
+
+        [Test]
+        public void M68kasm_symbolic_labels()
+        {
+            BuildTest(m =>
+            {
+                m.Clr_l(m.d0);
+                m.Label("lupe");
+                m.Cmp_l(m.Post(m.a3), m.d0);
+                m.Bne("lupe");
+            });
+            Expect("clr.l\td0");
+            Expect("cmp.l\t(a3)+,d0");
+            Expect("bne\t$00010002");
         }
     }
 }

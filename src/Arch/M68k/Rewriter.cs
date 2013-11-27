@@ -91,6 +91,7 @@ namespace Decompiler.Arch.M68k
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lsl: RewriteShift((s, d) => emitter.Shl(d, s)); break;
+                case Opcode.lsr: RewriteShift((s, d) => emitter.Shr(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.muls: RewriteMul((s, d) => emitter.SMul(d, s)); break;

@@ -40,15 +40,21 @@ namespace Decompiler.UnitTests.Assemblers.M68k
             asm = new M68kTextAssembler();
         }
 
+        protected void RunFragment(string fragment, string outputFile, Address addrBase)
+        {
+            var prog = RunTestFromFragment(fragment, addrBase);
+            RenderResult(prog, outputFile); 
+        }
+
         protected void RunTest(string sourceFile, string outputFile, Address addrBase)
         {
-            Program prog = new Program();
-            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
-            {
-                var lr = asm.Assemble(addrBase, rdr);
-                prog.Image = lr.Image;
-                prog.ImageMap = lr.ImageMap;
-            }
+            var prog = RunTestFromFile(sourceFile, addrBase);
+
+            RenderResult(prog, outputFile);
+        }
+
+        private void RenderResult(Program prog, string outputFile)
+        {
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
             {
                 prog.ImportThunks.Add(item.Key, item.Value);
@@ -74,11 +80,58 @@ namespace Decompiler.UnitTests.Assemblers.M68k
             }
         }
 
+        private Program RunTestFromFile(string sourceFile, Address addrBase)
+        {
+            Program prog = new Program();
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
+            {
+                var lr = asm.Assemble(addrBase, rdr);
+                prog.Image = lr.Image;
+                prog.ImageMap = lr.ImageMap;
+            }
+            return prog;
+        }
+
+        private Program RunTestFromFragment(string fragment, Address addrBase)
+        {
+            Program prog = new Program();
+            var lr = asm.AssembleFragment(addrBase, fragment);
+            prog.Image = lr.Image;
+            prog.ImageMap = lr.ImageMap;
+            return prog;
+        }
+
         [Test]
         public void M68kta_Max()
         {
-            RunTest("Fragments/m68k/MAX.asm", "M68k/Asm_MAX.txt", new Address(0x04000000));
+            RunTest("Fragments/m68k/MAX.asm", "M68k/M68kta_Max.txt", new Address(0x04000000));
+        }
+
+        [Test]
+        public void M68kta_BackJump()
+        {
+            string txt = @"
+    clr.l   d0
+lupe
+    cmp.l   (a3)+, d0
+    bne     lupe
+    rts
+";
+            RunFragment(txt, "M68k/M68kta_BackJump.txt", new Address(0x00010000));
+        }
+
+        [Test]
+        public void M68kta_FwdJump()
+        {
+            string txt = @"
+    clr.l   d0
+    cmp.b   (a3),d1
+    bne     return
+    addq.l  #1,d0
+return
+    rts
+";
+            RunFragment(txt, "M68k/M68kta_FwdJump.txt", new Address(0x00010000));
         }
     }
-
 }

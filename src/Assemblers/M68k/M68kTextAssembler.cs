@@ -58,9 +58,9 @@ namespace Decompiler.Assemblers.M68k
         {
             this.addrBase = baseAddress;
             this.lexer = new Lexer(rdr);
-            this.emitter = new Emitter();
             this.arch = new M68kArchitecture();
             asm = new M68kAssembler(arch, addrBase, entryPoints);
+            this.emitter = asm.Emitter;
 
             // Assemblers are strongly line-oriented.
 
@@ -95,24 +95,22 @@ namespace Decompiler.Assemblers.M68k
             case TokenType.NL:
             case TokenType.EOFile:
                 return;
-            case TokenType.CNOP:
-                ProcessCnop();
-                break;
+            case TokenType.CNOP: ProcessCnop(); break;
             case TokenType.DC: ProcessDc(); break;
             case TokenType.EQU: ProcessEqu(); break;
             case TokenType.IDNT: ProcessIdnt(); break;
             case TokenType.OPT: ProcessOpt(); break;
             case TokenType.REG: ProcessReg(); break;
             case TokenType.PUBLIC: ProcessPublic(); break;
-            case TokenType.SECTION:
-                ProcessSection();
-                break;
+            case TokenType.SECTION: ProcessSection(); break;
 
             case TokenType.add: ProcessAdd(); break;
             case TokenType.addq: ProcessAddq(); break;
+            case TokenType.clr: ProcessClr(); break;
             case TokenType.cmp: ProcessCmp(); break;
             case TokenType.beq: ProcessBeq(); break;
             case TokenType.bge: ProcessBge(); break;
+            case TokenType.bne: ProcessBne(); break;
             case TokenType.bra: ProcessBra(); break;
             case TokenType.jsr: ProcessJsr(); break;
             case TokenType.lea: ProcessLea(); break;
@@ -184,6 +182,13 @@ namespace Decompiler.Assemblers.M68k
             Emit(q, eaDst, code, asm.Addq_b, asm.Addq_w, asm.Addq_l);
         }
 
+        private void ProcessClr()
+        {
+            int code = ExpectDataWidth();
+            var ea = ExpectEffectiveAddress();
+            Emit(ea, code, asm.Clr_b, asm.Clr_w, asm.Clr_l);
+        }
+
         private void ProcessCmp()
         {
             int code = ExpectDataWidth();
@@ -216,6 +221,10 @@ namespace Decompiler.Assemblers.M68k
         {
             Expect(TokenType.ID);   //$BUG: create symbol.
             asm.Bge(0);     //$BUG
+        }
+        private void ProcessBne()
+        {
+            asm.Bne(Expect(TokenType.ID));
         }
 
         private void ProcessBra()
@@ -263,6 +272,16 @@ namespace Decompiler.Assemblers.M68k
             {
                 Error("Unpexected operand {0}.", ea);
             }
+        }
+        private void Emit<T>(T op, int width, Action<T> b, Action<T> w, Action<T> l)
+        {
+            switch (width)
+            {
+            case 0: b(op); return;
+            case 1: w(op); return;
+            case 2: l(op); return;
+            }
+            Error("Unknown width type {0}.", width);
         }
 
         private void Emit<TSrc, TDst>(TSrc src, TDst dst, int width, Action<TSrc, TDst> b, Action<TSrc, TDst> w, Action<TSrc, TDst> l)
@@ -365,6 +384,7 @@ namespace Decompiler.Assemblers.M68k
 
         private MachineOperand ParseAddressExpression()
         {
+            AddressRegister aReg;
             var tok = lexer.PeekToken();
             switch (tok.Type)
             {
@@ -373,9 +393,26 @@ namespace Decompiler.Assemblers.M68k
                 Expect(TokenType.PLUS); //$BUG support for expressions later.
                 Expect(TokenType.ID);
                 Expect(TokenType.COMMA);
-                var aReg = ExpectAddressRegister();
+                aReg = ExpectAddressRegister();
                 Expect(TokenType.RPAREN);
                 return new MemoryOperand(null, aReg);
+            case TokenType.ID:
+                var id = Expect(TokenType.ID);
+                aReg = AReg(id);
+                if (aReg != null)
+                {
+                    Expect(TokenType.RPAREN);
+                    if (PeekAndDiscard(TokenType.PLUS))
+                    {
+                        return new PostIncrementMemoryOperand(null, aReg);
+                    }
+                    else
+                    {
+                        return new MemoryOperand(null, aReg);
+                    }
+                }
+                Error("oo");
+                return null;
             default:
                 Error("Unexpected address expression token '{0}'.", tok.Text);
                 return null;
@@ -392,12 +429,25 @@ namespace Decompiler.Assemblers.M68k
         {
             var name = Expect(TokenType.ID);
             Debug.Assert(!string.IsNullOrEmpty(name));
-            if (name.Length == 2 && "aA".IndexOf(name[0]) >= 0 && '0' <= name[1] && name[1] <= '7')
+            var aReg = AReg(name);
+            if (aReg != null)
+                return aReg;
+            Error("Expect address register but saw '{0}.", name);
+            return null;
+        }
+
+        private AddressRegister AReg(string name)
+        {
+            if (IsAddressRegisterName(name))
             {
                 return Registers.AddressRegister(name[1] - '0');
             }
-            Error("Expect address register but saw '{0}.", name);
             return null;
+        }
+
+        private static bool IsAddressRegisterName(string name)
+        {
+            return name.Length == 2 && "aA".IndexOf(name[0]) >= 0 && '0' <= name[1] && name[1] <= '7';
         }
 
         private void Emit_i_ea(int i, MachineOperand eaDst, int size, Action<int, MachineOperand> b, Action<int, MachineOperand> w, Action<int, MachineOperand> l)
@@ -433,9 +483,10 @@ namespace Decompiler.Assemblers.M68k
 
         private void ProcessCnop()
         {
-            Expect(TokenType.INTEGER);
+            int extra = ExpectInteger();
             Expect(TokenType.COMMA);
-            Expect(TokenType.INTEGER);
+            int align = ExpectInteger();
+            asm.Cnop(extra, align);
         }
 
         private void ProcessSection()
@@ -469,6 +520,15 @@ namespace Decompiler.Assemblers.M68k
             return t.Text;
         }
 
+        private bool PeekAndDiscard(TokenType tokenType)
+        {
+            if (lexer.PeekToken().Type != tokenType)
+                return false;
+
+            lexer.GetToken();
+            return true;
+        }
+
         private void Error(string format, params object[] args)
         {
             var sb = new StringBuilder();
@@ -479,7 +539,8 @@ namespace Decompiler.Assemblers.M68k
 
         public LoaderResults AssembleFragment(Address baseAddress, string fragment)
         {
-            throw new NotImplementedException();
+            var rdr = new StringReader(fragment);
+            return Assemble(baseAddress, rdr);
         }
 
         public LoadedImage GetImage()
@@ -528,11 +589,5 @@ namespace Decompiler.Assemblers.M68k
             int opcode = 0x2000 | dSrc.Number | (dSrc.Number << 9);
             emitter.EmitBeUint16(opcode);
         }
-
-        public void Label(string label)
-        {
-            symtab.DefineSymbol(label, emitter.Position).Resolve(emitter);
-        }
-
-    }
+   }
 }

@@ -61,7 +61,16 @@ namespace Decompiler.Core.Assemblers
             }
         }
 
-        public void Resolve(Emitter emitter)
+        public void ResolveBe(Emitter emitter)
+        {
+            Debug.Assert(fResolved);
+            foreach (BackPatch patch in Patches)
+            {
+                emitter.PatchBe(patch.offset, offset, patch.Size);
+            }
+        }
+
+        public void ResolveLe(Emitter emitter)
         {
             Debug.Assert(fResolved);
             foreach (BackPatch patch in Patches)
@@ -103,11 +112,6 @@ namespace Decompiler.Core.Assemblers
 		{
 			symbols = new SortedList<string,Symbol>();
 			equates = new Dictionary<string,int>();
-		}
-
-		public Symbol AddDefinition(string s, int off)
-		{
-			return DefineSymbol(s, off);
 		}
 
 		public Symbol CreateSymbol(string s)
@@ -156,8 +160,6 @@ namespace Decompiler.Core.Assemblers
 			}
             return undef.ToArray();
 		}
-
-
 
 		public void Write(TextWriter txt)
 		{
