@@ -42,9 +42,7 @@ namespace Decompiler.Assemblers.M68k
     {
         private M68kArchitecture arch;
         private Platform platform;
-        private Address addrBase;
         private Emitter emitter;
-        private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
         private SortedDictionary<string, TypeLibrary> importLibraries;
         private Dictionary<uint, PseudoProcedure> importThunks;
@@ -53,13 +51,14 @@ namespace Decompiler.Assemblers.M68k
         public M68kAssembler(M68kArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
         {
             this.arch = arch;
-            BaseAddress = addrBase;
-            emitter = new Emitter();
-            constants = new List<ushort>();
-            symtab = new SymbolTable();
+            this.BaseAddress = addrBase;
+            this.emitter = new Emitter();
+            this.constants = new List<ushort>();
+            this.Symbols = new SymbolTable();
         }
 
         public Address BaseAddress { get; private set; }
+        public SymbolTable Symbols { get; private set; }
 
         public RegisterOperand d0 { get { return new RegisterOperand(Registers.d0); } }
         public RegisterOperand d1 { get { return new RegisterOperand(Registers.d1); } }
@@ -94,7 +93,7 @@ namespace Decompiler.Assemblers.M68k
 
         public void Label(string label)
         {
-            symtab.DefineSymbol(label, emitter.Position).ResolveBe(emitter);
+            Symbols.DefineSymbol(label, emitter.Position).ResolveBe(emitter);
         }
 
         private int Ea(MachineOperand op, int shift)
@@ -121,6 +120,8 @@ namespace Decompiler.Assemblers.M68k
                 var aReg = mop.Base;
                 if (mop.Offset == null || mop.Offset.ToInt32() == 0)
                     return (aReg.Number & 7 | 0x10);
+                constants.Add((ushort) mop.Offset.ToInt32());
+                return (aReg.Number & 7 | 0x28);
             }
 
             var postOp = op as PostIncrementMemoryOperand;
@@ -188,8 +189,8 @@ namespace Decompiler.Assemblers.M68k
 
         private int SwapEa(MachineOperand op)
         {
-            int ea = Ea(op) & 37;
-            return (ea >> 3) & 7 | (ea & 7) << 3;
+            int ea = Ea(op) & 0x3F;
+            return ((ea >> 3) & 7) | ((ea & 7) << 3);
         }
 
         private int AReg(MachineOperand op)
@@ -335,6 +336,10 @@ namespace Decompiler.Assemblers.M68k
         {
             Bcc(target, 6);
         }
+        public void Bra(string target)
+        {
+            Bcc(target, 0);
+        }
 
         public void Bra(uint address)
         {
@@ -344,7 +349,7 @@ namespace Decompiler.Assemblers.M68k
         {
             constants.Add((ushort)-(emitter.Position + 2));
             Emit(0x6000 | (flags << 8));
-            ReferToSymbol(symtab.CreateSymbol(target), emitter.Position - 2, PrimitiveType.Word16);
+            ReferToSymbol(Symbols.CreateSymbol(target), emitter.Position - 2, PrimitiveType.Word16);
         }
 
         private void Bcc(uint address, int flags)
@@ -365,7 +370,6 @@ namespace Decompiler.Assemblers.M68k
             Emit(0x4280 | Ea(ea, 0));
         }
 
-
         public void Jsr(uint address)
         {
             Jsr(new AddressOperand(new Address(address)));
@@ -373,6 +377,14 @@ namespace Decompiler.Assemblers.M68k
         public void Jsr(MachineOperand op)
         {
             Emit(0x4E80 | Ea(op, 0));
+        }
+        public void Jsr(string target)
+        {
+            var linBase = BaseAddress.Linear;
+            constants.Add((ushort) (linBase>>16));
+            constants.Add((ushort) (linBase));
+            Emit(0x4EB9);
+            ReferToSymbol(Symbols.CreateSymbol(target), emitter.Position - 4, PrimitiveType.Word32);
         }
 
         public void Lea(MachineOperand ea, RegisterOperand aReg)

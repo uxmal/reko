@@ -97,7 +97,8 @@ namespace Decompiler.Assemblers.M68k
             String,
             Integer,
             Cr,
-            Comment
+            Comment,
+            HexNumber
         }
 
         private Token ReadToken()
@@ -195,6 +196,10 @@ namespace Decompiler.Assemblers.M68k
                         rdr.Read();
                         st = State.Comment;
                         break;
+                    case '$':
+                        rdr.Read();
+                        st = State.HexNumber;
+                        break;
                     default:
                         if (Char.IsLetter(c) || c == '_')
                         {
@@ -254,6 +259,18 @@ namespace Decompiler.Assemblers.M68k
                     else if (c == '\n')
                         return LightToken(TokenType.NL, State.StartOfLine);
                     break;
+                case State.HexNumber:
+                    if (ch == -1)
+                        return HexToken(State.StartOfLine);
+                    if ('0' <= c && c <= '9' ||
+                        'a' <= c && c <= 'f' ||
+                        'A' <= c && c <= 'F')
+                    {
+                        rdr.Read();
+                        sb.Append(c);
+                        break;
+                    }
+                    return HexToken(State.StartOfLine);
                 }
             }
             throw new NotImplementedException();
@@ -271,6 +288,16 @@ namespace Decompiler.Assemblers.M68k
                 Debug.WriteLine("");
             st = nextState;
             return new Token(t);
+        }
+
+        private Token HexToken(State nextState)
+        {
+            string hex = sb.ToString();
+            int h = Convert.ToInt32(hex, 16);
+            Debug.Write(string.Format("{0} {1}", TokenType.INTEGER, h));
+            sb = new StringBuilder();
+            st = nextState;
+            return new Token(TokenType.INTEGER, h.ToString(System.Globalization.CultureInfo.InvariantCulture)); 
         }
 
         private Token BuildToken(TokenType tokenType, State nextState)
