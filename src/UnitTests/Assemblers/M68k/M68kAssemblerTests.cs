@@ -129,5 +129,15 @@ namespace Decompiler.UnitTests.Assemblers.M68k
             Expect("cmp.l\t(a3)+,d0");
             Expect("bne\t$00010002");
         }
+
+        [Test]
+        public void M68kasm_lea()
+        {
+            BuildTest(m =>
+            {
+                m.Lea(m.Mem(-8,  m.a2), m.a4);
+            });
+            Expect("lea\t$-0008(a2),a4");
+        }
     }
 }

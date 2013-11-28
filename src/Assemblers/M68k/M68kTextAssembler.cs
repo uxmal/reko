@@ -37,7 +37,6 @@ namespace Decompiler.Assemblers.M68k
         private M68kArchitecture arch;
         private Address addrBase;
         private Emitter emitter;
-        private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
         private Lexer lexer;
         private M68kAssembler asm ;
@@ -45,7 +44,6 @@ namespace Decompiler.Assemblers.M68k
 
         public M68kTextAssembler()
         {
-            this.symtab = new SymbolTable();
             this.entryPoints = new List<EntryPoint>();
             this.LineNumber = 1;
         }
@@ -229,15 +227,14 @@ namespace Decompiler.Assemblers.M68k
 
         private void ProcessBra()
         {
-            Expect(TokenType.ID);   //$BUG: create symbol.
-            asm.Bra(0);     //$BUG
+            var name = Expect(TokenType.ID);   //$BUG: create symbol.
+            asm.Bra(name);     //$BUG
         }
 
         private void ProcessJsr()
         {
             var name = Expect(TokenType.ID);
-            symtab.CreateSymbol(name);
-            asm.Jsr(0);     //$BUG.
+            asm.Jsr(name);     //$BUG.
         }
 
         private void ProcessLea()
@@ -350,6 +347,7 @@ namespace Decompiler.Assemblers.M68k
         private MachineOperand ExpectEffectiveAddress()
         {
             AddressRegister aReg;
+            int offset;
             var tok = lexer.GetToken();
             switch (tok.Type)
             {
@@ -365,15 +363,26 @@ namespace Decompiler.Assemblers.M68k
                     return new RegisterOperand(Registers.AddressRegister(name[1] - '0'));
                 }
                 // It's some identifier we haven't seen yet. Register our interest
-                return ForwardEa(symtab.CreateSymbol(name));
+                return ForwardEa(asm.Symbols.CreateSymbol(name));
                 break;
             case TokenType.MINUS:
+                tok = lexer.PeekToken();
+                if (tok.Type == TokenType.INTEGER)
+                {
+                    offset = -ExpectInteger();
+                    Expect(TokenType.LPAREN);
+                    return ParseAddressExpression(offset);
+                }
                 Expect(TokenType.LPAREN);
                 aReg = ExpectAddressRegister();
                 Expect(TokenType.RPAREN);
                 return new PredecrementMemoryOperand(null, aReg);
+            case TokenType.INTEGER:
+                offset = Convert.ToInt32(tok.Text);
+                Expect(TokenType.LPAREN);
+                return ParseAddressExpression(offset);
             case TokenType.LPAREN:
-                return ParseAddressExpression();
+                return ParseAddressExpression(0);
             case TokenType.HASH:
                 int n = ExpectInteger();
                 return new M68kImmediateOperand(Constant.Create(this.dataWidth, n));
@@ -382,7 +391,7 @@ namespace Decompiler.Assemblers.M68k
             return null;
         }
 
-        private MachineOperand ParseAddressExpression()
+        private MachineOperand ParseAddressExpression(int offset)
         {
             AddressRegister aReg;
             var tok = lexer.PeekToken();
@@ -392,10 +401,11 @@ namespace Decompiler.Assemblers.M68k
                 int i = ExpectInteger();
                 Expect(TokenType.PLUS); //$BUG support for expressions later.
                 Expect(TokenType.ID);
+                offset += i;
                 Expect(TokenType.COMMA);
                 aReg = ExpectAddressRegister();
                 Expect(TokenType.RPAREN);
-                return new MemoryOperand(null, aReg);
+                return new MemoryOperand(null, aReg, Constant.Int32(offset));
             case TokenType.ID:
                 var id = Expect(TokenType.ID);
                 aReg = AReg(id);
@@ -408,7 +418,7 @@ namespace Decompiler.Assemblers.M68k
                     }
                     else
                     {
-                        return new MemoryOperand(null, aReg);
+                        return new MemoryOperand(null, aReg, Constant.Int32(offset));
                     }
                 }
                 Error("oo");
@@ -581,7 +591,7 @@ namespace Decompiler.Assemblers.M68k
         {
             emitter.EmitByte(0x60);
             emitter.EmitByte(-(emitter.Length + 1));
-            symtab.CreateSymbol(target).ReferTo(emitter.Length - 1, PrimitiveType.Byte, emitter);
+            asm.Symbols.CreateSymbol(target).ReferTo(emitter.Length - 1, PrimitiveType.Byte, emitter);
         }
 
         public void Move(DataRegister dSrc, DataRegister dDst)

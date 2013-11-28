@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Assemblers.M68k
         protected void RunFragment(string fragment, string outputFile, Address addrBase)
         {
             var prog = RunTestFromFragment(fragment, addrBase);
-            RenderResult(prog, outputFile); 
+            RenderResult(prog, outputFile);
         }
 
         protected void RunTest(string sourceFile, string outputFile, Address addrBase)
@@ -132,6 +132,23 @@ return
     rts
 ";
             RunFragment(txt, "M68k/M68kta_FwdJump.txt", new Address(0x00010000));
+        }
+
+        [Test]
+        public void M68kta_Jsr()
+        {
+            string txt = @"
+    move.l  -$10(a7),d0
+    move.l  d0,-(a7)
+    jsr     mutate
+    addq.l  #4,a7
+    rts
+mutate
+    move.l  4(a7),d0
+    addq.l  #2,d0
+    rts
+";
+            RunFragment(txt, "M68k/M68kta_Jsr.txt", new Address(0x00010000));
         }
     }
 }

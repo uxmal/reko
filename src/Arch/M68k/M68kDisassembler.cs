@@ -792,13 +792,6 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
         }
 
-        private PrimitiveType get_dataWidth(uint size)
-        {
-            throw new NotImplementedException("switch size");
-        }
-
-
-
         /* ======================================================================== */
         /* ========================= INSTRUCTION HANDLERS ========================= */
         /* ======================================================================== */
