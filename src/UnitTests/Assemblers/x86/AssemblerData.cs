@@ -192,7 +192,7 @@ foo		endp
 		[Test]
 		public void AsFpuArgs()
 		{
-			RunTest("Fragments/multiple/fpuargs.asm", "Intel/AsFpuArgs.txt", new Address(0xB00, 0));
+			RunTest("Fragments/multiple/fpuArgs.asm", "Intel/AsFpuArgs.txt", new Address(0xB00, 0));
 		}
 
 		[Test]

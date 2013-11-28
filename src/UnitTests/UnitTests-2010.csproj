@@ -32,6 +32,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,7 +54,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\external\Rhino.Mocks-3.6\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -66,6 +66,9 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\AliasTests.cs" />
@@ -428,7 +431,7 @@
       <Name>M68k-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Mos6502\Mos6502.csproj">
-      <Project>{dc11ed7f-97f6-4488-86b4-eec67dd1f511}</Project>
+      <Project>{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}</Project>
       <Name>Mos6502</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11-2010.csproj">
@@ -440,7 +443,7 @@
       <Name>PowerPC-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Sparc\Sparc-2010.csproj">
-      <Project>{454d9734-edf3-4646-8c7f-8449c68eb826}</Project>
+      <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
       <Name>Sparc-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
@@ -448,7 +451,7 @@
       <Name>X86-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
-      <Project>{66a00ab2-6964-4815-9140-f28fee48e6d6}</Project>
+      <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
       <Name>Z80</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\M68k\M68kAssembler-2010.csproj">

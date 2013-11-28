@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DfaGlobalHandle()
 		{
-			RunTest32("Fragments/import32/globalhandle.asm", "Analysis/DfaGlobalHandle.txt");
+			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
 
 		[Test]

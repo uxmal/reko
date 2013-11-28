@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Typing
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             m.SegStore(ds, m.Word32(7000), m.SegMemW(ds, m.SegMemW(ds, m.Word32(0x5321))));
             mock.Add(m);
-            RunTest(mock.BuildProgram(), "typing/PprMemberPointers.txt");
+            RunTest(mock.BuildProgram(), "Typing/PprMemberPointers.txt");
         }
 
 		private void RunTest(Program prog, string outputFilename)

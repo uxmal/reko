@@ -241,7 +241,7 @@ join:
 		[Test]
 		public void RwFpuArgs()
 		{
-			RunTest("Fragments/multiple/fpuargs.asm", "Intel/RwFpuArgs.txt");
+			RunTest("Fragments/multiple/fpuArgs.asm", "Intel/RwFpuArgs.txt");
 		}
 
 		[Test]

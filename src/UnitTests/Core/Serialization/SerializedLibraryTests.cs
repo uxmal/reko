@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			XmlSerializer ser = new XmlSerializer(typeof (SerializedLibrary));
 			SerializedLibrary lib;
-			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/MsDos/realmodeintservices.xml"), FileMode.Open))
+			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/Msdos/realmodeintservices.xml"), FileMode.Open))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}

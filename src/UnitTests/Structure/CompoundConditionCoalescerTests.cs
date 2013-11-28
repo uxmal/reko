@@ -31,19 +31,19 @@ namespace Decompiler.UnitTests.Structure
 		[Test]
 		public void CccTest1()
 		{
-			RunTest("Fragments/compound1.asm", "structure/CccTest1.txt");
+			RunTest("Fragments/compound1.asm", "Structure/CccTest1.txt");
 		}
 
 		[Test]
 		public void CccTest2()
 		{
-			RunTest("Fragments/compound_non.asm", "structure/CccTest2.txt");
+			RunTest("Fragments/compound_non.asm", "Structure/CccTest2.txt");
 		}
 
 		[Test]
 		public void CccComplexTest()
 		{
-			RunTest("Fragments/compound_complex.asm", "structure/CccComplexText.txt");
+			RunTest("Fragments/compound_complex.asm", "Structure/CccComplexText.txt");
 		}
 
 		[Test]

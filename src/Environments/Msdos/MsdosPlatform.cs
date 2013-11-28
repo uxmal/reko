@@ -52,11 +52,18 @@ namespace Decompiler.Environments.Msdos
 
 		public void LoadRealmodeServices(IProcessorArchitecture arch)
 		{
-			string libPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/realmodeintservices.xml";
-			if (!File.Exists(libPath))
+			string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR");
+			// TODO: extract runtime files ( like "realmodeintservices.xml") to their own directory ?
+			string libPath = Path.Combine(prefix,"src/Environments/Msdos/realmodeintservices.xml");
+			if (!File.Exists (libPath))
 			{
-				libPath = Directory.GetCurrentDirectory() + "/realmodeintservices.xml";
+				libPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/realmodeintservices.xml";
+				if (!File.Exists(libPath))
+				{
+					libPath = Directory.GetCurrentDirectory() + "/realmodeintservices.xml";
+				}
 			}
+
             SerializedLibrary lib;
             using (FileStream stm = new FileStream(libPath, FileMode.Open))
 			{

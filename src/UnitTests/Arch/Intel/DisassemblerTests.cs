@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System;
 using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
@@ -197,7 +198,7 @@ foo		proc
             for (int i = 0; i != 4; ++i)
             {
                 IntelInstruction ii = dasm.Disassemble();
-                sb.AppendFormat("{0}\r\n", ii.ToString());
+                sb.AppendLine(string.Format("{0}", ii.ToString()));
             }
             string s = sb.ToString();
             Assert.AreEqual(

@@ -82,7 +82,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void RwGlobalHandle()
 		{
-			RunTest("Fragments/import32/globalhandle.asm", "Intel/RwGlobalHandle.txt");
+			RunTest("Fragments/import32/GlobalHandle.asm", "Intel/RwGlobalHandle.txt");
 		}
 
 		[Test]
