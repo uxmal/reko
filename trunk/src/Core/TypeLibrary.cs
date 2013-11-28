@@ -62,9 +62,13 @@ namespace Decompiler.Core
 
 		public void Load(IProcessorArchitecture arch, string fileName)
 		{
+			string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR");
+			// TODO: extract runtime files ( like "realmodeintservices.xml") to their own directory ?
+			string libPath = Path.Combine(prefix,"src/Environments/Win32");
+			libPath = Path.Combine(libPath,fileName);
 			XmlSerializer ser = SerializedLibrary.CreateSerializer();
 			SerializedLibrary slib;
-			using (FileStream stm = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (FileStream stm = new FileStream(libPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}

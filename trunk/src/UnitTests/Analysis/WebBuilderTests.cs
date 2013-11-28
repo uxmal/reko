@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void WebGlobalHandle()
 		{
-			RunTest32("Fragments/import32/globalhandle.asm", "Analysis/WebGlobalHandle.txt");
+			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
 		}
 
 		[Test]

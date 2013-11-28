@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoLength()
 		{
-			RunTest("Fragments/Type/listlength.asm", "Typing/TrcoLength.txt");
+			RunTest("Fragments/type/listlength.asm", "Typing/TrcoLength.txt");
 		}
 
 		[Test]
@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoUnknown()
 		{
-			RunTest("Fragments/Type/unknown.asm", "Typing/TrcoUnknown.txt");
+			RunTest("Fragments/type/unknown.asm", "Typing/TrcoUnknown.txt");
 		}
 
         [Test]

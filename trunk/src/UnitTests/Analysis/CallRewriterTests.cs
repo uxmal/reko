@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void CrwFpuArgs()
 		{
-			RunTest("Fragments/multiple/fpuargs.asm", "Analysis/CrwFpuArgs.txt");
+			RunTest("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
 		}
 
 		[Test]

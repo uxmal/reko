@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranUnknown()
 		{
-			RunTest("Fragments/Type/unknown.asm", "Typing/TtranUnknown.txt");
+			RunTest("Fragments/type/unknown.asm", "Typing/TtranUnknown.txt");
 		}
 
 		[Test]
@@ -66,13 +66,13 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranLength()
 		{
-			RunTest("Fragments/Type/listlength.asm", "Typing/TtranLength.txt");
+			RunTest("Fragments/type/listlength.asm", "Typing/TtranLength.txt");
 		}
 
 		[Test]
 		public void TtranIntegers()
 		{
-			RunTest("Fragments/Type/integraltypes.asm", "Typing/TtranIntegers.txt");
+			RunTest("Fragments/type/integraltypes.asm", "Typing/TtranIntegers.txt");
 		}
 
 		[Test]

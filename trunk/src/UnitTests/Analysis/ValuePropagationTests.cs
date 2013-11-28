@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void VpGlobalHandle()
 		{
-			RunTest32("Fragments/import32/globalhandle.asm", "Analysis/VpGlobalHandle.txt");
+			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
 		}
 
 		[Test]
