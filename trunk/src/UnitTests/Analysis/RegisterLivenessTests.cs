@@ -162,6 +162,12 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
+        public void RlReg00005()
+        {
+            RunTest("Fragments/regressions/r00005.asm", "Analysis/RlReg00005.txt");
+        }
+
+        [Test]
         public void RlReg00007()
         {
             RunTest("Fragments/regressions/r00007.asm", "Analysis/RlReg00007.txt");
