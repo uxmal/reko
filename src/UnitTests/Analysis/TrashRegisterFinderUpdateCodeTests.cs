@@ -366,6 +366,12 @@ main_exit:
         }
 
         [Test]
+        public void Trfu_Reg00005()
+        {
+            AnalysisTestBase.RunTest("Fragments/regressions/r00005.asm", RunTest, "Analysis/TrfuReg00005.txt");
+        }
+
+        [Test]
         public void Trfu_LiveLoopMock()
         {
             p.Add(new LiveLoopMock().Procedure);

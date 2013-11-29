@@ -269,7 +269,7 @@ namespace Decompiler.ImageLoaders.MzExe
             {
                 Convention = convention,
                 Arguments = args,
-                ReturnValue = new SerializedArgument { Type=retType}
+                ReturnValue = new SerializedArgument { Type=retType!= null ? retType : new SerializedVoidType() }
             };
         }
 

@@ -304,7 +304,6 @@ namespace Decompiler.Analysis
 			case ConditionCode.NS:  return ConditionCode.LT; 
 			default: throw new ArgumentException(string.Format("Don't know how to negate ConditionCode.{0}.",  cc), "cc");
 			}
-
 		}
 
 		private void Use(Expression expr, Statement stm)
