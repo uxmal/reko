@@ -34,25 +34,29 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
     {
         private void RunTest(string expected, string parse)
         {
-            var p = new PeMangledNameParser();
-            var sp = p.Parse(parse);
+            var p = new PeMangledNameParser(parse);
+            var sp = p.Parse();
             var sb = new StringBuilder();
-            Assert.AreEqual(expected, new Renderer(sb).Render(sp));
+            Assert.AreEqual(expected, new Renderer(sb).Render(p.Modifier, p.Scope, sp));
         }
 
         class Renderer : ISerializedTypeVisitor<StringBuilder>
         {
             private StringBuilder sb;
             private string name;
+            private string modifier;
 
             public Renderer(StringBuilder sb)
             {
                 this.sb = sb;
             }
 
-            internal string Render(SerializedProcedure sp)
+            internal string Render(string modifier, string scope, SerializedProcedure sp)
             {
+                this.modifier = modifier;
                 this.name = sp.Name;
+                if (scope != null)
+                    this.name = scope + "::" + sp.Name;
                 sp.Signature.Accept(this);
                 return sb.ToString();
             }
@@ -76,7 +80,16 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
                     default: throw new NotImplementedException();
                     }
                     break;
-                default: throw new NotImplementedException();
+                case Domain.Character|Domain.UnsignedInt:
+                    switch (primitive.ByteSize)
+                    {
+                    case 1: sb.Append("char"); break;
+                    default: throw new NotImplementedException();
+                    }
+                    break;
+                default: 
+                    throw new NotSupportedException(string.Format("Domain {0} is not supported.", primitive.Domain));
+                    break;
                 }
                 if (name != null)
                     sb.AppendFormat(" {0}", name);
@@ -104,6 +117,8 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             {
                 if (!string.IsNullOrEmpty(signature.Convention))
                     sb.AppendFormat("{0} ", signature.Convention);
+                if (!string.IsNullOrEmpty(modifier))
+                    sb.AppendFormat("{0}: ", modifier);
                 if (signature.ReturnValue != null && signature.ReturnValue.Type != null)
                 {
                     signature.ReturnValue.Type.Accept(this);
@@ -139,6 +154,18 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
                 sb.Append(typeReference.TypeName);
                 if (name != null)
                     sb.AppendFormat(" {0}", name);
+                if (typeReference.TypeArguments != null && typeReference.TypeArguments.Length > 0)
+                {
+                    sb.Append("<");
+                    var sep = "";
+                    foreach (var tyArg in typeReference.TypeArguments)
+                    {
+                        sb.Append(sep);
+                        tyArg.Accept(this);
+                        sep = ",";
+                    }
+                    sb.Append(">");
+                }
                 return sb;
             }
 
@@ -194,7 +221,7 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
         [Test]
         public void PMNP_global_var()
         {
-            RunTest("__thiscall public: virtual type_info::__dtor()", "??1type_info@@UAE@XZ");
+            RunTest("__thiscall public virtual: type_info::~type_info()", "??1type_info@@UAE@XZ");
         }
 
         [Test]
@@ -206,22 +233,48 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
         [Test]
         public void PMNP_ctor()
         {
-            RunTest("__thiscall public: exception::__ctor()", "??0exception@@QAE@XZ");
+            RunTest("__thiscall public: exception::exception()", "??0exception@@QAE@XZ");
         }
 
         [Test]
         public void PMNP_ctor2()
         {
             //$TODO: need support for full C++ type system for this. Whew.
-            RunTest("__thiscall public: exception::__ctor(exception *)", "??0exception@@QAE@ABV0@@Z");
+            RunTest("__thiscall public: exception::exception(exception *)", "??0exception@@QAE@ABV0@@Z");
         }
 
         [Test]
+        [Ignore("Too damn hard at this time; we don't have support for template classes or procedures.")]
         public void PMNP_method_in_class_in_namespace()
         {
             RunTest(
                 "__thiscall public: std::basic_string<char, std::char_traits, allocator>::c_str()",
                 "?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ");
         }
-    } 
+
+        [Test]
+        public void PMNP_const_ptr()
+        {
+            RunTest(
+                "__thiscall public: int foo::foox(foo *)",
+                "?foox@foo@@QBEHPBV1@@Z");
+        }
+
+        [Test]
+        public void PMNP_template_method()
+        {
+            RunTest(
+                 "__thiscall public: char * str::c_str()",
+                 "?c_str@?$str@DH@@QBEPADXZ");
+        }
+
+        [Test]
+        public void PMNP_template_function()
+        {
+            RunTest(
+                "__cdecl char barzoom(int)",      //$TODO: a SerializedProcedure could be templatized.
+                 "??$barzoom@N@@YADH@Z");
+        }
+    }
 }
+    

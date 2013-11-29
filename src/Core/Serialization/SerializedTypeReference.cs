@@ -40,7 +40,7 @@ namespace Decompiler.Core.Serialization
         public string[] Scope;
         
         [XmlElement("tyArg")]
-        public SerializedType TypeArguments;
+        public SerializedType[] TypeArguments;
 
         public SerializedTypeReference()
         {

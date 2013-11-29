@@ -26,9 +26,12 @@ using System.Text;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// Every ImageLoader must return a LoaderResults object.
+    /// </summary>
     public class LoaderResults
     {
-        public readonly LoadedImage Image;
+        public readonly LoadedImage Image; 
         public readonly ImageMap ImageMap;
         public readonly IProcessorArchitecture Architecture;
         public readonly Platform Platform;

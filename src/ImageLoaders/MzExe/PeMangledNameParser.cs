@@ -32,272 +32,375 @@ namespace Decompiler.ImageLoaders.MzExe
     // http://www.agner.org/optimize/calling_conventions.pdf
     public class PeMangledNameParser
     {
-        private int idx;
         private string str;
+        private int i;
         private List<SerializedTypeReference> namesSeen;
-        private Stack<string> scopes;
 
-        public SerializedProcedure Parse(string mangled)
+        public PeMangledNameParser(string str)
         {
-            this.idx = 0;
-            this.str = mangled;
+            this.str = str;
+            this.i = 0;
             this.namesSeen = new List<SerializedTypeReference>();
-            this.scopes = new Stack<string>();
+        }
 
-            if (idx >= str.Length)
-                throw new InvalidOperationException();
-            if (str[idx++] == '?')
+        public string Modifier;
+        public string ClassName;
+        public string Scope;
+
+        public SerializedProcedure Parse()
+        {
+            Expect('?');
+            string basicName = ParseBasicName();
+            SerializedType typeCode;
+            if (PeekAndDiscard('@'))
             {
-                // C++ identifier
-                string fnName = null;
-                if (str[idx] == '_' || Char.IsLetter(str[idx]))
-                {
-                    fnName = ParseName();
-                    Expect('@');
-                }
-                else if (str[idx] == '?')
-                {
-                    fnName = ParseSpecialName();
-                }
-                else
-                    throw new NotImplementedException();
-                var tyRef = this.ParseFullyQualifiedTypeName();
-
-                return ParseTypeInformation(tyRef.Scope != null ? string.Join(":", tyRef.Scope) : "", fnName);
+                typeCode = ParseUnqualifiedTypeCode();
             }
-            return null;
-        }
-
-        public class TemplateArg
-        {
-        }
-        private string EatScope()
-        {
-            if (str[idx] == '?' && str[idx + 1] == '$')           // template!
+            else
             {
-                idx += 2;
-                string tName = ParseName();
+                string[] qualification = ParseQualification();
+                basicName = string.Format(basicName, qualification.Last());
                 Expect('@');
-                var tPars = new List<TemplateArg>();
-                for (; ; )
-                {
-                    var t = GetEncodedType();
-                    if (t == null)
-                        break;
-                }
-                scopes.Push(tName + "<>");
+                typeCode = ParseQualifiedTypeCode(qualification);
             }
-            return scopes.Peek();
-        }
-        private string ParseSpecialName()
-        {
-            if (str[idx++] != '?') throw new InvalidOperationException();
-            switch (str[idx++])
+            string storageClass = ParseStorageClass();
+            return new SerializedProcedure
             {
-            case '0': return "__ctor";
-            case '1': return "__dtor";
-            default: throw new NotImplementedException();
+                Name = basicName,
+                Signature = (SerializedSignature) typeCode,
+            };
+        }
+
+        private void Error(string format, params object[] args)
+        {
+            throw new FormatException(string.Format(format, args));
+        }
+
+        private void Expect(char ch)
+        {
+            if (str[i++] != ch)
+                Error("Expected '{0}' but found '{1}'.", ch, str[i-1]);
+        }
+
+        private bool PeekAndDiscard(char ch)
+        {
+            if (str[i] == ch)
+            {
+                ++i;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        private string ParseName()
+        public string ParseBasicName()
         {
-            var sb = new StringBuilder();
-            while (idx < str.Length)
+            if (PeekAndDiscard('?'))
             {
-                char ch = str[idx];
-                if (!Char.IsLetter(ch) && !Char.IsNumber(ch) && ch != '_')
-                    break;
-                sb.Append(ch);
-                ++idx;
+                if (!PeekAndDiscard('$'))
+                    return ParseOperatorCode();
+                // Template!
+                var t = new TemplateParser(this).Parse();
+                return t.Name;
             }
-            var name = sb.ToString();
+            int iStart = i;
+            while (i < str.Length && str[i] != '@')
+                ++i;
+            string name = str.Substring(iStart, i - iStart);
+            ++i;
+
+            namesSeen.Add(new SerializedTypeReference(name));
             return name;
         }
 
-        private SerializedProcedure ParseTypeInformation(string clName, string name)
+        private class TemplateParser
         {
-            switch (str[idx++])
+            private  PeMangledNameParser outer;
+
+            public TemplateParser(PeMangledNameParser outer)
             {
-            case '@':
-                string callConvention;
-                SerializedType retType ;
-                SerializedArgument[] args;
-                switch (str[idx++])
+                this.outer = outer;
+            }
+
+            public SerializedTemplate Parse()
+            {
+                string name = outer.ParseAtName();
+                List<SerializedType> types = outer.ParseTemplateArguments();
+                return new SerializedTemplate(null, name, types.ToArray());
+            }
+        }
+
+        public List<SerializedType> ParseTemplateArguments()
+        {
+            var types = new List<SerializedType>();
+            while (str[i] != '@')
+            {
+                var t = ParseDataTypeCode();
+                types.Add(t);
+            }
+            return types;
+        }
+
+        public string[] ParseQualification()
+        {
+            var qualifiers = new List<string>();
+            SerializedType[] typeArgs = null;
+            while (i < str.Length && str[i] != '@')
+            {
+                string name = ParseAtName();
+                if (name.StartsWith("?$"))
                 {
-                case 'Y':  // near global fn
-                    callConvention = GetCallConvention();
-                    retType = GetEncodedType();
-                    args = GetArgs();
-                    Expect('Z');
-                    break;
-                case 'Q': // public
-                    name = "public: " + clName + "::" + name;
-                    MaybeMemberModifier();
-                    callConvention = GetCallConvention();
-                    retType = GetEncodedType();
-                    args = GetArgs();
-                    Expect('Z');
-                    break;
-                case 'U': // public virtual
-                    name = "public: virtual " + clName + "::" + name;
-                    MaybeMemberModifier();
-                    callConvention = GetCallConvention();
-                    retType = GetEncodedType();
-                    args = GetArgs();
-                    Expect('Z');
-                    break;
-                default:
-                    throw new FormatException(string.Format("Unpexected '{0}'", str[--idx]));
+                    name = name.Substring(2);
+                    typeArgs = ParseTemplateArguments().ToArray(); ///$TODO: what to do about these if they're nested?
                 }
-                return new SerializedProcedure
-                    {
-                        Name = name,
-                        Decompile = false,
-                        Signature = new SerializedSignature
-                        {
-                            Convention = callConvention,
-                            ReturnValue = new SerializedArgument { Type = retType },
-                            Arguments = args,
-                        }
-                    };
-
+                qualifiers.Insert(0, name);
+                Expect('@');
             }
-            throw new NotImplementedException();
+            var tr = new SerializedTypeReference
+            {
+                TypeName = qualifiers.Last(),
+                Scope = qualifiers.Take(qualifiers.Count - 1).ToArray(),
+                TypeArguments = typeArgs
+            };
+            namesSeen.Add(tr);
+            return qualifiers.ToArray();
         }
 
-        private void MaybeMemberModifier()
+        public SerializedType ParseQualifiedTypeCode(string [] qualification)
         {
-            switch (str[idx++])
+            this.Scope = string.Join("::", qualification);
+            switch (str[i++])
             {
-            case 'A': // default
-            case 'B': // const
-            case 'C': // volatile
-            case 'D': // const volatile
-                return;
+            case 'A': return ParseInstanceMethod("private");
+            case 'B': return ParseInstanceMethod("private far");
+            case 'C': return ParseStaticMethod("private static");
+            case 'D': return ParseStaticMethod("private static far");
+            case 'E': return ParseInstanceMethod("private virtual");
+            case 'F': return ParseInstanceMethod("private virtual far");
+
+            case 'I': return ParseInstanceMethod("protected");
+            case 'J': return ParseInstanceMethod("protected far");
+            case 'K': return ParseStaticMethod("protected static");
+            case 'L': return ParseStaticMethod("protected static far");
+            case 'M': return ParseInstanceMethod("protected virtual");
+            case 'N': return ParseInstanceMethod("protected virtual far");
+
+            case 'Q': return ParseInstanceMethod("public");
+            case 'R': return ParseInstanceMethod("public far");
+            case 'S': return ParseStaticMethod("public static");
+            case 'T': return ParseStaticMethod("public static far");
+            case 'U': return ParseInstanceMethod("public virtual");
+            case 'V': return ParseInstanceMethod("public virtual far");
+            default:
+                Expect('2');
+                return ParseDataTypeCode();
             }
-            throw new NotImplementedException();
         }
 
-        private void Expect(char expected)
-        {
-            if (str[idx++] != expected)
-                throw new FormatException(string.Format("Expected '{0}' but got '{1}'.", expected, str[idx-1]));
-        }
 
-        private SerializedArgument[] GetArgs()
+        public SerializedType ParseUnqualifiedTypeCode()
         {
-            var args = new List<SerializedArgument> ();
-            while (idx < str.Length)
+            if (PeekAndDiscard('Y'))
             {
-                char ch = str[idx++];
-                if (ch == '@' || ch == 'X')
-                    break;
-                switch (ch)
+                return ParseFunctionTypeCode();
+            }
+            Expect('3');
+            return ParseDataTypeCode();
+        }
+
+        public SerializedSignature ParseInstanceMethod(string modifier)
+        {
+            this.Modifier = modifier;
+            ParseThisStorageClass();
+            return ParseFunctionTypeCode();
+        }
+
+        public SerializedSignature ParseStaticMethod(string modifier)
+        {
+            return ParseFunctionTypeCode();
+        }
+
+        public string ParseStorageClass()
+        {
+            switch (str[i++])
+            {
+            case 'A': return "";
+            case 'B': return "volatile";
+            case 'C': return "const";
+            case 'Z': return "__executable";
+            default:
+                Error("Unknown storage class code '{0}'.", str[i - 1]);
+                return null;
+            }
+        }
+
+        public string ParseThisStorageClass()
+        {
+            switch (str[i++])
+            {
+            case 'A': return "";
+            case 'B': return "volatile";
+            case 'C': return "const";
+            case 'E': return "__ptr64";
+            case 'F': return "__unaligned";
+            default:
+                Error("Unknown 'this' storage class code '{0}'.", str[i - 1]);
+                return null;
+            }
+        }
+
+        public SerializedSignature ParseFunctionTypeCode()
+        {
+            string convention = ParseCallingConvention();
+            SerializedType retType;
+            if (PeekAndDiscard('@'))
+            {
+                // C++ ctors have no return type!
+                retType = null;
+            }
+            else
+            {
+                retType = ParseDataTypeCode();
+            }
+            SerializedArgument[] args = ParseArgumentList();
+            return new SerializedSignature
+            {
+                Convention = convention,
+                Arguments = args,
+                ReturnValue = new SerializedArgument { Type=retType}
+            };
+        }
+
+        public string ParseOperatorCode()
+        {
+            switch (str[i++])
+            {
+            case '0': return "{0}";
+            case '1': return "~{0}";
+            case '2': return "operator new";
+            default: Error("Unknown operator code '{0}'.", str[i - 1]);
+                return null;
+            }
+        }
+
+        public string ParseCallingConvention()
+        {
+            switch (str[i++])
+            {
+            case 'A': return "__cdecl";
+            case 'C': return "__pascal";
+            case 'E': return "__thiscall";
+            case 'G': return "__stdcall";
+            case 'I': return "__fastcall";
+            case 'K': return "";
+            case 'M': return "__clrcall";
+            case 'O': return "__eabi";
+            default: Error("Unknown calling convention code '{0}'.", str[i - 1]);
+                return null;
+            }
+        }
+        
+        public SerializedArgument[] ParseArgumentList()
+        {
+            var args = new List<SerializedArgument>();
+            var arg = ParseDataTypeCode();
+            if (arg != null)
+            {
+                args.Add(new SerializedArgument { Type = arg });
+                while (!PeekAndDiscard('@'))
                 {
-                case 'A':
-                    switch (str[idx++])
-                    {
-                    case 'B': // const &
-                        var type = GetEncodedType();
-                        args.Add(new SerializedArgument { Type = new SerializedPointerType { DataType=type } });     //$TODO: is_const, is_reference
+                    arg = ParseDataTypeCode();
+                    if (arg == null)
                         break;
-                    default: throw new NotSupportedException(string.Format("Unsupported type specifier 'A{0}'.", ch));
-                    }
-                    break;
-                case 'D': args.Add(new SerializedArgument { Type = new SerializedPrimitiveType(Domain.Character, 1) }); break;
-                default: throw new NotSupportedException(string.Format("Unsupported type specifier {0}.", ch));
-               }
+                    args.Add(new SerializedArgument { Type = arg });
+                }
             }
             return args.ToArray();
         }
 
-        private SerializedType GetEncodedType()
+        public SerializedType ParseDataTypeCode()
         {
-            switch(str[idx++])
+            switch (str[i++])
             {
-            case 'H': return new SerializedPrimitiveType(Domain.SignedInt, 4);
-            case '@': return null;  // No return type at all (dtors)
-            case 'X': return new SerializedVoidType();
+            case 'A': return ParsePointer();        //$TODO: really is a reference but is implemented as a pointer on Win32...
+            case 'C': return new SerializedPrimitiveType(Domain.Character | Domain.SignedInt, 1);
             case 'D': return new SerializedPrimitiveType(Domain.Character, 1);
-            case 'U': return ParseFullyQualifiedTypeName(); // struct
-            case 'V': return ParseFullyQualifiedTypeName(); // class
+            case 'E': return new SerializedPrimitiveType(Domain.Character | Domain.UnsignedInt, 1);
+            case 'F': return new SerializedPrimitiveType(Domain.SignedInt, 2);
+            case 'G': return new SerializedPrimitiveType(Domain.UnsignedInt, 2);
+            case 'H': return new SerializedPrimitiveType(Domain.SignedInt, 4);
+            case 'I': return new SerializedPrimitiveType(Domain.UnsignedInt, 4);
+            case 'J': return new SerializedPrimitiveType(Domain.SignedInt, 4);      // 'long' on Win32 is actually 4 bytes
+            case 'K': return new SerializedPrimitiveType(Domain.UnsignedInt, 4);  // 'long' on Win32 is actually 4 bytes
+            case 'M': return new SerializedPrimitiveType(Domain.Real, 4);
+            case 'N': return new SerializedPrimitiveType(Domain.Real, 8);
+            case 'O': return new SerializedPrimitiveType(Domain.Real, 10);
+            case 'P': return ParsePointer();
+            //case 'P': pointer        (see below)
+            //case 'Q': array          (see below)
+            case 'U': return ParseStructure(); // struct (see below)
+            case 'V': return ParseStructure(); // class (see below)
+            case 'X': return null;      // void           (terminates argument list)
+            case 'Z': return null;      // elipsis        (terminates argument list)
+            default: Error("Unsupported type code '{0}'.", str[i - 1]); return null;
             }
-            throw new NotSupportedException(string.Format("Unknown type {0}", str[idx - 1]));
         }
 
-        private SerializedTypeReference ParseFullyQualifiedTypeName()
+        public SerializedPointerType ParsePointer()
         {
-            string name;
-            char ch = str[idx];
-            if (ch == '?' && str[idx + 1] == '$')
+            int size = 0;       //$REVIEW how to deal with 64-bitness
+            switch (str[i++])
             {
-                idx += 2;
-                name = this.ParseName();
-                Expect('@');
-                var tempTypes = new List<SerializedType>();
-                for (; ; )
-                {
-                    var t = this.GetEncodedType();
-                    if (t == null)
-                        break;
-                    tempTypes.Add(t);
-                }
-                scopes = ParseNamespaces();
-                var tr = new SerializedTypeReference(scopes.ToArray(), name, tempTypes.ToArray());
-                namesSeen.Add(tr);
-                return tr;
+            case 'A': size = 4; break;      //$BUG: assumes 32-bitness
+            case 'B': size = 4; break;      // const ptr
+            case 'C': size = 4; break;      // volatile ptr
+            case 'D': size = 4; break;      // const volatile ptr
+            default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); break;
             }
-            else if ('0' <= ch && ch <= '9')
+            var type = ParseDataTypeCode();
+            return new SerializedPointerType
+            {
+                DataType = type,
+                PointerSize = size,
+            };
+        }
+
+        public SerializedTypeReference ParseStructure()
+        {
+            char ch = str[i];
+            if ('0' <= ch && ch <= '9')
             {
                 int n = ch - '0';
-                ++idx;
+                ++i;
                 var t = namesSeen[n];
                 Expect('@');
                 return t;
             }
             else
             {
-                name = this.ParseName();
+                var q = ParseQualification();
                 Expect('@');
-                scopes = ParseNamespaces();
-                var tr = new SerializedTypeReference(scopes.ToArray(), name);
+                var tr = new SerializedTypeReference
+                {
+                    TypeName = q.Last(),
+                    Scope = q.Take(q.Length - 1).ToArray()
+                };
                 namesSeen.Add(tr);
                 return tr;
             }
+
         }
 
-        public Stack<string> ParseNamespaces()
+        internal string ParseAtName()
         {
-            var stack = new Stack<string>();
-            while (str[idx] != '@')
-            {
-                stack.Push(ParseName());
-                Expect('@');
-            }
+            int iStart = i;
+            while (i < str.Length && str[i] != '@')
+                ++i;
+            string name = str.Substring(iStart, i - iStart);
             Expect('@');
-            return stack;
-        }
-
-        private int ParseDecimalDigit()
-        {
-            switch (str[idx++])
-            {
-            case '0': return 0;
-            default: throw new NotImplementedException();
-            }
-        }
-
-        private string GetCallConvention()
-        {
-            switch (str[idx++])
-            {
-            case 'G': return "__stdcall";
-            case 'A': return "__cdecl";
-            case 'I': return "__fastcall";
-            case 'E': return "__thiscall";
-            }
-            throw new NotSupportedException(string.Format("Unknown call convertion code '{0}'.", str[idx-1]));
+            return name;
         }
     }
 }

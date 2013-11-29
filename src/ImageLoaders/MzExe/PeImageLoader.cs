@@ -400,11 +400,11 @@ namespace Decompiler.ImageLoaders.MzExe
             if (sig == null)
             {
                 // Can we guess at the signature?
-                var pmnp = new PeMangledNameParser();
+                var pmnp = new PeMangledNameParser(fnName);
                 Decompiler.Core.Serialization.SerializedProcedure sproc = null;
                 try
                 {
-                    sproc = pmnp.Parse(fnName);
+                    sproc = pmnp.Parse();
                 }
                 catch
                 {
