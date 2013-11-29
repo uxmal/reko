@@ -76,6 +76,5 @@ namespace Decompiler.Core
 
         RegisterStorage StackRegister { get; }              // Stack pointer for this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
-
     }
 }

@@ -42,7 +42,6 @@ namespace Decompiler.Assemblers.M68k
     {
         private M68kArchitecture arch;
         private Platform platform;
-        private Emitter emitter;
         private List<EntryPoint> entryPoints;
         private SortedDictionary<string, TypeLibrary> importLibraries;
         private Dictionary<uint, PseudoProcedure> importThunks;
@@ -52,13 +51,14 @@ namespace Decompiler.Assemblers.M68k
         {
             this.arch = arch;
             this.BaseAddress = addrBase;
-            this.emitter = new Emitter();
+            this.Emitter = new Emitter();
             this.constants = new List<ushort>();
             this.Symbols = new SymbolTable();
         }
 
         public Address BaseAddress { get; private set; }
         public SymbolTable Symbols { get; private set; }
+        public Emitter Emitter { get; private set; }
 
         public RegisterOperand d0 { get { return new RegisterOperand(Registers.d0); } }
         public RegisterOperand d1 { get { return new RegisterOperand(Registers.d1); } }
@@ -78,22 +78,19 @@ namespace Decompiler.Assemblers.M68k
         public RegisterOperand a6 { get { return new RegisterOperand(Registers.a6); } }
         public RegisterOperand a7 { get { return new RegisterOperand(Registers.a7); } }
 
-        public Emitter Emitter { get { return emitter; } }
-
-
         public LoadedImage GetImage()
         {
-            return new LoadedImage(BaseAddress, emitter.Bytes);
+            return new LoadedImage(BaseAddress, Emitter.Bytes);
         }
 
         internal void Cnop(int extra, int align)
         {
-            emitter.Align(extra, align);
+            Emitter.Align(extra, align);
         }
 
         public void Label(string label)
         {
-            Symbols.DefineSymbol(label, emitter.Position).ResolveBe(emitter);
+            Symbols.DefineSymbol(label, Emitter.Position).ResolveBe(Emitter);
         }
 
         private int Ea(MachineOperand op, int shift)
@@ -221,7 +218,7 @@ namespace Decompiler.Assemblers.M68k
         {
             foreach (ushort c in constants)
             {
-                emitter.EmitBeUint16(c);
+                Emitter.EmitBeUint16(c);
             }
             constants.Clear();
         }
@@ -230,7 +227,7 @@ namespace Decompiler.Assemblers.M68k
         {
             if (psym.fResolved)
             {
-                emitter.PatchBe(off, psym.offset, width);
+                Emitter.PatchBe(off, psym.offset, width);
             }
             else
             {
@@ -263,29 +260,6 @@ namespace Decompiler.Assemblers.M68k
         {
             Emit(0xD080 | Ea(eaDst, 0) | DReg(dSrc) << 9);
         }
-
-        public void Cmp_b(MachineOperand eaSrc, RegisterOperand dDst)
-        {
-            Emit(0xB000 | Ea(eaSrc, 0) | DReg(dDst) << 9);
-        }
-        public void Cmp_w(MachineOperand eaSrc, RegisterOperand dDst)
-        {
-            Emit(0xB040 | Ea(eaSrc, 0) | DReg(dDst) << 9);
-        }
-        public void Cmp_l(MachineOperand eaSrc, RegisterOperand dDst)
-        {
-            Emit(0xB080 | Ea(eaSrc, 0) | DReg(dDst) << 9);
-        }
-
-        public void Cmpa_w(MachineOperand eaSrc, RegisterOperand aDst)
-        {
-            Emit(0xB0C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
-        }
-        public void Cmpa_l(MachineOperand eaSrc, RegisterOperand aDst)
-        {
-            Emit(0xB1C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
-        }
-
 
         public void Adda_w(MachineOperand eaSrc, RegisterOperand aDst)
         {
@@ -320,7 +294,6 @@ namespace Decompiler.Assemblers.M68k
             Emit(0xE180 | SmallQ(c) << 9 | DReg(dDst));
         }
 
-
             //Opcode.bt, Opcode.bf, Opcode.bhi, Opcode.bls, Opcode.bcc, Opcode.bcs, Opcode.bne, Opcode.beq, 
             //Opcode.bvc, Opcode.bvs, Opcode.bpl, Opcode.bmi, Opcode.bge, Opcode.blt, Opcode.bgt, Opcode.ble };
 
@@ -347,9 +320,9 @@ namespace Decompiler.Assemblers.M68k
         }
         public void Bcc(string target, int flags)
         {
-            constants.Add((ushort)-(emitter.Position + 2));
+            constants.Add((ushort)-(Emitter.Position + 2));
             Emit(0x6000 | (flags << 8));
-            ReferToSymbol(Symbols.CreateSymbol(target), emitter.Position - 2, PrimitiveType.Word16);
+            ReferToSymbol(Symbols.CreateSymbol(target), Emitter.Position - 2, PrimitiveType.Word16);
         }
 
         private void Bcc(uint address, int flags)
@@ -370,6 +343,28 @@ namespace Decompiler.Assemblers.M68k
             Emit(0x4280 | Ea(ea, 0));
         }
 
+        public void Cmp_b(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xB000 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+        public void Cmp_w(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xB040 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+        public void Cmp_l(MachineOperand eaSrc, RegisterOperand dDst)
+        {
+            Emit(0xB080 | Ea(eaSrc, 0) | DReg(dDst) << 9);
+        }
+
+        public void Cmpa_w(MachineOperand eaSrc, RegisterOperand aDst)
+        {
+            Emit(0xB0C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
+        }
+        public void Cmpa_l(MachineOperand eaSrc, RegisterOperand aDst)
+        {
+            Emit(0xB1C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
+        }
+
         public void Jsr(uint address)
         {
             Jsr(new AddressOperand(new Address(address)));
@@ -381,10 +376,9 @@ namespace Decompiler.Assemblers.M68k
         public void Jsr(string target)
         {
             var linBase = BaseAddress.Linear;
-            constants.Add((ushort) (linBase>>16));
-            constants.Add((ushort) (linBase));
+            Imm(4, linBase);
             Emit(0x4EB9);
-            ReferToSymbol(Symbols.CreateSymbol(target), emitter.Position - 4, PrimitiveType.Word32);
+            ReferToSymbol(Symbols.CreateSymbol(target), Emitter.Position - 4, PrimitiveType.Word32);
         }
 
         public void Lea(MachineOperand ea, RegisterOperand aReg)
@@ -429,7 +423,7 @@ namespace Decompiler.Assemblers.M68k
 
         public void Nop()
         {
-            emitter.EmitBeUint16(0x4E71);
+            Emitter.EmitBeUint16(0x4E71);
         }
 
         internal void Pea(MachineOperand ea)
@@ -458,7 +452,7 @@ namespace Decompiler.Assemblers.M68k
 
         private void Emit(int opcode)
         {
-            emitter.EmitBeUint16(opcode);
+            Emitter.EmitBeUint16(opcode);
             EmitConstants();
         }
 
