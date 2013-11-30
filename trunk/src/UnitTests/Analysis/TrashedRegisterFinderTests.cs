@@ -207,7 +207,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void Copy()
+        public void TrfCopy()
         {
             Identifier r1 = m.Register(1);
             Identifier r2 = m.Register(2);
@@ -222,7 +222,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void CopyBack()
+        public void TrfCopyBack()
         {
             var tmp = m.Local32("tmp");
             var esp = m.Frame.EnsureRegister(Registers.esp);
@@ -244,7 +244,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void OutParameters()
+        public void TrfOutParameters()
         {
             var r2 = m.Register(2);
             var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
@@ -257,7 +257,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void CallInstruction()
+        public void TrfCallInstruction()
         {
             var callee = new Procedure("Callee", prog.Architecture.CreateFrame());
             var stm = m.Call(callee);
@@ -274,7 +274,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void PropagateToSuccessorBlocks()
+        public void TrfPropagateToSuccessorBlocks()
         {
             Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
             var frame = proc.Frame;
@@ -314,7 +314,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void PropagateStackValuesToSuccessor()
+        public void TrfPropagateStackValuesToSuccessor()
         {
             m.Label("Start");
             Identifier ecx = m.Register(1);
@@ -348,7 +348,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void PropagateToProcedureSummary()
+        public void TrfPropagateToProcedureSummary()
         {
             Procedure proc = new Procedure("proc", prog.Architecture.CreateFrame());
             prog.CallGraph.AddProcedure(proc);
@@ -372,7 +372,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void PropagateFlagsToProcedureSummary()
+        public void TrfPropagateFlagsToProcedureSummary()
         {
             var proc = new Procedure("proc", prog.Architecture.CreateFrame());
             prog.CallGraph.AddProcedure(proc);
@@ -389,7 +389,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void PreserveEbp()
+        public void TrfPreserveEbp()
         {
             Identifier esp = m.Frame.EnsureRegister(Registers.esp);
             Identifier ebp = m.Frame.EnsureRegister(Registers.ebp);
@@ -410,7 +410,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void ProcessBlock()
+        public void TrfProcessBlock()
         {
             Identifier eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
             Identifier esp = m.Procedure.Frame.EnsureRegister(Registers.esp);
@@ -426,7 +426,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void TerminatingProcedure()
+        public void TrfTerminatingProcedure()
         {
             var eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
             m.Assign(eax, m.Word32(0x40));
@@ -441,7 +441,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void TwoProcedures()
+        public void TrfTwoProcedures()
         {
             p.Add("main", m =>
             {

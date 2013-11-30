@@ -2,76 +2,103 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax al
+	Trashed:   SCZO eax ecx ebx esp edi ax cx bx sp di al cl bl ah ch bh es
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp esp:<invalid>
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp esp:<invalid>
 l0C00_0000:
-	al = 0x20
 	call fn0C00_000C (retsize: 2; depth: 2)
-	branch Test(ULT,C) l0C00_000B
-// DataOut: ds
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0C00_0007:
-	Mem0[ds:0x0300:byte] = 0x20
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp al:0x20
-
-l0C00_000B:
+	Mem0[ds:0x0300:word16] = bx
+	Mem0[ds:0x0302:byte] = cl
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp al:0x20
 
+// SymbolicIn: sp:fp esp:<invalid> eax:<invalid> ecx:<invalid> ebx:<invalid> ax:<invalid> cx:<invalid> bx:<invalid> cl:<invalid> bl:<invalid> ah:<invalid> ch:<invalid> bh:<invalid> edi:<invalid> di:<invalid> al:0x00 es:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp al:0x20
 
 // fn0C00_000C /////////////////////
-	LiveOut:   C ds
-	MayUseIn:  al ds
+	LiveOut:   bx cl ds
+	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO
+	Trashed:   SCZO eax ecx ebx esp edi ax cx bx sp di al cl bl ah ch bh es
 	Preserved: sp
 // fn0C00_000C
 void fn0C00_000C()
+// SymbolicIn: sp:fp esp:<invalid>
 fn0C00_000C_entry:
-// DataOut: al ds
+// DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp esp:<invalid>
 l0C00_000C:
-	SCZO = cond(al - 0x20)
-	branch Test(ULT,C) l0C00_0014
-// DataOut: ds
-// DataOut (flags): C
-// SymbolicIn: sp:fp
+	cx = ds
+	es = cx
+	di = 0x7E0F
+	cx = 0x000C
+	al = 0x00
+	SZO = cond(al)
+	C = false
+// DataOut: cx di al es ds
+// DataOut (flags): Z
 
-l0C00_0010:
-	v7 = Mem0[ds:0x0201:word16] + 0x0001
-	Mem0[ds:0x0201:word16] = v7
-	SZO = cond(v7)
-// DataOut: ds
-// DataOut (flags): C
-// SymbolicIn: sp:fp
+// SymbolicIn: sp:fp esp:<invalid> cx:<invalid> ecx:<invalid> cl:<invalid> ch:<invalid> es:ds di:<invalid> edi:<invalid> al:0x00 ax:<invalid> eax:<invalid>
+l0C00_0019:
+	branch cx == 0x0000 l0C00_001B
+// DataOut: cx di al es ds
+// DataOut (flags): Z
 
-l0C00_0014:
+// SymbolicIn: sp:fp esp:<invalid> cx:<invalid> ecx:<invalid> cl:<invalid> ch:<invalid> es:ds di:<invalid> edi:<invalid> al:0x00 ax:<invalid> eax:<invalid>
+l0C00_0019_1:
+	SCZO = cond(al - Mem0[es:di:byte])
+	di = di + 0x0001
+	cx = cx - 0x0001
+	branch Test(NE,Z) l0C00_0019
+// DataOut: cx di al es ds
+// DataOut (flags): Z
+
+// SymbolicIn: di:<invalid> edi:<invalid> cx:<invalid> ecx:<invalid> cl:<invalid> ch:<invalid> sp:fp esp:<invalid> es:ds al:0x00 ax:<invalid> eax:<invalid>
+l0C00_001B:
+	branch Test(EQ,Z) l0C00_002D
+// DataOut: di al ds
+// DataOut (flags): 
+
+// SymbolicIn: di:<invalid> edi:<invalid> cx:<invalid> ecx:<invalid> cl:<invalid> ch:<invalid> sp:fp esp:<invalid> es:ds al:0x00 ax:<invalid> eax:<invalid>
+l0C00_001D:
+	ah = Mem0[ds:di + 0x0001:byte]
+	Z = ax == 0x0000
+	cx = __bsr(ax)
+	cx = cx - 0x0008
+	SCZO = cond(cx)
+	bx = di
+	bx = bx - 0x7E03
+	SCZO = cond(bx)
 	return
-// DataOut: ds
-// DataOut (flags): C
-// SymbolicIn: sp:fp
+// DataOut: bx cl ds
+// DataOut (flags): 
 
+// SymbolicIn: di:<invalid> edi:<invalid> cx:<invalid> ecx:<invalid> cl:<invalid> ch:<invalid> sp:fp esp:<invalid> es:ds al:0x00 ax:<invalid> eax:<invalid>
+l0C00_002D:
+	bx = 0x0000
+	SZO = cond(bx)
+	C = false
+	cl = 0x00
+	SZO = cond(cl)
+	C = false
+	return
+// DataOut: bx cl ds
+// DataOut (flags): 
+
+// SymbolicIn: bx:<invalid> ebx:<invalid> bl:<invalid> bh:<invalid> cl:<invalid> cx:<invalid> ecx:<invalid> ah:<invalid> ax:<invalid> eax:<invalid> ch:<invalid> di:<invalid> edi:<invalid> sp:fp esp:<invalid> es:ds al:0x00
 fn0C00_000C_exit:
-// DataOut: ds
-// DataOut (flags): C
-// SymbolicIn: sp:fp
+// DataOut: bx cl ds
+// DataOut (flags): 
 

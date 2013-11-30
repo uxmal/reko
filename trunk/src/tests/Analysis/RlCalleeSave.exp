@@ -6,11 +6,12 @@
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	call fn0C00_000D (retsize: 2; depth: 2)
 	si = ax
@@ -19,12 +20,11 @@ l0C00_0000:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
 
 // fn0C00_000D /////////////////////
 	LiveOut:   ax ds
@@ -34,12 +34,13 @@ fn0C00_0000_exit:
 	Preserved: sp si
 // fn0C00_000D
 void fn0C00_000D()
+// SymbolicIn: sp:fp
 fn0C00_000D_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_000D:
 	sp = fp - 0x0002
 	wLoc02 = si
@@ -51,12 +52,11 @@ l0C00_000D:
 	return
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp si:si ax:<invalid> -2(fp):si
 fn0C00_000D_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp si:si ax:<invalid> -2(fp):si
 
 // fn0C00_001A /////////////////////
 	LiveOut:   ax ds
@@ -66,12 +66,13 @@ fn0C00_000D_exit:
 	Preserved: sp si
 // fn0C00_001A
 void fn0C00_001A()
+// SymbolicIn: sp:fp
 fn0C00_001A_entry:
 // DataOut: si ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_001A:
 	sp = fp - 0x0002
 	wLoc02 = si
@@ -81,10 +82,9 @@ l0C00_001A:
 	return
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp ax:<invalid> si:si -2(fp):si
 fn0C00_001A_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:<invalid> si:si -2(fp):si
 

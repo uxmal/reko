@@ -6,12 +6,13 @@
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	sp = fp - 0x0002
 	wLoc02 = 0x0320
@@ -24,12 +25,11 @@ l0C00_0000:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp bx:<invalid> -4(fp):0x0300 -2(fp):0x0320
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp bx:<invalid> -4(fp):0x0300 -2(fp):0x0320
 
 // fn0C00_0010 /////////////////////
 	LiveOut:   ds
@@ -39,12 +39,13 @@ fn0C00_0000_exit:
 	Preserved: sp bp
 // fn0C00_0010
 void fn0C00_0010()
+// SymbolicIn: sp:fp
 fn0C00_0010_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Stack +0002(16) Stack +0004(16) Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0010:
 	sp = fp - 0x0002
 	wLoc02 = bp
@@ -68,12 +69,11 @@ l0C00_0010:
 	return
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp bp:bp bx:<invalid> -2(fp):bp
 fn0C00_0010_exit:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp bp:bp bx:<invalid> -2(fp):bp
 
 // fn0C00_0037 /////////////////////
 	LiveOut:  
@@ -83,11 +83,12 @@ fn0C00_0010_exit:
 	Preserved: sp
 // fn0C00_0037
 void fn0C00_0037()
+// SymbolicIn: sp:fp
 fn0C00_0037_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0037:
 	rLoc1 = 0
 	Mem0[ds:0x0400:real64] = rLoc1
@@ -96,10 +97,9 @@ l0C00_0037:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 fn0C00_0037_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 

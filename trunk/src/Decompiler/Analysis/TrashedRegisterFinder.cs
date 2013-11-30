@@ -230,9 +230,20 @@ namespace Decompiler.Analysis
 
         public void PropagateToSuccessorBlock(Block s)
         {
-            bool changed = false;
             BlockFlow succFlow = flow[s];
+            if (s.Name.StartsWith("fn0C00_000C"))
+                s.ToString();
+            bool changed = MergeDataFlow(succFlow);
+            if (changed)
+            {
+                worklist.Add(s);
+            }
+        }
+
+        public bool MergeDataFlow(BlockFlow succFlow)
+        {
             var ctxSucc = succFlow.SymbolicIn;
+            bool changed = false;
             foreach (var de in ctx.RegisterState)
             {
                 Expression oldValue;
@@ -269,10 +280,7 @@ namespace Decompiler.Analysis
                 succFlow.grfTrashedIn = grfNew;
                 changed = true;
             }
-            if (changed)
-            {
-                worklist.Add(s);
-            }
+            return changed;
         }
 
         [Conditional("DEBUG")]

@@ -66,6 +66,33 @@ namespace Decompiler.Analysis
                 writer.WriteLine("// Terminates process");
 		}
 
+        /// <summary>
+        /// Writes flow state that is true on entry to the basic block.
+        /// </summary>
+        /// <param name="arch"></param>
+        /// <param name="writer"></param>
+        public void WriteBefore(IProcessorArchitecture arch, TextWriter writer)
+        {
+            SymbolicIn.Emit(arch, "// SymbolicIn:", writer);
+            writer.WriteLine();
+        }
+
+        /// <summary>
+        /// Writes flow state that is true on exit from the basic block.
+        /// </summary>
+        /// <param name="arch"></param>
+        /// <param name="writer"></param>
+        public void WriteAfter(IProcessorArchitecture arch, TextWriter writer)
+        {
+            EmitRegisters(arch, "// DataOut:", DataOut, writer);
+            writer.WriteLine();
+            EmitFlagGroup(arch, "// DataOut (flags):", grfOut, writer);
+            writer.WriteLine();
+            EmitLocals("// LocalsOut:", writer);
+            if (TerminatesProcess)
+                writer.WriteLine("// Terminates process");
+        }
+
         private void EmitLocals(string caption, TextWriter writer)
         {
             if (StackVarsOut.Count <= 0)

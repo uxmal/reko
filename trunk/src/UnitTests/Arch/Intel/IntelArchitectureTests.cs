@@ -251,6 +251,5 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             Assert.AreEqual("12345678", addr.ToString());
         }
-        
 	}
 }

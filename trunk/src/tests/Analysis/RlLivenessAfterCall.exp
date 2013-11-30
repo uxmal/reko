@@ -6,23 +6,23 @@
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	call fn0C00_0006 (retsize: 2; depth: 2)
 	Mem0[ds:bx:word16] = 0x0001
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp ax:0x0001
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:0x0001
 
 // fn0C00_0006 /////////////////////
 	LiveOut:   bx ds
@@ -32,20 +32,20 @@ fn0C00_0000_exit:
 	Preserved: sp
 // fn0C00_0006
 void fn0C00_0006()
+// SymbolicIn: sp:fp
 fn0C00_0006_entry:
 // DataOut: bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0006:
 	ax = 0x0001
 	return
 // DataOut: bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp ax:0x0001
 fn0C00_0006_exit:
 // DataOut: bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:0x0001
 

@@ -59,12 +59,18 @@ namespace Decompiler.UnitTests.Analysis
 				w.WriteLine();
 				foreach (Block block in proc.SortBlocksByName())
 				{
-					block.Write(w);
-					if (live != null)
-					{
-						dfa.ProgramDataFlow[block].Emit(prog.Architecture, w);
-						w.WriteLine();
-					}
+                    if (live != null)
+                    {
+                        var bFlow = dfa.ProgramDataFlow[block];
+                        bFlow.WriteBefore(prog.Architecture, w);
+                        block.Write(w);
+                        bFlow.WriteAfter(prog.Architecture, w);
+                        w.WriteLine();
+                    }
+                    else
+                    {
+                        block.Write(w);
+                    }
 				}
 			}
 		}

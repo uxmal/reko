@@ -6,12 +6,13 @@
 	Preserved:
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Local -0006(16) Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	cx = 0x002A
 	sp = fp - 0x0002
@@ -47,12 +48,11 @@ l0C00_0000:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp - 0x0004 cx:0x002A ax:<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):0x0002 -6(fp):0x0001 -4(fp):0x0002 -2(fp):0x0001
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x0004 cx:0x002A ax:<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):0x0002 -6(fp):0x0001 -4(fp):0x0002 -2(fp):0x0001
 
 // fn0C00_0023 /////////////////////
 	LiveOut:   ds
@@ -62,12 +62,13 @@ fn0C00_0000_exit:
 	Preserved: cx sp bp
 // fn0C00_0023
 void fn0C00_0023()
+// SymbolicIn: sp:fp
 fn0C00_0023_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Stack +0002(16) Stack +0004(16) Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0023:
 	sp = fp - 0x0002
 	wLoc02 = cx
@@ -85,12 +86,11 @@ l0C00_0023:
 	return
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp bp:bp cx:cx ax:<invalid> -4(fp):bp -2(fp):cx
 fn0C00_0023_exit:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp bp:bp cx:cx ax:<invalid> -4(fp):bp -2(fp):cx
 
 // fn0C00_0034 /////////////////////
 	LiveOut:  
@@ -100,12 +100,13 @@ fn0C00_0023_exit:
 	Preserved: cx dx bx sp bp
 // fn0C00_0034
 void fn0C00_0034()
+// SymbolicIn: sp:fp
 fn0C00_0034_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0034:
 	sp = fp - 0x0002
 	wLoc02 = bx
@@ -119,9 +120,9 @@ l0C00_0034:
 	bx = fp + 0x0006
 // DataOut: bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 l0C00_003D:
 	ax = Mem0[ds:bx:word16]
 	bx = bx + 0x0002
@@ -131,9 +132,9 @@ l0C00_003D:
 	branch Test(NE,Z) l0C00_003D
 // DataOut: bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 l0C00_0046:
 	dx = wArg04
 	bx = bx + 0x0002
@@ -153,12 +154,11 @@ l0C00_0046:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 
+// SymbolicIn: sp:fp bp:bp bx:bx ax:<invalid> dx:dx cx:cx -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 fn0C00_0034_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp bp:bp bx:bx ax:<invalid> dx:dx cx:cx -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 
 // fn0C00_005D /////////////////////
 	LiveOut:  
@@ -168,12 +168,13 @@ fn0C00_0034_exit:
 	Preserved: cx sp bp
 // fn0C00_005D
 void fn0C00_005D()
+// SymbolicIn: sp:fp
 fn0C00_005D_entry:
 // DataOut: cx
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Stack +0004(16) Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_005D:
 	sp = fp - 0x0002
 	wLoc02 = cx
@@ -190,12 +191,11 @@ l0C00_005D:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp bp:bp ax:<invalid> cx:cx -4(fp):bp -2(fp):cx
 fn0C00_005D_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp bp:bp ax:<invalid> cx:cx -4(fp):bp -2(fp):cx
 
 // fn0C00_0069 /////////////////////
 	LiveOut:  
@@ -205,21 +205,21 @@ fn0C00_005D_exit:
 	Preserved: sp
 // fn0C00_0069
 void fn0C00_0069()
+// SymbolicIn: sp:fp
 fn0C00_0069_entry:
 // DataOut: cx bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0069:
 	Mem0[ds:0x0200:word16] = bx
 	Mem0[ds:0x0300:word16] = cx
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 fn0C00_0069_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 

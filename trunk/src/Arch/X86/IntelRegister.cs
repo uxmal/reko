@@ -19,11 +19,13 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Decompiler.Arch.X86
 {
@@ -227,7 +229,24 @@ namespace Decompiler.Arch.X86
 
 		}
 
-	}
+        public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
+        {
+            base.SetRegisterStateValues(value, isValid, ctx);
+            if (isValid)
+            {
+                var c = ((Constant) value).ToUInt16();
+                ctx[Registers.GetRegister(regLoByte)] = Constant.Byte((byte) c);
+                ctx[Registers.GetRegister(regHiByte)] = Constant.Byte((byte) (c >> 8));
+                ctx[Registers.GetRegister(regWord)] = Constant.Word16((ushort) c);
+            }
+            else
+            {
+                ctx[Registers.GetRegister(regLoByte)] = Constant.Invalid;
+                ctx[Registers.GetRegister(regHiByte)] = Constant.Invalid;
+                ctx[Registers.GetRegister(regWord)] = Constant.Invalid;
+            }
+        }
+    }
 
     public class Intel64AccRegister : Intel64Register
     {
@@ -293,43 +312,68 @@ namespace Decompiler.Arch.X86
             registerFile[r] = (value >> 8) & 0xFFU;
             valid[r] = true;
         }
+
+        public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
+        {
+            base.SetRegisterStateValues(value, isValid, ctx);
+            if (isValid)
+            {
+                var c = ((Constant) value).ToUInt16();
+                ctx[Registers.GetRegister(regLoByte)] = Constant.Byte((byte) c);
+                ctx[Registers.GetRegister(regHiByte)] = Constant.Byte((byte) (c >> 8));
+                ctx[Registers.GetRegister(regWord)] = Constant.Word16((ushort) c);
+                ctx[Registers.GetRegister(regDword)] = Constant.Word32((uint) c);
+            }
+            else
+            {
+                ctx[Registers.GetRegister(regLoByte)] = Constant.Invalid;
+                ctx[Registers.GetRegister(regHiByte)] = Constant.Invalid;
+                ctx[Registers.GetRegister(regWord)] = Constant.Invalid;
+                ctx[Registers.GetRegister(regDword)] = Constant.Invalid;
+            }
+        }
     }
 
-
-	public class Intel16Register : IntelRegister
-	{
-		public Intel16Register(string name, int number, int regDword, int regLoByte, int regHiByte)
-			: base(name, number, PrimitiveType.Word16, regDword, number, regLoByte, regHiByte)
-		{
-		}
+    public class Intel16Register : IntelRegister
+    {
+        public Intel16Register(string name, int number, int regDword, int regLoByte, int regHiByte)
+            : base(name, number, PrimitiveType.Word16, regDword, number, regLoByte, regHiByte)
+        {
+        }
 
         public override RegisterStorage GetSubregister(int offset, int size)
-		{
-			if (offset == 0)
-			{
-				if (size == 16)
-					return this;
-			}
-			return null;
-		}
+        {
+            if (offset == 0)
+            {
+                if (size == 16)
+                    return this;
+            }
+            return null;
+        }
 
         public override RegisterStorage GetWidestSubregister(BitSet bits)
-		{
-			int dw = Number + Registers.eax.Number - Registers.ax.Number;
-			if (bits[dw])
-				return this;
-			if (bits[Number])
-				return this;
-			return null;
-		}
+        {
+            int dw = Number + Registers.eax.Number - Registers.ax.Number;
+            if (bits[dw])
+                return this;
+            if (bits[Number])
+                return this;
+            return null;
+        }
 
-		public override void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
-		{
-			base.SetRegisterFileValues(registerFile, value, valid);
-			int r = regDword;
-			registerFile[r] = (uint) (registerFile[r] & ~0xFFFFU) | (value & 0xFFFFU);
-		}
-	}
+        public override void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
+        {
+            base.SetRegisterFileValues(registerFile, value, valid);
+            int r = regDword;
+            registerFile[r] = (uint) (registerFile[r] & ~0xFFFFU) | (value & 0xFFFFU);
+        }
+
+        public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
+        {
+            base.SetRegisterStateValues(value, isValid, ctx);
+            ctx[Registers.GetRegister(this.regDword)] = Constant.Invalid;
+        }
+    }
 
 	public class Intel16AccRegister : Intel16Register
 	{
@@ -391,6 +435,23 @@ namespace Decompiler.Arch.X86
 			registerFile[r] = (value >> 8) & 0xFFU;
 			valid[r] = true;
 		}
+
+        public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
+        {
+            base.SetRegisterStateValues(value, isValid, ctx);
+            if (isValid)
+            {
+                var c = ((Constant) value).ToUInt16();
+                ctx[Registers.GetRegister(regLoByte)] = Constant.Byte((byte) c);
+                ctx[Registers.GetRegister(regHiByte)] = Constant.Byte((byte) (c >> 8));
+            }
+            else
+            {
+                ctx[Registers.GetRegister(regLoByte)] = Constant.Invalid;
+                ctx[Registers.GetRegister(regHiByte)] = Constant.Invalid;
+            }
+            ctx[Registers.GetRegister(regDword)] = Constant.Invalid;        //$REVIEW: conservative
+        }
 	}
 
 	public class IntelLoByteRegister : IntelRegister
@@ -421,7 +482,6 @@ namespace Decompiler.Arch.X86
 
 			if (bits[Number])
 				return this;
-
 			return null;
 		}
 
@@ -442,6 +502,13 @@ namespace Decompiler.Arch.X86
 			r = regDword;
 			registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
 		}
+
+        public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
+        {
+            base.SetRegisterStateValues(value, isValid, ctx);
+            ctx[Registers.GetRegister(this.regWord)] = Constant.Invalid;
+            ctx[Registers.GetRegister(this.regDword)] = Constant.Invalid;
+        }
 	}
 
 	public class IntelHiByteRegister : IntelRegister
@@ -505,6 +572,13 @@ namespace Decompiler.Arch.X86
 			r = regDword;
 			registerFile[r] = (ulong) (registerFile[r] & ~0xFF00U) | (value << 8);
 		}
+
+        public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
+        {
+            base.SetRegisterStateValues(value, isValid, ctx);
+            ctx[Registers.GetRegister(this.regWord)] = Constant.Invalid;
+            ctx[Registers.GetRegister(this.regDword)] = Constant.Invalid;
+        }
 	}
 
 	public class SegmentRegister : IntelRegister

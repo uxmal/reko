@@ -19,12 +19,14 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Types;
 using Decompiler.Arch.X86;
 using NUnit.Framework;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Arch.Intel
 {
@@ -281,5 +283,31 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.IsTrue(valid[Registers.dh.Number]);
 		}
 
+        [Test]
+        public void X86reg_SetCxSymbolic_Invalid()
+        {
+            var ctx = new Dictionary<Storage, Expression> {
+                { Registers.cl, Constant.Byte(0) }
+            };
+            Registers.cx.SetRegisterStateValues(Constant.Invalid, false, ctx);
+            Assert.IsTrue(ctx[Registers.cx] == Constant.Invalid);
+            Assert.IsTrue(ctx[Registers.cl] == Constant.Invalid);
+            Assert.IsTrue(ctx[Registers.ch] == Constant.Invalid);
+            Assert.IsTrue(ctx[Registers.ecx] == Constant.Invalid);
+        }
+
+
+        [Test]
+        public void X86reg_SetDhSymbolic_Invalid()
+        {
+            var ctx = new Dictionary<Storage, Expression> {
+                { Registers.dl, Constant.Byte(3) }
+            };
+            Registers.dh.SetRegisterStateValues(Constant.Invalid, false, ctx);
+            Assert.IsTrue(ctx[Registers.dh] == Constant.Invalid);
+            Assert.IsTrue(ctx[Registers.dx] == Constant.Invalid);
+            Assert.IsTrue(ctx[Registers.edx] == Constant.Invalid);
+            Assert.AreEqual("0x03", ctx[Registers.dl].ToString());
+        }
 	}
 }
