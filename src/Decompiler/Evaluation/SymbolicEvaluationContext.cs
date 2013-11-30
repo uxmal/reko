@@ -306,7 +306,13 @@ namespace Decompiler.Evaluation
 
             public Storage VisitRegisterStorage(RegisterStorage reg)
             {
+                //$BUGBUG: Must also clear other registers (aliased subregisters)
+                //$BUGBUG: but the performance implications are terrible
+#if BUGGY
+                reg.SetRegisterStateValues(value, value is Constant && value != Constant.Invalid,  ctx.RegisterState);
+#else
                 ctx.RegisterState[reg] = value;
+#endif
                 return reg;
             }
 

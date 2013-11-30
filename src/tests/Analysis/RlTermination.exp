@@ -6,11 +6,12 @@
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	cx = 0x007B
 	ax = 0x0020
@@ -21,12 +22,11 @@ l0C00_0000:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp cx:0x007B ax:<invalid> bx:0x3212
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp cx:0x007B ax:<invalid> bx:0x3212
 
 // maybeterminate /////////////////////
 	LiveOut:  
@@ -36,25 +36,26 @@ fn0C00_0000_exit:
 	Preserved: sp
 // maybeterminate
 word16 maybeterminate(word16 ax, word16 bx)
+// SymbolicIn: sp:fp
 maybeterminate_entry:
 // DataOut: ax bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0015:
 	SCZO = cond(ax - Mem0[ds:bx:word16])
 	branch Test(ULT,C) l0C00_0023
 // DataOut: ax bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0019:
 	SCZO = cond(ax - Mem0[ds:bx + 0x0002:word16])
 	branch Test(UGE,C) l0C00_0023
 // DataOut: ax bx ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_001E:
 	bx = bx + ax
 	SCZO = cond(bx)
@@ -62,8 +63,8 @@ l0C00_001E:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0023:
 	cx = 0x0000
 	SZO = cond(cx)
@@ -73,10 +74,9 @@ l0C00_0023:
 	msdos_terminate(al)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp bx:bx + ax ax:<invalid>
 maybeterminate_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp bx:bx + ax ax:<invalid>
 

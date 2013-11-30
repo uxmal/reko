@@ -25,6 +25,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Core.Serialization;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Core
@@ -342,6 +343,11 @@ namespace Decompiler.Core
             valid[Number] = true;
         }
 
+        public virtual void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
+        {
+            ctx[this] = value;
+        }
+
         public int SubregisterOffset(RegisterStorage subReg)
         {
             var sub = subReg as RegisterStorage;
@@ -361,7 +367,7 @@ namespace Decompiler.Core
         public static RegisterStorage None { get { return none; } }
 
         private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Create(Domain.Any, 0));
-	}
+    }
 
 	public class SequenceStorage : Storage
 	{
@@ -525,7 +531,6 @@ namespace Decompiler.Core
                 return (local.StackOffset - StackOffset) * DataType.BitsPerByte;
             return -1;
         }
-
 
         public override void Write(TextWriter writer)
         {

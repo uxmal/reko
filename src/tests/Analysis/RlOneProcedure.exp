@@ -6,12 +6,13 @@
 	Preserved: sp bp
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Stack +0004(16) Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	sp = fp - 0x0002
 	wLoc02 = bp
@@ -31,10 +32,9 @@ l0C00_0000:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp bp:bp si:<invalid> ax:<invalid> -2(fp):bp
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp bp:bp si:<invalid> ax:<invalid> -2(fp):bp
 

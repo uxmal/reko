@@ -6,11 +6,12 @@
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	ax = 0x0001
 	cl = 0x00
@@ -25,12 +26,11 @@ l0C00_0000:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp ax:<invalid> cl:<invalid> bx:0x0005 ch:0x03 dx:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:<invalid> cl:<invalid> bx:0x0005 ch:0x03 dx:<invalid>
 
 // fn0C00_001E /////////////////////
 	LiveOut:   ax cl ds
@@ -40,26 +40,27 @@ fn0C00_0000_exit:
 	Preserved: sp
 // fn0C00_001E
 void fn0C00_001E()
+// SymbolicIn: sp:fp
 fn0C00_001E_entry:
 // DataOut: ax bx cl ch ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_001E:
 	cl = cl - ch
 	SCZO = cond(cl)
 	branch Test(ULT,C) l0C00_0027
 // DataOut: ax bx cl ch ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp cl:cl - ch
 l0C00_0022:
 	bx = bx >> cl
 	SCZO = cond(bx)
 // DataOut: ax bx cl ch ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp cl:cl - ch
 
+// SymbolicIn: sp:fp cl:cl - ch
 l0C00_0027:
 	cl = -cl
 	SCZO = cond(cl)
@@ -71,8 +72,8 @@ l0C00_0027:
 	C = cl == 0x00
 // DataOut: ax bx cl ch ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp cl:cl - ch
 
+// SymbolicIn: sp:fp cl:cl - ch ax:ax >> ch - cl bx:bx >> cl - ch
 l0C00_002D:
 	ax = ax + bx
 	SCZO = cond(ax)
@@ -81,12 +82,11 @@ l0C00_002D:
 	return
 // DataOut: ax cl ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp cl:cl - ch ax:ax >> ch - cl bx:bx >> cl - ch
 
+// SymbolicIn: sp:fp cl:cl - ch + ch ax:(ax >> ch - cl) + (bx >> cl - ch) bx:bx >> cl - ch
 fn0C00_001E_exit:
 // DataOut: ax cl ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp cl:cl - ch + ch ax:(ax >> ch - cl) + (bx >> cl - ch) bx:bx >> cl - ch
 
 // fn0C00_0032 /////////////////////
 	LiveOut:   ax cl ds
@@ -96,11 +96,12 @@ fn0C00_001E_exit:
 	Preserved: sp
 // fn0C00_0032
 void fn0C00_0032()
+// SymbolicIn: sp:fp
 fn0C00_0032_entry:
 // DataOut: ax bx cl ch ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0032:
 	dx_ax = bx *s ax
 	SCZO = cond(dx_ax)
@@ -109,10 +110,9 @@ l0C00_0032:
 	return
 // DataOut: ax cl ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp Sequence dx:ax:bx *s ax cl:cl + ch
 fn0C00_0032_exit:
 // DataOut: ax cl ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp Sequence dx:ax:bx *s ax cl:cl + ch
 

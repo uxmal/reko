@@ -6,12 +6,13 @@
 	Preserved: sp di
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: di ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	call fn0C00_000F (retsize: 2; depth: 2)
 	sp = fp - 0x0002
@@ -23,19 +24,18 @@ l0C00_0000:
 	sp = fp
 // DataOut: di ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp ax:<invalid> di:di -2(fp):di
 l0C00_0000_tmp:
 	call fn0C00_000F (retsize: 0;)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:<invalid> di:di -2(fp):di
 
+// SymbolicIn: sp:fp ax:<invalid> di:di -2(fp):di
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:<invalid> di:di -2(fp):di
 
 // fn0C00_000F /////////////////////
 	LiveOut:   di ds
@@ -45,22 +45,22 @@ fn0C00_0000_exit:
 	Preserved: sp
 // fn0C00_000F
 void fn0C00_000F()
+// SymbolicIn: sp:fp
 fn0C00_000F_entry:
 // DataOut: di ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_000F:
 	Mem0[ds:di:word16] = 0x0000
 	return
 // DataOut: di ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 fn0C00_000F_exit:
 // DataOut: di ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
 // fn0C00_0014 /////////////////////
 	LiveOut:   ax ds
@@ -70,11 +70,12 @@ fn0C00_000F_exit:
 	Preserved: sp
 // fn0C00_0014
 void fn0C00_0014()
+// SymbolicIn: sp:fp
 fn0C00_0014_entry:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp
 l0C00_0014:
 	di = 0x0000
 	SZO = cond(di)
@@ -84,10 +85,9 @@ l0C00_0014:
 	return
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp di:0x0000 ax:ax - 0x0001
 fn0C00_0014_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp di:0x0000 ax:ax - 0x0001
 
