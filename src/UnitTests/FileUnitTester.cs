@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests
 			{ 
 				string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR");
                 Assert.IsNotNullOrEmpty(prefix, "Must define the environment variable DECOMPILERROOTDIR.");
-				return prefix + "/src/tests";
+				return Path.Combine(prefix,"src","tests");
 			}
 		}
 		
