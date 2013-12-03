@@ -534,15 +534,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <DecompilerMetadata Include="$(SolutionDir)Environments/MsDos/*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments/Win32/*.xml" />
+  </ItemGroup>
+  <Target Name="BeforeBuild">
+    <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
+    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>xcopy /y /d $(SolutionDir)Environments\MsDos\*.xml $(TargetDir)
-xcopy /y /d $(SolutionDir)Environments\Win32\*.xml $(TargetDir)</PreBuildEvent>
+    <PreBuildEvent></PreBuildEvent>
   </PropertyGroup>
 </Project>
