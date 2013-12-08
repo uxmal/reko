@@ -42,13 +42,13 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest16(Action<IntelAssembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            BuildTest(new Address(0x0C00, 0x0000), new MsdosPlatform(arch), asmProg);
+            BuildTest(new Address(0x0C00, 0x0000), new MsdosPlatform(null, arch), asmProg);
         }
 
         private void BuildTest32(Action<IntelAssembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            BuildTest(new Address(0x00100000), new FakePlatform(), asmProg);
+            BuildTest(new Address(0x00100000), new FakePlatform(null, null), asmProg);
         }
 
         private void BuildTest(Address addrBase, Platform platform , Action<IntelAssembler> asmProg)

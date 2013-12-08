@@ -14,6 +14,15 @@ namespace Decompiler.Arch.X86
         List<Instruction> rewritten;
         OperandRewriter orw;
 
+        /*
+         * the C0 bit becomes the CF (carry) flag, 
+ the C2 bit becomes the PF(parity) flag, and 
+ the C3 bit becomes the ZF (zero) flag. 
+         */
+        //  >              0
+        //  <              1
+        //  =             40
+        //  inordered     45
 
         public FstswChainMatcher(IntelInstruction[] instrs, OperandRewriter orw)
         {

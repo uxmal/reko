@@ -49,7 +49,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
 		{
             this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = new MsdosPlatform(arch);
+            this.platform = new MsdosPlatform(services, arch);
 
 			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
 

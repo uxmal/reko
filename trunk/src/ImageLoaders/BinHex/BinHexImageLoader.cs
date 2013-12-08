@@ -50,7 +50,7 @@ namespace Decompiler.ImageLoaders.BinHex
             byte[] rsrcFork = LoadFork(hdr.ResourceForkLength, stm);
 
             var arch = new M68kArchitecture();
-            var platform = new MacOSClassic();
+            var platform = new MacOSClassic(Services, arch);
             if (hdr.FileType == "PACT")
             {
                 Cpt.CompactProArchive archive = new Cpt.CompactProArchive();

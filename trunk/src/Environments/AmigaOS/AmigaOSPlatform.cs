@@ -31,6 +31,11 @@ namespace Decompiler.Environments.AmigaOS
     /// </summary>
     public class AmigaOSPlatform : Platform
     {
+        public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
+            : base(services, arch)
+        {
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();

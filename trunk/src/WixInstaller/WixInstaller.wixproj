@@ -41,6 +41,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Mos6502\Mos6502.csproj">
+      <Name>Mos6502</Name>
+      <Project>{dc11ed7f-97f6-4488-86b4-eec67dd1f511}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11-2010.csproj">
       <Name>Pdp11-2010</Name>
       <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
@@ -124,6 +132,14 @@
     <ProjectReference Include="..\Environments\Win32\Win32-2010.csproj">
       <Name>Win32-2010</Name>
       <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\ZX81\ZX81.csproj">
+      <Name>ZX81</Name>
+      <Project>{2b4e0f2e-b458-4bc2-96ac-6a4d9324f974}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

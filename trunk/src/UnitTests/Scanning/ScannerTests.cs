@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Image = lr.Image;
             prog.ImageMap = lr.ImageMap;
             prog.Architecture = lr.Architecture;
-            prog.Platform = new FakePlatform();
+            prog.Platform = new FakePlatform(null, arch);
             scan = new TestScanner(prog);
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
@@ -130,7 +130,7 @@ namespace Decompiler.UnitTests.Scanning
                 Architecture = arch,
                 Image = image,
                 ImageMap = imageMap,
-                Platform = new FakePlatform()
+                Platform = new FakePlatform(null, arch)
             };
             var sc = new Scanner(prog, null, new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(
@@ -157,7 +157,7 @@ namespace Decompiler.UnitTests.Scanning
             prog = new Program(
                 new LoadedImage(new Address(startAddress), new byte[imageSize]),
                 arch,
-                new FakePlatform());
+                new FakePlatform(null, arch));
             return new TestScanner(prog);
         }
 
@@ -165,7 +165,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             this.prog = prog;
             prog.Architecture = arch;
-            prog.Platform = new FakePlatform();
+            prog.Platform = new FakePlatform(null, arch);
             prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
             prog.ImageMap = new ImageMap(prog.Image);
             return new TestScanner(prog);
@@ -257,7 +257,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Image = lr.Image;
             prog.ImageMap = lr.ImageMap;
             prog.Architecture = lr.Architecture;
-            prog.Platform = new FakePlatform();
+            prog.Platform = new FakePlatform(null, arch);
             var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);

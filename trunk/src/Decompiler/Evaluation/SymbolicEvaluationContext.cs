@@ -306,13 +306,31 @@ namespace Decompiler.Evaluation
 
             public Storage VisitRegisterStorage(RegisterStorage reg)
             {
+                var validConstant = value is Constant  && value != Constant.Invalid 
+                    ? value as Constant
+                    : null;
                 //$BUGBUG: Must also clear other registers (aliased subregisters)
                 //$BUGBUG: but the performance implications are terrible
-#if BUGGY
-                reg.SetRegisterStateValues(value, value is Constant && value != Constant.Invalid,  ctx.RegisterState);
-#else
+                var stateToSet = new Dictionary<RegisterStorage, Expression>();
+                foreach (RegisterStorage otherReg in ctx.RegisterState.Keys)
+                {
+                    if (otherReg.IsSubRegisterOf(reg))
+                    {
+                        stateToSet[otherReg] = value;
+                    }
+                    else if (reg.IsSubRegisterOf(otherReg))
+                    {
+                        stateToSet[otherReg] = Constant.Invalid;
+                    }
+                }
+                if (stateToSet.Count > 0)
+                {
+                    foreach (var s in stateToSet)
+                    {
+                        ctx.RegisterState[s.Key] = s.Value;
+                    }
+                }
                 ctx.RegisterState[reg] = value;
-#endif
                 return reg;
             }
 

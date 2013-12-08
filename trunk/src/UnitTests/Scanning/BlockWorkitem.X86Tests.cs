@@ -59,13 +59,14 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildTest32(Action<IntelAssembler> m)
         {
-            BuildTest(new IntelArchitecture(ProcessorMode.Protected32), new Address(0x10000), new FakePlatform(), m);
+            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            BuildTest(arch, new Address(0x10000), new FakePlatform(null, arch), m);
         }
 
         private void BuildTest16(Action<IntelAssembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            BuildTest(arch, new Address(0x0C00, 0x000), new MsdosPlatform(arch), m);
+            BuildTest(arch, new Address(0x0C00, 0x000), new MsdosPlatform(null, arch), m);
         }
 
         private class RewriterHost : IRewriterHost

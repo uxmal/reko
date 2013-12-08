@@ -30,7 +30,7 @@ namespace Decompiler.Environments.Msdos
 	{
 		private SystemService [] realModeServices; 
 
-		public MsdosPlatform(IProcessorArchitecture arch)
+		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
 			LoadRealmodeServices(arch);
 		}
