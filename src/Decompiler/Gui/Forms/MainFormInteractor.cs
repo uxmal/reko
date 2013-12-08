@@ -208,6 +208,7 @@ namespace Decompiler.Gui.Forms
         {
             OpenBinary(file, delegate { pageInitial.OpenBinary(file, this); });
         }
+
         public void OpenBinary(string file, Action openAction)
         {
             try
@@ -246,23 +247,31 @@ namespace Decompiler.Gui.Forms
 
         public bool OpenBinaryAs()
         {
-            using (var dlg = new OpenAsDialog())
+            IOpenAsDialog dlg = null;
+            IProcessorArchitecture arch = null;
+            Platform platform = null;
+            try
             {
+                dlg = dlgFactory.CreateOpenAsDialog();
                 dlg.Services = sc;
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
                 mru.Use(dlg.FileName.Text);
-                IProcessorArchitecture arch = null;
-                Platform platform = null;
 
-                var typeName = (string) ((ListOption)dlg.Architectures.SelectedValue).Value;
+                var typeName = (string)((ListOption)dlg.Architectures.SelectedValue).Value;
                 Type t = Type.GetType(typeName);
-                arch = (IProcessorArchitecture) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+                arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
 
-                typeName = (string) ((ListOption) dlg.Platforms.SelectedValue).Value;
+                typeName = (string)((ListOption)dlg.Platforms.SelectedValue).Value;
                 t = Type.GetType(typeName);
-                platform = (Platform) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+                if (t == null)
+                    throw new TypeLoadException(string.Format("Unable to load type {0}.", typeName));
+                platform = (Platform)t.GetConstructor(new Type[] { 
+                        typeof(IServiceProvider),
+                        typeof(IProcessorArchitecture)
+                    })
+                    .Invoke(new object[] { sc, arch });
 
                 OpenBinary(dlg.FileName.Text, delegate
                 {
@@ -273,6 +282,10 @@ namespace Decompiler.Gui.Forms
                         new Address(0x0000000),
                         this);
                 });
+            }
+            catch (Exception ex)
+            {
+                uiSvc.ShowError(ex, "An error occurred when opening the binary.");
             }
             return true;
         }

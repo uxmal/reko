@@ -31,14 +31,12 @@ namespace Decompiler.Environments.Win32
 {
 	public class Win32Platform : Platform
 	{
-        private IServiceProvider services;
         private IProcessorArchitecture arch;
 		private SystemService int3svc;
         private TypeLibrary [] TypeLibs;
 
-		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch)
+		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
-            this.services = services;
 			this.arch = arch;
             int3svc = new SystemService
             {
@@ -57,8 +55,8 @@ namespace Decompiler.Environments.Win32
         {
             if (TypeLibs == null)
             {
-                var envCfg = services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
-                var tlSvc = services.RequireService<ITypeLibraryLoaderService>();
+                var envCfg = Services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
+                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(arch, tl.Name)).ToArray();

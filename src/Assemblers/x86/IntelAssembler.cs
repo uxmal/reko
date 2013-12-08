@@ -57,7 +57,7 @@ namespace Decompiler.Assemblers.x86
         public IntelAssembler(IntelArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
         {
             this.arch = arch;
-            this.platform = new MsdosPlatform(arch);
+            this.platform = new MsdosPlatform(null, arch);
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;
             this.defaultWordSize = arch.WordWidth;
@@ -1043,7 +1043,7 @@ namespace Decompiler.Assemblers.x86
         public void i86()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(arch);
+            platform = new MsdosPlatform(null, arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 

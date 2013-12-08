@@ -137,7 +137,7 @@ namespace Decompiler.ImageLoaders.Elf
                 this.image,
                 this.imageMap,
                 this.arch,
-                new DefaultPlatform());
+                new DefaultPlatform(Services, arch));
         }
 
         public void LoadProgramHeaderTable()

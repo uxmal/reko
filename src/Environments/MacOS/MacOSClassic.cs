@@ -27,6 +27,11 @@ namespace Decompiler.Environments.MacOS
 {
     public class MacOSClassic : Platform
     {
+        public MacOSClassic(IServiceProvider services, IProcessorArchitecture arch)
+            : base(services, arch)
+        {
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();

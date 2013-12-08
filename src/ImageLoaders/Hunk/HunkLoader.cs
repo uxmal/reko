@@ -45,6 +45,7 @@ namespace Decompiler.ImageLoaders.Hunk
         public override LoaderResults Load(Address addrLoad)
         {
             var imgReader = new ImageReader(RawImage, 0);
+            var arch = new M68kArchitecture();
             var magic = imgReader.ReadBeInt32();
             if (magic != 0x000003F3)
                 throw new FormatException("Not a valid AmigaOS Hunk header.");
@@ -52,7 +53,7 @@ namespace Decompiler.ImageLoaders.Hunk
             return new LoaderResults(
                 null, //$TODO: loaded  image should go here.
                 new M68kArchitecture(),
-                new AmigaOSPlatform());
+                new AmigaOSPlatform(Services, arch));
         }
 
         public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)

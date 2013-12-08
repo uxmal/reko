@@ -54,7 +54,7 @@ namespace Decompiler.ImageLoaders.MzExe
             : base(services, imgRaw)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(arch);
+            platform = new MsdosPlatform(Services, arch);
 
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
             this.hdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) * 0x10U;

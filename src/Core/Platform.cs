@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Text;
 
 namespace Decompiler.Core
 {
@@ -28,20 +29,43 @@ namespace Decompiler.Core
 	/// </summary>
 	public abstract class Platform
 	{
+        /// <summary>
+        /// Initializes a Platform instance
+        /// </summary>
+        /// <remarks>We don't actually need the architecture in the base class, but we have to force a 
+        /// uniform constructor signature across all derived classes. All subclasses must implement this 
+        /// constructor.
+        /// </remarks>
+        /// <param name="arch"></param>
+        protected Platform(IServiceProvider services, IProcessorArchitecture arch) 
+        {
+            this.Services = services;
+        }
+
+        public IServiceProvider Services { get; private set; }
+
 		public abstract SystemService FindService(int vector, ProcessorState state);
+
+        /// <summary>
+        /// The default encoding for byte-encoded text.
+        /// </summary>
+        /// <remarks>
+        /// We use ASCII as the lowest common denominator here, but some arcane platforms (e.g.
+        /// ZX-81) don't use ASCII.
+        /// </remarks>
+        public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
 
         public abstract string DefaultCallingConvention { get; }
 
         public abstract ProcedureSignature LookupProcedure(string procName);
     }
 
-
     /// <summary>
     /// The default platform is used when a specific platform cannot be determind.
     /// </summary>
     public class DefaultPlatform : Platform
     {
-        public DefaultPlatform()
+        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
         {
         }
 

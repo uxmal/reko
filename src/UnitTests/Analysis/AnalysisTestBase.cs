@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Analysis
             Program prog = new Program
             {
                 Architecture = arch,
-                Platform = new MsdosPlatform(arch),
+                Platform = new MsdosPlatform(null, arch),
             };
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))

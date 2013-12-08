@@ -50,7 +50,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public PkLiteUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
 		{
             arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(arch);
+            platform = new MsdosPlatform(services, arch);
 
 			uint pkLiteHdrOffset = (uint) (exe.e_cparHeader * 0x10);
 

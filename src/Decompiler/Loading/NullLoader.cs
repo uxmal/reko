@@ -43,7 +43,7 @@ namespace Decompiler.Loading
             return new LoaderResults(
                 new LoadedImage(addrLoad, imageBytes),
                 null,
-                new DefaultPlatform());
+                new DefaultPlatform(Services, null));
         }
 
         public override Address PreferredBaseAddress

@@ -42,24 +42,34 @@ namespace Decompiler.Gui.Forms
 
         private void dlg_Load(object sender, EventArgs e)
         {
-            var dcCfg= dlg.Services.RequireService<IDecompilerConfigurationService>();
-            var archs = dcCfg.GetArchitectures()
-                .OfType<Architecture>()
-                .OrderBy(a => a.Description)
-                .Select(a => new ListOption { Text = a.Description, Value = a.TypeName });
-            dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
+            var dcCfg = dlg.Services.RequireService<IDecompilerConfigurationService>();
+            PopulateArchitectures(dcCfg);
+            PopulatePlatforms(dcCfg);
+        }
+
+        private void PopulatePlatforms(IDecompilerConfigurationService dcCfg)
+        {
             var noneOption = new ListOption
             {
                 Text = "- None -",
                 Value = typeof(DefaultPlatform).AssemblyQualifiedName
             };
-            var platforms = new ListOption [] { noneOption }
+            var platforms = new ListOption[] { noneOption }
                 .Concat(
                     dcCfg.GetEnvironments()
                     .OfType<OperatingEnvironment>()
                     .OrderBy(p => p.Description)
                     .Select(p => new ListOption { Text = p.Description, Value = p.TypeName }));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
+        }
+
+        private void PopulateArchitectures(IDecompilerConfigurationService dcCfg)
+        {
+            var archs = dcCfg.GetArchitectures()
+                .OfType<Architecture>()
+                .OrderBy(a => a.Description)
+                .Select(a => new ListOption { Text = a.Description, Value = a.TypeName });
+            dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)

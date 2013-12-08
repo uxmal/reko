@@ -41,7 +41,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			this.exe = exe;
             this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = new MsdosPlatform(arch);
+            this.platform = new MsdosPlatform(services, arch);
 		}
 
 		public override Address PreferredBaseAddress

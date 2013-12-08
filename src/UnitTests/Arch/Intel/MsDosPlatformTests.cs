@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void MspRealModeServices()
 		{
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-			Platform platform = new MsdosPlatform(arch);
+			Platform platform = new MsdosPlatform(null, arch);
 
 			var state = arch.CreateProcessorState();
 			state.SetRegister(Registers.ah, Constant.Byte(0x3E));
