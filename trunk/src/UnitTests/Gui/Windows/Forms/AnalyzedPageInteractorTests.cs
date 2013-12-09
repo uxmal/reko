@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void Populate()
+        public void AnpiPopulate()
         {
             CreateInteractor();
             form.Show();
@@ -110,7 +110,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void SelectProcedure()
+        public void AnpiSelectProcedure()
         {
             codeViewSvc.Expect(s => s.DisplayProcedure(
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
@@ -142,7 +142,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void ShowEditProcedureDialog()
+        public void AnpiShowEditProcedureDialog()
         {
             uiSvc.Expect(s => s.ShowModalDialog(
                     Arg<ProcedureDialog>.Is.TypeOf))

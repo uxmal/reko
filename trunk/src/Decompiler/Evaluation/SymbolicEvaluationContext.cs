@@ -312,15 +312,19 @@ namespace Decompiler.Evaluation
                 //$BUGBUG: Must also clear other registers (aliased subregisters)
                 //$BUGBUG: but the performance implications are terrible
                 var stateToSet = new Dictionary<RegisterStorage, Expression>();
-                foreach (RegisterStorage otherReg in ctx.RegisterState.Keys)
+                foreach (Storage other in ctx.RegisterState.Keys)
                 {
-                    if (otherReg.IsSubRegisterOf(reg))
+                    var otherReg = other as RegisterStorage;
+                    if (otherReg != null)
                     {
-                        stateToSet[otherReg] = value;
-                    }
-                    else if (reg.IsSubRegisterOf(otherReg))
-                    {
-                        stateToSet[otherReg] = Constant.Invalid;
+                        if (otherReg.IsSubRegisterOf(reg))
+                        {
+                            stateToSet[otherReg] = value;
+                        }
+                        else if (reg.IsSubRegisterOf(otherReg))
+                        {
+                            stateToSet[otherReg] = Constant.Invalid;
+                        }
                     }
                 }
                 if (stateToSet.Count > 0)

@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void Populate()
+        public void LpiPopulate()
         {
             var memSvc = AddService<IMemoryViewService>();
             var disSvc = AddService<IDisassemblyViewService>();
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void PopulateBrowserWithScannedProcedures()
+        public void LpiPopulateBrowserWithScannedProcedures()
         {
             var memSvc = AddService<IMemoryViewService>();
             var disSvc = AddService<IDisassemblyViewService>();
@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void MarkingProceduresShouldAddToUserProceduresList()
+        public void LpiMarkingProceduresShouldAddToUserProceduresList()
         {
             var memSvc = AddService<IMemoryViewService>();
             var uiSvc = AddService<IDecompilerShellUiService>();
@@ -156,7 +156,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void QueryStatus()
+        public void LpiQueryStatus()
         {
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));
         }
@@ -180,7 +180,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void BrowserItemSelectedShouldUpdateMemoryWindow()
+        public void LpiBrowserItemSelectedShouldUpdateMemoryWindow()
         {
             AddService<IDecompilerShellUiService>();
             AddService<IMemoryViewService>();
@@ -200,7 +200,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void SetBrowserCaptionWhenEnteringPage()
+        public void LpiSetBrowserCaptionWhenEnteringPage()
         {
             AddService<IDecompilerShellUiService>();
             AddService<IMemoryViewService>();
@@ -216,12 +216,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void CallScanProgramWhenenteringPage()
+        public void LpiCallScanProgramWhenenteringPage()
         {
             var decSvc = AddService<IDecompilerService>();
             var decompiler = repository.Stub<IDecompiler>();
             var prog = new Program();
             prog.Image = new LoadedImage(new Address(0x3000), new byte[10]);
+            prog.ImageMap = new ImageMap(prog.Image);
             decompiler.Stub(x => x.Program).Return(prog);
             decSvc.Stub(x => x.Decompiler).Return(decompiler);
             AddService<IDecompilerShellUiService>();

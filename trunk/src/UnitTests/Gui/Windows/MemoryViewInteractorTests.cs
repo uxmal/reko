@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void GotoAddressEnabled()
+        public void MemviewGotoAddressEnabled()
         {
             interactor = new MemoryViewInteractor();
             var status = new CommandStatus();
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void GotoAddress()
+        public void MemviewGotoAddress()
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
             dlgFactory.Expect(d => d.CreateAddressPromptDialog()).Return(dlg);
@@ -87,6 +87,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             CreateInteractor();
             interactor.ProgramImage = new LoadedImage(new Address(0x12345670), new byte[16]);
+            interactor.ImageMap = new ImageMap(interactor.ProgramImage);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
 
             repository.VerifyAll();
@@ -94,7 +95,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MarkAreaWithType()
+        public void MemviewMarkAreaWithType()
         {
             CreateInteractor();
             var image = new LoadedImage(addrBase, new byte[0x100]);

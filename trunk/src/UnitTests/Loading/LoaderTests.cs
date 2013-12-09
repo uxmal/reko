@@ -49,14 +49,14 @@ namespace Decompiler.UnitTests.Loading
         }
 
         [Test]
-        public void Match()
+        public void LoaderMatch()
         {
             TestLoader ldr = new TestLoader(new Program(), sc);
             Assert.IsTrue(ldr.ImageBeginsWithMagicNumber(new byte[] { 0x47, 0x11 }, "4711"));
         }
 
         [Test]
-        public void LoadUnknownImageType()
+        public void LoaderUnknownImageType()
         {
             TestLoader ldr = new TestLoader(new Program(), sc);
             ldr.Image = new byte[] { 42, 42, 42, 42, };
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Loading
             Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown; you will need to specify it manually." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
             Assert.IsNull(prog.Architecture);
-            Assert.IsNull(prog.Platform);
+            Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
 
         }
 

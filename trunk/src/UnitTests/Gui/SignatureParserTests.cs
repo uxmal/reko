@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void ParseVoidFn()
+        public void SigparseVoidFn()
         {
             sp.Parse("void foo()");
             Assert.AreEqual("foo", sp.ProcedureName);
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void ParseRegisterFn()
+        public void SigparseRegisterFn()
         {
             sp.Parse("eax foo()");
             Assert.AreEqual("foo", sp.ProcedureName);
@@ -65,14 +65,14 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void ParseFnName()
+        public void SigparseFnName()
         {
             sp.Parse("cx bar()");
             Assert.AreEqual("bar", sp.ProcedureName);
         }
 
         [Test]
-        public void ParseNoArg()
+        public void SigparseNoArg()
         {
             sp.Parse("void zzz()");
             Assert.IsNotNull(sp.Signature.Arguments);
@@ -80,18 +80,18 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void ParseSingleRegisterArg()
+        public void SigparseSingleRegisterArg()
         {
             sp.Parse("void zzz(word32 eax)");
             Assert.IsNotNull(sp.Signature.Arguments);
             Assert.AreEqual(1, sp.Signature.Arguments.Length);
             Assert.IsAssignableFrom(typeof (SerializedRegister), sp.Signature.Arguments[0].Kind);
             Assert.AreEqual("eax", sp.Signature.Arguments[0].Name);
-            Assert.AreEqual("word32", sp.Signature.Arguments[0].Type);
+            Assert.AreEqual("word32", sp.Signature.Arguments[0].Type.ToString());
         }
 
         [Test]
-        public void ParseTwoArgs()
+        public void SigparseTwoArgs()
         {
             sp.Parse("void zzz(word32 eax, byte cl)");
             Assert.IsNotNull(sp.Signature.Arguments);
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void ParseStackParameter()
+        public void SigparseStackParameter()
         {
             sp.Parse("void zzz(word32 stackie, byte stackb)");
             Assert.IsNotNull(sp.Signature.Arguments);
@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void ParseSequence()
+        public void SigparseSequence()
         {
             sp.Parse("void foo(ptr32 ss:di)");
             Assert.IsTrue(sp.IsValid);
@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void ParseUnderscoreSequence()
+        public void SigparseUnderscoreSequence()
         {
             sp.Parse("void foo(ptr32 ss_di)");
             Assert.IsTrue(sp.IsValid);
@@ -143,7 +143,7 @@ namespace Decompiler.UnitTests.Gui
             Assert.AreEqual("di", seq.Registers[1].Name);
         }
         [Test]
-        public void ParseReturnedSequence()
+        public void SigparseReturnedSequence()
         {
             sp.Parse("dx_ax foo()");
             Assert.IsTrue(sp.IsValid);
