@@ -115,11 +115,11 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void FindFinalValue()
+		public void Liv_FindFinalValue()
 		{
 			Prepare(new ByteArrayLoopMock().Procedure);
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, null);
-			List<SsaIdentifier> a = new List<SsaIdentifier>();
+			var liv = new LinearInductionVariableFinder(proc, ssaIds, null);
+			var a = new List<SsaIdentifier>();
 			a.Add(ssaIds[5]);
 			a.Add(ssaIds[8]);
 			Constant c = liv.FindFinalValue(a);

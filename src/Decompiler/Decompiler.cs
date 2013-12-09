@@ -198,9 +198,11 @@ namespace Decompiler
         {
             eventListener.ShowStatus("Loading raw bytes.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
+            var loadedImage = new LoadedImage(addrBase, image);
             Program = new Program
             {
-                Image = new LoadedImage(addrBase, image),
+                Image = loadedImage,
+                ImageMap = new ImageMap(loadedImage),
                 Architecture = arch,
                 Platform = platform
             };
