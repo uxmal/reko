@@ -140,6 +140,8 @@
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\Windows\Forms\OpenAsInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\SearchDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\WindowsFormsSettingsServiceTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeMangledNameParserTests.cs" />
@@ -513,9 +515,7 @@
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Environments\Msdos\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
@@ -548,6 +548,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent></PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

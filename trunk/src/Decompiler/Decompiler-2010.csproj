@@ -235,6 +235,7 @@
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
     <Compile Include="Gui\Controls\IButton.cs" />
+    <Compile Include="Gui\Controls\ICheckBox.cs" />
     <Compile Include="Gui\Controls\IComboBox.cs" />
     <Compile Include="Gui\Controls\ITextBox.cs" />
     <Compile Include="Gui\FindResult.cs" />
@@ -253,10 +254,14 @@
     <Compile Include="Gui\IMemoryViewService.cs" />
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
+    <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\IRegistryService.cs" />
+    <Compile Include="Gui\ISearchDialog.cs" />
     <Compile Include="Gui\ISearchResult.cs" />
     <Compile Include="Gui\ISearchResultService.cs">
     </Compile>
     <Compile Include="Gui\IServiceFactory.cs" />
+    <Compile Include="Gui\ISettingsService.cs" />
     <Compile Include="Gui\IStartPage.cs" />
     <Compile Include="Gui\IStatusBarService.cs" />
     <Compile Include="Gui\IWindowPane.cs" />
@@ -339,6 +344,13 @@
     <Compile Include="Gui\Windows\Forms\OpenAsDialog.Designer.cs">
       <DependentUpon>OpenAsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\Windows\Forms\SearchDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\SearchDialog.Designer.cs">
+      <DependentUpon>SearchDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\SearchDialogInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\WorkerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,6 +367,8 @@
     <Compile Include="Gui\Windows\TypeMarker.cs" />
     <Compile Include="Gui\Windows\ViewService.cs" />
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
+    <Compile Include="Gui\Windows\WindowsFormsRegistryService.cs" />
+    <Compile Include="Gui\Windows\WindowsFormsSettingsService.cs" />
     <Compile Include="Loading\LoadedProject.cs" />
     <Compile Include="Loading\NullLoader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -584,6 +598,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\SearchDialog.resx">
+      <DependentUpon>SearchDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
       <DependentUpon>WorkerDialog.cs</DependentUpon>

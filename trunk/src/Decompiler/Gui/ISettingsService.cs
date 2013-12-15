@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
  * Copyright (C) 1999-2013 John Källén.
- *
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -23,13 +23,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Controls
+namespace Decompiler.Gui
 {
-    public interface ITextBox
+    /// <summary>
+    /// Use this to save user settings to a platform-appropriate 
+    /// storage location.
+    /// </summary>
+    public interface ISettingsService
     {
-        event EventHandler TextChanged;
+        object Get(string settingName, object defaultValue);
+        string[] GetList(string settingName);
 
-        bool Enabled { get; set; }
-        string Text { get; set; }
+        void SetList(string name, IEnumerable<string> values);
+        void Set(string name, object value);
     }
 }

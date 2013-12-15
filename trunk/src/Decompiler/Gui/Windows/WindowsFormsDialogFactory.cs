@@ -50,6 +50,14 @@ namespace Decompiler.Gui.Windows
                 Services = services,
             };
         }
+
+        public ISearchDialog CreateSearchDialog()
+        {
+            return new SearchDialog()
+            {
+				Services = services,
+            };
+        }
     }
 }
 

@@ -27,8 +27,10 @@ namespace Decompiler.Gui.Controls
 {
     public interface IButton
     {
+        event EventHandler Click;
+
         bool Enabled { get; set; }
 
-        event EventHandler Click;
+        void PerformClick();
     }
 }

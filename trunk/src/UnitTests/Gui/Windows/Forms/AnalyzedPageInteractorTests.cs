@@ -184,6 +184,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             {
                 Program prog = new Program();
                 prog.Image = new LoadedImage(new Address(0x00100000), imageFile);
+                prog.ImageMap = new ImageMap(prog.Image);
                 prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
                 return prog;
             }

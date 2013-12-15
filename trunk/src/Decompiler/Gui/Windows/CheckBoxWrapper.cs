@@ -18,18 +18,24 @@
  */
 #endregion
 
+using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Gui.Controls
+namespace Decompiler.Gui.Windows
 {
-    public interface ITextBox
+    public class CheckBoxWrapper : ICheckBox
     {
-        event EventHandler TextChanged;
+        private CheckBox chk;
 
-        bool Enabled { get; set; }
-        string Text { get; set; }
+        public CheckBoxWrapper(CheckBox chk)
+        {
+            this.chk = chk;
+        }
+
+        public bool Checked { get { return chk.Checked; } set { chk.Checked = value; } }
     }
 }

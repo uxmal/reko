@@ -35,7 +35,8 @@ namespace Decompiler.Gui.Windows
         {
             this.text = text;
         }
-    
+
+        public bool Enabled { get { return text.Enabled; } set { text.Enabled = value; } }
         public string Text { get { return text.Text; } set { text.Text = value;  } }
 
         public event EventHandler TextChanged

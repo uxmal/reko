@@ -38,6 +38,11 @@ namespace Decompiler.Gui.Windows
 
         public bool Enabled { get { return button.Enabled; } set { button.Enabled = value; } }
 
+        public void PerformClick()
+        {
+            button.PerformClick();
+        }
+
         public event EventHandler Click
         {
             add { button.Click += value; }

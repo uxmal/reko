@@ -42,6 +42,7 @@ namespace Decompiler.Scanning
         private Program prog;
         private Dictionary<Block, Procedure> procMap;
         private HashSet<Procedure> procsVisited;
+        private WorkList<Procedure> procWl;
 
         public CrossProcedureAnalyzer(Program prog)
         {
@@ -107,7 +108,11 @@ namespace Decompiler.Scanning
                         {
                             BlocksNeedingPromotion.Add(block);
                             var procNew = PromoteBlockToProcedureEntry(block, blockProc);
-                            Analyze(procNew);
+                            procNew.AddBlock(block);
+                            procNew.ControlGraph.AddEdge(procNew.EntryBlock, block);
+                            block.Procedure = procNew;
+                            procMap[block] = procNew;
+                            procWl.Add(procNew);
                             continue;
                         }
                     }
@@ -184,15 +189,12 @@ namespace Decompiler.Scanning
         public void Analyze(Program prog)
         {
             procsVisited = new HashSet<Procedure>();
-            Analyze(prog.Procedures.Values.ToArray());
+            procWl = new WorkList<Procedure>(prog.Procedures.Values);
+            Procedure proc;
+            while (procWl.GetWorkItem(out proc))
+                Analyze(proc);
             PromoteBlocksToProcedures(this.BlocksNeedingPromotion);
             CloneBlocksIntoOtherProcedures(this.BlocksNeedingCloning);
-        }
-
-        public void Analyze(IEnumerable<Procedure> procedures)
-        {
-            foreach (var proc in procedures)
-                Analyze(proc);
         }
 
         public void PromoteBlocksToProcedures(IEnumerable<Block> blocks)

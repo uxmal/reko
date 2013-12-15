@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "fn00410120",
             "fn00410120",
             "int __cdecl fn00410120(char * szArg08)"}, -1);
@@ -78,17 +78,21 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.callGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findExecutableCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.followReverseJumpsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uncannedBlocksOfCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.timerSearchResults = new System.Windows.Forms.Timer(this.components);
-            this.callGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uncannedBlocksOfCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxmProc = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showDisassemblyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCallGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
+            this.ctxmProc.SuspendLayout();
             this.SuspendLayout();
             // 
             // listSearchResults
@@ -101,9 +105,9 @@
             this.listSearchResults.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.listSearchResults.FullRowSelect = true;
             this.listSearchResults.HideSelection = false;
-            listViewItem6.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
             this.listSearchResults.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6});
+            listViewItem2});
             this.listSearchResults.Location = new System.Drawing.Point(3, 421);
             this.listSearchResults.Name = "listSearchResults";
             this.listSearchResults.Size = new System.Drawing.Size(1156, 132);
@@ -308,6 +312,13 @@
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "&View";
             // 
+            // callGraphToolStripMenuItem
+            // 
+            this.callGraphToolStripMenuItem.Enabled = false;
+            this.callGraphToolStripMenuItem.Name = "callGraphToolStripMenuItem";
+            this.callGraphToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.callGraphToolStripMenuItem.Text = "Call graph";
+            // 
             // actionsToolStripMenuItem
             // 
             this.actionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -339,6 +350,13 @@
             this.followReverseJumpsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.followReverseJumpsToolStripMenuItem.Text = "Follow reverse jumps";
             // 
+            // uncannedBlocksOfCodeToolStripMenuItem
+            // 
+            this.uncannedBlocksOfCodeToolStripMenuItem.Name = "uncannedBlocksOfCodeToolStripMenuItem";
+            this.uncannedBlocksOfCodeToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.uncannedBlocksOfCodeToolStripMenuItem.Text = "&Uncanned blocks of code";
+            this.uncannedBlocksOfCodeToolStripMenuItem.Click += new System.EventHandler(this.uncannedBlocksOfCodeToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -367,19 +385,25 @@
             this.timerSearchResults.Interval = 200;
             this.timerSearchResults.Tick += new System.EventHandler(this.timerSearchResults_Tick);
             // 
-            // callGraphToolStripMenuItem
+            // ctxmProc
             // 
-            this.callGraphToolStripMenuItem.Enabled = false;
-            this.callGraphToolStripMenuItem.Name = "callGraphToolStripMenuItem";
-            this.callGraphToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.callGraphToolStripMenuItem.Text = "Call graph";
+            this.ctxmProc.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showDisassemblyToolStripMenuItem,
+            this.showCallGraphToolStripMenuItem});
+            this.ctxmProc.Name = "ctxmProc";
+            this.ctxmProc.Size = new System.Drawing.Size(172, 70);
             // 
-            // uncannedBlocksOfCodeToolStripMenuItem
+            // showDisassemblyToolStripMenuItem
             // 
-            this.uncannedBlocksOfCodeToolStripMenuItem.Name = "uncannedBlocksOfCodeToolStripMenuItem";
-            this.uncannedBlocksOfCodeToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.uncannedBlocksOfCodeToolStripMenuItem.Text = "&Uncanned blocks of code";
-            this.uncannedBlocksOfCodeToolStripMenuItem.Click += new System.EventHandler(this.uncannedBlocksOfCodeToolStripMenuItem_Click);
+            this.showDisassemblyToolStripMenuItem.Name = "showDisassemblyToolStripMenuItem";
+            this.showDisassemblyToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.showDisassemblyToolStripMenuItem.Text = "Show &Disassembly";
+            // 
+            // showCallGraphToolStripMenuItem
+            // 
+            this.showCallGraphToolStripMenuItem.Name = "showCallGraphToolStripMenuItem";
+            this.showCallGraphToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.showCallGraphToolStripMenuItem.Text = "&Show call graph";
             // 
             // MainForm
             // 
@@ -398,6 +422,7 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.ctxmProc.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -437,6 +462,9 @@
         private System.Windows.Forms.Timer timerSearchResults;
         private System.Windows.Forms.ToolStripMenuItem callGraphToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem uncannedBlocksOfCodeToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip ctxmProc;
+        private System.Windows.Forms.ToolStripMenuItem showDisassemblyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showCallGraphToolStripMenuItem;
     }
 }
 

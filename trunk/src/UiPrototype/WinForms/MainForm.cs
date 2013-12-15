@@ -130,7 +130,8 @@ namespace Decompiler.UiPrototype.WinForms
                 ImageKey = "Code.ico",
                 SelectedImageKey = "Code.ico",
                 ToolTipText = tt.ToString(),
-                NodeFont = userEdited ? userNodeFont : treeFont
+                NodeFont = userEdited ? userNodeFont : treeFont,
+                ContextMenuStrip = ctxmProc,
             };
             node.Nodes.AddRange(nodes);
             return node;

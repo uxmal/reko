@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ui\MainFormInteractor.cs" />
+    <Compile Include="WinForms\DataType.cs" />
+    <Compile Include="WinForms\Project.cs" />
     <Compile Include="WinForms\StringSearcher.cs" />
     <Compile Include="WinForms\SearchHit.cs" />
     <Compile Include="WinForms\PatternSearchDialog.cs">

@@ -18,18 +18,26 @@
  */
 #endregion
 
+using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Controls
+namespace Decompiler.Gui
 {
-    public interface ITextBox
+    public interface ISearchDialog : IDialog
     {
-        event EventHandler TextChanged;
+        event EventHandler Load;
 
-        bool Enabled { get; set; }
-        string Text { get; set; }
+        IServiceProvider Services { get; }
+
+        IComboBox Patterns { get; }
+        ICheckBox RegexCheckbox { get; }
+        IComboBox Encodings { get; }
+        IComboBox Scopes { get; }
+        ITextBox StartAddress { get; }
+        ITextBox EndAddress { get; }
+        IButton SearchButton { get; }
     }
 }
