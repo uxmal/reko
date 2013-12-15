@@ -28,6 +28,7 @@ namespace Decompiler.Gui
 		IAddressPromptDialog CreateAddressPromptDialog();
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
+        ISearchDialog CreateSearchDialog();
     }
 }
 

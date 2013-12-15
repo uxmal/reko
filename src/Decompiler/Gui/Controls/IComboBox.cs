@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,9 @@ namespace Decompiler.Gui.Controls
     public interface IComboBox
     {
         object DataSource { get; set; }
+        IList Items { get; }
+        int SelectedIndex { get; set; }
         object SelectedValue { get; set; }
+        string Text { get; set; }
     }
 }

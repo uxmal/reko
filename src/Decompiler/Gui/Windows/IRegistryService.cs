@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
  * Copyright (C) 1999-2013 John Källén.
- *
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -22,14 +22,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Win32;
 
-namespace Decompiler.Gui.Controls
+namespace Decompiler.Gui.Windows
 {
-    public interface ITextBox
+    /// <summary>
+    /// Wraps access to the Win32 registry.
+    /// </summary>
+    public interface IRegistryService
     {
-        event EventHandler TextChanged;
+        IRegistryKey CurrentUser { get; }
+    }
 
-        bool Enabled { get; set; }
-        string Text { get; set; }
+    public interface IRegistryKey : IDisposable
+    {
+        object GetValue(string name, object defaultValue);
+        IRegistryKey OpenSubKey(string keyName, bool writeable);
+        void SetValue(string name, object value);
     }
 }

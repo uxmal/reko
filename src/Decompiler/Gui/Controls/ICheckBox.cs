@@ -25,11 +25,8 @@ using System.Text;
 
 namespace Decompiler.Gui.Controls
 {
-    public interface ITextBox
+    public interface ICheckBox
     {
-        event EventHandler TextChanged;
-
-        bool Enabled { get; set; }
-        string Text { get; set; }
+        bool Checked { get; set; }
     }
 }
