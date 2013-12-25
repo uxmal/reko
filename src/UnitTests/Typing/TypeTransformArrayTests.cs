@@ -73,9 +73,9 @@ namespace Decompiler.UnitTests.Typing
 		private StructureType BuildStaggeredArrays()
 		{
 			StructureType s = new StructureType(null, 0);
-			s.Fields.Add(4, new ArrayType(new StructureType(null, 20, new StructureField(0, PrimitiveType.Int32)), 0));
-			s.Fields.Add(8, new ArrayType(new StructureType(null, 20, new StructureField(0, PrimitiveType.Real64)), 0));
-			s.Fields.Add(12,new ArrayType(new StructureType(null, 20, new StructureField(0, PrimitiveType.Byte)), 0));
+			s.Fields.Add(4, new ArrayType(new StructureType(null, 20) { Fields = { { 0, PrimitiveType.Int32 } } }, 0));
+			s.Fields.Add(8, new ArrayType(new StructureType(null, 20) { Fields = { { 0, PrimitiveType.Real64} } }, 0));
+			s.Fields.Add(12,new ArrayType(new StructureType(null, 20) { Fields = { { 0, PrimitiveType.Byte } } }, 0));
 			return s;
 		}
 
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Typing
 
 		private void AddArrayField(StructureType s, int off, int elemSize, DataType elemType)
 		{
-			s.Fields.Add(off, new ArrayType(new StructureType(null, elemSize, new StructureField(0, elemType)), 0));
+            s.Fields.Add(off, new ArrayType(new StructureType(null, elemSize) { Fields = { { 0, elemType } } }, 0));
 		}
 
 		[SetUp]

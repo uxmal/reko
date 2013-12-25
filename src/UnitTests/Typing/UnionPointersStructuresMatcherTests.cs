@@ -38,8 +38,8 @@ namespace Decompiler.UnitTests.Typing
 			TypeVariable t2 = new TypeVariable(2);
 			EquivalenceClass c1 = new EquivalenceClass(t1);
 			EquivalenceClass c2 = new EquivalenceClass(t2);
-			c1.DataType = new StructureType(null, 0, new StructureField(4, PrimitiveType.Word16));
-			c2.DataType = new StructureType(null, 0, new StructureField(20, PrimitiveType.Word32));
+            c1.DataType = new StructureType { Fields = { { 4, PrimitiveType.Word16 } } };
+            c2.DataType = new StructureType { Fields = { { 20, PrimitiveType.Word32 } } };
 			t1.Class = c1;
 			t2.Class = c2;
 
@@ -60,8 +60,8 @@ namespace Decompiler.UnitTests.Typing
 			TypeVariable t2 = new TypeVariable(2);
 			EquivalenceClass c1 = new EquivalenceClass(t1);
 			EquivalenceClass c2 = new EquivalenceClass(t2);
-			c1.DataType = new StructureType(null, 0, new StructureField(4, PrimitiveType.Word16));
-			c2.DataType = new StructureType(null, 0, new StructureField(20, PrimitiveType.Word32));
+			c1.DataType = new StructureType{ Fields = { { 4, PrimitiveType.Word16 } } };
+            c2.DataType = new StructureType { Fields = { { 20, PrimitiveType.Word32 } } };
 			t1.Class = c1;
 			t2.Class = c2;
 

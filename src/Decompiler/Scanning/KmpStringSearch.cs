@@ -63,7 +63,7 @@ namespace Decompiler.Scanning
 
         private int[] BuildFailureTable(C[] W)
         {
-            int[] T = new int[W.Length+1];
+            int[] T = new int[W.Length+2];
             T[0] = -1;
             T[1] = 0;
             int pos = 2;

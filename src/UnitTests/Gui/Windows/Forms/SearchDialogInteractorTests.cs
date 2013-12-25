@@ -20,6 +20,7 @@
 
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
+using Decompiler.Scanning;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -115,6 +116,51 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             When_SearchButtonPushed();
 
             mr.VerifyAll();
+        }
+
+        [Test]
+        public void SrchDlg_Foo()
+        {
+            var arr = new System.Collections.BitArray(60);
+            arr[14] = true;
+            int i = 0;
+            foreach (bool x in arr)
+            {
+                if (x)
+                System.Diagnostics.Debug.Print("X: {0}", i);
+                ++i;
+            }
+        }
+
+        [Test]
+        public void SrchDlg_SearchForBinary()
+        {
+            Given_SettingsService();
+            Given_UiSettings("SearchDialog/Patterns", null);
+            Given_UiSettings("SearchDialog/Regexp", 0, 0);
+            Given_UiSettings("SearchDialog/Encoding", 0, 0);
+            Given_UiSettings("SearchDialog/Scope", 0, 0);
+            Expect_UiSettingsSet("SearchDialog/Patterns", new[] { "00 11 22 33" });
+            mr.ReplayAll();
+
+            When_CreateDialog();
+            When_ShowDialog();
+            When_EnterPattern("00 11 22 33");
+            When_SearchButtonPushed();
+
+            Then_DialogHasBinarySearcher(00, 0x11, 0x22, 0x33);
+        }
+
+        [Test]
+        public void SrchDlg_Hexize()
+        {
+            var bytes = SearchDialogInteractor.Hexize("FA").ToArray();
+            Assert.AreEqual(0xFA, bytes[0]);
+        }
+        private void Then_DialogHasBinarySearcher(params byte[] expectedBytes)
+        {
+            Assert.IsNotNull(dlg.ImageSearcher);
+            Assert.AreEqual(expectedBytes, dlg.ImageSearcher.Pattern);
         }
 
         private void Expect_UiSettingsSet(string name, string[] expected)

@@ -28,8 +28,11 @@ namespace Decompiler.Scanning
     {
         public StringSearch(TChar[] pattern)
         {
+            this.Pattern = pattern;
         }
 
         public abstract IEnumerator<int> GetMatchPositions(TChar[] stringToSearch);
+
+        public TChar[] Pattern { get; private set; }
     }
 }

@@ -20,6 +20,7 @@
 
 using Decompiler.Gui.Controls;
 using Decompiler.Gui.Forms;
+using Decompiler.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,5 +57,7 @@ namespace Decompiler.Gui.Windows.Forms
         public ITextBox StartAddress { get; private set; }
         public ITextBox EndAddress { get; private set; }
         public IButton SearchButton { get; private set; }
+
+        public StringSearch<byte> ImageSearcher { get; set; }
     }
 }

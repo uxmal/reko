@@ -178,7 +178,7 @@ struct a {
         {
             tyfo = new TypeFormatter(new Formatter(sw), true);
             EquivalenceClass b = new EquivalenceClass(new TypeVariable(1));
-            b.DataType = new StructureType("b", 0, new StructureField(4, PrimitiveType.Word32));
+            b.DataType = new StructureType("b", 0) { Fields = { { 4, PrimitiveType.Word32 } } };
 
             tyfo.Write(new Pointer(b, 2), "pb");
             Assert.AreEqual("b * pb", sw.ToString());

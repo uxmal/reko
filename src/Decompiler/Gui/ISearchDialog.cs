@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Gui.Controls;
+using Decompiler.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,5 +40,7 @@ namespace Decompiler.Gui
         ITextBox StartAddress { get; }
         ITextBox EndAddress { get; }
         IButton SearchButton { get; }
+
+        StringSearch<byte> ImageSearcher { get; set; }
     }
 }

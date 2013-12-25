@@ -27,6 +27,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui
 {
+    /// <summary>
+    /// The Search Result Service is used to show the results of some kind of search.
+    /// </summary>
     public interface ISearchResultService 
     {
         void ShowSearchResults(ISearchResult result);

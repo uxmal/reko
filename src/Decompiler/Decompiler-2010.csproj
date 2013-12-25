@@ -232,6 +232,7 @@
     <Compile Include="Evaluation\Substitutor.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
+    <Compile Include="Gui\AddressSearchResult.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
     <Compile Include="Gui\Controls\IButton.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Gui\IMemoryViewService.cs" />
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
+    <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
     <Compile Include="Gui\Windows\IRegistryService.cs" />
     <Compile Include="Gui\ISearchDialog.cs" />
@@ -381,6 +383,9 @@
     <Compile Include="Scanning\BlockCloner.cs" />
     <Compile Include="Scanning\BlockPromoter.cs" />
     <Compile Include="Scanning\CrossProcedureAnalyzer.cs" />
+    <Compile Include="Scanning\DfaBuilder.cs" />
+    <Compile Include="Scanning\DfaState.cs" />
+    <Compile Include="Scanning\DfAutomaton.cs" />
     <Compile Include="Scanning\ProcedureScanner.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />

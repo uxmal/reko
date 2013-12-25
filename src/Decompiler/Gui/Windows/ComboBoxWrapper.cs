@@ -30,6 +30,12 @@ namespace Decompiler.Gui.Windows
 {
     public class ComboBoxWrapper : IComboBox
     {
+        public event EventHandler TextChanged 
+        {
+            add { this.ddl.TextChanged += value; } 
+            remove { this.ddl.TextChanged -= value; }
+        }
+
         private ComboBox ddl;
 
         public ComboBoxWrapper(ComboBox ddl) { this.ddl = ddl; }

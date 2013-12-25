@@ -23,6 +23,9 @@ using System.IO;
 
 namespace Decompiler.Core.Types
 {
+    /// <summary>
+    /// Models a function type. Note the similarity to ProcedureSignature.
+    /// </summary>
 	public class FunctionType : DataType
 	{
 		public DataType ReturnType;

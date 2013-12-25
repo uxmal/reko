@@ -45,7 +45,6 @@ namespace Decompiler.UnitTests.Gui
         [Test]
         public void CreateColumns()
         {
-
             var psr = new ProcedureSearchResult(repository.Stub<IServiceProvider>(), procs);
 
             procs.Add(new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32)));

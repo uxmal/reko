@@ -18,22 +18,45 @@
  */
 #endregion
 
+using Decompiler.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Controls
+namespace Decompiler.Gui
 {
-    public interface IComboBox
+    public interface ISearchService
     {
-        event EventHandler TextChanged;
+    }
 
-        object DataSource { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedValue { get; set; }
-        string Text { get; set; }
+    public class SearchService : IObserver<ICodeLocation>
+    {
+        private IDisposable subscription;
+
+        public void StartSearch(IObservable<ICodeLocation> newSearcher, ISearchResult result)
+        {
+            if (subscription == null)
+            {
+                subscription.Dispose();
+            }
+            subscription = newSearcher.Subscribe(this);
+        }
+
+        void IObserver<ICodeLocation>.OnCompleted()
+        {
+            subscription.Dispose();
+            subscription = null;
+        }
+
+        void IObserver<ICodeLocation>.OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IObserver<ICodeLocation>.OnNext(ICodeLocation value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
