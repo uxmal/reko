@@ -31,16 +31,15 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void SimplifySimpleStruct()
 		{
-			StructureType s = new StructureType(null, 0, new StructureField(0, PrimitiveType.Int32));
+            StructureType s = new StructureType(null, 0) { Fields = { { 0, PrimitiveType.Int32 } } };
 			DataType dt = s.Simplify();
 			Assert.AreEqual("int32", dt.ToString());
 		}
-
 	
 		[Test]
 		public void SimplifyNonSimpleStruct()
 		{
-			StructureType s = new StructureType(null, 0, new StructureField(4, PrimitiveType.Int32));
+            StructureType s = new StructureType(null, 0) { Fields = { { 4, PrimitiveType.Int32 } } };
 			DataType dt = s.Simplify();
 			Assert.AreEqual("(struct (4 int32 dw0004))", dt.ToString());
 		}
@@ -55,7 +54,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void DontSimplifySegmentStruct()
 		{
-			StructureType s = new StructureType(null, 0, new StructureField(0, PrimitiveType.Int32));
+			StructureType s = new StructureType(null, 0) { Fields = { { 0, PrimitiveType.Int32 } } };
 			s.IsSegment = true;
 			DataType dt = s.Simplify();
 			Assert.AreEqual("(segment (0 int32 dw0000))", dt.ToString());

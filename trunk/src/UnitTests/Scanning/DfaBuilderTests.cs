@@ -18,22 +18,17 @@
  */
 #endregion
 
+using Decompiler.Scanning;
+using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Controls
+namespace Decompiler.UnitTests.Scanning
 {
-    public interface IComboBox
+    [TestFixture]
+    public class DfaBuilderTests
     {
-        event EventHandler TextChanged;
-
-        object DataSource { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedValue { get; set; }
-        string Text { get; set; }
     }
 }

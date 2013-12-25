@@ -138,6 +138,7 @@
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
+    <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\Windows\Forms\OpenAsInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SearchDialogInteractorTests.cs" />
@@ -355,6 +356,8 @@
     <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
     <Compile Include="Scanning\CrossProcedureAnalyzerTests.cs" />
+    <Compile Include="Scanning\DfaBuilderTests.cs" />
+    <Compile Include="Scanning\DfAutomatonTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />

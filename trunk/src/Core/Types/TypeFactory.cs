@@ -75,7 +75,7 @@ namespace Decompiler.Core.Types
 
 		public StructureType CreateStructureType(string name, int size, StructureField field)
 		{
-			return new StructureType(name, size, field);
+            return new StructureType(name, size) { Fields = { field } };
 		}
 
 		public MemberPointer CreateMemberPointer(DataType basePointer, DataType pointee, int byteSize)
@@ -112,5 +112,10 @@ namespace Decompiler.Core.Types
 		{
 			return new UnionType(name, preferred, alternatives);
 		}
+
+        public VoidType CreateVoidType()
+        {
+            return VoidType.Instance;
+        }
 	}
  }

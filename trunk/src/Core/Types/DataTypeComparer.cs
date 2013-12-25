@@ -64,7 +64,7 @@ namespace Decompiler.Core.Types
 		public int Compare(DataType x, DataType y, int count)
 		{
 			if (count > 20)
-				throw new ApplicationException("Way too deep");
+				throw new ApplicationException("Way too deep");     //$DEBUG
 			int prioX = x.Accept(this);
 			int prioY = y.Accept(this);
 			int dPrio = prioX - prioY;

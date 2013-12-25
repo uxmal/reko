@@ -32,10 +32,9 @@ namespace Decompiler.Core.Types
 		{
 		}
 
-		public StructureType(string name, int size, StructureField field) : this(name, size)
-		{
-			Fields.Add(field);
-		}
+        public StructureType(int size) : this(null, size)
+        {
+        }
 
 		public StructureType(string name, int size) : base(name)
 		{

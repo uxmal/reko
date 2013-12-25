@@ -70,8 +70,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyStructs()
 		{
-			StructureType m1 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Word32));
-			StructureType m2 = new StructureType(null, 0, new StructureField(8, PrimitiveType.Word32));
+            StructureType m1 = new StructureType { Fields = { { 4, PrimitiveType.Word32 } } };
+            StructureType m2 = new StructureType { Fields = { { 8, PrimitiveType.Word32 } } };
 
 			StructureType m = (StructureType) un.Unify(m1, m2);
 			Assert.AreEqual(2, m.Fields.Count);
@@ -89,8 +89,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyStructTypevars()
 		{
-			StructureType m1 = new StructureType(null, 0, new StructureField(4, factory.CreateTypeVariable()));
-			StructureType m2 = new StructureType(null, 0, new StructureField(4, factory.CreateTypeVariable()));
+            StructureType m1 = new StructureType(null, 0) { Fields = { { 4, factory.CreateTypeVariable() } } };
+            StructureType m2 = new StructureType(null, 0) { Fields = { { 4, factory.CreateTypeVariable() } } };
 
 			StructureType m = (StructureType) un.Unify(m1, m2);
 			Assert.AreEqual(1, m.Fields.Count);
@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyEmptyStruct()
 		{
-			StructureType m1 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Word32));
+            StructureType m1 = new StructureType(null, 0) { Fields = { { 4, PrimitiveType.Word32 } } };
 			StructureType m2 = new StructureType(null, 0);
 
 			StructureType m = (StructureType) un.Unify(m1, m2);
@@ -181,17 +181,17 @@ namespace Decompiler.UnitTests.Typing
 		{
 			TypeVariable tv1 = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
-			DataType dt = un.Unify(
-				new StructureType(null, 0, new StructureField(0, tv1)),
-				new StructureType(null, 0, new StructureField(4, tv1)));
+            DataType dt = un.Unify(
+                new StructureType { Fields = { { 0, tv1 } } },
+                new StructureType { Fields = { { 4, tv1 } } });
 
 			StructureType mem = (StructureType) dt;
 			Assert.AreEqual(2, mem.Fields.Count);
 			Assert.IsNotNull((TypeVariable) mem.Fields[0].DataType);
 			Assert.IsNotNull((TypeVariable) mem.Fields[1].DataType);
-			dt = un.Unify(
-				dt,
-				new StructureType(null, 0, new StructureField(0, PrimitiveType.Word32)));
+            dt = un.Unify(
+                dt,
+                new StructureType { Fields = { { 0, PrimitiveType.Word32 } } });
 
 			mem = (StructureType) dt;
 			Assert.AreEqual(2, mem.Fields.Count);
@@ -221,7 +221,7 @@ namespace Decompiler.UnitTests.Typing
 		public void UnifyStructNamedStruct()
 		{
 			StructureType st1 = new StructureType("foo", 0);
-			StructureType st2 = new StructureType(null, 0, new StructureField(0, PrimitiveType.Word32, "bar"));
+            StructureType st2 = new StructureType { Fields = { { 0, PrimitiveType.Word32, "bar" } } };
 			StructureType st = (StructureType) un.Unify(st1, st2);
 			Assert.AreEqual("foo", st.Name);
 		}
@@ -240,8 +240,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyArrays2()
 		{
-			ArrayType a1 = new ArrayType(new StructureType(null, 10, new StructureField(0, new TypeVariable(1), "t1")), 0);
-			ArrayType a2 = new ArrayType(new StructureType(null, 10, new StructureField(4, new TypeVariable(2), "t2")), 0);
+            ArrayType a1 = new ArrayType(new StructureType(null, 10) { Fields = { { 0, new TypeVariable(1), "t1" } } }, 0);
+            ArrayType a2 = new ArrayType(new StructureType(null, 10) { Fields = { { 4, new TypeVariable(2), "t2" } } }, 0);
 			DataType dt = un.Unify(a1, a2);
 			Assert.AreEqual("(arr (struct 000A (0 T_1 t1) (4 T_2 t2)))", dt.ToString());
 		}
@@ -285,7 +285,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyPointerStructSegment()
 		{
-			Pointer p = new Pointer(new StructureType(null, 0, new StructureField(4, PrimitiveType.UInt32, null)), 2);
+			Pointer p = new Pointer(new StructureType{ Fields = { { 4, PrimitiveType.UInt32} } }, 2);
 			DataType dt = un.Unify(p, PrimitiveType.SegmentSelector);
 			Assert.AreEqual("(ptr (struct (4 uint32 dw0004)))", dt.ToString());
 		}

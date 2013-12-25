@@ -23,6 +23,7 @@ using System;
 
 namespace Decompiler.Core.Expressions
 {
+    [Obsolete("Never used, see ExpressionEmitter")]
 	public class ExpressionFactory
 	{
 		private Constant trueValue;

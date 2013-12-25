@@ -33,13 +33,16 @@
             this.memoryControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rTFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.controlsToolStripMenuItem});
+            this.controlsToolStripMenuItem,
+            this.dialogsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(284, 24);
@@ -77,6 +80,21 @@
             this.webControlToolStripMenuItem.Text = "&Web Control";
             this.webControlToolStripMenuItem.Click += new System.EventHandler(this.webControlToolStripMenuItem_Click);
             // 
+            // dialogsToolStripMenuItem
+            // 
+            this.dialogsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchToolStripMenuItem});
+            this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
+            this.dialogsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.dialogsToolStripMenuItem.Text = "&Dialogs";
+            // 
+            // searchToolStripMenuItem
+            // 
+            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.searchToolStripMenuItem.Text = "&Search...";
+            this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
+            // 
             // ItpForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -100,6 +118,8 @@
         private System.Windows.Forms.ToolStripMenuItem memoryControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rTFToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem webControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dialogsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
     }
 }
 

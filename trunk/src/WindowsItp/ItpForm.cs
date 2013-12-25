@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,6 +57,40 @@ namespace Decompiler.WindowsItp
             using (var dlg = new WebDialog())
             {
                 dlg.ShowDialog(this);
+            }
+        }
+
+        private void searchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sc = new System.ComponentModel.Design.ServiceContainer();
+            sc.AddService(typeof(ISettingsService), new DummySettingsService());
+            using (var dlg = new Decompiler.Gui.Windows.Forms.SearchDialog())
+            {
+                dlg.Services = sc;
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    //string.foo();
+                }
+            }
+        }
+        private class DummySettingsService : ISettingsService
+        {
+            public object Get(string settingName, object defaultValue)
+            {
+                return null;
+            }
+
+            public string[] GetList(string settingName)
+            {
+                return null;
+            }
+
+            public void SetList(string name, IEnumerable<string> values)
+            {
+            }
+
+            public void Set(string name, object value)
+            {
             }
         }
     }

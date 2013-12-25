@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Typing
         {
             ArrayType a = new ArrayType(PrimitiveType.Int32, 4);
 
-            StructureType s = new StructureType(null, 0, new StructureField(8, a));
+            StructureType s = new StructureType(null, 0) { Fields = { { 8, a } } };
 
             TypeVariable tv = store.EnsureExpressionTypeVariable(factory, null);
             tv.Class.DataType = s;
