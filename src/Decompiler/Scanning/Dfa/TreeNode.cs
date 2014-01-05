@@ -16,6 +16,7 @@ namespace Decompiler.Scanning.Dfa
         public TreeNode Left;
         public TreeNode Right;
         public bool Nullable;
+        public bool Starts;
         public HashSet<TreeNode> FirstPos;
         public HashSet<TreeNode> LastPos;
         public HashSet<TreeNode> FollowPos;
@@ -50,6 +51,8 @@ namespace Decompiler.Scanning.Dfa
             writer.Write("{0}", Type);
             if (Number != 0)
                 writer.Write(" - {0}", Number);
+            if (Starts)
+                writer.Write(" - Starts");
             writer.WriteLine();
             WriteSet("    First:  ", FirstPos, writer);
             WriteSet("    Last:   ", LastPos, writer);
@@ -60,6 +63,7 @@ namespace Decompiler.Scanning.Dfa
             case NodeType.CharClass: writer.Write("[]"); break;
             case NodeType.Cat: Left.Write(writer); Right.Write(writer); break;
             case NodeType.Plus: Left.Write(writer); break;
+            case NodeType.Cut: Left.Write(writer); Right.Write(writer); break;
             }
             writer.WriteLine();
         }

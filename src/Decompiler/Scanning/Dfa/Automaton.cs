@@ -50,6 +50,12 @@ namespace Decompiler.Scanning.Dfa
             this.transitions = transitions;
         }
 
+        /// <summary>
+        /// Returns a sequence of positions at which the automaton pattern matches.
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public IEnumerable<int> GetMatches(byte[] bytes, int position)
         {
             bool isMatching = false;
@@ -73,14 +79,17 @@ namespace Decompiler.Scanning.Dfa
                 {
                     iState = dst;
                     var st = states[dst];
-                    if (!isMatching)
+                    if (isMatching)
+                    {
+                        if (st.Starts)
+                        {
+                            lastMatchPos = i;
+                        }
+                    }
+                    else 
                     {
                         lastMatchPos = i;
                         isMatching = true;
-                    }
-                    else if (st.Starts && isMatching)
-                    {
-                        lastMatchPos = i;
                     }
                 }
             }

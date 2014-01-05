@@ -66,6 +66,7 @@ namespace Decompiler.Scanning.Dfa
 
             public SortedSet<TreeNode> Nodes;
             public int Number;
+            public bool Starts;
             private int hash;
 
             public override bool Equals(object obj)
@@ -89,6 +90,7 @@ namespace Decompiler.Scanning.Dfa
             {
                 return hash;
             }
+
         }
 
         public void BuildAutomaton()
@@ -119,6 +121,7 @@ namespace Decompiler.Scanning.Dfa
             Dtran = new List<Tuple<int, int, int>>();
             var unmarked = new Queue<IntermediateState>();
             var state = CreateIntermediateState(ParseTree.FirstPos);
+            state.Starts = true;
             Dstates.Add(state, state);
             unmarked.Enqueue(state);
             while (unmarked.Count > 0)
@@ -135,12 +138,13 @@ namespace Decompiler.Scanning.Dfa
                         unmarked.Enqueue(U);
                         dstate = U;
                     }
+                    dstate.Starts |= p.Node.Starts;
                     Dtran.Add(Tuple.Create(T.Number, (int) p.Value, dstate.Number));
                 }
             }
             this.States = Dstates.Values
                 .OrderBy(d => d.Number)
-                .Select(d => new State { Number = d.Number, Starts = false, Terminates = false })
+                .Select(d => new State { Number = d.Number, Starts = d.Starts, Terminates = false })
                 .ToArray();
             this.Transitions = Compact(Dtran);
         }
@@ -178,6 +182,33 @@ namespace Decompiler.Scanning.Dfa
                 node.Nullable = true;
                 node.FirstPos = new HashSet<TreeNode>();
                 node.LastPos = new HashSet<TreeNode>();
+                break;
+            case NodeType.Cut:
+                BuildNodeSets(node.Left);
+                BuildNodeSets(node.Right);
+                node.Nullable = node.Left.Nullable && node.Right.Nullable;
+                var setcu = new HashSet<TreeNode>(node.Left.FirstPos);
+                if (node.Left.Nullable)
+                {
+                    setcu.UnionWith(node.Right.FirstPos);
+                }
+                node.FirstPos = setcu;
+                setcu = new HashSet<TreeNode>(node.Right.LastPos);
+                if (node.Right.Nullable)
+                {
+                    setcu.UnionWith(node.Left.LastPos);
+                }
+                node.LastPos = setcu;
+                foreach (var n in node.Right.FirstPos)
+                {
+                    n.Starts = true;
+                }
+                foreach (var i in node.Left.LastPos)
+                {
+                    i.FollowPos.UnionWith(node.Right.FirstPos);
+                }
+                break;
+
                 break;
             case NodeType.Star:
                 BuildNodeSets(node.Left);
