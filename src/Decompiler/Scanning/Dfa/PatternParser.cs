@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Decompiler.Scanning.Dfa
 {
+    /// <summary>
+    /// Parses a regexp pattern into a tree of TreeNodes.
+    /// </summary>
     public class PatternParser
     {
         private int idx;

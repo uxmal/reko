@@ -29,10 +29,14 @@ using BitArray = System.Collections.BitArray;
 
 namespace Decompiler.Scanning.Dfa
 {
+    /// <summary>
+    /// Builds a DFA directly from a regular expression.
+    /// </summary>
     public class DfaBuilder
     {
         private Dictionary<IntermediateState, IntermediateState> Dstates;
         private List<Tuple<int, int, int>> Dtran;
+        private NodeComparer nodeComparer;
 
         public DfaBuilder(string pattern)
             : this(new PatternParser(pattern).Parse())
@@ -42,6 +46,7 @@ namespace Decompiler.Scanning.Dfa
         public DfaBuilder(TreeNode node)
         {
             this.ParseTree = node;
+            this.nodeComparer = new NodeComparer();
         }
 
         public TreeNode ParseTree { get; private set; }
@@ -99,32 +104,38 @@ namespace Decompiler.Scanning.Dfa
             }
         }
 
-        public void BuildAutomaton(TreeNode tree)
+        private IntermediateState CreateIntermediateState(ISet<TreeNode> nodeSet)
         {
             var state = new IntermediateState(
-                new SortedSet<TreeNode>(ParseTree.FirstPos),
-                0);
+                new SortedSet<TreeNode>(nodeSet, nodeComparer),
+                Dstates.Count);
             DumpState(state);
-            Dstates = new Dictionary<IntermediateState, IntermediateState> { { state, state } };
+            return state;
+        }
+
+        public void BuildAutomaton(TreeNode tree)
+        {
+            Dstates = new Dictionary<IntermediateState, IntermediateState>();
             Dtran = new List<Tuple<int, int, int>>();
             var unmarked = new Queue<IntermediateState>();
-            var cmp = new NodeComparer();
+            var state = CreateIntermediateState(ParseTree.FirstPos);
+            Dstates.Add(state, state);
             unmarked.Enqueue(state);
             while (unmarked.Count > 0)
             {
                 IntermediateState T = unmarked.Dequeue();
                 foreach (var p in T.Nodes.SelectMany(p => p.GetTransitionCharacters(), (p, c) => new { Node = p, Value = c }))
                 {
-                    var U = new IntermediateState(
-                        new SortedSet<TreeNode>(p.Node.FollowPos, cmp),
-                        Dstates.Count);
-                    DumpState(U);
-                    if (U.Nodes.Count() > 0 && !Dstates.ContainsKey(U))
+                    var U = CreateIntermediateState(p.Node.FollowPos);
+                    IntermediateState dstate;
+                    Dstates.TryGetValue(U, out dstate);
+                    if (U.Nodes.Count() > 0 && dstate == null)
                     {
                         Dstates.Add(U, U);
                         unmarked.Enqueue(U);
+                        dstate = U;
                     }
-                    Dtran.Add(Tuple.Create(T.Number, (int) p.Value, Dstates[U].Number));
+                    Dtran.Add(Tuple.Create(T.Number, (int) p.Value, dstate.Number));
                 }
             }
             this.States = Dstates.Values

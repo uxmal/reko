@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Decompiler.Scanning.Dfa
 {
+    /// <summary>
+    /// Represents a DFA state. 
+    /// </summary>
     public class State
     {
         public int Number;
