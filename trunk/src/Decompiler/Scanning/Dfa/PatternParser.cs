@@ -131,7 +131,7 @@ namespace Decompiler.Scanning.Dfa
 
         private TreeNode ParseAtom()
         {
-            if (this.idx >= pattern.Length)
+            if (!EatSpaces())
                 return null;
             if (PeekAndDiscard('('))
             {
@@ -143,9 +143,9 @@ namespace Decompiler.Scanning.Dfa
             {
                 return ParseCharClass();
             }
-            int d = ExpectHexByte();
+            int d = MaybeHexByte();
             if (d < 0)
-                throw new FormatException("Expected hexadecimal encoded byte.");
+                return null;
             return new TreeNode
             {
                 Type = NodeType.Char,
@@ -154,17 +154,30 @@ namespace Decompiler.Scanning.Dfa
             };
         }
 
+        private bool EatSpaces()
+        {
+            while (this.idx < pattern.Length)
+            {
+                int ch = pattern[idx];
+                if (ch != ' ' && ch != '\t' && ch != '\r' && ch != '\n')
+                    return true;
+                ++idx;
+            }
+            return false;
+            throw new NotImplementedException();
+        }
+
         private TreeNode ParseCharClass()
         {
             var bytes = new BitArray(256);
             Expect('[');
             while (!PeekAndDiscard(']'))
             {
-                int d = ExpectHexByte();
+                int d = MaybeHexByte();
                 bytes[d] = true;
                 if (PeekAndDiscard('-'))
                 {
-                    int e = ExpectHexByte();
+                    int e = MaybeHexByte();
                     for (int b = d + 1; b < e; ++b)
                     {
                         bytes[d] = true;
@@ -190,14 +203,20 @@ namespace Decompiler.Scanning.Dfa
                     return ch - 'A' + 10;
                 if ('a' <= ch && ch <= 'f')
                     return ch - 'a' + 10;
+                --idx;
+                return -1;
             }
-            throw new FormatException("Expected a hexadecimal digit. ");
+            return -1;
         }
 
-        private int ExpectHexByte()
+        private int MaybeHexByte()
         {
             int h = HexNibble();
+            if (h < 0)
+                return h;
             int l = HexNibble();
+            if (l < 0)
+                return l;
             return (h << 4) | l;
         }
 

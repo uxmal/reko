@@ -187,7 +187,6 @@
     <Compile Include="Core\ConstantTests.cs" />
     <Compile Include="Core\Lib\DequeueTests.cs" />
     <Compile Include="Core\Lib\DfsIteratorTests.cs" />
-    <Compile Include="Core\ExpressionFactoryTests.cs" />
     <Compile Include="Core\IdentifierTests.cs" />
     <Compile Include="Core\ExpressionValueComparerTests.cs" />
     <Compile Include="Core\ExternalProcedureTest.cs" />

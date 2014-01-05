@@ -68,5 +68,16 @@ namespace Decompiler.UnitTests.Scanning.Dfa
             Assert.AreEqual(1, dfab.Transitions[1, 0xCC]);
             Assert.AreEqual(2, dfab.Transitions[1, 0x55]);
         }
+
+        [Test]
+        public void Dfab_StartsWith()
+        {
+            var dfab = new DfaBuilder("BB][CC");
+            dfab.ExtendWithEos();
+            dfab.BuildNodeSets();
+            dfab.BuildAutomaton();
+            Debug.WriteLine(dfab.ParseTree.ToString());
+            Assert.IsTrue(dfab.States[2].Starts);
+        }
     }
 }
