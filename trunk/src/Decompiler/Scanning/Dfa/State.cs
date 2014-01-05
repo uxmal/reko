@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Decompiler.Scanning;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Decompiler.Scanning.Dfa
 {
-    [TestFixture]
-    public class DfaBuilderTests
+    public class State
     {
+        public int Number;
+        public bool Starts;
+        public bool Terminates;
     }
 }

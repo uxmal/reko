@@ -356,8 +356,8 @@
     <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
     <Compile Include="Scanning\CrossProcedureAnalyzerTests.cs" />
-    <Compile Include="Scanning\DfaBuilderTests.cs" />
-    <Compile Include="Scanning\DfAutomatonTests.cs" />
+    <Compile Include="Scanning\Dfa\DfaBuilderTests.cs" />
+    <Compile Include="Scanning\Dfa\AutomatonTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />

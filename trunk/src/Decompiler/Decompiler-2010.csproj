@@ -383,9 +383,11 @@
     <Compile Include="Scanning\BlockCloner.cs" />
     <Compile Include="Scanning\BlockPromoter.cs" />
     <Compile Include="Scanning\CrossProcedureAnalyzer.cs" />
-    <Compile Include="Scanning\DfaBuilder.cs" />
-    <Compile Include="Scanning\DfaState.cs" />
-    <Compile Include="Scanning\DfAutomaton.cs" />
+    <Compile Include="Scanning\Dfa\DfaBuilder.cs" />
+    <Compile Include="Scanning\Dfa\PatternParser.cs" />
+    <Compile Include="Scanning\Dfa\State.cs" />
+    <Compile Include="Scanning\Dfa\TreeNode.cs" />
+    <Compile Include="Scanning\Dfa\Automaton.cs" />
     <Compile Include="Scanning\ProcedureScanner.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />

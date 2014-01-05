@@ -18,14 +18,14 @@
  */
 #endregion
 
-using Decompiler.Scanning;
+using Decompiler.Scanning.Dfa;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Decompiler.UnitTests.Scanning.Dfa
 {
     [TestFixture]
     public class DfAutomatonTests
@@ -60,12 +60,39 @@ namespace Decompiler.UnitTests.Scanning
                 automaton.GetMatches(new byte[] { 2, 2, 2 }, 0).ToArray());
         }
 
-        private static DfAutomaton Given_SingleStateAutomaton()
+        [Test]
+        public void Dfa_Longmatch()
         {
-            var automaton = new DfAutomaton(
-                new DfaState[] { 
-                    new DfaState { Number = 0, Starts = true, Terminates= false },
-                    new DfaState { Number = 1, Starts = false, Terminates= true},
+            var automaton = Given_LongMatchAutomaton();
+            Assert.AreEqual(
+                new int[] { 3 },
+                automaton.GetMatches(new byte[] { 3, 3, 3, 2, 2, 0, 1, 3 }, 0).ToArray());
+        }
+
+        private static Automaton Given_LongMatchAutomaton()
+        {
+            var automaton = new Automaton(
+                new State[] {
+                    new State { Number = 0, Starts = false, Terminates = false },
+                    new State { Number = 1, Starts = false, Terminates = false },
+                    new State { Number = 2, Starts = true, Terminates = false },
+                    new State { Number = 3, Starts = false, Terminates = true},
+                },
+                new int[,] {
+                    { -1, -1, 0, -1 },
+                    {  2, -1, 1, -1 },
+                    { -1,  3,  1, -1 },
+                    { -1, -1, -1, -1 },
+                });
+            return automaton;
+        }
+
+        private static Automaton Given_SingleStateAutomaton()
+        {
+            var automaton = new Automaton(
+                new State[] { 
+                    new State { Number = 0, Starts = true, Terminates= false },
+                    new State { Number = 1, Starts = false, Terminates= true},
                 },
                 new int[,] {
                     { -1, -1, 1, -1 },

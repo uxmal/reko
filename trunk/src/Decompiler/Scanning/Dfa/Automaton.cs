@@ -23,32 +23,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Decompiler.Scanning.Dfa
 {
     /// <summary>
     /// Deterministic finite automaton that matches a pattern of bytes in an array.
     /// </summary>
-    public class DfAutomaton
+    public class Automaton
     {
         private int[,] transitions;
-        private DfaState[] states;
+        private State[] states;
 
-        public static DfAutomaton CreateFromPatter(string pattern)
+        public static Automaton CreateFromPatter(string pattern)
         {
-            var parser = new DfaBuilder.DfaPatternParser(pattern);
+            var parser = new PatternParser(pattern);
             var tree = parser.Parse();
             var builder = new DfaBuilder(tree);
             builder.ExtendWithEos();
-
-            builder.BuildNullable(tree);
-            builder.BuildFirstPos(tree);
-            builder.BuildLastPos(tree);
-            builder.BuildFollowPos(tree);
+            builder.BuildNodeSets(tree);
             builder.BuildAutomaton(tree);
-            return new DfAutomaton(builder.DfaStates, builder.Transitions);
+            return new Automaton(builder.States, builder.Transitions);
         }
 
-        public DfAutomaton(DfaState[] states, int[,] transitions)
+        public Automaton(State[] states, int[,] transitions)
         {
             this.states = states;
             this.transitions = transitions;
