@@ -89,7 +89,6 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
                     break;
                 default: 
                     throw new NotSupportedException(string.Format("Domain {0} is not supported.", primitive.Domain));
-                    break;
                 }
                 if (name != null)
                     sb.AppendFormat(" {0}", name);

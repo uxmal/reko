@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		public RewriterTestBase()
 		{
-			baseAddress = new Address(0xC00, 0);
+			baseAddress = new Address(0x0C00, 0);
 		}
 
 		[SetUp]

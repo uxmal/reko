@@ -117,7 +117,9 @@ fn00001001_exit:
                 var r2 = m.Reg32("r2");
                 m.Label("bob_1");
                 m.Assign(r1, 0);
-                m.Label("Real_entry");
+                // Fall through should be promoted to call/return pair.
+
+                m.Label("Real_entry"); // Cross jump target: should become a new function entry point.
                 m.Store(r2, r1);
                 m.BranchIf(r2, "Real_entry");
                 m.Return();

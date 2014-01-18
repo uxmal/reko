@@ -27,6 +27,10 @@ namespace Decompiler.Core
 {
     public abstract class ImageWriter
     {
+        public ImageWriter() :this(new byte[16])
+        {
+        }
+
         public ImageWriter(byte[] image)
         {
             this.Bytes = image;
@@ -73,7 +77,7 @@ namespace Decompiler.Core
             WriteByte((byte) (us >> 8));
         }
 
-        public void WriteBeUint16(ushort us)
+        public void WriteBeUInt16(ushort us)
         {
             WriteByte((byte)(us >> 8));
             WriteByte((byte)us);
@@ -85,6 +89,14 @@ namespace Decompiler.Core
             Bytes[offset + 1] = (byte)(ui >> 16);
             Bytes[offset + 2] = (byte)(ui >> 8);
             Bytes[offset + 3] = (byte)ui;
+        }
+
+        public void WriteBeUInt32(uint ui)
+        {
+            WriteByte((byte) (ui >> 24));
+            WriteByte((byte) (ui >> 16));
+            WriteByte((byte) (ui >> 8));
+            WriteByte((byte) ui);
         }
 
         public void WriteLeUInt32(uint offset, uint ui)
@@ -100,6 +112,11 @@ namespace Decompiler.Core
 
     public class BeImageWriter : ImageWriter
     {
+        public BeImageWriter()
+            : base()
+        {
+        }
+
         public BeImageWriter(byte [] image) : base(image)
         {
         }

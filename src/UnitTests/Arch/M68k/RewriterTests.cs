@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             var writer = new BeImageWriter(bytes);
             foreach (ushort opcode in opcodes)
             {
-                writer.WriteBeUint16(opcode);
+                writer.WriteBeUInt16(opcode);
             }
             var image = new LoadedImage(addrBase, bytes);
 
