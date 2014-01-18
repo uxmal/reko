@@ -341,7 +341,6 @@ namespace Decompiler.Core
 
 		public ImageMapItem(uint size)
 		{
-			Debug.Assert(size > 0);
 			this.Size = size;
 		}
 

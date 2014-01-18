@@ -31,68 +31,33 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
     [TestFixture]
     public class HunkFileParserTests
     {
-        private Encoding enc = Encoding.GetEncoding("ISO_8859-1");
+        private HunkMaker hm;
 
-        private BeImageReader MakeBytes(params object[] data)
+        [SetUp]
+        public void Setup()
         {
-            var w = new BeImageWriter();
-            foreach (var o in data)
-            {
-                if (o is Int32)
-                {
-                    w.WriteBeUInt32((uint) (Int32) o);
-                    continue;
-                }
-                var s = o as string;
-                if (s != null)
-                {
-                    WriteString(s, w);
-                    continue;
-                }
-                throw new NotImplementedException();
-            }
-            var bytes= w.Bytes.Take(w.Position).ToArray();
-            return new BeImageReader(bytes, 0);
+            hm = new HunkMaker();
         }
-
-        private void WriteString(string s, BeImageWriter w)
-        {
-            if (s.Length <= 0)
-            {
-                w.WriteBeUInt32(0);
-                return;
-            }
-            byte[] ab = enc.GetBytes(s);
-            int padLength = (ab.Length + 3) & ~3;
-            w.WriteBeUInt32((uint) padLength / 4);
-            w.WriteBytes(ab);
-            int cPad = padLength - ab.Length;
-            while (--cPad >= 0)
-            {
-                w.WriteByte(0);
-            }
-        }
-
         [Test]
-        public void Hunk_ReadString_ZeroLength()
+        public void Hfp_ReadString_ZeroLength()
         {
-            var bytes = MakeBytes(0);
+            var bytes = hm.MakeImageReader(0);
             var parser = new HunkFileParser(bytes);
             Assert.AreEqual("", parser.ReadString(bytes));
         }
 
         [Test]
-        public void Hunk_ReadString_TrailingZeros()
+        public void Hfp_ReadString_TrailingZeros()
         {
-            var bytes = MakeBytes("a");
+            var bytes = hm.MakeImageReader("a");
             var parser = new HunkFileParser(bytes);
             Assert.AreEqual("a", parser.ReadString(bytes));
         }
 
         [Test]
-        public void Hunk_HeaderBlock()
+        public void Hfp_HeaderBlock()
         {
-            var rdr = MakeBytes(
+            var rdr = hm.MakeImageReader(
                 //0x3F3,
                 "Hello", "",
                 2,
@@ -113,9 +78,9 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
         }
 
         [Test]
-        public void Hunk_CodeBlock()
+        public void Hfp_CodeBlock()
         {
-            var rdr = MakeBytes(
+            var rdr = hm.MakeImageReader(
                 //0x3E9,    // Assumes this is already read
                 2,
                 3,
