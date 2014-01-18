@@ -57,7 +57,6 @@ namespace Decompiler.ImageLoaders.Hunk
             this.overlay_segments = new List<Segment>();
             this.libs = null;
             this.units = null;
-
         }
 
         public int FileType { get; private set; } 
@@ -84,7 +83,8 @@ namespace Decompiler.ImageLoaders.Hunk
 
         private string get_struct_summary(object obj)
         {
-            throw new NotImplementedException();/*
+            throw new NotImplementedException();
+            /*
     if type(obj) == ListType:
       result = []
       for a in obj:
@@ -107,40 +107,6 @@ namespace Decompiler.ImageLoaders.Hunk
       return null*/
         }
 
-        /*
-  def get_long(this, data):
-    return struct.unpack(">I",data)[0]
-  
-  def read_long(BeImageReader f):
-    data = f.read(4)
-    if len(data) == 0:
-      return -1
-    elif len(data) != 4:
-      return -(len(data)+1)
-    return struct.unpack(">I",data)[0]
-
-  def read_word(BeImageReader f):
-    data = f.read(2)
-    if len(data) == 0:
-      return -1
-    elif len(data) != 2:
-      return -(len(data)+1)
-    return struct.unpack(">H",data)[0]
-
-  def read_name(BeImageReader f):
-    num_longs = this.read_long(f)
-    if num_longs < 0:
-      return -1,null
-    elif num_longs == 0:
-      return 0,""
-    else:
-      return this.read_name_size(f, num_longs)
-*/
-
-
-
-
-
         ///
         ///  Read a hunk file and build internal hunk structure
         ///Return status and set this.error_string on failure
@@ -150,8 +116,6 @@ namespace Decompiler.ImageLoaders.Hunk
             var parser = new HunkFileParser(f, v37_compat);
             parser.Parse();
         }
-
-      
 
         // Return a list with all the hunk type names that were found
         public string get_hunk_summary()
@@ -343,7 +307,7 @@ namespace Decompiler.ImageLoaders.Hunk
                             name = null;
                         }
                         e.hunk_no = hunk_no;
-                        hunk_no += 1;
+                        ++hunk_no;
                         in_hunk = true;
                     }
                     // broken hunk: ignore multi ENDs
@@ -430,7 +394,7 @@ namespace Decompiler.ImageLoaders.Hunk
                     {
                         segment = new Segment { hunks = { e } };
                         e.hunk_no = hunk_no;
-                        hunk_no += 1;
+                        ++hunk_no;
                         segment_list.Add(segment);
                         seek_main = false;
 
@@ -517,7 +481,7 @@ namespace Decompiler.ImageLoaders.Hunk
         }
 
         /// <summary>
-        /// Build segments from the hunk list. T
+        /// Build segments from the hunk list.
         /// </summary>
         /// <returns></returns>
         public bool BuildSegments()
@@ -530,8 +494,8 @@ namespace Decompiler.ImageLoaders.Hunk
             }
 
             //  determine type of file from first hunk
-            HunkType first_hunk_type = this.hunks[0].HunkType;
-            switch (first_hunk_type)
+            HunkType firstHunkType = this.hunks[0].HunkType;
+            switch (firstHunkType)
             {
             case HunkType.HUNK_HEADER:
                 this.FileType = TYPE_LOADSEG;

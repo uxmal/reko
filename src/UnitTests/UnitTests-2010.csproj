@@ -146,6 +146,7 @@
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkFileParserTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
+    <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeMangledNameParserTests.cs" />
     <Compile Include="Mocks\SegmentedPointerProc.cs" />

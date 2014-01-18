@@ -32,13 +32,38 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
     [TestFixture]
     public class HunkLoaderTests
     {
+        private HunkMaker mh;
+
+        [SetUp]
+        public void Setup()
+        {
+            mh = new HunkMaker();
+        }
+
+
         [Test]
         public void Hunk_LoadFile()
         {
             var bytes = File.ReadAllBytes(
                 FileUnitTester.MapTestPath("../UnitTests/Arch/M68k/images/FIBO"));
             var ldr = new HunkLoader(null, bytes);
-            ldr.Load(new Address(0x10000));
+            ldr.Load(new Address(0x10000)); 
+        }
+
+        [Test]
+        public void Hunk_LoadEmpty()
+        {
+            var bytes = mh.MakeBytes(
+                HunkType.HUNK_HEADER,
+                "",
+                0,
+                0,
+                0,
+                0);
+            var ldr = new HunkLoader(null, bytes);
+            var ldImg = ldr.Load(new Address(0x00010000));
+            Assert.AreEqual(1, ldImg.ImageMap.Segments.Count);
+            Assert.AreEqual(new Address(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
         }
     }
 }

@@ -486,7 +486,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 else if (num_relocs == 0)
                 {
                     // last relocation found
-                    total_words += 1;
+                    ++total_words;
                     break;
                 }
 
@@ -671,7 +671,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 var unit = new Unit();
                 units.Add(unit);
                 unit.unit_no = unit_no;
-                unit_no += 1;
+                ++unit_no;
 
                 // generate unit name
                 unit.name = this.ReadIndexName(strtab, name_offset);
