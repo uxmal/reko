@@ -72,7 +72,8 @@ namespace Decompiler.Core
         }
 
         public Address Address { get { return addrStart + (off - offStart); } }
-        public uint Offset { get { return off; } }
+        public byte[] Bytes { get { return bytes; } }
+        public uint Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(uint offset) { return 0 <= offset && offset < bytes.Length; }
 
@@ -88,8 +89,16 @@ namespace Decompiler.Core
             return (sbyte) ReadByte();
         }
 
+        public byte[] ReadBytes(uint length)
+        {
+            byte[] dst = new byte[length];
+            Array.Copy(bytes, off, dst, 0, length);
+            Offset += length;
+            return dst;
+        }
+
         /// <summary>
-        /// Reads a chunk of bytes in Little-Endian mode.
+        /// Reads a chunk of bytes and interpret it in Little-Endian mode.
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
@@ -101,7 +110,7 @@ namespace Decompiler.Core
         }
 
         /// <summary>
-        /// Reads a chunk of bytes in Big-Endian mode.
+        /// Reads a chunk of bytes and interret it in Big-Endian mode.
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>

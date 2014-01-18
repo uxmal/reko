@@ -106,6 +106,8 @@ namespace Decompiler.Scanning
                         }
                         else
                         {
+                            // The block cannot be cloned, so we have to take all the blocks reachable by a DFS walk
+                            // and move them into a new procedure.
                             BlocksNeedingPromotion.Add(block);
                             var procNew = PromoteBlockToProcedureEntry(block, blockProc);
                             procNew.AddBlock(block);
