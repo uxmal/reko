@@ -10,7 +10,6 @@ namespace Decompiler.ImageLoaders.Hunk
     public class HunkRelocator
     {
         public static TraceSwitch Trace = new TraceSwitch("HunkRelocation", "Hunk relocation");
-        private bool verbose;
         private HunkLoader hunk_file;
 
         public HunkRelocator(HunkLoader hunk_file)
@@ -36,16 +35,16 @@ namespace Decompiler.ImageLoaders.Hunk
 
         // generate a sequence of addresses suitable for relocation
         // in a single block
-        public List<uint> GetSegmentRelocationAddresses(uint base_addr, uint padding = 0)
+        public List<uint> GetSegmentRelocationAddresses(uint baseAddress, uint padding = 0)
         {
             var sizes = this.GetSegmentSizes();
-            return GetSegmentRelocationAddresses(base_addr, padding, sizes)
+            return GetSegmentRelocationAddresses(baseAddress, padding, sizes)
                 .ToList();
         }
 
-        private IEnumerable<uint> GetSegmentRelocationAddresses(uint base_addr, uint padding, IEnumerable<uint> sizes)
+        private IEnumerable<uint> GetSegmentRelocationAddresses(uint baseAddress, uint padding, IEnumerable<uint> sizes)
         {
-            var addr = base_addr;
+            var addr = baseAddress;
             return sizes.Select(s =>
             {
                 uint a = addr;
@@ -56,20 +55,27 @@ namespace Decompiler.ImageLoaders.Hunk
 
         public byte[] Relocate(List<uint> addr)
         {
+            throw new NotImplementedException();
             var datas = new System.IO.MemoryStream();
             foreach (Segment segment in this.hunk_file.segments)
             {
-                var main_hunk = segment.hunks[0];
-                int hunk_no = main_hunk.hunk_no;
-                uint alloc_size = main_hunk.alloc_size;
-                uint size = main_hunk.size;
-                var data = new BeImageWriter(new byte[alloc_size]);
+                Debug.WriteLineIf(Trace.TraceVerbose, string.Format("Relocating segment {0}", segment.hunks[0]));
+                var mainHunk = segment.hunks[0];
+                int hunk_no = mainHunk.hunk_no;
+                uint alloc_size = mainHunk.alloc_size;
+                uint size = mainHunk.Size;
 
                 // fill in segment data
-                var txt = main_hunk as TextHunk;
+                BeImageWriter data;
+                var txt = mainHunk as TextHunk;
                 if (txt != null)
                 {
+                    Debug.Assert(txt.Size <= alloc_size);
                     data = new BeImageWriter(txt.Data);
+                }
+                else
+                {
+                    data = new BeImageWriter(new byte[alloc_size]);
                 }
                 Debug.WriteLineIf(Trace.TraceVerbose, string.Format("#{0:X2} @ {1:X6}", hunk_no, addr[hunk_no]));
 

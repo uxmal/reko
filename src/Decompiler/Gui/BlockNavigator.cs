@@ -25,6 +25,10 @@ using System.Text;
 
 namespace Decompiler.Gui
 {
+    /// <summary>
+    /// Used in search results to navigate to basic blocks. When NavigateTo is invoked, 
+    /// a code viewer is displayed at the address of the basic block.
+    /// </summary>
     public class BlockNavigator : ICodeLocation
     {
         private IServiceProvider sp;

@@ -60,12 +60,7 @@ namespace Decompiler.ImageLoaders.Hunk
     {
         //private const int RESULT_UNSUPPORTED_HUNKS = 3;
 
-        private HunkType[] loadseg_valid_begin_hunks = new[] {
-            HunkType.HUNK_CODE,
-            HunkType.HUNK_DATA,
-            HunkType.HUNK_BSS,
-            HunkType.HUNK_PPC_CODE
-        };
+
 
         private const int TYPE_UNKNOWN = 0;
         private const int TYPE_LOADSEG = 1;
@@ -103,37 +98,29 @@ namespace Decompiler.ImageLoaders.Hunk
             HunkType.HUNK_ABSRELOC16,
             HunkType.HUNK_RELRELOC26,
         };
-
-        private HunkType[] loadseg_valid_extra_hunks = new[] {
-            HunkType.HUNK_ABSRELOC32,
-            HunkType.HUNK_DREL32,
-            HunkType.HUNK_DEBUG,
-            HunkType.HUNK_SYMBOL,
-            HunkType.HUNK_NAME
-        };
-
-
-
-
     }
 
     public class Hunk
     {
-        public byte[] custom_data;
         public HunkType HunkType;
+        public string Name;
         public uint FileOffset;
         public bool inLib;
         public string fixes;
-        public uint size;
+        public uint Size;
         public uint alloc_size;
-        public string name;
         public List<Reference> refs;
-        public string memf;
+        public string MemoryFlags;
         public int hunk_no;
         public Hunk index_hunk;
         public List<Hunk> defs;
         public int hunk_lib_offset;
-        public uint lib_file_offset;
+        public byte[] custom_data;
+
+        public override string ToString()
+        {
+            return string.Format("{0} ({1})", hunk_no, string.IsNullOrEmpty(Name) ? "<unnamed>" : Name);
+        }
     }
 
     public class HeaderHunk : Hunk
@@ -181,6 +168,7 @@ namespace Decompiler.ImageLoaders.Hunk
         public List<Unit> units;
         public int lib_no;
         public Hunk index;
+        public uint lib_file_offset;
     }
 
     class OverlayHunk : Hunk
@@ -208,7 +196,9 @@ namespace Decompiler.ImageLoaders.Hunk
 
 
     //$TODO: make this not derive from hunk
-    public class HunkInfo : Hunk
+    public class HunkInfo // : Hunk
     {
+        public uint Size;
+        public string MemoryFlags;
     }
 }

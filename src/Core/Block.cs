@@ -39,6 +39,7 @@ namespace Decompiler.Core
 			this.Procedure = proc;
 			this.Name = name;
 			this.Statements = new StatementList(this);
+            // The great majority of blocks have at most two predecessors / successors.
             this.Pred = new List<Block>(2);
             this.Succ = new List<Block>(2);
 		}
