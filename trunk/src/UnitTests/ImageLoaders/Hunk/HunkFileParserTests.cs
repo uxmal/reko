@@ -73,8 +73,8 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
             Assert.AreEqual(0, hdr.FirstHunkId);
             Assert.AreEqual(1, hdr.LastHunkId);
             Assert.AreEqual(2, hdr.HunkSizes.Count);
-            Assert.AreEqual(16, hdr.HunkSizes[0].size);
-            Assert.AreEqual(64, hdr.HunkSizes[1].size);
+            Assert.AreEqual(16, hdr.HunkSizes[0].Size);
+            Assert.AreEqual(64, hdr.HunkSizes[1].Size);
         }
 
         [Test]

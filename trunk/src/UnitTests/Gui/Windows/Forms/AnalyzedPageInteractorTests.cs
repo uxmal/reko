@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
 
-            ProgramImageBrowserService brSvc = new ProgramImageBrowserService(form.BrowserList);
+            ProgramImageBrowserService brSvc = new ProgramImageBrowserService(form.BrowserTree);
             sc.AddService(typeof(IProgramImageBrowserService), brSvc);
         }
 
@@ -93,10 +93,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Show();
             prog.Procedures.Add(new Address(0x12345), new Procedure("foo", prog.Architecture.CreateFrame()));
             interactor.EnterPage();
-            Assert.IsTrue(form.BrowserList.Visible, "Browserlist should be visible");
+            Assert.IsTrue(form.BrowserTree.Visible, "Browserlist should be visible");
 
-            Assert.AreEqual(1, form.BrowserList.Items.Count);
-            KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) form.BrowserList.Items[0].Tag;
+            Assert.AreEqual(1, form.BrowserTree.Items.Count);
+            KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) form.BrowserTree.Items[0].Tag;
             Assert.AreEqual(0x12345, entry.Key.Offset);
             Assert.AreEqual("foo", entry.Value.Name);
 
@@ -135,8 +135,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12346), p);
             interactor.EnterPage();
 
-            form.BrowserList.Items[1].Focused = true;
-            form.BrowserList.Items[1].Selected = true;
+            form.BrowserTree.SelectedNode = form.BrowserTree.Nodes[1];
 
             repository.VerifyAll();
         }

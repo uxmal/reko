@@ -23,6 +23,7 @@ using Decompiler.Environments.AmigaOS;
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -44,6 +45,8 @@ namespace Decompiler.ImageLoaders.Hunk
         private List<Segment> overlay_segments;
         private List<LibHunk> libs;
         private List<Unit> units;
+
+        private static TraceSwitch Trace = new TraceSwitch("HunkLoader", "Trace Amiga Hunk loader", "Verbose");
 
         public HunkLoader(IServiceProvider services, byte[] imgRaw)
             : base(services, imgRaw)
@@ -123,34 +126,48 @@ namespace Decompiler.ImageLoaders.Hunk
             return this.get_struct_summary(this.hunks);
         }
 
+        private HunkType[] loadseg_valid_begin_hunks = new[] {
+            HunkType.HUNK_CODE,
+            HunkType.HUNK_DATA,
+            HunkType.HUNK_BSS,
+            HunkType.HUNK_PPC_CODE
+        };
+
+        private HunkType[] loadseg_valid_extra_hunks = new[] {
+            HunkType.HUNK_ABSRELOC32,
+            HunkType.HUNK_DREL32,
+            HunkType.HUNK_DEBUG,
+            HunkType.HUNK_SYMBOL,
+            HunkType.HUNK_NAME
+        };
+
         public bool BuildLoadSegments()
         {
             bool inHeader = true;
             bool beginSeek = false;
             Segment segment = null;
-            var segment_list = this.segments;
             int hunk_no = 0;
             foreach (Hunk e in this.hunks)
             {
                 var hunk_type = e.HunkType;
 
-                // check for end of header
-                if (inHeader && loadseg_valid_begin_hunks.Contains(hunk_type))
+                if (inHeader)
                 {
+                    if (loadseg_valid_begin_hunks.Contains(hunk_type))
                     inHeader = false;
                     beginSeek = true;
-                }
-
+                } 
                 if (inHeader)
                 {
                     if (hunk_type == HunkType.HUNK_HEADER)
                     {
+                        Debug.WriteLineIf(Trace.TraceVerbose, "Loading Header into a segment.");
                         var hdr = e as HeaderHunk;
                         // we are in an overlay!
                         if (this.overlay != null)
                         {
-                            segment_list = new List<Segment>();
-                            this.overlay_segments.AddRange(segment_list);
+                            segments = new List<Segment>();
+                            this.overlay_segments.AddRange(segments);
                             this.overlay_headers.Add(hdr);
                         }
                         else
@@ -180,12 +197,12 @@ namespace Decompiler.ImageLoaders.Hunk
                 {
                     if (loadseg_valid_begin_hunks.Contains(hunk_type))
                     {
-                        // a new hunk shall begin
+                        Debug.WriteLineIf(Trace.TraceVerbose, string.Format("Hunk {0} starting new segment because it is {1}.", e.Name, hunk_type));
                         segment = new Segment { hunks = { e } };
-                        segment_list.Add(segment);
+                        segments.Add(segment);
                         beginSeek = false;
                         e.hunk_no = hunk_no;
-                        e.alloc_size = this.header.HunkSizes[hunk_no].size;
+                        e.alloc_size = this.header.HunkSizes[hunk_no].Size;
                         ++hunk_no;
                         break;
                     }
@@ -205,10 +222,10 @@ namespace Decompiler.ImageLoaders.Hunk
                     }
                     else if (hunk_type == HunkType.HUNK_BREAK)
                     {
-                        // assume hunk to be empty
+                        // Assume hunk to be empty
                         inHeader = true;
                     }
-                    else if (hunk_type == HunkType.HUNK_END
+                    else if (hunk_type == HunkType.HUNK_END 
                       || hunk_type == HunkType.HUNK_NAME
                       || hunk_type == HunkType.HUNK_DEBUG)
                     {
@@ -232,16 +249,17 @@ namespace Decompiler.ImageLoaders.Hunk
                     else if (loadseg_valid_extra_hunks.Contains(hunk_type))
                     {
                         // contents of hunk
+                        Debug.WriteLineIf(Trace.TraceVerbose, string.Format("...adding hunk {0} ({1})", e.hunk_no, e.Name));
                         segment.hunks.Add(e);
                     }
                     else if (loadseg_valid_begin_hunks.Contains(hunk_type))
                     {
                         // broken hunk file without END tag
                         segment = new Segment { hunks = { e } };
-                        segment_list.Add(segment);
+                        segments.Add(segment);
                         beginSeek = false;
                         e.hunk_no = hunk_no;
-                        e.alloc_size = this.header.HunkSizes[hunk_no].size;
+                        e.alloc_size = this.header.HunkSizes[hunk_no].Size;
                         ++hunk_no;
                         // unexpected hunk?!
                     }
@@ -274,7 +292,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 if (hunk_type == HunkType.HUNK_UNIT)
                 {
                     unit = new Unit();
-                    unit.name = e.name;
+                    unit.name = e.Name;
                     unit.unit_no = unit_no;
                     unit.segments = new List<Segment>();
                     unit.unit = e;
@@ -293,7 +311,7 @@ namespace Decompiler.ImageLoaders.Hunk
                     // begin a named hunk
                     if (hunk_type == HunkType.HUNK_NAME)
                     {
-                        name = e.name;
+                        name = e.Name;
                     }
                     // main hunk block
                     else if (unit_valid_main_hunks.Contains(hunk_type))
@@ -303,7 +321,7 @@ namespace Decompiler.ImageLoaders.Hunk
                         // give main block the NAME
                         if (name != null)
                         {
-                            e.name = name;
+                            e.Name = name;
                             name = null;
                         }
                         e.hunk_no = hunk_no;
@@ -345,7 +363,7 @@ namespace Decompiler.ImageLoaders.Hunk
             var lib_segments = new List<Segment>();
             var segment_list = new List<Segment>();
             Segment segment = null;
-            bool seek_lib = true;
+            bool seekForLibHunk = true;
             bool seek_main = false;
             int hunk_no = 0;
             uint lib_file_offset = 0;
@@ -353,19 +371,20 @@ namespace Decompiler.ImageLoaders.Hunk
             {
                 var hunk_type = e.HunkType;
 
-                // seeking for a LIB hunk
-                if (seek_lib)
+                if (seekForLibHunk)
                 {
                     if (hunk_type == HunkType.HUNK_LIB)
                     {
+                        var libHunk = (LibHunk) e;
                         segment_list = new List<Segment>();
                         lib_segments.AddRange(segment_list);
-                        seek_lib = false;
                         seek_main = true;
                         hunk_no = 0;
 
                         // get start address of lib hunk in file
-                        lib_file_offset = e.lib_file_offset;
+                        lib_file_offset = libHunk.lib_file_offset;
+
+                        seekForLibHunk = false;
                     }
                     else
                     {
@@ -375,11 +394,11 @@ namespace Decompiler.ImageLoaders.Hunk
                 }
                 else if (seek_main)
                 {
-                    // End of lib? -> index!
                     if (hunk_type == HunkType.HUNK_INDEX)
                     {
+                        // End of lib? -> index!
                         seek_main = false;
-                        seek_lib = true;
+                        seekForLibHunk = true;
                         var lib_units = new List<Unit>();
                         if (!this.ResolveIndexHunks((IndexHunk)e, segment_list, lib_units))
                             throw new BadImageFormatException("Error resolving index hunks.");
@@ -389,9 +408,9 @@ namespace Decompiler.ImageLoaders.Hunk
                         lib.index = e;
                         this.libs.Add(lib);
                     }
-                    // start of a hunk
                     else if (unit_valid_main_hunks.Contains(hunk_type))
                     {
+                        // start of a hunk
                         segment = new Segment { hunks = { e } };
                         e.hunk_no = hunk_no;
                         ++hunk_no;
@@ -410,14 +429,13 @@ namespace Decompiler.ImageLoaders.Hunk
                 }
                 else
                 {
-                    // end hunk
                     if (hunk_type == HunkType.HUNK_END)
                     {
                         seek_main = true;
                     }
-                    // extra contents
                     else if (unit_valid_extra_hunks.Contains(hunk_type))
                     {
+                        // extra contents
                         segment.hunks.Add(e);
                     }
                     else
@@ -468,7 +486,7 @@ namespace Decompiler.ImageLoaders.Hunk
                             unit_segments.Add(seg);
                             // renumber hunk
                             seg.hunks[0].hunk_no = i;
-                            seg.hunks[0].name = info.name;
+                            seg.hunks[0].Name = info.Name;
                             seg.hunks[0].index_hunk = info;
                         }
                         found = true;

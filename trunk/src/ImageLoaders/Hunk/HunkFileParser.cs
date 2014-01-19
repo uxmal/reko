@@ -216,7 +216,7 @@ namespace Decompiler.ImageLoaders.Hunk
                     hunks.Add(h);
 
                     //hunk.HunkType = hunk_names[hunk_type]
-                    SetMemoryFlags(h, hunkFlags, 30);
+                    h.MemoryFlags = GetMemoryFlags(hunkFlags, 30);
                     // account for lib
                     uint lastHunkSize = hunkFileOffset - prevOffset;
                     if (libSize > 0)
@@ -370,8 +370,8 @@ namespace Decompiler.ImageLoaders.Hunk
                     throw new BadImageFormatException("HUNK_HEADER contains invalid hunk_size.");
                 uint hunk_bytes = (uint) (hunkSize & ~HUNKF_ALL);
                 hunk_bytes *= 4; // longs to bytes
-                hunk_info.size = hunk_bytes;
-                this.SetMemoryFlags(hunk_info, hunkSize & HUNKF_ALL, 30);
+                hunk_info.Size = hunk_bytes;
+                hunk_info.MemoryFlags = GetMemoryFlags(hunkSize & HUNKF_ALL, 30);
                 hunkTable.Add(hunk_info);
             }
             hunk.HunkSizes = hunkTable;
@@ -397,11 +397,11 @@ namespace Decompiler.ImageLoaders.Hunk
             // read in hunk data
             uint size = (uint) cLongs * 4;
 
-            hunk.size = size & ~HUNKF_ALL;
+            hunk.Size = size & ~HUNKF_ALL;
             uint flags = (uint) (size & HUNKF_ALL);
-            this.SetMemoryFlags(hunk, (int) flags, 30);
+            hunk.MemoryFlags = GetMemoryFlags((int) flags, 30);
             hunk.dataFileOffset = f.Offset;
-            var data = f.ReadBytes(hunk.size);
+            var data = f.ReadBytes(hunk.Size);
             hunk.Data = data;
             return hunk;
         }
@@ -417,9 +417,9 @@ namespace Decompiler.ImageLoaders.Hunk
                     "{0} has invalid size.", hunk.HunkType));
             }
             uint size = (uint) num_longs * 4;
-            hunk.size = size & ~HUNKF_ALL;
+            hunk.Size = size & ~HUNKF_ALL;
             uint flags = (uint) (size & HUNKF_ALL);
-            this.SetMemoryFlags(hunk, (int) flags, 30);
+            hunk.MemoryFlags = GetMemoryFlags((int) flags, 30);
         }
 
         private void ParseReloc(BeImageReader f, Action<Hunk> fn)
@@ -687,19 +687,20 @@ namespace Decompiler.ImageLoaders.Hunk
                 unit.hunk_infos = ihunks;
                 for (int a = 0; a < num_hunks; ++a)
                 {
-                    var ihunk = new Hunk();
-                    ihunks.Add(ihunk);
 
                     // get hunk info
                     name_offset = f.ReadBeInt16();
-                    int hunk_size = f.ReadBeInt16(); ;
+                    int hunk_size = f.ReadBeInt16(); 
                     int hunk_type = f.ReadBeInt16();
+                    var ihunk = new Hunk
+                    {
+                        Name = this.ReadIndexName(strtab, name_offset),
+                        Size = (uint) hunk_size,
+                        HunkType = (HunkType) (hunk_type & 0x3FFF),
+                        MemoryFlags = GetMemoryFlags(hunk_type & 0xC000, 14),
+                    };
+                    ihunks.Add(ihunk);
                     total_size -= 6;
-                    ihunk.name = this.ReadIndexName(strtab, name_offset);
-                    ihunk.size = (uint) hunk_size;
-                    ihunk.HunkType = (HunkType) (hunk_type & 0x3fff);
-                    this.SetMemoryFlags(ihunk, hunk_type & 0xc000, 14);
-                    ihunk.HunkType = (HunkType) (hunk_type & 0x3FFF);
 
                     // get references
                     int num_refs = f.ReadBeInt16();
@@ -745,8 +746,8 @@ namespace Decompiler.ImageLoaders.Hunk
                             var def_flags = def_type_flags & 0xc000;
                             total_size -= 6;
                             string name = this.ReadIndexName(strtab, name_offset);
-                            var d = new DefHunk { name = name, value = def_value, HunkType = def_type };
-                            this.SetMemoryFlags(d, def_flags, 14);
+                            var d = new DefHunk { Name = name, value = def_value, HunkType = def_type };
+                            d.MemoryFlags = GetMemoryFlags(def_flags, 14);
                             defs.Add(d);
                         }
                     }
@@ -847,9 +848,9 @@ namespace Decompiler.ImageLoaders.Hunk
             fn(hunk);
             string n = this.ReadString(f);
             if (n.Length > 0)
-                hunk.name = n;
+                hunk.Name = n;
             else
-                hunk.name = "";
+                hunk.Name = "";
         }
 
         private TextHunk FindFirstCodeHunk()
@@ -921,15 +922,16 @@ namespace Decompiler.ImageLoaders.Hunk
             rdr.Offset += (uint) cWords * 4;
             return str.TrimEnd('\0');
         }
-        private void SetMemoryFlags(Hunk hunk, int flags, int shift)
+
+        private string GetMemoryFlags(int flags, int shift)
         {
             int f = flags >> shift;
             if ((f & 1) == 1)
-                hunk.memf = "chip";
+                return "chip";
             else if ((f & 2) == 2)
-                hunk.memf = "fast";
+                return "fast";
             else
-                hunk.memf = "";
+                return "";
         }
     }
 }
