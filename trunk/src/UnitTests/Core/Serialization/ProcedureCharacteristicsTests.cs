@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 
         private static ProcedureCharacteristics DeserializeXml(string x)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(ProcedureCharacteristics));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(ProcedureCharacteristics));
             ProcedureCharacteristics pc = (ProcedureCharacteristics) ser.Deserialize(new StringReader(x));
             return pc;
         }
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                 "    <factor constant=\"30\"/>" +
                 "  </array-size>" +
                 "</ProcedureCharacteristics>";
-            XmlSerializer ser = new XmlSerializer(typeof(ProcedureCharacteristics));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(ProcedureCharacteristics));
             ProcedureCharacteristics pc = (ProcedureCharacteristics) ser.Deserialize(new StringReader(x));
             ArraySizeCharacteristic arrs = pc.ArraySize;
             Assert.IsNotNull(arrs, "Should have deserialized an array size.");

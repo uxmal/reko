@@ -524,5 +524,24 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             RunTest("pea\t$0004(a2)", 0x486A, 0x0004);
         }
+
+        [Test]
+        public void M68kdis_dbra()
+        {
+            RunTest("dbra\td2,$0FFFFFFC", 0x51CA, 0xFFFA);
+        }
+
+        [Test]
+        public void M68kdis_dble()
+        {
+            RunTest("dble\td7,$0FFFFFFC", 0x5FCF, 0xFFFA);
+        }
+
+        [Test]
+        public void M68kdis_link()
+        {
+            RunTest("link\ta2,#$0004", 0x4E52, 0x0004);
+            RunTest("link\ta3,#$00050004", 0x480B, 0x0005, 0004);
+        }
     }
 }

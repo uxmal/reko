@@ -234,26 +234,26 @@ namespace Decompiler.Gui
             return idx < str.Length && str[idx] == cha;
         }
 
-        private SerializedArgument ParseStackArgument(string typeName, string argName)
-        {
-            PrimitiveType p;
-            int sizeInWords;
-            int wordSize = arch.WordWidth.Size;
-            if (PrimitiveType.TryParse(typeName, out p))
-            {
-                sizeInWords = (p.Size + (wordSize - 1))/wordSize;
-            }
-            else
-            {
-                sizeInWords = 1;      // A reasonable guess, but is it a good one?
-            }
+		private SerializedArgument ParseStackArgument(string typeName, string argName)
+		{
+			PrimitiveType p;
+			int sizeInWords;
+			int wordSize = arch.WordWidth.Size;
+			if (PrimitiveType.TryParse(typeName, out p))
+			{
+				sizeInWords = (p.Size + (wordSize - 1))/wordSize;
+			}
+			else
+			{
+				sizeInWords = 1;      // A reasonable guess, but is it a good one?
+			}
 
-            SerializedArgument arg = new SerializedArgument();
-            arg.Name= argName;
-            arg.Type = new SerializedTypeReference { TypeName = typeName };
-            arg.Kind = new SerializedStackVariable(sizeInWords * wordSize);
-            return arg;
-        }
+			SerializedArgument arg = new SerializedArgument();
+			arg.Name = argName;
+			arg.Type = new SerializedTypeReference { TypeName = typeName };
+			arg.Kind = new SerializedStackVariable(); //  (sizeInWords * wordSize);
+			return arg;
+		}
 
         private string GetNextWord()
         {

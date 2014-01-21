@@ -209,7 +209,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
                 XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
                 x.Formatting = Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer(ssig.GetType());
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(ssig.GetType());
                 ser.Serialize(x, ssig);
                 fut.AssertFilesEqual();
             }

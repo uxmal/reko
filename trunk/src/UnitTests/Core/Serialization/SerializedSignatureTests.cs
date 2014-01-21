@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/AxBxCl.xml"), FileMode.Open))
 			{
 				XmlTextReader rdr = new XmlTextReader(stm);
-				XmlSerializer ser = new XmlSerializer(typeof (SerializedSignature));
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedSignature));
 				ssig = (SerializedSignature) ser.Deserialize(rdr);
 			}
 			ProcedureSerializer sser = new ProcedureSerializer(this.arch, "stdapi");
@@ -136,11 +136,13 @@ namespace Decompiler.UnitTests.Core.Serialization
                     new SerializedArgument
                     {
                         Name = "lParam",
-			            Kind = new SerializedStackVariable(4)
+			            Kind = new SerializedStackVariable(),
+                        Type = new SerializedPrimitiveType(Domain.SignedInt, 4),
                     },
                     new SerializedArgument 
                     {
-			            Kind = new SerializedStackVariable(2)
+			            Kind = new SerializedStackVariable(),
+                        Type = new SerializedPrimitiveType(Domain.SignedInt, 2),
                     }
                 }
             };
@@ -153,7 +155,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
 				x.Formatting = Formatting.Indented;
-				XmlSerializer ser = SerializedLibrary.CreateSerializer(ssig.GetType());
+				XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(ssig.GetType());
 				ser.Serialize(x, ssig);
 
 				fut.AssertFilesEqual();

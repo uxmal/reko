@@ -78,7 +78,7 @@ private  string convention;
 				argCur.Name ?? "arg" + ps.StackOffset, 
 				dt,
 				new StackArgumentStorage(ps.StackOffset, dt));
-			ps.StackOffset += ss.ByteSize;
+            ps.StackOffset += dt.Size;
 		}
 
 		public void Deserialize(SerializedFpuStackVariable fs)

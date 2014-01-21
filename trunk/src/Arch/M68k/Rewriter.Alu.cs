@@ -57,6 +57,53 @@ namespace Decompiler.Arch.M68k
             AllConditions(opDst);
         }
 
+        public void RewriteBchg()
+        {
+            throw new NotImplementedException("Haven't gotten this work yet.");
+            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var tmpMask = frame.CreateTemporary(PrimitiveType.UInt32);
+            emitter.Assign(tmpMask, emitter.Shl(1, opSrc));
+            var opDst = orw.RewriteDst(di.Instruction.op2, tmpMask, (s, d) => emitter.Xor(d, s));
+            emitter.Assign(
+                orw.FlagGroup(FlagM.ZF),
+                emitter.Cond(emitter.And(opDst, tmpMask)));
+        }
+
+        public void RewriteExt()
+        {
+            PrimitiveType dtSrc;
+            PrimitiveType dtDst;
+            if (di.Instruction.dataWidth.Size == 4)
+            {
+                dtSrc = PrimitiveType.Int16;
+                dtDst = PrimitiveType.Int32;
+            }
+            else
+            {
+                dtSrc = PrimitiveType.SByte;
+                dtDst = PrimitiveType.Int16;
+            }
+            var dReg = frame.EnsureRegister(((RegisterOperand) di.Instruction.op1).Register);
+            emitter.Assign(
+                dReg,
+                emitter.Cast(dtDst, emitter.Cast(dtSrc, dReg)));
+            emitter.Assign(
+                orw.FlagGroup(FlagM.NF | FlagM.ZF),
+                emitter.Cond(dReg));
+        }
+
+        public void RewriteExtb()
+        {
+            var dReg = orw.RewriteSrc(di.Instruction.op1);
+            emitter.Assign(
+                dReg, 
+                emitter.Cast(PrimitiveType.Int32,
+                    emitter.Cast(PrimitiveType.SByte, dReg)));
+            emitter.Assign(
+                orw.FlagGroup(FlagM.NF | FlagM.ZF),
+                emitter.Cond(dReg));
+        }
+
         public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
         {
             var width = di.Instruction.dataWidth;
@@ -182,6 +229,33 @@ namespace Decompiler.Arch.M68k
         {
             expr = emitter.Neg(expr);
             return emitter.ISub(expr, orw.FlagGroup(FlagM.XF));
+        }
+
+        private void RewriteLink()
+        {
+            var aReg = orw.RewriteSrc(di.Instruction.op1);
+            var aSp = frame.EnsureRegister(arch.StackRegister);
+            var imm = ((M68kImmediateOperand) di.Instruction.op2).Constant.ToInt32();
+            emitter.Assign(aSp, emitter.ISub(aSp, 4));
+            emitter.Assign(emitter.LoadDw(aSp), aReg);
+            emitter.Assign(aReg, aSp);
+            if (imm < 0)
+            {
+                emitter.Assign(aSp, emitter.ISub(aSp, -imm));
+            }
+            else
+            {
+                emitter.Assign(aSp, emitter.IAdd(aSp, -imm));
+            }
+        }
+
+        private void RewriteUnlk()
+        {
+            var aReg = orw.RewriteSrc(di.Instruction.op1);
+            var aSp = frame.EnsureRegister(arch.StackRegister);
+            emitter.Assign(aSp, aReg);
+            emitter.Assign(aReg, emitter.LoadDw(aSp));
+            emitter.Assign(aSp, emitter.IAdd(aSp, 4));
         }
 
         private void Copy(Expression dst, Expression src, int bitSize)

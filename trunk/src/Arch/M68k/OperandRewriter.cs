@@ -66,14 +66,14 @@ namespace Decompiler.Arch.M68k
             if (reg != null)
             {
                 Expression r = rewriter.frame.EnsureRegister(reg.Register);
-                if (dataWidth.Size != reg.Width.Size)
+                if (dataWidth != null && dataWidth.Size != reg.Width.Size)
                     r = m.Cast(dataWidth, r);
                 return r;
             }
             var imm = operand as M68kImmediateOperand;
             if (imm != null)
             {
-               if (dataWidth.BitSize > imm.Width.BitSize)
+               if (dataWidth != null && dataWidth.BitSize > imm.Width.BitSize)
                     return Constant.Create(dataWidth, imm.Constant.ToInt64());
                 else
                     return Constant.Create(imm.Width, imm.Constant.ToUInt32());
@@ -211,7 +211,10 @@ namespace Decompiler.Arch.M68k
             return m.Load(dataWidth, ea);
         }
 
-        public Expression RewriteUnary(MachineOperand operand, PrimitiveType dataWidth, Func<Expression, Expression> opGen)
+        public Expression RewriteUnary(
+            MachineOperand operand, 
+            PrimitiveType dataWidth,
+            Func<Expression, Expression> opGen)
         {
             var reg = operand as RegisterOperand;
             if (reg != null)
@@ -238,7 +241,6 @@ namespace Decompiler.Arch.M68k
                 m.Assign(tmp, opGen(load));
                 m.Assign(RewriteMemoryAccess(mem,dataWidth), tmp);
                 return tmp;
-
             }
             var post = operand as PostIncrementMemoryOperand;
             if (post != null)

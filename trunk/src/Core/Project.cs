@@ -33,12 +33,14 @@ namespace Decompiler.Core
         public Project()
         {
             UserProcedures = new SortedList<Address, SerializedProcedure>();
-            UserCalls = new SortedList<Address, SerializedCall>();
+            UserCalls = new SortedList<Address, SerializedCall_v1>();
             UserGlobalData = new SortedList<Address, SerializedType>();
+            InputFiles = new List<InputFile>();
         }
 
         public Address BaseAddress { get; set; }
         public string DisassemblyFilename { get; set; }
+        public List<InputFile> InputFiles { get; private set; }
         public string InputFilename { get; set; }
         public string IntermediateFilename { get; set; }
         public string OutputFilename { get; set; }
@@ -53,7 +55,7 @@ namespace Decompiler.Core
         /// Locations that have been identified as calls by the user, complete with 
         /// their signatures.
         /// </summary>
-        public SortedList<Address, SerializedCall> UserCalls { get; private set; }
+        public SortedList<Address, SerializedCall_v1> UserCalls { get; private set; }
 
         /// <summary>
         /// Global data identified by the user.

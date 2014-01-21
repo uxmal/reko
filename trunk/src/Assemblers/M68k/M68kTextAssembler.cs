@@ -130,7 +130,7 @@ namespace Decompiler.Assemblers.M68k
             switch (code)
             {
             case 0: emitter.EmitByte(n); break;
-            case 1: emitter.EmitBeUint16(n); break;
+            case 1: emitter.EmitBeUInt16(n); break;
             case 2: emitter.EmitBeUint32(n); break;
             default: Debug.Assert(false); break;
             }
@@ -364,7 +364,6 @@ namespace Decompiler.Assemblers.M68k
                 }
                 // It's some identifier we haven't seen yet. Register our interest
                 return ForwardEa(asm.Symbols.CreateSymbol(name));
-                break;
             case TokenType.MINUS:
                 tok = lexer.PeekToken();
                 if (tok.Type == TokenType.INTEGER)
@@ -597,7 +596,7 @@ namespace Decompiler.Assemblers.M68k
         public void Move(DataRegister dSrc, DataRegister dDst)
         {
             int opcode = 0x2000 | dSrc.Number | (dSrc.Number << 9);
-            emitter.EmitBeUint16(opcode);
+            emitter.EmitBeUInt16(opcode);
         }
    }
 }

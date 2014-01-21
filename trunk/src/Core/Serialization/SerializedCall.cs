@@ -29,7 +29,7 @@ namespace Decompiler.Core.Serialization
 	/// If while rewriting the code a call is found at the InstructionAddress, the rewriter will
 	/// emit an Application rather than a call instruction. This allows the user to coerce a 
 	/// particular call instruction to a specified signature.
-	public class SerializedCall
+	public class SerializedCall_v1
 	{
 		/// <summary>
 		/// The address of the call instruction whose signature we wish to override.
@@ -40,11 +40,14 @@ namespace Decompiler.Core.Serialization
 		[XmlElement("signature")]
 		public SerializedSignature Signature;
 
-		public SerializedCall()
+        [XmlElement("comment")]
+        public string Comment;
+
+		public SerializedCall_v1()
 		{
 		}
 
-		public SerializedCall(Address addr, SerializedSignature sig)
+		public SerializedCall_v1(Address addr, SerializedSignature sig)
 		{
 			InstructionAddress = addr.ToString();
 			Signature = sig;

@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests
             Program prog = new Program();
             prog.Architecture = arch;
             decompiler.Program = prog;
-            List<SerializedCall> al = new List<SerializedCall>();
+            List<SerializedCall_v1> al = new List<SerializedCall_v1>();
             SerializedSignature sig = new SerializedSignature();
             sig.Arguments = new SerializedArgument[] {
 			    new SerializedArgument {
@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests
 			        Kind = new SerializedRegister("bx"),
                 }
             };
-            al.Add(new SerializedCall(new Address(0x0C32, 0x3200), sig));
+            al.Add(new SerializedCall_v1(new Address(0x0C32, 0x3200), sig));
             var sigs = decompiler.LoadCallSignatures(al);
 
             ProcedureSignature ps = sigs[new Address(0x0C32, 0x3200)];

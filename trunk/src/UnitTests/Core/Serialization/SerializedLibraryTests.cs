@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SlibReadOneProcedure()
 		{
-			XmlSerializer ser = new XmlSerializer(typeof (SerializedLibrary));
+			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof (SerializedLibrary));
 			SerializedLibrary lib;
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/SlibOneProcedure.xml"), FileMode.Open))
 			{
@@ -53,13 +53,13 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedProcedure proc = (SerializedProcedure) lib.Procedures[0];
 			Assert.AreEqual("malloc", proc.Name);
 			Assert.AreEqual(1, proc.Signature.Arguments.Length);
-			Assert.AreEqual("int", proc.Signature.Arguments[0].Type);
+			Assert.AreEqual("int", proc.Signature.Arguments[0].Type.ToString());
 		}
 
 		[Test]
 		public void SlibReadMsvcrtXml()
 		{
-			XmlSerializer ser = new XmlSerializer(typeof (SerializedLibrary));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
 			SerializedLibrary lib;
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/Win32/msvcrt.xml"), FileMode.Open))
 			{
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SlibReadRealModeIntServices()
 		{
-			XmlSerializer ser = new XmlSerializer(typeof (SerializedLibrary));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
 			SerializedLibrary lib;
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("../Environments/Msdos/realmodeintservices.xml"), FileMode.Open))
 			{
@@ -97,7 +97,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			proc.Signature.Arguments = new SerializedArgument[1];
 			proc.Signature.Arguments[0] = new SerializedArgument();
 			proc.Signature.Arguments[0].Name = "cb";
-			proc.Signature.Arguments[0].Kind = new SerializedStackVariable(4);
+			proc.Signature.Arguments[0].Kind = new SerializedStackVariable();
 
 			return proc;
 		}
@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				XmlTextWriter writer = new FilteringXmlWriter(fut.TextWriter);
 				writer.Formatting = Formatting.Indented;
-				XmlSerializer ser = new XmlSerializer(slib.GetType());
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(slib.GetType());
 				ser.Serialize(writer, slib);
 
 				fut.AssertFilesEqual();

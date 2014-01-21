@@ -115,7 +115,7 @@ namespace Decompiler.Core.Assemblers
 			stmOut.WriteByte((byte)(s >> 8));
 		}
 
-        public void EmitBeUint16(int s)
+        public void EmitBeUInt16(int s)
         {
             stmOut.WriteByte((byte)(s >> 8));
             stmOut.WriteByte((byte)(s & 0xFF));

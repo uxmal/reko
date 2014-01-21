@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			sig.Arguments = new SerializedArgument[1];
 			sig.Arguments[0] = new SerializedArgument();
 			sig.Arguments[0].Kind = new SerializedRegister("bx");
-			SerializedCall sc = new SerializedCall(new Address(0x01004000), sig);
+			SerializedCall_v1 sc = new SerializedCall_v1(new Address(0x01004000), sig);
 			Assert.AreEqual("01004000", sc.InstructionAddress);
 			Assert.AreEqual("bx", ((SerializedRegister) sc.Signature.Arguments[0].Kind).Name);
 		}

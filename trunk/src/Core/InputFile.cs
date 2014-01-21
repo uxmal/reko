@@ -23,6 +23,9 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Core
 {
+    public class InputFile
+    {
+    }
 }

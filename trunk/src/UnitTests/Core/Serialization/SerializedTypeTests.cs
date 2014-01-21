@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			        new SerializedStructField(4, null, new SerializedPrimitiveType(Domain.Real, 8)),
                 }
             };
-			Assert.AreEqual("struct(0, (0, ?, prim(UnsignedInt,4)), (4, ?, prim(Real,8)))", str.ToString());
+			Assert.AreEqual("struct((0, ?, prim(UnsignedInt,4))(4, ?, prim(Real,8)))", str.ToString());
 		}
 
 		[Test]
@@ -69,15 +69,18 @@ namespace Decompiler.UnitTests.Core.Serialization
 			StringWriter writer = new StringWriter();
 			XmlTextWriter x = new XmlTextWriter(writer);
 			x.Formatting = Formatting.None;
-			XmlSerializer ser = new XmlSerializer(str.GetType());
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(str.GetType());
 			ser.Serialize(x, str);
 
 			string s = writer.ToString();
 			int b = s.IndexOf("<field");
 			int e = s.IndexOf("</Ser");
-			Assert.AreEqual("<field offset=\"0\"><prim domain=\"SignedInt\" size=\"4\" /></field><field offset=\"4\"><prim domain=\"Real\" size=\"8\" /></field>", s.Substring(b, e-b));
+			Assert.AreEqual(
+                "<field offset=\"0\"><prim domain=\"SignedInt\" size=\"4\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>" +
+                "<field offset=\"4\"><prim domain=\"Real\" size=\"8\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>",
+                s.Substring(b, e-b));
 			StringReader rdr = new StringReader(s);
-			XmlSerializer deser = new XmlSerializer(typeof (SerializedStructType));
+            XmlSerializer deser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedStructType));
 			SerializedStructType destr = (SerializedStructType) deser.Deserialize(rdr);
 		}
 
@@ -86,12 +89,12 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			SerializedType st = new SerializedPointerType(new SerializedPrimitiveType(Domain.SignedInt, 4));
 			StringWriter writer = new StringWriter();
-			XmlSerializer ser = new XmlSerializer(st.GetType());
+			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(st.GetType());
 			ser.Serialize(writer, st);
 			string s = writer.ToString();
 			int b = s.IndexOf("<prim");
 			int e = s.IndexOf("/>");
-			Assert.AreEqual("<prim domain=\"SignedInt\" size=\"4\" />", s.Substring(b, 36));
+            Assert.AreEqual("<prim domain=\"SignedInt\" size=\"4\" xmlns=\"http://schemata.jklnet.org/Decompiler\" ", s.Substring(b, e-b));
 		}
 	}
 }

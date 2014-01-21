@@ -13,10 +13,12 @@
         <reg>eax</reg>
       </return>
       <arg>
-        <stack size="4" />
+        <prim domain="SignedInt" size="4" />
+        <stack />
       </arg>
       <arg>
-        <stack size="4" />
+        <prim domain="SignedInt" size="4" />
+        <stack />
       </arg>
     </signature>
     <address>1000:0010</address>

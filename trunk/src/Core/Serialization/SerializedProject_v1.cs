@@ -45,7 +45,7 @@ namespace Decompiler.Core.Serialization
             this.Input = new DecompilerInput_v1();
             this.Output = new DecompilerOutput_v1();
             this.UserProcedures = new List<SerializedProcedure>();
-            this.UserCalls = new List<SerializedCall>();
+            this.UserCalls = new List<SerializedCall_v1>();
         }
 
         [XmlElement("input")]
@@ -57,21 +57,23 @@ namespace Decompiler.Core.Serialization
         [XmlElement("procedure", typeof(SerializedProcedure))]
         public List<SerializedProcedure> UserProcedures;
 
-        [XmlElement("call", typeof(SerializedCall))]
-        public List<SerializedCall> UserCalls;
+        [XmlElement("call", typeof(SerializedCall_v1))]
+        public List<SerializedCall_v1> UserCalls;
     }
 
     public class DecompilerInput_v1
     {
-        public DecompilerInput_v1()
-        {
-        }
-
         [XmlElement("filename")]
         public string Filename;
 
         [XmlElement("address")]
         public string Address;
+
+        [XmlElement("comment")]
+        public string Comment;
+
+        [XmlElement("processor")]
+        public string Processor;
     }
 
     public class DecompilerOutput_v1
