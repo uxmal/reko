@@ -160,17 +160,17 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void Bchg()
+        public void M68kdis_Bchg()
         {
             DasmSingleInstruction(0x01, 0x40);
             Assert.AreEqual("bchg\td0,d0", instr.ToString());
         }
 
         [Test]
-        public void Dbf()
+        public void Dbra()
         {
             DasmSingleInstruction(0x51, 0xCA, 0xFF, 0xE4);
-            Assert.AreEqual("dbf\td2,$0FFFFFE6", instr.ToString());
+            Assert.AreEqual("dbra\td2,$0FFFFFE6", instr.ToString());
         }
 
         [Test]
