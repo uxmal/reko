@@ -221,6 +221,7 @@
     <Compile Include="Serialization\DataTypeNameSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
     <Compile Include="Serialization\ProjectSerializer.cs" />
+    <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\SerializedArrayType.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
     <Compile Include="Serialization\SerializedTemplate.cs" />
@@ -453,7 +454,7 @@
     <Compile Include="RelocationDictionary.cs" />
     <Compile Include="Serialization\ArgumentSerializer.cs" />
     <Compile Include="Serialization\ArraySizeCharacteristic.cs" />
-    <Compile Include="Serialization\DecompilerInput.cs">
+    <Compile Include="InputFile.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\DecompilerOutput.cs">

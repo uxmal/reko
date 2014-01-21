@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,24 @@ namespace Decompiler.Arch.M68k
         {
             var src = orw.RewriteSrc(di.Instruction.op1);
             emitter.Call(src, 4);
+        }
+
+        private void RewriteDbcc(ConditionCode cc, FlagM flags)
+        {
+            if (cc != ConditionCode.None)
+            {
+                emitter.Branch(
+                    emitter.Test(cc, orw.FlagGroup(flags)),
+                    di.Address + 4,
+                    RtlClass.ConditionalTransfer);
+            }
+            var src = orw.RewriteSrc(di.Instruction.op1);
+
+            emitter.Assign(src, emitter.ISub(src, 1));
+            emitter.Branch(
+                emitter.Ne(src, emitter.Int32(-1)),
+                (Address) orw.RewriteSrc(di.Instruction.op2),
+                RtlClass.ConditionalTransfer);
         }
     }
 }

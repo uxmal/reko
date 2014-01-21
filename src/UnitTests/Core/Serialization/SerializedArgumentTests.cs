@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
 			    Name = "bar",
 			    Type = new SerializedTypeReference("int"),
-			    Kind = new SerializedStackVariable(4)
+			    Kind = new SerializedStackVariable()
             };
 			Verify(sarg, "Core/SargWriteStackArgument.txt");
 		}
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
 				x.Formatting = Formatting.Indented;
-				XmlSerializer ser = SerializedLibrary.CreateSerializer(sarg.GetType());
+				XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(sarg.GetType());
 				ser.Serialize(x, sarg);
 
 				fut.AssertFilesEqual();

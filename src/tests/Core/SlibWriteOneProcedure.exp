@@ -6,7 +6,7 @@
         <reg>eax</reg>
       </return>
       <arg name="cb">
-        <stack size="4" />
+        <stack />
       </arg>
     </signature>
   </procedure>

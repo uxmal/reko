@@ -3,5 +3,7 @@
 // ax:ax
 // cx:cx
 // wLoc02:Local -0002
+// sp:sp
+// ss:ss
 // return address size: 0
 ax = bar(cx, wLoc02)

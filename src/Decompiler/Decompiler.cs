@@ -348,7 +348,7 @@ namespace Decompiler
 			}
 		}
 
-        public IDictionary<Address, ProcedureSignature> LoadCallSignatures(ICollection<SerializedCall> serializedCalls)
+        public IDictionary<Address, ProcedureSignature> LoadCallSignatures(ICollection<SerializedCall_v1> serializedCalls)
         {
             return
                 (from sc in serializedCalls

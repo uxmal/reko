@@ -42,21 +42,33 @@ namespace Decompiler.UnitTests.Core.Serialization
 			ud.Output.IntermediateFilename = "foo.cod";
 			SerializedProcedure proc = new SerializedProcedure();
 			proc.Name = "foo";
-			proc.Signature = new SerializedSignature();
-			proc.Signature.ReturnValue = new SerializedArgument();
-			proc.Signature.ReturnValue.Kind = new SerializedRegister("eax");
-			proc.Signature.Arguments = new SerializedArgument[2];
-			proc.Signature.Arguments[0] = new SerializedArgument();
-			proc.Signature.Arguments[0].Kind = new SerializedStackVariable(4);
-			proc.Signature.Arguments[1] = new SerializedArgument();
-			proc.Signature.Arguments[1].Kind = new SerializedStackVariable(4);
+			proc.Signature = new SerializedSignature
+			{
+				ReturnValue = new SerializedArgument
+				{
+					Kind = new SerializedRegister("eax")
+				},
+				Arguments = new SerializedArgument[]
+				{
+					new SerializedArgument
+					{
+						Kind = new SerializedStackVariable(),
+						Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+					},
+					new SerializedArgument
+					{
+						Kind = new SerializedStackVariable(),
+						Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+					}
+				}
+			};
 			ud.UserProcedures.Add(proc);
 
 			using (FileUnitTester fut = new FileUnitTester("Core/SudWrite.txt"))
 			{
 			    var writer = new FilteringXmlWriter(fut.TextWriter);
 				writer.Formatting = System.Xml.Formatting.Indented;
-				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject_v1));
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
 				ser.Serialize(writer, ud);
 				fut.AssertFilesEqual();
 			}
@@ -78,16 +90,18 @@ namespace Decompiler.UnitTests.Core.Serialization
             proc.Signature.ReturnValue.Kind = new SerializedRegister("eax");
             proc.Signature.Arguments = new SerializedArgument[2];
             proc.Signature.Arguments[0] = new SerializedArgument();
-            proc.Signature.Arguments[0].Kind = new SerializedStackVariable(4);
+            proc.Signature.Arguments[0].Kind = new SerializedStackVariable();
+            proc.Signature.Arguments[0].Type = new SerializedPrimitiveType(Domain.SignedInt, 4);
             proc.Signature.Arguments[1] = new SerializedArgument();
-            proc.Signature.Arguments[1].Kind = new SerializedStackVariable(4);
+            proc.Signature.Arguments[1].Kind = new SerializedStackVariable();
+            proc.Signature.Arguments[1].Type = new SerializedPrimitiveType(Domain.SignedInt, 4);
             project.UserProcedures.Add(addr, proc);
 
             using (FileUnitTester fut = new FileUnitTester("Core/SudSaveProject.txt"))
             {
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = new XmlSerializer(typeof(SerializedProject_v1));
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
                 SerializedProject_v1 ud = project.Save();
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
@@ -100,7 +114,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedProject_v1 proj = null;
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/SudRead.xml"), FileMode.Open))
 			{
-				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject_v1));
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
 				proj = (SerializedProject_v1) ser.Deserialize(stm);
 			}
 			Assert.AreEqual("10003330", proj.Input.Address);
@@ -142,7 +156,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             SerializedProject_v1 proj = null;
             using (StringReader rdr = new StringReader(input))
             {
-                var ser = new XmlSerializer(typeof(SerializedProject_v1));
+                var ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
                 proj = (SerializedProject_v1)ser.Deserialize(rdr);
             }
             var project = new ProjectSerializer().LoadProject(proj);
@@ -169,6 +183,29 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Assert.IsTrue(proc.Characteristics.IsAlloca);
 		}
 
+        [Test]
+        public void LoadProject_Inputs_v2()
+        {
+            var sProject = new Project_v2
+            {
+                Inputs = {
+                    new DecompilerInput_v1 {
+                        Filename = "foo.exe",
+                        Address = "1000:0000",
+                        Comment = "main file" 
+                    },
+                    new DecompilerInput_v1 {
+                        Filename = "foo.bin",
+                        Address = "1000:D000",
+                        Comment = "overlay",
+                        Processor = "x86-real-16",
+                    }
+                }
+            };
+            var ser = new ProjectSerializer();
+            var project = ser.LoadProject(sProject);
+            Assert.AreEqual(2, project.InputFiles.Count);
+        }
 
 	}
 }

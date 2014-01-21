@@ -480,9 +480,7 @@ namespace Decompiler.Core
 
         public override SerializedKind Serialize()
         {
-            SerializedStackVariable svar = new SerializedStackVariable();
-            svar.ByteSize = DataType.Size;
-            return svar;
+            return new SerializedStackVariable();
         }
 
 		public override void Write(TextWriter writer)

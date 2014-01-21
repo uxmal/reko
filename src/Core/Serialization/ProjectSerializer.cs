@@ -11,7 +11,7 @@ namespace Decompiler.Core.Serialization
     {
         public void Save(SerializedProject_v1 project, TextWriter sw)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(SerializedProject_v1));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
             ser.Serialize(sw, project);
         }
 
@@ -25,8 +25,17 @@ namespace Decompiler.Core.Serialization
 
         public Project LoadProject(Stream stm)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(SerializedProject_v1));
-            return LoadProject((SerializedProject_v1) ser.Deserialize(stm));
+            var rdr = new XmlTextReader(stm);
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v2));
+            if (ser.CanDeserialize(rdr))
+                return LoadProject((Project_v2) ser.Deserialize(stm));
+            ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
+            return LoadProject((SerializedProject_v1) ser.Deserialize(rdr));
+        }
+
+        public Project LoadProject(Project_v2 sp)
+        {
+            throw new NotImplementedException();
         }
 
         public Project LoadProject(SerializedProject_v1 sp)

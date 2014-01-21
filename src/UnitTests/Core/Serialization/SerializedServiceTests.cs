@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			StringWriter sw = new StringWriter();
 			XmlTextWriter xml = new XmlTextWriter(sw);
-			XmlSerializer ser = new XmlSerializer(svc.GetType());
+			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(svc.GetType());
 			ser.Serialize(xml, svc);
 			string s = sw.ToString();
 			int i = s.IndexOf("<syscallin");

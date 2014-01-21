@@ -148,17 +148,6 @@ namespace Decompiler.Arch.X86
                         emitter.Ne0(cx)),
                     OperandAsCodeAddress(di.Instruction.op1),
                     RtlClass.ConditionalTransfer);
-                // new TestCondition(ConditionCode.NE, orw.FlagGroup(FlagM.ZF)
-                //CodeEmitter e = emitter;
-
-                //// Splice in a new block.
-
-                //blockNew = proc.AddBlock(state.InstructionAddress.GenerateName("l", "_loop"));
-                //proc.AddEdge(blockHead, blockNew);
-
-                //emitter = ProcedureRewriter.CreateEmitter(blockNew);
-                //Block tgt = EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
-                //e.Branch(new TestCondition(cc, orw.FlagGroup(useFlags)), tgt);
             }
             else
             {

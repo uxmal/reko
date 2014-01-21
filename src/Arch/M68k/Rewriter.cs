@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
@@ -83,13 +84,19 @@ namespace Decompiler.Arch.M68k
                 case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.asl: RewriteArithmetic((s, d) => emitter.Shl(d, s)); break;
                 case Opcode.asr: RewriteShift((s, d) => emitter.Sar(d, s)); break;
+                case Opcode.bchg: RewriteBchg(); break;
                 case Opcode.adda: RewriteBinOp((s,d)=>emitter.IAdd(d, s)); break;
                 case Opcode.clr: RewriteClr(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
+                case Opcode.dble: RewriteDbcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
+                case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
+                case Opcode.ext: RewriteExt(); break;
+                case Opcode.extb: RewriteExtb(); break;
                 case Opcode.jsr: RewriteJsr(); break;
+                case Opcode.link: RewriteLink(); break;
                 case Opcode.lsl: RewriteShift((s, d) => emitter.Shl(d, s)); break;
                 case Opcode.lsr: RewriteShift((s, d) => emitter.Shr(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
@@ -106,6 +113,7 @@ namespace Decompiler.Arch.M68k
                 case Opcode.subi: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subq: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subx: RewriteArithmetic((s, d) => emitter.ISub(emitter.ISub(d, s), frame.EnsureFlagGroup((uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
+                case Opcode.unlk: RewriteUnlk(); break;
                 default:
                     throw new AddressCorrelatedException(
                         di.Address,

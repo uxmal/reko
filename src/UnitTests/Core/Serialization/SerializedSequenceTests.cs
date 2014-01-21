@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Assert.AreEqual("dx", sq.Registers[0].Name);
 			Assert.AreEqual("ax", sq.Registers[1].Name);
 
-			XmlSerializer ser = new XmlSerializer(sq.GetType());
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(sq.GetType());
 			StringWriter sw = new StringWriter();
 			XmlTextWriter xml = new XmlTextWriter(sw);
 			xml.Formatting = Formatting.None;

@@ -123,6 +123,19 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_Ext()
+        {
+            Rewrite(0x4884, 0x48C4, 0x49C4);
+            AssertCode(
+                "0|d4 = (int16) (int8) d4",
+                "1|ZN = cond(d4)",
+                "2|d4 = (int32) (int16) d4",
+                "3|ZN = cond(d4)",
+                "4|d4 = (int32) (int8) d4",
+                "5|ZN = cond(d4)");
+        }
+
+        [Test]
         public void M68krw_adda_postinc() // addal (a4)+,%a5
         {
             Rewrite(0xDBDC);
@@ -520,6 +533,68 @@ namespace Decompiler.UnitTests.Arch.M68k
             AssertCode(
                 "0|d1 = d1 << 0x00000003",
                 "1|CVZNX = cond(d1)");
+        }
+
+        //[Ignore("Hard to fit into the existing structure.")]
+        public void M68krw_bchg_s()
+        {
+            Rewrite((m) => { m.Bchg(3, m.Mem(m.a0)); });    // bchg #3,(a0)
+            AssertCode(
+                "0|v2 = 0x00000001 << 0x00000003",
+                "1|v4 = Mem0[a0:word32]",
+                "2|Mem0[a0] = v4 ^ v5",
+                "3|Z = cond(v4 & v5)");
+        }
+
+        [Test]
+        public void M68krw_dbra()
+        {
+            Rewrite(0x51CD, 0xFFFA);        // dbra -$6
+            AssertCode(
+                "0|d5 = d5 - 0x00000001",
+                "1|if (d5 != 0xFFFFFFFF) branch 0000FFFC");
+        }
+
+        [Test]
+        public void M68krw_dble()
+        {
+            Rewrite(0x5FCF, 0xFFFA);
+            AssertCode(
+                "0|if (Test(GT,VZN)) branch 00010004",
+                "1|d7 = d7 - 0x00000001",
+                "2|if (d7 != 0xFFFFFFFF) branch 0000FFFC");
+        }
+
+        [Test]
+        public void M68krw_unlk()
+        {
+            Rewrite(0x4E5D);
+            AssertCode(
+                "0|a7 = a5",
+                "1|a5 = Mem0[a7:word32]",
+                "2|a7 = a7 + 0x00000004");
+        }
+
+        [Test]
+        public void M68krw_link()
+        {
+            Rewrite(0x4E52, 0xFFF8);
+            AssertCode(
+                "0|a7 = a7 - 0x00000004",
+                "1|Mem0[a7:word32] = a2",
+                "2|a2 = a7",
+                "3|a7 = a7 - 0x00000008");
+        }
+
+        [Test]
+        public void M68krw_link_32()
+        {
+            Rewrite(0x480B, 0xFFFE, 0x0104);
+            AssertCode(
+                "0|a7 = a7 - 0x00000004",
+                "1|Mem0[a7:word32] = a3",
+                "2|a3 = a7",
+                "3|a7 = a7 - 0x0001FEFC");
         }
     }
 }

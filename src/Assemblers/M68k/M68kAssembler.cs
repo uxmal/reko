@@ -218,7 +218,7 @@ namespace Decompiler.Assemblers.M68k
         {
             foreach (ushort c in constants)
             {
-                Emitter.EmitBeUint16(c);
+                Emitter.EmitBeUInt16(c);
             }
             constants.Clear();
         }
@@ -292,6 +292,17 @@ namespace Decompiler.Assemblers.M68k
         public void Asl_l(int c, RegisterOperand dDst)
         {
             Emit(0xE180 | SmallQ(c) << 9 | DReg(dDst));
+        }
+
+        public void Bchg(int c, MachineOperand eaDst)
+        {
+            Emit(0x0840 | Ea(eaDst));
+            Emitter.EmitBeUInt16(c);
+        }
+
+        public void Bchg(RegisterOperand dSrc, MachineOperand eaDst)
+        {
+            Emit(0x0140 | DReg(dSrc) << 9 | Ea(eaDst));
         }
 
             //Opcode.bt, Opcode.bf, Opcode.bhi, Opcode.bls, Opcode.bcc, Opcode.bcs, Opcode.bne, Opcode.beq, 
@@ -423,7 +434,7 @@ namespace Decompiler.Assemblers.M68k
 
         public void Nop()
         {
-            Emitter.EmitBeUint16(0x4E71);
+            Emitter.EmitBeUInt16(0x4E71);
         }
 
         internal void Pea(MachineOperand ea)
@@ -452,12 +463,13 @@ namespace Decompiler.Assemblers.M68k
 
         private void Emit(int opcode)
         {
-            Emitter.EmitBeUint16(opcode);
+            Emitter.EmitBeUInt16(opcode);
             EmitConstants();
         }
 
         internal void ReportUnresolvedSymbols()
         {
         }
+
     }
 }
