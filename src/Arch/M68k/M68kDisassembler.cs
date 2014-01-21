@@ -3884,8 +3884,8 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
 	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
 	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new OpRec("sl:D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r
-	new OpRec("sl:Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s
+	new OpRec("D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r
+	new OpRec("Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s
 	new OpRec(d68000_bclr_r       , 0xf1c0, 0x0180, 0xbf8),
 	new OpRec(d68000_bclr_s       , 0xffc0, 0x0880, 0xbf8),
 	new OpRec(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),

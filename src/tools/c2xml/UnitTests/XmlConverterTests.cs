@@ -135,7 +135,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -214,7 +214,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         <ptr>
           <type>FOO</type>
         </ptr>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -427,13 +427,13 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       </return>
       <arg name=""bar"">
         <prim domain=""SignedInt"" size=""4"" />
-        <stack size=""4"" />
+        <stack />
       </arg>
       <arg name=""foo"">
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -530,7 +530,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       </return>
       <arg name=""bar"">
         <type>HANDLE</type>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -559,13 +559,13 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       </return>
       <arg name=""inp"">
         <type>SHORT</type>
-        <stack size=""4"" />
+        <stack />
       </arg>
       <arg name=""outp"">
         <ptr>
           <type>SHORT</type>
         </ptr>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -616,7 +616,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
           </return>
           <arg name=""RunOnce"">
             <prim domain=""SignedInt"" size=""4"" />
-            <stack size=""4"" />
+            <stack />
           </arg>
         </fn>
       </ptr>
@@ -629,7 +629,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       </return>
       <arg name=""q"">
         <type>PRTL_RUN_ONCE_INIT_FN</type>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -654,7 +654,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -700,7 +700,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             <prim domain=""Character"" size=""1"" />
           </arr>
         </ptr>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
@@ -734,7 +734,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         <ptr>
           <struct name=""foo"" />
         </ptr>
-        <stack size=""4"" />
+        <stack />
       </arg>
     </signature>
   </procedure>
