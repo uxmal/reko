@@ -35,6 +35,7 @@
             this.webControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +55,8 @@
             this.controlsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.memoryControlToolStripMenuItem,
             this.rTFToolStripMenuItem,
-            this.webControlToolStripMenuItem});
+            this.webControlToolStripMenuItem,
+            this.treeViewToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.controlsToolStripMenuItem.Text = "&Controls";
@@ -91,9 +93,16 @@
             // searchToolStripMenuItem
             // 
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.searchToolStripMenuItem.Text = "&Search...";
             this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
+            // 
+            // treeViewToolStripMenuItem
+            // 
+            this.treeViewToolStripMenuItem.Name = "treeViewToolStripMenuItem";
+            this.treeViewToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.treeViewToolStripMenuItem.Text = "&Tree View";
+            this.treeViewToolStripMenuItem.Click += new System.EventHandler(this.treeViewToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -120,6 +129,7 @@
         private System.Windows.Forms.ToolStripMenuItem webControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dialogsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem treeViewToolStripMenuItem;
     }
 }
 

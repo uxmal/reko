@@ -88,12 +88,14 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		// Fix up the relocations.
 
-		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+		public override RelocationResults Relocate(Address addrLoad)
 		{
 			// Seed the scanner with the start location.
 
-			EntryPoint ep =  new EntryPoint(new Address((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState());
-			entryPoints.Add(ep);
+            List<EntryPoint> entryPoints = new List<EntryPoint>() {
+			    new EntryPoint(new Address((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
+            };
+            var relocations = new RelocationDictionary();
 			if (isLz91)
 			{
 				Relocate91(RawImage, addrLoad.Selector, imgLoaded, relocations);
@@ -102,6 +104,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			{
 				Relocate90(RawImage, addrLoad.Selector, imgLoaded, relocations);
 			}
+            return new RelocationResults(entryPoints, relocations);
 		}
 
 		// for LZEXE ver 0.90 

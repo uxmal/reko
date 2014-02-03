@@ -77,5 +77,24 @@ namespace Decompiler.Environments.Win32
         {
             get { return "stdapi"; }
         }
+
+        public override ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
+        {
+            var pmnp = new MsMangledNameParser(fnName);
+            Decompiler.Core.Serialization.SerializedProcedure sproc = null;
+            try
+            {
+                sproc = pmnp.Parse();
+            }
+            catch
+            {
+                pmnp.ToString();
+            }
+            if (sproc == null)
+                return null;
+
+            var sser = new Decompiler.Core.Serialization.ProcedureSerializer(arch, "__cdecl");
+            return sser.Deserialize(sproc.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+        }
 	}
 }

@@ -51,9 +51,20 @@ namespace Decompiler.Core
 		public int Value;
 	}
 
+    /// <summary>
+    /// Describes an exported entry point to an operating system service, or an
+    /// ordinal entry point to a dynamic library.
+    /// </summary>
 	public struct SyscallInfo
 	{
+        /// <summary>
+        /// Either an interrupt vector number or an ordinal entry point to a dynamic library.
+        /// </summary>
 		public int Vector;
+
+        /// <summary>
+        /// Register values that select which subservice of the system call to invoke.
+        /// </summary>
 		public RegValue [] RegisterValues;
 
 		public bool Matches(int vector, ProcessorState state)

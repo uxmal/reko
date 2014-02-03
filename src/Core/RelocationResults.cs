@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,36 +18,24 @@
  */
 #endregion
 
-using Decompiler.Arch.PowerPC;
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.PowerPC
+namespace Decompiler.Core
 {
-    [TestFixture]  
-    public class PowerPcArchitectureTests
+    public class RelocationResults
     {
-        [Test]
-        public void PPCArch_Create()
-        {
-            IProcessorArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
-        }
+        // Collection into which any found entry points found should be added.
+        public readonly  List<EntryPoint> EntryPoints;
+        // Each relocation is a potential constant pointer. Some platforms only relocate _segments_, though.
+        public readonly  RelocationDictionary Relocations;
 
-        [Test]
-        public void PPCArch_InvalidWordSize()
+        public RelocationResults(List<EntryPoint> entryPoints, RelocationDictionary relocations)
         {
-            try
-            {
-                new PowerPcArchitecture(PrimitiveType.Word16);
-                Assert.Fail("There is no 16-bit powerPC architecture.");
-            }
-            catch (ArgumentException)
-            {
-            }
+            this.EntryPoints = entryPoints;
+            this.Relocations = relocations;
         }
     }
 }

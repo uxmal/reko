@@ -46,6 +46,11 @@ namespace Decompiler.Core
 
 		public abstract SystemService FindService(int vector, ProcessorState state);
 
+        public virtual SystemService FindService(string name)
+        {
+            throw new NotSupportedException();
+        }
+
         /// <summary>
         /// The default encoding for byte-encoded text.
         /// </summary>
@@ -58,6 +63,11 @@ namespace Decompiler.Core
         public abstract string DefaultCallingConvention { get; }
 
         public abstract ProcedureSignature LookupProcedure(string procName);
+
+        public virtual ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>

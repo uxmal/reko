@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Core.Lib
             dq = new Dequeue<int>(4);
         }
         [Test]
-        public void Create()
+        public void Dequeue_Create()
         {
             Assert.AreEqual(0, dq.Count);
         }

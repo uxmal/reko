@@ -47,9 +47,11 @@ namespace Decompiler.Core.Serialization
 				svc.SyscallInfo.RegisterValues = new RegValue[SyscallInfo.RegisterValues.Length];
 				for (int i = 0; i < SyscallInfo.RegisterValues.Length; ++i)
 				{
-					svc.SyscallInfo.RegisterValues[i] = new RegValue();
-					svc.SyscallInfo.RegisterValues[i].Register = arch.GetRegister(SyscallInfo.RegisterValues[i].Register);
-					svc.SyscallInfo.RegisterValues[i].Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16);
+                    svc.SyscallInfo.RegisterValues[i] = new RegValue
+                    {
+                        Register = arch.GetRegister(SyscallInfo.RegisterValues[i].Register),
+                        Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16),
+                    };
 				}
 			}
 			else

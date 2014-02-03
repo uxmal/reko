@@ -843,7 +843,7 @@ namespace Decompiler.Assemblers.x86
             case 4: emitter.EmitLeUint32((uint)-(emitter.Length + 4)); break;
             }
             var sym = symtab.CreateSymbol(target);
-            sym.ReferTo(emitter.Length - offBytes, offsetSize, emitter);
+            sym.ReferToLe(emitter.Length - offBytes, offsetSize, emitter);
             return sym;
         }
 
@@ -1582,7 +1582,7 @@ namespace Decompiler.Assemblers.x86
             if (far)
             {
                 var sym = symtab.CreateSymbol(destination);
-                sym.ReferTo(emitter.Length, emitter.SegmentAddressWidth, emitter);
+                sym.ReferToLe(emitter.Length, emitter.SegmentAddressWidth, emitter);
 
                 emitter.EmitLe(emitter.SegmentAddressWidth, 0);
 

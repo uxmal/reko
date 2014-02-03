@@ -51,8 +51,9 @@ namespace Decompiler.Loading
             get { return new Address(0); }
         }
 
-        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        public override RelocationResults Relocate(Address addrLoad)
         {
+            return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary());
         }
     }
 }

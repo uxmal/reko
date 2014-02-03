@@ -90,13 +90,16 @@ namespace Decompiler.ImageLoaders.BinHex
             get { return new Address(0x10000000); }
         }
 
-        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        public override RelocationResults Relocate(Address addrLoad)
         {
+            var entryPoints = new List<EntryPoint>();
+            var relocations = new RelocationDictionary();
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
                 rsrcFork.AddResourcesToImageMap(addrLoad, imageMap, entryPoints);
             }
+            return new RelocationResults(entryPoints, relocations);
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)

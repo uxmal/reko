@@ -39,6 +39,7 @@ namespace Decompiler.Arch.Z80
         {
             this.arch = arch;
             this.registerFile = new ushort[RegisterFileItems];
+            this.isValid = new bool[RegisterFileItems];
         }
 
         public Z80ProcessorState(Z80ProcessorState state)

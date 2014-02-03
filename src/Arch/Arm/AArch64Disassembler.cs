@@ -29,7 +29,7 @@ namespace Decompiler.Arch.Arm
 {
     public class AArch64Disassembler : IDisassembler
     {
-        private ImageReader rdr;
+        internal ImageReader rdr;
 
         public AArch64Disassembler(ImageReader rdr)
         {
@@ -47,55 +47,6 @@ namespace Decompiler.Arch.Arm
             return oprecs[(opcode >> 24) & 0xFF].Decode(this, opcode);
         }
 
-        private abstract class OpDecoder
-        {
-            public abstract AArch64Instruction Decode(AArch64Disassembler dasm, uint opcode) ;
-        }
-
-        private class AAOprec : OpDecoder
-        {
-            private AA64Opcode opcode;
-            private string fmt;
-
-            public AAOprec(AA64Opcode opcode, string fmt)
-            {
-                this.opcode = opcode;
-                this.fmt = fmt;
-            }
-
-            public override AArch64Instruction Decode(AArch64Disassembler dasm, uint instr)
-            {
-                AA64Opcode opcode = this.opcode;
-                List<MachineOperand> ops = new List<MachineOperand>();
-                MachineOperand op = null;
-                int i = 0;
-                while (i < fmt.Length)
-                {
-                    switch (fmt[i++])
-                    {
-                    default: throw new InvalidOperationException(string.Format("Bad format character {0}.", fmt[i - 1]));
-                    case ',':
-                        continue;
-                    case 'J':   // long relative branch
-                        int offset = (((int) instr) << 6) >> 4;
-                        op = new AddressOperand(dasm.rdr.Address + offset);
-                        break;
-                    case 'X':   // (64-bit) X register operand 
-                        op = GetXReg(instr, fmt[i++] - '0');
-                        break;
-                    }
-                    ops.Add(op);
-                }
-                return AArch64Instruction.Create(opcode, ops);
-            }
-
-            private MachineOperand GetXReg(uint instr, int regPos)
-            {
-                int reg = (int) ((instr >> regPos) & 0x1F);
-                return new RegisterOperand(A64Registers.GetXReg(reg));
-            }
-        }
-
         private class RootDecoder : OpDecoder
         {
             private OpDecoder[] opdecs;
@@ -110,8 +61,6 @@ namespace Decompiler.Arch.Arm
                 return opdecs[(instr >> 28) & 0x0F].Decode(dasm, instr);
             }
         }
-
-
 
         static OpDecoder[] oprecs02 = 
         {
@@ -181,10 +130,10 @@ namespace Decompiler.Arch.Arm
             null,
             null, 
 
-             // 10
+            // 10
             null,
-            null, 
-            null,
+            new AAOprec(AA64Opcode.add, "W0,W5,I10s22"), 
+            new AAOprec(AA64Opcode.and, "W0,W5,Bw"),
             null, 
       
             new AAOprec(AA64Opcode.b, "J"),
@@ -309,7 +258,7 @@ namespace Decompiler.Arch.Arm
 
              // 70
             null,
-            null, 
+            new AAOprec(AA64Opcode.subs,  "W0,W5,I10s22"), 
             null,
             null, 
       
@@ -352,7 +301,7 @@ namespace Decompiler.Arch.Arm
              // 90
             null,
             null, 
-            null,
+            new AAOprec(AA64Opcode.and, "X0,X5,Bx"),
             null, 
       
             new AAOprec(AA64Opcode.bl, "J"),
@@ -393,10 +342,10 @@ namespace Decompiler.Arch.Arm
 
              // B0
             null,
-            null, 
+            new AAOprec(AA64Opcode.adds, "X0,X5,I10s22"), 
             null,
             null, 
-      
+
             null,
             null,
             null,
@@ -435,7 +384,7 @@ namespace Decompiler.Arch.Arm
 
              // D0
             null,
-            null, 
+            new AAOprec(AA64Opcode.sub, "X0,X5,I10s22"), 
             null,
             null, 
       
@@ -478,7 +427,7 @@ namespace Decompiler.Arch.Arm
              // F0
             null,
             null, 
-            null,
+            new LogMovImmOprec(AA64Opcode.ands, "X0,X5,Bx", AA64Opcode.movk, "X0,H5"),
             null, 
       
             null,

@@ -191,7 +191,7 @@ namespace Decompiler.ImageLoaders.Hunk
     public class TextHunk : Hunk
     {
         public byte[] Data;
-        public uint dataFileOffset;
+        public uint FileOffset;
     }
 
 

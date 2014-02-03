@@ -20,21 +20,21 @@
 
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
-using Decompiler.ImageLoaders.MzExe;
+using Decompiler.Environments.Win32;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.ImageLoaders.MzExe
+namespace Decompiler.UnitTests.Environments.Win32
 {
     [TestFixture]
     public class PeMangledNameParserTests
     {
         private void RunTest(string expected, string parse)
         {
-            var p = new PeMangledNameParser(parse);
+            var p = new MsMangledNameParser(parse);
             var sp = p.Parse();
             var sb = new StringBuilder();
             Assert.AreEqual(expected, new Renderer(sb).Render(p.Modifier, p.Scope, sp));

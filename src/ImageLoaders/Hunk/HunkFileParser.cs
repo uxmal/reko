@@ -394,13 +394,12 @@ namespace Decompiler.ImageLoaders.Hunk
                     string.Format("{0} has invalid size.", hunk.HunkType));
             }
 
-            // read in hunk data
+            // Read in hunk data
             uint size = (uint) cLongs * 4;
-
             hunk.Size = size & ~HUNKF_ALL;
             uint flags = (uint) (size & HUNKF_ALL);
             hunk.MemoryFlags = GetMemoryFlags((int) flags, 30);
-            hunk.dataFileOffset = f.Offset;
+            hunk.FileOffset = f.Offset;
             var data = f.ReadBytes(hunk.Size);
             hunk.Data = data;
             return hunk;

@@ -35,6 +35,8 @@ namespace Decompiler.Core
             new Dictionary<string, DataType>(),
             new Dictionary<string, ProcedureSignature>())
         {
+            ServicesByName = new Dictionary<string, SystemService>();
+            ServicesByVector = new Dictionary<int, SystemService>();
         }
 
         public TypeLibrary(IDictionary<string,DataType> types, IDictionary<string, ProcedureSignature> procedures)
@@ -45,6 +47,8 @@ namespace Decompiler.Core
 
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
+        public IDictionary<string, SystemService> ServicesByName { get; private set; }
+        public IDictionary<int, SystemService> ServicesByVector { get; private set; }
 
 		public void Write(TextWriter writer)
 		{

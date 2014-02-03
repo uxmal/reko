@@ -13,7 +13,7 @@ namespace Decompiler.UnitTests.Structure
         ProcedureStructure proc;
 
         [Test]
-        public void Create()
+        public void ProcHeader_Create()
         {
             RunTest(delegate(ProcedureBuilder m)
             {

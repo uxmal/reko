@@ -59,6 +59,37 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             return Disassemble(img);
         }
 
+        protected PowerPcInstruction DisassembleBits(string bitPattern)
+        {
+            var img = new LoadedImage(new Address(0x00100000), new byte[4]);
+            LeImageWriter w = new LeImageWriter(img.Bytes);
+            uint instr = ParseBitPattern(bitPattern);
+            w.WriteBeUInt32(0, instr);
+            return Disassemble(img);
+        }
+
+        protected static uint ParseBitPattern(string bitPattern)
+        {
+            int cBits = 0;
+            uint instr = 0;
+            for (int i = 0; i < bitPattern.Length; ++i)
+            {
+                switch (bitPattern[i])
+                {
+                case '0':
+                case '1':
+                    instr = (instr << 1) | (uint) (bitPattern[i] - '0');
+                    ++cBits;
+                    break;
+                }
+            }
+            if (cBits != 32)
+                throw new ArgumentException(
+                    string.Format("Bit pattern didn't contain exactly 32 binary digits, but {0}.", cBits),
+                    "bitPattern");
+            return instr;
+        }
+
         private static PowerPcInstruction Disassemble(LoadedImage img)
         {
             var arch = new PowerPcArchitecture(PrimitiveType.Word32);
@@ -242,6 +273,154 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             var instr = DisassembleWord(0x8C0A0000);
             Assert.AreEqual("lbzu\tr0,0(r10)", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_xori()
+        {
+            var instr = DisassembleBits("011010 00001 00011 0101010101010101");
+            Assert.AreEqual("xori\tr3,r1,5555", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_xoris()
+        {
+            var instr = DisassembleBits("011011 00001 00011 0101010101010101");
+            Assert.AreEqual("xoris\tr3,r1,5555", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_xor_()
+        {
+            var instr = DisassembleBits("011111 00010 00001 00011 0100111100 1");
+            Assert.AreEqual("xor.\tr1,r2,r3", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_lhz()
+        {
+            var instr = DisassembleBits("101000 00010 00001 1111111111111000");
+            Assert.AreEqual("lhz\tr2,-8(r1)", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_twi()
+        {
+            var instr = DisassembleBits("000011 00010 00001 1111111111111000");
+            Assert.AreEqual("twi\t02,r1,-0008", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_subfic()
+        {
+            var instr = DisassembleBits("001000 00010 00001 1111111111111000");
+            Assert.AreEqual("subfic\tr2,r1,-0008", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_cmpli()
+        {
+            var instr = DisassembleBits("001010 00010 00001 1111111111111000");
+            Assert.AreEqual("cmpli\tr1,02,FFF8", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_cmpi()
+        {
+            var instr = DisassembleBits("001011 00010 00001 1111111111111000");
+            Assert.AreEqual("cmpi\tr1,02,-0008", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_addic()
+        {
+            var instr = DisassembleBits("001100 00010 00001 1111111111111000");
+            Assert.AreEqual("addic\tr2,r1,-0008", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_addic_()
+        {
+            var instr = DisassembleBits("001101 00010 00001 1111111111111000");
+            Assert.AreEqual("addic.\tr2,r1,-0008", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_sc()
+        {
+            var instr = DisassembleBits("010001 00010 00000 0000000000000010");
+            Assert.AreEqual("sc", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_crnor()
+        {
+            var instr = DisassembleBits("010011 00001 00010 00011 00001000010");
+            Assert.AreEqual("crnor\tcr1,cr2,cr3", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_cror()
+        {
+            var instr = DisassembleBits("010011 00001 00010 00011 01110000010");
+            Assert.AreEqual("cror\tcr1,cr2,cr3", instr.ToString());
+        }
+
+
+        [Test]
+        public void PPCDis_rfi()
+        {
+            var instr = DisassembleBits("010011 00000 00000 00000 0 0001100100");
+            Assert.AreEqual("rfi", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_andi_()
+        {
+            var instr = DisassembleBits("011100 00001 00011 1111110001100100");
+            Assert.AreEqual("andi.\tr3,r1,FC64", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_andis_()
+        {
+            var instr = DisassembleBits("011101 00001 00011 1111110001100100");
+            Assert.AreEqual("andis.\tr3,r1,FC64", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_cmp()
+        {
+            var instr = DisassembleBits("011111 01100 00001 00010 0000000000 0");
+            Assert.AreEqual("cmp\t0C,r1,r2", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_tw()
+        {
+            var instr = DisassembleBits("011111 01100 00001 00010 0000000100 0");
+            Assert.AreEqual("tw\t0C,r1,r2", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_lmw()
+        {
+            var instr = DisassembleBits("101110 00001 00010 111111111110100 0");
+            Assert.AreEqual("lmw\tr1,-24(r2)", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_stmw()
+        {
+            var instr = DisassembleBits("101110 00001 00010 111111111110100 0");
+            Assert.AreEqual("stmw\tr1,-24(r2)", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_lfs()
+        {
+            var instr = DisassembleBits("110000 00001 00010 111111111110100 0");
+            Assert.AreEqual("lfs\tf1,-24(r2)", instr.ToString());
         }
     }
 }

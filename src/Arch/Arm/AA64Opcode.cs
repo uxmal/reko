@@ -29,8 +29,15 @@ namespace Decompiler.Arch.Arm
     {
         illegal,
 
+        add,
+        adds,
+        and,
+        ands,
         b,
         bl,
         br,
+        movk,
+        sub,
+        subs,
     }
 }

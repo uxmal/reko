@@ -230,8 +230,9 @@ l01C8:
 			get { return new Address(0x800, 0); }
 		}
 
-		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+		public override RelocationResults Relocate(Address addrLoad)
 		{
+            var relocations = new RelocationDictionary();
 			ushort segCode = (ushort) (addrLoad.Selector + (PspSize >> 4));
 			for (;;)
 			{
@@ -270,7 +271,9 @@ l01C8:
 			state.SetRegister(Registers.si, Constant.Word16(0));
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
-			entryPoints.Add(new EntryPoint(new Address(pklCs, pklIp), state));
+            return new RelocationResults(
+                new List<EntryPoint> {new EntryPoint(new Address(pklCs, pklIp), state) },
+                relocations);
 		}
 
 

@@ -134,12 +134,6 @@ namespace Decompiler.Core.Assemblers
 			get { return (int) stmOut.Length; }
 		}
 
-        [Obsolete]
-        public void Patch(int offsetPatch, int offsetRef, DataType width)
-        {
-            PatchLe(offsetPatch, offsetRef, width);
-        }
-
         /// <summary>
         /// Patches a value by fetching it from the stream and adding an offset.
         /// </summary>

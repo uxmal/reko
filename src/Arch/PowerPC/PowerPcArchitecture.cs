@@ -36,6 +36,7 @@ namespace Decompiler.Arch.PowerPC
         private PrimitiveType wordWidth;
         private ReadOnlyCollection<RegisterStorage> regs;
         private ReadOnlyCollection<RegisterStorage> fpregs;
+        private ReadOnlyCollection<RegisterStorage> cregs;
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
@@ -122,6 +123,17 @@ namespace Decompiler.Arch.PowerPC
                 new RegisterStorage("f30", 30, PrimitiveType.Real64),
                 new RegisterStorage("f31", 31, PrimitiveType.Real64),
             });
+
+            cregs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
+                new RegisterStorage("cr0", 0, PrimitiveType.Byte),
+                new RegisterStorage("cr1", 1, PrimitiveType.Byte),
+                new RegisterStorage("cr2", 2, PrimitiveType.Byte),
+                new RegisterStorage("cr3", 3, PrimitiveType.Byte),
+                new RegisterStorage("cr4", 4, PrimitiveType.Byte),
+                new RegisterStorage("cr5", 5, PrimitiveType.Byte),
+                new RegisterStorage("cr6", 6, PrimitiveType.Byte),
+                new RegisterStorage("cr7", 7, PrimitiveType.Byte),
+            });
         }
 
         public ReadOnlyCollection<RegisterStorage> Registers
@@ -132,6 +144,11 @@ namespace Decompiler.Arch.PowerPC
         public ReadOnlyCollection<RegisterStorage> FpRegisters
         {
             get { return fpregs; }
+        }
+
+        public ReadOnlyCollection<RegisterStorage> CrRegisters
+        {
+            get { return cregs; }
         }
 
         #region IProcessorArchitecture Members

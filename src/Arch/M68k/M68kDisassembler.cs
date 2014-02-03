@@ -1730,17 +1730,6 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        private static M68kInstruction d68000_dbra(M68kDisassembler dasm)
-        {
-            Address temp_pc = dasm.rdr.Address;
-            return new M68kInstruction
-            {
-                code = Opcode.dbra,
-                op1 = get_data_reg(dasm.instruction & 7),
-                op2 = new AddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
-            };
-        }
-
         private static M68kInstruction d68000_dbcc(M68kDisassembler dasm)
         {
             Address temp_pc = dasm.rdr.Address;
@@ -1749,17 +1738,6 @@ namespace Decompiler.Arch.M68k
                 code = g_dbcc[(dasm.instruction >> 8) & 0xf],
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = new AddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
-            };
-        }
-
-        private static M68kInstruction d68000_divs(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.divs,
-                dataWidth = PrimitiveType.UInt16,
-                op1 = dasm.get_ea_mode_str_16(dasm.instruction),
-                op2 = get_data_reg((dasm.instruction >> 9) & 7),
             };
         }
 
@@ -2658,16 +2636,6 @@ namespace Decompiler.Arch.M68k
                 };
         }
 
-        private static M68kInstruction d68000_moveq(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.moveq,
-                op1 = new M68kImmediateOperand(make_signed_hex_str_8(dasm.instruction)),
-                op2 = get_data_reg((dasm.instruction >> 9) & 7)
-            };
-        }
-
         private static M68kInstruction d68040_move16_pi_pi(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68040_PLUS);
@@ -2723,16 +2691,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private static M68kInstruction d68000_muls(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.muls,
-                dataWidth = PrimitiveType.Word16,
-                op1 = dasm.get_ea_mode_str_16(dasm.instruction),
-                op2 = get_data_reg((dasm.instruction >> 9) & 7)
-            };
-        }
 
         private static M68kInstruction d68020_mull(M68kDisassembler dasm)
         {
@@ -2817,24 +2775,6 @@ namespace Decompiler.Arch.M68k
                 code = Opcode.negx,
                 dataWidth = PrimitiveType.Word32,
                 op1 = dasm.get_ea_mode_str_32(dasm.instruction)
-            };
-        }
-
-        private static M68kInstruction d68000_nop(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-               code = Opcode.nop,
-            };
-        }
-
-        private static M68kInstruction d68000_not_16(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.not,
-                dataWidth = PrimitiveType.Word16,
-                op1 = dasm.get_ea_mode_str_16(dasm.instruction)
             };
         }
 
@@ -3952,7 +3892,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68040_cpush        , 0xff20, 0xf420, 0x000),
     new OpRec(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
     new OpRec("D0,Rw", 0xfff8, 0x51c8, 0x000, Opcode.dbra),      // d68000_dbra
-	new OpRec(d68000_divs         , 0xf1c0, 0x81c0, 0xbff),
+	new OpRec("sw:E0,D9", 0xf1c0, 0x81c0, 0xbff, Opcode.divs),      // d68000_divs
 	new OpRec(d68000_divu         , 0xf1c0, 0x80c0, 0xbff),
 	new OpRec(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
 	new OpRec("sb:D9,E0", 0xf1c0, 0xb100, 0xbf8, Opcode.eor),       // d68000_eor_8        

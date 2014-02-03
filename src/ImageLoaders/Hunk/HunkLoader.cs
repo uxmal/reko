@@ -76,7 +76,7 @@ namespace Decompiler.ImageLoaders.Hunk
             var parse = new HunkFileParser(imgReader, false);
             this.hunks = parse.Parse();
             BuildSegments();
-            var image = Relocate(addrLoad);
+            var image = RelocateBytes(addrLoad);
 
             return new LoaderResults(
                 new LoadedImage(addrLoad, image),
@@ -560,11 +560,12 @@ namespace Decompiler.ImageLoaders.Hunk
                 return null;
         }
 
-		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+		public override RelocationResults Relocate(Address addrLoad)
         {
+            return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary());
         }
 
-        private byte[] Relocate(Address addrLoad)
+        private byte[] RelocateBytes(Address addrLoad)
         {
             var rel = new HunkRelocator(this);
             // get sizes of all segments

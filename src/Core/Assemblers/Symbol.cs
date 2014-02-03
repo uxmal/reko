@@ -27,6 +27,7 @@ using System.IO;
 
 namespace Decompiler.Core.Assemblers
 {
+    //$TODO: may need a big-endian and little-endian version of this class.
 	public class Symbol
 	{
 		public string sym;
@@ -48,11 +49,24 @@ namespace Decompiler.Core.Assemblers
 			Patches.Add(new BackPatch(offset, width));
 		}
 
-        public void ReferTo(int off, DataType width, Emitter emitter)
+        public void ReferToBe(int off, DataType width, Emitter emitter)
         {
             if (fResolved)
             {
-                emitter.Patch(off, offset, width);
+                emitter.PatchBe(off, offset, width);
+            }
+            else
+            {
+                // Add forward references to the backpatch list.
+                AddForwardReference(off, width);
+            }
+        }
+
+        public void ReferToLe(int off, DataType width, Emitter emitter)
+        {
+            if (fResolved)
+            {
+                emitter.PatchLe(off, offset, width);
             }
             else
             {

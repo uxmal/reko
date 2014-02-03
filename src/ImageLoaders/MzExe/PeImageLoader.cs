@@ -260,18 +260,19 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
-		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+		public override RelocationResults Relocate(Address addrLoad)
 		{
             AddSectionsToImageMap(addrLoad, imageMap);
-			
+            var relocations = new RelocationDictionary();
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
 			{
 				ApplyRelocations(relocSection.OffsetRawData, relocSection.VirtualSize, (uint) addrLoad.Linear, relocations);
 			}
-			entryPoints.Add(new EntryPoint(addrLoad + rvaStartAddress, arch.CreateProcessorState()));
+            var entryPoints = new List<EntryPoint> { new EntryPoint(addrLoad + rvaStartAddress, arch.CreateProcessorState()) };
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
+            return new RelocationResults(entryPoints, relocations);
 		}
 
         private void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
@@ -387,7 +388,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			return id;
 		}
 
-
         private void ResolveImportedFunction(ImportDescriptor id, uint rvaEntry, Address addrThunk)
         {
             if (!ImportedFunctionNameSpecified(rvaEntry))
@@ -400,20 +400,9 @@ namespace Decompiler.ImageLoaders.MzExe
             if (sig == null)
             {
                 // Can we guess at the signature?
-                var pmnp = new PeMangledNameParser(fnName);
-                Decompiler.Core.Serialization.SerializedProcedure sproc = null;
-                try
+                sig = platform.SignatureFromName(fnName, arch);
+                if (sig != null)
                 {
-                    sproc = pmnp.Parse();
-                }
-                catch
-                {
-                    pmnp.ToString();
-                }
-                if (sproc != null)
-                {
-                    var sser = new Decompiler.Core.Serialization.ProcedureSerializer(arch, "__cdecl");
-                    sig = sser.Deserialize(sproc.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
                     importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));   //$BUGBUG: mangled name!
                 }
                 AddUnresolvedImport(id, fnName);

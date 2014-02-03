@@ -55,13 +55,16 @@ namespace Decompiler.Arch.PowerPC
         private PowerPcInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt, bool setsCR0)
         {
             var ops = new List<MachineOperand>();
+            MachineOperand op = null;
             for (int i = 0; i < opFmt.Length; ++i)
             {
-                MachineOperand op;
                 switch (opFmt[i])
                 {
                 default: throw new NotImplementedException(string.Format("Operator format {0}", opFmt[i]));
                 case ',':
+                    continue;
+                case '.':
+                    setsCR0 = true;
                     continue;
                 case 'E':
                     switch (opFmt[++i])
@@ -70,6 +73,16 @@ namespace Decompiler.Arch.PowerPC
                     case '2': op = MemOff(wInstr >> 16, wInstr); break;
                     case '3': op = MemOff(wInstr >> 11, wInstr); break;
                     case '4': op = MemOff(wInstr >> 6, wInstr); break;
+                    default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
+                    }
+                    break;
+                case 'c':
+                    switch (opFmt[++i])
+                    {
+                    case '1': op = this.CRegFromBits(wInstr >> 21); break;
+                    case '2': op = this.CRegFromBits(wInstr >> 16); break;
+                    case '3': op = this.CRegFromBits(wInstr >> 11); break;
+                    case '4': op = this.CRegFromBits(wInstr >> 6); break;
                     default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
                     }
                     break;
@@ -91,6 +104,13 @@ namespace Decompiler.Arch.PowerPC
                     case '3': op = this.RegFromBits(wInstr >> 11); break;
                     case '4': op = this.RegFromBits(wInstr >> 6); break;
                     default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
+                    }
+                    break;
+                case 'I':
+                    switch (opFmt[++i])
+                    {
+                    case '1': op = ImmediateOperand.Byte((byte) ((wInstr >> 21) & 0x1F)); break;
+                    default: throw new NotImplementedException(string.Format("Bitfield {0}.", opFmt[i]));
                     }
                     break;
                 case 'S':
@@ -119,6 +139,11 @@ namespace Decompiler.Arch.PowerPC
         public MachineInstruction DisassembleInstruction()
         {
             return Disassemble();
+        }
+
+        private RegisterOperand CRegFromBits(uint r)
+        {
+            return new RegisterOperand(arch.CrRegisters[(int) r & 0x1F]);
         }
 
         private RegisterOperand RegFromBits(uint r)
@@ -161,6 +186,21 @@ namespace Decompiler.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 return dasm.DecodeOperands(opcode, wInstr, opFmt, false);
+            }
+        }
+
+        private class AOpRec : OpRec
+        {
+            private Dictionary<uint, XOpRecAux> xOpRecs;
+
+            public AOpRec(Dictionary<uint, XOpRecAux> xOpRecs)
+            {
+                this.xOpRecs = xOpRecs;
+            }
+        
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            {
+                return xOpRecs[(wInstr >> 1) & 0x3FF].Decode(dasm, wInstr, (wInstr & 1) == 1);
             }
         }
 
@@ -289,16 +329,26 @@ namespace Decompiler.Arch.PowerPC
             var x13oprecs = new Dictionary<uint, XOpRecAux>()
             {
                 { 16, new BclrOpRec() }, 
+                { 33, new XOpRecAux(Opcode.crnor, "c1,c2,c3") },
+                { 50, new XOpRecAux(Opcode.rfi, "") },
+                { 449, new XOpRecAux(Opcode.cror, "c1,c2,c3") },
             };
 
             var x1FOpRecs = new Dictionary<uint, XOpRecAux>()
             {
+                { 0, new XOpRecAux(Opcode.cmp, "I1,r2,r3") },
+                { 4, new XOpRecAux(Opcode.tw, "I1,r2,r3") },
                 { 20, new XOpRecAux(Opcode.lwarx, "r1,r2,r3") },
                 { 87, new XOpRecAux(Opcode.lbzx, "r1,r2,r3") },
                 { 247, new XOpRecAux(Opcode.stbux, "r1,r2,r3") },
                 { 279, new XOpRecAux(Opcode.lhzx, "r1,r2,r3") },
+                { 316, new XOpRecAux(Opcode.xor, "r2,r1,r3") },
                 { 444, new XOpRecAux(Opcode.or, "r2,r1,r3") },
                 { 467, new SprOpRec(true) },
+            };
+
+            var x3BOpRecs = new Dictionary<uint, XOpRecAux>()
+            {
             };
 
             var x3FOpRecs = new Dictionary<uint, XOpRecAux>()
@@ -311,23 +361,23 @@ namespace Decompiler.Arch.PowerPC
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.twi, "I1,r2,S"),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new DOpRec(Opcode.mulli, "r1,r2,S"),
 
+                new DOpRec(Opcode.subfic, "r1,r2,S"),
                 new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.cmpli, "r2,I1,U"),
+                new DOpRec(Opcode.cmpi, "r2,I1,S"),
+                new DOpRec(Opcode.addic, "r1,r2,S"),
+                new DOpRec(Opcode.addic, ".r1,r2,S"),
                 new DOpRec(Opcode.addi, "r1,r2,S"),
                 new DOpRec(Opcode.addis, "r1,r2,S"),
                 // 10
                 new BOpRec(),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.sc, ""),
                 new IOpRec(),
                 new XOpRec(x13oprecs),
                 new InvalidOpRec(),
@@ -337,15 +387,15 @@ namespace Decompiler.Arch.PowerPC
 
                 new DOpRec(Opcode.ori, "r2,r1,U"),
                 new DOpRec(Opcode.oris, "r2,r1,U"),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.xori, "r2,r1,U"),
+                new DOpRec(Opcode.xoris, "r2,r1,U"),
+                new DOpRec(Opcode.andi, ".r2,r1,U"),
+                new DOpRec(Opcode.andis, ".r2,r1,U"),
                 new InvalidOpRec(),
                 new XOpRec(x1FOpRecs),
                 // 20
                 new DOpRec(Opcode.lwz, "r1,E2"),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.lwzu, "r1,E2"),
                 new DOpRec(Opcode.lbz, "r1,E2"),
                 new DOpRec(Opcode.lbzu, "r1,E2"),
                 new DOpRec(Opcode.stw, "r1,E2"),
@@ -353,28 +403,28 @@ namespace Decompiler.Arch.PowerPC
                 new DOpRec(Opcode.stb, "r1,E2"),
                 new DOpRec(Opcode.stbu, "r1,E2"),
 
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.lhz, "r1,E2"),
+                new DOpRec(Opcode.lhzu, "r1,E2"),
+                new DOpRec(Opcode.lha, "r1,E2"),
+                new DOpRec(Opcode.lhau, "r1,E2"),
+                new DOpRec(Opcode.sth, "r1,E2"),
+                new DOpRec(Opcode.sthu, "r1,E2"),
+                new DOpRec(Opcode.lmw, "r1,E2"),
+                new DOpRec(Opcode.stmw, "r1,E2"),
                 // 30
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.lfs, "f1,E2"),
+                new DOpRec(Opcode.lfsu, "f1,E2"),
+                new DOpRec(Opcode.lfd, "f1,E2"),
+                new DOpRec(Opcode.lfdu, "f1,E2"),
+                new DOpRec(Opcode.stfs, "f1,E2"),
+                new DOpRec(Opcode.stfsu, "f1,E2"),
+                new DOpRec(Opcode.stfd, "f1,E2"),
+                new DOpRec(Opcode.stfdu, "f1,E2"),
 
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
-                new InvalidOpRec(),
+                new XOpRec(x3BOpRecs),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
