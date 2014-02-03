@@ -26,17 +26,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.MzExe
+namespace Decompiler.Environments.Win32
 {
-    // http://www.kegel.com/mangle.html
-    // http://www.agner.org/optimize/calling_conventions.pdf
-    public class PeMangledNameParser
+    /// <summary>
+    /// Unmangles methods and data objects whose names have been mangled using Microsoft's 
+    /// mangling algorithm.
+    /// </summary>
+    /// <remarks>
+    /// Microsoft doesn't document the mangling format, but reverse engineering has been done, resulting in:
+    /// http://www.kegel.com/mangle.html
+    /// http://www.agner.org/optimize/calling_conventions.pdf
+    /// </remarks>
+    public class MsMangledNameParser
     {
         private string str;
         private int i;
         private List<SerializedTypeReference> namesSeen;
 
-        public PeMangledNameParser(string str)
+        public MsMangledNameParser(string str)
         {
             this.str = str;
             this.i = 0;
@@ -117,9 +124,9 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private class TemplateParser
         {
-            private  PeMangledNameParser outer;
+            private  MsMangledNameParser outer;
 
-            public TemplateParser(PeMangledNameParser outer)
+            public TemplateParser(MsMangledNameParser outer)
             {
                 this.outer = outer;
             }

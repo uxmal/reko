@@ -543,5 +543,12 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("link\ta2,#$0004", 0x4E52, 0x0004);
             RunTest("link\ta3,#$00050004", 0x480B, 0x0005, 0004);
         }
+
+        [Test]
+        public void M68kdis_divs()
+        {
+            RunTest("divs.w\td4,d7", 0x8FC4);
+        }
+
     }
 }

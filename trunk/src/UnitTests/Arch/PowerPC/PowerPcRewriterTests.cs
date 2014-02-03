@@ -53,7 +53,6 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 "1|r4 = r0 | 0x12340000");
         }
 
-
         [Test]
         public void PPCRW_Add()
         {

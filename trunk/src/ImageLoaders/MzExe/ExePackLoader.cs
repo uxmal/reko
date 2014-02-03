@@ -141,7 +141,7 @@ namespace Decompiler.ImageLoaders.MzExe
             get { return new Address(0x800, 0); }
         }
 
-        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        public override RelocationResults Relocate(Address addrLoad)
         {
             ImageReader rdr = new ImageReader(RawImage, hdrOffset + relocationsOffset);
             ushort segCode = (ushort)(addrLoad.Selector + (ExeImageLoader.CbPsp >> 4));
@@ -173,7 +173,11 @@ namespace Decompiler.ImageLoaders.MzExe
             state.SetRegister(Registers.cs, Constant.Word16(cs));
             state.SetRegister(Registers.ss, Constant.Word16(ss));
             state.SetRegister(Registers.bx, Constant.Word16(0));
-            entryPoints.Add(new EntryPoint(new Address(cs, ip), state));
+            var entryPoints = new List<EntryPoint> 
+            {
+                new EntryPoint(new Address(cs, ip), state)
+            };
+            return new RelocationResults(entryPoints, new RelocationDictionary());
         }
 
         private static byte[] signature = 

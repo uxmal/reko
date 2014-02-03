@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.Hunk
 {
+    /// <summary>
+    /// Relocates any pointer
+    /// </summary>
     public class HunkRelocator
     {
         public static TraceSwitch Trace = new TraceSwitch("HunkRelocation", "Hunk relocation");

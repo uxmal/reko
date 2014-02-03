@@ -68,7 +68,7 @@ namespace Decompiler.ImageLoaders.Coff
             };
         }
 
-        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        public override RelocationResults Relocate(Address addrLoad)
         {
             throw new NotImplementedException();
         }

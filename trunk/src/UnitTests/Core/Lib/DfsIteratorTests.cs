@@ -49,13 +49,12 @@ namespace Decompiler.UnitTests.Core.Lib
 
 
         [Test]
-        public void Create()
+        public void Dfsi_Create()
         {
             TreeNode tree = new TreeNode("a");
             DumpPreOrderIterator(tree, CreateTreeNodeIterator());
             Assert.AreEqual("a", sb.ToString());
         }
-
 
         [Test]
         public void PreorderTwoLevelTree()

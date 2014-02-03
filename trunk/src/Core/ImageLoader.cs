@@ -57,11 +57,11 @@ namespace Decompiler.Core
 		/// <returns></returns>
         public abstract LoaderResults Load(Address addrLoad);
 
-		/// <summary>
-		/// Performs fix-ups of the loaded image, adding findings to the supplied collections.
-		/// </summary>
-		/// <param name="addrLoad">The address at which the program image is loaded.</param>
-		/// <param name="entryPoints">Collection into which any found entry points found should be added.</param>
-		public abstract void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations);
+        /// <summary>
+        /// Performs fix-ups of the loaded image, adding findings to the supplied collections.
+        /// </summary>
+        /// <param name="addrLoad">The address at which the program image is loaded.</param>
+        /// <returns></returns>
+		public abstract RelocationResults Relocate(Address addrLoad);
     }
 }

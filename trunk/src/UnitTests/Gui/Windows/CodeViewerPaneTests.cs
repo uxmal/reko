@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void Create()
+        public void Cvp_Create()
         {
             using (Form f = new Form())
             {

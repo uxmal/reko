@@ -87,7 +87,7 @@ namespace Decompiler.Core.Machine
 
 		public static string FormatUnsignedValue(Constant c)
 		{
-			return c.ToUInt32().ToString(FormatString(c.DataType));
+			return c.ToUInt64().ToString(FormatString(c.DataType));
 		}
 
 	}
@@ -125,6 +125,13 @@ namespace Decompiler.Core.Machine
         }
 
         public static ImmediateOperand Word32(uint value) { return Word32((int) value); }
+
+        public static ImmediateOperand Word64(long value)
+        {
+            return new ImmediateOperand(Constant.Word64(value));
+        }
+
+        public static ImmediateOperand Word64(ulong value) { return Word64((long) value); }
 
     }
 

@@ -29,12 +29,18 @@ namespace Decompiler.UnitTests.Core.Serialization
 	public class SerializedCallTests
 	{
 		[Test]
-		public void Create()
+		public void SerializedCall_Create()
 		{
-			SerializedSignature sig = new SerializedSignature();
-			sig.Arguments = new SerializedArgument[1];
-			sig.Arguments[0] = new SerializedArgument();
-			sig.Arguments[0].Kind = new SerializedRegister("bx");
+            SerializedSignature sig = new SerializedSignature
+            {
+                Arguments = new SerializedArgument[] 
+                {
+			        new SerializedArgument
+                    {
+			            Kind = new SerializedRegister("bx"),
+                    }
+                }
+            };
 			SerializedCall_v1 sc = new SerializedCall_v1(new Address(0x01004000), sig);
 			Assert.AreEqual("01004000", sc.InstructionAddress);
 			Assert.AreEqual("bx", ((SerializedRegister) sc.Signature.Arguments[0].Kind).Name);

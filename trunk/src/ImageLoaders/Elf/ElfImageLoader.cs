@@ -264,10 +264,12 @@ namespace Decompiler.ImageLoaders.Elf
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
 
-        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        public override RelocationResults Relocate(Address addrLoad)
         {
             if (image == null) 
                 throw new InvalidOperationException(); // No file loaded
+            List<EntryPoint> entryPoints = new List<EntryPoint>();
+            RelocationDictionary relocations = new RelocationDictionary();
             entryPoints.Add(new EntryPoint(new Address(Header.e_entry), arch.CreateProcessorState()));
             if (arch is IntelArchitecture)
             {
@@ -277,6 +279,7 @@ namespace Decompiler.ImageLoaders.Elf
             {
                 throw new NotImplementedException();
             }
+            return new RelocationResults(entryPoints, relocations);
         }
 
         private void RelocateI386()

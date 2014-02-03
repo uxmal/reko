@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -41,6 +42,7 @@ namespace Decompiler.Gui.Forms
         ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }
         ListView DiagnosticsList { get; }
+        ITreeView ProjectBrowser { get; }
         OpenFileDialog OpenFileDialog { get; }
         SaveFileDialog SaveFileDialog { get; }
         StatusStrip StatusStrip { get; }

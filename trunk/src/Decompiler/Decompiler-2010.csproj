@@ -239,6 +239,7 @@
     <Compile Include="Gui\Controls\ICheckBox.cs" />
     <Compile Include="Gui\Controls\IComboBox.cs" />
     <Compile Include="Gui\Controls\ITextBox.cs" />
+    <Compile Include="Gui\Controls\ITreeView.cs" />
     <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
     <Compile Include="Gui\Forms\OpenAsInteractor.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Gui\IMemoryViewService.cs" />
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
+    <Compile Include="Gui\IProjectBrowserService.cs" />
     <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
     <Compile Include="Gui\Windows\IRegistryService.cs" />
@@ -366,6 +368,7 @@
     <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
     <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />
     <Compile Include="Gui\Windows\TextBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\TreeViewWrapper.cs" />
     <Compile Include="Gui\Windows\TypeMarker.cs" />
     <Compile Include="Gui\Windows\ViewService.cs" />
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />

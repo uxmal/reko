@@ -30,8 +30,9 @@ namespace Decompiler.UnitTests.Gui
 	public class MenuBuilderTests
 	{
 		private string nl = Environment.NewLine;
+
 		[Test]
-		public void Create()
+		public void Mb_Create()
 		{
 			StringWriter sb = new StringWriter();
 			MenuBuilder mb = new FakeMenuBuilder(sb);

@@ -522,6 +522,12 @@ namespace Decompiler.Gui.Forms
             return false;
         }
 
+        /// <summary>
+        /// Dispatches menu commands.
+        /// </summary>
+        /// <param name="cmdSet"></param>
+        /// <param name="cmdId"></param>
+        /// <returns></returns>
         public bool Execute(ref Guid cmdSet, int cmdId)
         {
             if (subWindowCommandTarget.Execute(ref cmdSet, cmdId))

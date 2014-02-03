@@ -51,6 +51,7 @@ namespace Decompiler.Assemblers.M68k
         {
             this.arch = arch;
             this.BaseAddress = addrBase;
+            this.entryPoints = new List<EntryPoint>();
             this.Emitter = new Emitter();
             this.constants = new List<ushort>();
             this.Symbols = new SymbolTable();

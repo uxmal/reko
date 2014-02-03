@@ -73,6 +73,7 @@ namespace Decompiler.WindowsItp
                 }
             }
         }
+
         private class DummySettingsService : ISettingsService
         {
             public object Get(string settingName, object defaultValue)
@@ -91,6 +92,14 @@ namespace Decompiler.WindowsItp
 
             public void Set(string name, object value)
             {
+            }
+        }
+
+        private void treeViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new TreeViewDialog())
+            {
+                dlg.ShowDialog(this);
             }
         }
     }

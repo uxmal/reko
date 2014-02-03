@@ -33,6 +33,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.treeBrowser = new System.Windows.Forms.TreeView();
             this.listBrowser = new System.Windows.Forms.ListView();
             this.colBrowserHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -69,6 +70,14 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // treeBrowser
+            // 
+            this.treeBrowser.Dock = System.Windows.Forms.DockStyle.Left;
+            this.treeBrowser.Location = new System.Drawing.Point(169, 0);
+            this.treeBrowser.Name = "treeBrowser";
+            this.treeBrowser.Size = new System.Drawing.Size(121, 328);
+            this.treeBrowser.TabIndex = 0;
+            // 
             // listBrowser
             // 
             this.listBrowser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -76,7 +85,7 @@
             this.listBrowser.Dock = System.Windows.Forms.DockStyle.Left;
             this.listBrowser.Location = new System.Drawing.Point(3, 0);
             this.listBrowser.Name = "listBrowser";
-            this.listBrowser.Size = new System.Drawing.Size(333, 328);
+            this.listBrowser.Size = new System.Drawing.Size(166, 328);
             this.listBrowser.TabIndex = 4;
             this.listBrowser.UseCompatibleStateImageBehavior = false;
             this.listBrowser.View = System.Windows.Forms.View.Details;
@@ -183,16 +192,13 @@
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
             // 
-            // ofd
-            // 
-            this.ofd.Multiselect = false;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 533);
             this.Controls.Add(this.listBrowser);
+            this.Controls.Add(this.treeBrowser);
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.tabControl1);
@@ -216,6 +222,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ListView listBrowser;
+        private System.Windows.Forms.TreeView treeBrowser;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabFindResults;
         private System.Windows.Forms.TabPage tabDiagnostics;

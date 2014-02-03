@@ -357,6 +357,16 @@ namespace Decompiler.Core.Expressions
             return new ConstantUInt32(PrimitiveType.Word32, n);
         }
 
+        public static Constant Word64(long n)
+        {
+            return new ConstantUInt64(PrimitiveType.Word64, (ulong) n);
+        }
+
+        public static Constant Word64(ulong n)
+        {
+            return new ConstantUInt64(PrimitiveType.Word64, n);
+        }
+
         public static Constant Zero(DataType dataType)
         {
             return Constant.Create(dataType, 0);

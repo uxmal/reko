@@ -24,6 +24,7 @@ using Decompiler.Core.Machine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -39,13 +40,14 @@ namespace Decompiler.UnitTests.Arch.Arm
             return instr;
         }
 
-        protected static ArmInstruction Disassemble(uint instr)
+        protected MachineInstruction Disassemble(uint instr)
         {
             var image = new LoadedImage(new Address(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
             w.WriteLeUInt32(0, instr);
-            var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateReader(0));
-            return dasm.Disassemble();
+            var arch = CreateArchitecture();
+            var dasm = arch.CreateDisassembler(image.CreateReader(0));
+            return dasm.DisassembleInstruction();
         }
 
         protected MachineInstruction DisassembleBits(string bitPattern)
@@ -54,6 +56,8 @@ namespace Decompiler.UnitTests.Arch.Arm
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);
+            var b = image.Bytes;
+            Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]);
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateReader(0));
             return dasm.DisassembleInstruction();
@@ -77,7 +81,9 @@ namespace Decompiler.UnitTests.Arch.Arm
                 }
             }
             if (cBits != 32)
-                throw new ArgumentException("Bit pattern didn't contain exactly 32 binary digits.", "bitPattern");
+                throw new ArgumentException(
+                    string.Format("Bit pattern didn't contain exactly 32 binary digits, but {0}.", cBits),
+                    "bitPattern");
             return instr;
         }
     }
@@ -94,7 +100,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_Cond_Eq()
         {
             var instr = Disassemble(0x00111111);
-            Assert.AreEqual(Condition.eq, instr.Cond);
+            Assert.AreEqual(Condition.eq, ((ArmInstruction) instr).Cond);
         }
 
         [Test]

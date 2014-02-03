@@ -43,7 +43,7 @@ Eq_12: word32
 Eq_13: word32
 	T_13 (in arg1 + 0x00000008 : word32)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: 
   OrigDataType: 

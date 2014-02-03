@@ -135,6 +135,7 @@
     <Compile Include="Core\Serialization\DataTypeSerializerTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />
+    <Compile Include="Environments\Win32\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
-    <Compile Include="ImageLoaders\MzExe\PeMangledNameParserTests.cs" />
+    <Compile Include="Environments\Win32\PeMangledNameParserTests.cs" />
     <Compile Include="Mocks\SegmentedPointerProc.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />

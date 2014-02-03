@@ -590,7 +590,7 @@ namespace Decompiler.Assemblers.M68k
         {
             emitter.EmitByte(0x60);
             emitter.EmitByte(-(emitter.Length + 1));
-            asm.Symbols.CreateSymbol(target).ReferTo(emitter.Length - 1, PrimitiveType.Byte, emitter);
+            asm.Symbols.CreateSymbol(target).ReferToLe(emitter.Length - 1, PrimitiveType.Byte, emitter);
         }
 
         public void Move(DataRegister dSrc, DataRegister dDst)

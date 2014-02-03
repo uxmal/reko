@@ -7,12 +7,11 @@ l1:
 	Mem0[0x0302:word16] = 0x5550
 	es_bx = Mem0[0x0300:segptr32]
 	Mem0[0x0304:word16] = Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16]
-	// succ: 
 SegmentedPointerProc_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (300 T_2 t0300) (304 T_17 t0304)))
-	Globals (in globals : ptr32)
+	Globals (in globals : (ptr (struct "Globals")))
 Eq_2: (struct (0 memptr16 mp0000) (2 segment seg0000))
 	T_2 (in 0x1234 : word16)
 	T_4 (in Mem0[0x0300:word16] : word16)
@@ -41,7 +40,7 @@ Eq_15: word16
 Eq_16: (ptr (struct (0 T_17 t0000)))
 	T_16 (in 0x0304 : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct (300 T_2 t0300) (302 T_7 t0302) (304 T_17 t0304)))
   OrigDataType: (ptr (struct (300 T_2 t0300) (302 T_7 t0302) (304 T_17 t0304)))

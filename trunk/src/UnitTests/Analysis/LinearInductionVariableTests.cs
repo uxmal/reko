@@ -165,14 +165,14 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CreateNo()
+		public void Liv_CreateNo()
 		{
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
 			Assert.IsNull(liv.CreateInductionVariable());
 		}
 
 		[Test]
-		public void CreateBareMinimum()
+		public void Liv_CreateBareMinimum()
 		{
 			ssaIds = new SsaIdentifierCollection();
 			Identifier id0 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage());
@@ -188,7 +188,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CreateIncInitialValue()
+		public void Liv_CreateIncInitialValue()
 		{
 			ssaIds = new SsaIdentifierCollection();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);

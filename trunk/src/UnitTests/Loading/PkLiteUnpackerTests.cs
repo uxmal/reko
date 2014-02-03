@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Loading
 			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, prog.Image.Bytes);
 			LoaderResults lr = ldr.Load(new Address(0xC00, 0));
 			Assert.AreEqual(0x19EC0, lr.Image.Bytes.Length);
-			ldr.Relocate(new Address(0xC00, 0), new List<EntryPoint>(), new RelocationDictionary());
+			ldr.Relocate(new Address(0xC00, 0));
 		}
 
         [Test]

@@ -188,9 +188,9 @@ namespace Decompiler.ImageLoaders.MzExe
 			e_lfanew = rdr.ReadLeUInt32();          
 		}
 
-		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+		public override RelocationResults Relocate(Address addrLoad)
 		{
-			GetDeferredLoader().Relocate(addrLoad, entryPoints, relocations);
+			return GetDeferredLoader().Relocate(addrLoad);
 		}
 
 		void RelocateNewExe(object neHeader)

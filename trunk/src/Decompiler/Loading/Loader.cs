@@ -106,8 +106,8 @@ namespace Decompiler.Loading
                 Platform = result.Platform,
             };
 
-		    var relocations = new RelocationDictionary();
-			loader.Relocate(addrLoad, EntryPoints, relocations);
+		    var relocations = loader.Relocate(addrLoad);
+            EntryPoints.AddRange(relocations.EntryPoints);
             CopyImportThunks(loader.ImportThunks, prog);
             return prog;
         }

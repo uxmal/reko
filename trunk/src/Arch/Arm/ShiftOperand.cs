@@ -57,5 +57,10 @@ namespace Decompiler.Arch.Arm
         public MachineOperand Operand { get; set; }
         public Opcode Opcode { get; set; }
         public MachineOperand Shift { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1} {2}", Operand, Opcode, Shift);
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(0x800, 0); }
+			get { return new Address(0x0800, 0); }
 		}
 
         public override LoaderResults Load(Address addrLoad)
@@ -61,10 +61,11 @@ namespace Decompiler.ImageLoaders.MzExe
             return new LoaderResults(imgLoaded, arch, platform);
         }
 
-		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+		public override RelocationResults Relocate(Address addrLoad)
 		{
 			ImageMap imageMap = imgLoadedMap;
 			ImageReader rdr = new ImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
+            var relocations = new RelocationDictionary();
 			int i = exe.e_cRelocations;
 			while (i != 0)
 			{
@@ -84,7 +85,9 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
 			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWrite);
-			entryPoints.Add(new EntryPoint(addrStart, arch.CreateProcessorState()));
+            return new RelocationResults(
+                new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
+                relocations);
 		}
 	}
 }

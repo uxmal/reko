@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Gui.Controls;
 using Decompiler.Gui.Forms;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
             InitializeComponent();
             docWindows = new DocumentWindowCollection(this);
+            ProjectBrowser = new TreeViewWrapper(treeBrowser);
         }
 
         #region IMainForm Members
@@ -88,6 +90,8 @@ namespace Decompiler.Gui.Windows.Forms
         {
             get { return listDiagnostics; }
         }
+
+        public ITreeView ProjectBrowser { get; set; }
 
         public OpenFileDialog OpenFileDialog
         {
