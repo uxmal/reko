@@ -33,9 +33,10 @@
             this.memoryControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rTFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.treeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,10 +83,18 @@
             this.webControlToolStripMenuItem.Text = "&Web Control";
             this.webControlToolStripMenuItem.Click += new System.EventHandler(this.webControlToolStripMenuItem_Click);
             // 
+            // treeViewToolStripMenuItem
+            // 
+            this.treeViewToolStripMenuItem.Name = "treeViewToolStripMenuItem";
+            this.treeViewToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.treeViewToolStripMenuItem.Text = "&Tree View";
+            this.treeViewToolStripMenuItem.Click += new System.EventHandler(this.treeViewToolStripMenuItem_Click);
+            // 
             // dialogsToolStripMenuItem
             // 
             this.dialogsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.searchToolStripMenuItem});
+            this.searchToolStripMenuItem,
+            this.projectBrowserToolStripMenuItem});
             this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
             this.dialogsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.dialogsToolStripMenuItem.Text = "&Dialogs";
@@ -93,16 +102,16 @@
             // searchToolStripMenuItem
             // 
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.searchToolStripMenuItem.Text = "&Search...";
             this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
             // 
-            // treeViewToolStripMenuItem
+            // projectBrowserToolStripMenuItem
             // 
-            this.treeViewToolStripMenuItem.Name = "treeViewToolStripMenuItem";
-            this.treeViewToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.treeViewToolStripMenuItem.Text = "&Tree View";
-            this.treeViewToolStripMenuItem.Click += new System.EventHandler(this.treeViewToolStripMenuItem_Click);
+            this.projectBrowserToolStripMenuItem.Name = "projectBrowserToolStripMenuItem";
+            this.projectBrowserToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.projectBrowserToolStripMenuItem.Text = "&Project Browser...";
+            this.projectBrowserToolStripMenuItem.Click += new System.EventHandler(this.projectBrowserToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -130,6 +139,7 @@
         private System.Windows.Forms.ToolStripMenuItem dialogsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem treeViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projectBrowserToolStripMenuItem;
     }
 }
 

@@ -60,10 +60,15 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="exe_dll\driver.cpp" />
+    <ClCompile Include="exe_dll\main.cpp" />
     <ClCompile Include="fib\fib.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="exe_dll\types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

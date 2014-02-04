@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Decompiler.Gui;
+using Decompiler.Gui.Controls;
+using Decompiler.Gui.Windows;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,18 +15,21 @@ namespace Decompiler.WindowsItp
 {
     public partial class TreeViewDialog : Form
     {
+        private TreeViewWrapper wrappedTree; 
+
         public TreeViewDialog()
         {
             InitializeComponent();
+            wrappedTree = new TreeViewWrapper(this.treeView);
             ClearTree();
             EnableControls();
         }
 
         void ClearTree()
         {
-            treeView.Nodes.Clear();
-            treeView.ShowLines = false;
-            treeView.Nodes.Add("(No items)");
+            wrappedTree.Nodes.Clear();
+            wrappedTree.ShowLines = false;
+            wrappedTree.Nodes.Add("(No items)");
             lblResult.Text = "";
         }
 
@@ -47,32 +53,83 @@ namespace Decompiler.WindowsItp
         private void AddAllAtOnce()
         {
             var nodes = CreateNodes();
-            treeView.Nodes.Clear();
-            treeView.Nodes.AddRange(nodes);
+            AddAllAtOnce(nodes);
+        }
+
+        private void AddAllAtOnce(ITreeNode[] nodes)
+        {
+            wrappedTree.Nodes.Clear();
+            wrappedTree.Nodes.AddRange(nodes);
         }
 
         private void AddOneByOne()
         {
             var nodes = CreateNodes();
-            treeView.Nodes.Clear();
+            wrappedTree.Nodes.Clear();
             for (int i = 0; i < nodes.Length; ++i)
             {
-                treeView.Nodes.Add(nodes[i]);
+                wrappedTree.Nodes.Add(nodes[i]);
             }
         }
 
-        private TreeNode[] CreateNodes()
+        [Designer(typeof(BrowseObjectDesigner))]
+        public class BrowseObject
+        {
+            public int Index { get; set; }
+        }
+
+        public class BrowseObjectDesigner : TreeNodeDesigner
+        {
+            public override void Initialize(object obj)
+            {
+                var bo = (BrowseObject) obj;
+                TreeNode.Text = "Node #" + bo.Index;
+                TreeNode.ToolTipText = "This\nIs the text for\nNode #" + bo.Index;
+                TreeNode.Tag = bo;
+            }
+        }
+
+        private ITreeNode[] CreateNodesViaDesigner()
         {
             int n;
             if (!int.TryParse(txtItems.Text, out n) ||
                 n <= 0)
-                return new TreeNode[0];
+                return new ITreeNode[0];
+            var objs = Enumerable.Range(0, n)
+                .Select(i => new BrowseObject { Index = i });
+            var nodes = objs.Select(o => new
+                {
+                    o,
+                    dd = o.GetType()
+                        .GetCustomAttributes(typeof(DesignerAttribute), true)
+                })
+                .Where(o => o.dd != null && o.dd.Length > 0)
+                .Select(o =>
+                {
+                    var tyName = ((DesignerAttribute) o.dd.First()).DesignerTypeName;
+                    var des = Type.GetType(tyName, true).CreateInstance<TreeNodeDesigner>();
+                    var node = wrappedTree.CreateNode();
+                    des.TreeNode = node;
+                    des.Initialize(o.o);
+                    return node;
+                })
+                .ToArray();
+            return nodes;
+        }
+
+        private ITreeNode[] CreateNodes()
+        {
+            int n;
+            if (!int.TryParse(txtItems.Text, out n) ||
+                n <= 0)
+                return new ITreeNode[0];
             return Enumerable.Range(0, n)
-                            .Select(i => new TreeNode
-                            {
-                                Text = "Node #" + i,
-                                ToolTipText = "This\nIs the text for\nNode #" + i,
-                                Tag = new object[300]
+                            .Select(i => {
+                                var node = wrappedTree.CreateNode();
+                                node.Text = "Node #" + i;
+                                node.ToolTipText = "This\nIs the text for\nNode #" + i;
+                                node.Tag = new object[300];
+                                return node;
                             })
                             .ToArray();
         }
@@ -104,7 +161,19 @@ namespace Decompiler.WindowsItp
         private void btnAllAtOnce_Click(object sender, EventArgs e)
         {
             DisplayElapsedTime(AddAllAtOnce);
+        }
 
+        private void btnWithDesigner_Click(object sender, EventArgs e)
+        {
+            DisplayElapsedTime(() => AddAllAtOnce(CreateNodesViaDesigner()));
+        }
+    }
+
+    public static class Extomatic
+    {
+        public static T  CreateInstance<T>(this Type t, params object[] args)
+        {
+            return (T)Activator.CreateInstance(t, args);
         }
     }
 }

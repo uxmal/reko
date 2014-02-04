@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Gui.Windows;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
@@ -98,6 +99,14 @@ namespace Decompiler.WindowsItp
         private void treeViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new TreeViewDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private void projectBrowserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ProjectBrowserDialog())
             {
                 dlg.ShowDialog(this);
             }
