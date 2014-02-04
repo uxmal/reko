@@ -82,6 +82,12 @@
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProjectBrowserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectBrowserDialog.Designer.cs">
+      <DependentUpon>ProjectBrowserDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ItpForm.resx">
       <DependentUpon>ItpForm.cs</DependentUpon>
@@ -90,6 +96,9 @@
     <EmbeddedResource Include="MemoryControlDialog.resx">
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectBrowserDialog.resx">
+      <DependentUpon>ProjectBrowserDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

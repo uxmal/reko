@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /* 
  * Copyright (C) 1999-2014 John Källén.
  *
@@ -22,6 +21,7 @@
 using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -38,7 +38,13 @@ namespace Decompiler.Gui.Windows
         public TreeViewWrapper(TreeView treeView)
         {
             this.treeView = treeView;
+            this.Nodes = new WrappedNodeList(treeView.Nodes);
         }
+
+        public ITreeNodeCollection Nodes { get; private set; }
+        public bool ShowLines { get { return treeView.ShowLines; } set { treeView.ShowLines = value; } }
+        public bool ShowNodeToolTips { get { return treeView.ShowNodeToolTips; } set { treeView.ShowNodeToolTips = value; } }
+        public bool ShowRootLines { get { return treeView.ShowRootLines; } set { treeView.ShowRootLines = value; } }
 
         public object SelectedItem
         {
@@ -74,5 +80,118 @@ namespace Decompiler.Gui.Windows
             return null;
         }
 
+        public ITreeNode CreateNode()
+        {
+            return new WrappedNode();
+        }
+
+        public ITreeNode CreateNode(string text)
+        {
+            return new WrappedNode { Text = text };
+        }
+
+        public class WrappedNode : TreeNode, ITreeNode
+        {
+            private Lazy<WrappedNodeList> nodes;
+
+            public WrappedNode()
+            {
+                nodes = new Lazy<WrappedNodeList>(() => new WrappedNodeList(base.Nodes), true);
+            }
+
+            public new IList<ITreeNode> Nodes { get { return nodes.Value; } }
+        }
+
+        public class WrappedNodeList : ITreeNodeCollection
+        {
+            private TreeNodeCollection nodes;
+
+            public WrappedNodeList(TreeNodeCollection nodes)
+            {
+                this.nodes = nodes;
+            }
+
+            public int IndexOf(ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Insert(int index, ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveAt(int index)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ITreeNode this[int index]
+            {
+                get { return (ITreeNode) nodes[index]; }
+                set { nodes[index] = (WrappedNode) value; }
+            }
+
+            public void Add(ITreeNode item)
+            {
+                nodes.Add((WrappedNode) item);
+            }
+
+            public ITreeNode Add(string text)
+            {
+                var node = new WrappedNode { Text = text };
+                nodes.Add(node);
+                return node;
+            }
+
+            public void AddRange(IEnumerable<ITreeNode> items)
+            {
+                nodes.AddRange(items.Cast<TreeNode>().ToArray());
+            }
+
+            public void Clear()
+            {
+                nodes.Clear();
+            }
+
+            public bool Contains(ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void CopyTo(ITreeNode[] array, int arrayIndex)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Count
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public bool IsReadOnly
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public bool Remove(ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerator<ITreeNode> GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+
     }
+
+
 }

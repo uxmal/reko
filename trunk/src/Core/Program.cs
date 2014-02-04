@@ -30,9 +30,12 @@ using System.Text;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// Contains information gathered during loading, scanning and data analysis,
+	/// Contains information about one input file, gathered during loading, scanning and data analysis,
 	/// as well as storing any user-specified information.
 	/// </summary>
+    /// <remarks>
+    /// A Decompiler project may consist of several Programs.
+    /// </remarks>
 	public class Program
 	{
 		private LoadedImage image;

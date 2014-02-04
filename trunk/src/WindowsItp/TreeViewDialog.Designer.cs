@@ -34,6 +34,7 @@
             this.lblResult = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
             this.txtItems = new System.Windows.Forms.TextBox();
+            this.btnWithDesigner = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // treeView
@@ -43,15 +44,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView.Location = new System.Drawing.Point(12, 12);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(179, 222);
+            this.treeView.Size = new System.Drawing.Size(191, 222);
             this.treeView.TabIndex = 0;
             // 
             // btnOneByOne
             // 
             this.btnOneByOne.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOneByOne.Location = new System.Drawing.Point(197, 38);
+            this.btnOneByOne.Location = new System.Drawing.Point(209, 38);
             this.btnOneByOne.Name = "btnOneByOne";
-            this.btnOneByOne.Size = new System.Drawing.Size(75, 23);
+            this.btnOneByOne.Size = new System.Drawing.Size(104, 23);
             this.btnOneByOne.TabIndex = 1;
             this.btnOneByOne.Text = "One by One";
             this.btnOneByOne.UseVisualStyleBackColor = true;
@@ -60,9 +61,9 @@
             // btnAllAtOnce
             // 
             this.btnAllAtOnce.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAllAtOnce.Location = new System.Drawing.Point(197, 67);
+            this.btnAllAtOnce.Location = new System.Drawing.Point(209, 67);
             this.btnAllAtOnce.Name = "btnAllAtOnce";
-            this.btnAllAtOnce.Size = new System.Drawing.Size(75, 23);
+            this.btnAllAtOnce.Size = new System.Drawing.Size(104, 23);
             this.btnAllAtOnce.TabIndex = 2;
             this.btnAllAtOnce.Text = "All at once";
             this.btnAllAtOnce.UseVisualStyleBackColor = true;
@@ -81,9 +82,9 @@
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.Location = new System.Drawing.Point(197, 109);
+            this.btnClear.Location = new System.Drawing.Point(209, 146);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.Size = new System.Drawing.Size(104, 23);
             this.btnClear.TabIndex = 4;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -91,17 +92,30 @@
             // 
             // txtItems
             // 
-            this.txtItems.Location = new System.Drawing.Point(197, 12);
+            this.txtItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtItems.Location = new System.Drawing.Point(209, 12);
             this.txtItems.Name = "txtItems";
-            this.txtItems.Size = new System.Drawing.Size(75, 20);
+            this.txtItems.Size = new System.Drawing.Size(104, 20);
             this.txtItems.TabIndex = 5;
             this.txtItems.TextChanged += new System.EventHandler(this.txtItems_TextChanged);
+            // 
+            // btnWithDesigner
+            // 
+            this.btnWithDesigner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnWithDesigner.Location = new System.Drawing.Point(209, 96);
+            this.btnWithDesigner.Name = "btnWithDesigner";
+            this.btnWithDesigner.Size = new System.Drawing.Size(104, 23);
+            this.btnWithDesigner.TabIndex = 6;
+            this.btnWithDesigner.Text = "All w. designer";
+            this.btnWithDesigner.UseVisualStyleBackColor = true;
+            this.btnWithDesigner.Click += new System.EventHandler(this.btnWithDesigner_Click);
             // 
             // TreeViewDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(325, 262);
+            this.Controls.Add(this.btnWithDesigner);
             this.Controls.Add(this.txtItems);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.lblResult);
@@ -128,5 +142,6 @@
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.TextBox txtItems;
+        private System.Windows.Forms.Button btnWithDesigner;
     }
 }

@@ -207,6 +207,8 @@
     <Compile Include="Operators\FMulOperator.cs" />
     <Compile Include="Operators\FSubOperator.cs" />
     <Compile Include="Output\ProcedureFormatter.cs" />
+    <Compile Include="ProjectFile.cs" />
+    <Compile Include="ReferenceFile.cs" />
     <Compile Include="RelocationResults.cs" />
     <Compile Include="Rtl\RtlAssignment.cs" />
     <Compile Include="Rtl\RtlBranch.cs" />

@@ -70,6 +70,7 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\AliasTests.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\Windows\Forms\OpenAsInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SearchDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\ProjectBrowserServiceTests.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsServiceTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkFileParserTests.cs" />

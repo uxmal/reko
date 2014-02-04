@@ -41,14 +41,18 @@ namespace Decompiler.Core
         public Address BaseAddress { get; set; }
         public string DisassemblyFilename { get; set; }
         public List<InputFile> InputFiles { get; private set; }
-        public string InputFilename { get; set; }
-        public string IntermediateFilename { get; set; }
-        public string OutputFilename { get; set; }
-        public string TypesFilename { get; set; }
+       [Obsolete] public string InputFilename { get; set; }
+       [Obsolete]
+       public string IntermediateFilename { get; set; }
+       [Obsolete]
+       public string OutputFilename { get; set; }
+       [Obsolete]
+       public string TypesFilename { get; set; }
 
         /// <summary>
-        /// Locations that have been identified as Procedures by the user.
+        /// Locations that have been identified as Procedures by the user from all input files.
         /// </summary>
+        [Obsolete("UserProcedures are per binary.")]
         public SortedList<Address, SerializedProcedure> UserProcedures { get;  set; }
 
         /// <summary>
@@ -99,6 +103,8 @@ namespace Decompiler.Core
             var serializer = new ProjectSerializer();
             var project = serializer.LoadProject(sp);
         }
+
+        [Obsolete("Go to inputfile", true)]
         public void SetDefaultFileNames(string inputFilename)
         {
             InputFilename = inputFilename;

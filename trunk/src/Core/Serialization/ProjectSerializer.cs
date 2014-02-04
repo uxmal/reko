@@ -40,10 +40,10 @@ namespace Decompiler.Core.Serialization
 
         public Project LoadProject(SerializedProject_v1 sp)
         {
-            Project project = new Project
+            InputFile inputFile = new InputFile
             {
                 BaseAddress = Address.ToAddress(sp.Input.Address, 16),
-                InputFilename = sp.Input.Filename,
+                Filename = sp.Input.Filename,
                 DisassemblyFilename = sp.Output.DisassemblyFilename,
                 IntermediateFilename = sp.Output.IntermediateFilename,
                 OutputFilename = sp.Output.OutputFilename,
@@ -55,14 +55,17 @@ namespace Decompiler.Core.Serialization
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value)
             };
-            
+
             foreach (var uc in sp.UserCalls)
             {
                 var addr = Address.ToAddress(uc.InstructionAddress, 16);
                 if (addr != null)
-                    project.UserCalls.Add(addr, uc);
+                    inputFile.UserCalls.Add(addr, uc);
             }
-            return project;
+            return new Project
+            {
+                InputFiles = { inputFile }
+            };
         }
     }
 }

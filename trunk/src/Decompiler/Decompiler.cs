@@ -177,7 +177,7 @@ namespace Decompiler
             if (Project != null)
             {
                 Program = loader.Load(
-                    loader.LoadImageBytes(Project.InputFilename, 0),
+                    loader.LoadImageBytes(Project.InputFiles[0].Filename, 0),
                     Project.BaseAddress);
             }
             else
@@ -246,9 +246,15 @@ namespace Decompiler
 
         protected Project CreateDefaultProject(string filename, Program prog)
         {
-            var project = new Project();
-            project.SetDefaultFileNames(filename);
-            project.BaseAddress = prog.Image.BaseAddress;
+            var inputFile = new InputFile {
+                Filename = filename,
+                BaseAddress = prog.Image.BaseAddress,
+            };
+            inputFile.SetDefaultFileNames(filename);
+            var project = new Project
+            {
+                InputFiles = { inputFile },
+            };
             return project;
         }
 
