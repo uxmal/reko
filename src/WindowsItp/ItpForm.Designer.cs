@@ -37,6 +37,7 @@
             this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.activationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,7 +75,7 @@
             this.rTFToolStripMenuItem.Name = "rTFToolStripMenuItem";
             this.rTFToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.rTFToolStripMenuItem.Text = "&RTF ";
-            this.rTFToolStripMenuItem.Click += new System.EventHandler(this.rTFToolStripMenuItem_Click);
+            this.rTFToolStripMenuItem.Click += new System.EventHandler(this.rtfToolStripMenuItem_Click);
             // 
             // webControlToolStripMenuItem
             // 
@@ -94,7 +95,8 @@
             // 
             this.dialogsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.searchToolStripMenuItem,
-            this.projectBrowserToolStripMenuItem});
+            this.projectBrowserToolStripMenuItem,
+            this.activationToolStripMenuItem});
             this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
             this.dialogsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.dialogsToolStripMenuItem.Text = "&Dialogs";
@@ -112,6 +114,13 @@
             this.projectBrowserToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.projectBrowserToolStripMenuItem.Text = "&Project Browser...";
             this.projectBrowserToolStripMenuItem.Click += new System.EventHandler(this.projectBrowserToolStripMenuItem_Click);
+            // 
+            // activationToolStripMenuItem
+            // 
+            this.activationToolStripMenuItem.Name = "activationToolStripMenuItem";
+            this.activationToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.activationToolStripMenuItem.Text = "&Activation...";
+            this.activationToolStripMenuItem.Click += new System.EventHandler(this.activationToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -140,6 +149,7 @@
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem treeViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectBrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem activationToolStripMenuItem;
     }
 }
 

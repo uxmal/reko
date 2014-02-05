@@ -32,7 +32,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
-    [Ignore("Disabled until we come up woth a mechanism to perform architecture-specific expression simplifications, at which point this should go to Analysis")]
+    [Ignore("Disabled until we come up with a mechanism to perform architecture-specific expression simplifications, at which point this should go to Analysis")]
     public class FstswChainMatcherTests
     {
         IntelArchitecture arch;

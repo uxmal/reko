@@ -29,8 +29,13 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.PowerPC
 {
     [TestFixture]
-    public class PowerPcDisassemblerTests
+    public class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
     {
+        public PowerPcDisassemblerTests() :
+            base(new PowerPcArchitecture(PrimitiveType.Word32), new Address(0x00100000), 32)
+        {
+        }
+
         private PowerPcInstruction DisassembleX(uint op, uint rs, uint ra, uint rb, uint xo, uint rc)
         {
             uint w =
@@ -45,70 +50,22 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             return Disassemble(img);
         }
 
-        private static PowerPcInstruction DisassembleWord(byte[] a)
+        protected override ImageWriter CreateImageWriter(byte[] bytes)
         {
-            LoadedImage img = new LoadedImage(new Address(0x00100000), a);
-            return Disassemble(img);
-        }
-
-        private static PowerPcInstruction DisassembleWord(uint instr)
-        {
-            var bytes = new byte[4];
-            new BeImageWriter(bytes).WriteBeUInt32(0, instr);
-            var img = new LoadedImage(new Address(0x00100000), bytes);
-            return Disassemble(img);
-        }
-
-        protected PowerPcInstruction DisassembleBits(string bitPattern)
-        {
-            var img = new LoadedImage(new Address(0x00100000), new byte[4]);
-            LeImageWriter w = new LeImageWriter(img.Bytes);
-            uint instr = ParseBitPattern(bitPattern);
-            w.WriteBeUInt32(0, instr);
-            return Disassemble(img);
-        }
-
-        protected static uint ParseBitPattern(string bitPattern)
-        {
-            int cBits = 0;
-            uint instr = 0;
-            for (int i = 0; i < bitPattern.Length; ++i)
-            {
-                switch (bitPattern[i])
-                {
-                case '0':
-                case '1':
-                    instr = (instr << 1) | (uint) (bitPattern[i] - '0');
-                    ++cBits;
-                    break;
-                }
-            }
-            if (cBits != 32)
-                throw new ArgumentException(
-                    string.Format("Bit pattern didn't contain exactly 32 binary digits, but {0}.", cBits),
-                    "bitPattern");
-            return instr;
-        }
-
-        private static PowerPcInstruction Disassemble(LoadedImage img)
-        {
-            var arch = new PowerPcArchitecture(PrimitiveType.Word32);
-            var dasm = new PowerPcDisassembler(arch, img.CreateReader(0U), arch.WordWidth);
-            var instr = dasm.Disassemble();
-            return instr;
+            return new BeImageWriter(bytes);
         }
 
         [Test]
         public void PPCDis_IllegalOpcode()
         {
-            PowerPcInstruction instr = DisassembleWord(new byte[] { 00, 00, 00, 00 });
+            PowerPcInstruction instr = DisassembleBytes(new byte[] { 00, 00, 00, 00 });
             Assert.AreEqual(Opcode.illegal, instr.Opcode);
         }
 
         [Test]
         public void PPCDis_Ori()
         {
-            PowerPcInstruction instr = DisassembleWord(new byte[] { 0x60, 0x1F, 0x44, 0x44 });
+            PowerPcInstruction instr = DisassembleBytes(new byte[] { 0x60, 0x1F, 0x44, 0x44 });
             Assert.AreEqual(Opcode.ori, instr.Opcode);
             Assert.AreEqual(3, instr.Operands);
             Assert.AreEqual("ori\tr31,r0,4444", instr.ToString());
@@ -117,14 +74,14 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_Oris()
         {
-            PowerPcInstruction instr = DisassembleWord(new byte[] { 0x64, 0x1F, 0x44, 0x44 });
+            PowerPcInstruction instr = DisassembleBytes(new byte[] { 0x64, 0x1F, 0x44, 0x44 });
             Assert.AreEqual("oris\tr31,r0,4444", instr.ToString());
         }
 
         [Test]
         public void PPCDis_Addi()
         {
-            PowerPcInstruction instr = DisassembleWord(new byte[] { 0x38, 0x1F, 0xFF, 0xFC });
+            PowerPcInstruction instr = DisassembleBytes(new byte[] { 0x38, 0x1F, 0xFF, 0xFC });
             Assert.AreEqual("addi\tr0,r31,-0004", instr.ToString());
         }
 

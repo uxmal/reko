@@ -45,7 +45,7 @@ namespace Decompiler.WindowsItp
             }
         }
 
-        private void rTFToolStripMenuItem_Click(object sender, EventArgs e)
+        private void rtfToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new RtfDialog())
             {
@@ -107,6 +107,14 @@ namespace Decompiler.WindowsItp
         private void projectBrowserToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new ProjectBrowserDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private void activationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ActiveControlForm())
             {
                 dlg.ShowDialog(this);
             }

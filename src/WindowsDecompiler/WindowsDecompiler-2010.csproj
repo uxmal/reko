@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Decompiler.Arch.M68k.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Decompiler.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Decompiler.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Decompiler.Arch.Z80.*" />
     <ImageLoaders Include="$(SolutionDir)MzExe\$(OutDir)Decompiler.ImageLoaders.MzExe.*" />

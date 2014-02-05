@@ -14,7 +14,6 @@ namespace Decompiler.UnitTests.Arch.PowerPC
     {
         private InstructionBuilder b;
 
-
         private void RunTest(Action<InstructionBuilder> m)
         {
             b = new InstructionBuilder(new Address(0x01000000));

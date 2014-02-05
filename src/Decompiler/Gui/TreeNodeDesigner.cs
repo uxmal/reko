@@ -31,6 +31,7 @@ namespace Decompiler.Gui
         public IServiceProvider Services { get; set; }
         public ITreeNode TreeNode { get; set; }
         public ITreeNodeDesignerHost Host { get ; set; }
+        public object Component { get; set; }
 
         public virtual void Initialize(object obj)
         {

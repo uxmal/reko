@@ -133,6 +133,50 @@ namespace Decompiler.Core.Machine
 
         public static ImmediateOperand Word64(ulong value) { return Word64((long) value); }
 
+
+        public static ImmediateOperand Int32(int value)
+        {
+            return new ImmediateOperand(Constant.Int32(value));
+        }
+
+        public static MachineOperand Int16(short value)
+        {
+            return new ImmediateOperand(Constant.Int16(value));
+        }
+    }
+
+    /// <summary>
+    /// Represents an address.
+    /// </summary>
+    public class AddressOperand : MachineOperand
+    {
+        public Address Address;
+
+        protected AddressOperand(Address a, PrimitiveType type)
+            : base(type)
+        {
+            Address = a;
+        }
+
+        public static AddressOperand Ptr16(uint a)
+        {
+            return new AddressOperand(new Address(a), PrimitiveType.Ptr16);
+        }
+
+        public static AddressOperand Ptr32(uint a)
+        {
+            return new AddressOperand(new Address(a), PrimitiveType.Pointer32);
+        }
+
+        public static AddressOperand Ptr64(uint a)
+        {
+            return new AddressOperand(new Address(a), PrimitiveType.Pointer64);
+        }
+
+        public override string ToString()
+        {
+            return Address.ToString();
+        }
     }
 
     /// <summary>

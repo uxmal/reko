@@ -25,7 +25,6 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using M68kAddressOperand = Decompiler.Arch.M68k.AddressOperand;
 
 namespace Decompiler.Arch.M68k
 {
@@ -188,14 +187,13 @@ namespace Decompiler.Arch.M68k
                 switch (operandBits)
                 {
                 case 0: // Absolute short address
-                    return new AddressOperand(rdr.ReadBeUInt16());
+                    return new M68kAddressOperand(rdr.ReadBeUInt16());
                 case 1: // Absolute long address
-                    return new AddressOperand(rdr.ReadBeUInt32());
+                    return new M68kAddressOperand(rdr.ReadBeUInt32());
                 case 2: // Program counter with displacement
                     return new MemoryOperand(dataWidth, Registers.pc, Constant.Int16(rdr.ReadBeInt16()));
-                //g_helper_str = string.Format("; (${0})", (make_int_16(temp_value) + g_cpu_pc - 2) & 0xffffffff);
                 case 3:
-                    //// Program counter with index
+                    // Program counter with index
                     ushort extension = rdr.ReadBeUInt16();
 
                     if (EXT_FULL(extension))

@@ -19,27 +19,43 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
+using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 
-namespace Decompiler.Arch.M68k
+namespace Decompiler.Arch.Mips
 {
-    public class M68kAddressOperand : Core.Machine.AddressOperand, M68kOperand
+    public class IndirectOperand : MachineOperand
     {
-        public M68kAddressOperand(Address addr) : base(addr, PrimitiveType.Pointer32)
+        public int Offset;
+        public RegisterStorage Base;
+
+        public IndirectOperand(PrimitiveType dataWidth, int offset, RegisterStorage baseReg) : base(dataWidth)
         {
+            this.Offset = offset;
+            this.Base = baseReg;
         }
 
-        public M68kAddressOperand(uint addr)
-            : this(new Address(addr))
-        { 
-        }
-
-        public T Accept<T>(M68kOperandVisitor<T> visitor)
+        public override string ToString()
         {
-            return visitor.Visit(this);
+            string fmt;
+            int offset;
+            if (Offset >= 0)
+            {
+                fmt = "{0:X4}({1})";
+                offset = Offset;
+            }
+            else 
+            {
+                fmt = "-{0:X4}({1})";
+                offset = -Offset;
+            }
+            return string.Format(fmt, offset, Base);
         }
     }
 }
