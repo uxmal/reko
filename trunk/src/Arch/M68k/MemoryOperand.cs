@@ -41,7 +41,7 @@ namespace Decompiler.Arch.M68k
 
         T Visit(PredecrementMemoryOperand pre);
 
-        T Visit(AddressOperand addressOperand);
+        T Visit(M68kAddressOperand addressOperand);
 
         T Visit(PostIncrementMemoryOperand post);
 

@@ -138,7 +138,7 @@ namespace Decompiler.Arch.M68k
             return post;
         }
 
-        public M68kOperand Visit(AddressOperand addr)
+        public M68kOperand Visit(M68kAddressOperand addr)
         {
             writer.Write("$");
             writer.Write("{0:X8}", addr.Address.Offset);

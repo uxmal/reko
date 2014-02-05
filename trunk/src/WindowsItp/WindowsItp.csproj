@@ -69,6 +69,12 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ActiveControlForm.Designer.cs">
+      <DependentUpon>ActiveControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ItpForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
       <DependentUpon>ProjectBrowserDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ActiveControlForm.resx">
+      <DependentUpon>ActiveControlForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ItpForm.resx">
       <DependentUpon>ItpForm.cs</DependentUpon>
       <SubType>Designer</SubType>

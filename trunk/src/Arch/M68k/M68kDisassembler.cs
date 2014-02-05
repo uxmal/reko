@@ -956,7 +956,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
-                op1 = new AddressOperand(temp_pc + make_int_8(dasm.instruction))
+                op1 = new M68kAddressOperand(temp_pc + make_int_8(dasm.instruction))
             };
         }
 
@@ -966,7 +966,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
-                op1 = new AddressOperand(temp_pc + dasm.rdr.ReadBeInt16()),
+                op1 = new M68kAddressOperand(temp_pc + dasm.rdr.ReadBeInt16()),
             };
         }
 
@@ -977,7 +977,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
-                op1 = new AddressOperand(temp_pc + dasm.rdr.ReadBeInt32()),
+                op1 = new M68kAddressOperand(temp_pc + dasm.rdr.ReadBeInt32()),
             };
         }
 
@@ -1215,7 +1215,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.bra,
-                op1 = new AddressOperand(temp_pc + make_int_8(dasm.instruction))
+                op1 = new M68kAddressOperand(temp_pc + make_int_8(dasm.instruction))
             };
         }
 
@@ -1225,7 +1225,7 @@ namespace Decompiler.Arch.M68k
              return new M68kInstruction
              {
                  code = Opcode.bra,
-                 op1 = new AddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
+                 op1 = new M68kAddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
              };
         }
 
@@ -1236,7 +1236,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.bra,
-                op1 = new AddressOperand(temp_pc + dasm.read_imm_32())
+                op1 = new M68kAddressOperand(temp_pc + dasm.read_imm_32())
             };
         }
 
@@ -1267,7 +1267,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.bsr,
-                op1 = new AddressOperand(temp_pc + make_int_8(dasm.instruction))
+                op1 = new M68kAddressOperand(temp_pc + make_int_8(dasm.instruction))
             };
         }
 
@@ -1277,7 +1277,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.bsr,
-                op1 = new AddressOperand( temp_pc + make_int_16(dasm.read_imm_16())),
+                op1 = new M68kAddressOperand( temp_pc + make_int_16(dasm.read_imm_16())),
             };
         }
 
@@ -1287,7 +1287,7 @@ namespace Decompiler.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.bsr,
-                op1 = new AddressOperand(temp_pc + dasm.read_imm_32())
+                op1 = new M68kAddressOperand(temp_pc + dasm.read_imm_32())
             };
         }
 
@@ -1737,7 +1737,7 @@ namespace Decompiler.Arch.M68k
             {
                 code = g_dbcc[(dasm.instruction >> 8) & 0xf],
                 op1 = get_data_reg(dasm.instruction & 7),
-                op2 = new AddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
+                op2 = new M68kAddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
             };
         }
 

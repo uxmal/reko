@@ -133,7 +133,7 @@ namespace Decompiler.Assemblers.M68k
                 return (preOp.Register.Number & 7 | 0x20);
             }
 
-            var addrOp = op as AddressOperand;
+            var addrOp = op as M68kAddressOperand;
             if (addrOp != null)
             {
                 Imm(addrOp.Width.Size, addrOp.Address.Linear);
@@ -379,12 +379,14 @@ namespace Decompiler.Assemblers.M68k
 
         public void Jsr(uint address)
         {
-            Jsr(new AddressOperand(new Address(address)));
+            Jsr(new M68kAddressOperand(address));
         }
+
         public void Jsr(MachineOperand op)
         {
             Emit(0x4E80 | Ea(op, 0));
         }
+
         public void Jsr(string target)
         {
             var linBase = BaseAddress.Linear;

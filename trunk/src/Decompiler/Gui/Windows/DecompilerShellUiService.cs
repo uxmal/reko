@@ -102,6 +102,7 @@ namespace Decompiler.Gui.Windows
             if (activeMdiForm == null)
                 return null;
             WindowFrame frame;
+            Control c;
             if (!framesByForm.TryGetValue(activeMdiForm, out frame))
                 return null;
             return frame.Pane as ICommandTarget;
@@ -125,7 +126,6 @@ namespace Decompiler.Gui.Windows
                 return false;
             return ct.QueryStatus(ref cmdSet, cmdId, status, text);
         }
-
 
         public bool Execute(ref Guid cmdSet, int cmdId)
         {
