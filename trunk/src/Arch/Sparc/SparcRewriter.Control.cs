@@ -43,23 +43,23 @@ namespace Decompiler.Arch.Sparc
         {
             // SPARC architecture always has delay slot.
             var rtlClass = RtlClass.ConditionalTransfer | RtlClass.Delay;
-            if (di.Instr.Annul)
+            if (instrCur.Annul)
                 rtlClass |= RtlClass.Annul;
-            emitter.Branch(cond, ((AddressOperand) di.Instr.Op1).Address, rtlClass);
+            emitter.Branch(cond, ((AddressOperand) instrCur.Op1).Address, rtlClass);
         }
 
         private void RewriteCall()
         {
-            emitter.CallD(((AddressOperand) di.Instr.Op1).Address, 0);
+            emitter.CallD(((AddressOperand) instrCur.Op1).Address, 0);
         }
 
         private void RewriteJmpl()
         {
-            var rDst = di.Instr.Op3 as RegisterOperand;
-            var dst = RewriteOp(di.Instr.Op3, true);
-            var src1 = RewriteOp(di.Instr.Op1, true);
-            var src2 = RewriteOp(di.Instr.Op2, true);
-            emitter.Assign(dst, di.Address);
+            var rDst = instrCur.Op3 as RegisterOperand;
+            var dst = RewriteOp(instrCur.Op3, true);
+            var src1 = RewriteOp(instrCur.Op1, true);
+            var src2 = RewriteOp(instrCur.Op2, true);
+            emitter.Assign(dst, instrCur.Address);
             var target = SimplifySum(src1, src2);
             if (rDst.Register == Registers.o7)
             {
@@ -82,8 +82,8 @@ namespace Decompiler.Arch.Sparc
         private void RewriteTrap(Expression cond)
         {
             //$REVIEW: does a SPARC trap instruction have a delay slot?
-            var src1 = RewriteOp(di.Instr.Op1, true);
-            var src2 = RewriteOp(di.Instr.Op2, true);
+            var src1 = RewriteOp(instrCur.Op1, true);
+            var src2 = RewriteOp(instrCur.Op2, true);
             emitter.If(
                 cond,
                 new RtlSideEffect(

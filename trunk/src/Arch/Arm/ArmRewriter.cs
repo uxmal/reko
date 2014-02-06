@@ -33,51 +33,41 @@ namespace Decompiler.Arch.Arm
     public partial class ArmRewriter : IEnumerable<RtlInstructionCluster>
     {
         private ArmProcessorArchitecture arch;
-        private IEnumerator<DisassembledInstruction> instrs;
+        private IEnumerator<ArmInstruction> instrs;
         private ArmProcessorState state;
         private Frame frame;
-        private DisassembledInstruction di;
+        private ArmInstruction instr;
         private RtlInstructionCluster ric;
         private RtlEmitter emitter;
 
         public ArmRewriter(ArmProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, Frame frame)
         {
             this.arch = arch;
-            this.instrs = CreateInstructionStream(rdr).GetEnumerator();
+            this.instrs = CreateInstructionStream(rdr);
             this.state = state;
             this.frame = frame;
         }
 
-        //$REVIEW: move the DisassembledInstruction fields into the MachineInstruction class.
-        private IEnumerable<DisassembledInstruction> CreateInstructionStream(ImageReader rdr)
+        private IEnumerator<ArmInstruction> CreateInstructionStream(ImageReader rdr)
         {
-            var d = new ArmDisassembler2(arch, rdr);
-            while (rdr.IsValid)
-            {
-                var addr = d.Address;
-                var instr = d.Disassemble();
-                if (instr == null)
-                    yield break;
-                var length = (uint)(d.Address - addr);
-                yield return new DisassembledInstruction(addr, instr, length);
-            }
+            return new ArmDisassembler2(arch, rdr);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (instrs.MoveNext())
             {
-                this.di = instrs.Current;
-                this.ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
+                this.instr = instrs.Current;
+                this.ric = new RtlInstructionCluster(instr.Address, (byte)instr.Length);
                 this.emitter = new RtlEmitter(ric.Instructions);
-                switch (di.Instruction.Opcode)
+                switch (instr.Opcode)
                 {
                 default:
                     throw NYI();
                 case Opcode.add: RewriteBinOp(Operator.IAdd); break;
                 case Opcode.b: RewriteB(false); break;
                 case Opcode.mov:
-                    emitter.Assign(Operand(di.Instruction.Dst), Operand(di.Instruction.Src1)); break;
+                    emitter.Assign(Operand(instr.Dst), Operand(instr.Src1)); break;
                 case Opcode.orr: RewriteBinOp(Operator.Or); break;
                 case Opcode.sub: RewriteBinOp(Operator.ISub); break;
                 }
@@ -88,27 +78,27 @@ namespace Decompiler.Arch.Arm
         private AddressCorrelatedException NYI()
         {
             return new AddressCorrelatedException(
-                di.Address,
+                instr.Address,
                 "Rewriting ARM opcode '{0}' is not supported yet.",
-                di.Instruction.Opcode);
+                instr.Opcode);
         }
 
         private void RewriteB(bool link)
         {
-            Address addr = ((AddressOperand)di.Instruction.Dst).Address;
+            Address addr = ((AddressOperand)instr.Dst).Address;
             if (link)
             {
                 throw NYI();
             }
             else
             {
-                if (di.Instruction.Cond == Condition.al)
+                if (instr.Cond == Condition.al)
                 {
                     emitter.Goto(addr);
                 }
                 else
                 {
-                    emitter.Branch(TestCond(di.Instruction.Cond), addr, RtlClass.ConditionalTransfer);
+                    emitter.Branch(TestCond(instr.Cond), addr, RtlClass.ConditionalTransfer);
                 }
             }
         }
@@ -118,13 +108,13 @@ namespace Decompiler.Arch.Arm
             return GetEnumerator();
         }
 
-        private void AddConditional(RtlInstruction instr)
+        private void AddConditional(RtlInstruction rtlInstr)
         {
-            if (di.Instruction.Cond != Condition.al)
+            if (instr.Cond != Condition.al)
             {
-                instr = new RtlIf(TestCond(di.Instruction.Cond), instr);
+                rtlInstr = new RtlIf(TestCond(instr.Cond), rtlInstr);
             }
-            ric.Instructions.Add(instr);
+            ric.Instructions.Add(rtlInstr);
         }
 
         private Expression Operand(MachineOperand op)

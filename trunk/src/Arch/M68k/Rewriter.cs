@@ -36,14 +36,14 @@ namespace Decompiler.Arch.M68k
     /// </summary>
     public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        // These field are internal so that the OperandRewriter can use them.
+        // These fields are internal so that the OperandRewriter can use them.
         internal M68kArchitecture arch;
         internal Frame frame;
-        internal DisassembledInstruction di;
+        internal M68kInstruction di;
         internal RtlEmitter emitter;
         private M68kState state;
         private IRewriterHost host;
-        private IEnumerator<DisassembledInstruction> dasm;
+        private IEnumerator<M68kInstruction> dasm;
         private RtlInstructionCluster ric;
         private OperandRewriter orw;
 
@@ -53,7 +53,7 @@ namespace Decompiler.Arch.M68k
             this.state = m68kState;
             this.frame = frame;
             this.host = host;
-            this.dasm = CreateDisassemblyStream(rdr);
+            this.dasm = arch.CreateDisassembler(rdr);
         }
 
         protected IEnumerator<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
@@ -70,23 +70,6 @@ namespace Decompiler.Arch.M68k
             }
         }
 
-        public class DisassembledInstruction
-        {
-            private Address addr;
-            private M68kInstruction instr;
-            private uint length;
-
-            public DisassembledInstruction(Address addr, M68kInstruction instr, uint length)
-            {
-                this.addr = addr;
-                this.instr = instr;
-                this.length = length;
-            }
-
-            public Address Address { get { return addr; } }
-            public M68kInstruction Instruction { get { return instr; } }
-            public uint Length { get { return length; } }
-        }
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
@@ -94,8 +77,8 @@ namespace Decompiler.Arch.M68k
                 di = dasm.Current;
                 ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
                 emitter = new RtlEmitter(ric.Instructions);
-                orw = new OperandRewriter(this, di.Instruction.dataWidth);
-                switch (di.Instruction.code)
+                orw = new OperandRewriter(this, di.dataWidth);
+                switch (di.code)
                 {
                 case Opcode.and: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
@@ -135,7 +118,7 @@ namespace Decompiler.Arch.M68k
                     throw new AddressCorrelatedException(
                         di.Address,
                         "Rewriting M68k opcode '{0}' is not supported yet.",
-                        di.Instruction.code);
+                        di.code);
                 }
                 yield return ric;
             }

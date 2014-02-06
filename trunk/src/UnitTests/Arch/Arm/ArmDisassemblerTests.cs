@@ -36,8 +36,8 @@ namespace Decompiler.UnitTests.Arch.Arm
         {
             var image = new LoadedImage(new Address(0x00100000), bytes);
             var dasm = new ArmDisassembler3(new ArmProcessorArchitecture(), image.CreateReader(0));
-            var instr = dasm.Disassemble();
-            return instr;
+            Assert.IsTrue(dasm.MoveNext());
+            return dasm.Current;
         }
 
         protected MachineInstruction Disassemble(uint instr)

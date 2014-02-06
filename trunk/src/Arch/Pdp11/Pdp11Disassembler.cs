@@ -27,10 +27,11 @@ using System.Text;
 
 namespace Decompiler.Arch.Pdp11
 {
-    public class Pdp11Disassembler : IDisassembler
+    public class Pdp11Disassembler : IDisassembler, IEnumerator<Pdp11Instruction>
     {
-        private ImageReader rdr;
         private Pdp11Architecture arch;
+        private ImageReader rdr;
+        private Pdp11Instruction instrCur;
         private PrimitiveType dataWidth;
 
         public Pdp11Disassembler(ImageReader rdr, Pdp11Architecture arch)
@@ -39,12 +40,36 @@ namespace Decompiler.Arch.Pdp11
             this.arch = arch;
         }
 
+        public Pdp11Instruction Current { get { return instrCur; } }
+
+        object System.Collections.IEnumerator.Current { get { return instrCur; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotImplementedException(); }
+
         public Address Address
         {
             get { return rdr.Address; }
         }
 
-        public MachineInstruction DisassembleInstruction()
+        public bool MoveNext()
+        {
+            if (!rdr.IsValid)
+                return false;
+            var addr = rdr.Address;
+            instrCur = DisassembleInstruction();
+            instrCur.Address = addr;
+            instrCur.Length = addr - rdr.Address;
+            return true;
+        }
+
+        MachineInstruction IDisassembler.DisassembleInstruction()
+        {
+            return DisassembleInstruction();
+        }
+
+        public Pdp11Instruction DisassembleInstruction()
         {
             ushort opcode = rdr.ReadLeUInt16();
             dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
@@ -142,7 +167,7 @@ namespace Decompiler.Arch.Pdp11
             return p != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
         }
 
-        private MachineInstruction NonDoubleOperandInstruction(ushort opcode)
+        private Pdp11Instruction NonDoubleOperandInstruction(ushort opcode)
         {
             var dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
             var op = DecodeOperand(opcode);
@@ -237,7 +262,7 @@ namespace Decompiler.Arch.Pdp11
             };
         }
 
-        private MachineInstruction BranchInstruction(ushort opcode)
+        private Pdp11Instruction BranchInstruction(ushort opcode)
         {
             var oc = Opcodes.illegal;
             switch ((opcode >> 8) | (opcode >> 15))

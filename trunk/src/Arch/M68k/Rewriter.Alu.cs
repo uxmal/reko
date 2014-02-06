@@ -36,23 +36,23 @@ namespace Decompiler.Arch.M68k
     {
         public void RewriteArithmetic(Func<Expression, Expression, Expression> binOpGen)
         {
-            var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, binOpGen);
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, opSrc, binOpGen);
             AllConditions(opDst);
         }
 
         public void RewriteShift(Func<Expression, Expression, Expression> binOpGen)
         {
             Expression opDst;
-            if (di.Instruction.op2 != null)
+            if (di.op2 != null)
             {
-                var opSrc = orw.RewriteSrc(di.Instruction.op1);
-                opDst = orw.RewriteDst(di.Instruction.op2, opSrc, binOpGen);
+                var opSrc = orw.RewriteSrc(di.op1);
+                opDst = orw.RewriteDst(di.op2, opSrc, binOpGen);
             }
             else
             {
                 var opSrc = Constant.Int32(1);
-                opDst = orw.RewriteDst(di.Instruction.op1, PrimitiveType.Word16, opSrc, binOpGen);
+                opDst = orw.RewriteDst(di.op1, PrimitiveType.Word16, opSrc, binOpGen);
             }
             AllConditions(opDst);
         }
@@ -60,10 +60,10 @@ namespace Decompiler.Arch.M68k
         public void RewriteBchg()
         {
             throw new NotImplementedException("Haven't gotten this work yet.");
-            var opSrc = orw.RewriteSrc(di.Instruction.op1);
+            var opSrc = orw.RewriteSrc(di.op1);
             var tmpMask = frame.CreateTemporary(PrimitiveType.UInt32);
             emitter.Assign(tmpMask, emitter.Shl(1, opSrc));
-            var opDst = orw.RewriteDst(di.Instruction.op2, tmpMask, (s, d) => emitter.Xor(d, s));
+            var opDst = orw.RewriteDst(di.op2, tmpMask, (s, d) => emitter.Xor(d, s));
             emitter.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 emitter.Cond(emitter.And(opDst, tmpMask)));
@@ -73,7 +73,7 @@ namespace Decompiler.Arch.M68k
         {
             PrimitiveType dtSrc;
             PrimitiveType dtDst;
-            if (di.Instruction.dataWidth.Size == 4)
+            if (di.dataWidth.Size == 4)
             {
                 dtSrc = PrimitiveType.Int16;
                 dtDst = PrimitiveType.Int32;
@@ -83,7 +83,7 @@ namespace Decompiler.Arch.M68k
                 dtSrc = PrimitiveType.SByte;
                 dtDst = PrimitiveType.Int16;
             }
-            var dReg = frame.EnsureRegister(((RegisterOperand) di.Instruction.op1).Register);
+            var dReg = frame.EnsureRegister(((RegisterOperand) di.op1).Register);
             emitter.Assign(
                 dReg,
                 emitter.Cast(dtDst, emitter.Cast(dtSrc, dReg)));
@@ -94,7 +94,7 @@ namespace Decompiler.Arch.M68k
 
         public void RewriteExtb()
         {
-            var dReg = orw.RewriteSrc(di.Instruction.op1);
+            var dReg = orw.RewriteSrc(di.op1);
             emitter.Assign(
                 dReg, 
                 emitter.Cast(PrimitiveType.Int32,
@@ -106,23 +106,23 @@ namespace Decompiler.Arch.M68k
 
         public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
         {
-            var width = di.Instruction.dataWidth;
-            var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, binOpGen);
+            var width = di.dataWidth;
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, opSrc, binOpGen);
             LogicalConditions(opDst);
         }
 
         public void RewriteMul(Func<Expression, Expression, Expression> binOpGen)
         {
-            var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var opDst = orw.RewriteDst(di.Instruction.op2, PrimitiveType.Int32, opSrc, binOpGen);
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, PrimitiveType.Int32, opSrc, binOpGen);
             emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF), emitter.Cond(opDst));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
         public void RewriteUnary(Func<Expression, Expression> unaryOpGen, Action<Expression> generateFlags)
         {
-            var op = orw.RewriteUnary(di.Instruction.op1, di.Instruction.dataWidth, unaryOpGen);
+            var op = orw.RewriteUnary(di.op1, di.dataWidth, unaryOpGen);
             generateFlags(op);
         }
 
@@ -136,14 +136,14 @@ namespace Decompiler.Arch.M68k
 
         private void RewriteBinOp(Func<Expression,Expression,Expression> opGen)
         {
-            var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, opGen);
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, opSrc, opGen);
         }
 
         private void RewriteClr()
         {
-            var src = Constant.Create(di.Instruction.dataWidth, 0);
-            var opDst = orw.RewriteMoveDst(di.Instruction.op1, di.Instruction.dataWidth, src);
+            var src = Constant.Create(di.dataWidth, 0);
+            var opDst = orw.RewriteMoveDst(di.op1, di.dataWidth, src);
             emitter.Assign(orw.FlagGroup(FlagM.ZF), Constant.True());
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
             emitter.Assign(orw.FlagGroup(FlagM.NF), Constant.False());
@@ -152,8 +152,8 @@ namespace Decompiler.Arch.M68k
 
         private void RewriteCmp()
         {
-            var src = orw.RewriteSrc(di.Instruction.op1);
-            var dst = orw.RewriteSrc(di.Instruction.op2);
+            var src = orw.RewriteSrc(di.op1);
+            var dst = orw.RewriteSrc(di.op2);
             var tmp = frame.CreateTemporary(dst.DataType);
             emitter.Assign(tmp, emitter.ISub(dst, src));
             emitter.Assign(
@@ -188,8 +188,8 @@ namespace Decompiler.Arch.M68k
                     emitter.Assign(t, opSrc);
                     opSrc = t;
                 }
-                emitter.Assign(reg, emitter.ISub(reg, di.Instruction.dataWidth.Size));
-                var op = emitter.Load(di.Instruction.dataWidth, reg);
+                emitter.Assign(reg, emitter.ISub(reg, di.dataWidth.Size));
+                var op = emitter.Load(di.dataWidth, reg);
                 m(opSrc, op);
                 return op;
             }
@@ -197,14 +197,14 @@ namespace Decompiler.Arch.M68k
             if (postInc != null)
             {
                 var reg = frame.EnsureRegister(postInc.Register);
-                var t = frame.CreateTemporary(di.Instruction.dataWidth);
+                var t = frame.CreateTemporary(di.dataWidth);
                 if (NeedsSpilling(opSrc))
                 {
                     emitter.Assign(t, opSrc);
                     opSrc = t;
                 }
-                m(opSrc, emitter.Load(di.Instruction.dataWidth, reg));
-                emitter.Assign(reg, emitter.IAdd(reg, di.Instruction.dataWidth.Size));
+                m(opSrc, emitter.Load(di.dataWidth, reg));
+                emitter.Assign(reg, emitter.IAdd(reg, di.dataWidth.Size));
                 return t;
             }
             return orw.RewriteSrc(mop);
@@ -212,8 +212,8 @@ namespace Decompiler.Arch.M68k
 
         public void RewriteMove(bool setFlag)
         {
-            var opSrc = orw.RewriteSrc(di.Instruction.op1);
-            var opDst = orw.RewriteDst(di.Instruction.op2, opSrc, (s, d) => s);
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, opSrc, (s, d) => s);
             if (setFlag)
             {
                 emitter.Assign(
@@ -233,9 +233,9 @@ namespace Decompiler.Arch.M68k
 
         private void RewriteLink()
         {
-            var aReg = orw.RewriteSrc(di.Instruction.op1);
+            var aReg = orw.RewriteSrc(di.op1);
             var aSp = frame.EnsureRegister(arch.StackRegister);
-            var imm = ((M68kImmediateOperand) di.Instruction.op2).Constant.ToInt32();
+            var imm = ((M68kImmediateOperand) di.op2).Constant.ToInt32();
             emitter.Assign(aSp, emitter.ISub(aSp, 4));
             emitter.Assign(emitter.LoadDw(aSp), aReg);
             emitter.Assign(aReg, aSp);
@@ -251,7 +251,7 @@ namespace Decompiler.Arch.M68k
 
         private void RewriteUnlk()
         {
-            var aReg = orw.RewriteSrc(di.Instruction.op1);
+            var aReg = orw.RewriteSrc(di.op1);
             var aSp = frame.EnsureRegister(arch.StackRegister);
             emitter.Assign(aSp, aReg);
             emitter.Assign(aReg, emitter.LoadDw(aSp));

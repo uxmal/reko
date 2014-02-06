@@ -33,23 +33,23 @@ namespace Decompiler.Arch.Sparc
     {
         private void RewriteAlu(Operator op)
         {
-            var dst = RewriteOp(di.Instr.Op3);
-            var src1 = RewriteOp(di.Instr.Op1);
-            var src2 = RewriteOp(di.Instr.Op2);
+            var dst = RewriteOp(instrCur.Op3);
+            var src1 = RewriteOp(instrCur.Op1);
+            var src2 = RewriteOp(instrCur.Op2);
             emitter.Assign(dst, new BinaryExpression(op, PrimitiveType.Word32, src1, src2));
         }
 
         private void RewriteAluCc(Operator op)
         {
             RewriteAlu(op);
-            var dst = RewriteOp(di.Instr.Op3);
+            var dst = RewriteOp(instrCur.Op3);
             EmitCc(dst);
         }
 
         private void RewriteLoad(PrimitiveType size)
         {
-            var dst = RewriteOp(di.Instr.Op2);
-            var src = RewriteMemOp(di.Instr.Op1, size);
+            var dst = RewriteOp(instrCur.Op2);
+            var src = RewriteMemOp(instrCur.Op1, size);
             if (size.Size < dst.DataType.Size)
             {
                 size = (size.Domain == Domain.SignedInt) ? PrimitiveType.Int32 : PrimitiveType.Word32;
@@ -60,9 +60,9 @@ namespace Decompiler.Arch.Sparc
 
         private void RewriteMulscc()
         {
-            var dst = RewriteOp(di.Instr.Op3);
-            var src1 = RewriteOp(di.Instr.Op1);
-            var src2 = RewriteOp(di.Instr.Op2);
+            var dst = RewriteOp(instrCur.Op3);
+            var src1 = RewriteOp(instrCur.Op1);
+            var src2 = RewriteOp(instrCur.Op2);
             emitter.Assign(
                 dst,
                 PseudoProc("__mulscc", PrimitiveType.Int32, src1, src2));
@@ -71,15 +71,15 @@ namespace Decompiler.Arch.Sparc
 
         private void RewriteSethi()
         {
-            var dst = RewriteOp(di.Instr.Op2);
-            var src = (ImmediateOperand) di.Instr.Op1;
+            var dst = RewriteOp(instrCur.Op2);
+            var src = (ImmediateOperand) instrCur.Op1;
             emitter.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
         }
 
         private void RewriteStore(PrimitiveType size)
         {
-            var src = RewriteOp(di.Instr.Op1);
-            var dst = RewriteMemOp(di.Instr.Op2, size);
+            var src = RewriteOp(instrCur.Op1);
+            var dst = RewriteMemOp(instrCur.Op2, size);
             if (size.Size < src.DataType.Size)
                 src = emitter.Cast(size, src);
             emitter.Assign(dst, src);

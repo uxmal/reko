@@ -369,7 +369,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_stmw()
         {
-            var instr = DisassembleBits("101110 00001 00010 111111111110100 0");
+            var instr = DisassembleBits("101111 00001 00010 111111111110100 0");
             Assert.AreEqual("stmw\tr1,-24(r2)", instr.ToString());
         }
 

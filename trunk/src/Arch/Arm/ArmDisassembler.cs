@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Arm
     using address = UInt32;
     using addrdiff = UInt32;
 
-    public class ArmDisassembler2 : IDisassembler
+    public class ArmDisassembler2 : IDisassembler, IEnumerator<ArmInstruction>
     {
         private ArmProcessorArchitecture arch;
         private ImageReader rdr;
@@ -88,23 +88,39 @@ namespace Decompiler.Arch.Arm
 
         public MachineInstruction DisassembleInstruction()
         {
-            addr = rdr.Address.Linear;
-            this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
-            return arm;
+            if (MoveNext())
+                return Current;
+            return null;
         }
 
-        public ArmInstruction Disassemble()
+        public ArmInstruction Current { get { return arm; } }
+
+        object System.Collections.IEnumerator.Current { get { return arm; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotImplementedException(); }
+
+        public bool MoveNext()
         {
-            addr = rdr.Address.Linear;
+            if (!rdr.IsValid)
+                return false;
+
+            arm = new ArmInstruction
+            {
+                Address = rdr.Address,
+                Length = 4,
+            };
+
+            addr = arm.Address.Linear;
             this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
-            return arm;
+            return true;
         }
 
         public ArmInstruction Disassemble(word instr, DisOptions opts)
         {
             this.instr = instr;
             DumpBits(instr);
-            arm = new ArmInstruction();
             arm.Cond = ConditionField();
             if (arm.Cond == Condition.nv)
                 return DecodeUnconditional();
@@ -482,11 +498,26 @@ namespace Decompiler.Arch.Arm
             return arm;
         }
 
-        public ArmInstruction Disassemble()
+
+
+        public ArmInstruction Current { get { return arm; } }
+
+        object System.Collections.IEnumerator.Current { get { return arm; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotImplementedException(); }
+
+        public bool MoveNext()
         {
-            addr = rdr.Address.Linear;
+            if (!rdr.IsValid)
+                return false;
+            var a = rdr.Address;
+            addr = a.Linear;
             this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
-            return arm;
+            arm.Address = a;
+            arm.Length = rdr.Address - a;
+            return true;
         }
 
         public enum eTargetType
@@ -1557,595 +1588,6 @@ namespace Decompiler.Arch.Arm
 
         void swiname(word w, string s, int sz) { return; }
     }
-
-    #region Broken
-    public class ArmDisassembler : IDisassembler
-    {
-        private ImageReader rdr;
-
-        public ArmDisassembler(ImageReader rdr)
-        {
-            // TODO: Complete member initialization
-            this.rdr = rdr;
-        }
-
-        public Address Address
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public MachineInstruction DisassembleInstruction()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ArmInstruction Disassemble()
-        {
-            // ARM instructions are always little-endian.
-            uint instr = rdr.ReadLeUInt32();
-            uint cond = instr >> 28;
-            if (cond == 0xF)
-            {
-                //Unconditional();
-                throw new NotImplementedException();
-            }
-            else
-            {
-                uint sel = ((instr >> 23) & 0x0E) | ((instr >> 4) & 1);
-                var oprec = firstLevel.oprecs[sel];
-                return oprec.Decode(instr);
-            }
-        }
-
-        public static OpGroup firstLevel = new OpGroup
-        {
-            Selectors = new BitRange[]{
-                new BitRange { bitPos=28, mask=0xF }
-            },
-
-            oprecs = new OpRec[] { 
-                new DataMiscOpRec { },
-                new DataMiscOpRec { },
-                new DataMiscOpRec { },
-                new DataMiscOpRec { },
-                new LoadStoreOpRec { },
-                new LoadStoreOpRec { },
-                new LoadStoreOpRec { },
-                new MediaOpRec { },
-
-                new BranchBdtOpRec { },
-                new BranchBdtOpRec { },
-                new BranchBdtOpRec { },
-                new BranchBdtOpRec { },
-                new SwiCopOpRec {},
-                new SwiCopOpRec {},
-                new SwiCopOpRec {},
-                new SwiCopOpRec {},
-            }
-        };
-
-        public class DataMiscOpRec : OpRec
-        {
-            public new ArmInstruction Decode(uint instr)
-            {
-                throw new NotImplementedException();
-            }
-
-            static OpRec[] opRecs = new OpRec[] {
-                new DataProcessingOpRec(),
-
-                // 1 00000
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),
-  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(), 
- 
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(), 
- 
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(), 
- 
-                // 1 10000
-                new MovImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(), 
-                new MsrImmediateOpRec(),
-                new DataProcessingImmediateOpRec(), 
-
-                new MovTOpRec(),
-                new DataProcessingImmediateOpRec(), 
-                new MsrImmediateOpRec(),
-                new DataProcessingImmediateOpRec(), 
-
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(), 
- 
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(),  
-                new DataProcessingImmediateOpRec(), 
-            };
-        }
-
-        public class MsrImmediateOpRec : OpRec { }
-
-        public class MovTOpRec : OpRec { }
-
-        public class DataProcessingOpRec :OpRec
-        {
-        }
-
-        public class DataProcessingImmediateOpRec : OpRec
-        {
-        }
-
-        public class LoadStoreOpRec : OpRec
-        {
-        }
-
-        public class MediaOpRec : OpRec
-        {
-        }
-
-        public class BranchBdtOpRec : OpRec
-        {
-        }
-
-        public class SwiCopOpRec : OpRec
-        {
-        }
-
-        public class MovImmediateOpRec : OpRec { }
-
-        public static OpGroup predicated = new OpGroup
-        {
-            Selectors = { },
-            oprecs = new OpRec[]
-            {
-                new OpRec { Group = DataMisc },
-                new OpRec { Group=  DataMisc },
-                new OpRec { Group=  DataMisc },
-                new OpRec { Group = DataMisc },
-
-                new OpRec { Group = LdStWord },
-                new OpRec { Group = LdStWord },
-                new OpRec { Group = LdStWord },
-                new OpRec { Group = Media },
-
-                new OpRec { Group = BranchBlockTransfer },
-                new OpRec { Group = BranchBlockTransfer},
-                new OpRec { Group = BranchBlockTransfer},
-                new OpRec { Group = BranchBlockTransfer},
-
-                new OpRec { Group = SysCoproc },
-                new OpRec { Group = SysCoproc },
-                new OpRec { Group = SysCoproc },
-                new OpRec { Group = SysCoproc },
-            }
-        };
-
-        public static OpGroup DataMisc = new OpGroup
-        {
-
-        };
-
-        public static OpGroup LdStWord = new OpGroup
-        {
-        };
-        public static OpGroup Media = new OpGroup
-        {
-        };
-
-        public static OpGroup BranchBlockTransfer = new OpGroup
-{
-};
-
-        public static OpGroup SysCoproc = new OpGroup
-{
-};
-
-        public static OpGroup nonpredicated = new OpGroup
-        {
-            Selectors = new BitRange[] { new BitRange { bitPos = 27, mask = 1 }, },
-            oprecs = new OpRec[]
-                {
-                    new OpRec{ Group = NonpMisc },
-                    new OpRec { Group = nonp2 } 
-                }
-        };
-
-        public static OpGroup nonp2 = new OpGroup
-        {
-            Selectors = new BitRange[] { new BitRange { bitPos = 24, mask = 0x7 }, },
-            oprecs = new OpRec[]
-            {
-                new OpRec { op= Opcode.srs, },
-                new OpRec { op= Opcode.srs, }
-            }
-        };
-
-        public static OpGroup NonpMisc = new OpGroup
-        {
-        };
-
-
-
-        public static OpRec[] ops = new OpRec[] {
-            // 00-0F
-                new OpRec{ op = Opcode.and, format="lli"},
-                new OpRec{ op = Opcode.and, format="llr"},
-                new OpRec{ op = Opcode.and, format="lri"},
-                new OpRec{ op = Opcode.and, format="lrr"},
-                new OpRec{ op = Opcode.and, format="ari"},
-                new OpRec{ op = Opcode.and, format="arr"},
-                new OpRec{ op = Opcode.and, format="rri"},
-                new OpRec{ op = Opcode.and , format="rrr"},
-
-                new OpRec{ op = Opcode.and , format="lli"},
-                new OpRec { op= Opcode.mul, format="RdRnRsRm" },
-                new OpRec{ op = Opcode.and , format="lri"},
-                new OpRec(),
-                new OpRec(),
-                new OpRec(),
-                new OpRec(),
-                new OpRec(),
-            
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 10-1F
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 20-2F
-            new OpRec{op=Opcode.and,  format="ndRi"  },
-            new OpRec{op=Opcode.ands, format="ndRi" },
-            new OpRec{op=Opcode.eor,  format="ndRi"  },
-            new OpRec{op=Opcode.eors, format="ndRi" },
-            new OpRec{op=Opcode.sub,  format="ndRi"  },
-            new OpRec{op=Opcode.subs, format="ndRi" },
-            new OpRec{op=Opcode.rsb,  format="ndRi"  },
-            new OpRec{op=Opcode.rsbs, format="ndRi" },
-
-            new OpRec{op=Opcode.add,  format="ndRi"  },
-            new OpRec{op=Opcode.adds, format="ndRi" },
-            new OpRec{op=Opcode.adc,  format="ndRi"  },
-            new OpRec{op=Opcode.adcs, format="ndRi" },
-            new OpRec{op=Opcode.sbc,  format="ndRi"  },
-            new OpRec{op=Opcode.sbcs, format="ndRi" },
-            new OpRec{op=Opcode.rsc,  format="ndRi"  },
-            new OpRec{op=Opcode.rscs, format="ndRi" },
-
-            // 30-3F
-            new OpRec{op=Opcode.tst,  format="ndRi"  },
-            new OpRec{op=Opcode.tsts, format="ndRi" },
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 40-4F
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 50-5F
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 60-6F
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 70-7F
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 80-8F
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // 90-9F
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // A0-AF
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-            new OpRec{ op = Opcode.b, format="O"},
-
-
-            // B0-BF
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-            new OpRec{ op = Opcode.bl, format="O"},
-
-
-
-            // C0-CF
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // D0-DF
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // E0-EF
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            // F0-FF
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-            new OpRec(),
-
-        };
-
-
-        // 00-01 - cruft
-        // 20-5F - rows
-        // 60-7F - striped rows
-        // 80-9F - rows
-        // A0-AF - B
-        // B0-BF - BL
-        // C0-DF - rows
-        // E0-EF - crucft
-        // F0-FF - SWI
-
-    }
-
-    public class OpGroup
-    {
-        public BitRange[] Selectors;
-        public OpRec[] oprecs;
-    }
-
-    public struct BitRange
-    {
-        public uint bitPos;
-        public uint mask;
-    }
-
-    public class OpRec
-    {
-        public Opcode op;
-        public string format;
-        public int mask;
-        public OpGroup Group;
-
-        internal ArmInstruction Decode(uint instr)
-        {
-            throw new NotImplementedException();
-        }
-    }
-#endregion
 }
 
 #region OpCode map

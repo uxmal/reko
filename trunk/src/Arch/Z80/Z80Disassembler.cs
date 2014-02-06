@@ -29,10 +29,11 @@ using System.Text;
 
 namespace Decompiler.Arch.Z80
 {
-    public class Z80Disassembler : IDisassembler
+    public class Z80Disassembler : IDisassembler, IEnumerator<Z80Instruction>
     {
         private ImageReader rdr;
         private RegisterStorage IndexRegister;
+        private Z80Instruction instr;
 
         public Z80Disassembler(ImageReader rdr)
         {
@@ -46,16 +47,43 @@ namespace Decompiler.Arch.Z80
 
         public Z80Instruction Disassemble()
         {
-            var op = rdr.ReadByte();
-            var opRef = oprecs[op];
-            this.IndexRegister = null;
-            return opRef.Decode(this, op, "");
+            if (!MoveNext())
+                return null;
+            return Current;
         }
+
 
         public MachineInstruction DisassembleInstruction()
         {
             return Disassemble();
         }
+
+        public Z80Instruction Current { get { return instr; } }
+
+        object System.Collections.IEnumerator.Current { get { return instr; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotImplementedException(); }
+
+        public bool MoveNext()
+        {
+            if (!rdr.IsValid)
+                return false;
+            var addr = rdr.Address;
+            this.instr = new Z80Instruction
+            {
+                Address = rdr.Address,
+            };
+            var op = rdr.ReadByte();
+            var opRef = oprecs[op];
+            this.IndexRegister = null;
+            instr = opRef.Decode(this, op, "");
+            instr.Address = addr;
+            instr.Length = rdr.Address - addr;
+            return true;
+        }
+
 
         public Z80Instruction DecodeOperands(Opcode opcode, byte op, string fmt)
         {
@@ -128,14 +156,13 @@ namespace Decompiler.Arch.Z80
                 case 'L':
                     ops[iOp++] = new RegisterOperand(LiteralRegister(fmt[i++]));
                     break;
-                    }
+                }
             }
-            return new Z80Instruction
-            {
-                Code = opcode,
-                Op1 = ops[0],
-                Op2 = ops[1],
-            };
+            instr.Code = opcode;
+            instr.Length = rdr.Address - instr.Address;
+            instr.Op1 = ops[0];
+            instr.Op2 = ops[1];
+            return instr;
         }
 
         private MemoryOperand MemOperand(char chWidth)

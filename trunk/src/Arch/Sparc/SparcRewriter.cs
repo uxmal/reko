@@ -40,16 +40,10 @@ namespace Decompiler.Arch.Sparc
         private SparcProcessorState state;
         private Frame frame;
         private IRewriterHost host;
-        private LookaheadEnumerator<DisassembledInstruction> dasm;
-        private DisassembledInstruction di;
+        private LookaheadEnumerator<SparcInstruction> dasm;
+        private SparcInstruction instrCur;
         private RtlEmitter emitter;
         private RtlInstructionCluster ric;
-
-        public class DisassembledInstruction 
-        {
-            public Address Address;
-            public SparcInstruction Instr;
-        }
 
         public SparcRewriter(SparcArchitecture arch, ImageReader rdr, SparcProcessorState state, Frame frame, IRewriterHost host)
         {
@@ -57,43 +51,37 @@ namespace Decompiler.Arch.Sparc
             this.state = state;
             this.frame = frame;
             this.host = host;
-            this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr));
+            this.dasm = new LookaheadEnumerator<SparcInstruction>(CreateDisassemblyStream(rdr));
         }
 
-        public SparcRewriter(SparcArchitecture arch, IEnumerable<DisassembledInstruction> instrs, SparcProcessorState state, Frame frame, IRewriterHost host)
+        public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;
             this.frame = frame;
             this.host = host;
-            this.dasm = new LookaheadEnumerator<DisassembledInstruction>(instrs);
+            this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);
         }
 
-        private IEnumerator<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
+        private IEnumerator<SparcInstruction> CreateDisassemblyStream(ImageReader rdr)
         {
-            var d = new SparcDisassembler(arch, rdr);
-            while (rdr.IsValid)
-            {
-                var addr = d.Address;
-                var instr = d.Disassemble();
-                yield return new DisassembledInstruction { Address = addr, Instr = instr };
-            }
+            return new SparcDisassembler(arch, rdr);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
             {
-                di = dasm.Current;
-                ric = new RtlInstructionCluster(di.Address, 4);
+                instrCur = dasm.Current;
+                ric = new RtlInstructionCluster(instrCur.Address, 4);
                 emitter = new RtlEmitter(ric.Instructions);
-                switch (di.Instr.Opcode)
+                switch (instrCur.Opcode)
                 {
                 default: 
                     throw new AddressCorrelatedException(
-                        di.Address,
+                        instrCur.Address,
                         "Rewriting SPARC opcode '{0}' is not supported yet.",
-                        di.Instr.Opcode);
+                        instrCur.Opcode);
                 case Opcode.add: RewriteAlu(Operator.IAdd); break;
                 case Opcode.addcc: RewriteAluCc(Operator.IAdd); break;
                 case Opcode.and: RewriteAlu(Operator.And); break;

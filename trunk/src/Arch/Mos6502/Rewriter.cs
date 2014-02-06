@@ -35,8 +35,8 @@ namespace Decompiler.Arch.Mos6502
         private Frame frame;
         private IRewriterHost host;
         private Mos6502ProcessorArchitecture arch;
-        private IEnumerator<DisassembledInstruction> instrs;
-        private DisassembledInstruction di;
+        private IEnumerator<Instruction> instrs;
+        private Instruction instrCur;
         private RtlInstructionCluster ric;
         private RtlEmitter emitter;
 
@@ -45,39 +45,25 @@ namespace Decompiler.Arch.Mos6502
             this.arch = arch;
             this.state = state;
             this.frame = frame;
-            this.instrs = CreateInstructionStream(rdr).GetEnumerator();
-        }
-
-        private IEnumerable<DisassembledInstruction> CreateInstructionStream(ImageReader rdr)
-        {
-            var d = new Disassembler(rdr.CreateLeReader());
-            while (rdr.IsValid)
-            {
-                var addr = d.Address;
-                var instr = d.Disassemble();
-                if (instr == null)
-                    yield break;
-                var length = (uint) (d.Address - addr);
-                yield return new DisassembledInstruction(addr, instr, length);
-            }
+            this.instrs = new Disassembler(rdr.CreateLeReader());
         }
 
         private AddressCorrelatedException NYI()
         {
             return new AddressCorrelatedException(
-                di.Address,
+                instrCur.Address,
                 "Rewriting 6502 opcode '{0}' is not supported yet.",
-                di.Instruction.Code);
+                instrCur.Code);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (instrs.MoveNext())
             {
-                this.di = instrs.Current;
-                this.ric = new RtlInstructionCluster(di.Address, (byte) di.Length);
+                this.instrCur = instrs.Current;
+                this.ric = new RtlInstructionCluster(instrCur.Address, (byte) instrCur.Length);
                 this.emitter = new RtlEmitter(ric.Instructions);
-                switch (di.Instruction.Code)
+                switch (instrCur.Code)
                 {
                 default: throw NYI();
                 case Opcode.sbc: Sbc(); break;
@@ -107,7 +93,7 @@ namespace Decompiler.Arch.Mos6502
 
         private void Sbc()
         {
-            var mem = RewriteOperand(di.Instruction.Operand);
+            var mem = RewriteOperand(instrCur.Operand);
             var a = frame.EnsureRegister(Registers.a);
             var c = frame.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
             emitter.Assign(
@@ -116,9 +102,8 @@ namespace Decompiler.Arch.Mos6502
                     emitter.ISub(a, mem),
                     emitter.Not(c)));
             emitter.Assign(
-                frame.EnsureFlagGroup((uint) Instruction.DefCc(di.Instruction.Code), "NVZC", PrimitiveType.Byte),
+                frame.EnsureFlagGroup((uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
                 emitter.Cond(a));
-                
         }
 
         private Expression RewriteOperand(Operand op)
