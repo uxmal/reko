@@ -27,41 +27,16 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch
 {
-    public abstract class DisassemblerTestBase<TInstruction> 
+    abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
         where TInstruction : MachineInstruction
     {
-        private IProcessorArchitecture arch;
         private Address baseAddress;
-        private int instructionSize;
 
-        public DisassemblerTestBase(IProcessorArchitecture arch, Address baseAddress, int instructionSizeInBits)
+        public DisassemblerTestBase(IProcessorArchitecture arch, Address baseAddress, int instructionSizeInBits) : base(arch, instructionSizeInBits)
         {
-            this.arch = arch;
             this.baseAddress = baseAddress;
-            this.instructionSize = instructionSizeInBits;
         }
 
-        public uint ParseBitPattern(string bitPattern)
-        {
-            int cBits = 0;
-            uint instr = 0;
-            for (int i = 0; i < bitPattern.Length; ++i)
-            {
-                switch (bitPattern[i])
-                {
-                case '0':
-                case '1':
-                    instr = (instr << 1) | (uint) (bitPattern[i] - '0');
-                    ++cBits;
-                    break;
-                }
-            }
-            if (cBits != instructionSize)
-                throw new ArgumentException(
-                    string.Format("Bit pattern didn't contain exactly {0} binary digits, but {1}.",  instructionSize, cBits),
-                    "bitPattern");
-            return instr;
-        }
 
         protected abstract ImageWriter CreateImageWriter(byte[] bytes);
 
@@ -89,7 +64,7 @@ namespace Decompiler.UnitTests.Arch
 
         public TInstruction Disassemble(LoadedImage img)
         {
-            var dasm = arch.CreateDisassembler(img.CreateReader(0U));
+            var dasm = Architecture.CreateDisassembler(img.CreateReader(0U));
             var instr = dasm.DisassembleInstruction();
             return (TInstruction) instr;
         }

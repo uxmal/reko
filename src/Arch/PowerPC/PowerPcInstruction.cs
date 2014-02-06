@@ -33,7 +33,7 @@ namespace Decompiler.Arch.PowerPC
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
-        private bool setsCR0;
+        public bool setsCR0;
 
         public PowerPcInstruction(Opcode opcode)
         {
@@ -49,7 +49,7 @@ namespace Decompiler.Arch.PowerPC
             this.setsCR0 = setsCR0;
         }
 
-        public Address Address { get; set; }
+        public Address  Address { get; set; }
 
         public int Operands
         {

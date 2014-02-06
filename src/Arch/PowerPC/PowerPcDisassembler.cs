@@ -33,6 +33,7 @@ namespace Decompiler.Arch.PowerPC
         private PowerPcArchitecture arch;
         private ImageReader rdr;
         private PrimitiveType defaultWordWidth;
+        private Address addr;
 
         public PowerPcDisassembler(PowerPcArchitecture arch, ImageReader rdr, PrimitiveType defaultWordWidth)
         {
@@ -48,6 +49,7 @@ namespace Decompiler.Arch.PowerPC
 
         public PowerPcInstruction Disassemble()
         {
+            this.addr = rdr.Address;
             uint wInstr = rdr.ReadBeUInt32();
             return oprecs[wInstr >> 26].Decode(this, wInstr);
         }
@@ -122,12 +124,15 @@ namespace Decompiler.Arch.PowerPC
                 }
                 ops.Add(op);
             }
-            return new PowerPcInstruction(
-                opcode,
-                ops.Count > 0 ? ops[0] : null,
-                ops.Count > 1 ? ops[1] : null,
-                ops.Count > 2 ? ops[2] : null,
-                setsCR0);
+            return new PowerPcInstruction(opcode)
+            {
+                Address = addr,
+                Length = 4,
+                op1 = ops.Count > 0 ? ops[0] : null,
+                op2 = ops.Count > 1 ? ops[1] : null,
+                op3 = ops.Count > 2 ? ops[2] : null,
+                setsCR0 = setsCR0
+            };
         }
 
         private MachineOperand MemOff(uint reg, uint wInstr)

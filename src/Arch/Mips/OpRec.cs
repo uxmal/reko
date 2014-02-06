@@ -53,10 +53,12 @@ namespace Decompiler.Arch.Mips
     {
         private static OpRec[] specialOpRecs = new OpRec[] 
         {
-            null, null, null, null, null, null, null, null, 
+            null, null, null, null, 
+            null, null, null, null, 
             new AOpRec(Opcode.jr, "R1"),
             new AOpRec(Opcode.jalr, "R3,R1"),
-            null, null, 
+            new AOpRec(Opcode.movz, "R3,R1,R2"),
+            new AOpRec(Opcode.movn, "R3,R1,R2"),
             null,
             new AOpRec(Opcode.@break, "B"),
             null,
@@ -67,8 +69,8 @@ namespace Decompiler.Arch.Mips
             null,
             new AOpRec(Opcode.dsrlv, "R3,R2,R1"),
             new AOpRec(Opcode.dsrav, "R3,R2,R1"),
-            null, 
-            null, 
+            new AOpRec(Opcode.mult, "R1,R2"),
+            new AOpRec(Opcode.multu, "R1,R2"),
             new AOpRec(Opcode.div, "R1,R2"),
             new AOpRec(Opcode.divu, "R1,R2"),
             new AOpRec(Opcode.dmult, "R1,R2"),
@@ -81,9 +83,9 @@ namespace Decompiler.Arch.Mips
             null, 
             null,
             new AOpRec(Opcode.and, "R3,R1,R2"),
-            null, 
-            null,
-            null,
+            new AOpRec(Opcode.or, "R3,R1,R2"),
+            new AOpRec(Opcode.xor, "R3,R1,R2"),
+            new AOpRec(Opcode.nor, "R3,R1,R2"),
  
             null, null, null, null, 
             new AOpRec(Opcode.dadd, "R3,R1,R2"),

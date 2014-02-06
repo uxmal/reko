@@ -170,6 +170,14 @@ namespace Decompiler.Core.Expressions
 			return acc;
 		}
 
+        public override bool IsZero
+        {
+            get
+            {
+                return IsIntegerZero;
+            }
+        }
+
 		public bool IsIntegerZero
 		{
 			get 

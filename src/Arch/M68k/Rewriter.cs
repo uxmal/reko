@@ -70,6 +70,23 @@ namespace Decompiler.Arch.M68k
             }
         }
 
+        public class DisassembledInstruction
+        {
+            private Address addr;
+            private M68kInstruction instr;
+            private uint length;
+
+            public DisassembledInstruction(Address addr, M68kInstruction instr, uint length)
+            {
+                this.addr = addr;
+                this.instr = instr;
+                this.length = length;
+            }
+
+            public Address Address { get { return addr; } }
+            public M68kInstruction Instruction { get { return instr; } }
+            public uint Length { get { return length; } }
+        }
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
