@@ -29,7 +29,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Mips
 {
     [TestFixture]
-    public class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
+    class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
         public MipsDisassemblerTests()
             : base(new MipsProcessorArchitecture(), new Address(0x00100000), 32)
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Arch.Mips
         public void MipsDis_andi()
         {
             var instr = DisassembleBits("001100 00011 00110 1111000000100100");
-            Assert.AreEqual("andi\tr6,r3,-00000FDC", instr.ToString());
+            Assert.AreEqual("andi\tr6,r3,0000F024", instr.ToString());
         }
 
         [Test]
@@ -328,6 +328,69 @@ namespace Decompiler.UnitTests.Arch.Mips
             Assert.AreEqual("mthi\tr10", instr.ToString());
             instr = DisassembleBits("000000 000000000 01010 00000 010011");
             Assert.AreEqual("mtlo\tr10", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_mov_z_nz()
+        {
+            var instr = DisassembleBits("000000 00001 00101 01010 00000 001011");
+            Assert.AreEqual("movn\tr10,r1,r5", instr.ToString());
+            instr = DisassembleBits("000000 00001 00101 01010 00000 001010");
+            Assert.AreEqual("movz\tr10,r1,r5", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_mult()
+        {
+            var instr = DisassembleBits("000000 00011 00101 00000 00000 011000");
+            Assert.AreEqual("mult\tr3,r5", instr.ToString());
+            instr = DisassembleBits("000000 00011 00101 00000 00000 011001");
+            Assert.AreEqual("multu\tr3,r5", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_or()
+        {
+            var instr = DisassembleBits("000000 00011 00101 00111 00000 100101");
+            Assert.AreEqual("or\tr7,r3,r5", instr.ToString());
+            instr = DisassembleBits("000000 00011 00101 00111 00000 100111");
+            Assert.AreEqual("nor\tr7,r3,r5", instr.ToString());
+            instr = DisassembleBits("001101 00011 00101 0011100000100111");
+            Assert.AreEqual("ori\tr5,r3,00003827", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_stores()
+        {
+            var instr = DisassembleBits("101000 01001 00011 1111111111001000");
+            Assert.AreEqual("sb\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("111000 01001 00011 1111111111001000");
+            Assert.AreEqual("sc\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("111100 01001 00011 1111111111001000");
+            Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("111111 01001 00011 1111111111001000");
+            Assert.AreEqual("sd\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("101100 01001 00011 1111111111001000");
+            Assert.AreEqual("sdl\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("101101 01001 00011 1111111111001000");
+            Assert.AreEqual("sdr\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("101001 01001 00011 1111111111001000");
+            Assert.AreEqual("sh\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("101011 01001 00011 1111111111001000");
+            Assert.AreEqual("sw\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("101010 01001 00011 1111111111001000");
+            Assert.AreEqual("swl\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("101110 01001 00011 1111111111001000");
+            Assert.AreEqual("swr\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_xor()
+        {
+            var instr = DisassembleBits("000000 00011 00101 00111 00000 100110");
+            Assert.AreEqual("xor\tr7,r3,r5", instr.ToString());
+            instr = DisassembleBits("001110 00011 00101 0011100000100111");
+            Assert.AreEqual("xori\tr5,r3,00003827", instr.ToString());
         }
     }
 }

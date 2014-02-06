@@ -767,6 +767,7 @@ namespace Decompiler.Evaluation
 			return id1.Number > id2.Number;
 		}
 
+        [Obsolete("Use Expression.IsZero")]
 		public bool IsZero(Expression expr)
 		{
 			Constant c = expr as Constant;

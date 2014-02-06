@@ -30,9 +30,10 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.Mips
 {
-    public class MipsDisassembler : IDisassembler
+    public class MipsDisassembler : IDisassembler, IEnumerable<MipsInstruction>
     {
         private MipsProcessorArchitecture arch;
+        private Address addr;
         private ImageReader rdr;
 
         public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader)
@@ -51,13 +52,27 @@ namespace Decompiler.Arch.Mips
             return Disassemble();
         }
 
+        public IEnumerator<MipsInstruction> GetEnumerator()
+        {
+            while (rdr.IsValid)
+            {
+                yield return Disassemble();
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public MipsInstruction Disassemble()
         {
+            this.addr = rdr.Address; 
             var wInstr = rdr.ReadBeUInt32();
             var opRec = opRecs[wInstr >> 26];
             Debug.Print("Decoding {0:X8} => oprec {1} {2}", wInstr, wInstr >> 26, opRec == null ? "(null!)" : "");
             if (opRec == null)
-                throw new NotImplementedException();    //$REVIEW: remove this when all oprecs are in place.
+                throw new NotImplementedException((wInstr >> 26).ToString());    //$REVIEW: remove this when all oprecs are in place.
             return opRec.Decode(wInstr, this);
         }
 
@@ -74,12 +89,12 @@ namespace Decompiler.Arch.Mips
 
             new AOpRec(Opcode.addi, "R2,R1,I"),
             new AOpRec(Opcode.addiu, "R2,R1,I"),
-            null, 
-            null,
+            new AOpRec(Opcode.slti, "R2,R1,I"),
+            new AOpRec(Opcode.sltiu, "R2,R1,I"),
 
-            new AOpRec(Opcode.andi, "R2,R1,I"),
-            null,
-            null,
+            new AOpRec(Opcode.andi, "R2,R1,U"),
+            new AOpRec(Opcode.ori, "R2,R1,U"),
+            new AOpRec(Opcode.xori, "R2,R1,U"),
             new AOpRec(Opcode.lui, "R2,i"),
             // 10
             null,
@@ -104,27 +119,41 @@ namespace Decompiler.Arch.Mips
             new AOpRec(Opcode.lh, "R2,EH"),
             new AOpRec(Opcode.lwl, "R2,Ew"),
             new AOpRec(Opcode.lw, "R2,EW"),
-
+                              
             new AOpRec(Opcode.lbu, "R2,Eb"),
             new AOpRec(Opcode.lhu, "R2,Eh"),
             new AOpRec(Opcode.lwr, "R2,Ew"),
             new AOpRec(Opcode.lwu, "R2,Ew"),
+            
+            new AOpRec(Opcode.sb, "R2,EB"),
+            new AOpRec(Opcode.sh, "R2,EH"),
+            new AOpRec(Opcode.swl, "R2,Ew"),
+            new AOpRec(Opcode.sw, "R2,EW"),
 
-            null, null, null, null, 
-            null, null, null, null, 
+            new AOpRec(Opcode.sdl, "R2,Ew"),
+            new AOpRec(Opcode.sdr, "R2,Ew"),
+            new AOpRec(Opcode.swr, "R2,Ew"),
+            null,
             // 30
             new AOpRec(Opcode.ll, "R2,Ew"),
             null, 
             null, 
-            null,
+            new AOpRec(Opcode.pref, "R2,Ew"),
 
             new AOpRec(Opcode.lld, "R2,Ew"),
             null, 
             null,
             new AOpRec(Opcode.ld, "R2,El"),
 
-            null, null, null, null,
-            null, null, null, null,
+            new AOpRec(Opcode.sc, "R2,El"),
+            null,
+            null,
+            null,
+
+            new AOpRec(Opcode.scd, "R2,El"),
+            null, 
+            null, 
+            new AOpRec(Opcode.sd, "R2,El"),
         };
 
         public MipsInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt)
@@ -151,6 +180,9 @@ namespace Decompiler.Arch.Mips
                 case 'I':
                     op = ImmediateOperand.Int32((short) wInstr);
                     break;
+                case 'U':
+                    op = ImmediateOperand.Word32((ushort) wInstr);
+                    break;
                 case 'i':
                     op = ImmediateOperand.Int16((short) wInstr);
                     break;
@@ -175,6 +207,8 @@ namespace Decompiler.Arch.Mips
             return new MipsInstruction
             {
                 opcode = opcode,
+                Address = addr,
+                Length = 4,
                 op1 = ops.Count > 0 ? ops[0] : null,
                 op2 = ops.Count > 1 ? ops[1] : null,
                 op3 = ops.Count > 2 ? ops[2] : null,

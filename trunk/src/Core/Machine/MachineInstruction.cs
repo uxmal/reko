@@ -30,6 +30,17 @@ namespace Decompiler.Core.Machine
     public abstract class MachineInstruction
     {
         /// <summary>
+        /// The address at which the instruction begins.
+        /// </summary>
+        public Address Address;
+
+        /// <summary>
+        /// The length of the entire instruction. Some architectures, e.g. M68k, x86, and most
+        /// 8-bit microprocessors, have variable length instructions.
+        /// </summary>
+        public int Length;
+
+        /// <summary>
         /// Returns any processor flags that are defined by the instruction when it is executed.
         /// Typically, ALU instructions will set flags to reflect the result of the operation.
         /// </summary>

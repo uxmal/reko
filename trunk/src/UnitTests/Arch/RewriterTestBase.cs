@@ -1,0 +1,82 @@
+﻿#region License
+/* 
+ * Copyright (C) 1999-2014 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Core;
+using Decompiler.Core.Types;
+using Decompiler.Core.Rtl;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Decompiler.UnitTests.Arch
+{
+    class RewriterTestBase : ArchTestBase
+    {
+        private LoadedImage instructions;
+
+        public RewriterTestBase(IProcessorArchitecture arch, int instrSize) : base(arch, instrSize)
+        {
+        }
+
+        public void Rewrite(params uint [] words)
+        {
+            instructions = RewriteCode(words);
+        }
+
+        protected virtual LoadedImage RewriteCode(uint [] words)
+        {
+            Assert.Fail();
+            return null;
+        }
+
+        protected virtual IRewriterHost CreateHost()
+        {
+            return null;
+        }
+
+        public void AssertCode(params string[] s)
+        {
+            int i = 0;
+            var frame = Architecture.CreateFrame();
+            var rewriter = GetInstructionStream(frame);
+            foreach (var instr in rewriter)
+            {
+                var str = string.Format("{0}|{1}", i, instr);
+                Assert.AreEqual(s[i], str);
+                ++i;
+                foreach (var rtl in instr.Instructions)
+                {
+                    str = string.Format("{0}|{1}", i, rtl);
+                    Assert.AreEqual(s[i], str);
+                    ++i;
+                }
+            }
+            if (s.Length > i)
+                Assert.Fail("Not enough expected statements");
+        }
+
+        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        {
+            yield break;
+        }
+    }
+}

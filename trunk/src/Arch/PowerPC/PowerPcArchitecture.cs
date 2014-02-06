@@ -34,6 +34,7 @@ namespace Decompiler.Arch.PowerPC
     public class PowerPcArchitecture : IProcessorArchitecture
     {
         private PrimitiveType wordWidth;
+        private PrimitiveType ptrType;
         private ReadOnlyCollection<RegisterStorage> regs;
         private ReadOnlyCollection<RegisterStorage> fpregs;
         private ReadOnlyCollection<RegisterStorage> cregs;
@@ -47,7 +48,7 @@ namespace Decompiler.Arch.PowerPC
             if (wordWidth != PrimitiveType.Word32)
                 throw new ArgumentException("Only 32-bit mode of the architecture is currently supported.");
             this.wordWidth = wordWidth;
-
+            this.ptrType =  PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
             regs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
                 new RegisterStorage("r0", 0, wordWidth),
                 new RegisterStorage("r1", 1, wordWidth),
@@ -215,12 +216,12 @@ namespace Decompiler.Arch.PowerPC
 
         public PrimitiveType FramePointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return ptrType; }
         }
 
         public PrimitiveType PointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return ptrType; }
         }
 
         public PrimitiveType WordWidth
@@ -240,7 +241,7 @@ namespace Decompiler.Arch.PowerPC
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new PowerPcRewriter(this, rdr, frame);
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

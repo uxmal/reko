@@ -30,6 +30,13 @@ namespace Decompiler.Arch.Mips
 {
     public class MipsProcessorArchitecture : IProcessorArchitecture
     {
+        public MipsProcessorArchitecture()
+        {
+            this.WordWidth = PrimitiveType.Word32;
+            this.PointerType = PrimitiveType.Word32;
+            this.FramePointerType = PrimitiveType.Word32;
+        }
+
         public IDisassembler CreateDisassembler(ImageReader imageReader)
         {
             return new MipsDisassembler(this, imageReader);
@@ -57,7 +64,7 @@ namespace Decompiler.Arch.Mips
 
         public Frame CreateFrame()
         {
-            throw new NotImplementedException();
+            return new Frame(FramePointerType);
         }
 
         public RegisterStorage GetRegister(int i)
@@ -105,20 +112,9 @@ namespace Decompiler.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public PrimitiveType PointerType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public PrimitiveType WordWidth
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public PrimitiveType FramePointerType { get; private set; }
+        public PrimitiveType PointerType { get; private set; }
+        public PrimitiveType WordWidth { get; private set ; }
 
         public RegisterStorage StackRegister
         {
