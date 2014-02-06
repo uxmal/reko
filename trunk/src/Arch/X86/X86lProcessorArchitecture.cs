@@ -88,9 +88,14 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
-		public virtual IDisassembler CreateDisassembler(ImageReader imageReader)
-		{
+        public X86Disassembler CreateDisassembler(ImageReader imageReader)
+        {
             return mode.CreateDisassembler(imageReader);
+        }
+
+		IEnumerator<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
+		{
+            return CreateDisassembler(imageReader);
 		}
 
         public virtual Frame CreateFrame()

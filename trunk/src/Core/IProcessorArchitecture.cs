@@ -34,7 +34,7 @@ namespace Decompiler.Core
     /// </summary>
 	public interface IProcessorArchitecture
 	{
-        IDisassembler CreateDisassembler(ImageReader imageReader);
+        IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader);
 
 		ProcessorState CreateProcessorState();
 

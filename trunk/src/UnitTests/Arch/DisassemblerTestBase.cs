@@ -31,18 +31,11 @@ namespace Decompiler.UnitTests.Arch
     abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
         where TInstruction : MachineInstruction
     {
-        private Address baseAddress;
-
-        public DisassemblerTestBase(IProcessorArchitecture arch, Address baseAddress, int instructionSizeInBits) : base(arch, instructionSizeInBits)
-        {
-            this.baseAddress = baseAddress;
-        }
-
         protected abstract ImageWriter CreateImageWriter(byte[] bytes);
 
         public TInstruction DisassembleBytes(byte[] a)
         {
-            LoadedImage img = new LoadedImage(baseAddress, a);
+            LoadedImage img = new LoadedImage(LoadAddress, a);
             return Disassemble(img);
         }
 
@@ -50,13 +43,13 @@ namespace Decompiler.UnitTests.Arch
         {
             var bytes = new byte[256];
             CreateImageWriter(bytes).WriteUInt32(0, instr);
-            var img = new LoadedImage(baseAddress, bytes);
+            var img = new LoadedImage(LoadAddress, bytes);
             return Disassemble(img);
         }
 
         protected TInstruction DisassembleBits(string bitPattern)
         {
-            var img = new LoadedImage(baseAddress, new byte[256]);
+            var img = new LoadedImage(LoadAddress, new byte[256]);
             uint instr = ParseBitPattern(bitPattern);
             CreateImageWriter(img.Bytes).WriteUInt32(0, instr);
             return Disassemble(img);

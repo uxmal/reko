@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-    public class AArch64Disassembler : IDisassembler, IEnumerator<AArch64Instruction>
+    public class AArch64Disassembler : DisassemblerBase<AArch64Instruction>
     {
         internal ImageReader rdr;
         internal AArch64Instruction instr;
@@ -37,26 +37,9 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public Address Address
-        {
-            get {  return rdr.Address; }
-        }
-
-        public MachineInstruction DisassembleInstruction()
-        {
-            uint opcode = rdr.ReadLeUInt32();
-            return oprecs[(opcode >> 24) & 0xFF].Decode(this, opcode);
-        }
-
-        public AArch64Instruction Current { get { return instr; } }
+        public override AArch64Instruction Current { get { return instr; } }
     
-        object System.Collections.IEnumerator.Current { get { return instr; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotSupportedException(); }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;

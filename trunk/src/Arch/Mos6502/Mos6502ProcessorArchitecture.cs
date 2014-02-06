@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Core.Expressions;
 using System;
@@ -32,7 +33,7 @@ namespace Decompiler.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : IProcessorArchitecture
     {
-        public IDisassembler CreateDisassembler(ImageReader imageReader)
+        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Disassembler(imageReader.CreateLeReader());
         }

@@ -29,13 +29,9 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch
 {
-    class RewriterTestBase : ArchTestBase
+    abstract class RewriterTestBase : ArchTestBase
     {
         private LoadedImage instructions;
-
-        public RewriterTestBase(IProcessorArchitecture arch, int instrSize) : base(arch, instrSize)
-        {
-        }
 
         public void Rewrite(params uint [] words)
         {

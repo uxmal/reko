@@ -31,20 +31,7 @@ namespace Decompiler.Arch.PowerPC
             //this.state = ppcState;
             this.frame = frame;
             //this.host = host;
-            this.dasm = CreateDisassemblyStream(rdr);
-        }
-
-        protected IEnumerator<PowerPcInstruction> CreateDisassemblyStream(ImageReader rdr)
-        {
-            var d = (PowerPcDisassembler) arch.CreateDisassembler(rdr);
-            while (rdr.IsValid)
-            {
-                var addr = d.Address;
-                var instr = d.Disassemble();
-                if (instr == null)
-                    yield break;
-                yield return instr;
-            }
+            this.dasm = arch.CreateDisassembler(rdr);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

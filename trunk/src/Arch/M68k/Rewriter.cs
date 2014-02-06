@@ -56,20 +56,6 @@ namespace Decompiler.Arch.M68k
             this.dasm = arch.CreateDisassembler(rdr);
         }
 
-        protected IEnumerator<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
-        {
-            var d = (M68kDisassembler) arch.CreateDisassembler(rdr);
-            while (rdr.IsValid)
-            {
-                var addr = d.Address;
-                var instr = d.Disassemble();
-                if (instr == null)
-                    yield break;
-                var length = (uint)(d.Address - addr);
-                yield return new DisassembledInstruction(addr, instr, length);
-            }
-        }
-
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())

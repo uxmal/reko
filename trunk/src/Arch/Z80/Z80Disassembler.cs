@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Z80
 {
-    public class Z80Disassembler : IDisassembler, IEnumerator<Z80Instruction>
+    public class Z80Disassembler : DisassemblerBase<Z80Instruction>
     {
         private ImageReader rdr;
         private RegisterStorage IndexRegister;
@@ -40,33 +40,9 @@ namespace Decompiler.Arch.Z80
             this.rdr = rdr;
         }
 
-        public Address Address
-        {
-            get { return rdr.Address; }
-        }
+        public override Z80Instruction Current { get { return instr; } }
 
-        public Z80Instruction Disassemble()
-        {
-            if (!MoveNext())
-                return null;
-            return Current;
-        }
-
-
-        public MachineInstruction DisassembleInstruction()
-        {
-            return Disassemble();
-        }
-
-        public Z80Instruction Current { get { return instr; } }
-
-        object System.Collections.IEnumerator.Current { get { return instr; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotImplementedException(); }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;

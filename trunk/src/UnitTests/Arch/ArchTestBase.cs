@@ -27,18 +27,14 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch
 {
-    class ArchTestBase
+    abstract class ArchTestBase
     {
-        private int instructionSize;
+        public abstract IProcessorArchitecture Architecture { get; }
 
-        public ArchTestBase(IProcessorArchitecture arch, int instructionSizeInBits)
-        {
-            this.Architecture = arch;
-            this.instructionSize = instructionSizeInBits;
-        }
+        public abstract Address LoadAddress { get; }
 
-        public IProcessorArchitecture Architecture { get; private set; }
-
+        public abstract int InstructionBitSize { get; }
+        
         public uint ParseBitPattern(string bitPattern)
         {
             int cBits = 0;
@@ -54,9 +50,9 @@ namespace Decompiler.UnitTests.Arch
                     break;
                 }
             }
-            if (cBits != instructionSize)
+            if (cBits != InstructionBitSize)
                 throw new ArgumentException(
-                    string.Format("Bit pattern didn't contain exactly {0} binary digits, but {1}.", instructionSize, cBits),
+                    string.Format("Bit pattern didn't contain exactly {0} binary digits, but {1}.", InstructionBitSize, cBits),
                     "bitPattern");
             return instr;
         }

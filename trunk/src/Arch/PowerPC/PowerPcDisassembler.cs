@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcDisassembler : IDisassembler, IEnumerator<PowerPcInstruction>
+    public class PowerPcDisassembler : DisassemblerBase<PowerPcInstruction>
     {
         private PowerPcArchitecture arch;
         private ImageReader rdr;
@@ -43,27 +43,9 @@ namespace Decompiler.Arch.PowerPC
             this.defaultWordWidth = defaultWordWidth;
         }
 
-        public Address Address
-        {
-            get { return rdr.Address; }
-        }
+        public override PowerPcInstruction Current { get { return instrCur; } }
 
-        public PowerPcInstruction Disassemble()
-        {
-            if (!MoveNext())
-                return null;
-            return Current;
-        }
-
-        public PowerPcInstruction Current { get { return instrCur; } }
-
-        object System.Collections.IEnumerator.Current { get { return instrCur; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotImplementedException(); }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;
@@ -158,11 +140,6 @@ namespace Decompiler.Arch.PowerPC
         {
             var d = Constant.Int32((short)wInstr);
             return new MemoryOperand(PrimitiveType.Word32, arch.Registers[(int) reg & 0x1F], d);
-        }
-
-        public MachineInstruction DisassembleInstruction()
-        {
-            return Disassemble();
         }
 
         private RegisterOperand CRegFromBits(uint r)
@@ -273,7 +250,7 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = wInstr & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
-                var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.Address.Linear - 4;
+                var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.rdr.Address.Linear - 4;
                 return new PowerPcInstruction(opcode)
                 {
                     op1 = new AddressOperand(new Address(unchecked(baseAddr + uOffset))),
@@ -289,7 +266,7 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = wInstr & 0x0000FFFC;
                 if ((uOffset & 0x8000) != 0)
                     uOffset |= 0xFFFF0000;
-                var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.Address.Linear - 4;
+                var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.rdr.Address.Linear - 4;
                 return new PowerPcInstruction(opcode)
                 {
                     op1 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),

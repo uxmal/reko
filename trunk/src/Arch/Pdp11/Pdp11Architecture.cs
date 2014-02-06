@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Pdp11
         public RegisterStorage StackRegister { get { return Registers.sp; } }
         public uint CarryFlagMask { get { throw new NotImplementedException(); } }
 
-        public IDisassembler CreateDisassembler(ImageReader rdr)
+        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return new Pdp11Disassembler(rdr, this);
         }

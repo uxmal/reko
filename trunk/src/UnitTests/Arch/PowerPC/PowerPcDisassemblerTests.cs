@@ -31,10 +31,13 @@ namespace Decompiler.UnitTests.Arch.PowerPC
     [TestFixture]
     class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
     {
-        public PowerPcDisassemblerTests() :
-            base(new PowerPcArchitecture(PrimitiveType.Word32), new Address(0x00100000), 32)
-        {
-        }
+        private PowerPcArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
+
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+
+        public override Address LoadAddress { get { return new Address(0x00100000); } }
+
+        public override int InstructionBitSize { get { return 32; } }
 
         private PowerPcInstruction DisassembleX(uint op, uint rs, uint ra, uint rb, uint xo, uint rc)
         {

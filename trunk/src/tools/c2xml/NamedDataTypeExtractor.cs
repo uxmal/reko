@@ -202,7 +202,7 @@ namespace Decompiler.Tools.C2Xml
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 return new SerializedArgument
                 {
-                    Kind = new SerializedStackVariable { ByteSize = ToStackSize(nt.Size), },
+                    Kind = new SerializedStackVariable(),
                     Name = nt.Name,
                     Type = nt.DataType,
                 };

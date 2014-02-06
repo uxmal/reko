@@ -30,7 +30,7 @@ namespace Decompiler.Arch.Mos6502
 {
     // http://www.e-tradition.net/bytes/6502/6502_instruction_set.html
 
-    public class Disassembler : IDisassembler, IEnumerator<Instruction>
+    public class Disassembler : DisassemblerBase<Instruction>
     {
         LeImageReader rdr;
         Instruction instr;
@@ -40,32 +40,9 @@ namespace Decompiler.Arch.Mos6502
             this.rdr = rdr;
         }
 
-        public Address Address
-        {
-            get { return rdr.Address; }
-        }
+        public override Instruction Current { get { return instr; } }
 
-        public MachineInstruction DisassembleInstruction()
-        {
-            return Disassemble();
-        }
-
-        public Instruction Disassemble()
-        {
-            if (!MoveNext())
-                return null;
-            return Current;
-        }
-
-        public Instruction Current { get { return instr; } }
-
-        object System.Collections.IEnumerator.Current { get { return instr; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotSupportedException(); } 
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;

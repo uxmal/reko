@@ -74,10 +74,10 @@ namespace Decompiler.Arch.X86
         {
             EmitBinOp(
                 op,
-                di.Instruction.op1,
-                di.Instruction.op1.Width,
-                SrcOp(di.Instruction.op1),
-                SrcOp(di.Instruction.op2),
+                instrCur.op1,
+                instrCur.op1.Width,
+                SrcOp(instrCur.op1),
+                SrcOp(instrCur.op2),
                 CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
@@ -87,15 +87,15 @@ namespace Decompiler.Arch.X86
             // to simplify code analysis in later stages. 
             var c = orw.FlagGroup(FlagM.CF);       
             EmitCopy(
-                di.Instruction.op1, 
+                instrCur.op1, 
                 new BinaryExpression(
                     opr, 
-                    di.Instruction.dataWidth,
+                    instrCur.dataWidth,
                     new BinaryExpression(
                         opr,
-                        di.Instruction.dataWidth, 
-                        SrcOp(di.Instruction.op1),
-                        SrcOp(di.Instruction.op2)),
+                        instrCur.dataWidth, 
+                        SrcOp(instrCur.op1),
+                        SrcOp(instrCur.op2)),
                     c),
                 CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
@@ -105,39 +105,39 @@ namespace Decompiler.Arch.X86
             emitter.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 PseudoProc("__arpl", PrimitiveType.Bool, 
-                    SrcOp(di.Instruction.op1),
-                    SrcOp(di.Instruction.op2),
-                    orw.AddrOf(SrcOp(di.Instruction.op1))));
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2),
+                    orw.AddrOf(SrcOp(instrCur.op1))));
         }
 
         public void RewriteBinOp(BinaryOperator opr)
         {
-            EmitBinOp(opr, di.Instruction.op1, di.Instruction.dataWidth, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2), CopyFlags.ForceBreak|CopyFlags.EmitCc);
+            EmitBinOp(opr, instrCur.op1, instrCur.dataWidth, SrcOp(instrCur.op1), SrcOp(instrCur.op2), CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
         private void RewriteBsr()
         {
-            Expression src = SrcOp(di.Instruction.op2);
+            Expression src = SrcOp(instrCur.op2);
             emitter.Assign(orw.FlagGroup(FlagM.ZF), emitter.Eq0(src));
-            emitter.Assign(SrcOp(di.Instruction.op1), PseudoProc("__bsr", di.Instruction.op1.Width, src));
+            emitter.Assign(SrcOp(instrCur.op1), PseudoProc("__bsr", instrCur.op1.Width, src));
         }
 
         private void RewriteBt()
         {
 		    emitter.Assign(
                 orw.FlagGroup(FlagM.CF),
-				PseudoProc("__bt", PrimitiveType.Bool, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2)));
+				PseudoProc("__bt", PrimitiveType.Bool, SrcOp(instrCur.op1), SrcOp(instrCur.op2)));
         }
 
         public void RewriteBswap()
         {
-            Identifier reg = (Identifier)orw.AluRegister(((RegisterOperand)di.Instruction.op1).Register);
+            Identifier reg = (Identifier)orw.AluRegister(((RegisterOperand)instrCur.op1).Register);
             emitter.Assign(reg, PseudoProc("__bswap", (PrimitiveType)reg.DataType, reg));
         }
 
         public void RewriteCbw()
         {
-            if (di.Instruction.dataWidth == PrimitiveType.Word32)
+            if (instrCur.dataWidth == PrimitiveType.Word32)
             {
                 emitter.Assign(
                     orw.AluRegister(Registers.eax),
@@ -179,14 +179,14 @@ namespace Decompiler.Arch.X86
         {
             var opSrc = SrcOp(src);
             var opDst = SrcOp(dst);
-            var test = CreateTestCondition(cc, di.Instruction.code);
+            var test = CreateTestCondition(cc, instrCur.code);
             emitter.If(test, new RtlAssignment(opDst, opSrc));
         }
 
         private void RewriteCmp()
         {
-            Expression op1 = SrcOp(di.Instruction.op1);
-            Expression op2 = SrcOp(di.Instruction.op2, di.Instruction.op1.Width);
+            Expression op1 = SrcOp(instrCur.op1);
+            Expression op2 = SrcOp(instrCur.op2, instrCur.op1.Width);
             emitter.Assign(
                 orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
                 new ConditionOf(emitter.ISub(op1, op2)));
@@ -194,7 +194,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteCwd()
         {
-            if (di.Instruction.dataWidth == PrimitiveType.Word32)
+            if (instrCur.dataWidth == PrimitiveType.Word32)
             {
                 Identifier edx_eax = frame.EnsureSequence(
                     orw.AluRegister(Registers.edx),
@@ -225,13 +225,13 @@ namespace Decompiler.Arch.X86
 
         private void RewriteDivide(BinaryOperator op, Domain domain)
         {
-            if (di.Instruction.Operands != 1)
+            if (instrCur.Operands != 1)
                 throw new ArgumentOutOfRangeException("Intel DIV/IDIV instructions only take one operand");
             Identifier regDividend;
             Identifier regQuotient;
             Identifier regRemainder;
 
-            switch (di.Instruction.dataWidth.Size)
+            switch (instrCur.dataWidth.Size)
             {
             case 1:
                 regQuotient = orw.AluRegister(Registers.al);
@@ -249,28 +249,28 @@ namespace Decompiler.Arch.X86
                 regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word64);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", di.Instruction.dataWidth.Size));
+                throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.dataWidth.Size));
             };
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
             emitter.Assign(
                 regRemainder, new BinaryExpression(Operator.IMod, p,
                 regDividend,
-                SrcOp(di.Instruction.op1)));
+                SrcOp(instrCur.op1)));
             emitter.Assign(
                 regQuotient, new BinaryExpression(op, p, regDividend,
-                SrcOp(di.Instruction.op1)));
-            EmitCcInstr(regQuotient, IntelInstruction.DefCc(di.Instruction.code));
+                SrcOp(instrCur.op1)));
+            EmitCcInstr(regQuotient, IntelInstruction.DefCc(instrCur.code));
         }
 
         private void RewriteEnter()
         {
-            var bp = orw.AluRegister(Registers.ebp.GetPart(di.Instruction.dataWidth));
-            RewritePush(di.Instruction.dataWidth, bp);
+            var bp = orw.AluRegister(Registers.ebp.GetPart(instrCur.dataWidth));
+            RewritePush(instrCur.dataWidth, bp);
             var sp = StackPointer();
             emitter.Assign(bp, sp);
             var cbExtraSavedBytes = 
-                di.Instruction.dataWidth.Size * ((ImmediateOperand)di.Instruction.op2).Value.ToInt32() +
-                ((ImmediateOperand)di.Instruction.op1).Value.ToInt32();
+                instrCur.dataWidth.Size * ((ImmediateOperand)instrCur.op2).Value.ToInt32() +
+                ((ImmediateOperand)instrCur.op1).Value.ToInt32();
             if (cbExtraSavedBytes != 0)
             {
                 emitter.Assign(sp, emitter.ISub(sp, cbExtraSavedBytes));
@@ -279,10 +279,10 @@ namespace Decompiler.Arch.X86
 
         private void RewriteExchange()
         {
-            Identifier itmp = frame.CreateTemporary(di.Instruction.dataWidth);
-            emitter.Assign(itmp, SrcOp(di.Instruction.op1));
-            emitter.Assign(SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
-            emitter.Assign(SrcOp(di.Instruction.op2), itmp);
+            Identifier itmp = frame.CreateTemporary(instrCur.dataWidth);
+            emitter.Assign(itmp, SrcOp(instrCur.op1));
+            emitter.Assign(SrcOp(instrCur.op1), SrcOp(instrCur.op2));
+            emitter.Assign(SrcOp(instrCur.op2), itmp);
         }
 
         private void RewriteIncDec(int amount)
@@ -295,47 +295,47 @@ namespace Decompiler.Arch.X86
             }
 
             EmitBinOp(op,
-                di.Instruction.op1,
-                di.Instruction.op1.Width,
-                SrcOp(di.Instruction.op1),
-                emitter.Const(di.Instruction.op1.Width, amount),
+                instrCur.op1,
+                instrCur.op1.Width,
+                SrcOp(instrCur.op1),
+                emitter.Const(instrCur.op1.Width, amount),
                 CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
         private void RewriteLogical(BinaryOperator op)
         {
-            if (di.Instruction.code == Opcode.and)
+            if (instrCur.code == Opcode.and)
             {
-                var r = di.Instruction.op1 as RegisterOperand;
+                var r = instrCur.op1 as RegisterOperand;
                 if (r != null && r.Register == arch.StackRegister &&
-                    di.Instruction.op2 is ImmediateOperand)
+                    instrCur.op2 is ImmediateOperand)
                 {
-                    emitter.SideEffect(PseudoProc("__align", VoidType.Instance, SrcOp(di.Instruction.op1)));
+                    emitter.SideEffect(PseudoProc("__align", VoidType.Instance, SrcOp(instrCur.op1)));
                     return;
                 }
             }
 
             EmitBinOp(
                 op,
-                di.Instruction.op1,
-                di.Instruction.op1.Width,
-                SrcOp(di.Instruction.op1),
-                SrcOp(di.Instruction.op2),
+                instrCur.op1,
+                instrCur.op1.Width,
+                SrcOp(instrCur.op1),
+                SrcOp(instrCur.op2),
                 CopyFlags.ForceBreak);
-            EmitCcInstr(SrcOp(di.Instruction.op1), (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
+            EmitCcInstr(SrcOp(instrCur.op1), (IntelInstruction.DefCc(instrCur.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
         private void RewriteMultiply(BinaryOperator op, Domain resultDomain)
         {
             Expression product;
-            switch (di.Instruction.Operands)
+            switch (instrCur.Operands)
             {
             case 1:
                 {
                     Identifier multiplicator;
 
-                    switch (di.Instruction.op1.Width.Size)
+                    switch (instrCur.op1.Width.Size)
                     {
                     case 1:
                         multiplicator = orw.AluRegister(Registers.al);
@@ -352,25 +352,25 @@ namespace Decompiler.Arch.X86
                             orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
                         break;
                     default:
-                        throw new ApplicationException(string.Format("Unexpected operand size: {0}", di.Instruction.op1.Width));
+                        throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
                     };
                     emitter.Assign(
                         product,
                         new BinaryExpression(
                             op, 
                             PrimitiveType.Create(resultDomain, product.DataType.Size),
-                            SrcOp(di.Instruction.op1),
+                            SrcOp(instrCur.op1),
                             multiplicator));
-                    EmitCcInstr(product, IntelInstruction.DefCc(di.Instruction.code));
+                    EmitCcInstr(product, IntelInstruction.DefCc(instrCur.code));
                     return;
                 }
                 break;
             case 2:
-                EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2), 
+                EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), SrcOp(instrCur.op1), SrcOp(instrCur.op2), 
                     CopyFlags.ForceBreak|CopyFlags.EmitCc);
                 return;
             case 3:
-                EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op2), SrcOp(di.Instruction.op3),
+                EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), SrcOp(instrCur.op2), SrcOp(instrCur.op3),
                     CopyFlags.ForceBreak | CopyFlags.EmitCc);
                 return;
             default:
@@ -380,10 +380,10 @@ namespace Decompiler.Arch.X86
 
         private void RewriteIn()
         {
-            var ppName = "__in" + IntelSizeSuffix(di.Instruction.op1.Width.Size);
+            var ppName = "__in" + IntelSizeSuffix(instrCur.op1.Width.Size);
             emitter.Assign(
-                SrcOp(di.Instruction.op1),
-                PseudoProc(ppName, di.Instruction.op1.Width, SrcOp(di.Instruction.op2)));
+                SrcOp(instrCur.op1),
+                PseudoProc(ppName, instrCur.op1.Width, SrcOp(instrCur.op2)));
         }
 
         private string IntelSizeSuffix(int size)
@@ -406,14 +406,14 @@ namespace Decompiler.Arch.X86
         public void RewriteLea()
         {
             Expression src;
-            MemoryOperand mem = (MemoryOperand)di.Instruction.op2;
+            MemoryOperand mem = (MemoryOperand)instrCur.op2;
             if (mem.Base == RegisterStorage.None && mem.Index == RegisterStorage.None)
             {
                 src = mem.Offset;
             }
             else
             {
-                src = SrcOp(di.Instruction.op2);
+                src = SrcOp(instrCur.op2);
                 MemoryAccess load = src as MemoryAccess;
                 if (load != null)
                 {
@@ -424,7 +424,7 @@ namespace Decompiler.Arch.X86
                     src = orw.AddrOf(src);
                 }
             }
-            emitter.Assign(SrcOp(di.Instruction.op1), src);
+            emitter.Assign(SrcOp(instrCur.op1), src);
         }
 
         private void RewriteLeave()
@@ -438,11 +438,11 @@ namespace Decompiler.Arch.X86
 
         private void RewriteLxs(RegisterStorage seg)
         {
-            var reg = (RegisterOperand)di.Instruction.op1;
-            MemoryOperand mem = (MemoryOperand)di.Instruction.op2;
+            var reg = (RegisterOperand)instrCur.op1;
+            MemoryOperand mem = (MemoryOperand)instrCur.op2;
             if (!mem.Offset.IsValid)
             {
-                mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(di.Instruction.addrWidth, 0));
+                mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
             }
 
             var ass = emitter.Assign(
@@ -454,63 +454,63 @@ namespace Decompiler.Arch.X86
         private void RewriteMov()
         {
             emitter.Assign(
-                SrcOp(di.Instruction.op1),
-                SrcOp(di.Instruction.op2, di.Instruction.op1.Width));
+                SrcOp(instrCur.op1),
+                SrcOp(instrCur.op2, instrCur.op1.Width));
         }
 
         private void RewriteMovsx()
         {
             emitter.Assign(
-                SrcOp(di.Instruction.op1),
-                emitter.Cast(PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size), SrcOp(di.Instruction.op2)));
+                SrcOp(instrCur.op1),
+                emitter.Cast(PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size), SrcOp(instrCur.op2)));
         }
 
         private void RewriteMovzx()
         {
             emitter.Assign(
-                SrcOp(di.Instruction.op1),
-                emitter.Cast(di.Instruction.op1.Width, SrcOp(di.Instruction.op2)));
+                SrcOp(instrCur.op1),
+                emitter.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
         }
 
         private void RewritePush()
         {
-            RegisterOperand reg = di.Instruction.op1 as RegisterOperand;
+            RegisterOperand reg = instrCur.op1 as RegisterOperand;
             if (reg != null && reg.Register == Registers.cs)
             {
-                if (dasm.Peek(1).Instruction.code == Opcode.call &&
-                    dasm.Peek(1).Instruction.op1.Width == PrimitiveType.Word16)
+                if (dasm.Peek(1).code == Opcode.call &&
+                    dasm.Peek(1).op1.Width == PrimitiveType.Word16)
                 {
                     dasm.MoveNext();
                     emitter.Assign(StackPointer(), emitter.ISub(StackPointer(), reg.Register.DataType.Size));
-                    RewriteCall(dasm.Current.Instruction.op1, dasm.Current.Instruction.op1.Width);
+                    RewriteCall(dasm.Current.op1, dasm.Current.op1.Width);
                     return;
                 }
 
                 if (
-                    dasm.Peek(1).Instruction.code == Opcode.push && (dasm.Peek(1).Instruction.op1 is ImmediateOperand) &&
-                    dasm.Peek(2).Instruction.code == Opcode.push && (dasm.Peek(2).Instruction.op1 is ImmediateOperand) &&
-                    dasm.Peek(3).Instruction.code == Opcode.jmp && (dasm.Peek(3).Instruction.op1 is AddressOperand))
+                    dasm.Peek(1).code == Opcode.push && (dasm.Peek(1).op1 is ImmediateOperand) &&
+                    dasm.Peek(2).code == Opcode.push && (dasm.Peek(2).op1 is ImmediateOperand) &&
+                    dasm.Peek(3).code == Opcode.jmp && (dasm.Peek(3).op1 is AddressOperand))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
-                    RewriteCall(dasm.Peek(3).Instruction.op1, di.Instruction.op1.Width);
+                    RewriteCall(dasm.Peek(3).op1, instrCur.op1.Width);
                     dasm.MoveNext();
                     dasm.MoveNext();
                     dasm.MoveNext();
                     return;
                 }
             }
-            Debug.Assert(dasm.Current.Instruction.dataWidth == PrimitiveType.Word16 || dasm.Current.Instruction.dataWidth == PrimitiveType.Word32);
-            RewritePush(dasm.Current.Instruction.dataWidth, SrcOp(dasm.Current.Instruction.op1));
+            Debug.Assert(dasm.Current.dataWidth == PrimitiveType.Word16 || dasm.Current.dataWidth == PrimitiveType.Word32);
+            RewritePush(dasm.Current.dataWidth, SrcOp(dasm.Current.op1));
         }
 
         private void RewritePush(IntelRegister reg)
         {
-            RewritePush(di.Instruction.dataWidth, orw.AluRegister(reg));
+            RewritePush(instrCur.dataWidth, orw.AluRegister(reg));
         }
 
         private void RewritePusha()
         {
-            if (di.Instruction.dataWidth == PrimitiveType.Word16)
+            if (instrCur.dataWidth == PrimitiveType.Word16)
             {
                 RewritePush(Registers.ax);
                 RewritePush(Registers.cx);
@@ -537,7 +537,7 @@ namespace Decompiler.Arch.X86
         private void RewritePushf()
         {
             RewritePush(
-                dasm.Current.Instruction.dataWidth,
+                dasm.Current.dataWidth,
                 frame.EnsureFlagGroup(
                     (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
                     "SCZDOP", 
@@ -546,24 +546,24 @@ namespace Decompiler.Arch.X86
 
         private void RewriteNeg()
         {
-            RewriteUnaryOperator(Operator.Neg, di.Instruction.op1, di.Instruction.op1, CopyFlags.ForceBreak|CopyFlags.EmitCc|CopyFlags.SetCfIf0);
+            RewriteUnaryOperator(Operator.Neg, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak|CopyFlags.EmitCc|CopyFlags.SetCfIf0);
         }
 
         private void RewriteNot()
         {
-            RewriteUnaryOperator(Operator.Comp, di.Instruction.op1, di.Instruction.op1, CopyFlags.ForceBreak);
+            RewriteUnaryOperator(Operator.Comp, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak);
         }
 
         private void RewriteOut()
         {
-            var ppp = host.EnsurePseudoProcedure("__out" + di.Instruction.op2.Width.Prefix, VoidType.Instance, 2);
+            var ppp = host.EnsurePseudoProcedure("__out" + instrCur.op2.Width.Prefix, VoidType.Instance, 2);
             emitter.SideEffect(emitter.Fn(ppp, 
-                SrcOp(di.Instruction.op1),
-                SrcOp(di.Instruction.op2)));
+                SrcOp(instrCur.op1),
+                SrcOp(instrCur.op2)));
         }
         private void RewritePop()
         {
-            RewritePop(dasm.Current.Instruction.op1, dasm.Current.Instruction.op1.Width);
+            RewritePop(dasm.Current.op1, dasm.Current.op1.Width);
         }
 
         private void RewritePop(MachineOperand op, PrimitiveType width)
@@ -582,19 +582,19 @@ namespace Decompiler.Arch.X86
 
         private void EmitPop(IntelRegister reg)
         {
-            RewritePop(orw.AluRegister(reg), di.Instruction.dataWidth);
+            RewritePop(orw.AluRegister(reg), instrCur.dataWidth);
         }
 
         private void RewritePopa()
         {
-            Debug.Assert(di.Instruction.dataWidth == PrimitiveType.Word16 || di.Instruction.dataWidth == PrimitiveType.Word32);
+            Debug.Assert(instrCur.dataWidth == PrimitiveType.Word16 || instrCur.dataWidth == PrimitiveType.Word32);
             var sp = StackPointer();
-            if (di.Instruction.dataWidth == PrimitiveType.Word16)
+            if (instrCur.dataWidth == PrimitiveType.Word16)
             {
                 EmitPop(Registers.di);
                 EmitPop(Registers.si);
                 EmitPop(Registers.bp);
-                emitter.Assign(sp, emitter.IAdd(sp, di.Instruction.dataWidth.Size));
+                emitter.Assign(sp, emitter.IAdd(sp, instrCur.dataWidth.Size));
                 EmitPop(Registers.bx);
                 EmitPop(Registers.dx);
                 EmitPop(Registers.cx);
@@ -605,7 +605,7 @@ namespace Decompiler.Arch.X86
                 EmitPop(Registers.edi);
                 EmitPop(Registers.esi);
                 EmitPop(Registers.ebp);
-                emitter.Assign(sp, emitter.IAdd(sp, di.Instruction.dataWidth.Size));
+                emitter.Assign(sp, emitter.IAdd(sp, instrCur.dataWidth.Size));
                 EmitPop(Registers.ebx);
                 EmitPop(Registers.edx);
                 EmitPop(Registers.ecx);
@@ -615,7 +615,7 @@ namespace Decompiler.Arch.X86
 
         private void RewritePopf()
         {
-            var width = di.Instruction.dataWidth;
+            var width = instrCur.dataWidth;
             var sp = StackPointer();
             emitter.Assign(frame.EnsureFlagGroup(
                     (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
@@ -648,38 +648,38 @@ namespace Decompiler.Arch.X86
             {
                 sh = new BinaryExpression(
                     Operator.ISub,
-                    di.Instruction.op2.Width,
-                    Constant.Create(di.Instruction.op2.Width, di.Instruction.op1.Width.BitSize),
-                    SrcOp(di.Instruction.op2));
+                    instrCur.op2.Width,
+                    Constant.Create(instrCur.op2.Width, instrCur.op1.Width.BitSize),
+                    SrcOp(instrCur.op2));
             }
             else
             {
-                sh = SrcOp(di.Instruction.op2);
+                sh = SrcOp(instrCur.op2);
             }
             sh = new BinaryExpression(
                 Operator.Shl,
-                di.Instruction.op1.Width,
-                Constant.Create(di.Instruction.op1.Width, 1),
+                instrCur.op1.Width,
+                Constant.Create(instrCur.op1.Width, 1),
                 sh);
             t = frame.CreateTemporary(PrimitiveType.Bool);
-            emitter.Assign(t, emitter.Ne0(emitter.And(SrcOp(di.Instruction.op1), sh)));
+            emitter.Assign(t, emitter.Ne0(emitter.And(SrcOp(instrCur.op1), sh)));
             Expression p;
             if (useCarry)
             {
-                p = PseudoProc(operation, di.Instruction.op1.Width, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2), orw.FlagGroup(FlagM.CF));
+                p = PseudoProc(operation, instrCur.op1.Width, SrcOp(instrCur.op1), SrcOp(instrCur.op2), orw.FlagGroup(FlagM.CF));
             }
             else
             {
-                p = PseudoProc(operation, di.Instruction.op1.Width, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
+                p = PseudoProc(operation, instrCur.op1.Width, SrcOp(instrCur.op1), SrcOp(instrCur.op2));
             }
-            emitter.Assign(SrcOp(di.Instruction.op1), p);
+            emitter.Assign(SrcOp(instrCur.op1), p);
             if (t != null)
                 emitter.Assign(orw.FlagGroup(FlagM.CF), t);
         }
 
         private void RewriteSet(ConditionCode cc)
         {
-            emitter.Assign(SrcOp(di.Instruction.op1), CreateTestCondition(cc, di.Instruction.code));
+            emitter.Assign(SrcOp(instrCur.op1), CreateTestCondition(cc, instrCur.code));
         }
 
         private void RewriteSetFlag(FlagM flagM, Constant value)
@@ -692,59 +692,59 @@ namespace Decompiler.Arch.X86
 
         private void RewriteShxd(string name)
         {
-            var ppp = host.EnsurePseudoProcedure(name, di.Instruction.op1.Width, 3);
+            var ppp = host.EnsurePseudoProcedure(name, instrCur.op1.Width, 3);
             emitter.Assign(
-                SrcOp(di.Instruction.op1), 
+                SrcOp(instrCur.op1), 
                 emitter.Fn(
                     ppp,
-                    SrcOp(di.Instruction.op1),
-                    SrcOp(di.Instruction.op2),
-                    SrcOp(di.Instruction.op3)));
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2),
+                    SrcOp(instrCur.op3)));
         }
 
         public MemoryAccess MemDi()
 		{
 			if (arch.ProcessorMode != ProcessorMode.Protected32)
 			{
-				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, di.Instruction.dataWidth);
+				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, instrCur.dataWidth);
 			}
 			else
-				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegDi, di.Instruction.dataWidth);
+				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegDi, instrCur.dataWidth);
 		}
 
 		public MemoryAccess MemSi()
 		{
 			if (arch.ProcessorMode != ProcessorMode.Protected32)
 			{
-				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.ds), RegSi, di.Instruction.dataWidth);
+				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.ds), RegSi, instrCur.dataWidth);
 			}
 			else
-				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegSi, di.Instruction.dataWidth);
+				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegSi, instrCur.dataWidth);
 		}
 
         public MemoryAccess Mem(Expression defaultSegment, Expression effectiveAddress)
         {
             if (arch.ProcessorMode != ProcessorMode.Protected32)
             {
-                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, defaultSegment, effectiveAddress, di.Instruction.dataWidth);
+                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, defaultSegment, effectiveAddress, instrCur.dataWidth);
             }
             else
-                return new MemoryAccess(MemoryIdentifier.GlobalMemory, effectiveAddress, di.Instruction.dataWidth);
+                return new MemoryAccess(MemoryIdentifier.GlobalMemory, effectiveAddress, instrCur.dataWidth);
         }
 
 		public Identifier RegAl
 		{
-			get { return orw.AluRegister(Registers.eax, di.Instruction.dataWidth); }
+			get { return orw.AluRegister(Registers.eax, instrCur.dataWidth); }
 		}
 
 		public Identifier RegDi
 		{
-			get { return orw.AluRegister(Registers.edi, di.Instruction.addrWidth); }
+			get { return orw.AluRegister(Registers.edi, instrCur.addrWidth); }
 		}
 
 		public Identifier RegSi
 		{
-			get { return orw.AluRegister(Registers.esi, di.Instruction.addrWidth); }
+			get { return orw.AluRegister(Registers.esi, instrCur.addrWidth); }
 		}
 	
         private void RewriteStringInstruction()
@@ -755,16 +755,16 @@ namespace Decompiler.Arch.X86
 
             Identifier regDX;
             PseudoProcedure ppp;
-            switch (di.Instruction.code)
+            switch (instrCur.code)
             {
             default:
-                throw new NotSupportedException(string.Format("'{0}' is not an x86 string instruction.", di.Instruction.code));
+                throw new NotSupportedException(string.Format("'{0}' is not an x86 string instruction.", instrCur.code));
             case Opcode.cmps:
             case Opcode.cmpsb:
                 emitter.Assign(
                     orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
                     new ConditionOf(
-                    new BinaryExpression(Operator.ISub, di.Instruction.dataWidth, MemSi(), MemDi())));
+                    new BinaryExpression(Operator.ISub, instrCur.dataWidth, MemSi(), MemDi())));
                 incSi = true;
                 incDi = true;
                 break;
@@ -775,7 +775,7 @@ namespace Decompiler.Arch.X86
                 break;
             case Opcode.movs:
             case Opcode.movsb:
-                Identifier tmp = frame.CreateTemporary(di.Instruction.dataWidth);
+                Identifier tmp = frame.CreateTemporary(instrCur.dataWidth);
                 emitter.Assign(tmp, MemSi());
                 emitter.Assign(MemDi(), tmp);
                 incSi = true;
@@ -783,14 +783,14 @@ namespace Decompiler.Arch.X86
                 break;
             case Opcode.ins:
             case Opcode.insb:
-                regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__in", di.Instruction.dataWidth, 1);
+                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
+                ppp = host.EnsurePseudoProcedure("__in", instrCur.dataWidth, 1);
                 emitter.Assign(MemDi(), emitter.Fn(ppp, regDX));
                 incDi = true;
                 break;
             case Opcode.outs:
             case Opcode.outsb:
-                regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
+                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
                 ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, 2);
                 emitter.SideEffect(emitter.Fn(ppp, regDX, RegAl));
                 incSi = true;
@@ -801,7 +801,7 @@ namespace Decompiler.Arch.X86
                     orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
                     new ConditionOf(
                     new BinaryExpression(Operator.ISub,
-                    di.Instruction.dataWidth,
+                    instrCur.dataWidth,
                     RegAl,
                     MemDi())));
                 incDi = true;
@@ -817,18 +817,18 @@ namespace Decompiler.Arch.X86
             {
                 emitter.Assign(RegSi,
                     new BinaryExpression(incOperator,
-                    di.Instruction.addrWidth,
+                    instrCur.addrWidth,
                     RegSi,
-                    Constant.Create(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
+                    Constant.Create(instrCur.addrWidth, instrCur.dataWidth.Size)));
             }
 
             if (incDi)
             {
                 emitter.Assign(RegDi,
                     new BinaryExpression(incOperator,
-                    di.Instruction.addrWidth,
+                    instrCur.addrWidth,
                     RegDi,
-                    Constant.Create(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
+                    Constant.Create(instrCur.addrWidth, instrCur.dataWidth.Size)));
             }
         }
 
@@ -846,11 +846,11 @@ namespace Decompiler.Arch.X86
         private void RewriteTest()
         {
             var src = new BinaryExpression(Operator.And,
-                di.Instruction.op1.Width,
-                SrcOp(di.Instruction.op1),
-                                SrcOp(di.Instruction.op2));
+                instrCur.op1.Width,
+                SrcOp(instrCur.op1),
+                                SrcOp(instrCur.op2));
 
-            EmitCcInstr(src, (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
+            EmitCcInstr(src, (IntelInstruction.DefCc(instrCur.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -862,7 +862,7 @@ namespace Decompiler.Arch.X86
         private void RewriteXlat()
         {
             var al = orw.AluRegister(Registers.al);
-            var bx = orw.AluRegister(Registers.ebx, di.Instruction.addrWidth);
+            var bx = orw.AluRegister(Registers.ebx, instrCur.addrWidth);
             var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.Size); 
             emitter.Assign(
                 al,

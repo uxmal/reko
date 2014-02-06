@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Arm
 
         #region IProcessorArchitecture Members
 
-        public IDisassembler CreateDisassembler(ImageReader imageReader)
+        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new ArmDisassembler2(this, imageReader);
         }

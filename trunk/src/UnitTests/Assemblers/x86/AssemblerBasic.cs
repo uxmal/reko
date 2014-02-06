@@ -353,12 +353,13 @@ foo		endp
         {
             Address addr = new Address(0x0C00, 0);
             var lr = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
-            IDisassembler dasm = new X86Disassembler(
+            var dasm = new X86Disassembler(
                 lr.Image.CreateReader(addr),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
-            Assert.AreEqual("mov\tword ptr [0400],1234", dasm.DisassembleInstruction().ToString());
+            Assert.IsTrue(dasm.MoveNext());
+            Assert.AreEqual("mov\tword ptr [0400],1234", dasm.Current.ToString());
         }
 
         [Test]

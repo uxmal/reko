@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeDisassembler : IDisassembler, IEnumerator<MachineInstruction>
+    public class FakeDisassembler : DisassemblerBase<MachineInstruction>
     {
         private IEnumerator<MachineInstruction> instrs;
         private Address addr;
@@ -18,29 +18,9 @@ namespace Decompiler.UnitTests.Mocks
             this.instrs = e;
         }
 
-        public Address Address
-        {
-            get { return addr; } 
-        }
+        public override MachineInstruction Current { get { return instr; } }
 
-        public MachineInstruction DisassembleInstruction()
-        {
-            if (!instrs.MoveNext())
-                return null;
-            
-            addr = addr+ 1;
-            return instrs.Current;
-        }
-
-        public MachineInstruction Current { get { return instr; } }
-
-        object System.Collections.IEnumerator.Current { get { return instr; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotSupportedException(); }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!instrs.MoveNext())
                 return false;

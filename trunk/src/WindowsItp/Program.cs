@@ -36,5 +36,73 @@ namespace Decompiler.WindowsItp
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new ItpForm());
         }
+
+        public class Instr
+        {
+        }
+
+        public class Instr1 : Instr
+        {
+        }
+
+        public class Instr2 : Instr
+        {
+        }
+
+        public abstract class BaseDasm<T> : IEnumerator<T>
+        {
+            public abstract T Current { get; } 
+            
+            object System.Collections.IEnumerator.Current { get { return Current; } }
+
+            public void Dispose() { }
+
+            public bool MoveNext()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Reset()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class Dasm1 : BaseDasm<Instr1>
+        {
+            public override Instr1 Current
+            {
+                get { throw new NotImplementedException(); }
+            }
+        }
+        
+        public class Dasm2 : BaseDasm<Instr2>
+        {
+            public override Instr2 Current
+            {
+                get { throw new NotImplementedException(); }
+            }
+        }
+
+        public interface Arch
+        {
+            IEnumerator<Instr> GetInstrs();
+        }
+
+        public class Arch1 : Arch
+        {
+            public IEnumerator<Instr> GetInstrs()
+            {
+                return new Dasm1();
+            }
+        }
+
+        public class Arch2 : Arch
+        {
+            public IEnumerator<Instr> GetInstrs()
+            {
+                return new Dasm2();
+            }
+        }
     }
 }

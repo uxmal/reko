@@ -38,7 +38,7 @@ namespace Decompiler.Arch.M68k
             return M68kDisassembler.Create68020(rdr);
         }
 
-        IDisassembler IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
+        IEnumerator<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
         {
             return CreateDisassembler(rdr);
         }

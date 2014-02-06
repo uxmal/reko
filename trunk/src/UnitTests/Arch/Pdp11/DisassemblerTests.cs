@@ -44,7 +44,8 @@ namespace Decompiler.UnitTests.Arch.Pdp11
             var rdr = new LeImageReader(image, 0);
             var arch = new Pdp11Architecture();
             var dasm = new Pdp11Disassembler(rdr, arch);
-            return dasm.DisassembleInstruction();
+            Assert.IsTrue(dasm.MoveNext());
+            return dasm.Current;
         }
 
         [Test]

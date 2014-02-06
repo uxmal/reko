@@ -176,7 +176,7 @@ namespace Decompiler.UnitTests.Core
                                 new SerializedArgument {
                                     Name = "bar",
                                     Type = new SerializedStructType { Name="tagFoo" },
-                                    Kind = new SerializedStackVariable { ByteSize= 4 }
+                                    Kind = new SerializedStackVariable(),
                                 }
                             }
                         }

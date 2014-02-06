@@ -47,7 +47,8 @@ namespace Decompiler.UnitTests.Arch.Arm
             w.WriteLeUInt32(0, instr);
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateReader(0));
-            return dasm.DisassembleInstruction();
+            Assert.IsTrue(dasm.MoveNext());
+            return dasm.Current;
         }
 
         protected MachineInstruction DisassembleBits(string bitPattern)
@@ -60,7 +61,8 @@ namespace Decompiler.UnitTests.Arch.Arm
             Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]);
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateReader(0));
-            return dasm.DisassembleInstruction();
+            Assert.IsTrue(dasm.MoveNext());
+            return dasm.Current;
         }
 
         protected abstract IProcessorArchitecture CreateArchitecture();

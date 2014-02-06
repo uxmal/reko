@@ -30,7 +30,7 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.Mips
 {
-    public class MipsDisassembler : IDisassembler, IEnumerator<MipsInstruction>
+    public class MipsDisassembler : DisassemblerBase<MipsInstruction>
     {
         private MipsProcessorArchitecture arch;
         private MipsInstruction instrCur;
@@ -43,32 +43,9 @@ namespace Decompiler.Arch.Mips
             this.rdr = imageReader;
         }
 
-        public Address Address
-        {
-            get { return rdr.Address; }
-        }
+        public override MipsInstruction Current { get { return instrCur; } }
 
-        public MachineInstruction DisassembleInstruction()
-        {
-            return Disassemble();
-        }
-
-        public MipsInstruction Disassemble()
-        {
-            if (!MoveNext())
-                return null;
-            return Current;
-        }
-
-        public MipsInstruction Current { get { return instrCur; } }
-
-        object System.Collections.IEnumerator.Current { get { return instrCur; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotImplementedException(); }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false; 
@@ -224,12 +201,6 @@ namespace Decompiler.Arch.Mips
         private RegisterOperand Reg(uint regNumber)
         {
             return new RegisterOperand(arch.GetRegister((int) regNumber & 0x1F));
-        }
-
-        [Obsolete("", true)]
-        private ImmediateOperand Imm(uint uInstr)
-        {
-            return ImmediateOperand.Int32((short) uInstr);
         }
 
         private AddressOperand RelativeBranch(uint wInstr)

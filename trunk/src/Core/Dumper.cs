@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Decompiler.Core.Machine;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -138,37 +140,33 @@ namespace Decompiler.Core
         public void DumpAssembler(LoadedImage image, Address addrStart, Address addrLast, TextWriter writer)
         {
             var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
-            while (dasm.Address < addrLast)
-            {
-                if (!DumpAssemblerLine(image, dasm, writer))
-                    break;
-            }
-        }
-
-        public bool DumpAssemblerLine(LoadedImage image, IDisassembler dasm, TextWriter writer)
-        {
-            Address addrBegin = dasm.Address;
-            if (ShowAddresses)
-                writer.Write("{0} ", addrBegin);
-            Machine.MachineInstruction instr = null;
             try
             {
-                instr = dasm.DisassembleInstruction();
+                while (dasm.MoveNext())
+                {
+                    MachineInstruction instr = dasm.Current;
+                    if (instr.Address >= addrLast)
+                        break;
+                    if (!DumpAssemblerLine(image, instr, writer))
+                        break;
+                }
             }
             catch (Exception ex)
             {
                 writer.WriteLine(ex.Message);
-                return false;
-            }
-            if (instr == null)
-            {
                 writer.WriteLine();
-                return false;
             }
+        }
+
+        public bool DumpAssemblerLine(LoadedImage image, MachineInstruction instr, TextWriter writer)
+        {
+            Address addrBegin = instr.Address;
+            if (ShowAddresses)
+                writer.Write("{0} ", addrBegin);
             if (ShowCodeBytes)
             {
                 StringWriter sw = new StringWriter();
-                WriteByteRange(image, addrBegin, dasm.Address, sw);
+                WriteByteRange(image, instr.Address, instr.Address + instr.Length, sw);
                 writer.WriteLine("{0,-16}\t{1}", sw.ToString(), instr);
             }
             else

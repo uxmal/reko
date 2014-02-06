@@ -80,10 +80,10 @@ namespace Decompiler.UnitTests.Assemblers.x86
             StringBuilder sb = new StringBuilder();
             try
             {
-                for (Address addr = dasm.Address; lr.Image.IsValidAddress(dasm.Address); addr = dasm.Address)
+                while (dasm.MoveNext())
                 {
-                    IntelInstruction instr = dasm.Disassemble();
-                    sb.AppendFormat("{0}\t{1}", addr, instr);
+                    IntelInstruction instr = dasm.Current;
+                    sb.AppendFormat("{0}\t{1}", instr.Address, instr);
                     sb.AppendLine();
                 }
                 Assert.AreEqual(sExp, sb.ToString());
@@ -93,7 +93,6 @@ namespace Decompiler.UnitTests.Assemblers.x86
                 Console.WriteLine(sb.ToString());
                 throw;
             }
-            
         }
     }
 }

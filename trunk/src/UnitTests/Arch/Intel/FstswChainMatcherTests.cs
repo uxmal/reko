@@ -127,9 +127,9 @@ namespace Decompiler.UnitTests.Arch.Intel
                 PrimitiveType.Word32,
                 false);
             instrs = new List<IntelInstruction>();
-            while (lr.Image.IsValidAddress(dasm.Address))
+            while (dasm.MoveNext())
             {
-                instrs.Add(dasm.Disassemble());
+                instrs.Add(dasm.Current);
             }
             return new FstswChainMatcher(instrs.ToArray(), orw);
         }
