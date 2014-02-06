@@ -41,10 +41,10 @@ namespace Decompiler.Arch.X86
         private IRewriterHost host;
         private IntelArchitecture arch;
         private Frame frame;
-        private LookaheadEnumerator<DisassembledInstruction> dasm;
+        private LookaheadEnumerator<IntelInstruction> dasm;
         private RtlEmitter emitter;
         private OperandRewriter orw;
-        private DisassembledInstruction di;
+        private IntelInstruction instrCur;
         private RtlInstructionCluster ric;
         private X86State state;
 
@@ -59,21 +59,7 @@ namespace Decompiler.Arch.X86
             this.host = host;
             this.frame = frame;
             this.state = state;
-            this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr));
-        }
-
-        protected IEnumerable<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr)
-        {
-            var d = (X86Disassembler) arch.CreateDisassembler(rdr);
-            while (rdr.IsValid)
-            {
-                var addr = d.Address;
-                var instr = d.Disassemble();
-                if (instr == null)
-                    yield break;
-                var length = (uint)(d.Address - addr);
-                yield return new DisassembledInstruction(addr, instr, length);
-            }
+            this.dasm = new LookaheadEnumerator<IntelInstruction>(arch.CreateDisassembler(rdr));
         }
 
         /// <summary>
@@ -84,17 +70,17 @@ namespace Decompiler.Arch.X86
         {
             while (dasm.MoveNext())
             {
-                di = dasm.Current;
-                ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
+                instrCur = dasm.Current;
+                ric = new RtlInstructionCluster(instrCur.Address, (byte)instrCur.Length);
                 emitter = new RtlEmitter(ric.Instructions);
                 orw = new OperandRewriter(arch, frame, host);
-                switch (di.Instruction.code)
+                switch (instrCur.code)
                 {
                 default:
                     throw new AddressCorrelatedException(
-                        di.Address,
+                        instrCur.Address,
                         "Rewriting x86 opcode '{0}' is not supported yet.",
-                        di.Instruction.code);
+                        instrCur.code);
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aam: RewriteAam(); break;
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.IAdd); break;
@@ -104,28 +90,28 @@ namespace Decompiler.Arch.X86
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.bt: RewriteBt(); break;
-                case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
+                case Opcode.call: RewriteCall(instrCur.op1, instrCur.op1.Width); break;
                 case Opcode.cbw: RewriteCbw(); break;
                 case Opcode.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
                 case Opcode.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
                 case Opcode.cli: break; //$TODO
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
-                case Opcode.cmova: RewriteConditionalMove(ConditionCode.UGT, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovbe: RewriteConditionalMove(ConditionCode.ULE, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovc: RewriteConditionalMove(ConditionCode.ULT, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovge: RewriteConditionalMove(ConditionCode.GE, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovg: RewriteConditionalMove(ConditionCode.GT, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovl: RewriteConditionalMove(ConditionCode.LT, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovle: RewriteConditionalMove(ConditionCode.LE, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovnc: RewriteConditionalMove(ConditionCode.UGE, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovno: RewriteConditionalMove(ConditionCode.NO, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovns: RewriteConditionalMove(ConditionCode.NS, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovnz: RewriteConditionalMove(ConditionCode.NE, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovo: RewriteConditionalMove(ConditionCode.OV, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovpe: RewriteConditionalMove(ConditionCode.PE, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovpo: RewriteConditionalMove(ConditionCode.PO, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovs: RewriteConditionalMove(ConditionCode.SG, di.Instruction.op1, di.Instruction.op2); break;
-                case Opcode.cmovz: RewriteConditionalMove(ConditionCode.EQ, di.Instruction.op1, di.Instruction.op2); break;
+                case Opcode.cmova: RewriteConditionalMove(ConditionCode.UGT, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovbe: RewriteConditionalMove(ConditionCode.ULE, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovc: RewriteConditionalMove(ConditionCode.ULT, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovge: RewriteConditionalMove(ConditionCode.GE, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovg: RewriteConditionalMove(ConditionCode.GT, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovl: RewriteConditionalMove(ConditionCode.LT, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovle: RewriteConditionalMove(ConditionCode.LE, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovnc: RewriteConditionalMove(ConditionCode.UGE, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovno: RewriteConditionalMove(ConditionCode.NO, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovns: RewriteConditionalMove(ConditionCode.NS, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovnz: RewriteConditionalMove(ConditionCode.NE, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovo: RewriteConditionalMove(ConditionCode.OV, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovpe: RewriteConditionalMove(ConditionCode.PE, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovpo: RewriteConditionalMove(ConditionCode.PO, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovs: RewriteConditionalMove(ConditionCode.SG, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmovz: RewriteConditionalMove(ConditionCode.EQ, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmps: RewriteStringInstruction(); break;
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
@@ -188,23 +174,23 @@ namespace Decompiler.Arch.X86
                 case Opcode.@int: RewriteInt(); break;
                 case Opcode.iret: RewriteIret(); break;
                 case Opcode.jmp: RewriteJmp(); break;
-                case Opcode.ja: RewriteConditionalGoto(ConditionCode.UGT, di.Instruction.op1); break;
-                case Opcode.jbe: RewriteConditionalGoto(ConditionCode.ULE, di.Instruction.op1); break;
-                case Opcode.jc: RewriteConditionalGoto(ConditionCode.ULT, di.Instruction.op1); break;
+                case Opcode.ja: RewriteConditionalGoto(ConditionCode.UGT, instrCur.op1); break;
+                case Opcode.jbe: RewriteConditionalGoto(ConditionCode.ULE, instrCur.op1); break;
+                case Opcode.jc: RewriteConditionalGoto(ConditionCode.ULT, instrCur.op1); break;
                 case Opcode.jcxz: RewriteJcxz(); break;
-                case Opcode.jge: RewriteConditionalGoto(ConditionCode.GE, di.Instruction.op1); break;
-                case Opcode.jg: RewriteConditionalGoto(ConditionCode.GT, di.Instruction.op1); break;
-                case Opcode.jl: RewriteConditionalGoto(ConditionCode.LT, di.Instruction.op1); break;
-                case Opcode.jle: RewriteConditionalGoto(ConditionCode.LE, di.Instruction.op1); break;
-                case Opcode.jnc: RewriteConditionalGoto(ConditionCode.UGE, di.Instruction.op1); break;
-                case Opcode.jno: RewriteConditionalGoto(ConditionCode.NO, di.Instruction.op1); break;
-                case Opcode.jns: RewriteConditionalGoto(ConditionCode.NS, di.Instruction.op1); break;
-                case Opcode.jnz: RewriteConditionalGoto(ConditionCode.NE, di.Instruction.op1); break;
-                case Opcode.jo: RewriteConditionalGoto(ConditionCode.OV, di.Instruction.op1); break;
-                case Opcode.jpe: RewriteConditionalGoto(ConditionCode.PE, di.Instruction.op1); break;
-                case Opcode.jpo: RewriteConditionalGoto(ConditionCode.PO, di.Instruction.op1); break;
-                case Opcode.js: RewriteConditionalGoto(ConditionCode.SG, di.Instruction.op1); break;
-                case Opcode.jz: RewriteConditionalGoto(ConditionCode.EQ, di.Instruction.op1); break;
+                case Opcode.jge: RewriteConditionalGoto(ConditionCode.GE, instrCur.op1); break;
+                case Opcode.jg: RewriteConditionalGoto(ConditionCode.GT, instrCur.op1); break;
+                case Opcode.jl: RewriteConditionalGoto(ConditionCode.LT, instrCur.op1); break;
+                case Opcode.jle: RewriteConditionalGoto(ConditionCode.LE, instrCur.op1); break;
+                case Opcode.jnc: RewriteConditionalGoto(ConditionCode.UGE, instrCur.op1); break;
+                case Opcode.jno: RewriteConditionalGoto(ConditionCode.NO, instrCur.op1); break;
+                case Opcode.jns: RewriteConditionalGoto(ConditionCode.NS, instrCur.op1); break;
+                case Opcode.jnz: RewriteConditionalGoto(ConditionCode.NE, instrCur.op1); break;
+                case Opcode.jo: RewriteConditionalGoto(ConditionCode.OV, instrCur.op1); break;
+                case Opcode.jpe: RewriteConditionalGoto(ConditionCode.PE, instrCur.op1); break;
+                case Opcode.jpo: RewriteConditionalGoto(ConditionCode.PO, instrCur.op1); break;
+                case Opcode.js: RewriteConditionalGoto(ConditionCode.SG, instrCur.op1); break;
+                case Opcode.jz: RewriteConditionalGoto(ConditionCode.EQ, instrCur.op1); break;
                 case Opcode.lahf: RewriteLahf(); break;
                 case Opcode.lds: RewriteLxs(Registers.ds); break;
                 case Opcode.lea: RewriteLea(); break;
@@ -245,7 +231,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retf: RewriteRet(); break;
-                case Opcode.sahf: emitter.Assign(orw.FlagGroup(IntelInstruction.DefCc(di.Instruction.code)), orw.AluRegister(Registers.ah)); break;
+                case Opcode.sahf: emitter.Assign(orw.FlagGroup(IntelInstruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
                 case Opcode.sar: RewriteBinOp(Operator.Sar); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.ISub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
@@ -341,7 +327,7 @@ namespace Decompiler.Arch.X86
             }
             if ((flags & CopyFlags.EmitCc) != 0)
             {
-                EmitCcInstr(dst, IntelInstruction.DefCc(di.Instruction.code));
+                EmitCcInstr(dst, IntelInstruction.DefCc(instrCur.code));
             }
             if ((flags & CopyFlags.SetCfIf0) != 0)
             {

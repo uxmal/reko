@@ -143,7 +143,7 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
 		}
 
-		public IDisassembler CreateDisassembler(ImageReader rdr)
+		public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, DisassemblyStream.GetEnumerator());
 		}

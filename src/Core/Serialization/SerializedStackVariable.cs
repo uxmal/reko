@@ -25,16 +25,7 @@ namespace Decompiler.Core.Serialization
 {
 	public class SerializedStackVariable : SerializedKind
 	{
-		[XmlAttribute("size")]
-        [Obsolete("", true)]
-		public int ByteSize;
-
 		public SerializedStackVariable() {}
-
-        [Obsolete("", true)]
-		public SerializedStackVariable(int byteSize)
-		{
-		}
 
 		public override void Accept(ArgumentSerializer sser)
 		{

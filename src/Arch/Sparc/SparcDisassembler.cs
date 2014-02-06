@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Sparc
 {
-    public class SparcDisassembler : IDisassembler, IEnumerator<SparcInstruction>
+    public class SparcDisassembler : DisassemblerBase<SparcInstruction>
     {
         private SparcArchitecture arch;
         private SparcInstruction instrCur;
@@ -42,23 +42,7 @@ namespace Decompiler.Arch.Sparc
             this.imageReader = imageReader;
         }
 
-        public Address Address  { get { return imageReader.Address; } }
-
-        public MachineInstruction DisassembleInstruction()
-        {
-            if (!MoveNext())
-                return null;
-            return Current;
-        }
-
-        public SparcInstruction Current { get { return instrCur; } }
-
-        object System.Collections.IEnumerator.Current { get { return instrCur; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotImplementedException(); }
-
+        public override SparcInstruction Current { get { return instrCur; } }
 
         // Format 1 (op == 1)
         // +----+-------------------------------------------------------------+
@@ -82,7 +66,7 @@ namespace Decompiler.Arch.Sparc
         // | op |    rd    |   op3  |  rs1 |           opf            |  rs2  |
         // +----+----------+--------+------+--------------------------+-------+
         // 31   29         24       18     13    12                   4
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!imageReader.IsValid)
                 return false;

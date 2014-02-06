@@ -31,10 +31,13 @@ namespace Decompiler.UnitTests.Arch.Mips
     [TestFixture]
     class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        public MipsDisassemblerTests()
-            : base(new MipsProcessorArchitecture(), new Address(0x00100000), 32)
-        {
-        }
+        private MipsProcessorArchitecture arch = new MipsProcessorArchitecture();
+
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+
+        public override Address LoadAddress { get { return new Address(0x00100000); } }
+
+        public override int InstructionBitSize { get { return 32; } }
 
         protected override ImageWriter CreateImageWriter(byte[] bytes)
         {
@@ -318,15 +321,15 @@ namespace Decompiler.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipisDis_mtofromhilo()
+        public void MipsDis_mtofromhilo()
         {
-            var instr = DisassembleBits("000000 000000000 01010 00000 010000");
+            var instr = DisassembleBits("000000 00000 01010 00000 00000 010000");
             Assert.AreEqual("mfhi\tr10", instr.ToString());
-            instr = DisassembleBits("000000 000000000 01010 00000 010010");
+            instr = DisassembleBits("000000 00000 01010 00000 00000 010010");
             Assert.AreEqual("mflo\tr10", instr.ToString());
-            instr = DisassembleBits("000000 000000000 01010 00000 010001");
+            instr = DisassembleBits("000000 00000 01010 00000 00000 010001");
             Assert.AreEqual("mthi\tr10", instr.ToString());
-            instr = DisassembleBits("000000 000000000 01010 00000 010011");
+            instr = DisassembleBits("000000 00000 01010 00000 00000 010011");
             Assert.AreEqual("mtlo\tr10", instr.ToString());
         }
 

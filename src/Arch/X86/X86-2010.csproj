@@ -97,7 +97,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DisassembledInstruction.cs" />
     <Compile Include="IntelInstruction.cs">
       <SubType>Code</SubType>
     </Compile>

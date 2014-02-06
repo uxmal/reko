@@ -37,7 +37,8 @@ namespace Decompiler.UnitTests.Arch.M68k
         private void DasmSingleInstruction(params byte[] bytes)
         {
             dasm = CreateDasm(bytes, 0x10000000);
-            instr = dasm.Disassemble();
+            Assert.IsTrue(dasm.MoveNext());
+            instr = dasm.Current;
         }
 
         private M68kDisassembler CreateDasm(byte[] bytes, uint address)

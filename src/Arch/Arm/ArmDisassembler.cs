@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Arm
     using address = UInt32;
     using addrdiff = UInt32;
 
-    public class ArmDisassembler2 : IDisassembler, IEnumerator<ArmInstruction>
+    public class ArmDisassembler2 : DisassemblerBase<ArmInstruction>
     {
         private ArmProcessorArchitecture arch;
         private ImageReader rdr;
@@ -84,24 +84,10 @@ namespace Decompiler.Arch.Arm
             this.arch = arch;
             this.rdr = rdr;
         }
-        public Address Address { get { return rdr.Address; } }
 
-        public MachineInstruction DisassembleInstruction()
-        {
-            if (MoveNext())
-                return Current;
-            return null;
-        }
+        public override ArmInstruction Current { get { return arm; } }
 
-        public ArmInstruction Current { get { return arm; } }
-
-        object System.Collections.IEnumerator.Current { get { return arm; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotImplementedException(); }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;
@@ -434,7 +420,7 @@ namespace Decompiler.Arch.Arm
         }
     }
 
-    public class ArmDisassembler3 : IDisassembler
+    public class ArmDisassembler3 : DisassemblerBase<ArmInstruction>
     {
 
         /* (*This* comment is NOT part of the notice mentioned in the
@@ -489,26 +475,9 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public Address Address { get { return rdr.Address; } }
+        public override ArmInstruction Current { get { return arm; } }
 
-        public MachineInstruction DisassembleInstruction()
-        {
-            addr = rdr.Address.Linear;
-            this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
-            return arm;
-        }
-
-
-
-        public ArmInstruction Current { get { return arm; } }
-
-        object System.Collections.IEnumerator.Current { get { return arm; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotImplementedException(); }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;

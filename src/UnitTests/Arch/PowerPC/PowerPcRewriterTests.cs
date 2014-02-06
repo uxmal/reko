@@ -34,11 +34,13 @@ namespace Decompiler.UnitTests.Arch.PowerPC
     class PowerPcRewriterTests : RewriterTestBase
     {
         private InstructionBuilder b;
+        private PowerPcArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
 
-        public PowerPcRewriterTests()
-            : base(new PowerPcArchitecture(PrimitiveType.Word32), 32)
-        {
-        }
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+
+        public override Address LoadAddress { get { return new Address(0x00100000); } }
+
+        public override int InstructionBitSize { get { return 32; } }
 
         private void RunTest(Action<InstructionBuilder> m)
         {

@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Decompiler.Arch.Arm
 {
     public class AArch64 : IProcessorArchitecture
     {
-        public IDisassembler CreateDisassembler(ImageReader imageReader)
+        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new AArch64Disassembler(imageReader);
         }
@@ -45,7 +46,7 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Core.Rtl.RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();
         }

@@ -291,7 +291,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Diagnostic.cs" />
-    <Compile Include="IDisassembler.cs">
+    <Compile Include="DisassemblerBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dumper.cs">

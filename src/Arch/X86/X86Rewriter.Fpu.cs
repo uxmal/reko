@@ -45,7 +45,7 @@ namespace Decompiler.Arch.X86
             bool fPopStack,
             DataType cast)
         {
-            switch (di.Instruction.Operands)
+            switch (instrCur.Operands)
             {
             default:
                 throw new ArgumentOutOfRangeException("di.Instruction", "Instruction must have 1 or 2 operands");
@@ -53,28 +53,28 @@ namespace Decompiler.Arch.X86
                 {
                     // implicit st(0) operand.
                     Identifier opLeft = FpuRegister(0);
-                    Expression opRight = SrcOp(di.Instruction.op1);
+                    Expression opRight = SrcOp(instrCur.op1);
                     if (fReversed)
                     {
                         EmitCopy(
-                            di.Instruction.op1, 
-                            new BinaryExpression(op, di.Instruction.dataWidth, opRight, MaybeCast(cast, opLeft)),
+                            instrCur.op1, 
+                            new BinaryExpression(op, instrCur.dataWidth, opRight, MaybeCast(cast, opLeft)),
                             CopyFlags.ForceBreak);
                     }
                     else
                     {
-                        emitter.Assign(opLeft, new BinaryExpression(op, di.Instruction.dataWidth, opLeft, MaybeCast(cast, opRight)));
+                        emitter.Assign(opLeft, new BinaryExpression(op, instrCur.dataWidth, opLeft, MaybeCast(cast, opRight)));
                     }
                     break;
                 }
             case 2:
                 {
-                    Expression op1 = SrcOp(di.Instruction.op1);
-                    Expression op2 = SrcOp(di.Instruction.op2);
+                    Expression op1 = SrcOp(instrCur.op1);
+                    Expression op2 = SrcOp(instrCur.op2);
                     emitter.Assign(
-                        SrcOp(di.Instruction.op1),
+                        SrcOp(instrCur.op1),
                         new BinaryExpression(op,
-                            di.Instruction.op1.Width,
+                            instrCur.op1.Width,
                             fReversed ? op2 : op1,
                             fReversed ? op1 : op2));
                     break;
@@ -103,13 +103,13 @@ namespace Decompiler.Arch.X86
         private void RewriteFcom(int pops)
         {
             Identifier op1 = FpuRegister(0);
-            Expression op2 = (di.Instruction.code == Opcode.fcompp)
+            Expression op2 = (instrCur.code == Opcode.fcompp)
                 ? FpuRegister(1)
-                : SrcOp(di.Instruction.op1);
+                : SrcOp(instrCur.op1);
             emitter.Assign(
                 orw.FlagGroup(FlagM.FPUF),
                 new ConditionOf(
-                    new BinaryExpression(Operator.FSub, di.Instruction.dataWidth, op1, op2)));
+                    new BinaryExpression(Operator.FSub, instrCur.dataWidth, op1, op2)));
             state.ShrinkFpuStack(pops);
         }
 
@@ -123,25 +123,25 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFild()
         {
-            state.GrowFpuStack(di.Address);
-            var iType = PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size);
+            state.GrowFpuStack(instrCur.Address);
+            var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             emitter.Assign(
                 orw.FpuRegister(0, state),
-                emitter.Cast(PrimitiveType.Real64, SrcOp(di.Instruction.op1, iType)));
+                emitter.Cast(PrimitiveType.Real64, SrcOp(instrCur.op1, iType)));
             WriteFpuStack(0);
         }
 
         private void RewriteFistp()
         {
-            di.Instruction.op1.Width = PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size);
-            emitter.Assign(SrcOp(di.Instruction.op1), emitter.Cast(di.Instruction.op1.Width, orw.FpuRegister(0, state)));
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
+            emitter.Assign(SrcOp(instrCur.op1), emitter.Cast(instrCur.op1.Width, orw.FpuRegister(0, state)));
             state.ShrinkFpuStack(1);
         }
 
         public void RewriteFld()
         {
-            state.GrowFpuStack(di.Address);
-            emitter.Assign(FpuRegister(0), SrcOp(di.Instruction.op1));
+            state.GrowFpuStack(instrCur.Address);
+            emitter.Assign(FpuRegister(0), SrcOp(instrCur.op1));
             WriteFpuStack(0);
         }
 
@@ -152,7 +152,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFldConst(Constant c)
         {
-            state.GrowFpuStack(di.Address);
+            state.GrowFpuStack(instrCur.Address);
             emitter.Assign(FpuRegister(0), c);
             WriteFpuStack(0);
         }
@@ -161,7 +161,7 @@ namespace Decompiler.Arch.X86
             emitter.SideEffect(PseudoProc(
                 "__fldcw",
                 VoidType.Instance,
-                SrcOp(di.Instruction.op1)));
+                SrcOp(instrCur.op1)));
         }
 
         private void RewriteFpatan()
@@ -178,7 +178,7 @@ namespace Decompiler.Arch.X86
             Identifier itmp = frame.CreateTemporary(PrimitiveType.Real64);
             emitter.Assign(itmp, FpuRegister(0));
 
-            state.GrowFpuStack(di.Address);
+            state.GrowFpuStack(instrCur.Address);
             emitter.Assign(FpuRegister(1), PseudoProc("cos", PrimitiveType.Real64, itmp));
             emitter.Assign(FpuRegister(0), PseudoProc("sin", PrimitiveType.Real64, itmp));
             WriteFpuStack(0);
@@ -187,7 +187,7 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFst(bool pop)
         {
-            emitter.Assign(SrcOp(di.Instruction.op1), FpuRegister(0));
+            emitter.Assign(SrcOp(instrCur.op1), FpuRegister(0));
             if (pop)
                 state.ShrinkFpuStack(1);
         }
@@ -195,14 +195,14 @@ namespace Decompiler.Arch.X86
         private void RewriterFstcw()
         {
 			emitter.Assign(
-                SrcOp(di.Instruction.op1), 
+                SrcOp(instrCur.op1), 
                 PseudoProc("__fstcw", PrimitiveType.UInt16));
         }
 
         private void RewriteFstsw()
         {
             emitter.Assign(
-                SrcOp(di.Instruction.op1),
+                SrcOp(instrCur.op1),
                 new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
                         new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
                         Constant.Int16(8)));

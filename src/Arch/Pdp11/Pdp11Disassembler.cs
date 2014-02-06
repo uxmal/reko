@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Pdp11
 {
-    public class Pdp11Disassembler : IDisassembler, IEnumerator<Pdp11Instruction>
+    public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction>
     {
         private Pdp11Architecture arch;
         private ImageReader rdr;
@@ -40,36 +40,20 @@ namespace Decompiler.Arch.Pdp11
             this.arch = arch;
         }
 
-        public Pdp11Instruction Current { get { return instrCur; } }
+        public override Pdp11Instruction Current { get { return instrCur; } }
 
-        object System.Collections.IEnumerator.Current { get { return instrCur; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotImplementedException(); }
-
-        public Address Address
-        {
-            get { return rdr.Address; }
-        }
-
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;
             var addr = rdr.Address;
-            instrCur = DisassembleInstruction();
+            instrCur = Disassemble();
             instrCur.Address = addr;
             instrCur.Length = addr - rdr.Address;
             return true;
         }
-
-        MachineInstruction IDisassembler.DisassembleInstruction()
-        {
-            return DisassembleInstruction();
-        }
-
-        public Pdp11Instruction DisassembleInstruction()
+    
+        private Pdp11Instruction Disassemble()
         {
             ushort opcode = rdr.ReadLeUInt16();
             dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);

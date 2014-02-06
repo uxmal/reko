@@ -62,9 +62,12 @@ namespace Decompiler.Gui.Windows
                     dumper.ShowCodeBytes = true;
                     var image = Decompiler.Program.Image;
                     var dasm = arch.CreateDisassembler(image.CreateReader(StartAddress));
-                    while (lines > 0)
+                    while (dasm.MoveNext())
                     {
-                        dumper.DumpAssemblerLine(image, dasm, writer);
+                        var instr = dasm.Current;
+                        if (lines <= 0)
+                            break;
+                        dumper.DumpAssemblerLine(image, instr, writer);
                         --lines;
                     }
                     txtDisassembly.Text = writer.ToString();

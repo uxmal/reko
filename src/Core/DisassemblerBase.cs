@@ -1,6 +1,6 @@
-ï»¿#region License
+#region License
 /* 
- * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2014 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Decompiler.Core
 {
-    public class DisassembledInstruction
+    public abstract class DisassemblerBase<TInstr> : IEnumerator<TInstr>
     {
-        private Address addr;
-        private IntelInstruction instr;
-        private uint length;
+        public abstract TInstr Current { get; }
 
-        public DisassembledInstruction(Address addr, IntelInstruction instr, uint length)
+        object System.Collections.IEnumerator.Current { get { return Current; } }
+
+        public void Dispose() { }
+
+        public abstract bool MoveNext();
+
+        public void Reset()
         {
-            this.addr = addr;
-            this.instr = instr;
-            this.length = length;
+            throw new NotSupportedException();
         }
-
-        public Address Address { get { return addr; } }
-        public IntelInstruction Instruction { get { return instr; } }
-        public uint Length { get { return length; } } 
     }
 }

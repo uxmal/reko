@@ -33,13 +33,14 @@ namespace Decompiler.UnitTests.Arch.Mips
     class MipsRewriterTests : RewriterTestBase
     {
         static MipsProcessorArchitecture arch = new MipsProcessorArchitecture();
-        
         private MipsDisassembler dasm;
 
-        public MipsRewriterTests()
-            : base(arch, 32)
-        {
-        }
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+
+        public override Address LoadAddress { get { return new Address(0x00100000); } }
+
+        public override int InstructionBitSize { get { return 32; } }
+
 
         private void RunTest(params string[] bitStrings)
         {

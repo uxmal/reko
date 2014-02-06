@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
@@ -32,7 +33,7 @@ namespace Decompiler.Arch.Z80
 {
     public class Z80ProcessorArchitecture : IProcessorArchitecture
     {
-        public IDisassembler CreateDisassembler(ImageReader imageReader)
+        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Z80Disassembler(imageReader);
         }

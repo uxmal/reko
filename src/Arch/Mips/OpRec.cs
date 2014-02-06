@@ -64,11 +64,15 @@ namespace Decompiler.Arch.Mips
             null,
             null, 
             // 10
-            null, null, null, null, 
+            new AOpRec(Opcode.mfhi, "R2"),
+            new AOpRec(Opcode.mthi, "R2"),
+            new AOpRec(Opcode.mflo, "R2"),
+            new AOpRec(Opcode.mtlo, "R2"),
             new AOpRec(Opcode.dsllv, "R3,R2,R1"),
             null,
             new AOpRec(Opcode.dsrlv, "R3,R2,R1"),
             new AOpRec(Opcode.dsrav, "R3,R2,R1"),
+
             new AOpRec(Opcode.mult, "R1,R2"),
             new AOpRec(Opcode.multu, "R1,R2"),
             new AOpRec(Opcode.div, "R1,R2"),

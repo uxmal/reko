@@ -32,7 +32,7 @@ namespace Decompiler.Arch.X86
 	/// <summary>
 	/// Intel x86 opcode disassembler 
 	/// </summary>
-	public partial class X86Disassembler : IDisassembler, IEnumerator<IntelInstruction>
+	public partial class X86Disassembler : DisassemblerBase<IntelInstruction>
 	{
         private IntelInstruction instrCur;
 		private PrimitiveType dataWidth;
@@ -63,42 +63,14 @@ namespace Decompiler.Arch.X86
             this.useRexPrefix = useRexPrefix;
         }
 
-        public virtual IntelInstruction Disassemble()
-        {
-            dataWidth = defaultDataWidth;
-            addressWidth = defaultAddressWidth;
-            isModrmValid = false;
-            rexPrefix = 0;
-            segmentOverride = RegisterStorage.None;
-            if (!rdr.IsValid)
-                return null;
-            byte op = rdr.ReadByte();
-            return s_aOpRec[op].Decode(this, op, "");
-        }
-
-        /// <summary>
-        /// Current address of the disassembler.
-        /// </summary>
-        public Address Address
-        {
-            get { return rdr.Address; }
-        }
-
-
-        public IntelInstruction Current { get { return instrCur; } }
-
-        object System.Collections.IEnumerator.Current { get { return instrCur; } }
-
-        public void Dispose() { }
-
-        public void Reset() { throw new NotSupportedException(); }
+        public override IntelInstruction Current { get { return instrCur; } }
 
         /// <summary>
         /// Disassembles the current instruction. The address is incremented
         /// to point at the first address after the instruction and returned to the caller.
         /// </summary>
         /// <returns>A single disassembled instruction.</returns>
-        public bool MoveNext()
+        public override bool MoveNext()
         {
             if (!rdr.IsValid)
                 return false;
@@ -111,7 +83,7 @@ namespace Decompiler.Arch.X86
             byte op = rdr.ReadByte();
             instrCur = s_aOpRec[op].Decode(this, op, "");
             instrCur.Address = addr;
-            instrCur.Length = addr - rdr.Address;
+            instrCur.Length = rdr.Address - addr;
             return true;
         }
         private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
@@ -620,11 +592,6 @@ namespace Decompiler.Arch.X86
             default: throw new NotImplementedException(string.Format("Unknown operand width {0}", fmt[i-1]));
             }
         }
-
-		public MachineInstruction DisassembleInstruction()
-		{
-			return Disassemble();
-		}
 
 		private static IntelRegister [] s_ma16Base = 
 		{

@@ -100,25 +100,25 @@ namespace Decompiler.Arch.X86
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
-            emitter.Branch(CreateTestCondition(cc, di.Instruction.code), OperandAsCodeAddress(op1), RtlClass.ConditionalTransfer);
+            emitter.Branch(CreateTestCondition(cc, instrCur.code), OperandAsCodeAddress(op1), RtlClass.ConditionalTransfer);
         }
 
         private void RewriteInt()
         {
-            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance, SrcOp(di.Instruction.op1)));
+            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance, SrcOp(instrCur.op1)));
         }
 
         private void RewriteJcxz()
         {
             emitter.Branch(
-                emitter.Eq0(orw.AluRegister(Registers.ecx, di.Instruction.dataWidth)),
-                OperandAsCodeAddress(di.Instruction.op1),
+                emitter.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth)),
+                OperandAsCodeAddress(instrCur.op1),
                 RtlClass.ConditionalTransfer);
         }
 
         private void RewriteJmp()
         {
-            if (IsRealModeReboot(di.Instruction))
+            if (IsRealModeReboot(instrCur))
 			{
                 PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", VoidType.Instance, 0);
                 reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
@@ -127,18 +127,18 @@ namespace Decompiler.Arch.X86
 				return;
 			}
 				
-			if (di.Instruction.op1 is ImmediateOperand)
+			if (instrCur.op1 is ImmediateOperand)
 			{
-				Address addr = OperandAsCodeAddress(di.Instruction.op1);
+				Address addr = OperandAsCodeAddress(instrCur.op1);
                 emitter.Goto(addr);
 				return;
 			}
-            emitter.Goto(SrcOp(di.Instruction.op1));
+            emitter.Goto(SrcOp(instrCur.op1));
         }
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
         {
-            Identifier cx = orw.AluRegister(Registers.ecx, di.Instruction.dataWidth);
+            Identifier cx = orw.AluRegister(Registers.ecx, instrCur.dataWidth);
             emitter.Assign(cx, emitter.ISub(cx, 1));
             if (useFlags != 0)
             {
@@ -146,12 +146,12 @@ namespace Decompiler.Arch.X86
                     new BinaryExpression(Operator.Cand, PrimitiveType.Bool,
                         new TestCondition(cc, orw.FlagGroup(useFlags)),
                         emitter.Ne0(cx)),
-                    OperandAsCodeAddress(di.Instruction.op1),
+                    OperandAsCodeAddress(instrCur.op1),
                     RtlClass.ConditionalTransfer);
             }
             else
             {
-                emitter.Branch(emitter.Ne0(cx), OperandAsCodeAddress(di.Instruction.op1), RtlClass.ConditionalTransfer);
+                emitter.Branch(emitter.Ne0(cx), OperandAsCodeAddress(instrCur.op1), RtlClass.ConditionalTransfer);
             }
         }
 
@@ -169,24 +169,24 @@ namespace Decompiler.Arch.X86
         ///</summary>
         private void RewriteRep()
         {
-            var topOfLoop = di.Address;
-            var regCX = orw.AluRegister(Registers.ecx, di.Instruction.addrWidth);
+            var topOfLoop = instrCur.Address;
+            var regCX = orw.AluRegister(Registers.ecx, instrCur.addrWidth);
             dasm.MoveNext();
-            di = dasm.Current;
-            ric.Length += (byte) di.Length;
+            instrCur = dasm.Current;
+            ric.Length += (byte) instrCur.Length;
             var strFollow = dasm.Peek(1);
             emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address, RtlClass.ConditionalTransfer);
             RewriteStringInstruction();
             emitter.Assign(regCX, emitter.ISub(regCX, 1));
 
-            switch (di.Instruction.code)
+            switch (instrCur.code)
             {
             case Opcode.cmps:
             case Opcode.cmpsb:
             case Opcode.scas:
             case Opcode.scasb:
                 {
-                    var cc = (di.Instruction.code == Opcode.repne)
+                    var cc = (instrCur.code == Opcode.repne)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
                     emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, RtlClass.ConditionalTransfer);
@@ -201,14 +201,14 @@ namespace Decompiler.Arch.X86
         public void RewriteRet()
         {
             emitter.Return(
-                this.arch.WordWidth.Size + (di.Instruction.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
-                di.Instruction.Operands == 1 ? ((ImmediateOperand)di.Instruction.op1).Value.ToInt32() : 0);
+                this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? Registers.cs.DataType.Size : 0),
+                instrCur.Operands == 1 ? ((ImmediateOperand)instrCur.op1).Value.ToInt32() : 0);
         }
 
         public void RewriteIret()
         {
             RewritePop(
-                orw.FlagGroup(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), di.Instruction.dataWidth);
+                orw.FlagGroup(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), instrCur.dataWidth);
             emitter.Return(
                 Registers.cs.DataType.Size +
                 arch.WordWidth.Size, 
@@ -240,7 +240,7 @@ namespace Decompiler.Arch.X86
                     return new Address(imm.Value.ToUInt32());
                 }
                 else
-                    return new Address(di.Address.Selector, imm.Value.ToUInt32());
+                    return new Address(instrCur.Address.Selector, imm.Value.ToUInt32());
             }
             return null;
         }

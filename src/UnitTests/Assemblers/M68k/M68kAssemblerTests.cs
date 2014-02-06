@@ -51,7 +51,8 @@ namespace Decompiler.UnitTests.Assemblers.M68k
 
         private void Expect(string expectedInstr)
         {
-            var instr = dasm.DisassembleInstruction();
+            Assert.IsTrue(dasm.MoveNext());
+            var instr = dasm.Current;
             Assert.AreEqual(expectedInstr, instr.ToString());
         }
 
