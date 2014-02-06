@@ -85,18 +85,16 @@ namespace Decompiler.UnitTests.Arch.Sparc
 
         private void BuildTest(params SparcInstruction[] instrs)
         {
-            var addr = baseAddr;
-            var dis = instrs.Select(i =>
+            var addr = new Address(0x00100000);
+            var exts = instrs
+                .Select(i =>
                 {
-                    var a = addr;
+                    i.Address = addr;
+                    i.Length = 4;
                     addr += 4;
-                    return new SparcRewriter.DisassembledInstruction
-                    {
-                        Address = a,
-                        Instr = i,
-                    };
+                    return i;
                 });
-            e = new SparcRewriter(arch, dis, state, new Frame(arch.WordWidth), host).GetEnumerator();
+            e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host).GetEnumerator();
         }
 
         private SparcInstruction Instr(Opcode opcode, params object[] ops)

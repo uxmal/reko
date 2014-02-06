@@ -30,9 +30,10 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.Mips
 {
-    public class MipsDisassembler : IDisassembler, IEnumerable<MipsInstruction>
+    public class MipsDisassembler : IDisassembler, IEnumerator<MipsInstruction>
     {
         private MipsProcessorArchitecture arch;
+        private MipsInstruction instrCur;
         private Address addr;
         private ImageReader rdr;
 
@@ -52,28 +53,33 @@ namespace Decompiler.Arch.Mips
             return Disassemble();
         }
 
-        public IEnumerator<MipsInstruction> GetEnumerator()
-        {
-            while (rdr.IsValid)
-            {
-                yield return Disassemble();
-            }
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         public MipsInstruction Disassemble()
         {
+            if (!MoveNext())
+                return null;
+            return Current;
+        }
+
+        public MipsInstruction Current { get { return instrCur; } }
+
+        object System.Collections.IEnumerator.Current { get { return instrCur; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotImplementedException(); }
+
+        public bool MoveNext()
+        {
+            if (!rdr.IsValid)
+                return false; 
             this.addr = rdr.Address; 
             var wInstr = rdr.ReadBeUInt32();
             var opRec = opRecs[wInstr >> 26];
             Debug.Print("Decoding {0:X8} => oprec {1} {2}", wInstr, wInstr >> 26, opRec == null ? "(null!)" : "");
             if (opRec == null)
                 throw new NotImplementedException((wInstr >> 26).ToString());    //$REVIEW: remove this when all oprecs are in place.
-            return opRec.Decode(wInstr, this);
+            instrCur = opRec.Decode(wInstr, this);
+            return true;
         }
 
         private static OpRec[] opRecs = new OpRec[]

@@ -78,7 +78,6 @@
     <Compile Include="ArmRewriter.Alu.cs" />
     <Compile Include="ArmRewriter.cs" />
     <Compile Include="Condition.cs" />
-    <Compile Include="DisassembledInstruction.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="OpFlags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

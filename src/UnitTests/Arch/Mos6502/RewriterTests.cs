@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
                     ++i;
                 }
             }
-            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.");
+            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions but saw " + i + ".");
             Assert.IsFalse(e.MoveNext(), "More instructions were emitted than were expected.");
         }
 

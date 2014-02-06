@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Machine;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,6 @@ namespace Decompiler.UnitTests.Arch
         {
             this.baseAddress = baseAddress;
         }
-
 
         protected abstract ImageWriter CreateImageWriter(byte[] bytes);
 
@@ -65,8 +65,8 @@ namespace Decompiler.UnitTests.Arch
         public TInstruction Disassemble(LoadedImage img)
         {
             var dasm = Architecture.CreateDisassembler(img.CreateReader(0U));
-            var instr = dasm.DisassembleInstruction();
-            return (TInstruction) instr;
+            Assert.IsTrue(dasm.MoveNext());
+            return (TInstruction) dasm.Current; 
         }
     }
 }

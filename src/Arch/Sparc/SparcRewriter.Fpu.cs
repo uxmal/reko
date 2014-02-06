@@ -38,12 +38,12 @@ namespace Decompiler.Arch.Sparc
     {
         private void RewriteFitod()
         {
-            var dst = (RegisterOperand) di.Instr.Op2;
+            var dst = (RegisterOperand) instrCur.Op2;
             var r0 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var r1 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number + 1));
             var dt = PrimitiveType.Real64;
             var fpDst = frame.EnsureSequence(r0, r1, dt);
-            emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(di.Instr.Op1)));
+            emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(instrCur.Op1)));
         }
 
         private void RewriteFitoq()
@@ -59,10 +59,10 @@ namespace Decompiler.Arch.Sparc
 
         private void RewriteFitos()
         {
-            var dst = (RegisterOperand) di.Instr.Op2;
+            var dst = (RegisterOperand) instrCur.Op2;
             var fpDst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var dt = PrimitiveType.Real32;
-            emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(di.Instr.Op1)));
+            emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(instrCur.Op1)));
         }
     }
 }

@@ -32,8 +32,9 @@ namespace Decompiler.Arch.X86
 	/// <summary>
 	/// Intel x86 opcode disassembler 
 	/// </summary>
-	public partial class X86Disassembler : IDisassembler
+	public partial class X86Disassembler : IDisassembler, IEnumerator<IntelInstruction>
 	{
+        private IntelInstruction instrCur;
 		private PrimitiveType dataWidth;
 		private PrimitiveType addressWidth;
 		private PrimitiveType defaultDataWidth;
@@ -62,6 +63,57 @@ namespace Decompiler.Arch.X86
             this.useRexPrefix = useRexPrefix;
         }
 
+        public virtual IntelInstruction Disassemble()
+        {
+            dataWidth = defaultDataWidth;
+            addressWidth = defaultAddressWidth;
+            isModrmValid = false;
+            rexPrefix = 0;
+            segmentOverride = RegisterStorage.None;
+            if (!rdr.IsValid)
+                return null;
+            byte op = rdr.ReadByte();
+            return s_aOpRec[op].Decode(this, op, "");
+        }
+
+        /// <summary>
+        /// Current address of the disassembler.
+        /// </summary>
+        public Address Address
+        {
+            get { return rdr.Address; }
+        }
+
+
+        public IntelInstruction Current { get { return instrCur; } }
+
+        object System.Collections.IEnumerator.Current { get { return instrCur; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotSupportedException(); }
+
+        /// <summary>
+        /// Disassembles the current instruction. The address is incremented
+        /// to point at the first address after the instruction and returned to the caller.
+        /// </summary>
+        /// <returns>A single disassembled instruction.</returns>
+        public bool MoveNext()
+        {
+            if (!rdr.IsValid)
+                return false;
+            var addr = rdr.Address;
+            dataWidth = defaultDataWidth;
+            addressWidth = defaultAddressWidth;
+            isModrmValid = false;
+            rexPrefix = 0;
+            segmentOverride = RegisterStorage.None;
+            byte op = rdr.ReadByte();
+            instrCur = s_aOpRec[op].Decode(this, op, "");
+            instrCur.Address = addr;
+            instrCur.Length = addr - rdr.Address;
+            return true;
+        }
         private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
             return GpRegFromBits((bits & 7) | ((rexPrefix & 8)), dataWidth);
@@ -379,14 +431,6 @@ namespace Decompiler.Arch.X86
         }
 
 		/// <summary>
-		/// Current address of the disassembler.
-		/// </summary>
-		public Address Address
-		{
-			get { return rdr.Address; }
-		}
-
-		/// <summary>
 		/// If the ModR/M byte hasn't been read yet, do so now.
 		/// </summary>
 		/// <returns></returns>
@@ -399,24 +443,6 @@ namespace Decompiler.Arch.X86
 			}
 			return this.modrm;
 		}
-
-		/// <summary>
-		/// Disassembles the current instruction. The address is incremented
-		/// to point at the first address after the instruction and returned to the caller.
-		/// </summary>
-		/// <returns>A single disassembled instruction.</returns>
-		public virtual IntelInstruction Disassemble()
-		{
-			dataWidth = defaultDataWidth;
-			addressWidth = defaultAddressWidth;
-			isModrmValid = false;
-            rexPrefix = 0;
-			segmentOverride = RegisterStorage.None;
-            if (!rdr.IsValid)
-                return null;
-            byte op = rdr.ReadByte();
-            return s_aOpRec[op].Decode(this, op, "");
-        }
 
         private IntelInstruction DecodeOperands(Opcode opcode, byte op, string strFormat)
         {

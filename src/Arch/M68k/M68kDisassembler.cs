@@ -33,7 +33,7 @@ namespace Decompiler.Arch.M68k
 {
     // M68k opcode map in http://www.freescale.com/files/archives/doc/ref_manual/M68000PRM.pdf
 
-    public partial class M68kDisassembler : IDisassembler
+    public partial class M68kDisassembler : IDisassembler, IEnumerator<M68kInstruction>
     {
         private ImageReader rdr;        // program counter 
         private M68kInstruction instr;  // instruction being built
@@ -63,12 +63,36 @@ namespace Decompiler.Arch.M68k
 
         public M68kInstruction Disassemble()
         {
+            if (MoveNext())
+                return Current;
+            return null;
+        }
+
+        public M68kInstruction Current { get { return instr; } }
+
+        object System.Collections.IEnumerator.Current { get { return instr; } }
+
+        public void Dispose() { }
+
+        public bool MoveNext()
+        {
+            if (!rdr.IsValid)
+                return false;
+            var addr = rdr.Address;
+            instr = new M68kInstruction();
             instruction = rdr.ReadBeUInt16();
             g_opcode_type = 0;
 
-            instr = new M68kInstruction();
             OpRec handler = g_instruction_table[instruction];
-            return handler.opcode_handler(this);
+            instr = handler.opcode_handler(this);
+            instr.Address = addr;
+            instr.Length = rdr.Address - addr;
+            return true;
+        }
+
+        public void Reset()
+        {
+            throw new NotSupportedException();
         }
 
 #if !NEVER

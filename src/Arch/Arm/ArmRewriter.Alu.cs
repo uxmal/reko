@@ -36,11 +36,11 @@ namespace Decompiler.Arch.Arm
     {
         private void RewriteBinOp(Operator op)
         {
-            var opDst = this.Operand(di.Instruction.Dst);
-            var opSrc1 = this.Operand(di.Instruction.Src1);
-            var opSrc2 = this.Operand(di.Instruction.Src2);
+            var opDst = this.Operand(instr.Dst);
+            var opSrc1 = this.Operand(instr.Src1);
+            var opSrc2 = this.Operand(instr.Src2);
             AddConditional(new RtlAssignment(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2)));
-            if (di.Instruction.OpFlags == OpFlags.S)
+            if (instr.OpFlags == OpFlags.S)
             {
                 emitter.Assign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
             }

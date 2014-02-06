@@ -28,11 +28,12 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcDisassembler : IDisassembler
+    public class PowerPcDisassembler : IDisassembler, IEnumerator<PowerPcInstruction>
     {
         private PowerPcArchitecture arch;
         private ImageReader rdr;
         private PrimitiveType defaultWordWidth;
+        private PowerPcInstruction instrCur;
         private Address addr;
 
         public PowerPcDisassembler(PowerPcArchitecture arch, ImageReader rdr, PrimitiveType defaultWordWidth)
@@ -49,9 +50,27 @@ namespace Decompiler.Arch.PowerPC
 
         public PowerPcInstruction Disassemble()
         {
+            if (!MoveNext())
+                return null;
+            return Current;
+        }
+
+        public PowerPcInstruction Current { get { return instrCur; } }
+
+        object System.Collections.IEnumerator.Current { get { return instrCur; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotImplementedException(); }
+
+        public bool MoveNext()
+        {
+            if (!rdr.IsValid)
+                return false;
             this.addr = rdr.Address;
             uint wInstr = rdr.ReadBeUInt32();
-            return oprecs[wInstr >> 26].Decode(this, wInstr);
+            instrCur = oprecs[wInstr >> 26].Decode(this, wInstr);
+            return true;
         }
 
         private PowerPcInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt, bool setsCR0)

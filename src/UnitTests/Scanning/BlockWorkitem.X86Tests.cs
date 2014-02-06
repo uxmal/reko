@@ -301,7 +301,6 @@ namespace Decompiler.UnitTests.Scanning
             Assert.IsTrue(proc.ControlGraph.Blocks.Contains(block));
         }
 
-
         private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
             var block = new Block(proc, blockLabel);

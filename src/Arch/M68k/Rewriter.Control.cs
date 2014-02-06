@@ -32,7 +32,7 @@ namespace Decompiler.Arch.M68k
     {
         private void RewriteJsr()
         {
-            var src = orw.RewriteSrc(di.Instruction.op1);
+            var src = orw.RewriteSrc(di.op1);
             emitter.Call(src, 4);
         }
 
@@ -45,12 +45,12 @@ namespace Decompiler.Arch.M68k
                     di.Address + 4,
                     RtlClass.ConditionalTransfer);
             }
-            var src = orw.RewriteSrc(di.Instruction.op1);
+            var src = orw.RewriteSrc(di.op1);
 
             emitter.Assign(src, emitter.ISub(src, 1));
             emitter.Branch(
                 emitter.Ne(src, emitter.Int32(-1)),
-                (Address) orw.RewriteSrc(di.Instruction.op2),
+                (Address) orw.RewriteSrc(di.op2),
                 RtlClass.ConditionalTransfer);
         }
     }

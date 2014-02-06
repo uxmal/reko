@@ -24,14 +24,16 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace Decompiler.Arch.Sparc
 {
-    public class SparcDisassembler : IDisassembler
+    public class SparcDisassembler : IDisassembler, IEnumerator<SparcInstruction>
     {
         private SparcArchitecture arch;
+        private SparcInstruction instrCur;
         private ImageReader imageReader;
 
         public SparcDisassembler(SparcArchitecture arch, ImageReader imageReader)
@@ -44,8 +46,19 @@ namespace Decompiler.Arch.Sparc
 
         public MachineInstruction DisassembleInstruction()
         {
-            return Disassemble();
+            if (!MoveNext())
+                return null;
+            return Current;
         }
+
+        public SparcInstruction Current { get { return instrCur; } }
+
+        object System.Collections.IEnumerator.Current { get { return instrCur; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotImplementedException(); }
+
 
         // Format 1 (op == 1)
         // +----+-------------------------------------------------------------+
@@ -69,27 +82,36 @@ namespace Decompiler.Arch.Sparc
         // | op |    rd    |   op3  |  rs1 |           opf            |  rs2  |
         // +----+----------+--------+------+--------------------------+-------+
         // 31   29         24       18     13    12                   4
-        public SparcInstruction Disassemble()
+        public bool MoveNext()
         {
             if (!imageReader.IsValid)
-                return null;
+                return false;
+            var addr = imageReader.Address;
             uint wInstr = imageReader.ReadBeUInt32();
             switch (wInstr >> 30)
             {
+            default: Debug.Assert(false, "Impossible!"); break;
+
             case 0:
-                return opRecs_0[(wInstr >> 22) & 7].Decode(this, wInstr);
+                instrCur = opRecs_0[(wInstr >> 22) & 7].Decode(this, wInstr);
+                break;
             case 1:
-                return new SparcInstruction
+                instrCur = new SparcInstruction
                 {
                     Opcode = Opcode.call,
                     Op1 = new AddressOperand((imageReader.Address - 4) + ((int)wInstr << 2)),
                 };
+                break;
             case 2:
-                return opRecs_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
+                instrCur = opRecs_2[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
+                break;
             case 3:
-                return opRecs_3[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
+                instrCur = opRecs_3[(wInstr >> 19) & 0x3F].Decode(this, wInstr);
+                break;
             }
-            throw new InvalidOperationException("Impossible!");
+            instrCur.Address = addr;
+            instrCur.Length = 4;
+            return true;
         }
 
         private class OpRec

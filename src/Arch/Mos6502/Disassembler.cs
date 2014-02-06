@@ -30,9 +30,10 @@ namespace Decompiler.Arch.Mos6502
 {
     // http://www.e-tradition.net/bytes/6502/6502_instruction_set.html
 
-    public class Disassembler : IDisassembler
+    public class Disassembler : IDisassembler, IEnumerator<Instruction>
     {
         LeImageReader rdr;
+        Instruction instr;
 
         public Disassembler(LeImageReader rdr)
         {
@@ -51,8 +52,24 @@ namespace Decompiler.Arch.Mos6502
 
         public Instruction Disassemble()
         {
-            if (!rdr.IsValid)
+            if (!MoveNext())
                 return null;
+            return Current;
+        }
+
+        public Instruction Current { get { return instr; } }
+
+        object System.Collections.IEnumerator.Current { get { return instr; } }
+
+        public void Dispose() { }
+
+        public void Reset() { throw new NotSupportedException(); } 
+
+        public bool MoveNext()
+        {
+            if (!rdr.IsValid)
+                return false;
+            var addr = rdr.Address;
             var op = rdr.ReadByte();
             var opRec = opRecs[op];
             var fmt = opRec.Format;
@@ -116,11 +133,14 @@ namespace Decompiler.Arch.Mos6502
                 default: throw new NotImplementedException(string.Format("Unknown format character {0}.", fmt[i - 1]));
                 }
             }
-            return new Instruction
+            this.instr = new Instruction
             {
                 Code = opRec.Code,
                 Operand = operand,
+                Address = addr,
+                Length = rdr.Address - addr,
             };
+            return true;
         }
 
         private Operand Indirect()

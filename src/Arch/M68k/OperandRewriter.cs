@@ -92,8 +92,8 @@ namespace Decompiler.Arch.M68k
             if (pre != null)
             {
                 var ea = rewriter.frame.EnsureRegister(pre.Register);
-                m.Assign(ea, m.ISub(ea, rewriter.di.Instruction.dataWidth.Size));
-                return m.Load(rewriter.di.Instruction.dataWidth, ea);
+                m.Assign(ea, m.ISub(ea, rewriter.di.dataWidth.Size));
+                return m.Load(rewriter.di.dataWidth, ea);
             }
             var post = operand as PostIncrementMemoryOperand;
             if (post != null)

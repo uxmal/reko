@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DisassembledInstruction.cs" />
     <Compile Include="FlagM.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="Disassembler.cs" />

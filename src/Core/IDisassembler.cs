@@ -23,7 +23,8 @@ using System;
 
 namespace Decompiler.Core
 {
-	public interface IDisassembler
+    [Obsolete("Get the Address from the MachineInstruction")]
+	public interface IDisassembler : System.Collections.IEnumerator
 	{
         Address Address { get; }
 

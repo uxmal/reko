@@ -36,7 +36,7 @@ namespace Decompiler.Arch.Z80
         private ProcessorState state;
         private Frame frame;
         private IRewriterHost host;
-        private IEnumerator<DisassembledInstruction> dasm;
+        private IEnumerator<Z80Instruction> dasm;
         private RtlEmitter emitter;
 
         public Z80Rewriter(Z80ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -45,50 +45,27 @@ namespace Decompiler.Arch.Z80
             this.state = state;
             this.frame = frame;
             this.host = host;
-            this.dasm = CreateDasmStream(rdr).GetEnumerator();
-        }
-
-        private class DisassembledInstruction
-        {
-            public Address Address;
-            public Z80Instruction Instruction;
-            public int Size;
-        }
-
-        private IEnumerable<DisassembledInstruction> CreateDasmStream(ImageReader rdr)
-        {
-            var d = new Z80Disassembler(rdr);
-            while (rdr.IsValid)
-            {
-                var addr = rdr.Address;
-                var instr = d.Disassemble();
-                yield return new DisassembledInstruction
-                {
-                    Address = addr,
-                    Instruction = instr,
-                    Size = rdr.Address  -addr,
-                };
-            }
+            this.dasm = new Z80Disassembler(rdr);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
             {
-                var rtlc = new RtlInstructionCluster(dasm.Current.Address, (byte) dasm.Current.Size);
+                var rtlc = new RtlInstructionCluster(dasm.Current.Address, (byte) dasm.Current.Length);
                 emitter = new RtlEmitter(rtlc.Instructions);
-                switch (dasm.Current.Instruction.Code)
+                switch (dasm.Current.Code)
                 {
                 default: throw new AddressCorrelatedException(
                     dasm.Current.Address,
                     "Rewriting of Z80 instruction {0} not implemented yet.",
-                    dasm.Current.Instruction.Code);
-                case Opcode.jp: RewriteJp(dasm.Current.Instruction); break;
+                    dasm.Current.Code);
+                case Opcode.jp: RewriteJp(dasm.Current); break;
                 case Opcode.ld: emitter.Assign(
-                    RewriteOp(dasm.Current.Instruction.Op1),
-                    RewriteOp(dasm.Current.Instruction.Op2));
+                    RewriteOp(dasm.Current.Op1),
+                    RewriteOp(dasm.Current.Op2));
                     break;
-                case Opcode.push: RewritePush(dasm.Current.Instruction); break;
+                case Opcode.push: RewritePush(dasm.Current); break;
                 }
                 yield return rtlc;
             }
