@@ -37,8 +37,6 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
         public override Address LoadAddress { get { return new Address(0x00100000); } }
 
-        public override int InstructionBitSize { get { return 32; } }
-
         private PowerPcInstruction DisassembleX(uint op, uint rs, uint ra, uint rb, uint xo, uint rc)
         {
             uint w =

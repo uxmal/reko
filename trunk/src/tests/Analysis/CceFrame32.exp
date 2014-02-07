@@ -30,7 +30,7 @@ l10000000:
 	Mem13[0x10003428:word16] = ax_10
 	return
 	// succ:  fn10000000_exit
-fn10000000_exit: 
+fn10000000_exit:
 
 Mem0:Global memory
     def:  def Mem0

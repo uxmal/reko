@@ -29,13 +29,11 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch
 {
-    abstract class ArchTestBase
+    abstract class ArchTestBase 
     {
         public abstract IProcessorArchitecture Architecture { get; }
 
         public abstract Address LoadAddress { get; }
-
-        public abstract int InstructionBitSize { get; }
 
         protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
@@ -77,9 +75,9 @@ namespace Decompiler.UnitTests.Arch
                     break;
                 }
             }
-            if (cBits != InstructionBitSize)
+            if (cBits != Architecture.InstructionBitSize)
                 throw new ArgumentException(
-                    string.Format("Bit pattern didn't contain exactly {0} binary digits, but {1}.", InstructionBitSize, cBits),
+                    string.Format("Bit pattern didn't contain exactly {0} binary digits, but {1}.", Architecture.InstructionBitSize, cBits),
                     "bitPattern");
             return instr;
         }

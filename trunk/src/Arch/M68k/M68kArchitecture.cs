@@ -81,7 +81,6 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-
         public FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
@@ -119,6 +118,8 @@ namespace Decompiler.Arch.M68k
         {
             get { throw new NotImplementedException(); }
         }
+
+        public int InstructionBitSize { get { return 16; } }
 
         private static RegisterStorage[] flagRegisters = {
             new RegisterStorage("C", 0, PrimitiveType.Bool),

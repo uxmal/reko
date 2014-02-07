@@ -138,6 +138,8 @@ namespace Decompiler.UnitTests.Mocks
 			get { return implicitRegs; }
 		}
 
+        public int InstructionBitSize { get { return 32; } }
+
 		public string RegisterToString(int reg)
 		{
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");

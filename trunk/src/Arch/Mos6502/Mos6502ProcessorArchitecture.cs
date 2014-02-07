@@ -60,7 +60,8 @@ namespace Decompiler.Arch.Mos6502
 
         public Frame CreateFrame()
         {
-            throw new NotImplementedException();
+            //$HM. The stack pointer is 8 bits on this processor.
+            return new Frame(PrimitiveType.Ptr16);
         }
 
         public RegisterStorage GetRegister(int i)
@@ -102,6 +103,8 @@ namespace Decompiler.Arch.Mos6502
         {
             get { throw new NotImplementedException(); }
         }
+
+        public int InstructionBitSize { get { return 8; } }
 
         public string GrfToString(uint grf)
         {

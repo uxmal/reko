@@ -103,10 +103,12 @@ namespace Decompiler.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public Core.Lib.BitSet ImplicitArgumentRegisters
+        public BitSet ImplicitArgumentRegisters
         {
             get { throw new NotImplementedException(); }
         }
+
+        public int InstructionBitSize { get { return 32; } }
 
         public string GrfToString(uint grf)
         {

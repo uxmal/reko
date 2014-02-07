@@ -114,6 +114,8 @@ namespace Decompiler.Arch.Sparc
             get { throw new NotImplementedException(); }
         }
 
+        public int InstructionBitSize { get { return 32; } }
+
         public string GrfToString(uint grf)
         {
             StringBuilder s = new StringBuilder();

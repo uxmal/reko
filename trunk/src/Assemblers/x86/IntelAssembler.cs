@@ -1405,6 +1405,11 @@ namespace Decompiler.Assemblers.x86
             ProcessShortBranch(0x0A, destination);
         }
 
+        public void Jpo(string destination)
+        {
+            ProcessShortBranch(0x0B, destination);
+        }
+
         public void Jz(string destination)
         {
             ProcessShortBranch(0x04, destination);

@@ -37,8 +37,6 @@ namespace Decompiler.UnitTests.Arch.Mips
 
         public override Address LoadAddress { get { return new Address(0x00100000); } }
 
-        public override int InstructionBitSize { get { return 32; } }
-
         protected override ImageWriter CreateImageWriter(byte[] bytes)
         {
             return new BeImageWriter(bytes);
