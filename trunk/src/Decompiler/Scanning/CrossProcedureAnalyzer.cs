@@ -436,4 +436,92 @@ namespace Decompiler.Scanning
             }
         }
     }
+
+    public class Crpa2
+    {
+        private IProcessorArchitecture arch;
+        private Program program;
+        private WorkList<Procedure> rescanList = new WorkList<Procedure>();
+
+        public Crpa2(IProcessorArchitecture arch, Program program)
+        {
+            this.arch = arch;
+            this.program = program;
+        }
+
+        public void Foo(Procedure proc)
+        {
+            Block entryBlock = proc.EntryBlock.Succ[0];
+            var visited = new HashSet<Block> { entryBlock };
+            var stack = new Stack<IEnumerator<Block>>();
+            stack.Push(entryBlock.Succ.GetEnumerator());
+            while (stack.Count > 0)
+            {
+                var e = stack.Pop();
+                if (!e.MoveNext())
+                    continue;
+                stack.Push(e);
+                var block = e.Current;
+                if (visited.Contains(block))
+                    continue;
+
+                var foreignPredecessors = block.Pred.Where(p => p.Procedure != proc).ToArray();
+                if (foreignPredecessors.Length > 0)
+                {
+                    throw new NotImplementedException();
+                    //Procedure procNew = EnsureProcedure(block, "ZLATAN");
+                    //rescanList.Add(procNew);
+                    //foreach (var p in foreignPredecessors)
+                    //{
+                    //    ConvertEdgeToCallRet(p, block, procNew);
+                    //}
+                }
+                else
+                {
+                    stack.Push(block.Succ.GetEnumerator());
+                }
+            }
+        }
+
+        private void ConvertEdgeToCallRet(Block from, Block to, Procedure procNew)
+        {
+            var blockCR = CreateCallRetThunk(to, from.Procedure, procNew);
+
+            to.Pred.Remove(from);
+            for (int s = 0; s < from.Succ.Count; ++s)
+            {
+                if (from.Succ[s] == to)
+                    from.Succ[s] = blockCR;
+            }
+        }
+
+        //$REVIEW: this came from Scanner.
+        private Procedure EnsureProcedure(Address addr, string procedureName)
+        {
+            Procedure proc;
+            if (!program.Procedures.TryGetValue(addr, out proc))
+            {
+                proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
+                program.Procedures.Add(addr, proc);
+                program.CallGraph.AddProcedure(proc);
+            }
+            return proc;
+        }
+
+
+        private Block CreateCallRetThunk(Block block, Procedure procOld, Procedure procNew)
+        {
+            var blockCR = procOld.AddBlock(block.Name + Scanner.CallRetThunkSuffix);
+            blockCR.Statements.Add(
+                0, 
+                new CallInstruction(
+                    new ProcedureConstant(program.Architecture.PointerType, procNew),
+                    new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
+            blockCR.Statements.Add(
+                0, 
+                new ReturnInstruction());
+            program.CallGraph.AddEdge(blockCR.Statements.Last, procNew);
+            return blockCR;
+        }
+    }
 }

@@ -60,7 +60,7 @@ namespace Decompiler.Arch.Z80
 
         public Frame CreateFrame()
         {
-            throw new NotImplementedException();
+            return new Frame(PrimitiveType.Ptr16);
         }
 
         public RegisterStorage GetRegister(int i)

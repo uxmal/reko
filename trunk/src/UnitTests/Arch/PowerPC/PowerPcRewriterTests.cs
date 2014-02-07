@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|01000000(4): 1 instructions",
-                "1|r4 = r0 | 0x12340000");
+                "1|L--|r4 = r0 | 0x12340000");
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|01000000(4): 1 instructions",
-                "1|r4 = r1 + r3");
+                "1|L--|r4 = r1 + r3");
         }
 
         [Test]
@@ -86,8 +86,8 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|01000000(4): 2 instructions",
-                "1|r4 = r1 + r3",
-                "2|SCZO = cond(r4)");
+                "1|L--|r4 = r1 + r3",
+                "2|L--|SCZO = cond(r4)");
         }
 
         [Test]
@@ -99,8 +99,8 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|01000000(4): 2 instructions",
-                "1|r2 = Mem0[r1 + 4:word32]",
-                "2|r1 = r1 + 4"
+                "1|L--|r2 = Mem0[r1 + 4:word32]",
+                "2|L--|r1 = r1 + 4"
                 );
         }
 
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|01000000(4): 1 instructions",
-                "1|r2 = Mem0[0xFFFFFFFC:word32]"
+                "1|L--|r2 = Mem0[0xFFFFFFFC:word32]"
                 );
         }
         [Test]
@@ -125,8 +125,8 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|01000000(4): 2 instructions",
-                "1|Mem0[r3 + 18:byte] = (byte) r2",
-                "2|r3 = r3 + 18"
+                "1|L--|Mem0[r3 + 18:byte] = (byte) r2",
+                "2|L--|r3 = r3 + 18"
                 );
         }
 
@@ -139,10 +139,9 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             });
             AssertCode(
                 "0|01000000(4): 2 instructions",
-                "1|Mem0[r3 + r0:byte] = (byte) r2",
-                "2|r3 = r3 + r0"
+                "1|L--|Mem0[r3 + r0:byte] = (byte) r2",
+                "2|L--|r3 = r3 + r0"
                 );
         }
     }
 }
-

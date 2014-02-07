@@ -35,7 +35,14 @@ namespace Decompiler.Core.Serialization
 
         public Project LoadProject(Project_v2 sp)
         {
-            throw new NotImplementedException();
+            var inputFiles = sp.Inputs.Select(s => new InputFile
+            {
+                BaseAddress = Address.ToAddress(s.Address, 16),
+                Filename = s.Filename,
+            });
+            var project = new Project();
+            project.InputFiles.AddRange(inputFiles);
+            return project;
         }
 
         public Project LoadProject(SerializedProject_v1 sp)

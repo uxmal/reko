@@ -187,8 +187,6 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("r3 = r2", instr3.ToString());
             Assert.AreEqual("<invalid>", ctx.GetValue(r2).ToString());
             Assert.AreEqual("<invalid>", ctx.GetValue(r3).ToString());
-
-
         }
     }
 }

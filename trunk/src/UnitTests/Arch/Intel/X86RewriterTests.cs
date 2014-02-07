@@ -33,7 +33,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
-    public partial class X86RewriterTests
+    public partial class X86RewriterTests 
     {
         private IntelArchitecture arch;
         private IntelArchitecture arch32;

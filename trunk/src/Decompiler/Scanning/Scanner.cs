@@ -277,7 +277,7 @@ namespace Decompiler.Scanning
             }
         }
 
-        public void EnqueueVectorTable(Address addrFrom, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
+        public void EnqueueVectorTable(Address addrFrom, Address addrTable, PrimitiveType elemSize, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
         {
             ImageMapVectorTable table;
             if (vectors.TryGetValue(addrTable, out table))
@@ -286,7 +286,7 @@ namespace Decompiler.Scanning
             table = new ImageMapVectorTable(addrTable, calltable);
             var wi = new VectorWorkItem(this, table, proc);
             wi.State = state.Clone();
-            wi.Stride = stride;
+            wi.Stride = elemSize;
             wi.SegBase = segBase;
             wi.Table = table;
             wi.AddrFrom = addrFrom;

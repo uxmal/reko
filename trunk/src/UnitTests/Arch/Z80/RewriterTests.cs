@@ -32,14 +32,34 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Z80
 {
     [TestFixture]
-    public class RewriterTests
+    class RewriterTests : RewriterTestBase
     {
         private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture();
         private Address baseAddr = new Address(0x0100);
         private Z80ProcessorState state;
         private IRewriterHost host;
-        private IEnumerator<RtlInstructionCluster> e;
         private MockRepository repository;
+        private LoadedImage image;
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        {
+            return new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+        }
+
+        public override int InstructionBitSize
+        {
+            get { return 8; }
+        }
+
+        public override Address LoadAddress
+        {
+            get { return baseAddr; }
+        }
 
         [SetUp]
         public void Setup()
@@ -49,30 +69,10 @@ namespace Decompiler.UnitTests.Arch.Z80
             host = repository.StrictMock<IRewriterHost>();
         }
 
-        private void AssertCode(params string[] expected)
-        {
-            int i = 0;
-            while (i < expected.Length && e.MoveNext())
-            {
-                Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, e.Current));
-                ++i;
-                var ee = e.Current.Instructions.GetEnumerator();
-                while (i < expected.Length && ee.MoveNext())
-                {
-                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));
-                    ++i;
-                }
-            }
-            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.");
-            Assert.IsFalse(e.MoveNext(), "More instructions were emitted than were expected.");
-        }
-
-        
         private void BuildTest(params byte[] bytes)
         {
             repository.ReplayAll();
-            var image = new LoadedImage(baseAddr, bytes);
-            e = new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host).GetEnumerator();
+            image = new LoadedImage(baseAddr, bytes);
         }
 
         [Test]

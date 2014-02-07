@@ -206,6 +206,5 @@ namespace Decompiler.UnitTests.Core.Serialization
             var project = ser.LoadProject(sProject);
             Assert.AreEqual(2, project.InputFiles.Count);
         }
-
 	}
 }

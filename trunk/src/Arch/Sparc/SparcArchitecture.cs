@@ -71,7 +71,7 @@ namespace Decompiler.Arch.Sparc
 
         public Frame CreateFrame()
         {
-            throw new NotImplementedException();
+            return new Frame(pointerType);
         }
 
         public RegisterStorage GetRegister(int i)
