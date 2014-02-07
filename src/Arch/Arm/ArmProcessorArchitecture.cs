@@ -76,7 +76,7 @@ namespace Decompiler.Arch.Arm
 
         public Frame CreateFrame()
         {
-            throw new NotImplementedException();
+            return new Frame(FramePointerType);
         }
 
         public RegisterStorage GetRegister(int i)
@@ -113,6 +113,8 @@ namespace Decompiler.Arch.Arm
         {
             throw new NotImplementedException();
         }
+
+        public int InstructionBitSize { get { return 32; } }
 
         public BitSet ImplicitArgumentRegisters
         {

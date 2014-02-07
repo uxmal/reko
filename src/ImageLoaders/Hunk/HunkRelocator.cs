@@ -58,7 +58,6 @@ namespace Decompiler.ImageLoaders.Hunk
 
         public byte[] Relocate(List<uint> addr)
         {
-            throw new NotImplementedException();
             var datas = new System.IO.MemoryStream();
             foreach (Segment segment in this.hunk_file.segments)
             {

@@ -40,8 +40,6 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
         public override Address LoadAddress { get { return new Address(0x00100000); } }
 
-        public override int InstructionBitSize { get { return 32; } }
-
         private void RunTest(Action<InstructionBuilder> m)
         {
             b = new InstructionBuilder(new Address(0x01000000));

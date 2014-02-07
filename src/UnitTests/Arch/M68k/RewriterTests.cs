@@ -44,11 +44,6 @@ namespace Decompiler.UnitTests.Arch.M68k
             get { return arch; }
         }
 
-        public override int InstructionBitSize
-        {
-            get { return 16; }
-        }
-
         public override Address LoadAddress
         {
             get { return addrBase; }

@@ -189,6 +189,8 @@ namespace Decompiler.Arch.X86
 			get { return implicitRegs; }
 		}
 
+        public int InstructionBitSize { get { return 8; } }
+
 		public string GrfToString(uint grf)
 		{
 			StringBuilder s = new StringBuilder();

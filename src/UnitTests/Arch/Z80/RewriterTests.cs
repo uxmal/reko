@@ -51,11 +51,6 @@ namespace Decompiler.UnitTests.Arch.Z80
             return new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 
-        public override int InstructionBitSize
-        {
-            get { return 8; }
-        }
-
         public override Address LoadAddress
         {
             get { return baseAddr; }

@@ -48,11 +48,6 @@ namespace Decompiler.UnitTests.Arch.Mos6502
             return new Rewriter(arch, image.CreateReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType));
         }
 
-        public override int InstructionBitSize
-        {
-            get { return 8; }
-        }
-
         public override Address LoadAddress
         {
             get { return addrBase; }
@@ -67,18 +62,20 @@ namespace Decompiler.UnitTests.Arch.Mos6502
         public void Rw6502_tax()
         {
             BuildTest(0xAA);
-            AssertCode("0|00000200(1): 2 instructions",
-                "1|x = a",
-                "2|NZ = cond(x)");
+            AssertCode(
+                "0|00000200(1): 2 instructions",
+                "1|L--|x = a",
+                "2|L--|NZ = cond(x)");
         }
 
         [Test]
         public void Rw6502_sbc()
         {
             BuildTest(0xF1, 0xE0);
-            AssertCode("0|00000200(2): 2 instructions",
-                "1|a = a - Mem0[Mem0[0x00E0:ptr16] + (uint16) y:byte] - !C",
-                "2|NVZC = cond(a)");
+            AssertCode(
+                "0|00000200(2): 2 instructions",
+                "1|L--|a = a - Mem0[Mem0[0x00E0:ptr16] + (uint16) y:byte] - !C",
+                "2|L--|NVZC = cond(a)");
         }
     }
 }

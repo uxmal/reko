@@ -29,11 +29,24 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Arm
 {
     [TestFixture]
-    public class AArch64DisassemblerTests : ArmTestBase
+    class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
-        protected override IProcessorArchitecture CreateArchitecture()
+        private IProcessorArchitecture arch = new AArch64();
+        private Address baseAddress = new Address(0x00100000);
+
+        public override IProcessorArchitecture Architecture
         {
-            return new AArch64();
+            get { return arch; }
+        }
+
+        protected override ImageWriter CreateImageWriter(byte[] bytes)
+        {
+            return new LeImageWriter(bytes);
+        }
+
+        public override Address LoadAddress
+        {
+            get { return baseAddress; }
         }
 
         [Test]
@@ -88,14 +101,14 @@ namespace Decompiler.UnitTests.Arch.Arm
         [Test]
         public void Arm64_and_Wn_imm()
         {
-            var instr = Disassemble(0x120F3041);
+            var instr = DisassembleWord(0x120F3041);
             Assert.AreEqual("and\tw1,w2,3FFE0000", instr.ToString());
         }
 
         [Test]
         public void Arm64_and_Xn_imm()
         {
-            var instr = Disassemble(0x920F3041);
+            var instr = DisassembleWord(0x920F3041);
             Assert.AreEqual("and\tx1,x2,3FFE00003FFE0000", instr.ToString());
         }
 

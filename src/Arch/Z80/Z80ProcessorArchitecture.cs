@@ -103,6 +103,8 @@ namespace Decompiler.Arch.Z80
             get { throw new NotImplementedException(); }
         }
 
+        public int InstructionBitSize { get { return 32; } }
+
         public string GrfToString(uint grf)
         {
             throw new NotImplementedException();

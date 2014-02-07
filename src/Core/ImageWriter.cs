@@ -126,6 +126,11 @@ namespace Decompiler.Core
 
     public class LeImageWriter : ImageWriter
     {
+        public LeImageWriter()
+            : base()
+        {
+        }
+
         public LeImageWriter(byte [] image) :base(image)
         {
         }

@@ -49,11 +49,6 @@ namespace Decompiler.UnitTests.Arch.Sparc
             get { return arch; }
         }
 
-        public override int InstructionBitSize
-        {
-            get { return 32; }
-        }
-
         public override Address LoadAddress
         {
             get { return baseAddr; }

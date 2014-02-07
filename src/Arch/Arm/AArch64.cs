@@ -19,9 +19,11 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +88,7 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, Core.Types.DataType dataType)
+        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -101,22 +103,24 @@ namespace Decompiler.Arch.Arm
             get { throw new NotImplementedException(); }
         }
 
+        public int InstructionBitSize { get { return 32; } }
+
         public string GrfToString(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public Core.Types.PrimitiveType FramePointerType
+        public PrimitiveType FramePointerType
         {
             get { throw new NotImplementedException(); }
         }
 
-        public Core.Types.PrimitiveType PointerType
+        public PrimitiveType PointerType
         {
             get { throw new NotImplementedException(); }
         }
 
-        public Core.Types.PrimitiveType WordWidth
+        public PrimitiveType WordWidth
         {
             get { throw new NotImplementedException(); }
         }

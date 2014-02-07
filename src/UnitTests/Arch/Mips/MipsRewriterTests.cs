@@ -39,8 +39,6 @@ namespace Decompiler.UnitTests.Arch.Mips
 
         public override Address LoadAddress { get { return new Address(0x00100000); } }
 
-        public override int InstructionBitSize { get { return 32; } }
-
         private void RunTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
