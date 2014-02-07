@@ -626,7 +626,7 @@ namespace Decompiler.Scanning
             return (PseudoProcedure)scanner.GetImportedProcedure(offset.ToUInt32());
         }
 
-        //$TODO: merge these?
+        //$TODO: merge the followng two procedures?
         private void AffectProcessorState(ProcedureSignature sig)
         {
             TrashVariable(sig.ReturnValue);
@@ -706,7 +706,5 @@ namespace Decompiler.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
             }
         }
-
-
     }
 }

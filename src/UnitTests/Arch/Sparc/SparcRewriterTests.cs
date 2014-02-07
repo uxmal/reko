@@ -34,14 +34,35 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Sparc
 {
     [TestFixture]
-    public class SparcRewriterTests
+    class SparcRewriterTests : RewriterTestBase 
     {
         private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
+        private LoadedImage image;
         private Address baseAddr = new Address(0x00100000);
         private SparcProcessorState state;
         private IRewriterHost host;
         private IEnumerator<RtlInstructionCluster> e;
         private MockRepository repository;
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public override int InstructionBitSize
+        {
+            get { return 32; }
+        }
+
+        public override Address LoadAddress
+        {
+            get { return baseAddr; }
+        }
+
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        {
+            return new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+        }
 
         [SetUp]
         public void Setup()
@@ -49,24 +70,6 @@ namespace Decompiler.UnitTests.Arch.Sparc
             state = (SparcProcessorState) arch.CreateProcessorState();
             repository = new MockRepository();
             host = repository.StrictMock<IRewriterHost>();
-        }
-
-        private void AssertCode( params string[] expected)
-        {
-            int i = 0;
-            while (i < expected.Length && e.MoveNext())
-            {
-                Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, e.Current));
-                ++i;
-                var ee = e.Current.Instructions.GetEnumerator();
-                while (i < expected.Length && ee.MoveNext())
-                {
-                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));
-                    ++i;
-                }
-            }
-            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.");
-            Assert.IsFalse(e.MoveNext(), "More instructions were emitted than were expected.");
         }
 
         private void BuildTest(params uint[] words)
@@ -79,7 +82,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
                 (byte) (w >> 8),
                 (byte) w
             }).ToArray();
-            var image = new LoadedImage(baseAddr, bytes);
+            image = new LoadedImage(baseAddr, bytes);
             e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host).GetEnumerator();
         }
 

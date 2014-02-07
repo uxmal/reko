@@ -47,12 +47,12 @@ namespace Decompiler.Core
         /// Adds an item to the work list, but only if it isn't there already.
         /// </summary>
         /// <param name="t"></param>
-		public void Add(T  t)
+		public void Add(T item)
 		{
-			if (!inQ.Contains(t))
+			if (!inQ.Contains(item))
 			{
-				q.Enqueue(t);
-				inQ.Add(t);
+				q.Enqueue(item);
+				inQ.Add(item);
 			}
 		}
 

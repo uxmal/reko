@@ -20,6 +20,8 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +36,32 @@ namespace Decompiler.UnitTests.Arch
         public abstract Address LoadAddress { get; }
 
         public abstract int InstructionBitSize { get; }
-        
+
+        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        {
+            yield break;
+        }
+
+        protected void AssertCode(params string[] expected)
+        {
+            int i = 0;
+            var frame = Architecture.CreateFrame();
+            var rewriter = GetInstructionStream(frame).GetEnumerator();
+            while (i < expected.Length && rewriter.MoveNext())
+            {
+                Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, rewriter.Current));
+                ++i;
+                var ee = rewriter.Current.Instructions.GetEnumerator();
+                while (i < expected.Length && ee.MoveNext())
+                {
+                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));
+                    ++i;
+                }
+            }
+            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.");
+            Assert.IsFalse(rewriter.MoveNext(), "More instructions were emitted than were expected.");
+        }
+
         public uint ParseBitPattern(string bitPattern)
         {
             int cBits = 0;

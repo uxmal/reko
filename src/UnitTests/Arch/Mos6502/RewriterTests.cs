@@ -31,37 +31,36 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Mos6502
 {
     [TestFixture]
-    public class RewriterTests
+    class RewriterTests : RewriterTestBase
     {
         private IEnumerator<RtlInstructionCluster> eCluster;
+        private Mos6502ProcessorArchitecture arch = new Mos6502ProcessorArchitecture();
+        private LoadedImage image;
+        private Address addrBase = new Address(0x0200);
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        {
+            return new Rewriter(arch, image.CreateReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType));
+        }
+
+        public override int InstructionBitSize
+        {
+            get { return 8; }
+        }
+
+        public override Address LoadAddress
+        {
+            get { return addrBase; }
+        }
 
         private void BuildTest(params byte[] bytes)
         {
-            var arch = new Mos6502ProcessorArchitecture();
-            var image = new LoadedImage(new Address(0x200), bytes);
-            var rdr = new LeImageReader(image, 0);
-            var dasm = new Disassembler(rdr);
-            var rewriter = new Rewriter(arch, image.CreateReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType));
-            eCluster = rewriter.GetEnumerator();
-        }
-
-        private void AssertCode(params string[] expected)
-        {
-            int i = 0;
-            var e = eCluster;
-            while (i < expected.Length && e.MoveNext())
-            {
-                Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, e.Current));
-                ++i;
-                var ee = e.Current.Instructions.GetEnumerator();
-                while (i < expected.Length && ee.MoveNext())
-                {
-                    Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, ee.Current));
-                    ++i;
-                }
-            }
-            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions but saw " + i + ".");
-            Assert.IsFalse(e.MoveNext(), "More instructions were emitted than were expected.");
+            image = new LoadedImage(new Address(0x200), bytes);
         }
 
         [Test]

@@ -97,6 +97,17 @@ fn00001001_exit:
             Assert.AreEqual(sExp, sw.ToString());
         }
 
+        [Test]
+        public void Crpa2()
+        {
+            var prog = Given_CrossJump_Prog();
+            var crpa = new Crpa2(prog.Architecture, prog);
+            foreach (var p in prog.Procedures.Values)
+            {
+                crpa.Foo(p);
+            }
+        }
+
         private Program Given_Simple_Proc()
         {
             var b = new ProgramBuilder();

@@ -48,31 +48,5 @@ namespace Decompiler.UnitTests.Arch
         {
             return null;
         }
-
-        public void AssertCode(params string[] s)
-        {
-            int i = 0;
-            var frame = Architecture.CreateFrame();
-            var rewriter = GetInstructionStream(frame);
-            foreach (var instr in rewriter)
-            {
-                var str = string.Format("{0}|{1}", i, instr);
-                Assert.AreEqual(s[i], str);
-                ++i;
-                foreach (var rtl in instr.Instructions)
-                {
-                    str = string.Format("{0}|{1}", i, rtl);
-                    Assert.AreEqual(s[i], str);
-                    ++i;
-                }
-            }
-            if (s.Length > i)
-                Assert.Fail("Not enough expected statements");
-        }
-
-        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
-        {
-            yield break;
-        }
     }
 }
