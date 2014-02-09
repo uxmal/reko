@@ -58,7 +58,7 @@ namespace Decompiler.Arch.Arm
             while (instrs.MoveNext())
             {
                 this.instr = instrs.Current;
-                this.ric = new RtlInstructionCluster(instr.Address, (byte)instr.Length);
+                this.ric = new RtlInstructionCluster(instr.Address, instr.Length);
                 this.emitter = new RtlEmitter(ric.Instructions);
                 switch (instr.Opcode)
                 {

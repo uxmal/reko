@@ -41,6 +41,15 @@ namespace Decompiler.Arch.Pdp11
         public static RegisterStorage pc = new RegisterStorage("pc", 7, PrimitiveType.Word16);
     }
 
+    [Flags]
+    public enum FlagM
+    {
+        NF = 1,
+        ZF = 2,
+        VF = 4,
+        CF = 8,
+    }
+
     public class Pdp11Architecture : IProcessorArchitecture
     {
         private RegisterStorage[] regs;

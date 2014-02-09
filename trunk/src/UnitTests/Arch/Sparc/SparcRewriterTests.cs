@@ -37,11 +37,10 @@ namespace Decompiler.UnitTests.Arch.Sparc
     class SparcRewriterTests : RewriterTestBase 
     {
         private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
-        private LoadedImage image;
         private Address baseAddr = new Address(0x00100000);
         private SparcProcessorState state;
         private IRewriterHost host;
-        private IEnumerator<RtlInstructionCluster> e;
+        private IEnumerable<RtlInstructionCluster> e;
         private MockRepository repository;
 
         public override IProcessorArchitecture Architecture
@@ -56,7 +55,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
-            return new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+            return e;
         }
 
         [SetUp]
@@ -77,13 +76,13 @@ namespace Decompiler.UnitTests.Arch.Sparc
                 (byte) (w >> 8),
                 (byte) w
             }).ToArray();
-            image = new LoadedImage(baseAddr, bytes);
-            e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host).GetEnumerator();
+            var image = new LoadedImage(LoadAddress, bytes);
+            e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 
         private void BuildTest(params SparcInstruction[] instrs)
         {
-            var addr = new Address(0x00100000);
+            var addr = LoadAddress;
             var exts = instrs
                 .Select(i =>
                 {
@@ -92,7 +91,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
                     addr += 4;
                     return i;
                 });
-            e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host).GetEnumerator();
+            e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host);
         }
 
         private SparcInstruction Instr(Opcode opcode, params object[] ops)

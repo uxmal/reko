@@ -67,6 +67,8 @@ namespace Decompiler.Scanning
         Block SplitBlock(Block block, Address addr);
 
         ImageReader CreateReader(Address addr);
+
+        Block CreateCallRetThunk(Procedure procOld, Procedure ProcNew);
     }
 
     /// <summary>
@@ -98,6 +100,7 @@ namespace Decompiler.Scanning
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
         private const int PriorityVector = 7;
+        private const int PriorityBlockPromote = 8;
 
         public Scanner(
             Program program, 
@@ -230,6 +233,18 @@ namespace Decompiler.Scanning
                 addrStart);
         }
 
+
+        public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
+        {
+            return new PromoteBlockWorkItem
+            {
+                Address = addrStart,
+                Block = block,
+                ProcNew = procNew,
+                Scanner = this,
+            };
+        }
+
         public void EnqueueEntryPoint(EntryPoint ep)
         {
             queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, ep));
@@ -237,9 +252,11 @@ namespace Decompiler.Scanning
 
         public Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
+            Procedure procDest;
             Block block = FindExactBlock(addrStart);
             if (block == null)
             {
+                // Target wasn't a block before. Make sure it exists.
                 block = FindContainingBlock(addrStart);
                 if (block != null)
                 {
@@ -249,10 +266,85 @@ namespace Decompiler.Scanning
                 {
                     block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
                 }
-                var wi = CreateBlockWorkItem(addrStart, proc, state);
-                queue.Enqueue(PriorityJumpTarget, wi);
+
+                if (proc == block.Procedure)
+                {
+                    // Easy case: split a block in our own procedure.
+                    var wi = CreateBlockWorkItem(addrStart, proc, state);
+                    queue.Enqueue(PriorityJumpTarget, wi);
+                }
+                else if (IsBlockLinearProcedureExit(block))
+                {
+                    block = CloneBlockIntoOtherProcedure(block, proc);
+                }
+                else
+                {
+                    // We just created a block in a foreign procedure. 
+                    procDest = EnsureProcedure(addrStart, null);
+                    block = CreateCallRetThunk(proc, procDest);
+                    var wi = CreatePromoteWorkItem(addrStart, block, procDest);
+                    queue.Enqueue(PriorityBlockPromote, wi);
+                }
+            }
+            else if (block.Procedure != proc)
+            {
+                if (program.Procedures.TryGetValue(addrStart, out procDest))
+                {
+                    if (procDest == proc)
+                    {
+                        var wi = CreatePromoteWorkItem(addrStart, block, procDest);
+                        queue.Enqueue(PriorityBlockPromote, wi);
+                    }
+                    else
+                    {
+                        block = CreateCallRetThunk(proc, procDest);
+                    }
+                }
+                else if (IsBlockLinearProcedureExit(block))
+                {
+                    block = CloneBlockIntoOtherProcedure(block, proc);
+                }
+                else
+                {
+                    // We jumped into a pre-existing block of another procedure.
+                    procDest = EnsureProcedure(addrStart, null);
+                    block = CreateCallRetThunk(proc, procDest);
+                    var wi = CreatePromoteWorkItem(addrStart, block, procDest);
+                    queue.Enqueue(PriorityBlockPromote, wi);
+                }
             }
             return block;
+        }
+
+        public bool IsBlockLinearProcedureExit(Block block)
+        {
+            if (block.Statements.Count == 0)
+                return false;
+            return block.Statements.Last.Instruction is ReturnInstruction;
+        }
+
+        private Block CloneBlockIntoOtherProcedure(Block block, Procedure proc)
+        {
+            Debug.Print("Cloning {0} to {1}", block.Name, proc);
+            var clonedBlock = new BlockCloner(block, proc, program.CallGraph).Execute();
+            //ReplaceSuccessorsWith(pred, block, clonedBlock);
+            //pred.Procedure.ControlGraph.Blocks.Remove(block);
+            return clonedBlock;
+        }
+
+        public Block CreateCallRetThunk(Procedure procOld, Procedure procNew)
+        {
+            var blockName = string.Format(
+                "{0}_thunk_{1}", 
+                procOld.Name.Replace("fn", "l"),
+                procNew.Name);
+            var callRetThunkBlock = procOld.AddBlock(blockName);
+            callRetThunkBlock.Statements.Add(0, new CallInstruction(
+                    new ProcedureConstant(program.Architecture.PointerType, procNew),
+                    new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
+            program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
+            callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
+            return callRetThunkBlock;
         }
 
         /// <summary>
@@ -359,8 +451,6 @@ namespace Decompiler.Scanning
             }
         }
 
-        public const string CallRetThunkSuffix = "_tmp";
-
         public Block FindContainingBlock(Address address)
         {
             BlockRange b;
@@ -428,7 +518,6 @@ namespace Decompiler.Scanning
             {
                 stm.Block = blockNew;
             }
-
             blocks[blockStarts[blockToSplit]].End = linAddr;
             return blockNew;
         }
@@ -440,18 +529,6 @@ namespace Decompiler.Scanning
         public void ScanImage()
         {
             ProcessQueue();
-            HandleCrossProcedureJumps();
-        }
-
-        private void HandleCrossProcedureJumps()
-        {
-            CrossProcedureAnalyzer crpa = new CrossProcedureAnalyzer(program);
-            crpa.Analyze(program);
-            Dump("Blocks needing promotion", crpa.BlocksNeedingPromotion);
-            Dump("Blocks needing cloning", crpa.BlocksNeedingCloning);
-            crpa.PromoteBlocksToProcedures(crpa.BlocksNeedingPromotion);
-            crpa.CloneBlocksIntoOtherProcedures(crpa.BlocksNeedingCloning);
-            crpa.ReplaceCrossJumpsWithCalls(program);
         }
 
         [Conditional("DEBUG")]

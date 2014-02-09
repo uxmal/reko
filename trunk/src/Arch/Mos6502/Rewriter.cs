@@ -61,7 +61,7 @@ namespace Decompiler.Arch.Mos6502
             while (instrs.MoveNext())
             {
                 this.instrCur = instrs.Current;
-                this.ric = new RtlInstructionCluster(instrCur.Address, (byte) instrCur.Length);
+                this.ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
                 this.emitter = new RtlEmitter(ric.Instructions);
                 switch (instrCur.Code)
                 {

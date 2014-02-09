@@ -14,12 +14,12 @@ void fn0C00_0007(word16 cx, selector ds)
 fn0C00_0007_entry:
 	// succ:  l0C00_0007
 l0C00_0007:
-	word16 di_11 = 0x5388
+	word16 di_12 = 0x5388
 	// succ:  l0C00_000A
 l0C00_000A:
 	fn0C00_003D(Mem0[ds:di_12 + 0x0000:word16], 0x2D, ds)
 	di_12 = di_12 + 0x0002
-	cx = cx - 0x0001
+	cx = cx_28 - 0x0001
 	branch cx != 0x0000 l0C00_000A
 	// succ:  l0C00_001C l0C00_000A
 l0C00_001C:

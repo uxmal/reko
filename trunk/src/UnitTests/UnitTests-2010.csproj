@@ -125,6 +125,7 @@
     <Compile Include="Arch\Mos6502\DisassemblerTests.cs" />
     <Compile Include="Arch\Mos6502\RewriterTests.cs" />
     <Compile Include="Arch\Pdp11\DisassemblerTests.cs" />
+    <Compile Include="Arch\Pdp11\RewriterTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\RewriterTestBase.cs" />
@@ -365,13 +366,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
-    <Compile Include="Scanning\CrossProcedureAnalyzerTests.cs" />
     <Compile Include="Scanning\Dfa\DfaBuilderTests.cs" />
     <Compile Include="Scanning\Dfa\AutomatonTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
+    <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />

@@ -71,7 +71,7 @@ namespace Decompiler.Arch.X86
             while (dasm.MoveNext())
             {
                 instrCur = dasm.Current;
-                ric = new RtlInstructionCluster(instrCur.Address, (byte)instrCur.Length);
+                ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
                 emitter = new RtlEmitter(ric.Instructions);
                 orw = new OperandRewriter(arch, frame, host);
                 switch (instrCur.code)

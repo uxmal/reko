@@ -52,7 +52,7 @@ namespace Decompiler.Arch.Z80
         {
             while (dasm.MoveNext())
             {
-                var rtlc = new RtlInstructionCluster(dasm.Current.Address, (byte) dasm.Current.Length);
+                var rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
                 emitter = new RtlEmitter(rtlc.Instructions);
                 switch (dasm.Current.Code)
                 {

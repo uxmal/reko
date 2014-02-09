@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Arch.M68k;
 using NUnit.Framework;
 using System;
@@ -52,6 +53,13 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             byte[] bytes = words.SelectMany(w => new byte[] { (byte) (w >> 8), (byte) w }).ToArray();
             return CreateDasm(bytes, 0x10000000);
+        }
+
+        public MachineInstruction Disassemble()
+        {
+            if (dasm.MoveNext())
+                return dasm.Current;
+            return null;
         }
 
         [Test]
@@ -136,7 +144,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void Addal()
         {
             dasm = CreateDasm(0xDBDC);
-            Assert.AreEqual("adda.l\t(a4)+,a5", dasm.Disassemble().ToString());
+            Assert.AreEqual("adda.l\t(a4)+,a5", Disassemble().ToString());
         }
 
         [Test]
@@ -185,12 +193,12 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void ManyMoves()
         {
             dasm = CreateDasm(new byte[] { 0x20, 0x00, 0x20, 0x27, 0x20, 0x40, 0x20, 0x67, 0x20, 0x80, 0x21, 0x40, 0x00, 0x00 }, 0x10000000);
-            Assert.AreEqual("move.l\td0,d0", dasm.Disassemble().ToString());
-            Assert.AreEqual("move.l\t-(a7),d0", dasm.Disassemble().ToString());
-            Assert.AreEqual("movea.l\td0,a0", dasm.Disassemble().ToString());
-            Assert.AreEqual("movea.l\t-(a7),a0", dasm.Disassemble().ToString());
-            Assert.AreEqual("move.l\td0,(a0)", dasm.Disassemble().ToString());
-            Assert.AreEqual("move.l\td0,$0000(a0)", dasm.Disassemble().ToString());
+            Assert.AreEqual("move.l\td0,d0", Disassemble().ToString());
+            Assert.AreEqual("move.l\t-(a7),d0", Disassemble().ToString());
+            Assert.AreEqual("movea.l\td0,a0", Disassemble().ToString());
+            Assert.AreEqual("movea.l\t-(a7),a0", Disassemble().ToString());
+            Assert.AreEqual("move.l\td0,(a0)", Disassemble().ToString());
+            Assert.AreEqual("move.l\td0,$0000(a0)", Disassemble().ToString());
         }
 
         [Test]
@@ -204,22 +212,22 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void Eor()
         {
             dasm = CreateDasm(0xB103, 0xB143, 0xB183);
-            Assert.AreEqual("eor.b\td0,d3", dasm.Disassemble().ToString());
-            Assert.AreEqual("eor.w\td0,d3", dasm.Disassemble().ToString());
-            Assert.AreEqual("eor.l\td0,d3", dasm.Disassemble().ToString());
+            Assert.AreEqual("eor.b\td0,d3", Disassemble().ToString());
+            Assert.AreEqual("eor.w\td0,d3", Disassemble().ToString());
+            Assert.AreEqual("eor.l\td0,d3", Disassemble().ToString());
         }
 
         [Test]
         public void Bcs()
         {
             dasm = CreateDasm(0x6572);
-            Assert.AreEqual("bcs\t$10000074", dasm.Disassemble().ToString());
+            Assert.AreEqual("bcs\t$10000074", Disassemble().ToString());
         }
 
         private void RunTest(string expected, params ushort[] words)
         {
             dasm = CreateDasm(words);
-            Assert.AreEqual(expected, dasm.Disassemble().ToString());
+            Assert.AreEqual(expected, Disassemble().ToString());
         }
 
         [Test]

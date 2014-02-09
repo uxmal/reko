@@ -197,7 +197,7 @@ namespace Decompiler.Scanning
             var proc = blockCur.Procedure;
             var fallthruAddress = ric.Address + ric.Length;
 
-            var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, state.Clone());
+            var blockThen = BlockFromAddress(b.Target, proc, state.Clone());
 
             var blockElse = FallthroughBlock(proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
@@ -219,7 +219,7 @@ namespace Decompiler.Scanning
             var fallthruAddress = ric.Address + ric.Length;
 
             var blockInstr = AddIntraStatementBlock(proc);
-            var blockFollow = scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+            var blockFollow = BlockFromAddress(fallthruAddress, proc, state);
 
             blockCur = blockInstr;
             rtlIf.Instruction.Accept(this);
@@ -232,6 +232,11 @@ namespace Decompiler.Scanning
 
             blockCur = blockFollow;
             return true;
+        }
+
+        private Block BlockFromAddress(Address addr, Procedure proc, ProcessorState state)
+        {
+            return scanner.EnqueueJumpTarget(addr, proc, state);
         }
 
         private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
@@ -247,7 +252,7 @@ namespace Decompiler.Scanning
             if (addrTarget != null)
             {
                 Debug.Print("Enqueueing jump target {0}", addrTarget);
-                var blockTarget = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
+                var blockTarget = BlockFromAddress(addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
                 return false;
@@ -426,7 +431,7 @@ namespace Decompiler.Scanning
             return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
             // This would have to be arch-dependent + platform-dependent as some arch pass
             // on stack, while others pass in registers, or a combination or both
-            // (" xthiscall" in x86 µsoft world).
+            // ("thiscall" in x86 µsoft world).
         }
 
         public bool ProcessAlloca(CallSite site, PseudoProcedure impProc)
@@ -515,7 +520,7 @@ namespace Decompiler.Scanning
                 }
                 else
                 {
-                    scanner.EnqueueJumpTarget(addr, blockCur.Procedure, state);
+                    BlockFromAddress(addr, blockCur.Procedure, state);
                 }
             }
         }
@@ -536,7 +541,7 @@ namespace Decompiler.Scanning
             }
             else
             {
-                return scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+                return BlockFromAddress(fallthruAddress, proc, state);
             }
         }
 

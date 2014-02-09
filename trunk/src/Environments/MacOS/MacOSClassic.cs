@@ -27,9 +27,12 @@ namespace Decompiler.Environments.MacOS
 {
     public class MacOSClassic : Platform
     {
+        private MacOsRomanEncoding encoding;
+
         public MacOSClassic(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
+            encoding = new MacOsRomanEncoding();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -40,6 +43,11 @@ namespace Decompiler.Environments.MacOS
         public override string DefaultCallingConvention
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public override Encoding DefaultTextEncoding
+        {
+            get { return encoding; }
         }
 
         public override ProcedureSignature LookupProcedure(string procName)

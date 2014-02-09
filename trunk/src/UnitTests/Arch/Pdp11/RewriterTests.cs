@@ -18,22 +18,22 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
+using Decompiler.Arch.Pdp11;
+using Decompiler.Core;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
-using Decompiler.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch.Mos6502
+namespace Decompiler.UnitTests.Arch.Pdp11
 {
-    [TestFixture]
+    [TestFixture]   
     class RewriterTests : RewriterTestBase
     {
-        private Mos6502ProcessorArchitecture arch = new Mos6502ProcessorArchitecture();
+        private Pdp11Architecture arch = new Pdp11Architecture();
         private LoadedImage image;
         private Address addrBase = new Address(0x0200);
 
@@ -44,7 +44,8 @@ namespace Decompiler.UnitTests.Arch.Mos6502
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
-            return new Rewriter(arch, image.CreateReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType));
+            var dasm = new Pdp11Disassembler(image.CreateReader(0), arch);
+            return new Pdp11Rewriter(arch, dasm, frame);
         }
 
         public override Address LoadAddress
@@ -52,29 +53,27 @@ namespace Decompiler.UnitTests.Arch.Mos6502
             get { return addrBase; }
         }
 
-        private void BuildTest(params byte[] bytes)
+        private void BuildTest(params ushort[] words)
         {
-            image = new LoadedImage(addrBase, bytes);
+            var bytes = words
+                .SelectMany(
+                    w => new byte[] { (byte) w, (byte) (w >> 8) })
+                .ToArray();
+            image = new LoadedImage(LoadAddress, bytes);
         }
 
         [Test]
-        public void Rw6502_tax()
+        public void Pdp11Rw_xor()
         {
-            BuildTest(0xAA);
+            BuildTest(0x7811);
             AssertCode(
-                "0|00000200(1): 2 instructions",
-                "1|L--|x = a",
-                "2|L--|NZ = cond(x)");
-        }
-
-        [Test]
-        public void Rw6502_sbc()
-        {
-            BuildTest(0xF1, 0xE0);
-            AssertCode(
-                "0|00000200(2): 2 instructions",
-                "1|L--|a = a - Mem0[Mem0[0x00E0:ptr16] + (uint16) y:byte] - !C",
-                "2|L--|NVZC = cond(a)");
+                "0|00000200(2): 6 instructions",
+                "1|L--|v3 = Mem0[r1:word16]",
+                "2|L--|r1 = r1 + 0x0002",
+                "3|L--|r0 = r0 ^ v3",
+                "4|L--|NZ = cond(r0)",
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
     }
 }

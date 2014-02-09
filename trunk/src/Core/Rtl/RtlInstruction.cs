@@ -94,17 +94,17 @@ namespace Decompiler.Core.Rtl
     /// </summary>
     public class RtlInstructionCluster
     {
-        public RtlInstructionCluster(Address addr, byte instrLength)
+        public RtlInstructionCluster(Address addr, int instrLength)
         {
             this.Address = addr;
-            this.Length = instrLength;
+            this.Length = (byte) instrLength;
             this.Instructions = new List<RtlInstruction>();
         }
 
-        public RtlInstructionCluster(Address addr, byte instrLength, params RtlInstruction [] instrs)
+        public RtlInstructionCluster(Address addr, int instrLength, params RtlInstruction [] instrs)
         {
             this.Address = addr;
-            this.Length = instrLength;
+            this.Length = (byte)instrLength;
             this.Instructions = new List<RtlInstruction>(instrs);
         }
         /// <summary>

@@ -54,12 +54,12 @@ namespace Decompiler.Scanning
                 }
                 else
                 {
+                    //$TODO: BlockFromAddress.
                     scanner.EnqueueJumpTarget(vector[i], proc, st);
                 }
             }
             vectorUses[AddrFrom] = new VectorUse(Table.TableAddress, builder.IndexRegister);
             scanner.ImageMap.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
         }
-
     }
 }

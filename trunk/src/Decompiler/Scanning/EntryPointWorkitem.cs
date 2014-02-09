@@ -34,8 +34,8 @@ namespace Decompiler.Scanning
         {
             this.scanner = scanner;
             this.ep = ep;
-
         }
+
         public override void Process()
         {
             var pb = scanner.ScanProcedure(ep.Address, ep.Name, scanner.Architecture.CreateProcessorState());

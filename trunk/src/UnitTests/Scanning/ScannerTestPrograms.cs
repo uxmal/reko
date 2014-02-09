@@ -19,96 +19,29 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
+using Decompiler.Arch.X86;
+using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
-using NUnit.Framework;  
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Scanning
 {
-    [TestFixture]
-    public class CrossProcedureAnalyzerTests
+    class ScannerTestPrograms
     {
-        [Test]
-        public void Crpa_Analyze_SimpleProc()
-        {
-            var prog = Given_Simple_Proc();
-
-            var crpa = new CrossProcedureAnalyzer(prog);
-            crpa.Analyze(prog);
-            Assert.AreEqual(0, crpa.BlocksNeedingPromotion.Count);
-        }
-
-        [Test]
-        public void Crpa_Analyze_CrossJump()
-        {
-            var prog = Given_CrossJump_Prog();
-            var crpa = new CrossProcedureAnalyzer(prog);
-            crpa.Analyze(prog);
-            Assert.AreEqual(1, crpa.BlocksNeedingPromotion.Count);
-        }
-
-        [Test]
-        public void Crpa_Analyze_CrossJumpToLinearReturn()
-        {
-            var prog = Given_CrossJumpLinearReturn_Prog();
-            var crpa = new CrossProcedureAnalyzer(prog);
-            crpa.Analyze(prog);
-            Assert.AreEqual(1, crpa.BlocksNeedingCloning.Count);
-            Assert.AreEqual(0, crpa.BlocksNeedingPromotion.Count);
-        }
-
-        [Test]
-        public void Crpa_Promote_Block()
-        {
-            var prog = Given_CrossJump_Prog();
-            var crpa = new CrossProcedureAnalyzer(prog);
-            crpa.Analyze(prog);
-            crpa.PromoteBlocksToProcedures(crpa.BlocksNeedingPromotion);
-            Assert.AreEqual(3, prog.Procedures.Count);
-            var proc = prog.Procedures.Values[1];
-            Assert.AreEqual("fn00001001", proc.Name);
-            var sExp =
-#region Expected string
- @"// fn00001001
-void fn00001001()
-fn00001001_entry:
-	goto Real_entry
-	// succ:  Real_entry
-l1:
-	return
-	// succ:  fn00001001_exit
-Real_entry:
-	Mem0[r2:word32] = r1
-	branch r2 Real_entry
-	goto l1
-	// succ:  l1 Real_entry
-fn00001001_exit:
-";
-#endregion
-            var sw = new StringWriter();
-            proc.Write(false, sw);
-            Console.WriteLine(sw);
-            Assert.AreEqual(sExp, sw.ToString());
-        }
-
-        [Test]
-        public void Crpa2()
-        {
-            var prog = Given_CrossJump_Prog();
-            var crpa = new Crpa2(prog.Architecture, prog);
-            foreach (var p in prog.Procedures.Values)
-            {
-                crpa.Foo(p);
-            }
-        }
-
-        private Program Given_Simple_Proc()
+        /// <summary>
+        /// Simple program consisting of a single procedure.
+        /// </summary>
+        /// <returns></returns>
+        public Program Simple()
         {
             var b = new ProgramBuilder();
             b.Add("bob", m =>
@@ -119,7 +52,13 @@ fn00001001_exit:
             return b.BuildProgram();
         }
 
-        private Program Given_CrossJump_Prog()
+        /// <summary>
+        /// This program has a cross procedural jump
+        /// that should result in a new procedure, at Real_entry,since the jumped-to code 
+        /// is not a simple linear block but a branch.
+        /// </summary>
+        /// <returns></returns>
+        public static Program CrossJump()
         {
             var b = new ProgramBuilder();
             b.Add("bob", m =>
@@ -136,7 +75,7 @@ fn00001001_exit:
                 m.Return();
             });
 
-            b.Add("ext", m=>
+            b.Add("ext", m =>
             {
                 var r1 = m.Reg32("r1");
                 m.Label("ext_1");
@@ -146,7 +85,13 @@ fn00001001_exit:
             return b.BuildProgram();
         }
 
-        private Program Given_CrossJumpLinearReturn_Prog()
+        /// <summary>
+        /// This program has a cross procedural jump
+        /// that should result in a cloned procedure, since the jumped-to code is a simple linear block
+        /// followed by a return statement.
+        /// </summary>
+        /// <returns></returns>
+        private Program CrossJumpLinearReturn()
         {
             var b = new ProgramBuilder();
             b.Add("bob", m =>

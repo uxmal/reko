@@ -59,7 +59,6 @@ namespace Decompiler.Core.Output
             mpopstr.Add(Operator.Ule, "Ule");
             mpopstr.Add(Operator.Ult, "Ult");
             mpopstr.Add(Operator.Xor, "Xor");
-
         }
 
         private IEnumerable<Identifier> CollectLocalIdentifiers(Procedure proc)
@@ -90,7 +89,6 @@ namespace Decompiler.Core.Output
                 identifiers[id.Name] = id;
             }
         }
-
 
         public void Write(Procedure proc)
         {
