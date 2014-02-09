@@ -27,7 +27,7 @@ namespace Decompiler.Core
 {
     public abstract class ImageWriter
     {
-        public ImageWriter() :this(new byte[16])
+        public ImageWriter() : this(new byte[16])
         {
         }
 

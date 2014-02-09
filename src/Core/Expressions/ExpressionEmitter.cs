@@ -195,7 +195,6 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Le, PrimitiveType.Bool, a, b);
         }
 
-
         public BinaryExpression Le(Expression a, int b)
         {
             return Le(a, Constant.Create(a.DataType, b));
@@ -210,7 +209,6 @@ namespace Decompiler.Core.Expressions
         {
             return Lt(a, Constant.Create(a.DataType, b));
         }
-
 
         public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
         {

@@ -388,7 +388,7 @@ void fn00001100()
 fn00001100_entry:
 l00001100:
 	r1 = 0x00000001
-l00001100_tmp:
+l00001100_thunk_fn00001000:
 	call fn00001000 (retsize: 0;)
 	return
 fn00001100_exit:

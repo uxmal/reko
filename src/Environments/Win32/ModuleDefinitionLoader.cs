@@ -163,7 +163,7 @@ namespace Decompiler.Environments.Win32
         private class Lexer
         {
             private Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType> {
-                { "DATA", TokenType.DATA},
+                { "DATA", TokenType.DATA },
                 { "EXPORTS", TokenType.EXPORTS },
                 { "LIBRARY" ,TokenType.LIBRARY },
                 { "NAME", TokenType.NAME },
@@ -208,8 +208,8 @@ namespace Decompiler.Environments.Win32
                             st = State.String;
                             break;
                         case '@': rdr.Read(); sb = new StringBuilder(); st = State.Number; break;
-                        case '=': rdr.Read(); return new Token(TokenType.Eq); break;
-                        case ':': rdr.Read(); return new Token(TokenType.Colon); break;
+                        case '=': rdr.Read(); return new Token(TokenType.Eq);
+                        case ':': rdr.Read(); return new Token(TokenType.Colon);
                         case ';': rdr.Read(); st = State.Comment; break;
                         default:
                             rdr.Read();
@@ -254,7 +254,6 @@ namespace Decompiler.Environments.Win32
                         rdr.Read();
                         sb.Append(ch);
                         break;
-
                     }
                 }
             }

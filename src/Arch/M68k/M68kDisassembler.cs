@@ -54,13 +54,6 @@ namespace Decompiler.Arch.M68k
             build_opcode_table();
         }
 
-        [Obsolete("Only used by unit tests. Move this codethere.")]
-        public MachineInstruction Disassemble()
-        {
-            if (MoveNext())
-                return Current;
-            return null;
-        }
 
         public override M68kInstruction Current { get { return instr; } }
 

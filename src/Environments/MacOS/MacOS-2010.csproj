@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MacOSClassic.cs" />
+    <Compile Include="MacOsRomanEncoding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceFork.cs" />
   </ItemGroup>

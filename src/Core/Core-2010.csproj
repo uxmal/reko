@@ -309,9 +309,6 @@
     <Compile Include="IBackWalkHost.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ICodeWalkerListener.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ImageLoader.cs" />
     <Compile Include="ImageMap.cs">
       <SubType>Code</SubType>

@@ -32,7 +32,7 @@ using System.Text;
 namespace Decompiler.Arch.M68k
 {
     /// <summary>
-    /// Rewrites <seealso cref="M68kInstruntion"/>s to <see cref="RtlInstructionCluster"/>s.
+    /// Rewrites <seealso cref="M68kInstruction"/>s to <see cref="RtlInstructionCluster"/>s.
     /// </summary>
     public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -61,7 +61,7 @@ namespace Decompiler.Arch.M68k
             while (dasm.MoveNext())
             {
                 di = dasm.Current;
-                ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
+                ric = new RtlInstructionCluster(di.Address, di.Length);
                 emitter = new RtlEmitter(ric.Instructions);
                 orw = new OperandRewriter(this, di.dataWidth);
                 switch (di.code)

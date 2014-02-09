@@ -37,7 +37,7 @@ namespace Decompiler.Arch.Pdp11
 
         public AddressMode Mode { get; set; }
         public RegisterStorage Register { get;set;}
-        public bool PreInc { get; set; }
+        public bool PreDec { get; set; }
         public bool PostInc { get; set; }
 
         public override string ToString()
