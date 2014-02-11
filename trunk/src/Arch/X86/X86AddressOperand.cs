@@ -19,34 +19,25 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
-using Decompiler.Core.Rtl;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Arch
+namespace Decompiler.Arch.X86
 {
-    public abstract class RewriterTestBase : ArchTestBase
+    public class X86AddressOperand : AddressOperand
     {
-        private LoadedImage instructions;
-
-        public void Rewrite(params uint [] words)
+        public X86AddressOperand(Address a)
+            : base(a, PrimitiveType.Pointer32)	//$BUGBUG: P6 pointers?
         {
-            instructions = RewriteCode(words);
         }
 
-        protected virtual LoadedImage RewriteCode(uint [] words)
+        public override string ToString()
         {
-            Assert.Fail();
-            return null;
-        }
-
-        protected virtual IRewriterHost CreateHost()
-        {
-            return null;
+            return "far " + Address.ToString();
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Decompiler.UnitTests.Scanning
 {
     class ScannerTestPrograms
     {
+        //$TODO: translate to RtlTraces
         /// <summary>
         /// Simple program consisting of a single procedure.
         /// </summary>

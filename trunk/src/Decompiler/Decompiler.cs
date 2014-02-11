@@ -384,14 +384,14 @@ namespace Decompiler
             int i = 0;
 			foreach (Procedure proc in Program.Procedures.Values)
 			{
-                try
-                {
-                    eventListener.ShowProgress("Rewriting procedures to high-level language.", i, Program.Procedures.Values.Count);
-                    ++i;
+				try
+				{
+					eventListener.ShowProgress("Rewriting procedures to high-level language.", i, Program.Procedures.Values.Count);
+					++i;
 
-                    StructureAnalysis sa = new StructureAnalysis(proc);
-                    sa.Structure();
-                }
+					StructureAnalysis sa = new StructureAnalysis(proc);
+					sa.Structure();
+				}
                 catch (Exception e)
                 {
                     eventListener.AddDiagnostic(

@@ -45,6 +45,7 @@ namespace Decompiler.Scanning
             var movedBlocks = new HashSet<Block>();
             var stack = new Stack<IEnumerator<Block>>();
             stack.Push(new Block[] { Block }.Cast<Block>().GetEnumerator());
+            var replacer = new IdentifierReplacer(ProcNew.Frame);
             while (stack.Count != 0)
             {
                 var e = stack.Pop();
@@ -54,8 +55,14 @@ namespace Decompiler.Scanning
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
 
+                b.Procedure.RemoveBlock(b);
+                ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
                 movedBlocks.Add(b);
+                foreach (var stm in b.Statements)
+                {
+                    stm.Instruction = replacer.ReplaceIdentifiers(stm.Instruction);
+                }
                 stack.Push(b.Succ.GetEnumerator());
             }
             FixInboundEdges(movedBlocks);
@@ -66,13 +73,6 @@ namespace Decompiler.Scanning
             foreach (var block in movedBlocks)
             {
                 FixInboundEdges(block);
-                if (block == Block)
-                {
-                    // First block.
-                }
-                else
-                {
-                }
             }
         }
 

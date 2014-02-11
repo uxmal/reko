@@ -89,7 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressOperand.cs" />
+    <Compile Include="X86AddressOperand.cs" />
     <Compile Include="FstswChainMatcher.cs" />
     <Compile Include="OperandRewriter.cs">
       <SubType>Code</SubType>

@@ -884,10 +884,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Sahf();
             });
             AssertCode(
-                "0|0C00:0000(2): 1 instructions",
-                "1|L--|ax = (word16) FPUF << 8",
-                "2|0C00:0002(1): 1 instructions",
-                "3|L--|SCZO = ah");
+                "0|0C00:0000(3): 1 instructions",
+                "1|L--|SCZO = FPUF");
         }
 
         [Test]
@@ -904,13 +902,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode(
                 "0|0C00:0000(2): 1 instructions",
                 "1|L--|FPUF = cond(rArg0 - rArg1)",
-                "2|0C00:0002(2): 1 instructions",
-                "3|L--|ax = (word16) FPUF << 8",
-                "4|0C00:0004(3): 2 instructions",
-                "5|L--|SZO = cond(ah & 0x44)",
-                "6|L--|C = false",
-                "7|0C00:0007(2): 1 instructions",
-                "8|T--|if (Test(PE,P)) branch 0C00:0000");
+                "2|0C00:0002(7): 2 instructions",
+                "3|L--|SCZO = FPUF",
+                "4|T--|if (Test(NE,FPUF)) branch 0C00:0000");
         }
 
         [Test]

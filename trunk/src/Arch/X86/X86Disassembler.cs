@@ -432,7 +432,7 @@ namespace Decompiler.Arch.X86
                 pOperand = null;
                 ImmediateOperand immOp;
                 MemoryOperand memOp;
-                AddressOperand addrOp;
+                X86AddressOperand addrOp;
                 int offset;
 
                 char chFmt = strFormat[i++];
@@ -448,7 +448,7 @@ namespace Decompiler.Arch.X86
                     ++i;
                     ushort off = rdr.ReadLeUInt16();
                     ushort seg = rdr.ReadLeUInt16();
-                    pOperand = addrOp = new AddressOperand(new Address(seg, off));
+                    pOperand = addrOp = new X86AddressOperand(new Address(seg, off));
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);
@@ -735,7 +735,7 @@ namespace Decompiler.Arch.X86
 
 		private bool ImplicitWidth(MachineOperand op)
 		{
-			return op is RegisterOperand || op is AddressOperand;
+			return op is RegisterOperand || op is X86AddressOperand;
 		}
 
 		// A - direct address

@@ -158,9 +158,12 @@ namespace Decompiler.UnitTests.Analysis
                 : new ProjectSerializer().LoadProject(FileUnitTester.MapTestPath(configFile));
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
-            foreach (var sp in project.UserProcedures.Values)
+            foreach (var f in project.InputFiles)
             {
-                scan.EnqueueUserProcedure(sp);
+                foreach (var sp in f.UserProcedures.Values)
+                {
+                    scan.EnqueueUserProcedure(sp);
+                }
             }
             scan.ScanImage();
         }

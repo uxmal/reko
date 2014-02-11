@@ -318,7 +318,7 @@ namespace Decompiler.Arch.X86
 
 		private bool ImplicitWidth(MachineOperand op)
 		{
-			return op is RegisterOperand || op is AddressOperand || op is FpuOperand;
+			return op is RegisterOperand || op is X86AddressOperand || op is FpuOperand;
 		}
 	}
 }

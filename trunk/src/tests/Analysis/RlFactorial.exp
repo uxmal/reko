@@ -8,7 +8,6 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// LocalsOut: Temporary(16)
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: Temporary(16)
@@ -41,7 +40,6 @@ fn0C00_0000_exit:
 void fn0C00_000F()
 // SymbolicIn: sp:fp
 fn0C00_000F_entry:
-// LocalsOut: Stack +0002(16) Temporary(16)
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: Stack +0002(16) Temporary(16)
@@ -55,7 +53,6 @@ l0C00_000F:
 	ax = ax - 0x0001
 	SZO = cond(ax)
 	branch Test(EQ,Z) l0C00_0026
-// LocalsOut: Stack +0002(16) Temporary(16)
 // DataOut: ax ds
 // DataOut (flags): 
 // LocalsOut: Stack +0002(16) Temporary(16)

@@ -16,8 +16,6 @@
 // edi:edi
 // rLoc2:FPU stack
 // FPUF:Flags
-// ax:ax
-// ah:ah
 // rLoc3:FPU stack
 // SO:Flags
 // return address size: 4
@@ -72,10 +70,8 @@ l10000048:
 	Mem0[esp + 0x0000001C:word32] = ecx
 	rLoc2 = (real64) Mem0[esp + 0x0000001C:int32]
 	FPUF = cond(rLoc2 - Mem0[esp + 0x00000014:real32])
-	ax = (word16) FPUF << 8
-	SZO = cond(ah & 0x40)
-	C = false
-	branch Test(NE,Z) l1000007F
+	SCZO = FPUF
+	branch Test(EQ,FPUF) l1000007F
 	// succ:  l10000072 l1000007F
 l10000072:
 	ecx = ecx + 0x00000001
@@ -93,10 +89,8 @@ l1000007F:
 	rLoc2 = (real64) Mem0[esp + 0x0000001C:int32]
 	rLoc3 = rLoc2
 	FPUF = cond(rLoc3 - rLoc2)
-	ax = (word16) FPUF << 8
-	SZO = cond(ah & 0x40)
-	C = false
-	branch Test(NE,Z) l100000AD
+	SCZO = FPUF
+	branch Test(EQ,FPUF) l100000AD
 	// succ:  l100000A2 l100000AD
 l100000A2:
 	ecx = ecx + 0x00000001
@@ -108,17 +102,13 @@ l100000A2:
 l100000AD:
 	rLoc2 = Mem0[esp + 0x00000014:real32]
 	FPUF = cond(rLoc2 - Mem0[0x10033298:real64])
-	ax = (word16) FPUF << 8
-	SZO = cond(ah & 0x40)
-	C = false
-	branch Test(EQ,Z) l100000D7
+	SCZO = FPUF
+	branch Test(NE,FPUF) l100000D7
 	// succ:  l100000BF l100000D7
 l100000BF:
 	FPUF = cond(rLoc1 - Mem0[0x10033298:real64])
-	ax = (word16) FPUF << 8
-	SZO = cond(ah & 0x40)
-	C = false
-	branch Test(EQ,Z) l100000D7
+	SCZO = FPUF
+	branch Test(NE,FPUF) l100000D7
 	// succ:  l100000CD l100000D7
 l100000CD:
 	SCZO = cond(edi - 0x000186A0)

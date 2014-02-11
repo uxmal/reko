@@ -58,18 +58,10 @@ namespace Decompiler.Core.Lib
             }
         }
 
-        #endregion
-
-        #region IDisposable Members
-
         public void Dispose()
         {
             e.Dispose();
         }
-
-        #endregion
-
-        #region IEnumerator Members
 
         object System.Collections.IEnumerator.Current
         {
@@ -116,6 +108,16 @@ namespace Decompiler.Core.Lib
                 peeked.Add(e.Current);
             }
             return peeked[ahead];
+        }
+
+        public void Skip(int skip)
+        {
+            int itemsInBuffer = peeked.Count - iPeeked;
+            if (skip < itemsInBuffer)
+            {
+                iPeeked += skip;
+                return;
+            }
         }
     }
 }
