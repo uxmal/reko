@@ -19,28 +19,29 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.X86
+namespace Decompiler.Scanning
 {
-    public class AddressOperand : MachineOperand
+    public class UserProcedureWorkItem : WorkItem
     {
-        public Address Address;
+        private IScanner scanner;
+        private Address addr;
+        private string name;
 
-        public AddressOperand(Address a)
-            : base(PrimitiveType.Pointer32)	//$BUGBUG: P6 pointers?
+        public UserProcedureWorkItem(IScanner scanner, Address addr, string name)
         {
-            Address = a;
+            this.scanner = scanner;
+            this.addr = addr;
+            this.name = name;
         }
 
-        public override string ToString()
+        public override void Process()
         {
-            return "far " + Address.ToString();
+            scanner.ScanProcedure(addr, name, scanner.Architecture.CreateProcessorState());
         }
     }
 }

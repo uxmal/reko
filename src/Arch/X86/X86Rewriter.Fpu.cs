@@ -18,8 +18,11 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -201,11 +204,81 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFstsw()
         {
+            if (MatchesFstswSequence())
+                return;
             emitter.Assign(
                 SrcOp(instrCur.op1),
                 new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
                         new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
                         Constant.Int16(8)));
+        }
+
+        public bool MatchesFstswSequence()
+        {
+            var nextInstr = dasm.Peek(1);
+            if (nextInstr.code == Opcode.sahf)
+            {
+                ric.Length += (byte) nextInstr.Length;
+                dasm.Skip(1);
+                emitter.Assign(
+                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                    orw.FlagGroup(FlagM.FPUF));
+                return true;
+            }
+            if (nextInstr.code == Opcode.test)
+            {
+                RegisterOperand acc = nextInstr.op1 as RegisterOperand;
+                ImmediateOperand imm = nextInstr.op2 as ImmediateOperand;
+                if (imm == null || acc == null)
+                    return false;
+                int mask = imm.Value.ToInt32();
+                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                    mask >>= 8;
+                else if (acc.Register != Registers.ah)
+                    return false;
+                ric.Length += (byte) nextInstr.Length;
+                dasm.Skip(1);
+                emitter.Assign(
+                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF), orw.FlagGroup(FlagM.FPUF));
+                if (!dasm.MoveNext())
+                    throw new AddressCorrelatedException(nextInstr.Address, "Expected instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
+                nextInstr = dasm.Current;
+                ric.Length += (byte) nextInstr.Length;
+                //var r = new RtlInstructionCluster(nextInstr.Address, nextInstr.Length);
+                //r.Instructions.AddRange(ric.Instructions);
+                //emitter = new RtlEmitter(r.Instructions);
+                //ric = r;
+                switch (nextInstr.code)
+                {
+                case Opcode.jpe:
+                    if (mask == 0x05) { Branch(ConditionCode.LE, nextInstr.op1); return true;  }
+                    if (mask == 0x41) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
+                    if (mask == 0x44) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
+                    break;
+                case Opcode.jpo:
+                    if (mask == 0x44) { Branch(ConditionCode.EQ, nextInstr.op1); return true;}
+                    if (mask == 0x41) { Branch(ConditionCode.GE, nextInstr.op1); return true;}
+                    if (mask == 0x05) { Branch(ConditionCode.LT, nextInstr.op1); return true;}
+                    break;
+                case Opcode.jz:
+                    if (mask == 0x40) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
+                    if (mask == 0x41) { Branch(ConditionCode.LT, nextInstr.op1); return true; }
+                    break;
+                case Opcode.jnz:
+                    if (mask == 0x40) { Branch(ConditionCode.EQ, nextInstr.op1); return true; }
+                    if (mask == 0x41) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
+                    if (mask == 0x01) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
+                    break;
+                }
+
+                return false;
+            }
+            return false;
+        }
+
+        private void Branch(ConditionCode code, MachineOperand op)
+        {
+            emitter.Branch(emitter.Test(code, orw.FlagGroup(FlagM.FPUF)), OperandAsCodeAddress( op), RtlClass.ConditionalTransfer);
         }
 
         private void RewriteFtst()

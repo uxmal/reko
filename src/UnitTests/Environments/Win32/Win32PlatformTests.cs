@@ -143,5 +143,17 @@ namespace Decompiler.UnitTests.Environments.Win32
             tlSvc = repository.StrictMock<ITypeLibraryLoaderService>();
             sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
         }
+
+        [Test]
+        public void Win32_SignatureFromName_stdcall()
+        {
+            var fnName = "_foo@4";
+            When_Creating_Win32_Platform();
+
+            var sig = win32.SignatureFromName(fnName, arch);
+
+            Assert.AreEqual("void ()()\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
+        }
+
     }
 }

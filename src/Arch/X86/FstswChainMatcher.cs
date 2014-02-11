@@ -108,7 +108,6 @@ namespace Decompiler.Arch.X86
                 }
                 return false;
             }
-
             return false;
         }
 
@@ -125,19 +124,6 @@ namespace Decompiler.Arch.X86
                 ++i;
             }
             return -1;
-        }
-
-        private ImmediateOperand TestAhConstant(IntelInstruction instr)
-        {
-            RegisterOperand ah = instr.op1 as RegisterOperand;
-            if (ah == null)
-                return null;
-            if (ah.Register != Registers.ah)
-                return null;
-            ImmediateOperand imm = instr.op2 as ImmediateOperand;
-            if (imm == null)
-                return null;
-            return imm;
         }
 
         public void Rewrite(CodeEmitter emitter)

@@ -32,7 +32,7 @@ namespace Decompiler.Core.Serialization
 		private Frame frame;
 		private SerializedArgument argCur;
 		private Identifier idArg;
-private  string convention;
+        private string convention;
 
 		public ArgumentSerializer(ProcedureSerializer sig, IProcessorArchitecture arch, Frame frame, string callingConvention)
 		{

@@ -222,14 +222,14 @@ namespace Decompiler.Arch.X86
         /// <returns></returns>
         private bool IsRealModeReboot(IntelInstruction instrCur)
         {
-            AddressOperand addrOp = instrCur.op1 as AddressOperand;
+            X86AddressOperand addrOp = instrCur.op1 as X86AddressOperand;
             bool isRealModeReboot = addrOp != null && addrOp.Address.Linear == 0xFFFF0;
             return isRealModeReboot;
         }
 
         public Address OperandAsCodeAddress(MachineOperand op)
         {
-            AddressOperand ado = op as AddressOperand;
+            X86AddressOperand ado = op as X86AddressOperand;
             if (ado != null)
                 return ado.Address;
             ImmediateOperand imm = op as ImmediateOperand;

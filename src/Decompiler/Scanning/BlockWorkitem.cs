@@ -121,7 +121,7 @@ namespace Decompiler.Scanning
             var cont = scanner.FindContainingBlock(addr);
             if (cont == null || cont == blockCur)
                 return null;
-            return cont;
+            return BlockFromAddress(addr, blockCur.Procedure, state);
         }
 
         private bool BlockHasBeenScanned(Block block)
@@ -362,22 +362,9 @@ namespace Decompiler.Scanning
             Emit(new ReturnInstruction());
             proc.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
 
-            if (frame.ReturnAddressKnown)
-            {
-                if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
-                {
-                    scanner.AddDiagnostic(
-                        ric.Address,
-                        new WarningDiagnostic(string.Format(
-                        "Procedure {1} previously had a return address of {2} bytes on the stack, but now seems to have a return address of {0} bytes on the stack.",
-                        ret.ReturnAddressBytes, proc.Name, frame.ReturnAddressSize)));
-                }
-            }
-            else
-            {
-                frame.ReturnAddressSize = ret.ReturnAddressBytes;
-                frame.ReturnAddressKnown = true;
-            }
+            int returnAddressBytes = ret.ReturnAddressBytes;
+            var address = ric.Address;
+            scanner.SetProcedureReturnAddressBytes(proc, returnAddressBytes, address);
 
             int stackDelta = ret.ReturnAddressBytes + ret.ExtraBytesPopped;
             if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)

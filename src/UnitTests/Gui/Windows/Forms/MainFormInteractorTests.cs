@@ -537,6 +537,5 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             get { return promptedForSaving; }
         }
-
     }
 }

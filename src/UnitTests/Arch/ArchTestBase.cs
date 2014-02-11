@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch
 {
-    abstract class ArchTestBase 
+    public abstract class ArchTestBase 
     {
         public abstract IProcessorArchitecture Architecture { get; }
 

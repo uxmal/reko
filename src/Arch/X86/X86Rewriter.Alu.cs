@@ -489,7 +489,7 @@ namespace Decompiler.Arch.X86
                 if (
                     dasm.Peek(1).code == Opcode.push && (dasm.Peek(1).op1 is ImmediateOperand) &&
                     dasm.Peek(2).code == Opcode.push && (dasm.Peek(2).op1 is ImmediateOperand) &&
-                    dasm.Peek(3).code == Opcode.jmp && (dasm.Peek(3).op1 is AddressOperand))
+                    dasm.Peek(3).code == Opcode.jmp && (dasm.Peek(3).op1 is X86AddressOperand))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
                     RewriteCall(dasm.Peek(3).op1, instrCur.op1.Width);

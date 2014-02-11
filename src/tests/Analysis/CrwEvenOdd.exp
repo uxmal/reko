@@ -27,7 +27,7 @@ fn0C00_0000_exit:
 Register byte fn0C00_0015(Register word16 ax)
 // MayUse:  ax
 // LiveOut: al
-// Trashed: SCZO ax sp al ah
+// Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0015
 // Mem0:Global memory
@@ -44,22 +44,25 @@ fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
 	ax = ax | ax
-	C = false
 	SZO = cond(ax)
+	C = false
 	branch Test(EQ,Z) l0C00_001D
+	goto l0C00_0019
 	// succ:  l0C00_0019 l0C00_001D
+l0C00_0015_thunk_fn0C00_0020:
+	return fn0C00_0020(ax)
+	// succ:  fn0C00_0015_exit
 l0C00_0019:
 	ax = ax - 0x0001
 	SZO = cond(ax)
-	al = fn0C00_0020(ax)
-	return al
-	// succ:  fn0C00_0015_exit
-fn0C00_0015_exit:
-	// succ: 
+	goto l0C00_0015_thunk_fn0C00_0020
+	// succ:  l0C00_0015_thunk_fn0C00_0020
 l0C00_001D:
 	al = 0x01
 	return al
 	// succ:  fn0C00_0015_exit
+fn0C00_0015_exit:
+	// succ: 
 Register byte fn0C00_0020(Register word16 ax)
 // MayUse:  ax
 // LiveOut: al

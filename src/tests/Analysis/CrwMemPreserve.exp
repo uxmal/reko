@@ -1,18 +1,19 @@
-void fn0C00_0000(Register selector ds)
+void main(Register selector ds)
 // MayUse:  ds
 // LiveOut:
 // Trashed: SCZO ax bx al bl ah bh
-// Preserved:
-// fn0C00_0000
+// Preserved: sp
+// main
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register ds
-// ax:Register ax
+// sp:sp
+// ax:ax
+// ds:ds
 // return address size: 2
-void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+void main(selector ds)
+main_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	ax = Mem0[ds:0x0300:word16]
 	memfoo()
 	Mem0[ds:0x0302:word16] = ax
@@ -20,28 +21,28 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	ax = membar(ax, ds)
 	Mem0[ds:0x0304:word16] = ax
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+	// succ:  main_exit
+main_exit:
 void memfoo()
 // MayUse:  ax cx bx ds
 // LiveOut:
 // Trashed: SCZO ax cx bx al cl bl ah ch bh
-// Preserved:
+// Preserved: sp
 // memfoo
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register ax
-// ds:Register ds
-// bx:Register bx
-// cx:Register cx
-// cl:Register cl
+// sp:sp
+// ds:ds
+// ax:ax
+// bx:bx
+// cx:cx
+// cl:cl
 // SCZO:Flags
 // return address size: 2
 void memfoo()
-memfoo_entry:		// pred:
+memfoo_entry:
 	// succ:  l0C00_0017
-l0C00_0017:		// pred: memfoo_entry
+l0C00_0017:
 	Mem0[ds:0x0400:word16] = ax
 	Mem0[ds:0x0402:word16] = bx
 	Mem0[ds:0x0404:word16] = cx
@@ -56,25 +57,25 @@ l0C00_0017:		// pred: memfoo_entry
 	cx = Mem0[ds:0x0404:word16]
 	return
 	// succ:  memfoo_exit
-memfoo_exit:		// pred: l0C00_0017
-	// succ: 
+memfoo_exit:
 Register word16 membar(Register word16 ax, Register selector ds)
 // MayUse:  ax ds
 // LiveOut: ax
 // Trashed: SCZO ax bx al bl ah bh
-// Preserved:
+// Preserved: sp
 // membar
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register ax
-// ds:Register ds
-// bx:Register bx
+// sp:sp
+// ds:ds
+// ax:ax
+// bx:bx
 // SCZO:Flags
 // return address size: 2
 word16 membar(word16 ax, selector ds)
-membar_entry:		// pred:
+membar_entry:
 	// succ:  l0C00_0040
-l0C00_0040:		// pred: membar_entry
+l0C00_0040:
 	Mem0[ds:0x0500:word16] = ax
 	bx = Mem0[ds:0x1000:word16]
 	ax = Mem0[ds:bx:word16]
@@ -84,5 +85,4 @@ l0C00_0040:		// pred: membar_entry
 	ax = Mem0[ds:0x0500:word16]
 	return ax
 	// succ:  membar_exit
-membar_exit:		// pred: l0C00_0040
-	// succ: 
+membar_exit:

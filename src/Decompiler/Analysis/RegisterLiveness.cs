@@ -393,7 +393,6 @@ namespace Decompiler.Analysis
 			}
 		}
 
-
 		private void Use(Identifier id)
 		{
 			varLive.Use(proc.Frame.Identifiers[id.Number], bitUseOffset, cbitsUse);

@@ -157,7 +157,6 @@ namespace Decompiler.Assemblers.x86
             ProcessShiftRotation(0x07, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
         }
 
-
         public void Sar(ParsedOperand op1, ParsedOperand op2)
         {
             ProcessShiftRotation(0x7, op1, op2);
@@ -188,6 +187,10 @@ namespace Decompiler.Assemblers.x86
             ProcessTest( op1, op2 );
         }
 
+        public void Test(ParsedOperand op1, int imm)
+        {
+            ProcessTest(op1, Imm(imm));
+        }
         public ParsedOperand BytePtr(int offset)
         {
             emitter.AddressWidth = emitter.SegmentAddressWidth;
@@ -1387,6 +1390,11 @@ namespace Decompiler.Assemblers.x86
         public void Ja(string destination)
         {
             ProcessShortBranch(0x07, destination);
+        }
+
+        public void Jc(string destination)
+        {
+            ProcessShortBranch(0x02, destination);
         }
 
         public void Jcxz(string destination)

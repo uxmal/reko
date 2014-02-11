@@ -48,10 +48,9 @@ namespace Decompiler.UnitTests.Arch.Intel
                 fut.AssertFilesEqual();
             }
         }
-	
 
 		[Test]
-		public void RwSwitch()
+		public void X86Rw_Switch()
 		{
 			DoRewriteFile("Fragments/switch.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwSwitch.txt"))
@@ -61,7 +60,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RwDivideTests()
+		public void X86RwDivideTests()
 		{
 			Procedure proc = DoRewrite(@".i86
 	mov	ebx,32
@@ -81,7 +80,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RwMemOperations()
+		public void X86Rw_MemOperations()
 		{
 			DoRewriteFile("Fragments/memoperations.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwMemOperations.txt"))
@@ -92,7 +91,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RwCallTable()
+		public void X86Rw_CallTable()
 		{
 			DoRewriteFile("Fragments/multiple/calltables.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
@@ -107,86 +106,86 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RwStackVariables()
+		public void X86Rw_StackVariables()
 		{
 			RunTest("Fragments/stackvars.asm", "Intel/RwStackVariables.txt");
 		}
 
 		[Test]
-		public void RwDuff()
+		public void X86Rw_Duff()
 		{
 			RunTest("Fragments/duffs_device.asm", "Intel/RwDuff.txt");
 		}
 
 		[Test]
-		public void RwFactorial()
+		public void X86Rw_Factorial()
 		{
 			RunTest("Fragments/factorial.asm", "Intel/RwFactorial.txt");
 		}
 
 		[Test]
-		public void RwLoopne()
+		public void X86Rw_Loopne()
 		{
 			RunTest("Fragments/loopne.asm", "Intel/RwLoopne.txt");
 		}
 
 		[Test]
-		public void RwInterprocedureJump()
+		public void X86Rw_InterprocedureJump()
 		{
 			RunTest("Fragments/multiple/jumpintoproc.asm", "Intel/RwInterprocedureJump.txt");
 		}
 
 		[Test]
-		public void RwPopNoPop()
+		public void X86Rw_PopNoPop()
 		{
 			RunTest("Fragments/multiple/popnopop.asm", "Intel/RwPopNoPop.txt");
 		}
 
 		[Test]
-		public void RwMultiplication()
+		public void X86Rw_Multiplication()
 		{
 			RunTest("Fragments/multiplication.asm", "Intel/RwMultiplication.txt");
 		}
 
 		[Test]
-		public void RwStackPointerMessing()
+		public void X86Rw_StackPointerMessing()
 		{
 			RunTest("Fragments/multiple/stackpointermessing.asm", "Intel/RwStackPointerMessing.txt");
 		}
 
 		[Test]
-		public void RwStringInstructions()
+		public void X86Rw_StringInstructions()
 		{
 			RunTest("Fragments/stringinstr.asm", "Intel/RwStringInstructions.txt");
 		}
 
 		[Test]
-		public void RwTestCondition()
+		public void X86Rw_TestCondition()
 		{
 			RunTest("Fragments/setcc.asm", "Intel/RwTestCondition.txt");
 		}
 
 		[Test]
-		public void RwCopyFile()
+		public void X86Rw_CopyFile()
 		{
 			RunTest("Fragments/copy_file.asm", "Intel/RwCopyFile.txt");
 		}
 
 		[Test]
-		public void RwReadFile()
+		public void X86Rw_ReadFile()
 		{
 			RunTest("Fragments/multiple/read_file.asm", "Intel/RwReadFile.txt");
 		}
 
 
 		[Test]
-		public void RwProcIsolation()
+		public void X86Rw_ProcIsolation()
 		{
 			RunTest("Fragments/multiple/procisolation.asm", "Intel/RwProcIsolation.txt");
 		}
 
         [Test]
-        public void RwIntraSegmentFarCall()
+        public void X86Rw_IntraSegmentFarCall()
         {
             RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Intel/RwIntraSegmentFarCall.txt");
         }

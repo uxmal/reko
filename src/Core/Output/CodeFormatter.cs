@@ -300,7 +300,9 @@ namespace Decompiler.Core.Output
 
 		public void VisitPointerAddition(PointerAddition pa)
 		{
-			throw new NotImplementedException("NYI");
+            writer.Write("PTRADD(");
+            WriteExpression(pa.Pointer);
+            writer.Write(",{0})", pa.Offset);
 		}
 
 		public virtual void VisitProcedureConstant(ProcedureConstant pc)

@@ -68,7 +68,8 @@ namespace Decompiler.Scanning
 
         ImageReader CreateReader(Address addr);
 
-        Block CreateCallRetThunk(Procedure procOld, Procedure ProcNew);
+        Block CreateCallRetThunk(Procedure procOld, Procedure procNew);
+        void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
     }
 
     /// <summary>
@@ -344,6 +345,8 @@ namespace Decompiler.Scanning
                     new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
             program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
             callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
+            procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
+            SetProcedureReturnAddressBytes(procOld, procNew.Frame.ReturnAddressSize, new Address(0));
             return callRetThunkBlock;
         }
 
@@ -436,10 +439,8 @@ namespace Decompiler.Scanning
 
         public void EnqueueUserProcedure(SerializedProcedure sp)
         {
-            var proc = (Procedure)ScanProcedure(
-                Address.ToAddress(sp.Address, 16),
-                sp.Name,
-                program.Architecture.CreateProcessorState());
+            var addr = Address.ToAddress(sp.Address, 16);
+            var proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
                 var sser = new ProcedureSerializer(program.Architecture, program.Platform.DefaultCallingConvention);
@@ -449,6 +450,7 @@ namespace Decompiler.Scanning
             {
                 proc.Characteristics = sp.Characteristics;
             }
+            queue.Enqueue(PriorityEntryPoint, new UserProcedureWorkItem(this, addr, sp.Name));
         }
 
         public Block FindContainingBlock(Address address)
@@ -585,6 +587,29 @@ namespace Decompiler.Scanning
                 return ppp;
             else
                 return null;
+        }
+
+        public void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address)
+        {
+            if (proc.Frame.ReturnAddressKnown)
+            {
+                if (proc.Frame.ReturnAddressSize != returnAddressBytes)
+                {
+                    AddDiagnostic(
+                        address,
+                        new WarningDiagnostic(string.Format(
+                            "Procedure {1} previously had a return address of {2} bytes on the stack, " +
+                            "but now seems to have a return address of {0} bytes on the stack.",
+                        returnAddressBytes,
+                        proc.Name,
+                        proc.Frame.ReturnAddressSize)));
+                }
+            }
+            else
+            {
+                proc.Frame.ReturnAddressSize = returnAddressBytes;
+                proc.Frame.ReturnAddressKnown = true;
+            }
         }
     }
 }
