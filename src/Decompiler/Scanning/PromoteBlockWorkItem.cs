@@ -48,9 +48,12 @@ namespace Decompiler.Scanning
             var replacer = new IdentifierReplacer(ProcNew.Frame);
             while (stack.Count != 0)
             {
-                var e = stack.Pop();
+                var e = stack.Peek();
                 if (!e.MoveNext())
+                {
+                    stack.Pop();
                     continue;
+                }
                 var b = e.Current;
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
@@ -63,16 +66,14 @@ namespace Decompiler.Scanning
                 {
                     stm.Instruction = replacer.ReplaceIdentifiers(stm.Instruction);
                 }
-                stack.Push(b.Succ.GetEnumerator());
+                if (b.Succ.Count > 0)
+                    stack.Push(b.Succ.GetEnumerator());
             }
-            FixInboundEdges(movedBlocks);
-        }
-
-        private void FixInboundEdges(HashSet<Block> movedBlocks)
-        {
-            foreach (var block in movedBlocks)
+            foreach (var b in movedBlocks)
             {
-                FixInboundEdges(block);
+                FixExitEdges(b);
+                FixInboundEdges(b);
+                FixOutboundEdges(b);
             }
         }
 
@@ -90,13 +91,43 @@ namespace Decompiler.Scanning
                 blockToPromote.Pred.Remove(p);
             }
         }
-  
+
+        public void FixOutboundEdges(Block block)
+        {
+            for (int i = 0; i < block.Succ.Count; ++i)
+            {
+                var s = block.Succ[i];
+                if (s.Procedure == block.Procedure)
+                    continue;
+                if (s.Procedure.EntryBlock.Succ[0] == s)
+                {
+                    var retCallThunkBlock = Scanner.CreateCallRetThunk(block.Procedure, s.Procedure);
+                    block.Succ[i] = retCallThunkBlock;
+                }
+                s.ToString();
+            }
+        }
+
         private void ReplaceSuccessorsWith(Block block, Block blockOld, Block blockNew)
         {
             for (int s = 0; s < block.Succ.Count; ++s)
             {
                 if (block.Succ[s] == blockOld)
                     block.Succ[s] = blockNew;
+            }
+        }
+
+        private void FixExitEdges(Block block)
+        {
+            for (int i = 0; i < block.Succ.Count; ++i)
+            {
+                var s = block.Succ[i];
+                if (s.Procedure != ProcNew && s == s.Procedure.ExitBlock)
+                {
+                    s.Pred.Remove(block);
+                    ProcNew.ExitBlock.Pred.Add(block);
+                    block.Succ[i] = ProcNew.ExitBlock;
+                }
             }
         }
     }
