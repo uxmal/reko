@@ -24,15 +24,24 @@ using NUnit.Framework;
 
 namespace Decompiler.UnitTests.Core
 {
-	[TestFixture]
-	public class AddressTests
-	{
-		[Test]
-		public void SimpleAddressTest()
-		{
-			Address addr = new Address(0xC00, 0x1234);
-			string str = addr.ToString();
-			Assert.AreEqual("0C00:1234", addr.ToString());
-		}
-	}
+    [TestFixture]
+    public class AddressTests
+    {
+        [Test]
+        public void Addr_ToString()
+        {
+            Address addr = new Address(0xC00, 0x1234);
+            string str = addr.ToString();
+            Assert.AreEqual("0C00:1234", addr.ToString());
+        }
+
+        [Test(Description="Found this in a regression.")]
+        [Category("Regressions")]
+        public void Addr_Ge()
+        {
+            Assert.IsTrue(new Address(4001) >= new Address(4000));
+            Assert.IsTrue(new Address(4000) >= new Address(4000));
+            Assert.IsFalse(new Address(3999) >= new Address(4000));
+        }
+    }
 }

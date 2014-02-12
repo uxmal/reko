@@ -144,7 +144,7 @@ namespace Decompiler.Core
 
 		public static bool operator >= (Address a, Address b)
 		{
-			return a.Linear > b.Linear;
+			return a.Linear >= b.Linear;
 		}
 
 		public static Address operator + (Address a, uint off)
