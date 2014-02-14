@@ -166,6 +166,9 @@ namespace Decompiler.Gui.Forms
 
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();
             sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
+
+            var brSvc = svcFactory.CreateProjectBrowserService(form.ProjectBrowser);
+            sc.AddService<IProjectBrowserService>(brSvc);
         }
 
         protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)

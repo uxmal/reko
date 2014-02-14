@@ -39,7 +39,7 @@ namespace Decompiler.Gui
 
         object SelectedItem { get; }
 
-        void Populate(IEnumerable items, ListViewItemDecoratorHandler handler);
+        void Populate(IEnumerable items, Action<object, IListViewItem> handler);
 
         string Caption { get; set; }
 

@@ -42,6 +42,4 @@ namespace Decompiler.Gui
     {
         string Text { get; set; }
     }
-
-    public delegate void ListViewItemDecoratorHandler(object item, IListViewItem listItem);
 }

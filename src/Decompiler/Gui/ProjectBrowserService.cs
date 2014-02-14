@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Decompiler.Gui
 {
+    /// <summary>
+    /// Interactor class used to display the decompiler project as a tree view for user browsing.
+    /// </summary>
     public class ProjectBrowserService : IProjectBrowserService, ITreeNodeDesignerHost
     {
         private ITreeView tree;

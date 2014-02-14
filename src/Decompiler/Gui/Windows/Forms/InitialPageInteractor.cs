@@ -129,6 +129,8 @@ namespace Decompiler.Gui.Windows.Forms
             });
             if (Decompiler.Program != null)
             {
+                var browserSvc = Site.RequireService<IProjectBrowserService>();
+                browserSvc.Load(Decompiler.Project);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
             }
@@ -149,26 +151,28 @@ namespace Decompiler.Gui.Windows.Forms
             });
             if (Decompiler.Program != null)
             {
+                var browserSvc = Site.RequireService<IProjectBrowserService>();
+                browserSvc.Load(Decompiler.Project);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
             }
             PopulateBrowserServiceWithSegments();
         }
 
+        [Obsolete]
         private void PopulateBrowserServiceWithSegments()
         {
-            var browserSvc = Site.RequireService<IProgramImageBrowserService>();
-            browserSvc.Populate(Decompiler.Program.ImageMap.Segments.Values, delegate(object item, IListViewItem listItem)
+            var oldBrowserSvc = Site.RequireService<IProgramImageBrowserService>();
+            oldBrowserSvc.Populate(Decompiler.Program.ImageMap.Segments.Values, delegate(object item, IListViewItem listItem)
             {
                 var ims = (ImageMapSegment)item;
                 listItem.Text = ims.Name;
                 listItem.AddSubItem(ims.Address.ToString());
             });
-            browserSvc.Enabled = true;
-            browserSvc.Caption = "Segments";
-            browserSvc.AddColumn("Address");
-            browserSvc.SelectionChanged += BrowserItemSelected;
-
+            oldBrowserSvc.Enabled = true;
+            oldBrowserSvc.Caption = "Segments";
+            oldBrowserSvc.AddColumn("Address");
+            oldBrowserSvc.SelectionChanged += BrowserItemSelected;
         }
 
         public void BrowserItemSelected(object sender, EventArgs e)
