@@ -36,7 +36,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	[TestFixture]
 	public class InitialPageInteractorTests
 	{
-		private IMainForm form;
+        MockRepository mr = new MockRepository();
+        private IMainForm form;
 		private TestInitialPageInteractor i;
         private FakeUiService uiSvc;
         private FakeComponentSite site;
@@ -105,28 +106,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void OpenBinary_ShouldPopulateProgramBrowser()
+        public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            MockRepository repository = new MockRepository();
-            var browserSvc = repository.DynamicMock<IProgramImageBrowserService>();
-            site.RemoveService(typeof(IProgramImageBrowserService));
-            site.AddService<IProgramImageBrowserService>(browserSvc);
-            site.AddService<IMemoryViewService>(repository.Stub<IMemoryViewService>());
-
-            using (repository.Record())
-            {
-                browserSvc.Expect(s => s.Populate(
-                    Arg<System.Collections.IEnumerable>.Is.Anything,
-                    Arg<ListViewItemDecoratorHandler>.Is.Anything));
-                browserSvc.Expect(s => s.Enabled).SetPropertyWithArgument(true);
-                browserSvc.Expect(s => s.Caption).SetPropertyWithArgument("Segments");
-            }
-            form.BrowserList.Enabled = false;
+            var browserSvc = mr.StrictMock<IProjectBrowserService>();
+            var memSvc = mr.Stub<IMemoryViewService>();
+            site.AddService<IProjectBrowserService>(browserSvc);
+            site.AddService<IMemoryViewService>(memSvc);
+            browserSvc.Expect(b => b.Load(Arg<Project>.Is.NotNull));
+            mr.ReplayAll();
 
             i.OpenBinary("foo.exe", new FakeDecompilerHost());
-            repository.VerifyAll();
-        }
 
+            mr.VerifyAll();
+        }
 
         [Test]
         public void LeavePage()
@@ -152,8 +144,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IMemoryViewService), memSvc);
             return memSvc;
         }
-
-
 
         private class TestInitialPageInteractor : InitialPageInteractorImpl
         {

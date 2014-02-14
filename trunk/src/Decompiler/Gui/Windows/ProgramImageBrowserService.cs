@@ -70,7 +70,7 @@ namespace Decompiler.Gui.Windows
             list.Columns.Add(text);
         }
 
-        public void Populate(IEnumerable items, ListViewItemDecoratorHandler handler)
+        public void Populate(IEnumerable items, Action<object, IListViewItem> handler)
         {
             list.Items.Clear();
 			foreach (object item in items)

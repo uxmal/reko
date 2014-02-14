@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Services;
+using Decompiler.Gui.Controls;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using Decompiler.Core.Configuration;
@@ -45,6 +46,7 @@ namespace Decompiler.Gui
         InitialPageInteractor CreateInitialPageInteractor();
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
+        IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
     }
 
     public class ServiceFactory : IServiceFactory
@@ -99,6 +101,11 @@ namespace Decompiler.Gui
         public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()
         {
             return new TypeLibraryLoaderServiceImpl();
+        }
+
+        public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
+        {
+            return new ProjectBrowserService(services, treeView);
         }
     }
 }
