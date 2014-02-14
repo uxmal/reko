@@ -197,6 +197,7 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="ICodeLocation.cs" />
+    <Compile Include="InstructionScannerFlags.cs" />
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
     </Compile>

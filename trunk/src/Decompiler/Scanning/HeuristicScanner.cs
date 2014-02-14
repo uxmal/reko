@@ -55,7 +55,8 @@ namespace Decompiler.Scanning
                 .ToHashSet();
             return prog.Architecture.CreateCallInstructionScanner(
                 prog.Image.CreateReader(0),
-                procEntryLinearAddresses);
+                procEntryLinearAddresses,
+                InstructionScannerFlags.Calls);
         }
     }
 }

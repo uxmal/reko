@@ -178,6 +178,5 @@ namespace Decompiler.Gui.Windows.Forms
             memSvc.ShowMemoryAtAddress(segment.Address);
             memSvc.ShowWindow();
         }
-
     }
 }

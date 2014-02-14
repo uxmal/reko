@@ -53,7 +53,7 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
         {
             throw new NotImplementedException();
         }

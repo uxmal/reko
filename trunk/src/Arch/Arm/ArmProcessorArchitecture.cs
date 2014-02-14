@@ -58,8 +58,10 @@ namespace Decompiler.Arch.Arm
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame);
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
         {
+            if (flags != InstructionScannerFlags.Calls)
+                throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
             while (rdr.IsValid)
             {
                 uint linAddrCall = rdr.Address.Linear;

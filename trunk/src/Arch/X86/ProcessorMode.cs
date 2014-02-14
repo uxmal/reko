@@ -72,7 +72,7 @@ namespace Decompiler.Arch.X86
             get { return Registers.sp; }
         }
 
-        public abstract IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses);
+        public abstract IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags);
 
         public abstract X86Disassembler CreateDisassembler(ImageReader rdr);
         
@@ -107,7 +107,7 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
         {
             while (rdr.IsValid)
             {
@@ -152,7 +152,7 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -185,21 +185,9 @@ namespace Decompiler.Arch.X86
             return new Address(offset);
         }
 
-        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
         {
-            while (rdr.IsValid)
-            {
-                uint linAddrCall = rdr.Address.Linear;
-                var opcode = rdr.ReadByte();
-                if (opcode == 0xE8 && rdr.IsValidOffset(rdr.Offset + 4u))         // CALL NEAR
-                {
-                    int callOffset = rdr.ReadLeInt32();
-                    uint target = (uint) (callOffset + rdr.Address.Linear);
-                    rdr.Seek(-4);
-                    if (knownLinAddresses.Contains(target))
-                        yield return linAddrCall;
-                }
-            }
+            return new InstructionScanner(rdr, knownLinAddresses, flags);
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
@@ -236,7 +224,7 @@ namespace Decompiler.Arch.X86
             return new Address(offset);
         }
 
-        public override IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
         {
             throw new NotImplementedException();
         }

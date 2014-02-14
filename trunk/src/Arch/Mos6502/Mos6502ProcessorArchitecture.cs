@@ -53,7 +53,7 @@ namespace Decompiler.Arch.Mos6502
             return new Rewriter(this, rdr.CreateLeReader(), state, frame);
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
         {
             throw new NotImplementedException();
         }

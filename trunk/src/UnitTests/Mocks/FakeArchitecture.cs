@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Mocks
             return trace;
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddrs)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddrs, InstructionScannerFlags flags)
         {
             throw new NotImplementedException();
         }

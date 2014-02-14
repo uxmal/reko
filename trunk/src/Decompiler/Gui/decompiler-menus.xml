@@ -71,6 +71,7 @@
 	<cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
 	<cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>
 	<cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
+  <cmd id="ViewFindWhatPointsHere" cmdSet="Decompiler" container="GrpViewScanned">Find _what points here</cmd>
 
   <cmd id="ActionNextPhase" cmdSet="Decompiler" container="GrpActions" image="2">_Next Phase</cmd>
   <cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions" image="3">Finish _Decompilation</cmd>
@@ -99,9 +100,12 @@
   <placement item="ActionFinishDecompilation" container="GrpToolbarActions"/>
 
   <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
-	<placement item="ViewGoToAddress" container="GrpMemoryControl"/>
+	
+  <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionMarkType" container="GrpMemoryControl"/>
+  <placement item="ViewFindWhatPointsHere" container="GrpMemoryControl"/>
+  
   <placement item="ActionEditSignature" container="GrpBrowser"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />
 </menu-definitions>
