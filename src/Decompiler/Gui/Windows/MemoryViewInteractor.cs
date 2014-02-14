@@ -170,6 +170,7 @@ namespace Decompiler.Gui.Windows
                 {
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ActionMarkType:
+                case CmdIds.ViewFindWhatPointsHere:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                 }
             }
@@ -185,6 +186,7 @@ namespace Decompiler.Gui.Windows
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                 case CmdIds.ActionMarkType: MarkType(); return true;
                 case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
+                case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
                 }
             }
             return false;
@@ -206,6 +208,23 @@ namespace Decompiler.Gui.Windows
                 Control.Invalidate();
             }
         }
+
+        public bool ViewWhatPointsHere()
+        {
+            AddressRange addrRange = Control.GetAddressRange();
+            if (!addrRange.IsValid)
+                return true;
+            var decompiler = services.GetService<IDecompilerService>().Decompiler;
+            var arch = decompiler.Program.Architecture;
+            var image = decompiler.Program.Image;
+            var rdr = decompiler.Program.Image.CreateReader(0);
+            arch.CreateCallInstructionScanner(
+                rdr,
+                new HashSet<uint> { addrRange.Begin.Linear },
+                InstructionScannerFlags.CallsAndJumps);
+            return true;
+        }
+
         #endregion
     }
 }

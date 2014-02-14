@@ -129,6 +129,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Decompiler), CmdIds.ViewFindFragments);
             slViewFindFragments.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindFragments);
+            CommandMenuItem slViewFindWhatPointsHere = new CommandMenuItem("Find _what points here", new Guid(CmdSets.Decompiler), CmdIds.ViewFindWhatPointsHere);
+            slViewFindWhatPointsHere.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewFindWhatPointsHere);
             CommandMenuItem slActionNextPhase = new CommandMenuItem("_Next Phase", new Guid(CmdSets.Decompiler), CmdIds.ActionNextPhase);
             slActionNextPhase.IsDynamic = false;
             slActionNextPhase.ImageIndex = 2;slGrpActions.Add(0, slActionNextPhase);
@@ -191,6 +194,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slActionMarkType);
+			slGrpMemoryControl.Add(0, slViewFindWhatPointsHere);
 			slGrpBrowser.Add(0, slActionEditSignature);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			this.MainMenu = new System.Windows.Forms.MainMenu();

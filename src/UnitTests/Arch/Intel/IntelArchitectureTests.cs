@@ -25,7 +25,9 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Text;
@@ -200,6 +202,11 @@ namespace Decompiler.UnitTests.Arch.Intel
             return new LeImageReader(bytes, 0);
         }
 
+        private ImageReader CreateImageReader(Address address, params byte[] bytes)
+        {
+            return new LeImageReader(new LoadedImage(address, bytes), 0);
+        }
+
         [Test]
         public void ReadCodeAddress_RealMode_Offset()
         {
@@ -251,5 +258,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             Assert.AreEqual("12345678", addr.ToString());
         }
+
+
 	}
 }

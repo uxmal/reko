@@ -119,6 +119,7 @@
     <Compile Include="Arch\DisassemblerTestBase.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
+    <Compile Include="Arch\Intel\InstructionScannerTests.cs" />
     <Compile Include="Arch\M68k\RewriterTests.cs" />
     <Compile Include="Arch\Mips\MipsDisassemblerTests.cs" />
     <Compile Include="Arch\Mips\MipsRewriterTests.cs" />

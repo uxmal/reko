@@ -36,6 +36,31 @@ namespace Decompiler.Core
         private uint off;
         private Address addrStart;
 
+        public virtual ImageReader Clone()
+        {
+            ImageReader rdr;
+            if (image != null)
+            {
+                rdr = CreateNew(image, addrStart);
+                off = rdr.off;
+            }
+            else
+            {
+                rdr = CreateNew(bytes, off);
+            }
+            return rdr;
+        }
+
+        public virtual ImageReader CreateNew(byte[] bytes, uint offset)
+        {
+            return new ImageReader(bytes, offset);
+        }
+
+        public virtual ImageReader CreateNew(LoadedImage image, Address addr)
+        {
+            return new ImageReader(image, addr);
+        }
+
         public ImageReader(LoadedImage img, Address addr)
         {
             int o = addr - img.BaseAddress;
@@ -290,6 +315,17 @@ namespace Decompiler.Core
     {
         public LeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
         public LeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
+
+        public override ImageReader CreateNew(byte[] bytes, uint offset)
+        {
+            return new LeImageReader(bytes, offset);
+        }
+
+        public override ImageReader CreateNew(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, (uint)(addr - image.BaseAddress));
+        }
+
         public override short ReadInt16() { return ReadLeInt16(); }
         public override int ReadInt32() { return ReadLeInt32(); }
         public override long ReadInt64() { return ReadLeInt64(); }
