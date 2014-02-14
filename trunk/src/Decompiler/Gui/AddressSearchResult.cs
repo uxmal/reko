@@ -33,40 +33,48 @@ namespace Decompiler.Gui
     public class AddressSearchResult : ISearchResult
     {
         private IServiceProvider services;
+        private List<uint> addresses;
+        private ImageMap imageMap;
 
-        public AddressSearchResult(IServiceProvider services, LoadedImage image, ImageMap map, List<uint> linearAddresses)
+        public AddressSearchResult(IServiceProvider services, LoadedImage image, ImageMap map, IEnumerable<uint> linearAddresses)
         {
             this.services = services;
+            this.imageMap = map;
+            this.addresses = linearAddresses.ToList();
         }
 
         public int Count
         {
-            get { throw new NotImplementedException(); }
+            get { return addresses.Count; }
         }
 
         public int ContextMenuID
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public void CreateColumns(ISearchResultView view)
         {
-            throw new NotImplementedException();
+            view.AddColumn("Address", 80);
+            view.AddColumn("Data", 80);
         }
 
         public int GetItemImageIndex(int i)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public string[] GetItemStrings(int i)
         {
-            throw new NotImplementedException();
+            return new string[] {
+                imageMap.MapLinearAddressToAddress(addresses[i]).ToString()
+            };
         }
 
         public void NavigateTo(int i)
         {
-            throw new NotImplementedException();
+            var memSvc = services.RequireService<IMemoryViewService>();
+            memSvc.ShowMemoryAtAddress(imageMap.MapLinearAddressToAddress(addresses[i]));
         }
     }
 }
