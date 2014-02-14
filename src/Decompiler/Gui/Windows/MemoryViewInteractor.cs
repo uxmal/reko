@@ -215,13 +215,20 @@ namespace Decompiler.Gui.Windows
             if (!addrRange.IsValid)
                 return true;
             var decompiler = services.GetService<IDecompilerService>().Decompiler;
+            if (decompiler == null)
+                return true;
+            var resultSvc = services.GetService<ISearchResultService>();
+            if (resultSvc == null)
+                return true;
+
             var arch = decompiler.Program.Architecture;
             var image = decompiler.Program.Image;
             var rdr = decompiler.Program.Image.CreateReader(0);
-            arch.CreateCallInstructionScanner(
+            var addresses = arch.CreateCallInstructionScanner(
                 rdr,
                 new HashSet<uint> { addrRange.Begin.Linear },
                 InstructionScannerFlags.CallsAndJumps);
+            resultSvc.ShowSearchResults(new AddressSearchResult(services, image, decompiler.Program.ImageMap, addresses));
             return true;
         }
 

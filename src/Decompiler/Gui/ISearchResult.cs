@@ -47,6 +47,6 @@ namespace Decompiler.Gui
 
     public interface ISearchResultView
     {
-        void AddColumn(string p, int p_2);
+        void AddColumn(string columnTitle, int width);
     }
 }
