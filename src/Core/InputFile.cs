@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,6 +34,12 @@ namespace Decompiler.Core
     [Designer("Decompiler.Gui.Design.InputFileDesigner,Decompiler")]
     public class InputFile : ProjectFile
     {
+        public InputFile()
+        {
+            UserProcedures = new SortedList<Address, SerializedProcedure>();
+            UserCalls = new SortedList<Address, SerializedCall_v1>();
+        }
+
         /// <summary>
         /// The address at which the file is loaded.
         /// </summary>
@@ -60,8 +67,8 @@ namespace Decompiler.Core
         /// </summary>
         public string TypesFilename { get; set; }
 
-        public SortedList<Address, Serialization.SerializedProcedure> UserProcedures;
-        public SortedList<Address, Serialization.SerializedCall_v1> UserCalls;
+        public SortedList<Address, Serialization.SerializedProcedure> UserProcedures { get;  set; }
+        public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
 
         public void SetDefaultFileNames(string inputFilename)
         {

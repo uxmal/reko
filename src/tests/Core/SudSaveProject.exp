@@ -2,25 +2,24 @@
 <project xmlns="http://schemata.jklnet.org/Decompiler">
   <input>
     <address>1000:0000</address>
-  </input>
-  <output>
+    <procedure name="foo">
+      <signature>
+        <return>
+          <reg>eax</reg>
+        </return>
+        <arg>
+          <prim domain="SignedInt" size="4" />
+          <stack />
+        </arg>
+        <arg>
+          <prim domain="SignedInt" size="4" />
+          <stack />
+        </arg>
+      </signature>
+      <address>1000:0010</address>
+    </procedure>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
-  </output>
-  <procedure name="foo">
-    <signature>
-      <return>
-        <reg>eax</reg>
-      </return>
-      <arg>
-        <prim domain="SignedInt" size="4" />
-        <stack />
-      </arg>
-      <arg>
-        <prim domain="SignedInt" size="4" />
-        <stack />
-      </arg>
-    </signature>
-    <address>1000:0010</address>
-  </procedure>
+  </input>
+  <output />
 </project>

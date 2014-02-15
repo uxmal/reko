@@ -108,6 +108,10 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
+                scanner.Stub(x => x.SetProcedureReturnAddressBytes(
+                    Arg<Procedure>.Is.NotNull,
+                    Arg<int>.Is.Equal(4),
+                    Arg<Address>.Matches(a => a.Linear == 0x00100000)));
             }
 
             var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
@@ -221,6 +225,10 @@ namespace Decompiler.UnitTests.Scanning
                         .Return(new Procedure("fn1200", new Frame(PrimitiveType.Word32)));
                 scanner.Stub(x=> x.Architecture).Return(arch);
                 scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
+                scanner.Stub(x => x.SetProcedureReturnAddressBytes(
+                    Arg<Procedure>.Is.NotNull,
+                    Arg<int>.Is.Equal(4),
+                    Arg<Address>.Is.NotNull));
             }
             var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
@@ -385,10 +393,16 @@ testProc_exit:
                 proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, PrimitiveType.Word32)));
             proc2.Signature = sig;
             var block2 = new Block(proc, "l00100008");
+            var block3 = new Block(proc, "l00100004");
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             scanner.Expect(s => s.FindContainingBlock(new Address(0x00001000))).IgnoreArguments().Return(block).Repeat.Times(2);
             scanner.Expect(s => s.FindContainingBlock(new Address(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
             scanner.Expect(s => s.GetImportedProcedure(0)).IgnoreArguments().Return(null);
+            scanner.Expect(s => s.EnqueueJumpTarget(
+                Arg<Address>.Matches(a => a.Linear == 0x00100004),
+                Arg<Procedure>.Is.NotNull,
+                Arg<ProcessorState>.Is.NotNull))
+                .Return(block3);
             scanner.Expect(s => s.ScanProcedure(
                 Arg<Address>.Is.Equal(new Address(0x2000)),
                 Arg<string>.Is.Null,
@@ -409,8 +423,8 @@ void testProc()
 testProc_entry:
 l00100000:
 	r1 = fn2000(r2, r3)
-	goto l00100008
-	// succ:  l00100008
+	goto l00100004
+	// succ:  l00100004
 testProc_exit:
 ";
             Assert.AreEqual(sExp, sw.ToString());

@@ -35,7 +35,7 @@ l0C00_0000:
 	Mem9[ds:0x0310:word16] = ax_8
 	ax_10 = fn0C00_0027(si_6, ds, &si_9)
 	Mem11[ds:0x0320:word16] = ax_10
-	ax_13 = fn0C00_002F(si_9, ds, &si_12)
+	ax_13 = fn0C00_002F(si_7, ds, &si_12)
 	Mem14[ds:0x0330:word16] = ax_13
 	ax_16 = fn0C00_0036(si_12, ds, &si_15)
 	Mem17[ds:0x0340:word16] = ax_16
@@ -49,6 +49,7 @@ word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
 fn0C00_0025_entry:
 	def Mem0
 	def fp
+	def sp
 	def ax
 	def ds
 	def si
@@ -56,12 +57,11 @@ fn0C00_0025_entry:
 	// succ:  l0C00_0025
 l0C00_0025:
 	ax_7 = Mem0[ds:si:word16]
-	si_7 = si + 0x0002
-	return ax_6
+	si_8 = si + 0x0002
+	return ax_7
 	// succ:  fn0C00_0025_exit
 fn0C00_0025_exit:
-	use si_7 (=> siOut)
-	// succ: 
+	use si_8 (=> siOut)
 
 // fn0C00_0025
 word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
@@ -72,12 +72,11 @@ fn0C00_0025_entry:
 	def siOut
 	// succ:  l0C00_0025
 l0C00_0025:
-	ax_6 = Mem0[ds:si:word16]
+	ax_7 = Mem0[ds:si:word16]
 	Mem0[siOut:word16] = si + 0x0002
-	return ax_6
+	return ax_7
 	// succ:  fn0C00_0025_exit
-fn0C00_0025_exit:		// pred: l0C00_0025
-	// succ: 
+fn0C00_0025_exit:
 ====================
 // fn0C00_0027
 word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
@@ -86,28 +85,33 @@ fn0C00_0027_entry:
 	def fp
 	def sp
 	def ax
-	def SCZO
+	def SZO
+	def C
 	def si
 	def Z
 	def ds
 	def siOut
 	// succ:  l0C00_0027
-l0C00_0027:		// pred: fn0C00_0027_entry
-	ax_8 = 0x0000
-	SCZO_9 = cond(si - 0x0000)
-	Z_10 = SCZO_9 (alias)
-	branch Test(EQ,Z_10) l0C00_002E
+l0C00_0027:
+	ax_9 = 0x0000
+	SZO_10 = cond(ax_9)
+	C_11 = false
+	si_12 = si | si
+	SZO_13 = cond(si_12)
+	Z_14 = SZO_13 (alias)
+	C_15 = false
+	branch Test(EQ,Z_14) l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
-l0C00_002D:		// pred: l0C00_0027
+l0C00_002D:
 	ax_11 = Mem0[ds:si:word16]
 	si_12 = si + 0x0002
 	// succ:  l0C00_002E
-l0C00_002E:		// pred: l0C00_0027 l0C00_002D
+l0C00_002E:
 	si_13 = PHI(si, si_12)
 	ax_14 = PHI(ax_8, ax_11)
 	return ax_14
 	// succ:  fn0C00_0027_exit
-fn0C00_0027_exit:		// pred: l0C00_002E
+fn0C00_0027_exit:
 	use si_13 (=> siOut)
 	// succ: 
 

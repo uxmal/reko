@@ -79,7 +79,7 @@ namespace Decompiler.Core.Serialization
             {
                 XmlElements = 
                 {
-                    new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace},
                     new XmlElementAttribute("ptr", typeof(SerializedPointerType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = SerializedLibrary.Namespace },
                     new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = SerializedLibrary.Namespace },

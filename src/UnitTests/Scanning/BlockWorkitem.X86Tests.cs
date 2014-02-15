@@ -252,6 +252,8 @@ namespace Decompiler.UnitTests.Scanning
                 m.Jmp(m.MemW(Registers.cs, Registers.bx, "table"));
                 m.Label("table");
 
+                var image = new LoadedImage(new Address(0xc00, 0), new byte[100]);
+                var imageMap = new ImageMap(image);
                 scanner.Expect(x => x.EnqueueVectorTable(
                     Arg<Address>.Is.Anything,
                     Arg<Address>.Is.Anything,
@@ -283,11 +285,12 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1236))).Return(block1236);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1238))).Return(block1238);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x123A))).Return(block123A);
-                scanner.Stub(x => x.Image).Return(new LoadedImage(new Address(0xc00, 0), new byte[100]));
+                scanner.Stub(x => x.Image).Return(image);
+                scanner.Stub(x => x.ImageMap).Return(imageMap);
                 
             });
 
-            wi.Process();
+            wi.ProcessInternal();
             var sw = new StringWriter();
             block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
@@ -395,8 +398,12 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
                 scanner.Stub(x => x.TerminateBlock(Arg<Block>.Is.Anything, Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
+                scanner.Stub(x => x.SetProcedureReturnAddressBytes(
+                    Arg<Procedure>.Is.NotNull,
+                    Arg<int>.Is.Equal(4),
+                    Arg<Address>.Is.Anything));
             });
-            wi.Process();
+            wi.ProcessInternal();
             repository.VerifyAll();
             var sExp =
                 "testblock:" + nl +

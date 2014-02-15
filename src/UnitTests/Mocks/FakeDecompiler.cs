@@ -61,8 +61,14 @@ namespace Decompiler.UnitTests.Mocks
             byte [] image = loader.LoadImageBytes(fileName, 0);
 
             this.prog = loader.Load(image, null);
-            this.project = new Project();
-            this.project.InputFilename = fileName;
+            this.project = new Project
+            {
+                InputFiles = {
+                    new InputFile {
+                        Filename = fileName
+                    }
+                }
+            };
         }
 
         public void ScanProgram()

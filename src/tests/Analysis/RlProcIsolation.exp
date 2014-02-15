@@ -26,7 +26,7 @@ l0C00_0000:
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp ax:<invalid> di:di -2(fp):di
-l0C00_0000_tmp:
+l0C00_0000_thunk_fn0C00_000F:
 	call fn0C00_000F (retsize: 0;)
 	return
 // DataOut:

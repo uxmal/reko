@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Core
@@ -32,33 +33,35 @@ namespace Decompiler.Core
     {
         public Project()
         {
-            UserProcedures = new SortedList<Address, SerializedProcedure>();
-            UserCalls = new SortedList<Address, SerializedCall_v1>();
             UserGlobalData = new SortedList<Address, SerializedType>();
             InputFiles = new List<InputFile>();
         }
 
+        [Obsolete("", true)]
         public Address BaseAddress { get; set; }
+        [Obsolete("", true)]
         public string DisassemblyFilename { get; set; }
+        
         public List<InputFile> InputFiles { get; private set; }
-       [Obsolete] public string InputFilename { get; set; }
-       [Obsolete]
+
+       [Obsolete("", true)]
        public string IntermediateFilename { get; set; }
-       [Obsolete]
+       [Obsolete("", true)]
        public string OutputFilename { get; set; }
-       [Obsolete]
+       [Obsolete("", true)]
        public string TypesFilename { get; set; }
 
         /// <summary>
         /// Locations that have been identified as Procedures by the user from all input files.
         /// </summary>
-        [Obsolete("UserProcedures are per binary.")]
+        [Obsolete("UserProcedures are per binary.", true)]
         public SortedList<Address, SerializedProcedure> UserProcedures { get;  set; }
 
         /// <summary>
         /// Locations that have been identified as calls by the user, complete with 
         /// their signatures.
         /// </summary>
+        [Obsolete("", true)]
         public SortedList<Address, SerializedCall_v1> UserCalls { get; private set; }
 
         /// <summary>
@@ -66,32 +69,27 @@ namespace Decompiler.Core
         /// </summary>
         public SortedList<Address, SerializedType> UserGlobalData { get; private set; }
 
-        public SerializedProject_v1 Save()
+        public Project_v2 Save()
         {
-            var sp = new SerializedProject_v1()
+            var inputs = this.InputFiles.Select(i => new DecompilerInput_v1
             {
-                Input = new DecompilerInput_v1
-                {
-                    Address = BaseAddress.ToString(),
-                    Filename = InputFilename,
-                },
-                Output = new DecompilerOutput_v1
-                {
-                    DisassemblyFilename = DisassemblyFilename,
-                    IntermediateFilename = IntermediateFilename,
-                    OutputFilename = OutputFilename,
-                    TypesFilename = TypesFilename,
-                }
+                Address = i.BaseAddress.ToString(),
+                Filename = i.Filename,
+                UserProcedures = i.UserProcedures
+                    .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
+                    .ToList(),
+                UserCalls = i.UserCalls
+                    .Select(uc => uc.Value)
+                    .ToList(),
+                DisassemblyFilename = i.DisassemblyFilename,
+                IntermediateFilename = i.IntermediateFilename,
+                OutputFilename = i.OutputFilename,
+                TypesFilename = i.TypesFilename,
+            }).ToList();
+            var sp = new Project_v2()
+            {
+                Inputs = inputs,
             };
-            foreach (var de in UserProcedures)
-            {
-                de.Value.Address = de.Key.ToString();
-                sp.UserProcedures.Add(de.Value);
-            }
-            foreach (var de in UserCalls)
-            {
-                sp.UserCalls.Add(de.Value);
-            }
             foreach (var de in UserGlobalData)
             {
             }
@@ -102,17 +100,6 @@ namespace Decompiler.Core
         {
             var serializer = new ProjectSerializer();
             var project = serializer.LoadProject(sp);
-        }
-
-        [Obsolete("Go to inputfile", true)]
-        public void SetDefaultFileNames(string inputFilename)
-        {
-            InputFilename = inputFilename;
-
-            DisassemblyFilename = Path.ChangeExtension(inputFilename, ".asm");
-            IntermediateFilename = Path.ChangeExtension(inputFilename, ".dis");
-            OutputFilename = Path.ChangeExtension(inputFilename, ".c");
-            TypesFilename = Path.ChangeExtension(inputFilename, ".h");
         }
     }
 }

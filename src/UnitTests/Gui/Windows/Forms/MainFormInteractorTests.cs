@@ -54,6 +54,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IDiagnosticsService diagnosticSvc;
         private IDecompilerShellUiService uiSvc;
         private ITypeLibraryLoaderService typeLibSvc;
+        private IProjectBrowserService projectBrowserSvc;
 
 		[SetUp]
 		public void Setup()
@@ -141,7 +142,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
             p.Address = "12345";
             p.Name = "MyProc";
-            svc.Decompiler.Project.UserProcedures.Add(new Address(0x12345), p);
+            svc.Decompiler.Project.InputFiles[0].UserProcedures.Add(new Address(0x12345), p);
 
             interactor.Save();
             string s =
@@ -384,6 +385,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             disasmSvc = mr.StrictMock<IDisassemblyViewService>();
             diagnosticSvc = mr.StrictMock<IDiagnosticsService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
+            projectBrowserSvc = mr.StrictMock<IProjectBrowserService>();
 
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
@@ -396,6 +398,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
             svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
+            svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(projectBrowserSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 
@@ -406,6 +409,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var tabControl = new TabControl { TabPages = { tabPage } };
             var toolStrip = new ToolStrip { };
             var statusStrip = new StatusStrip { Items = { new ToolStripLabel() } };
+            var projectBrowser = mr.Stub<ITreeView>();
             form.Stub(f => f.DiagnosticsList).Return(listView);
             form.Stub(f => f.ImageList).Return(imagelist);
             form.Stub(f => f.Menu).SetPropertyAndIgnoreArgument();
@@ -416,6 +420,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.FindResultsPage).Return(tabPage);
             form.Stub(f => f.FindResultsList).Return(listView);
             form.Stub(f => f.ToolBar).Return(toolStrip);
+            form.Stub(f => f.ProjectBrowser).Return(projectBrowser);
             form.Stub(f => f.StatusStrip).Return(statusStrip);
             form.Load += null;
             LastCall.IgnoreArguments();

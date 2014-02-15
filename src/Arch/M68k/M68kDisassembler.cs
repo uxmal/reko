@@ -73,11 +73,6 @@ namespace Decompiler.Arch.M68k
             return true;
         }
 
-        public void Reset()
-        {
-            throw new NotSupportedException();
-        }
-
 #if !NEVER
         /* ======================================================================== */
         /* ========================= LICENSING & COPYRIGHT ======================== */
@@ -1244,27 +1239,6 @@ namespace Decompiler.Arch.M68k
             {
                 code = Opcode.bra,
                 op1 = new M68kAddressOperand(temp_pc + dasm.read_imm_32())
-            };
-        }
-
-        private static M68kInstruction d68000_bset_r(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.bset,
-                op1 = get_data_reg((dasm.instruction >> 9) & 7),
-                op2 = dasm.get_ea_mode_str_8(dasm.instruction)
-            };
-        }
-
-        private static M68kInstruction d68000_bset_s(M68kDisassembler dasm)
-        {
-            var str = dasm.get_imm_str_u8();
-            return new M68kInstruction
-            {
-                code = Opcode.bset,
-                op1 = str,
-                op2 = dasm.get_ea_mode_str_8(dasm.instruction)
             };
         }
 
@@ -3847,8 +3821,8 @@ namespace Decompiler.Arch.M68k
 	new OpRec("J", 0xff00, 0x6000, 0x000, Opcode.bra),              // d68000_bra_8
 	new OpRec("J", 0xffff, 0x6000, 0x000, Opcode.bra),              // d68000_bra_16
 	new OpRec("J", 0xffff, 0x60ff, 0x000, Opcode.bra),              // d68020_bra_32
-	new OpRec(d68000_bset_r       , 0xf1c0, 0x01c0, 0xbf8),
-	new OpRec(d68000_bset_s       , 0xffc0, 0x08c0, 0xbf8),
+	new OpRec("D9,E0", 0xf1c0, 0x01c0, 0xbf8, Opcode.bset),         // d68000_bset_r
+	new OpRec("Iw,E0", 0xffc0, 0x08c0, 0xbf8, Opcode.bset),         // d68000_bset_s
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32

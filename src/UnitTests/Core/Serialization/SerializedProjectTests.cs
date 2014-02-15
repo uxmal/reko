@@ -25,6 +25,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -77,39 +78,58 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
         public void SudSaveProject()
         {
-            Project project = new Project();
-            project.BaseAddress = new Address(0x1000, 0);
-            project.DisassemblyFilename = "foo.asm";
-            project.IntermediateFilename = "foo.cod";
-
-            var addr = new Address(0x1000, 0x10);
-            SerializedProcedure proc = new SerializedProcedure();
-            proc.Name = "foo";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.ReturnValue = new SerializedArgument();
-            proc.Signature.ReturnValue.Kind = new SerializedRegister("eax");
-            proc.Signature.Arguments = new SerializedArgument[2];
-            proc.Signature.Arguments[0] = new SerializedArgument();
-            proc.Signature.Arguments[0].Kind = new SerializedStackVariable();
-            proc.Signature.Arguments[0].Type = new SerializedPrimitiveType(Domain.SignedInt, 4);
-            proc.Signature.Arguments[1] = new SerializedArgument();
-            proc.Signature.Arguments[1].Kind = new SerializedStackVariable();
-            proc.Signature.Arguments[1].Type = new SerializedPrimitiveType(Domain.SignedInt, 4);
-            project.UserProcedures.Add(addr, proc);
-
+            Project project = new Project
+            {
+                InputFiles = 
+                {
+                    new InputFile
+                    {
+                        BaseAddress = new Address(0x1000, 0),
+                        DisassemblyFilename = "foo.asm",
+                        IntermediateFilename = "foo.cod",
+                        UserProcedures = new SortedList<Address,SerializedProcedure> 
+                        {
+                            { 
+                                new Address(0x1000, 0x10), 
+                                new SerializedProcedure
+                                {
+                                    Name = "foo",
+                                    Signature = new SerializedSignature
+                                    {
+                                        ReturnValue = new SerializedArgument { Kind = new SerializedRegister("eax") },
+                                        Arguments = new SerializedArgument[]
+                                        {
+                                            new SerializedArgument
+                                            {
+                                                Kind = new SerializedStackVariable(),
+                                                Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+                                            },
+                                            new SerializedArgument
+                                            {
+                                                Kind = new SerializedStackVariable(),
+                                                Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
             using (FileUnitTester fut = new FileUnitTester("Core/SudSaveProject.txt"))
             {
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
-                SerializedProject_v1 ud = project.Save();
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v2));
+                Project_v2 ud = project.Save();
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
         }
 		
         [Test]
-		public void SudRead()
+		public void SudRead_v1()
 		{
 			SerializedProject_v1 proj = null;
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/SudRead.xml"), FileMode.Open))
@@ -147,6 +167,7 @@ namespace Decompiler.UnitTests.Core.Serialization
     </signature>
   </procedure>
   <procedure name=""bar"">
+    <address>10005000</address>
     <signature>
       <return><reg>eax</reg></return>
       <arg><reg>ecx</reg></arg>
@@ -160,14 +181,13 @@ namespace Decompiler.UnitTests.Core.Serialization
                 proj = (SerializedProject_v1)ser.Deserialize(rdr);
             }
             var project = new ProjectSerializer().LoadProject(proj);
-            Assert.AreEqual(0x10003330, project.BaseAddress.Linear);
-            Assert.AreEqual("foo.cod", project.IntermediateFilename);
-            Assert.AreEqual(2, proj.UserProcedures.Count);
-            Assert.AreEqual("foo.asm", project.DisassemblyFilename);
-            Assert.AreEqual(0x10004000, project.UserProcedures.Keys[0].Linear);
-            SerializedProcedure proc = project.UserProcedures.Values[0];
+            Assert.AreEqual(0x10003330, project.InputFiles[0].BaseAddress.Linear);
+            Assert.AreEqual("foo.cod", project.InputFiles[0].IntermediateFilename);
+            Assert.AreEqual(2, project.InputFiles[0].UserProcedures.Count);
+            Assert.AreEqual("foo.asm", project.InputFiles[0].DisassemblyFilename);
+            Assert.AreEqual(0x10004000, project.InputFiles[0].UserProcedures.Keys[0].Linear);
+            SerializedProcedure proc = project.InputFiles[0].UserProcedures.Values[0];
             Assert.IsNull(proc.Signature.ReturnValue);
-
         }
 
 		[Test]
@@ -178,7 +198,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
                 proj = new ProjectSerializer().LoadProject(stm);
             }
-			SerializedProcedure proc = (SerializedProcedure) proj.UserProcedures.Values[0];
+			SerializedProcedure proc = (SerializedProcedure) proj.InputFiles[0].UserProcedures.Values[0];
 			Assert.AreEqual("alloca", proc.Name);
 			Assert.IsTrue(proc.Characteristics.IsAlloca);
 		}

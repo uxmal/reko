@@ -204,7 +204,7 @@ namespace Decompiler.Gui.Windows
                     Address = addrRange.Begin.ToString(),
                     Name = proc.Name,
                 };
-                decompiler.Project.UserProcedures.Add(addrRange.Begin, userp);
+                decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
                 Control.Invalidate();
             }
         }

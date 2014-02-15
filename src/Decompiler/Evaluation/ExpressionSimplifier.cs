@@ -505,7 +505,7 @@ namespace Decompiler.Evaluation
             // DO NOT simplify floating-point ops!
 			if (binOp == Operator.IAdd)
 			{
-				if (IsZero(cRight))
+				if (cRight.IsZero)
 					return left;
 			} 
 			else if (binOp == Operator.ISub)

@@ -402,7 +402,7 @@ namespace Decompiler.Gui.Forms
             {
                 string newName = PromptForFilename(
                     Path.ChangeExtension(
-                        decompilerSvc.Decompiler.Project.InputFilename,
+                        decompilerSvc.Decompiler.Project.InputFiles[0].Filename,
                         SerializedProject_v1.FileExtension));
                 if (newName == null)
                     return;
@@ -619,7 +619,7 @@ namespace Decompiler.Gui.Forms
 
         public void WriteDisassembly(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.DisassemblyFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].DisassemblyFilename))
             {
                 writer(output);
             }
@@ -627,7 +627,7 @@ namespace Decompiler.Gui.Forms
 
         public void WriteIntermediateCode(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.IntermediateFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].IntermediateFilename))
             {
                 writer(output);
             }
@@ -635,7 +635,7 @@ namespace Decompiler.Gui.Forms
 
         public void WriteTypes(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.TypesFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].TypesFilename))
             {
                 writer(output);
             }
@@ -643,7 +643,7 @@ namespace Decompiler.Gui.Forms
 
         public void WriteDecompiledCode(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.OutputFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].OutputFilename))
             {
                 writer(output);
             }
