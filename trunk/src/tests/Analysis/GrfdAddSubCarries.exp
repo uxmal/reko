@@ -1,6 +1,10 @@
-SCZO_43 = cond(cl_42 - 0x30): cond(cl_42 - 0x30)
-C_44 = SCZO_43 (alias): cond(cl_42 - 0x30)
-SCZO_51 = cond(cl_47 - 0x3A): cond(cl_47 - 0x3A)
-C_52 = SCZO_51 (alias): cond(cl_47 - 0x3A)
-C_53 = !C_52: !cond(cl_47 - 0x3A);
-SCZO_57 = cond(ax_55): cond(ax_55)
+SCZO_19 = cond(ax_18): cond(ax_18)
+C_20 = SCZO_19 (alias): cond(ax_18)
+SCZO_32 = cond(ax_31): cond(ax_31)
+C_33 = SCZO_32 (alias): cond(ax_31)
+SCZO_42 = cond(cl_41 - 0x30): cond(cl_41 - 0x30)
+C_43 = SCZO_42 (alias): cond(cl_41 - 0x30)
+SCZO_49 = cond(cl_46 - 0x3A): cond(cl_46 - 0x3A)
+C_50 = SCZO_49 (alias): cond(cl_46 - 0x3A)
+C_51 = !C_50: !cond(cl_46 - 0x3A);
+SCZO_53 = cond(ax_52): cond(ax_52)

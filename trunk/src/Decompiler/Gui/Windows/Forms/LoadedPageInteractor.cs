@@ -144,7 +144,8 @@ namespace Decompiler.Gui.Windows.Forms
                 SerializedProcedure userp = new SerializedProcedure();
                 userp.Address = addrRange.Begin.ToString();
                 userp.Name = proc.Name;
-                Decompiler.Project.UserProcedures.Add(addrRange.Begin, userp);
+                //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
+                Decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
                 memSvc.InvalidateWindow();
             }
         }

@@ -1,23 +1,24 @@
 // WhileLtIncMock
 void WhileLtIncMock()
-WhileLtIncMock_entry:		// pred:
+WhileLtIncMock_entry:
 	def a
 	// succ:  l1
-l1:		// pred: WhileLtIncMock_entry
+l1:
 	i_4 = 0x00000000
+	goto loopHdr
 	// succ:  loopHdr
-loopHdr:		// pred: l1 loop
-	i_5 = PHI(i_4, i_8)
-	branch i_5 < 0x00000064 loop
-	// succ:  l2 loop
-l2:		// pred: loopHdr
+l2:
 	return
 	// succ:  WhileLtIncMock_exit
-WhileLtIncMock_exit:		// pred: l2
-	// succ: 
-loop:		// pred: loopHdr
-	Mem7[a + i_5 * 0x00000004:word32] = 0x00000000
-	i_8 = i_5 + 0x00000001
+loop:
+	Mem6[a + i_5 * 0x00000004:word32] = 0x00000000
+	i_7 = i_5 + 0x00000001
 	// succ:  loopHdr
+loopHdr:
+	i_5 = PHI(i_4, i_7)
+	branch i_5 < 0x00000064 loop
+	goto l2
+	// succ:  l2 loop
+WhileLtIncMock_exit:
 
 (0x00000000 0x00000001 0x00000064 signed)

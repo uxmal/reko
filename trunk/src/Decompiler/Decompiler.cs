@@ -178,7 +178,7 @@ namespace Decompiler
             {
                 Program = loader.Load(
                     loader.LoadImageBytes(Project.InputFiles[0].Filename, 0),
-                    Project.BaseAddress);
+                    Project.InputFiles[0].BaseAddress);
             }
             else
             {
@@ -272,8 +272,8 @@ namespace Decompiler
 
         public void WriteDecompiledProcedures(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(Project.OutputFilename), w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(Project.TypesFilename));
+            WriteHeaderComment(Path.GetFileName(Project.InputFiles[0].OutputFilename), w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(Project.InputFiles[0].TypesFilename));
             w.WriteLine();
             var fmt = new CodeFormatter(new Formatter(w));
             foreach (Procedure proc in Program.Procedures.Values)
@@ -293,7 +293,7 @@ namespace Decompiler
 
         public void WriteDecompiledTypes(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(Project.TypesFilename), w);
+            WriteHeaderComment(Path.GetFileName(Project.InputFiles[0].TypesFilename), w);
             w.WriteLine("/*"); Program.TypeStore.Write(w); w.WriteLine("*/");
             TypeFormatter fmt = new TypeFormatter(new Formatter(w), false);
             foreach (EquivalenceClass eq in Program.TypeStore.UsedEquivalenceClasses)
@@ -339,7 +339,7 @@ namespace Decompiler
 				{
 					scanner.EnqueueEntryPoint(ep);
 				}
-				foreach (SerializedProcedure sp in Project.UserProcedures.Values)
+				foreach (SerializedProcedure sp in Project.InputFiles[0].UserProcedures.Values)
 				{
 					scanner.EnqueueUserProcedure(sp);
 				}
@@ -370,7 +370,7 @@ namespace Decompiler
         {
             return new Scanner(
                 prog, 
-                LoadCallSignatures(Project.UserCalls.Values),
+                LoadCallSignatures(Project.InputFiles[0].UserCalls.Values),
                 eventListener);
         }
 
@@ -412,7 +412,7 @@ namespace Decompiler
 		public void WriteHeaderComment(string filename, TextWriter w)
 		{
 			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, Project.InputFilename);
+			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, Project.InputFiles[0].Filename);
 			w.WriteLine("// using Decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}

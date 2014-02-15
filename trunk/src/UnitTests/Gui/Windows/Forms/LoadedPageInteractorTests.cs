@@ -141,7 +141,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var disSvc = AddService<IDisassemblyViewService>();
             var browserSvc = AddService<IProgramImageBrowserService>();
             interactor.Site = site;
-            Assert.AreEqual(0, decSvc.Decompiler.Project.UserProcedures.Count);
+            Assert.AreEqual(0, decSvc.Decompiler.Project.InputFiles[0].UserProcedures.Count);
             var addr = new Address(0x0C20, 0);
             memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
             memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
@@ -150,8 +150,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.MarkAndScanProcedure();
 
             repository.VerifyAll();
-            Assert.AreEqual(1, decSvc.Decompiler.Project.UserProcedures.Count);
-            SerializedProcedure uproc = (SerializedProcedure)decSvc.Decompiler.Project.UserProcedures.Values[0];
+            //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
+            Assert.AreEqual(1, decSvc.Decompiler.Project.InputFiles[0].UserProcedures.Count);
+            SerializedProcedure uproc = (SerializedProcedure)decSvc.Decompiler.Project.InputFiles[0].UserProcedures.Values[0];
             Assert.AreEqual("0C20:0000", uproc.Address);
         }
 

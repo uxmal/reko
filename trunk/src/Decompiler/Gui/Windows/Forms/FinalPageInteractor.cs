@@ -42,12 +42,12 @@ namespace Decompiler.Gui.Windows.Forms
 
         void DataTypeDefinitionLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ShowExplorerWindow(Decompiler.Project.TypesFilename);
+            ShowExplorerWindow(Decompiler.Project.InputFiles[0].TypesFilename);
         }
 
         void ProgramCodeLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ShowExplorerWindow(Decompiler.Project.OutputFilename);
+            ShowExplorerWindow(Decompiler.Project.InputFiles[0].OutputFilename);
         }
 
         private void ShowExplorerWindow(string filePath)

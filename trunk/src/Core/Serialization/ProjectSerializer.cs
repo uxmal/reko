@@ -9,9 +9,9 @@ namespace Decompiler.Core.Serialization
 {
     public class ProjectSerializer
     {
-        public void Save(SerializedProject_v1 project, TextWriter sw)
+        public void Save(Project_v2 project, TextWriter sw)
         {
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v2));
             ser.Serialize(sw, project);
         }
 
@@ -28,21 +28,35 @@ namespace Decompiler.Core.Serialization
             var rdr = new XmlTextReader(stm);
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v2));
             if (ser.CanDeserialize(rdr))
-                return LoadProject((Project_v2) ser.Deserialize(stm));
+                return LoadProject((Project_v2) ser.Deserialize(rdr));
             ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
-            return LoadProject((SerializedProject_v1) ser.Deserialize(rdr));
+            if (ser.CanDeserialize(rdr))
+                return LoadProject((SerializedProject_v1) ser.Deserialize(rdr));
+            return null;
         }
 
         public Project LoadProject(Project_v2 sp)
         {
-            var inputFiles = sp.Inputs.Select(s => new InputFile
-            {
-                BaseAddress = Address.ToAddress(s.Address, 16),
-                Filename = s.Filename,
-            });
+            var inputFiles = sp.Inputs.Select(s => LoadInputFile(s));
             var project = new Project();
             project.InputFiles.AddRange(inputFiles);
             return project;
+        }
+
+        private InputFile LoadInputFile(DecompilerInput_v1 sInput)
+        {
+            var file = new InputFile
+            {
+                BaseAddress = Address.ToAddress(sInput.Address, 16),
+                Filename = sInput.Filename,
+            };
+            file.UserProcedures = sInput.UserProcedures
+                    .Select(sup => new KeyValuePair<Address, SerializedProcedure>(
+                        Address.ToAddress(sup.Address, 16),
+                        sup))
+                    .Where(kv => kv.Key != null)
+                    .ToSortedList(kv => kv.Key, kv => kv.Value);
+            return file;
         }
 
         public Project LoadProject(SerializedProject_v1 sp)

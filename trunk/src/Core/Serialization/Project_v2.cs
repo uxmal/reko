@@ -35,7 +35,7 @@ namespace Decompiler.Core.Serialization
     /// format. However, should *rename* or delete XML nodes, you must copy the serialization
     /// file format into a new file, bump the namespace identifier and the class name. You will
     /// also have to modify the ProjectSerializer to handle the new format.</remarks>
-    [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler/v2")]
+    [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler")]
     public class Project_v2
     {
         public const string FileExtension = ".dcproject";
@@ -44,8 +44,6 @@ namespace Decompiler.Core.Serialization
         {
             this.Inputs = new List<DecompilerInput_v1>();
             this.Output = new DecompilerOutput_v1();
-            this.UserProcedures = new List<SerializedProcedure>();
-            this.UserCalls = new List<SerializedCall_v1>();
         }
 
         [XmlElement("input")]

@@ -67,6 +67,12 @@ namespace Decompiler.Core.Serialization
             return serializer;
         }
 
+        public static XmlSerializer CreateSerializer_v2(Type rootType)
+        {
+            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate);
+            return new XmlSerializer(rootType, attrOverrides);
+        }
+
         public static XmlSerializer CreateSerializer_v1(Type rootType)
         {
             var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate);

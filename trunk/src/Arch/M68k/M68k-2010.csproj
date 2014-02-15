@@ -68,7 +68,6 @@
     <Compile Include="InstructionFormatter.cs" />
     <Compile Include="M68kArchitecture.cs" />
     <Compile Include="M68kDisassembler.cs" />
-    <Compile Include="M68kDisassembler.Handlers.cs" />
     <Compile Include="M68kInstruction.cs" />
     <Compile Include="M68kState.cs" />
     <Compile Include="MemoryOperand.cs" />

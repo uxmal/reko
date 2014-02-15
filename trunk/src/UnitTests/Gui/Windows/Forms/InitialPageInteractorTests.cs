@@ -24,6 +24,7 @@ using Decompiler.Gui;
 using Decompiler.Gui.Forms;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.Gui.Controls;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
@@ -55,6 +56,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             site.AddService(typeof(IProgramImageBrowserService), new ProgramImageBrowserService(form.BrowserList));
+            site.AddService(typeof(IProjectBrowserService), new ProjectBrowserService(null, mr.Stub<ITreeView>()));
             i.Site = site;
 		}
 
@@ -73,7 +75,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
         }
-
 
         [Test]
         public void OpenBinary_CanAdvance()

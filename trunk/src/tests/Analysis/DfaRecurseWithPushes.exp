@@ -52,6 +52,5 @@ fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
 	Mem6[ds:0x4321:word32] = 0x00001234
-	// succ: 
 fn0C00_0020_exit:
 

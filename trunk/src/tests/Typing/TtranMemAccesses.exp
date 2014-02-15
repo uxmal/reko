@@ -6,8 +6,8 @@ l0C00_0000:
 	fn0C00_000C(ds)
 	fn0C00_0015(ds)
 	Mem4[ds:0x0100:word16] = 0x0000
-	// succ:  l0C00_0000_tmp
-l0C00_0000_tmp:
+	// succ:  l0C00_0000_thunk_fn0C00_000C
+l0C00_0000_thunk_fn0C00_000C:
 	fn0C00_000C(ds)
 	return
 	// succ:  fn0C00_0000_exit

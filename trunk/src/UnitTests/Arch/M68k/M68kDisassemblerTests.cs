@@ -559,5 +559,11 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("divs.w\td4,d7", 0x8FC4);
         }
 
+        [Test]
+        public void M68kdis_bset_s()
+        {
+            RunTest("bset\t#$001F,d0", 0x08C0, 0x001F);
+            RunTest("bset\td4,(a7)", 0x09D7);
+        }
     }
 }

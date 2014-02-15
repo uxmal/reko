@@ -74,6 +74,24 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("processor")]
         public string Processor;
+
+        [XmlElement("procedure")]
+        public List<SerializedProcedure> UserProcedures;
+
+        [XmlElement("call")]
+        public List<SerializedCall_v1> UserCalls;
+
+        [XmlElement("disassembly")]
+        public string DisassemblyFilename;
+
+        [XmlElement("intermediate-code")]
+        public string IntermediateFilename;
+
+        [XmlElement("output")]
+        public string OutputFilename;
+
+        [XmlElement("types-file")]
+        public string TypesFilename;
     }
 
     public class DecompilerOutput_v1

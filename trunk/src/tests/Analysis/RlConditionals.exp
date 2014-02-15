@@ -2,32 +2,33 @@
 	LiveOut:  
 	MayUseIn:  bp ss ds
 	BypassIn: 
-	Trashed:   SCZO ax bp al ah
+	Trashed:   SCZO ax sp bp al ah
 	Preserved:
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0000:
 	ax = Mem0[ds:0x0100:word16]
 	SCZO = cond(Mem0[ds:0x0102:word16] - ax)
 	branch Test(EQ,Z) l0C00_000F
 // DataOut: bp ss ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_000A:
 	Mem0[ds:0x0F00:byte] = 0x01
 // DataOut: bp ss ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:<invalid>
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_000F:
 	ax = Mem0[ds:0x0104:word16]
 	v7 = Mem0[ds:0x0106:word16] - ax
@@ -36,12 +37,16 @@ l0C00_000F:
 	branch Test(LE,SZO) l0C00_001E
 // DataOut: bp ss ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp ax:<invalid>
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_0019:
 	Mem0[ds:0x0F01:byte] = 0x01
+// DataOut (flags):
+// LocalsOut: Temporary(16)
+
 // DataOut: bp ss ds
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_001E:
 	ax = Mem0[ds:0x0106:word16]
 	ax = ax & Mem0[ds:0x0108:word16]
@@ -50,7 +55,6 @@ l0C00_001E:
 	branch Test(EQ,Z) l0C00_002D
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp ax:<invalid>
 l0C00_0028:
 	Mem0[ds:0x0F02:byte] = 0x01
 // DataOut: bp ss ds
@@ -168,8 +172,8 @@ l0C00_0069:
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 
+// SymbolicIn: sp:fp bp:bp -2(fp):bp
 fn0C00_0069_exit:
 // DataOut: ss ds
 // DataOut (flags): C
-// SymbolicIn: sp:fp bp:bp -2(fp):bp
 
