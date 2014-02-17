@@ -37,32 +37,7 @@ namespace Decompiler.Core
             InputFiles = new List<InputFile>();
         }
 
-        [Obsolete("", true)]
-        public Address BaseAddress { get; set; }
-        [Obsolete("", true)]
-        public string DisassemblyFilename { get; set; }
-        
         public List<InputFile> InputFiles { get; private set; }
-
-       [Obsolete("", true)]
-       public string IntermediateFilename { get; set; }
-       [Obsolete("", true)]
-       public string OutputFilename { get; set; }
-       [Obsolete("", true)]
-       public string TypesFilename { get; set; }
-
-        /// <summary>
-        /// Locations that have been identified as Procedures by the user from all input files.
-        /// </summary>
-        [Obsolete("UserProcedures are per binary.", true)]
-        public SortedList<Address, SerializedProcedure> UserProcedures { get;  set; }
-
-        /// <summary>
-        /// Locations that have been identified as calls by the user, complete with 
-        /// their signatures.
-        /// </summary>
-        [Obsolete("", true)]
-        public SortedList<Address, SerializedCall_v1> UserCalls { get; private set; }
 
         /// <summary>
         /// Global data identified by the user.

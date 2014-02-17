@@ -30,13 +30,14 @@ using System.Text;
 namespace Decompiler.ImageLoaders.Hunk
 {
     /// <summary>
-    /// This class knows how to load and how to relocate AmigaOS Hunk files.
+    /// This class knows how to load and relocate AmigaOS Hunk files.
     /// </summary>
     /// <remarks>
     /// http://amiga-dev.wikidot.com/file-format:hunk
     /// </remarks>
     public partial class HunkLoader: ImageLoader
     {
+        private M68kArchitecture arch;
         private List<Hunk> hunks;
         private HeaderHunk header;
         public List<Segment> segments { get; private set; }
@@ -45,6 +46,7 @@ namespace Decompiler.ImageLoaders.Hunk
         private List<Segment> overlay_segments;
         private List<LibHunk> libs;
         private List<Unit> units;
+        private TextHunk firstCodeHunk;
 
         private static TraceSwitch Trace = new TraceSwitch("HunkLoader", "Trace Amiga Hunk loader", "Verbose");
 
@@ -66,20 +68,22 @@ namespace Decompiler.ImageLoaders.Hunk
         
         public override Address PreferredBaseAddress
         {
-            get { throw new NotImplementedException(); }
+            get { return new Address(0x00100000); }
         }
 
         public override LoaderResults Load(Address addrLoad)
         {
+            arch = new M68kArchitecture();
             var imgReader = new BeImageReader(RawImage, 0);
-            var arch = new M68kArchitecture();
             var parse = new HunkFileParser(imgReader, false);
             this.hunks = parse.Parse();
             BuildSegments();
-            var image = RelocateBytes(addrLoad);
+            this.firstCodeHunk = parse.FindFirstCodeHunk();
+            var image = new LoadedImage(addrLoad, RelocateBytes(addrLoad));
 
             return new LoaderResults(
-                new LoadedImage(addrLoad, image),
+                image,
+                new ImageMap(image),
                 new M68kArchitecture(),
                 new AmigaOSPlatform(Services, arch));
         }
@@ -562,7 +566,12 @@ namespace Decompiler.ImageLoaders.Hunk
 
 		public override RelocationResults Relocate(Address addrLoad)
         {
-            return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary());
+            var entries = new List<EntryPoint>
+            {
+                //$TODO: what are the registers on entry?
+                new EntryPoint(addrLoad, arch.CreateProcessorState())
+            };
+            return new RelocationResults(entries, new RelocationDictionary());
         }
 
         private byte[] RelocateBytes(Address addrLoad)

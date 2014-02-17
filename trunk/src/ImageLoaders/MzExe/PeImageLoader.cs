@@ -107,8 +107,7 @@ namespace Decompiler.ImageLoaders.MzExe
             for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
                 ;
             char[] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
-            EntryPoint ep = new EntryPoint(addrLoad + addr, new string(chars), arch.CreateProcessorState());
-            return ep;
+            return new EntryPoint(addrLoad + addr, new string(chars), arch.CreateProcessorState());
         }
 
 		public IProcessorArchitecture CreateArchitecture(short peMachineType)
@@ -138,7 +137,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				LoadSections(addrLoad, sectionOffset, sections);
 			}
 			imgLoaded.BaseAddress = addrLoad;
-			return new LoaderResults(imgLoaded, arch, platform);
+			return new LoaderResults(imgLoaded, new ImageMap(imgLoaded), arch, platform);
 		}
 
 

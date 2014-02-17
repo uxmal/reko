@@ -202,11 +202,19 @@ namespace Decompiler.Arch.M68k
 
         private MemoryAccess RewriteMemoryAccess(MemoryOperand mem, PrimitiveType dataWidth)
         {
-            var bReg = rewriter.frame.EnsureRegister(mem.Base);
-            Expression ea = bReg;
-            if (mem.Offset != null)
+            Expression ea;
+            if (mem.Base == Registers.pc)
             {
-                ea = m.IAdd(bReg, mem.Offset);
+                ea = rewriter.di.Address + mem.Offset.ToInt32();
+            }
+            else
+            {
+                var bReg = rewriter.frame.EnsureRegister(mem.Base);
+                ea = bReg;
+                if (mem.Offset != null)
+                {
+                    ea = m.IAdd(bReg, mem.Offset);
+                }
             }
             return m.Load(dataWidth, ea);
         }
@@ -265,9 +273,9 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException("Unimplemented RewriteUnary for operand type " + operand.ToString());
         }
 
-        public Expression RewriteMoveDst(MachineOperand operand, PrimitiveType dataWidth, Expression src)
+        public Expression RewriteMoveDst(MachineOperand opDst, PrimitiveType dataWidth, Expression src)
         {
-            var mem = operand as MemoryOperand;
+            var mem = opDst as MemoryOperand;
             if (mem != null)
             {
                 src = Spill(src, frame.EnsureRegister(mem.Base));
@@ -276,7 +284,36 @@ namespace Decompiler.Arch.M68k
                 m.Assign(load, src);
                 return tmp;
             }
-            throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + operand.ToString());
+            var post = opDst as PostIncrementMemoryOperand;
+            if (post != null)
+            {
+                var r = frame.EnsureRegister(post.Register);
+                var rExp = Spill(src, r);
+                var load = m.Load(dataWidth, rExp);
+                m.Assign(load, src);
+                m.Assign(r, m.IAdd(r, dataWidth.Size));
+                return src;
+            }
+            var pre = opDst as PredecrementMemoryOperand;
+            if (pre != null)
+            {
+                var r = frame.EnsureRegister(pre.Register);
+                m.Assign(r, m.ISub(r, dataWidth.Size));
+                var rExp = Spill(src, r);
+                var load = m.Load(dataWidth, rExp);
+                m.Assign(load, src);
+                return src;
+            }
+            var indidx = opDst as IndirectIndexedOperand;
+            if (indidx != null)
+            {
+                var a = frame.EnsureRegister(indidx.ARegister);
+                var x = frame.EnsureRegister(indidx.XRegister);
+                var load = m.Load(dataWidth, m.IAdd(a, x));
+                m.Assign(load, src);
+                return src;
+            }
+            throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + opDst.ToString());
         }
 
         private Expression Spill(Expression src, Identifier r)

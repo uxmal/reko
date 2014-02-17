@@ -28,7 +28,7 @@ namespace Decompiler.Core
     public class RelocationResults
     {
         // Collection into which any found entry points found should be added.
-        public readonly  List<EntryPoint> EntryPoints;
+        public readonly List<EntryPoint> EntryPoints;
         // Each relocation is a potential constant pointer. Some platforms only relocate _segments_, though.
         public readonly  RelocationDictionary Relocations;
 

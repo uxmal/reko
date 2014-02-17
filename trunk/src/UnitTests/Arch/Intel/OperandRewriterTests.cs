@@ -255,11 +255,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return null;
 		}
 
-		public PseudoProcedure TrampolineAt(Address addr)
-		{
-			return null;
-		}
-
 		public VectorUse VectorUseAt(Address addr)
 		{
 			// TODO:  Add FakeRewriterHost.VectorUseAt implementation

@@ -64,12 +64,13 @@ namespace Decompiler.ImageLoaders.BinHex
                         this.rsrcFork = new ResourceFork(image, arch);
                         this.image = new LoadedImage(addrLoad, image);
                         this.imageMap = new ImageMap(addrLoad, image.Length);
-                        return new LoaderResults(this.image, arch, platform);
+                        return new LoaderResults(this.image, new ImageMap(this.image), arch, platform);
                     }
                 }
             }
 
-            return new LoaderResults(new LoadedImage(addrLoad, dataFork), arch, platform);
+            var li = new LoadedImage(addrLoad, dataFork);
+            return new LoaderResults(li, new ImageMap(li), arch, platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)

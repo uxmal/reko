@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests
             catch
             {
                 Assert.IsNotNull(decompiler.Project);
-                Assert.IsTrue(string.IsNullOrEmpty(decompiler.Project.InputFiles[0].Filename));
+                Assert.AreEqual(0, decompiler.Project.InputFiles.Count);
                 Assert.IsNull(decompiler.Program);
             }
         }

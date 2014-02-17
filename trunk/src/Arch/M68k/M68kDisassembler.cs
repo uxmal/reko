@@ -36,7 +36,7 @@ namespace Decompiler.Arch.M68k
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
         private ImageReader rdr;        // program counter 
-        private M68kInstruction instr;  // instruction being built
+        internal M68kInstruction instr;  // instruction being built
 
         private M68kDisassembler(ImageReader rdr, uint cpuType)
         {
@@ -54,7 +54,6 @@ namespace Decompiler.Arch.M68k
             build_opcode_table();
         }
 
-
         public override M68kInstruction Current { get { return instr; } }
 
         public override bool MoveNext()
@@ -62,12 +61,22 @@ namespace Decompiler.Arch.M68k
             if (!rdr.IsValid)
                 return false;
             var addr = rdr.Address;
-            instr = new M68kInstruction();
-            instruction = rdr.ReadBeUInt16();
-            g_opcode_type = 0;
+            try
+            {
+                instr = new M68kInstruction { Address = addr };
+                instruction = rdr.ReadBeUInt16();
+                g_opcode_type = 0;
 
-            OpRec handler = g_instruction_table[instruction];
-            instr = handler.opcode_handler(this);
+                OpRec handler = g_instruction_table[instruction];
+                instr = handler.opcode_handler(this);
+            }
+            catch (Exception ex)
+            {
+                instr = new M68kInstruction { 
+                    Address = addr,
+                    code = Opcode.illegal
+                };
+            }
             instr.Address = addr;
             instr.Length = rdr.Address - addr;
             return true;
@@ -268,7 +277,7 @@ namespace Decompiler.Arch.M68k
                     instr.dataWidth = OperandFormatDecoder.GetSizeType(dasm.instruction, args[1], null);
                     i = 3;
                 }
-                var opTranslator = new OperandFormatDecoder(dasm.instruction, i);
+                var opTranslator = new OperandFormatDecoder(dasm, i);
                 instr.op1 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
                 instr.op2 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
                 instr.op3 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
@@ -346,11 +355,8 @@ namespace Decompiler.Arch.M68k
             return true;
         }
 
-        [Obsolete]
         private MachineOperand get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint) instruction, 0); }
-        [Obsolete]
         private MachineOperand get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint) instruction, 1); }
-        [Obsolete]
         private MachineOperand get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint) instruction, 2); }
 
         private M68kImmediateOperand get_imm_str_s8() { return get_imm_str_s(0); }
@@ -957,6 +963,7 @@ namespace Decompiler.Arch.M68k
             var temp_pc = dasm.rdr.Address;
             return new M68kInstruction
             {
+                Address = dasm.instr.Address,
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
                 op1 = new M68kAddressOperand(temp_pc + make_int_8(dasm.instruction))
             };
@@ -967,6 +974,7 @@ namespace Decompiler.Arch.M68k
             var temp_pc = dasm.rdr.Address;
             return new M68kInstruction
             {
+                Address = dasm.instr.Address,
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
                 op1 = new M68kAddressOperand(temp_pc + dasm.rdr.ReadBeInt16()),
             };
@@ -978,6 +986,7 @@ namespace Decompiler.Arch.M68k
             var temp_pc = dasm.rdr.Address;
             return new M68kInstruction
             {
+                Address = dasm.instr.Address,
                 code = g_bcc[(dasm.instruction >> 8) & 0xf], 
                 op1 = new M68kAddressOperand(temp_pc + dasm.rdr.ReadBeInt32()),
             };
@@ -1716,6 +1725,7 @@ namespace Decompiler.Arch.M68k
             Address temp_pc = dasm.rdr.Address;
             return new M68kInstruction
             {
+                Address = dasm.instr.Address,
                 code = g_dbcc[(dasm.instruction >> 8) & 0xf],
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = new M68kAddressOperand(temp_pc + make_int_16(dasm.read_imm_16()))
@@ -2672,7 +2682,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-
         private static M68kInstruction d68020_mull(M68kDisassembler dasm)
         {
             uint extension = dasm.rdr.ReadBeUInt16();
@@ -2680,14 +2689,12 @@ namespace Decompiler.Arch.M68k
             MachineOperand op2 = BIT_A(extension)
                 ? dasm.get_double_data_reg(extension & 7, (extension >> 12) & 7)
                 : (MachineOperand) get_data_reg((int)(extension >> 12) & 7);
-            var opDecoder = new OperandFormatDecoder(dasm.instruction, 0);
-            return new M68kInstruction
-            {
-                code = BIT_B(extension) ? Opcode.muls : Opcode.mulu,
-                dataWidth = PrimitiveType.Word32,
-                op1 = opDecoder.ParseOperand(dasm.instruction, 0,  PrimitiveType.Word32, dasm.rdr),
-                op2 = op2
-            };
+            var opDecoder = new OperandFormatDecoder(dasm, 0);
+            dasm.instr.code = BIT_B(extension) ? Opcode.muls : Opcode.mulu;
+            dasm.instr.dataWidth = PrimitiveType.Word32;
+            dasm.instr.op1 = opDecoder.ParseOperand(dasm.instruction, 0, PrimitiveType.Word32, dasm.rdr);
+            dasm.instr.op2 = op2;
+            return dasm.instr;
         }
 
         private static M68kInstruction d68000_nbcd(M68kDisassembler dasm)
@@ -3915,7 +3922,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec("sw:E0,e6", 0xf000, 0x3000, 0xfff, Opcode.move),      // d68000_move_16  
 	new OpRec("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
 	new OpRec("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
-	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // (d68000_movea_32
+	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
 	new OpRec(d68000_move_to_ccr  , 0xffc0, 0x44c0, 0xbff),
 	new OpRec(d68010_move_fr_ccr  , 0xffc0, 0x42c0, 0xbf8),
 	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
@@ -3924,11 +3931,11 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
 	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
 	new OpRec(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
-	new OpRec("sl:M,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),         // d68000_movem_pd_32  
+	new OpRec("sl:M,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),      // d68000_movem_pd_32  
 	new OpRec(d68000_movem_re_16  , 0xffc0, 0x4880, 0x2f8),
-	new OpRec("sl:M,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),     // d68000_movem_re_32   
+	new OpRec("sl:M,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32   
 	new OpRec(d68000_movem_er_16  , 0xffc0, 0x4c80, 0x37b),
-	new OpRec(d68000_movem_er_32  , 0xffc0, 0x4cc0, 0x37b),
+	new OpRec("sl:E0,m", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),      // d68000_movem_er_32 
 	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
 	new OpRec(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
 	new OpRec(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
@@ -4047,7 +4054,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
 	new OpRec(d68000_tst_32       , 0xffc0, 0x4a80, 0xbf8),
 	new OpRec(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
-	new OpRec(d68020_tst_pcdi_32  , 0xffff, 0x4aba, 0x000),
+	new OpRec("sl:E0", 0xffff, 0x4aba, 0x000, Opcode.tst),          // d68020_tst_pcdi_32
 	new OpRec(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),
 	new OpRec(d68020_tst_i_32     , 0xffff, 0x4abc, 0x000),
 	new OpRec("A0", 0xfff8, 0x4e58, 0x000, Opcode.unlk),        // d68000_unlk

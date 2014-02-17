@@ -42,6 +42,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		private TestInitialPageInteractor i;
         private FakeUiService uiSvc;
         private FakeComponentSite site;
+        private IProjectBrowserService browserSvc;
 
 		[SetUp]
 		public void Setup()
@@ -50,13 +51,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             i = new TestInitialPageInteractor();
             site = new FakeComponentSite(i);
             uiSvc = new FakeShellUiService();
+
+            browserSvc = mr.StrictMock<IProjectBrowserService>();
+
             site.AddService<IDecompilerUIService>(uiSvc);
             site.AddService(typeof(IDecompilerShellUiService), uiSvc);
             site.AddService(typeof(IDecompilerService), new DecompilerService());
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             site.AddService(typeof(IProgramImageBrowserService), new ProgramImageBrowserService(form.BrowserList));
-            site.AddService(typeof(IProjectBrowserService), new ProjectBrowserService(null, mr.Stub<ITreeView>()));
+            site.AddService(typeof(IProjectBrowserService), browserSvc);
             i.Site = site;
 		}
 

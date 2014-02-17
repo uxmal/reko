@@ -80,6 +80,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelAssembler Create16bitAssembler()
         {
             arch = arch16;
+            baseAddr = baseAddr16;
             var asm = new IntelAssembler(arch, baseAddr16, new List<EntryPoint>());
             host = new RewriterHost(asm.ImportThunks);
             return asm;
@@ -88,6 +89,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelAssembler Create32bitAssembler()
         {
             arch = arch32;
+            baseAddr = baseAddr32;
             var asm = new IntelAssembler(arch, baseAddr32, new List<EntryPoint>());
             host = new RewriterHost(asm.ImportThunks);
             return asm;
@@ -180,19 +182,15 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "1|L--|ax = bx");
         }
 
-        [Obsolete("", true)]
-        private X86Rewriter CreateRewriter(IntelAssembler m)
-        {
-            return new X86Rewriter(arch, host, state, m.GetImage().Image.CreateReader(0), new Frame(arch.WordWidth));
-        }
-
         private X86Rewriter CreateRewriter32(IntelAssembler m)
         {
+            state = new X86State(arch32);
             return new X86Rewriter(arch32, host, state, m.GetImage().Image.CreateReader(0), new Frame(arch32.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(byte [] bytes)
         {
+            state = new X86State(arch32);
             return new X86Rewriter(arch32, host, state, new LeImageReader(image, 0), new Frame(arch32.WordWidth));
         }
 

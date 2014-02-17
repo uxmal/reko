@@ -18,34 +18,35 @@
  */
 #endregion
 
+using Decompiler.Arch.M68k;
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.UnitTests.Arch.M68k
 {
-    /// <summary>
-    /// Every ImageLoader must return a LoaderResults object.
-    /// </summary>
-    public class LoaderResults
+    [TestFixture]
+    public class M68kStateTests
     {
-        public readonly LoadedImage Image; 
-        public readonly ImageMap ImageMap;
-        public readonly IProcessorArchitecture Architecture;
-        public readonly Platform Platform;
+        private M68kArchitecture arch;
+        private M68kState state;
 
-        public LoaderResults(
-            LoadedImage image, 
-            ImageMap map, 
-            IProcessorArchitecture arch,
-            Platform platform)
+        [SetUp]
+        public void Setup()
         {
-            this.Image = image;
-            this.ImageMap = map;
-            this.Architecture = arch;
-            this.Platform = platform;
+            arch = new M68kArchitecture();
+            state = new M68kState(arch);
+        }
+
+        [Test]
+        public void M68ks_SetIllegalValue()
+        {
+            state.SetValue(Registers.a7, Constant.Invalid);
+            Assert.AreSame(Constant.Invalid, state.GetValue(Registers.a7));
         }
     }
 }

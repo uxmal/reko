@@ -77,7 +77,6 @@ namespace Decompiler.Assemblers.x86
             SetDefaultWordWidth(defaultWordSize);
         }
 
-
         public IntelArchitecture Architecture
         {
             get { return arch; }
@@ -105,7 +104,7 @@ namespace Decompiler.Assemblers.x86
             LoadSegments(stm);
             var image = new LoadedImage(addrBase, stm.ToArray());
             RelocateSegmentReferences(image);
-            return new LoaderResults(image, arch, platform);
+            return new LoaderResults(image, new ImageMap(image), arch, platform);
         }
 
         private void LoadSegments(MemoryStream stm)

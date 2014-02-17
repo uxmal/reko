@@ -199,9 +199,9 @@ done:
 			var stmBr = m.BranchIf(new TestCondition(ConditionCode.EQ, y), "foo");
             ssaIds[y].Uses.Add(stmBr);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
-			Instruction instr = stmBr.Instruction.Accept(cce);
-			Assert.AreEqual("branch r == 0x00000000 foo", instr.ToString());
+			var cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
+			cce.Transform();
+			Assert.AreEqual("branch r == 0x00000000 foo", stmBr.Instruction.ToString());
 		}
 
 		[Test]
@@ -211,7 +211,6 @@ done:
 			Identifier Z = FlagGroup("Z");
 			Identifier f = Reg32("f");
 
-            
 			Statement stmZ = new Statement(0, new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.ISub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
 			ssaIds[Z].DefStatement = stmZ;
 			Statement stmF = new Statement(0, new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);

@@ -41,10 +41,7 @@ namespace Decompiler.Assemblers.M68k
     public class M68kAssembler
     {
         private M68kArchitecture arch;
-        private Platform platform;
         private List<EntryPoint> entryPoints;
-        private SortedDictionary<string, TypeLibrary> importLibraries;
-        private Dictionary<uint, PseudoProcedure> importThunks;
         private List<ushort> constants;
 
         public M68kAssembler(M68kArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)

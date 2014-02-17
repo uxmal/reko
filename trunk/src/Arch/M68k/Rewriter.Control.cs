@@ -30,6 +30,24 @@ namespace Decompiler.Arch.M68k
 {
     public partial class Rewriter
     {
+        private void RewriteBcc(ConditionCode cc, FlagM flags)
+        {
+            emitter.Branch(
+                emitter.Test(cc, orw.FlagGroup(flags)),
+                ((M68kAddressOperand) di.op1).Address,
+                RtlClass.ConditionalTransfer);
+        }
+
+        private void RewriteBra()
+        {
+            emitter.Goto(orw.RewriteSrc(di.op1));
+        }
+
+        private void RewriteBsr()
+        {
+            emitter.Call(orw.RewriteSrc(di.op1), 4);
+        }
+
         private void RewriteJsr()
         {
             var src = orw.RewriteSrc(di.op1);
