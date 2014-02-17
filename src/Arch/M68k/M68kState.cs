@@ -20,8 +20,10 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,15 +33,21 @@ namespace Decompiler.Arch.M68k
     public class M68kState : ProcessorState
     {
         private M68kArchitecture arch;
+        private uint[] values;
+        private bool[] isValid;
 
         public M68kState(M68kArchitecture arch)
         {
             this.arch = arch;
+            this.values = new uint[16];
+            this.isValid = new bool[16];
         }
 
         public M68kState(M68kState orig) : base(orig)
         {
             this.arch = orig.arch;
+            this.values = (uint[]) orig.values.Clone();
+            this.isValid = (bool[]) orig.isValid.Clone();
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -53,7 +61,15 @@ namespace Decompiler.Arch.M68k
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
+            if (v != null && v.IsValid)
+            {
+                values[r.Number] = (uint) v.ToInt32();
+                isValid[r.Number] = true;
+            }
+            else
+            {
+                isValid[r.Number] = false;
+            }
         }
 
         public override void SetInstructionPointer(Address addr)
@@ -62,7 +78,14 @@ namespace Decompiler.Arch.M68k
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            if (isValid[r.Number])
+            {
+                return Constant.Create(r.DataType, values[r.Number]);
+            }
+            else
+            {
+                return Constant.Invalid;
+            }
         }
 
         public override void OnProcedureEntered()
@@ -75,12 +98,40 @@ namespace Decompiler.Arch.M68k
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            if (returnAddressSize > 0)
+            {
+                var spVal = GetValue(Registers.a7);
+                SetValue(
+                    arch.StackRegister,
+                    new BinaryExpression(
+                        Operator.ISub,
+                        spVal.DataType,
+                        stackReg,
+                        Constant.Create(
+                            PrimitiveType.CreateWord(returnAddressSize),
+                            returnAddressSize)));
+            }
+            return new CallSite(returnAddressSize, 0);
         }
 
         public override void OnAfterCall(Identifier sp, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
         {
-            throw new NotImplementedException();
+            var spReg = (RegisterStorage) sp.Storage;
+            var spVal = GetValue(spReg);
+            var stackOffset = SetValue(
+                spReg,
+                new BinaryExpression(
+                    Operator.IAdd,
+                    spVal.DataType,
+                    sp,
+                    Constant.Create(
+                        PrimitiveType.CreateWord(spReg.DataType.Size),
+                        sigCallee.StackDelta)).Accept(eval));
+            if (stackOffset.IsValid)
+            {
+                if (stackOffset.ToInt32() > 0)
+                    ErrorListener("Possible stack underflow detected.");
+            }
         }
 
         #endregion

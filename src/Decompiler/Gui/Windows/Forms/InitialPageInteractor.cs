@@ -120,8 +120,8 @@ namespace Decompiler.Gui.Windows.Forms
         public void OpenBinary(string file, DecompilerHost host)
         {
             var sc = Site.RequireService<IServiceContainer>();
-            LoaderBase ldr = CreateLoader(sc);
-            Decompiler = CreateDecompiler(ldr, host, sc);
+            var ldr = CreateLoader(sc);
+            this.Decompiler = CreateDecompiler(ldr, host, sc);
             IWorkerDialogService svc = Site.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
@@ -133,15 +133,20 @@ namespace Decompiler.Gui.Windows.Forms
                 browserSvc.Load(Decompiler.Project);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
+                PopulateBrowserServiceWithSegments();
             }
-            PopulateBrowserServiceWithSegments();
         }
 
-        public void OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host)
+        public void OpenBinaryAs(
+            string file, 
+            IProcessorArchitecture arch,
+            Platform platform, 
+            Address addrBase, 
+            DecompilerHost host)
         {
             var sc = Site.RequireService<IServiceContainer>();
-            LoaderBase ldr = CreateLoader(sc);
-            Decompiler = CreateDecompiler(ldr, host, sc);
+            var ldr = CreateLoader(sc);
+            this.Decompiler = CreateDecompiler(ldr, host, sc);
             IWorkerDialogService svc = Site.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
@@ -155,8 +160,8 @@ namespace Decompiler.Gui.Windows.Forms
                 browserSvc.Load(Decompiler.Project);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
+                PopulateBrowserServiceWithSegments();
             }
-            PopulateBrowserServiceWithSegments();
         }
 
         [Obsolete]

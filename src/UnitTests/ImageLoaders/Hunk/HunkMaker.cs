@@ -35,6 +35,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
         {
             { typeof(Int32), (o, w) => { w.WriteBeUInt32((uint) (Int32) o); } },
             { typeof(UInt32), (o, w) => { w.WriteBeUInt32((UInt32) o); } },
+            { typeof(UInt16), (o, w) => { w.WriteBeUInt16((ushort) o); } },
             { typeof(HunkType), (o, w) => { w.WriteBeUInt32((uint) (HunkType) o); } },
             { typeof(string), (o, w) => { WriteString((string) o, w); } },
         };

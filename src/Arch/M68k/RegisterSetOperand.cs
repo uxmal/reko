@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,8 @@ namespace Decompiler.Arch.M68k
 {
     public class RegisterSetOperand : M68kOperandImpl
     {
-        public RegisterSetOperand(uint bitset) : base(PrimitiveType.Word16)
+        public RegisterSetOperand(uint bitset)
+            : base(PrimitiveType.Word16)
         {
             this.BitSet = bitset;
         }
@@ -38,6 +40,20 @@ namespace Decompiler.Arch.M68k
         public override T Accept<T>(M68kOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
+        }
+
+        public static MachineOperand CreateReversed(ushort vv)
+        {
+            int v;
+            // Swap odd and even bits
+            v = ((vv >> 1) & 0x5555) | ((vv & 0x5555) << 1);
+            // swap consecutive pairs
+            v = ((v >> 2) & 0x3333) | ((v & 0x3333) << 2);
+            // swap nibbles
+            v = ((v >> 4) & 0x0F0F) | ((v & 0x0F0F) << 4);
+            // swap bytes
+            v = ((v >> 8) & 0x00FF) | ((v & 0x00FF) << 8);
+            return new RegisterSetOperand((ushort) v);
         }
     }
 }

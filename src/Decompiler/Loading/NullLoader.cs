@@ -40,8 +40,10 @@ namespace Decompiler.Loading
 
         public override LoaderResults Load(Address addrLoad)
         {
+            var image = new LoadedImage(addrLoad, imageBytes);
             return new LoaderResults(
-                new LoadedImage(addrLoad, imageBytes),
+                image,
+                new ImageMap(image),
                 null,
                 new DefaultPlatform(Services, null));
         }

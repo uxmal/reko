@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Loading
             ldr.Image = new byte[] { 42, 42, 42, 42, };
             Program prog = ldr.Load(ldr.Image, null);
 
-            Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown; you will need to specify it manually." , eventListener.LastDiagnostic);
+            Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
             Assert.IsNull(prog.Architecture);
             Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);

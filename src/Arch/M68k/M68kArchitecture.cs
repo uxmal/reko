@@ -156,8 +156,7 @@ namespace Decompiler.Arch.M68k
         }
 
         public uint CarryFlagMask { get { return (uint) FlagM.CF; } }
+
         public RegisterStorage StackRegister { get { return Registers.a7; } }
-
-
     }
 }

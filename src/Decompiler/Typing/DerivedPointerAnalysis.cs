@@ -156,6 +156,5 @@ namespace Decompiler.Typing
 		public override void VisitMemoryAccess(MemoryAccess acc)
 		{
 		}
-
 	}
 }

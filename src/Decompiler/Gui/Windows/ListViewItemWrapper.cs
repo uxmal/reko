@@ -40,7 +40,6 @@ namespace Decompiler.Gui.Windows
 
         public ListViewItem Item { get { return item; } }
 
-
         #region IListViewItem Members
 
         public string Text { get { return item.Text; } set { item.Text = value; } }

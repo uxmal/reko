@@ -148,8 +148,7 @@ namespace Decompiler.Arch.M68k
         public M68kOperand Visit(RegisterSetOperand registerSet)
         {
             uint bitSet = registerSet.BitSet;
-            WriteRegisterSet(bitSet, 15, -1, "d", writer);
-            WriteRegisterSet(bitSet, 7, -1, "a", writer);
+            WriteRegisterSet(bitSet, writer);
             return registerSet;
         }
 
@@ -181,25 +180,36 @@ namespace Decompiler.Arch.M68k
 
         private static bool bit(uint data, int pos) { return (data & (1 << pos)) != 0; }
 
-        public void WriteRegisterSet(uint data, int bitPos, int incr, string regType, TextWriter writer)
+        /// <summary>
+        /// Write register mask. Bits are:
+        ///  15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
+        ///  d0  d1  d2  d3  d4  d5  d6  d7  a0  a1  a2  a3  a4  a5  a6  a7
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="bitPos"></param>
+        /// <param name="incr"></param>
+        /// <param name="regType"></param>
+        /// <param name="writer"></param>
+        public void WriteRegisterSet(uint data, TextWriter writer)
         {
             string sep = "";
-            for (int i = 0; i < 8; i++, bitPos += incr)
+            int bitPos = 15;
+            for (int i = 0; i < 16; i++, --bitPos)
             {
                 if (bit(data, bitPos))
                 {
                     int first = i;
                     int run_length = 0;
-                    while (i < 7 && bit(data, bitPos + incr))
+                    while (i != 7 && i != 15 && bit(data, bitPos - 1))
                     {
-                        bitPos += incr;
+                        --bitPos;
                         ++i;
                         ++run_length;
                     }
                     writer.Write(sep);
-                    writer.Write("{0}{1}", regType, first);
+                    writer.Write(Registers.GetRegister(first).ToString());
                     if (run_length > 0)
-                        writer.Write("-{0}{0}", regType, first + run_length);
+                        writer.Write("-{0}", Registers.GetRegister(first + run_length));
                     sep = "/";
                 }
             }

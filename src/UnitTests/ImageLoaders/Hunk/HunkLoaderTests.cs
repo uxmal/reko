@@ -65,5 +65,29 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
             Assert.AreEqual(1, ldImg.ImageMap.Segments.Count);
             Assert.AreEqual(new Address(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
         }
+
+        [Test]
+        public void Hunk_LoadCode()
+        {
+            var bytes = mh.MakeBytes(
+                HunkType.HUNK_HEADER,
+                "CODE",
+                "",
+                1,
+                0,
+                0,
+                0x40,
+                HunkType.HUNK_CODE,
+                1,
+                (ushort) 0x4E75,
+                (ushort) 0,
+                HunkType.HUNK_END);
+            var ldr = new HunkLoader(null, bytes);
+            var ldImg = ldr.Load(new Address(0x00010000));
+            var rlImg = ldr.Relocate(new Address(0x00010000));
+            Assert.AreEqual(1, rlImg.EntryPoints.Count);
+            Assert.AreEqual(0x00010000, rlImg.EntryPoints[0].Address.Linear);
+
+        }
     }
 }

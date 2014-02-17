@@ -41,6 +41,15 @@ namespace Decompiler.Arch.M68k
             AllConditions(opDst);
         }
 
+        public void RewriteTst()
+        {
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.FlagGroup(FlagM.NF | FlagM.ZF);
+            emitter.Assign(opDst, emitter.Cond(emitter.ISub(opSrc, 0)));
+            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+        }
+
         public void RewriteShift(Func<Expression, Expression, Expression> binOpGen)
         {
             Expression opDst;
@@ -134,10 +143,33 @@ namespace Decompiler.Arch.M68k
                 return emitter.Cast(width, expr);
         }
 
+        private void RewriteAddSubq(Func<Expression,Expression,Expression> opGen)
+        {
+            var opSrc = orw.RewriteSrc(di.op1);
+            var regDst = di.op2 as RegisterOperand;
+            if (regDst != null && regDst.Register is AddressRegister)
+            {
+                var opDst = frame.EnsureRegister(regDst.Register);
+                emitter.Assign(opDst, opGen(opSrc, opDst));
+            }
+            else
+            {
+                var opDst = orw.RewriteDst(di.op2, opSrc, opGen);
+                emitter.Assign(orw.FlagGroup(FlagM.CVZNX), emitter.Cond(opDst));
+            }
+        }
+
         private void RewriteBinOp(Func<Expression,Expression,Expression> opGen)
         {
             var opSrc = orw.RewriteSrc(di.op1);
             var opDst = orw.RewriteDst(di.op2, opSrc, opGen);
+        }
+
+        private void RewriteBinOp(Func<Expression, Expression, Expression> opGen, FlagM flags)
+        {
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, opSrc, opGen);
+            emitter.Assign(orw.FlagGroup(flags), emitter.Cond(opDst));
         }
 
         private void RewriteClr()
@@ -210,6 +242,43 @@ namespace Decompiler.Arch.M68k
             return orw.RewriteSrc(mop);
         }
 
+        public void RewriteLea()
+        {
+            var dst = orw.RewriteSrc(di.op2);
+            var mem = di.op1 as MemoryOperand;
+            if (mem != null)
+            {
+                if (mem.Base == null)
+                {
+                    emitter.Assign(dst, mem.Offset);
+                }
+                else if (mem.Base == Registers.pc)
+                {
+                    emitter.Assign(dst, di.Address + mem.Offset.ToInt32());
+                }
+                else
+                {
+                    emitter.Assign(dst, emitter.IAdd(frame.EnsureRegister(mem.Base), mem.Offset));
+                }
+                return;
+            }
+            var addrOp = di.op1 as AddressOperand;
+            if (addrOp != null)
+            {
+                emitter.Assign(dst, addrOp.Address);
+                return;
+            }
+            var indIdx = di.op1 as IndirectIndexedOperand;
+            if (indIdx != null)
+            {
+                var a = frame.EnsureRegister(indIdx.ARegister);
+                var x = frame.EnsureRegister(indIdx.XRegister);
+                emitter.Assign(dst, emitter.IAdd(a, x));        //$REVIEW: woefully incomplete...
+                return;
+            }
+            throw new NotImplementedException(string.Format("{0} ({1})", di.op1, di.op1.GetType().Name));
+        }
+
         public void RewriteMove(bool setFlag)
         {
             var opSrc = orw.RewriteSrc(di.op1);
@@ -217,12 +286,56 @@ namespace Decompiler.Arch.M68k
             if (setFlag)
             {
                 emitter.Assign(
-                    frame.EnsureFlagGroup(
-                        (uint)(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.ZF),
-                        "CVZN",
-                        PrimitiveType.Byte),
+                    orw.FlagGroup(FlagM.CVZN),
                     emitter.Cond(opDst));
             }
+        }
+
+        public void RewriteMoveq()
+        {
+            var opSrc = (sbyte) ((M68kImmediateOperand) di.op1).Constant.ToInt32();
+            var opDst = frame.EnsureRegister(((RegisterOperand)di.op2).Register);
+            emitter.Assign(opDst, Constant.Int32(opSrc));
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CVZN),
+                emitter.Cond(opDst));
+        }
+
+        public void RewriteMovem()
+        {
+            var postInc = di.op1 as PostIncrementMemoryOperand;
+            if (postInc != null)
+            {
+                var srcReg = frame.EnsureRegister(postInc.Register);
+                var dstRegs = (RegisterSetOperand) di.op2;
+                for (int i = 0, mask = 0x8000; i < 16; ++i, mask >>= 1)
+                {
+                    if ((dstRegs.BitSet & mask) != 0)
+                    {
+                        var reg = new RegisterOperand(arch.GetRegister(i));
+                        emitter.Assign(orw.RewriteSrc(reg), emitter.Load(di.dataWidth, srcReg));
+                        emitter.Assign(srcReg, emitter.IAdd(srcReg, di.dataWidth.Size));
+                    }
+                }
+                return;
+            }
+            var preDec = di.op2 as PredecrementMemoryOperand;
+            if (preDec != null)
+            {
+                var dstReg = frame.EnsureRegister(preDec.Register);
+                var regSet = (RegisterSetOperand) di.op1;
+                for (int i = 15, mask = 1; i >= 0; --i, mask <<= 1)
+                {
+                    if ((regSet.BitSet & mask) != 0)
+                    {
+                        var reg = frame.EnsureRegister(arch.GetRegister(i));
+                        emitter.Assign(dstReg, emitter.ISub(dstReg, di.dataWidth.Size));
+                        emitter.Assign(emitter.Load(di.dataWidth, dstReg), reg);
+                    }
+                }
+                return;
+            }
+            throw new NotImplementedException();
         }
 
         private Expression RewriteNegx(Expression expr)

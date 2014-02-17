@@ -40,7 +40,6 @@ namespace Decompiler.Core
 	{
 		private LoadedImage image;
 		private SortedList<Address,Procedure> procedures;
-		private CallGraph callGraph;
         private SortedList<Address, ImageMapVectorTable> vectors;
         private Dictionary<uint, PseudoProcedure> mpuintfn;
         private Dictionary<uint, PseudoProcedure> trampolines;
@@ -55,7 +54,7 @@ namespace Decompiler.Core
 		{
 			this.procedures = new SortedList<Address,Procedure>();
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
-			this.callGraph = new CallGraph();
+			this.CallGraph = new CallGraph();
             this.mpuintfn = new Dictionary<uint, PseudoProcedure>();		// uint (offset) -> string
 			this.trampolines = new Dictionary<uint, PseudoProcedure>();	// linear address -> string
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
@@ -63,11 +62,6 @@ namespace Decompiler.Core
 			this.typefactory = new TypeFactory();
 			this.TypeStore = new TypeStore();
 		}
-
-        public Program(LoadedImage image, IProcessorArchitecture arch, Platform platform)
-            : this(image, new ImageMap(image), arch, platform)
-        {
-        }
 
         public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
         {
@@ -79,10 +73,7 @@ namespace Decompiler.Core
 
 		public IProcessorArchitecture Architecture { get; set; }
 
-		public CallGraph CallGraph
-		{
-			get { return callGraph; }
-		}
+        public CallGraph CallGraph { get; private set; }
 
 		public void DumpAssembler(TextWriter wr)
 		{

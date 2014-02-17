@@ -351,6 +351,9 @@ namespace Decompiler.Scanning
             var vector = possibleVector as Constant;
             if (vector == null)
                 return;
+            var pt = vector.DataType as PrimitiveType;
+            if (pt != null && pt.Domain == Domain.SignedInt)
+                return;
             var segmem = mem as SegmentedAccess;
             if (segmem != null)
             {

@@ -67,7 +67,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 uint alloc_size = mainHunk.alloc_size;
                 uint size = mainHunk.Size;
 
-                // fill in segment data
+                // Fill in segment data
                 BeImageWriter data;
                 var txt = mainHunk as TextHunk;
                 if (txt != null)
@@ -81,7 +81,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 }
                 Debug.WriteLineIf(Trace.TraceVerbose, string.Format("#{0:X2} @ {1:X6}", hunk_no, addr[hunk_no]));
 
-                // find relocation hunks
+                // Find relocation hunks
                 foreach (var relocHunk in segment.hunks
                     .Where(h => h.HunkType == HunkType.HUNK_ABSRELOC32)
                     .Cast<RelocHunk>())

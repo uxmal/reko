@@ -167,12 +167,20 @@ namespace Decompiler.Arch.M68k
         ZF = 4,
         NF = 8,
         XF = 16,
+
+        CVZN = CF | VF | ZF | NF,
+        CVZNX = CF | VF | ZF | NF | XF,
     }
 
     public class AddressRegister : RegisterStorage
     {
         public AddressRegister(string name, int number, PrimitiveType dt) : base(name, number, dt)
         {
+        }
+
+        public override RegisterStorage GetSubregister(int offset, int size)
+        {
+            return null;
         }
     }
 

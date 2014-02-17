@@ -144,10 +144,11 @@
     <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Decompiler.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Decompiler.Arch.X86.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Decompiler.Arch.Z80.*" />
-    <ImageLoaders Include="$(SolutionDir)MzExe\$(OutDir)Decompiler.ImageLoaders.MzExe.*" />
-    <ImageLoaders Include="$(SolutionDir)BinHex\$(OutDir)Decompiler.ImageLoaders.BinHex.*" />
-    <ImageLoaders Include="$(SolutionDir)Elf\$(OutDir)Decompiler.ImageLoaders.Elf.*" />
-    <ImageLoaders Include="$(SolutionDir)Hunk\$(OutDir)Decompiler.ImageLoaders.Hunk.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Decompiler.ImageLoaders.MzExe.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Decompiler.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Decompiler.ImageLoaders.Elf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Decompiler.ImageLoaders.Hunk.*" />
+    <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Decompiler.Environments.AmigaOS.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Decompiler.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Decompiler.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Decompiler.Environments.Win32.*" />

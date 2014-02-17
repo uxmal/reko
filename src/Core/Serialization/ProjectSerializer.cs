@@ -50,12 +50,15 @@ namespace Decompiler.Core.Serialization
                 BaseAddress = Address.ToAddress(sInput.Address, 16),
                 Filename = sInput.Filename,
             };
-            file.UserProcedures = sInput.UserProcedures
-                    .Select(sup => new KeyValuePair<Address, SerializedProcedure>(
-                        Address.ToAddress(sup.Address, 16),
-                        sup))
-                    .Where(kv => kv.Key != null)
-                    .ToSortedList(kv => kv.Key, kv => kv.Value);
+            if (sInput.UserProcedures != null)
+            {
+                file.UserProcedures = sInput.UserProcedures
+                        .Select(sup => new KeyValuePair<Address, SerializedProcedure>(
+                            Address.ToAddress(sup.Address, 16),
+                            sup))
+                        .Where(kv => kv.Key != null)
+                        .ToSortedList(kv => kv.Key, kv => kv.Value);
+            }
             return file;
         }
 

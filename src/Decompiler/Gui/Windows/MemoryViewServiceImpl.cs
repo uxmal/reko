@@ -33,7 +33,6 @@ namespace Decompiler.Gui.Windows
 
         public const string ViewWindowType = "memoryViewWindow";
 
-
         public MemoryViewServiceImpl(IServiceProvider sp) : base(sp)
         {
         }
@@ -57,7 +56,6 @@ namespace Decompiler.Gui.Windows
             ShowWindow();
             mvi.SelectedAddress = addr;
         }
-
 
         public AddressRange GetSelectedAddressRange()
         {

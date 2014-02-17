@@ -60,8 +60,6 @@ namespace Decompiler.ImageLoaders.Hunk
     {
         //private const int RESULT_UNSUPPORTED_HUNKS = 3;
 
-
-
         private const int TYPE_UNKNOWN = 0;
         private const int TYPE_LOADSEG = 1;
         private const int TYPE_UNIT = 2;
@@ -182,7 +180,6 @@ namespace Decompiler.ImageLoaders.Hunk
         public Dictionary<int, List<uint>> reloc;
     }
 
-
     class SymbolHunk : Hunk
     {
         public Dictionary<string, int> symbols;
@@ -191,12 +188,9 @@ namespace Decompiler.ImageLoaders.Hunk
     public class TextHunk : Hunk
     {
         public byte[] Data;
-        public uint FileOffset;
     }
 
-
-    //$TODO: make this not derive from hunk
-    public class HunkInfo // : Hunk
+    public class HunkInfo
     {
         public uint Size;
         public string MemoryFlags;

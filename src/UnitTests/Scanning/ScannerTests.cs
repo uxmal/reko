@@ -154,8 +154,10 @@ namespace Decompiler.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
+            var image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
             prog = new Program(
-                new LoadedImage(new Address(startAddress), new byte[imageSize]),
+                image,
+                new ImageMap(image),
                 arch,
                 new FakePlatform(null, arch));
             return new TestScanner(prog);

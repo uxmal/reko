@@ -30,12 +30,14 @@ namespace Decompiler.Arch.M68k
 {
     public class OperandFormatDecoder
     {
+        private M68kDisassembler dasm;
         ushort opcode;
         int i;
 
-        public  OperandFormatDecoder(ushort opcode, int i)
+        public OperandFormatDecoder(M68kDisassembler dasm, int i)
         {
-            this.opcode = opcode;
+            this.dasm = dasm;
+            this.opcode = dasm.instruction;
             this.i = i;
         }
 
@@ -72,6 +74,8 @@ namespace Decompiler.Arch.M68k
                 return new M68kAddressOperand(addr + offset);
             case 'M':   // Register bitset
                 return new RegisterSetOperand(rdr.ReadBeUInt16());
+            case 'm':   // Register bitset reversed
+                return RegisterSetOperand.CreateReversed(rdr.ReadBeUInt16());
             case 'q':   // "Small" quick constant (3-bit part of the opcode)
                 return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.Byte);
             case 'Q':   // "Large" quick constant (8-bit part of the opcode)
@@ -191,9 +195,12 @@ namespace Decompiler.Arch.M68k
                 case 1: // Absolute long address
                     return new M68kAddressOperand(rdr.ReadBeUInt32());
                 case 2: // Program counter with displacement
-                    return new MemoryOperand(dataWidth, Registers.pc, Constant.Int16(rdr.ReadBeInt16()));
+                    var off = rdr.Address - dasm.instr.Address;
+                    off += rdr.ReadBeInt16();
+                    return new MemoryOperand(dataWidth, Registers.pc, Constant.Int16((short) off));
                 case 3:
                     // Program counter with index
+                    var addrExt = rdr.Address;
                     ushort extension = rdr.ReadBeUInt16();
 
                     if (EXT_FULL(extension))

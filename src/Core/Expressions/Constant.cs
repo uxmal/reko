@@ -261,7 +261,7 @@ namespace Decompiler.Core.Expressions
             return Convert.ToBoolean(GetValue());
         }
 
-        public ushort ToByte()
+        public byte ToByte()
         {
             return Convert.ToByte(GetValue());
         }

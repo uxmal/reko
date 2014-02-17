@@ -58,7 +58,7 @@ namespace Decompiler.ImageLoaders.MzExe
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new LoadedImage(addrLoad, bytes);
             imgLoadedMap = new ImageMap(imgLoaded);
-            return new LoaderResults(imgLoaded, arch, platform);
+            return new LoaderResults(imgLoaded, new ImageMap(imgLoaded), arch, platform);
         }
 
 		public override RelocationResults Relocate(Address addrLoad)

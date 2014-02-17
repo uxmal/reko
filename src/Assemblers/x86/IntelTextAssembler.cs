@@ -103,7 +103,6 @@ namespace Decompiler.Assemblers.x86
 			throw new ApplicationException(string.Format("line {0}: error: {1}", lexer.LineNumber, pstr));
 		}
 
-
 		private void Expect(Token tok)
 		{
 			if (lexer.GetToken() != tok)

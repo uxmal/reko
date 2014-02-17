@@ -350,7 +350,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 names.Add(s);
             }
 
-            // table size and hunk range
+            // Table size and hunk range
             uint table_size = f.ReadBeUInt32();
             uint first_hunk = f.ReadBeUInt32();
             uint last_hunk = f.ReadBeUInt32();
@@ -359,7 +359,7 @@ namespace Decompiler.ImageLoaders.Hunk
             hunk.FirstHunkId = first_hunk;
             hunk.LastHunkId = last_hunk;
 
-            // determine number of hunks in size table
+            // Determine number of hunks in size table
             int cHunks = (int) (last_hunk - first_hunk + 1);
             List<HunkInfo> hunkTable = new List<HunkInfo>();
             for (int a = 0; a < cHunks; ++a)
@@ -852,7 +852,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 hunk.Name = "";
         }
 
-        private TextHunk FindFirstCodeHunk()
+        public TextHunk FindFirstCodeHunk()
         {
             foreach (var hunk in this.hunks)
             {

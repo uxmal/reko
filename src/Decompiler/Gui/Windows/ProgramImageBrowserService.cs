@@ -101,6 +101,5 @@ namespace Decompiler.Gui.Windows
             if (SelectionChanged != null)
                 SelectionChanged(this, e);
         }
-
     }
 }

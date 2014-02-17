@@ -323,15 +323,11 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68kdis_clrw_ea_off()
+        public void M68kdis_clr()
         {
             RunTest("clr.w\t$0008(a0)", 0x4268, 0x0008);
-        }
-
-        [Test]
-        public void M68kdis_clrw_ea()
-        {
             RunTest("clr.w\t(a0)+", 0x4258);
+            RunTest("clr.b\t(a0,d0)", 0x4230, 0x0800);
         }
 
         [Test]
@@ -565,5 +561,24 @@ namespace Decompiler.UnitTests.Arch.M68k
             RunTest("bset\t#$001F,d0", 0x08C0, 0x001F);
             RunTest("bset\td4,(a7)", 0x09D7);
         }
+
+        [Test]
+        public void M68kdis_movem_2()
+        {
+            RunTest("movem.l\t(a7)+,d2/a2-a3", 0x4CDF, 0x0C04);
+        }
+
+        [Test]
+        public void M68kdis_lea_pc()
+        {
+            RunTest("lea\t$0014(pc),a2", 0x45FA, 0x0012);
+        }
+
+        [Test]
+        public void M68kdis_tst()
+        {
+            RunTest("tst.l\t$0126(pc)", 0x4ABA, 0x0124);
+        }
+
     }
 }

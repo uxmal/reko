@@ -39,12 +39,12 @@ namespace Decompiler.Loading
 	{
         private IDecompilerConfigurationService config;
         private DecompilerEventListener eventListener;
-        private IServiceProvider serviceProvider;
+        private IServiceProvider services;
 
         public Loader(IDecompilerConfigurationService config, IServiceProvider services)
         {
             this.config = config;
-            this.serviceProvider = services;
+            this.services = services;
             this.eventListener = (DecompilerEventListener) services.GetService(typeof(DecompilerEventListener));
         }
 
@@ -53,6 +53,12 @@ namespace Decompiler.Loading
             return LoadExecutableFile(image, addrLoad);
         }
 
+        /// <summary>
+        /// Locates an image loader from the Decompiler configuration file, based on the magic number in the
+        /// begining of the program image.
+        /// </summary>
+        /// <param name="rawBytes"></param>
+        /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
         private ImageLoader FindImageLoader(byte[] rawBytes)
         {
             foreach (LoaderElement e in config.GetImageLoaders())
@@ -62,26 +68,9 @@ namespace Decompiler.Loading
             }
             eventListener.AddDiagnostic(
                 new NullCodeLocation(""),
-                new ErrorDiagnostic("The format of the file is unknown; you will need to specify it manually."));
+                new ErrorDiagnostic("The format of the file is unknown."));
             return new NullLoader(null, rawBytes);
         }
-
-		/// <summary>
-		/// Loads the <paramref>binaryFile</paramref> into memory without any 
-		/// relocation or other processing. The beginning of the
-		/// image is assumed to be at <paramref>addrBase</paramref.
-		/// </summary>
-		/// <param name="binaryFile"></param>
-		/// <param name="addrBase"></param>
-        //$REVIEW: move to platform-specific place.
-        //public void LoadComBinary(string binaryFile, Address addrBase)
-        //{
-        //    byte [] rawBytes = LoadImageBytes(binaryFile, 0x100);
-        //    Program.Image = new ProgramImage(addrBase, rawBytes);
-        //    Program.Architecture = new IntelArchitecture(ProcessorMode.Real);
-        //    Program.Platform = new Arch.Intel.MsDos.MsdosPlatform(Program.Architecture);
-        //    EntryPoints.Add(new EntryPoint(addrBase + 0x0100, Program.Architecture.CreateProcessorState()));
-        //}
 
 		/// <summary>
 		/// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
@@ -159,7 +148,7 @@ namespace Decompiler.Loading
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
             ConstructorInfo ci = t.GetConstructor(new Type[] { typeof (IServiceProvider), typeof(byte[]) });
-            return (ImageLoader) ci.Invoke(new object[] { this.serviceProvider, bytes });
+            return (ImageLoader) ci.Invoke(new object[] { this.services, bytes });
         }
 	}
 }

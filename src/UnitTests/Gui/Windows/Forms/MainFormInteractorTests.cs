@@ -151,16 +151,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
   <input>
     <filename>foo.exe</filename>
     <address>0C00:0000</address>
-  </input>
-  <output>
+    <procedure name=""MyProc"">
+      <address>00012345</address>
+    </procedure>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.dis</intermediate-code>
     <output>foo.c</output>
     <types-file>foo.h</types-file>
-  </output>
-  <procedure name=""MyProc"">
-    <address>00012345</address>
-  </procedure>
+  </input>
+  <output />
 </project>";
             Assert.AreEqual(s, interactor.ProbeSavedProjectXml);
             mr.VerifyAll();
