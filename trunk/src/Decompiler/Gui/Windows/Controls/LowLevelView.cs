@@ -18,21 +18,29 @@
  */
 #endregion
 
-using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Decompiler.Gui.Windows.Controls
 {
-    public interface IProjectBrowserService
+    /// <summary>
+    /// Provides a unified view of Memory and Disassembly.
+    /// </summary>
+    public partial class LowLevelView : UserControl
     {
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project, Program program);
+        public LowLevelView()
+        {
+            InitializeComponent();
+        }
+
+        public MemoryControl MemoryView { get { return this.memCtrl; } }
+
+        public DisassemblyControl DisassemblyView { get { return this.disassemblyControl1; } }
     }
 }

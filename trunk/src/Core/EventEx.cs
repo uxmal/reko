@@ -13,6 +13,11 @@ namespace Decompiler.Core
         public static void Fire(this EventHandler eh, object sender)
         {
             if (eh != null) eh(sender, EventArgs.Empty);
-        }    
+        }
+
+        public static void Fire<T>(this EventHandler<T> eh, object sender, T e) where T : EventArgs
+        {
+            if (eh != null) eh(sender, e);
+        } 
     }
 }

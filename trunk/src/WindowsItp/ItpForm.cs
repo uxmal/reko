@@ -119,5 +119,13 @@ namespace Decompiler.WindowsItp
                 dlg.ShowDialog(this);
             }
         }
+
+        private void disassemblyControlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new DisassemblyControlForm())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }

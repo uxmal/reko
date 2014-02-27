@@ -74,7 +74,7 @@ namespace Decompiler.Gui.Windows.Controls
 			vscroller = new VScrollBar();
 			vscroller.Dock = DockStyle.Right;
 			Controls.Add(vscroller);
-			vscroller.Scroll += new ScrollEventHandler(vscroller_Scroll);
+			vscroller.Scroll += vscroller_Scroll;
 			wordSize = 1;
 			cbRow = 16;
 		}
@@ -315,7 +315,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		protected override void OnPaint(PaintEventArgs pea)
 		{
-			if (image == null)
+			if (image == null || imageMap == null)
 			{
 				pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
 			}

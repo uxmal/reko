@@ -548,6 +548,9 @@ namespace Decompiler.Arch.X86
 			case 'b':
 				dataWidth = PrimitiveType.Byte;
 				break;
+            case 'B':
+                dataWidth = PrimitiveType.Bcd80;
+                break;
 			case 'v':
 				break;
 			case 'w':

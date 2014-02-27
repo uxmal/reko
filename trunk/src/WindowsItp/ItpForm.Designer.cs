@@ -38,6 +38,7 @@
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disassemblyControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,7 +59,8 @@
             this.memoryControlToolStripMenuItem,
             this.rTFToolStripMenuItem,
             this.webControlToolStripMenuItem,
-            this.treeViewToolStripMenuItem});
+            this.treeViewToolStripMenuItem,
+            this.disassemblyControlToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.controlsToolStripMenuItem.Text = "&Controls";
@@ -66,28 +68,28 @@
             // memoryControlToolStripMenuItem
             // 
             this.memoryControlToolStripMenuItem.Name = "memoryControlToolStripMenuItem";
-            this.memoryControlToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.memoryControlToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.memoryControlToolStripMenuItem.Text = "&Memory Control";
             this.memoryControlToolStripMenuItem.Click += new System.EventHandler(this.memoryControlToolStripMenuItem_Click);
             // 
             // rTFToolStripMenuItem
             // 
             this.rTFToolStripMenuItem.Name = "rTFToolStripMenuItem";
-            this.rTFToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.rTFToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.rTFToolStripMenuItem.Text = "&RTF ";
             this.rTFToolStripMenuItem.Click += new System.EventHandler(this.rtfToolStripMenuItem_Click);
             // 
             // webControlToolStripMenuItem
             // 
             this.webControlToolStripMenuItem.Name = "webControlToolStripMenuItem";
-            this.webControlToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.webControlToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.webControlToolStripMenuItem.Text = "&Web Control";
             this.webControlToolStripMenuItem.Click += new System.EventHandler(this.webControlToolStripMenuItem_Click);
             // 
             // treeViewToolStripMenuItem
             // 
             this.treeViewToolStripMenuItem.Name = "treeViewToolStripMenuItem";
-            this.treeViewToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.treeViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.treeViewToolStripMenuItem.Text = "&Tree View";
             this.treeViewToolStripMenuItem.Click += new System.EventHandler(this.treeViewToolStripMenuItem_Click);
             // 
@@ -122,6 +124,13 @@
             this.activationToolStripMenuItem.Text = "&Activation...";
             this.activationToolStripMenuItem.Click += new System.EventHandler(this.activationToolStripMenuItem_Click);
             // 
+            // disassemblyControlToolStripMenuItem
+            // 
+            this.disassemblyControlToolStripMenuItem.Name = "disassemblyControlToolStripMenuItem";
+            this.disassemblyControlToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.disassemblyControlToolStripMenuItem.Text = "&Disassembly Control";
+            this.disassemblyControlToolStripMenuItem.Click += new System.EventHandler(this.disassemblyControlToolStripMenuItem_Click);
+            // 
             // ItpForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -150,6 +159,7 @@
         private System.Windows.Forms.ToolStripMenuItem treeViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectBrowserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem activationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disassemblyControlToolStripMenuItem;
     }
 }
 

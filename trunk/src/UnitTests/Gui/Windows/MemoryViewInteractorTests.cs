@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Gui.Windows
     public class MemoryViewInteractorTests
     {
         private MemoryViewInteractor interactor;
-        private MockRepository repository;
+        private MockRepository mr;
         private IDecompilerShellUiService uiSvc;
         private IDialogFactory dlgFactory;
         private ServiceContainer sp;
@@ -48,10 +48,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
             sp = new ServiceContainer();
-            uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
-			dlgFactory = repository.DynamicMock<IDialogFactory>();
+            uiSvc = mr.DynamicMock<IDecompilerShellUiService>();
+			dlgFactory = mr.DynamicMock<IDialogFactory>();
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
             addrBase = new Address(0x0100000);
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MemviewGotoAddressEnabled()
+        public void MVI_GotoAddressEnabled()
         {
             interactor = new MemoryViewInteractor();
             var status = new CommandStatus();
@@ -74,28 +74,40 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MemviewGotoAddress()
+        public void MVI_SelectAddress()
         {
-            var dlg = repository.Stub<IAddressPromptDialog>();
+            CreateInteractor();
+            mr.ReplayAll();
+
+            interactor.Control.MemoryView.SelectedAddress = new Address(0x12321);
+
+            Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.TopAddress.Linear);
+            Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.SelectedAddress.Linear);
+        }
+
+        [Test]
+        public void MVI_GotoAddress()
+        {
+            var dlg = mr.Stub<IAddressPromptDialog>();
             dlgFactory.Expect(d => d.CreateAddressPromptDialog()).Return(dlg);
             dlg.Stub(x => dlg.Address).Return(new Address(0x12345678));
             uiSvc.Expect(x => x.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))
                 .Return(DialogResult.OK);
             dlg.Expect(x => x.Dispose());
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateInteractor();
             interactor.ProgramImage = new LoadedImage(new Address(0x12345670), new byte[16]);
             interactor.ImageMap = new ImageMap(interactor.ProgramImage);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
 
-            repository.VerifyAll();
-            Assert.AreEqual(0x12345670, interactor.Control.TopAddress.Linear);
+            mr.VerifyAll();
+            Assert.AreEqual(0x12345670, interactor.Control.MemoryView.TopAddress.Linear);
         }
 
         [Test]
-        public void MemviewMarkAreaWithType()
+        public void MVI_MarkAreaWithType()
         {
             CreateInteractor();
             var image = new LoadedImage(addrBase, new byte[0x100]);

@@ -40,6 +40,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Mips\Mips.csproj">
+      <Name>Mips</Name>
+      <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Mos6502\Mos6502.csproj">
       <Name>Mos6502</Name>
       <Project>{dc11ed7f-97f6-4488-86b4-eec67dd1f511}</Project>

@@ -36,7 +36,7 @@ namespace Decompiler.Structure
             if (derGraph == null)
                 throw new ArgumentNullException("derGraph");
             if (derGraph.Entry == null)
-                throw new ArgumentException("cfg graph must be non-null", "derGraph");
+                throw new ArgumentException("cfg graph must be non-null.", "derGraph");
 
             var intSeq = derGraph.Intervals;	// The sequence of intervals in this graph
             var headerSeq = new WorkList<StructureNode>();	// The sequence of interval header nodes

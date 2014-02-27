@@ -7,6 +7,8 @@ namespace Decompiler.Gui.Controls
 {
     public interface ITreeView
     {
+        event EventHandler AfterSelect;
+
         object SelectedItem { get; set; }
         bool ShowNodeToolTips { get; set; }
         bool ShowRootLines { get; set; }
@@ -15,6 +17,7 @@ namespace Decompiler.Gui.Controls
 
         ITreeNode CreateNode();
         ITreeNode CreateNode(string text);
+
     }
 
     public interface ITreeNodeCollection : IList<ITreeNode>
@@ -25,9 +28,11 @@ namespace Decompiler.Gui.Controls
 
     public interface ITreeNode
     {
-        IList<ITreeNode> Nodes { get; }
+        ITreeNodeCollection Nodes { get; }
         object Tag { get; set; }
         string Text { get; set; }
         string ToolTipText { get; set; }
+
+        void Expand();
     }
 }

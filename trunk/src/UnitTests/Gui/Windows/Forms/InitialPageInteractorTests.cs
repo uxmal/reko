@@ -117,7 +117,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var memSvc = mr.Stub<IMemoryViewService>();
             site.AddService<IProjectBrowserService>(browserSvc);
             site.AddService<IMemoryViewService>(memSvc);
-            browserSvc.Expect(b => b.Load(Arg<Project>.Is.NotNull));
+            browserSvc.Expect(b => b.Load(Arg<Project>.Is.NotNull, Arg<Program>.Is.NotNull));
             mr.ReplayAll();
 
             i.OpenBinary("foo.exe", new FakeDecompilerHost());

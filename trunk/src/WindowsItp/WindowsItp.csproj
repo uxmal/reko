@@ -75,6 +75,12 @@
     <Compile Include="ActiveControlForm.Designer.cs">
       <DependentUpon>ActiveControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DisassemblyControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DisassemblyControlForm.Designer.cs">
+      <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ItpForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ActiveControlForm.resx">
       <DependentUpon>ActiveControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisassemblyControlForm.resx">
+      <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ItpForm.resx">
       <DependentUpon>ItpForm.cs</DependentUpon>
@@ -160,6 +169,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arch\PowerPC\PowerPC-2010.csproj">
+      <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
+      <Name>PowerPC-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
+      <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
+      <Name>X86-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Decompiler\Decompiler-2010.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler-2010</Name>

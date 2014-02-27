@@ -130,7 +130,7 @@ namespace Decompiler.Gui.Windows.Forms
             if (Decompiler.Program != null)
             {
                 var browserSvc = Site.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Project);
+                browserSvc.Load(Decompiler.Project, Decompiler.Program);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
                 PopulateBrowserServiceWithSegments();
@@ -157,7 +157,7 @@ namespace Decompiler.Gui.Windows.Forms
             if (Decompiler.Program != null)
             {
                 var browserSvc = Site.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Project);
+                browserSvc.Load(Decompiler.Project, Decompiler.Program);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
                 PopulateBrowserServiceWithSegments();

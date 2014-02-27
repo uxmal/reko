@@ -19,13 +19,14 @@
 #endregion
 
 using System;
-
+using System.ComponentModel;
 namespace Decompiler.Core
 {
 	/// <summary>
 	/// Represent a segment of memory, corresponding to an 16-bit segment for intel real and protected modes, and 
 	/// executable sections for flat processor modes.
 	/// </summary>
+    [Designer("Decompiler.Gui.Design.ImageMapSegmentDesigner,Decompiler")]
 	public class ImageMapSegment : ImageMapItem
 	{
 		public ImageMapSegment(string name, AccessMode access) : base() 

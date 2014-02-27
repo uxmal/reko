@@ -56,6 +56,12 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             return new BeImageWriter(bytes);
         }
 
+        private void RunTest(string expected, string bits)
+        {
+            var instr = DisassembleBits(bits);
+            Assert.AreEqual(expected, instr.ToString());
+        }
+
         [Test]
         public void PPCDis_IllegalOpcode()
         {
@@ -324,7 +330,6 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             Assert.AreEqual("cror\tcr1,cr2,cr3", instr.ToString());
         }
 
-
         [Test]
         public void PPCDis_rfi()
         {
@@ -379,6 +384,33 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             var instr = DisassembleBits("110000 00001 00010 111111111110100 0");
             Assert.AreEqual("lfs\tf1,-24(r2)", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_unknown()
+        {
+            var instr = base.DisassembleWord(0xEC6729D4);
+            Assert.AreEqual("illegal", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_fpu_single_precision_instructions()
+        {
+            RunTest("fdivs.\tf1,f2,f3", "111011 00001 00010 00011 00000 10010 1");
+            RunTest("fsubs.\tf1,f2,f3", "111011 00001 00010 00011 00000 10100 1");
+            RunTest("fadds.\tf1,f2,f3", "111011 00001 00010 00011 00000 10101 1");
+            RunTest("fsqrts.\tf1,f3", "111011 00001 00010 00011 00000 10110 1");
+            RunTest("fres.\tf1,f3", "111011 00001 00010 00011 00000 11000 1");
+            RunTest("fmuls.\tf1,f2,f4", "111011 00001 00010 00000 00100 11001 1");
+            RunTest("fmsubs.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11100 1");
+            RunTest("fmadds.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11101 1");
+            RunTest("fnmsubs.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11110 1");
+            RunTest("fnmadds.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11111 1");
+        }
+
+        [Test]
+        public void PPCDis_fpu_double_precision_instructions()
+        {
         }
     }
 }

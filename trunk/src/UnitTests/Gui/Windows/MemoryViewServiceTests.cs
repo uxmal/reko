@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void ShowingWindowCreatesWindowFrame()
+        public void MVS_ShowingWindowCreatesWindowFrame()
         {
             ServiceContainer sc = new ServiceContainer();
             var shellUi = repository.DynamicMock<IDecompilerShellUiService>();
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             sc.AddService(typeof(IDecompilerShellUiService), shellUi);
 
             var interactor = repository.DynamicMock<MemoryViewInteractor>();
-            interactor.Stub(x => x.Control).Return(new MemoryControl());
+            interactor.Stub(x => x.Control).Return(new LowLevelView());
 
             var service = repository.Stub<MemoryViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
@@ -84,13 +84,13 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void ShowMemoryAtAddressShouldChangeMemoryControl()
+        public void MVS_ShowMemoryAtAddressShouldChangeMemoryControl()
         {
-            ServiceContainer sc = new ServiceContainer();
-            MemoryControl ctrl = new MemoryControl();
+            var sc = new ServiceContainer();
+            var ctrl = new LowLevelView();
             var interactor = repository.DynamicMock<MemoryViewInteractor>();
-            interactor.Expect(x => x.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
-            interactor.Stub(x => x.Control).Return(ctrl);
+            interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
+            interactor.Stub(i => i.Control).Return(ctrl);
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
             uiSvc.Stub(x => x.FindWindow(Arg<string>.Is.Anything)).Return(null);
             uiSvc.Stub(x => x.CreateWindow("", "", null))
@@ -104,9 +104,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             service.ShowMemoryAtAddress(new Address(0x4711));
 
             repository.VerifyAll();
-
         }
-
 
         private class TestMainFormInteractor : MainFormInteractor
         {

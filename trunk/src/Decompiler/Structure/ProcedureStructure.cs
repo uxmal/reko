@@ -26,6 +26,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Structure
@@ -50,49 +51,26 @@ namespace Decompiler.Structure
     /// </summary>
     public class ProcedureStructure
     {
-        private List<StructureNode> nodes;
-        private StructureNode exitNode;
-        private StructureNode entryNode;
         private List<StructureNode> ordering;
         private List<DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
 
         public ProcedureStructure(string name, List<StructureNode> nodes)
         {
             this.Name = name;
-            this.nodes = nodes;
+            this.Nodes = nodes;
             this.derivedGraphs = new List<DerivedGraph>();
             this.ordering = new List<StructureNode>();
         }
 
+        public StructureNode EntryNode { get; set; }
+        public StructureNode ExitNode { get; set; }
         public string Name { get; set; }
+        public List<StructureNode> Nodes { get; private set; }
 
         public StructureNode FindNodeByName(string nodeName)
         {
-            foreach (StructureNode node in nodes)
-            {
-                if (node.Name == nodeName)
-                    return node;
-            }
-            return null;
+            return Nodes.FirstOrDefault(node => node.Name == nodeName);
         }
-
-        public List<StructureNode> Nodes
-        {
-            get { return nodes; }
-        }
-
-        public StructureNode EntryNode
-        {
-            get { return entryNode; }
-            set { entryNode = value; }
-        }
-
-        public StructureNode ExitNode
-        {
-            get { return exitNode; }
-            set { exitNode = value; }
-        }
-
 
         public List<DerivedGraph> DerivedGraphs
         {
@@ -114,7 +92,7 @@ namespace Decompiler.Structure
 
         public void Write(TextWriter writer)
         {
-            WriteNode(this.entryNode, new HashSet<StructureNode>(), writer);
+            WriteNode(this.EntryNode, new HashSet<StructureNode>(), writer);
         }
 
         [Conditional("DEBUG")]

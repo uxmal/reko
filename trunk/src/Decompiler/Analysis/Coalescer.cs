@@ -60,6 +60,8 @@ namespace Decompiler.Analysis
             }
 		}
 
+        public bool Coalesced { get; set; }
+
         private void SetDefStatement(Statement stm, SsaIdentifier sid)
         {
             List<SsaIdentifier> sids;
@@ -109,8 +111,6 @@ namespace Decompiler.Analysis
 			return true;
 		}
 
-		public bool Coalesced { get; set; }
-
 		/// <summary>
 		/// Coalesces the single use and the single definition of an identifier.
 		/// </summary>
@@ -122,25 +122,23 @@ namespace Decompiler.Analysis
 		public bool CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use)
 		{
             PreCoalesceDump(sid, def, use);
-			UsedIdentifierAdjuster uia = new UsedIdentifierAdjuster(def, ssa.Identifiers, use);
-			def.Instruction.Accept(uia);
-			IdentifierReplacer ir = new IdentifierReplacer(sid.Identifier, defExpr);
-			use.Instruction.Accept(ir);
+			def.Instruction.Accept(new UsedIdentifierAdjuster(def, ssa.Identifiers, use));
+			use.Instruction.Accept(new IdentifierReplacer(sid.Identifier, defExpr));
 
-            List<SsaIdentifier> sids;
-            if (defsByStatement.TryGetValue(def, out sids))
-            {
-                foreach (SsaIdentifier s in sids)
-                {
-                    if (s != sid)
-                    {
-                        s.DefStatement = use;
-                        SetDefStatement(use, s);
-                    }
-                }
-            }
+			List<SsaIdentifier> sids;
+			if (defsByStatement.TryGetValue(def, out sids))
+			{
+				foreach (SsaIdentifier s in sids)
+				{
+					if (s != sid)
+					{
+						s.DefStatement = use;
+						SetDefStatement(use, s);
+					}
+				}
+			}
 			ssa.DeleteStatement(def);
-            PostCoalesceDump(use);
+			PostCoalesceDump(use);
 			return true;
 		}
 
@@ -158,7 +156,6 @@ namespace Decompiler.Analysis
 
         private static void PostCoalesceDump(Statement use)
         {
-
             if (trace.TraceInfo)
             {
                 Debug.WriteLineIf(trace.TraceInfo, "  ; coalesced to");
@@ -208,7 +205,6 @@ namespace Decompiler.Analysis
 				Process(b);
 			}
 		}
-
 
 		/// <summary>
 		/// Tries to move the assigment as far down the block as is possible.

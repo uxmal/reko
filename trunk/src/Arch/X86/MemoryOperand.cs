@@ -99,7 +99,7 @@ namespace Decompiler.Arch.X86
 					s = "float ptr ";
 				else if (Width == PrimitiveType.Real64)
 					s = "double ptr ";
-				else if (Width == PrimitiveType.Real80)
+				else if (Width == PrimitiveType.Real80 || Width == PrimitiveType.Bcd80)
 					s = "tword ptr ";
                 else if (Width == PrimitiveType.Word128)
                     s = "xmmword ptr ";

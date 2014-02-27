@@ -19,13 +19,15 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Gui;
 using Decompiler.Gui.Forms;
-using Decompiler.Gui.Windows.Forms;
 using Decompiler.Gui.Windows.Controls;
+using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -36,131 +38,82 @@ namespace Decompiler.Gui.Windows
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         private IServiceProvider services;
-        private MemoryControl ctrl;
+        private LowLevelView control;
+        private IProcessorArchitecture arch;
         private TypeMarker typeMarker;
+        private LoadedImage image;
+        private ImageMap imageMap;
+
+        public virtual LowLevelView Control { get { return control; } }
+
+        public IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+            set
+            {
+                arch = value;
+                control.DisassemblyView.Architecture = value;
+            }
+        }
+
+        public LoadedImage ProgramImage
+        {
+            get { return image; }
+            set
+            {
+                image = value;
+                control.MemoryView.ProgramImage = value;
+                control.DisassemblyView.Image = value;
+                control.DisassemblyView.StartAddress = value.BaseAddress;
+            }
+        }
+
+        public ImageMap ImageMap
+        {
+            get { return imageMap; }
+            set
+            {
+                imageMap = value;
+                control.MemoryView.ImageMap = value;
+                //control.DisassemblyView.ImageMap = value;
+            }
+        }
+
+        public virtual Address SelectedAddress
+        {
+            get { return control.MemoryView.SelectedAddress; }
+            set
+            {
+                control.MemoryView.SelectedAddress = value;
+                control.MemoryView.TopAddress = value;
+                control.DisassemblyView.SelectedAddress = value;
+                control.DisassemblyView.TopAddress = value;
+            }
+        }
 
         public Control CreateControl()
         {
-            ctrl = new MemoryControl();
-            Control.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(ctl_SelectionChanged);
-            Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
             var uiService = services.RequireService<IDecompilerShellUiService>();
-            Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
-            typeMarker = new TypeMarker(Control);
-            typeMarker.TextChanged += FormatType;
-            typeMarker.TextAccepted += SetTypeAtAddressRange;
+            this.control = new LowLevelView();
+            this.control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
+            this.Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
+            this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
 
-            return Control;
+            typeMarker = new TypeMarker(control.MemoryView);
+            typeMarker.TextChanged += FormatType;
+            typeMarker.TextAccepted += (sender, e) => { SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText); };
+
+            return control;
         }
 
-        public virtual MemoryControl Control { get { return ctrl; } }
-
-        public void SetSite(IServiceProvider services)
+        public void SetSite(IServiceProvider sp)
         {
-            this.services = services;
+            services = sp;
         }
 
         public void Close()
         {
         }
-
-        public LoadedImage ProgramImage
-        {
-            get { return Control.ProgramImage; }
-            set { Control.ProgramImage = value; }
-        }
-
-        public ImageMap ImageMap
-        {
-            get { return Control.ImageMap; }
-            set { Control.ImageMap = value; }
-        }
-
-        void ctl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SelectionChanged != null)
-                SelectionChanged(this, e);
-        }
-
-        public void InvalidateControl()
-        {
-            Control.Invalidate();
-        }
-
-        public AddressRange GetSelectedAddressRange()
-        {
-            return Control.GetAddressRange();
-        }
-
-        public void GotoAddress()
-        {
-            Debug.Print("GotoAddress invoked");
-            var uiSvc = services.GetService<IDecompilerShellUiService>();
-            var dlgSvc = services.RequireService<IDialogFactory>();
-            using (IAddressPromptDialog dlg = dlgSvc.CreateAddressPromptDialog())
-            {
-                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                {
-                    Control.ShowAddress(dlg.Address);
-                }
-            }
-        }
-
-        public void MarkType()
-        {
-            var addrRange = Control.GetAddressRange();
-            if (!addrRange.IsValid)
-                return;
-            typeMarker.Show(Control.AddressToPoint(addrRange.Begin));
-        }
-
-        public void FormatType(object sender, TypeMarkerEventArgs e)
-        {
-            try
-            {
-                var parser = new HungarianParser();
-                var dataType = parser.Parse(e.UserText);
-                if (dataType == null)
-                    e.FormattedType = " - Null - ";
-                else 
-                    e.FormattedType = dataType.ToString();
-            }
-            catch
-            {
-                e.FormattedType = " - Error - ";
-            }
-        }
-
-        private void SetTypeAtAddressRange(object sender, TypeMarkerEventArgs e)
-        {
-            SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText);
-        }
-
-        public void SetTypeAtAddressRange(Address address, string userText)
-        {
-           var parser = new HungarianParser();
-           var dataType = parser.Parse(userText);
-           if (dataType == null)
-               return;
-            ImageMap.AddItem(address, new ImageMapItem
-            {
-                Size = (uint) dataType.Size,
-                DataType = dataType,
-            });
-            Control.Invalidate();
-        }
-
-        public virtual Address SelectedAddress
-        {
-            get { return Control.SelectedAddress; }
-            set
-            {
-                Control.SelectedAddress = value;
-                Control.TopAddress = value;
-            }
-        }
-
-        #region ICommandTarget Members
 
         public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
         {
@@ -192,9 +145,33 @@ namespace Decompiler.Gui.Windows
             return false;
         }
 
+        public AddressRange GetSelectedAddressRange()
+        {
+            return control.MemoryView.GetAddressRange();
+        }
+
+        public void GotoAddress()
+        {
+            Debug.Print("GotoAddress invoked");
+            var uiSvc = services.GetService<IDecompilerShellUiService>();
+            var dlgSvc = services.RequireService<IDialogFactory>();
+            using (IAddressPromptDialog dlg = dlgSvc.CreateAddressPromptDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    control.MemoryView.ShowAddress(dlg.Address);
+                }
+            }
+        }
+
+        public void InvalidateControl()
+        {
+            control.Invalidate();
+        }
+
         public void MarkAndScanProcedure()
         {
-            AddressRange addrRange = Control.GetAddressRange();
+            AddressRange addrRange = control.MemoryView.GetAddressRange();
             if (addrRange.IsValid)
             {
                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
@@ -205,13 +182,58 @@ namespace Decompiler.Gui.Windows
                     Name = proc.Name,
                 };
                 decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
-                Control.Invalidate();
+                control.MemoryView.Invalidate();
             }
+        }
+
+        
+        public void MarkType()
+        {
+            var addrRange = control.MemoryView.GetAddressRange();
+            if (!addrRange.IsValid)
+                return;
+            typeMarker.Show(control.MemoryView.AddressToPoint(addrRange.Begin));
+        }
+
+        public void FormatType(object sender, TypeMarkerEventArgs e)
+        {
+            try
+            {
+                var parser = new HungarianParser();
+                var dataType = parser.Parse(e.UserText);
+                if (dataType == null)
+                    e.FormattedType = " - Null - ";
+                else
+                    e.FormattedType = dataType.ToString();
+            }
+            catch
+            {
+                e.FormattedType = " - Error - ";
+            }
+        }
+
+        private void SetTypeAtAddressRange(object sender, TypeMarkerEventArgs e)
+        {
+            
+        }
+
+        public void SetTypeAtAddressRange(Address address, string userText)
+        {
+            var parser = new HungarianParser();
+            var dataType = parser.Parse(userText);
+            if (dataType == null)
+                return;
+            ImageMap.AddItem(address, new ImageMapItem
+            {
+                Size = (uint) dataType.Size,
+                DataType = dataType,
+            });
+            control.MemoryView.Invalidate();
         }
 
         public bool ViewWhatPointsHere()
         {
-            AddressRange addrRange = Control.GetAddressRange();
+            AddressRange addrRange = control.MemoryView.GetAddressRange();
             if (!addrRange.IsValid)
                 return true;
             var decompiler = services.GetService<IDecompilerService>().Decompiler;
@@ -232,6 +254,11 @@ namespace Decompiler.Gui.Windows
             return true;
         }
 
-        #endregion
+        private void MemoryView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.Control.DisassemblyView.SelectedAddress = e.AddressRange.Begin;
+            this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
+            this.SelectionChanged.Fire(this, e);
+        }
     }
 }

@@ -25,16 +25,21 @@ namespace Decompiler.WindowsItp
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
+            var image = new LoadedImage(new Address(0x12312300),new byte[0x1000]);
+            var imageMap = new ImageMap(image);
+            var arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
+            var program = new Core.Program(image, imageMap, arch, new DefaultPlatform(null, arch));
             pbs.Load(new Project
             {
                 InputFiles = {
                     new InputFile 
                     {
                         Filename = "c:\\test\\foo.exe",
-                        BaseAddress = new Address(0x12312300),
+                        BaseAddress = image.BaseAddress,
                     }
                 }
-            });
+            },
+            program);
         }
     }
 }
