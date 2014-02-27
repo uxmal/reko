@@ -181,7 +181,6 @@ namespace Decompiler.Structure
 
         #endregion
 
-
         #region IAbsynVisitor Members
 
         public void VisitAssignment(AbsynAssignment ass)

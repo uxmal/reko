@@ -240,6 +240,7 @@
     <Compile Include="Gui\Controls\IComboBox.cs" />
     <Compile Include="Gui\Controls\ITextBox.cs" />
     <Compile Include="Gui\Controls\ITreeView.cs" />
+    <Compile Include="Gui\Design\ImageMapSegmentDesigner.cs" />
     <Compile Include="Gui\Design\InputFileDesigner.cs" />
     <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
@@ -261,6 +262,12 @@
     <Compile Include="Gui\ProjectBrowserService.cs" />
     <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\Controls\LowLevelView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\LowLevelView.Designer.cs">
+      <DependentUpon>LowLevelView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Windows\IRegistryService.cs" />
     <Compile Include="Gui\ISearchDialog.cs" />
     <Compile Include="Gui\ISearchResult.cs" />
@@ -576,6 +583,9 @@
     <EmbeddedResource Include="Gui\Windows\Controls\ImageMapControl.resx">
       <DependentUpon>ImageMapControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\LowLevelView.resx">
+      <DependentUpon>LowLevelView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Controls\MemoryControl.resx">
       <DependentUpon>MemoryControl.cs</DependentUpon>

@@ -720,7 +720,6 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|L--|a1 = a1 - 0x0002");
         }
 
-
         [Test]
         public void M68krw_moveq()
         {

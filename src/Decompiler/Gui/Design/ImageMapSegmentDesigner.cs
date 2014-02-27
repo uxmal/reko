@@ -24,15 +24,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Gui.Design
 {
-    public interface IProjectBrowserService
+    public class ImageMapSegmentDesigner : TreeNodeDesigner
     {
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project, Program program);
+        private ImageMapSegment segment;
+
+        public override void Initialize(object obj)
+        {
+            this.segment = (ImageMapSegment) obj;
+            base.TreeNode.Text = segment.Name;
+            base.TreeNode.ToolTipText = string.Format(
+                "{0}{1}{2}{1}{3}",
+                segment.Name,
+                Environment.NewLine,
+                segment.Address,
+                Environment.NewLine,
+                segment.Access);
+        }
     }
 }

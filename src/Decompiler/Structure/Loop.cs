@@ -105,11 +105,11 @@ namespace Decompiler.Structure
         protected override void GenerateCodeInner(AbsynCodeGenerator codeGen, StructureNode node, AbsynStatementEmitter emitter)
         {
             codeGen.EmitLinearBlockStatements(node, emitter);
-            List<AbsynStatement> loopBody = new List<AbsynStatement>();
-            StructureNode bodyNode = (node.Else == node.Loop.Follow)
+            var loopBody = new List<AbsynStatement>();
+            var bodyNode = (node.Else == node.Loop.Follow)
                 ? node.Then
                 : node.Else;
-            AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+            var bodyEmitter = new AbsynStatementEmitter(loopBody);
             codeGen.GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
             bodyEmitter.StripDeclarations = true;
             codeGen.EmitLinearBlockStatements(node, bodyEmitter);

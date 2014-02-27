@@ -42,13 +42,14 @@ namespace Decompiler.Core.Types
 		Character = 4,
 		SignedInt = 8,
 		UnsignedInt = 16,
-		Real = 32,
-		Pointer = 64,
-		Selector = 128,
-        SegPointer = 256,   // Segmented pointer (x86-style)
-        PtrCode = 512,      // Pointer to executable code.
+        Bcd = 32,
+        Real = 64,
+		Pointer = 128,
+		Selector = 256,
+        SegPointer = 512,   // Segmented pointer (x86-style)
+        PtrCode = 1024,      // Pointer to executable code.
 
-        Any = Boolean|Character|SignedInt|UnsignedInt|Real|Pointer|Selector|SegPointer
+        Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Selector|SegPointer
 	}
 
 	/// <summary>
@@ -316,6 +317,7 @@ namespace Decompiler.Core.Types
             PtrCode64 = Create(Domain.PtrCode, 8);
 
 			Real80 = Create(Domain.Real, 10);
+            Bcd80 = Create(Domain.Bcd, 10);
 
             Word128 = CreateWord(16);
             Real128 = Create(Domain.Real, 16);
@@ -360,6 +362,8 @@ namespace Decompiler.Core.Types
 
         public static PrimitiveType Word256 { get; private set; }
 
-        public static PrimitiveType WChar { get; private set; } 
+        public static PrimitiveType WChar { get; private set; }
+
+        public static PrimitiveType Bcd80 { get;private set; }
     }
 }

@@ -157,9 +157,6 @@ namespace Decompiler.Gui.Windows
         #endregion
 
 
-
-
-
         #region ICommandTarget Members
 
         public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
@@ -190,7 +187,7 @@ namespace Decompiler.Gui.Windows
 
         void txtDisassembly_Resize(object sender, EventArgs e)
         {
-                DumpAssembler();
+              DumpAssembler();
         }
     }
 }

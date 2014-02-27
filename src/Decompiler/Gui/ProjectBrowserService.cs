@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -41,12 +42,15 @@ namespace Decompiler.Gui
         {
             this.Services = services;
             this.tree = treeView;
+            this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
+            this.tree.AfterSelect += tree_AfterSelect;
         }
 
         public IServiceProvider Services { get; private set; }
 
-        public void Load(Project project)
+        public void Load(Project project, Program prog)
         {
+            tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             if (project == null)
             {
@@ -56,8 +60,12 @@ namespace Decompiler.Gui
                 tree.Nodes.Add(tree.CreateNode("(No project loaded)"));
                 return;
             }
-            AddComponents(project.InputFiles);
-            tree.ShowNodeToolTips = true;
+            else
+            {
+                AddComponents(project.InputFiles);
+                AddComponents(project.InputFiles[0], prog.ImageMap.Segments.Values);
+                tree.ShowNodeToolTips = true;
+            }
         }
 
         public void AddComponents(IEnumerable components)
@@ -65,34 +73,89 @@ namespace Decompiler.Gui
             List<ITreeNode> nodes = new List<ITreeNode>();
             foreach (object o in components)
             {
-                if (o == null)
-                    continue;
-                var attr = o.GetType().GetCustomAttributes(typeof(DesignerAttribute), true);
-                if (attr.Length == 0)
-                    continue;   //$Consider a simple designer where the text is component.ToString()?
-                var desType = Type.GetType(
-                    ((DesignerAttribute) attr[0]).DesignerTypeName,
-                    true);
-                var des = (TreeNodeDesigner) Activator.CreateInstance(desType);
-                var node = tree.CreateNode();
-                node.Tag = o;
-                des.Services = Services;
-                des.Host = this;
-                des.TreeNode = node;
-                des.Initialize(o);
-                nodes.Add(node);
+                var des = CreateDesigner(o);
+                if (des != null)
+                {
+                    nodes.Add(des.TreeNode);
+                }
             }
             tree.Nodes.AddRange(nodes);
         }
 
+        private TreeNodeDesigner CreateDesigner(object o)
+        {
+            if (o == null)
+                return null;
+            var attr = o.GetType().GetCustomAttributes(typeof(DesignerAttribute), true);
+            TreeNodeDesigner des;
+            if (attr.Length > 0)
+            {
+                var desType = Type.GetType(
+                    ((DesignerAttribute) attr[0]).DesignerTypeName,
+                    true);
+                 des = (TreeNodeDesigner) Activator.CreateInstance(desType);
+            }
+            else
+            {
+                des = new TreeNodeDesigner();
+            }
+            mpitemToDesigner[o] = des;
+            var node = CreateTreeNode(o, des);
+            return des;
+        }
+
+        private ITreeNode CreateTreeNode(object o, TreeNodeDesigner des)
+        {
+            var node = tree.CreateNode();
+            node.Tag = o;
+            node.Expand();
+            des.Services = Services;
+            des.Host = this;
+            des.TreeNode = node;
+            des.Initialize(o);
+
+            return node;
+        }
+
         public void AddComponents(object parent, IEnumerable components)
         {
-            throw new NotImplementedException();
+            TreeNodeDesigner parentDes = GetDesigner(parent);
+            if (parentDes == null)
+            {
+                Debug.Print("No designer for parent object {0}", parent ?? "(null)");
+                AddComponents(components);
+                return;
+            }
+            var nodes = components
+                .Cast<object>()
+                .Select(o => CreateTreeNode(o, CreateDesigner(o)));
+            parentDes.TreeNode.Nodes.AddRange(nodes);
+        }
+
+        public TreeNodeDesigner GetDesigner(object o)
+        {
+            if (o == null)
+                return null;
+            TreeNodeDesigner des;
+            if (mpitemToDesigner.TryGetValue(o, out des))
+                return des;
+            else
+                return null;
         }
 
         public void RemoveComponent(object component)
         {
             throw new NotImplementedException();
+        }
+
+        private void tree_AfterSelect(object sender, EventArgs e)
+        {
+            if (tree.SelectedItem == null)
+                return;
+            var des = GetDesigner(tree.SelectedItem);
+            if (des == null)
+                return;
+            des.DoDefaultAction();
         }
     }
 }

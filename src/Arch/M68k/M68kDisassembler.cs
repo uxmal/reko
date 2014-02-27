@@ -72,6 +72,7 @@ namespace Decompiler.Arch.M68k
             }
             catch (Exception ex)
             {
+                Debug.Print("*** Exception when diassembling {0:X4} at address {1}: {2}", instruction, addr, ex.Message);
                 instr = new M68kInstruction { 
                     Address = addr,
                     code = Opcode.illegal

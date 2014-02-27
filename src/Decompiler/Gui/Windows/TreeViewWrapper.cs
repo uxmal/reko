@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace Decompiler.Gui.Windows
         {
             this.treeView = treeView;
             this.Nodes = new WrappedNodeList(treeView.Nodes);
+            this.treeView.AfterSelect += treeView_AfterSelect;
         }
 
         public ITreeNodeCollection Nodes { get; private set; }
@@ -65,6 +67,13 @@ namespace Decompiler.Gui.Windows
                 else 
                     treeView.SelectedNode = null;
             }
+        }
+
+        public event EventHandler AfterSelect;
+
+        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            AfterSelect.Fire(this);
         }
 
         private TreeNode NodeOf(TreeNodeCollection nodes, object value)
@@ -99,7 +108,7 @@ namespace Decompiler.Gui.Windows
                 nodes = new Lazy<WrappedNodeList>(() => new WrappedNodeList(base.Nodes), true);
             }
 
-            public new IList<ITreeNode> Nodes { get { return nodes.Value; } }
+            public ITreeNodeCollection Nodes { get { return nodes.Value; } }
         }
 
         public class WrappedNodeList : ITreeNodeCollection

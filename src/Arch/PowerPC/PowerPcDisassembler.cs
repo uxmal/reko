@@ -51,7 +51,16 @@ namespace Decompiler.Arch.PowerPC
                 return false;
             this.addr = rdr.Address;
             uint wInstr = rdr.ReadBeUInt32();
-            instrCur = oprecs[wInstr >> 26].Decode(this, wInstr);
+            try
+            {
+                instrCur = oprecs[wInstr >> 26].Decode(this, wInstr);
+            }
+            catch
+            {
+                instrCur = new PowerPcInstruction(Opcode.illegal);
+            }
+            instrCur.Address = addr;
+            instrCur.Length = 4;
             return true;
         }
 
@@ -88,6 +97,11 @@ namespace Decompiler.Arch.PowerPC
                     case '4': op = this.CRegFromBits(wInstr >> 6); break;
                     default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
                     }
+                    break;
+                case 'C':   // CR register in certain FPU opcodes.
+                    if (opFmt[++i] != 1)
+                        throw new FormatException("Invalid CRx format specification.");
+                    op = this.CRegFromBits((wInstr >> 22) & 0x07);
                     break;
                 case 'f':
                     switch (opFmt[++i])
@@ -132,6 +146,7 @@ namespace Decompiler.Arch.PowerPC
                 op1 = ops.Count > 0 ? ops[0] : null,
                 op2 = ops.Count > 1 ? ops[1] : null,
                 op3 = ops.Count > 2 ? ops[2] : null,
+                op4 = ops.Count > 3 ? ops[3] : null,
                 setsCR0 = setsCR0
             };
         }
@@ -216,7 +231,36 @@ namespace Decompiler.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return xOpRecs[(wInstr >> 1) & 0x3FF].Decode(dasm, wInstr, (wInstr & 1) == 1);
+                var xOp = (wInstr >> 1) & 0x3FF;
+                XOpRecAux opRec;
+                if (xOpRecs.TryGetValue(xOp, out opRec))
+                {
+                    return opRec.Decode(dasm, wInstr, (wInstr & 1) == 1);
+                }
+                else
+                {
+                    return new PowerPcInstruction(Opcode.illegal);
+                }
+            }
+        }
+
+        private class FpuOpRec : OpRec
+        {
+            private Dictionary<uint, FpuOpRecAux> fpuOpRecs;
+
+            public FpuOpRec(Dictionary<uint, FpuOpRecAux> fpuOpRecs)
+            {
+                this.fpuOpRecs = fpuOpRecs;
+            }
+
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            {
+                var x = (wInstr >> 1) & 0x1F;
+                FpuOpRecAux opRec;
+                if (fpuOpRecs.TryGetValue(x, out opRec))
+                    return opRec.Decode(dasm, wInstr, (wInstr & 1) == 1);
+                else
+                    return new PowerPcInstruction(Opcode.illegal);
             }
         }
 
@@ -231,6 +275,23 @@ namespace Decompiler.Arch.PowerPC
             }
 
             public XOpRecAux(Opcode opcode, string opFmt)
+            {
+                this.opcode = opcode;
+                this.opFmt = opFmt;
+            }
+
+            public virtual PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            {
+                return dasm.DecodeOperands(opcode, wInstr, opFmt, setsCr0);
+            }
+        }
+
+        private class FpuOpRecAux
+        {
+            private Opcode opcode;
+            private string opFmt;
+
+            public FpuOpRecAux(Opcode opcode, string opFmt)
             {
                 this.opcode = opcode;
                 this.opFmt = opFmt;
@@ -348,10 +409,6 @@ namespace Decompiler.Arch.PowerPC
                 { 467, new SprOpRec(true) },
             };
 
-            var x3BOpRecs = new Dictionary<uint, XOpRecAux>()
-            {
-            };
-
             var x3FOpRecs = new Dictionary<uint, XOpRecAux>()
             {
                 { 21, new XOpRecAux(Opcode.fadd, "f1,f2,f3") },
@@ -425,7 +482,19 @@ namespace Decompiler.Arch.PowerPC
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
-                new XOpRec(x3BOpRecs),
+                new FpuOpRec( new Dictionary<uint, FpuOpRecAux>()
+                {
+                    { 18, new FpuOpRecAux(Opcode.fdivs, "f1,f2,f3") },
+                    { 20, new FpuOpRecAux(Opcode.fsubs, "f1,f2,f3") },
+                    { 21, new FpuOpRecAux(Opcode.fadds, "f1,f2,f3") },
+                    { 22, new FpuOpRecAux(Opcode.fsqrts, "f1,f3") },
+                    { 24, new FpuOpRecAux(Opcode.fres, "f1,f3") },
+                    { 25, new FpuOpRecAux(Opcode.fmuls, "f1,f2,f4") },
+                    { 28, new FpuOpRecAux(Opcode.fmsubs, "f1,f2,f3,f4") },
+                    { 29, new FpuOpRecAux(Opcode.fmadds, "f1,f2,f3,f4") },
+                    { 30, new FpuOpRecAux(Opcode.fnmsubs, "f1,f2,f3,f4") },
+                    { 31, new FpuOpRecAux(Opcode.fnmadds, "f1,f2,f3,f4") },
+                }),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new InvalidOpRec(),

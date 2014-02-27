@@ -39,9 +39,12 @@ namespace Decompiler.UnitTests.Gui.Windows
     {
         private MockRepository mr;
         private ServiceContainer sc;
+        private FakeTreeView fakeTree;
         private ITreeView mockTree;
         private ITreeNodeCollection mockNodes;
-        private FakeTreeView fakeTree;
+        private IDecompilerService decompilerSvc;
+        private IDecompiler decompiler;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -50,6 +53,8 @@ namespace Decompiler.UnitTests.Gui.Windows
             sc = new ServiceContainer();
             mockTree = mr.StrictMock<ITreeView>();
             mockNodes = mr.StrictMock<ITreeNodeCollection>();
+            decompilerSvc = mr.StrictMock<IDecompilerService>();
+            decompiler = mr.StrictMock<IDecompiler>();
             mockTree.Stub(t => t.Nodes).Return(mockNodes);
             fakeTree = new FakeTreeView();
         }
@@ -57,7 +62,8 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void Expect(string sExp)
         {
             var x = new XElement("foo");
-            var render = new Func<ITreeNode, XNode>(n =>
+            Func<ITreeNode, XNode> render = null;
+            render = new Func<ITreeNode, XNode>(n =>
             {
                 var e = new XElement(
                     "node",
@@ -65,7 +71,9 @@ namespace Decompiler.UnitTests.Gui.Windows
                         n.Text != null ? new XAttribute("text", n.Text): null,
                         n.ToolTipText != null ? new XAttribute("tip", n.ToolTipText) : null,
                         n.Tag != null ? new XAttribute("tag", n.Tag.GetType().Name) : null
-                    }.Where(a => a != null));
+                    }.Where(a => a != null),
+                    n.Nodes.Select(c => render(c)));
+                    
                 return e;
             });
             var sb = new StringWriter();
@@ -87,18 +95,10 @@ namespace Decompiler.UnitTests.Gui.Windows
             }
 
             public ITreeNodeCollection Nodes { get; private set; }
+            public event EventHandler AfterSelect;
 
-            public object SelectedItem
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public object SelectedItem { get { return selectedItem; } set { selectedItem = value; AfterSelect.Fire(this); } }
+            private object selectedItem;
 
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
@@ -128,13 +128,16 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             public FakeTreeNode()
             {
-                Nodes = new List<ITreeNode>();
+                Nodes = new FakeTreeNodeCollection();
             }
 
+
             public object Tag { get; set; }
-            public IList<ITreeNode> Nodes { get; private set; }
+            public ITreeNodeCollection Nodes { get; private set; }
             public string Text { get; set; }
             public string ToolTipText { get; set; }
+
+            public void Expand() { }
         }
 
 
@@ -142,26 +145,39 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void PBS_NoProject()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
-            pbs.Load(null);
+            pbs.Load(null, null);
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?><root><node text=\"(No project loaded)\" /></root>");
             Assert.IsFalse(fakeTree.ShowRootLines);
             Assert.IsFalse(fakeTree.ShowNodeToolTips);
         }
 
+        private void Given_ProgramWithOneSegment()
+        {
+            var image = new LoadedImage(new Address(0x12340000), new byte[0x1000]);
+            var imageMap = new ImageMap(image);
+            imageMap.AddSegment(new Address(0x12340000), ".text", AccessMode.Execute);
+            var arch = mr.StrictMock<IProcessorArchitecture>();
+            var platform = new DefaultPlatform(sc, arch);
+            program = new Program(image, imageMap, arch, platform);
+        }
+
         [Test]
         public void PBS_SingleBinary()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
-            pbs.Load(new Project
+            Given_ProgramWithOneSegment();
+            var project =  new Project
             {
                 InputFiles = {
                     new InputFile {
-                         Filename = "/home/fnord/project/executable",
-                         BaseAddress = new Address(0x12340000),
+                            Filename = "/home/fnord/project/executable",
+                            BaseAddress = new Address(0x12340000),
                     }
-                }
-            });
+                },
+            };
+
+            pbs.Load(project, program);
 
             Assert.IsTrue(fakeTree.ShowNodeToolTips);
             var cr = Environment.NewLine == "\r\n"
@@ -173,10 +189,14 @@ namespace Decompiler.UnitTests.Gui.Windows
                 "<node " +
                     "text=\"executable\" " +
                     "tip=\"/home/fnord/project/executable" + cr + "12340000\" " +
-                    "tag=\"InputFile\" />" +
+                    "tag=\"InputFile\">" +
+                    "<node " + 
+                        "text=\"Image base\" " +
+                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
+                        "tag=\"ImageMapSegment\" />" +
+                "</node>" +
                 "</root>");
 
-        } 
-
+        }
     }
 }
