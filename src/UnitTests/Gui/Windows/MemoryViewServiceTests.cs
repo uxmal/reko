@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             Expect.Call(windowFrame.Show);
             repository.ReplayAll();
 
-            svc.ShowMemoryAtAddress(new Address(0x10000));
+            svc.ShowMemoryAtAddress(null, new Address(0x10000));
             repository.VerifyAll();
         }
 
@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
             repository.ReplayAll();
 
-            service.ShowMemoryAtAddress(new Address(0x4711));
+            service.ShowMemoryAtAddress(null, new Address(0x4711));
 
             repository.VerifyAll();
         }

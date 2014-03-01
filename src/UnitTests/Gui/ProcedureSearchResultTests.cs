@@ -93,6 +93,7 @@ namespace Decompiler.UnitTests.Gui
                 Arg<Type>.Is.Same(typeof (IMemoryViewService)))).Return(mvs);
             cvs.Stub(c => c.DisplayProcedure(null)).IgnoreArguments();
             mvs.Expect(s => s.ShowMemoryAtAddress(
+                Arg<Program>.Is.NotNull,
                 Arg<Address>.Is.Equal(new Address(0x4234))));
             repository.ReplayAll();
 

@@ -37,7 +37,6 @@ namespace Decompiler.Gui.Forms
 		string TitleText { get; set; }
         void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
 
-        ListView BrowserList { get; }
         ICollection<IWindowFrame> DocumentWindows { get; }
         ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }

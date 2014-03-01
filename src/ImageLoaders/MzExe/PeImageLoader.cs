@@ -137,9 +137,8 @@ namespace Decompiler.ImageLoaders.MzExe
 				LoadSections(addrLoad, sectionOffset, sections);
 			}
 			imgLoaded.BaseAddress = addrLoad;
-			return new LoaderResults(imgLoaded, new ImageMap(imgLoaded), arch, platform);
+			return new LoaderResults(imgLoaded, imageMap, arch, platform);
 		}
-
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
 		{
@@ -177,7 +176,6 @@ namespace Decompiler.ImageLoaders.MzExe
 				}
 			}
 		}
-
 
 		public override Address PreferredBaseAddress
 		{

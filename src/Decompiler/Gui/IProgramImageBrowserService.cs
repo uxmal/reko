@@ -27,6 +27,7 @@ namespace Decompiler.Gui
     /// <summary>
     /// Services for interacting with the ProgramImage browser.
     /// </summary>
+    [Obsolete("", true)]
     public interface IProgramImageBrowserService
     {
         event EventHandler SelectionChanged;

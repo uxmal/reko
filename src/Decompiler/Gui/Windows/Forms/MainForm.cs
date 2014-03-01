@@ -64,11 +64,6 @@ namespace Decompiler.Gui.Windows.Forms
             get { return tabControl1; }
         }
 
-        public ListView BrowserList
-        {
-            get { return listBrowser; }
-        }
-
         public ICollection<IWindowFrame> DocumentWindows { get { return docWindows; } }
 
         public ImageList ImageList

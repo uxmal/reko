@@ -45,6 +45,7 @@ namespace Decompiler.UnitTests.Gui
         {
             var memSvc = repository.DynamicMock<IMemoryViewService>();
             memSvc.Expect(x => x.ShowMemoryAtAddress(
+                Arg<Program>.Is.NotNull,
                 Arg<Address>.Matches(a => a.Linear == 0x1234)));
             repository.ReplayAll();
 

@@ -318,9 +318,6 @@
     <Compile Include="Gui\Windows\MruListTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\ProgramImageBrowserServiceTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Gui\Windows\SearchResultServiceTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -539,7 +536,9 @@
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Gui\Design\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

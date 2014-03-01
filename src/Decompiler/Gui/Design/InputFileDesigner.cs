@@ -34,6 +34,7 @@ namespace Decompiler.Gui.Design
         {
             var inputFile =(InputFile) obj;
             TreeNode.Text = Path.GetFileName(inputFile.Filename);
+            TreeNode.ImageName = "Binary.ico";
             TreeNode.ToolTipText = string.Format("{0}{1}{2}",
                 inputFile.Filename,
                 Environment.NewLine,

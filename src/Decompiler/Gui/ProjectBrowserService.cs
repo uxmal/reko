@@ -86,18 +86,21 @@ namespace Decompiler.Gui
         {
             if (o == null)
                 return null;
-            var attr = o.GetType().GetCustomAttributes(typeof(DesignerAttribute), true);
-            TreeNodeDesigner des;
-            if (attr.Length > 0)
+            TreeNodeDesigner des = o as TreeNodeDesigner;
+            if (des == null)
             {
-                var desType = Type.GetType(
-                    ((DesignerAttribute) attr[0]).DesignerTypeName,
-                    true);
-                 des = (TreeNodeDesigner) Activator.CreateInstance(desType);
-            }
-            else
-            {
-                des = new TreeNodeDesigner();
+                var attr = o.GetType().GetCustomAttributes(typeof(DesignerAttribute), true);
+                if (attr.Length > 0)
+                {
+                    var desType = Type.GetType(
+                        ((DesignerAttribute) attr[0]).DesignerTypeName,
+                        true);
+                    des = (TreeNodeDesigner) Activator.CreateInstance(desType);
+                }
+                else
+                {
+                    des = new TreeNodeDesigner();
+                }
             }
             mpitemToDesigner[o] = des;
             var node = CreateTreeNode(o, des);

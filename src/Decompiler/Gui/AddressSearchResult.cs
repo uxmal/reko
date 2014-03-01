@@ -67,14 +67,16 @@ namespace Decompiler.Gui
         public string[] GetItemStrings(int i)
         {
             return new string[] {
-                imageMap.MapLinearAddressToAddress(addresses[i]).ToString()
+                imageMap.MapLinearAddressToAddress(addresses[i]).ToString(),
+                ""
             };
         }
 
         public void NavigateTo(int i)
         {
+            var decSvc = services.RequireService<IDecompilerService>();
             var memSvc = services.RequireService<IMemoryViewService>();
-            memSvc.ShowMemoryAtAddress(imageMap.MapLinearAddressToAddress(addresses[i]));
+            memSvc.ShowMemoryAtAddress(decSvc.Decompiler.Program, imageMap.MapLinearAddressToAddress(addresses[i]));
         }
     }
 }

@@ -34,8 +34,6 @@ namespace Decompiler.Gui.Windows.Forms
 
     public class FinalPageInteractor : PhasePageInteractorImpl, IFinalPageInteractor
     {
-        IProgramImageBrowserService browserService;
-
         public FinalPageInteractor()
         {
         }
@@ -58,16 +56,10 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void ConnectToBrowserService()
         {
-            browserService = Site.GetService<IProgramImageBrowserService>();
-            browserService.Enabled = true;
-            browserService.SelectionChanged += browserService_SelectionChanged;
-            browserService.Caption = "Procedures";
-            browserService.SelectionChanged += new EventHandler(browserService_SelectionChanged);
         }
 
         public void DisconnectFromBrowserService()
         {
-            browserService.SelectionChanged -= browserService_SelectionChanged;
         }
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
@@ -88,30 +80,12 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void EnterPage()
         {
-            ConnectToBrowserService();
-            PopulateBrowserService();
         }
-
-        private void PopulateBrowserService()
-        {
-            browserService.Populate(Decompiler.Program.Procedures.Values, delegate(object o, IListViewItem item)
-            {
-                item.Text = o.ToString();
-            });
-        }
-
 
         public override bool LeavePage()
         {
             DisconnectFromBrowserService();
             return true;
-        }
-
-        void browserService_SelectionChanged(object sender, EventArgs e)
-        {
-            var proc = (Procedure) browserService.SelectedItem;
-            var codeSvc = Site.RequireService<ICodeViewerService>();
-            codeSvc.DisplayProcedure(proc);
         }
     }
 }
