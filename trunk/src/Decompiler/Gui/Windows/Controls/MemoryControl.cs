@@ -276,7 +276,6 @@ namespace Decompiler.Gui.Windows.Controls
                     if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift &&
                         !isDragging)
                     {
-                        Debug.Print("Trakkie");
                         addrAnchor = addrSelected;
                     }
                     Debug.Print("Selection: {0}-{1}", addrAnchor, addrSelected);

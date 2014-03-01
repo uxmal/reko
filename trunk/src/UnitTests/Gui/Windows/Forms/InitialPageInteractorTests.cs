@@ -59,7 +59,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IDecompilerService), new DecompilerService());
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            site.AddService(typeof(IProgramImageBrowserService), new ProgramImageBrowserService(form.BrowserList));
             site.AddService(typeof(IProjectBrowserService), browserSvc);
             i.Site = site;
 		}
@@ -69,16 +68,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
 			form.Dispose();
 		}
-
-        [Test]
-        public void InitialControls()
-        {
-            i.EnterPage();
-            // When opening the application for the very first time, we should be on the initial page, and 
-            // most controls on the mainform should be disabled.
-
-            Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
-        }
 
         [Test]
         public void OpenBinary_CanAdvance()

@@ -46,9 +46,9 @@ namespace Decompiler.Gui
 
         public void NavigateTo()
         {
-            var svc = sp.GetService<IMemoryViewService>();
-            if (svc != null)
-                svc.ShowMemoryAtAddress(Address);
+            var dec = sp.RequireService<IDecompilerService>();
+            var svc = sp.RequireService<IMemoryViewService>();
+            svc.ShowMemoryAtAddress(dec.Decompiler.Program, Address);
         }
 
         #endregion

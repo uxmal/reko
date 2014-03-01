@@ -34,6 +34,7 @@ namespace Decompiler.Gui.Design
         {
             this.segment = (ImageMapSegment) obj;
             base.TreeNode.Text = segment.Name;
+            base.TreeNode.ImageName = "Header.ico";
             base.TreeNode.ToolTipText = string.Format(
                 "{0}{1}{2}{1}{3}",
                 segment.Name,
@@ -41,6 +42,13 @@ namespace Decompiler.Gui.Design
                 segment.Address,
                 Environment.NewLine,
                 segment.Access);
+        }
+
+        public override void DoDefaultAction()
+        {
+            var memSvc = Services.RequireService<IMemoryViewService>();
+            var decSvc = Services.RequireService<IDecompilerService>();
+            memSvc.ShowMemoryAtAddress(decSvc.Decompiler.Program, segment.Address);
         }
     }
 }

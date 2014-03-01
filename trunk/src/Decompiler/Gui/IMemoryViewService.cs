@@ -43,7 +43,7 @@ namespace Decompiler.Gui
 
         void ShowWindow();
         void ViewImage(Program program);
-        void ShowMemoryAtAddress(Address addr);
+        void ShowMemoryAtAddress(Program program, Address addr);
         AddressRange GetSelectedAddressRange();
         void InvalidateWindow();
     }

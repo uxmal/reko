@@ -36,46 +36,46 @@ namespace Decompiler.Gui.Windows.Forms
     {
     }
 
-	public class LoadedPageInteractor : PhasePageInteractorImpl, ILoadedPageInteractor
-	{
-		private Hashtable mpCmdidToCommand;
-        private IProgramImageBrowserService browserSvc;
+    public class LoadedPageInteractor : PhasePageInteractorImpl, ILoadedPageInteractor
+    {
+        private Hashtable mpCmdidToCommand;
+        private IDecompilerService decompilerSvc;
         private IStatusBarService sbSvc;
         private IMemoryViewService memSvc;
         private IDisassemblyViewService disSvc;
 
-		public LoadedPageInteractor() 
-		{
-			mpCmdidToCommand = new Hashtable();
+        public LoadedPageInteractor()
+        {
+            mpCmdidToCommand = new Hashtable();
             AddCommand(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
-			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
-			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
-			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);
-		}
+            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
+            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
+            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);
+        }
 
-		protected MenuCommand AddCommand(ref Guid cmdSet, int cmdId)
-		{
-			MenuCommand mc = new MenuCommand(null, new CommandID(cmdSet, cmdId));
-			mpCmdidToCommand.Add(mc.CommandID.ID, mc);
-			return mc;
-		}
+        protected MenuCommand AddCommand(ref Guid cmdSet, int cmdId)
+        {
+            MenuCommand mc = new MenuCommand(null, new CommandID(cmdSet, cmdId));
+            mpCmdidToCommand.Add(mc.CommandID.ID, mc);
+            return mc;
+        }
 
-		public override bool Execute(ref Guid cmdSet, int cmdId)
-		{
-			if (cmdSet == CmdSets.GuidDecompiler)
-			{
-				switch (cmdId)
-				{
+        public override bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            if (cmdSet == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId)
+                {
                 case CmdIds.EditFind:
                     EditFindBytes(); return true;
-				case CmdIds.ViewGoToAddress:
-					GotoAddress(); return true;
-				case CmdIds.ActionMarkProcedure:
-					MarkAndScanProcedure(); return true;
-				}
-			}
-			return base.Execute(ref cmdSet, cmdId);
-		}
+                case CmdIds.ViewGoToAddress:
+                    GotoAddress(); return true;
+                case CmdIds.ActionMarkProcedure:
+                    MarkAndScanProcedure(); return true;
+                }
+            }
+            return base.Execute(ref cmdSet, cmdId);
+        }
 
 
         public void EditFindBytes()
@@ -90,22 +90,22 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-        private void FindMatchingBytes(byte [] pattern)
+        private void FindMatchingBytes(byte[] pattern)
         {
             throw new NotImplementedException();
         }
 
-		public void GotoAddress()
-		{
+        public void GotoAddress()
+        {
             using (IAddressPromptDialog dlg = new AddressPromptDialog())
             {
                 if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
                 {
-                    memSvc.ShowMemoryAtAddress(dlg.Address);
+                    memSvc.ShowMemoryAtAddress(decompilerSvc.Decompiler.Program, dlg.Address);
                     memSvc.ShowWindow();
                 }
             }
-		}
+        }
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
@@ -115,25 +115,15 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void EnterPage()
         {
-            browserSvc.Enabled = true;
-            browserSvc.SelectionChanged += BrowserItemSelected;
-            browserSvc.Caption = "Segments";
-            memSvc.SelectionChanged += memSvc_SelectionChanged;
-
             memSvc.ViewImage(Decompiler.Program);
             disSvc.ShowWindow();
             disSvc.Clear();
-
-            PopulateBrowser();
         }
 
-		public override bool LeavePage()
-		{
-            browserSvc.SelectionChanged -= BrowserItemSelected;
-            memSvc.SelectionChanged -= memSvc_SelectionChanged;
-
-			return true;
-		}
+        public override bool LeavePage()
+        {
+            return true;
+        }
 
         public void MarkAndScanProcedure()
         {
@@ -150,26 +140,18 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-		public void PopulateBrowser()
-		{
-            browserSvc.Populate(Decompiler.Program.ImageMap.Segments.Values, delegate(object item, IListViewItem listItem)
+        public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdSet == CmdSets.GuidDecompiler)
             {
-                listItem.Text = ((ImageMapSegment) item).Name;
-            });
-		}
-
-		public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
-		{
-			if (cmdSet == CmdSets.GuidDecompiler)
-			{
-				MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId];
-				if (cmd == null)
-					return false;
-				status.Status = (MenuStatus) cmd.OleStatus;
-				return true;
-			}
-			return false;
-		}
+                MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId];
+                if (cmd == null)
+                    return false;
+                status.Status = (MenuStatus) cmd.OleStatus;
+                return true;
+            }
+            return false;
+        }
 
         public override ISite Site
         {
@@ -178,14 +160,13 @@ namespace Decompiler.Gui.Windows.Forms
                 base.Site = value;
                 if (value != null)
                 {
-                    browserSvc = Site.RequireService<IProgramImageBrowserService>();
+                    decompilerSvc = Site.RequireService<IDecompilerService>();
                     sbSvc = Site.RequireService<IStatusBarService>();
                     memSvc = Site.RequireService<IMemoryViewService>();
                     disSvc = Site.RequireService<IDisassemblyViewService>();
                 }
                 else
                 {
-                    browserSvc = null;
                     sbSvc = null;
                 }
             }
@@ -203,26 +184,6 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 sbSvc.SetText(string.Format("[{0}-{1}]", range.Begin, range.End));
             }
-        }
-
-
-        // Event handlers /////////////////////////
-
-        private void memSvc_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sbSvc != null)
-            {
-                ShowMemoryControlRange(sbSvc, e.AddressRange);
-                disSvc.DisassembleStartingAtAddress(e.AddressRange.Begin);
-
-            }
-        }
-
-        public void BrowserItemSelected(object sender, EventArgs e)
-        {
-            ImageMapSegment segment = (ImageMapSegment) browserSvc.FocusedItem;
-            memSvc.ShowMemoryAtAddress(segment.Address);
-            memSvc.ShowWindow();
         }
     }
 }

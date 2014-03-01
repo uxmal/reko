@@ -36,7 +36,7 @@ namespace Decompiler.Gui.Windows.Forms
 
 	public class AnalyzedPageInteractorImpl : PhasePageInteractorImpl, IAnalyzedPageInteractor
 	{
-        private IProgramImageBrowserService browserSvc;
+        private IDecompilerService decompilerSvc;
         private ICodeViewerService codeViewerSvc;
         private IMemoryViewService memViewerSvc;
         private IDisassemblyViewService disasmViewerSvc;
@@ -51,8 +51,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
             if (addr != null && proc != null)
             {
-                memViewerSvc.ShowMemoryAtAddress(addr);
-                disasmViewerSvc.DisassembleStartingAtAddress(addr);
+                memViewerSvc.ShowMemoryAtAddress(decompilerSvc.Decompiler.Program, addr);
                 codeViewerSvc.DisplayProcedure(proc);
             }
         }
@@ -70,28 +69,19 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void EnterPage()
         {
-            browserSvc.Enabled = true;
             PopulateBrowserListWithProcedures();
-
-            browserSvc.SelectionChanged += new EventHandler(BrowserList_SelectedIndexChanged);
         }
 
 
 		public override bool LeavePage()
 		{
-            browserSvc.SelectionChanged -= new EventHandler(BrowserList_SelectedIndexChanged);
 			return true;
         }
 
 
         private void PopulateBrowserListWithProcedures()
         {
-            browserSvc.Caption = "Procedures";
-            browserSvc.Populate(Decompiler.Program.Procedures, delegate(object item, IListViewItem listItem)
-            {
-                KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) item;
-                listItem.Text = entry.Value.Name;
-            });
+            //$TODO!
         }
 
         private void EditSignature()
@@ -120,10 +110,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
             get
             {
-                if (!browserSvc.IsItemSelected)
-                    return new KeyValuePair<Address,Procedure>(null, null);
-                var entry = (KeyValuePair<Address, Procedure>) browserSvc.SelectedItem;
-                return entry;
+                return new KeyValuePair<Address, Procedure>(null, null);
             }
         }
 
@@ -133,10 +120,9 @@ namespace Decompiler.Gui.Windows.Forms
             set 
             {
                 base.Site = value;
-                browserSvc = Site.RequireService<IProgramImageBrowserService>();
+                decompilerSvc = Site.RequireService<IDecompilerService>();
                 codeViewerSvc = Site.RequireService<ICodeViewerService>();
                 memViewerSvc = Site.RequireService<IMemoryViewService>();
-                memViewerSvc.SelectionChanged += memViewerSvc_SelectionChanged;
                 disasmViewerSvc = Site.RequireService<IDisassemblyViewService>();
             }
         }
@@ -178,13 +164,6 @@ namespace Decompiler.Gui.Windows.Forms
         public void BrowserList_SelectedIndexChanged(object sender, EventArgs e)
         {
             DisplayProcedure(SelectedProcedureEntry.Key, SelectedProcedureEntry.Value);
-        }
-
-        public void memViewerSvc_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddressRange.Begin.Linear == 0)
-                return;
-            disasmViewerSvc.DisassembleStartingAtAddress(e.AddressRange.Begin);
         }
 	}
 }

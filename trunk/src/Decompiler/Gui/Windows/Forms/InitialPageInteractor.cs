@@ -41,8 +41,6 @@ namespace Decompiler.Gui.Windows.Forms
     /// </summary>
     public class InitialPageInteractorImpl : PhasePageInteractorImpl, InitialPageInteractor
     {
-        private IProgramImageBrowserService browserSvc;
-
         public InitialPageInteractorImpl()
         {
         }
@@ -81,7 +79,6 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void EnableControls()
         {
-            browserSvc.Enabled = false;
         }
 
         public override ISite Site
@@ -90,14 +87,6 @@ namespace Decompiler.Gui.Windows.Forms
             set
             {
                 base.Site = value;
-                if (value != null)
-                {
-                    browserSvc = Site.RequireService<IProgramImageBrowserService>();
-                }
-                else
-                {
-                    browserSvc = null;
-                }
             }
         }
 
@@ -112,8 +101,6 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool LeavePage()
         {
-            var browserSvc = Site.RequireService<IProgramImageBrowserService>();
-            browserSvc.SelectionChanged -= BrowserItemSelected;
             return (Decompiler != null);
         }
 
@@ -133,7 +120,6 @@ namespace Decompiler.Gui.Windows.Forms
                 browserSvc.Load(Decompiler.Project, Decompiler.Program);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
-                PopulateBrowserServiceWithSegments();
             }
         }
 
@@ -160,32 +146,7 @@ namespace Decompiler.Gui.Windows.Forms
                 browserSvc.Load(Decompiler.Project, Decompiler.Program);
                 var memSvc = Site.RequireService<IMemoryViewService>();
                 memSvc.ViewImage(Decompiler.Program);
-                PopulateBrowserServiceWithSegments();
             }
-        }
-
-        [Obsolete]
-        private void PopulateBrowserServiceWithSegments()
-        {
-            var oldBrowserSvc = Site.RequireService<IProgramImageBrowserService>();
-            oldBrowserSvc.Populate(Decompiler.Program.ImageMap.Segments.Values, delegate(object item, IListViewItem listItem)
-            {
-                var ims = (ImageMapSegment)item;
-                listItem.Text = ims.Name;
-                listItem.AddSubItem(ims.Address.ToString());
-            });
-            oldBrowserSvc.Enabled = true;
-            oldBrowserSvc.Caption = "Segments";
-            oldBrowserSvc.AddColumn("Address");
-            oldBrowserSvc.SelectionChanged += BrowserItemSelected;
-        }
-
-        public void BrowserItemSelected(object sender, EventArgs e)
-        {
-            ImageMapSegment segment = (ImageMapSegment)browserSvc.FocusedItem;
-            var memSvc = Site.RequireService<IMemoryViewService>();
-            memSvc.ShowMemoryAtAddress(segment.Address);
-            memSvc.ShowWindow();
         }
     }
 }

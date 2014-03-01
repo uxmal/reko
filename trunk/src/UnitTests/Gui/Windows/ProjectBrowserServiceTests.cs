@@ -134,6 +134,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             public object Tag { get; set; }
             public ITreeNodeCollection Nodes { get; private set; }
+            public string ImageName { get; set; }
             public string Text { get; set; }
             public string ToolTipText { get; set; }
 
@@ -196,7 +197,29 @@ namespace Decompiler.UnitTests.Gui.Windows
                         "tag=\"ImageMapSegment\" />" +
                 "</node>" +
                 "</root>");
+        }
 
+        [Test]
+        public void PBS_AfterSelect_Calls_DoDefaultAction()
+        {
+            var des = mr.StrictMock<TreeNodeDesigner>();
+            var node = mr.Stub<ITreeNode>();
+            des.Expect(d => d.DoDefaultAction());
+            des.Stub(d => d.Initialize(null)).IgnoreArguments();
+            mockTree.Stub(m => m.CreateNode()).Return(node);
+            mockTree.Stub(m => m.AfterSelect += null).IgnoreArguments();
+            mockTree.Stub(m => m.SelectedItem).Return(des);
+            mockNodes.Stub(m => m.AddRange(null)).IgnoreArguments();
+            mr.ReplayAll();
+            
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            pbs.AddComponents(new object[] { des });
+            var desdes = pbs.GetDesigner(des);
+            Assert.IsNotNull(desdes);
+
+            mockTree.Raise(f => f.AfterSelect += null, mockTree, EventArgs.Empty);
+
+            mr.VerifyAll();
         }
     }
 }

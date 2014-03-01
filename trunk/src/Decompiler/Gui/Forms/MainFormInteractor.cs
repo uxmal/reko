@@ -147,9 +147,6 @@ namespace Decompiler.Gui.Forms
             var codeViewSvc = new CodeViewerServiceImpl(sc);
             sc.AddService(typeof(ICodeViewerService), codeViewSvc);
 
-            var pibSvc = new ProgramImageBrowserService(form.BrowserList);
-            sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
-
             var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);

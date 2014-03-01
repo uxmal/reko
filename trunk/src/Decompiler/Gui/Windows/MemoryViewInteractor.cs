@@ -186,7 +186,6 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        
         public void MarkType()
         {
             var addrRange = control.MemoryView.GetAddressRange();

@@ -53,10 +53,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		public void ConnectToBrowserService()
 		{
             interactor = new FinalPageInteractor();
-            var brSvc = repository.DynamicMock<IProgramImageBrowserService>();
-            site.AddService<IProgramImageBrowserService>(brSvc);
-            brSvc.Expect(x => x.Enabled).SetPropertyWithArgument(true);
-            brSvc.Expect(x => x.Caption).SetPropertyWithArgument("Procedures");
             repository.ReplayAll();
 
             interactor.Site = site;
@@ -69,10 +65,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void ShowCodeWindowWhenUserSelectsFunction()
         {
             interactor = new FinalPageInteractor();
-            var brSvc = repository.DynamicMock<IProgramImageBrowserService>();
             var proc = Procedure.Create(new Address(0x12345), new Frame(PrimitiveType.Word32));
-            brSvc.Stub(x => x.SelectedItem).Return(proc);
-            site.AddService<IProgramImageBrowserService>(brSvc);
             var codeService = repository.DynamicMock<ICodeViewerService>();
             codeService.Expect(x => x.DisplayProcedure(
                 Arg<Procedure>.Is.Same(proc)));
@@ -82,10 +75,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             interactor.Site = site;
             interactor.ConnectToBrowserService();
-            brSvc.Raise(x => x.SelectionChanged += null, this, EventArgs.Empty);
             repository.VerifyAll();
-
-
         }
 	}
 }

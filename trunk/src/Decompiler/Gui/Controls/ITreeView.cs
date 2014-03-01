@@ -29,6 +29,7 @@ namespace Decompiler.Gui.Controls
     public interface ITreeNode
     {
         ITreeNodeCollection Nodes { get; }
+        string ImageName { get; set; }
         object Tag { get; set; }
         string Text { get; set; }
         string ToolTipText { get; set; }

@@ -417,12 +417,15 @@ namespace Decompiler.Analysis
         {
             if (unary.Operator == Operator.AddrOf &&
                 unary.Expression is Identifier)
+            {
+                ctx.SetValue((Identifier) unary.Expression, Constant.Invalid);
                 return new Result
                 {
                     PropagatedExpression = unary,
-                    Value = unary,
+                    Value = Constant.Invalid,
                 };
 
+            }
             return SimplifyExpression(
                 new UnaryExpression(unary.Operator, unary.DataType,
                     SimplifyExpression(unary.Expression).PropagatedExpression));

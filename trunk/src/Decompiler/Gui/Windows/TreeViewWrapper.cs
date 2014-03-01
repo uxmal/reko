@@ -109,6 +109,16 @@ namespace Decompiler.Gui.Windows
             }
 
             public ITreeNodeCollection Nodes { get { return nodes.Value; } }
+
+            public string ImageName
+            {
+                get { return ImageKey; }
+                set
+                {
+                    ImageKey = value;
+                    SelectedImageKey = value;
+                }
+            }
         }
 
         public class WrappedNodeList : ITreeNodeCollection

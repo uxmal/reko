@@ -75,7 +75,8 @@ namespace Decompiler.Gui
             var mvs = sp.GetService<IMemoryViewService>();
             if (mvs == null)
                 return;
-            mvs.ShowMemoryAtAddress(procs.Keys[i]);
+            var decSvc = sp.RequireService<IDecompilerService>();
+            mvs.ShowMemoryAtAddress(decSvc.Decompiler.Program, procs.Keys[i]);
         }
     }
 }
