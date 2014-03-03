@@ -164,7 +164,7 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }

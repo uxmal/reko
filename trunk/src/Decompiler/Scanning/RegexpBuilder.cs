@@ -72,7 +72,6 @@ namespace Decompiler.Scanning
 			pattern = s;
 			rdr = new StringReader(s);
 			tok = Token.End;
-
 		}
 
 		private void AddCharacterClass(int b)

@@ -43,6 +43,7 @@ namespace Decompiler.Gui.Windows
         private TypeMarker typeMarker;
         private LoadedImage image;
         private ImageMap imageMap;
+        private bool ignoreAddressChange;
 
         public virtual LowLevelView Control { get { return control; } }
 
@@ -84,10 +85,12 @@ namespace Decompiler.Gui.Windows
             get { return control.MemoryView.SelectedAddress; }
             set
             {
+                ignoreAddressChange = true;
                 control.MemoryView.SelectedAddress = value;
                 control.MemoryView.TopAddress = value;
                 control.DisassemblyView.SelectedAddress = value;
                 control.DisassemblyView.TopAddress = value;
+                ignoreAddressChange = false;
             }
         }
 
@@ -245,19 +248,21 @@ namespace Decompiler.Gui.Windows
             var arch = decompiler.Program.Architecture;
             var image = decompiler.Program.Image;
             var rdr = decompiler.Program.Image.CreateReader(0);
-            var addresses = arch.CreateCallInstructionScanner(
+            var addrControl = arch.CreateCallInstructionScanner(
                 rdr,
                 new HashSet<uint> { addrRange.Begin.Linear },
-                InstructionScannerFlags.CallsAndJumps);
-            resultSvc.ShowSearchResults(new AddressSearchResult(services, image, decompiler.Program.ImageMap, addresses));
+                PointerScannerFlags.All);
+            resultSvc.ShowSearchResults(new AddressSearchResult(services, decompiler.Program, addrControl));
             return true;
         }
 
         private void MemoryView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            this.ignoreAddressChange = true;
             this.Control.DisassemblyView.SelectedAddress = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
             this.SelectionChanged.Fire(this, e);
+            this.ignoreAddressChange = false;
         }
     }
 }

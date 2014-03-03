@@ -72,7 +72,7 @@ namespace Decompiler.Arch.X86
             get { return Registers.sp; }
         }
 
-        public abstract IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags);
+        public abstract IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
 
         public abstract X86Disassembler CreateDisassembler(ImageReader rdr);
         
@@ -107,7 +107,7 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             while (rdr.IsValid)
             {
@@ -152,7 +152,7 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -185,9 +185,9 @@ namespace Decompiler.Arch.X86
             return new Address(offset);
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
-            return new InstructionScanner(rdr, knownLinAddresses, flags);
+            return new PointerScanner(rdr, knownLinAddresses, flags);
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
@@ -224,7 +224,7 @@ namespace Decompiler.Arch.X86
             return new Address(offset);
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }

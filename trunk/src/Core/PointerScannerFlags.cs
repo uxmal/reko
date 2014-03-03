@@ -26,10 +26,11 @@ using System.Text;
 namespace Decompiler.Core
 {
     [Flags]
-    public enum InstructionScannerFlags 
+    public enum PointerScannerFlags 
     {
-        Calls = 1,
-        Jumps = 2,
-        CallsAndJumps = Calls | Jumps,
+        Pointers = 1,
+        Calls = 2,
+        Jumps = 4,
+        All = Pointers | Calls | Jumps,
     }
 }

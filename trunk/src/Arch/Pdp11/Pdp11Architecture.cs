@@ -86,7 +86,7 @@ namespace Decompiler.Arch.Pdp11
             return new BitSet(16);
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }

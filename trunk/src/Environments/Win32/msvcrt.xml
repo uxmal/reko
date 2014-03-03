@@ -199,4 +199,12 @@
     </arg>
 	</signature>
   </procedure>
+  <procedure name="__set_app_type">
+    <signature>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
 </library>

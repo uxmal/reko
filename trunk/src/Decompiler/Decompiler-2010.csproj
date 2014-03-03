@@ -400,7 +400,6 @@
     <Compile Include="Scanning\Dfa\TreeNode.cs" />
     <Compile Include="Scanning\Dfa\Automaton.cs" />
     <Compile Include="Scanning\IdentifierReplacer.cs" />
-    <Compile Include="Scanning\ProcedureScanner.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />

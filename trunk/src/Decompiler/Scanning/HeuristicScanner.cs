@@ -56,7 +56,7 @@ namespace Decompiler.Scanning
             return prog.Architecture.CreateCallInstructionScanner(
                 prog.Image.CreateReader(0),
                 procEntryLinearAddresses,
-                InstructionScannerFlags.Calls);
+                PointerScannerFlags.Calls);
         }
     }
 }

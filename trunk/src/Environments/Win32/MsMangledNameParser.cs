@@ -41,13 +41,14 @@ namespace Decompiler.Environments.Win32
     {
         private string str;
         private int i;
-        private List<SerializedTypeReference> namesSeen;
+        private List<string> namesSeen;
+        private List<string> templateNamesSeen;
 
         public MsMangledNameParser(string str)
         {
             this.str = str;
             this.i = 0;
-            this.namesSeen = new List<SerializedTypeReference>();
+            this.namesSeen = new List<string>();
         }
 
         public string Modifier;
@@ -67,7 +68,6 @@ namespace Decompiler.Environments.Win32
             {
                 string[] qualification = ParseQualification();
                 basicName = string.Format(basicName, qualification.Last());
-                Expect('@');
                 typeCode = ParseQualifiedTypeCode(qualification);
             }
             string storageClass = ParseStorageClass();
@@ -118,7 +118,7 @@ namespace Decompiler.Environments.Win32
             string name = str.Substring(iStart, i - iStart);
             ++i;
 
-            namesSeen.Add(new SerializedTypeReference(name));
+            namesSeen.Add(name);
             return name;
         }
 
@@ -142,7 +142,7 @@ namespace Decompiler.Environments.Win32
         public List<SerializedType> ParseTemplateArguments()
         {
             var types = new List<SerializedType>();
-            while (str[i] != '@')
+            while (!PeekAndDiscard('@'))
             {
                 var t = ParseDataTypeCode();
                 types.Add(t);
@@ -150,20 +150,36 @@ namespace Decompiler.Environments.Win32
             return types;
         }
 
+        /// <summary>
+        /// Reads a qualification followed by '@'.
+        /// </summary>
+        /// <returns></returns>
         public string[] ParseQualification()
         {
             var qualifiers = new List<string>();
             SerializedType[] typeArgs = null;
-            while (i < str.Length && str[i] != '@')
+            while (i < str.Length && !PeekAndDiscard('@'))
             {
                 string name = ParseAtName();
                 if (name.StartsWith("?$"))
                 {
                     name = name.Substring(2);
+                    var oldNames = namesSeen;
+                    if (templateNamesSeen == null)
+                    {
+                        templateNamesSeen = new List<string> { name };
+                    }
+                    else
+                        templateNamesSeen.Add(name);
+                    namesSeen = templateNamesSeen;
                     typeArgs = ParseTemplateArguments().ToArray(); ///$TODO: what to do about these if they're nested?
+                    namesSeen = oldNames;
+                }
+                else
+                {
+                    namesSeen.Add(name);
                 }
                 qualifiers.Insert(0, name);
-                Expect('@');
             }
             var tr = new SerializedTypeReference
             {
@@ -171,7 +187,6 @@ namespace Decompiler.Environments.Win32
                 Scope = qualifiers.Take(qualifiers.Count - 1).ToArray(),
                 TypeArguments = typeArgs
             };
-            namesSeen.Add(tr);
             return qualifiers.ToArray();
         }
 
@@ -376,35 +391,26 @@ namespace Decompiler.Environments.Win32
 
         public SerializedTypeReference ParseStructure()
         {
-            char ch = str[i];
-            if ('0' <= ch && ch <= '9')
+            var q = ParseQualification();
+            var tr = new SerializedTypeReference
             {
-                int n = ch - '0';
-                ++i;
-                var t = namesSeen[n];
-                Expect('@');
-                return t;
-            }
-            else
-            {
-                var q = ParseQualification();
-                Expect('@');
-                var tr = new SerializedTypeReference
-                {
-                    TypeName = q.Last(),
-                    Scope = q.Take(q.Length - 1).ToArray()
-                };
-                namesSeen.Add(tr);
-                return tr;
-            }
-
+                TypeName = q.Last(),
+                Scope = q.Take(q.Length - 1).ToArray()
+            };
+            return tr;
         }
 
         internal string ParseAtName()
         {
             int iStart = i;
             while (i < str.Length && str[i] != '@')
+            {
+                if (Char.IsDigit(str[i]))
+                {
+                    return namesSeen[str[i++] - '0'];
+                }
                 ++i;
+            }
             string name = str.Substring(iStart, i - iStart);
             Expect('@');
             return name;

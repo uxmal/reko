@@ -30,7 +30,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Environments.Win32
 {
     [TestFixture]
-    public class PeMangledNameParserTests
+    public class MsMangledNameParserTests
     {
         private void RunTest(string expected, string parse)
         {
@@ -206,6 +206,12 @@ namespace Decompiler.UnitTests.Environments.Win32
         }
 
         [Test]
+        public void PMNP_Typeinfo()
+        {
+            RunTest("__thiscall public virtual: void type_info::~type_info()", "??1type_info@@UAE@XZ");
+        }
+
+        [Test]
         public void PMNP_Simple()
         {
             RunTest("__cdecl int foo()", "?foo@@YAHXZ");
@@ -218,12 +224,6 @@ namespace Decompiler.UnitTests.Environments.Win32
         }
 
         [Test]
-        public void PMNP_global_var()
-        {
-            RunTest("__thiscall public virtual: type_info::~type_info()", "??1type_info@@UAE@XZ");
-        }
-
-        [Test]
         public void PMNP_voidfn()
         {
             RunTest("__cdecl void terminate()", "?terminate@@YAXXZ");
@@ -232,22 +232,23 @@ namespace Decompiler.UnitTests.Environments.Win32
         [Test]
         public void PMNP_ctor()
         {
-            RunTest("__thiscall public: exception::exception()", "??0exception@@QAE@XZ");
+            RunTest("__thiscall public: void exception::exception()", "??0exception@@QAE@XZ");
         }
 
         [Test]
         public void PMNP_ctor2()
         {
-            //$TODO: need support for full C++ type system for this. Whew.
-            RunTest("__thiscall public: exception::exception(exception *)", "??0exception@@QAE@ABV0@@Z");
+            //$TODO: need support for full C++ type system for this, since the 'A' in 'ABV0' is a C++ reference.
+            // For now, fake it with a pointer.
+            RunTest("__thiscall public: void exception::exception(exception *)", "??0exception@@QAE@ABV0@@Z");
         }
 
         [Test]
-        [Ignore("Too damn hard at this time; we don't have support for template classes or procedures.")]
+        //$TODO: no support for C++ type system here either, the template arguments to basic_string are dropped.
         public void PMNP_method_in_class_in_namespace()
         {
             RunTest(
-                "__thiscall public: std::basic_string<char, std::char_traits, allocator>::c_str()",
+                "__thiscall public: char * std::basic_string::c_str()",
                 "?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ");
         }
 

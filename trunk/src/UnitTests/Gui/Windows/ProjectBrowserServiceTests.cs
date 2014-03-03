@@ -131,7 +131,6 @@ namespace Decompiler.UnitTests.Gui.Windows
                 Nodes = new FakeTreeNodeCollection();
             }
 
-
             public object Tag { get; set; }
             public ITreeNodeCollection Nodes { get; private set; }
             public string ImageName { get; set; }
@@ -140,7 +139,6 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             public void Expand() { }
         }
-
 
         [Test]
         public void PBS_NoProject()

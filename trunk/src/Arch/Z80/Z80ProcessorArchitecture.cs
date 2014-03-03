@@ -53,7 +53,7 @@ namespace Decompiler.Arch.Z80
             return new Z80Rewriter(this, rdr, state, frame, host);
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
