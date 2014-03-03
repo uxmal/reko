@@ -216,6 +216,7 @@ namespace Decompiler.Environments.Win32
                             if (Char.IsWhiteSpace(ch))
                                 break;
                             sb = new StringBuilder();
+                            sb.Append(ch);
                             st = State.Id;
                             break;
                         }

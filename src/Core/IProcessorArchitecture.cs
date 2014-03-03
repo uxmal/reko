@@ -34,10 +34,24 @@ namespace Decompiler.Core
     /// </summary>
 	public interface IProcessorArchitecture
 	{
+        /// <summary>
+        /// Creates an IEnumerator of disassembled MachineInstructions which consumes 
+        /// its input from the provided <paramref name="imageReader"/>.
+        /// </summary>
+        /// <param name="imageReader"></param>
+        /// <returns></returns>
         IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader);
 
+        /// <summary>
+        /// Creates an instance of a ProcessorState appropriate for this processor.
+        /// </summary>
+        /// <returns></returns>
 		ProcessorState CreateProcessorState();
 
+        /// <summary>
+        /// Creates a BitSet large enough to fit all the registers.
+        /// </summary>
+        /// <returns></returns>
 		BitSet CreateRegisterBitset();
 
         /// <summary>
@@ -47,7 +61,7 @@ namespace Decompiler.Core
         /// </summary>
         IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
 
-        IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags);
+        IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
 
         Frame CreateFrame();
 
@@ -74,7 +88,7 @@ namespace Decompiler.Core
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
         int InstructionBitSize { get; }                     // Instruction "granularity"
-        RegisterStorage StackRegister { get; }              // Stack pointer for this machine.
+        RegisterStorage StackRegister { get; }              // Stack pointer used by this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
     }
 }

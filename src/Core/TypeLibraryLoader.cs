@@ -136,8 +136,6 @@ namespace Decompiler.Core
                     var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));
                     str.Fields.AddRange(fields);
                 }
-                else
-                    Debug.Print("Huh? structure {0} has no fields?", structure.Name);
                 return str;
             }
             else

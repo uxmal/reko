@@ -64,7 +64,7 @@ namespace Decompiler.Arch.Sparc
             return new SparcRewriter(this, rdr, (SparcProcessorState) state, frame, host);
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }

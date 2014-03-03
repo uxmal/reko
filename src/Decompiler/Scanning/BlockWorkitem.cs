@@ -314,7 +314,14 @@ namespace Decompiler.Scanning
                 var ppp = procCallee.Procedure as PseudoProcedure;
                 if (ppp != null)
                 {
-                    Emit(BuildApplication(procCallee, ppp.Signature, site));
+                    if (ppp.Signature != null && ppp.Signature.ArgumentsValid)
+                    {
+                        Emit(BuildApplication(procCallee, ppp.Signature, site));
+                    }
+                    else
+                    {
+                        Emit(new CallInstruction(procCallee, site));
+                    }
                     state.OnAfterCall(stackReg, ppp.Signature, eval);
                     return !ppp.Characteristics.Terminates;
                 }

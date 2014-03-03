@@ -34,12 +34,12 @@ namespace Decompiler.Gui
     {
         private IServiceProvider services;
         private List<uint> addresses;
-        private ImageMap imageMap;
+        private Program program;
 
-        public AddressSearchResult(IServiceProvider services, LoadedImage image, ImageMap map, IEnumerable<uint> linearAddresses)
+        public AddressSearchResult(IServiceProvider services, Program program, IEnumerable<uint> linearAddresses)
         {
             this.services = services;
-            this.imageMap = map;
+            this.program = program;
             this.addresses = linearAddresses.ToList();
         }
 
@@ -66,17 +66,19 @@ namespace Decompiler.Gui
 
         public string[] GetItemStrings(int i)
         {
+            var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i]);
+            var dasm = program.Architecture.CreateDisassembler(program.Image.CreateReader(addr));
+            var instr = dasm.MoveNext() ? dasm.Current.ToString().Replace('\t',' ') : "";
             return new string[] {
-                imageMap.MapLinearAddressToAddress(addresses[i]).ToString(),
-                ""
+                addr.ToString(),
+                instr,
             };
         }
 
         public void NavigateTo(int i)
         {
-            var decSvc = services.RequireService<IDecompilerService>();
             var memSvc = services.RequireService<IMemoryViewService>();
-            memSvc.ShowMemoryAtAddress(decSvc.Decompiler.Program, imageMap.MapLinearAddressToAddress(addresses[i]));
+            memSvc.ShowMemoryAtAddress(program, program.ImageMap.MapLinearAddressToAddress(addresses[i]));
         }
     }
 }

@@ -76,7 +76,17 @@ namespace Decompiler.Gui.Windows.Controls
         private Address topAddress;
 
         [Browsable(false)]
-        public Address SelectedAddress { get { return selectedAddress; } set { selectedAddress = value; SelectedAddressChanged.Fire(this); } }
+        public Address SelectedAddress
+        {
+            get { return selectedAddress; }
+            set
+            {
+                selectedAddress = value;
+                TopAddress = value;
+                Invalidate();
+                SelectedAddressChanged.Fire(this);
+            }
+        }
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
 
@@ -106,7 +116,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             var rcClient = ClientRectangle;
             g.Clear(BackColor);
-            if (arch == null || image == null || !image.IsValidAddress(startAddress))
+            if (arch == null || image == null || !image.IsValidAddress(topAddress))
             {
                 return;
             }
@@ -119,7 +129,7 @@ namespace Decompiler.Gui.Windows.Controls
             var dumper = new Dumper(arch);
             dumper.ShowAddresses = true;
             dumper.ShowCodeBytes = true;
-            var addrStart = StartAddress + vscroll.Value;
+            var addrStart = TopAddress;
             var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
             var cyRow = (int) g.MeasureString("M", Font).Height;
             var rc = new RectangleF(g.ClipBounds.Left, g.ClipBounds.Top, rcClient.Width, cyRow);

@@ -114,6 +114,13 @@ namespace Decompiler.Core
             return (sbyte) ReadByte();
         }
 
+        public byte ReadByte(int offset)
+        {
+            return bytes[off + offset];
+        }
+
+        public sbyte ReadSByte(int offset) { return (sbyte) bytes[off + offset]; }
+
         public byte[] ReadBytes(uint length)
         {
             byte[] dst = new byte[length];
@@ -215,10 +222,10 @@ namespace Decompiler.Core
         public int ReadBeInt32() { return (int)ReadBeUInt32(); }
         public int ReadLeInt32() { return (int)ReadLeUInt32(); }
 
-        public uint ReadLeUInt32(uint offset) { return LoadedImage.ReadLeUInt32(bytes, off); }
-        public uint ReadBeUInt32(uint offset) { return LoadedImage.ReadBeUInt32(bytes, off); }
-        public int ReadLeInt32(uint offset) { return (int)LoadedImage.ReadLeUInt32(bytes, off); }
-        public int ReadBeInt32(uint offset) { return (int)LoadedImage.ReadBeUInt32(bytes, off); }
+        public uint ReadLeUInt32(uint offset) { return LoadedImage.ReadLeUInt32(bytes, offset + off); }
+        public uint ReadBeUInt32(uint offset) { return LoadedImage.ReadBeUInt32(bytes, offset + off); }
+        public int ReadLeInt32(uint offset) { return (int) LoadedImage.ReadLeUInt32(bytes, offset + off); }
+        public int ReadBeInt32(uint offset) { return (int) LoadedImage.ReadBeUInt32(bytes, offset + off); }
 
         public ulong ReadLeUint64()
         {

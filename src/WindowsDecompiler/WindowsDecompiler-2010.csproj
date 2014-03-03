@@ -138,6 +138,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Decompiler.Arch.M68k.*" />

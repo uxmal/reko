@@ -36,22 +36,23 @@ namespace Decompiler.UnitTests.Gui
     {
         private MockRepository mr;
         private ServiceContainer sc;
-        private LoadedImage image;
-        private ImageMap imageMap;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
             sc = new ServiceContainer();
-            image = new LoadedImage(new Address(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
-            imageMap = new ImageMap(image);
+            var image = new LoadedImage(new Address(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
+            var imageMap = new ImageMap(image);
+            var arch = new Mocks.FakeArchitecture();
+            this.program = new Program(image, imageMap, arch, new DefaultPlatform(sc, arch));
         }
 
         [Test]
         public void Asr_Create()
         {
-            var results = new AddressSearchResult(sc, image, imageMap, new List<uint>());
+            var results = new AddressSearchResult(sc, program, new List<uint>());
         }
     }
 

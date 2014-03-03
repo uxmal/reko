@@ -89,7 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InstructionScanner.cs" />
+    <Compile Include="PointerScanner.cs" />
     <Compile Include="X86AddressOperand.cs" />
     <Compile Include="FstswChainMatcher.cs" />
     <Compile Include="OperandRewriter.cs">

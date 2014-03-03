@@ -26,13 +26,13 @@ using System.Text;
 
 namespace Decompiler.Arch.X86
 {
-    public class InstructionScanner : IEnumerable<uint>
+    public class PointerScanner : IEnumerable<uint>
     {
         private ImageReader rdr;
         private HashSet<uint> knownLinAddresses;
-        private InstructionScannerFlags flags;
+        private PointerScannerFlags flags;
 
-        public InstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, InstructionScannerFlags flags)
+        public PointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             this.rdr = rdr;
             this.knownLinAddresses = knownLinAddresses;
@@ -49,10 +49,10 @@ namespace Decompiler.Arch.X86
         private class Enumerator : IEnumerator<uint>
         {
             private uint target;
-            private InstructionScanner scanner;
+            private PointerScanner scanner;
             private ImageReader rdr;
 
-            public Enumerator(InstructionScanner scanner, ImageReader rdr)
+            public Enumerator(PointerScanner scanner, ImageReader rdr)
             {
                 this.scanner = scanner;
                 this.rdr = rdr;
@@ -67,12 +67,23 @@ namespace Decompiler.Arch.X86
                 while (rdr.IsValid)
                 {
                     uint linAddrInstr = rdr.Address.Linear;
-                    var opcode = rdr.ReadByte();
+                    var opcode = rdr.ReadByte(0);
                     if (MatchCode(scanner.flags, rdr, opcode) && scanner.knownLinAddresses.Contains(target))
                     {
+                        rdr.Seek(1);
                         Current = linAddrInstr;
                         return true;
                     }
+                    else if ((scanner.flags & PointerScannerFlags.Pointers) != 0)
+                    {
+                        if (MatchPointer(rdr))
+                        {
+                            rdr.Seek(1);
+                            Current = linAddrInstr;
+                            return true;
+                        }
+                    }
+                    rdr.Seek(1);
                 }
                 return false;
             }
@@ -84,45 +95,52 @@ namespace Decompiler.Arch.X86
 
             public void Dispose() { }
 
-            private bool MatchCode(InstructionScannerFlags flags, ImageReader rdr, byte opcode)
+            private bool MatchPointer(ImageReader rdr)
             {
-                if ((flags & InstructionScannerFlags.Calls) != 0
+                if (!rdr.IsValidOffset(rdr.Offset + 4-1))
+                    return false;
+                return scanner.knownLinAddresses.Contains(rdr.ReadLeUInt32(0));
+            }
+
+            private bool MatchCode(PointerScannerFlags flags, ImageReader rdr, byte opcode)
+            {
+                if ((flags & PointerScannerFlags.Calls) != 0
                     &&
                     opcode == 0xE8 // CALL NEAR
                     &&
                     rdr.IsValidOffset(rdr.Offset + 4u))
                 {
-                    int callOffset = rdr.ReadLeInt32();
-                    target = (uint) (callOffset + rdr.Address.Linear);
-                    rdr.Seek(-4);
+                    int callOffset = rdr.ReadLeInt32(1);
+                    target = (uint) (callOffset + rdr.Address.Linear + 5);
                     return true;
                 }
-                if ((flags & InstructionScannerFlags.Jumps) != 0)
+                if ((flags & PointerScannerFlags.Jumps) != 0)
                 {
                     if (opcode == 0xE9 // JMP NEAR
                         &&
-                        rdr.IsValidOffset(rdr.Offset + 4u))
+                        rdr.IsValidOffset(rdr.Offset + 5u))
                     {
-                        int callOffset = rdr.ReadLeInt32();
-                        target = (uint) (callOffset + rdr.Address.Linear);
-                        rdr.Seek(-4);
+                        int callOffset = rdr.ReadLeInt32(1);
+                        target = (uint) (callOffset + rdr.Address.Linear + 5);
                         return true;
                     }
                     if (0x70 <= opcode && opcode <= 0x7F &&       // short branch.
                         rdr.IsValidOffset(rdr.Offset + 1u))
                     {
-                        sbyte callOffset = rdr.ReadSByte();
-                        target = (uint) (rdr.Address.Linear + callOffset);
-                        rdr.Seek(-1);
+                        sbyte callOffset = rdr.ReadSByte(1);
+                        target = (uint) (rdr.Address.Linear + callOffset + 2);
                         return true;
                     }
                     if (opcode == 0x0F && rdr.IsValidOffset(rdr.Offset + 5u))
                     {
-                        opcode = rdr.ReadByte();
-                        int callOffset = rdr.ReadLeInt32();
-                        target = (uint) (callOffset + rdr.Address.Linear);
-                        rdr.Seek(-5);
-                        return true;
+                        opcode = rdr.ReadByte(1);
+                        int callOffset = rdr.ReadLeInt32(2);
+                        uint linAddr = rdr.Address.Linear;
+                        if (0x80 <= opcode && opcode <= 0x8F)   // long branch
+                        {
+                            target = (uint) (callOffset + linAddr + 6);
+                            return true;
+                        }
                     }
                 }
                 return false;

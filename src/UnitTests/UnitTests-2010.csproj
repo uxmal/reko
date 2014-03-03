@@ -119,7 +119,7 @@
     <Compile Include="Arch\DisassemblerTestBase.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
-    <Compile Include="Arch\Intel\InstructionScannerTests.cs" />
+    <Compile Include="Arch\Intel\PointerScannerTests.cs" />
     <Compile Include="Arch\M68k\M68kStateTests.cs" />
     <Compile Include="Arch\M68k\RewriterTests.cs" />
     <Compile Include="Arch\Mips\MipsDisassemblerTests.cs" />
@@ -159,7 +159,7 @@
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
-    <Compile Include="Environments\Win32\PeMangledNameParserTests.cs" />
+    <Compile Include="Environments\Win32\MsMangledNameParserTests.cs" />
     <Compile Include="Mocks\SegmentedPointerProc.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />

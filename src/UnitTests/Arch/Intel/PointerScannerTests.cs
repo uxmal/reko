@@ -36,7 +36,7 @@ using BitSet = Decompiler.Core.Lib.BitSet;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
-    public class InstructionScannerTests
+    public class PointerScannerTests
     {
         private LeImageReader CreateImageReader(Address address, params byte[] bytes)
         {
@@ -54,50 +54,61 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Is_FindInboundCalls_Flat32()
+        public void X86Ps_FindInboundCalls_Flat32()
         {
             var rdr = CreateImageReader(
                 new Address(0x00100000),
                 0x00, 0xE8, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x90,
                 0xC3);
-            var items = new InstructionScanner(rdr, new HashSet<uint> { 0x00100008u }, InstructionScannerFlags.Calls).ToArray();
+            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Calls).ToArray();
 
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100001u, items[0]);
         }
 
         [Test]
-        public void X86Is_FindInboundJumps_Flat32()
+        public void X86Ps_FindInboundJumps_Flat32()
         {
             var rdr = CreateImageReader(
                 new Address(0x00100000),
                 0x00, 0xE9, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x90,
                 0xC3);
-            var items = new InstructionScanner(rdr, new HashSet<uint> { 0x00100008u }, InstructionScannerFlags.Jumps).ToArray();
+            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100001u, items[0]);
         }
 
         [Test]
-        public void X86Is_FindShortBranches_Flat32()
+        public void X86Ps_FindShortBranches_Flat32()
         {
             var rdr = CreateImageReader(
                 new Address(0x00100000),
                 0x00, 0x74, 0x02, 0xC3, 0x90, 0xC3);
-            var items = new InstructionScanner(rdr, new HashSet<uint> { 0x00100005u }, InstructionScannerFlags.Jumps).ToArray();
+            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100005u }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100001u, items[0]);
         }
 
         [Test]
-        public void X86Is_FindLongBranches_Flat32()
+        public void X86Ps_FindLongBranches_Flat32()
         {
             var rdr = CreateImageReader(
                 new Address(0x00100000),
                 0x0F, 0x84, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x90, 0xC3);
-            var items = new InstructionScanner(rdr, new HashSet<uint> { 0x00100008u }, InstructionScannerFlags.Jumps).ToArray();
+            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100000u, items[0]);
+        }
+
+        [Test]
+        public void X86Ps_FindPointer_Flat32()
+        {
+            var rdr = CreateImageReader(
+                new Address(0x00100000),
+                0x22, 0x22, 0x22, 0x08, 0x00, 0x10, 0x00);
+            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Pointers).ToArray();
+            Assert.AreEqual(1, items.Length);
+            Assert.AreEqual(0x00100003u, items[0]);
         }
     }
 }
