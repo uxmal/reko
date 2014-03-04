@@ -75,6 +75,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             interactor.Site = site;
             interactor.ConnectToBrowserService();
+
             repository.VerifyAll();
         }
 	}

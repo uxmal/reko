@@ -36,7 +36,7 @@ namespace Decompiler.Core
             this.RawImage = imgRaw;
         }
 
-        public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get { return null; } }
+        public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get; private set; }
 
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.

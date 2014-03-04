@@ -97,7 +97,7 @@ namespace Decompiler.UnitTests.Scanning
             }
 
 
-            public PseudoProcedure GetImportThunkAtAddress(uint addrThunk)
+            public PseudoProcedure GetImportedProcedure(uint addrThunk)
             {
                 PseudoProcedure p;
                 if (importThunks.TryGetValue(addrThunk, out p))

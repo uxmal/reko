@@ -140,7 +140,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 throw new NotImplementedException();
             }
 
-            public PseudoProcedure GetImportThunkAtAddress(uint addrThunk)
+            public PseudoProcedure GetImportedProcedure(uint addrThunk)
             {
                 PseudoProcedure p;
                 if (importThunks.TryGetValue(addrThunk, out p))

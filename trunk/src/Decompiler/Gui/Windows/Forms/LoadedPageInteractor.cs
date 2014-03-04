@@ -67,18 +67,18 @@ namespace Decompiler.Gui.Windows.Forms
                 switch (cmdId)
                 {
                 case CmdIds.EditFind:
-                    EditFindBytes(); return true;
+                    return EditFindBytes();
                 case CmdIds.ViewGoToAddress:
-                    GotoAddress(); return true;
+                    return GotoAddress();
                 case CmdIds.ActionMarkProcedure:
-                    MarkAndScanProcedure(); return true;
+                    return MarkAndScanProcedure(); 
                 }
             }
             return base.Execute(ref cmdSet, cmdId);
         }
 
 
-        public void EditFindBytes()
+        public bool EditFindBytes()
         {
             FindDialogInteractor i = new FindDialogInteractor();
             using (FindDialog dlg = i.CreateDialog())
@@ -88,6 +88,7 @@ namespace Decompiler.Gui.Windows.Forms
                     FindMatchingBytes(i.ToHexadecimal(""));
                 }
             }
+            return true;
         }
 
         private void FindMatchingBytes(byte[] pattern)
@@ -95,7 +96,7 @@ namespace Decompiler.Gui.Windows.Forms
             throw new NotImplementedException();
         }
 
-        public void GotoAddress()
+        public bool GotoAddress()
         {
             using (IAddressPromptDialog dlg = new AddressPromptDialog())
             {
@@ -105,6 +106,7 @@ namespace Decompiler.Gui.Windows.Forms
                     memSvc.ShowWindow();
                 }
             }
+            return true;
         }
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
@@ -125,7 +127,7 @@ namespace Decompiler.Gui.Windows.Forms
             return true;
         }
 
-        public void MarkAndScanProcedure()
+        public bool MarkAndScanProcedure()
         {
             AddressRange addrRange = memSvc.GetSelectedAddressRange();
             if (addrRange.IsValid)
@@ -138,6 +140,7 @@ namespace Decompiler.Gui.Windows.Forms
                 Decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
                 memSvc.InvalidateWindow();
             }
+            return true;
         }
 
         public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)

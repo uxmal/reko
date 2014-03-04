@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler;
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +37,7 @@ namespace Decompiler.Gui
         /// </summary>
         event EventHandler DecompilerChanged;
 
-        IDecompiler Decompiler{ get; set; }
+        IDecompiler Decompiler { get; set; }
 
         string ProjectName { get; }
     }
@@ -73,6 +74,7 @@ namespace Decompiler.Gui
                 return Path.GetFileName(decompiler.Project.InputFiles[0].Filename);
             }
         }
+
         #endregion
     }
 }

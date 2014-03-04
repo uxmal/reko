@@ -44,22 +44,25 @@ l0C00_0004:
 	branch Test(NE,Z_10) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
-	SZO_16 = PHI(SZO_12, SZO_10)
-	Z_17 = PHI(Z_14, Z_9)
-	SCZO_18 = PHI(SCZO_13, SCZO_8)
-	dx_19 = PHI(dx_11, dx_15)
-	ax_20 = dx_19
-	return ax_20
-	// succ:  fn0C00_0004_exit
-fn0C00_0004_exit:		// pred: l0C00_0010
-	use dx_19 (=> dxOut)
-	// succ: 
-l0C00_000F:		// pred: l0C00_0004
-	dx_11 = dx - 0x0001
-	SZO_12 = cond(dx_11)
-	SCZO_13 = SZO_12 (alias)
-	Z_14 = SZO_12 (alias)
+	dx_17 = fn0C00_0013(dx)
+	goto l0C00_0010
 	// succ:  l0C00_0010
+l0C00_000F:
+	dx_18 = dx - 0x0001
+	SZO_19 = cond(dx_18)
+	SCZO_20 = SZO_19 (alias)
+	Z_21 = SZO_19 (alias)
+	// succ:  l0C00_0010
+l0C00_0010:
+	SZO_12 = PHI(SZO_11, SZO_19)
+	Z_13 = PHI(Z_10, Z_21)
+	SCZO_14 = PHI(SCZO_9, SCZO_20)
+	dx_15 = PHI(dx_17, dx_18)
+	ax_16 = dx_15
+	return ax_16
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:
+	use dx_15 (=> dxOut)
 
 // fn0C00_0004
 word16 fn0C00_0004(word16 dx, ptr16 dxOut)
@@ -71,52 +74,55 @@ fn0C00_0004_entry:
 l0C00_0004:
 	SCZO_9 = cond(dx - 0x001E)
 	Z_10 = SCZO_9 (alias)
-	branch Test(NE,Z_9) l0C00_000F
+	branch Test(NE,Z_10) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
 	Mem0[dxOut:word16] = fn0C00_0013(dx)
+	goto l0C00_0010
+	// succ:  l0C00_0010
+l0C00_000F:
+	dx_18 = dx - 0x0001
+	Mem0[dxOut:word16] = dx_18
 	// succ:  l0C00_0010
 l0C00_0010:
-	dx_19 = PHI(dx_11, dx_15)
-	ax_20 = dx_19
-	return ax_20
+	dx_15 = PHI(dx_17, dx_18)
+	ax_16 = dx_15
+	return ax_16
 	// succ:  fn0C00_0004_exit
-l0C00_000F:
-	dx_11 = dx - 0x0001
-	Mem0[dxOut:word16] = dx_11
-	// succ:  l0C00_0010
 fn0C00_0004_exit:
 ====================
 // fn0C00_0013
 word16 fn0C00_0013(word16 dx)
-fn0C00_0013_entry:		// pred:
+fn0C00_0013_entry:
 	def Mem0
 	def fp
+	def sp
 	def dx
 	def SCZO
 	def SO
-	def ax
 	def SZO
+	def ax
 	// succ:  l0C00_0013
-l0C00_0013:		// pred: fn0C00_0013_entry
-	SCZO_7 = cond(dx - 0x0014)
-	SO_8 = SCZO_7 (alias)
-	SZO_9 = SCZO_7 (alias)
-	branch Test(LT,SO_8) l0C00_001F
+l0C00_0013:
+	SCZO_8 = cond(dx - 0x0014)
+	SO_9 = SCZO_8 (alias)
+	SZO_10 = SCZO_8 (alias)
+	branch Test(LT,SO_9) l0C00_001F
 	// succ:  l0C00_0018 l0C00_001F
-l0C00_0018:		// pred: l0C00_0013
-	dx_16 = dx - 0x0001
-	SZO_17 = cond(dx_16)
-	SCZO_18 = SZO_17 (alias)
-	SO_19 = SZO_17 (alias)
-	ax_21 = fn0C00_0004(dx_16, &dx_20)
+l0C00_0018:
+	dx_17 = dx - 0x0001
+	SZO_18 = cond(dx_17)
+	SCZO_19 = SZO_18 (alias)
+	SO_20 = SZO_18 (alias)
+	ax_22 = fn0C00_0004(dx_17, &dx_21)
+	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
-	dx_10 = dx - 0x000A
-	SCZO_11 = cond(dx_10)
-	SO_12 = SCZO_11 (alias)
-	SZO_13 = SCZO_11 (alias)
-	ax_15 = fn0C00_0004(dx_10, &dx_14)
+	dx_23 = dx - 0x000A
+	SCZO_24 = cond(dx_23)
+	SO_25 = SCZO_24 (alias)
+	SZO_26 = SCZO_24 (alias)
+	ax_28 = fn0C00_0004(dx_23, &dx_27)
 	// succ:  l0C00_0025
 l0C00_0025:
 	ax_11 = PHI(ax_22, ax_28)

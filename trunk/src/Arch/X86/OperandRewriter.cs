@@ -205,7 +205,7 @@ namespace Decompiler.Arch.X86
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                return (PseudoProcedure)host.GetImportThunkAtAddress(mem.Offset.ToUInt32());
+                return (PseudoProcedure)host.GetImportedProcedure(mem.Offset.ToUInt32());
             }
             return null;
         }

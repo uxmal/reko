@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             }
             codeViewer.DisplayProcedure(m.Procedure);
             string sExp =
-                "<html><head><style>.kw { color:blue } </style></head>" + nl +
+                "<html><head><style>.kw { color:blue } .comment { color:green } </style></head>" + nl +
                 "<body><pre id=\"contents\">void&nbsp;ProcedureBuilder()<br />" + nl +
                 "{<br />" + nl +
                 "ProcedureBuilder_entry:<br />" + nl +

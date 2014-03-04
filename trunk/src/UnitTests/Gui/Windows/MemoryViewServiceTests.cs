@@ -53,11 +53,14 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             ServiceContainer sc = new ServiceContainer();
             var shellUi = repository.DynamicMock<IDecompilerShellUiService>();
+            var decSvc = repository.StrictMock<IDecompilerService>();
             var windowFrame = repository.DynamicMock<IWindowFrame>();
             sc.AddService(typeof(IDecompilerShellUiService), shellUi);
+            sc.AddService<IDecompilerService>(decSvc);
 
-            var interactor = repository.DynamicMock<MemoryViewInteractor>();
-            interactor.Stub(x => x.Control).Return(new LowLevelView());
+            var interactor = new MemoryViewInteractor();
+            interactor.SetSite(sc);
+            interactor.CreateControl();
 
             var service = repository.Stub<MemoryViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
@@ -72,7 +75,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             Expect.Call(windowFrame.Show);
             repository.ReplayAll();
 
-            svc.ShowMemoryAtAddress(null, new Address(0x10000));
+            svc.ShowMemoryAtAddress(new Program(), new Address(0x10000));
             repository.VerifyAll();
         }
 

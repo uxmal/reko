@@ -228,7 +228,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public PseudoProcedure GetImportThunkAtAddress(uint linaddr)
+		public PseudoProcedure GetImportedProcedure(uint linaddr)
 		{
 			return null;
 		}
