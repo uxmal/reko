@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Arch.X86;
 using Decompiler.Core;
 using Decompiler.Environments.Win32;
 using NUnit.Framework;
@@ -37,7 +38,7 @@ namespace Decompiler.UnitTests.Environments.Win32
 
         private void CreateDefFileLoader(string str)
         {
-            dfl = new ModuleDefinitionLoader(new StringReader(str));
+            dfl = new ModuleDefinitionLoader(new StringReader(str), new X86ArchitectureFlat32());
         }
 
         [Test]
@@ -62,8 +63,8 @@ namespace Decompiler.UnitTests.Environments.Win32
                 "EXPORTS" + nl +
                 " _Foo@4 @4" + nl);
             var lib = dfl.Load();
-            var svc = lib.ServicesByName["Foo"];
-            Assert.AreEqual("Foo", svc.Name);
+            var svc = lib.ServicesByName["_Foo@4"];
+            Assert.AreEqual("_Foo@4", svc.Name);
             Assert.IsFalse(svc.Signature.ArgumentsValid, "We don't know the arguments");
             Assert.AreEqual(8, svc.Signature.StackDelta, "StackDelta includes the return address, which stdapi calls pop.");
         }

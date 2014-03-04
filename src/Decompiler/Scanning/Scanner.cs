@@ -580,15 +580,6 @@ namespace Decompiler.Scanning
             return sig;
         }
 
-        public PseudoProcedure GetImportThunkAtAddress(uint linaddrThunk)
-        {
-            PseudoProcedure ppp;
-            if (importThunks.TryGetValue(linaddrThunk, out ppp))
-                return ppp;
-            else
-                return null;
-        }
-
         public void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address)
         {
             if (proc.Frame.ReturnAddressKnown)

@@ -209,24 +209,20 @@ namespace Decompiler
             Project = CreateDefaultProject(fileName, Program);
             eventListener.ShowStatus("Raw bytes loaded.");
         }
-        
+
         private Project DeserializeProject(byte[] image)
         {
-            if (IsXmlFile(image))
-            {
-                try
-                {
-                    Stream stm = new MemoryStream(image);
-                    Project project = new ProjectSerializer().LoadProject(stm);
-                    return project;
-                }
-                catch (XmlException)
-                {
-                    return null;
-                }
-            }
-            else
+            if (!IsXmlFile(image))
                 return null;
+            try
+            {
+                Stream stm = new MemoryStream(image);
+                return new ProjectSerializer().LoadProject(stm);
+            }
+            catch (XmlException)
+            {
+                return null;
+            }
         }
 
         /// <summary>

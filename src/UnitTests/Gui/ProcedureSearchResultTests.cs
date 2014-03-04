@@ -25,6 +25,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Decompiler.UnitTests.Gui
@@ -34,11 +35,13 @@ namespace Decompiler.UnitTests.Gui
     {
         private MockRepository repository;
         private SortedList<Address, Procedure> procs;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             repository = new MockRepository();
+            sc = new ServiceContainer();
             procs = new SortedList<Address, Procedure>();
         }
 
@@ -80,28 +83,33 @@ namespace Decompiler.UnitTests.Gui
 
         }
 
+        private T AddService<T>()
+        {
+            var svc = repository.StrictMock<T>();
+            sc.AddService(typeof(T), svc);
+            return svc;
+        }
+
         [Test]
         public void Navigate()
         {
-            var sp = repository.StrictMock<IServiceProvider>();
-            var mvs = repository.StrictMock<IMemoryViewService>();
-            var cvs = repository.StrictMock<ICodeViewerService>();
+            var mvs = AddService<IMemoryViewService>();
+            var cvs = AddService<ICodeViewerService>();
+            var decSvc = AddService<IDecompilerService>();
+            var dec = repository.StrictMock<IDecompiler>();
 
-            sp.Expect(s => s.GetService(
-                Arg<Type>.Is.Same(typeof(ICodeViewerService)))).Return(cvs);
-            sp.Expect(s => s.GetService(
-                Arg<Type>.Is.Same(typeof (IMemoryViewService)))).Return(mvs);
             cvs.Stub(c => c.DisplayProcedure(null)).IgnoreArguments();
             mvs.Expect(s => s.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
                 Arg<Address>.Is.Equal(new Address(0x4234))));
+            decSvc.Stub(d => d.Decompiler).Return(dec);
+            dec.Stub(d => d.Program).Return(new Program());
             repository.ReplayAll();
 
-            ISearchResult psr = new ProcedureSearchResult(sp, procs);
+            ISearchResult psr = new ProcedureSearchResult(sc, procs);
             procs.Add(new Address(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32)));
             psr.NavigateTo(0);
             repository.VerifyAll();
-
         }
     }
 }

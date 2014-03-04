@@ -96,13 +96,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             i.OpenBinary("floxe.exe", new FakeDecompilerHost());
 
             memSvc.VerifyAllExpectations();
-
         }
 
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            var browserSvc = mr.StrictMock<IProjectBrowserService>();
             var memSvc = mr.Stub<IMemoryViewService>();
             site.AddService<IProjectBrowserService>(browserSvc);
             site.AddService<IMemoryViewService>(memSvc);

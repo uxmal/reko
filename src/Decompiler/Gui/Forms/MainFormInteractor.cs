@@ -459,7 +459,7 @@ namespace Decompiler.Gui.Forms
 
         public void UpdateWindowTitle()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (!string.IsNullOrEmpty(decompilerSvc.ProjectName))
             {
                 sb.Append(decompilerSvc.ProjectName);

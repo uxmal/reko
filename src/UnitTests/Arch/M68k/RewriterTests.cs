@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Arch.M68k
                 throw new NotImplementedException();
             }
 
-            public PseudoProcedure GetImportThunkAtAddress(uint addrThunk)
+            public PseudoProcedure GetImportedProcedure(uint addrThunk)
             {
                 throw new NotImplementedException();
             }

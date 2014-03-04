@@ -32,28 +32,34 @@ namespace Decompiler.UnitTests.Gui
     [TestFixture]
     public class CodeLocationTests
     {
-        MockRepository repository;
+        MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
         }
 
         [Test]
         public void NavigateToAddress()
         {
-            var memSvc = repository.DynamicMock<IMemoryViewService>();
+            var memSvc = mr.DynamicMock<IMemoryViewService>();
+            var decSvc = mr.DynamicMock<IDecompilerService>();
+            var dec = mr.DynamicMock<IDecompiler>();
             memSvc.Expect(x => x.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
                 Arg<Address>.Matches(a => a.Linear == 0x1234)));
-            repository.ReplayAll();
+            decSvc.Stub(d => d.Decompiler).Return(dec);
+            dec.Stub(d => d.Program).Return(new Program());
+            mr.ReplayAll();
 
             var sc = new ServiceContainer();
             sc.AddService<IMemoryViewService>(memSvc);
+            sc.AddService<IDecompilerService>(decSvc);
             var nav = new AddressNavigator(new Address(0x1234), sc);
             nav.NavigateTo();
-            repository.VerifyAll();
+
+            mr.VerifyAll();
         }
 
         [Test]
@@ -61,16 +67,16 @@ namespace Decompiler.UnitTests.Gui
         {
             var proc = new Procedure("foo", null);
 
-            var codeSvc = repository.DynamicMock<ICodeViewerService>();
+            var codeSvc = mr.DynamicMock<ICodeViewerService>();
             codeSvc.Expect(x => x.DisplayProcedure(
                 Arg<Procedure>.Is.Same(proc)));
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var sc = new ServiceContainer();
             sc.AddService<ICodeViewerService>(codeSvc);
             var nav = new ProcedureNavigator(proc, sc);
             nav.NavigateTo();
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         [Test]
@@ -79,16 +85,16 @@ namespace Decompiler.UnitTests.Gui
             var proc = new Procedure("foo", null);
             var block = new Block(proc, "foo_block");
 
-            var codeSvc = repository.DynamicMock<ICodeViewerService>();
+            var codeSvc = mr.DynamicMock<ICodeViewerService>();
             codeSvc.Expect(x => x.DisplayProcedure(
                 Arg<Procedure>.Is.Same(proc)));
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var sc = new ServiceContainer();
             sc.AddService<ICodeViewerService>(codeSvc);
             var nav = new BlockNavigator(block, sc);
             nav.NavigateTo();
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
     }
 }

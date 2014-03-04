@@ -55,7 +55,7 @@ namespace Decompiler.Core
     /// Describes an exported entry point to an operating system service, or an
     /// ordinal entry point to a dynamic library.
     /// </summary>
-	public struct SyscallInfo
+	public class SyscallInfo
 	{
         /// <summary>
         /// Either an interrupt vector number or an ordinal entry point to a dynamic library.

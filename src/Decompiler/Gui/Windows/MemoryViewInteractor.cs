@@ -65,7 +65,8 @@ namespace Decompiler.Gui.Windows
                 image = value;
                 control.MemoryView.ProgramImage = value;
                 control.DisassemblyView.Image = value;
-                control.DisassemblyView.StartAddress = value.BaseAddress;
+                if (value != null)
+                    control.DisassemblyView.StartAddress = value.BaseAddress;
             }
         }
 

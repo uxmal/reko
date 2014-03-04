@@ -155,6 +155,7 @@ fn0C00_0000_exit:
 
                 m.Proc("p2");
                 m.Mov(m.MemDw(Registers.ebx, 0x1234), 4);
+
                 m.Label("p3");
                 m.Mov(m.eax, 1);
                 m.Cmp(m.MemDw(Registers.ebx, 0x1238), 5);

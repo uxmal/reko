@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -32,13 +33,15 @@ namespace Decompiler.Environments.Win32
     /// </summary>
     public class ModuleDefinitionLoader
     {
-        Lexer lexer;
-        Token bufferedTok;
+        private Lexer lexer;
+        private Token bufferedTok;
+        private IProcessorArchitecture arch;
 
-        public ModuleDefinitionLoader(TextReader rdr)
+        public ModuleDefinitionLoader(TextReader rdr, IProcessorArchitecture arch)
         {
             this.lexer = new Lexer(rdr);
             this.bufferedTok = null;
+            this.arch = arch;
         }
 
         public TypeLibrary Load()
@@ -68,6 +71,7 @@ namespace Decompiler.Environments.Win32
             var tok = Peek();
             if (tok.Type == TokenType.Number)
             {
+                this.Get();
                 ordinal = Convert.ToInt32(tok.Text);
                 PeekAndDiscard(TokenType.NONAME);
             }
@@ -78,18 +82,18 @@ namespace Decompiler.Environments.Win32
             {
                 Name = entryName,
                 Signature = ParseSignature(entryName),
-                SyscallInfo = new SyscallInfo
-                {
-                    Vector = ordinal,
-                },
             };
+            if (ordinal != -1)
+            {
+                svc.SyscallInfo = new SyscallInfo { Vector = ordinal };
+                lib.ServicesByVector[ordinal] = svc;
+            }
+            lib.ServicesByName[entryName] = svc;
         }
 
         private ProcedureSignature ParseSignature(string entryName)
         {
-            throw new NotImplementedException();
-            if (string.IsNullOrEmpty(entryName))
-                throw new ArgumentException("entryName", "Function name was blank.");
+            return SignatureGuesser.SignatureFromName(entryName, arch);
         }
 
         private bool PeekAndDiscard(TokenType type)
@@ -150,11 +154,13 @@ namespace Decompiler.Environments.Win32
 
             public Token(TokenType tokenType)
             {
+                Debug.Print("Token: {0}", tokenType);
                 this.Type = tokenType;
             }
 
             public Token(TokenType tokenType, string p)
             {
+                Debug.Print("Token: {0} {1}", tokenType, p);
                 this.Type = tokenType;
                 this.Text = p;
             }

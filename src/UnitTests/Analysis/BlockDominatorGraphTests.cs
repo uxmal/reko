@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DiamondMock().Procedure;
 			var doms = proc.CreateBlockDominatorGraph();
-			Block head = proc.ControlGraph.Blocks[1];
+			Block head = proc.EntryBlock.Succ[0];
             Block f = head.ElseBlock;
             Block t = head.ThenBlock;
             Block join = t.Succ[0];
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DiamondMock().Procedure;
 			var doms = proc.CreateBlockDominatorGraph();
-			Block head = proc.ControlGraph.Blocks[1];
+			Block head = proc.EntryBlock.Succ[0];
 			Block f = head.ElseBlock;
 			Block t = head.ThenBlock;
 			Block join = t.Succ[0];
@@ -94,11 +94,11 @@ namespace Decompiler.UnitTests.Analysis
 			var r = Local32("r");
 
 			Label("head");
-			BranchIf(f, "false");
-			Label("true");
+			BranchIf(f, "true");
+			Label("false");
 			Assign(r, 1);
 			Jump("join");
-			Label("false");
+			Label("true");
 			Assign(r, 0);
 			Label("join");
 			Assign(f, Constant.True());

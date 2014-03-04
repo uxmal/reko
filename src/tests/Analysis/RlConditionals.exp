@@ -42,10 +42,10 @@ l0C00_000F:
 // SymbolicIn: sp:fp ax:<invalid>
 l0C00_0019:
 	Mem0[ds:0x0F01:byte] = 0x01
+// DataOut: bp ss ds
 // DataOut (flags):
 // LocalsOut: Temporary(16)
 
-// DataOut: bp ss ds
 // SymbolicIn: sp:fp ax:<invalid>
 l0C00_001E:
 	ax = Mem0[ds:0x0106:word16]
@@ -55,13 +55,16 @@ l0C00_001E:
 	branch Test(EQ,Z) l0C00_002D
 // DataOut: bp ss ds
 // DataOut (flags):
+// LocalsOut: Temporary(16)
+
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_0028:
 	Mem0[ds:0x0F02:byte] = 0x01
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp ax:<invalid>
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_002D:
 	ax = Mem0[ds:0x010A:word16]
 	SCZO = cond(ax - Mem0[ds:0x010C:word16])
@@ -69,16 +72,16 @@ l0C00_002D:
 	branch Test(ULT,C) l0C00_003D
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp ax:<invalid>
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_0038:
 	Mem0[ds:0x0F03:byte] = 0x01
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp ax:<invalid>
 // LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp ax:<invalid>
 l0C00_003D:
 	sp = fp - 0x0002
 	wLoc02 = 0x0003
@@ -86,66 +89,65 @@ l0C00_003D:
 	branch Test(UGE,C) l0C00_0049
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp ax:<invalid>
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 l0C00_0044:
 	Mem0[ds:0x0F04:byte] = 0x01
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 l0C00_0049:
 	SZO = cond(Mem0[ds:0x010E:word16] & 0x01FF)
 	C = false
 	branch Test(EQ,Z) l0C00_0056
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 l0C00_0051:
 	Mem0[ds:0x0F05:byte] = 0x01
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 l0C00_0056:
 	bp = bp - 0x0010
 	SCZO = cond(bp)
 	branch Test(LT,SO) l0C00_005F
 // DataOut: bp ss ds
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
 l0C00_005B:
 	Mem0[ss:bp + 0x0006:byte] = 0x01
 // DataOut: bp ds
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
 l0C00_005F:
 	bp = bp + bp
 	SCZO = cond(bp)
 	branch Test(NO,O) l0C00_0068
 // DataOut: ds
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
 l0C00_0063:
 	Mem0[ds:0x0F07:byte] = 0x01
 // DataOut:
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
 l0C00_0068:
 	return
 // DataOut:
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
 
 
 // fn0C00_0069 /////////////////////
@@ -156,10 +158,13 @@ fn0C00_0000_exit:
 	Preserved: sp bp
 // fn0C00_0069
 void fn0C00_0069()
+// SymbolicIn: sp:fp
 fn0C00_0069_entry:
 // DataOut: ss ds
-// LocalsOut: Stack +0000(16)
+// DataOut (flags):
+// LocalsOut: Temporary(16)
 
+// SymbolicIn: sp:fp
 l0C00_0069:
 	sp = fp - 0x0002
 	wLoc02 = bp
@@ -170,7 +175,6 @@ l0C00_0069:
 	return
 // DataOut: ss ds
 // DataOut (flags): C
-// SymbolicIn: sp:fp
 
 // SymbolicIn: sp:fp bp:bp -2(fp):bp
 fn0C00_0069_exit:

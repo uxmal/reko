@@ -116,7 +116,7 @@ namespace Decompiler.UnitTests.Gui
             var k0 = (SerializedStackVariable)sp.Signature.Arguments[0].Kind;
             var k1 = (SerializedStackVariable)sp.Signature.Arguments[1].Kind;
             Assert.AreEqual("word32", sp.Signature.Arguments[0].Type.ToString());
-            Assert.AreEqual("word32", sp.Signature.Arguments[1].Type.ToString());
+            Assert.AreEqual("byte", sp.Signature.Arguments[1].Type.ToString());
         }
 
         [Test]

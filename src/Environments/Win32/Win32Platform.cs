@@ -80,73 +80,7 @@ namespace Decompiler.Environments.Win32
 
         public override ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
         {
-                int argBytes;
-            if (fnName[0] == '_')
-            {
-                int lastAt = fnName.LastIndexOf('@');
-                if (lastAt < 0)
-                    return CdeclSignature(fnName.Substring(1), arch);
-                string name = fnName.Substring(1, lastAt - 1);
-                if (!Int32.TryParse(fnName.Substring(lastAt + 1), out argBytes))
-                    return CdeclSignature(name, arch);
-                else
-                    return StdcallSignature(name, argBytes, arch);
-            }
-            else if (fnName[0] == '@')
-            {
-                int lastAt = fnName.LastIndexOf('@');
-                if (lastAt <= 0)
-                    return CdeclSignature(fnName.Substring(1), arch);
-                string name = fnName.Substring(1, lastAt - 1);
-                if (!Int32.TryParse(fnName.Substring(lastAt + 1), out argBytes))
-                    return CdeclSignature(name, arch);
-                else
-                    return FastcallSignature(name, argBytes, arch);
-            }
-            else if (fnName[0] == '?')
-            {
-                var pmnp = new MsMangledNameParser(fnName);
-                Decompiler.Core.Serialization.SerializedProcedure sproc = null;
-                try
-                {
-                    sproc = pmnp.Parse();
-                }
-                catch
-                {
-                    pmnp.ToString();
-                    return null;
-                }
-                var sser = new Decompiler.Core.Serialization.ProcedureSerializer(arch, "__cdecl");
-                return sser.Deserialize(sproc.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
-            }
-            else
-                return null;
-        }
-
-        private ProcedureSignature CdeclSignature(string name, IProcessorArchitecture arch)
-        {
-            return new ProcedureSignature()
-            {
-                ReturnAddressOnStack = arch.PointerType.Size,
-            };
-        }
-
-        private ProcedureSignature StdcallSignature(string name, int argBytes, IProcessorArchitecture arch)
-        {
-            return new ProcedureSignature()
-            {
-                ReturnAddressOnStack = arch.PointerType.Size,
-                StackDelta = argBytes,
-            };
-        }
-
-        private ProcedureSignature FastcallSignature(string name, int argBytes, IProcessorArchitecture arch)
-        {
-            return new ProcedureSignature
-            {
-                ReturnAddressOnStack = arch.PointerType.Size,
-                StackDelta = argBytes - 2 * arch.PointerType.Size, // ecx, edx
-            };
+            return SignatureGuesser.SignatureFromName(fnName, arch);
         }
 	}
 }

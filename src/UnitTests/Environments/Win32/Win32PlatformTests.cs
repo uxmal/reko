@@ -152,8 +152,7 @@ namespace Decompiler.UnitTests.Environments.Win32
 
             var sig = win32.SignatureFromName(fnName, arch);
 
-            Assert.AreEqual("void ()()\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
+            Assert.AreEqual("void ()()\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
         }
-
     }
 }

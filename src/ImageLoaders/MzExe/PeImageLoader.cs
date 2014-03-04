@@ -37,7 +37,6 @@ namespace Decompiler.ImageLoaders.MzExe
 	{
         private IProcessorArchitecture arch;
         private Platform platform;
-        private Dictionary<uint, PseudoProcedure> importThunks;
         private List<ImportedFunction> unresolvedImports;
 
 		private short optionalHeaderSize;
@@ -47,6 +46,7 @@ namespace Decompiler.ImageLoaders.MzExe
         private ImageMap imageMap;
 		private uint preferredBaseOfImage;
 		private SortedDictionary<string, Section> sectionMap;
+        private Dictionary<uint, PseudoProcedure> importThunks;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
 		private uint rvaExportTable;
 		private uint sizeExportTable;
@@ -331,13 +331,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-        public override Dictionary<uint, PseudoProcedure> ImportThunks
-        {
-            get
-            {
-                return importThunks;
-            }
-        }
+        public override Dictionary<uint, PseudoProcedure> ImportThunks { get { return importThunks; } }
 
 		public string ImportFileLocation(string dllName)
 		{
@@ -345,7 +339,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			return Path.Combine(assemblyDir, Path.ChangeExtension(dllName, ".xml"));
 		}
 
-		public string ReadAsciiString(uint rva, int maxLength)
+		public string ReadUtf8String(uint rva, int maxLength)
 		{
 			ImageReader rdr = imgLoaded.CreateReader(rva);
 			List<byte> bytes = new List<byte>();
@@ -356,7 +350,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				if (bytes.Count == maxLength)
 					break;
 			}
-			return Encoding.ASCII.GetString(bytes.ToArray());
+			return Encoding.UTF8.GetString(bytes.ToArray());
 		}
 
 		public ImportDescriptor ReadImportDescriptor(ImageReader rdr, Address addrLoad)
@@ -367,7 +361,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				return null;
 			rdr.ReadLeUInt32();		// datestamp
 			rdr.ReadLeUInt32();		// forwarder chain
-			id.DllName = ReadAsciiString(rdr.ReadLeUInt32(), 0);		// DLL name
+			id.DllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
 			id.RvaThunks = rdr.ReadLeUInt32();		// first thunk
 
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
@@ -392,7 +386,7 @@ namespace Decompiler.ImageLoaders.MzExe
                 AddUnresolvedImport(id, string.Format("Ordinal_{0}", rvaEntry & 0x7FFFFFF));
                 return;
             }
-            string fnName = ReadAsciiString(rvaEntry + 2, 0);
+            string fnName = ReadUtf8String(rvaEntry + 2, 0);
             ProcedureSignature sig = platform.LookupProcedure(fnName);
             if (sig == null)
             {
@@ -400,12 +394,12 @@ namespace Decompiler.ImageLoaders.MzExe
                 sig = platform.SignatureFromName(fnName, arch);
                 if (sig != null)
                 {
-                    importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));   //$BUGBUG: mangled name!
+                    ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));   //$BUGBUG: mangled name!
                 }
                 AddUnresolvedImport(id, fnName);
                 return;
             }
-            importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
+            ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
         }
 
         private void AddUnresolvedImport(ImportDescriptor id, string fnName)
