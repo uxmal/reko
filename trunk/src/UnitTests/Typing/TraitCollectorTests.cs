@@ -381,7 +381,7 @@ namespace Decompiler.UnitTests.Typing
 				"\ttrait_mem(T_2, 0)" + nl + 
 				"T_2 (in Mem0[pfn:word32] : word32)" + nl +
 				"\ttrait_primitive(word32)" + nl +
-				"\ttrait_func(pfn32)" + nl;
+				"\ttrait_primitive(pfn32)" + nl;
             Console.WriteLine(sw.ToString());
 			Assert.AreEqual(exp, sw.ToString());
 		}

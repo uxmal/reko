@@ -1,10 +1,12 @@
-// ProcedureBuilder
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+// proc1
+void proc1()
+proc1_entry:
 	// succ:  l1
 l1:
 	ds->w0300 = ds->*ds->*bx;
-ProcedureBuilder_exit:
+	return
+	// succ:  proc1_exit
+proc1_exit:
 
 // Equivalence classes ////////////
 Eq_2: (segment "Eq_2" (300 word16 w0300))
