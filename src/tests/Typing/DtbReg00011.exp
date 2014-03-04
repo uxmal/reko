@@ -1,40 +1,38 @@
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	fn0C00_0004()
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 // fn0C00_0004
 void fn0C00_0004()
-fn0C00_0004_entry:		// pred:
+fn0C00_0004_entry:
 	// succ:  l0C00_0004
-l0C00_0004:		// pred: fn0C00_0004_entry
-	word16 bx_15 = 0x0FFF
-	byte bh_16 = 0x0F
-	byte bl_17 = 0xFF
+l0C00_0004:
+	word16 bx_16 = 0x0FFF
+	byte bh_17 = 0x0F
+	byte bl_18 = 0xFF
 	// succ:  l0C00_000C
-l0C00_000C:		// pred: l0C00_0004 l0C00_000C
-	Mem37[0x4DE1:bx_15 + 0x0000:byte] = bl_17 & 0xF0 | SLICE((bl_17 & 0x0F) *u (bh_16 + 0x01) << 0x0004, byte, 8) & 0x0F
+l0C00_000C:
+	Mem44[0x4DE1:bx_50 + 0x0000:byte] = bl_17 & 0xF0 | SLICE((bl_17 & 0x0F) *u (bh_16 + 0x01) << 0x0004, byte, 8) & 0x0F
 	bx_15 = bx_15 - 0x0001
 	bh_16 = SLICE(bx_15, byte, 8) (alias)
 	bl_17 = (byte) bx_15 (alias)
 	branch bx_15 >= 0x0000 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
-l0C00_0029:		// pred: l0C00_000C
+l0C00_0029:
 	return
 	// succ:  fn0C00_0004_exit
-fn0C00_0004_exit:		// pred: l0C00_0029
-	// succ: 
+fn0C00_0004_exit:
 
 // Equivalence classes ////////////
 Eq_2: (ptr (fn T_4 ()))
 	T_2 (in fn0C00_0004 : ptr32)
-	T_3 (in signature of fn0C00_0004)
+	T_3 (in signature of fn0C00_0004 : void)
 Eq_4: void
 	T_4 (in fn0C00_0004() : void)
 Eq_5: int16
@@ -47,7 +45,7 @@ Eq_7: byte
 	T_8 (in 0x0F : byte)
 	T_30 (in SLICE(bx_15, byte, 8) : byte)
 Eq_9: byte
-	T_9 (in bl_17 : byte)
+	T_9 (in bl_18 : byte)
 	T_10 (in 0xFF : byte)
 	T_31 (in (byte) bx_15 : byte)
 Eq_11: byte
@@ -112,7 +110,7 @@ T_6: (in 0x0FFF : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: word16
-T_7: (in bh_16 : byte)
+T_7: (in bh_17 : byte)
   Class: Eq_7
   DataType: byte
   OrigDataType: byte

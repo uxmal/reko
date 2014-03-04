@@ -37,9 +37,9 @@ namespace Decompiler.Structure
 
         public DerivedSequenceBuilder(ProcedureStructure proc)
         {
-            graphs = proc.DerivedGraphs;
-            ib = new IntervalBuilder();
-            DerivedGraph gr = BuildDerivedGraph(proc.Nodes, proc.EntryNode);
+            this.graphs = proc.DerivedGraphs;
+            this.ib = new IntervalBuilder();
+            var gr = BuildDerivedGraph(proc.Nodes, proc.EntryNode);
             graphs.Add(gr);
             while (gr.Graph.Nodes.Count > 1)
             {

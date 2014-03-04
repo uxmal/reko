@@ -44,6 +44,68 @@ namespace Decompiler.UnitTests.Typing
 		private TypeTransformer trans;
 		private ComplexTypeNamer ctn;
 
+        protected override void RunTest(Program prog, string outputFile)
+        {
+            using (FileUnitTester fut = new FileUnitTester(outputFile))
+            {
+                SetupPreStages(prog.Architecture);
+                aen.Transform(prog);
+                eqb.Build(prog);
+                coll = new TraitCollector(factory, store, dtb, prog);
+                coll.CollectProgramTraits(prog);
+                dtb.BuildEquivalenceClassDataTypes();
+                cpf.FollowConstantPointers(prog);
+                tvr.ReplaceTypeVariables();
+                trans.Transform();
+                ctn.RenameAllTypes(store);
+
+                ter = new TypedExpressionRewriter(store, prog.Globals);
+                try
+                {
+                    ter.RewriteProgram(prog);
+                }
+                catch (Exception ex)
+                {
+                    fut.TextWriter.WriteLine("** Exception **");
+                    fut.TextWriter.WriteLine(ex);
+                }
+                finally
+                {
+                    DumpProgAndStore(prog, fut);
+                }
+            }
+        }
+
+        private void DumpProgAndStore(Program prog, FileUnitTester fut)
+        {
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+            }
+
+            store.Write(fut.TextWriter);
+            fut.AssertFilesEqual();
+        }
+
+        public void SetupPreStages(IProcessorArchitecture arch)
+        {
+            factory = new TypeFactory();
+            store = new TypeStore();
+            aen = new ExpressionNormalizer(arch.PointerType);
+            eqb = new EquivalenceClassBuilder(factory, store);
+            dtb = new DataTypeBuilder(factory, store, arch);
+            cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);
+            tvr = new TypeVariableReplacer(store);
+            trans = new TypeTransformer(factory, store, null);
+            ctn = new ComplexTypeNamer();
+        }
+
+        private void SetType(Expression e, DataType t)
+        {
+            e.DataType = t;
+        }
+
 		[Test]
 		public void TerComplex()
 		{
@@ -162,15 +224,16 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Need a constant pointer analysis phase")]
 		public void TerArrayConstantPointers()
 		{
-			ProgramBuilder pp = new ProgramBuilder();
-
-			ProcedureBuilder m = new ProcedureBuilder("Fn");
-			Identifier a = m.Local32("a");
-			Identifier i = m.Local32("i");
-			m.Assign(a, 0x00123456);		// array pointer
-			m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
-			pp.Add(m);
-
+			
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier i = m.Local32("i");
+                m.Assign(a, 0x00123456);		// array pointer
+                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
+                pp.Add(m);
+            });
 			RunTest(pp.BuildProgram(), "Typing/TerArrayConstantPointers.txt");
 		}
 
@@ -195,204 +258,141 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerAddNonConstantToPointer()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier i = m.Local16("i");
-            Identifier p = m.Local16("p");
-
-            m.Store(p, m.Word16(4));
-            m.Store(m.IAdd(p, 4), m.Word16(4));
-            m.Assign(p, m.IAdd(p, i));
             ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
+            prog.Add("proc1", m =>
+            {
+                Identifier i = m.Local16("i");
+                Identifier p = m.Local16("p");
 
+                m.Store(p, m.Word16(4));
+                m.Store(m.IAdd(p, 4), m.Word16(4));
+                m.Assign(p, m.IAdd(p, i));
+
+            });
             RunTest(prog.BuildProgram(), "Typing/TerAddNonConstantToPointer.txt");
         }
 
         [Test]
         public void TerSignedCompare()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier p = m.Local32("p");
-            Identifier ds = m.Local16("ds");
-            ds.DataType = PrimitiveType.SegmentSelector;
-            Identifier ds2 = m.Local16("ds2");
-            ds2.DataType = PrimitiveType.SegmentSelector;
-            m.Assign(ds2, ds);
-            m.Store(
-                m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
-                m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
-            m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
-
             ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
+            prog.Add("proc1", m =>
+            {
+                Identifier p = m.Local32("p");
+                Identifier ds = m.Local16("ds");
+                ds.DataType = PrimitiveType.SegmentSelector;
+                Identifier ds2 = m.Local16("ds2");
+                ds2.DataType = PrimitiveType.SegmentSelector;
+                m.Assign(ds2, ds);
+                m.Store(
+                    m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
+                    m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
+                m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
+            });
             RunTest(prog.BuildProgram(), "Typing/TerSignedCompare.txt");
         }
 
         [Test]
         public void TerDereferenceSignedCompare()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier p = m.Local32("p");
-            Identifier ds = m.Local16("ds");
-            ds.DataType = PrimitiveType.SegmentSelector;
-            Identifier ds2 = m.Local16("ds2");
-            ds2.DataType = PrimitiveType.SegmentSelector;
-            m.Assign(ds2, ds);
-            m.Store(
-                m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
-                m.Lt(
-                    m.SegMemW(ds, m.IAdd(m.SegMemW(ds, m.Word16(0x5404)), 4)),
-                    m.Word16(20)));
-            m.Store(m.SegMemW(ds2, m.IAdd(m.SegMemW(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
-
             ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
+            prog.Add("proc1", m =>
+            {
+                Identifier p = m.Local32("p");
+                Identifier ds = m.Local16("ds");
+                ds.DataType = PrimitiveType.SegmentSelector;
+                Identifier ds2 = m.Local16("ds2");
+                ds2.DataType = PrimitiveType.SegmentSelector;
+                m.Assign(ds2, ds);
+                m.Store(
+                    m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
+                    m.Lt(
+                        m.SegMemW(ds, m.IAdd(m.SegMemW(ds, m.Word16(0x5404)), 4)),
+                        m.Word16(20)));
+                m.Store(m.SegMemW(ds2, m.IAdd(m.SegMemW(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
+                m.Return();
+            });
             RunTest(prog.BuildProgram(), "Typing/TerDereferenceSignedCompare.txt");
         }
 
         [Test]
         public void TerFlatDereferenceSignedCompare()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier ds = m.Local32("ds");
-            Identifier ds2 = m.Local32("ds2");
-            m.Assign(ds2, ds);
-            m.Store(
-                m.IAdd(ds, m.Word32(0x5400)),
-                m.Lt(
-                    m.LoadW(m.IAdd(m.LoadDw(m.IAdd(ds, m.Word32(0x5404))), 4)),
-                    m.Word16(20)));
-            m.Store(m.IAdd(m.LoadDw(m.IAdd(ds2, m.Word32(0x5404))), 4), m.Word16(0));
-
             ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
+            prog.Add("proc1", m =>
+            {
+                Identifier ds = m.Local32("ds");
+                Identifier ds2 = m.Local32("ds2");
+                m.Assign(ds2, ds);
+                m.Store(
+                    m.IAdd(ds, m.Word32(0x5400)),
+                    m.Lt(
+                        m.LoadW(m.IAdd(m.LoadDw(m.IAdd(ds, m.Word32(0x5404))), 4)),
+                        m.Word16(20)));
+                m.Store(m.IAdd(m.LoadDw(m.IAdd(ds2, m.Word32(0x5404))), 4), m.Word16(0));
+            });
             RunTest(prog.BuildProgram(), "Typing/TerFlatDereferenceSignedCompare.txt");
         }
 
         [Test]
         public void TerComparison()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier p = m.Local32("p");
-            Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
-            m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(3)));
-
             ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
+            prog.Add("proc1", m =>
+            {
+                Identifier p = m.Local32("p");
+                Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
+                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(3)));
+            });
             RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
         }
 
         [Test]
         public void TerUnionConstants()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier bx = m.Local16("bx");
-            m.Assign(bx, m.Shr(bx, 2));     // makes bx unsigned uint16
-            m.Assign(m.LocalBool("f"), m.Lt(bx, 4));    // makes bx also signed; assembler bug, but forces a union.
-            m.Assign(bx, m.Word16(4));          // what type should 4 have?
-
             ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
+            prog.Add("proc1", m =>
+            {
+                Identifier bx = m.Local16("bx");
+                m.Assign(bx, m.Shr(bx, 2));     // makes bx unsigned uint16
+                m.Assign(m.LocalBool("f"), m.Lt(bx, 4));    // makes bx also signed; assembler bug, but forces a union.
+                m.Assign(bx, m.Word16(4));          // what type should 4 have?
+            });
             RunTest(prog.BuildProgram(), "Typing/TerUnionConstants.txt");
         }
 
         [Test]
         public void TerOffsetInArrayLoop()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier ds = m.Local16("ds");
-            Identifier cx = m.Local16("cx");
-            Identifier di = m.Local16("di");
-            m.Assign(di, 0);
-            m.Label("lupe");
-            m.SegStore(ds, m.IAdd(di, 0x5388), m.Word16(0));
-            m.Assign(di, m.IAdd(di, 2));
-            m.Assign(cx, m.ISub(cx, 1));
-            m.BranchIf(m.Ne(cx, 0), "lupe");
-            m.Return();
-
             ProgramBuilder pm = new ProgramBuilder();
-            pm.Add(m);
+            pm.Add("proc1", m =>
+            {
+                var ds = m.Local16("ds");
+                var cx = m.Local16("cx");
+                var di = m.Local16("di");
+                m.Assign(di, 0);
+                m.Label("lupe");
+                m.SegStore(ds, m.IAdd(di, 0x5388), m.Word16(0));
+                m.Assign(di, m.IAdd(di, 2));
+                m.Assign(cx, m.ISub(cx, 1));
+                m.BranchIf(m.Ne(cx, 0), "lupe");
+                m.Return();
+            });
             RunTest(pm, "Typing/TerOffsetInArrayLoop.txt");
         }
 
         [Test]
         public void TerSegmentedLoadLoad()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
-            Identifier bx = m.Local(PrimitiveType.Word16, "bx");
-            m.SegStore(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
-
             ProgramBuilder pm = new ProgramBuilder();
-            pm.Add(m);
+            pm.Add("proc1", m =>
+            {
+                var ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+                var bx = m.Local(PrimitiveType.Word16, "bx");
+                m.SegStore(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
+                m.Return();
+            });
             RunTest(pm, "Typing/TerSegmentedLoadLoad.txt");
-        }
-
-        //////////////////////////////////////////////////////////////////////////
-
-
-		protected override void RunTest(Program prog, string outputFile)
-		{
-			using (FileUnitTester fut = new FileUnitTester(outputFile))
-			{
-                SetupPreStages(prog.Architecture);
-                aen.Transform(prog);
-				eqb.Build(prog);
-				coll = new TraitCollector(factory, store, dtb, prog);
-				coll.CollectProgramTraits(prog);
-				dtb.BuildEquivalenceClassDataTypes();
-				cpf.FollowConstantPointers(prog);
-				tvr.ReplaceTypeVariables();
-				trans.Transform();
-				ctn.RenameAllTypes(store);
-
-				ter = new TypedExpressionRewriter(store, prog.Globals);
-				try
-				{
-					ter.RewriteProgram(prog);
-				}
-				catch (Exception ex)
-				{
-					fut.TextWriter.WriteLine("** Exception **");
-					fut.TextWriter.WriteLine(ex);
-				}
-				finally
-				{
-					DumpProgAndStore(prog, fut);
-				}
-			}
-		}
-
-		private void DumpProgAndStore(Program prog, FileUnitTester fut)
-		{
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
-				proc.Write(false, fut.TextWriter);
-				fut.TextWriter.WriteLine();
-			}
-
-			store.Write(fut.TextWriter);
-			fut.AssertFilesEqual();
-		}
-
-
-        public void SetupPreStages(IProcessorArchitecture arch)
-        {
-			factory = new TypeFactory();
-			store = new TypeStore();
-            aen = new ExpressionNormalizer(arch.PointerType);
-			eqb = new EquivalenceClassBuilder(factory, store);
-            dtb = new DataTypeBuilder(factory, store, arch);
-			cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);
-			tvr = new TypeVariableReplacer(store);
-			trans = new TypeTransformer(factory, store, null);
-			ctn = new ComplexTypeNamer();
-		}
-
-        private void SetType(Expression e, DataType t)
-        {
-            e.DataType = t;
         }
 	}
 

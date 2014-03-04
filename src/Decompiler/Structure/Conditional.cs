@@ -55,11 +55,11 @@ namespace Decompiler.Structure
             if (node == latchNode)
                 return;
 
-            Expression exp = codeGen.BranchCondition(node);
-            AbsynIf ifStm = EmitIfCondition(exp, this, emitter);
+            var exp = codeGen.BranchCondition(node);
+            var ifStm = EmitIfCondition(exp, this, emitter);
 
-            StructureNode succ = FirstBranch(node);
-            AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
+            var succ = FirstBranch(node);
+            var emitThen = new AbsynStatementEmitter(ifStm.Then);
             if (node.UnstructType == UnstructuredType.JumpInOutLoop)
             {
                 codeGen.DeferRendering(node, succ, emitThen);

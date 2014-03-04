@@ -1,10 +1,10 @@
-// ProcedureBuilder
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+// proc1
+void proc1()
+proc1_entry:
 	// succ:  l1
 l1:
 	f = p->ptr0004 < 0x00000003;
-ProcedureBuilder_exit:
+proc1_exit:
 
 // Equivalence classes ////////////
 Eq_2: (struct "Eq_2" (4 (ptr Eq_5) ptr0004))

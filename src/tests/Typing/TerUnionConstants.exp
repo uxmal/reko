@@ -1,12 +1,12 @@
-// ProcedureBuilder
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+// proc1
+void proc1()
+proc1_entry:
 	// succ:  l1
 l1:
 	bx = bx >>u 0x02;
 	f = bx < 0x0004;
 	bx.u0 = 0x0004;
-ProcedureBuilder_exit:
+proc1_exit:
 
 // Equivalence classes ////////////
 Eq_2: (union "Eq_2" (int16 u0) (uint16 u1))

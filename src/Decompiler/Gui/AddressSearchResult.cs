@@ -55,8 +55,8 @@ namespace Decompiler.Gui
 
         public void CreateColumns(ISearchResultView view)
         {
-            view.AddColumn("Address", 80);
-            view.AddColumn("Data", 80);
+            view.AddColumn("Address", 10);
+            view.AddColumn("Data", 70);
         }
 
         public int GetItemImageIndex(int i)
