@@ -66,9 +66,10 @@ namespace Decompiler.ImageLoaders.Hunk
 
         public int FileType { get; private set; } 
         
+        //$REVIEW: is this a sane value? AmigaOS apparently didn't load at a specific address.
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0x00100000); }
+            get { return new Address(0x1000); }
         }
 
         public override LoaderResults Load(Address addrLoad)
@@ -114,10 +115,10 @@ namespace Decompiler.ImageLoaders.Hunk
       return null*/
         }
 
-        ///
+        /// <summary>
         ///  Read a hunk file and build internal hunk structure
         ///Return status and set this.error_string on failure
-        ///
+        /// </summary>
         public void ParseHunkFile(BeImageReader f, bool? v37_compat)
         {
             var parser = new HunkFileParser(f, v37_compat);
@@ -130,6 +131,9 @@ namespace Decompiler.ImageLoaders.Hunk
             return this.get_struct_summary(this.hunks);
         }
 
+        /// <summary>
+        /// Valid hunks to find in the beginning of the file.
+        /// </summary>
         private HunkType[] loadseg_valid_begin_hunks = new[] {
             HunkType.HUNK_CODE,
             HunkType.HUNK_DATA,
@@ -145,6 +149,10 @@ namespace Decompiler.ImageLoaders.Hunk
             HunkType.HUNK_NAME
         };
 
+        /// <summary>
+        /// Builds the in-memory segments from a loadable Hunk file.
+        /// </summary>
+        /// <returns></returns>
         public bool BuildLoadSegments()
         {
             bool inHeader = true;
@@ -245,7 +253,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 }
                 else
                 {
-                    // an extra block in hunk or end is expected
+                    // An extra block in hunk or end is expected
                     if (hunk_type == HunkType.HUNK_END)
                     {
                         beginSeek = true;
@@ -515,7 +523,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 return false;
             }
 
-            //  determine type of file from first hunk
+            // Determine type of file from first hunk
             HunkType firstHunkType = this.hunks[0].HunkType;
             switch (firstHunkType)
             {
@@ -577,12 +585,12 @@ namespace Decompiler.ImageLoaders.Hunk
         private byte[] RelocateBytes(Address addrLoad)
         {
             var rel = new HunkRelocator(this);
-            // get sizes of all segments
+            // Get sizes of all segments
             var sizes = rel.GetSegmentSizes();
-            // calc begin addrs for all segments
+            // Determine begin addrs for all segments
             uint base_addr = addrLoad.Linear;
             var addrs = rel.GetSegmentRelocationAddresses(base_addr);
-            //  relocate and return data of segments
+            //  Relocate and return data of segments
             var datas = rel.Relocate(addrs);
             if (datas == null)
                 throw new BadImageFormatException("Relocation failed.");

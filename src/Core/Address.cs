@@ -184,7 +184,7 @@ namespace Decompiler.Core
 		/// <param name="s">The string representation of the Address</param>
 		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
 		/// <returns></returns>
-		public static Address ToAddress(string s, int radix)
+		public static Address Parse(string s, int radix)
 		{
 			if (s == null)
 				return null;
@@ -201,11 +201,39 @@ namespace Decompiler.Core
 			}
 		}
 
+        public static bool TryParse(string s, int radix, out Address result)
+        {
+            if (s != null)
+            {
+                try
+                {
+                    var a = s.Split(':');
+                    if (a.Length == 2)
+                    {
+                        var seg = Convert.ToUInt16(a[0], radix);
+                        var off = Convert.ToUInt32(a[1], radix);
+                        result = new Address(seg, off);
+                    }
+                    else
+                    {
+                        result = new Address(Convert.ToUInt32(a[0], radix));
+                    }
+                    return true;
+                }
+                catch
+                {
+                }
+            }
+            result = null;
+            return false;
+        }
+            
+
         /// <summary>
         /// Converts a hexadecimal string representation of an address to an Address.
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static Address ToAddress(string s) { return ToAddress(s, 16); }
+        public static Address Parse(string s) { return Parse(s, 16); }
     }
 }

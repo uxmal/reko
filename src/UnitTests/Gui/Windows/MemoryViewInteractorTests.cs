@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
+using Decompiler.Gui.Windows.Controls;
 using Decompiler.Gui.Windows.Forms;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -44,6 +45,9 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDialogFactory dlgFactory;
         private ServiceContainer sp;
         private Address addrBase;
+        private LowLevelView control;
+        private LoadedImage image;
+        private ImageMap imageMap;
 
         [SetUp]
         public void Setup()
@@ -54,14 +58,14 @@ namespace Decompiler.UnitTests.Gui.Windows
 			dlgFactory = mr.DynamicMock<IDialogFactory>();
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
-            addrBase = new Address(0x0100000);
+            addrBase = new Address(0x1000);
         }
 
-        private void CreateInteractor()
+        private void Given_Interactor()
         {
             interactor = new MemoryViewInteractor();
             interactor.SetSite(sp);
-            interactor.CreateControl();
+            control = (LowLevelView) interactor.CreateControl();
         }
 
         [Test]
@@ -76,7 +80,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void MVI_SelectAddress()
         {
-            CreateInteractor();
+            Given_Interactor();
             mr.ReplayAll();
 
             interactor.Control.MemoryView.SelectedAddress = new Address(0x12321);
@@ -97,7 +101,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             dlg.Expect(x => x.Dispose());
             mr.ReplayAll();
 
-            CreateInteractor();
+            Given_Interactor();
             interactor.ProgramImage = new LoadedImage(new Address(0x12345670), new byte[16]);
             interactor.ImageMap = new ImageMap(interactor.ProgramImage);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
@@ -109,17 +113,52 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void MVI_MarkAreaWithType()
         {
-            CreateInteractor();
-            var image = new LoadedImage(addrBase, new byte[0x100]);
-            var imageMap = new ImageMap(image);
-            interactor.ProgramImage = image;
-            interactor.ImageMap = imageMap;
+            Given_Interactor();
+            Given_Image();
             interactor.SetTypeAtAddressRange(addrBase, "i32");
 
             ImageMapItem item;
             Assert.IsTrue(imageMap.TryFindItemExact(addrBase, out item));
             Assert.AreEqual(addrBase, item.Address);
             Assert.AreEqual("int32", item.DataType.ToString());
+        }
+
+        private void Given_Image()
+        {
+            image = new LoadedImage(addrBase, new byte[0x100]);
+            imageMap = new ImageMap(image);
+            interactor.ProgramImage = image;
+            interactor.ImageMap = imageMap;
+        }
+
+        [Test]
+        public void MVI_NavigateToAddress()
+        {
+            Given_Interactor();
+            Given_Image();
+
+            When_EnterAddressInBar("100");
+            When_GoPushed();
+            Assert.IsNull(control.MemoryView.SelectedAddress);
+            When_EnterAddressInBar("1000");
+            When_GoPushed();
+            Assert.AreEqual(0x01000, control.MemoryView.SelectedAddress.Linear);
+            When_EnterAddressInBar("1004");
+            When_GoPushed();
+            Assert.AreEqual(0x01004, control.MemoryView.SelectedAddress.Linear);
+            When_EnterAddressInBar("10010");
+            When_GoPushed();
+            Assert.AreEqual(0x01004, control.MemoryView.SelectedAddress.Linear);
+        }
+
+        private void When_EnterAddressInBar(string address)
+        {
+            control.ToolBarAddressTextbox.Text = address;
+        }
+
+        private void When_GoPushed()
+        {
+            control.ToolBarGoButton.PerformClick();
         }
     }
 }

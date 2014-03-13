@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Decompiler.Gui.Controls;
+using Decompiler.Gui.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,11 +36,18 @@ namespace Decompiler.Gui.Windows.Controls
     /// </summary>
     public partial class LowLevelView : UserControl
     {
+        ITextBox txtAddressWrapped;
+        IButton btnGoWrapped;
+
         public LowLevelView()
         {
             InitializeComponent();
+            txtAddressWrapped = new ToolStripTextBoxWrapper(txtAddress);
+            btnGoWrapped = new ToolStripButtonWrapper(btnGo);
         }
 
+        public ITextBox ToolBarAddressTextbox { get { return txtAddressWrapped; } }
+        public IButton ToolBarGoButton { get { return btnGoWrapped; } } 
         public MemoryControl MemoryView { get { return this.memCtrl; } }
 
         public DisassemblyControl DisassemblyView { get { return this.disassemblyControl1; } }

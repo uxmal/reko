@@ -275,6 +275,14 @@ namespace Decompiler.UnitTests.Environments.Win32
                 "__cdecl char barzoom(int)",      //$TODO: a SerializedProcedure could be templatized.
                  "??$barzoom@N@@YADH@Z");
         }
+
+        [Test]
+        public void PMNP_string_ctor()
+        {
+            RunTest(
+                "@@@",
+                "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z");
+        }
     }
 }
     

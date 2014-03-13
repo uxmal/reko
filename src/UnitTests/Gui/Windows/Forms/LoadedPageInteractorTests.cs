@@ -229,7 +229,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.EnterPage();
 
             repository.VerifyAll();
-
         }
 
         private MenuStatus QueryStatus(int cmdId)
@@ -238,7 +237,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
             return status.Status;
         }
-
 
         private class TestLoader : LoaderBase
         {

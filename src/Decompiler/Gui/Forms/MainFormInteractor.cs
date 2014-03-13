@@ -118,7 +118,7 @@ namespace Decompiler.Gui.Forms
             CreatePhaseInteractors(svcFactory);
 
             form.Load += this.MainForm_Loaded;
-            form.Closed += new System.EventHandler(this.MainForm_Closed);
+            form.Closed += this.MainForm_Closed;
             form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
             //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
             //MainForm.InitialPage.IsDirty = false;         //$REENABLE
@@ -347,7 +347,6 @@ namespace Decompiler.Gui.Forms
                     }
                 });
                 prev.EnterPage();
-
             }
             catch (Exception ex)
             {

@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     [TestFixture]
     public class OpenAsInteractorTests
     {
-        private MockRepository repository;
+        private MockRepository mr;
         private IOpenAsDialog dlg;
         private ListOption[] archNames;
         private ListOption[] platformNames;
@@ -48,8 +48,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
-            dcSvc = repository.Stub<IDecompilerConfigurationService>();
+            mr = new MockRepository();
+            dcSvc = mr.Stub<IDecompilerConfigurationService>();
             sc = new ServiceContainer();
             sc.AddService(typeof(IDecompilerConfigurationService), dcSvc);
         }
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Architectures();
             Expect_PlatformDataSourceSet();
             Expect_ArchDatasourceSet();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var interactor = new OpenAsInteractor();
             interactor.Attach(dlg);
@@ -70,48 +70,53 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 dlg,
                 EventArgs.Empty);
 
-            repository.VerifyAll();
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
             Assert.AreEqual("- None -", platformNames[0].Text);
+            Assert.AreEqual("0", dlg.AddressTextBox.Text);
+            mr.VerifyAll();
         }
 
         private void Expect_ArchDatasourceSet()
         {
-            ddlArchitecture = repository.StrictMock<IComboBox>();
+            ddlArchitecture = mr.StrictMock<IComboBox>();
             ddlArchitecture.Expect(d => d.DataSource = null)
                 .IgnoreArguments()
-                .WhenCalled(m => { this.archNames = ((IEnumerable)m.Arguments[0]).OfType<ListOption>().ToArray(); });
+                .WhenCalled(m => { this.archNames = ((IEnumerable) m.Arguments[0]).OfType<ListOption>().ToArray(); });
             dlg.Expect(d => d.Architectures).Return(ddlArchitecture);
         }
 
         private void Expect_PlatformDataSourceSet()
         {
-            ddlPlatform = repository.StrictMock<IComboBox>();
+            ddlPlatform = mr.StrictMock<IComboBox>();
             ddlPlatform.Expect(d => d.DataSource = null)
                 .IgnoreArguments()
-                .WhenCalled(m => { this.platformNames = ((IEnumerable)m.Arguments[0]).OfType<ListOption>().ToArray(); });
+                .WhenCalled(m => { this.platformNames = ((IEnumerable) m.Arguments[0]).OfType<ListOption>().ToArray(); });
             dlg.Expect(d => d.Platforms).Return(ddlPlatform);
         }
 
         private void Given_Dialog()
         {
-            dlg = repository.DynamicMock<IOpenAsDialog>();
-            var btnBrowse = repository.Stub<IButton>();
-            var btnOk = repository.Stub<IButton>();
+            dlg = mr.DynamicMock<IOpenAsDialog>();
+            var btnBrowse = mr.Stub<IButton>();
+            var btnOk = mr.Stub<IButton>();
+            var txtAddress = mr.Stub<ITextBox>();
+            var fileName = mr.Stub<ITextBox>();
+            dlg.Stub(d => d.AddressTextBox).Return(txtAddress);
             dlg.Stub(d => d.Services).Return(sc);
+            dlg.Stub(d => d.FileName).Return(fileName);
             dlg.Stub(d => d.BrowseButton).Return(btnBrowse);
             dlg.Stub(d => d.OkButton).Return(btnOk);
         }
 
         private void Given_Architectures()
         {
-            var arch1 = repository.Stub<Architecture>();
+            var arch1 = mr.Stub<Architecture>();
             arch1.Stub(a => a.Name).Return("ARCH1");
             arch1.Stub(a => a.Description).Return("Arch 1");
             arch1.Stub(a => a.TypeName).Return("ArchSpace1.Arch");
 
-            var arch2 = repository.Stub<Architecture>();
+            var arch2 = mr.Stub<Architecture>();
             arch2.Stub(a => a.Name).Return("ARCH2");
             arch2.Stub(a => a.Description).Return("Arch 2");
             arch2.Stub(a => a.TypeName).Return("ArchSpace2.Arch");
@@ -121,8 +126,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void Given_Platforms()
         {
-            var env1 = repository.Stub<OperatingEnvironment>();
-            env1.Stub(e  => e.Name).Return("TECH");
+            var env1 = mr.Stub<OperatingEnvironment>();
+            env1.Stub(e => e.Name).Return("TECH");
             env1.Stub(e => e.Description).Return("Friendly");
             env1.Stub(a => a.TypeName).Return("Env1.Env");
 
@@ -138,14 +143,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Architectures();
             Expect_PlatformDataSourceSet();
             Expect_ArchDatasourceSet();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var interactor = new OpenAsInteractor();
             interactor.Attach(dlg);
 
             When_Dialog_Loaded();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
             Assert.AreEqual("- None -", platformNames[0].Text);
@@ -166,7 +171,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Architectures();
             Expect_PlatformDataSourceSet();
             Expect_ArchDatasourceSet();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             var interactor = new OpenAsInteractor();
             interactor.Attach(dlg);
@@ -174,7 +179,34 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             When_Dialog_Loaded();
 
             Assert.IsFalse(dlg.OkButton.Enabled);
-            repository.VerifyAll();
+            mr.VerifyAll();
+        }
+
+
+        [Test]
+        public void Oai_AddressSelected_OkDisabled()
+        {
+            Given_Dialog();
+            Given_Platforms();
+            Given_Architectures();
+            Expect_PlatformDataSourceSet();
+            Expect_ArchDatasourceSet();
+            mr.ReplayAll();
+
+            var interactor = new OpenAsInteractor();
+            interactor.Attach(dlg);
+
+            When_Dialog_Loaded();
+            When_FileSelected("foo.exe");
+
+            Assert.IsFalse(dlg.OkButton.Enabled);
+            mr.VerifyAll();
+        }
+
+        private void When_FileSelected(string fileName)
+        {
+            dlg.FileName.Text = fileName;
+            dlg.FileName.Raise(t => t.TextChanged += null, dlg.FileName, EventArgs.Empty);
         }
     }
 }

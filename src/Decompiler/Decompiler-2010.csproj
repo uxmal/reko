@@ -378,6 +378,8 @@
     <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />
     <Compile Include="Gui\Windows\TextBoxWrapper.cs" />
     <Compile Include="Gui\TreeNodeDesigner.cs" />
+    <Compile Include="Gui\Windows\ToolStripButtonWrapper.cs" />
+    <Compile Include="Gui\Windows\ToolStripTextBoxWrapper.cs" />
     <Compile Include="Gui\Windows\TreeViewWrapper.cs" />
     <Compile Include="Gui\Windows\TypeMarker.cs" />
     <Compile Include="Gui\Windows\ViewService.cs" />
@@ -636,9 +638,11 @@
     <Content Include="Gui\decompiler-menus.xml" />
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
+    <None Include="Images\Back.bmp" />
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />
+    <None Include="Images\Forward.bmp" />
     <Content Include="Images\NewBo.ico" />
     <Content Include="Images\NextPhase.ico" />
     <Content Include="Images\Open.ico" />

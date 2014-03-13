@@ -29,20 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LowLevelView));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.memCtrl = new Decompiler.Gui.Windows.Controls.MemoryControl();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblMemoryView = new System.Windows.Forms.Label();
             this.disassemblyControl1 = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
             this.lblDisassembly = new System.Windows.Forms.Label();
-            this.lblMemoryView = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.lblSegmentCaption = new System.Windows.Forms.Label();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.btnBack = new System.Windows.Forms.ToolStripButton();
+            this.btnForward = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.txtAddress = new System.Windows.Forms.ToolStripTextBox();
             this.lowLeveImages = new System.Windows.Forms.ImageList(this.components);
+            this.btnGo = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -86,15 +88,18 @@
             this.memCtrl.TopAddress = null;
             this.memCtrl.WordSize = ((uint)(1u));
             // 
-            // panel1
+            // lblMemoryView
             // 
-            this.panel1.Controls.Add(this.lblSegmentCaption);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.panel1.Location = new System.Drawing.Point(0, 25);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(858, 61);
-            this.panel1.TabIndex = 1;
+            this.lblMemoryView.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.lblMemoryView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblMemoryView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMemoryView.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.lblMemoryView.Location = new System.Drawing.Point(0, 0);
+            this.lblMemoryView.Name = "lblMemoryView";
+            this.lblMemoryView.Size = new System.Drawing.Size(858, 18);
+            this.lblMemoryView.TabIndex = 1;
+            this.lblMemoryView.Text = "Memory View";
+            this.lblMemoryView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // disassemblyControl1
             // 
@@ -103,10 +108,12 @@
             this.disassemblyControl1.Image = null;
             this.disassemblyControl1.Location = new System.Drawing.Point(0, 18);
             this.disassemblyControl1.Name = "disassemblyControl1";
+            this.disassemblyControl1.SelectedAddress = null;
             this.disassemblyControl1.Size = new System.Drawing.Size(858, 139);
             this.disassemblyControl1.StartAddress = null;
             this.disassemblyControl1.TabIndex = 0;
             this.disassemblyControl1.Text = "disassemblyControl1";
+            this.disassemblyControl1.TopAddress = null;
             // 
             // lblDisassembly
             // 
@@ -122,18 +129,15 @@
             this.lblDisassembly.Text = "Disassembly";
             this.lblDisassembly.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblMemoryView
+            // panel1
             // 
-            this.lblMemoryView.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.lblMemoryView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblMemoryView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMemoryView.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.lblMemoryView.Location = new System.Drawing.Point(0, 0);
-            this.lblMemoryView.Name = "lblMemoryView";
-            this.lblMemoryView.Size = new System.Drawing.Size(858, 18);
-            this.lblMemoryView.TabIndex = 1;
-            this.lblMemoryView.Text = "Memory View";
-            this.lblMemoryView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.panel1.Controls.Add(this.lblSegmentCaption);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.panel1.Location = new System.Drawing.Point(0, 25);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(858, 61);
+            this.panel1.TabIndex = 1;
             // 
             // lblSegmentCaption
             // 
@@ -150,32 +154,35 @@
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2,
+            this.btnBack,
+            this.btnForward,
             this.toolStripLabel1,
             this.toolStripSeparator1,
-            this.toolStripTextBox1});
+            this.txtAddress,
+            this.btnGo});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(858, 25);
             this.toolStrip.TabIndex = 3;
             this.toolStrip.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // btnBack
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "Back";
+            this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnBack.Image = global::Decompiler.Properties.Resources.Back;
+            this.btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(23, 22);
+            this.btnBack.Text = "Back";
             // 
-            // toolStripButton2
+            // btnForward
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "Forward";
+            this.btnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnForward.Image = global::Decompiler.Properties.Resources.Forward;
+            this.btnForward.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnForward.Name = "btnForward";
+            this.btnForward.Size = new System.Drawing.Size(23, 22);
+            this.btnForward.Text = "Forward";
             // 
             // toolStripLabel1
             // 
@@ -188,16 +195,25 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripTextBox1
+            // txtAddress
             // 
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 25);
+            this.txtAddress.Name = "txtAddress";
+            this.txtAddress.Size = new System.Drawing.Size(100, 25);
             // 
             // lowLeveImages
             // 
             this.lowLeveImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.lowLeveImages.ImageSize = new System.Drawing.Size(16, 16);
             this.lowLeveImages.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // btnGo
+            // 
+            this.btnGo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnGo.Image = ((System.Drawing.Image)(resources.GetObject("btnGo.Image")));
+            this.btnGo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnGo.Name = "btnGo";
+            this.btnGo.Size = new System.Drawing.Size(26, 22);
+            this.btnGo.Text = "Go";
             // 
             // LowLevelView
             // 
@@ -230,11 +246,12 @@
         private System.Windows.Forms.Label lblMemoryView;
         private System.Windows.Forms.Label lblSegmentCaption;
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton btnBack;
+        private System.Windows.Forms.ToolStripButton btnForward;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
+        private System.Windows.Forms.ToolStripTextBox txtAddress;
         private System.Windows.Forms.ImageList lowLeveImages;
+        private System.Windows.Forms.ToolStripButton btnGo;
     }
 }

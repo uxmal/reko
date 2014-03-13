@@ -578,7 +578,13 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kdis_tst()
         {
             RunTest("tst.l\t$0126(pc)", 0x4ABA, 0x0124);
+            RunTest("tst.l\t(a3,d0)", 0x4AB3, 0x0800);
         }
 
+        [Test]
+        public void M68kdis_btst()
+        {
+            RunTest("btst\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
+        }
     }
 }

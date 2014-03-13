@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		}
 
         [Test]
-        public void OpenBinary_CanAdvance()
+        public void Ipi_OpenBinary_CanAdvance()
         {
             AddFakeMemoryViewService();
             Assert.IsFalse(i.CanAdvance);
@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void OpenBinary_ShouldPopulateFields()
+        public void Ipi_OpenBinary_ShouldPopulateFields()
         {
             AddFakeMemoryViewService();
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void OpenBinary_ShouldShowMemoryWindow()
+        public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
             var memSvc = AddFakeMemoryViewService();
             memSvc.Expect(s => s.ViewImage(null)).IgnoreArguments();
@@ -102,7 +102,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
             var memSvc = mr.Stub<IMemoryViewService>();
-            site.AddService<IProjectBrowserService>(browserSvc);
             site.AddService<IMemoryViewService>(memSvc);
             browserSvc.Expect(b => b.Load(Arg<Project>.Is.NotNull, Arg<Program>.Is.NotNull));
             mr.ReplayAll();
@@ -113,7 +112,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void LeavePage()
+        public void Ipi_LeavePage()
         {
             AddFakeMemoryViewService();
             i.OpenBinary("foo.exe", new FakeDecompilerHost());

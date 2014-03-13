@@ -23,19 +23,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Gui.Forms
+namespace Decompiler.Gui.Windows
 {
-    public interface IOpenAsDialog : IDialog
+    public class ToolStripTextBoxWrapper : ITextBox
     {
-        event EventHandler Load;
+        private ToolStripTextBox textbox;
 
-        ITextBox AddressTextBox { get; }
-        ITextBox FileName { get; }
-        IServiceProvider Services { get; set; }
-        IComboBox Architectures { get; }
-        IComboBox Platforms { get; }
-        IButton BrowseButton { get; }
-        IButton OkButton { get; }
+        public ToolStripTextBoxWrapper(ToolStripTextBox textbox)
+        {
+            this.textbox = textbox;
+        }
+
+        public bool Enabled { get { return textbox.Enabled; } set { textbox.Enabled = value; } }
+        public string Text { get { return textbox.Text; } set { textbox.Text = value; } }
+
+        public event EventHandler TextChanged
+        {
+            add { textbox.TextChanged += value; }
+            remove { textbox.TextChanged -= value; }
+        }
     }
 }

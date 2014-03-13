@@ -47,14 +47,14 @@ namespace Decompiler.Core.Serialization
         {
             var file = new InputFile
             {
-                BaseAddress = Address.ToAddress(sInput.Address, 16),
+                BaseAddress = Address.Parse(sInput.Address, 16),
                 Filename = sInput.Filename,
             };
             if (sInput.UserProcedures != null)
             {
                 file.UserProcedures = sInput.UserProcedures
                         .Select(sup => new KeyValuePair<Address, SerializedProcedure>(
-                            Address.ToAddress(sup.Address, 16),
+                            Address.Parse(sup.Address, 16),
                             sup))
                         .Where(kv => kv.Key != null)
                         .ToSortedList(kv => kv.Key, kv => kv.Value);
@@ -66,7 +66,7 @@ namespace Decompiler.Core.Serialization
         {
             InputFile inputFile = new InputFile
             {
-                BaseAddress = Address.ToAddress(sp.Input.Address, 16),
+                BaseAddress = Address.Parse(sp.Input.Address, 16),
                 Filename = sp.Input.Filename,
                 DisassemblyFilename = sp.Output.DisassemblyFilename,
                 IntermediateFilename = sp.Output.IntermediateFilename,
@@ -74,7 +74,7 @@ namespace Decompiler.Core.Serialization
                 TypesFilename = sp.Output.TypesFilename,
                 UserProcedures = sp.UserProcedures
                     .Select(sup => new KeyValuePair<Address, SerializedProcedure>(
-                        Address.ToAddress(sup.Address, 16),
+                        Address.Parse(sup.Address, 16),
                         sup))
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value)
@@ -82,7 +82,7 @@ namespace Decompiler.Core.Serialization
 
             foreach (var uc in sp.UserCalls)
             {
-                var addr = Address.ToAddress(uc.InstructionAddress, 16);
+                var addr = Address.Parse(uc.InstructionAddress, 16);
                 if (addr != null)
                     inputFile.UserCalls.Add(addr, uc);
             }
