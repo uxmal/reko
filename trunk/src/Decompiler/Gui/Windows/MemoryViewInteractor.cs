@@ -102,6 +102,7 @@ namespace Decompiler.Gui.Windows
             this.control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
             this.Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
             this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            this.control.ToolBarAddressTextbox.TextChanged += ToolBarAddressTextbox_TextChanged;
 
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += FormatType;
@@ -109,6 +110,7 @@ namespace Decompiler.Gui.Windows
 
             return control;
         }
+
 
         public void SetSite(IServiceProvider sp)
         {
@@ -141,7 +143,7 @@ namespace Decompiler.Gui.Windows
                 switch (cmdId)
                 {
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
-                case CmdIds.ActionMarkType: MarkType(); return true;
+                case CmdIds.ActionMarkType: return MarkType();
                 case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
                 case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
                 }
@@ -190,12 +192,14 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        public void MarkType()
+        public bool MarkType()
         {
             var addrRange = control.MemoryView.GetAddressRange();
-            if (!addrRange.IsValid)
-                return;
-            typeMarker.Show(control.MemoryView.AddressToPoint(addrRange.Begin));
+            if (addrRange.IsValid)
+            {
+                typeMarker.Show(control.MemoryView.AddressToPoint(addrRange.Begin));
+            }
+            return true;
         }
 
         public void FormatType(object sender, TypeMarkerEventArgs e)
@@ -259,10 +263,29 @@ namespace Decompiler.Gui.Windows
 
         private void MemoryView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ignoreAddressChange)
+                return;
             this.ignoreAddressChange = true;
             this.Control.DisassemblyView.SelectedAddress = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
             this.SelectionChanged.Fire(this, e);
+            this.ignoreAddressChange = false;
+        }
+
+        void ToolBarAddressTextbox_TextChanged(object sender, EventArgs e)
+        {
+            if (ignoreAddressChange)
+                return;
+            Address addr;
+            if (!Address.TryParse(Control.ToolBarAddressTextbox.Text, 16, out addr))
+                return;
+            if (!image.IsValidAddress(addr))
+                return;
+            this.ignoreAddressChange = true;
+            this.Control.MemoryView.SelectedAddress = addr;
+            this.Control.MemoryView.TopAddress = addr;
+            this.Control.DisassemblyView.SelectedAddress = addr;
+            this.Control.DisassemblyView.TopAddress = addr;
             this.ignoreAddressChange = false;
         }
     }

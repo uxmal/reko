@@ -88,7 +88,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 {
                     foreach (var hunk_num in relocHunk.reloc.Keys)
                     {
-                        // get address of other hunk
+                        // Get address of other hunk
                         var hunk_addr = addr[hunk_num];
                         var offsets = relocHunk.reloc[hunk_num];
                         foreach (var offset in offsets)

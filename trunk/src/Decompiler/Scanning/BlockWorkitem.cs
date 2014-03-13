@@ -281,7 +281,7 @@ namespace Decompiler.Scanning
         public bool VisitCall(RtlCall call)
         {
             var site = state.OnBeforeCall(stackReg, call.ReturnAddressSize);
-            
+            ProcedureSignature sig;
             Address addr = call.Target as Address;
             if (addr != null)
             {
@@ -291,9 +291,10 @@ namespace Decompiler.Scanning
 
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
-                if (callee.Signature != null && callee.Signature.ArgumentsValid)
+                sig = callee.Signature; 
+                if (sig != null && sig.ArgumentsValid)
                 {
-                    Emit(BuildApplication(pcCallee, callee.Signature, site));
+                    Emit(BuildApplication(pcCallee, sig, site));
                 }
                 else 
                 {
@@ -304,7 +305,7 @@ namespace Decompiler.Scanning
                 {
                     scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
-                state.OnAfterCall(stackReg, callee.Signature, eval);
+                state.OnAfterCall(stackReg, sig, eval);
                 return !callee.Characteristics.Terminates;
             }
 
@@ -314,9 +315,10 @@ namespace Decompiler.Scanning
                 var ppp = procCallee.Procedure as PseudoProcedure;
                 if (ppp != null)
                 {
-                    if (ppp.Signature != null && ppp.Signature.ArgumentsValid)
+                    sig = ppp.Signature; 
+                    if (sig != null && sig.ArgumentsValid)
                     {
-                        Emit(BuildApplication(procCallee, ppp.Signature, site));
+                        Emit(BuildApplication(procCallee, sig, site));
                     }
                     else
                     {
@@ -326,7 +328,7 @@ namespace Decompiler.Scanning
                     return !ppp.Characteristics.Terminates;
                 }
             }
-            var sig = scanner.GetCallSignatureAtAddress(ric.Address);
+            sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
                 Emit(BuildApplication(call.Target, sig, site));

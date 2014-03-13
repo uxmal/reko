@@ -439,7 +439,7 @@ namespace Decompiler.Scanning
 
         public void EnqueueUserProcedure(SerializedProcedure sp)
         {
-            var addr = Address.ToAddress(sp.Address, 16);
+            var addr = Address.Parse(sp.Address, 16);
             var proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {

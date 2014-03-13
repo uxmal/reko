@@ -3489,16 +3489,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        private static M68kInstruction d68000_tst_32(M68kDisassembler dasm)
-        {
-            return new M68kInstruction
-            {
-                code = Opcode.tst,
-                dataWidth = PrimitiveType.Word32,
-                op1 = dasm.get_ea_mode_str_32(dasm.instruction)
-            };
-        }
-
         private static M68kInstruction d68020_tst_a_32(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
@@ -3762,7 +3752,7 @@ namespace Decompiler.Arch.M68k
         {
 //  opcode handler             mask    match   ea mask 
 	new OpRec(d68000_1010         , 0xf000, 0xa000, 0x000),
-	new OpRec(d68000_1111         , 0xf000, 0xf000, 0x000),
+	new OpRec("", 0xf000, 0xf000, 0x000, Opcode.illegal),               // d68000_1111
 	new OpRec(d68000_abcd_rr      , 0xf1f8, 0xc100, 0x000),
 	new OpRec(d68000_abcd_mm      , 0xf1f8, 0xc108, 0x000),
 	new OpRec("s6:E0,D9", 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8
@@ -3834,8 +3824,8 @@ namespace Decompiler.Arch.M68k
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec(d68000_btst_r       , 0xf1c0, 0x0100, 0xbff),
-	new OpRec(d68000_btst_s       , 0xffc0, 0x0800, 0xbfb),
+	new OpRec("D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),         // d68000_btst_r
+	new OpRec("Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),         // d68000_btst_s
 	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
 	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
 	new OpRec(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
@@ -4053,7 +4043,7 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68020_tst_pcdi_16  , 0xffff, 0x4a7a, 0x000),
 	new OpRec(d68020_tst_pcix_16  , 0xffff, 0x4a7b, 0x000),
 	new OpRec(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
-	new OpRec(d68000_tst_32       , 0xffc0, 0x4a80, 0xbf8),
+	new OpRec("sl:E0", 0xffc0, 0x4a80, 0xbf8, Opcode.tst),      // d68000_tst_32
 	new OpRec(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
 	new OpRec("sl:E0", 0xffff, 0x4aba, 0x000, Opcode.tst),          // d68020_tst_pcdi_32
 	new OpRec(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),

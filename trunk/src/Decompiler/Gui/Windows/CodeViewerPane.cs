@@ -170,7 +170,7 @@ namespace Decompiler.Gui.Windows
 
         private Procedure GetProcedureFromUrl(Uri uri)
         {
-            Address addr = Address.ToAddress(uri.PathAndQuery, 16);
+            Address addr = Address.Parse(uri.PathAndQuery, 16);
             return decompilerSvc.Decompiler.Program.Procedures[addr];
         }
 

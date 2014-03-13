@@ -37,6 +37,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
             InitializeComponent();
 
+            AddressTextBox = new TextBoxWrapper(txtAddress);
             Architectures = new ComboBoxWrapper(ddlArchitectures);
             Platforms = new ComboBoxWrapper(ddlEnvironments);
             FileName = new TextBoxWrapper(textBox1);
@@ -50,6 +51,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public ITextBox FileName { get; private set; }
 
+        public ITextBox AddressTextBox { get; private set; }
         public IComboBox Architectures { get; private set; }
         public IComboBox Platforms { get; private set; }
         public IButton BrowseButton { get; private set; }

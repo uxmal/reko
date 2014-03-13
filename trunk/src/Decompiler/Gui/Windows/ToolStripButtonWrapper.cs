@@ -23,19 +23,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Gui.Forms
+namespace Decompiler.Gui.Windows
 {
-    public interface IOpenAsDialog : IDialog
+    public class ToolStripButtonWrapper : IButton
     {
-        event EventHandler Load;
+        private ToolStripButton btn;
 
-        ITextBox AddressTextBox { get; }
-        ITextBox FileName { get; }
-        IServiceProvider Services { get; set; }
-        IComboBox Architectures { get; }
-        IComboBox Platforms { get; }
-        IButton BrowseButton { get; }
-        IButton OkButton { get; }
+        public ToolStripButtonWrapper(ToolStripButton btn)
+        {
+            this.btn = btn;
+        }
+
+        public bool Enabled { get { return btn.Enabled; } set { btn.Enabled = value; } }
+
+        public void PerformClick()
+        {
+            btn.PerformClick();
+        }
+
+        public event EventHandler Click
+        {
+            add { btn.Click += value; }
+            remove { btn.Click -= value; }
+        }
     }
 }

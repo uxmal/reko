@@ -42,7 +42,6 @@ namespace Decompiler.Gui.Windows.Forms
         private IDecompilerService decompilerSvc;
         private IStatusBarService sbSvc;
         private IMemoryViewService memSvc;
-        private IDisassemblyViewService disSvc;
 
         public LoadedPageInteractor()
         {
@@ -76,7 +75,6 @@ namespace Decompiler.Gui.Windows.Forms
             }
             return base.Execute(ref cmdSet, cmdId);
         }
-
 
         public bool EditFindBytes()
         {
@@ -118,8 +116,6 @@ namespace Decompiler.Gui.Windows.Forms
         public override void EnterPage()
         {
             memSvc.ViewImage(Decompiler.Program);
-            disSvc.ShowWindow();
-            disSvc.Clear();
         }
 
         public override bool LeavePage()
@@ -133,9 +129,10 @@ namespace Decompiler.Gui.Windows.Forms
             if (addrRange.IsValid)
             {
                 var proc = Decompiler.ScanProcedure(addrRange.Begin);
-                SerializedProcedure userp = new SerializedProcedure();
-                userp.Address = addrRange.Begin.ToString();
-                userp.Name = proc.Name;
+                SerializedProcedure userp = new SerializedProcedure {
+                    Address = addrRange.Begin.ToString(),
+                    Name = proc.Name,
+                };
                 //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
                 Decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
                 memSvc.InvalidateWindow();
@@ -166,7 +163,6 @@ namespace Decompiler.Gui.Windows.Forms
                     decompilerSvc = Site.RequireService<IDecompilerService>();
                     sbSvc = Site.RequireService<IStatusBarService>();
                     memSvc = Site.RequireService<IMemoryViewService>();
-                    disSvc = Site.RequireService<IDisassemblyViewService>();
                 }
                 else
                 {

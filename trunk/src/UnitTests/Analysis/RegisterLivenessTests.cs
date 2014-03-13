@@ -37,6 +37,17 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
+		protected override void RunTest(Program prog, TextWriter writer)
+		{
+			var eventListener = new FakeDecompilerEventListener();
+			var dfa = new DataFlowAnalysis(prog, eventListener);
+			var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
+			trf.Compute();
+			trf.RewriteBasicBlocks();
+			var rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
+			DumpProcedureFlows(prog, dfa, rl, writer);
+		}
+
 		[Test]
 		public void RlDataConstraint()
 		{
@@ -184,16 +195,5 @@ namespace Decompiler.UnitTests.Analysis
         {
             RunTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
         }
-
-        protected override void RunTest(Program prog, TextWriter writer)
-		{
-            var eventListener = new FakeDecompilerEventListener();
-			var dfa = new DataFlowAnalysis(prog, eventListener);
-            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
-			trf.Compute();
-            trf.RewriteBasicBlocks();
-			var rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
-			DumpProcedureFlows(prog, dfa, rl, writer);
-		}
 	}
 }

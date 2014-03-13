@@ -49,7 +49,7 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 			try
 			{
-				Address = Address.ToAddress(dlg.MemoryAddress.Text, 16);
+				Address = Address.Parse(dlg.MemoryAddress.Text, 16);
 			} 
 			catch 
 			{

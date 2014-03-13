@@ -38,6 +38,7 @@ namespace Decompiler.Gui.Forms
             this.dlg = dlg;
             dlg.Load += dlg_Load;
             dlg.BrowseButton.Click += BrowseButton_Click;
+            dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
         }
 
         private void dlg_Load(object sender, EventArgs e)
@@ -45,6 +46,20 @@ namespace Decompiler.Gui.Forms
             var dcCfg = dlg.Services.RequireService<IDecompilerConfigurationService>();
             PopulateArchitectures(dcCfg);
             PopulatePlatforms(dcCfg);
+            dlg.AddressTextBox.Text = "0";
+        }
+
+        private void EnableControls()
+        {
+            Address addr;
+            if (!Address.TryParse(dlg.AddressTextBox.Text, 16, out addr))
+            {
+                dlg.OkButton.Enabled = false;
+            }
+            else
+            {
+                dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0;
+            }
         }
 
         private void PopulatePlatforms(IDecompilerConfigurationService dcCfg)
@@ -78,6 +93,11 @@ namespace Decompiler.Gui.Forms
            var fileName = uiSvc.ShowOpenFileDialog("");
            if (fileName != null)
                dlg.FileName.Text = fileName;
+        }
+
+        void AddressTextBox_TextChanged(object sender, EventArgs e)
+        {
+            EnableControls();
         }
     }
 }

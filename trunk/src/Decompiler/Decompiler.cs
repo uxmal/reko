@@ -357,7 +357,7 @@ namespace Decompiler
                  where sc != null && sc.Signature != null
                  let sser = new ProcedureSerializer(Program.Architecture, "stdapi")
                  select new KeyValuePair<Address, ProcedureSignature>(
-                     Address.ToAddress(sc.InstructionAddress, 16),
+                     Address.Parse(sc.InstructionAddress, 16),
                      sser.Deserialize(sc.Signature, Program.Architecture.CreateFrame())
                  )).ToDictionary(item => item.Key, item => item.Value);
         }

@@ -58,11 +58,8 @@ namespace Decompiler.UnitTests.Gui.Windows
             sc.AddService(typeof(IDecompilerShellUiService), shellUi);
             sc.AddService<IDecompilerService>(decSvc);
 
-            var interactor = new MemoryViewInteractor();
-            interactor.SetSite(sc);
-            interactor.CreateControl();
-
             var service = repository.Stub<MemoryViewServiceImpl>(sc);
+            var interactor = new MemoryViewInteractor();
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
 
             var svc = (IMemoryViewService)service;
@@ -75,7 +72,10 @@ namespace Decompiler.UnitTests.Gui.Windows
             Expect.Call(windowFrame.Show);
             repository.ReplayAll();
 
+            interactor.SetSite(sc);
+            interactor.CreateControl();
             svc.ShowMemoryAtAddress(new Program(), new Address(0x10000));
+
             repository.VerifyAll();
         }
 
@@ -99,12 +99,20 @@ namespace Decompiler.UnitTests.Gui.Windows
             uiSvc.Stub(x => x.CreateWindow("", "", null))
                 .IgnoreArguments()
                 .Return(repository.Stub<IWindowFrame>());
+            uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
 
             var service = repository.Stub<MemoryViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
+            var image = new LoadedImage(new Address(0x1000), new byte[300]);
+            var program = new Program {
+                Image = image,
+                ImageMap = new ImageMap(image)
+            };
             repository.ReplayAll();
 
-            service.ShowMemoryAtAddress(null, new Address(0x4711));
+            interactor.SetSite(sc);
+            interactor.CreateControl();
+            service.ShowMemoryAtAddress(program, new Address(0x4711));
 
             repository.VerifyAll();
         }

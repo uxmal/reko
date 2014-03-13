@@ -35,48 +35,48 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	{
         private FinalPageInteractor interactor;
         private IServiceContainer sc;
-        private MockRepository repository;
+        private MockRepository mr;
         private FakeComponentSite site;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
             sc = new ServiceContainer();
             site = new FakeComponentSite(sc);
-            site.AddService<IDecompilerService>(repository.Stub<IDecompilerService>());
-            site.AddService<IDecompilerShellUiService>(repository.Stub<IDecompilerShellUiService>());
-            site.AddService<IWorkerDialogService>(repository.Stub<IWorkerDialogService>());
+            site.AddService<IDecompilerService>(mr.Stub<IDecompilerService>());
+            site.AddService<IDecompilerShellUiService>(mr.Stub<IDecompilerShellUiService>());
+            site.AddService<IWorkerDialogService>(mr.Stub<IWorkerDialogService>());
         }
 
 		[Test]
-		public void ConnectToBrowserService()
+        public void Fpi_ConnectToBrowserService()
 		{
             interactor = new FinalPageInteractor();
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             interactor.Site = site;
             interactor.ConnectToBrowserService();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
 		}
 
         [Test]
-        public void ShowCodeWindowWhenUserSelectsFunction()
+        public void Fpi_ShowCodeWindowWhenUserSelectsFunction()
         {
             interactor = new FinalPageInteractor();
             var proc = Procedure.Create(new Address(0x12345), new Frame(PrimitiveType.Word32));
-            var codeService = repository.DynamicMock<ICodeViewerService>();
+            var codeService = mr.DynamicMock<ICodeViewerService>();
             codeService.Expect(x => x.DisplayProcedure(
                 Arg<Procedure>.Is.Same(proc)));
             site.AddService<ICodeViewerService>(codeService);
 
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             interactor.Site = site;
             interactor.ConnectToBrowserService();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 	}
 }
