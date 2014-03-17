@@ -62,6 +62,11 @@ namespace Decompiler.Core.Serialization
             throw new NotImplementedException();
         }
 
+        public SerializedType VisitString(StringType str)
+        {
+            throw new NotImplementedException();
+        }
+
         public SerializedType VisitStructure(StructureType str)
         {
             throw new NotImplementedException();

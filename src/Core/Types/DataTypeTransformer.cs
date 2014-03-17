@@ -80,6 +80,12 @@ namespace Decompiler.Core.Types
 			return ptr;
 		}
 
+        public virtual DataType VisitString(StringType str)
+        {
+            return str.CharType.Accept(this);
+            return str;
+        }
+
         public virtual DataType VisitTypeReference(TypeReference typeref)
         {
             return new TypeReference(typeref.Name, typeref.Referent.Accept(this));

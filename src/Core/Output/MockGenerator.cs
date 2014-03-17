@@ -462,6 +462,11 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        public int VisitString(StringType str)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitStructure(StructureType str)
         {
             throw new NotImplementedException();
