@@ -28,6 +28,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
@@ -71,6 +72,8 @@ namespace Decompiler.Gui.Windows.Forms
                     return GotoAddress();
                 case CmdIds.ActionMarkProcedure:
                     return MarkAndScanProcedure(); 
+                case CmdIds.ViewShowUnscanned:
+                    return ViewUnscannedBlocks();
                 }
             }
             return base.Execute(ref cmdSet, cmdId);
@@ -137,6 +140,13 @@ namespace Decompiler.Gui.Windows.Forms
                 Decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
                 memSvc.InvalidateWindow();
             }
+            return true;
+        }
+
+        public bool ViewUnscannedBlocks()
+        {
+            var srSvc = Site.RequireService<ISearchResultService>();
+            Decompiler.GetScannedBlocks();
             return true;
         }
 

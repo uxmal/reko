@@ -33,7 +33,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public class MemoryViewInteractor : IWindowPane, ICommandTarget
+    public class LowLevelViewInteractor : IWindowPane, ICommandTarget
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
@@ -102,7 +102,7 @@ namespace Decompiler.Gui.Windows
             this.control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
             this.Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
             this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
-            this.control.ToolBarAddressTextbox.TextChanged += ToolBarAddressTextbox_TextChanged;
+            this.control.ToolBarGoButton.Click += ToolBarGoButton_Click;
 
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += FormatType;
@@ -110,7 +110,6 @@ namespace Decompiler.Gui.Windows
 
             return control;
         }
-
 
         public void SetSite(IServiceProvider sp)
         {
@@ -272,7 +271,7 @@ namespace Decompiler.Gui.Windows
             this.ignoreAddressChange = false;
         }
 
-        void ToolBarAddressTextbox_TextChanged(object sender, EventArgs e)
+        void ToolBarGoButton_Click(object sender, EventArgs e)
         {
             if (ignoreAddressChange)
                 return;

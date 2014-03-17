@@ -42,9 +42,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     [TestFixture]
     public class AnalyzedPageInteractorTests
     {
+        private MockRepository mr;
         private Program prog;
         private IMainForm form;
-        private MockRepository repository;
         private AnalyzedPageInteractorImpl interactor;
         private IDecompilerShellUiService uiSvc;
         private ICodeViewerService codeViewSvc;
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             form = new MainForm();
-            repository = new MockRepository();
+            mr = new MockRepository();
 
             sc = new ServiceContainer();
             uiSvc = AddService<IDecompilerShellUiService>();
@@ -84,8 +84,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        [Ignore]
-        public void AnpiPopulate()
+        public void Anpi_Populate()
         {
             CreateInteractor();
             form.Show();
@@ -96,7 +95,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             //KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) form.BrowserList.Items[0].Tag;
             //Assert.AreEqual(0x12345, entry.Key.Offset);
             //Assert.AreEqual("foo", entry.Value.Name);
-
         }
 
         private void CreateInteractor()
@@ -107,8 +105,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        [Ignore]
-        public void AnpiSelectProcedure()
+        public void Anpi_SelectProcedure()
         {
             codeViewSvc.Expect(s => s.DisplayProcedure(
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
@@ -118,7 +115,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             disasmViewSvc.Expect(s => s.DisassembleStartingAtAddress(
                 Arg<Address>.Matches(address => address.Linear == 0x12346)));
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateInteractor();
             form.Show();
@@ -136,17 +133,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             //form.BrowserList.Items[1].Selected = true;
             //form.BrowserList.FocusedItem = form.BrowserList.Items[1];
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         [Test]
-        [Ignore]
-        public void AnpiShowEditProcedureDialog()
+        public void Anpi_ShowEditProcedureDialog()
         {
             uiSvc.Expect(s => s.ShowModalDialog(
                     Arg<ProcedureDialog>.Is.TypeOf))
                 .Return(DialogResult.Cancel);
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateInteractor();
 
@@ -162,13 +158,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             //form.BrowserList.Items[0].Selected = true;
 
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
 
         private T AddService<T>() where T : class
         {
-            var svc = repository.DynamicMock<T>();
+            var svc = mr.DynamicMock<T>();
             sc.AddService(typeof(T), svc);
             return svc;
         }

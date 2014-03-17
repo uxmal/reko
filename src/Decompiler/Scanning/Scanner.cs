@@ -43,15 +43,17 @@ namespace Decompiler.Scanning
         void EnqueueUserProcedure(SerializedProcedure sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
+        //$REVIEW: the following fields look an awful lot like a Program to me?
         CallGraph CallGraph { get; }
         LoadedImage Image { get; }
-        ImageMap ImageMap { get; }  //$REVIEW: don't expose this?
+        ImageMap ImageMap { get; } 
         IProcessorArchitecture Architecture { get; }
         Platform Platform { get; }
         IDictionary<Address, VectorUse> VectorUses { get; }
 
         Block AddBlock(Address addr, Procedure proc, string blockName);
         void AddDiagnostic(Address addr, Diagnostic d);
+        IEnumerable<KeyValuePair<Address, Block>> GetBlocks();
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
         PseudoProcedure GetImportedProcedure(uint linAddr);
         void TerminateBlock(Block block, Address addrEnd);
@@ -87,8 +89,8 @@ namespace Decompiler.Scanning
         private PriorityQueue<WorkItem> queue;
         private LoadedImage image;
         private ImageMap imageMap;
-        private Map<uint, BlockRange> blocks;
-        private Dictionary<Block, uint> blockStarts;
+        private Map<Address, BlockRange> blocks;
+        private Dictionary<Block, Address> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private IDictionary<Address, ProcedureSignature> callSigs;
         private IDictionary<Address, ImageMapVectorTable> vectors;
@@ -117,8 +119,8 @@ namespace Decompiler.Scanning
                 throw new InvalidOperationException("Program must have an image map.");
             this.Procedures = program.Procedures;
             this.queue = new PriorityQueue<WorkItem>();
-            this.blocks = new Map<uint, BlockRange>();
-            this.blockStarts = new Dictionary<Block, uint>();
+            this.blocks = new Map<Address, BlockRange>();
+            this.blockStarts = new Dictionary<Block, Address>();
             this.pseudoProcs = program.PseudoProcedures;
             this.vectors = program.Vectors;
             this.VectorUses = new Dictionary<Address, VectorUse>();
@@ -168,8 +170,8 @@ namespace Decompiler.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName);
-            blocks.Add(addr.Linear, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint)image.Bytes.Length));
-            blockStarts.Add(b, addr.Linear);
+            blocks.Add(addr, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint)image.Bytes.Length));
+            blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
 
             imageMap.AddItem(addr, new ImageMapBlock { Block = b }); 
@@ -184,7 +186,7 @@ namespace Decompiler.Scanning
         public void TerminateBlock(Block block, Address addr)
         {
             BlockRange range;
-            if (blocks.TryGetLowerBound(addr.Linear, out range) && range.Start < addr.Linear)
+            if (blocks.TryGetLowerBound(addr, out range) && range.Start < addr.Linear)
                 range.End = addr.Linear;
             imageMap.TerminateItem(addr);
         }
@@ -315,6 +317,11 @@ namespace Decompiler.Scanning
                 }
             }
             return block;
+        }
+
+        public IEnumerable<KeyValuePair<Address, Block>> GetBlocks()
+        {
+            return blocks.Select(de => new KeyValuePair<Address, Block>(de.Key, de.Value.Block));
         }
 
         public bool IsBlockLinearProcedureExit(Block block)
@@ -456,7 +463,7 @@ namespace Decompiler.Scanning
         public Block FindContainingBlock(Address address)
         {
             BlockRange b;
-            if (blocks.TryGetLowerBound(address.Linear, out b) && address.Linear < b.End)
+            if (blocks.TryGetLowerBound(address, out b) && address.Linear < b.End)
             {
                 if (b.Block.Succ.Count == 0)
                     return b.Block;
@@ -473,7 +480,7 @@ namespace Decompiler.Scanning
         public Block FindExactBlock(Address address)
         {
             BlockRange b;
-            if (blocks.TryGetValue(address.Linear, out b))
+            if (blocks.TryGetValue(address, out b))
                 return b.Block;
             else
                 return null;

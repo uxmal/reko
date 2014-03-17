@@ -24,6 +24,7 @@ using Decompiler.Core.Services;
 using Decompiler.Gui;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -36,10 +37,12 @@ namespace Decompiler.UnitTests.Gui
     {
         ServiceContainer sc;
         IDecompilerService svc;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             sc = new ServiceContainer();
             svc = new DecompilerService();
             sc.AddService(typeof(IDecompilerService), svc);
@@ -47,7 +50,7 @@ namespace Decompiler.UnitTests.Gui
         }
         
         [Test]
-        public void NotifyOnChangedDecompiler()
+        public void DecSvc_NotifyOnChangedDecompiler()
         {
             DecompilerDriver d = new DecompilerDriver(null, null, sc);
             bool decompilerChangedEventFired = true;
@@ -62,21 +65,35 @@ namespace Decompiler.UnitTests.Gui
         }
 
         [Test]
-        public void EmptyDecompilerProjectName()
+        public void DecSvc_EmptyDecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
             Assert.IsEmpty(svc.ProjectName, "Shouldn't have project name available.");
         }
 
         [Test]
-        public void DecompilerProjectName()
+        public void DecSvc_DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
+            var loader = mr.StrictMock<Decompiler.Loading.LoaderBase>();
+            var host = mr.StrictMock<DecompilerHost>();
+            var arch = mr.StrictMock<IProcessorArchitecture>();
+            var platform = mr.StrictMock<Platform>(sc, arch);
+            var dec = new DecompilerDriver(loader, host, sc);
+            var bytes = new byte[100];
+            var image = new LoadedImage(new Address(0x1000), bytes);
+            var imageMap = new ImageMap(image);
+            var prog = new Program(image, imageMap, arch, platform);
+            loader.Stub(l => l.LoadImageBytes("foo\\bar\\baz.exe", 0)).Return(bytes);
+            loader.Stub(l => l.Load(bytes, null)).Return(prog);
+            mr.ReplayAll();
 
-            svc.Decompiler = new FakeDecompiler(new FakeLoader());
+            svc.Decompiler = dec;
             svc.Decompiler.LoadProgram("foo\\bar\\baz.exe");
+
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");
+            mr.VerifyAll();
         }
     }
 }

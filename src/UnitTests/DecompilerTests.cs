@@ -25,6 +25,7 @@ using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -36,14 +37,16 @@ namespace Decompiler.UnitTests
     [TestFixture]
     public class DecompilerTests
     {
-        FakeLoader loader;
+        MockRepository mr;
+        LoaderBase loader;
         TestDecompiler decompiler;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             var config = new FakeDecompilerConfiguration();
-            loader = new FakeLoader();
+            loader = mr.StrictMock<LoaderBase>();
             var host = new FakeDecompilerHost();
             var sp = new ServiceContainer();
             sp.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
@@ -51,38 +54,49 @@ namespace Decompiler.UnitTests
         }
 
         [Test]
-        public void LoadIncompleteProject()
+        public void Dec_LoadIncompleteProject()
         {
-            loader.ImageBytes = Encoding.UTF8.GetBytes(
-@"<?xml version=""1.0"" encoding=""UTF-8""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler"">
-</project>");
-            loader.ThrowOnLoadImage(new FileNotFoundException("file.dcproject"), 1);
+            loader.Stub(l => l.LoadImageBytes("file.dcproject", 0))
+                .Return(Encoding.UTF8.GetBytes(
+                    @"<?xml version=""1.0"" encoding=""UTF-8""?>
+                    <project xmlns=""http://schemata.jklnet.org/Decompiler"">
+                    </project>"));
+            //loader.Stub(l => l.Load.Load(.ThrowOnLoadImage(new FileNotFoundException("file.dcproject"), 1);
+            mr.ReplayAll();
 
             try
             {
                 decompiler.LoadProgram("file.dcproject");
                 Assert.Fail("Should have thrown exception.");
             }
-            catch
+            catch (ArgumentOutOfRangeException)
             {
                 Assert.IsNotNull(decompiler.Project);
                 Assert.AreEqual(0, decompiler.Project.InputFiles.Count);
                 Assert.IsNull(decompiler.Program);
+                mr.VerifyAll();
             }
         }
 
         [Test]
-        public void LoadProjectFileNoBom()
+        public void Dec_LoadProjectFileNoBom()
         {
-            loader.ImageBytes = new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
-                "<input><filename>foo.bar</filename></input></project>");
+            byte [] bytes = new byte[1000];
+            loader.Stub(l => l.LoadImageBytes("test.dcproject", 0))
+                .Return(new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
+                    "<input><filename>foo.bar</filename></input></project>"));
+            loader.Stub(l => l.LoadImageBytes("foo.bar", 0)).Return(bytes);
+            loader.Stub(l => l.Load(bytes, null));
+            mr.ReplayAll();
+
             decompiler.LoadProgram("test.dcproject");
+
             Assert.AreEqual("foo.bar", decompiler.Project.InputFiles[0].Filename);
+            mr.VerifyAll();
         }
 
         [Test]
-        public void LoadCallSignatures()
+        public void Dec_LoadCallSignatures()
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
             Program prog = new Program();

@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Gui
         public void ParseEmpty()
         {
             DataType dt = parser.Parse("");
-            Assert.IsNull(dt);
+            Assert.AreEqual("<unknown>", dt.ToString());
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Gui
         public void IncompleteArray_Fail()
         {
             var dt = parser.Parse("a");        // incomplete array, not a valid type
-            Assert.IsNull(dt);
+            Assert.AreEqual("(arr <unknown>)", dt.ToString());
         }
 
         [Test]
@@ -121,6 +121,48 @@ namespace Decompiler.UnitTests.Gui
         {
             var dt = parser.Parse("apfn");
             Assert.AreEqual("(arr pfn32)", dt.ToString());
+        }
+
+        [Test]
+        public void Wide_Zero_Terminated_string()
+        {
+            var dt = parser.Parse("wsz");
+            Assert.AreEqual("(arr wchar_t)", dt.ToString());
+        }
+
+        [Test]
+        public void Length_Prefixed_byte_string()
+        {
+            var dt = parser.Parse("si8");
+            Assert.AreEqual("(struct (0 int8 length) (1 (arr char) chars))", dt.ToString());
+        }
+
+        [Test]
+        public void ParseWord()
+        {
+            var dt = parser.Parse("w");
+            Assert.AreEqual("word32", dt.ToString());
+        }
+
+        [Test]
+        public void Parse_ushort()
+        {
+            var dt = parser.Parse("us");
+            Assert.AreEqual("uint16", dt.ToString());
+        }
+
+        [Test]
+        public void Parse_signed_word()
+        {
+            var dt = parser.Parse("iw");
+            Assert.AreEqual("int32", dt.ToString());
+        }
+
+        [Test]
+        public void Parse_single_precision_real()
+        {
+            var dt = parser.Parse("r32");
+            Assert.AreEqual("real32", dt.ToString());
         }
     }
 }

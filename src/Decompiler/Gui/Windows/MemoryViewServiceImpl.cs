@@ -29,7 +29,7 @@ namespace Decompiler.Gui.Windows
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
-        private MemoryViewInteractor mvi;
+        private LowLevelViewInteractor mvi;
 
         public const string ViewWindowType = "memoryViewWindow";
 
@@ -75,9 +75,9 @@ namespace Decompiler.Gui.Windows
 
         #endregion
 
-        public virtual MemoryViewInteractor CreateMemoryViewInteractor()
+        public virtual LowLevelViewInteractor CreateMemoryViewInteractor()
         {
-            return new MemoryViewInteractor();
+            return new LowLevelViewInteractor();
         }
 
         void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)

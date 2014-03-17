@@ -309,7 +309,7 @@
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\MemoryViewInteractorTests.cs">
+    <Compile Include="Gui\Windows\LowLevelViewInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\MemoryViewServiceTests.cs">
@@ -346,7 +346,6 @@
     <Compile Include="Mocks\FactorialMock.cs" />
     <Compile Include="Mocks\FakeComponentSite.cs" />
     <Compile Include="Mocks\FakeDecompilerHost.cs" />
-    <Compile Include="Mocks\FakeLoader.cs" />
     <Compile Include="Mocks\FakeUiService.cs" />
     <Compile Include="Mocks\FakeWorkerDialogService.cs" />
     <Compile Include="Mocks\LiveCopyMock.cs" />
