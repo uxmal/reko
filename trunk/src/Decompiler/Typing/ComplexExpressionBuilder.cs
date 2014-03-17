@@ -237,6 +237,11 @@ namespace Decompiler.Typing
 			return RewritePointer(memptr, memptr.Pointee, ((MemberPointer) dtOriginal).Pointee);
 		}
 
+        public Expression VisitString(StringType str)
+        {
+            throw new NotImplementedException();
+        }
+
 		public Expression VisitStructure(StructureType str)
 		{
 			StructureField field = str.Fields.LowerBound(this.offset);

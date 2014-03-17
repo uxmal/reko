@@ -35,13 +35,14 @@ namespace Decompiler.Core.Types
 		private const int MemPtr = 2;
 		private const int Fn =     3;
 		private const int Array =  4;
-		private const int Struct = 5;
-		private const int Union =  6;
-        private const int TRef =   7;
-        private const int TVar =   8;
-		private const int EqClass= 9;
-		private const int Unk =    10;
-        private const int Void =   11;
+        private const int String = 5;
+		private const int Struct = 6;
+		private const int Union =  7;
+        private const int TRef =   8;
+        private const int TVar =   9;
+		private const int EqClass= 10;
+		private const int Unk =    11;
+        private const int Void =   12;
 
 		public DataTypeComparer()
 		{
@@ -145,6 +146,13 @@ namespace Decompiler.Core.Types
 			{
 				return Compare(ax, ay, ++count);
 			}
+
+            StringType strX = x as StringType;
+            StringType strY = y as StringType;
+            if (strX != null && strY != null)
+            {
+                return Compare(strX, strY, ++count);
+            }
 			throw new NotImplementedException(string.Format("NYI: comparison between {0} and {1}", x.GetType(), y.GetType()));
 		}
 
@@ -173,6 +181,20 @@ namespace Decompiler.Core.Types
 				return d;
 			return x.Length - y.Length;
 		}
+
+        public int Compare(StringType x, StringType y, int count)
+        {
+            int d = Compare(x.CharType, y.CharType, ++count);
+            if (d != 0)
+                return d;
+            if (x.LengthPrefixType == null && y.LengthPrefixType == null)
+                return 0;
+            if (x.LengthPrefixType == null)
+                return -1;
+            if (y.LengthPrefixType == null)
+                return 1;
+            return Compare(x.LengthPrefixType, y.LengthPrefixType, ++count);
+        }
 
 		public int Compare(StructureType x, StructureType y, int count)
 		{
@@ -231,6 +253,11 @@ namespace Decompiler.Core.Types
 		{
 			return Prim;
 		}
+
+        public int VisitString(StringType str)
+        {
+            return String;
+        }
 
 		public int VisitStructure(StructureType str)
 		{

@@ -162,11 +162,15 @@ namespace Decompiler.Typing
 			}
 		}
 
+        public Expression VisitString(StringType str)
+        {
+            throw new NotImplementedException();
+        }
+
 		public Expression VisitStructure(StructureType str)
 		{
 			throw new NotImplementedException();
 		}
-
 
 		public Expression VisitUnion(UnionType ut)
 		{

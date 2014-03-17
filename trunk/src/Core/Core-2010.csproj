@@ -567,6 +567,7 @@
     <Compile Include="Types\PrimitiveType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\StringType.cs" />
     <Compile Include="Types\StructureField.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -75,6 +75,11 @@ namespace Decompiler.Core.Types
             return ptr;
         }
 
+        public DataType VisitString(StringType str)
+        {
+            return str;
+        }
+
         public DataType VisitStructure(StructureType str)
         {
             foreach (var field in str.Fields)

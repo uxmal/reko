@@ -33,6 +33,7 @@ namespace Decompiler.Core.Types
         T VisitPrimitive(PrimitiveType pt);
         T VisitMemberPointer(MemberPointer memptr);
         T VisitPointer(Pointer ptr);
+        T VisitString(StringType str);
         T VisitStructure(StructureType str);
         T VisitTypeReference(TypeReference typeref);
         T VisitTypeVariable(TypeVariable tv);

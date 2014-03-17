@@ -108,6 +108,11 @@ namespace Decompiler.Typing
             return ptr;
         }
 
+        public DataType VisitString(StringType str)
+        {
+            return str;
+        }
+
         public DataType VisitTypeReference(TypeReference typeref)
         {
             throw new NotImplementedException();

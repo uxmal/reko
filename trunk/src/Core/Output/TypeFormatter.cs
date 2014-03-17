@@ -169,6 +169,15 @@ namespace Decompiler.Core.Output
             return writer;
 		}
 
+        public Formatter VisitString(StringType str)
+        {
+            //$REVIEW: yes, totally inadequate
+            str.CharType.Accept(this);
+            writer.Write(name);
+            writer.Write("[]");
+            return writer;
+        }
+
 		public Formatter VisitStructure(StructureType str)
 		{
 			string n = name;

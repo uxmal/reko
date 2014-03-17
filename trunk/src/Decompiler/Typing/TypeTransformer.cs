@@ -272,6 +272,11 @@ namespace Decompiler.Typing
             return pt;
         }
 
+        public DataType VisitString(StringType str)
+        {
+            return str;
+        }
+
         public DataType VisitStructure(StructureType str)
 		{
             foreach (var field in str.Fields)

@@ -96,7 +96,22 @@ namespace Decompiler.Core.Types
 			WriteReference(ptr.Pointee);
 			writer.Write(")");
             return writer;
-		}        
+		}
+
+        public TextWriter VisitString(StringType str)
+        {
+            writer.Write("(str");
+            if (str.LengthPrefixType != null)
+            {
+                writer.Write(" length-");
+                str.LengthPrefixType.Accept(this);
+                if (str.PrefixOffset != 0)
+                    writer.Write(" {0}", str.PrefixOffset);
+            }
+            writer.Write(" ");
+            str.CharType.Accept(this);
+            return writer;
+        }
 
         public TextWriter VisitStructure(StructureType str)
         {
