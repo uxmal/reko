@@ -372,7 +372,7 @@
     </Compile>
     <Compile Include="Gui\Windows\IToolWindow.cs" />
     <Compile Include="Gui\IWindowFrame.cs" />
-    <Compile Include="Gui\Windows\MemoryViewInteractor.cs" />
+    <Compile Include="Gui\Windows\LowLevelViewInteractor.cs" />
     <Compile Include="Gui\Windows\MemoryViewServiceImpl.cs" />
     <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
     <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />

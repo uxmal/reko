@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Decompiler.Arch.Z80
 {
+    /// <summary>
+    /// Disassembles both 8080 and Z80 instructions, with respective syntax.
+    /// </summary>
     public class Z80Disassembler : DisassemblerBase<Z80Instruction>
     {
         private ImageReader rdr;
@@ -59,7 +62,6 @@ namespace Decompiler.Arch.Z80
             instr.Length = rdr.Address - addr;
             return true;
         }
-
 
         public Z80Instruction DecodeOperands(Opcode opcode, byte op, string fmt)
         {
@@ -118,7 +120,7 @@ namespace Decompiler.Arch.Z80
                 case 'J':       // Relative jump
                     var width = OperandSize(fmt[i++]);
                     int ipOffset = rdr.ReadLeSigned(width);
-                    ops[iOp++] = new ImmediateOperand(Constant.Word16((ushort) (rdr.Address.Offset + ipOffset)));
+                    ops[iOp++] = AddressOperand.Ptr16((uint)(rdr.Address.Offset + ipOffset));
                     break;
                 case 'x':       // 2-digit Inline hexadecimal byte
                     int val = (Hex(fmt[i++]) << 4);

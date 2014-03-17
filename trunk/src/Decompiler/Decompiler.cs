@@ -41,6 +41,8 @@ namespace Decompiler
         Program Program { get; }
         Project Project { get; }
 
+        IEnumerable<KeyValuePair<Address, Block>> GetScannedBlocks();
+
         void LoadProgram(string fileName);
         void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase);
         void ScanProgram();
@@ -163,7 +165,12 @@ namespace Decompiler
             }
             output.Flush();
         }
-        
+
+        public IEnumerable<KeyValuePair<Address, Block>> GetScannedBlocks()
+        {
+            return this.scanner.GetBlocks();
+        }
+
         /// <summary>
 		/// Loads (or assembles) the program in memory, performing relocations as necessary.
 		/// </summary>

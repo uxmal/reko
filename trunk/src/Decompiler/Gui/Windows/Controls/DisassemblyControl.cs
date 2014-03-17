@@ -121,26 +121,19 @@ namespace Decompiler.Gui.Windows.Controls
                 return;
             }
 
-#if SCROLLABLE
-            g.TranslateTransform(this.AutoScrollPosition.X,
-                                          this.AutoScrollPosition.Y);
-#endif
-
             var dumper = new Dumper(arch);
             dumper.ShowAddresses = true;
             dumper.ShowCodeBytes = true;
             var addrStart = TopAddress;
             var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
-            var cyRow = (int) g.MeasureString("M", Font).Height;
+            var cyRow = GetRowHeight(g);
             var rc = new RectangleF(g.ClipBounds.Left, g.ClipBounds.Top, rcClient.Width, cyRow);
-            var addrFinal = StartAddress;
             for (; rc.Top < rcClient.Bottom; rc.Offset(0, cyRow))
             {
                 try
                 {
                     if (!dasm.MoveNext())
                     {
-                        addrFinal = Image.BaseAddress + Image.Bytes.Length;
                         break;
                     }
                 }
@@ -148,16 +141,17 @@ namespace Decompiler.Gui.Windows.Controls
                 {
                     break;
                 }
-                addrFinal = dasm.Current.Address;
                 var writer = new StringWriter();
                 var instr = dasm.Current;
                 dumper.DumpAssemblerLine(image, instr, writer);
                 var s = writer.ToString();
                 g.DrawString(s, Font, SystemBrushes.ControlText, rc);
             }
-            //UpdateScrollbar(addrStart, addrFinal);
-            //Debug.Print("Client rect: {0}", rcClient);
-            //Debug.Print("scrool rect: {0}", vscroll.Bounds);
+        }
+
+        private int GetRowHeight(Graphics g)
+        {
+            return (int) g.MeasureString("M", Font).Height;
         }
 
 
@@ -169,16 +163,45 @@ namespace Decompiler.Gui.Windows.Controls
             //vscroll.LargeChange = 100;
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        protected override bool IsInputKey(Keys keyData)
         {
-            Debug.Print("Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue);
-            base.OnKeyDown(e);
+            switch (keyData & ~Keys.Modifiers)
+            {
+            case Keys.Down:
+            case Keys.Up:
+            case Keys.Left:
+            case Keys.Right:
+                return true;
+            default:
+                return base.IsInputKey(keyData);
+            }
         }
 
-        protected override void OnKeyPress(KeyPressEventArgs e)
+        protected override void OnKeyDown(KeyEventArgs e)
         {
-            Debug.Print("Press: ch:{0}", e.KeyChar);
-            base.OnKeyPress(e);
+            Debug.Print("Disassembly control: Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue);
+            switch (e.KeyCode)
+            {
+            case Keys.Down:
+                DiffMove(arch.InstructionBitSize / 8);
+                break;
+            case Keys.Up:
+                DiffMove(-arch.InstructionBitSize / 8);
+                break;
+            default:
+                base.OnKeyDown(e);
+                return;
+            }
+            e.Handled = true;
+        }
+
+        private void DiffMove(int bytesToMove)
+        {
+            var topAddr = TopAddress + bytesToMove;
+            if (topAddr < this.image.BaseAddress)
+                return;
+            TopAddress = topAddr;
+            Invalidate();
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -190,6 +213,12 @@ namespace Decompiler.Gui.Windows.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             DumpAssembler(e.Graphics);
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            Focus();
+            base.OnMouseDown(e);
         }
 
         //public Control CreateControl()

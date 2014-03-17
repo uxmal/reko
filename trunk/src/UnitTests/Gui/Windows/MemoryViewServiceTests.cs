@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             sc.AddService<IDecompilerService>(decSvc);
 
             var service = repository.Stub<MemoryViewServiceImpl>(sc);
-            var interactor = new MemoryViewInteractor();
+            var interactor = new LowLevelViewInteractor();
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
 
             var svc = (IMemoryViewService)service;
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var sc = new ServiceContainer();
             var ctrl = new LowLevelView();
-            var interactor = repository.DynamicMock<MemoryViewInteractor>();
+            var interactor = repository.DynamicMock<LowLevelViewInteractor>();
             interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
             interactor.Stub(i => i.Control).Return(ctrl);
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);

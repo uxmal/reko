@@ -76,6 +76,11 @@ namespace Decompiler.UnitTests.Mocks
             ScanProgram_Called = true;
         }
 
+        public IEnumerable<KeyValuePair<Address, Block>> GetScannedBlocks()
+        {
+            throw new NotImplementedException();
+        }
+
         public ProcedureBase ScanProcedure(Address procAddress)
         {
             throw new NotImplementedException();

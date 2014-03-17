@@ -37,9 +37,9 @@ using System.Windows.Forms;
 namespace Decompiler.UnitTests.Gui.Windows
 {
     [TestFixture]
-    public class MemoryViewInteractorTests
+    public class LowLevelViewInteractorTests
     {
-        private MemoryViewInteractor interactor;
+        private LowLevelViewInteractor interactor;
         private MockRepository mr;
         private IDecompilerShellUiService uiSvc;
         private IDialogFactory dlgFactory;
@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_Interactor()
         {
-            interactor = new MemoryViewInteractor();
+            interactor = new LowLevelViewInteractor();
             interactor.SetSite(sp);
             control = (LowLevelView) interactor.CreateControl();
         }
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void MVI_GotoAddressEnabled()
         {
-            interactor = new MemoryViewInteractor();
+            interactor = new LowLevelViewInteractor();
             var status = new CommandStatus();
             Assert.IsTrue(interactor.QueryStatus(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress, status, null));
             Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);

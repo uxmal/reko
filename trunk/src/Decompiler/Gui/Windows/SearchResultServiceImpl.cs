@@ -52,7 +52,6 @@ namespace Decompiler.Gui.Windows
             ShowSearchResults(new EmptyResult());
         }
 
-
         public void ShowSearchResults(ISearchResult result)
         {
             this.result = result;

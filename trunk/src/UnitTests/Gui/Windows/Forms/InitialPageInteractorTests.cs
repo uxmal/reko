@@ -43,14 +43,30 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private FakeUiService uiSvc;
         private FakeComponentSite site;
         private IProjectBrowserService browserSvc;
+        private LoaderBase loader;
+        private IDecompiler dec;
+        private DecompilerHost host;
+        private IMemoryViewService memSvc;
+        private Program program;
+        private Project project;
 
 		[SetUp]
 		public void Setup()
 		{
 			form = new MainForm();
-            i = new TestInitialPageInteractor();
+            loader = mr.StrictMock<LoaderBase>();
+            dec = mr.StrictMock<IDecompiler>();
+            i = new TestInitialPageInteractor(loader, dec);
             site = new FakeComponentSite(i);
             uiSvc = new FakeShellUiService();
+            host = mr.StrictMock<DecompilerHost>();
+            memSvc = mr.StrictMock<IMemoryViewService>();
+            var image = new LoadedImage(new Address(0x10000), new byte[1000]);
+            var imageMap = new ImageMap(image);
+            var arch = mr.StrictMock<IProcessorArchitecture>();
+            var platform = mr.StrictMock<Platform>(null, null);
+            program = new Program(image, imageMap, arch, platform);
+            project = new Project();
 
             browserSvc = mr.StrictMock<IProjectBrowserService>();
 
@@ -60,6 +76,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             site.AddService(typeof(IProjectBrowserService), browserSvc);
+            site.AddService(typeof(IMemoryViewService), memSvc);
             i.Site = site;
 		}
 
@@ -72,38 +89,66 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_OpenBinary_CanAdvance()
         {
-            AddFakeMemoryViewService();
+            mr.ReplayAll();
+
             Assert.IsFalse(i.CanAdvance);
-            i.OpenBinary("floxe.exe", new FakeDecompilerHost());
+
+            mr.Record();
+
+            dec.Stub(d => d.LoadProgram("floxe.exe"));
+            dec.Stub(d => d.Project).Return(project);
+            dec.Stub(d => d.Program).Return(program);
+            browserSvc.Stub(b => b.Load(project, program));
+            memSvc.Stub(m => m.ViewImage(program));
+            mr.ReplayAll();
+
+            i.OpenBinary("floxe.exe", host);
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
+            mr.VerifyAll();
         }
 
         [Test]
         public void Ipi_OpenBinary_ShouldPopulateFields()
         {
-            AddFakeMemoryViewService();
+            dec.Stub(d => d.Project).Return(null);
+            dec.Stub(d => d.Program).Return(null);
+            mr.ReplayAll();
+
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
-            i.OpenBinary("floxe.exe", new FakeDecompilerHost());
+
+            mr.Record();
+            dec.Stub(d => d.LoadProgram("floxe.exe"));
+            mr.ReplayAll();
+
+            i.OpenBinary("floxe.exe", host);
+
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
+            mr.VerifyAll();
         }
 
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            var memSvc = AddFakeMemoryViewService();
-            memSvc.Expect(s => s.ViewImage(null)).IgnoreArguments();
+            dec.Stub(d => d.LoadProgram("floxe.exe"));
+            dec.Stub(d => d.Program).Return(program);
+            dec.Stub(d => d.Project).Return(project);
+            browserSvc.Stub(d => d.Load(project, program));
+            memSvc.Expect(s => s.ViewImage(program));
+            mr.ReplayAll();
 
-            i.OpenBinary("floxe.exe", new FakeDecompilerHost());
+            i.OpenBinary("floxe.exe", host);
 
-            memSvc.VerifyAllExpectations();
+            mr.VerifyAll();
         }
 
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            var memSvc = mr.Stub<IMemoryViewService>();
-            site.AddService<IMemoryViewService>(memSvc);
-            browserSvc.Expect(b => b.Load(Arg<Project>.Is.NotNull, Arg<Program>.Is.NotNull));
+            dec.Stub(d => d.LoadProgram("foo.exe"));
+            dec.Stub(d => d.Program).Return(program);
+            dec.Stub(d => d.Project).Return(project);
+            browserSvc.Expect(b => b.Load(project, program));
+            memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
             i.OpenBinary("foo.exe", new FakeDecompilerHost());
@@ -114,10 +159,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_LeavePage()
         {
-            AddFakeMemoryViewService();
-            i.OpenBinary("foo.exe", new FakeDecompilerHost());
-            Assert.IsTrue(i.FakeDecompiler.LoadProgram_Called, "LoadProgram should have been called");
+            dec.Expect(d => d.LoadProgram("foo.exe"));
+            dec.Stub(d => d.Program).Return(program);
+            dec.Stub(d => d.Project).Return(project);
+            browserSvc.Stub(b => b.Load(project, program));
+            memSvc.Stub(m => m.ViewImage(program));
+            mr.ReplayAll();
+
+            i.OpenBinary("foo.exe", host);
             Assert.IsTrue(i.LeavePage());
+
+            mr.VerifyAll();
         }
 
         //$REFACTOR: copied from LoadedPageInteractor, should
@@ -131,28 +183,28 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private IMemoryViewService AddFakeMemoryViewService()
         {
-            var memSvc = MockRepository.GenerateMock<IMemoryViewService>();
-            site.AddService(typeof(IMemoryViewService), memSvc);
             return memSvc;
         }
 
         private class TestInitialPageInteractor : InitialPageInteractorImpl
         {
-            public FakeDecompiler FakeDecompiler;
+            private LoaderBase loader;
+            public IDecompiler decompiler;
 
-            public TestInitialPageInteractor()
+            public TestInitialPageInteractor( LoaderBase loader, IDecompiler decompiler)
             {
+                this.loader = loader;
+                this.decompiler = decompiler;
             }
 
             protected override LoaderBase CreateLoader(IServiceContainer sc)
             {
-                return new FakeLoader();
+                return loader;
             }
 
             protected override IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host, IServiceProvider sp)
             {
-                FakeDecompiler = new FakeDecompiler(ldr);
-                return FakeDecompiler;
+                return decompiler;
             }
         }
 	}
