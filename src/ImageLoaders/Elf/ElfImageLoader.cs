@@ -198,7 +198,7 @@ namespace Decompiler.ImageLoaders.Elf
             case EM_MIPS: //MIPS RS3000 Big-Endian
             case EM_MIPSRS4BE: // MIPS RS4000 Big-Endian
             default:
-                throw new NotSupportedException("Processor format is not supported.");
+                throw new NotSupportedException(string.Format("Processor format {0}is not supported.", machineType));
             }
         }
 

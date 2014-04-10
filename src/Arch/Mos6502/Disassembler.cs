@@ -143,7 +143,7 @@ namespace Decompiler.Arch.Mos6502
                         Offset = rdr.Read(PrimitiveType.Word16)
                     };
                 }
-                else if (fmt[i] == 'x')
+                else if (fmt[i] == 'y')
                 {
                     ++i;
                     return new Operand(PrimitiveType.Byte)

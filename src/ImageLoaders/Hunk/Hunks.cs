@@ -25,6 +25,14 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.Hunk
 {
+    public enum FileType
+    {
+        TYPE_UNKNOWN = 0,
+        TYPE_LOADSEG = 1,
+        TYPE_UNIT = 2,
+        TYPE_LIB = 3,
+    }
+
     public enum HunkType
     {
         HUNK_UNIT = 999,
@@ -56,64 +64,27 @@ namespace Decompiler.ImageLoaders.Hunk
         HUNK_RELRELOC26 = 1260,
     }
 
-    partial class HunkLoader
+    public partial class Hunk
     {
-        //private const int RESULT_UNSUPPORTED_HUNKS = 3;
+        public static int HUNKF_ADVISORY = 1 << 29;
+        public static int HUNKF_CHIP = 1 << 30;
+        public static int HUNKF_FAST = 1 << 31;
+        public static int HUNKF_ALL = HUNKF_ADVISORY | HUNKF_CHIP | HUNKF_FAST;
+        public static int HUNK_TYPE_MASK = 65535;
+        public static int HUNK_FLAGS_MASK = -65536;
 
-        private const int TYPE_UNKNOWN = 0;
-        private const int TYPE_LOADSEG = 1;
-        private const int TYPE_UNIT = 2;
-        private const int TYPE_LIB = 3;
-
-        private Dictionary<int, string> type_names = new Dictionary<int, string>
-        {
-            { TYPE_UNKNOWN, "TYPE_UNKNOWN"},
-            { TYPE_LOADSEG, "TYPE_LOADSEG"},
-            { TYPE_UNIT, "TYPE_UNIT"},
-            { TYPE_LIB, "TYPE_LIB"}
-        };
-
-        private HunkType[] unit_valid_main_hunks = new[] {
-            HunkType.HUNK_CODE,
-            HunkType.HUNK_DATA,
-            HunkType.HUNK_BSS,
-            HunkType.HUNK_PPC_CODE,
-        };
-
-        private HunkType[] unit_valid_extra_hunks = new[] {
-            HunkType.HUNK_DEBUG,
-            HunkType.HUNK_SYMBOL,
-            HunkType.HUNK_NAME,
-            HunkType.HUNK_EXT,
-            HunkType.HUNK_ABSRELOC32,
-            HunkType.HUNK_RELRELOC16,
-            HunkType.HUNK_RELRELOC8,
-            HunkType.HUNK_DREL32,
-            HunkType.HUNK_DREL16,
-            HunkType.HUNK_DREL8,
-            HunkType.HUNK_RELOC32SHORT,
-            HunkType.HUNK_RELRELOC32,
-            HunkType.HUNK_ABSRELOC16,
-            HunkType.HUNK_RELRELOC26,
-        };
-    }
-
-    public class Hunk
-    {
         public HunkType HunkType;
-        public string Name;
         public uint FileOffset;
-        public bool inLib;
+        public int size;
+        public int alloc_size;
+        public string memf;
+        public bool in_lib;
         public string fixes;
-        public uint Size;
-        public uint alloc_size;
-        public List<Reference> refs;
-        public string MemoryFlags;
+        public string Name;
         public int hunk_no;
-        public Hunk index_hunk;
-        public List<Hunk> defs;
-        public int hunk_lib_offset;
-        public byte[] custom_data;
+        public byte[] Data;
+        public uint hunk_lib_offset;
+        public IHunk index_hunk;
 
         public override string ToString()
         {
@@ -124,38 +95,95 @@ namespace Decompiler.ImageLoaders.Hunk
     public class HeaderHunk : Hunk
     {
         public List<string> HunkNames;
-        public uint table_size;
-        public uint FirstHunkId;
-        public uint LastHunkId;
-        public List<HunkInfo> HunkSizes;
+        public int table_size;
+        public int FirstHunkId;
+        public int LastHunkId;
+        public List<HunkInfo> HunkInfos;
+    }
+
+    public class HunkInfo
+    {
+        public int Size;
+        public string Flags;
     }
 
     public class BssHunk : Hunk 
     {
     }
 
-    class DebugHunk : Hunk
+    public class LibraryHunk : Hunk
+    {
+        public uint lib_file_offset;
+    }
+
+    public class DebugHunk : Hunk
     {
         public uint debug_offset;
         public string debug_type;
         public string src_file;
         public Dictionary<int, uint> src_map;
-        public byte[] data;
     }
 
-    class DefHunk : Hunk
+    public class UnitHunk : Hunk
+    {
+    }
+
+    public class DefHunk : Hunk
     {
         public short value;
     }
 
-    class ExtHunk : Hunk
+    public class LibUnit
+    {
+        public List<List<Hunk>> segments;
+        public object name;
+        public int unit_no;
+        public Unit index_unit;
+    }
+
+    public class ExtHunk : Hunk
     {
         public List<ExtObject> ext_def;
         public List<ExtObject> ext_ref;
         public List<ExtObject> ext_common;
     }
 
-    class IndexHunk : Hunk
+    public enum ExtType
+    {
+        EXT_SYMB = 0,
+        EXT_DEF = 1,
+        EXT_ABS = 2,
+
+        EXT_RES = 3,
+
+        EXT_ABSREF32 = 129,
+
+        EXT_ABSCOMMON = 130,
+
+        EXT_RELREF16 = 131,
+
+        EXT_RELREF8 = 132,
+
+        EXT_DEXT32 = 133,
+
+        EXT_DEXT16 = 134,
+
+        EXT_DEXT8 = 135,
+
+        EXT_RELREF32 = 136,
+
+        EXT_RELCOMMON = 137,
+
+        EXT_ABSREF16 = 138,
+
+        EXT_ABSREF8 = 139,
+        EXT_RELREF26 = 229,
+
+        EXT_TYPE_SHIFT = 24,
+        EXT_TYPE_SIZE_MASK = 16777215,
+    }
+
+    public class IndexHunk : Hunk
     {
         public List<Unit> units;
     }
@@ -169,10 +197,11 @@ namespace Decompiler.ImageLoaders.Hunk
         public uint lib_file_offset;
     }
 
-    class OverlayHunk : Hunk
+    public class OverlayHunk : Hunk
     {
         public byte[] ov_data;
         public bool ov_std;
+        public byte[] custom_data;
     }
 
     public class RelocHunk : Hunk
@@ -180,19 +209,23 @@ namespace Decompiler.ImageLoaders.Hunk
         public Dictionary<int, List<uint>> reloc;
     }
 
-    class SymbolHunk : Hunk
+    public class SymbolHunk : Hunk
     {
         public Dictionary<string, int> symbols;
     }
 
     public class TextHunk : Hunk
     {
-        public byte[] Data;
+        public uint data_file_offset;
     }
 
-    public class HunkInfo
+    public class IHunk
     {
-        public uint Size;
-        public string MemoryFlags;
+        public string name;
+        public short size;
+        public int type;
+        public string memf;
+        public List<Reference> refs;
+        public List<Definition> defs;
     }
 }

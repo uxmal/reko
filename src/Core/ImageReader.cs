@@ -121,6 +121,8 @@ namespace Decompiler.Core
 
         public sbyte ReadSByte(int offset) { return (sbyte) bytes[off + offset]; }
 
+        public byte[] ReadBytes(int length) { return ReadBytes((uint) length); }
+
         public byte[] ReadBytes(uint length)
         {
             byte[] dst = new byte[length];
@@ -313,6 +315,13 @@ namespace Decompiler.Core
         {
             off = (uint)(off + offset);
         }
+
+        public byte[] ReadToEnd()
+        {
+            var ab = new byte[this.Bytes.Length - Offset];
+            Array.Copy(Bytes, Offset, ab, 0, ab.Length);
+            return ab;
+        }
     }
 
     /// <summary>
@@ -320,7 +329,7 @@ namespace Decompiler.Core
     /// </summary>
     public class LeImageReader : ImageReader
     {
-        public LeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
+        public LeImageReader(byte[] bytes, uint offset=0) : base(bytes, offset) { }
         public LeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
 
         public override ImageReader CreateNew(byte[] bytes, uint offset)

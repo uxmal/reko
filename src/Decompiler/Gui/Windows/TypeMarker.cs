@@ -66,12 +66,14 @@ namespace Decompiler.Gui.Windows
             {
             case Keys.Escape:
                 HideControls();
+                e.SuppressKeyPress = true;
                 e.Handled = true;
                 break;
             case Keys.Enter:
                 if (TextAccepted != null)
                     TextAccepted(this, new TypeMarkerEventArgs(text.Text));
                 HideControls();
+                e.SuppressKeyPress = true;
                 e.Handled = true;
                 return;
             }

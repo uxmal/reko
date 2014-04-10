@@ -118,7 +118,7 @@ namespace Decompiler.Arch.X86
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public virtual IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public virtual IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             return mode.CreateInstructionScanner(rdr, knownLinAddresses, flags);
         }

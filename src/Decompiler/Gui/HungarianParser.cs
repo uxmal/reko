@@ -128,6 +128,7 @@ Some examples:
     {
         private string str;
         private int i;
+
         public DataType Parse(string hungarianString)
         {
             if (hungarianString == null)
@@ -138,7 +139,7 @@ Some examples:
             return Parse(PrimitiveType.Char);
         }
 
-        private DataType Parse(DataType charPrefix)
+        private DataType Parse(PrimitiveType charPrefix)
         {
             if (i >= str.Length)
                 return new UnknownType();
@@ -191,7 +192,7 @@ Some examples:
                 {
                     switch (str[i++])
                     {
-                    case 'z':  return new ArrayType(charPrefix, 0);
+                    case 'z':  return StringType.NullTerminated(charPrefix);
                     case 'i': return ParseLengthPrefixString(charPrefix);
                     }
                     --i;

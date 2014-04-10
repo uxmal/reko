@@ -127,7 +127,8 @@ namespace Decompiler.Core
                 int afterOffset = (int) (delta + itemNew.Size);
                 var itemAfter = new ImageMapItem
                 {
-                    Size = (uint)(item.Size - afterOffset),
+                    Address = addr + itemNew.Size,
+                    Size = (uint) (item.Size - afterOffset),
                     DataType = ChopBefore(item.DataType, afterOffset),
                 };
 
@@ -135,7 +136,18 @@ namespace Decompiler.Core
                 item.DataType = ChopAfter(item.DataType, delta);      // Shrink the existing mofo.
 
                 items.Add(addr, itemNew);
-                items.Add(addr + afterOffset, itemAfter);
+                items.Add(itemAfter.Address, itemAfter);
+            }
+            else
+            {
+                if (!(item.DataType is UnknownType))
+                    throw new NotSupportedException("Haven't handled this case yet.");
+                items.Remove(item.Address);
+                item.Address += itemNew.Size;
+                item.Size -= itemNew.Size;
+
+                items.Add(addr, itemNew);
+                items.Add(item.Address, item);
             }
         }
 

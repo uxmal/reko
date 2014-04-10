@@ -110,6 +110,7 @@ namespace Decompiler.Core.Types
             }
             writer.Write(" ");
             str.CharType.Accept(this);
+            writer.Write(")");
             return writer;
         }
 

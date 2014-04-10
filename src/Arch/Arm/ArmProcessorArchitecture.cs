@@ -58,7 +58,7 @@ namespace Decompiler.Arch.Arm
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame);
         }
 
-        public IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
             if (flags != PointerScannerFlags.Calls)
                 throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));

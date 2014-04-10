@@ -18,32 +18,46 @@
  */
 #endregion
 
-using Decompiler.Core;
 using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Decompiler.Arch.Cil
 {
-    public class AddressOperand : MachineOperand
+    public class CilInstruction : MachineInstruction
     {
-        public Address Address;
-
-        public AddressOperand(Address a)
-            : base(PrimitiveType.Ptr16)	
+        private static Dictionary<OpCode, string> mpopcodetostring = new Dictionary<OpCode, string>
         {
-            Address = a;
+            { OpCodes.Ldc_I4_0,  "ldc.i4.0"}
+        };
+
+        public override uint DefCc()
+        {
+            throw new NotImplementedException();
         }
+
+        public override uint UseCc()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OpCode Opcode { get; set; }
 
         public override string ToString()
         {
-            if (base.Width.Size == 2)
-                return string.Format("{0:X4}", Address.Linear);
-            else
-                return Address.ToString();
+            try
+            {
+                return mpopcodetostring[Opcode];
+            }
+            catch
+            {
+                throw new NotImplementedException("Lolwut: " + Opcode);
+            }
         }
+
+        public object Operand { get; set; }
     }
 }

@@ -146,5 +146,20 @@ namespace Decompiler.UnitTests.Core
             Assert.AreEqual(0x10, item.Size);
             Assert.IsInstanceOf<UnknownType>(item.DataType);
         }
+
+        [Test]
+        public void ImageMap_CreateItem_AtExistingRange()
+        {
+            var map = new ImageMap(addrBase, 0x0100);
+            map.AddItemWithSize(
+                addrBase,
+                new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 0x10) });
+            map.Dump();
+            ImageMapItem item;
+            Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
+            Assert.AreEqual("(arr byte 16)", item.DataType.ToString());
+            Assert.IsTrue(map.TryFindItemExact(addrBase + 0x10, out item));
+            Assert.IsInstanceOf<UnknownType>(item.DataType);
+        }
 	}
 }

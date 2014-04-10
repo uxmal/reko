@@ -10,4 +10,11 @@ namespace Decompiler.ImageLoaders.Hunk
         public int bits;
         public string name;
     }
+    public class Definition
+    {
+        public string name;
+        public short value;
+        public int type;
+        public string memf;
+    }
 }

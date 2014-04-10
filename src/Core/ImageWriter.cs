@@ -85,10 +85,7 @@ namespace Decompiler.Core
 
         public void WriteBeUInt32(uint offset, uint ui)
         {
-            Bytes[offset] = (byte)(ui >> 24);
-            Bytes[offset + 1] = (byte)(ui >> 16);
-            Bytes[offset + 2] = (byte)(ui >> 8);
-            Bytes[offset + 3] = (byte)ui;
+            LoadedImage.WriteBeUInt32(Bytes, offset, ui);
         }
 
         public void WriteBeUInt32(uint ui)

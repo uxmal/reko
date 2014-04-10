@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 (xo << 1) |
                 rc;
             LoadedImage img = new LoadedImage(new Address(0x00100000), new byte[4]);
-            img.WriteBeUint32(0, w);
+            img.WriteBeUInt32(0, w);
             return Disassemble(img);
         }
 

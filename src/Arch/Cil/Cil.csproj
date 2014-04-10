@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</ProjectGuid>
+    <ProjectGuid>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.ImageLoaders.Hunk</RootNamespace>
-    <AssemblyName>Decompiler.ImageLoaders.Hunk</AssemblyName>
+    <RootNamespace>Decompiler.Arch.Cil</RootNamespace>
+    <AssemblyName>Decompiler.Arch.Cil</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -22,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,28 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtObject.cs" />
-    <Compile Include="HunkFile.cs" />
-    <Compile Include="HunkFileParser.cs" />
-    <Compile Include="HunkLoader.cs" />
-    <Compile Include="HunkRelocator.cs" />
-    <Compile Include="Hunks.cs" />
+    <Compile Include="CilArchitecture.cs" />
+    <Compile Include="CilDisassembler.cs" />
+    <Compile Include="CilInstruction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reference.cs" />
-    <Compile Include="Unit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\M68k\M68k-2010.csproj">
-      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
-      <Name>M68k-2010</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core-2010</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj">
-      <Project>{0B2DCD75-44FF-4AF6-AA08-AAF4EA30C402}</Project>
-      <Name>AmigaOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
