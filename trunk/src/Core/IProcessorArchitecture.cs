@@ -56,12 +56,12 @@ namespace Decompiler.Core
 
         /// <summary>
         /// Returns a stream of machine-independent instructions, which it generates by successively disassembling
-        /// machine-specific instractions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
+        /// machine-specific instructions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
         /// returned as clusters of RtlInstructions.
         /// </summary>
         IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
 
-        IEnumerable<uint> CreateCallInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
+        IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
 
         Frame CreateFrame();
 

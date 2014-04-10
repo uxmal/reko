@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Types;
 using Decompiler.Gui;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows.Controls;
@@ -99,10 +100,10 @@ namespace Decompiler.Gui.Windows
         {
             var uiService = services.RequireService<IDecompilerShellUiService>();
             this.control = new LowLevelView();
-            this.control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
+            this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
             this.Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
             this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
-            this.control.ToolBarGoButton.Click += ToolBarGoButton_Click;
+            this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
 
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += FormatType;
@@ -229,14 +230,41 @@ namespace Decompiler.Gui.Windows
             var dataType = parser.Parse(userText);
             if (dataType == null)
                 return;
-            ImageMap.AddItem(address, new ImageMapItem
-            {
-                Size = (uint) dataType.Size,
-                DataType = dataType,
-            });
+
+            var size = GetDataSize(address, dataType);
+            var item = new ImageMapItem
+                {
+                    Address = address,
+                    Size = size,
+                    DataType = dataType,
+                };
+            if (size != 0)
+                ImageMap.AddItemWithSize(address, item);
+            else
+                ImageMap.AddItem(address, item);
             control.MemoryView.Invalidate();
         }
 
+        public uint GetDataSize(Address addr, DataType dt)
+        {
+            var strDt = dt as StringType;
+            if (strDt == null)
+                return (uint) dt.Size;
+            if (strDt.LengthPrefixType == null)
+            {
+                // Zero-terminated string.
+                var rdr = image.CreateReader(addr);
+                while (rdr.IsValid)
+                {
+                    var ch = rdr.ReadChar(strDt.CharType);
+                    if (ch == 0)
+                        break;
+                }
+                return (uint) (rdr.Address - addr);
+            }
+            throw new NotImplementedException();
+        }
+        
         public bool ViewWhatPointsHere()
         {
             AddressRange addrRange = control.MemoryView.GetAddressRange();
@@ -252,7 +280,7 @@ namespace Decompiler.Gui.Windows
             var arch = decompiler.Program.Architecture;
             var image = decompiler.Program.Image;
             var rdr = decompiler.Program.Image.CreateReader(0);
-            var addrControl = arch.CreateCallInstructionScanner(
+            var addrControl = arch.CreatePointerScanner(
                 rdr,
                 new HashSet<uint> { addrRange.Begin.Linear },
                 PointerScannerFlags.All);

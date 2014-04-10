@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,32 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Decompiler.Core;
+using Decompiler.Arch.Cil;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.UnitTests.Arch.Cil
 {
-	/// <summary>
-	/// Describes a block of executable code. 
-	/// </summary>
-	public class ImageMapBlock : ImageMapItem
-	{
-        public Block Block { get; set; }
-
-        public ImageMapBlock()
+    [TestFixture]
+    public class CilDisassemblerTests
+    {
+        private void RunTest(string sExp, params byte[] bytes)
         {
-            //$REVIEW: need a raw data type for "executable code".
-            DataType = new ArrayType(PrimitiveType.Byte, 0);
+            var image = new LoadedImage(new Address(0x0100000), bytes);
+            var dasm = new CilDisassembler(image.CreateReader(0));
+            Assert.IsTrue(dasm.MoveNext());
+            var instr = dasm.Current;
+            Assert.AreEqual(sExp, instr.ToString());
         }
 
-		public override string ToString()
-		{
-			return "ImageMapBlock: " + Address.ToString() + ", size: " +  Size.ToString("X4");
-		}
-	}
+        [Test]
+        public void CilDasm_Ldc0()
+        {
+            RunTest("ldc.i4.0", 0x16);
+        }
+    }
 }

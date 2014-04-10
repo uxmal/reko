@@ -285,7 +285,7 @@ namespace Decompiler.Core
 			abImage[offset+1] = (byte) (w >> 8);
 		}
 
-        public void WriteBeUint32(uint offset, uint dw)
+        public void WriteBeUInt32(uint offset, uint dw)
         {
             abImage[offset + 0] = (byte) (dw >> 24);
             abImage[offset + 1] = (byte) (dw >> 16);
@@ -299,6 +299,14 @@ namespace Decompiler.Core
             abImage[offset + 1] = (byte) (dw >> 8);
             abImage[offset + 2] = (byte) (dw >> 16);
             abImage[offset + 3] = (byte) (dw >> 24);
+        }
+
+        public static void WriteBeUInt32(byte[] abImage, uint offset, uint dw)
+        {
+            abImage[offset] = (byte) (dw >> 24);
+            abImage[offset + 1] = (byte) (dw >> 16);
+            abImage[offset + 2] = (byte) (dw >> 8);
+            abImage[offset + 3] = (byte) dw;
         }
     }
 }

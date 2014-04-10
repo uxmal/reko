@@ -35,38 +35,18 @@ namespace Decompiler.ImageLoaders.Hunk
     /// <remarks>
     /// http://amiga-dev.wikidot.com/file-format:hunk
     /// </remarks>
-    public partial class HunkLoader: ImageLoader
+    public partial class HunkLoader : ImageLoader
     {
         private M68kArchitecture arch;
-        private List<Hunk> hunks;
-        private HeaderHunk header;
-        public List<Segment> segments { get; private set; }
-        private OverlayHunk overlay;
-        private List<HeaderHunk> overlay_headers;
-        private List<Segment> overlay_segments;
-        private List<LibHunk> libs;
-        private List<Unit> units;
         private TextHunk firstCodeHunk;
-
-        private static TraceSwitch Trace = new TraceSwitch("HunkLoader", "Trace Amiga Hunk loader", "Verbose");
+        private HunkFile hunkFile;
 
         public HunkLoader(IServiceProvider services, byte[] imgRaw)
             : base(services, imgRaw)
         {
-            this.hunks = new List<Hunk>();
-            this.FileType = 0;
-            this.header = null;
-            this.segments = new List<Segment>();
-            this.overlay = null;
-            this.overlay_headers = new List<HeaderHunk>();
-            this.overlay_segments = new List<Segment>();
-            this.libs = null;
-            this.units = null;
         }
 
-        public int FileType { get; private set; } 
-        
-        //$REVIEW: is this a sane value? AmigaOS apparently didn't load at a specific address.
+        //$REVIEW: is this a sane value? AmigaOS apparently didn't load at a specific address. Emulators 
         public override Address PreferredBaseAddress
         {
             get { return new Address(0x1000); }
@@ -77,7 +57,7 @@ namespace Decompiler.ImageLoaders.Hunk
             arch = new M68kArchitecture();
             var imgReader = new BeImageReader(RawImage, 0);
             var parse = new HunkFileParser(imgReader, false);
-            this.hunks = parse.Parse();
+            this.hunkFile = parse.Parse();
             BuildSegments();
             this.firstCodeHunk = parse.FindFirstCodeHunk();
             var image = new LoadedImage(addrLoad, RelocateBytes(addrLoad));
@@ -85,63 +65,134 @@ namespace Decompiler.ImageLoaders.Hunk
             return new LoaderResults(
                 image,
                 new ImageMap(image),
-                new M68kArchitecture(),
+                arch,
                 new AmigaOSPlatform(Services, arch));
         }
 
-        private string get_struct_summary(object obj)
+        public bool BuildLoadSegments()
         {
-            throw new NotImplementedException();
-            /*
-    if type(obj) == ListType:
-      result = []
-      for a in obj:
-        v = this.get_struct_summary(a)
-        if v != null:
-          result.append(v)
-      return "[" + ",".join(result) + "]"
-    elif type(obj) == DictType:
-      if obj.has_key('type_name'):
-        type_name = obj['type_name']
-        return type_name.replace('HUNK_','')
-      else:
-        result = []
-        for k in obj.keys():
-          v = this.get_struct_summary(obj[k])
-          if v != null:
-            result.append(k + ":" + v)
-        return '{' + ",".join(result) + '}'
-    else:
-      return null*/
+            bool inHeader = true;
+            bool beginSeek = false;
+            List<Hunk> segment = null;
+            var segments = this.hunkFile.segments;
+            int hunk_no = 0;
+            foreach (Hunk e in this.hunkFile.hunks)
+            {
+                var hunk_type = e.HunkType;
+                // check for end of header
+                if (inHeader && loadseg_valid_begin_hunks.Contains(hunk_type))
+                {
+                    inHeader = false;
+                    beginSeek = true;
+                }
+                if (inHeader)
+                {
+                    if (hunk_type == HunkType.HUNK_HEADER)
+                    {
+                        // we are in an overlay!
+                        if (this.hunkFile.overlay != null)
+                        {
+                            segments = new List<List<Hunk>>();
+                            this.hunkFile.overlay_segments.Add(segments);
+                            this.hunkFile.overlay_headers.Add((HeaderHunk) e);
+                        }
+                        else
+                        {
+                            // set load_seg() header
+                            this.hunkFile.header = (HeaderHunk) e;
+                        }
+                        // start a new segment
+                        segment = new List<Hunk>();
+                        // setup hunk counter
+                        hunk_no = ((HeaderHunk) e).FirstHunkId;
+                        // we allow a debug hunk in header for SAS compatibility
+                    }
+                    else if (hunk_type == HunkType.HUNK_DEBUG)
+                    {
+                        segment.Add(e);
+                    }
+                    else
+                        throw new BadImageFormatException(string.Format("Expected header in loadseg: {0}. {1}/{1:X}", e.HunkType, (int) hunk_type));
+                }
+                else if (beginSeek)
+                {
+                    // a new hunk shall begin
+                    if (loadseg_valid_begin_hunks.Contains(hunk_type))
+                    {
+                        segment = new List<Hunk> { e };
+                        segments.Add(segment);
+                        beginSeek = false;
+                        e.hunk_no = hunk_no;
+                        e.alloc_size = this.hunkFile.header.HunkInfos[hunk_no].Size;
+                        hunk_no += 1;
+                    }
+                    else if (hunk_type == HunkType.HUNK_OVERLAY)
+                    {
+                        // add an extra overlay "hunk"
+                        // assume hunk to be empty
+                        if (this.hunkFile.overlay != null)
+                            throw new BadImageFormatException(String.Format("Multiple overlay in loadseg: {0} {1}/{1:X}.", e.HunkType, (int) hunk_type));
+                        this.hunkFile.overlay = e;
+                        this.hunkFile.overlay_headers = new List<HeaderHunk>();
+                        this.hunkFile.overlay_segments = new List<List<List<Hunk>>>();
+                        inHeader = true;
+                    }
+                    else if (hunk_type == HunkType.HUNK_BREAK)
+                    {
+                        // assume hunk to be empty
+                        inHeader = true;
+                        // broken hunk: multiple END or other hunks
+                    }
+                    else if (new List<object> {
+                        HunkType.HUNK_END,
+                        HunkType.HUNK_NAME,
+                        HunkType.HUNK_DEBUG
+                    }.Contains(hunk_type))
+                    {
+                    }
+                    else
+                        throw new BadImageFormatException(string.Format("Expected hunk start in loadseg: {0) {1}/{1:X}", e.HunkType, (int) hunk_type));
+                }
+                else
+                {
+                    if (hunk_type == HunkType.HUNK_END)
+                    {
+                        // an extra block in hunk or end is expected
+                        beginSeek = true;
+                    }
+                    else if (loadseg_valid_extra_hunks.Contains(hunk_type))
+                    {
+                        // contents of hunk
+                        segment.Add(e);
+                    }
+                    else if (loadseg_valid_begin_hunks.Contains(hunk_type))
+                    {
+                        // broken hunk file without END tag
+                        segment = new List<Hunk> { e };
+                        segments.Add(segment);
+                        beginSeek = false;
+                        e.hunk_no = hunk_no;
+                        e.alloc_size = this.hunkFile.header.HunkInfos[hunk_no].Size;
+                        ++hunk_no;
+                    }
+                    else
+                    {
+                        // unexpected hunk?!
+                        throw new BadImageFormatException(string.Format("Unexpected hunk extra in loadseg: {0} {1}/{1:X}.", e.HunkType, (int) hunk_type));
+                    }
+                }
+            }
+            return true;
         }
 
-        /// <summary>
-        ///  Read a hunk file and build internal hunk structure
-        ///Return status and set this.error_string on failure
-        /// </summary>
-        public void ParseHunkFile(BeImageReader f, bool? v37_compat)
-        {
-            var parser = new HunkFileParser(f, v37_compat);
-            parser.Parse();
-        }
-
-        // Return a list with all the hunk type names that were found
-        public string get_hunk_summary()
-        {
-            return this.get_struct_summary(this.hunks);
-        }
-
-        /// <summary>
-        /// Valid hunks to find in the beginning of the file.
-        /// </summary>
-        private HunkType[] loadseg_valid_begin_hunks = new[] {
+        public static List<HunkType> loadseg_valid_begin_hunks = new List<HunkType> {
             HunkType.HUNK_CODE,
             HunkType.HUNK_DATA,
             HunkType.HUNK_BSS,
             HunkType.HUNK_PPC_CODE
         };
 
-        private HunkType[] loadseg_valid_extra_hunks = new[] {
+        public static List<HunkType> loadseg_valid_extra_hunks = new List<HunkType> {
             HunkType.HUNK_ABSRELOC32,
             HunkType.HUNK_DREL32,
             HunkType.HUNK_DEBUG,
@@ -149,186 +200,51 @@ namespace Decompiler.ImageLoaders.Hunk
             HunkType.HUNK_NAME
         };
 
-        /// <summary>
-        /// Builds the in-memory segments from a loadable Hunk file.
-        /// </summary>
-        /// <returns></returns>
-        public bool BuildLoadSegments()
-        {
-            bool inHeader = true;
-            bool beginSeek = false;
-            Segment segment = null;
-            int hunk_no = 0;
-            foreach (Hunk e in this.hunks)
-            {
-                var hunk_type = e.HunkType;
 
-                if (inHeader)
-                {
-                    if (loadseg_valid_begin_hunks.Contains(hunk_type))
-                    inHeader = false;
-                    beginSeek = true;
-                } 
-                if (inHeader)
-                {
-                    if (hunk_type == HunkType.HUNK_HEADER)
-                    {
-                        Debug.WriteLineIf(Trace.TraceVerbose, "Loading Header into a segment.");
-                        var hdr = e as HeaderHunk;
-                        // we are in an overlay!
-                        if (this.overlay != null)
-                        {
-                            segments = new List<Segment>();
-                            this.overlay_segments.AddRange(segments);
-                            this.overlay_headers.Add(hdr);
-                        }
-                        else
-                        {
-                            // set load_seg() header
-                            this.header = hdr;
-                        }
-                        // start a new segment
-                        segment = new Segment { };
-
-                        // setup hunk counter
-                        hunk_no = (int) hdr.FirstHunkId;
-                    }
-                    else if (hunk_type == HunkType.HUNK_DEBUG)
-                    {
-                        // we allow a debug hunk in header for SAS compatibility
-                        segment.hunks.Add(e);
-                    }
-                    else
-                    {
-                        throw new BadImageFormatException(
-                            string.Format(
-                                "Expected header in loadseg: {0} {1}/{1:X}", e.HunkType, (int) e.HunkType));
-                    }
-                }
-                else if (beginSeek)
-                {
-                    if (loadseg_valid_begin_hunks.Contains(hunk_type))
-                    {
-                        Debug.WriteLineIf(Trace.TraceVerbose, string.Format("Hunk {0} starting new segment because it is {1}.", e.Name, hunk_type));
-                        segment = new Segment { hunks = { e } };
-                        segments.Add(segment);
-                        beginSeek = false;
-                        e.hunk_no = hunk_no;
-                        e.alloc_size = this.header.HunkSizes[hunk_no].Size;
-                        ++hunk_no;
-                        break;
-                    }
-                    else if (hunk_type == HunkType.HUNK_OVERLAY)
-                    {
-                        // add an extra overlay "hunk"
-                        // assume hunk to be empty
-                        if (this.overlay != null)
-                            throw new BadImageFormatException(
-                                string.Format(
-                                  "Multiple overlay in loadseg: {0} {1}/{1:X}.", e.HunkType, (int) e.HunkType));
-                        this.overlay = (OverlayHunk) e;
-                        this.overlay_headers = new List<HeaderHunk>();
-                        this.overlay_segments = new List<Segment>();
-                        inHeader = true;
-                        // break
-                    }
-                    else if (hunk_type == HunkType.HUNK_BREAK)
-                    {
-                        // Assume hunk to be empty
-                        inHeader = true;
-                    }
-                    else if (hunk_type == HunkType.HUNK_END 
-                      || hunk_type == HunkType.HUNK_NAME
-                      || hunk_type == HunkType.HUNK_DEBUG)
-                    {
-                        // broken hunk: multiple END or other hunks
-                        continue;
-                    }
-                    else
-                    {
-                        throw new BadImageFormatException(
-                            string.Format(
-                                "Expected hunk start in loadseg: {0} {1}/{1:X}.", e.HunkType, (int) e.HunkType));
-                    }
-                }
-                else
-                {
-                    // An extra block in hunk or end is expected
-                    if (hunk_type == HunkType.HUNK_END)
-                    {
-                        beginSeek = true;
-                    }
-                    else if (loadseg_valid_extra_hunks.Contains(hunk_type))
-                    {
-                        // contents of hunk
-                        Debug.WriteLineIf(Trace.TraceVerbose, string.Format("...adding hunk {0} ({1})", e.hunk_no, e.Name));
-                        segment.hunks.Add(e);
-                    }
-                    else if (loadseg_valid_begin_hunks.Contains(hunk_type))
-                    {
-                        // broken hunk file without END tag
-                        segment = new Segment { hunks = { e } };
-                        segments.Add(segment);
-                        beginSeek = false;
-                        e.hunk_no = hunk_no;
-                        e.alloc_size = this.header.HunkSizes[hunk_no].Size;
-                        ++hunk_no;
-                        // unexpected hunk?!
-                    }
-                    else
-                    {
-                        throw new BadImageFormatException(
-                            string.Format(
-                                "Unexpected hunk extra in loadseg: {0} {1}/{1:X}.", e.HunkType, (int) e.HunkType));
-                    }
-                }
-            }
-            return true;
-        }
-
+        //$TODO: move this to HunkFile
         public bool BuildUnit()
         {
             var force_unit = true;
             var in_hunk = false;
             string name = null;
-            Segment segment = null;
+            List<Hunk> segment = null;
             Unit unit = null;
-            this.units = new List<Unit>();
+            this.hunkFile.units = new List<Unit>();
             var unit_no = 0;
-            var hunk_no = 0;
-            foreach (var e in this.hunks)
+            int hunk_no = 0;
+            foreach (var e in this.hunkFile.hunks)
             {
                 var hunk_type = e.HunkType;
-
                 // optional unit as first entry
                 if (hunk_type == HunkType.HUNK_UNIT)
                 {
-                    unit = new Unit();
-                    unit.name = e.Name;
-                    unit.unit_no = unit_no;
-                    unit.segments = new List<Segment>();
-                    unit.unit = e;
-                    unit_no += 1;
-                    this.units.Add(unit);
+                    unit = new Unit
+                    {
+                        name = e.Name,
+                        unit_no = unit_no,
+                        segments = new List<List<Hunk>>(),
+                        unit = e,
+                    };
+                    ++unit_no;
+                    this.hunkFile.units.Add(unit);
                     force_unit = false;
                     hunk_no = 0;
                 }
                 else if (force_unit)
-                {
-                    throw new BadImageFormatException(string.Format(
-                        "Expected name hunk in unit: {0} {1}/{1:X}", e.HunkType, (int) hunk_type));
-                }
+                    throw new BadImageFormatException(string.Format("Expected name hunk in unit: {0} {1}/{1:X}.", e.HunkType, (int) hunk_type));
                 else if (!in_hunk)
                 {
                     // begin a named hunk
                     if (hunk_type == HunkType.HUNK_NAME)
                     {
                         name = e.Name;
+                        // main hunk block
                     }
-                    // main hunk block
                     else if (unit_valid_main_hunks.Contains(hunk_type))
                     {
-                        segment = new Segment { hunks = { e } };
+                        segment = new List<Hunk> {
+                            e
+                        };
                         unit.segments.Add(segment);
                         // give main block the NAME
                         if (name != null)
@@ -337,17 +253,15 @@ namespace Decompiler.ImageLoaders.Hunk
                             name = null;
                         }
                         e.hunk_no = hunk_no;
-                        ++hunk_no;
+                        hunk_no += 1;
                         in_hunk = true;
+                        // broken hunk: ignore multi ENDs
                     }
-                    // broken hunk: ignore multi ENDs
                     else if (hunk_type == HunkType.HUNK_END)
                     {
-                        continue;
                     }
                     else
-                        throw new BadImageFormatException(string.Format(
-                            "Expected main hunk in unit: {0} {1}/{1:X}", e.HunkType, (int) hunk_type));
+                        throw new BadImageFormatException(string.Format("Expected main hunk in unit: {0} {1}/{1:X}.", e.HunkType, hunk_type));
                 }
                 else
                 {
@@ -355,224 +269,356 @@ namespace Decompiler.ImageLoaders.Hunk
                     if (hunk_type == HunkType.HUNK_END)
                     {
                         in_hunk = false;
+                        // contents of hunk
                     }
-                    // contents of hunk
-                    else if (unit_valid_extra_hunks.Contains(hunk_type))
+                    else if (HunkLoader.unit_valid_extra_hunks.Contains(hunk_type))
                     {
-                        segment.hunks.Add(e);
+                        segment.Add(e);
+                        // unecpected hunk?!
                     }
                     else
-                        throw new BadImageFormatException(string.Format(
-                          "Unexpected hunk in unit: {0} {1}/{1:X}", e.HunkType, (int) hunk_type));
+                        throw new BadImageFormatException(string.Format("Unexpected hunk in unit: {0} {1}/{1:X}", e.HunkType, hunk_type));
                 }
             }
             return true;
         }
 
-        private bool BuildLib()
+        public static HunkType[] unit_valid_main_hunks = new [] 
         {
-            this.libs = new List<LibHunk>();
-            var lib_segments = new List<Segment>();
-            var segment_list = new List<Segment>();
-            Segment segment = null;
-            bool seekForLibHunk = true;
-            bool seek_main = false;
-            int hunk_no = 0;
-            uint lib_file_offset = 0;
-            foreach (var e in this.hunks)
+            HunkType.HUNK_CODE,
+            HunkType.HUNK_DATA,
+            HunkType.HUNK_BSS,
+            HunkType.HUNK_PPC_CODE
+        };
+
+        public static HunkType[] unit_valid_extra_hunks = new[]
+        {
+            HunkType.HUNK_DEBUG,
+            HunkType.HUNK_SYMBOL,
+            HunkType.HUNK_NAME,
+            HunkType.HUNK_EXT,
+            HunkType.HUNK_ABSRELOC32,
+            HunkType.HUNK_RELRELOC16,
+            HunkType.HUNK_RELRELOC8,
+            HunkType.HUNK_DREL32,
+            HunkType.HUNK_DREL16,
+            HunkType.HUNK_DREL8,
+            HunkType.HUNK_RELOC32SHORT,
+            HunkType.HUNK_RELRELOC32,
+            HunkType.HUNK_ABSRELOC16,
+            HunkType.HUNK_RELRELOC26
+        };
+
+        public virtual bool build_lib()
+        {
+            this.hunkFile.libs = new List<Lib>();
+            var lib_segments = new List<object>();
+            var seek_lib = true;
+            var seek_main = false;
+            int hunk_no = -1;
+            uint lib_file_offset = ~0u;
+            List<List<Hunk>> segment_list = null;
+            List<Hunk> segment = null;
+            foreach (var e in this.hunkFile.hunks)
             {
                 var hunk_type = e.HunkType;
-
-                if (seekForLibHunk)
+                // seeking for a LIB hunk
+                if (seek_lib)
                 {
                     if (hunk_type == HunkType.HUNK_LIB)
                     {
-                        var libHunk = (LibHunk) e;
-                        segment_list = new List<Segment>();
-                        lib_segments.AddRange(segment_list);
+                        segment_list = new List<List<Hunk>>();
+                        lib_segments.Add(segment_list);
+                        seek_lib = false;
                         seek_main = true;
                         hunk_no = 0;
-
                         // get start address of lib hunk in file
-                        lib_file_offset = libHunk.lib_file_offset;
-
-                        seekForLibHunk = false;
+                        lib_file_offset = ((LibraryHunk) e).lib_file_offset;
                     }
                     else
-                    {
-                        throw new BadImageFormatException(string.Format(
-                            "Expected lib hunk in lib: {0} {1}/{1:X}", hunk_type, (int) hunk_type));
-                    }
+                        throw new BadImageFormatException(string.Format("Expected lib hunk in lib: {0} {1}/{1:X}", e.HunkType, hunk_type));
                 }
                 else if (seek_main)
                 {
+                    // end of lib? -> index!
                     if (hunk_type == HunkType.HUNK_INDEX)
                     {
-                        // End of lib? -> index!
                         seek_main = false;
-                        seekForLibHunk = true;
-                        var lib_units = new List<Unit>();
-                        if (!this.ResolveIndexHunks((IndexHunk)e, segment_list, lib_units))
+                        seek_lib = true;
+                        var lib_units = new List<LibUnit>();
+                        if (!this.resolve_index_hunks((IndexHunk) e, segment_list, lib_units))
                             throw new BadImageFormatException("Error resolving index hunks.");
-                        var lib = new LibHunk();
-                        lib.units = lib_units;
-                        lib.lib_no = this.libs.Count;
-                        lib.index = e;
-                        this.libs.Add(lib);
+                        var lib = new Lib
+                        {
+                            units = lib_units,
+                            lib_no = this.hunkFile.libs.Count,
+                            index = (IndexHunk) e
+                        };
+                        this.hunkFile.libs.Add(lib);
                     }
                     else if (unit_valid_main_hunks.Contains(hunk_type))
                     {
                         // start of a hunk
-                        segment = new Segment { hunks = { e } };
+                        segment = new List<Hunk> { e };
                         e.hunk_no = hunk_no;
                         ++hunk_no;
                         segment_list.Add(segment);
                         seek_main = false;
-
-                        // calc relative lib address
-                        var hunk_lib_offset = (int)( e.FileOffset - lib_file_offset);
+                        // calculate relative lib address
+                        var hunk_lib_offset = e.FileOffset - lib_file_offset;
                         e.hunk_lib_offset = hunk_lib_offset;
                     }
                     else
-                    {
-                        throw new BadImageFormatException(string.Format(
-                            "Expected main hunk in lib: {0} {1}/{1:X}", e.HunkType, (int) e.HunkType));
-                    }
+                        throw new BadImageFormatException(string.Format("Expected main hunk in lib: {0} {1}/{1:X}.", e.HunkType, (int) hunk_type));
                 }
                 else
                 {
+                    // end hunk
                     if (hunk_type == HunkType.HUNK_END)
                     {
                         seek_main = true;
+                        // extra contents
                     }
                     else if (unit_valid_extra_hunks.Contains(hunk_type))
                     {
-                        // extra contents
-                        segment.hunks.Add(e);
+                        segment.Add(e);
                     }
                     else
-                        throw new BadImageFormatException(string.Format(
-                            "Unexpected hunk in lib: {0} {1}/{1:X}.", hunk_type, (int) hunk_type));
+                        throw new BadImageFormatException(string.Format("Unexpected hunk in lib: {0} {1}/{1:X}.", e.HunkType, (int) hunk_type));
                 }
             }
             return true;
         }
 
-        /// <summary>
-        /// Resolve hunks referenced in the index.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="segment_list"></param>
-        /// <param name="lib_units"></param>
-        /// <returns></returns>
-        private bool ResolveIndexHunks(IndexHunk index, List<Segment> segment_list, List<Unit> lib_units)
+        public virtual bool resolve_index_hunks(IndexHunk index, List<List<Hunk>> segment_list, List<LibUnit> lib_units)
         {
             var units = index.units;
-            int no = 0;
+            var no = 0;
+            bool found = false;
             foreach (var unit in units)
             {
-                var lib_unit = new Unit();
-                var unit_segments = new List<Segment>();
-                lib_unit.segments = unit_segments;
-                lib_unit.name = unit.name;
-                lib_unit.unit_no = no;
-                lib_unit.index_unit = unit;
+                var unit_segments = new List<List<Hunk>>();
+                var lib_unit = new LibUnit
+                {
+                    segments = unit_segments,
+                    name = unit.name,
+                    unit_no = no,
+                    index_unit = unit,
+                };
                 lib_units.Add(lib_unit);
-                ++no;
-
-                // Try to find segment with start offset
-                uint hunk_offset = unit.hunk_begin_offset;
-                bool found = false;
+                no += 1;
+                // try to find segment with start offset
+                var hunk_offset = unit.hunk_begin_offset;
+                found = false;
                 foreach (var segment in segment_list)
                 {
-                    int hunk_no = segment.hunks[0].hunk_no;
-                    int lib_off = segment.hunks[0].hunk_lib_offset / 4; // is in longwords
+                    int hunk_no = segment[0].hunk_no;
+                    uint lib_off = segment[0].hunk_lib_offset / 4;
                     if (lib_off == hunk_offset)
                     {
                         // found segment
                         int num_segs = unit.hunk_infos.Count;
-                        for (int i = 0; i < num_segs; ++i)
+                        for (var i = 0; i < num_segs; ++i)
                         {
                             var info = unit.hunk_infos[i];
                             var seg = segment_list[hunk_no + i];
                             unit_segments.Add(seg);
                             // renumber hunk
-                            seg.hunks[0].hunk_no = i;
-                            seg.hunks[0].Name = info.Name;
-                            seg.hunks[0].index_hunk = info;
+                            seg[0].hunk_no = i;
+                            seg[0].Name = info.name;
+                            seg[0].index_hunk = info;
                         }
                         found = true;
                     }
                 }
                 if (!found)
+                {
                     return false;
+                }
             }
             return true;
         }
 
-        /// <summary>
-        /// Build segments from the hunk list.
-        /// </summary>
-        /// <returns></returns>
         public bool BuildSegments()
         {
-            this.segments = new List<Segment>();
-            if (this.hunks.Count == 0)
+            if (this.hunkFile.hunks.Count == 0)
             {
-                this.FileType = TYPE_UNKNOWN;
+                this.hunkFile.type = FileType.TYPE_UNKNOWN;
                 return false;
             }
-
-            // Determine type of file from first hunk
-            HunkType firstHunkType = this.hunks[0].HunkType;
-            switch (firstHunkType)
+            // determine type of file from first hunk
+            switch (this.hunkFile.hunks[0].HunkType)
             {
             case HunkType.HUNK_HEADER:
-                this.FileType = TYPE_LOADSEG;
+                this.hunkFile.type = FileType.TYPE_LOADSEG;
                 return this.BuildLoadSegments();
             case HunkType.HUNK_UNIT:
-                this.FileType = TYPE_UNIT;
+                this.hunkFile.type = FileType.TYPE_UNIT;
                 return this.BuildUnit();
             case HunkType.HUNK_LIB:
-                this.FileType = TYPE_LIB;
-                return this.BuildLib();
+                this.hunkFile.type = FileType.TYPE_LIB;
+                return this.build_lib();
             default:
-                this.FileType = TYPE_UNKNOWN;
+                this.hunkFile.type = FileType.TYPE_UNKNOWN;
                 return false;
             }
         }
 
-        // Return a summary of the created segment structure
-        public string get_segment_summary()
+        // ---------- Build Segments from Hunks ----------
+
+        public virtual object get_hunk_summary()
         {
-            return this.get_struct_summary(this.segments);
+            return this.get_struct_summary(hunkFile.hunks);
         }
 
-        public string get_overlay_segment_summary()
+        public virtual object get_struct_summary(object obj)
         {
-            if (this.overlay_segments != null)
-                return this.get_struct_summary(this.overlay_segments);
+            /*
+                        object type_name;
+                        object v;
+                        if (obj.GetType().IsGenericType) {
+                            {
+                                if (obj.GetType().GetGenericTypeDefinition().Name == "List")
+                                {
+                                var result = new List<object>();
+                                foreach (var a in obj) {
+                                    v = this.get_struct_summary(a);
+                                    if (v != null) {
+                                        result.append(v);
+                                    }
+                                }
+                                return "{" + string.Join(",", result) + "]";
+                            } else if (type(obj) == DictType) {
+                                if (obj.has_key("type_name")) {
+                                    type_name = obj["type_name"];
+                                    return type_name.replace("HUNK_", "");
+                                }
+                            } else {
+                                result = new List<object>();
+                                foreach (var k in obj.keys()) {
+                                    v = this.get_struct_summary(obj[k]);
+                                    if (v != null) {
+                                        result.append(k + ":" + v);
+                                    }
+                                }
+                                return "{" + ",".join(result) + "}";
+                            }
+                        } else {
+                            return null;
+                        }
+             * */
+            throw new NotImplementedException();
+        }
+
+        public virtual object get_segment_summary()
+        {
+            return this.get_struct_summary(this.hunkFile.segments);
+        }
+
+        public virtual object get_overlay_segment_summary()
+        {
+            if (this.hunkFile.overlay_segments != null)
+            {
+                return this.get_struct_summary(this.hunkFile.overlay_segments);
+            }
             else
+            {
                 return null;
+            }
         }
 
-        public string get_libs_summary()
+        public virtual object get_libs_summary()
         {
-            if (this.libs != null)
-                return this.get_struct_summary(this.libs);
+            if (this.hunkFile.libs != null)
+            {
+                return this.get_struct_summary(this.hunkFile.libs);
+            }
             else
+            {
                 return null;
+            }
         }
 
-        public string get_units_summary()
+        public virtual object get_units_summary()
         {
-            if (this.units != null)
-                return this.get_struct_summary(this.units);
+            if (this.hunkFile.units != null)
+            {
+                return this.get_struct_summary(this.hunkFile.units);
+            }
             else
+            {
                 return null;
+            }
         }
+        /*
+bin = args.bin
+bin_args = args.args
+print "vamos: %s %s" % (bin, bin_args)
+ 
+# --- load binary ---
+hunk_file = HunkReader.HunkReader()
+fobj = file(bin,"rb")
+result = hunk_file.read_file_obj(bin,fobj,None)
+if result != Hunk.RESULT_OK:
+  print "Error loading '%s'" % (bin)
+  sys.exit(1)
+# build segments
+ok = hunk_file.build_segments()
+if not ok:
+  print "Error building segments for '%s'" % (bin)
+  sys.exit(2)
+# make sure its a loadseg()
+if hunk_file.type != Hunk.TYPE_LOADSEG:
+  print "File not loadSeg()able: '%s'" % (bin)
+  sys.exit(3)
+ 
+# --- create memory layout ---
+print "setting up memory layout"
+layout = MemoryLayout.MemoryLayout(verbose=True)
+context = MachineContext.MachineContext(MusashiCPU(),layout)
+ 
+# place prog segments
+prog_base = 0x010000
+prog_start = prog_base
+off = prog_base
+relocator = HunkRelocate.HunkRelocate(hunk_file)
+prog_data = relocator.relocate_one_block(prog_base, padding=8)
+prog_size = len(prog_data)
+prog_mem = MemoryBlock.MemoryBlock("prog", prog_base, prog_size)
+prog_mem.write_data(prog_base, prog_data)
+layout.add_range(prog_mem)
+print prog_mem
+ 
+# some segment info
+seg_sizes = relocator.get_sizes()
+seg_addrs = relocator.get_seq_addrs(prog_base, padding=8)
+for i in xrange(len(seg_sizes)):
+  print "  seg:  @%06x  +%06x" % (seg_addrs[i], seg_sizes[i])
+ 
+# setup stack
+magic_end = 0xff0000
+stack_base = 0x080000
+stack_size = 0x001000
+stack_end = stack_base + stack_size
+stack_mem = MemoryBlock.MemoryBlock("stack", stack_base, stack_size)
+stack_initial = stack_end - 4
+stack_mem.w32(stack_initial, magic_end)
+layout.add_range(stack_mem)
+ 
+# setup argument
+arg_base = 0x1000
+arg_text = " ".join(bin_args)
+arg_len  = len(arg_text)
+arg_size = arg_len + 1
+arg_mem  = MemoryBlock.MemoryBlock("args", arg_base, arg_size)
+arg_mem.write_data(arg_base, arg_text)
+arg_mem.write_mem(0, arg_base + arg_len, 0)
+layout.add_range(arg_mem)
+print "args: %s (%d)" % (arg_text, arg_len)
+print arg_mem
+*/
 
-		public override RelocationResults Relocate(Address addrLoad)
+        public override RelocationResults Relocate(Address addrLoad)
         {
             var entries = new List<EntryPoint>
             {
@@ -584,7 +630,7 @@ namespace Decompiler.ImageLoaders.Hunk
 
         private byte[] RelocateBytes(Address addrLoad)
         {
-            var rel = new HunkRelocator(this);
+            var rel = new HunkRelocator(this.hunkFile);
             // Get sizes of all segments
             var sizes = rel.GetSegmentSizes();
             // Determine begin addrs for all segments

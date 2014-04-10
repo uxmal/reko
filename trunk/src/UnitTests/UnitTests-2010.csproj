@@ -116,6 +116,7 @@
     <Compile Include="Arch\Arm\AArch64DisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmDisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
+    <Compile Include="Arch\Cil\CilDisassemblerTests.cs" />
     <Compile Include="Arch\DisassemblerTestBase.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Core\Serialization\DataTypeSerializerTests.cs" />
+    <Compile Include="Core\StructureReaderTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />
     <Compile Include="Environments\Win32\ModuleDefinitionLoaderTests.cs" />
@@ -440,6 +442,10 @@
     <ProjectReference Include="..\Arch\Arm\Arm-2010.csproj">
       <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
       <Name>Arm-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Cil\Cil.csproj">
+      <Project>{f6f2225d-b778-4fd2-9ba9-a8e2b58acccc}</Project>
+      <Name>Cil</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\M68k\M68k-2010.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>

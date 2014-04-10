@@ -20,6 +20,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Types;
 using Decompiler.Gui;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
@@ -69,7 +70,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MVI_GotoAddressEnabled()
+        public void LLI_GotoAddressEnabled()
         {
             interactor = new LowLevelViewInteractor();
             var status = new CommandStatus();
@@ -78,7 +79,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MVI_SelectAddress()
+        public void LLI_SelectAddress()
         {
             Given_Interactor();
             mr.ReplayAll();
@@ -90,7 +91,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MVI_GotoAddress()
+        public void LLI_GotoAddress()
         {
             var dlg = mr.Stub<IAddressPromptDialog>();
             dlgFactory.Expect(d => d.CreateAddressPromptDialog()).Return(dlg);
@@ -111,7 +112,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MVI_MarkAreaWithType()
+        public void LLI_MarkAreaWithType()
         {
             Given_Interactor();
             Given_Image();
@@ -125,14 +126,19 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_Image()
         {
-            image = new LoadedImage(addrBase, new byte[0x100]);
+            Given_Image(new byte[0x100]);
+        }
+
+        private void Given_Image(params byte[] bytes)
+        {
+            image = new LoadedImage(addrBase, bytes);
             imageMap = new ImageMap(image);
             interactor.ProgramImage = image;
             interactor.ImageMap = imageMap;
         }
 
         [Test]
-        public void MVI_NavigateToAddress()
+        public void LLI_NavigateToAddress()
         {
             Given_Interactor();
             Given_Image();
@@ -159,6 +165,25 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void When_GoPushed()
         {
             control.ToolBarGoButton.PerformClick();
+        }
+
+        [Test]
+        public void LLI_GetDataSize_of_Integer()
+        {
+            Given_Interactor();
+            Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
+
+            Assert.AreEqual(4u, interactor.GetDataSize(addrBase, PrimitiveType.Int32));
+        }
+
+        [Test]
+        public void LLI_GetDataSize_of_ZeroTerminatedString()
+        {
+            Given_Interactor();
+            Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
+
+            var dt = StringType.NullTerminated(PrimitiveType.Char);
+            Assert.AreEqual(6u, interactor.GetDataSize(addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");
         }
     }
 }

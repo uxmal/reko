@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using Decompiler.Gui;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows.Controls;
@@ -146,7 +147,11 @@ namespace Decompiler.Gui.Windows.Forms
         public bool ViewUnscannedBlocks()
         {
             var srSvc = Site.RequireService<ISearchResultService>();
-            Decompiler.GetScannedBlocks();
+            foreach (var de in Decompiler.Program.ImageMap.Items
+                .Where(i => i.Value.DataType is UnknownType))
+            {
+
+            }
             return true;
         }
 

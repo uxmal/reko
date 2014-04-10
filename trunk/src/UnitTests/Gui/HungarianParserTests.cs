@@ -92,14 +92,14 @@ namespace Decompiler.UnitTests.Gui
         public void Parse8bit_c_string()
         {
             var dt = parser.Parse("sz");       // zero-terminated string
-            Assert.AreEqual("(arr char)", dt.ToString());
+            Assert.AreEqual("(str char)", dt.ToString());
         }
 
         [Test]
         public void Parse16bit_c_string()
         {
             var dt = parser.Parse("sz");       // zero-terminated string
-            Assert.AreEqual("(arr char)", dt.ToString());
+            Assert.AreEqual("(str char)", dt.ToString());
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Gui
         public void Wide_Zero_Terminated_string()
         {
             var dt = parser.Parse("wsz");
-            Assert.AreEqual("(arr wchar_t)", dt.ToString());
+            Assert.AreEqual("(str wchar_t)", dt.ToString());
         }
 
         [Test]

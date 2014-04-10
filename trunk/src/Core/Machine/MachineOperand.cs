@@ -175,7 +175,10 @@ namespace Decompiler.Core.Machine
 
         public override string ToString()
         {
-            return Address.ToString();
+            if (base.Width.Size == 2)
+                return string.Format("{0:X4}", Address.Linear);
+            else
+                return Address.ToString();
         }
     }
 

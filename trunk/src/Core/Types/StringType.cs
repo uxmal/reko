@@ -25,23 +25,26 @@ using System.Text;
 
 namespace Decompiler.Core.Types
 {
+    /// <summary>
+    /// This class is used to model strings, including size prefix and null termination.
+    /// </summary>
     public class StringType : DataType
     {
-        public  DataType CharType { get; private set; }
-        public DataType LengthPrefixType { get; private set; }
+        public PrimitiveType CharType { get; private set; }
+        public PrimitiveType LengthPrefixType { get; private set; }
         public int PrefixOffset { get; private set; }
 
-        public static StringType NullTerminated(DataType charType)
+        public static StringType NullTerminated(PrimitiveType  charType)
         {
             return new StringType(charType, null, 0);
         }
 
-        public static StringType LengthPrefixedStringType(DataType charType, DataType lengthPrefixType)
+        public static StringType LengthPrefixedStringType(PrimitiveType charType, PrimitiveType lengthPrefixType)
         {
             return new StringType(charType, lengthPrefixType, 0);
         }
 
-        public StringType(DataType charType, DataType lengthPrefixType, int prefixOffset)
+        public StringType(PrimitiveType charType, PrimitiveType lengthPrefixType, int prefixOffset)
         {
             this.CharType = charType;
             this.LengthPrefixType = lengthPrefixType;

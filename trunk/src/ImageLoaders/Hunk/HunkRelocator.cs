@@ -10,19 +10,19 @@ namespace Decompiler.ImageLoaders.Hunk
     /// <summary>
     /// Relocates any pointer
     /// </summary>
-    public class HunkRelocator
+    public partial class HunkRelocator
     {
         public static TraceSwitch Trace = new TraceSwitch("HunkRelocation", "Hunk relocation");
-        private HunkLoader hunk_file;
+        private HunkFile hunk_file;
 
-        public HunkRelocator(HunkLoader hunk_file)
+        public HunkRelocator(HunkFile hunk_file)
         {
             this.hunk_file = hunk_file;
         }
 
-        public IEnumerable<uint> GetSegmentSizes()
+        public IEnumerable<int> GetSegmentSizes()
         {
-            return this.hunk_file.segments.Select(s => s.hunks[0].alloc_size);
+            return this.hunk_file.segments.Select(s => s[0].alloc_size);
         }
 
         private uint GetTotalSize()
@@ -33,7 +33,7 @@ namespace Decompiler.ImageLoaders.Hunk
         private IEnumerable<string> GetTypeNames()
         {
             return this.hunk_file.segments
-                .Select(s => s.hunks[0].HunkType.ToString());
+                .Select(s => s[0].HunkType.ToString());
         }
 
         // generate a sequence of addresses suitable for relocation
@@ -45,13 +45,13 @@ namespace Decompiler.ImageLoaders.Hunk
                 .ToList();
         }
 
-        private IEnumerable<uint> GetSegmentRelocationAddresses(uint baseAddress, uint padding, IEnumerable<uint> sizes)
+        private IEnumerable<uint> GetSegmentRelocationAddresses(uint baseAddress, uint padding, IEnumerable<int> sizes)
         {
             var addr = baseAddress;
             return sizes.Select(s =>
             {
                 uint a = addr;
-                addr += s;
+                addr += (uint) s;
                 return a;
             });
         }
@@ -59,69 +59,55 @@ namespace Decompiler.ImageLoaders.Hunk
         public byte[] Relocate(List<uint> addr)
         {
             var datas = new System.IO.MemoryStream();
-            foreach (Segment segment in this.hunk_file.segments)
+            foreach (List<Hunk> segment in this.hunk_file.segments)
             {
-                Debug.WriteLineIf(Trace.TraceVerbose, string.Format("Relocating segment {0}", segment.hunks[0]));
-                var mainHunk = segment.hunks[0];
+                Debug.WriteLineIf(Trace.TraceVerbose, string.Format("Relocating segment {0}", segment[0]));
+                var mainHunk = segment[0];
                 int hunk_no = mainHunk.hunk_no;
-                uint alloc_size = mainHunk.alloc_size;
-                uint size = mainHunk.Size;
+                int alloc_size = mainHunk.alloc_size;
+                int size = mainHunk.size;
 
                 // Fill in segment data
-                BeImageWriter data;
+                byte[] data;
                 var txt = mainHunk as TextHunk;
                 if (txt != null)
                 {
-                    Debug.Assert(txt.Size <= alloc_size);
-                    data = new BeImageWriter(txt.Data);
+                    Debug.Assert(txt.size <= alloc_size);
+                    data = txt.Data;
                 }
                 else
                 {
-                    data = new BeImageWriter(new byte[alloc_size]);
+                    data = new byte[alloc_size];
                 }
                 Debug.WriteLineIf(Trace.TraceVerbose, string.Format("#{0:X2} @ {1:X6}", hunk_no, addr[hunk_no]));
 
                 // Find relocation hunks
-                foreach (var relocHunk in segment.hunks
+                foreach (var relocHunk in segment.Skip(1)
                     .Where(h => h.HunkType == HunkType.HUNK_ABSRELOC32)
                     .Cast<RelocHunk>())
                 {
-                    foreach (var hunk_num in relocHunk.reloc.Keys)
+                    foreach (var hunkNo in relocHunk.reloc.Keys)
                     {
                         // Get address of other hunk
-                        var hunk_addr = addr[hunk_num];
-                        var offsets = relocHunk.reloc[hunk_num];
+                        var hunk_addr = addr[hunkNo];
+                        var offsets = relocHunk.reloc[hunkNo];
                         foreach (var offset in offsets)
                         {
-                            throw new NotImplementedException();    //$TODO:
-                            //this.relocate32(hunk_no, data, offset, hunk_addr);
+                            this.relocate32(hunk_no, data, offset, hunk_addr);
                         }
                     }
                 }
-                datas.Write(data.Bytes, 0, data.Bytes.Length);
+                datas.Write(data, 0, data.Length);
             }
             return datas.ToArray();
         }
 
         public void relocate32(int hunk_no, byte[] data, uint offset, uint hunk_addr)
         {
-            throw new NotImplementedException();    //$TODO
-            //var delta = this.read_long(data, offset);
-            //var addr = hunk_addr + delta;
-            //this.write_long(data, offset, addr);
-            //Debug.WriteLineIf(Trace.TraceVerbose, string.Format("#{0:2} + {1:X6}: {2:X6} (delta) + {3:X6} (hunk_addr) -> {4:X6}",
-            //    hunk_no, offset, delta, hunk_addr, addr));
+            var delta = LoadedImage.ReadBeUInt32(data, offset);
+            var addr = hunk_addr + delta;
+            LoadedImage.WriteBeUInt32(data, offset, addr);
+            Debug.WriteIf(Trace.TraceVerbose, string.Format("#{0,2} + {1:X8}: {2:X6} (delta) + {3:X6} (hunk_addr) -> {4:X6}", hunk_no, offset, delta, hunk_addr, addr));
         }
     }
-
-    //public void read_long(byte [] data, offset) {
-    //  bytes = data[offset:offset+4];
-    //  return struct.unpack(">i",bytes)[0];
-    //}
-
-    //public void write_long(this, data, offset, value) {
-    //  bytes = struct.pack(">i",value);
-    //  data[offset:offset+4] = bytes;
-    //  }
-    //  }
 }

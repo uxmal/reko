@@ -53,7 +53,6 @@ namespace Decompiler.Scanning
 
         Block AddBlock(Address addr, Procedure proc, string blockName);
         void AddDiagnostic(Address addr, Diagnostic d);
-        IEnumerable<KeyValuePair<Address, Block>> GetBlocks();
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
         PseudoProcedure GetImportedProcedure(uint linAddr);
         void TerminateBlock(Block block, Address addrEnd);
@@ -317,11 +316,6 @@ namespace Decompiler.Scanning
                 }
             }
             return block;
-        }
-
-        public IEnumerable<KeyValuePair<Address, Block>> GetBlocks()
-        {
-            return blocks.Select(de => new KeyValuePair<Address, Block>(de.Key, de.Value.Block));
         }
 
         public bool IsBlockLinearProcedureExit(Block block)

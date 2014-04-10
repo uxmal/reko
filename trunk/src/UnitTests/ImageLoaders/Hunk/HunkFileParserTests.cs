@@ -42,8 +42,8 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
         public void Hfp_ReadString_ZeroLength()
         {
             var bytes = hm.MakeImageReader(0);
-            var parser = new HunkFileParser(bytes);
-            Assert.AreEqual("", parser.ReadString(bytes));
+            var parser = new HunkFileParser( bytes);
+            Assert.AreEqual("", parser.ReadString());
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
         {
             var bytes = hm.MakeImageReader("a");
             var parser = new HunkFileParser(bytes);
-            Assert.AreEqual("a", parser.ReadString(bytes));
+            Assert.AreEqual("a", parser.ReadString());
         }
 
         [Test]
@@ -66,15 +66,15 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
                 4,
                 16);
             var parser = new HunkFileParser(rdr);
-            HeaderHunk hdr = parser.ParseHeader(rdr);
+            HeaderHunk hdr = parser.ParseHeader(q => { });
 
             Assert.AreEqual(1, hdr.HunkNames.Count);
             Assert.AreEqual("Hello", hdr.HunkNames[0]);
             Assert.AreEqual(0, hdr.FirstHunkId);
             Assert.AreEqual(1, hdr.LastHunkId);
-            Assert.AreEqual(2, hdr.HunkSizes.Count);
-            Assert.AreEqual(16, hdr.HunkSizes[0].Size);
-            Assert.AreEqual(64, hdr.HunkSizes[1].Size);
+            Assert.AreEqual(2, hdr.HunkInfos.Count);
+            Assert.AreEqual(16, hdr.HunkInfos[0].Size);
+            Assert.AreEqual(64, hdr.HunkInfos[1].Size);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
                 3,
                 4);
             var parser = new HunkFileParser(rdr);
-            TextHunk code = parser.ParseText(rdr);
+            TextHunk code = parser.ParseText(q => { });
             Assert.AreEqual(12, rdr.Offset);
             Assert.AreEqual(new byte[] {
                     0, 0, 0, 3,  0, 0, 0, 4 

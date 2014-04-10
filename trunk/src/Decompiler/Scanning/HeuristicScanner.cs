@@ -53,7 +53,7 @@ namespace Decompiler.Scanning
                 knownProcedureAddresses
                 .Select(addr => addr.Linear)
                 .ToHashSet();
-            return prog.Architecture.CreateCallInstructionScanner(
+            return prog.Architecture.CreatePointerScanner(
                 prog.Image.CreateReader(0),
                 procEntryLinearAddresses,
                 PointerScannerFlags.Calls);

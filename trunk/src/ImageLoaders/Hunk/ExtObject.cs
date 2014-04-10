@@ -5,13 +5,12 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.Hunk
 {
-    class ExtObject
+    public class ExtObject
     {
-        public string type_name;
-        public int common_size;
-        public int type;
+        public ExtType type;
         public string name;
-        public int def;
+        public uint common_size;
+        public uint def;
         public List<uint> refs;
     }
 }
