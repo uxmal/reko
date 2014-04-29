@@ -202,7 +202,17 @@ namespace Decompiler.Assemblers.x86
 				ParseMemoryFactor(memOp);
 			} 
 		}
-
+		private ParsedOperand IntegerCommon() {
+			if (lexer.PeekToken() == Token.BRA)
+			{
+				Expect(Token.BRA);
+				return ParseMemoryOperand(RegisterStorage.None);
+			}
+			else
+			{
+				return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, defaultWordWidth)));
+			}
+		}
 		public ParsedOperand ParseOperand()
 		{
 			sym = null;
@@ -217,21 +227,12 @@ namespace Decompiler.Assemblers.x86
 			case Token.BRA:
 				return ParseMemoryOperand(RegisterStorage.None);
 			case Token.MINUS:
-				Expect(Token.INTEGER);
+				Expect( Token.INTEGER );
 				totalInt -= lexer.Integer;
-				goto IntegerCommon;
+				return IntegerCommon();
 			case Token.INTEGER:
 				totalInt += lexer.Integer;
-				IntegerCommon:
-				if (lexer.PeekToken() == Token.BRA)
-				{
-					Expect(Token.BRA);
-					return ParseMemoryOperand(RegisterStorage.None);
-				}
-				else
-				{
-					return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, defaultWordWidth)));
-				}
+				return IntegerCommon();
 			case Token.REGISTER:
 			{
 				RegisterStorage reg = lexer.Register;
@@ -259,7 +260,7 @@ namespace Decompiler.Assemblers.x86
                 if (symtab.Equates.TryGetValue(lexer.StringLiteral.ToLower(), out v))
                 {
 					totalInt += lexer.Integer;
-					goto IntegerCommon;
+					return IntegerCommon();
 				}
 				return new ParsedOperand(
 							   new MemoryOperand(addrWidth, Constant.Create(defaultWordWidth, addrBase.Offset)),
