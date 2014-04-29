@@ -99,7 +99,16 @@ namespace Decompiler.Core.Expressions
                 {
                     return 0x10101010 * GetHashCodeImpl(((ConditionOf) obj).Expression);
                 });
-
+            Add(typeof(Address),
+                delegate(Expression ea, Expression eb)
+                {
+                    Address a = (Address) ea, b = (Address) eb;
+                    return object.Equals(a.Linear, b.Linear);
+                },
+                delegate(Expression obj)
+                {
+                    return ((Address) obj).Linear.GetHashCode();
+                });
             Add(typeof(Constant),
                 delegate(Expression ea, Expression eb)
                 {

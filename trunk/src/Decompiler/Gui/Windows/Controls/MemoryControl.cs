@@ -470,6 +470,10 @@ namespace Decompiler.Gui.Windows.Controls
         {
             private MemoryControl ctrl;
             private Size cellSize;
+            private BrushTheme codeTheme;
+            private BrushTheme dataTheme;
+            private BrushTheme defaultTheme;
+            private BrushTheme selectTheme;
 
             public MemoryControlPainter(MemoryControl ctrl)
             {
@@ -484,6 +488,10 @@ namespace Decompiler.Gui.Windows.Controls
             public Address PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
             {
                 this.cellSize = cellSize;
+                codeTheme = new BrushTheme { Background = Brushes.Pink, Foreground = Brushes.Black, StartMarker = Brushes.Red };
+                dataTheme = new BrushTheme { Background = Brushes.LightBlue, Foreground = Brushes.Black, StartMarker = Brushes.Blue };
+                defaultTheme = new BrushTheme { Background = SystemBrushes.Window, Foreground = SystemBrushes.ControlText };
+                selectTheme = new BrushTheme { Background = SystemBrushes.Highlight, Foreground = SystemBrushes.HighlightText };
 
                 // Enumerate all segments visible on screen.
 
@@ -573,9 +581,6 @@ namespace Decompiler.Gui.Windows.Controls
                         ctrl.ImageMap.TryFindItem(addrByte, out item);
                         bool isSelected = linearBeginSelection <= addrByte.Linear && addrByte.Linear <= linearEndSelection;
                         bool isCursor = addrByte.Linear == linearSelected;
-                        Brush fg = GetForegroundBrush(item, isSelected);
-                        Brush bg = GetBackgroundBrush(item, isSelected);
-
                         if (rdr.IsValid)
                         {
                             byte b = rdr.ReadByte();
@@ -599,8 +604,21 @@ namespace Decompiler.Gui.Windows.Controls
                         if (!render && rcByte.Contains(ptAddr))
                             return addrByte;
 
-                        g.FillRectangle(bg, rc.Left, rc.Top, cx, rc.Height);
-                        g.DrawString(s, ctrl.Font, fg, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
+                        var theme = GetBrushTheme(item, isSelected);
+                        g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
+                        if (!isSelected && theme.StartMarker != null && addrByte.Linear == item.Address.Linear)
+                        {
+                            var pts = new Point[] 
+                            {
+                                rc.Location,
+                                rc.Location,
+                                rc.Location,
+                            };
+                            pts[1].Offset(4, 0);
+                            pts[2].Offset(0, 4);
+                            g.FillClosedCurve(theme.StartMarker, pts);
+                        }
+                        g.DrawString(s, ctrl.Font, theme.Foreground, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
                         if (isCursor)
                         {
                             ControlPaint.DrawFocusRectangle(g, rc);
@@ -618,24 +636,23 @@ namespace Decompiler.Gui.Windows.Controls
                 return null;
             }
 
-            private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
+            private BrushTheme GetBrushTheme(ImageMapItem item, bool selected)
             {
                 if (selected)
-                    return SystemBrushes.Highlight;
+                    return selectTheme;
                 if (item is ImageMapBlock)
-                    return Brushes.Pink;
+                    return codeTheme;
                 if (item.DataType != null && !(item.DataType is UnknownType))
-                    return Brushes.LightBlue;
-                return SystemBrushes.Window;
-            }
-
-            private Brush GetForegroundBrush(ImageMapItem item, bool selected)
-            {
-                if (selected)
-                    return SystemBrushes.HighlightText;
-                return SystemBrushes.WindowText;
+                    return dataTheme;
+                return defaultTheme;
             }
         }
 
+        private class BrushTheme
+        {
+            public Brush Foreground;
+            public Brush Background;
+            public Brush StartMarker;
+        }
     }
 }

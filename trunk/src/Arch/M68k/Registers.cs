@@ -62,6 +62,7 @@ namespace Decompiler.Arch.M68k
         public static readonly AddressRegister pc;
 
         private static RegisterStorage[] regs;
+        internal static int Max;
 
         static Registers()
         {
@@ -97,6 +98,8 @@ namespace Decompiler.Arch.M68k
             usp = new RegisterStorage("usp", 26, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
 
+            Max = 28;
+
             regs = new RegisterStorage[] { 
                 d0, 
                 d1, 
@@ -124,6 +127,11 @@ namespace Decompiler.Arch.M68k
                 fp5,
                 fp6,
                 fp7,
+
+                ccr,
+                sr,
+                usp,
+                pc,
             };
         }
 

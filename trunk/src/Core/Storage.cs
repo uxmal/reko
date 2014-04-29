@@ -287,9 +287,12 @@ namespace Decompiler.Core
             return GetSubregister(0, width.BitSize);
         }
 
-        public virtual RegisterStorage GetSubregister(int offset, int size)
+        public virtual RegisterStorage GetSubregister(int offset, int bitSize)
         {
-            throw new NotSupportedException(string.Format("Invalid offset {0} or size {1} for register {2}.", offset, size, Name));
+            if (offset == 0 && bitSize == DataType.BitSize)
+                return this;
+            else
+                return null;
         }
 
         public virtual RegisterStorage GetWidestSubregister(BitSet bits)
