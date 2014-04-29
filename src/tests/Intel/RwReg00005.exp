@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // ds:ds
 // bx:bx
@@ -19,7 +19,7 @@ fn0C00_0000_exit:
 
 // fn0C00_000C
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // cx:cx
 // ds:ds

@@ -1,6 +1,6 @@
 // NotMock
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // a:Local -0004
 // return address size: 0
 void NotMock()

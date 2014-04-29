@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 unused:Local -0004
 r63:r63
 unused_4: orig: unused

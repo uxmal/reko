@@ -91,7 +91,7 @@ namespace Decompiler.Scanning
             if (Stride > 1)
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
-            bool continueBackwalking = BackwalkInstructions(Index, StatementsInReverseOrder(block));
+            bool continueBackwalking = BackwalkInstructions(Index, block);
             if (Index == null)
                 return null;	// unable to find guard. //$REVIEW: return warning.
 
@@ -101,7 +101,7 @@ namespace Decompiler.Scanning
                 if (block == null)
                     return null;	// seems unguarded to me.	//$REVIEW: emit warning.
 
-                BackwalkInstructions(Index, StatementsInReverseOrder(block));
+                BackwalkInstructions(Index, block);
                 if (Index == null)
                     return null;
             }
@@ -178,10 +178,14 @@ namespace Decompiler.Scanning
                 var regDst = RegisterOf(ass.Dst);
                 if (memSrc != null && (regDst == Index || regDst.IsSubRegisterOf(Index)))
                 {
+                    // R = Mem[xxx]
                     var rIdx = Index;
                     var rDst = RegisterOf(ass.Dst);
                     if (rDst != rIdx.GetSubregister(0, 8))
+                    {
+                        Index = RegisterStorage.None;
                         return false;
+                    }
 
                     var binEa = memSrc.EffectiveAddress as BinaryExpression;
                     if (binEa == null)
@@ -241,6 +245,24 @@ namespace Decompiler.Scanning
                     return false;
             }
             return true;
+        }
+
+        public bool BackwalkInstructions(
+            RegisterStorage regIdx,
+            Block block)
+        {
+            DumpBlock(regIdx, block);
+            return BackwalkInstructions(regIdx, StatementsInReverseOrder(block));
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpBlock(RegisterStorage regIdx, Block block)
+        {
+            Debug.Print("Backwalking register {0} through block: {1}", regIdx, block.Name);
+            foreach (var stm in block.Statements  )
+            {
+                Debug.Print("    {0}", stm.Instruction);
+            }
         }
 
         private RegisterStorage GetBaseRegister(Expression ea)

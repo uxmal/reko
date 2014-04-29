@@ -69,16 +69,36 @@ namespace Decompiler.Arch.M68k
                 case Opcode.add: RewriteBinOp((s, d) => emitter.IAdd(d, s), FlagM.CVZNX); break;
                 case Opcode.adda: RewriteBinOp((s, d) => emitter.IAdd(d, s)); break;
                 case Opcode.addq: RewriteAddSubq((s, d) => emitter.IAdd(d, s)); break;
+                case Opcode.addx: RewriteAddSubx(Operator.IAdd); break;
+                
                 case Opcode.and: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.asl: RewriteArithmetic((s, d) => emitter.Shl(d, s)); break;
                 case Opcode.asr: RewriteShift((s, d) => emitter.Sar(d, s)); break;
-                case Opcode.bcc: RewriteBcc(ConditionCode.ULT, FlagM.CF); break;
+/*
+ * 
+ * Mnemonic Condition Encoding Test
+T* True 0000 1
+F* False 0001 0
+HI High 0010 C L Z
+LS Low or Same 0011 C V Z
+VC Overflow Clear 1000 V
+VS Overflow Set 1001 V
+ */
+                case Opcode.bcc: RewriteBcc(ConditionCode.UGE, FlagM.CF); break;
+                case Opcode.bcs: RewriteBcc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.beq: RewriteBcc(ConditionCode.EQ, FlagM.ZF); break;
-                case Opcode.bne: RewriteBcc(ConditionCode.NE, FlagM.ZF); break; 
+                case Opcode.bge: RewriteBcc(ConditionCode.GE, FlagM.NF | FlagM.VF); break;
+                case Opcode.bgt: RewriteBcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
+                case Opcode.ble: RewriteBcc(ConditionCode.LE, FlagM.NF | FlagM.VF | FlagM.ZF); break;
+                case Opcode.blt: RewriteBcc(ConditionCode.LT, FlagM.VF | FlagM.ZF); break;
+                case Opcode.bmi: RewriteBcc(ConditionCode.LT, FlagM.NF); break;
+                case Opcode.bne: RewriteBcc(ConditionCode.NE, FlagM.ZF); break;
+                case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.bchg: RewriteBchg(); break;
                 case Opcode.bra: RewriteBra(); break;
                 case Opcode.bsr: RewriteBsr(); break;
+                case Opcode.btst: RewriteBtst(); break;
                 case Opcode.clr: RewriteClr(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmpa: RewriteCmp(); break;
@@ -104,12 +124,15 @@ namespace Decompiler.Arch.M68k
                 case Opcode.negx: RewriteUnary(RewriteNegx, AllConditions); break;
                 case Opcode.not: RewriteUnary(s => emitter.Comp(s), LogicalConditions); break;
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
+                case Opcode.ori: RewriteLogical((s, d) => emitter.Or(d, s)); break;
+                case Opcode.pea: RewritePea(); break;
                 case Opcode.rts: emitter.Return(4, 0); break;
                 case Opcode.sub: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.suba: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subq: RewriteAddSubq((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subx: RewriteArithmetic((s, d) => emitter.ISub(emitter.ISub(d, s), frame.EnsureFlagGroup((uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
+                case Opcode.swap: RewriteSwap(); break;
                 case Opcode.tst: RewriteTst(); break;
                 case Opcode.unlk: RewriteUnlk(); break;
                 default:
@@ -127,5 +150,25 @@ namespace Decompiler.Arch.M68k
         {
             return GetEnumerator();
         }
+
+        //$REVIEW: push PseudoProc into the RewriterHost interface"
+        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
+        {
+            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
+            return PseudoProc(ppp, retType, args);
+        }
+
+        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+        {
+            if (args.Length != ppp.Arity)
+                throw new ArgumentOutOfRangeException(
+                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                    ppp.Name,
+                    ppp.Arity,
+                    args.Length));
+
+            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
+        }
+
     }
 }

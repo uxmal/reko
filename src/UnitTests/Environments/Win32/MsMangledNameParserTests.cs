@@ -280,7 +280,7 @@ namespace Decompiler.UnitTests.Environments.Win32
         public void PMNP_string_ctor()
         {
             RunTest(
-                "@@@",
+                "__thiscall public: void std::basic_string::basic_string(std::basic_string *);",
                 "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z");
         }
     }

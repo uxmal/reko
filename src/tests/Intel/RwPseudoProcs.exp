@@ -1,16 +1,16 @@
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss
 // si:si
 // dx:dx
 // al:al
-// v8:Temporary
+// v8:v8
 // bx:bx
 // C:Flags
-// v11:Temporary
+// v11:v11
 // cx:cx
 // SZO:Flags
 // es:es

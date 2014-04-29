@@ -73,6 +73,7 @@
     <Compile Include="Opcode.cs" />
     <Compile Include="OperandFormatDecoder.cs" />
     <Compile Include="OperandRewriter.cs" />
+    <Compile Include="M68kPointerScanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
     <Compile Include="RegisterSetOperand.cs" />

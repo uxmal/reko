@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 si:si
 ds:ds
@@ -36,7 +36,7 @@ fn0C00_0000_exit:
 Mem0:Global memory
     def:  def Mem0
     uses: return Mem0[ds:si:word16]
-fp:Temporary
+fp:fp
 sp:sp
 ax:ax
 si:si

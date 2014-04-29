@@ -1,7 +1,7 @@
 Mem0:Global memory
     def:  def Mem0
     uses: ax_8 = Mem0[ds:si + 0x0200:word16]
-fp:Temporary
+fp:fp
 sp:sp
 ax:ax
 si:si
@@ -22,7 +22,7 @@ ds:ds
           ax_17 = Mem15[ds:0x0200:word16]
           fn0C00_002A(ds)
           Mem18[ds:0x0200:word16] = ax_17
-v6:Temporary
+v6:v6
 SCZO:Flags
 ax_8: orig: ax
     def:  ax_8 = Mem0[ds:si + 0x0200:word16]
@@ -71,7 +71,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 ax:ax
 ss:ss

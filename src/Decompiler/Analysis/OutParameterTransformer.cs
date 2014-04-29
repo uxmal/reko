@@ -56,15 +56,15 @@ namespace Decompiler.Analysis
 			this.idOut = idOut;
 			wl = new WorkList<Identifier>();
 			wl.Add(id);
-			Dictionary<Statement,Statement> visited = new Dictionary<Statement,Statement>();
+			var visited = new HashSet<Statement>();
 
 			while (wl.GetWorkItem(out id))
 			{
 				ssa = ssaIds[id];
 				stmDef = ssa.DefStatement;
-				if (stmDef != null && !visited.ContainsKey(stmDef))
+				if (stmDef != null && !visited.Contains(stmDef))
 				{
-					visited.Add(stmDef, stmDef);
+					visited.Add(stmDef);
 					iStmDef = stmDef.Block.Statements.IndexOf(stmDef);
 					stmDef.Instruction = stmDef.Instruction.Accept(this);
 				}

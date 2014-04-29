@@ -5,7 +5,7 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // Preserved: sp
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // si:si
 // ss:ss
@@ -35,7 +35,7 @@ void fn0C00_0010(Register word16 si, Register word16 di, Register selector ds)
 // Preserved: sp
 // fn0C00_0010
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // ax:ax
 // si:si
@@ -59,7 +59,7 @@ void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
 // Stack args: Stack +0002(16)
 // fn0C00_0017
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss
@@ -98,7 +98,7 @@ void fn0C00_0029(Register word16 ax, Register word16 di, Register selector ds)
 // Preserved: sp
 // fn0C00_0029
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // di:di
 // ds:ds
@@ -120,7 +120,7 @@ void fn0C00_002C(Register word16 di, Register selector ds, Stack word16 wArg02)
 // Stack args: Stack +0002(16)
 // fn0C00_002C
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss

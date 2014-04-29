@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2014 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -29,9 +49,9 @@ namespace Decompiler.Core.Serialization
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v2));
             if (ser.CanDeserialize(rdr))
                 return LoadProject((Project_v2) ser.Deserialize(rdr));
-            ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedProject_v1));
+            ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v1));
             if (ser.CanDeserialize(rdr))
-                return LoadProject((SerializedProject_v1) ser.Deserialize(rdr));
+                return LoadProject((Project_v1) ser.Deserialize(rdr));
             return null;
         }
 
@@ -62,7 +82,7 @@ namespace Decompiler.Core.Serialization
             return file;
         }
 
-        public Project LoadProject(SerializedProject_v1 sp)
+        public Project LoadProject(Project_v1 sp)
         {
             InputFile inputFile = new InputFile
             {

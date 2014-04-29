@@ -73,46 +73,39 @@ namespace Decompiler.Analysis
                 }
                 return changed;
             }
-            else
+            var cmp = new ExpressionValueComparer();
+            foreach (var de in ctx.RegisterState)
             {
-                var cmp = new ExpressionValueComparer();
-                foreach (var de in ctx.RegisterState)
+                var idValue = de.Value as Identifier;
+                if (idValue != null)
                 {
-                    var idValue = de.Value as Identifier;
-                    if (idValue != null)
+                    if (de.Key == idValue.Storage ||
+                        (de.Key == arch.StackRegister && idValue == proc.Frame.FramePointer))
                     {
-                        if (de.Key == idValue.Storage ||
-                            (de.Key == arch.StackRegister && idValue == proc.Frame.FramePointer))
-                        {
-                            Preserve(de.Key);
-                        }
-                        else
-                        {
-                            Trash(de.Key);
-                        }
+                        Preserve(de.Key);
                     }
                     else
                     {
                         Trash(de.Key);
-                        var cNew = de.Value as Constant;
-                        if (cNew != null)
+                    }
+                }
+                else
+                {
+                    Trash(de.Key);
+                    var cNew = de.Value as Constant;
+                    if (cNew != null)
+                    {
+                        if (cNew.IsValid)
                         {
-                            if (cNew.IsValid)
+                            Constant cOld;
+                            if (!pf.ConstantRegisters.TryGetValue(de.Key, out cOld))
                             {
-                                Constant cOld;
-                                if (!pf.ConstantRegisters.TryGetValue(de.Key, out cOld))
-                                {
-                                    changed = true;
-                                    pf.ConstantRegisters[de.Key] = cNew;
-                                }
-                                else if (!cmp.Equals(cOld, cNew))
-                                {
-                                    changed = true;
-                                    SetConstant(de.Key, Constant.Invalid);
-                                }
+                                changed = true;
+                                pf.ConstantRegisters[de.Key] = cNew;
                             }
-                            else
+                            else if (!cmp.Equals(cOld, cNew))
                             {
+                                changed = true;
                                 SetConstant(de.Key, Constant.Invalid);
                             }
                         }
@@ -121,26 +114,30 @@ namespace Decompiler.Analysis
                             SetConstant(de.Key, Constant.Invalid);
                         }
                     }
+                    else
+                    {
+                        SetConstant(de.Key, Constant.Invalid);
+                    }
                 }
-
-                if (!(trashed & ~pf.TrashedRegisters).IsEmpty)
-                {
-                    pf.TrashedRegisters |= trashed;
-                    changed = true;
-                }
-                if (!(preserved & ~pf.PreservedRegisters).IsEmpty)
-                {
-                    pf.PreservedRegisters |= preserved;
-                    changed = true;
-                }
-                uint grfNew = pf.grfTrashed | ctx.TrashedFlags;
-                if (grfNew != pf.grfTrashed)
-                {
-                    pf.grfTrashed = grfNew;
-                    changed = true;
-                }
-                return changed;
             }
+
+            if (!(trashed & ~pf.TrashedRegisters).IsEmpty)
+            {
+                pf.TrashedRegisters |= trashed;
+                changed = true;
+            }
+            if (!(preserved & ~pf.PreservedRegisters).IsEmpty)
+            {
+                pf.PreservedRegisters |= preserved;
+                changed = true;
+            }
+            uint grfNew = pf.grfTrashed | ctx.TrashedFlags;
+            if (grfNew != pf.grfTrashed)
+            {
+                pf.grfTrashed = grfNew;
+                changed = true;
+            }
+            return changed;
         }
 
         private void SetConstant(Storage storage, Constant constant)
@@ -156,6 +153,7 @@ namespace Decompiler.Analysis
                 }
                 return;
             }
+            RegisterStorage r;
             pf.ConstantRegisters[storage] = Constant.Invalid;
         }
 

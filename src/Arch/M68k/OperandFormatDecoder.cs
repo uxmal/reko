@@ -255,7 +255,7 @@ namespace Decompiler.Arch.M68k
                     throw new NotImplementedException(string.Format("Address mode {0}:{1} not implemented.", addressMode, operandBits));
                 }
             default: 
-                throw new NotImplementedException(string.Format("Address mode {0:X} not implemented.", addressMode));
+                throw new NotImplementedException(string.Format("Address mode {0:X1} not implemented.", addressMode));
             }
         }
 

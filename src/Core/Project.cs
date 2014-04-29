@@ -71,7 +71,7 @@ namespace Decompiler.Core
             return sp;
         }
 
-        public void Load(SerializedProject_v1 sp)
+        public void Load(Project_v1 sp)
         {
             var serializer = new ProjectSerializer();
             var project = serializer.LoadProject(sp);

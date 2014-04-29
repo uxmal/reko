@@ -56,12 +56,12 @@ namespace Decompiler.UnitTests.Evaluation
 
         private static Identifier Tmp32(string name)
         {
-            return new Identifier(name, 1, PrimitiveType.Word32, new TemporaryStorage());
+            return new Identifier(name, 1, PrimitiveType.Word32, new TemporaryStorage(name, 1, PrimitiveType.Word32));
         }
 
         private static Identifier Tmp8(string name)
         {
-            return new Identifier(name, 1, PrimitiveType.Byte, new TemporaryStorage());
+            return new Identifier(name, 1, PrimitiveType.Byte, new TemporaryStorage(name, 1, PrimitiveType.Byte));
         }
 
         private void CreateSymbolicEvaluator(Frame frame)

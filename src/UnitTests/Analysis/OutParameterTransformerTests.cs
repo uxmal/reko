@@ -72,15 +72,15 @@ namespace Decompiler.UnitTests.Analysis
 		{
             ProcedureBuilder m = new ProcedureBuilder();
             Block block = m.Label("block");
-			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-			Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
+			var foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
+			var pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
             var assDef = m.Assign(foo, 3);
-			SsaIdentifier sid = new SsaIdentifier(foo, foo, m.Block.Statements.Last, null, false);
+			var sid = new SsaIdentifier(foo, foo, m.Block.Statements.Last, null, false);
 
-			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
+			var ssaIds = new SsaIdentifierCollection();
 			ssaIds.Add(sid);
 
-			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
+			var opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 
 			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000003", assDef.ToString());

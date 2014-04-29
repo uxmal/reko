@@ -112,6 +112,8 @@ namespace Decompiler.Core
 
         public Expression GetValue(Identifier id)
         {
+            if (id.Storage is TemporaryStorage)
+                return Constant.Invalid;
             var reg = id.Storage as RegisterStorage;
             if (reg == null)
                 return Constant.Invalid;
@@ -168,6 +170,8 @@ namespace Decompiler.Core
 
         public void SetValue(Identifier id, Expression value)
         {
+            if (id.Storage is TemporaryStorage)
+                return;
             var reg = id.Storage as RegisterStorage;
             if (reg == null)
                 return;

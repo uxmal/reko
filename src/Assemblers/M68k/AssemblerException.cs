@@ -27,8 +27,6 @@ namespace Decompiler.Assemblers.M68k
 {
     public class AssemblerException : Exception
     {
-        private string p;
-
         public AssemblerException(string message) : base(message)
         {
         }

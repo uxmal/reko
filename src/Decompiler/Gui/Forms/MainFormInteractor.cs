@@ -399,7 +399,7 @@ namespace Decompiler.Gui.Forms
                 string newName = PromptForFilename(
                     Path.ChangeExtension(
                         decompilerSvc.Decompiler.Project.InputFiles[0].Filename,
-                        SerializedProject_v1.FileExtension));
+                        Project_v1.FileExtension));
                 if (newName == null)
                     return;
                 ProjectFileName = newName;

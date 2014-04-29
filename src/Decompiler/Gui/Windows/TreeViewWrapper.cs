@@ -108,7 +108,7 @@ namespace Decompiler.Gui.Windows
                 nodes = new Lazy<WrappedNodeList>(() => new WrappedNodeList(base.Nodes), true);
             }
 
-            public ITreeNodeCollection Nodes { get { return nodes.Value; } }
+            public new ITreeNodeCollection Nodes { get { return nodes.Value; } }
 
             public string ImageName
             {

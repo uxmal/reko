@@ -10,7 +10,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 // DataOut: di ds
 // DataOut (flags): 
-// LocalsOut: Temporary(16)
+// LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_0000:

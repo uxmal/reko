@@ -45,16 +45,17 @@ namespace Decompiler.Arch.M68k
         private Rewriter rewriter;
         private RtlEmitter m;
         private Frame frame;
-        private PrimitiveType dataWidth;     // the data width of the current instruction being rewritten.
 
         public OperandRewriter(Rewriter rewriter, PrimitiveType dataWidth)
         {
             this.rewriter = rewriter;
             this.m = rewriter.emitter;
             this.frame = rewriter.frame;
-            this.dataWidth = dataWidth;
+            this.DataWidth = dataWidth;
         }
 
+        public PrimitiveType DataWidth { get; set; }     // the data width of the current instruction being rewritten.
+        
         /// <summary>
         /// Rewrite operands being used as sources.
         /// </summary>
@@ -66,22 +67,22 @@ namespace Decompiler.Arch.M68k
             if (reg != null)
             {
                 Expression r = rewriter.frame.EnsureRegister(reg.Register);
-                if (dataWidth != null && dataWidth.Size != reg.Width.Size)
-                    r = m.Cast(dataWidth, r);
+                if (DataWidth != null && DataWidth.Size != reg.Width.Size)
+                    r = m.Cast(DataWidth, r);
                 return r;
             }
             var imm = operand as M68kImmediateOperand;
             if (imm != null)
             {
-               if (dataWidth != null && dataWidth.BitSize > imm.Width.BitSize)
-                    return Constant.Create(dataWidth, imm.Constant.ToInt64());
+               if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
+                    return Constant.Create(DataWidth, imm.Constant.ToInt64());
                 else
                     return Constant.Create(imm.Width, imm.Constant.ToUInt32());
             }
             var mem = operand as MemoryOperand;
             if (mem != null)
             {
-                return RewriteMemoryAccess(mem, dataWidth);
+                return RewriteMemoryAccess(mem, DataWidth);
             }
             var addr = operand as AddressOperand;
             if (addr != null)
@@ -99,17 +100,28 @@ namespace Decompiler.Arch.M68k
             if (post != null)
             {
                 var r = frame.EnsureRegister(post.Register);
-                var tmp = rewriter.frame.CreateTemporary(dataWidth);
-                m.Assign(tmp, m.Load(dataWidth, r));
-                m.Assign(r, m.IAdd(r, dataWidth.Size));
+                var tmp = rewriter.frame.CreateTemporary(DataWidth);
+                m.Assign(tmp, m.Load(DataWidth, r));
+                m.Assign(r, m.IAdd(r, DataWidth.Size));
                 return tmp;
             }
+            var indidx = operand as IndirectIndexedOperand;
+            if (indidx != null)
+            {
+                Expression ea = frame.EnsureRegister(indidx.ARegister);
+                if (indidx.Imm8 != 0)
+                    ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+                Expression ix = frame.EnsureRegister(indidx.XRegister);
+                if (indidx.Scale > 1)
+                    ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                return m.Load(DataWidth, m.IAdd(ea, ix));
+            } 
             throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.GetType().Name);
         }
 
         public Expression RewriteDst(MachineOperand operand, Expression src, Func<Expression, Expression, Expression> opGen)
         {
-            return RewriteDst(operand, this.dataWidth, src, opGen);
+            return RewriteDst(operand, this.DataWidth, src, opGen);
         }
 
         public Expression RewriteDst(MachineOperand operand, PrimitiveType dataWidth, Expression src, Func<Expression ,Expression, Expression> opGen)
@@ -150,6 +162,11 @@ namespace Decompiler.Arch.M68k
                 var result = opGen(src, l);
                 m.Assign(d, result);
                 return d;
+            }
+            var addr = operand as M68kAddressOperand;
+            if (addr != null)
+            {
+                return addr.Address;
             }
             var mem = operand as MemoryOperand;
             if (mem != null)
@@ -275,6 +292,13 @@ namespace Decompiler.Arch.M68k
 
         public Expression RewriteMoveDst(MachineOperand opDst, PrimitiveType dataWidth, Expression src)
         {
+            var reg = opDst as RegisterOperand;
+            if (reg != null)
+            {
+                var dst = frame.EnsureRegister(reg.Register);
+                m.Assign(dst, src);
+                return dst;
+            }
             var mem = opDst as MemoryOperand;
             if (mem != null)
             {

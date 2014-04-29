@@ -87,7 +87,6 @@ namespace Decompiler.UnitTests.Analysis
             return prog;
         }
 
-
         protected Program RewriteFile(string relativePath)
         {
             return RewriteMsdosAssembler(relativePath, "");

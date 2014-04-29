@@ -37,7 +37,7 @@ void fn0C00_000B()
 fn0C00_000B_entry:
 // DataOut: si ds
 // DataOut (flags): 
-// LocalsOut: Temporary(16)
+// LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_000B:

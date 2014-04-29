@@ -2,7 +2,7 @@ Mem0:Global memory
     def:  def Mem0
     uses: bx_9 = Mem0[ds:bx + 0x0004:word16]
           cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
-fp:Temporary
+fp:fp
     def:  def fp
 sp:sp
     def:  def sp

@@ -1,7 +1,7 @@
 Mem0:Global memory
     def:  def Mem0
     uses: bl_20 = Mem0[ds_18:si:byte]
-fp:Temporary
+fp:fp
     def:  def fp
     uses: sp_16 = fp - 0x0002
           sp_19 = fp

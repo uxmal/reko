@@ -6,7 +6,7 @@ void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // Stack args: Stack +0004(32)
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss
@@ -63,7 +63,7 @@ Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // Stack args: Stack +0002(32)
 // fn0C00_0020
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss
@@ -97,7 +97,7 @@ Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // Stack args: Stack +0002(32) Stack +0006(16)
 // fn0C00_002E
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss

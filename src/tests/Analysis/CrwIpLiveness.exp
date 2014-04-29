@@ -5,7 +5,7 @@ void fn0C00_0000(Register selector ds)
 // Preserved: sp
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // di:di
 // ds:ds
@@ -39,12 +39,12 @@ Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // Preserved: sp di
 // fn0C00_0026
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // di:di
 // ss:ss
 // ds:ds
-// v6:Temporary
+// v6:v6
 // SZO:Flags
 // wLoc02:Local -0002
 // si:si
@@ -73,7 +73,7 @@ Register word16 fn0C00_0033(Register word16 si, Register selector ds)
 // Preserved: sp
 // fn0C00_0033
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // ax:ax
 // si:si

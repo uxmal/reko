@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 r0:r0
     def:  def r0
     uses: r0_7 = PHI(r0, r0_9)

@@ -310,7 +310,8 @@ namespace Decompiler.Analysis
 
         public Result VisitConditionOf(ConditionOf cof)
         {
-            return SimplifyExpression(cof);
+            var e = cof.Expression.Accept(this);
+            return SimplifyExpression(new ConditionOf(e.PropagatedExpression));
         }
 
         public Result VisitConstant(Constant c)
@@ -342,7 +343,7 @@ namespace Decompiler.Analysis
         {
             var ev = id.Accept(eval);
             if (!MayReplace(ev))
-                return new Result { Value = ev, PropagatedExpression = id };
+                return new Result { Value = ctx.GetValue(id), PropagatedExpression = id };
             else 
                 return SimplifyExpression(ev);
         }

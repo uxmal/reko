@@ -5,7 +5,7 @@ void fn0C00_0000(Register selector ds)
 // Preserved: sp
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // cx:cx
 // ss:ss
@@ -36,7 +36,7 @@ Register word16 fn0C00_000F(Stack word16 wArg02)
 // Stack args: Stack +0002(16)
 // fn0C00_000F
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss

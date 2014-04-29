@@ -1,6 +1,6 @@
 // ReturnMock
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // r1:Local -0004
 // return address size: 0
 void ReturnMock()

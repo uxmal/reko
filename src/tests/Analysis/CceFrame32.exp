@@ -1,7 +1,7 @@
 Mem0:Global memory
     def:  def Mem0
     uses: eax_7 = Mem0[0x10003420:word32]
-fp:Temporary
+fp:fp
 esp:esp
 eax:eax
 SCZO:Flags
@@ -35,7 +35,7 @@ fn10000000_exit:
 Mem0:Global memory
     def:  def Mem0
     uses: edx_50 = (int32) Mem0[dwArg04 + eax_48:byte]
-fp:Temporary
+fp:fp
     def:  def fp
     uses: branch Mem0[fp + 0x00000004:word32] != 0x00000000 l1000002F
 esp:esp
@@ -125,7 +125,6 @@ SCZO_64: orig: SCZO
 wLoc08_65: orig: wLoc08
     def:  wLoc08_65 = wLoc08_44 + 0x0001
     uses: wLoc08_44 = PHI(wLoc08_23, wLoc08_65)
-
 // fn10000017
 word16 fn10000017(word32 dwArg04)
 fn10000017_entry:
@@ -135,7 +134,7 @@ fn10000017_entry:
 	// succ:  l10000017
 l10000017:
 	wLoc08_23 = 0x0000
-	branch dwArg04 != 0x00000000 l1000002F
+	branch Mem0[fp + 0x00000004:word32] != 0x00000000 l1000002F
 	// succ:  l10000027 l1000002F
 l10000027:
 	ax_40 = 0x0000
@@ -163,5 +162,4 @@ l1000005E:
 	return ax_33
 	// succ:  fn10000017_exit
 fn10000017_exit:
- 
 

@@ -68,6 +68,9 @@ namespace Decompiler.Analysis
             if (proc.Characteristics.Terminates)
                 return true;
             var callee = proc as Procedure;
+            if (callee == null)
+                return false;
+
             return (callee != null && flow[callee].TerminatesProcess);
         }
 

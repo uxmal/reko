@@ -127,32 +127,42 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
 		}
 
-
         private void Given_Loader()
         {
             loader = mr.StrictMock<LoaderBase>();
+            var bytes = new byte[1000];
+            loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments()
+                .Return(bytes);
+            loader.Stub(l => l.Load(null, null)).IgnoreArguments()
+                .Return(new Program
+                {
+                    Image = new LoadedImage(new Address(0x0C00,0x0000), bytes)
+                });
         }
+
         [Test]
         public void MainForm_Save()
         {
             Given_MainFormInteractor();
+            Given_Loader();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-            mr.ReplayAll();
 
             IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(loader);
+            Assert.IsNotNull(loader);
             svc.Decompiler.LoadProgram("foo.exe");
-            Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
-            p.Address = "12345";
-            p.Name = "MyProc";
+            var p = new Decompiler.Core.Serialization.SerializedProcedure {
+                Address = "12345",
+                Name = "MyProc", 
+            };
             svc.Decompiler.Project.InputFiles[0].UserProcedures.Add(new Address(0x12345), p);
 
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Decompiler"">
+<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
   <input>
     <filename>foo.exe</filename>
     <address>0C00:0000</address>

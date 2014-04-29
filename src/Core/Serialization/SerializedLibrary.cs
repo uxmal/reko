@@ -26,10 +26,11 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace)]
+    [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary
     {
-        public const string Namespace = "http://schemata.jklnet.org/Decompiler";
+        public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
+        public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
 
         [XmlAttribute("case")]
         public string Case;
@@ -69,13 +70,13 @@ namespace Decompiler.Core.Serialization
 
         public static XmlSerializer CreateSerializer_v2(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate);
+            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v2);
             return new XmlSerializer(rootType, attrOverrides);
         }
 
         public static XmlSerializer CreateSerializer_v1(Type rootType)
         {
-            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate);
+            var attrOverrides = SerializedType.GetAttributeOverrides(TypesToDecorate, Namespace_v1);
             return new XmlSerializer(rootType, attrOverrides);
         }
 

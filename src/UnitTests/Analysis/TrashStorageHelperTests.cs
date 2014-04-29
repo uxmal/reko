@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Analysis
         public void Setup()
         {
             frame = new Frame(PrimitiveType.Word32);
-            trash = new TemporaryStorage();
+            trash = new TemporaryStorage("v0", 1, PrimitiveType.Word32);
             tsh = new TrashStorageHelper(trash);
         }
 

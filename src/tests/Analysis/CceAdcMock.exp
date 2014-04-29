@@ -1,7 +1,7 @@
 Mem0:Global memory
     def:  def Mem0
     uses: r0_8 = Mem0[0x01001000:word32]
-fp:Temporary
+fp:fp
 r0:Local -0004
 C:Flags
 r1:r1

@@ -46,7 +46,7 @@ void fn0C00_0026()
 fn0C00_0026_entry:
 // DataOut: bx si ds
 // DataOut (flags): 
-// LocalsOut: Temporary(16)
+// LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_0026:

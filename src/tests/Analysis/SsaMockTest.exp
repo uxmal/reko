@@ -1,6 +1,6 @@
 Mem0:Global memory
     def:  def Mem0
-fp:Temporary
+fp:fp
     def:  def fp
 r0:r0
     def:  def r0

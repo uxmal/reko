@@ -62,7 +62,6 @@ namespace Decompiler.Core.Expressions
 			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
 		}
 
-
 		public void Write(bool writeStorage, TextWriter writer)
 		{
 			WriteType(writeStorage, writer);
@@ -106,7 +105,6 @@ namespace Decompiler.Core.Expressions
 		public MemoryIdentifier(int i, DataType dt) : base("Mem" + i, i, dt, new MemoryStorage())
 		{
 		}
-
 
 		static MemoryIdentifier()
 		{

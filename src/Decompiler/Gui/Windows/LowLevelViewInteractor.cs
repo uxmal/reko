@@ -178,7 +178,10 @@ namespace Decompiler.Gui.Windows
         public void MarkAndScanProcedure()
         {
             AddressRange addrRange = control.MemoryView.GetAddressRange();
-            if (addrRange.IsValid)
+            if (!addrRange.IsValid)
+                return;
+
+            try
             {
                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
                 var proc = decompiler.ScanProcedure(addrRange.Begin);
@@ -188,8 +191,12 @@ namespace Decompiler.Gui.Windows
                     Name = proc.Name,
                 };
                 decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
-                control.MemoryView.Invalidate();
             }
+            catch (Exception ex)
+            {
+                services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error happened while scanning the procedure.");
+            }
+            control.MemoryView.Invalidate();
         }
 
         public bool MarkType()

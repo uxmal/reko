@@ -55,7 +55,7 @@ namespace Decompiler.Arch.M68k
 
         public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            return new M68kPointerScanner(rdr, knownLinAddresses, flags);
         }
 
         public Frame CreateFrame()

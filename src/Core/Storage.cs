@@ -549,9 +549,9 @@ namespace Decompiler.Core
     /// SCZ = Cond(tmp)
     /// </code>
     /// </remarks>
-	public class TemporaryStorage : Storage
+	public class TemporaryStorage : RegisterStorage
 	{
-		public TemporaryStorage() : base("Temporary")
+		public TemporaryStorage(string name, int number, PrimitiveType dt) : base(name, number, dt)
 		{
 		}
 
@@ -560,14 +560,19 @@ namespace Decompiler.Core
 			return visitor.VisitTemporaryStorage(this);
 		}
 
+        public override RegisterStorage GetSubregister(int offset, int size)
+        {
+            return null;
+        }
+
+        public override bool IsSubRegisterOf(RegisterStorage reg2)
+        {
+            return false;
+        }
+
 		public override int OffsetOf(Storage stgSub)
 		{
 			return -1;
-		}
-
-		public override void Write(TextWriter writer)
-		{
-			writer.Write("Temporary");
 		}
 	}
 }

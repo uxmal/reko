@@ -1,5 +1,5 @@
 Mem0:Global memory (aliases:)
-fp:Temporary (aliases:)
+fp:fp (aliases:)
 sp:sp (aliases:)
 ax:ax (aliases: dx_ax)
 ds:ds (aliases:)

@@ -4,7 +4,7 @@ Mem0:Global memory
           ax_32 = ax_19 + Mem0[ds:si_26:word16]
           si_38 = Mem0[ds:0x0302:word16]
           ax_39 = ax_19 + Mem0[ds:si_38 + 0x0004:word16]
-fp:Temporary
+fp:fp
     def:  def fp
 sp:sp
     def:  def sp
