@@ -229,6 +229,14 @@ namespace Decompiler.Core.Expressions
                 expr);
         }
 
+        public Expression Remainder(Expression a, Expression b)
+        {
+            return new BinaryExpression(
+                Operator.IMod,
+                b.DataType,
+                a, b);
+        }
+
         public MkSequence Seq(Expression head, Expression tail)
         {
             int totalSize = head.DataType.Size + tail.DataType.Size;
@@ -358,6 +366,12 @@ namespace Decompiler.Core.Expressions
         public TestCondition Test(ConditionCode cc, Expression expr)
         {
             return new TestCondition(cc, expr);
+        }
+
+        public BinaryExpression UDiv(Expression a, Expression b)
+        {
+            return new BinaryExpression(
+                Operator.UDiv, b.DataType, a, b);
         }
 
         public BinaryExpression Ugt(Expression a, Expression b)

@@ -166,7 +166,11 @@ namespace Decompiler.Arch.M68k
             var addr = operand as M68kAddressOperand;
             if (addr != null)
             {
-                return addr.Address;
+                var load = m.Load(dataWidth, addr.Address);
+                var tmp = rewriter.frame.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(src, load));
+                m.Assign(load, tmp);
+                return tmp;
             }
             var mem = operand as MemoryOperand;
             if (mem != null)

@@ -33,6 +33,7 @@ namespace Decompiler.Arch.M68k
         private M68kDisassembler dasm;
         ushort opcode;
         int i;
+        private ushort bitSet;          // MoveM
 
         public OperandFormatDecoder(M68kDisassembler dasm, int i)
         {
@@ -45,58 +46,64 @@ namespace Decompiler.Arch.M68k
         {
             if (i >= args.Length)
                 return null;
-            if (args[i] == ',')
-                ++i;
-            Address addr;
-            switch (args[i++])
+            for (; ; )
             {
-            case 'A':   // Address register A0-A7 encoded in in instrution
-                return new RegisterOperand(AddressRegister(opcode, GetOpcodeOffset(args[i++])));
-            case 'c':   // CCR register 
-                return new RegisterOperand(Registers.ccr);
-            case 'D':   // Data register D0-D7 encoded in instruction
-                return DataRegisterOperand(opcode, GetOpcodeOffset(args[i++]));
-            case 'E':   // Effective address (EA) 
-                return ParseOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
-            case 'e':   // Effective address with 3-bit halves swapped
-                return ParseSwappedOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
-            case 'I':   // Immediate operand
-                return GetImmediate(rdr, GetSizeType(0, args[i++], dataWidth));
-            case 'J':   // PC Relative jump 
-                addr = rdr.Address;
-                int offset = opcode & 0xFF;
-                if (offset == 0xFF)
-                    offset = rdr.ReadBeInt32();
-                else if (offset == 0x00)
-                    offset = rdr.ReadBeInt16();
-                else
-                    offset = (sbyte) offset;
-                return new M68kAddressOperand(addr + offset);
-            case 'M':   // Register bitset
-                return new RegisterSetOperand(rdr.ReadBeUInt16());
-            case 'm':   // Register bitset reversed
-                return RegisterSetOperand.CreateReversed(rdr.ReadBeUInt16());
-            case 'q':   // "Small" quick constant (3-bit part of the opcode)
-                return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.Byte);
-            case 'Q':   // "Large" quick constant (8-bit part of the opcode)
-                return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
-            case 'R': // relative -- //$TODO: seems like a duplicate with 'J'?
-                addr = rdr.Address;
-                int relative = 0;
+                if (args[i] == ',')
+                    ++i;
+                Address addr;
                 switch (args[i++])
                 {
-                case 'w': relative = rdr.ReadBeInt16(); break;
-                case 'l': relative = rdr.ReadBeInt32(); break;
-                default: throw new NotImplementedException();
+                case 'A':   // Address register A0-A7 encoded in in instrution
+                    return new RegisterOperand(AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                case 'c':   // CCR register 
+                    return new RegisterOperand(Registers.ccr);
+                case 'D':   // Data register D0-D7 encoded in instruction
+                    return DataRegisterOperand(opcode, GetOpcodeOffset(args[i++]));
+                case 'E':   // Effective address (EA) 
+                    return ParseOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
+                case 'e':   // Effective address with 3-bit halves swapped
+                    return ParseSwappedOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
+                case 'I':   // Immediate operand
+                    return GetImmediate(rdr, GetSizeType(0, args[i++], dataWidth));
+                case 'J':   // PC Relative jump 
+                    addr = rdr.Address;
+                    int offset = opcode & 0xFF;
+                    if (offset == 0xFF)
+                        offset = rdr.ReadBeInt32();
+                    else if (offset == 0x00)
+                        offset = rdr.ReadBeInt16();
+                    else
+                        offset = (sbyte) offset;
+                    return new M68kAddressOperand(addr + offset);
+                case 'M':   // Register bitset
+                    return new RegisterSetOperand(rdr.ReadBeUInt16());
+                case 'n':   // cache bitset
+                    bitSet = rdr.ReadBeUInt16();
+                    break;
+                case 'm':   // Register bitset reversed
+                    return RegisterSetOperand.CreateReversed(bitSet);
+                case 'q':   // "Small" quick constant (3-bit part of the opcode)
+                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.Byte);
+                case 'Q':   // "Large" quick constant (8-bit part of the opcode)
+                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
+                case 'R': // relative -- //$TODO: seems like a duplicate with 'J'?
+                    addr = rdr.Address;
+                    int relative = 0;
+                    switch (args[i++])
+                    {
+                    case 'w': relative = rdr.ReadBeInt16(); break;
+                    case 'l': relative = rdr.ReadBeInt32(); break;
+                    default: throw new NotImplementedException();
+                    }
+                    return new M68kAddressOperand(addr + relative);
+                case 's':   // SR register
+                    return new RegisterOperand(Registers.sr);
+                case '+':   // Postincrement operator; following character specifies bit offset of the address register code.
+                    return new PostIncrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                case '-':   // Predecrement operator; following character specifies bit offset of the address register code.
+                    return new PredecrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
+                default: throw new FormatException(string.Format("Unknown argument type {0}.", args[--i]));
                 }
-                return new M68kAddressOperand(addr + relative);
-            case 's':   // SR register
-                return new RegisterOperand(Registers.sr);
-            case '+':   // Postincrement operator; following character specifies bit offset of the address register code.
-                return new PostIncrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
-            case '-':   // Predecrement operator; following character specifies bit offset of the address register code.
-                return new PredecrementMemoryOperand(dataWidth, AddressRegister(opcode, GetOpcodeOffset(args[i++])));
-            default: throw new FormatException(string.Format("Unknown argument type {0}.", args[--i]));
             }
         }
 

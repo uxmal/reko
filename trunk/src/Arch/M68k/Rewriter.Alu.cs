@@ -229,6 +229,32 @@ namespace Decompiler.Arch.M68k
                 emitter.Cond(tmp));
         }
 
+        private void RewriteDiv(BinaryOperator op)
+        {
+            System.Diagnostics.Debug.Print(di.dataWidth.ToString());
+            if (di.dataWidth.BitSize == 16)
+            {
+                di.dataWidth = PrimitiveType.UInt32;
+                var src = orw.RewriteSrc(di.op1);
+                var tmp = orw.RewriteDst(di.op2, src, (d, s) =>
+                {
+                    var rem = frame.CreateTemporary(PrimitiveType.UInt16);
+                    var quot = frame.CreateTemporary(PrimitiveType.UInt16);
+                    emitter.Assign(rem, emitter.Remainder(d, s));
+                    emitter.Assign(quot, emitter.UDiv(d, s));
+                    emitter.Assign(d, emitter.Dpb(d, rem, 16, 16));
+                    return emitter.Dpb(d, quot, 0, 16);
+                });
+                emitter.Assign(
+                    orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
+                    emitter.Cond(tmp));
+                emitter.Assign(
+                    orw.FlagGroup(FlagM.CF), Constant.False());
+                return;
+            }
+            throw new NotImplementedException(di.ToString());
+        }
+
         private Expression RewriteSrcOperand(MachineOperand mop)
         {
             return RewriteDstOperand(mop, null, (s, d) => { });
@@ -348,39 +374,66 @@ namespace Decompiler.Arch.M68k
                 emitter.Cond(opDst));
         }
 
+        public IEnumerable<Identifier> RegisterMaskIncreasing(uint bitSet)
+        {
+            for (int i = 0, mask = 0x8000; i < 16; ++i, mask >>= 1)
+            {
+                if ((bitSet & mask) != 0)
+                {
+                    yield return frame.EnsureRegister(arch.GetRegister(i));
+                }
+            }
+        }
+
+        public IEnumerable<Identifier> RegisterMaskDecreasing(uint bitSet)
+        {
+            for (int i = 15, mask = 1; i >= 0; --i, mask <<= 1)
+            {
+                if ((bitSet & mask) != 0)
+                    yield return frame.EnsureRegister(arch.GetRegister(i));
+            }
+        }
+
         public void RewriteMovem()
         {
-            var postInc = di.op1 as PostIncrementMemoryOperand;
-            if (postInc != null)
+            var dstRegs = di.op2 as RegisterSetOperand;
+            if (dstRegs != null)
             {
-                var srcReg = frame.EnsureRegister(postInc.Register);
-                var dstRegs = (RegisterSetOperand) di.op2;
-                for (int i = 0, mask = 0x8000; i < 16; ++i, mask >>= 1)
+                var postInc = di.op1 as PostIncrementMemoryOperand;
+                Identifier srcReg = null;
+                if (postInc != null)
                 {
-                    if ((dstRegs.BitSet & mask) != 0)
-                    {
-                        var reg = new RegisterOperand(arch.GetRegister(i));
-                        emitter.Assign(orw.RewriteSrc(reg), emitter.Load(di.dataWidth, srcReg));
-                        emitter.Assign(srcReg, emitter.IAdd(srcReg, di.dataWidth.Size));
-                    }
+                    srcReg = frame.EnsureRegister(postInc.Register);
+                }
+                else
+                {
+                    var src = orw.RewriteSrc(di.op1) as MemoryAccess;
+                    if (src == null)
+                        throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+                    srcReg = frame.CreateTemporary(di.dataWidth);
+                    emitter.Assign(srcReg, src.EffectiveAddress);
+                }
+                foreach (var reg in RegisterMaskIncreasing(dstRegs.BitSet))
+                {
+                    emitter.Assign(reg, emitter.Load(di.dataWidth, srcReg));
+                    emitter.Assign(srcReg, emitter.IAdd(srcReg, di.dataWidth.Size));
                 }
                 return;
             }
-            var preDec = di.op2 as PredecrementMemoryOperand;
-            if (preDec != null)
+            dstRegs = di.op1 as RegisterSetOperand;
+            if (dstRegs != null)
             {
-                var dstReg = frame.EnsureRegister(preDec.Register);
-                var regSet = (RegisterSetOperand) di.op1;
-                for (int i = 15, mask = 1; i >= 0; --i, mask <<= 1)
+                var preDec = di.op2 as PredecrementMemoryOperand;
+                if (preDec != null)
                 {
-                    if ((regSet.BitSet & mask) != 0)
+                    var dstReg = frame.EnsureRegister(preDec.Register);
+                    foreach (var reg in RegisterMaskDecreasing(dstRegs.BitSet))
                     {
-                        var reg = frame.EnsureRegister(arch.GetRegister(i));
                         emitter.Assign(dstReg, emitter.ISub(dstReg, di.dataWidth.Size));
                         emitter.Assign(emitter.Load(di.dataWidth, dstReg), reg);
                     }
+                    return;
                 }
-                return;
             }
             throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
         }

@@ -29,7 +29,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.M68k
 {
     [TestFixture]
-    public class PointerScannerTests
+    public class M68kPointerScannerTests
     {
         private BeImageReader CreateImageReader(Address address, params ushort[] words)
         {

@@ -36,7 +36,7 @@ using BitSet = Decompiler.Core.Lib.BitSet;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
-    public class PointerScannerTests
+    public class X86PointerScannerTests
     {
         private LeImageReader CreateImageReader(Address address, params byte[] bytes)
         {

@@ -90,8 +90,10 @@ VS Overflow Set 1001 V
                 case Opcode.beq: RewriteBcc(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.bge: RewriteBcc(ConditionCode.GE, FlagM.NF | FlagM.VF); break;
                 case Opcode.bgt: RewriteBcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
+                case Opcode.bhi: RewriteBcc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
                 case Opcode.ble: RewriteBcc(ConditionCode.LE, FlagM.NF | FlagM.VF | FlagM.ZF); break;
-                case Opcode.blt: RewriteBcc(ConditionCode.LT, FlagM.VF | FlagM.ZF); break;
+                case Opcode.blt: RewriteBcc(ConditionCode.LT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.bls: RewriteBcc(ConditionCode.ULE, FlagM.VF | FlagM.ZF); break;
                 case Opcode.bmi: RewriteBcc(ConditionCode.LT, FlagM.NF); break;
                 case Opcode.bne: RewriteBcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
@@ -106,6 +108,7 @@ VS Overflow Set 1001 V
                 case Opcode.dble: RewriteDbcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
                 case Opcode.dbhi: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF); break;
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
+                case Opcode.divu: RewriteDiv(Operator.UDiv); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.ext: RewriteExt(); break;
                 case Opcode.extb: RewriteExtb(); break;
