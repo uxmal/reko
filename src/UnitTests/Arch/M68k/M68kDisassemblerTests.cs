@@ -569,6 +569,12 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68kdis_movem_3()
+        {
+            RunTest("movem.l\t$0030(a7),d0-d1", 0x4cef, 0x0003, 0x0030);
+        }
+
+        [Test]
         public void M68kdis_lea_pc()
         {
             RunTest("lea\t$0014(pc),a2", 0x45FA, 0x0012);
@@ -585,6 +591,12 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kdis_btst()
         {
             RunTest("btst\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
+        }
+
+        [Test]
+        public void M68kdis_oril()
+        {
+            RunTest("ori.l\t#$00000004,$0048(a7)", 0x00AF, 0x0000, 0x0004, 0x0048);
         }
     }
 }

@@ -33,7 +33,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.M68k
 {
     [TestFixture]
-    class RewriterTests : RewriterTestBase
+    public class RewriterTests : RewriterTestBase
     {
         private M68kArchitecture arch = new M68kArchitecture();
         private Address addrBase = new Address(0x00010000);
@@ -799,12 +799,12 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68krw_ori()
         {
-            Rewrite(0x0038, 0x584F);
+            Rewrite(0x0038, 0x584F, 0x4000);
             AssertCode(
-                "0|00010000(4): 5 instructions",
-                "1|L--|v3 = (byte) d7 | 0x4F",
-                "2|L--|d7 = DPB(d7, v3, 0, 8)",
-                "3|L--|ZN = cond(v3)",
+                "0|00010000(6): 5 instructions",
+                "1|L--|v2 = Mem0[0x00004000:byte] | 0x4F",
+                "2|L--|Mem0[0x00004000:byte] = v2",
+                "3|L--|ZN = cond(v2)",
                 "4|L--|C = false",
                 "5|L--|V = false");
         }
@@ -821,6 +821,31 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "4|L--|v6 = v5 + Mem0[a1:word32] + X",
                 "5|L--|Mem0[a1:word32] = v6",
                 "6|L--|CVZNX = cond(v6)");
+        }
+
+        [Test]
+        public void M68krw_movem_to_reg()
+        {
+            Rewrite(0x4cef, 0x0003, 0x0030);
+            AssertCode(
+                "0|00010000(6): 5 instructions",
+                "1|L--|v3 = a7 + 48",
+                "2|L--|d0 = Mem0[v3:word32]",
+                "3|L--|v3 = v3 + 0x00000004",
+                "4|L--|d1 = Mem0[v3:word32]");
+        }
+
+        [Test]
+        [Obsolete("//$REVIEW: this is BROKEN")]
+        public void M68k_divu_w()
+        {
+            Rewrite(0x80C1);
+            AssertCode(
+                "0|00010000(2): 7 instructions",
+                "1|L--|v4 = (uint16) d1 % (uint16) d0",
+                "2|L--|v5 = (uint16) d1 /u (uint16) d0",
+                "3|L--|(uint16) d1 = DPB((uint16) d1, v4, 16, 16)",
+                "4|L--|v6 = DPB((uint16) d1, v5, 0, 16)");
         }
     }
 }
