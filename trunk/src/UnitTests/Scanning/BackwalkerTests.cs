@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void BackwalkAdd()
+        public void BwAdd()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var bw = new Backwalker(
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void BackwalkAndMask()
+        public void BwAndMask()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void BackwalkJmp()
+        public void BwJmp()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF|FlagM.ZF|FlagM.CF|FlagM.OF), "SCZO", PrimitiveType.Byte);
@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void Comparison()
+        public void BwComparison()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void BackwalkAndMaskWithHoles()
+        public void BwMaskWithHoles()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void LoadIndexed()
+        public void BwLoadIndexed()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var edx = m.Frame.EnsureRegister(Registers.edx);
@@ -137,7 +137,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void XorHiwordOfIndex()
+        public void BwXorHiwordOfIndex()
         {
             var bx = m.Frame.EnsureRegister(Registers.bx);
             var bl = m.Frame.EnsureRegister(Registers.bl);
@@ -247,7 +247,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
 		[Test]
-		public void IbwInc()
+		public void BwInc()
 		{
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", 0, Registers.di.DataType, Registers.di);
@@ -261,7 +261,7 @@ namespace Decompiler.UnitTests.Scanning
 		}
 
 		[Test]
-		public void IbwPowersOfTwo()
+		public void BwPowersOfTwo()
 		{
 			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(2), "2 is power of two");
 			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(4), "4 is power of two");
@@ -274,12 +274,30 @@ namespace Decompiler.UnitTests.Scanning
 		}
 
         [Test]
-        public void DetectIndexRegister()
+        public void BwDetectIndexRegister()
         {
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var xfer = new RtlGoto(m.LoadDw(m.IAdd(m.Word32(0x10001234), m.IMul(edx, 4))), RtlClass.Transfer);
             var bw = new Backwalker(host, xfer, expSimp);
             Assert.AreSame(Registers.edx, bw.Index);
+        }
+
+        [Test]
+        public void BwTempRegister()
+        {
+            var v1 = m.Frame.CreateTemporary(PrimitiveType.Word32);
+            var edi = m.Frame.CreateTemporary(PrimitiveType.Word32);
+            var esi = m.Frame.EnsureRegister(Registers.esi);
+            var xfer = new RtlCall(m.LoadDw(m.IAdd(esi, 40)), 4, RtlClass.Transfer);
+            m.Assign(v1, m.LoadDw(edi));
+            m.Assign(esi, v1);
+            var bw = new Backwalker(host, xfer, expSimp);
+            bool result;
+            result = bw.BackwalkInstruction(m.Block.Statements[1].Instruction);
+            result = bw.BackwalkInstruction(m.Block.Statements[0].Instruction);
+
+            Assert.IsFalse(result);
+            Assert.AreEqual("None", bw.Index.ToString());
         }
 
         private void RunTest(IntelArchitecture arch, RtlTransfer rtlTransfer, string outputFile)

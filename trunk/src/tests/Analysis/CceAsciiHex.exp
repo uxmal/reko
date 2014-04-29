@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 C:Flags
 ds:ds
@@ -35,7 +35,7 @@ l0C00_0009:
 fn0C00_0000_exit:
 
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 al:al
     def:  def al

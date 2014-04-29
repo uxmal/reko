@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void UseCreate()
 		{
-			var id1 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage());
+			var id1 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
 			var use = new UseInstruction(id1);
 			Assert.AreSame(id1, use.Expression);
 			Assert.IsNull(use.OutArgument);
@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void UseCreateWithArg()
 		{
-			var id2 = new Identifier("bar", -1, PrimitiveType.Word32, new TemporaryStorage());
+			var id2 = new Identifier("bar", -1, PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
 			var r = new Identifier(Registers.edx.Name, 2, Registers.edx.DataType, Registers.edx);
 			var arg = new Identifier("barOut", 3, PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			var use2 = new UseInstruction(id2, arg);

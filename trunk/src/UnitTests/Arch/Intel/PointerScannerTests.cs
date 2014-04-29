@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 new Address(0x00100000),
                 0x00, 0xE8, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x90,
                 0xC3);
-            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Calls).ToArray();
+            var items = new X86PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Calls).ToArray();
 
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100001u, items[0]);
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 new Address(0x00100000),
                 0x00, 0xE9, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x90,
                 0xC3);
-            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Jumps).ToArray();
+            var items = new X86PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100001u, items[0]);
         }
@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var rdr = CreateImageReader(
                 new Address(0x00100000),
                 0x00, 0x74, 0x02, 0xC3, 0x90, 0xC3);
-            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100005u }, PointerScannerFlags.Jumps).ToArray();
+            var items = new X86PointerScanner(rdr, new HashSet<uint> { 0x00100005u }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100001u, items[0]);
         }
@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var rdr = CreateImageReader(
                 new Address(0x00100000),
                 0x0F, 0x84, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x90, 0xC3);
-            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Jumps).ToArray();
+            var items = new X86PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Jumps).ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100000u, items[0]);
         }
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var rdr = CreateImageReader(
                 new Address(0x00100000),
                 0x22, 0x22, 0x22, 0x08, 0x00, 0x10, 0x00);
-            var items = new PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Pointers).ToArray();
+            var items = new X86PointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Pointers).ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual(0x00100003u, items[0]);
         }

@@ -1,7 +1,7 @@
 = fn0C00_0000 ========================
 Mem0:Global memory
     def:  def Mem0
-fp:Temporary
+fp:fp
     def:  def fp
 eax:Register eax
     def:  def eax

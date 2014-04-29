@@ -1,7 +1,7 @@
 Mem0:Global memory
     def:  def Mem0
     uses: ax_10 = Mem0[ds:bx + 0x0004:word16]
-fp:Temporary
+fp:fp
 sp:sp
 ax:ax
 bx:bx

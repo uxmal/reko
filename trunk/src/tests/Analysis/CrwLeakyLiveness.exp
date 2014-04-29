@@ -5,12 +5,12 @@ void fn0C00_0000(Register selector ds)
 // Preserved: sp
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // C:Flags
 // ds:ds
 // ax:ax
-// v6:Temporary
+// v6:v6
 // SCZO:Flags
 // return address size: 2
 void fn0C00_0000(selector ds)
@@ -36,7 +36,7 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // Preserved: sp
 // fn0C00_000A
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // si:si
 // ds:ds

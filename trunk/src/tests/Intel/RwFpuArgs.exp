@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // rLoc1:FPU stack
 // ds:ds
@@ -33,7 +33,7 @@ fn0C00_0000_exit:
 
 // fn0C00_0024
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss
@@ -60,7 +60,7 @@ fn0C00_0024_exit:
 
 // fn0C00_0031
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bp:bp
 // ss:ss

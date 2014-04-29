@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 a:Local -0004
     def:  def a
     uses: Mem6[0x10000000:word32] = a + b

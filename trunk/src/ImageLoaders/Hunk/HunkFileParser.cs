@@ -36,6 +36,8 @@ namespace Decompiler.ImageLoaders.Hunk
         private bool? v37_compat;
         private Encoding textEncoding;
 
+        private static TraceSwitch trace = new TraceSwitch("HunkLoader", "Traces the progress of the Amiga Hunk loader");
+
         public HunkFileParser(BeImageReader f, bool? v37_compat = null)
         {
             this.f = f;
@@ -44,6 +46,7 @@ namespace Decompiler.ImageLoaders.Hunk
             // national variants may need to override this.
             this.textEncoding = Encoding.GetEncoding("ISO_8859-1");
             this.hunk_file = new HunkFile();
+            this.hunks = hunk_file.hunks;
         }
 
         // Resolve hunks referenced in the index";
@@ -122,7 +125,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 {
                     h.HunkType = hunkType;
                     h.FileOffset = hunkFileOffset;
-                    this.hunks.Add(h);
+                    hunk_file.hunks.Add(h);
                     h.memf = this.SetMemoryFlags(hunkFlags, 30);
                     
                     // Account for lib
@@ -151,6 +154,7 @@ namespace Decompiler.ImageLoaders.Hunk
                         }
                     }
                 };
+                Debug.WriteLineIf(trace.TraceVerbose, string.Format("Loading hunk type: {0}", hunkType));
                 switch (hunkType)
                 {
                 case HunkType.HUNK_HEADER:
@@ -374,6 +378,8 @@ namespace Decompiler.ImageLoaders.Hunk
             hunk.memf = this.SetMemoryFlags(flags, 30);
             hunk.data_file_offset = f.Offset;
             hunk.Data = f.ReadBytes(hunk.alloc_size);
+            Debug.WriteLineIf(trace.TraceVerbose, string.Format("  alloc_size:  {0:X8}", hunk.alloc_size));
+            Debug.WriteLineIf(trace.TraceVerbose, string.Format("  file_offset: {0:X8}", hunk.data_file_offset));
             return hunk;
         }
 
@@ -413,6 +419,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 var hunkNo = this.read_long();
                 if (hunkNo < 0)
                     throw new BadImageFormatException(string.Format("{0} has invalid hunk num.", hunk.HunkType));
+                Debug.WriteLineIf(trace.TraceVerbose, string.Format("  hunk: {0}, relocs: {1}", hunkNo, num_relocs));
                 var offsets = new List<uint>();
                 num_relocs &= 0xFFFF;
                 for (var a = 0; a < num_relocs; ++a)

@@ -1,6 +1,6 @@
 // FactorialMock
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // r2:Local -0004
 // r3:Local -0008
 // Z:Flags

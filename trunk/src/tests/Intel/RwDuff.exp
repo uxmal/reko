@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // sp:sp
 // bx:bx
 // ds:ds
@@ -10,15 +10,15 @@
 // si:si
 // SCZO:Flags
 // di:di
-// v11:Temporary
+// v11:v11
 // es:es
-// v13:Temporary
-// v14:Temporary
-// v15:Temporary
-// v16:Temporary
-// v17:Temporary
-// v18:Temporary
-// v19:Temporary
+// v13:v13
+// v14:v14
+// v15:v15
+// v16:v16
+// v17:v17
+// v18:v18
+// v19:v19
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:

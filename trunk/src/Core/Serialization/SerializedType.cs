@@ -41,7 +41,7 @@ namespace Decompiler.Core.Serialization
         public abstract DataType BuildDataType(TypeFactory factory);
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
 
-        public static XmlAttributeOverrides GetAttributeOverrides(IEnumerable<Type> typesToDecorate)
+        public static XmlAttributeOverrides GetAttributeOverrides(IEnumerable<Type> typesToDecorate, string xmlNamespace)
         {
             var overrides = typesToDecorate
                 .SelectMany(x => x.GetFields())
@@ -55,13 +55,13 @@ namespace Decompiler.Core.Serialization
                     new XmlAttributeOverrides(),
                     (ov, field) =>
                     { 
-                        ov.Add(field.Field.DeclaringType, field.Field.Name, field.AttrCreator()); 
+                        ov.Add(field.Field.DeclaringType, field.Field.Name, field.AttrCreator(xmlNamespace)); 
                         return ov;
                     });
             return overrides;
         }
 
-        private static Func<XmlAttributes> GetAttributeCreator(FieldInfo f)
+        private static Func<string, XmlAttributes> GetAttributeCreator(FieldInfo f)
         {
             if (f.FieldType == typeof(SerializedType))
                 return CreateElementAttributes;
@@ -73,43 +73,43 @@ namespace Decompiler.Core.Serialization
                 return null;
         }
 
-        private static XmlAttributes CreateElementAttributes()
+        private static XmlAttributes CreateElementAttributes(string @namespace)
         {
             var sertypeAttributes = new XmlAttributes
             {
                 XmlElements = 
                 {
-                    new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace},
-                    new XmlElementAttribute("ptr", typeof(SerializedPointerType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("union", typeof(SerializedUnionType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("typedef", typeof(SerializedTypedef)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("type", typeof(SerializedTypeReference)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlElementAttribute("void", typeof(SerializedVoidType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = @namespace},
+                    new XmlElementAttribute("ptr", typeof(SerializedPointerType)) { Namespace = @namespace},
+                    new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
+                    new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
+                    new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
+                    new XmlElementAttribute("union", typeof(SerializedUnionType)) { Namespace = @namespace},
+                    new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
+                    new XmlElementAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},
+                    new XmlElementAttribute("type", typeof(SerializedTypeReference)) { Namespace = @namespace},
+                    new XmlElementAttribute("void", typeof(SerializedVoidType)) { Namespace = @namespace},
                 }
             };
             return sertypeAttributes;
         }
 
-        private static XmlAttributes CreateArrayElementAttributes()
+        private static XmlAttributes CreateArrayElementAttributes(string @namespace)
         {
             var sertypeAttributes = new XmlAttributes
             {
                 XmlArrayItems = 
                 {
-                    new XmlArrayItemAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("ptr", typeof(SerializedPointerType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("enum", typeof(SerializedEnumType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("union", typeof(SerializedUnionType)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("type", typeof(SerializedTypeReference)) { Namespace = SerializedLibrary.Namespace },
-                    new XmlArrayItemAttribute("void", typeof(SerializedVoidType)) { Namespace = SerializedLibrary.Namespace },
+                    new XmlArrayItemAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("ptr", typeof(SerializedPointerType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("union", typeof(SerializedUnionType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("type", typeof(SerializedTypeReference)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("void", typeof(SerializedVoidType)) { Namespace = @namespace},
                 }
             };
             return sertypeAttributes;

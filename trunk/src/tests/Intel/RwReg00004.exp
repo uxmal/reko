@@ -1,6 +1,6 @@
 // fn10000000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // ebx:ebx
@@ -150,7 +150,7 @@ fn10000000_exit:
 
 // fn1000010A
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // rArg0:FPU stack
 // eax:eax

@@ -1,6 +1,6 @@
 // fn10000000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // ebx:ebx
 // ebp:ebp
@@ -351,7 +351,7 @@ fn10000000_exit:
 
 // fn10000233
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -366,7 +366,7 @@ fn10000233_exit:
 
 // fn10000238
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -381,7 +381,7 @@ fn10000238_exit:
 
 // fn1000023D
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -396,7 +396,7 @@ fn1000023D_exit:
 
 // fn10000242
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -411,7 +411,7 @@ fn10000242_exit:
 
 // fn1000024C
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -426,7 +426,7 @@ fn1000024C_exit:
 
 // fn10000251
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -441,7 +441,7 @@ fn10000251_exit:
 
 // fn10000256
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -456,7 +456,7 @@ fn10000256_exit:
 
 // fn1000025B
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -471,7 +471,7 @@ fn1000025B_exit:
 
 // fn10000260
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // SCZO:Flags
@@ -489,7 +489,7 @@ fn10000260_exit:
 
 // fn10000269
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // return address size: 4
@@ -504,7 +504,7 @@ fn10000269_exit:
 
 // fn1000026E
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // SCZO:Flags
@@ -522,7 +522,7 @@ fn1000026E_exit:
 
 // fn10000277
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // edx:edx
 // eax:eax
@@ -550,7 +550,7 @@ fn10000277_exit:
 
 // fn100002A8
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // return address size: 4
 void fn100002A8()
@@ -563,7 +563,7 @@ fn100002A8_exit:
 
 // fn100002A9
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // edx:edx
 // eax:eax

@@ -39,7 +39,6 @@ namespace Decompiler.UnitTests.Analysis
 		private SsaIdentifierCollection ssaIds;
 		private BlockDominatorGraph doms;
 
-
 		/// <summary>
 		/// Builds a strongly connected component corresponding to:
 		/// a1 = 0
@@ -121,7 +120,7 @@ namespace Decompiler.UnitTests.Analysis
 			var liv = new LinearInductionVariableFinder(proc, ssaIds, null);
 			var a = new List<SsaIdentifier>();
 			a.Add(ssaIds[5]);
-			a.Add(ssaIds[8]);
+			a.Add(ssaIds[7]);
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
             Assert.AreEqual("branch i_5 < 0x0000000A body", liv.Context.TestStatement.ToString());
@@ -175,8 +174,8 @@ namespace Decompiler.UnitTests.Analysis
 		public void Liv_CreateBareMinimum()
 		{
 			ssaIds = new SsaIdentifierCollection();
-			Identifier id0 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage());
-			Identifier id1 = new Identifier("bar", 2, PrimitiveType.Word32, new TemporaryStorage());
+            Identifier id0 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
+            Identifier id1 = new Identifier("bar", 2, PrimitiveType.Word32, new TemporaryStorage("bar", 1, PrimitiveType.Word32));
 			ssaIds.Add(new SsaIdentifier(id0, id0, null, null, false));
 			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
@@ -210,8 +209,8 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			ssaIds = new SsaIdentifierCollection();
-			SsaId(new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage()), null, null, false);
-			SsaId(new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage()), null, null, false);
+			SsaId(new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage("id0", 0, PrimitiveType.Word32)), null, null, false);
+			SsaId(new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage("id1", 1, PrimitiveType.Word32)), null, null, false);
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 
 			liv.Context.InitialValue = Constant.Word32(0);
@@ -241,7 +240,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
         [Test]
-        public void PreTestedUge()
+        public void Liv_PreTestedUge()
         {
             Prepare(delegate(ProcedureBuilder m)
             {
@@ -255,13 +254,13 @@ namespace Decompiler.UnitTests.Analysis
                 m.Store(m.Word32(0x4200), i);
                 m.Return();
             });
-            LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
+            var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
             liv.Find();
             Assert.AreEqual("(? 0x00000001 0x0000000A)", liv.InductionVariables[0].ToString());
         }
 
 		[Test]
-		public void CreateDecTest()
+		public void Liv_CreateDecTest()
 		{
             Prepare(delegate(ProcedureBuilder m)
             {
@@ -277,16 +276,15 @@ namespace Decompiler.UnitTests.Analysis
             var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
             liv.Find();
 			var iv = liv.InductionVariables[0];
-			Assert.AreEqual("(9 -1 -1 signed)", iv.ToString());
+			Assert.AreEqual("(0x0000000A -1 0 signed)", iv.ToString());
 		}
 
 		[Test]
-		public void Commensurate()
+		public void Liv_Commensurate()
 		{
-			LinearInductionVariable liv1 = new LinearInductionVariable(null, Constant.Word32(1), null, false);
-            LinearInductionVariable liv2 = new LinearInductionVariable(null, Constant.Word32(2), null, false);
-			LinearInductionVariable liv =
-				LinearInductionVariable.Merge(liv1, liv2);
+			var liv1 = new LinearInductionVariable(null, Constant.Word32(1), null, false);
+            var liv2 = new LinearInductionVariable(null, Constant.Word32(2), null, false);
+			var liv = LinearInductionVariable.Merge(liv1, liv2);
 			Assert.IsNotNull(liv);
 			Assert.AreEqual(1, liv.Delta.ToInt32());
 		}
@@ -319,15 +317,13 @@ namespace Decompiler.UnitTests.Analysis
 			SsaTransform sst = new SsaTransform(proc, doms);
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;
-	
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
 			cce.Transform();
-			
 
 			DeadCode.Eliminate(proc, ssa);
 
-			ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+			var vp = new ValuePropagator(ssa.Identifiers, proc);
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);
@@ -343,7 +339,7 @@ namespace Decompiler.UnitTests.Analysis
 		private void RunTest(Procedure proc, string outputFile)
 		{
 			Prepare(proc);
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
+			var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
 			liv.Find();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

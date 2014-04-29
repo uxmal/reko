@@ -47,6 +47,7 @@ namespace Decompiler.ImageLoaders.Hunk
         }
 
         //$REVIEW: is this a sane value? AmigaOS apparently didn't load at a specific address. Emulators 
+        // seem to like this value.
         public override Address PreferredBaseAddress
         {
             get { return new Address(0x1000); }

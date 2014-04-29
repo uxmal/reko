@@ -48,7 +48,7 @@ namespace Decompiler.Core
                 var attr = GetFieldAttribute(f);
                 uint alignment = (uint) attr.Align;
                 rdr.Offset = (rdr.Offset + alignment - 1u) & ~(alignment - 1u);
-                Debug.Print("At offset: {0:X8} reading field {1} after alignment of {2}.", rdr.Offset, f.Name, alignment);
+                Debug.Print("At offset: {0:X8} reading field '{1}.{2}' after alignment of {3}.", rdr.Offset, f.DeclaringType.Name, f.Name, alignment);
 
                 object value = attr.ReadValue(f, rdr, null);
                 f.SetValue(structure, value);

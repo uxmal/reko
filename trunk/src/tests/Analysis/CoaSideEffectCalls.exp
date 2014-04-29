@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 ds:ds
     def:  def ds
@@ -33,7 +33,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 ax:ax
 bx:bx
@@ -54,7 +54,7 @@ fn0C00_000E_exit:
 	use bx_7 (=> bxOut)
 
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 ds:ds
     def:  def ds

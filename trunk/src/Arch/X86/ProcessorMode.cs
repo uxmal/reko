@@ -187,7 +187,7 @@ namespace Decompiler.Arch.X86
 
         public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
-            return new PointerScanner(rdr, knownLinAddresses, flags);
+            return new X86PointerScanner(rdr, knownLinAddresses, flags);
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)

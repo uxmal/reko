@@ -36,11 +36,11 @@ namespace Decompiler.Core.Serialization
     /// file format into a new file, bump the namespace identifier and the class name. You will
     /// also have to modify the ProjectSerializer to handle the new format.</remarks>
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler")]
-    public class SerializedProject_v1
+    public class Project_v1
     {
         public const string FileExtension = ".dcproject";
 
-        public SerializedProject_v1()
+        public Project_v1()
         {
             this.Input = new DecompilerInput_v1();
             this.Output = new DecompilerOutput_v1();

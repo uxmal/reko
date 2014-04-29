@@ -114,6 +114,7 @@ namespace Decompiler.Core
             return (sbyte) ReadByte();
         }
 
+        //$REFACTOR: should be called PeekByte as it doesn't actually _read_.
         public byte ReadByte(int offset)
         {
             return bytes[off + offset];
@@ -202,10 +203,11 @@ namespace Decompiler.Core
         public short ReadBeInt16() { return (short)ReadBeUInt16(); }
         public short ReadLeInt16() { return (short)ReadLeUInt16(); }
 
-        public ushort ReadLeUInt16(uint offset) { return LoadedImage.ReadLeUInt16(bytes, off); }
-        public ushort ReadBeUInt16(uint offset) { return LoadedImage.ReadBeUInt16(bytes, off); }
-        public short ReadLeInt16(uint offset) { return (short)LoadedImage.ReadLeUInt16(bytes, off); }
-        public short ReadBeInt16(uint offset) { return (short)LoadedImage.ReadBeUInt16(bytes, off); }
+        //$REVIEW: these should all be called "Peek".
+        public ushort ReadLeUInt16(uint offset) { return LoadedImage.ReadLeUInt16(bytes, offset + off); }
+        public ushort ReadBeUInt16(uint offset) { return LoadedImage.ReadBeUInt16(bytes, offset + off); }
+        public short ReadLeInt16(uint offset) { return (short) LoadedImage.ReadLeUInt16(bytes, offset + off); }
+        public short ReadBeInt16(uint offset) { return (short) LoadedImage.ReadBeUInt16(bytes, offset + off); }
 
         public uint ReadLeUInt32()
         {
@@ -365,6 +367,8 @@ namespace Decompiler.Core
     public class BeImageReader : ImageReader
     {
         public BeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
+        public BeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
+
         public override short ReadInt16() { return ReadBeInt16(); }
         public override int ReadInt32() { return ReadBeInt32(); }
         public override long ReadInt64() { return ReadBeInt64(); }

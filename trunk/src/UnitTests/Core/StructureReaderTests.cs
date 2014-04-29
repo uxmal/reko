@@ -141,13 +141,13 @@ namespace Decompiler.UnitTests.Core
 
         public class TestStruct6
         {
-            [PointerField(Size = 2)]
+            public short signature;
+            [PointerField(Size = 2, Align=2)]
             public Directory directory;
 
             public class Directory
             {
                 [ArrayField(Length = 4, PointerElementSize=2)]
-                [PointerField(Size = 2)]
                 public Section[] sections;
             }
 
@@ -172,6 +172,7 @@ namespace Decompiler.UnitTests.Core
                 0x61, 0x62, 0x00,
                 0x63, 0x64, 0x00,
                 0x65, 0x66, 0x00,
+                0x65, 0x78, 0x00,
             });
             var test = new TestStruct6();
             var sr = new StructureReader(test);
@@ -183,6 +184,7 @@ namespace Decompiler.UnitTests.Core
             Assert.AreEqual("ab", test.directory.sections[0].name);
             Assert.AreEqual("cd", test.directory.sections[1].name);
             Assert.AreEqual("ef", test.directory.sections[2].name);
+            Assert.AreEqual("ex", test.directory.sections[3].name);
         }
     }
 }

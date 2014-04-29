@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 tmp:Local -0004
 reg:Local -0008
     def:  def reg

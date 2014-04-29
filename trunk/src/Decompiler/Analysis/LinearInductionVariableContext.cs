@@ -108,6 +108,5 @@ namespace Decompiler.Analysis
                 op == Operator.Lt || op == Operator.Le ||
                 op == Operator.Gt || op == Operator.Ge;
         }
-
     }
 }

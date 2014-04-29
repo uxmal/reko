@@ -10,7 +10,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Local -0006(16) Temporary(16)
+// LocalsOut: fp(16) Local -0006(16)
 
 // SymbolicIn: sp:fp
 l0C00_0000:
@@ -66,7 +66,7 @@ void fn0C00_0023()
 fn0C00_0023_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Stack +0002(16) Stack +0004(16) Temporary(16)
+// LocalsOut: fp(16) Stack +0002(16) Stack +0004(16)
 
 // SymbolicIn: sp:fp
 l0C00_0023:
@@ -104,7 +104,7 @@ void fn0C00_0034()
 fn0C00_0034_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Temporary(16)
+// LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_0034:
@@ -120,7 +120,7 @@ l0C00_0034:
 	bx = fp + 0x0006
 // DataOut: bx ds
 // DataOut (flags): 
-// LocalsOut: Temporary(16)
+// LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 l0C00_003D:
@@ -132,7 +132,7 @@ l0C00_003D:
 	branch Test(NE,Z) l0C00_003D
 // DataOut: bx ds
 // DataOut (flags): 
-// LocalsOut: Temporary(16)
+// LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 l0C00_0046:
@@ -172,7 +172,7 @@ void fn0C00_005D()
 fn0C00_005D_entry:
 // DataOut: cx
 // DataOut (flags): 
-// LocalsOut: Stack +0004(16) Temporary(16)
+// LocalsOut: fp(16) Stack +0004(16)
 
 // SymbolicIn: sp:fp
 l0C00_005D:

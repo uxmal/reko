@@ -83,6 +83,7 @@ namespace Decompiler.Scanning
             }
             catch (Exception ex)
             {
+                Debug.WriteLine("* Exception at address {0}", rtlStream.Current.Address);
                 if (ric == null)
                     throw;
                 scanner.AddDiagnostic(ric.Address, new ErrorDiagnostic(ex.Message));
@@ -95,6 +96,7 @@ namespace Decompiler.Scanning
             blockCur = scanner.FindContainingBlock(addrStart);
             if (BlockHasBeenScanned(blockCur))
                 return;
+            Debug.Print("Scanning jump target {0}", addrStart);
             while (rtlStream.MoveNext())
             {
                 ric = rtlStream.Current;
@@ -251,7 +253,6 @@ namespace Decompiler.Scanning
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
-                Debug.Print("Enqueueing jump target {0}", addrTarget);
                 var blockTarget = BlockFromAddress(addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
@@ -356,6 +357,8 @@ namespace Decompiler.Scanning
                 return !imp.Characteristics.Terminates;
             }
 
+            if (ric.Address.Linear == 0x136C)   //$DEBUG
+                ric.ToString();
             ProcessIndirectControlTransfer(ric.Address, call);
 
             var ic = new CallInstruction(call.Target, site);

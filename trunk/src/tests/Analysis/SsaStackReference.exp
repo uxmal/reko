@@ -1,6 +1,6 @@
 Mem0:Global memory
     def:  def Mem0
-fp:Temporary
+fp:fp
     def:  def fp
 wArg04:Stack +0004
     def:  def wArg04

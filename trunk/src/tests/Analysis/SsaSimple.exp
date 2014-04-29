@@ -1,6 +1,6 @@
 Mem0:Global memory
     def:  def Mem0
-fp:Temporary
+fp:fp
     def:  def fp
     uses: bp_10 = fp
           sp_17 = fp

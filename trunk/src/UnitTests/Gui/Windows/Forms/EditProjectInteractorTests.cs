@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc.SimulateUserCancel = true;
             var project = CreateTestProject();
             var epi = new EditProjectInteractor();
-            var ret = epi.EditProjectProperties(uiSvc, project, delegate(SerializedProject_v1 p)
+            var ret = epi.EditProjectProperties(uiSvc, project, delegate(Project_v1 p)
             {
                 Assert.Fail("Should not save if user cancels.");
             });
@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var epi = new EditProjectInteractor();
             var p = CreateTestProject();
 
-            var ret = epi.EditProjectProperties(uiSvc, p, delegate(SerializedProject_v1 project)
+            var ret = epi.EditProjectProperties(uiSvc, p, delegate(Project_v1 project)
             {
                 Assert.AreEqual("test.exe", project.Input.Filename);
                 Assert.AreEqual("10000", project.Input.Address);
@@ -111,9 +111,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.AreEqual("fooga.exe", dlg.BinaryFilename.Text);
         }
 
-        private  SerializedProject_v1 CreateTestProject()
+        private  Project_v1 CreateTestProject()
         {
-            var project = new SerializedProject_v1();
+            var project = new Project_v1();
             project.Input.Filename = "test.exe";
             project.Input.Address = "10000";
             project.Output.DisassemblyFilename = "test.asm";

@@ -1,7 +1,7 @@
 Mem0:Global memory
     def:  def Mem0
     uses: ax_15 = Mem0[ds:si_14:word16]
-fp:Temporary
+fp:fp
 sp:sp
 bx:bx
 si:si
@@ -23,7 +23,7 @@ di:di
     uses: Mem33[ds:di:word16] = ax_15
 SZO:Flags
 C:Flags
-v12:Temporary
+v12:v12
 bx_13: orig: bx
 si_14: orig: si
     def:  si_14 = PHI(si, si_16, si_16)

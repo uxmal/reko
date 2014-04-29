@@ -128,7 +128,7 @@ namespace Decompiler.Analysis
             }
         }
 
-       private void SetInitialValueOfStackPointer(Procedure proc)
+        private void SetInitialValueOfStackPointer(Procedure proc)
         {
             flow[proc.EntryBlock].SymbolicIn.SetValue(
                 proc.Frame.EnsureRegister(prog.Architecture.StackRegister),
@@ -231,8 +231,6 @@ namespace Decompiler.Analysis
         public void PropagateToSuccessorBlock(Block s)
         {
             BlockFlow succFlow = flow[s];
-            if (s.Name.StartsWith("fn0C00_000C"))
-                s.ToString();
             bool changed = MergeDataFlow(succFlow);
             if (changed)
             {

@@ -1,5 +1,5 @@
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // ax:ax
 // dx:dx
 // dx_ax:Sequence dx:ax

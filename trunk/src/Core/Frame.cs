@@ -112,14 +112,17 @@ namespace Decompiler.Core
 		/// <returns></returns>
 		public Identifier CreateTemporary(DataType dt)
 		{
-			Identifier id = new Identifier("v" + identifiers.Count, identifiers.Count, dt, new TemporaryStorage());
+            string name = "v" + identifiers.Count;
+			Identifier id = new Identifier(name, identifiers.Count, dt,
+                new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
 			identifiers.Add(id);
 			return id;
 		}
 
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
-			Identifier id = new Identifier(name, identifiers.Count, dt, new TemporaryStorage());
+			Identifier id = new Identifier(name, identifiers.Count, dt, 
+                new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
 			identifiers.Add(id);
 			return id;
 		}

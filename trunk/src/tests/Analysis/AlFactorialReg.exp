@@ -1,5 +1,5 @@
 Mem0:Global memory (aliases:)
-fp:Temporary (aliases:)
+fp:fp (aliases:)
 sp:sp (aliases:)
 cx:cx (aliases:)
 ds:ds (aliases:)
@@ -17,7 +17,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 Mem0:Global memory (aliases:)
-fp:Temporary (aliases:)
+fp:fp (aliases:)
 sp:sp (aliases:)
 si:si (aliases:)
 ss:ss (aliases:)

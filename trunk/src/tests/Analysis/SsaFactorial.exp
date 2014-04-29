@@ -1,6 +1,6 @@
 Mem0:Global memory
     def:  def Mem0
-fp:Temporary
+fp:fp
     def:  def fp
     uses: sp_10 = fp - 0x0002
           sp_13 = fp
@@ -63,7 +63,7 @@ fn0C00_0000_exit:
 
 Mem0:Global memory
     def:  def Mem0
-fp:Temporary
+fp:fp
     def:  def fp
     uses: sp_14 = fp - 0x0002
           bp_16 = fp - 0x0002

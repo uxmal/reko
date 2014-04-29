@@ -10,7 +10,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Temporary(16)
+// LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_0000:
@@ -42,7 +42,7 @@ void fn0C00_000F()
 fn0C00_000F_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Stack +0002(16) Temporary(16)
+// LocalsOut: fp(16) Stack +0002(16)
 
 // SymbolicIn: sp:fp
 l0C00_000F:
@@ -55,7 +55,7 @@ l0C00_000F:
 	branch Test(EQ,Z) l0C00_0026
 // DataOut: ax ds
 // DataOut (flags): 
-// LocalsOut: Stack +0002(16) Temporary(16)
+// LocalsOut: fp(16) Stack +0002(16)
 
 // SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2(fp):bp
 l0C00_0018:

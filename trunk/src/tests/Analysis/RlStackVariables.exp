@@ -10,7 +10,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Local -0008(16) Stack +0004(32) Temporary(16)
+// LocalsOut: fp(16) Local -0008(16) Stack +0004(32)
 
 // SymbolicIn: sp:fp
 l0C00_0000:
@@ -59,7 +59,7 @@ void fn0C00_0020()
 fn0C00_0020_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Stack +0002(32) Temporary(16)
+// LocalsOut: fp(16) Stack +0002(32)
 
 // SymbolicIn: sp:fp
 l0C00_0020:
@@ -92,7 +92,7 @@ void fn0C00_002E()
 fn0C00_002E_entry:
 // DataOut: ds
 // DataOut (flags): 
-// LocalsOut: Stack +0002(32) Stack +0006(16) Temporary(16)
+// LocalsOut: fp(16) Stack +0002(32) Stack +0006(16)
 
 // SymbolicIn: sp:fp
 l0C00_002E:

@@ -137,7 +137,8 @@ namespace Decompiler.UnitTests.Analysis
                 name,
                 0,
                 PrimitiveType.Word16,
-                new TemporaryStorage());
+                new TemporaryStorage(
+                    name, 0, PrimitiveType.Word16));
         }
 
         private Identifier Id32(string name)
@@ -146,7 +147,8 @@ namespace Decompiler.UnitTests.Analysis
                 name,
                 0,
                 PrimitiveType.Word32,
-                new TemporaryStorage());
+                new TemporaryStorage(
+                    name, 0, PrimitiveType.Word32));
         }
 	}
 }

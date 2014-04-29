@@ -76,6 +76,7 @@ namespace Decompiler.Core
 
         public static object ReadPointer(Type pointerType, int size, ImageReader rdr, ReaderContext ctx)
         {
+            Debug.Print("Reading pointer at offset {0}, size {1}", rdr.Offset, size);
             uint newOffset;
             switch (size)
             {
@@ -85,9 +86,10 @@ namespace Decompiler.Core
             case 2: newOffset = rdr.ReadUInt16(); break;
             case 4: newOffset = rdr.ReadUInt32(); break;
             }
-            Debug.Print("Structure must start at offset {0:X}", newOffset);
+            Debug.Print("Structure of type {0} must start at offset {1:X}", pointerType.Name, newOffset);
             rdr = rdr.Clone();
             rdr.Offset = newOffset;
+
             var dst = Activator.CreateInstance(pointerType);
             var sr = new StructureReader(dst);
             sr.Read(rdr);
@@ -103,9 +105,10 @@ namespace Decompiler.Core
 
         public override object ReadValue(FieldInfo f, ImageReader rdr, ReaderContext ctx)
         {
-            var elemType =             f.FieldType.GetElementType(); 
+            var elemType = f.FieldType.GetElementType(); 
             if (Length > 0)
             {
+                Debug.Print("Array: at offset {0}, reading {1} entries", rdr.Offset, Length);
                 var a = (Array) Activator.CreateInstance(f.FieldType, Length);
                 if (PointerElementSize > 0)
                 {
@@ -119,7 +122,6 @@ namespace Decompiler.Core
                 throw new NotImplementedException();
             }
             throw new NotImplementedException();
-
         }
     }
 }

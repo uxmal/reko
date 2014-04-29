@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             public PseudoProcedure EnsurePseudoProcedure(string name, Decompiler.Core.Types.DataType returnType, int arity)
             {
-                throw new NotImplementedException();
+                return new PseudoProcedure(name, returnType, arity);
             }
 
             public PseudoProcedure GetImportedProcedure(uint addrThunk)
@@ -695,7 +695,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0x6438, 0x6636);
             AssertCode(
                 "0|00010000(2): 1 instructions",
-                "1|T--|if (Test(ULT,C)) branch 0001003A",
+                "1|T--|if (Test(UGE,C)) branch 0001003A",
                 "2|00010002(2): 1 instructions",
                 "3|T--|if (Test(NE,Z)) branch 0001003A");
         }
@@ -748,6 +748,79 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|L--|ZN = cond(Mem0[0x00010126:word32] - 0x00000000)",
                 "2|L--|C = false",
                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_pea()
+        {
+            Rewrite(0x486A, 0x0004);
+            AssertCode(
+                "0|00010000(4): 2 instructions",
+                "1|L--|a7 = a7 - 0x00000004",
+                "2|L--|Mem0[a7:word32] = a2 + 4");
+        }
+
+        [Test]
+        public void M68krw_IndirectIndexed()
+        {
+            Rewrite(0x4AB3, 0x0000);
+            AssertCode(
+                "0|00010000(4): 3 instructions",
+                "1|L--|ZN = cond(Mem0[a3 + d0:word32] - 0x00000000)",
+                "2|L--|C = false",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_Swap()
+        {
+            Rewrite(0x4847);
+            AssertCode(
+                "0|00010000(2): 4 instructions",
+                "1|L--|d7 = __swap(d7)",
+                "2|L--|ZN = cond(d7)",
+                "3|L--|C = false",
+                "4|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_Clr_d1()
+        {
+            Rewrite(0x4241);
+            AssertCode(
+                "0|00010000(2): 5 instructions",
+                "1|L--|d1 = 0x0000",
+                "2|L--|Z = true",
+                "3|L--|C = false",
+                "4|L--|N = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_ori()
+        {
+            Rewrite(0x0038, 0x584F);
+            AssertCode(
+                "0|00010000(4): 5 instructions",
+                "1|L--|v3 = (byte) d7 | 0x4F",
+                "2|L--|d7 = DPB(d7, v3, 0, 8)",
+                "3|L--|ZN = cond(v3)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_addx()
+        {
+            Rewrite(0xD38D);
+            AssertCode(
+                "0|00010000(2): 6 instructions",
+                "1|L--|a5 = a5 - 0x00000004",
+                "2|L--|v5 = Mem0[a5:word32]",
+                "3|L--|a1 = a1 - 0x00000004",
+                "4|L--|v6 = v5 + Mem0[a1:word32] + X",
+                "5|L--|Mem0[a1:word32] = v6",
+                "6|L--|CVZNX = cond(v6)");
         }
     }
 }

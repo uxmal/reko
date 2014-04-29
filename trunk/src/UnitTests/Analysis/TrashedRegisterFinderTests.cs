@@ -46,6 +46,10 @@ namespace Decompiler.UnitTests.Analysis
         private ProgramDataFlow flow;
         private IntelArchitecture arch;
         private ProgramBuilder p;
+        private Frame frame;
+        private SymbolicEvaluationContext ctx1;
+        private SymbolicEvaluationContext ctx2;
+        private BlockFlow blockflow;
 
         [SetUp]
         public void Setup()
@@ -573,9 +577,40 @@ const eax:<invalid>
         }
 
         [Test]
+        public void TrfConstNonConst()
+        {
+            // Constant in one branch, not constant in other.
+            p.Add("main", m =>
+            {
+                var ax = m.Frame.EnsureRegister(Registers.ax);
+                var cl = m.Frame.EnsureRegister(Registers.cl);
+                var cx = m.Frame.EnsureRegister(Registers.cx);
+                m.BranchIf(m.Eq0(ax), "zero");
+                m.Assign(cl, 0);
+                m.Return();
+
+                m.Label("zero");
+                m.Assign(cx, m.LoadW(ax));
+                m.Return();
+            });
+            var sExp =
+@"main ax cx al cl ah ch
+const ax:0x0000 cx:<invalid>
+    main_entry:esp:fp
+    
+";
+            RunTest(p, sExp);
+        }
+        [Test]
         public void TrfFactorial()
         {
             RunTest("Fragments/factorial.asm", "Analysis/TrfFactorial.txt");
+        }
+
+        [Test]
+        public void TrfReg00005()
+        {
+            RunTest("Fragments/regressions/r00005.asm", "Analysis/TrfReg00005.txt");
         }
 
         [Test]
@@ -588,6 +623,29 @@ const eax:<invalid>
         public void TrfProcIsolation()
         {
             RunTest("Fragments/multiple/procisolation.asm", "Analysis/TrfProcIsolation.txt");
+        }
+
+        [Test]
+        public void TrfMergeSubregisterRegister()
+        {
+            Given_Contexts();
+            var cl = frame.EnsureRegister(Registers.cl);
+            var cx = frame.EnsureRegister(Registers.cx);
+            trf.RegisterSymbolicValues[cl.Storage] = Constant.Zero(cl.DataType);
+            blockflow.SymbolicIn.SetValue(cx, Constant.Invalid);
+            trf.MergeDataFlow(blockflow);
+
+            var sw = new StringWriter();
+            DataFlow.EmitRegisterValues("", blockflow.SymbolicIn.RegisterState, sw);
+            Assert.AreEqual("cx:<invalid>", sw.ToString());
+        }
+
+        private void Given_Contexts()
+        {
+            frame = new Frame(PrimitiveType.Pointer32);
+            ctx1 = new SymbolicEvaluationContext(arch, frame);
+            blockflow = new BlockFlow(null, arch.CreateRegisterBitset(), ctx1);
+            trf.EnsureEvaluationContext(blockflow);
         }
     }
 }

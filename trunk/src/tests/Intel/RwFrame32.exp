@@ -1,6 +1,6 @@
 // fn10000000
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // eax:eax
 // SCZO:Flags
@@ -23,7 +23,7 @@ fn10000000_exit:
 
 // fn10000017
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // esp:esp
 // ebp:ebp
 // ecx:ecx

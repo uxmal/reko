@@ -29,6 +29,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
@@ -112,6 +113,28 @@ namespace Decompiler.UnitTests.Analysis
             trs.PropagateToProcedureSummary();
 
             Assert.AreEqual("0x00000003", flow.ConstantRegisters[r4].ToString());
+        }
+
+        [Test]
+        public void TrsMergeSubregisterWithRegister()
+        {
+            var cl = Decompiler.Arch.X86.Registers.cl;
+            var cx = Decompiler.Arch.X86.Registers.cx;
+            ctx.RegisterState[cl] = Constant.Zero(cl.DataType);
+            trs.PropagateToProcedureSummary();
+            ctx.RegisterState[cx] = Constant.Invalid;
+            trs.PropagateToProcedureSummary();
+
+            Assert.AreEqual("cl:<invalid>, cx:<invalid>", Dump(flow.ConstantRegisters));
+        }
+
+        private string Dump(Dictionary<Storage, Constant> dictionary)
+        {
+            return string.Join(
+                ", ",
+                dictionary
+                    .OrderBy(d => d.Key.ToString())
+                    .Select(d => string.Format("{0}:{1}", d.Key, d.Value)));
         }
     }
 }

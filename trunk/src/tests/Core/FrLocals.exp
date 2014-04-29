@@ -1,5 +1,5 @@
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // wLoc02:Local -0002
 // dwLoc04:Local -0004
 // return address size: 0
