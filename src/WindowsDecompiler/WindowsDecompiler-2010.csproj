@@ -2,8 +2,6 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -79,9 +77,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms">
@@ -137,22 +133,22 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml" />
+    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\MsDos\realmodeintservices.xml" />
+    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Win32\msvcrt.xml" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Decompiler.Arch.M68k.*" />
-    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Decompiler.Arch.Mips.*" />
-    <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Decompiler.Arch.X86.*" />
-    <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Decompiler.Arch.Z80.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Decompiler.ImageLoaders.MzExe.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Decompiler.ImageLoaders.BinHex.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Decompiler.ImageLoaders.Elf.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Decompiler.ImageLoaders.Hunk.*" />
-    <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Decompiler.Environments.AmigaOS.*" />
-    <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Decompiler.Environments.MacOS.*" />
-    <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Decompiler.Environments.Msdos.*" />
-    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Decompiler.Environments.Win32.*" />
+    <Architectures Include="%24%28SolutionDir%29Arch\M68k\%24%28OutDir%29Decompiler.Arch.M68k.*" />
+    <Architectures Include="%24%28SolutionDir%29Arch\Mips\%24%28OutDir%29Decompiler.Arch.Mips.*" />
+    <Architectures Include="%24%28SolutionDir%29Arch\X86\%24%28OutDir%29Decompiler.Arch.X86.*" />
+    <Architectures Include="%24%28SolutionDir%29Arch\Z80\%24%28OutDir%29Decompiler.Arch.Z80.*" />
+    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\MzExe\%24%28OutDir%29Decompiler.ImageLoaders.MzExe.*" />
+    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\BinHex\%24%28OutDir%29Decompiler.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\Elf\%24%28OutDir%29Decompiler.ImageLoaders.Elf.*" />
+    <ImageLoaders Include="%24%28SolutionDir%29ImageLoaders\Hunk\%24%28OutDir%29Decompiler.ImageLoaders.Hunk.*" />
+    <Environments Include="%24%28SolutionDir%29Environments\AmigaOS\%24%28OutDir%29Decompiler.Environments.AmigaOS.*" />
+    <Environments Include="%24%28SolutionDir%29Environments\MacOS\%24%28OutDir%29Decompiler.Environments.MacOS.*" />
+    <Environments Include="%24%28SolutionDir%29Environments\MsDos\%24%28OutDir%29Decompiler.Environments.Msdos.*" />
+    <Environments Include="%24%28SolutionDir%29Environments\Win32\%24%28OutDir%29Decompiler.Environments.Win32.*" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />

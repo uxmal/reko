@@ -48,14 +48,15 @@ namespace Decompiler.Gui.Windows
             this.listView.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(listView_RetrieveVirtualItem);
             this.listView.CacheVirtualItems += new CacheVirtualItemsEventHandler(listView_CacheVirtualItems);
             this.listView.DoubleClick += new EventHandler(listView_DoubleClick);
-            
+
             ShowSearchResults(new EmptyResult());
         }
 
         public void ShowSearchResults(ISearchResult result)
         {
             this.result = result;
-            listView.Clear();
+			if(!listView.VirtualMode)
+            	listView.Clear();
             listView.VirtualListSize = result.Count;
             var searchResultView = new SearchResultView(this.listView);
             result.CreateColumns(searchResultView);
