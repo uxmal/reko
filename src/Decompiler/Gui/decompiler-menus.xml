@@ -108,5 +108,9 @@
   
   <placement item="ActionEditSignature" container="GrpBrowser"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />
+
+<!-- Accelerators ================================================== -->
+
+  <keybinding id="ActionMarkType" cmdSet="Decompiler" editor="Decompiler.Gui.Windows.LowLevelViewInteractor" key1="T" alt1="Control" />
 </menu-definitions>
  

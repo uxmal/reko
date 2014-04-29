@@ -381,7 +381,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestForm : Form, IWindowFrame
         {
-
+            public IWindowPane Pane { get; private set; }
         }
 
         private Program CreateFakeProgram()

@@ -69,6 +69,15 @@ namespace Decompiler.Gui.Windows.Forms
 			<for-each select="c:placement">
 			sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@item"/>);</for-each>
     
+      // Build accelerators.
+      <for-each select="c:keybinding">
+        AddBinding(
+           "<value-of select="@editor"/>", 
+          new Guid(CmdSets.<value-of select="@cmdSet"/>), 
+          CmdIds.<value-of select="@id"/>, 
+          Keys.<value-of select="@key1" />,
+          Keys.<value-of select="@alt1" />);
+      </for-each>
     <for-each select="c:menu">
 		<choose>
 			<when test="@container">

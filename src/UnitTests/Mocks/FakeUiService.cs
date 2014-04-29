@@ -145,6 +145,12 @@ namespace Decompiler.UnitTests.Mocks
 
 
         #endregion
+
+
+        public IWindowFrame ActiveFrame
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 
 }

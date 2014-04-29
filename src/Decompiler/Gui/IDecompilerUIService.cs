@@ -40,6 +40,8 @@ namespace Decompiler.Gui
     {
         ContextMenu GetContextMenu(int menuID);
 
+        IWindowFrame ActiveFrame { get; }
+
         IWindowFrame FindWindow(string windowType);
         IWindowFrame FindDocumentWindow(string documentType, object docItem);
         IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);

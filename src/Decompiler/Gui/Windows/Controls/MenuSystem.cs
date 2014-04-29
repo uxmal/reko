@@ -21,6 +21,7 @@
 using Decompiler.Gui;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
@@ -38,12 +39,14 @@ namespace Decompiler.Gui.Windows.Controls
 		private ICommandTarget target;
 		private CommandStatus cmdStatus;
 		private CommandText cmdText;
+        private Dictionary<string, Dictionary<Keys, CommandID>> bindingLists;
 
 		public MenuSystem(ICommandTarget target)
 		{
 			this.target = target;
 			this.cmdStatus = new CommandStatus();
 			this.cmdText = new CommandText();
+            this.bindingLists = new Dictionary<string, Dictionary<Keys, CommandID>>();
 		}
 
 		public void BuildMenu(SortedList menu, IList m)
@@ -68,6 +71,17 @@ namespace Decompiler.Gui.Windows.Controls
 				}
 			}
 		}
+
+        public void AddBinding(string windowKey, Guid cmdSet, int id, Keys key, Keys modifiers)
+        {
+            Dictionary<Keys, CommandID> bindingList;
+            if (!bindingLists.TryGetValue(windowKey, out bindingList))
+            {
+                bindingList = new Dictionary<Keys,CommandID>();
+                bindingLists.Add(windowKey, bindingList);
+            }
+            bindingList[key | modifiers] = new CommandID(cmdSet, id);
+        }
 
         public void BuildMenu(SortedList menu, ToolStripItemCollection items)
         {
@@ -200,6 +214,25 @@ namespace Decompiler.Gui.Windows.Controls
 				target.Execute(ref guid, cmd.CommandID.ID);
 			}
 		}
-	}
 
+        public void ProcessKey(IDecompilerShellUiService uiSvc, KeyEventArgs e)
+        {
+            var frame = uiSvc.ActiveFrame;
+            if (frame == null)
+                return;
+            var t = frame.Pane as ICommandTarget;
+            if (t == null)
+                return;
+            Dictionary<Keys, CommandID> bindings;
+            if (bindingLists.TryGetValue(t.GetType().FullName, out bindings))
+            {
+                CommandID cmdID;
+                if (bindings.TryGetValue(e.KeyData, out cmdID))
+                {
+                    var guid = cmdID.Guid;
+                    e.Handled = t.Execute(ref guid, cmdID.ID);
+                }
+            }
+        }
+	}
 }
