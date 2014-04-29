@@ -133,7 +133,7 @@ Some examples:
         {
             if (hungarianString == null)
                 return null;
-            Debug.Print("Parsing " + hungarianString);
+            //Debug.Print("Parsing " + hungarianString);
             this.str = hungarianString;
             this.i = 0;
             return Parse(PrimitiveType.Char);

@@ -672,7 +672,6 @@ namespace Decompiler.Gui.Forms
 
         private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
         {
-            Debug.WriteLine("CmdKey: {0}", e.KeyData);
             dm.ProcessKey(uiSvc, e);
         }
 

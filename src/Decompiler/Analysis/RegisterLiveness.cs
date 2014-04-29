@@ -537,16 +537,16 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				if (state.PropagateThroughExitNodes)
+                var pc = ci.Callee as ProcedureConstant;
+                if (pc == null)
+                    return;
+                if (state.PropagateThroughExitNodes)
 				{
 					PropagateToCalleeExitBlocks(stmCur);
 				}
 
 				// Update trash information.
 
-                var pc = ci.Callee as ProcedureConstant;
-                if (pc == null)
-                    return;
 				ProcedureFlow pi = mpprocData[(Procedure)pc.Procedure];
 				ProcedureFlow item = mpprocData[proc];
 

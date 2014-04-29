@@ -79,6 +79,8 @@ namespace Decompiler.Core
 		/// <remarks>
 		/// Typically, the stack pointer register is one of these registers. Some architectures define
 		/// global registers that are preserved across calls; these should also be present in this set.
+        /// //$REVIEW: it may make more sense to have the Platform decided what which the implict regs
+        /// are. Calling conventions may vary from computer to computer.
 		/// </remarks>
 		BitSet ImplicitArgumentRegisters { get; }
 

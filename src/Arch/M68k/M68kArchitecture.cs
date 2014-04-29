@@ -33,6 +33,14 @@ namespace Decompiler.Arch.M68k
 {
     public class M68kArchitecture : IProcessorArchitecture
     {
+        private BitSet implicitRegs;
+
+        public M68kArchitecture()
+        {
+            implicitRegs = CreateRegisterBitset();
+            implicitRegs[Registers.a7.Number] = true;
+        }
+
         public M68kDisassembler CreateDisassembler(ImageReader rdr)
         {
             return M68kDisassembler.Create68020(rdr);
@@ -50,7 +58,7 @@ namespace Decompiler.Arch.M68k
 
         public BitSet CreateRegisterBitset()
         {
-            throw new NotImplementedException();
+            return new BitSet((int) Registers.Max);
         }
 
         public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
@@ -116,7 +124,7 @@ namespace Decompiler.Arch.M68k
 
         public BitSet ImplicitArgumentRegisters
         {
-            get { throw new NotImplementedException(); }
+            get { return implicitRegs; }
         }
 
         public int InstructionBitSize { get { return 16; } }

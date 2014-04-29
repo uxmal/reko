@@ -133,12 +133,15 @@ namespace Decompiler.Analysis
             var bin = spVal as BinaryExpression;
             if (bin == null || !ctx.IsFramePointer(bin.Left))
                 return 0;
-            if (bin.Operator != Operator.ISub)
-                throw new NotImplementedException("Expected stack depth to be negative.");
             var c = bin.Right as Constant;
             if (c == null)
                 throw new NotImplementedException("Expected stack depth to be known.");
-            return c.ToInt32();
+            int depth = c.ToInt32();
+            if (bin.Operator == Operator.ISub)
+                depth = -depth;
+            if (depth > 0)
+                throw new NotImplementedException("Expected stack depth to be negative.");
+            return -depth;
         }
 
         public Instruction VisitDeclaration(Declaration decl)

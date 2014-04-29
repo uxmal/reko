@@ -75,7 +75,6 @@ namespace Decompiler.Typing
 			return store.EnsureExpressionTypeVariable(factory, e, name);
 		}
 
-
 		public override void VisitApplication(Application appl)
 		{
 			signature = null;
@@ -120,6 +119,11 @@ namespace Decompiler.Typing
 			s.Dst.Accept(this);
 			store.MergeClasses(s.Dst.TypeVariable, s.Src.TypeVariable);
 		}
+
+        public override void VisitAddress(Address addr)
+        {
+            EnsureTypeVariable(addr);
+        }
 
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{

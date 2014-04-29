@@ -89,7 +89,6 @@ namespace Decompiler.Gui.Windows
             {
                 ignoreAddressChange = true;
                 control.MemoryView.SelectedAddress = value;
-                control.MemoryView.TopAddress = value;
                 control.DisassemblyView.SelectedAddress = value;
                 control.DisassemblyView.TopAddress = value;
                 ignoreAddressChange = false;
@@ -107,9 +106,18 @@ namespace Decompiler.Gui.Windows
 
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += FormatType;
-            typeMarker.TextAccepted += (sender, e) => { SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText); };
+            typeMarker.TextAccepted += typeMarker_TextAccepted;
 
             return control;
+        }
+
+        private void typeMarker_TextAccepted(object sender, TypeMarkerEventArgs e)
+        {
+            var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText);
+            if (item == null)
+                return;
+            // Advance selection to beyond item.
+            this.SelectedAddress = item.Address + item.Size;
         }
 
         public void SetSite(IServiceProvider sp)
@@ -226,30 +234,26 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        private void SetTypeAtAddressRange(object sender, TypeMarkerEventArgs e)
-        {
-            
-        }
-
-        public void SetTypeAtAddressRange(Address address, string userText)
+        public ImageMapItem SetTypeAtAddressRange(Address address, string userText)
         {
             var parser = new HungarianParser();
             var dataType = parser.Parse(userText);
             if (dataType == null)
-                return;
+                return null;
 
             var size = GetDataSize(address, dataType);
             var item = new ImageMapItem
-                {
-                    Address = address,
-                    Size = size,
-                    DataType = dataType,
-                };
+            {
+                Address = address,
+                Size = size,
+                DataType = dataType,
+            };
             if (size != 0)
                 ImageMap.AddItemWithSize(address, item);
             else
                 ImageMap.AddItem(address, item);
             control.MemoryView.Invalidate();
+            return item;
         }
 
         public uint GetDataSize(Address addr, DataType dt)
@@ -317,7 +321,6 @@ namespace Decompiler.Gui.Windows
                 return;
             this.ignoreAddressChange = true;
             this.Control.MemoryView.SelectedAddress = addr;
-            this.Control.MemoryView.TopAddress = addr;
             this.Control.DisassemblyView.SelectedAddress = addr;
             this.Control.DisassemblyView.TopAddress = addr;
             this.ignoreAddressChange = false;

@@ -83,7 +83,6 @@ namespace Decompiler.Scanning
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("* Exception at address {0}", rtlStream.Current.Address);
                 if (ric == null)
                     throw;
                 scanner.AddDiagnostic(ric.Address, new ErrorDiagnostic(ex.Message));

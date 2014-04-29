@@ -36,9 +36,9 @@ namespace Decompiler.Evaluation
             this.ctx = ctx;
         }
 
-        public Expression VisitAddress(Core.Address addr)
+        public Expression VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            return addr;
         }
 
         public Expression VisitApplication(Application appl)
@@ -98,7 +98,13 @@ namespace Decompiler.Evaluation
 
         public Expression VisitDepositBits(DepositBits d)
         {
-            throw new NotImplementedException();
+            var source = d.Source.Accept(this);
+            if (source == Constant.Invalid)
+                return source;
+            var inserted = d.InsertedBits.Accept(this);
+            if (inserted == Constant.Invalid)
+                return inserted;
+            return new DepositBits(source, inserted, d.BitPosition, d.BitCount);
         }
 
         public Expression VisitDereference(Dereference deref)
@@ -187,6 +193,6 @@ namespace Decompiler.Evaluation
                 unary.Operator,
                 unary.DataType,
                 e);
-        }                   
+        }
     }
 }
