@@ -37,6 +37,8 @@ namespace Decompiler.Gui.Windows
             this.page = page;
         }
 
+        public IWindowPane Pane { get; private set; }
+
         public void Show()
         {
             ctrl.SelectedTab = page;

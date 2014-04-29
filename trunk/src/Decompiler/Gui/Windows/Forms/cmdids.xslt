@@ -56,7 +56,6 @@ namespace Decompiler.Gui
 	
 	<for-each select="c:cmd[@dynamic-item-id]">	public const int <value-of select="@id"/> = <value-of select="@dynamic-item-id"/>;
 	</for-each>}
-
 }
   </template>
 </stylesheet>

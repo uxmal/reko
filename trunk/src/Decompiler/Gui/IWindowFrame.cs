@@ -26,6 +26,8 @@ namespace Decompiler.Gui
 {
     public interface IWindowFrame
     {
+        IWindowPane Pane { get; }
+
         void Show();
         void Close();
     }

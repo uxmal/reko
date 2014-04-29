@@ -96,14 +96,24 @@ namespace Decompiler.Gui.Windows
             framesByForm.Remove(form);
         }
 
+        public IWindowFrame ActiveFrame
+        {
+            get
+            {
+                var activeMdiForm = form.ActiveMdiChild;
+                if (activeMdiForm == null)
+                    return null;
+                WindowFrame frame;
+                if (!framesByForm.TryGetValue(activeMdiForm, out frame))
+                    return null;
+                return frame;
+            }
+        }
         private ICommandTarget ActiveMdiCommandTarget()
         {
-            var activeMdiForm = form.ActiveMdiChild;
-            if (activeMdiForm == null)
-                return null;
-            WindowFrame frame;
-            if (!framesByForm.TryGetValue(activeMdiForm, out frame))
-                return null;
+            var frame = ActiveFrame as WindowFrame;
+            if (frame == null)
+                return null; 
             return frame.Pane as ICommandTarget;
         }
 
@@ -154,6 +164,8 @@ namespace Decompiler.Gui.Windows
                 this.pane = pane;
                 this.form.FormClosed += new FormClosedEventHandler(form_FormClosed);
             }
+
+            public string WindowType { get { return key; } }
 
             public void Close()
             {

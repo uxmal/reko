@@ -197,6 +197,16 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpMemoryControl.Add(0, slViewFindWhatPointsHere);
 			slGrpBrowser.Add(0, slActionEditSignature);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
+    
+      // Build accelerators.
+      
+        AddBinding(
+           "Decompiler.Gui.Windows.LowLevelViewInteractor", 
+          new Guid(CmdSets.Decompiler), 
+          CmdIds.ActionMarkType, 
+          Keys.T,
+          Keys.Control);
+      
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
   

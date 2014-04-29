@@ -99,6 +99,5 @@ namespace Decompiler.Gui
 		public const int ShowProcedureCallHierarchy = 24 + 2000;
 		public const int FileMru = 2200;
 	}
-
 }
   

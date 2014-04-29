@@ -143,6 +143,23 @@ namespace Decompiler.Gui.Windows.Forms
             get { return statusStrip; }
         }
 
+        public event KeyEventHandler ProcessCommandKey;
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            var eh = ProcessCommandKey;
+            if (eh != null)
+            {
+                var e = new KeyEventArgs(keyData);
+                eh(this, e);
+                return e.Handled;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion
 
         public void CloseAllDocumentWindows()

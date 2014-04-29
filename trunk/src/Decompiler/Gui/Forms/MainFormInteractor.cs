@@ -62,10 +62,12 @@ namespace Decompiler.Gui.Forms
         private ILoadedPageInteractor pageLoaded;
         private IAnalyzedPageInteractor pageAnalyzed;
         private IFinalPageInteractor pageFinal;
+        private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
+
         private MruList mru;
+        private DecompilerMenus dm;
         private string projectFileName;
         private IServiceContainer sc;
-        private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
         private IDecompilerConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
         private static string dirSettings;
@@ -107,7 +109,7 @@ namespace Decompiler.Gui.Forms
         {
             this.form = dlgFactory.CreateMainForm();
 
-            DecompilerMenus dm = new DecompilerMenus(this);
+            dm = new DecompilerMenus(this);
             form.Menu = dm.MainMenu;
             dm.MainToolbar.Text = "";
             dm.MainToolbar.ImageList = form.ImageList;
@@ -119,12 +121,15 @@ namespace Decompiler.Gui.Forms
 
             form.Load += this.MainForm_Loaded;
             form.Closed += this.MainForm_Closed;
-            form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
+            form.ProcessCommandKey += this.MainForm_ProcessCommandKey;
+
+            form.ToolBar.ItemClicked += toolBar_ItemClicked;
             //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
             //MainForm.InitialPage.IsDirty = false;         //$REENABLE
 
             return form;
         }
+
 
         protected void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
         {
@@ -663,6 +668,12 @@ namespace Decompiler.Gui.Forms
         private void MainForm_Closed(object sender, System.EventArgs e)
         {
             mru.Save(MruListFile);
+        }
+
+        private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
+        {
+            Debug.WriteLine("CmdKey: {0}", e.KeyData);
+            dm.ProcessKey(uiSvc, e);
         }
 
 

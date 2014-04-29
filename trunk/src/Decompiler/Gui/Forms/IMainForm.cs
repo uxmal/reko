@@ -51,6 +51,7 @@ namespace Decompiler.Gui.Forms
 
         event EventHandler Closed;
         event EventHandler Load;
+        event KeyEventHandler ProcessCommandKey;
 
         void LayoutMdi(DocumentWindowLayout layout);
         

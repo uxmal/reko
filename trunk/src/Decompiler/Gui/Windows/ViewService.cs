@@ -50,6 +50,5 @@ namespace Decompiler.Gui.Windows
             }
             windowFrame.Show();
         }
-
     }
 }
