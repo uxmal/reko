@@ -37,7 +37,7 @@ namespace Decompiler.Core.Serialization
         }
 
 		[XmlElement("return")]
-		public SerializedArgument ReturnValue;
+		public Argument_v1 ReturnValue;
 
 		[XmlAttribute("convention")]
 		public string Convention;		
@@ -47,7 +47,7 @@ namespace Decompiler.Core.Serialization
 		public int StackDelta;
 
 		[XmlElement("arg")]
-		public SerializedArgument [] Arguments;
+		public Argument_v1 [] Arguments;
 
         [XmlAttribute("fpuStackDelta")]
         [DefaultValue(0)]

@@ -18,40 +18,37 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
+using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Decompiler.Core.Configuration
 {
-    public class FakeDecompilerConfiguration : IDecompilerConfigurationService
+    public class UiPreferencesSectionHandler : ConfigurationSection
     {
-        private System.Collections.ArrayList imageLoaders = new System.Collections.ArrayList();
-
-        public System.Collections.ICollection GetImageLoaders()
+        [ConfigurationProperty("disassemblyFont")]
+        public string DisassemblyFont
         {
-            return imageLoaders;
+            get { return (string) this["disassemblyFont"]; }
         }
 
-        public System.Collections.ICollection GetArchitectures()
+        [ConfigurationProperty("srcFont")]
+        public string SourceCodeFont
         {
-            throw new NotImplementedException();
+            get { return (string) this["srcFont"]; }
         }
 
-        public System.Collections.ICollection GetEnvironments()
+        internal DefaultPreferences GetPreferences()
         {
-            throw new NotImplementedException();
-        }
-
-        public OperatingEnvironment GetEnvironment(string envName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DefaultPreferences GetDefaultPreferences()
-        {
-            throw new NotImplementedException();
+            return new DefaultPreferences
+            {
+                DisassemblyFont = DisassemblyFont,
+                SourceCodeFont = SourceCodeFont,
+            };
         }
     }
 }

@@ -156,6 +156,7 @@
     <Compile Include="Configuration\ArchitectureReferenceElementCollection.cs" />
     <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
     <Compile Include="Configuration\DecompilerConfiguration.cs" />
+    <Compile Include="Configuration\DefaultPreferences.cs" />
     <Compile Include="Configuration\LoaderElement.cs" />
     <Compile Include="Configuration\LoaderElementCollection.cs" />
     <Compile Include="Configuration\LoaderSectionHandler.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\TypeLibraryElementCollection.cs" />
+    <Compile Include="Configuration\UiPreferencesSectionHandler.cs" />
     <Compile Include="EnumerableEx.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="EventEx.cs" />
@@ -464,7 +466,7 @@
     <Compile Include="Serialization\ProcedureCharacteristics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedArgument.cs">
+    <Compile Include="Serialization\Argument_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedCall.cs">

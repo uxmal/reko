@@ -91,11 +91,11 @@ namespace Decompiler.UnitTests.Core.Serialization
 			proc.Name = "malloc";
 			proc.Signature = new SerializedSignature();
 			proc.Signature.Convention = "cdecl";
-			proc.Signature.ReturnValue = new SerializedArgument();
+			proc.Signature.ReturnValue = new Argument_v1();
 			proc.Signature.ReturnValue.Kind = new SerializedRegister("eax");
 
-			proc.Signature.Arguments = new SerializedArgument[1];
-			proc.Signature.Arguments[0] = new SerializedArgument();
+			proc.Signature.Arguments = new Argument_v1[1];
+			proc.Signature.Arguments[0] = new Argument_v1();
 			proc.Signature.Arguments[0].Name = "cb";
 			proc.Signature.Arguments[0].Kind = new SerializedStackVariable();
 

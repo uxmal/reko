@@ -79,6 +79,8 @@ namespace Decompiler.Gui.Windows.Controls
 			cbRow = 16;
 		}
 
+        public IServiceProvider Services { get; set; }
+
         /// <summary>
         /// Returns the selection as an address range. Note that the range is 
         /// a closed interval in the address space.

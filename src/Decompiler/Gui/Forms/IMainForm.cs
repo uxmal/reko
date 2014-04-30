@@ -74,6 +74,10 @@ namespace Decompiler.Gui.Forms
         void SetStatus(string txt);
         void SetStatusDetails(string txt);
 
+
+        System.Drawing.Size Size { get; set; }
+
+        FormWindowState WindowState { get; set; }
     }
 
     public enum DocumentWindowLayout

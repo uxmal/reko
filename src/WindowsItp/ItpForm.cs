@@ -94,6 +94,15 @@ namespace Decompiler.WindowsItp
             public void Set(string name, object value)
             {
             }
+
+
+            public void Load()
+            {
+            }
+
+            public void Save()
+            {
+            }
         }
 
         private void treeViewToolStripMenuItem_Click(object sender, EventArgs e)

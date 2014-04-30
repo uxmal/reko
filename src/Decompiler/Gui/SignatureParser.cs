@@ -95,7 +95,7 @@ namespace Decompiler.Gui
 
         public bool IsValid { get; private set; }
 
-        private SerializedArgument ParseReturn()
+        private Argument_v1 ParseReturn()
         {
             string w = GetNextWord();
             if (w == "void")
@@ -104,7 +104,7 @@ namespace Decompiler.Gui
             RegisterStorage reg;
             if (arch.TryGetRegister(w, out reg))
             {
-                return new SerializedArgument(
+                return new Argument_v1(
                     reg.Name,
                     null,
                     new SerializedRegister(reg.Name),
@@ -117,7 +117,7 @@ namespace Decompiler.Gui
             throw new NotImplementedException();
         }
 
-        private SerializedArgument ParseRegisterSequenceWithUnderscore(string w)
+        private Argument_v1 ParseRegisterSequenceWithUnderscore(string w)
         {
             string[] subregs = w.Split('_');
             var regs = new List<SerializedRegister>();
@@ -130,7 +130,7 @@ namespace Decompiler.Gui
             }
             var seq = new SerializedSequence();
             seq.Registers = regs.ToArray();
-            return new SerializedArgument(
+            return new Argument_v1(
                 w,
                 null,
                 seq,
@@ -142,13 +142,13 @@ namespace Decompiler.Gui
             return GetNextWord();
         }
 
-        private SerializedArgument[] ParseProcedureArgs()
+        private Argument_v1[] ParseProcedureArgs()
         {
             EatWhiteSpace();
             if (idx >= str.Length || str[idx] != '(')
                 return null;
             ++idx;
-            var args = new List<SerializedArgument>();
+            var args = new List<Argument_v1>();
             for (; ; )
             {
                 EatWhiteSpace();
@@ -169,7 +169,7 @@ namespace Decompiler.Gui
             }
         }
 
-        private SerializedArgument ParseArg()
+        private Argument_v1 ParseArg()
         {
             var w = GetNextWord();
             if (w == null)
@@ -200,7 +200,7 @@ namespace Decompiler.Gui
                 return ParseRegisterSequence(reg, type);
             }
 
-            var arg = new SerializedArgument()
+            var arg = new Argument_v1()
             {
                 Name = reg.Name,
                 Kind = new SerializedRegister(reg.Name),
@@ -210,7 +210,7 @@ namespace Decompiler.Gui
             return arg;
         }
 
-        private SerializedArgument ParseRegisterSequence(RegisterStorage reg, string type)
+        private Argument_v1 ParseRegisterSequence(RegisterStorage reg, string type)
         {
             ++idx;
             string w2 = GetNextWord();
@@ -226,7 +226,7 @@ namespace Decompiler.Gui
                     new SerializedRegister(reg.Name), 
                     new SerializedRegister(reg2.Name)
                 };
-            return new SerializedArgument(seqArgName, seqArgType, seqKind, false);
+            return new Argument_v1(seqArgName, seqArgType, seqKind, false);
         }
 
         private bool PeekChar(char cha)
@@ -234,7 +234,7 @@ namespace Decompiler.Gui
             return idx < str.Length && str[idx] == cha;
         }
 
-		private SerializedArgument ParseStackArgument(string typeName, string argName)
+		private Argument_v1 ParseStackArgument(string typeName, string argName)
 		{
 			PrimitiveType p;
 			int sizeInWords;
@@ -248,7 +248,7 @@ namespace Decompiler.Gui
 				sizeInWords = 1;      // A reasonable guess, but is it a good one?
 			}
 
-			SerializedArgument arg = new SerializedArgument();
+			Argument_v1 arg = new Argument_v1();
 			arg.Name = argName;
 			arg.Type = new SerializedTypeReference { TypeName = typeName };
 			arg.Kind = new SerializedStackVariable(); //  (sizeInWords * wordSize);

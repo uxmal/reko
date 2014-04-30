@@ -40,13 +40,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AmigaOSPlatform.cs" />
+    <Compile Include="AmigaSystemFunction.cs" />
+    <Compile Include="FuncsFileParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\M68k\M68k-2010.csproj">
+      <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
+      <Name>M68k-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core-2010</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exec.funcs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

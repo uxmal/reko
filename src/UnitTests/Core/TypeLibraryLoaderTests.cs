@@ -129,7 +129,7 @@ namespace Decompiler.UnitTests.Core
                         Signature = new SerializedSignature
                         {
                             Convention="__cdecl",
-                            ReturnValue = new SerializedArgument {
+                            ReturnValue = new Argument_v1 {
                                 Type = new SerializedVoidType()
                             },
                         }
@@ -169,11 +169,11 @@ namespace Decompiler.UnitTests.Core
                         Signature = new SerializedSignature
                         {
                             Convention="__cdecl",
-                            ReturnValue = new SerializedArgument {
+                            ReturnValue = new Argument_v1 {
                                 Type = new SerializedVoidType {}
                             },
-                            Arguments = new SerializedArgument[] {
-                                new SerializedArgument {
+                            Arguments = new Argument_v1[] {
+                                new Argument_v1 {
                                     Name = "bar",
                                     Type = new SerializedStructType { Name="tagFoo" },
                                     Kind = new SerializedStackVariable(),

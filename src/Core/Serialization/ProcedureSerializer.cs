@@ -86,7 +86,7 @@ namespace Decompiler.Core.Serialization
 			var args = new List<Identifier>();
 			if (ss.Arguments != null)
 			{
-				foreach (SerializedArgument arg in ss.Arguments)
+				foreach (Argument_v1 arg in ss.Arguments)
 				{
 					args.Add(argser.Deserialize(arg));
 				}
@@ -106,7 +106,7 @@ namespace Decompiler.Core.Serialization
                 return ssig;
             ArgumentSerializer argSer = new ArgumentSerializer(this, arch, null, null);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
-            ssig.Arguments = new SerializedArgument[sig.FormalArguments.Length];
+            ssig.Arguments = new Argument_v1[sig.FormalArguments.Length];
             for (int i = 0; i < sig.FormalArguments.Length; ++i)
             {
                 Identifier formal = sig.FormalArguments[i];

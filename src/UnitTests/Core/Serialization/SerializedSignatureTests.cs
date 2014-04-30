@@ -83,11 +83,11 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void DeserializeOutArgument()
 		{
-			SerializedArgument arg = new SerializedArgument();
+			Argument_v1 arg = new Argument_v1();
 			arg.Kind = new SerializedRegister("bp");
 			arg.OutParameter = true;
 			SerializedSignature sig = new SerializedSignature();
-			sig.Arguments = new SerializedArgument[] { arg };
+			sig.Arguments = new Argument_v1[] { arg };
 			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
             ProcedureSignature ps = ser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo(Register out ptr16 bpOut)", ps.ToString("foo"));
@@ -98,16 +98,16 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			SerializedSignature ssig = new SerializedSignature();
 			
-			SerializedArgument sarg = new SerializedArgument();
+			Argument_v1 sarg = new Argument_v1();
 			sarg.Type = new SerializedTypeReference("int");
 			sarg.Kind = new SerializedRegister("ax");
 			ssig.ReturnValue = sarg;
 
-			ssig.Arguments = new SerializedArgument[2];
-			ssig.Arguments[0] = new SerializedArgument();
+			ssig.Arguments = new Argument_v1[2];
+			ssig.Arguments[0] = new Argument_v1();
 			ssig.Arguments[0].Kind = new SerializedRegister("bx");
 
-			ssig.Arguments[1] = new SerializedArgument();
+			ssig.Arguments[1] = new Argument_v1();
 			ssig.Arguments[1].Kind = new SerializedRegister("cl");
 			return ssig;
 		}
@@ -126,20 +126,20 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
             SerializedSignature ssig = new SerializedSignature()
             {
-                ReturnValue = new SerializedArgument
+                ReturnValue = new Argument_v1
                 {
                     Type = new SerializedTypeReference("int"),
                     Kind = new SerializedRegister("ax")
                 },
-                Arguments = new SerializedArgument[]
+                Arguments = new Argument_v1[]
                 {
-                    new SerializedArgument
+                    new Argument_v1
                     {
                         Name = "lParam",
 			            Kind = new SerializedStackVariable(),
                         Type = new SerializedPrimitiveType(Domain.SignedInt, 4),
                     },
-                    new SerializedArgument 
+                    new Argument_v1 
                     {
 			            Kind = new SerializedStackVariable(),
                         Type = new SerializedPrimitiveType(Domain.SignedInt, 2),

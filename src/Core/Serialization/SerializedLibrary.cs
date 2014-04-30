@@ -93,7 +93,7 @@ namespace Decompiler.Core.Serialization
             typeof(SerializedSignature),
             typeof(SerializedTypedef),
             typeof(SerializedLibrary),
-            typeof(SerializedArgument),
+            typeof(Argument_v1),
         };
     }
 }

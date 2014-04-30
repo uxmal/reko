@@ -255,6 +255,7 @@
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
     <Compile Include="Gui\IProjectBrowserService.cs" />
+    <Compile Include="Gui\IUiPreferencesService.cs" />
     <Compile Include="Gui\ProjectBrowserService.cs" />
     <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />

@@ -30,7 +30,7 @@ namespace Decompiler.Core.Serialization
 		private ProcedureSerializer ps;
 		private IProcessorArchitecture arch;
 		private Frame frame;
-		private SerializedArgument argCur;
+		private Argument_v1 argCur;
 		private Identifier idArg;
         private string convention;
 
@@ -103,7 +103,7 @@ namespace Decompiler.Core.Serialization
 				PrimitiveType.CreateWord(head.DataType.Size + tail.DataType.Size));
 		}
 
-		public Identifier Deserialize(SerializedArgument arg)
+		public Identifier Deserialize(Argument_v1 arg)
 		{
 			argCur = arg;
             if (arg.Kind != null)
@@ -119,13 +119,13 @@ namespace Decompiler.Core.Serialization
 			return idArg;
 		}
 
-        public SerializedArgument Serialize(Identifier arg)
+        public Argument_v1 Serialize(Identifier arg)
         {
             if (arg == null)
                 return null;
             if (arg.DataType == null)
                 throw new ArgumentNullException("arg.DataType");
-            SerializedArgument sarg = new SerializedArgument 
+            Argument_v1 sarg = new Argument_v1 
             {
 			    Name = arg.Name,
 			    Kind = arg.Storage.Serialize(),

@@ -153,15 +153,15 @@ namespace Decompiler.Tools.C2Xml
                 // Special case for C, where foo(void) means a function with no parameters,
                 // not a function with one parameter of type "void".
                 if (FirstParameterVoid(parameters))
-                    parameters = new SerializedArgument[0];
+                    parameters = new Argument_v1[0];
 
-                SerializedArgument ret = null;
+                Argument_v1 ret = null;
                 if (nt.DataType != null)
                 {
                     var kind = !(nt.DataType is SerializedVoidType)
                         ? new SerializedRegister { Name = "eax" }       //$REVIEW platform-specific.
                         : null;
-                    ret = new SerializedArgument
+                    ret = new Argument_v1
                     {
                         Kind = kind,
                         Type = nt.DataType,
@@ -179,18 +179,18 @@ namespace Decompiler.Tools.C2Xml
             };
         }
 
-        private bool FirstParameterVoid(SerializedArgument[] parameters)
+        private bool FirstParameterVoid(Argument_v1[] parameters)
         {
             if (parameters == null || parameters.Length != 1)
                 return false;
             return parameters[0].Type is SerializedVoidType;
         }
 
-        private SerializedArgument ConvertParameter(ParamDecl decl)
+        private Argument_v1 ConvertParameter(ParamDecl decl)
         {
             if (decl.IsEllipsis)
             {
-                return new SerializedArgument
+                return new Argument_v1
                 {
                     Kind = new SerializedStackVariable { },
                     Name = "...",
@@ -200,7 +200,7 @@ namespace Decompiler.Tools.C2Xml
             {
                 var ntde = new NamedDataTypeExtractor(decl.DeclSpecs, converter);
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
-                return new SerializedArgument
+                return new Argument_v1
                 {
                     Kind = new SerializedStackVariable(),
                     Name = nt.Name,
