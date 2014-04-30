@@ -28,11 +28,11 @@ namespace Decompiler.Core.Serialization
 	/// <summary>
 	/// Serialization format for procedure arguments.
 	/// </summary>
-	public class SerializedArgument
+	public class Argument_v1
 	{
-        public SerializedArgument() { }
+        public Argument_v1() { }
 
-        public SerializedArgument(string name, SerializedType type, SerializedKind kind, bool outParameter)
+        public Argument_v1(string name, SerializedType type, SerializedKind kind, bool outParameter)
         {
             Name = name;
             Type = type;

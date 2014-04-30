@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
                 Convention = "stdapi",
                 ReturnValue = RegArg(Type("int"), "eax"),
-                Arguments = new SerializedArgument[] {
+                Arguments = new Argument_v1[] {
                     FpuArg(Type("double"),  null)
                 }
             };
@@ -129,9 +129,9 @@ namespace Decompiler.UnitTests.Core.Serialization
             return new SerializedTypeReference(typeName);
         }
 
-        private SerializedArgument RegArg(SerializedType type, string regName)
+        private Argument_v1 RegArg(SerializedType type, string regName)
         {
-            return new SerializedArgument
+            return new Argument_v1
             {
                 Type = type,
                 Kind = new SerializedRegister { Name = "eax" },
@@ -139,9 +139,9 @@ namespace Decompiler.UnitTests.Core.Serialization
             };
         }
 
-        private SerializedArgument FpuArg(SerializedType type, string name)
+        private Argument_v1 FpuArg(SerializedType type, string name)
         {
-            return new SerializedArgument(
+            return new Argument_v1(
                 name, 
                 type, 
                 new SerializedFpuStackVariable { ByteSize = 8 },
@@ -154,7 +154,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ssig = new SerializedSignature
             {
                 Convention = "stdapi",
-                ReturnValue = new SerializedArgument
+                ReturnValue = new Argument_v1
                 {
                     Type = new SerializedTypeReference("double"),
                     Kind = new SerializedFpuStackVariable { ByteSize = 8 },
@@ -171,8 +171,8 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ssig = new SerializedSignature
             {
                 Convention = "__cdecl",
-                Arguments = new SerializedArgument[] {
-                    new SerializedArgument
+                Arguments = new Argument_v1[] {
+                    new Argument_v1
                     {
                         Name = "foo",
                         Type = new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize = 4 },
@@ -190,8 +190,8 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ssig = new SerializedSignature
             {
                 Convention = "stdapi",
-                Arguments = new SerializedArgument[] {
-                    new SerializedArgument
+                Arguments = new Argument_v1[] {
+                    new Argument_v1
                     {
                         Name = "foo",
                         Type = new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize = 4 },

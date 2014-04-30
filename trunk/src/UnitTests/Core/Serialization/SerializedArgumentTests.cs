@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SargWriteRegisterArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument {
+			Argument_v1 sarg = new Argument_v1 {
 			    Name = "foo",
 			    Type = new SerializedTypeReference("int"),
 			    Kind = new SerializedRegister("eax"),
@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SargWriteNamelessRegisterArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument
+			Argument_v1 sarg = new Argument_v1
             {
 			    Type = new SerializedTypeReference("int"),
 			    Kind = new SerializedRegister("eax"),
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SargWriteStackArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument
+			Argument_v1 sarg = new Argument_v1
             {
 			    Name = "bar",
 			    Type = new SerializedTypeReference("int"),
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SargWriteOutArgument()
 		{
-			SerializedArgument sarg = new SerializedArgument
+			Argument_v1 sarg = new Argument_v1
             {
 			    Name = "bxOut",
 			    Type = new SerializedTypeReference("int"),
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Verify(sarg, "Core/SargWriteOutArgument.txt");
 		}
 
-		private void Verify(SerializedArgument sarg, string outputFilename)
+		private void Verify(Argument_v1 sarg, string outputFilename)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
 			{

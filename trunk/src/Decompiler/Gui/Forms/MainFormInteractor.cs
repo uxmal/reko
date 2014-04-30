@@ -171,6 +171,9 @@ namespace Decompiler.Gui.Forms
 
             var brSvc = svcFactory.CreateProjectBrowserService(form.ProjectBrowser);
             sc.AddService<IProjectBrowserService>(brSvc);
+
+            var upSvc = svcFactory.CreateUiPreferencesService();
+            sc.AddService<IUiPreferencesService>(upSvc);
         }
 
         protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
@@ -662,12 +665,31 @@ namespace Decompiler.Gui.Forms
 
         private void MainForm_Loaded(object sender, System.EventArgs e)
         {
+            var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
+            // It's ok if we can't load settings, just proceed with defaults.
+            try
+            {
+                uiPrefsSvc.Load();
+                if (uiPrefsSvc.WindowSize != new System.Drawing.Size())
+                    form.Size = uiPrefsSvc.WindowSize;
+                form.WindowState = uiPrefsSvc.WindowState;
+            }
+            catch { };
             SwitchInteractor(pageInitial);
         }
 
         private void MainForm_Closed(object sender, System.EventArgs e)
         {
-            mru.Save(MruListFile);
+            var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
+            // It's OK if we can't save settings, just discard them.
+            try
+            {
+                uiPrefsSvc.WindowSize = form.Size;
+                uiPrefsSvc.WindowState = form.WindowState;
+                uiPrefsSvc.Save();
+                mru.Save(MruListFile);
+            }
+            catch { }
         }
 
         private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)

@@ -93,5 +93,16 @@ namespace Decompiler.Gui.Windows
                 }
             }
         }
+
+
+        public void Load()
+        {
+            // Doesn't need an implementation, since we load live values from the registry.
+        }
+
+        public void Save()
+        {
+            // Doesn't need an implementation, since we save values to the registry immediately in the Set method.
+        }
     }
 }

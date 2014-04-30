@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
  * Copyright (C) 1999-2014 John Källén.
- .
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -23,21 +23,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Core.Configuration
 {
-    /// <summary>
-    /// Use this to save user settings to a platform-appropriate 
-    /// storage location.
-    /// </summary>
-    public interface ISettingsService
+    public class DefaultPreferences
     {
-        object Get(string settingName, object defaultValue);
-        string[] GetList(string settingName);
-
-        void SetList(string name, IEnumerable<string> values);
-        void Set(string name, object value);
-
-        void Load();        // Load settings from their persistent location
-        void Save();        // Save settings to their persistent location
+        public string DisassemblyFont;
+        public string SourceCodeFont;
     }
 }

@@ -37,6 +37,8 @@ namespace Decompiler.Core.Configuration
          ICollection GetEnvironments();
 
          OperatingEnvironment GetEnvironment(string envName);
+
+         DefaultPreferences GetDefaultPreferences ();
     }
 
     public class DecompilerConfiguration : IDecompilerConfigurationService
@@ -68,6 +70,14 @@ namespace Decompiler.Core.Configuration
         public OperatingEnvironment GetEnvironment(string envName)
         {
             return GetEnvironments().OfType<OperatingEnvironment>().Where(e => e.Name == envName).Single();
+        }
+
+        public DefaultPreferences GetDefaultPreferences()
+        {
+            var handler = (UiPreferencesSectionHandler) ConfigurationManager.GetSection("Decompiler/UiPreferences");
+            if (handler == null)
+                handler = new UiPreferencesSectionHandler();
+            return handler.GetPreferences();
         }
     }
 }

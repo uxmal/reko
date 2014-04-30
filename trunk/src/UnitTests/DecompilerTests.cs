@@ -104,11 +104,11 @@ namespace Decompiler.UnitTests
             decompiler.Program = prog;
             List<SerializedCall_v1> al = new List<SerializedCall_v1>();
             SerializedSignature sig = new SerializedSignature();
-            sig.Arguments = new SerializedArgument[] {
-			    new SerializedArgument {
+            sig.Arguments = new Argument_v1[] {
+			    new Argument_v1 {
 			        Kind = new SerializedRegister("ds")
                 },
-                new SerializedArgument {
+                new Argument_v1 {
 			        Kind = new SerializedRegister("bx"),
                 }
             };

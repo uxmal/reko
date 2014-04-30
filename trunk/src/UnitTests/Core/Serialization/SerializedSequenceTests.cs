@@ -64,10 +64,10 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Identifier tail = f.EnsureRegister(Registers.ax);
 			Identifier seq = f.EnsureSequence(head, tail, PrimitiveType.Word32);
 			SerializedSequence sq = new SerializedSequence((SequenceStorage) seq.Storage);
-			SerializedArgument sa = new SerializedArgument();
+			Argument_v1 sa = new Argument_v1();
 			sa.Kind = sq;
 			SerializedSignature ssig = new SerializedSignature();
-			ssig.Arguments = new SerializedArgument[] { sa };
+			ssig.Arguments = new Argument_v1[] { sa };
 
 			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
 			ProcedureSignature ps = ser.Deserialize(ssig, f);

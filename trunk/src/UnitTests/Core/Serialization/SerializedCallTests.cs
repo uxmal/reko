@@ -33,9 +33,9 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
             SerializedSignature sig = new SerializedSignature
             {
-                Arguments = new SerializedArgument[] 
+                Arguments = new Argument_v1[] 
                 {
-			        new SerializedArgument
+			        new Argument_v1
                     {
 			            Kind = new SerializedRegister("bx"),
                     }

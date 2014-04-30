@@ -45,18 +45,18 @@ namespace Decompiler.UnitTests.Core.Serialization
 			proc.Name = "foo";
 			proc.Signature = new SerializedSignature
 			{
-				ReturnValue = new SerializedArgument
+				ReturnValue = new Argument_v1
 				{
 					Kind = new SerializedRegister("eax")
 				},
-				Arguments = new SerializedArgument[]
+				Arguments = new Argument_v1[]
 				{
-					new SerializedArgument
+					new Argument_v1
 					{
 						Kind = new SerializedStackVariable(),
 						Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
 					},
-					new SerializedArgument
+					new Argument_v1
 					{
 						Kind = new SerializedStackVariable(),
 						Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
@@ -96,15 +96,15 @@ namespace Decompiler.UnitTests.Core.Serialization
                                     Name = "foo",
                                     Signature = new SerializedSignature
                                     {
-                                        ReturnValue = new SerializedArgument { Kind = new SerializedRegister("eax") },
-                                        Arguments = new SerializedArgument[]
+                                        ReturnValue = new Argument_v1 { Kind = new SerializedRegister("eax") },
+                                        Arguments = new Argument_v1[]
                                         {
-                                            new SerializedArgument
+                                            new Argument_v1
                                             {
                                                 Kind = new SerializedStackVariable(),
                                                 Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
                                             },
-                                            new SerializedArgument
+                                            new Argument_v1
                                             {
                                                 Kind = new SerializedStackVariable(),
                                                 Type = new SerializedPrimitiveType(Domain.SignedInt, 4)

@@ -18,6 +18,7 @@
 */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Services;
 using Decompiler.Gui.Controls;
 using Decompiler.Gui.Windows;
@@ -47,6 +48,7 @@ namespace Decompiler.Gui
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
+        IUiPreferencesService CreateUiPreferencesService();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -70,7 +72,7 @@ namespace Decompiler.Gui
         }
         public IMemoryViewService CreateMemoryViewService()
         {
-             return new MemoryViewServiceImpl(services);
+            return new MemoryViewServiceImpl(services);
         }
 
         public IDisassemblyViewService CreateDisassemblyViewService()
@@ -106,6 +108,13 @@ namespace Decompiler.Gui
         public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
         {
             return new ProjectBrowserService(services, treeView);
+        }
+
+        public IUiPreferencesService CreateUiPreferencesService()
+        {
+            var configSvc = services.RequireService<IDecompilerConfigurationService>();
+            var settingsSvc = services.RequireService<ISettingsService>();
+            return new UiPreferencesService(configSvc, settingsSvc);
         }
     }
 }

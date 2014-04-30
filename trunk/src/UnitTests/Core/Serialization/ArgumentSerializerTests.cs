@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         public void SerializeRegister()
         {
             var arg = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, Registers.ax);
-            SerializedArgument sarg = argser.Serialize(arg);
+            Argument_v1 sarg = argser.Serialize(arg);
             Assert.AreEqual("ax", sarg.Name);
             SerializedRegister sreg = (SerializedRegister) sarg.Kind;
             Assert.IsNotNull(sreg);
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         public void SargSerializeFlag()
         {
             var arg = new Identifier("SZ", 0, PrimitiveType.Byte, new FlagGroupStorage(3, "SZ", PrimitiveType.Byte));
-            SerializedArgument sarg = argser.Serialize(arg);
+            Argument_v1 sarg = argser.Serialize(arg);
             Assert.AreEqual("SZ", sarg.Name);
             SerializedFlag sflag = (SerializedFlag) sarg.Kind;
             Assert.AreEqual("SZ", sflag.Name);
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void ArgSer_DeserializeRegister()
 		{
 			SerializedRegister reg = new SerializedRegister("eax");
-			SerializedArgument arg = new SerializedArgument();
+			Argument_v1 arg = new Argument_v1();
 			arg.Name = "eax"; 
 			arg.Kind = reg;
 			Identifier id = argser.Deserialize(arg);
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
             Identifier id = new Identifier("qOut", 42, PrimitiveType.Word32,
                 new OutArgumentStorage(new Identifier("q", 33, PrimitiveType.Word32, new RegisterStorage("q", 4, PrimitiveType.Word32))));
-            SerializedArgument arg = argser.Serialize(id);
+            Argument_v1 arg = argser.Serialize(id);
             Assert.AreEqual("qOut", arg.Name);
             Assert.IsTrue(arg.OutParameter);
             SerializedRegister sr = (SerializedRegister) arg.Kind;

@@ -42,7 +42,7 @@ namespace Decompiler.Gui.Windows.Forms
             this.proc = proc;
             if (proc.Signature != null && proc.Signature.Arguments == null)
             {
-                proc.Signature.Arguments = new SerializedArgument[0];
+                proc.Signature.Arguments = new Argument_v1[0];
             }
         }
 

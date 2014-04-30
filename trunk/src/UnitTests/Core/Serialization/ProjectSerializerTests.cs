@@ -59,17 +59,17 @@ namespace Decompiler.UnitTests.Core.Serialization
                         },
                         Address = "113300",
                         Signature = new SerializedSignature {
-                            ReturnValue = new SerializedArgument {
+                            ReturnValue = new Argument_v1 {
                                 Type = new SerializedPrimitiveType(Domain.SignedInt, 4),
                             },
-                            Arguments = new SerializedArgument[] {
-                                new SerializedArgument
+                            Arguments = new Argument_v1[] {
+                                new Argument_v1
                                 {
                                     Name = "a",
                                     Kind = new SerializedStackVariable(),
                                     Type = new SerializedPrimitiveType(Domain.Character, 2)
                                 },
-                                new SerializedArgument
+                                new Argument_v1
                                 {
                                     Name = "b",
                                     Kind = new SerializedStackVariable(),

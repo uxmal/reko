@@ -98,11 +98,13 @@ namespace Decompiler.Gui.Windows
         public Control CreateControl()
         {
             var uiService = services.RequireService<IDecompilerShellUiService>();
+            var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
-            this.Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
+            this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
             this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
+            this.control.MemoryView.Services = this.services;
 
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += FormatType;

@@ -286,12 +286,12 @@ namespace Decompiler.Environments.Win32
             {
                 retType = ParseDataTypeCode();
             }
-            SerializedArgument[] args = ParseArgumentList();
+            Argument_v1[] args = ParseArgumentList();
             return new SerializedSignature
             {
                 Convention = convention,
                 Arguments = args,
-                ReturnValue = new SerializedArgument { Type=retType!= null ? retType : new SerializedVoidType() }
+                ReturnValue = new Argument_v1 { Type=retType!= null ? retType : new SerializedVoidType() }
             };
         }
 
@@ -324,19 +324,19 @@ namespace Decompiler.Environments.Win32
             }
         }
         
-        public SerializedArgument[] ParseArgumentList()
+        public Argument_v1[] ParseArgumentList()
         {
-            var args = new List<SerializedArgument>();
+            var args = new List<Argument_v1>();
             var arg = ParseDataTypeCode();
             if (arg != null)
             {
-                args.Add(new SerializedArgument { Type = arg });
+                args.Add(new Argument_v1 { Type = arg });
                 while (!PeekAndDiscard('@'))
                 {
                     arg = ParseDataTypeCode();
                     if (arg == null)
                         break;
-                    args.Add(new SerializedArgument { Type = arg });
+                    args.Add(new Argument_v1 { Type = arg });
                 }
             }
             return args.ToArray();

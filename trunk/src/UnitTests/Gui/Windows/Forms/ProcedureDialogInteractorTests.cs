@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             proc.Name = "x";
             proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new SerializedArgument[0];
+            proc.Signature.Arguments = new Argument_v1[0];
             CreateReturnValue(proc.Signature);
             //proc.Signature.Arguments = new SerializedArgument[1];
             //proc.Signature.Arguments[0] = new SerializedArgument();
@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private static void CreateReturnValue(SerializedSignature sig)
         {
-            sig.ReturnValue = new SerializedArgument();
+            sig.ReturnValue = new Argument_v1();
             sig.ReturnValue.Kind = new SerializedRegister("eax");
             sig.ReturnValue.Type = new SerializedTypeReference("int32");
         }
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             proc.Name = "x";
             proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new SerializedArgument[0];
+            proc.Signature.Arguments = new Argument_v1[0];
             CreateReturnValue(proc.Signature);
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             proc.Name = "foo";
             proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new SerializedArgument[0];
+            proc.Signature.Arguments = new Argument_v1[0];
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
@@ -118,7 +118,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             proc.Name = "foo";
             proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new SerializedArgument[0];
+            proc.Signature.Arguments = new Argument_v1[0];
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             proc.Name = "foo";
             proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new SerializedArgument[0];
+            proc.Signature.Arguments = new Argument_v1[0];
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
