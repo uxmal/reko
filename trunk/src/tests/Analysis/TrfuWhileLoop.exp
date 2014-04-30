@@ -7,7 +7,7 @@ l0C00_0000:
 	wLoc02 = bp
 	bp = fp - 0x0002
 	bx = 0x0000
-	SZO = cond(bx)
+	SZO = cond(0x0000)
 	C = false
 	ax = wArg04
 	ax = ax | ax

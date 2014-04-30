@@ -24,7 +24,7 @@ l0C00_0000:
 	wLoc02 = 0x0100
 	fn0C00_0017(di, ds, wLoc02)
 	sp = fp
-	SCZO = cond(sp)
+	SCZO = cond(fp)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -85,7 +85,7 @@ l0C00_0017:
 	wLoc04 = ax
 	fn0C00_002C(di, ds, wLoc04)
 	sp = fp - 0x0002
-	SCZO = cond(sp)
+	SCZO = cond(fp - 0x0002)
 	bp = wLoc02
 	sp = fp
 	return

@@ -33,7 +33,7 @@ l0C00_0000:
 	rLoc1 = fn0C00_0031(ds, wLoc04)
 	Mem0[ds:0x030C:real32] = rLoc1
 	sp = fp
-	SCZO = cond(sp)
+	SCZO = cond(fp)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

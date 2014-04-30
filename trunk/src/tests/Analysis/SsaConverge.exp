@@ -62,10 +62,9 @@ ax_21: orig: ax
     uses: ax_15 = PHI(ax_20, ax_22, ax_21)
 ax_22: orig: ax
     def:  ax_22 = 0x0000
-    uses: SZO_23 = cond(ax_22)
-          ax_15 = PHI(ax_20, ax_22, ax_21)
+    uses: ax_15 = PHI(ax_20, ax_22, ax_21)
 SZO_23: orig: SZO
-    def:  SZO_23 = cond(ax_22)
+    def:  SZO_23 = cond(0x0000)
     uses: Z_24 = SZO_23 (alias)
           SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
 Z_24: orig: Z
@@ -112,7 +111,7 @@ l0C00_000D:
 	// succ:  l0C00_0015
 l0C00_0013:
 	ax_22 = 0x0000
-	SZO_23 = cond(ax_22)
+	SZO_23 = cond(0x0000)
 	Z_24 = SZO_23 (alias)
 	C_25 = false
 	SCZO_26 = C_25 (alias)

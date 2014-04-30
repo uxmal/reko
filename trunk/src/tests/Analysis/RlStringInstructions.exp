@@ -55,22 +55,22 @@ l0C00_0026:
 	cx = Mem0[ds:0x0400:word16]
 	al = 0x00
 	di = Mem0[ds:0x0402:word16]
-// DataOut: cx di al es ds
+// DataOut: cx di es ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
 l0C00_0030:
 	branch cx == 0x0000 l0C00_0032
-// DataOut: cx di al es ds
+// DataOut: cx di es ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
 l0C00_0030_1:
-	SCZO = cond(al - Mem0[es:di:byte])
+	SCZO = cond(0x00 - Mem0[es:di:byte])
 	di = di + 0x0001
 	cx = cx - 0x0001
 	branch Test(NE,Z) l0C00_0030
-// DataOut: cx di al es ds
+// DataOut: cx di es ds
 // DataOut (flags): 
 
 // SymbolicIn: di:<invalid> cx:<invalid> sp:fp al:0x00

@@ -67,7 +67,7 @@ l0C00_001E:
 // SymbolicIn: sp:fp
 l0C00_0023:
 	cx = 0x0000
-	SZO = cond(cx)
+	SZO = cond(0x0000)
 	C = false
 	Mem0[ds:0x0232:word16] = 0x0000
 	ax = 0x4C00

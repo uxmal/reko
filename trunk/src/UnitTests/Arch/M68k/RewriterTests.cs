@@ -837,9 +837,21 @@ namespace Decompiler.UnitTests.Arch.M68k
 
         [Test]
         [Obsolete("//$REVIEW: this is BROKEN")]
-        public void M68k_divu_w()
+        public void M68krw_divu_w()
         {
             Rewrite(0x80C1);
+            AssertCode(
+                "0|00010000(2): 7 instructions",
+                "1|L--|v4 = (uint16) d1 % (uint16) d0",
+                "2|L--|v5 = (uint16) d1 /u (uint16) d0",
+                "3|L--|(uint16) d1 = DPB((uint16) d1, v4, 16, 16)",
+                "4|L--|v6 = DPB((uint16) d1, v5, 0, 16)");
+        }
+
+        [Test]
+        public void M68krw_rol()
+        {
+             Rewrite(0xE099 );
             AssertCode(
                 "0|00010000(2): 7 instructions",
                 "1|L--|v4 = (uint16) d1 % (uint16) d0",

@@ -21,7 +21,7 @@ l0C00_0000:
 	call fn0C00_0010 (retsize: 2; depth: 6)
 	call fn0C00_0037 (retsize: 2; depth: 6)
 	sp = fp
-	SCZO = cond(sp)
+	SCZO = cond(fp)
 	return
 // DataOut:
 // DataOut (flags): 

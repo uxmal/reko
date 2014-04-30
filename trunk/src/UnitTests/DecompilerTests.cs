@@ -54,31 +54,6 @@ namespace Decompiler.UnitTests
         }
 
         [Test]
-        public void Dec_LoadIncompleteProject()
-        {
-            loader.Stub(l => l.LoadImageBytes("file.dcproject", 0))
-                .Return(Encoding.UTF8.GetBytes(
-                    @"<?xml version=""1.0"" encoding=""UTF-8""?>
-                    <project xmlns=""http://schemata.jklnet.org/Decompiler"">
-                    </project>"));
-            //loader.Stub(l => l.Load.Load(.ThrowOnLoadImage(new FileNotFoundException("file.dcproject"), 1);
-            mr.ReplayAll();
-
-            try
-            {
-                decompiler.LoadProgram("file.dcproject");
-                Assert.Fail("Should have thrown exception.");
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Assert.IsNotNull(decompiler.Project);
-                Assert.AreEqual(0, decompiler.Project.InputFiles.Count);
-                Assert.IsNull(decompiler.Program);
-                mr.VerifyAll();
-            }
-        }
-
-        [Test]
         public void Dec_LoadProjectFileNoBom()
         {
             byte [] bytes = new byte[1000];

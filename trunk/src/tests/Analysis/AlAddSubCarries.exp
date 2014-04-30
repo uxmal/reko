@@ -49,7 +49,7 @@ l0C00_0000:
 	SCZO = cond(dx_ax)
 	Mem0[ds:0x021A:word16] = dx
 	ax = 0x0000
-	SZO = cond(ax)
+	SZO = cond(0x0000)
 	C = false
 	cl = Mem0[ds:0x0220:byte]
 	SCZO = cond(cl - 0x30)

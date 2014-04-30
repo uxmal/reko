@@ -49,6 +49,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private LowLevelView control;
         private LoadedImage image;
         private ImageMap imageMap;
+        private IUiPreferencesService uiPrefsSvc;
 
         [SetUp]
         public void Setup()
@@ -56,9 +57,11 @@ namespace Decompiler.UnitTests.Gui.Windows
             mr = new MockRepository();
             sp = new ServiceContainer();
             uiSvc = mr.DynamicMock<IDecompilerShellUiService>();
+            uiPrefsSvc = mr.DynamicMock<IUiPreferencesService>();
 			dlgFactory = mr.DynamicMock<IDialogFactory>();
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
+            sp.AddService(typeof(IUiPreferencesService), uiPrefsSvc);
             addrBase = new Address(0x1000);
         }
 

@@ -24,7 +24,7 @@ l0C00_0000:
 	wLoc06 = bx
 	call fn0C00_0020 (retsize: 2; depth: 8)
 	sp = fp - 0x0002
-	SCZO = cond(sp)
+	SCZO = cond(fp - 0x0002)
 	sp = fp - 0x0004
 	wLoc04 = ax
 	es_bx = ptrArg04
@@ -34,7 +34,7 @@ l0C00_0000:
 	wLoc08 = bx
 	call fn0C00_002E (retsize: 2; depth: 10)
 	sp = fp - 0x0002
-	SCZO = cond(sp)
+	SCZO = cond(fp - 0x0002)
 	Mem0[ds:0x0200:word16] = ax
 	bp = wLoc02
 	sp = fp
