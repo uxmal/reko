@@ -36,8 +36,6 @@ Mem0:Global memory
     def:  def Mem0
     uses: edx_50 = (int32) Mem0[dwArg04 + eax_48:byte]
 fp:fp
-    def:  def fp
-    uses: branch Mem0[fp + 0x00000004:word32] != 0x00000000 l1000002F
 esp:esp
 ebp:ebp
 ecx:ecx
@@ -56,6 +54,7 @@ wLoc08:Local -0008
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: edx_50 = (int32) Mem0[dwArg04 + eax_48:byte]
+          branch dwArg04 != 0x00000000 l1000002F
 esp_18: orig: esp
 dwLoc04_19: orig: dwLoc04
 ebp_20: orig: ebp
@@ -129,12 +128,11 @@ wLoc08_65: orig: wLoc08
 word16 fn10000017(word32 dwArg04)
 fn10000017_entry:
 	def Mem0
-	def fp
 	def dwArg04
 	// succ:  l10000017
 l10000017:
 	wLoc08_23 = 0x0000
-	branch Mem0[fp + 0x00000004:word32] != 0x00000000 l1000002F
+	branch dwArg04 != 0x00000000 l1000002F
 	// succ:  l10000027 l1000002F
 l10000027:
 	ax_40 = 0x0000

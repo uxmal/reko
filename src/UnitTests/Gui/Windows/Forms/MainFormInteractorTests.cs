@@ -34,6 +34,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -56,6 +57,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private ITypeLibraryLoaderService typeLibSvc;
         private IProjectBrowserService projectBrowserSvc;
         private LoaderBase loader;
+        private IUiPreferencesService uiPrefs;
 
 		[SetUp]
 		public void Setup()
@@ -117,6 +119,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             form.Expect(f => f.CloseAllDocumentWindows());
+            Expect_LoadPreferences();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -124,6 +127,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
 			interactor.NextPhase();
 			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPhase);
+
             mr.VerifyAll();
 		}
 
@@ -145,6 +149,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Given_MainFormInteractor();
             Given_Loader();
+            Expect_LoadPreferences();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -211,7 +216,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test] 
-        public void IsNextPhaseEnabled()
+        public void MainForm_IsNextPhaseEnabled()
         {
             Given_MainFormInteractor();
             mr.ReplayAll();
@@ -359,6 +364,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var docWindows = new List<IWindowFrame>();
             form.Stub(f => f.DocumentWindows).Return(docWindows);
             form.Expect(f => f.CloseAllDocumentWindows());
+            Expect_LoadPreferences();
             Expect_CommandNotHandledBySubwindow();
             mr.ReplayAll();
 
@@ -369,6 +375,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll);
 
             mr.VerifyAll();
+        }
+
+        private void Expect_LoadPreferences()
+        {
+            uiPrefs.Expect(u => u.Load());
+            uiPrefs.Stub(u => u.WindowSize).Return(new Size());
+            uiPrefs.Stub(u => u.WindowState).Return(FormWindowState.Normal);
+            form.Stub(f => f.WindowState = FormWindowState.Normal);
         }
 
         private void Expect_CommandNotHandledBySubwindow()
@@ -403,6 +417,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             diagnosticSvc = mr.StrictMock<IDiagnosticsService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
             projectBrowserSvc = mr.StrictMock<IProjectBrowserService>();
+            uiPrefs = mr.StrictMock<IUiPreferencesService>();
 
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
@@ -416,6 +431,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(projectBrowserSvc);
+            svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 
@@ -441,6 +457,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Load += null;
             LastCall.IgnoreArguments();
             form.Closed += null;
+            LastCall.IgnoreArguments();
+            form.ProcessCommandKey += null;
             LastCall.IgnoreArguments();
             dlgFactory.Stub(d => d.CreateMainForm()).Return(form);
         }

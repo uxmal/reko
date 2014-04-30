@@ -91,13 +91,12 @@ bl_33: orig: bl
 bh_34: orig: bh
     def:  bh_34 = 0x00
     uses: bx_35 = DPB(bx_21, bh_34, 8, 8) (alias)
-          SZO_36 = cond(bh_34)
 bx_35: orig: bx
     def:  bx_35 = DPB(bx_21, bh_34, 8, 8) (alias)
     uses: bx_38 = bx_35 + bx_35
           bx_38 = bx_35 + bx_35
 SZO_36: orig: SZO
-    def:  SZO_36 = cond(bh_34)
+    def:  SZO_36 = cond(0x00)
 C_37: orig: C
     def:  C_37 = false
 bx_38: orig: bx
@@ -190,7 +189,7 @@ l0C00_0000:
 l0C00_0009:
 	bh_34 = 0x00
 	bx_35 = DPB(bx_21, bh_34, 8, 8) (alias)
-	SZO_36 = cond(bh_34)
+	SZO_36 = cond(0x00)
 	C_37 = false
 	bx_38 = bx_35 + bx_35
 	bl_39 = (byte) bx_38 (alias)

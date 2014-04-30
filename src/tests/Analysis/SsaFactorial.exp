@@ -4,6 +4,7 @@ fp:fp
     def:  def fp
     uses: sp_10 = fp - 0x0002
           sp_13 = fp
+          SCZO_14 = cond(fp)
 sp:sp
     def:  def sp
 cx:cx
@@ -31,9 +32,8 @@ ax_12: orig: ax
     uses: Mem15[ds:0x0064:word16] = ax_12
 sp_13: orig: sp
     def:  sp_13 = fp
-    uses: SCZO_14 = cond(sp_13)
 SCZO_14: orig: SCZO
-    def:  SCZO_14 = cond(sp_13)
+    def:  SCZO_14 = cond(fp)
 Mem15: orig: Mem0
     def:  Mem15[ds:0x0064:word16] = ax_12
 // fn0C00_0000
@@ -55,7 +55,7 @@ l0C00_0000:
 	wLoc02_11 = 0x0064
 	ax_12 = fn0C00_000F(wLoc02_11)
 	sp_13 = fp
-	SCZO_14 = cond(sp_13)
+	SCZO_14 = cond(fp)
 	Mem15[ds:0x0064:word16] = ax_12
 	return
 	// succ:  fn0C00_0000_exit
@@ -70,7 +70,9 @@ fp:fp
           sp_31 = fp
           sp_32 = fp - 0x0004
           sp_35 = fp - 0x0003
+          SZO_36 = cond(fp - 0x0003)
           sp_37 = fp - 0x0002
+          SZO_38 = cond(fp - 0x0002)
 sp:sp
     def:  def sp
 bp:bp
@@ -161,14 +163,12 @@ ax_34: orig: ax
     uses: dx_ax_40 = dx_39 *s ax_34
 sp_35: orig: sp
     def:  sp_35 = fp - 0x0003
-    uses: SZO_36 = cond(sp_35)
 SZO_36: orig: SZO
-    def:  SZO_36 = cond(sp_35)
+    def:  SZO_36 = cond(fp - 0x0003)
 sp_37: orig: sp
     def:  sp_37 = fp - 0x0002
-    uses: SZO_38 = cond(sp_37)
 SZO_38: orig: SZO
-    def:  SZO_38 = cond(sp_37)
+    def:  SZO_38 = cond(fp - 0x0002)
 dx_39: orig: dx
     def:  dx_39 = wArg02
     uses: dx_ax_40 = dx_39 *s ax_34
@@ -237,9 +237,9 @@ l0C00_0018:
 	wLoc04_33 = ax_18
 	ax_34 = fn0C00_000F(wLoc04_33)
 	sp_35 = fp - 0x0003
-	SZO_36 = cond(sp_35)
+	SZO_36 = cond(fp - 0x0003)
 	sp_37 = fp - 0x0002
-	SZO_38 = cond(sp_37)
+	SZO_38 = cond(fp - 0x0002)
 	dx_39 = wArg02
 	dx_ax_40 = dx_39 *s ax_34
 	ax_41 = (word16) dx_ax_40 (alias)

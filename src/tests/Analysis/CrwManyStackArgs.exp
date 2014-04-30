@@ -27,7 +27,7 @@ l0C00_0000:
 	wLoc06 = 0x0001
 	ax = fn0C00_0011(wLoc06, wLoc04, wLoc02)
 	sp = fp
-	SCZO = cond(sp)
+	SCZO = cond(fp)
 	Mem0[ds:0x1300:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit

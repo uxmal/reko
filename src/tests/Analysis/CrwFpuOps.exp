@@ -24,7 +24,7 @@ l0C00_0000:
 	fn0C00_0010(ds, wLoc04, wLoc02)
 	fn0C00_0037(ds)
 	sp = fp
-	SCZO = cond(sp)
+	SCZO = cond(fp)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -19,7 +19,7 @@ l0C00_0000:
 	wLoc02 = 0x0064
 	call fn0C00_000F (retsize: 2; depth: 4)
 	sp = fp
-	SCZO = cond(sp)
+	SCZO = cond(fp)
 	Mem0[ds:0x0064:word16] = ax
 	return
 // DataOut:
@@ -63,9 +63,9 @@ l0C00_0018:
 	wLoc04 = ax
 	call fn0C00_000F (retsize: 2; depth: 6)
 	sp = fp - 0x0003
-	SZO = cond(sp)
+	SZO = cond(fp - 0x0003)
 	sp = fp - 0x0002
-	SZO = cond(sp)
+	SZO = cond(fp - 0x0002)
 	dx = wArg02
 	dx_ax = dx *s ax
 	SCZO = cond(dx_ax)

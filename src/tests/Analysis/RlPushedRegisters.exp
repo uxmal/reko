@@ -21,7 +21,7 @@ l0C00_0000:
 	wLoc04 = 0x0002
 	call fn0C00_0023 (retsize: 2; depth: 6)
 	ax = 0x0000
-	SZO = cond(ax)
+	SZO = cond(0x0000)
 	C = false
 	sp = fp - 0x0006
 	wLoc06 = 0x0000
@@ -37,14 +37,14 @@ l0C00_0000:
 	wLoc10 = 0x0000
 	call fn0C00_0034 (retsize: 2; depth: 18)
 	sp = fp - 0x0004
-	SCZO = cond(sp)
+	SCZO = cond(fp - 0x0004)
 	sp = fp - 0x0006
 	wLoc06 = 0x0001
 	sp = fp - 0x0008
 	wLoc08 = 0x0002
 	call fn0C00_005D (retsize: 2; depth: 10)
 	sp = fp - 0x0004
-	SCZO = cond(sp)
+	SCZO = cond(fp - 0x0004)
 	return
 // DataOut:
 // DataOut (flags): 
