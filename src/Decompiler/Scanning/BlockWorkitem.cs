@@ -356,8 +356,11 @@ namespace Decompiler.Scanning
                 return !imp.Characteristics.Terminates;
             }
 
-            if (ric.Address.Linear == 0x136C)   //$DEBUG
-                ric.ToString();
+            var syscall = scanner.Platform.FindService(call, state);
+            if (syscall != null)
+            {
+                return EmitSytemServiceCall(syscall);
+            }
             ProcessIndirectControlTransfer(ric.Address, call);
 
             var ic = new CallInstruction(call.Target, site);
@@ -399,16 +402,8 @@ namespace Decompiler.Scanning
             var svc = MatchSyscallToService(side);
             if (svc != null)
             {
-                var ep = svc.CreateExternalProcedure(arch);
-                var fn = new ProcedureConstant(arch.PointerType, ep);
-                var site = state.OnBeforeCall(stackReg, svc.Signature.ReturnAddressOnStack);
-                Emit(BuildApplication(fn, ep.Signature, site));
-                if (svc.Characteristics.Terminates)
-                {
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                if (EmitSytemServiceCall(svc))
                     return false;
-                }
-                AffectProcessorState(svc.Signature);
             }
             else
             {
@@ -422,6 +417,26 @@ namespace Decompiler.Scanning
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Takes a system service description and generates a system call from it.
+        /// </summary>
+        /// <param name="svc"></param>
+        /// <returns>True if the system service terminates.</returns>
+        private bool EmitSytemServiceCall(SystemService svc)
+        {
+            var ep = svc.CreateExternalProcedure(arch);
+            var fn = new ProcedureConstant(arch.PointerType, ep);
+            var site = state.OnBeforeCall(stackReg, svc.Signature.ReturnAddressOnStack);
+            Emit(BuildApplication(fn, ep.Signature, site));
+            if (svc.Characteristics.Terminates)
+            {
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                return true;
+            }
+            AffectProcessorState(svc.Signature);
+            return false;
         }
 
         private ProcedureSignature GuessProcedureSignature(CallInstruction call)

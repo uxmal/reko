@@ -66,6 +66,7 @@ namespace Decompiler.UnitTests.Scanning
 
             scanner = repository.StrictMock<IScanner>();
             arch = repository.DynamicMock<IProcessorArchitecture>();
+            arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
             scanner.Stub(s => s.Architecture).Return(arch);
         }
 
@@ -428,6 +429,31 @@ l00100000:
 testProc_exit:
 ";
             Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void Bwi_IndirectCallMatchedByPlatform()
+        {
+            var platform = repository.StrictMock<Platform>(null, null);
+            var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, PrimitiveType.Pointer32));
+            var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Pointer32));
+            var sysSvc = new SystemService {
+                Name = "SysSvc", 
+                Signature = new ProcedureSignature(null, reg1),
+                Characteristics = new ProcedureCharacteristics()
+            };
+            platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
+            scanner.Stub(f => f.FindContainingBlock(new Address(0x100000))).Return(block);
+            scanner.Stub(f => f.GetCallSignatureAtAddress(new Address(0x100000))).Return(null);
+            scanner.Stub(f => f.Platform).Return(platform);
+            repository.ReplayAll();
+
+            trace.Add(m => m.Call(m.LoadDw(m.IAdd(reg0, -32)), 4));
+            var wi = CreateWorkItem(new Address(0x100000), arch.CreateProcessorState());
+            wi.ProcessInternal();
+
+            Assert.AreEqual("SysSvc(r1)", block.Statements[0].ToString());
+            repository.VerifyAll();
         }
     }
 }
