@@ -851,13 +851,32 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68krw_rol()
         {
-             Rewrite(0xE099 );
+             Rewrite(0xE199);
+             AssertCode(
+                "0|00010000(2): 3 instructions",
+                "1|L--|d1 = __rol(d1, 0x00000008)",
+                "2|L--|CZN = cond(d1)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_roxl()
+        {
+            Rewrite(0xE391);
             AssertCode(
-                "0|00010000(2): 7 instructions",
-                "1|L--|v4 = (uint16) d1 % (uint16) d0",
-                "2|L--|v5 = (uint16) d1 /u (uint16) d0",
-                "3|L--|(uint16) d1 = DPB((uint16) d1, v4, 16, 16)",
-                "4|L--|v6 = DPB((uint16) d1, v5, 0, 16)");
+               "0|00010000(2): 3 instructions",
+               "1|L--|d1 = __roxl(d1, 0x00000001, X)",
+               "2|L--|CZNX = cond(d1)",
+               "3|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_st()
+        {
+            Rewrite(0x50EF, 0x0002);
+            AssertCode(
+               "0|00010000(4): 1 instructions",
+               "1|L--|Mem0[a7 + 2:bool] = true");
         }
     }
 }

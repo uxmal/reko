@@ -41,6 +41,28 @@ namespace Decompiler.Arch.M68k
             AllConditions(opDst);
         }
 
+        public void RewriteRotation(string procName)
+        {
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, opSrc, (s, d) =>
+                PseudoProc(procName, di.dataWidth, d, s));
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.ZF),
+                emitter.Cond(opDst));
+            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+        }
+
+        public void RewriteRotationX(string procName)
+        {
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteDst(di.op2, opSrc, (s, d) =>
+                PseudoProc(procName, di.dataWidth, d, s, orw.FlagGroup(FlagM.XF)));
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.XF | FlagM.ZF),
+                emitter.Cond(opDst));
+            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+        }
+
         public void RewriteTst()
         {
             var opSrc = orw.RewriteSrc(di.op1);
@@ -76,6 +98,17 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 emitter.Cond(emitter.And(opDst, tmpMask)));
+        }
+
+        public void RewriteExg()
+        {
+            var opSrc = orw.RewriteSrc(di.op1);
+            var opDst = orw.RewriteSrc(di.op2);
+            var tmp = frame.CreateTemporary(PrimitiveType.Word32);
+            emitter.Assign(tmp, opSrc);
+            emitter.Assign(opSrc, opDst);
+            emitter.Assign(opDst, tmp);
+            LogicalConditions(opDst);
         }
 
         public void RewriteExt()
@@ -174,6 +207,11 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(orw.FlagGroup(FlagM.CVZNX), emitter.Cond(dst));
         }
 
+        private void RewriteScc(ConditionCode cc, FlagM flagsUsed)
+        {
+            orw.RewriteMoveDst(di.op1, PrimitiveType.Byte, orw.FlagGroup(flagsUsed));
+        }
+        
         private void RewriteSwap()
         {
             var r = (RegisterOperand) di.op1;
@@ -432,8 +470,21 @@ namespace Decompiler.Arch.M68k
                         emitter.Assign(dstReg, emitter.ISub(dstReg, di.dataWidth.Size));
                         emitter.Assign(emitter.Load(di.dataWidth, dstReg), reg);
                     }
-                    return;
                 }
+                else
+                {
+                    var src = orw.RewriteSrc(di.op2) as MemoryAccess;
+                    if (src == null)
+                        throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+                    var srcReg = frame.CreateTemporary(di.dataWidth);
+                    emitter.Assign(srcReg, src.EffectiveAddress);
+                    foreach (var reg in RegisterMaskIncreasing(dstRegs.BitSet))
+                    {
+                        emitter.Assign(reg, emitter.Load(di.dataWidth, srcReg));
+                        emitter.Assign(srcReg, emitter.IAdd(srcReg, di.dataWidth.Size));
+                    }
+                }
+                return;
             }
             throw new Decompiler.Core.AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
         }
