@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Rtl;
 using System;
 using System.Text;
 
@@ -45,6 +46,11 @@ namespace Decompiler.Core
         public IServiceProvider Services { get; private set; }
 
 		public abstract SystemService FindService(int vector, ProcessorState state);
+
+        public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)
+        {
+            return null;
+        }
 
         public virtual SystemService FindService(string name)
         {
