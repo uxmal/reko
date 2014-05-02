@@ -56,6 +56,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IDecompilerShellUiService uiSvc;
         private ITypeLibraryLoaderService typeLibSvc;
         private IProjectBrowserService projectBrowserSvc;
+        private IFileSystemService fsSvc;
         private LoaderBase loader;
         private IUiPreferencesService uiPrefs;
 
@@ -418,6 +419,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
             projectBrowserSvc = mr.StrictMock<IProjectBrowserService>();
             uiPrefs = mr.StrictMock<IUiPreferencesService>();
+            fsSvc = mr.StrictMock<IFileSystemService>();
 
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
@@ -432,6 +434,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(projectBrowserSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
+            svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 

@@ -18,9 +18,17 @@
  */
 #endregion
 
+using Decompiler.Arch.M68k;
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Operators;
+using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -31,9 +39,23 @@ namespace Decompiler.Environments.AmigaOS
     /// </summary>
     public class AmigaOSPlatform : Platform
     {
+        private RtlInstructionMatcher a6Pattern;
+        private Dictionary<int, SystemService> funcs;
+
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
+            this.a6Pattern = new RtlInstructionMatcher(
+                new RtlCall(
+                    new MemoryAccess(
+                        new BinaryExpression(
+                            Operator.IAdd,
+                            PrimitiveType.Word32,
+                            ExpressionMatcher.AnyId("addrReg"),
+                            ExpressionMatcher.AnyConstant("offset")),
+                        PrimitiveType.Word32),
+                    4,
+                    RtlClass.Transfer));
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -41,14 +63,55 @@ namespace Decompiler.Environments.AmigaOS
             throw new NotImplementedException();
         }
 
+        public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
+        {
+            if (!a6Pattern.Match(rtl))
+                return null;
+            var reg = ((Identifier) a6Pattern.CapturedExpressions("addrReg")).Storage as RegisterStorage;
+            var offset = ((Constant) a6Pattern.CapturedExpressions("offset")).ToInt32();
+            if (reg != Registers.a6)
+                return null;
+            if (funcs == null)
+                funcs = LoadFuncs();
+            SystemService svc;
+            return funcs.TryGetValue(offset, out svc) ? svc : null;
+        }
+
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public override ProcedureSignature LookupProcedure(string procName)
         {
             throw new NotImplementedException();
+        }
+
+        private Dictionary<int, SystemService> LoadFuncs()
+        {
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            var sser = new ProcedureSerializer(
+                Architecture,
+                new TypeLibraryLoader(Architecture),
+                DefaultCallingConvention);
+
+            using (var rdr = new StreamReader(fsSvc.CreateFileStream("exec.funcs", FileMode.Open, FileAccess.Read)))
+            {
+                var fpp = new FuncsFileParser((M68kArchitecture) this.Architecture, rdr);
+                fpp.Parse();
+                return fpp.FunctionsByA6Offset.Values
+                    .Select(amiSvc => new SystemService
+                    {
+                        Name = amiSvc.Name,
+                        SyscallInfo = new SyscallInfo
+                        {
+                            Vector = amiSvc.Offset,
+                        },
+                        Signature = sser.Deserialize(amiSvc.Signature, Architecture.CreateFrame()),   //$BUGBUG: catch dupes?   
+                        Characteristics = new ProcedureCharacteristics { }
+                    })
+                    .ToDictionary(de => de.SyscallInfo.Vector, de => de);
+            };
         }
     }
 }

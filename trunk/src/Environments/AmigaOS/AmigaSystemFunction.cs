@@ -11,6 +11,6 @@ namespace Decompiler.Environments.AmigaOS
     {
         public int Offset;
         public string Name;
-        public List<Argument_v1> Parameters;
+        public SerializedSignature Signature;
     }
 }

@@ -50,7 +50,6 @@ namespace Decompiler.Core
 
         private class Enumerator : IEnumerator<uint>
         {
-            private uint target;
             private PointerScanner scanner;
             private ImageReader r;
 

@@ -180,6 +180,7 @@
     <Compile Include="Expressions\Dereference.cs" />
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\ExpressionEmitter.cs" />
+    <Compile Include="Expressions\ExpressionMatcher.cs" />
     <Compile Include="Expressions\ExpressionValueComparer.cs" />
     <Compile Include="Expressions\ExpressionVisitor.cs" />
     <Compile Include="Expressions\FieldAccess.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Rtl\RtlGoto.cs" />
     <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="Rtl\RtlInstruction.cs" />
+    <Compile Include="Rtl\RtlInstructionMatcher.cs" />
     <Compile Include="Rtl\RtlInstructionVisitor.cs" />
     <Compile Include="Rtl\RtlReturn.cs" />
     <Compile Include="Rtl\RtlSideEffect.cs" />

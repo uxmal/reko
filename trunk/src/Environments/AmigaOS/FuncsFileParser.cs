@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Arch.M68k;
+using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -87,7 +88,10 @@ namespace Decompiler.Environments.AmigaOS
             {
                 Offset = -decOffset,
                 Name = name,
-                Parameters = parameters
+                Signature = new SerializedSignature
+                {
+                    Arguments = parameters.ToArray()
+                }
             };
         }
 
@@ -119,7 +123,7 @@ namespace Decompiler.Environments.AmigaOS
             private string line;
             private int pos;
             private Token token;
-private  StringBuilder sb;
+            private StringBuilder sb;
 
             public Lexer(string line)
             {
