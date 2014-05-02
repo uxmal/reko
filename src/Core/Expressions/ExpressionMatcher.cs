@@ -26,8 +26,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Evaluation
+namespace Decompiler.Core.Expressions
 {
+    /// <summary>
+    /// Used to match expressions to a pattern and possibly capture identifiers and constants.
+    /// </summary>
     public class ExpressionMatcher : ExpressionVisitor<bool>
     {
         private Expression p;

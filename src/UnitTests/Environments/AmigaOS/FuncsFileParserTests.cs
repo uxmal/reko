@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Environments.AmigaOS
             var func = ffp.FunctionsByA6Offset[-666];
             Assert.AreEqual(-666, func.Offset);
             Assert.AreEqual("CreateMsgPort", func.Name);
-            Assert.AreEqual(0, func.Parameters.Count);
+            Assert.AreEqual(0, func.Signature.Arguments.Length);
         }
 
         [Test]
@@ -76,14 +76,13 @@ namespace Decompiler.UnitTests.Environments.AmigaOS
             var func = ffp.FunctionsByA6Offset[-552];
             Assert.AreEqual(-552, func.Offset);
             Assert.AreEqual("OpenLibrary", func.Name);
-            Assert.AreEqual(2, func.Parameters.Count);
-            var p0 = func.Parameters[0];
-            var p1 = func.Parameters[1];
+            Assert.AreEqual(2, func.Signature.Arguments.Length);
+            var p0 = func.Signature.Arguments[0];
+            var p1 = func.Signature.Arguments[1];
             Assert.AreEqual("libName", p0.Name);
             Assert.AreEqual("version", p1.Name);
             Assert.AreEqual("a1", ((SerializedRegister) p0.Kind).Name);
             Assert.AreEqual("d0", ((SerializedRegister) p1.Kind).Name);
         }
-
     }
 }

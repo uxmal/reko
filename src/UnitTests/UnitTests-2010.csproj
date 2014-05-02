@@ -144,6 +144,7 @@
     <Compile Include="Core\StructureReaderTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />
+    <Compile Include="Environments\AmigaOS\AmigaOSPlatformTests.cs" />
     <Compile Include="Environments\AmigaOS\FuncsFileParserTests.cs" />
     <Compile Include="Environments\Win32\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />

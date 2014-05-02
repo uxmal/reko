@@ -174,6 +174,9 @@ namespace Decompiler.Gui.Forms
 
             var upSvc = svcFactory.CreateUiPreferencesService();
             sc.AddService<IUiPreferencesService>(upSvc);
+
+            var fsSvc = svcFactory.CreateFileSystemService();
+            sc.AddService<IFileSystemService>(fsSvc);
         }
 
         protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)

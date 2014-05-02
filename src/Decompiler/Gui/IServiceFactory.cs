@@ -49,6 +49,7 @@ namespace Decompiler.Gui
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
         IUiPreferencesService CreateUiPreferencesService();
+        IFileSystemService CreateFileSystemService();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -115,6 +116,11 @@ namespace Decompiler.Gui
             var configSvc = services.RequireService<IDecompilerConfigurationService>();
             var settingsSvc = services.RequireService<ISettingsService>();
             return new UiPreferencesService(configSvc, settingsSvc);
+        }
+
+        public IFileSystemService CreateFileSystemService()
+        {
+            return new FileSystemServiceImpl();
         }
     }
 }

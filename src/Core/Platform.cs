@@ -41,9 +41,11 @@ namespace Decompiler.Core
         protected Platform(IServiceProvider services, IProcessorArchitecture arch) 
         {
             this.Services = services;
+            this.Architecture = arch;
         }
 
         public IServiceProvider Services { get; private set; }
+        public IProcessorArchitecture Architecture { get; private set; }
 
 		public abstract SystemService FindService(int vector, ProcessorState state);
 
@@ -52,6 +54,7 @@ namespace Decompiler.Core
             return null;
         }
 
+  
         public virtual SystemService FindService(string name)
         {
             throw new NotSupportedException();
