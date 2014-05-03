@@ -45,6 +45,7 @@ namespace Decompiler.Core
             this.Signatures = procedures;
         }
 
+        public string LibraryName { get; set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
         public IDictionary<string, SystemService> ServicesByName { get; private set; }

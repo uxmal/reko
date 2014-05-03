@@ -359,7 +359,7 @@ namespace Decompiler.Scanning
             var syscall = scanner.Platform.FindService(call, state);
             if (syscall != null)
             {
-                return EmitSytemServiceCall(syscall);
+                return !EmitSystemServiceCall(syscall);
             }
             ProcessIndirectControlTransfer(ric.Address, call);
 
@@ -402,8 +402,7 @@ namespace Decompiler.Scanning
             var svc = MatchSyscallToService(side);
             if (svc != null)
             {
-                if (EmitSytemServiceCall(svc))
-                    return false;
+                return !EmitSystemServiceCall(svc);
             }
             else
             {
@@ -424,7 +423,7 @@ namespace Decompiler.Scanning
         /// </summary>
         /// <param name="svc"></param>
         /// <returns>True if the system service terminates.</returns>
-        private bool EmitSytemServiceCall(SystemService svc)
+        private bool EmitSystemServiceCall(SystemService svc)
         {
             var ep = svc.CreateExternalProcedure(arch);
             var fn = new ProcedureConstant(arch.PointerType, ep);
