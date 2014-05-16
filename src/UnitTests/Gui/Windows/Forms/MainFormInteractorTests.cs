@@ -88,6 +88,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.CloseAllDocumentWindows());
             diagnosticSvc.Stub(d => d.AddDiagnostic(null, null)).IgnoreArguments();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
+            Expect_UiPreferences_Loaded();
+            Expect_MainForm_SizeSet();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -104,6 +106,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             form.Stub(f => f.DocumentWindows).Return(docWindows);
             form.Expect(f => f.CloseAllDocumentWindows());
+            Expect_UiPreferences_Loaded();
+            Expect_MainForm_SizeSet();
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             mr.ReplayAll();
 
@@ -112,6 +116,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.OpenBinary("");
 
             mr.VerifyAll();
+        }
+
+        private void Expect_MainForm_SizeSet()
+        {
+            form.Expect(f => f.Size = new Size(1000, 700));
+            form.Expect(f => f.WindowState = FormWindowState.Normal);
+        }
+
+        private void Expect_UiPreferences_Loaded()
+        {
+            uiPrefs.Expect(u => u.Load());
+            uiPrefs.Stub(u => u.WindowState).Return(FormWindowState.Normal);
+            uiPrefs.Stub(u => u.WindowSize).Return(new Size(1000, 700));
         }
 
 		[Test]

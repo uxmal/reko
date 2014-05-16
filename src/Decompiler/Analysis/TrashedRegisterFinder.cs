@@ -130,6 +130,7 @@ namespace Decompiler.Analysis
 
         private void SetInitialValueOfStackPointer(Procedure proc)
         {
+            Debug.Print("SetInitialValueSP: {0}", proc.Name);
             flow[proc.EntryBlock].SymbolicIn.SetValue(
                 proc.Frame.EnsureRegister(prog.Architecture.StackRegister),
                 proc.Frame.FramePointer);

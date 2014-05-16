@@ -31,6 +31,8 @@ namespace Decompiler.Arch.Arm
 
         add,
         adds,
+        adr,
+        adrp,
         and,
         ands,
         b,
