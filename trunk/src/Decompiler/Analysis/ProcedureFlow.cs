@@ -59,23 +59,26 @@ namespace Decompiler.Analysis
 
 		public ProcedureSignature Signature;
 
-        public bool TerminatesProcess;          // True if calling this procedure terminates the thread/process.
+        // True if calling this procedure terminates the thread/process. This implies
+        // that no code path reached the exit block without first terminating the process.
+        public bool TerminatesProcess;
 
-		public ProcedureFlow(Procedure proc, IProcessorArchitecture arch)
-		{
-			this.proc = proc;
+        public ProcedureFlow(Procedure proc, IProcessorArchitecture arch)
+        {
+            this.proc = proc;
 
-			PreservedRegisters = arch.CreateRegisterBitset();
-			TrashedRegisters = arch.CreateRegisterBitset();
+            PreservedRegisters = arch.CreateRegisterBitset();
+            TrashedRegisters = arch.CreateRegisterBitset();
             ConstantRegisters = new Dictionary<Storage, Constant>();
 
-			ByPass = arch.CreateRegisterBitset();
-			MayUse = arch.CreateRegisterBitset();
-			LiveOut = arch.CreateRegisterBitset();
+            ByPass = arch.CreateRegisterBitset();
+            MayUse = arch.CreateRegisterBitset();
+            LiveOut = arch.CreateRegisterBitset();
 
-			StackArguments = new Hashtable();
-		}
+            StackArguments = new Hashtable();
+        }
 
+        [Conditional("DEBUG")]
         public void Dump(IProcessorArchitecture arch)
         {
             var sb = new StringWriter();

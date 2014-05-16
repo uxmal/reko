@@ -45,9 +45,9 @@ namespace Decompiler.Gui.Windows
             listView.VirtualMode = true;
             listView.View = View.Details;
             listView.VirtualListSize = 0;
-            this.listView.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(listView_RetrieveVirtualItem);
-            this.listView.CacheVirtualItems += new CacheVirtualItemsEventHandler(listView_CacheVirtualItems);
-            this.listView.DoubleClick += new EventHandler(listView_DoubleClick);
+            this.listView.RetrieveVirtualItem += listView_RetrieveVirtualItem;
+            this.listView.CacheVirtualItems += listView_CacheVirtualItems;
+            this.listView.DoubleClick += listView_DoubleClick;
 
             ShowSearchResults(new EmptyResult());
         }

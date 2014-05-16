@@ -310,9 +310,10 @@ namespace Decompiler.Scanning
                 {
                     // We jumped into a pre-existing block of another procedure.
                     procDest = EnsureProcedure(addrStart, null);
-                    block = CreateCallRetThunk(proc, procDest);
+                    var blockNew = CreateCallRetThunk(proc, procDest);
                     var wi = CreatePromoteWorkItem(addrStart, block, procDest);
                     queue.Enqueue(PriorityBlockPromote, wi);
+                    return blockNew;
                 }
             }
             return block;

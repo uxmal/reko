@@ -30,11 +30,6 @@ namespace Decompiler.Arch.X86
 {
     public abstract class ProcessorMode
     {
-        private PrimitiveType wordSize;
-        private PrimitiveType framePtrSize;
-        private PrimitiveType pointerType;
-
-        //public static readonly ProcessorMode None = new ProcessorMode(null, null, null);
         public static readonly ProcessorMode Real = new RealMode();
         public static readonly ProcessorMode ProtectedSegmented = new SegmentedMode();
         public static readonly ProcessorMode Protected32 = new FlatMode32();
@@ -42,9 +37,9 @@ namespace Decompiler.Arch.X86
 
         protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
         {
-            this.wordSize = wordSize;
-            this.framePtrSize = framePointerType;
-            this.pointerType = pointerType;
+            this.WordWidth = wordSize;
+            this.FramePointerType = framePointerType;
+            this.PointerType = pointerType;
         }
 
         public virtual Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
@@ -52,20 +47,11 @@ namespace Decompiler.Arch.X86
             return state.AddressFromSegOffset(seg, offset);
         }
 
-        public PrimitiveType FramePointerType
-        {
-            get { return framePtrSize; }
-        }
+        public PrimitiveType FramePointerType { get; private set ; }
 
-        public PrimitiveType PointerType
-        {
-            get { return pointerType; }
-        }
+        public PrimitiveType PointerType { get; private set; }
 
-        public PrimitiveType WordWidth
-        {
-            get { return wordSize; }
-        }
+        public PrimitiveType WordWidth { get; private set; }
 
         public virtual RegisterStorage StackRegister
         {

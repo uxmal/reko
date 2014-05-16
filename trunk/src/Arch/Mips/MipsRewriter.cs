@@ -54,7 +54,10 @@ namespace Decompiler.Arch.Mips
             this.emitter = new RtlEmitter(cluster.Instructions);
             switch (instr.opcode)
             {
-            default: throw new NotImplementedException(string.Format("Rewriting of MIPS instruction {0} not implemented yet.", instr.opcode));
+            default: throw new AddressCorrelatedException(
+                instr.Address,
+                "Rewriting of MIPS instruction {0} not implemented yet.",
+                instr.opcode);
             case Opcode.add:
             case Opcode.addi:
                 RewriteAdd(instr); break;

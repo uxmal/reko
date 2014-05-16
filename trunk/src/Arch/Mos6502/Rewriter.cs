@@ -68,6 +68,9 @@ namespace Decompiler.Arch.Mos6502
                 default: throw NYI();
                 case Opcode.sbc: Sbc(); break;
                 case Opcode.tax: Copy(Registers.x, Registers.a); break;
+                case Opcode.tay: Copy(Registers.y, Registers.a); break;
+                case Opcode.txa: Copy(Registers.a, Registers.x); break;
+                case Opcode.tya: Copy(Registers.a, Registers.y); break;
                 }
                 yield return ric;
             }

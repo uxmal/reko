@@ -299,9 +299,18 @@ namespace Decompiler.Arch.M68k
             var reg = opDst as RegisterOperand;
             if (reg != null)
             {
-                var dst = frame.EnsureRegister(reg.Register);
-                m.Assign(dst, src);
-                return dst;
+                var r = frame.EnsureRegister(reg.Register);
+                if (r.DataType.Size > dataWidth.Size)
+                {
+                    var tmp = frame.CreateTemporary(dataWidth);
+                    m.Assign(r, m.Dpb(r, src, 0, dataWidth.BitSize));
+                    return tmp;
+                }
+                else
+                {
+                    m.Assign(r, src);
+                    return r;
+                }
             }
             var mem = opDst as MemoryOperand;
             if (mem != null)

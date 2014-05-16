@@ -371,6 +371,19 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68k_clrw_reg()
+        {
+            Rewrite(0x4240);        // clr.w\td0
+            AssertCode(
+                "0|00010000(2): 5 instructions",
+                "1|L--|d0 = DPB(d0, 0x0000, 0, 16)",
+                "2|L--|Z = true",
+                "3|L--|C = false",
+                "4|L--|N = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
         public void M68krw_clrb_idx()
         {
             Rewrite(0x4230, 0x0800);
