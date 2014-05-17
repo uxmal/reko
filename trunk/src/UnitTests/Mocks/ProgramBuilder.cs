@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Procedure Add(string procName, Action<ProcedureBuilder> testCodeBuilder)
         {
-            var mock = new ProcedureBuilder(prog.Architecture, procName, blocks);
+            var mock = new ProcedureBuilder(prog.Architecture, procName, null);
             mock.ProgramMock = this;
             mock.LinearAddress = (uint)((procCount + 1) * 0x1000);
             testCodeBuilder(mock);

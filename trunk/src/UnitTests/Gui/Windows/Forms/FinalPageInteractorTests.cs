@@ -61,22 +61,5 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
 		}
 
-        [Test]
-        public void Fpi_ShowCodeWindowWhenUserSelectsFunction()
-        {
-            interactor = new FinalPageInteractor();
-            var proc = Procedure.Create(new Address(0x12345), new Frame(PrimitiveType.Word32));
-            var codeService = mr.DynamicMock<ICodeViewerService>();
-            codeService.Expect(x => x.DisplayProcedure(
-                Arg<Procedure>.Is.Same(proc)));
-            site.AddService<ICodeViewerService>(codeService);
-
-            mr.ReplayAll();
-
-            interactor.Site = site;
-            interactor.ConnectToBrowserService();
-
-            mr.VerifyAll();
-        }
 	}
 }

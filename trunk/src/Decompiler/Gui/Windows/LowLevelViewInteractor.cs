@@ -46,7 +46,8 @@ namespace Decompiler.Gui.Windows
         private ImageMap imageMap;
         private bool ignoreAddressChange;
 
-        public virtual LowLevelView Control { get { return control; } }
+        public LowLevelView Control { get { return control; } }
+        //public virtual LowLevelView Control { get { return control; } }
 
         public IProcessorArchitecture Architecture
         {
@@ -107,7 +108,7 @@ namespace Decompiler.Gui.Windows
             this.control.MemoryView.Services = this.services;
 
             typeMarker = new TypeMarker(control.MemoryView);
-            typeMarker.TextChanged += FormatType;
+            typeMarker.TextChanged += typeMarker_FormatType;
             typeMarker.TextAccepted += typeMarker_TextAccepted;
 
             return control;
@@ -219,7 +220,7 @@ namespace Decompiler.Gui.Windows
             return true;
         }
 
-        public void FormatType(object sender, TypeMarkerEventArgs e)
+        public void typeMarker_FormatType(object sender, TypeMarkerEventArgs e)
         {
             try
             {

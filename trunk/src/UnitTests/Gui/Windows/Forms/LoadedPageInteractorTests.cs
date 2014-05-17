@@ -179,23 +179,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void LpiBrowserItemSelectedShouldUpdateMemoryWindow()
-        {
-            AddService<IDecompilerShellUiService>();
-            AddService<IMemoryViewService>();
-            AddService<IDisassemblyViewService>();
-            var memSvc = AddService<IMemoryViewService>();
-            var program = new Program();
-            memSvc.Expect(x => x.ShowMemoryAtAddress(program, mapSegment2.Address));
-            repository.ReplayAll();
-
-            interactor.Site = site;
-            interactor.EnterPage();
-
-            repository.VerifyAll();
-        }
-
-        [Test]
         public void LpiSetBrowserCaptionWhenEnteringPage()
         {
             AddService<IDecompilerShellUiService>();

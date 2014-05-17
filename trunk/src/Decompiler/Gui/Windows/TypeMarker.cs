@@ -38,6 +38,7 @@ namespace Decompiler.Gui.Windows
 
         public TypeMarker(Control bgControl)
         {
+            System.Diagnostics.Debug.Print(bgControl.GetType().FullName);
             text = new TextBox
             {
                 BorderStyle = BorderStyle.FixedSingle,
