@@ -56,9 +56,13 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             mr = new MockRepository();
             sp = new ServiceContainer();
-            uiSvc = mr.DynamicMock<IDecompilerShellUiService>();
-            uiPrefsSvc = mr.DynamicMock<IUiPreferencesService>();
-			dlgFactory = mr.DynamicMock<IDialogFactory>();
+            uiSvc = mr.StrictMock<IDecompilerShellUiService>();
+            uiPrefsSvc = mr.StrictMock<IUiPreferencesService>();
+            dlgFactory = mr.StrictMock<IDialogFactory>();
+            uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
+            uiSvc.Replay();
+            uiPrefsSvc.Stub(u => u.DisassemblyFont).Return(new System.Drawing.Font("Lucida Console", 10));
+            uiPrefsSvc.Replay();
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
             sp.AddService(typeof(IUiPreferencesService), uiPrefsSvc);
@@ -91,6 +95,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.TopAddress.Linear);
             Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.SelectedAddress.Linear);
+            mr.VerifyAll();
         }
 
         [Test]

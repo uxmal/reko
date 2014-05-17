@@ -802,7 +802,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0x4241);
             AssertCode(
                 "0|00010000(2): 5 instructions",
-                "1|L--|d1 = 0x0000",
+                "1|L--|d1 = DPB(d1, 0x0000, 0, 16)",
                 "2|L--|Z = true",
                 "3|L--|C = false",
                 "4|L--|N = false",

@@ -40,25 +40,27 @@ namespace Decompiler.UnitTests.Gui.Windows
     [TestFixture]
     public class MemoryViewServiceTests
     {
-        private MockRepository repository;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
         }
 
         [Test]
         public void MVS_ShowingWindowCreatesWindowFrame()
         {
             ServiceContainer sc = new ServiceContainer();
-            var shellUi = repository.DynamicMock<IDecompilerShellUiService>();
-            var decSvc = repository.StrictMock<IDecompilerService>();
-            var windowFrame = repository.DynamicMock<IWindowFrame>();
+            var shellUi = mr.DynamicMock<IDecompilerShellUiService>();
+            var decSvc = mr.StrictMock<IDecompilerService>();
+            var windowFrame = mr.DynamicMock<IWindowFrame>();
+            var uiPrefSvc = mr.Stub<IUiPreferencesService>();
             sc.AddService(typeof(IDecompilerShellUiService), shellUi);
             sc.AddService<IDecompilerService>(decSvc);
+            AddStubService<IUiPreferencesService>(sc);
 
-            var service = repository.Stub<MemoryViewServiceImpl>(sc);
+            var service = mr.Stub<MemoryViewServiceImpl>(sc);
             var interactor = new LowLevelViewInteractor();
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
 
@@ -70,18 +72,18 @@ namespace Decompiler.UnitTests.Gui.Windows
                 Arg<IWindowPane>.Is.Anything))
                 .Return(windowFrame);
             Expect.Call(windowFrame.Show);
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             interactor.SetSite(sc);
             interactor.CreateControl();
             svc.ShowMemoryAtAddress(new Program(), new Address(0x10000));
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         private T AddStubService<T>(IServiceContainer sc)
         {
-            var svc = repository.Stub<T>();
+            var svc = mr.Stub<T>();
             sc.AddService<T>(svc);
             return svc;
         }
@@ -91,30 +93,31 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var sc = new ServiceContainer();
             var ctrl = new LowLevelView();
-            var interactor = repository.DynamicMock<LowLevelViewInteractor>();
+            var interactor = mr.DynamicMock<LowLevelViewInteractor>();
             interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
             interactor.Stub(i => i.Control).Return(ctrl);
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
+            AddStubService<IUiPreferencesService>(sc);
             uiSvc.Stub(x => x.FindWindow(Arg<string>.Is.Anything)).Return(null);
             uiSvc.Stub(x => x.CreateWindow("", "", null))
                 .IgnoreArguments()
-                .Return(repository.Stub<IWindowFrame>());
+                .Return(mr.Stub<IWindowFrame>());
             uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
 
-            var service = repository.Stub<MemoryViewServiceImpl>(sc);
+            var service = mr.Stub<MemoryViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
             var image = new LoadedImage(new Address(0x1000), new byte[300]);
             var program = new Program {
                 Image = image,
                 ImageMap = new ImageMap(image)
             };
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             interactor.SetSite(sc);
             interactor.CreateControl();
             service.ShowMemoryAtAddress(program, new Address(0x4711));
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         private class TestMainFormInteractor : MainFormInteractor
