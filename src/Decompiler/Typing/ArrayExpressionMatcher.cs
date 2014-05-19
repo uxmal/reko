@@ -32,7 +32,6 @@ namespace Decompiler.Typing
 	{
 		private Expression index;
 		private Constant elemSize;
-		private Expression arrayPtr;
         private PrimitiveType dtPointer;
 
 		public ArrayExpressionMatcher(PrimitiveType dtPointer)
@@ -40,10 +39,7 @@ namespace Decompiler.Typing
             this.dtPointer = dtPointer;
 		}
 
-		public Expression ArrayPointer
-		{
-			get { return arrayPtr; }
-		}
+		public Expression ArrayPointer { get; set; }
 			
 		public Constant ElementSize
 		{
@@ -85,7 +81,7 @@ namespace Decompiler.Typing
 		{
 			elemSize = null;
 			index = null;
-			arrayPtr = null;
+			ArrayPointer = null;
 
 			BinaryExpression b = e as BinaryExpression;
 			if (b == null)
@@ -102,7 +98,7 @@ namespace Decompiler.Typing
 					if (MatchMul(bInner))
 					{
 						// (+ (* i c) ptr)
-						arrayPtr = b.Right;
+						ArrayPointer = b.Right;
 						return true;
 					}
 				}
@@ -112,7 +108,7 @@ namespace Decompiler.Typing
 					if (MatchMul(bInner))
 					{
 						// (+ ptr (* i c))
-						arrayPtr = b.Left;
+						ArrayPointer = b.Left;
 						return true;
 					}
 					if (bInner.Operator == Operator.IAdd)
@@ -132,7 +128,7 @@ namespace Decompiler.Typing
 									b.Left,
 									bInner.Right);
 								b.Left = bbInner;
-								arrayPtr = b.Right;
+								ArrayPointer = b.Right;
 								return true;
 							}
 						}
@@ -146,11 +142,11 @@ namespace Decompiler.Typing
 		{
             if (baseptr != null)
             {
-                arrayPtr = new MkSequence(dtPointer, baseptr, arrayPtr);
+                ArrayPointer = new MkSequence(dtPointer, baseptr, ArrayPointer);
             }
 			return new ArrayAccess(
                 dtAccess, 
-                arrayPtr,
+                ArrayPointer,
                 new BinaryExpression(
                     BinaryOperator.IMul, 
                     index.DataType,

@@ -68,6 +68,14 @@ namespace Decompiler.Typing
             access.EffectiveAddress = access.EffectiveAddress.Accept(this);
             if (aem.Match(access.EffectiveAddress))
             {
+                if (aem.ArrayPointer == null)
+                {
+                    aem.ArrayPointer = Constant.Create(
+                        PrimitiveType.Create(
+                            Domain.Pointer,
+                            access.EffectiveAddress.DataType.Size),
+                        0);
+                }
                 return aem.Transform(null, access.DataType);
             }
             else if (access.EffectiveAddress is Identifier)
@@ -105,6 +113,8 @@ namespace Decompiler.Typing
 			{
                 foreach (var stm in proc.Statements)
                 {
+                    if (stm.LinearAddress == 0x10CC)    //$DEBUG
+                        stm.ToString();
                     stm.Instruction = stm.Instruction.Accept(this);
                 }
 			}
