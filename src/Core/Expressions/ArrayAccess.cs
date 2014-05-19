@@ -28,13 +28,15 @@ namespace Decompiler.Core.Expressions
     /// </summary>
 	public class ArrayAccess : Expression
 	{
-		public Expression Array;
-		public Expression Index;
 
 		public ArrayAccess(DataType elementType, Expression array, Expression index) : base(elementType)
 		{
+            if (array == null) throw new ArgumentNullException("array"); 
 			this.Array = array; this.Index = index;
 		}
+
+        public Expression Array { get; private set; }
+        public Expression Index { get; private set; }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {

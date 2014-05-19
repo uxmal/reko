@@ -142,9 +142,9 @@ namespace Decompiler.Core.Code
 
 		public virtual Expression VisitArrayAccess(ArrayAccess acc)
 		{
-			acc.Array = acc.Array.Accept(this);
-			acc.Index = acc.Index.Accept(this);
-			return acc;
+			var a = acc.Array.Accept(this);
+			var i = acc.Index.Accept(this);
+			return new ArrayAccess(acc.DataType, a, i);
 		}
 
 		public virtual Expression VisitBinaryExpression(BinaryExpression binExp)

@@ -94,18 +94,18 @@ namespace Decompiler.Analysis
 				coa.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-                var liv = new LinearInductionVariableFinder(
-                    proc, 
-                    ssa.Identifiers, 
-                    new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
-                liv.Find();
-     
-                foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
-                {
-                    var str = new StrengthReduction(ssa, de.Key, de.Value);
-                    str.ClassifyUses();
-                    str.ModifyUses();
-                }
+				var liv = new LinearInductionVariableFinder(
+					proc, 
+					ssa.Identifiers, 
+					new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
+				liv.Find();
+
+				foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
+				{
+					var str = new StrengthReduction(ssa, de.Key, de.Value);
+					str.ClassifyUses();
+					str.ModifyUses();
+				}
 				var opt = new OutParameterTransformer(proc, ssa.Identifiers);
 				opt.Transform();
 				DeadCode.Eliminate(proc, ssa);

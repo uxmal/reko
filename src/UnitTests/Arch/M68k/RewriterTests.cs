@@ -854,11 +854,13 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             Rewrite(0x80C1);
             AssertCode(
-                "0|00010000(2): 7 instructions",
-                "1|L--|v4 = (uint16) d1 % (uint16) d0",
-                "2|L--|v5 = (uint16) d1 /u (uint16) d0",
-                "3|L--|(uint16) d1 = DPB((uint16) d1, v4, 16, 16)",
-                "4|L--|v6 = DPB((uint16) d1, v5, 0, 16)");
+                "0|00010000(2): 6 instructions",
+                "1|L--|v3 = (uint16) (d0 % (uint16) d1)",
+                "2|L--|v4 = (uint16) (d0 /u (uint16) d1)",
+                "3|L--|d0 = DPB(d0, v3, 16, 16)",
+                "4|L--|d0 = DPB(d0, v4, 0, 16)",
+                "5|L--|VZN = cond(v4)",
+                "6|L--|C = false");
         }
 
         [Test]

@@ -53,18 +53,13 @@ namespace Decompiler.Scanning
 
         public BlockWorkitem(
             IScanner scanner,
-            IEnumerable<RtlInstructionCluster> rewriter,
             ProcessorState state,
-            Frame frame,
             Address addr)
         {
             this.scanner = scanner;
             this.arch = scanner.Architecture;   // cached since it's used heavily.
-            this.rtlStream = rewriter.GetEnumerator();
             this.state = state;
             this.eval = new ExpressionSimplifier(state);
-            this.stackReg = frame.EnsureRegister(arch.StackRegister);
-            this.frame = frame;
             this.addrStart = addr;
             this.blockCur = null;
         }
@@ -96,6 +91,11 @@ namespace Decompiler.Scanning
             if (BlockHasBeenScanned(blockCur))
                 return;
             Debug.Print("Scanning jump target {0}", addrStart);
+            frame = blockCur.Procedure.Frame;
+            this.stackReg = frame.EnsureRegister(arch.StackRegister);
+            rtlStream = scanner.GetTrace(addrStart, state, frame)
+                .GetEnumerator();
+
             while (rtlStream.MoveNext())
             {
                 ric = rtlStream.Current;

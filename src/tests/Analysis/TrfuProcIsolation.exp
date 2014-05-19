@@ -11,8 +11,8 @@ l0C00_0000:
 	Mem0[ds:0x0300:word16] = ax
 	di = wLoc02
 	sp = fp
-	// succ:  l0C00_0000_thunk_fn0C00_000F
-l0C00_0000_thunk_fn0C00_000F:
+	// succ:  l0C00_000F_thunk_fn0C00_000F
+l0C00_000F_thunk_fn0C00_000F:
 	call fn0C00_000F (retsize: 0;)
 	return
 	// succ:  fn0C00_0000_exit

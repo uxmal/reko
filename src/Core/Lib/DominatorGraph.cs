@@ -176,7 +176,7 @@ namespace Decompiler.Core.Lib
             return idoms;
         }
 
-        private Dictionary<T, List<T>> BuildDominanceFrontiers(DirectedGraph<T> graph, Dictionary<T,T> doms)
+        private Dictionary<T, List<T>> BuildDominanceFrontiers(DirectedGraph<T> graph, Dictionary<T,T> idoms)
         {
             Dictionary<T, List<T>> fronts = new Dictionary<T, List<T>>();
             foreach (T node in graph.Nodes)
@@ -192,14 +192,14 @@ namespace Decompiler.Core.Lib
                 foreach (T p in pred)
                 {
                     T r = p;
-                    while (r != null && r != doms[bb])
+                    while (r != null && r != idoms[bb])
                     {
                         // Add b to the dominance frontier of r.
 
-                            if (!fronts[r].Contains(bb))
-                                fronts[r].Add(bb);
+                        if (!fronts[r].Contains(bb))
+                            fronts[r].Add(bb);
 
-                        r = doms[r];
+                        r = idoms[r];
                     }
                 }
             }

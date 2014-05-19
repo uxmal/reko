@@ -20,12 +20,14 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelAssembler asm;
         private LoaderResults asmResult;
         private Address loadAddress = new Address(0x0010000);
+        private FakeRewriterHost host;
 
         [SetUp]
         public void Setup()
         {
             arch = new X86ArchitectureFlat32();
             asm = new IntelAssembler(arch, loadAddress, new List<EntryPoint>());
+            host = new FakeRewriterHost(null);
         }
 
         public override IProcessorArchitecture Architecture
@@ -35,7 +37,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
-            return new X86Rewriter(arch, null, new X86State(arch), asmResult.Image.CreateReader(0), frame);
+            return new X86Rewriter(arch, host, new X86State(arch), asmResult.Image.CreateReader(0), frame);
         }
 
         public override Address LoadAddress

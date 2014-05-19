@@ -55,6 +55,8 @@ namespace Decompiler.Arch.X86
             ImageReader rdr, 
             Frame frame)
         {
+            if (host == null)
+                throw new ArgumentNullException("host");
             this.arch = arch;
             this.host = host;
             this.frame = frame;
