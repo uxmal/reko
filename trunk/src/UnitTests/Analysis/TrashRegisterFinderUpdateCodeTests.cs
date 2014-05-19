@@ -149,6 +149,7 @@ l1:
 	call foo (retsize: 4; depth: 8)
 	ebx = 0x00471100
 	return
+	// succ:  main_exit
 main_exit:
 
 // foo
@@ -158,6 +159,7 @@ foo_entry:
 l1:
 	eax = 0x00471100
 	return
+	// succ:  foo_exit
 foo_exit:
 
 ";

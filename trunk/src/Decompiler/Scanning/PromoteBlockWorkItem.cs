@@ -48,6 +48,7 @@ namespace Decompiler.Scanning
             var replacer = new IdentifierReplacer(ProcNew.Frame);
             while (stack.Count != 0)
             {
+                DumpBlocks(Block.Procedure);
                 var e = stack.Peek();
                 if (!e.MoveNext())
                 {
@@ -58,6 +59,7 @@ namespace Decompiler.Scanning
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
 
+                Debug.Print("PromoteBlock visiting block {0}", b.Name);
                 b.Procedure.RemoveBlock(b);
                 ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
@@ -77,13 +79,23 @@ namespace Decompiler.Scanning
             }
         }
 
+        private void DumpBlocks(Procedure procedure)
+        {
+            Debug.Print("{0}", procedure.Name);
+            foreach (var block in procedure.ControlGraph.Blocks)
+            {
+                Debug.Print("  {0}; {1}", block.Name, block.Procedure.Name);
+            }
+        }
+
         public void FixInboundEdges(Block blockToPromote)
         {
             // Get all blocks that are from "outside" blocks.
             var inboundBlocks = blockToPromote.Pred.Where(p => p.Procedure != ProcNew).ToArray();
             foreach (var inboundBlock in inboundBlocks)
             {
-                var callRetThunkBlock = Scanner.CreateCallRetThunk(inboundBlock.Procedure, ProcNew);
+                var callRetThunkBlock = Scanner.CreateCallRetThunk(inboundBlock, inboundBlock.Procedure, ProcNew);
+                inboundBlock.Procedure.ControlGraph.AddEdge(inboundBlock, callRetThunkBlock);
                 ReplaceSuccessorsWith(inboundBlock, blockToPromote, callRetThunkBlock);
             }
             foreach (var p in inboundBlocks)
@@ -101,7 +113,7 @@ namespace Decompiler.Scanning
                     continue;
                 if (s.Procedure.EntryBlock.Succ[0] == s)
                 {
-                    var retCallThunkBlock = Scanner.CreateCallRetThunk(block.Procedure, s.Procedure);
+                    var retCallThunkBlock = Scanner.CreateCallRetThunk(block, block.Procedure, s.Procedure);
                     block.Succ[i] = retCallThunkBlock;
                 }
                 s.ToString();

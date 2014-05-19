@@ -604,9 +604,9 @@ namespace Decompiler.Evaluation
 
 		public Expression VisitArrayAccess(ArrayAccess acc)
 		{
-			acc.Index = acc.Index.Accept(this);
-			acc.Array = acc.Array.Accept(this);
-			return acc;
+			var a = acc.Index.Accept(this);
+			var i = acc.Array.Accept(this);
+			return new ArrayAccess(acc.DataType, a, i);
 		}
 
 		/// <summary>
@@ -785,7 +785,7 @@ namespace Decompiler.Evaluation
 		{
 			PrimitiveType lType = (PrimitiveType) l.DataType;
 			PrimitiveType rType = (PrimitiveType) r.DataType;
-			if (lType.Domain != rType.Domain)
+			if ((lType.Domain & rType.Domain) == 0)
 				throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
 			return ((BinaryOperator)op).ApplyConstants(l, r);
 		}

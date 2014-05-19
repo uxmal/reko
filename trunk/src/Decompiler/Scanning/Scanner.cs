@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
 using Decompiler.Core.Types;
@@ -30,6 +31,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
 
 namespace Decompiler.Scanning
 {
@@ -69,8 +71,10 @@ namespace Decompiler.Scanning
 
         ImageReader CreateReader(Address addr);
 
-        Block CreateCallRetThunk(Procedure procOld, Procedure procNew);
+        Block CreateCallRetThunk(Block blockFrom, Procedure procOld, Procedure procNew);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
+
+        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame);
     }
 
     /// <summary>
@@ -225,16 +229,18 @@ namespace Decompiler.Scanning
         {
             return new BlockWorkitem(
                 this,
-                this.program.Architecture.CreateRewriter(
-                    CreateReader(addrStart), 
-                    stateOnEntry, 
-                    proc.Frame,
-                    this),
                 stateOnEntry,
-                proc.Frame,
                 addrStart);
         }
 
+        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
+        {
+            return Architecture.CreateRewriter(
+                    CreateReader(addrStart),
+                    state,
+                    frame,
+                    this);
+        }
 
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
         {
@@ -283,7 +289,7 @@ namespace Decompiler.Scanning
                 {
                     // We just created a block in a foreign procedure. 
                     procDest = EnsureProcedure(addrStart, null);
-                    block = CreateCallRetThunk(proc, procDest);
+                    block = CreateCallRetThunk(block, proc, procDest);
                     var wi = CreatePromoteWorkItem(addrStart, block, procDest);
                     queue.Enqueue(PriorityBlockPromote, wi);
                 }
@@ -299,7 +305,7 @@ namespace Decompiler.Scanning
                     }
                     else
                     {
-                        block = CreateCallRetThunk(proc, procDest);
+                        block = CreateCallRetThunk(block, proc, procDest);
                     }
                 }
                 else if (IsBlockLinearProcedureExit(block))
@@ -310,7 +316,8 @@ namespace Decompiler.Scanning
                 {
                     // We jumped into a pre-existing block of another procedure.
                     procDest = EnsureProcedure(addrStart, null);
-                    var blockNew = CreateCallRetThunk(proc, procDest);
+                    var blockNew = CreateCallRetThunk(block, proc, procDest);
+                    procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
                     var wi = CreatePromoteWorkItem(addrStart, block, procDest);
                     queue.Enqueue(PriorityBlockPromote, wi);
                     return blockNew;
@@ -335,11 +342,11 @@ namespace Decompiler.Scanning
             return clonedBlock;
         }
 
-        public Block CreateCallRetThunk(Procedure procOld, Procedure procNew)
+        public Block CreateCallRetThunk(Block blockFrom, Procedure procOld, Procedure procNew)
         {
             var blockName = string.Format(
                 "{0}_thunk_{1}", 
-                procOld.Name.Replace("fn", "l"),
+                blockFrom.Name,
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
             callRetThunkBlock.Statements.Add(0, new CallInstruction(

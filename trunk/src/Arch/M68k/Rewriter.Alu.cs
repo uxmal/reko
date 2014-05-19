@@ -24,6 +24,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -269,23 +270,21 @@ namespace Decompiler.Arch.M68k
 
         private void RewriteDiv(BinaryOperator op)
         {
-            System.Diagnostics.Debug.Print(di.dataWidth.ToString());
+            Debug.Print(di.dataWidth.ToString());
             if (di.dataWidth.BitSize == 16)
             {
                 di.dataWidth = PrimitiveType.UInt32;
                 var src = orw.RewriteSrc(di.op1);
-                var tmp = orw.RewriteDst(di.op2, src, (d, s) =>
-                {
-                    var rem = frame.CreateTemporary(PrimitiveType.UInt16);
-                    var quot = frame.CreateTemporary(PrimitiveType.UInt16);
-                    emitter.Assign(rem, emitter.Remainder(d, s));
-                    emitter.Assign(quot, emitter.UDiv(d, s));
-                    emitter.Assign(d, emitter.Dpb(d, rem, 16, 16));
-                    return emitter.Dpb(d, quot, 0, 16);
-                });
+                var rem = frame.CreateTemporary(PrimitiveType.UInt16);
+                var quot = frame.CreateTemporary(PrimitiveType.UInt16);
+                var regDst = frame.EnsureRegister(((RegisterOperand) di.op2).Register);
+                emitter.Assign(rem, emitter.Cast(rem.DataType, emitter.Remainder(regDst, src)));
+                emitter.Assign(quot, emitter.Cast(quot.DataType, emitter.UDiv(regDst, src)));
+                emitter.Assign(regDst, emitter.Dpb(regDst, rem, 16, 16));
+                emitter.Assign(regDst, emitter.Dpb(regDst, quot, 0, 16));
                 emitter.Assign(
                     orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
-                    emitter.Cond(tmp));
+                    emitter.Cond(quot));
                 emitter.Assign(
                     orw.FlagGroup(FlagM.CF), Constant.False());
                 return;

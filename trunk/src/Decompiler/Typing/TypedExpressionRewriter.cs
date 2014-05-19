@@ -142,9 +142,9 @@ namespace Decompiler.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            acc.Array = NormalizeArrayPointer(acc.Array.Accept(this));
-            acc.Index = acc.Index.Accept(this);
-            return acc;
+            var a = NormalizeArrayPointer(acc.Array.Accept(this));
+            var i = acc.Index.Accept(this);
+            return new ArrayAccess(acc.DataType, a, i);
         }
 
         private Expression NormalizeArrayPointer(Expression arrayExp)

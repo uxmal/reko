@@ -98,7 +98,17 @@ namespace Decompiler.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitAddress(Decompiler.Core.Address addr)
         {
-            throw new NotImplementedException();
+            var anyC = p as WildConstant;
+            if (anyC != null)
+            {
+                if (!string.IsNullOrEmpty(anyC.Label))
+                    capturedExpressions[anyC.Label] = addr;
+                return true;
+            }
+            var cP = p as Address;
+            if (cP == null)
+                return false;
+            return addr.Linear == cP.Linear;
         }
 
         bool ExpressionVisitor<bool>.VisitApplication(Application appl)
@@ -167,7 +177,15 @@ namespace Decompiler.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitDepositBits(DepositBits d)
         {
-            throw new NotImplementedException();
+            var dP = p as DepositBits;
+            if (dP == null)
+                return false;
+            if (!Match(dP.Source, d.Source))
+                return false;
+            if (!Match(dP.InsertedBits, d.InsertedBits))
+                return false;
+            return (dP.BitPosition == d.BitPosition &&
+                dP.BitCount == d.BitCount);
         }
 
         bool ExpressionVisitor<bool>.VisitDereference(Dereference deref)

@@ -12,8 +12,8 @@ l0C00_0000:
 	call fn0C00_000C (retsize: 2;)
 	bx = 0x5678
 	call fn0C00_0018 (retsize: 2;)
-	// succ:  l0C00_0000_thunk_fn0C00_000C
-l0C00_0000_thunk_fn0C00_000C:
+	// succ:  l0C00_000C_thunk_fn0C00_000C
+l0C00_000C_thunk_fn0C00_000C:
 	call fn0C00_000C (retsize: 0;)
 	return
 	// succ:  fn0C00_0000_exit

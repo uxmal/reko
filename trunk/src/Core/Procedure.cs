@@ -46,7 +46,7 @@ namespace Decompiler.Core
             this.ControlGraph = new BlockGraph(blocks);
 			this.Frame = frame;
 			this.Signature = new ProcedureSignature();
-			this.EntryBlock = AddBlock(Name + "_entry");	
+            this.EntryBlock = AddBlock(Name + "_entry");
 			this.ExitBlock = AddBlock(Name + "_exit");
 		}
 

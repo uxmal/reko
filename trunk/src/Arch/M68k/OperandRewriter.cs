@@ -135,7 +135,7 @@ namespace Decompiler.Arch.M68k
                 {
                     Expression rSub = m.Cast(dataWidth, r);
                     var srcExp = opGen(src, rSub);
-                    if (srcExp is Identifier || srcExp is Constant)
+                    if (srcExp is Identifier || srcExp is Constant || srcExp is DepositBits)
                     {
                         tmp = srcExp;
                     }

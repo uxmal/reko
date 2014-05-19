@@ -114,18 +114,19 @@ namespace Decompiler.UnitTests.Scanning
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
             var asm = new IntelAssembler(arch, addr, new List<EntryPoint>());
-            scanner = repository.Stub<IScanner>();
+            scanner = repository.StrictMock<IScanner>();
+            m(asm);
+            lr = asm.GetImage();
             host = new RewriterHost(asm.ImportThunks);
+            var rw = arch.CreateRewriter(new ImageReader(lr.Image, addr), this.state, proc.Frame, host);
             using (repository.Record())
             {
-                m(asm);
                 scanner.Stub(x => x.Platform).Return(platform);
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
+                scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(rw);
             }
-            lr = asm.GetImage();
-            var rw = arch.CreateRewriter(new ImageReader(lr.Image, addr), this.state, proc.Frame, host);
-            wi = new BlockWorkitem(scanner, rw, state, proc.Frame, addr);
+            wi = new BlockWorkitem(scanner, state, addr);
         }
 
 
@@ -404,6 +405,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Is.Anything));
             });
             wi.ProcessInternal();
+
             repository.VerifyAll();
             var sExp =
                 "testblock:" + nl +
