@@ -76,9 +76,14 @@ namespace Decompiler.Assemblers.M68k
         public RegisterOperand a6 { get { return new RegisterOperand(Registers.a6); } }
         public RegisterOperand a7 { get { return new RegisterOperand(Registers.a7); } }
 
-        public LoadedImage GetImage()
+        public LoaderResults GetImage()
         {
-            return new LoadedImage(BaseAddress, Emitter.Bytes);
+            var image = new LoadedImage(BaseAddress, Emitter.Bytes);
+            return new LoaderResults(
+                image,
+                new ImageMap(image),
+                arch, 
+                new DefaultPlatform(null, null));
         }
 
         internal void Cnop(int extra, int align)
@@ -443,7 +448,7 @@ namespace Decompiler.Assemblers.M68k
             Emit(0x4840 | Ea(ea));
         }
 
-        internal void Rts()
+        public void Rts()
         {
             Emit(0x4E75);
         }
@@ -470,6 +475,5 @@ namespace Decompiler.Assemblers.M68k
         internal void ReportUnresolvedSymbols()
         {
         }
-
     }
 }

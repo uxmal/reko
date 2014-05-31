@@ -172,17 +172,16 @@ namespace Decompiler.Arch.Arm
 
                 // value = extract_fields (code, 0, 3, FLD_N, FLD_immr, FLD_imms);
                 //sf = aarch64_get_qualifier_esize (inst->operands[0].qualifier) != 4;
-
-                /* value is N:immr:imms.  */
+                // value is N:immr:imms.
                 S = (value >> 10) & 0x3Fu;
                 R = (value >> 16) & 0x3F;
-                N = (value >> 22) & 0x1;
+                N = (value >> 22) & 0x01;
 
                 if (!is64 && N == 1)
                     throw new InvalidOperationException();
 
-                /* The immediate value is S+1 bits to 1, left rotated by SIMDsize - R
-                   (in other words, right rotated by R), then replicated.  */
+                // The immediate value is S+1 bits to 1, left rotated by SIMDsize - R
+                // (in other words, right rotated by R), then replicated.
                 if (N != 0)
                 {
                     simd_size = 64;
@@ -355,8 +354,6 @@ namespace Decompiler.Arch.Arm
             {
                 return oprecs[(opcode >> shift) & mask].Decode(dasm, opcode);
             }
-
-
         }
 
         class AddSubIDecoder : OpDecoder2
@@ -415,6 +412,22 @@ namespace Decompiler.Arch.Arm
                 throw new NotImplementedException();
             }
         }
+
+        private class DataImmediateOpRec : OpDecoder2
+        {
+            private OpDecoder2[] oprecs;
+
+            public DataImmediateOpRec(OpDecoder2[] oprecs)
+            {
+                this.oprecs = oprecs;
+            }
+
+            public override AArch64Instruction Decode(AArch64Disassembler2 dasm, uint instr)
+            {
+                return oprecs[(instr >> 23) & 7].Decode(dasm, instr);
+            }
+        }
+
         static AArch64Disassembler2()
         {
             var opPcRelData = new MaskDecoder(31, 1,
@@ -426,22 +439,31 @@ namespace Decompiler.Arch.Arm
             var opAddSubI = new MaskDecoder(29, 0x7,
                 new OpDecoder2[] 
                 {
-                    new ShiftOpRec(AA64Opcode.add, "r0,r5,A"),
-                    new ShiftOpRec(AA64Opcode.adds, "r0,r5,A"),
+                    new ShiftOpRec(AA64Opcode.add, "W0,W5,A"),
+                    new ShiftOpRec(AA64Opcode.adds, "W0,W5,A"),
+                    new ShiftOpRec(AA64Opcode.sub, "W0,W5,A"),
+                    new ShiftOpRec(AA64Opcode.subs, "W0,W5,A"),
+                    new ShiftOpRec(AA64Opcode.add, "X0,X5,A"),
+                    new ShiftOpRec(AA64Opcode.adds, "X0,X5,A"),
+                    new ShiftOpRec(AA64Opcode.sub, "X0,X5,A"),
+                    new ShiftOpRec(AA64Opcode.subs, "X0,X5,A"),
                 });
 
-            //opDataIRecs = new OpDecoder2 [] {
-            //    opPcRelData,
-            //    opPcRelData,
-            //    new AddSubIDecoder(),
-            //    new AddSubIDecoder(),
-            //    new LogicalIDecoder(),
-            //    new MoveWideIDecoder(),
-            //    new BitFieldDecoder(),
-            //    new ExtractDecoder(),
-            //};
+            var opDataIRecs = new MaskDecoder(23, 7,
+                new OpDecoder2 []
+                {
+                    opPcRelData,
+                    opPcRelData,
+                    opAddSubI,
+                    opAddSubI,
+                    new LogicalIDecoder(),
+                    new MoveWideIDecoder(),
+                    new BitFieldDecoder(),
+                    new ExtractDecoder(),
+                });
 
             opBesRecs = new OpDecoder2[] { };
+
             oprecs = new OpDecoder2[] {
                 // 00
                 null,   // Unallocated

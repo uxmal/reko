@@ -69,8 +69,7 @@ namespace Decompiler.Assemblers.M68k
 
             asm.ReportUnresolvedSymbols();
             //addrStart = addrBase;
-            var image = asm.GetImage();
-            return new LoaderResults(image, new ImageMap(image), arch, null);
+            return asm.GetImage();
         }
 
         private void ProcessLine()

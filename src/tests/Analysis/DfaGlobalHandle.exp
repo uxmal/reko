@@ -2,8 +2,8 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: eax esp edi ax sp di al ah
-// Preserved: esi
+// Trashed: eax ax al ah
+// Preserved: esp esi edi
 // Stack args: Stack +0004(32)
 // fn10000000
 void fn10000000(word32 dwArg04)

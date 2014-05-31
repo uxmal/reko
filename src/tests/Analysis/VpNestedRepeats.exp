@@ -238,19 +238,23 @@ Mem34: orig: Mem0
     def:  Mem34[ds:0x0300:word16] = dx_23
 // fn0C00_0000
 void fn0C00_0000(word16 si, selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
+	def fp
+	def sp
+	def SZO
+	def C
 	def ds
 	def si
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	dx_11 = 0x0000
-	cx_15 = 0x0004
-	di_16 = 0x0004
+l0C00_0000:
+	dx_13 = 0x0000
+	cx_18 = 0x0004
+	di_19 = 0x0004
 	// succ:  l0C00_0008
-l0C00_0008:		// pred: l0C00_0000 l0C00_0008 l0C00_000D
-	si_17 = PHI(si, si_22, si_22)
-	di_18 = PHI(di_16, di_18, di_30)
+l0C00_0008:
+	si_20 = PHI(si, si_25, si_25)
+	di_21 = PHI(di_19, di_21, di_33)
 	cx_19 = PHI(cx_15, cx_25, cx_29)
 	dx_20 = PHI(dx_11, dx_23, dx_23)
 	ax_21 = Mem0[ds:si_17:word16]

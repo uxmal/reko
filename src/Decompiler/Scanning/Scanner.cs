@@ -609,6 +609,7 @@ namespace Decompiler.Scanning
             {
                 proc.Frame.ReturnAddressSize = returnAddressBytes;
                 proc.Frame.ReturnAddressKnown = true;
+                proc.Signature.ReturnAddressOnStack = returnAddressBytes;
             }
         }
     }

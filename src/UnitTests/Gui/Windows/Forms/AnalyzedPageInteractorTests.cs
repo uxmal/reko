@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Anpi_SelectProcedure()
         {
-            codeViewSvc.Expect(s => s.DisplayProcedure(
+            codeViewSvc.Stub(s => s.DisplayProcedure(
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
             memViewSvc.Expect(s => s.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,

@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             var asm = new M68kAssembler(arch, addrBase, new List<EntryPoint>());
             build(asm);
-            image = asm.GetImage();
+            image = asm.GetImage().Image;
         }
 
         private class RewriterHost : IRewriterHost

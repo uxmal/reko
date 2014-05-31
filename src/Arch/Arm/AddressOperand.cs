@@ -33,7 +33,7 @@ namespace Decompiler.Arch.Arm
         public Address Address;
 
         public AddressOperand(Address a)
-            : base(PrimitiveType.Word64)        //$BUGBUG: what about AArch64?
+            : base(PrimitiveType.Word32)        //$BUGBUG: what about AArch64?
         {
             Address = a;
         }

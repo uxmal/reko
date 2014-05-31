@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch
 {
-    abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
+    public abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
         where TInstruction : MachineInstruction
     {
         protected abstract ImageWriter CreateImageWriter(byte[] bytes);

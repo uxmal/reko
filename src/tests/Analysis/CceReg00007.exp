@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 al:al
 C:Flags
@@ -33,7 +33,7 @@ fn0C00_0000_exit:
 Mem0:Global memory
     def:  def Mem0
     uses: v7_14 = Mem0[ds:0x0201:word16] + 0x0001
-fp:Temporary
+fp:fp
 sp:sp
 al:al
     def:  def al

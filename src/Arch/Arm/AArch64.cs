@@ -112,17 +112,17 @@ namespace Decompiler.Arch.Arm
 
         public PrimitiveType FramePointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Pointer64; }
         }
 
         public PrimitiveType PointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Pointer64; }
         }
 
         public PrimitiveType WordWidth
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Word64; }
         }
 
         public RegisterStorage StackRegister

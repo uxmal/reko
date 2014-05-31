@@ -143,5 +143,37 @@ namespace Decompiler.Arch.Mos6502
         public static readonly RegisterStorage x = new RegisterStorage("x", 1, PrimitiveType.Byte);
         public static readonly RegisterStorage y = new RegisterStorage("y", 2, PrimitiveType.Byte);
         public static readonly RegisterStorage s = new RegisterStorage("s", 3, PrimitiveType.Byte);
+
+        public static readonly RegisterStorage N = new RegisterStorage("N", 4, PrimitiveType.Byte);
+        public static readonly RegisterStorage V = new RegisterStorage("V", 5, PrimitiveType.Byte);
+        public static readonly RegisterStorage C = new RegisterStorage("C", 6, PrimitiveType.Byte);
+        public static readonly RegisterStorage Z = new RegisterStorage("Z", 7, PrimitiveType.Byte);
+        public static readonly RegisterStorage I = new RegisterStorage("I", 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage D = new RegisterStorage("D", 9, PrimitiveType.Byte);
+        
+        private static RegisterStorage[] regs;
+
+        public static RegisterStorage GetRegister(int reg)
+        {
+            return regs[reg];
+        }
+
+        static Registers()
+        {
+            regs = new RegisterStorage[]
+            {
+                a,
+                x,
+                y,
+                s,
+
+                N,
+                V,
+                C,
+                Z,
+                I,
+                D,
+            };
+        }
     }
 }

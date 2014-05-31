@@ -118,6 +118,7 @@ namespace Decompiler.Gui.Windows
             public SearchResultView(ListView lv)
             {
                 this.listView = lv;
+                this.listView.Columns.Clear();
             }
 
             #region ISearchResultView Members

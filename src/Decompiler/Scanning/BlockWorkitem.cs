@@ -305,8 +305,7 @@ namespace Decompiler.Scanning
                 {
                     scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
-                state.OnAfterCall(stackReg, sig, eval);
-                return !callee.Characteristics.Terminates;
+                return OnAfterCall(sig, callee.Characteristics);
             }
 
             var procCallee = call.Target as ProcedureConstant;
@@ -324,16 +323,14 @@ namespace Decompiler.Scanning
                     {
                         Emit(new CallInstruction(procCallee, site));
                     }
-                    state.OnAfterCall(stackReg, ppp.Signature, eval);
-                    return !ppp.Characteristics.Terminates;
+                    return OnAfterCall(ppp.Signature, ppp.Characteristics);
                 }
             }
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
                 Emit(BuildApplication(call.Target, sig, site));
-                state.OnAfterCall(stackReg, sig, eval);
-                return true;
+                return OnAfterCall(sig, null);  //$TODO: make characteristics available
             }
 
             var id = call.Target as Identifier;
@@ -344,7 +341,7 @@ namespace Decompiler.Scanning
                 {
                     var e = CreateProcedureConstant(ppp);
                     Emit(BuildApplication(e, ppp.Signature, site));
-                    return !ppp.Characteristics.Terminates;
+                    return OnAfterCall(ppp.Signature, ppp.Characteristics);
                 }
             }
 
@@ -352,8 +349,7 @@ namespace Decompiler.Scanning
             if (imp != null)
             {
                 Emit(BuildApplication(CreateProcedureConstant(imp), imp.Signature, site));
-                state.OnAfterCall(stackReg, imp.Signature, eval);
-                return !imp.Characteristics.Terminates;
+                return OnAfterCall(imp.Signature, imp.Characteristics);
             }
 
             var syscall = scanner.Platform.FindService(call, state);
@@ -366,8 +362,24 @@ namespace Decompiler.Scanning
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
-            state.OnAfterCall(stackReg, sig, eval);
-            return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
+            return OnAfterCall(sig, null);
+        }
+
+        private bool OnAfterCall(ProcedureSignature sigCallee, Decompiler.Core.Serialization.ProcedureCharacteristics characteristics)
+        {
+            state.OnAfterCall(stackReg, sigCallee, eval);
+            if (characteristics != null && characteristics.Terminates)
+                return false;
+
+            int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
+            if (delta != 0)
+            {
+                var d = Constant.Create(stackReg.DataType, delta);
+                this.Emit(new Assignment(
+                    stackReg,
+                    new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
+            }
+            return true;
         }
 
         public bool VisitReturn(RtlReturn ret)
