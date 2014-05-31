@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -78,6 +79,14 @@ namespace Decompiler.Arch.Mos6502
                         Register = null,
                         Offset = rdr.Read(PrimitiveType.Byte)
                     };
+                    if (i < fmt.Length)
+                    {
+                        if (fmt[i] == 'x')
+                            operand.Register = Registers.x;
+                        if (fmt[i] == 'y')
+                            operand.Register = Registers.y;
+                        ++i;
+                    }
                     break;
                 case 'i':
                     operand = Indirect();
@@ -106,6 +115,16 @@ namespace Decompiler.Arch.Mos6502
                     break;
                 case 'A':
                     operand = AbsoluteOperand(fmt, ref i);
+                    break;
+                case 'j':
+                    short offset = rdr.ReadSByte();
+                    operand = new Operand(PrimitiveType.Ptr16)
+                    {
+                        Mode = AddressMode.Immediate,
+                        Offset = Constant.Create(
+                            PrimitiveType.Ptr16,
+                            (rdr.Address.Offset + offset)),
+                    };
                     break;
                 default: throw new NotImplementedException(string.Format("Unknown format character {0}.", fmt[i - 1]));
                 }
@@ -381,73 +400,77 @@ new OpRec(Opcode.bcs, "j"),
     new OpRec(Opcode.ldx, "Ay"),
     new OpRec(Opcode.illegal, ""),
  
-new OpRec(Opcode.cpy, "#"),
-    new OpRec(Opcode.cmp, "Ix"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.cpy, "z"),
-    new OpRec(Opcode.cmp, "z"),
-    new OpRec(Opcode.dec, "z"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.iny, ""),
-    new OpRec(Opcode.cmp, "#"),
-    new OpRec(Opcode.dex, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.cpy, "A"),
-    new OpRec(Opcode.cmp, "A"),
-    new OpRec(Opcode.dec, "A"),
-    new OpRec(Opcode.illegal, ""),
+        // C0
+        new OpRec(Opcode.cpy, "#"),
+        new OpRec(Opcode.cmp, "Ix"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.cpy, "z"),
+        new OpRec(Opcode.cmp, "z"),
+        new OpRec(Opcode.dec, "z"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.iny, ""),
+        new OpRec(Opcode.cmp, "#"),
+        new OpRec(Opcode.dex, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.cpy, "A"),
+        new OpRec(Opcode.cmp, "A"),
+        new OpRec(Opcode.dec, "A"),
+        new OpRec(Opcode.illegal, ""),
  
-new OpRec(Opcode.bne, "j"),
-    new OpRec(Opcode.cmp, "Iy"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.cmp, "zx"),
-    new OpRec(Opcode.dec, "zx"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.cld, ""),
-    new OpRec(Opcode.cmp, "Ay"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.cmp, "Ax"),
-    new OpRec(Opcode.dec, "Ax"),
-    new OpRec(Opcode.illegal, ""),
+        // D0
+        new OpRec(Opcode.bne, "j"),
+        new OpRec(Opcode.cmp, "Iy"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.cmp, "zx"),
+        new OpRec(Opcode.dec, "zx"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.cld, ""),
+        new OpRec(Opcode.cmp, "Ay"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.cmp, "Ax"),
+        new OpRec(Opcode.dec, "Ax"),
+        new OpRec(Opcode.illegal, ""),
+
+        // E0
+        new OpRec(Opcode.cpx, "#"),
+        new OpRec(Opcode.sbc, "Ix"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.cpx, "z"),
+        new OpRec(Opcode.sbc, "z"),
+        new OpRec(Opcode.inc, "z"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.inx, ""),
+        new OpRec(Opcode.sbc, "#"),
+        new OpRec(Opcode.nop, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.cpx, "A"),
+        new OpRec(Opcode.sbc, "A"),
+        new OpRec(Opcode.inc, "A"),
+        new OpRec(Opcode.illegal, ""),
  
-new OpRec(Opcode.cpx, "#"),
-    new OpRec(Opcode.sbc, "Ix"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.cpx, "z"),
-    new OpRec(Opcode.sbc, "z"),
-    new OpRec(Opcode.inc, "z"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.inx, ""),
-    new OpRec(Opcode.sbc, "#"),
-    new OpRec(Opcode.nop, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.cpx, "A"),
-    new OpRec(Opcode.sbc, "A"),
-    new OpRec(Opcode.inc, "A"),
-    new OpRec(Opcode.illegal, ""),
- 
-new OpRec(Opcode.beq, "j"),
-    new OpRec(Opcode.sbc, "Iy"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.sbc, "zx"),
-    new OpRec(Opcode.inc, "zx"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.sed, ""),
-    new OpRec(Opcode.sbc, "Ay"),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.illegal, ""),
-    new OpRec(Opcode.sbc, "Ax"),
-    new OpRec(Opcode.inc, "Ax"),
-    new OpRec(Opcode.illegal, ""),
+        // F0
+        new OpRec(Opcode.beq, "j"),
+        new OpRec(Opcode.sbc, "Iy"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.sbc, "zx"),
+        new OpRec(Opcode.inc, "zx"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.sed, ""),
+        new OpRec(Opcode.sbc, "Ay"),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.illegal, ""),
+        new OpRec(Opcode.sbc, "Ax"),
+        new OpRec(Opcode.inc, "Ax"),
+        new OpRec(Opcode.illegal, ""),
         };
     }
 }

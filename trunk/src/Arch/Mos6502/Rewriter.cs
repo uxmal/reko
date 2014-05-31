@@ -66,6 +66,12 @@ namespace Decompiler.Arch.Mos6502
                 switch (instrCur.Code)
                 {
                 default: throw NYI();
+                case Opcode.asl: Asl(); break;
+                case Opcode.beq: Branch(ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.cmp: Cmp(); break;
+                case Opcode.dec: Dec(); break;
+                case Opcode.pha: Push(Registers.a); break;
+                case Opcode.rts: Rts(); break;
                 case Opcode.sbc: Sbc(); break;
                 case Opcode.tax: Copy(Registers.x, Registers.a); break;
                 case Opcode.tay: Copy(Registers.y, Registers.a); break;
@@ -94,6 +100,68 @@ namespace Decompiler.Arch.Mos6502
                 emitter.Cond(dst));
         }
 
+
+        private void Branch(ConditionCode cc, FlagM flags)
+        {
+            var f = FlagGroupStorage(flags);
+            emitter.Branch(
+                emitter.Test(cc, f),
+                new Address(instrCur.Operand.Offset.ToUInt16()),
+                RtlClass.ConditionalTransfer);
+        }
+
+        private Identifier FlagGroupStorage(FlagM flags)
+        {
+            uint f = (uint) flags;
+            var sb = new StringBuilder();
+            for (int iReg = Registers.N.Number; f != 0; ++iReg, f >>= 1)
+            {
+                if ((f & 1) != 0)
+                    sb.Append(Registers.GetRegister(iReg));
+            }
+            return frame.EnsureFlagGroup((uint)flags, sb.ToString(), PrimitiveType.Byte);
+        }
+
+        private void Asl()
+        {
+            var mem = RewriteOperand(instrCur.Operand);
+            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
+            emitter.Assign(tmp, emitter.Shl(mem, 1));
+            emitter.Assign(RewriteOperand(instrCur.Operand), tmp);
+            emitter.Assign(c, emitter.Cond(tmp));
+        }
+
+        private void Cmp()
+        {
+            var a = frame.EnsureRegister(Registers.a);
+            var mem = RewriteOperand(instrCur.Operand);
+            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
+            emitter.Assign(c, emitter.Cond(emitter.ISub(a, mem)));
+        }
+
+        private void Dec()
+        {
+            var mem = RewriteOperand(instrCur.Operand);
+            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
+            emitter.Assign(tmp, emitter.ISub(mem, 1));
+            emitter.Assign(RewriteOperand(instrCur.Operand), tmp);
+            emitter.Assign(c, emitter.Cond(tmp));
+        }
+
+        private void Push(RegisterStorage reg)
+        {
+            var s = frame.EnsureRegister(arch.StackRegister);
+            emitter.Assign(s, emitter.ISub(s, 1));
+            emitter.Assign(emitter.LoadB(s), frame.EnsureRegister(reg));
+        }
+
+        private void Rts()
+        {
+            emitter.Return(2, 0);
+        }
+
         private void Sbc()
         {
             var mem = RewriteOperand(instrCur.Operand);
@@ -111,17 +179,40 @@ namespace Decompiler.Arch.Mos6502
 
         private Expression RewriteOperand(Operand op)
         {
+            Constant offset;
             switch (op.Mode)
             {
             default: throw new NotImplementedException("Unimplemented address mode " + op.Mode);
             case AddressMode.IndirectIndexed:
                 var y = frame.EnsureRegister(Registers.y);
-                var offset = Constant.Word16((ushort) op.Offset.ToByte());
-                return
-                    emitter.LoadB(
+                offset = Constant.Word16((ushort) op.Offset.ToByte());
+                return emitter.LoadB(
+                    emitter.IAdd(
+                        emitter.Load(PrimitiveType.Ptr16, offset),
+                        emitter.Cast(PrimitiveType.UInt16, y)));
+            case AddressMode.IndexedIndirect:
+                var x = frame.EnsureRegister(Registers.x);
+                offset = Constant.Word16((ushort) op.Offset.ToByte());
+                return emitter.LoadB(
+                    emitter.IAdd(
+                        offset,
+                        emitter.Cast(PrimitiveType.UInt16, x)));
+                break;
+            case AddressMode.Absolute:
+                return emitter.LoadB(op.Offset);
+            case AddressMode.ZeroPage:
+                if (op.Register != null)
+                {
+                    return emitter.LoadB(
                         emitter.IAdd(
-                            emitter.Load(PrimitiveType.Ptr16, offset),
-                            emitter.Cast(PrimitiveType.UInt16, y)));
+                            Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()),
+                            frame.EnsureRegister(op.Register)));
+                }
+                else
+                {
+                    return emitter.LoadB(
+                        Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()));
+                }
             }
         }
     }

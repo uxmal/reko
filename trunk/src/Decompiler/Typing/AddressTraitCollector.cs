@@ -210,7 +210,7 @@ namespace Decompiler.Typing
             var tvBase = (basePointer != null) ? basePointer : prog.Globals;
             if (delta < 0)
             {
-                // induction variable is decremented, so the actual array begings at ivFinal - delta.
+                // induction variable is decremented, so the actual array begins at ivFinal - delta.
                 if (iv.Final != null)
                 {
                     int init = iv.Final.ToInt32() - delta;

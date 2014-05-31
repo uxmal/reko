@@ -109,6 +109,13 @@ namespace Decompiler.Core.Rtl
             return this;
         }
 
+        /// <summary>
+        /// Return to caller.
+        /// </summary>
+        /// <param name="returnAddressBytes">How large the return address is on the stack.</param>
+        /// <param name="extraBytesPopped">Some architectures (like x86) pop the caller's extra
+        /// bytes off the stack.</param>
+        /// <returns></returns>
         public RtlEmitter Return(
             int returnAddressBytes,
             int extraBytesPopped)

@@ -29,7 +29,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Arm
 {
     [TestFixture]
-    class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
+    public class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
         private IProcessorArchitecture arch = new AArch64();
         private Address baseAddress = new Address(0x00100000);

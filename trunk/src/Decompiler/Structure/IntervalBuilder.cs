@@ -142,7 +142,7 @@ namespace Decompiler.Structure
             return intervalsInGraph;
         }
 
-        private bool IsSubSetOf(IEnumerable <StructureNode> inEdges, Interval newInt)
+        private bool IsSubSetOf(IEnumerable<StructureNode> inEdges, Interval newInt)
         {
             foreach (StructureNode inEdge in inEdges)
                 if (inEdge.Interval != newInt)

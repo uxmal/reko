@@ -76,5 +76,75 @@ namespace Decompiler.UnitTests.Arch.Mos6502
                 "1|L--|a = a - Mem0[Mem0[0x00E0:ptr16] + (uint16) y:byte] - !C",
                 "2|L--|NVZC = cond(a)");
         }
+
+        [Test]
+        public void Rw6502_dec_A()
+        {
+            BuildTest(0xCE, 0x34, 0x12);
+            AssertCode(
+                "0|00000200(3): 3 instructions",
+                "1|L--|v2 = Mem0[0x1234:byte] - 0x01",
+                "2|L--|Mem0[0x1234:byte] = v2",
+                "3|L--|NZ = cond(v2)");
+        }
+
+        [Test]
+        public void Rw6502_rts()
+        {
+            BuildTest(0x60);
+            AssertCode(
+                "0|00000200(1): 1 instructions",
+                "1|T--|return (2,0)");
+        }
+
+        [Test]
+        public void Rw6502_pha()
+        {
+            BuildTest(0x48);
+            AssertCode(
+                "0|00000200(1): 2 instructions",
+                "1|L--|s = s - 0x01",
+                "2|L--|Mem0[s:byte] = a");
+        }
+
+        [Test]
+        public void Rw6502_asl_zx()
+        {
+            BuildTest(0x16, 0x64);
+            AssertCode(
+                "0|00000200(2): 3 instructions",
+                "1|L--|v3 = Mem0[0x0064 + x:byte] << 0x01",
+                "2|L--|Mem0[0x0064 + x:byte] = v3",
+                "3|L--|NCZ = cond(v3)");
+        }
+
+        [Test]
+        public void Rw6502_beq()
+        {
+            BuildTest(0xF0, 0x64);
+            AssertCode(
+                "0|00000200(2): 1 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00000266");
+        }
+
+        [Test]
+        public void Rw6502_cmp_iX()
+        {
+            BuildTest(0xC1, 0x38);
+            AssertCode(
+                "0|00000200(2): 1 instructions",
+                "1|L--|NCZ = cond(a - Mem0[Mem0[0x0038 + (uint16) x:word16]:ptr16]:byte])");
+        }
+
+        [Test]
+        public void Rw6502_ldy_x()
+        {
+            BuildTest(0xBC, 0x34, 0x12);
+            AssertCode(
+                "0|00000200(2): 2 instructions",
+                "1|y = Mem0[0x1234 + x:byte]",
+                "2|L--|NZ = cond(v3)");
+
+        }
     }
 }

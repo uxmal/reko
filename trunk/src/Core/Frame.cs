@@ -58,8 +58,8 @@ namespace Decompiler.Core
 	/// etc.
 	/// </code>
 	/// <para>Note that variables that are stack arguments use offsets based on the state of stack
-	/// _after_ the return address was pushed. The return address, if passed on the stack, is always at 
-    /// offset 0.</para>
+	/// _after_ the return address was pushed. The return address, if passed on the stack, is always
+    /// considered to be at offset 0.</para>
 	/// <para>In addition, support has to be provided for architectures that have separate FPU stacks.</para>
 	/// </remarks>
 	public class Frame
@@ -284,7 +284,6 @@ namespace Decompiler.Core
 			}
 			return null;
 		}
-		
 
 		public string FormatStackAccessName(DataType type, string prefix, int cbOffset)
 		{

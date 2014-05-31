@@ -177,7 +177,6 @@ namespace Decompiler.Structure
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
- 
         public bool IsAncestorOf(StructureNode other)
         {
             return ((loopStamps[0] < other.loopStamps[0] &&

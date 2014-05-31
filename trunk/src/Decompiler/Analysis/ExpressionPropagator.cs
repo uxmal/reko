@@ -110,19 +110,17 @@ namespace Decompiler.Analysis
             if (pc != null)
             {
                 var proc = pc.Procedure as Procedure;
+                if (proc != null)
                 {
-                    if (proc != null)
-                    {
-                        ctx.UpdateRegistersTrashedByProcedure(flow[proc]);
-                    }
+                    ctx.UpdateRegistersTrashedByProcedure(flow[proc]);
                 }
+                return ci;
             }
             else
             {
                 var fn = ci.Callee.Accept(this);
                 return new CallInstruction(fn.PropagatedExpression, ci.CallSite);
             }
-            return ci;
         }
 
         private int GetStackDepthBeforeCall()

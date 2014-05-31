@@ -2115,6 +2115,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
+        [Obsolete]
         private static M68kInstruction d68000_move_to_ccr(M68kDisassembler dasm)
         {
             return new M68kInstruction 
@@ -3837,8 +3838,8 @@ namespace Decompiler.Arch.M68k
 	new OpRec("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
 	new OpRec("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
 	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
-	new OpRec(d68000_move_to_ccr  , 0xffc0, 0x44c0, 0xbff),
-	new OpRec(d68010_move_fr_ccr  , 0xffc0, 0x42c0, 0xbf8),
+	new OpRec("E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),        // d68000_move_to_ccr
+	new OpRec("c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),        // d68010_move_fr_ccr
 	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
 	new OpRec(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
 	new OpRec(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
@@ -3938,19 +3939,19 @@ namespace Decompiler.Arch.M68k
 	new OpRec("sl:D9,E0", 0xf1c0, 0x9180, 0x3f8, Opcode.sub),       // d68000_sub_re_32
 	new OpRec("sw:E0,A9", 0xf1c0, 0x90c0, 0xfff, Opcode.suba),      // d68000_suba_16
 	new OpRec("sl:E0,A9", 0xf1c0, 0x91c0, 0xfff, Opcode.suba),      // d68000_suba_32
-	new OpRec("sb:Ib,E0", 0xffc0, 0x0400, 0xbf8, Opcode.subi),      // d68000_subi_8
-	new OpRec("sw:Iw,E0", 0xffc0, 0x0440, 0xbf8, Opcode.subi),      // d68000_subi_16
-	new OpRec("sl:Il,E0", 0xffc0, 0x0480, 0xbf8, Opcode.subi),      // d68000_subi_32
-	new OpRec("sb:q9,E0", 0xf1c0, 0x5100, 0xbf8, Opcode.subq),      // d68000_subq_8
-	new OpRec("sw:q9,E0", 0xf1c0, 0x5140, 0xff8, Opcode.subq),      // d68000_subq_16
-	new OpRec("sl:q9,E0", 0xf1c0, 0x5180, 0xff8, Opcode.subq),      // d68000_subq_32
-	new OpRec("sb:D0,D9", 0xf1f8, 0x9100, 0x000, Opcode.subx),      // d68000_subx_rr_8
-	new OpRec("sw:D0,D9", 0xf1f8, 0x9140, 0x000, Opcode.subx),      // d68000_subx_rr_16
-	new OpRec("sl:D0,D9", 0xf1f8, 0x9180, 0x000, Opcode.subx),      // d68000_subx_rr_32
-	new OpRec("sb:-0,-9", 0xf1f8, 0x9108, 0x000, Opcode.subx),      // d68000_subx_mm_8
-	new OpRec("sw:-0,-9", 0xf1f8, 0x9148, 0x000, Opcode.subx),      // d68000_subx_mm_16
-	new OpRec("sl:-0,-9", 0xf1f8, 0x9188, 0x000, Opcode.subx),      // d68000_subx_mm_32
-	new OpRec("sl:D0",    0xfff8, 0x4840, 0x000, Opcode.swap),         // d68000_swap
+	new OpRec("sb:Ib,E0",   0xffc0, 0x0400, 0xbf8, Opcode.subi),      // d68000_subi_8
+	new OpRec("sw:Iw,E0",   0xffc0, 0x0440, 0xbf8, Opcode.subi),      // d68000_subi_16
+	new OpRec("sl:Il,E0",   0xffc0, 0x0480, 0xbf8, Opcode.subi),      // d68000_subi_32
+	new OpRec("sb:q9,E0",   0xf1c0, 0x5100, 0xbf8, Opcode.subq),      // d68000_subq_8
+	new OpRec("sw:q9,E0",   0xf1c0, 0x5140, 0xff8, Opcode.subq),      // d68000_subq_16
+	new OpRec("sl:q9,E0",   0xf1c0, 0x5180, 0xff8, Opcode.subq),      // d68000_subq_32
+	new OpRec("sb:D0,D9",   0xf1f8, 0x9100, 0x000, Opcode.subx),      // d68000_subx_rr_8
+	new OpRec("sw:D0,D9",   0xf1f8, 0x9140, 0x000, Opcode.subx),      // d68000_subx_rr_16
+	new OpRec("sl:D0,D9",   0xf1f8, 0x9180, 0x000, Opcode.subx),      // d68000_subx_rr_32
+	new OpRec("sb:-0,-9",   0xf1f8, 0x9108, 0x000, Opcode.subx),      // d68000_subx_mm_8
+	new OpRec("sw:-0,-9",   0xf1f8, 0x9148, 0x000, Opcode.subx),      // d68000_subx_mm_16
+	new OpRec("sl:-0,-9",   0xf1f8, 0x9188, 0x000, Opcode.subx),      // d68000_subx_mm_32
+	new OpRec("sl:D0",      0xfff8, 0x4840, 0x000, Opcode.swap),         // d68000_swap
 	new OpRec(d68000_tas          , 0xffc0, 0x4ac0, 0xbf8),
 	new OpRec(d68000_trap         , 0xfff0, 0x4e40, 0x000),
 	new OpRec(d68020_trapcc_0     , 0xf0ff, 0x50fc, 0x000),
@@ -3966,9 +3967,9 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68020_tst_pcdi_16  , 0xffff, 0x4a7a, 0x000),
 	new OpRec(d68020_tst_pcix_16  , 0xffff, 0x4a7b, 0x000),
 	new OpRec(d68020_tst_i_16     , 0xffff, 0x4a7c, 0x000),
-	new OpRec("sl:E0", 0xffc0, 0x4a80, 0xbf8, Opcode.tst),      // d68000_tst_32
+	new OpRec("sl:E0",      0xffc0, 0x4a80, 0xbf8, Opcode.tst),      // d68000_tst_32
 	new OpRec(d68020_tst_a_32     , 0xfff8, 0x4a88, 0x000),
-	new OpRec("sl:E0", 0xffff, 0x4aba, 0x000, Opcode.tst),          // d68020_tst_pcdi_32
+	new OpRec("sl:E0",      0xffff, 0x4aba, 0x000, Opcode.tst),          // d68020_tst_pcdi_32
 	new OpRec(d68020_tst_pcix_32  , 0xffff, 0x4abb, 0x000),
 	new OpRec(d68020_tst_i_32     , 0xffff, 0x4abc, 0x000),
 	new OpRec("A0", 0xfff8, 0x4e58, 0x000, Opcode.unlk),        // d68000_unlk
@@ -3985,7 +3986,7 @@ namespace Decompiler.Arch.M68k
 
         private static OpRec illegalOpcode = new OpRec("", 0, 0, 0, Opcode.illegal);
 
-        /* Check if opcode is using a valid ea mode */
+        // Check if opcode is using a valid ea mode
         static bool valid_ea(uint opcode, uint mask)
         {
             if (mask == 0)
@@ -4068,7 +4069,6 @@ namespace Decompiler.Arch.M68k
                 return (mask & 0x004) != 0;
             }
             return false;
-
         }
 
         static int compare_nof_true_bits(OpRec aptr, OpRec bptr)

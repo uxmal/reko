@@ -87,6 +87,14 @@ namespace Decompiler.UnitTests.Arch.Z80
         }
 
         [Test]
+        public void Z80rw_mov_a_ix()
+        {
+            BuildTest(0xDD, 0x7E, 0x3);
+            AssertCode("0|00000100(3): 1 instructions",
+                "1|L--|a = Mem0[ix + 0x0003:byte]");
+        }
+
+        [Test]
         public void Z80rw_jp()
         {
             BuildTest(0xC3, 0xAA, 0xBB);
@@ -117,6 +125,15 @@ namespace Decompiler.UnitTests.Arch.Z80
             AssertCode("0|00000100(1): 2 instructions",
                 "1|L--|sp = sp - 0x0002",
                 "2|L--|Mem0[sp:word16] = hl");
+        }
+
+        [Test]
+        public void Z80rw_add_a_R()
+        {
+            BuildTest(0x83);
+            AssertCode("0|00000100(1): 2 instructions",
+                "1|L--|a = a + e",
+                "2|L--|SZC = cond(a)");
         }
     }
 }

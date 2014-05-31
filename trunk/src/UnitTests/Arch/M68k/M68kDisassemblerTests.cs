@@ -598,5 +598,17 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             RunTest("ori.l\t#$00000004,$0048(a7)", 0x00AF, 0x0000, 0x0004, 0x0048);
         }
+
+        [Test]
+        public void M68kdis_move_to_ccr()
+        {
+            RunTest("move\td3,ccr", 0x44c3);
+        }
+
+        [Test]
+        public void M68kdis_move_fr_ccr()
+        {
+            RunTest("move\t(a3),ccr", 0x42d3, 0x0000);
+        }
     }
 }

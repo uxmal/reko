@@ -9,9 +9,14 @@ l0C00_0000:
 	sp = fp - 0x0004
 	wLoc04 = 0x0002
 	call fn0C00_0023 (retsize: 2; depth: 6)
+	sp = fp
 	ax = 0x0000
-	SZO = cond(ax)
+	SZO = cond(0x0000)
 	C = false
+	sp = fp - 0x0002
+	wLoc02 = 0x0000
+	sp = fp - 0x0004
+	wLoc04 = 0x0000
 	sp = fp - 0x0006
 	wLoc06 = 0x0000
 	sp = fp - 0x0008
@@ -20,20 +25,16 @@ l0C00_0000:
 	wLoc0A = 0x0000
 	sp = fp - 0x000C
 	wLoc0C = 0x0000
-	sp = fp - 0x000E
-	wLoc0E = 0x0000
-	sp = fp - 0x0010
-	wLoc10 = 0x0000
 	call fn0C00_0034 (retsize: 2; depth: 14)
+	sp = fp
+	SCZO = cond(fp)
+	sp = fp - 0x0002
+	wLoc02 = 0x0001
 	sp = fp - 0x0004
-	SCZO = cond(sp)
-	sp = fp - 0x0006
-	wLoc06 = 0x0001
-	sp = fp - 0x0008
-	wLoc08 = 0x0002
+	wLoc04 = 0x0002
 	call fn0C00_005D (retsize: 2; depth: 6)
 	sp = fp
-	SCZO = cond(sp)
+	SCZO = cond(fp)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

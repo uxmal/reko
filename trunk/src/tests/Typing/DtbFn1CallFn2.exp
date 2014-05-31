@@ -34,7 +34,7 @@ Eq_8: word32
 Eq_9: word32
 	T_9 (in 0x00000001 : word32)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: 
   OrigDataType: 

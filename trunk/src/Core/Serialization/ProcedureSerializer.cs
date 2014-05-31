@@ -117,8 +117,6 @@ namespace Decompiler.Core.Serialization
             return ssig;
         }
 
-
-
         public SerializedProcedure Serialize(Procedure proc, Address addr)
         {
             SerializedProcedure sproc = new SerializedProcedure();

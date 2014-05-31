@@ -105,10 +105,16 @@ namespace Decompiler.Arch.Z80
 
         public int InstructionBitSize { get { return 8; } }
 
-        public string GrfToString(uint grf)
-        {
-            throw new NotImplementedException();
-        }
+		public string GrfToString(uint grf)
+		{
+			StringBuilder s = new StringBuilder();
+			for (int r = Registers.S.Number; grf != 0; ++r, grf >>= 1)
+			{
+				if ((grf & 1) != 0)
+					s.Append(Registers.GetRegister(r).Name);
+			}
+			return s.ToString();
+		}
 
         public PrimitiveType FramePointerType
         {
@@ -191,6 +197,52 @@ namespace Decompiler.Arch.Z80
 
         public static readonly RegisterStorage i = new RegisterStorage("i", 16, PrimitiveType.Byte);
         public static readonly RegisterStorage r = new RegisterStorage("r", 17, PrimitiveType.Byte);
+
+        public static readonly RegisterStorage S = new RegisterStorage("S", 20, PrimitiveType.Bool);
+        public static readonly RegisterStorage Z = new RegisterStorage("Z", 21, PrimitiveType.Bool);
+        public static readonly RegisterStorage P = new RegisterStorage("P", 22, PrimitiveType.Bool);
+        public static readonly RegisterStorage C = new RegisterStorage("C", 23, PrimitiveType.Bool);
+
+        private static RegisterStorage[] regs;
+
+        static Registers()
+        {
+            regs = new RegisterStorage[] {
+             b ,
+             c ,
+             d ,
+             e ,
+
+             h ,
+             l ,
+             a ,
+             null,
+               
+             bc,
+             de,
+             hl,
+             sp,
+             ix,
+             iy,
+             af,
+             null,
+
+             i ,
+             r ,
+             null,
+             null,
+
+             S ,
+             Z ,
+             P ,
+             C ,
+            };
+        }
+
+        internal static RegisterStorage GetRegister(int r)
+        {
+            return regs[r];
+        }
     }
 
     [Flags]

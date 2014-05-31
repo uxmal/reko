@@ -113,8 +113,6 @@ namespace Decompiler.Typing
 			{
                 foreach (var stm in proc.Statements)
                 {
-                    if (stm.LinearAddress == 0x10CC)    //$DEBUG
-                        stm.ToString();
                     stm.Instruction = stm.Instruction.Accept(this);
                 }
 			}

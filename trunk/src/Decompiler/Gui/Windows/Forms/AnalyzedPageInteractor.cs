@@ -87,9 +87,9 @@ namespace Decompiler.Gui.Windows.Forms
         private void EditSignature()
         {
             var arch = Decompiler.Program.Architecture;
-            ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
-            SerializedProcedure proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
-            ProcedureDialogInteractor i = new ProcedureDialogInteractor(arch, proc);
+            var ser = new ProcedureSerializer(arch, "stdapi");
+            var proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
+            var i = new ProcedureDialogInteractor(arch, proc);
             using (ProcedureDialog dlg = i.CreateDialog())
             {
                 if (DialogResult.OK == UIService.ShowModalDialog(dlg))

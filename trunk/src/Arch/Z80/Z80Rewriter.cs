@@ -65,12 +65,26 @@ namespace Decompiler.Arch.Z80
                     RewriteOp(dasm.Current.Op1),
                     RewriteOp(dasm.Current.Op2));
                     break;
+                case Opcode.add: RewriteAdd(); break;
                 case Opcode.push: RewritePush(dasm.Current); break;
                 }
                 yield return rtlc;
             }
         }
 
+        private void RewriteAdd()
+        {
+            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Op2);
+            emitter.Assign(dst, emitter.IAdd(dst, src));
+            var flags = FlagGroup(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF );
+            emitter.Assign(flags, emitter.Cond(dst));
+        }
+
+        public Identifier FlagGroup(FlagM flags)
+        {
+            return frame.EnsureFlagGroup((uint) flags, arch.GrfToString((uint) flags), PrimitiveType.Byte);
+        }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
