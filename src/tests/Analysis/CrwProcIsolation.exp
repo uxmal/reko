@@ -70,7 +70,6 @@ fn0C00_0014_entry:
 	// succ:  l0C00_0014
 l0C00_0014:
 	di = 0x0000
-	SZO = cond(0x0000)
 	C = false
 	ax = ax - 0x0001
 	SZO = cond(ax)

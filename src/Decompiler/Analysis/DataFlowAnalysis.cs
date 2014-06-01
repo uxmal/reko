@@ -40,13 +40,13 @@ namespace Decompiler.Analysis
 	/// </summary>
 	public class DataFlowAnalysis
 	{
-		private Program prog;
+		private Program program;
 		private DecompilerEventListener eventListener;
 		private ProgramDataFlow flow;
 
         public DataFlowAnalysis(Program prog, DecompilerEventListener eventListener)
 		{
-			this.prog = prog;
+			this.program = prog;
             this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(prog);
 		}
@@ -65,21 +65,21 @@ namespace Decompiler.Analysis
 		public void BuildExpressionTrees()
 		{
             int i = 0;
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-                eventListener.ShowProgress("Building complex expressions.", i, prog.Procedures.Values.Count);
+                eventListener.ShowProgress("Building complex expressions.", i, program.Procedures.Values.Count);
                 ++i;
 
-                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                LongAddRewriter larw = new LongAddRewriter(proc, program.Architecture);
                 larw.Transform();
 
-				Aliases alias = new Aliases(proc, prog.Architecture, flow);
+				Aliases alias = new Aliases(proc, program.Architecture, flow);
 				alias.Transform();
                 var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
                 var sst = new SsaTransform(proc, doms);
 				var ssa = sst.SsaState;
 
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
@@ -111,7 +111,7 @@ namespace Decompiler.Analysis
 				DeadCode.Eliminate(proc, ssa);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(proc, ssa.Identifiers, prog.InductionVariables);
+                var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
 				web.Transform();
 				ssa.ConvertBack(false);
 			} 
@@ -119,7 +119,7 @@ namespace Decompiler.Analysis
 
 		public void DumpProgram()
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				StringWriter output = new StringWriter();
 				ProcedureFlow pf= this.flow[proc];
@@ -131,7 +131,7 @@ namespace Decompiler.Analysis
 				else
 					output.Write("Warning: no signature found for {0}", proc.Name);
 				output.WriteLine();
-				pf.Emit(prog.Architecture, output);
+				pf.Emit(program.Architecture, output);
 
 				output.WriteLine("// {0}", proc.Name);
 				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
@@ -141,7 +141,7 @@ namespace Decompiler.Analysis
 					if (block != null)
 					{
 						BlockFlow bf = this.flow[block];
-						bf.Emit(prog.Architecture, output);
+						bf.Emit(program.Architecture, output);
 						output.WriteLine();
 						block.Write(output);
 					}
@@ -164,18 +164,20 @@ namespace Decompiler.Analysis
         /// </returns>
 		public void UntangleProcedures()
 		{
+            eventListener.ShowStatus("Eliminating intra-block dead registers.");
+            IntraBlockDeadRegisters.Apply(program);
             eventListener.ShowStatus("Finding terminating procedures.");
             var term = new TerminationAnalysis(flow);
-            term.Analyze(prog);
+            term.Analyze(program);
 			eventListener.ShowStatus("Finding trashed registers.");
-            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
+            var trf = new TrashedRegisterFinder(program, program.Procedures.Values, flow, eventListener);
 			trf.Compute();
             eventListener.ShowStatus("Rewriting affine expressions.");
             trf.RewriteBasicBlocks();
             eventListener.ShowStatus("Computing register liveness.");
-            var rl = RegisterLiveness.Compute(prog, flow, eventListener);
+            var rl = RegisterLiveness.Compute(program, flow, eventListener);
             eventListener.ShowStatus("Rewriting calls.");
-			GlobalCallRewriter.Rewrite(prog, flow);
+			GlobalCallRewriter.Rewrite(program, flow);
 		}
 	}
 }

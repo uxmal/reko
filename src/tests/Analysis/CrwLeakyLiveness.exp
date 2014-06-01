@@ -58,7 +58,6 @@ l0C00_000A:
 l0C00_0014:
 	ax = Mem0[ds:si:word16]
 	si = si + 0x0001
-	SZO = cond(si)
 	si = si + 0x0001
 	SZO = cond(si)
 	Mem0[ds:0x0100:word16] = si

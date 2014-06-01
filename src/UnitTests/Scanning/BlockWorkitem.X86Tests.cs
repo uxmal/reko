@@ -411,6 +411,7 @@ namespace Decompiler.UnitTests.Scanning
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +
                 "\teax = GetDC(Mem0[esp:HWND])" + nl +
+                "\tesp = esp + 0x00000004" + nl +
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);

@@ -13,18 +13,18 @@ word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 ax_27
+	word16 ax_26
 	branch wArg02 == 0x0001 l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_27 = (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) (alias)
+	ax_26 = (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
-	ax_27 = 0x0001
+	ax_26 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	return ax_27
+	return ax_26
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
 
@@ -76,7 +76,7 @@ T_10: (in ax : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_11: (in ax_27 : word16)
+T_11: (in ax_26 : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16

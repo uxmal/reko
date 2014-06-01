@@ -137,6 +137,7 @@
     <Compile Include="Analysis\InteferenceGraph.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\IntraBlockDeadRegisters.cs" />
     <Compile Include="Analysis\LinearInductionVariableContext.cs" />
     <Compile Include="Analysis\LinearInductionVariableFinder.cs">
       <SubType>Code</SubType>

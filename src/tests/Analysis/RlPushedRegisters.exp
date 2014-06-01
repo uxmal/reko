@@ -2,8 +2,8 @@
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax cx sp al cl ah ch
-	Preserved:
+	Trashed:   SCZO ax cx al cl ah ch
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
 // SymbolicIn: sp:fp
@@ -20,9 +20,14 @@ l0C00_0000:
 	sp = fp - 0x0004
 	wLoc04 = 0x0002
 	call fn0C00_0023 (retsize: 2; depth: 6)
+	sp = fp
 	ax = 0x0000
 	SZO = cond(0x0000)
 	C = false
+	sp = fp - 0x0002
+	wLoc02 = 0x0000
+	sp = fp - 0x0004
+	wLoc04 = 0x0000
 	sp = fp - 0x0006
 	wLoc06 = 0x0000
 	sp = fp - 0x0008
@@ -31,25 +36,21 @@ l0C00_0000:
 	wLoc0A = 0x0000
 	sp = fp - 0x000C
 	wLoc0C = 0x0000
-	sp = fp - 0x000E
-	wLoc0E = 0x0000
-	sp = fp - 0x0010
-	wLoc10 = 0x0000
-	call fn0C00_0034 (retsize: 2; depth: 18)
+	call fn0C00_0034 (retsize: 2; depth: 14)
+	sp = fp
+	SCZO = cond(fp)
+	sp = fp - 0x0002
+	wLoc02 = 0x0001
 	sp = fp - 0x0004
-	SCZO = cond(fp - 0x0004)
-	sp = fp - 0x0006
-	wLoc06 = 0x0001
-	sp = fp - 0x0008
-	wLoc08 = 0x0002
-	call fn0C00_005D (retsize: 2; depth: 10)
-	sp = fp - 0x0004
-	SCZO = cond(fp - 0x0004)
+	wLoc04 = 0x0002
+	call fn0C00_005D (retsize: 2; depth: 6)
+	sp = fp
+	SCZO = cond(fp)
 	return
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0004 cx:0x002A ax:<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):0x0002 -6(fp):0x0001 -4(fp):0x0002 -2(fp):0x0001
+// SymbolicIn: sp:fp cx:0x002A ax:<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0002 -2(fp):0x0001
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 

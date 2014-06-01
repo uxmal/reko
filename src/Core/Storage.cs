@@ -44,6 +44,7 @@ namespace Decompiler.Core
 		public abstract int OffsetOf(Storage storage);
 
         public abstract T Accept<T>(StorageVisitor<T> visitor);
+        public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
 
 		public virtual SerializedKind Serialize()
 		{
@@ -81,6 +82,11 @@ namespace Decompiler.Core
         {
 			return visitor.VisitFlagGroupStorage(this);
 		}
+
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitFlagGroupStorage(this, context);
+        }
 
 		public override bool Equals(object obj)
 		{
@@ -130,6 +136,10 @@ namespace Decompiler.Core
 			return visitor.VisitFpuStackStorage(this);
 		}
 
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitFpuStackStorage(this, context);
+        }
 
 		public override bool Equals(object obj)
 		{
@@ -169,6 +179,11 @@ namespace Decompiler.Core
 			return visitor.VisitMemoryStorage(this);
 		}
 
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitMemoryStorage(this, context);
+        }
+
 		public override int OffsetOf(Storage stgSub)
 		{
 			return -1;
@@ -194,6 +209,11 @@ namespace Decompiler.Core
         {
 			return visitor.VisitOutArgumentStorage(this);
 		}
+
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitOutArgumentStorage(this, context);
+        }
 
 		public override bool Equals(object obj)
 		{
@@ -268,6 +288,11 @@ namespace Decompiler.Core
 		{
 			return visitor.VisitRegisterStorage(this);
 		}
+
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitRegisterStorage(this, context);
+        }
 
 		public override bool Equals(object obj)
 		{
@@ -389,6 +414,11 @@ namespace Decompiler.Core
 			return visitor.VisitSequenceStorage(this);
 		}
 
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitSequenceStorage(this, context);
+        }
+
 		public override bool Equals(object obj)
 		{
 			SequenceStorage ss = obj as SequenceStorage;
@@ -458,6 +488,11 @@ namespace Decompiler.Core
 			return visitor.VisitStackArgumentStorage(this);
 		}
 
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitStackArgumentStorage(this, context);
+        }
+
 		public override bool Equals(object obj)
 		{
 			StackArgumentStorage sas = obj as StackArgumentStorage;
@@ -507,6 +542,11 @@ namespace Decompiler.Core
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitStackLocalStorage(this);
+        }
+
+        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        {
+            return visitor.VisitStackLocalStorage(this, context);
         }
 
         public override bool Equals(object obj)
