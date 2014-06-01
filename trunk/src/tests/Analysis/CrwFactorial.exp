@@ -67,9 +67,7 @@ l0C00_0018:
 	wLoc04 = ax
 	ax = fn0C00_000F(wLoc04)
 	sp = fp - 0x0003
-	SZO = cond(fp - 0x0003)
 	sp = fp - 0x0002
-	SZO = cond(fp - 0x0002)
 	dx = wArg02
 	dx_ax = dx *s ax
 	SCZO = cond(dx_ax)

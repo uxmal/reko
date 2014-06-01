@@ -34,10 +34,9 @@ Z:Flags
     def:  def Z
 ax_12: orig: ax
     def:  ax_12 = 0x0000
-    uses: SZO_13 = cond(ax_12)
-          ax_19 = PHI(ax_12, ax_32, ax_39)
+    uses: ax_19 = PHI(ax_12, ax_32, ax_39)
 SZO_13: orig: SZO
-    def:  SZO_13 = cond(ax_12)
+    def:  SZO_13 = cond(0x0000)
     uses: SO_14 = SZO_13 (alias)
           Z_15 = SZO_13 (alias)
 SO_14: orig: SO
@@ -152,7 +151,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_12 = 0x0000
-	SZO_13 = cond(ax_12)
+	SZO_13 = cond(0x0000)
 	SO_14 = SZO_13 (alias)
 	Z_15 = SZO_13 (alias)
 	C_16 = false

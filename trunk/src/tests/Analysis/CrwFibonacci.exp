@@ -49,7 +49,6 @@ l10000011:
 	edi = eax
 	eax = fn10000000(dwLoc10)
 	esp = fp - 0x00000008
-	SCZO = cond(fp - 0x00000008)
 	eax = eax + edi
 	SCZO = cond(eax)
 	edi = dwLoc08

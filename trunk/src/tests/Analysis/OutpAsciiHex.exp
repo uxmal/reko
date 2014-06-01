@@ -63,57 +63,55 @@ l0C00_000E:
 	branch Test(ULE,CZ_20) l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	SCZO_39 = cond(al - 0x41)
-	C_40 = SCZO_39 (alias)
-	CZ_41 = SCZO_39 (alias)
-	branch Test(ULT,C_40) l0C00_0032
+	SCZO_37 = cond(al - 0x41)
+	C_38 = SCZO_37 (alias)
+	CZ_39 = SCZO_37 (alias)
+	branch Test(ULT,C_38) l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
-	SCZO_42 = cond(al - 0x46)
-	C_43 = SCZO_42 (alias)
-	CZ_44 = SCZO_42 (alias)
-	branch Test(ULE,CZ_44) l0C00_0022
+	SCZO_40 = cond(al - 0x46)
+	C_41 = SCZO_40 (alias)
+	CZ_42 = SCZO_40 (alias)
+	branch Test(ULE,CZ_42) l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
 l0C00_001A:
-	SCZO_45 = cond(al - 0x61)
-	C_46 = SCZO_45 (alias)
-	CZ_47 = SCZO_45 (alias)
-	branch Test(ULT,C_46) l0C00_0032
+	SCZO_43 = cond(al - 0x61)
+	C_44 = SCZO_43 (alias)
+	CZ_45 = SCZO_43 (alias)
+	branch Test(ULT,C_44) l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
 l0C00_001E:
-	SCZO_48 = cond(al - 0x66)
-	C_49 = SCZO_48 (alias)
-	CZ_50 = SCZO_48 (alias)
-	branch Test(UGT,CZ_50) l0C00_0032
+	SCZO_46 = cond(al - 0x66)
+	C_47 = SCZO_46 (alias)
+	CZ_48 = SCZO_46 (alias)
+	branch Test(UGT,CZ_48) l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
 	al_21 = al - 0x30
-	SCZO_22 = cond(al_21)
-	SCZO_23 = cond(al_21 - 0x0A)
-	C_24 = SCZO_23 (alias)
-	CZ_25 = SCZO_23 (alias)
-	branch Test(ULT,C_24) l0C00_0030
+	SCZO_22 = cond(al_21 - 0x0A)
+	C_23 = SCZO_22 (alias)
+	CZ_24 = SCZO_22 (alias)
+	branch Test(ULT,C_23) l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_30 = al_21 - 0x07
-	SCZO_31 = cond(al_30)
-	SCZO_32 = cond(al_30 - 0x10)
-	C_33 = SCZO_32 (alias)
-	CZ_34 = SCZO_32 (alias)
-	branch Test(ULT,C_33) l0C00_0030
+	al_29 = al_21 - 0x07
+	SCZO_30 = cond(al_29 - 0x10)
+	C_31 = SCZO_30 (alias)
+	CZ_32 = SCZO_30 (alias)
+	branch Test(ULT,C_31) l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_35 = al_30 - 0x20
-	SCZO_36 = cond(al_35)
-	C_37 = SCZO_36 (alias)
-	CZ_38 = SCZO_36 (alias)
+	al_33 = al_29 - 0x20
+	SCZO_34 = cond(al_33)
+	C_35 = SCZO_34 (alias)
+	CZ_36 = SCZO_34 (alias)
 	// succ:  l0C00_0030
 l0C00_0030:
-	al_26 = PHI(al_21, al_30, al_35)
-	C_27 = false
-	SCZO_28 = C_27 (alias)
-	CZ_29 = C_27 (alias)
-	return C_27
+	al_25 = PHI(al_21, al_29, al_33)
+	C_26 = false
+	SCZO_27 = C_26 (alias)
+	CZ_28 = C_26 (alias)
+	return C_26
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
 	C_15 = true
@@ -122,10 +120,10 @@ l0C00_0032:
 	return C_15
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	CZ_11 = PHI(CZ_17, CZ_29)
-	C_12 = PHI(C_15, C_27)
-	SCZO_13 = PHI(SCZO_16, SCZO_28)
-	al_14 = PHI(al, al_26)
+	CZ_11 = PHI(CZ_17, CZ_28)
+	C_12 = PHI(C_15, C_26)
+	SCZO_13 = PHI(SCZO_16, SCZO_27)
+	al_14 = PHI(al, al_25)
 	use al_14 (=> alOut)
 
 // fn0C00_000A
@@ -147,46 +145,46 @@ l0C00_000E:
 	branch Test(ULE,CZ_20) l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	SCZO_39 = cond(al - 0x41)
-	C_40 = SCZO_39 (alias)
-	branch Test(ULT,C_40) l0C00_0032
+	SCZO_37 = cond(al - 0x41)
+	C_38 = SCZO_37 (alias)
+	branch Test(ULT,C_38) l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
-	SCZO_42 = cond(al - 0x46)
-	CZ_44 = SCZO_42 (alias)
-	branch Test(ULE,CZ_44) l0C00_0022
+	SCZO_40 = cond(al - 0x46)
+	CZ_42 = SCZO_40 (alias)
+	branch Test(ULE,CZ_42) l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
 l0C00_001A:
-	SCZO_45 = cond(al - 0x61)
-	C_46 = SCZO_45 (alias)
-	branch Test(ULT,C_46) l0C00_0032
+	SCZO_43 = cond(al - 0x61)
+	C_44 = SCZO_43 (alias)
+	branch Test(ULT,C_44) l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
 l0C00_001E:
-	SCZO_48 = cond(al - 0x66)
-	CZ_50 = SCZO_48 (alias)
-	branch Test(UGT,CZ_50) l0C00_0032
+	SCZO_46 = cond(al - 0x66)
+	CZ_48 = SCZO_46 (alias)
+	branch Test(UGT,CZ_48) l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
 	al_21 = al - 0x30
 	Mem0[alOut:byte] = al_21
-	SCZO_23 = cond(al_21 - 0x0A)
-	C_24 = SCZO_23 (alias)
-	branch Test(ULT,C_24) l0C00_0030
+	SCZO_22 = cond(al_21 - 0x0A)
+	C_23 = SCZO_22 (alias)
+	branch Test(ULT,C_23) l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_30 = al_21 - 0x07
-	Mem0[alOut:byte] = al_30
-	SCZO_32 = cond(al_30 - 0x10)
-	C_33 = SCZO_32 (alias)
-	branch Test(ULT,C_33) l0C00_0030
+	al_29 = al_21 - 0x07
+	Mem0[alOut:byte] = al_29
+	SCZO_30 = cond(al_29 - 0x10)
+	C_31 = SCZO_30 (alias)
+	branch Test(ULT,C_31) l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_35 = al_30 - 0x20
-	Mem0[alOut:byte] = al_35
+	al_33 = al_29 - 0x20
+	Mem0[alOut:byte] = al_33
 	// succ:  l0C00_0030
 l0C00_0030:
-	C_27 = false
-	return C_27
+	C_26 = false
+	return C_26
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
 	C_15 = true

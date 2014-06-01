@@ -4,8 +4,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	word16 ax_10 = Mem0[ds:bx + 0x0004:word16]
-	Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
-	Mem15[ds:si + 0x04D4:word16] = si + 0x0002
+	Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+	Mem14[ds:si + 0x04D4:word16] = si + 0x0002
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -39,7 +39,7 @@ T_9 (in 0x0006 : word16)
 	trait_primitive(word16)
 T_10 (in bx + 0x0006 : word16)
 	trait_primitive(word16)
-T_11 (in Mem13[ds:bx + 0x0006:word16] : word16)
+T_11 (in Mem12[ds:bx + 0x0006:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_8)
 T_12 (in si : word16)
@@ -54,6 +54,6 @@ T_15 (in 0x04D4 : word16)
 	trait_primitive(word16)
 T_16 (in si + 0x04D4 : word16)
 	trait_primitive(word16)
-T_17 (in Mem15[ds:si + 0x04D4:word16] : word16)
+T_17 (in Mem14[ds:si + 0x04D4:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_14)

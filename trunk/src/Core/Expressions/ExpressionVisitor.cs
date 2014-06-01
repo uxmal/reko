@@ -204,4 +204,119 @@ namespace Decompiler.Core.Expressions
 
 		#endregion
 	}
+
+    public class ExpressionVisitorBase<T> : ExpressionVisitor<T>
+    {
+        public virtual T VisitAddress(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitApplication(Application appl)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitArrayAccess(ArrayAccess acc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitBinaryExpression(BinaryExpression binExp)
+        {
+            binExp.Left.Accept(this);
+            binExp.Right.Accept(this);
+            return default(T);
+        }
+
+        public virtual T VisitCast(Cast cast)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitConditionOf(ConditionOf cof)
+        {
+            return cof.Expression.Accept(this);
+        }
+
+        public virtual T VisitConstant(Constant c)
+        {
+            return default(T);
+        }
+
+        public virtual T VisitDepositBits(DepositBits d)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitDereference(Dereference deref)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitFieldAccess(FieldAccess acc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitIdentifier(Identifier id)
+        {
+            return default(T);
+        }
+
+        public virtual T VisitMemberPointerSelector(MemberPointerSelector mps)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitMemoryAccess(MemoryAccess access)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitMkSequence(MkSequence seq)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitPhiFunction(PhiFunction phi)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitPointerAddition(PointerAddition pa)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitProcedureConstant(ProcedureConstant pc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitScopeResolution(ScopeResolution scopeResolution)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitSegmentedAccess(SegmentedAccess access)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitSlice(Slice slice)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitTestCondition(TestCondition tc)
+        {
+            return tc.Expression.Accept(this);
+        }
+
+        public virtual T VisitUnaryExpression(UnaryExpression unary)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

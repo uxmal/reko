@@ -48,7 +48,7 @@ wLoc02:Local -0002
 wArg02:Stack +0002
     def:  def wArg02
     uses: ax_17 = wArg02
-          dx_39 = wArg02
+          dx_37 = wArg02
 wLoc04:Local -0004
 sp_14: orig: sp
 wLoc02_15: orig: wLoc02
@@ -71,7 +71,7 @@ dx_26: orig: dx
 Z_27: orig: Z
 SZO_28: orig: SZO
 ax_29: orig: ax
-    def:  ax_29 = PHI(ax_41, ax_46)
+    def:  ax_29 = PHI(ax_39, ax_44)
     uses: return ax_29
 bp_30: orig: bp
 sp_31: orig: sp
@@ -81,28 +81,26 @@ wLoc04_33: orig: wLoc04
     uses: ax_34 = fn0C00_000F(wLoc04_33)
 ax_34: orig: ax
     def:  ax_34 = fn0C00_000F(wLoc04_33)
-    uses: dx_ax_40 = dx_39 *s ax_34
+    uses: dx_ax_38 = dx_37 *s ax_34
 sp_35: orig: sp
-SZO_36: orig: SZO
-sp_37: orig: sp
-SZO_38: orig: SZO
-dx_39: orig: dx
-    def:  dx_39 = wArg02
-    uses: dx_ax_40 = dx_39 *s ax_34
-dx_ax_40: orig: dx_ax
-    def:  dx_ax_40 = dx_39 *s ax_34
-    uses: ax_41 = (word16) dx_ax_40 (alias)
-ax_41: orig: ax
-    def:  ax_41 = (word16) dx_ax_40 (alias)
-    uses: ax_29 = PHI(ax_41, ax_46)
-dx_42: orig: dx
-SCZO_43: orig: SCZO
-SZO_44: orig: SZO
-Z_45: orig: Z
-ax_46: orig: ax
-    def:  ax_46 = 0x0001
-    uses: ax_29 = PHI(ax_41, ax_46)
-dx_ax_47: orig: dx_ax
+sp_36: orig: sp
+dx_37: orig: dx
+    def:  dx_37 = wArg02
+    uses: dx_ax_38 = dx_37 *s ax_34
+dx_ax_38: orig: dx_ax
+    def:  dx_ax_38 = dx_37 *s ax_34
+    uses: ax_39 = (word16) dx_ax_38 (alias)
+ax_39: orig: ax
+    def:  ax_39 = (word16) dx_ax_38 (alias)
+    uses: ax_29 = PHI(ax_39, ax_44)
+dx_40: orig: dx
+SCZO_41: orig: SCZO
+SZO_42: orig: SZO
+Z_43: orig: Z
+ax_44: orig: ax
+    def:  ax_44 = 0x0001
+    uses: ax_29 = PHI(ax_39, ax_44)
+dx_ax_45: orig: dx_ax
 // fn0C00_000F
 word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
@@ -116,16 +114,16 @@ l0C00_000F:
 l0C00_0018:
 	wLoc04_33 = ax_18
 	ax_34 = fn0C00_000F(wLoc04_33)
-	dx_39 = wArg02
-	dx_ax_40 = dx_39 *s ax_34
-	ax_41 = (word16) dx_ax_40 (alias)
+	dx_37 = wArg02
+	dx_ax_38 = dx_37 *s ax_34
+	ax_39 = (word16) dx_ax_38 (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
-	ax_46 = 0x0001
+	ax_44 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	ax_29 = PHI(ax_41, ax_46)
+	ax_29 = PHI(ax_39, ax_44)
 	return ax_29
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:

@@ -7,36 +7,35 @@ ax:ax
 bx:bx
     def:  def bx
     uses: ax_10 = Mem0[ds:bx + 0x0004:word16]
-          Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+          Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
 ds:ds
     def:  def ds
     uses: ax_10 = Mem0[ds:bx + 0x0004:word16]
-          Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
-          Mem15[ds:si + 0x04D4:word16] = si + 0x0002
+          Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+          Mem14[ds:si + 0x04D4:word16] = si + 0x0002
 SCZO:Flags
 si:si
     def:  def si
-    uses: Mem15[ds:si + 0x04D4:word16] = si + 0x0002
-          Mem15[ds:si + 0x04D4:word16] = si + 0x0002
-          Mem15[ds:si + 0x04D4:word16] = si + 0x0002
+    uses: Mem14[ds:si + 0x04D4:word16] = si + 0x0002
+          Mem14[ds:si + 0x04D4:word16] = si + 0x0002
+          Mem14[ds:si + 0x04D4:word16] = si + 0x0002
 SZO:Flags
 C:Flags
 ax_10: orig: ax
     def:  ax_10 = Mem0[ds:bx + 0x0004:word16]
-    uses: Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
-          Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+    uses: Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+          Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
 ax_11: orig: ax
-    uses: Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
-SCZO_12: orig: SCZO
-Mem13: orig: Mem0
-    def:  Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
-bx_14: orig: bx
-Mem15: orig: Mem0
-    def:  Mem15[ds:si + 0x04D4:word16] = si + 0x0002
-ax_16: orig: ax
-SZO_17: orig: SZO
-C_18: orig: C
-SCZO_19: orig: SCZO
+    uses: Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+Mem12: orig: Mem0
+    def:  Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+bx_13: orig: bx
+Mem14: orig: Mem0
+    def:  Mem14[ds:si + 0x04D4:word16] = si + 0x0002
+ax_15: orig: ax
+SZO_16: orig: SZO
+C_17: orig: C
+SCZO_18: orig: SCZO
 // fn0C00_0000
 void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
@@ -47,8 +46,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_10 = Mem0[ds:bx + 0x0004:word16]
-	Mem13[ds:bx + 0x0006:word16] = ax_10 *s ax_10
-	Mem15[ds:si + 0x04D4:word16] = si + 0x0002
+	Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
+	Mem14[ds:si + 0x04D4:word16] = si + 0x0002
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
