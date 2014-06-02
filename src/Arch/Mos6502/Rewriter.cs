@@ -70,6 +70,7 @@ namespace Decompiler.Arch.Mos6502
                 case Opcode.beq: Branch(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.cmp: Cmp(); break;
                 case Opcode.dec: Dec(); break;
+                case Opcode.ldy: Ld(Registers.y); break;
                 case Opcode.pha: Push(Registers.a); break;
                 case Opcode.rts: Rts(); break;
                 case Opcode.sbc: Sbc(); break;
@@ -150,6 +151,15 @@ namespace Decompiler.Arch.Mos6502
             emitter.Assign(c, emitter.Cond(tmp));
         }
 
+        private void Ld(RegisterStorage reg)
+        {
+            var r = frame.EnsureRegister(reg);
+            var mem = RewriteOperand(instrCur.Operand);
+            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
+            emitter.Assign(r, mem);
+            emitter.Assign(c, emitter.Cond(r));
+        }
+
         private void Push(RegisterStorage reg)
         {
             var s = frame.EnsureRegister(arch.StackRegister);
@@ -200,6 +210,8 @@ namespace Decompiler.Arch.Mos6502
                 break;
             case AddressMode.Absolute:
                 return emitter.LoadB(op.Offset);
+            case AddressMode.AbsoluteX:
+                return emitter.LoadB(emitter.IAdd(op.Offset, frame.EnsureRegister(Registers.x)));
             case AddressMode.ZeroPage:
                 if (op.Register != null)
                 {

@@ -59,12 +59,12 @@ l0C00_0022:
 	branch al <u 0x3A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	byte al_28
+	byte al_27
 	Mem0[alOut:byte] = al - 0x37
 	branch al <u 0x47 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	byte al_32
+	byte al_30
 	Mem0[alOut:byte] = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:
@@ -95,12 +95,12 @@ l0C00_0022:
 	branch al <u 0x3A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	byte al_28
+	byte al_27
 	Mem0[alOut:byte] = al - 0x37
 	branch al <u 0x47 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	byte al_32
+	byte al_30
 	Mem0[alOut:byte] = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:

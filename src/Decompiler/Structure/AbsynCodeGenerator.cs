@@ -178,7 +178,6 @@ namespace Decompiler.Structure
             return followStack.Pop();
         }
 
-
         private bool AllPredecessorsVisited(StructureNode node)
         {
             foreach (StructureNode pred in node.InEdges)

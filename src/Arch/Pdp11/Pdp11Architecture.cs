@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
@@ -159,14 +160,14 @@ namespace Decompiler.Arch.Pdp11
             get { throw new NotImplementedException(); }
         }
 
-        public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Pdp11Rewriter(this);
+            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame);
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

@@ -95,7 +95,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             var ctrl = new LowLevelView();
             var interactor = mr.DynamicMock<LowLevelViewInteractor>();
             interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
-            interactor.Stub(i => i.Control).Return(ctrl);
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
             AddStubService<IUiPreferencesService>(sc);
             uiSvc.Stub(x => x.FindWindow(Arg<string>.Is.Anything)).Return(null);

@@ -33,7 +33,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.memCtrl = new Decompiler.Gui.Windows.Controls.MemoryControl();
             this.lblMemoryView = new System.Windows.Forms.Label();
-            this.disassemblyControl1 = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
+            this.dasmCtrl = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
             this.lblDisassembly = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblSegmentCaption = new System.Windows.Forms.Label();
@@ -67,7 +67,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.disassemblyControl1);
+            this.splitContainer1.Panel2.Controls.Add(this.dasmCtrl);
             this.splitContainer1.Panel2.Controls.Add(this.lblDisassembly);
             this.splitContainer1.Size = new System.Drawing.Size(858, 395);
             this.splitContainer1.SplitterDistance = 234;
@@ -103,17 +103,17 @@
             // 
             // disassemblyControl1
             // 
-            this.disassemblyControl1.Architecture = null;
-            this.disassemblyControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.disassemblyControl1.Image = null;
-            this.disassemblyControl1.Location = new System.Drawing.Point(0, 18);
-            this.disassemblyControl1.Name = "disassemblyControl1";
-            this.disassemblyControl1.SelectedAddress = null;
-            this.disassemblyControl1.Size = new System.Drawing.Size(858, 139);
-            this.disassemblyControl1.StartAddress = null;
-            this.disassemblyControl1.TabIndex = 0;
-            this.disassemblyControl1.Text = "disassemblyControl1";
-            this.disassemblyControl1.TopAddress = null;
+            this.dasmCtrl.Architecture = null;
+            this.dasmCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dasmCtrl.Image = null;
+            this.dasmCtrl.Location = new System.Drawing.Point(0, 18);
+            this.dasmCtrl.Name = "disassemblyControl1";
+            this.dasmCtrl.SelectedAddress = null;
+            this.dasmCtrl.Size = new System.Drawing.Size(858, 139);
+            this.dasmCtrl.StartAddress = null;
+            this.dasmCtrl.TabIndex = 0;
+            this.dasmCtrl.Text = "disassemblyControl1";
+            this.dasmCtrl.TopAddress = null;
             // 
             // lblDisassembly
             // 
@@ -240,7 +240,7 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private MemoryControl memCtrl;
-        private DisassemblyControl disassemblyControl1;
+        private DisassemblyControl dasmCtrl;
         private System.Windows.Forms.Label lblDisassembly;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblMemoryView;

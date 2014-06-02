@@ -14,9 +14,9 @@ l0C00_0000:
 	word16 ax_34
 	msdos_read_file(Mem22[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_21), &ax_34)
 	msdos_close_file(Mem22[ds:0x99D0:word16])
-	Mem45[ds:0xC36A:word16] = Mem22[ds:Mem22[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
-	Mem53[ds:0x0100:word16] = ds
-	Mem55[ds:0x0102:word16] = 0x6041
+	Mem38[ds:0xC36A:word16] = Mem21[ds:Mem21[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
+	Mem46[ds:0x0100:word16] = ds
+	Mem48[ds:0x0102:word16] = 0x6041
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

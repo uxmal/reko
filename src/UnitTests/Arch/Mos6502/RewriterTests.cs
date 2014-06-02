@@ -141,9 +141,9 @@ namespace Decompiler.UnitTests.Arch.Mos6502
         {
             BuildTest(0xBC, 0x34, 0x12);
             AssertCode(
-                "0|00000200(2): 2 instructions",
-                "1|y = Mem0[0x1234 + x:byte]",
-                "2|L--|NZ = cond(v3)");
+                "0|00000200(3): 2 instructions",
+                "1|L--|y = Mem0[0x1234 + x:byte]",
+                "2|L--|NZ = cond(y)");
 
         }
     }

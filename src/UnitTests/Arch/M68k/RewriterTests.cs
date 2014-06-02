@@ -396,6 +396,19 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_clrl_postInc()
+        {
+            Rewrite(0x4298);
+            AssertCode("0|00010000(2): 6 instructions",
+                "1|L--|Mem0[a0:word32] = 0x00000000",
+                "2|L--|a0 = a0 + 0x00000004",
+                "3|L--|Z = true",
+                "4|L--|C = false",
+                "5|L--|N = false",
+                "6|L--|V = false");
+        }
+
+        [Test]
         public void M68krw_cmpib_d()
         {
             Rewrite(0x0C18, 0x0042);    // cmpi.b #$42,(a0)+

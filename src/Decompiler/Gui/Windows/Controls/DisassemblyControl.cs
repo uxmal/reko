@@ -19,8 +19,10 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -40,6 +42,7 @@ namespace Decompiler.Gui.Windows.Controls
             ImageChanged += DisassemblyControl_StateChange;
             ArchitectureChanged += DisassemblyControl_StateChange;
             StartAddressChanged += DisassemblyControl_StateChange;
+            TopAddressChanged += DisassemblyControl_StateChange;
      
             vscroll = new VScrollBar();
             vscroll.Margin = new Padding(10);
@@ -52,7 +55,7 @@ namespace Decompiler.Gui.Windows.Controls
             vscroll.MinimumSize = new Size(0, 20);
             vscroll.Dock = DockStyle.Right;
             Controls.Add(vscroll);
-            vscroll.ValueChanged += delegate { Invalidate(); } ;
+            vscroll.ValueChanged += vscroll_ValueChanged;
         }
 
         [Browsable(false)]
@@ -90,6 +93,13 @@ namespace Decompiler.Gui.Windows.Controls
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
 
+        private void vscroll_ValueChanged(object sender, EventArgs e)
+        {
+            if (image == null || arch == null || !image.IsValidAddress(startAddress))
+                return;
+            TopAddress = image.BaseAddress + vscroll.Value * (arch.InstructionBitSize / 8);
+        }
+
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
             if (arch == null || image == null || !image.IsValidAddress(startAddress))
@@ -100,7 +110,7 @@ namespace Decompiler.Gui.Windows.Controls
             {
                 vscroll.Enabled = true;
                 vscroll.Minimum = 0;
-                vscroll.Maximum = image.Bytes.Length - 1;
+                vscroll.Maximum = (image.Bytes.Length - 1) / (arch.InstructionBitSize / 8);
 
                 using (var g = CreateGraphics())
                 {
@@ -130,30 +140,36 @@ namespace Decompiler.Gui.Windows.Controls
             var rc = new RectangleF(g.ClipBounds.Left, g.ClipBounds.Top, rcClient.Width, cyRow);
             for (; rc.Top < rcClient.Bottom; rc.Offset(0, cyRow))
             {
-                try
-                {
-                    if (!dasm.MoveNext())
-                    {
-                        break;
-                    }
-                }
-                catch
-                {
+                var instr = NextInstruction(dasm);
+                if (instr == null)
                     break;
-                }
                 var writer = new StringWriter();
-                var instr = dasm.Current;
                 dumper.DumpAssemblerLine(image, instr, writer);
                 var s = writer.ToString();
                 g.DrawString(s, Font, SystemBrushes.ControlText, rc);
             }
         }
 
+        private MachineInstruction NextInstruction(IEnumerator<MachineInstruction> dasm)
+        {
+            try
+            {
+                if (!dasm.MoveNext())
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return dasm.Current;
+        }
+
         private int GetRowHeight(Graphics g)
         {
             return (int) g.MeasureString("M", Font).Height;
         }
-
 
         private void UpdateScrollbar(Address addrBegin, Address addrEnd)
         {

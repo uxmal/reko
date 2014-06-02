@@ -25,6 +25,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Decompiler.Typing
 {
@@ -58,7 +59,6 @@ namespace Decompiler.Typing
 				return e.TypeVariable.DataType;
 			return e.DataType;
 		}
-
 
 		/// <summary>
 		/// Creates an "addressof" expression.
@@ -97,7 +97,6 @@ namespace Decompiler.Typing
 			return new ArrayAccess(elementType, e, Constant.Word32(idx));
 		}
 
-
         private void RewriteFormals(ProcedureSignature sig)
         {
             if (sig.ReturnValue != null)
@@ -114,9 +113,9 @@ namespace Decompiler.Typing
         public void RewriteProgram(Program prog)
 		{
 			{//$DEBUG
-				System.IO.StringWriter sb = new System.IO.StringWriter();
+				StringWriter sb = new System.IO.StringWriter();
 				prog.TypeStore.Write(sb);
-				System.Diagnostics.Debug.WriteLine(sb.ToString());
+				Debug.WriteLine(sb.ToString());
 			}
 
 			foreach (Procedure proc in prog.Procedures.Values)
@@ -149,12 +148,12 @@ namespace Decompiler.Typing
 
         private Expression NormalizeArrayPointer(Expression arrayExp)
         {
-            UnaryExpression u = arrayExp as UnaryExpression;
+            var u = arrayExp as UnaryExpression;
             if (u == null)
                 return arrayExp;
             if (u.Operator != Operator.AddrOf)
                 return arrayExp;
-            ArrayAccess a = u.Expression as ArrayAccess;
+            var a = u.Expression as ArrayAccess;
             if (a == null)
                 return arrayExp;
             return a.Array;
@@ -167,8 +166,8 @@ namespace Decompiler.Typing
 
 		public Instruction MakeAssignment(Expression dst, Expression src)
 		{
-            TypeVariable tvDst = dst.TypeVariable;
-            TypeVariable tvSrc = src.TypeVariable;
+            var tvDst = dst.TypeVariable;
+            var tvSrc = src.TypeVariable;
 			src = src.Accept(this);
 			DataType dtSrc = DataTypeOf(src);
 			dst = dst.Accept(this);
