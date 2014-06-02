@@ -608,7 +608,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_move_fr_ccr()
         {
-            RunTest("move\t(a3),ccr", 0x42d3, 0x0000);
+            RunTest("move\tccr,(a3)", 0x42d3, 0x0000);
         }
     }
 }

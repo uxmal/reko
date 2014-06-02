@@ -69,13 +69,11 @@ l0C00_001E:
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
 	al = al - 0x30
-	SCZO = cond(al)
 	SCZO = cond(al - 0x0A)
 	branch Test(ULT,C) l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
 	al = al - 0x07
-	SCZO = cond(al)
 	SCZO = cond(al - 0x10)
 	branch Test(ULT,C) l0C00_0030
 	// succ:  l0C00_002E l0C00_0030

@@ -53,7 +53,21 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest32(Action<M68kAssembler> asmProg)
         {
             arch = new M68kArchitecture();
-            BuildTest(new Address(0x00100000), new DefaultPlatform(null, null), asmProg);
+            BuildTest(new Address(0x00100000), new DefaultPlatform(null, arch), asmProg);
+        }
+
+        private void BuildTest32(Address addrBase, params byte[] bytes)
+        {
+            arch = new M68kArchitecture();
+            var image = new LoadedImage(addrBase, bytes);
+            prog = new Program
+            {
+                Architecture = arch,
+                Image = image,
+                ImageMap = new ImageMap(image),
+                Platform = new DefaultPlatform(null, arch)
+            };
+            RunTest(addrBase);
         }
 
         private void BuildTest(Address addrBase, Platform platform, Action<M68kAssembler> asmProg)
@@ -70,6 +84,12 @@ namespace Decompiler.UnitTests.Scanning
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };
+
+            RunTest(addrBase);
+        }
+
+        private void RunTest(Address addrBase)
+        {
             scanner = new Scanner(
                 prog,
                 new Dictionary<Address, ProcedureSignature>(),
@@ -125,6 +145,66 @@ l00100000:
 	return
 	// succ:  fn00100000_exit
 fn00100000_exit:
+";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void ScanM68k_Zerofill()
+        {
+            BuildTest32(
+                new Address(0x01020),
+                0x41, 0xF9 , 0x00 , 0x00 , 0x3E , 0x94
+                , 0x20 , 0x3C , 0x00 , 0x00 , 0x00 , 0x30
+                , 0x56 , 0x80 
+                , 0xE4 , 0x88
+                , 0x42 , 0x98
+                , 0x53 , 0x80
+                , 0x66 , 0xFA
+                , 0x4E , 0x75);
+            var sw = new StringWriter();
+            scanner.Procedures.Values[0].Write(true, sw);
+            Console.WriteLine(sw);
+            string sExp = @"// fn00001020
+// Mem0:Global memory
+// fp:fp
+// a7:a7
+// a0:a0
+// d0:d0
+// CVZN:Flags
+// CVZNX:Flags
+// Z:Flags
+// C:Flags
+// N:Flags
+// V:Flags
+// return address size: 4
+void fn00001020()
+fn00001020_entry:
+	// succ:  l00001020
+l00001020:
+	a0 = 0x00003E94
+	d0 = 0x00000030
+	CVZN = cond(d0)
+	d0 = d0 + 0x00000003
+	CVZNX = cond(d0)
+	d0 = d0 >>u 0x00000002
+	CVZNX = cond(d0)
+	// succ:  l00001030
+l00001030:
+	Mem0[a0:word32] = 0x00000000
+	a0 = a0 + 0x00000004
+	Z = true
+	C = false
+	N = false
+	V = false
+	d0 = d0 - 0x00000001
+	CVZNX = cond(d0)
+	branch Test(NE,Z) l00001030
+	// succ:  l00001036 l00001030
+l00001036:
+	return
+	// succ:  fn00001020_exit
+fn00001020_exit:
 ";
             Assert.AreEqual(sExp, sw.ToString());
         }

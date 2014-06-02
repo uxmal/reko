@@ -326,8 +326,8 @@ namespace Decompiler.Arch.M68k
             {
                 var r = frame.EnsureRegister(post.Register);
                 var rExp = Spill(src, r);
-                var load = m.Load(dataWidth, rExp);
-                m.Assign(load, src);
+                var load = m.Load(dataWidth, r);
+                m.Assign(load, rExp);
                 m.Assign(r, m.IAdd(r, dataWidth.Size));
                 return src;
             }

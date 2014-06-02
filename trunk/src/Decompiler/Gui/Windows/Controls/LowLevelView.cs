@@ -49,7 +49,6 @@ namespace Decompiler.Gui.Windows.Controls
         public ITextBox ToolBarAddressTextbox { get { return txtAddressWrapped; } }
         public IButton ToolBarGoButton { get { return btnGoWrapped; } } 
         public MemoryControl MemoryView { get { return this.memCtrl; } }
-
-        public DisassemblyControl DisassemblyView { get { return this.disassemblyControl1; } }
+        public DisassemblyControl DisassemblyView { get { return this.dasmCtrl; } }
     }
 }

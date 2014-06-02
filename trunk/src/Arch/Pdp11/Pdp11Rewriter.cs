@@ -36,7 +36,7 @@ namespace Decompiler.Arch.Pdp11
         private Frame frame;
         private RtlEmitter emitter;
 
-        public Pdp11Rewriter(Pdp11Architecture arch)
+        private Pdp11Rewriter(Pdp11Architecture arch)
         {
             this.arch = arch;
         }

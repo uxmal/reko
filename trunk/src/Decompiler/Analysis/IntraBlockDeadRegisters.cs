@@ -137,7 +137,9 @@ namespace Decompiler.Analysis
 
             public bool VisitDepositBits(DepositBits d)
             {
-                throw new NotImplementedException();
+                var dead = d.InsertedBits.Accept(this);
+                dead &= d.Source.Accept(this);
+                return dead;
             }
 
             public bool VisitDereference(Dereference deref)
@@ -242,7 +244,7 @@ namespace Decompiler.Analysis
         {
             bool isDead = IsDead(ass.Dst);
             Define(ass.Dst);
-            ass.Src.Accept(expVisitor);
+            isDead &= ass.Src.Accept(expVisitor);
             return isDead;
         }
 
