@@ -36,13 +36,13 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
     public class PeImageLoaderTests
     {
         private ServiceContainer sc;
-        private MockRepository repository;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
             sc = new ServiceContainer();
-            repository = new MockRepository();
+            mr = new MockRepository();
         }
     }
 }

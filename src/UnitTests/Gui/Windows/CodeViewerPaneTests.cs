@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows;
+using Decompiler.Gui.Windows.Controls;
 using Decompiler.Gui.Windows.Forms;
 using Decompiler.UnitTests.Mocks;
 using Rhino.Mocks;
@@ -28,6 +29,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
@@ -38,21 +40,26 @@ namespace Decompiler.UnitTests.Gui.Windows
     {
         private string nl = Environment.NewLine;
 
-        private TestCodeViewerPane codeViewer;
-        private MockRepository repository;
+        private CodeViewerPane codeViewer;
+        private MockRepository mr;
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
+        private IUiPreferencesService uiPreferencesSvc;
+        private Font font;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
-            codeViewer = new TestCodeViewerPane();
-            decompilerSvc = repository.Stub<IDecompilerService>();
-            decompiler = repository.Stub<IDecompiler>();
+            mr = new MockRepository();
+            codeViewer = new CodeViewerPane();
+            decompilerSvc = mr.Stub<IDecompilerService>();
+            decompiler = mr.Stub<IDecompiler>();
+            uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
+            font = new Font("Arial", 10);
             var sc = new ServiceContainer();
             decompilerSvc.Decompiler = decompiler;
             sc.AddService<IDecompilerService>(decompilerSvc);
+            sc.AddService<IUiPreferencesService>(uiPreferencesSvc);
             codeViewer.SetSite(sc);
         }
 
@@ -60,11 +67,40 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void TearDown()
         {
             codeViewer.Close();
+            if (font != null) font.Dispose();
+        }
+
+        private string Flatten(TextViewModel model)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < model.LineCount; ++i)
+            {
+                var spans = model.GetLineSpans(i);
+                foreach (var span in spans)
+                {
+                    EmitSpanWrapper(span, sb);
+                    sb.Append(span.GetText());
+                    EmitSpanWrapper(span, sb);
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        private void EmitSpanWrapper(TextSpan span, StringBuilder sb)
+        {
+            if (span.Style == "kw")
+                sb.Append("'");
+            if (span.Style == "cmt")
+                sb.Append("rem ");
+            if (span.Style == "link")
+                sb.Append("_");
         }
 
         [Test]
         public void Cvp_Create()
         {
+
             using (Form f = new Form())
             {
                 f.Controls.Add(codeViewer.CreateControl());
@@ -73,90 +109,30 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void SetProcedure()
+        public void Cvp_SetProcedure()
         {
             codeViewer.CreateControl();
             var m = new ProcedureBuilder();
             m.Return();
 
-            using (repository.Record())
+            using (mr.Record())
             {
                 var prog = new Program();
-                decompiler.Stub(x => decompiler.Program).Return(prog);
+                decompiler.Stub(d => d.Program).Return(prog);
+                uiPreferencesSvc.SourceCodeFont = font;
             }
+
             codeViewer.DisplayProcedure(m.Procedure);
+
             string sExp =
-                "<html><head><style>.kw { color:blue } .comment { color:green } </style></head>" + nl +
-                "<body><pre id=\"contents\">void&nbsp;ProcedureBuilder()<br />" + nl +
-                "{<br />" + nl +
-                "ProcedureBuilder_entry:<br />" + nl +
-                "l1:<br />" + nl +
-                "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"kw\">return</span><br />" + nl +
-                "ProcedureBuilder_exit:<br />" + nl +
-                "}<br />" + nl +
-                "</pre></body></html>";
-            Assert.AreEqual(sExp, codeViewer.WebControl.DocumentText);
-        }
-
-        private class TestCodeViewerPane : CodeViewerPane
-        {
-            protected override IWebBrowser CreateDockedWebBrowser()
-            {
-                return new FakeWebBrowser();
-            }
-        }
-
-        private class FakeWebBrowser : TextBox, IWebBrowser
-        {
-            #region IWebBrowser Members
-
-            public IHtmlDocument Document {get; private set; }
-
-            public string DocumentText
-            {
-                get { return Text; }
-                set { Text = value; if (Document == null) Document = new FakeHtmlDocument(); }
-            }
-
-            public void SetInnerHtmlOfElement(string elementId, string innerHtml)
-            {
-                string str = Text;
-                int i = str.IndexOf("ents\">") + 6;
-                Text = str.Substring(0, i) + innerHtml + str.Substring(i);
-            }
-
-            public event WebBrowserDocumentCompletedEventHandler DocumentCompleted;
-
-            public event WebBrowserNavigatingEventHandler Navigating;
-
-            #endregion
-
-            public void Test_Navigate(string url, string target)
-            {
-                if (Navigating != null)
-                    Navigating(this, new WebBrowserNavigatingEventArgs(new Uri(url), target));
-            }
-
-            public void Test_FireDocumentCompleted(string url)
-            {
-                if (DocumentCompleted != null)
-                    DocumentCompleted(this, new WebBrowserDocumentCompletedEventArgs(new Uri(url)));
-            }
-
-            private class FakeHtmlDocument : IHtmlDocument
-            {
-                private StringBuilder sb = new StringBuilder();
-
-                public HtmlElement GetElementById(string elementId)
-                {
-                    throw new NotImplementedException();
-                }
-
-                public void Write(string text)
-                {
-                    sb.Append(text);
-                }
-            }
+                "void ProcedureBuilder()" + nl +
+                "{" + nl +
+                "ProcedureBuilder_entry:" + nl +
+                "l1:" + nl +
+                "    'return'" + nl +
+                "ProcedureBuilder_exit:" + nl +
+                "}" + nl;
+            Assert.AreEqual(sExp, Flatten(codeViewer.TextView.Model));
         }
     }
 }
