@@ -271,7 +271,7 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
-        public TextViewModel Model { get { return model; } set { this.model = value; ModelChanged.Fire(this); } }
+        public TextViewModel Model { get { return model; } set { this.model = value; vScroll.Value = 0; OnModelChanged(); ModelChanged.Fire(this); } }
         private TextViewModel model;
         private void OnModelChanged()
         {
