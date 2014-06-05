@@ -132,7 +132,7 @@ namespace Decompiler
                 if (dfa != null)
                 {
                     ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-                    Formatter f = new Formatter(output);
+                    TextFormatter f = new TextFormatter(output);
                     if (flow.Signature != null)
                         flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
                     else if (proc.Signature != null)
@@ -271,7 +271,7 @@ namespace Decompiler
             WriteHeaderComment(Path.GetFileName(Project.InputFiles[0].OutputFilename), w);
             w.WriteLine("#include \"{0}\"", Path.GetFileName(Project.InputFiles[0].TypesFilename));
             w.WriteLine();
-            var fmt = new CodeFormatter(new Formatter(w));
+            var fmt = new CodeFormatter(new TextFormatter(w));
             foreach (Procedure proc in Program.Procedures.Values)
             {
                 try
@@ -291,7 +291,7 @@ namespace Decompiler
         {
             WriteHeaderComment(Path.GetFileName(Project.InputFiles[0].TypesFilename), w);
             w.WriteLine("/*"); Program.TypeStore.Write(w); w.WriteLine("*/");
-            TypeFormatter fmt = new TypeFormatter(new Formatter(w), false);
+            TypeFormatter fmt = new TypeFormatter(new TextFormatter(w), false);
             foreach (EquivalenceClass eq in Program.TypeStore.UsedEquivalenceClasses)
             {
                 if (eq.DataType != null)

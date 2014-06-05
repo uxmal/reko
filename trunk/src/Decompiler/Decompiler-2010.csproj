@@ -259,6 +259,14 @@
     <Compile Include="Gui\ProjectBrowserService.cs" />
     <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\Controls\TextBuffer.cs" />
+    <Compile Include="Gui\Windows\Controls\TextViewModel.cs" />
+    <Compile Include="Gui\Windows\Controls\TextView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\TextView.Designer.cs">
+      <DependentUpon>TextView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Windows\Controls\LowLevelView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -375,6 +383,7 @@
     <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />
     <Compile Include="Gui\Windows\TextBoxWrapper.cs" />
     <Compile Include="Gui\TreeNodeDesigner.cs" />
+    <Compile Include="Gui\Windows\TextSpanFormatter.cs" />
     <Compile Include="Gui\Windows\ToolStripButtonWrapper.cs" />
     <Compile Include="Gui\Windows\ToolStripTextBoxWrapper.cs" />
     <Compile Include="Gui\Windows\TreeViewWrapper.cs" />
@@ -576,6 +585,9 @@
     <EmbeddedResource Include="Gui\Windows\Controls\DirtyManager.resx">
       <DependentUpon>DirtyManager.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\TextView.resx">
+      <DependentUpon>TextView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Controls\ImageMapControl.resx">
       <DependentUpon>ImageMapControl.cs</DependentUpon>

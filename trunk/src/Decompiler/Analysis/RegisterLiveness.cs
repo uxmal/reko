@@ -540,6 +540,9 @@ namespace Decompiler.Analysis
                 var pc = ci.Callee as ProcedureConstant;
                 if (pc == null)
                     return;
+                var procCallee = pc.Procedure as Procedure;
+                if (procCallee == null)
+                    return;
                 if (state.PropagateThroughExitNodes)
 				{
 					PropagateToCalleeExitBlocks(stmCur);
@@ -547,7 +550,7 @@ namespace Decompiler.Analysis
 
 				// Update trash information.
 
-				ProcedureFlow pi = mpprocData[(Procedure)pc.Procedure];
+				ProcedureFlow pi = mpprocData[procCallee];
 				ProcedureFlow item = mpprocData[proc];
 
 				// The registers that are still live before a call are those

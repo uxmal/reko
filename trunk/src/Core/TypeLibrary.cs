@@ -56,7 +56,7 @@ namespace Decompiler.Core
             var sl = new SortedList<string, ProcedureSignature>(
                 Signatures,
                 StringComparer.InvariantCulture);
-            Formatter f = new Formatter(writer);
+            TextFormatter f = new TextFormatter(writer);
 			foreach (KeyValuePair<string,ProcedureSignature> de in sl)
 			{
 				string name = (string) de.Key;

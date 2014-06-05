@@ -189,9 +189,7 @@ namespace Decompiler.Arch.PowerPC
         {
             private Opcode opcode;
             private string opFmt;
-            private bool signed;
             private bool swapOps;
-            private bool addr;
 
             public DOpRec(Opcode opcode, string opFmt)
             {

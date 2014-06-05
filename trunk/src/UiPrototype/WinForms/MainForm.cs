@@ -26,9 +26,47 @@ namespace Decompiler.UiPrototype.WinForms
             if (treeView1.SelectedNode == null)
                 return;
 
-            var mv = new MemoryView();
-            mv.MdiParent = this;
-            mv.Show();
+            if (IsFnNode(treeView1.SelectedNode))
+            {
+                var fv = new ProcedureView();
+                fv.EditorView.Model = fv.Model(
+                    fv.Line(
+                        fv.Span("// fn00112233", "cmt")),
+                    fv.Line(
+                        fv.Span("// Trashes - edx", "cmt")),
+                    fv.Line(
+                        fv.Span("void fn00112233(esi)")),
+                    fv.Line(
+                        fv.Span("{")),
+                    fv.Line(
+                        fv.Span("    "),
+                        fv.Span("while", "keyword"),
+                        fv.Span(" (edx_10 != 0)")),
+                    fv.Line(
+                        fv.Span("    {")), 
+                    fv.Line(
+                        fv.Span("        "),
+                        fv.Span("edx_10 = "),
+                        fv.Link("fn00114434"),
+                        fv.Span("(edx_10);")),
+                    fv.Line(
+                        fv.Span("    }")),
+                    fv.Line(
+                        fv.Span("}")));
+                fv.MdiParent = this;
+                fv.Show();
+            }
+            else
+            {
+                var mv = new MemoryView();
+                mv.MdiParent = this;
+                mv.Show();
+            }
+        }
+
+        private bool IsFnNode(TreeNode treeNode)
+        {
+            return treeNode.ImageKey == "Code.ico";
         }
 
         private void MainForm_Load(object sender, EventArgs e)

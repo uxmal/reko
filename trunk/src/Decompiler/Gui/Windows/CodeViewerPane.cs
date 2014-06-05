@@ -142,7 +142,6 @@ namespace Decompiler.Gui.Windows
                 initialLoad = true;
                 SetDocumentText();
             }
-
         }
 
         private void SetDocumentText()

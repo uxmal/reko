@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Structure
             sb.WriteLine("{0}()", proc.Name);
             sb.WriteLine("{");
 
-            CodeFormatter cf = new CodeFormatter(new Formatter(sb));
+            CodeFormatter cf = new CodeFormatter(new TextFormatter(sb));
             cf.WriteStatementList(proc.Body);
 
             sb.WriteLine("}");

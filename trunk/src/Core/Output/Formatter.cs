@@ -27,15 +27,13 @@ namespace Decompiler.Core.Output
 	/// <summary>
 	/// Base class for all formatting classes. 
 	/// </summary>
-	public class Formatter
+	public abstract class Formatter
 	{
-		public Formatter(TextWriter writer)
+		public Formatter()
 		{
-			this.TextWriter = writer;
 			this.UseTabs = true;
 			this.TabSize = 4;
 			this.Indentation = 4;
-			this.Terminator = Environment.NewLine;
 		}
 
 		public void Indent()
@@ -58,17 +56,12 @@ namespace Decompiler.Core.Output
 
 		public int Indentation { get; set; }
 		public int TabSize  {get; set; }
-        public string Terminator { get; set; }
         public bool UseTabs { get; set; }
-        public TextWriter TextWriter { get; private set; }
 
         /// <summary>
-        /// Terminate a line using the terminator string.
+        /// Terminate a line.
         /// </summary>
-        public void Terminate()
-		{
-			TextWriter.Write(Terminator);
-		}
+        public abstract void Terminate();
 
         /// <summary>
         /// Write the string <paramref name="s"/>, then terminate the line.
@@ -77,33 +70,41 @@ namespace Decompiler.Core.Output
 		public void Terminate(string s)
 		{
 			Write(s);
-			TextWriter.Write(Terminator);
+            Terminate();
 		}
 
-        public virtual void Write(string s)
+        /// <summary>
+        /// Write the string <paramref name="s"/> with no special formatting.
+        /// </summary>
+        /// <param name="s"></param>
+        public abstract void Write(string s);
+
+        public void Write(object o)
         {
-            TextWriter.Write(s);
+            if (o != null)
+                Write(o.ToString());
         }
 
-        public virtual void Write(string format, params object[] arguments)
+        public abstract void Write(string format, params object[] arguments);
+
+        public abstract void WriteComment(string comment);
+
+        public abstract void WriteHyperlink(string text, object href);
+
+        public abstract void WriteKeyword(string keyword);
+
+        public abstract void WriteLine();
+
+        public abstract void WriteLine(string s);
+
+        public void WriteLine(object o)
         {
-            TextWriter.Write(format, arguments);
+            if (o != null)
+                Write(o);
+            WriteLine();
         }
 
-        public virtual void WriteComment(string comment)
-        {
-            TextWriter.Write(comment);
-        }
-
-        public virtual void WriteKeyword(string keyword)
-        {
-            TextWriter.Write(keyword);
-        }
-
-        public virtual void WriteLine()
-        {
-            TextWriter.WriteLine();
-        }
+        public abstract void WriteLine(string format, params object[] arguments);
 
 		public void WriteSpaces(int n)
 		{
@@ -113,5 +114,6 @@ namespace Decompiler.Core.Output
 				--n;
 			}
 		}
+
     }
 }

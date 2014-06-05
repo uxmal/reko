@@ -32,12 +32,6 @@ namespace Decompiler.Core.Output
         private CodeFormatter formatter;
         private Procedure proc;
 
-        public ProcedureFormatter(Procedure procedure, TextWriter writer)
-        {
-            this.proc = procedure;
-            this.formatter = new CodeFormatter(new Formatter(writer));
-        }
-
         public ProcedureFormatter(Procedure procedure, CodeFormatter formatter)
         {
             this.proc = procedure;
