@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void CreateViewerIfNotVisible()
+        public void Cvp_CreateViewerIfNotVisible()
         {
             var uiSvc = AddMockService<IDecompilerShellUiService>();
             uiSvc.Expect(s => s.FindWindow(
@@ -63,9 +63,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             codeViewerSvc.DisplayProcedure(m.Procedure);
 
             uiSvc.VerifyAllExpectations();
-
-
-
         }
 
         private T AddMockService<T>() where T : class

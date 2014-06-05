@@ -308,7 +308,7 @@ namespace Decompiler.Core.Output
 
 		public virtual void VisitProcedureConstant(ProcedureConstant pc)
 		{
-			writer.Write(pc.Procedure.Name);
+			writer.WriteHyperlink(pc.Procedure.Name, pc.Procedure);
 		}
 
 		public void VisitTestCondition(TestCondition tc)
