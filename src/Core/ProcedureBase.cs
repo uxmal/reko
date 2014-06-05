@@ -53,7 +53,7 @@ namespace Decompiler.Core
         public override string ToString()
         {
             StringWriter sw = new StringWriter();
-            Signature.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(sw));
+            Signature.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new TextFormatter(sw));
             return sw.ToString();
         }
 

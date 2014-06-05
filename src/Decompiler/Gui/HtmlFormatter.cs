@@ -29,7 +29,7 @@ namespace Decompiler.Gui
     /// <summary>
     /// Formats code as HTML for presentation in Web browsers.
     /// </summary>
-    public class HtmlFormatter : Formatter
+    public class HtmlFormatter : TextFormatter
     {
         public HtmlFormatter(TextWriter writer) : base(writer)
         {
@@ -90,15 +90,16 @@ namespace Decompiler.Gui
             TextWriter.WriteLine("<br />");
         }
 
-        public void WriteHyperlink(string text, string href)
+        public override void WriteHyperlink(string text, object href)
         {
             if (text == null)
                 return;
+            var dest = href as string;
             TextWriter.Write("<a");
-            if (!string.IsNullOrEmpty(href))
+            if (!string.IsNullOrEmpty(dest))
             {
                 TextWriter.Write(" href=\"");
-                WriteEntityEscaped(href);
+                WriteEntityEscaped(dest);
                 TextWriter.Write("\"");
             }
             TextWriter.Write(">");

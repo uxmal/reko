@@ -13,7 +13,7 @@ namespace Decompiler.Core.Output
         {
         }
 
-        private class KeywordFormatter : Formatter
+        private class KeywordFormatter : TextFormatter
         {
             public KeywordFormatter(TextWriter writer)
                 : base(writer)

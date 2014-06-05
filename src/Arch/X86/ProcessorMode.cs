@@ -127,8 +127,6 @@ namespace Decompiler.Arch.X86
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
-
-
     }
 
     internal class SegmentedMode : ProcessorMode

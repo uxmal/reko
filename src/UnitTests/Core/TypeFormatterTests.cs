@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Core
         public void SetUp()
         {
             sw = new StringWriter();
-            tyfo = new TypeFormatter(new Formatter(sw), false);
+            tyfo = new TypeFormatter(new TextFormatter(sw), false);
         }
         
         [Test]
@@ -176,7 +176,7 @@ struct a {
         [Test]
         public void TypeReference()
         {
-            tyfo = new TypeFormatter(new Formatter(sw), true);
+            tyfo = new TypeFormatter(new TextFormatter(sw), true);
             EquivalenceClass b = new EquivalenceClass(new TypeVariable(1));
             b.DataType = new StructureType("b", 0) { Fields = { { 4, PrimitiveType.Word32 } } };
 

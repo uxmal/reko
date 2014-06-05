@@ -123,7 +123,7 @@ namespace Decompiler.Analysis
 			{
 				StringWriter output = new StringWriter();
 				ProcedureFlow pf= this.flow[proc];
-                Formatter f = new Formatter(output);
+                TextFormatter f = new TextFormatter(output);
 				if (pf.Signature != null)
 					pf.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
 				else if (proc.Signature != null)

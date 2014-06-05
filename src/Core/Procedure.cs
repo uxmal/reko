@@ -142,9 +142,10 @@ namespace Decompiler.Core
 			writer.WriteLine("// {0}", Name);
 			if (emitFrame)
 				Frame.Write(writer);
-            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
+            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new TextFormatter(writer));
 			writer.WriteLine();
-            new ProcedureFormatter(this, writer).WriteProcedureBlocks(showEdges);
+            var formatter = new CodeFormatter(new TextFormatter(writer));
+            new ProcedureFormatter(this, formatter).WriteProcedureBlocks(showEdges);
 		}
 
         public void WriteGraph(TextWriter writer)

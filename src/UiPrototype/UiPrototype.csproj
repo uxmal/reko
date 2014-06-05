@@ -50,6 +50,12 @@
   <ItemGroup>
     <Compile Include="Ui\MainFormInteractor.cs" />
     <Compile Include="WinForms\DataType.cs" />
+    <Compile Include="WinForms\ProcedureView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\ProcedureView.Designer.cs">
+      <DependentUpon>ProcedureView.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Project.cs" />
     <Compile Include="WinForms\StringSearcher.cs" />
     <Compile Include="WinForms\SearchHit.cs" />
@@ -116,6 +122,9 @@
     <EmbeddedResource Include="WinForms\MemoryTyperControl.resx">
       <DependentUpon>MemoryTyperControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\ProcedureView.resx">
+      <DependentUpon>ProcedureView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\TypeDialog.resx">
       <DependentUpon>TypeDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -148,6 +157,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core-2010.csproj">
+      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Name>Core-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Decompiler\Decompiler-2010.csproj">
+      <Project>{5e21c722-f9c6-4192-95ec-89fcef2acdb7}</Project>
+      <Name>Decompiler-2010</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -96,7 +96,7 @@ namespace Decompiler.Core
         #region Output methods
         public void Emit(string fnName, EmitFlags f, TextWriter writer)
         {
-            Emit(fnName, f, new Formatter(writer));
+            Emit(fnName, f, new TextFormatter(writer));
         }
 
         public void Emit(string fnName, EmitFlags f, Formatter fmt)
@@ -153,7 +153,7 @@ namespace Decompiler.Core
         public override string ToString()
         {
             StringWriter w = new StringWriter();
-            Formatter f = new Formatter(w);
+            TextFormatter f = new TextFormatter(w);
             CodeFormatter cf = new CodeFormatter(f);
             TypeFormatter tf = new TypeFormatter(f, false);
             Emit("()", EmitFlags.ArgumentKind | EmitFlags.LowLevelInfo, f, cf, tf);
@@ -163,7 +163,7 @@ namespace Decompiler.Core
         public string ToString(string name)
         {
             StringWriter sw = new StringWriter();
-            Formatter f = new Formatter(sw);
+            TextFormatter f = new TextFormatter(sw);
             CodeFormatter cf = new CodeFormatter(f);
             TypeFormatter tf = new TypeFormatter(f, false);
             Emit(name, EmitFlags.ArgumentKind, f, cf, tf);

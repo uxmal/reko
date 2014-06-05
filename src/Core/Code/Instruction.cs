@@ -45,7 +45,7 @@ namespace Decompiler.Core.Code
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();
-            Formatter f = new Formatter(sw);
+            TextFormatter f = new TextFormatter(sw);
 			f.Terminator = "";
 			f.Indentation = 0;
 			CodeFormatter fmt = new CodeFormatter(f);

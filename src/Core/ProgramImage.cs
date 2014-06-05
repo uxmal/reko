@@ -123,7 +123,6 @@ namespace Decompiler.Core
 			return offset < abImage.Length;
         }
 
-	
 		/// <summary>
 		/// Reads a little-endian word from image offset.
 		/// </summary>

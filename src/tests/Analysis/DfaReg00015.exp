@@ -21,16 +21,16 @@ l0C00_0000:
 	word16 si_38 = dx_35 + 0x0001
 	// succ:  l0C00_0019
 l0C00_0019:
-	si_38 = si_63 + 0x0001
-	word16 si_63 = si_38
-	branch Mem23[ds_33:si_63:byte] != 0xFFFF l0C00_0019
+	si_38 = si_62 + 0x0001
+	word16 si_62 = si_38
+	branch Mem23[ds_33:si_62:byte] != 0xFFFF l0C00_0019
 	// succ:  l0C00_001E l0C00_0019
 l0C00_001E:
-	word16 ax_51
-	msdos_write_file(0x3D01, si_63 + 0x0000 - dx_35 - 0x0001, ds_dx_36, &ax_51)
-	Mem56[ss:0x06B6:word16] = Mem23[ss:0x06B6:word16]
+	word16 ax_50
+	msdos_write_file(0x3D01, si_62 + 0x0000 - dx_35 - 0x0001, ds_dx_36, &ax_50)
+	Mem55[ss:0x06B6:word16] = Mem23[ss:0x06B6:word16]
 	fn0C00_0037(0x0000, 0x00FF, ds_33)
-	msdos_terminate((byte) Mem56[ss:0x06B6:word16])
+	msdos_terminate((byte) Mem55[ss:0x06B6:word16])
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 

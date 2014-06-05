@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Analysis
 				w.WriteLine();
 
 				w.WriteLine("// {0}", proc.Name);
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, new Formatter(w));
+				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, new TextFormatter(w));
 				w.WriteLine();
 				foreach (Block block in proc.SortBlocksByName())
 				{

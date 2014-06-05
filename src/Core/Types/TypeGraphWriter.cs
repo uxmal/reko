@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,18 +26,18 @@ using System.Text;
 
 namespace Decompiler.Core.Types
 {
-    public class TypeGraphWriter : IDataTypeVisitor<TextWriter>
+    public class TypeGraphWriter : IDataTypeVisitor<Formatter>
     {
         private HashSet<DataType> visited;
-        private TextWriter writer;
+        private Formatter writer;
         private bool reference;
 
-        public TypeGraphWriter(TextWriter writer)
+        public TypeGraphWriter(Formatter writer)
         {
             this.writer = writer;
         }
         
-        public TextWriter VisitArray(ArrayType at)
+        public Formatter VisitArray(ArrayType at)
         {
             writer.Write("(arr ");
             at.ElementType.Accept(this);
@@ -48,13 +49,13 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
-        public TextWriter VisitEquivalenceClass(EquivalenceClass eq)
+        public Formatter VisitEquivalenceClass(EquivalenceClass eq)
         {
             writer.Write(eq.Name);
             return writer;
         }
 
-        public TextWriter VisitFunctionType(FunctionType ft)
+        public Formatter VisitFunctionType(FunctionType ft)
         {
             writer.Write("(fn ");
             if (ft.ReturnType != null)
@@ -74,13 +75,13 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
-        public TextWriter VisitPrimitive(PrimitiveType pt)
+        public Formatter VisitPrimitive(PrimitiveType pt)
         {
             writer.Write(pt.Name);
             return writer;
         }
 
-        public TextWriter VisitMemberPointer(MemberPointer memptr)
+        public Formatter VisitMemberPointer(MemberPointer memptr)
         {
             writer.Write("(memptr ");
             memptr.BasePointer.Accept(this);
@@ -90,7 +91,7 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
-        public TextWriter VisitPointer(Pointer ptr)
+        public Formatter VisitPointer(Pointer ptr)
         {
 			writer.Write("(ptr ");
 			WriteReference(ptr.Pointee);
@@ -98,7 +99,7 @@ namespace Decompiler.Core.Types
             return writer;
 		}
 
-        public TextWriter VisitString(StringType str)
+        public Formatter VisitString(StringType str)
         {
             writer.Write("(str");
             if (str.LengthPrefixType != null)
@@ -114,7 +115,7 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
-        public TextWriter VisitStructure(StructureType str)
+        public Formatter VisitStructure(StructureType str)
         {
             if (this.visited == null)
                 visited = new HashSet<DataType>();
@@ -143,7 +144,7 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
-        public TextWriter VisitTypeReference(TypeReference typeref)
+        public Formatter VisitTypeReference(TypeReference typeref)
         {
             if (string.IsNullOrEmpty(typeref.Name))
             {
@@ -156,13 +157,13 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
-        public TextWriter VisitTypeVariable(TypeVariable tv)
+        public Formatter VisitTypeVariable(TypeVariable tv)
         {
             writer.Write(tv.Name);
             return writer;
         }
 
-        public TextWriter VisitUnion(UnionType ut)
+        public Formatter VisitUnion(UnionType ut)
         {
             if (visited == null)
                 visited = new HashSet<DataType>(); 
@@ -188,13 +189,13 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
-        public TextWriter VisitUnknownType(UnknownType ut)
+        public Formatter VisitUnknownType(UnknownType ut)
         {
             writer.Write("<unknown>");
             return writer;
         }
 
-        public TextWriter VisitVoidType(VoidType vt)
+        public Formatter VisitVoidType(VoidType vt)
         {
             writer.Write("void");
             return writer;

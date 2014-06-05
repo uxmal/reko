@@ -60,7 +60,7 @@ namespace Decompiler.Gui.Windows.Forms
             txt.SuspendLayout();
         }
 
-        private new class InnerFormatter : Formatter
+        private new class InnerFormatter : TextFormatter
         {
             private RichTextBox txt;
 

@@ -31,7 +31,6 @@ namespace Decompiler.Core.Output
 	public class TypeFormatter : IDataTypeVisitor<Formatter>
 	{
         private Formatter writer;
-
 		private string name;
 		public int indentLevel;
 		private Dictionary<DataType,object> visited;

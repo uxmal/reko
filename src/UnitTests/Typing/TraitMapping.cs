@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Code;
+using Decompiler.Core.Output;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -74,10 +75,11 @@ namespace Decompiler.UnitTests.Typing
 
 		public void Write(TextWriter tw)
 		{
+            var formatter = new TextFormatter(tw);
 			foreach (KeyValuePair<TypeVariable,List<Trait>> de in items)
 			{
                 tw.Write(de.Key);
-                store.WriteExpressionOf(de.Key, tw);
+                store.WriteExpressionOf(de.Key, formatter);
                 tw.WriteLine();
 				foreach (Trait tr in de.Value)
 				{

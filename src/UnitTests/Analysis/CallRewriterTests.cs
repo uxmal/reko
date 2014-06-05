@@ -151,7 +151,7 @@ namespace Decompiler.UnitTests.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(writer));
+				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, new TextFormatter(writer));
 				writer.WriteLine();
 				flow.Emit(prog.Architecture, writer);
 				proc.Write(true, writer);

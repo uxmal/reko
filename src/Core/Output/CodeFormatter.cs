@@ -24,6 +24,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -760,7 +761,7 @@ namespace Decompiler.Core.Output
                     writer.Write(" ");
                 }
             }
-            typeWriter = new TypeGraphWriter(writer.TextWriter);
+            typeWriter = new TypeGraphWriter(writer);
             typeWriter.WriteReference(arg.DataType);
         }
 

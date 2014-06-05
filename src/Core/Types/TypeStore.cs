@@ -173,8 +173,9 @@ namespace Decompiler.Core.Types
             get { return usedClasses.Values; }
         }
 
-        public void Write(TextWriter writer)
+        public void Write(TextWriter w)
         {
+            var writer = new TextFormatter(w);
             writer.WriteLine("// Equivalence classes ////////////");
             foreach (TypeVariable tv in TypeVariables)
             {
@@ -197,7 +198,7 @@ namespace Decompiler.Core.Types
             }
         }
 
-        public void WriteExpressionOf(TypeVariable tvMember, TextWriter writer)
+        public void WriteExpressionOf(TypeVariable tvMember, Formatter writer)
         {
             Expression e;
             if (tvSources.TryGetValue(tvMember, out e) && e != null)
@@ -212,7 +213,7 @@ namespace Decompiler.Core.Types
             }
         }
 
-        public void WriteEntry(TypeVariable tv, TextWriter writer)
+        public void WriteEntry(TypeVariable tv, Formatter writer)
         {
             writer.Write(tv.Name);
             writer.Write(":");
@@ -229,7 +230,7 @@ namespace Decompiler.Core.Types
             writer.WriteLine(tv.OriginalDataType);
         }
 
-        private void WriteEntry(TypeVariable tv, DataType dt, TextWriter writer)
+        private void WriteEntry(TypeVariable tv, DataType dt, Formatter writer)
         {
             writer.Write("{0}: ", tv);
             if (dt != null)

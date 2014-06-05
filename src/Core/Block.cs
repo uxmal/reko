@@ -138,7 +138,7 @@ namespace Decompiler.Core
 
 		public void WriteStatements(TextWriter writer)
 		{
-            Formatter f = new Formatter(writer);
+            TextFormatter f = new TextFormatter(writer);
             f.UseTabs = true;
             f.TabSize = 4;
             CodeFormatter cf = new CodeFormatter(f);

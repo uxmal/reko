@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Core
 	[TestFixture]
 	public class CodeFormatterTests
 	{
-        private Formatter formatter;
+        private TextFormatter formatter;
 		private CodeFormatter cf;
 		private StringWriter sw;
 		private string nl = Environment.NewLine;
@@ -123,7 +123,7 @@ namespace Decompiler.UnitTests.Core
 		public void Setup()
 		{
 			sw = new StringWriter();
-            formatter = new Formatter(sw);
+            formatter = new TextFormatter(sw);
 			cf = new CodeFormatter(formatter);
 		}
 

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Output;
 using System;
 using System.IO;
 
@@ -57,8 +58,10 @@ namespace Decompiler.Core.Types
 
 		public sealed override string ToString()
 		{
-            var typeGraphWriter = new TypeGraphWriter(new StringWriter());
-            return this.Accept(typeGraphWriter).ToString();
+            var sw = new StringWriter();
+            var typeGraphWriter = new TypeGraphWriter(new TextFormatter(sw));
+            this.Accept(typeGraphWriter);
+            return sw.ToString();
 		}
 	}
 }
