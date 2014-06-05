@@ -24,7 +24,7 @@
     Id="*"
     Name="Decompiler"
     Language="1033"
-    Version="0.2.5.0"
+    Version="0.2.6.0"
     Manufacturer="jklSoft"
     UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E">
 
@@ -96,6 +96,7 @@
 
         <!-- Environments -->
         <File Source="$(var.AmigaOS.TargetPath)" />
+        <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" />
         <File Source="$(var.MacOS-2010.TargetPath)" />
         <File Source="$(var.Msdos-2010.TargetPath)" />
         <File Source="$(var.Msdos-2010.ProjectDir)realmodeintservices.xml" />
