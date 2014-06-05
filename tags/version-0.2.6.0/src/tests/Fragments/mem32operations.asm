@@ -1,0 +1,21 @@
+;;; 32-bit memory operands
+.i386
+	mov eax,[0x1234567]
+	add eax,[0x1233242]
+	mov ebx,[0x01]
+	mov ecx,[eax]
+	mov edx,[ebx+02]
+	mov esi,[ebx-02]
+	mov edi,[ebx+0264]
+	mov eax,[esi-0264]
+	mov eax,[ebp+04]
+	mov ebp,[ebp]
+	mov eax,[esp]
+	mov eax,[esp+3]
+	mov ebx,[esp-3]
+	mov ecx,[esp+0333]
+	mov edx,[esp-0333]
+	mov eax,[edi*2]
+	mov ebx,[eax+edi]
+	mov ebx,[eax+esi*8+03343]
+	ret

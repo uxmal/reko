@@ -1,0 +1,1348 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <service name="cpu_int_02">
+	<syscallinfo>
+	  <vector>02</vector>
+	</syscallinfo>
+	<signature></signature>
+  </service>
+  <service name="cpu_debug_break">
+	<syscallinfo>
+	  <vector>03</vector>
+	</syscallinfo>
+	<signature></signature>
+  </service>
+  <service name="bios_video_set_mode">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">00</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_set_text_mode_cursor_shape">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">01</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>ch</reg>
+	  </arg>
+	  <arg>
+		<reg>cl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_set_cursor_position">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">02</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>bh</reg>
+	  </arg>
+	  <arg>
+		<reg>dh</reg>
+	  </arg>
+	  <arg>
+		<reg>dl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_get_cursor_position_size">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">03</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ch</reg>
+	  </return>
+	  <arg>
+		<reg>bh</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>cl</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>dh</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>dl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_set_CGA_palette">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">0B</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>bh</reg>
+	  </arg>
+	  <arg>
+		<reg>bl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_get_current_video_mode">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">0F</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	  <arg out="true">
+		<reg>ah</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>bh</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_set_all_palette_registers">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">10</regvalue>
+	  <regvalue reg="al">02</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>es</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_teletype_output">
+    <syscallinfo>
+      <vector>10</vector>
+      <regvalue reg="ah">0E</regvalue>
+    </syscallinfo>
+    <signature>
+      <arg><reg>al</reg></arg>
+      <arg><reg>bh</reg></arg>
+      <arg><reg>bl</reg></arg>
+    </signature>
+  </service>
+  <service name="bios_video_load_ROM_8x8_dbl_dot_patterns">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">11</regvalue>
+	  <regvalue reg="al">12</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>bl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_set_block_of_DAC_registers">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">10</regvalue>
+	  <regvalue reg="al">12</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>es</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_unknown_1030">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">30</regvalue>
+	</syscallinfo>
+	<signature></signature>
+  </service>
+  <service name="bios_video_get_EGA_info">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">12</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>bh</reg>
+	  </return>
+	  <arg out="true">
+		<reg>bl</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ch</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>cl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_write_string">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">13</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	  <arg>
+		<reg>bh</reg>
+	  </arg>
+	  <arg>
+		<reg>bl</reg>
+	  </arg>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>dh</reg>
+	  </arg>
+	  <arg>
+		<reg>dl</reg>
+	  </arg>
+	  <arg>
+		<seq><reg>es</reg><reg>bp</reg>
+	  </seq>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_video_get_DAC_color_page_state">
+	<syscallinfo>
+	  <vector>10</vector>
+	  <regvalue reg="ah">1A</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>bl</reg>
+	  </return>
+	  <arg out="true">
+		<reg>bh</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_get_memory_size">
+	<syscallinfo>
+	  <vector>12</vector>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ax</reg>
+	  </return>
+	</signature>
+  </service>
+  <service name="bios_get_system_configuration">
+	<syscallinfo>
+	  <vector>15</vector>
+	  <regvalue reg="ah">C0</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg out="true">
+		<reg>ah</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>es</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>bx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="tandy_read_eeprom">
+	<syscallinfo>
+	  <vector>15</vector>
+	  <regvalue reg="ah">70</regvalue>
+	  <regvalue reg="al">00</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>dx</reg>
+	  </return>
+	  <arg>
+		<reg>bl</reg>
+	  </arg>
+	  <arg out="true">
+		<flag>C</flag>
+	  </arg>
+	</signature>
+  </service>
+  <service name="tandy_write_eeprom">
+	<syscallinfo>
+	  <vector>15</vector>
+	  <regvalue reg="ah">70</regvalue>
+	  <regvalue reg="al">01</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bl</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_kbd_get_keystroke">
+	<syscallinfo>
+	  <vector>16</vector>
+	  <regvalue reg="ah">00</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	  <arg out="true">
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_kbd_check_keystroke">
+	<syscallinfo>
+	  <vector>16</vector>
+	  <regvalue reg="ah">01</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	  <arg out="true">
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="bios_get_system_time">
+	<syscallinfo>
+	  <vector>1A</vector>
+	  <regvalue reg="ah">00</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>cx</reg>
+	  </return>
+	  <arg out="true">
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_terminate_program20">
+	<syscallinfo>
+	  <vector>20</vector>
+	</syscallinfo>
+	<signature></signature>
+	<characteristics>
+	  <terminates>true</terminates>
+	</characteristics>
+  </service>
+  <service name="msdos_terminate_program">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">00</regvalue>
+	</syscallinfo>
+	<signature></signature>
+	<characteristics>
+	  <terminates>true</terminates>
+	</characteristics>
+  </service>
+  <service name="msdos_write_console_char">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">02</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>dl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_direct_console_output">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">06</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>dl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_direct_character_input_without_echo">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">07</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	</signature>
+  </service>
+  <service name="msdos_character_input_without_echo">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">08</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	</signature>
+  </service>
+  <service name="msdos_display_string">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">09</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_stdin_status">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">0B</regvalue>
+	</syscallinfo>
+	<signature></signature>
+  </service>
+  <service name="msdos_flush_buffer_and_read_stdin">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">0C</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_set_default_drive">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">0E</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	  <arg>
+		<reg>dl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_current_default_drive">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">19</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	</signature>
+  </service>
+  <service name="msdos_set_DTA">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">1A</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_set_interrupt_vector">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">25</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	  <arg>
+		<seq>
+		<reg>ds</reg>
+		<reg>dx</reg>
+	  </seq>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_parse_filename_into_fcb">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">29</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><reg>al</reg></return>
+      <arg>
+        <reg>al</reg>
+      </arg>
+      <arg>
+        <seq>
+          <reg>ds</reg>
+          <reg>si</reg>
+        </seq>
+      </arg>
+      <arg>
+        <seq>
+          <reg>es</reg>
+          <reg>di</reg>
+        </seq>
+      </arg>
+      <arg out="true">
+        <seq>
+          <reg>ds</reg>
+          <reg>si</reg>
+        </seq>
+      </arg>
+    </signature>
+  </service>
+  <service name="msdos_get_system_date">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">2A</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>dl</reg>
+	  </return>
+	  <arg out="true">
+		<reg>dh</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>cx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_system_time">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">2C</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>cl</reg>
+	  </return>
+	  <arg out="true">
+		<reg>ch</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>dh</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>dl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_disk_transfer_area_address">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">2F</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<seq><reg>es</reg><reg>bx</reg></seq>
+	  </return>
+	</signature>
+  </service>
+  <service name="msdos_get_dos_version">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">30</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	  <arg out="true">
+		<reg>ah</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="terminate_and_stay_resident">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">31</regvalue>
+    </syscallinfo>
+    <signature>
+      <arg><reg>dx</reg></arg>
+    </signature>
+  </service>
+  <service name="msdos_get_interrupt_vector">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">35</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<seq>
+		<reg>es</reg>
+		<reg>bx</reg>
+	  </seq>
+	  </return>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_switch_character">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">37</regvalue>
+      <regvalue reg="al">00</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><reg>dl</reg></return>
+    </signature>
+  </service>
+  <service name="msdos_set_switch_character">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">37</regvalue>
+      <regvalue reg="al">01</regvalue>
+    </syscallinfo>
+    <signature>
+      <arg>
+        <reg>dl</reg>
+      </arg>
+    </signature>
+  </service>
+
+  <service name="msdos_create_truncate_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">3C</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_open_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">3D</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<seq><reg>ds</reg><reg>dx</reg>
+	  </seq>
+	  </arg>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_close_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">3E</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_read_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">3F</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<seq><reg>ds</reg><reg>dx</reg></seq>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_write_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">40</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<seq><reg>ds</reg><reg>dx</reg></seq>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_delete_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">41</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_set_file_position">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">42</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg>
+		<seq><reg>cx</reg><reg>dx</reg></seq>
+	  </arg>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	  <arg out="true">
+	    <seq><reg>dx</reg><reg>ax</reg></seq>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_unknown_2143">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">43</regvalue>
+	</syscallinfo>
+	<signature></signature>
+  </service>
+  <service name="msdos_ioctl_get_device_info">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">44</regvalue>
+	  <regvalue reg="al">00</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_ioctl_get_output_status">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">44</regvalue>
+	  <regvalue reg="al">07</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_ioctl_generic_character_device_request">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">44</regvalue>
+	  <regvalue reg="al">0C</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg>
+		<reg>ch</reg>
+	  </arg>
+	  <arg>
+		<reg>cl</reg>
+	  </arg>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_unknown_2144">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">44</regvalue>
+	</syscallinfo>
+	<signature></signature>
+  </service>
+  <service name="msdos_duplicate_file_handle">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">45</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_current_directory">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">47</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>dl</reg>
+	  </arg>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_allocate_memory_block">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">48</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return><flag>C</flag></return>
+	  <arg><reg>bx</reg></arg>
+	</signature>
+  </service>
+  <service name="msdos_free_memory_block">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">49</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>es</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_resize_memory_block">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">4A</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>es</reg>
+	  </arg>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>bx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_exec">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">4B</regvalue>
+    </syscallinfo>
+    
+    <signature>
+      <return><flag>C</flag></return>
+      <arg><reg>al</reg></arg>
+      <arg><seq><reg>ds</reg><reg>dx</reg></seq></arg>
+      <arg><seq><reg>es</reg><reg>bx</reg></seq></arg>
+    </signature>
+  </service>
+  <service name="msdos_terminate">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">4C</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	</signature>
+	<characteristics>
+	  <terminates>true</terminates>
+	</characteristics>
+  </service>
+  <service name="msdos_get_return_code">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">4D</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><reg>al</reg></return>
+      <arg out="true"><reg>ah</reg></arg>
+    </signature>
+  </service>
+  <service name="msdos_find_first_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">4E</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_find_next_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">4F</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	</signature>
+  </service>
+  <service name="msdos_get_current_process_id">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">51</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>bx</reg>
+	  </return>
+	</signature>
+  </service>
+  <service name="msdos_get_list_of_lists">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">52</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>es</reg>
+	  </return>
+	  <arg out="true">
+		<reg>bx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_verify_flag">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">54</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>al</reg>
+	  </return>
+	</signature>
+  </service>
+  <service name="msdos_set_memory_allocation_strategy">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">58</regvalue>
+	  <regvalue reg="al">01</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_extended_error_information">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">59</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ax</reg>
+	  </return>
+	  <arg out="true">
+		<reg>bh</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>bl</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ch</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>es</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>di</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_create_new_file">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">5B</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>ds</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_set_handle_count">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">67</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_multiplex">
+	<syscallinfo>
+	  <vector>2F</vector>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>ah</reg>
+	  </arg>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_reset">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">00</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ax</reg>
+	  </return>
+	  <arg out="true">
+		<reg>bx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_position_mouse_cursor">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">04</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_define_horizontal_range">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">07</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_define_vertical_range">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">08</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_set_ISR">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">0C</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>es</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_define_mickey_pixel_ratio">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">0F</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>cx</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_set_interrupt_rate">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">1C</regvalue>
+	</syscallinfo>
+	<signature>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="ems_get_manager_status">
+	<syscallinfo>
+	  <vector>67</vector>
+	  <regvalue reg="ah">40</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	</signature>
+  </service>
+  <service name="ems_get_page_frame_segment">
+	<syscallinfo>
+	  <vector>67</vector>
+	  <regvalue reg="ah">41</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	  <arg out="true">
+		<reg>bx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="ems_get_number_of_pages">
+	<syscallinfo>
+	  <vector>67</vector>
+	  <regvalue reg="ah">42</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	  <arg out="true">
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="ems_get_handle_and_allocate_memory">
+	<syscallinfo>
+	  <vector>67</vector>
+	  <regvalue reg="ah">43</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="ems_map_memory">
+	<syscallinfo>
+	  <vector>67</vector>
+	  <regvalue reg="ah">44</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	  <arg>
+		<reg>al</reg>
+	  </arg>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="ems_release_memory">
+	<syscallinfo>
+	  <vector>67</vector>
+	  <regvalue reg="ah">45</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ah</reg>
+	  </return>
+	  <arg>
+		<reg>dx</reg>
+	  </arg>
+	</signature>
+  </service>
+</library>

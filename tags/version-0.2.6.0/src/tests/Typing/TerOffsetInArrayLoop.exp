@@ -1,0 +1,83 @@
+// ProcedureMock
+void ProcedureMock()
+ProcedureMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ProcedureMock_entry
+	word16 Eq_5::*di_5 = &Eq_5::a5388[0]
+	// succ:  lupe
+lupe:		// pred: l1 lupe
+	ds->*di_5 = 0x0000;
+	di_5 = di_5 + 1;
+	cx = cx - 0x0001;
+	branch cx != 0x0000 lupe
+	// succ:  l2 lupe
+l2:		// pred: lupe
+	return
+	// succ:  ProcedureMock_exit
+ProcedureMock_exit:		// pred: l2
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_5: (struct "Eq_5" (5388 (arr word16) a5388))
+	T_5 (in ds : word16)
+// Type Variables ////////////
+Globals: (in globals : ptr32)
+  Class: Eq_1
+  DataType: Eq_1
+  OrigDataType: 
+T_2: (in di_5 : (memptr (ptr Eq_5) word16))
+  Class: Eq_2
+  DataType: (memptr (ptr Eq_5) word16)
+  OrigDataType: (memptr T_5 (struct 2 (0 T_8 t0000)))
+T_3: (in 0x5388 : word16)
+  Class: Eq_2
+  DataType: (memptr (ptr Eq_5) word16)
+  OrigDataType: word16
+T_4: (in 0x0000 : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_5: (in ds : word16)
+  Class: Eq_5
+  DataType: (ptr Eq_5)
+  OrigDataType: (ptr (struct (5388 (arr (struct 2 (0 word16 w0000))) a5388)))
+T_6: (in 0x0000 : word16)
+  Class: Eq_6
+  DataType: word16
+  OrigDataType: word16
+T_7: (in di_5 + 0x0000 : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
+T_8: (in Mem9[ds:di_5 + 0x0000:word16] : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_9: (in 0x0002 : word16)
+  Class: Eq_9
+  DataType: word16
+  OrigDataType: word16
+T_10: (in di_5 + 0x0002 : word16)
+  Class: Eq_2
+  DataType: (memptr (ptr Eq_5) word16)
+  OrigDataType: word16
+T_11: (in cx : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_12: (in 0x0001 : word16)
+  Class: Eq_12
+  DataType: word16
+  OrigDataType: word16
+T_13: (in cx - 0x0001 : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_14: (in 0x0000 : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_15: (in cx != 0x0000 : bool)
+  Class: Eq_15
+  DataType: bool
+  OrigDataType: bool

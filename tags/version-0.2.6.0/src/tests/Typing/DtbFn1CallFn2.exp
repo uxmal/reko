@@ -1,0 +1,76 @@
+// Fn1
+void Fn1()
+Fn1_entry:
+	// succ:  l1
+l1:
+	loc2 = Fn2(loc1)
+	return
+	// succ:  Fn1_exit
+Fn1_exit:
+
+// Fn2
+word32 Fn2(word32 arg1)
+Fn2_entry:
+	// succ:  l1
+l1:
+	r1 = arg1 + 0x00000001
+	return r1
+	// succ:  Fn2_exit
+Fn2_exit:
+
+// Equivalence classes ////////////
+Eq_2: (ptr (fn T_6 (T_5)))
+	T_2 (in Fn2 : ptr32)
+	T_3 (in signature of Fn2 : void)
+Eq_4: word32
+	T_4 (in arg1 : word32)
+	T_5 (in loc1 : word32)
+Eq_6: word32
+	T_6 (in Fn2(loc1) : word32)
+	T_7 (in loc2 : word32)
+Eq_8: word32
+	T_8 (in r1 : word32)
+	T_10 (in arg1 + 0x00000001 : word32)
+Eq_9: word32
+	T_9 (in 0x00000001 : word32)
+// Type Variables ////////////
+Globals: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in Fn2 : ptr32)
+  Class: Eq_2
+  DataType: (ptr (fn T_6 (T_5)))
+  OrigDataType: (ptr (fn T_6 (T_5)))
+T_3: (in signature of Fn2 : void)
+  Class: Eq_2
+  DataType: (ptr (fn T_6 (T_5)))
+  OrigDataType: 
+T_4: (in arg1 : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_5: (in loc1 : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_6: (in Fn2(loc1) : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_7: (in loc2 : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_8: (in r1 : word32)
+  Class: Eq_8
+  DataType: word32
+  OrigDataType: word32
+T_9: (in 0x00000001 : word32)
+  Class: Eq_9
+  DataType: word32
+  OrigDataType: word32
+T_10: (in arg1 + 0x00000001 : word32)
+  Class: Eq_8
+  DataType: word32
+  OrigDataType: word32

@@ -1,0 +1,54 @@
+Mem0:Global memory
+    def:  def Mem0
+    uses: FPUF_13 = cond(rArg0 - Mem0[ds:bx:real32])
+fp:Temporary
+sp:sp
+rArg0:FPU stack
+    def:  def rArg0
+    uses: FPUF_13 = cond(rArg0 - Mem0[ds:bx:real32])
+bx:bx
+    def:  def bx
+    uses: FPUF_13 = cond(rArg0 - Mem0[ds:bx:real32])
+ds:ds
+    def:  def ds
+    uses: FPUF_13 = cond(rArg0 - Mem0[ds:bx:real32])
+FPUF:Flags
+ax:ax
+ah:ah
+SZO:Flags
+C:Flags
+Z:Flags
+ecx:ecx
+FPUF_13: orig: FPUF
+    def:  FPUF_13 = cond(rArg0 - Mem0[ds:bx:real32])
+    uses: ah_15 = (byte) FPUF_13 (alias)
+ax_14: orig: ax
+ah_15: orig: ah
+    def:  ah_15 = (byte) FPUF_13 (alias)
+    uses: branch (ah_15 & 0x41) == 0x00 l0C00_000C
+SZO_16: orig: SZO
+Z_17: orig: Z
+C_18: orig: C
+ecx_19: orig: ecx
+C_20: orig: C
+SZO_21: orig: SZO
+ecx_22: orig: ecx
+SZO_23: orig: SZO
+C_24: orig: C
+// fn0C00_0000
+void fn0C00_0000(word16 bx, selector ds, real64 rArg0)
+fn0C00_0000_entry:
+	def Mem0
+	def rArg0
+	def bx
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+	// succ:  l0C00_0009 l0C00_000C
+l0C00_0009:
+	// succ:  l0C00_000C
+l0C00_000C:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:

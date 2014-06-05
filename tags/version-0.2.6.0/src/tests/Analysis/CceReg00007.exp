@@ -1,0 +1,83 @@
+Mem0:Global memory
+fp:fp
+sp:sp
+al:al
+C:Flags
+ds:ds
+    def:  def ds
+    uses: C_7 = fn0C00_000C(0x20, ds)
+          Mem8[ds:0x0300:byte] = 0x20
+al_6: orig: al
+C_7: orig: C
+    def:  C_7 = fn0C00_000C(0x20, ds)
+    uses: branch C_7 l0C00_000B
+Mem8: orig: Mem0
+    def:  Mem8[ds:0x0300:byte] = 0x20
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	C_7 = fn0C00_000C(0x20, ds)
+	branch C_7 l0C00_000B
+	// succ:  l0C00_0007 l0C00_000B
+l0C00_0007:
+	Mem8[ds:0x0300:byte] = 0x20
+	// succ:  l0C00_000B
+l0C00_000B:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory
+    def:  def Mem0
+    uses: v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+fp:fp
+sp:sp
+al:al
+    def:  def al
+    uses: SCZO_9 = cond(al - 0x20)
+          branch al <u 0x20 l0C00_0014
+SCZO:Flags
+C:Flags
+ds:ds
+    def:  def ds
+    uses: v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+          Mem15[ds:0x0201:word16] = v7_14
+v7:Temporary
+SZO:Flags
+SCZO_9: orig: SCZO
+    def:  SCZO_9 = cond(al - 0x20)
+    uses: return SCZO_9
+C_10: orig: C
+SZO_11: orig: SZO
+SZO_12: orig: SZO
+SCZO_13: orig: SCZO
+v7_14: orig: v7
+    def:  v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+    uses: Mem15[ds:0x0201:word16] = v7_14
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x0201:word16] = v7_14
+SZO_16: orig: SZO
+SCZO_17: orig: SCZO
+// fn0C00_000C
+byte fn0C00_000C(byte al, selector ds)
+fn0C00_000C_entry:
+	def Mem0
+	def al
+	def ds
+	// succ:  l0C00_000C
+l0C00_000C:
+	SCZO_9 = cond(al - 0x20)
+	branch al <u 0x20 l0C00_0014
+	// succ:  l0C00_0010 l0C00_0014
+l0C00_0010:
+	v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+	Mem15[ds:0x0201:word16] = v7_14
+	// succ:  l0C00_0014
+l0C00_0014:
+	return C_9
+	// succ:  fn0C00_000C_exit
+fn0C00_000C_exit:
+

@@ -1,0 +1,24 @@
+// WhileGtDecMock
+void WhileGtDecMock()
+WhileGtDecMock_entry:
+	def a
+	// succ:  l1
+l1:
+	i_4 = 0x00000064
+	goto loopHdr
+	// succ:  loopHdr
+l2:
+	return
+	// succ:  WhileGtDecMock_exit
+loop:
+	i_6 = i_5 - 0x00000001
+	Mem8[a + i_6 * 0x00000004:word32] = 0x00000000
+	// succ:  loopHdr
+loopHdr:
+	i_5 = PHI(i_4, i_6)
+	branch i_5 > 0x00000000 loop
+	goto l2
+	// succ:  l2 loop
+WhileGtDecMock_exit:
+
+(0x00000064 -1 0x00000000 signed)

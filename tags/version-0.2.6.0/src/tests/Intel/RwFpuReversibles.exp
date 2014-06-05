@@ -1,0 +1,36 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// rLoc1:FPU stack
+// ds:ds
+// rLoc2:FPU stack
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	rLoc1 = Mem0[ds:0x0300:real64]
+	rLoc2 = Mem0[ds:0x0310:real64]
+	rLoc1 = rLoc1 - rLoc2
+	Mem0[ds:0x0400:real64] = rLoc1
+	rLoc1 = Mem0[ds:0x0320:real64]
+	rLoc2 = Mem0[ds:0x0330:real64]
+	rLoc1 = rLoc1 / rLoc2
+	Mem0[ds:0x0338:real64] = rLoc1
+	rLoc1 = Mem0[ds:0x0328:real64]
+	rLoc2 = Mem0[ds:0x0320:real64]
+	rLoc1 = rLoc1 / rLoc2
+	Mem0[ds:0x0408:real64] = rLoc1
+	rLoc1 = Mem0[ds:0x0320:real64]
+	rLoc2 = Mem0[ds:0x0330:real64]
+	rLoc1 = rLoc2 - rLoc1
+	Mem0[ds:0x0338:real64] = rLoc1
+	rLoc1 = Mem0[ds:0x0320:real64]
+	rLoc2 = Mem0[ds:0x0330:real64]
+	rLoc1 = rLoc2 / rLoc1
+	Mem0[ds:0x0340:real64] = rLoc1
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

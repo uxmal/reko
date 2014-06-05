@@ -1,0 +1,269 @@
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+    uses: sp_10 = fp - 0x0002
+          sp_13 = fp
+          SCZO_14 = cond(fp)
+sp:sp
+    def:  def sp
+cx:cx
+    def:  def cx
+ss:ss
+    def:  def ss
+SCZO:Flags
+    def:  def SCZO
+ds:ds
+    def:  def ds
+    uses: Mem15[ds:0x0064:word16] = ax_12
+ax:ax
+    def:  def ax
+wLoc02:Local -0002
+    def:  def wLoc02
+cx_9: orig: cx
+    def:  cx_9 = 0x0064
+sp_10: orig: sp
+    def:  sp_10 = fp - 0x0002
+wLoc02_11: orig: wLoc02
+    def:  wLoc02_11 = 0x0064
+    uses: ax_12 = fn0C00_000F(wLoc02_11)
+ax_12: orig: ax
+    def:  ax_12 = fn0C00_000F(wLoc02_11)
+    uses: Mem15[ds:0x0064:word16] = ax_12
+sp_13: orig: sp
+    def:  sp_13 = fp
+SCZO_14: orig: SCZO
+    def:  SCZO_14 = cond(fp)
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x0064:word16] = ax_12
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def Mem0
+	def fp
+	def sp
+	def cx
+	def ss
+	def SCZO
+	def ds
+	def ax
+	def wLoc02
+	// succ:  l0C00_0000
+l0C00_0000:
+	cx_9 = 0x0064
+	sp_10 = fp - 0x0002
+	wLoc02_11 = 0x0064
+	ax_12 = fn0C00_000F(wLoc02_11)
+	sp_13 = fp
+	SCZO_14 = cond(fp)
+	Mem15[ds:0x0064:word16] = ax_12
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+    uses: sp_14 = fp - 0x0002
+          bp_16 = fp - 0x0002
+          sp_31 = fp
+          sp_32 = fp - 0x0004
+          sp_35 = fp - 0x0003
+          SZO_36 = cond(fp - 0x0003)
+          sp_37 = fp - 0x0002
+          SZO_38 = cond(fp - 0x0002)
+sp:sp
+    def:  def sp
+bp:bp
+    def:  def bp
+    uses: wLoc02_15 = bp
+ss:ss
+    def:  def ss
+ax:ax
+    def:  def ax
+SZO:Flags
+    def:  def SZO
+Z:Flags
+    def:  def Z
+dx:dx
+    def:  def dx
+    uses: dx_ax_19 = SEQ(dx, ax_18) (alias)
+          dx_ax_47 = SEQ(dx, ax_46) (alias)
+          dx_26 = PHI(dx_42, dx)
+dx_ax:Sequence dx:ax
+    def:  def dx_ax
+SCZO:Flags
+    def:  def SCZO
+wLoc02:Local -0002
+    def:  def wLoc02
+wArg02:Stack +0002
+    def:  def wArg02
+    uses: ax_17 = wArg02
+          dx_39 = wArg02
+wLoc04:Local -0004
+    def:  def wLoc04
+    uses: wLoc04_23 = PHI(wLoc04_33, wLoc04)
+sp_14: orig: sp
+    def:  sp_14 = fp - 0x0002
+wLoc02_15: orig: wLoc02
+    def:  wLoc02_15 = bp
+    uses: bp_30 = wLoc02_15
+bp_16: orig: bp
+    def:  bp_16 = fp - 0x0002
+ax_17: orig: ax
+    def:  ax_17 = wArg02
+    uses: ax_18 = ax_17 - 0x0001
+ax_18: orig: ax
+    def:  ax_18 = ax_17 - 0x0001
+    uses: dx_ax_19 = SEQ(dx, ax_18) (alias)
+          SZO_20 = cond(ax_18)
+          wLoc04_33 = ax_18
+dx_ax_19: orig: dx_ax
+    def:  dx_ax_19 = SEQ(dx, ax_18) (alias)
+SZO_20: orig: SZO
+    def:  SZO_20 = cond(ax_18)
+    uses: Z_21 = SZO_20 (alias)
+          SCZO_22 = SZO_20 (alias)
+          SZO_28 = PHI(SZO_44, SZO_20)
+Z_21: orig: Z
+    def:  Z_21 = SZO_20 (alias)
+    uses: branch Test(EQ,Z_21) l0C00_0026
+          Z_27 = PHI(Z_45, Z_21)
+SCZO_22: orig: SCZO
+    def:  SCZO_22 = SZO_20 (alias)
+    uses: SCZO_24 = PHI(SCZO_43, SCZO_22)
+wLoc04_23: orig: wLoc04
+    def:  wLoc04_23 = PHI(wLoc04_33, wLoc04)
+SCZO_24: orig: SCZO
+    def:  SCZO_24 = PHI(SCZO_43, SCZO_22)
+dx_ax_25: orig: dx_ax
+    def:  dx_ax_25 = PHI(dx_ax_40, dx_ax_47)
+dx_26: orig: dx
+    def:  dx_26 = PHI(dx_42, dx)
+Z_27: orig: Z
+    def:  Z_27 = PHI(Z_45, Z_21)
+SZO_28: orig: SZO
+    def:  SZO_28 = PHI(SZO_44, SZO_20)
+ax_29: orig: ax
+    def:  ax_29 = PHI(ax_41, ax_46)
+    uses: return ax_29
+bp_30: orig: bp
+    def:  bp_30 = wLoc02_15
+sp_31: orig: sp
+    def:  sp_31 = fp
+sp_32: orig: sp
+    def:  sp_32 = fp - 0x0004
+wLoc04_33: orig: wLoc04
+    def:  wLoc04_33 = ax_18
+    uses: ax_34 = fn0C00_000F(wLoc04_33)
+          wLoc04_23 = PHI(wLoc04_33, wLoc04)
+ax_34: orig: ax
+    def:  ax_34 = fn0C00_000F(wLoc04_33)
+    uses: dx_ax_40 = dx_39 *s ax_34
+sp_35: orig: sp
+    def:  sp_35 = fp - 0x0003
+SZO_36: orig: SZO
+    def:  SZO_36 = cond(fp - 0x0003)
+sp_37: orig: sp
+    def:  sp_37 = fp - 0x0002
+SZO_38: orig: SZO
+    def:  SZO_38 = cond(fp - 0x0002)
+dx_39: orig: dx
+    def:  dx_39 = wArg02
+    uses: dx_ax_40 = dx_39 *s ax_34
+dx_ax_40: orig: dx_ax
+    def:  dx_ax_40 = dx_39 *s ax_34
+    uses: ax_41 = (word16) dx_ax_40 (alias)
+          dx_42 = SLICE(dx_ax_40, word16, 16) (alias)
+          SCZO_43 = cond(dx_ax_40)
+          dx_ax_25 = PHI(dx_ax_40, dx_ax_47)
+ax_41: orig: ax
+    def:  ax_41 = (word16) dx_ax_40 (alias)
+    uses: ax_29 = PHI(ax_41, ax_46)
+dx_42: orig: dx
+    def:  dx_42 = SLICE(dx_ax_40, word16, 16) (alias)
+    uses: dx_26 = PHI(dx_42, dx)
+SCZO_43: orig: SCZO
+    def:  SCZO_43 = cond(dx_ax_40)
+    uses: SZO_44 = SCZO_43 (alias)
+          Z_45 = SCZO_43 (alias)
+          SCZO_24 = PHI(SCZO_43, SCZO_22)
+SZO_44: orig: SZO
+    def:  SZO_44 = SCZO_43 (alias)
+    uses: SZO_28 = PHI(SZO_44, SZO_20)
+Z_45: orig: Z
+    def:  Z_45 = SCZO_43 (alias)
+    uses: Z_27 = PHI(Z_45, Z_21)
+ax_46: orig: ax
+    def:  ax_46 = 0x0001
+    uses: dx_ax_47 = SEQ(dx, ax_46) (alias)
+          ax_29 = PHI(ax_41, ax_46)
+dx_ax_47: orig: dx_ax
+    def:  dx_ax_47 = SEQ(dx, ax_46) (alias)
+    uses: dx_ax_25 = PHI(dx_ax_40, dx_ax_47)
+// fn0C00_000F
+word16 fn0C00_000F(word16 wArg02)
+fn0C00_000F_entry:
+	def Mem0
+	def fp
+	def sp
+	def bp
+	def ss
+	def ax
+	def SZO
+	def Z
+	def dx
+	def dx_ax
+	def SCZO
+	def wLoc02
+	def wArg02
+	def wLoc04
+	// succ:  l0C00_000F
+l0C00_000F:
+	sp_14 = fp - 0x0002
+	wLoc02_15 = bp
+	bp_16 = fp - 0x0002
+	ax_17 = wArg02
+	ax_18 = ax_17 - 0x0001
+	dx_ax_19 = SEQ(dx, ax_18) (alias)
+	SZO_20 = cond(ax_18)
+	Z_21 = SZO_20 (alias)
+	SCZO_22 = SZO_20 (alias)
+	branch Test(EQ,Z_21) l0C00_0026
+	// succ:  l0C00_0018 l0C00_0026
+l0C00_0018:
+	sp_32 = fp - 0x0004
+	wLoc04_33 = ax_18
+	ax_34 = fn0C00_000F(wLoc04_33)
+	sp_35 = fp - 0x0003
+	SZO_36 = cond(fp - 0x0003)
+	sp_37 = fp - 0x0002
+	SZO_38 = cond(fp - 0x0002)
+	dx_39 = wArg02
+	dx_ax_40 = dx_39 *s ax_34
+	ax_41 = (word16) dx_ax_40 (alias)
+	dx_42 = SLICE(dx_ax_40, word16, 16) (alias)
+	SCZO_43 = cond(dx_ax_40)
+	SZO_44 = SCZO_43 (alias)
+	Z_45 = SCZO_43 (alias)
+	goto l0C00_0029
+	// succ:  l0C00_0029
+l0C00_0026:
+	ax_46 = 0x0001
+	dx_ax_47 = SEQ(dx, ax_46) (alias)
+	// succ:  l0C00_0029
+l0C00_0029:
+	wLoc04_23 = PHI(wLoc04_33, wLoc04)
+	SCZO_24 = PHI(SCZO_43, SCZO_22)
+	dx_ax_25 = PHI(dx_ax_40, dx_ax_47)
+	dx_26 = PHI(dx_42, dx)
+	Z_27 = PHI(Z_45, Z_21)
+	SZO_28 = PHI(SZO_44, SZO_20)
+	ax_29 = PHI(ax_41, ax_46)
+	bp_30 = wLoc02_15
+	sp_31 = fp
+	return ax_29
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:
+

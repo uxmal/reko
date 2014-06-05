@@ -1,0 +1,84 @@
+void fn0C00_0000(Register selector ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax cx dx al cl dl ah ch dh
+// Preserved: sp
+// fn0C00_0000
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// cx:cx
+// ss:ss
+// SCZO:Flags
+// ds:ds
+// ax:ax
+// wLoc02:Local -0002
+// return address size: 2
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	cx = 0x0064
+	sp = fp - 0x0002
+	wLoc02 = 0x0064
+	ax = fn0C00_000F(wLoc02)
+	sp = fp
+	SCZO = cond(fp)
+	Mem0[ds:0x0064:word16] = ax
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+Register word16 fn0C00_000F(Stack word16 wArg02)
+// MayUse: 
+// LiveOut: ax
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved: sp bp
+// Stack args: Stack +0002(16)
+// fn0C00_000F
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// bp:bp
+// ss:ss
+// ax:ax
+// SZO:Flags
+// Z:Flags
+// dx:dx
+// dx_ax:Sequence dx:ax
+// SCZO:Flags
+// wLoc02:Local -0002
+// wArg02:Stack +0002
+// wLoc04:Local -0004
+// return address size: 2
+word16 fn0C00_000F(word16 wArg02)
+fn0C00_000F_entry:
+	// succ:  l0C00_000F
+l0C00_000F:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	ax = wArg02
+	ax = ax - 0x0001
+	SZO = cond(ax)
+	branch Test(EQ,Z) l0C00_0026
+	// succ:  l0C00_0018 l0C00_0026
+l0C00_0018:
+	sp = fp - 0x0004
+	wLoc04 = ax
+	ax = fn0C00_000F(wLoc04)
+	sp = fp - 0x0003
+	sp = fp - 0x0002
+	dx = wArg02
+	dx_ax = dx *s ax
+	SCZO = cond(dx_ax)
+	goto l0C00_0029
+	// succ:  l0C00_0029
+l0C00_0026:
+	ax = 0x0001
+	// succ:  l0C00_0029
+l0C00_0029:
+	bp = wLoc02
+	sp = fp
+	return ax
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:

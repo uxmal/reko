@@ -1,0 +1,23 @@
+liveIn: 
+LiveLoopMock_entry:
+	def Mem0
+	def i
+liveOut: Mem0 i
+
+liveIn: 
+LiveLoopMock_exit:
+liveOut:
+
+liveIn:  Mem0
+loop:
+	i_4 = PHI(i, i_6)
+	i_6 = i_4 + 0x00000001
+	branch Mem0[i_4 + 0x00000001:byte] != 0 loop
+liveOut: Mem0 i_4 i_6
+
+liveIn:  i_4
+l1:
+	return i_4
+liveOut:
+
+=======================

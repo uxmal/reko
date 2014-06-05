@@ -1,0 +1,34 @@
+Mem0:Global memory
+fp:fp
+tmp:Local -0004
+reg:Local -0008
+    def:  def reg
+    uses: branch (reg & 0x00000001) == 0x00000000 even
+          reg_5 = PHI(reg, reg_6)
+          reg_6 = reg + 0x00000002
+          return reg_5 - reg
+tmp_4: orig: tmp
+reg_5: orig: reg
+    def:  reg_5 = PHI(reg, reg_6)
+    uses: return reg_5 - reg
+reg_6: orig: reg
+    def:  reg_6 = reg + 0x00000002
+    uses: reg_5 = PHI(reg, reg_6)
+// LiveCopyMock
+void LiveCopyMock()
+LiveCopyMock_entry:
+	def reg
+	goto l1
+	// succ:  l1
+even:
+	reg_5 = PHI(reg, reg_6)
+	return reg_5 - reg
+	// succ:  LiveCopyMock_exit
+l1:
+	branch (reg & 0x00000001) == 0x00000000 even
+	// succ:  l2 even
+l2:
+	reg_6 = reg + 0x00000002
+	goto even
+	// succ:  even
+LiveCopyMock_exit:

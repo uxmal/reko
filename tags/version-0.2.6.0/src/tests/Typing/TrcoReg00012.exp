@@ -1,0 +1,261 @@
+// fn0C00_0000
+void fn0C00_0000(word16 cx, word16 bx, selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	fn0C00_0007(cx, ds)
+	fn0C00_001D(bx, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// fn0C00_0007
+void fn0C00_0007(word16 cx, selector ds)
+fn0C00_0007_entry:
+	// succ:  l0C00_0007
+l0C00_0007:
+	word16 di_12 = 0x5388
+	// succ:  l0C00_000A
+l0C00_000A:
+	fn0C00_003D(Mem0[ds:di_12 + 0x0000:word16], 0x2D, ds)
+	di_12 = di_12 + 0x0002
+	cx = cx_28 - 0x0001
+	branch cx != 0x0000 l0C00_000A
+	// succ:  l0C00_001C l0C00_000A
+l0C00_001C:
+	return
+	// succ:  fn0C00_0007_exit
+fn0C00_0007_exit:
+
+// fn0C00_001D
+void fn0C00_001D(word16 bx, selector ds)
+fn0C00_001D_entry:
+	// succ:  l0C00_001D
+l0C00_001D:
+	branch bx == Mem0[ds:0x53BA:word16] l0C00_003C
+	// succ:  l0C00_0023 l0C00_003C
+l0C00_0023:
+	branch bx >= Mem0[ds:0x53B8:word16] l0C00_003C
+	// succ:  l0C00_0029 l0C00_003C
+l0C00_0029:
+	Mem19[ds:0x53BA:word16] = bx
+	fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds)
+	// succ:  l0C00_003C
+l0C00_003C:
+	return
+	// succ:  fn0C00_001D_exit
+fn0C00_001D_exit:
+
+// fn0C00_003D
+void fn0C00_003D(word16 dx, byte ah, selector ds)
+fn0C00_003D_entry:
+	// succ:  l0C00_003D
+l0C00_003D:
+	Mem6[ds:0x0110:byte] = ah
+	Mem7[ds:0x0112:word16] = dx
+	return
+	// succ:  fn0C00_003D_exit
+fn0C00_003D_exit:
+
+// fn0C00_0046
+void fn0C00_0046(word16 ax, word16 dx, word16 bx, selector ds)
+fn0C00_0046_entry:
+	// succ:  l0C00_0046
+l0C00_0046:
+	Mem7[ds:0x0114:word16] = ax
+	Mem8[ds:0x0116:word16] = bx
+	Mem9[ds:0x0118:word16] = dx
+	return
+	// succ:  fn0C00_0046_exit
+fn0C00_0046_exit:
+
+T_2 (in fn0C00_0007 : ptr32)
+	trait_func(T_6, T_7 -> T_8)
+T_4 (in cx : word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_equal(T_31)
+	trait_primitive(word16)
+T_5 (in ds : selector)
+	trait_primitive(selector)
+	trait_primitive(selector)
+	trait_mem_array(5388, 2, 0, T_24)
+	trait_primitive(selector)
+	trait_equal(T_21)
+T_6 (in cx : word16)
+	trait_primitive(word16)
+	trait_equal(T_4)
+T_7 (in ds : selector)
+	trait_primitive(selector)
+	trait_equal(T_5)
+	trait_primitive(selector)
+	trait_equal(T_12)
+T_8 (in fn0C00_0007(cx, ds) : void)
+	trait_primitive(void)
+T_9 (in fn0C00_001D : ptr32)
+	trait_func(T_13, T_7 -> T_14)
+T_11 (in bx : word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_equal(T_34)
+	trait_primitive(word16)
+	trait_equal(T_37)
+	trait_primitive(int16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+T_12 (in ds : selector)
+	trait_primitive(selector)
+	trait_primitive(selector)
+	trait_mem(T_34, 53BA)
+	trait_primitive(selector)
+	trait_mem(T_37, 53B8)
+	trait_primitive(selector)
+	trait_mem(T_40, 53BA)
+	trait_primitive(selector)
+	trait_mem_array(5388, 2, 0, T_52)
+	trait_primitive(selector)
+	trait_equal(T_46)
+T_13 (in bx : word16)
+	trait_primitive(word16)
+	trait_equal(T_11)
+T_14 (in fn0C00_001D(bx, ds) : void)
+	trait_primitive(void)
+T_15 (in di_11 : word16)
+	trait_primitive(word16)
+	trait_equal(T_16)
+	trait_primitive(word16)
+	trait_memsize(2)
+	trait_mem(T_5:T_24, 0)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_equal(T_28)
+T_16 (in 0x5388 : word16)
+	trait_primitive(word16)
+T_17 (in fn0C00_003D : ptr32)
+	trait_func(T_24, T_25, T_5 -> T_26)
+T_19 (in dx : word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+T_20 (in ah : byte)
+	trait_primitive(byte)
+	trait_primitive(byte)
+T_21 (in ds : selector)
+	trait_primitive(selector)
+	trait_primitive(selector)
+	trait_mem(T_56, 110)
+	trait_primitive(selector)
+	trait_mem(T_58, 112)
+T_22 (in 0x0000 : word16)
+	trait_primitive(word16)
+T_23 (in di_11 + 0x0000 : word16)
+	trait_primitive(word16)
+T_24 (in Mem0[ds:di_12 + 0x0000:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_19)
+T_25 (in 0x2D : byte)
+	trait_primitive(byte)
+	trait_equal(T_20)
+T_26 (in fn0C00_003D(Mem0[ds:di_11 + 0x0000:word16], 0x2D, ds) : void)
+	trait_primitive(void)
+T_27 (in 0x0002 : word16)
+	trait_primitive(word16)
+T_28 (in di_11 + 0x0002 : word16)
+	trait_primitive(word16)
+T_29 (in 0x0001 : word16)
+	trait_primitive(word16)
+T_30 (in cx - 0x0001 : word16)
+	trait_primitive(word16)
+T_31 (in 0x0000 : word16)
+	trait_primitive(word16)
+T_32 (in cx != 0x0000 : bool)
+	trait_primitive(bool)
+T_33 (in 0x53BA : word16)
+	trait_primitive(word16)
+	trait_mem(T_12:T_34, 0)
+T_34 (in Mem0[ds:0x53BA:word16] : word16)
+	trait_primitive(word16)
+T_35 (in bx == Mem0[ds:0x53BA:word16] : bool)
+	trait_primitive(bool)
+T_36 (in 0x53B8 : word16)
+	trait_primitive(word16)
+	trait_mem(T_12:T_37, 0)
+T_37 (in Mem0[ds:0x53B8:word16] : word16)
+	trait_primitive(word16)
+	trait_primitive(int16)
+T_38 (in bx >= Mem0[ds:0x53B8:word16] : bool)
+	trait_primitive(bool)
+T_39 (in 0x53BA : word16)
+	trait_primitive(word16)
+	trait_mem(T_12:T_40, 0)
+T_41 (in Mem19[ds:0x53BA:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_11)
+T_42 (in fn0C00_0046 : ptr32)
+	trait_func(T_48, T_53, T_54, T_12 -> T_55)
+T_44 (in ax : word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+T_45 (in dx : word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+T_46 (in bx : word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+T_47 (in ds : selector)
+	trait_primitive(selector)
+	trait_primitive(selector)
+	trait_mem(T_61, 114)
+	trait_primitive(selector)
+	trait_mem(T_63, 116)
+	trait_primitive(selector)
+	trait_mem(T_65, 118)
+T_48 (in 0x4400 : word16)
+	trait_primitive(word16)
+	trait_equal(T_43)
+T_49 (in 0x5388 : word16)
+	trait_primitive(word16)
+T_50 (in SEQ(ds, 0x5388) : ptr32)
+	trait_primitive(ptr32)
+T_50 (in 0x0002 : word16)
+	trait_primitive(word16)
+T_51 (in bx * 0x0002 : word16)
+	trait_primitive(uis16)
+T_52 (in SEQ(ds, 0x5388)[bx * 0x0002] : word16)
+	trait_primitive(word16)
+	trait_equal(T_44)
+T_53 (in 0x0000 : word16)
+	trait_primitive(word16)
+	trait_equal(T_45)
+T_54 (in fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds) : void)
+	trait_primitive(void)
+T_55 (in 0x0110 : word16)
+	trait_primitive(word16)
+	trait_mem(T_21:T_56, 0)
+T_56 (in Mem5[ds:0x0110:byte] : byte)
+	trait_primitive(byte)
+	trait_equal(T_20)
+T_57 (in 0x0112 : word16)
+	trait_primitive(word16)
+	trait_mem(T_21:T_58, 0)
+T_58 (in Mem6[ds:0x0112:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_19)
+T_59 (in 0x0114 : word16)
+	trait_primitive(word16)
+	trait_mem(T_46:T_60, 0)
+T_60 (in Mem6[ds:0x0114:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_43)
+T_61 (in 0x0116 : word16)
+	trait_primitive(word16)
+	trait_mem(T_46:T_62, 0)
+T_62 (in Mem7[ds:0x0116:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_45)
+T_63 (in 0x0118 : word16)
+	trait_primitive(word16)
+	trait_mem(T_46:T_64, 0)
+T_64 (in Mem8[ds:0x0118:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_44)

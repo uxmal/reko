@@ -1,0 +1,36 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ecx:ecx
+// SZO:Flags
+// C:Flags
+// ax:ax
+// bx:bx
+// SCZO:Flags
+// cl:cl
+// Z:Flags
+// ds:ds
+// SO:Flags
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	ecx = ecx ^ ecx
+	SZO = cond(ecx)
+	C = false
+	ax = ax - bx
+	SCZO = cond(ax)
+	cl = Test(EQ,Z)
+	Mem0[ds:0x0300:word32] = ecx
+	SCZO = cond(ax - 0x0030)
+	branch Test(LT,SO) l0C00_0016
+	// succ:  l0C00_0012 l0C00_0016
+l0C00_0012:
+	Mem0[ds:0x0302:word16] = ax
+	// succ:  l0C00_0016
+l0C00_0016:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:

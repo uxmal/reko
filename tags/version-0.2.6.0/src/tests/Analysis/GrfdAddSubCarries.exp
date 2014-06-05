@@ -1,0 +1,10 @@
+SCZO_19 = cond(ax_18): cond(ax_18)
+C_20 = SCZO_19 (alias): cond(ax_18)
+SCZO_31 = cond(ax_30): cond(ax_30)
+C_32 = SCZO_31 (alias): cond(ax_30)
+SCZO_38 = cond(cl_37 - 0x30): cond(cl_37 - 0x30)
+C_39 = SCZO_38 (alias): cond(cl_37 - 0x30)
+SCZO_44 = cond(cl_41 - 0x3A): cond(cl_41 - 0x3A)
+C_45 = SCZO_44 (alias): cond(cl_41 - 0x3A)
+C_46 = !C_45: !cond(cl_41 - 0x3A);
+SCZO_48 = cond(ax_47): cond(ax_47)

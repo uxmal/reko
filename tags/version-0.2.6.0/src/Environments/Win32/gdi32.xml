@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <default>
+	<signature convention="stdapi"></signature>
+  </default>
+  <procedure name="CreateSolidBrush">
+	<signature>
+	  <return type="HBRUSH">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="COLORREF">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetStockObject">
+	<signature>
+	  <return type="HGDIOBJ">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DeleteObject">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HGDIOBJ">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SelectObject">
+	<signature>
+	  <return type="HGDIOBJ">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="HGDIOBJ">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetPixelV">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="COLORREF">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetObjectA">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HGDIOBJ">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPVOID">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CreateCompatibleDC">
+	<signature>
+	  <return type="HDC">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetBkColor">
+	<signature>
+	  <return type="COLORREF">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="COLORREF">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="LineTo">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="BitBlt">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CreateDCA">
+	<signature>
+	  <return type="HDC">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DEVMODEA">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SelectClipRgn">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="HRGN">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CreateRectRgn">
+	<signature>
+	  <return type="HRGN">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetTextColor">
+	<signature>
+	  <return type="COLORREF">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="COLORREF">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetBkMode">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="TextOutA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CreateFontA">
+	<signature>
+	  <return type="HFONT">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CreatePen">
+	<signature>
+	  <return type="HPEN">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="COLORREF">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="MoveToEx">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPPOINT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DeleteDC">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HDC">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+</library>

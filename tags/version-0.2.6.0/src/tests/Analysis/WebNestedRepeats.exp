@@ -1,0 +1,26 @@
+// fn0C00_0000
+void fn0C00_0000(word16 si, selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	word16 dx_13 = 0x0000
+	word16 cx_18 = 0x0004
+	word16 di_19 = 0x0004
+	// succ:  l0C00_0008
+l0C00_0008:
+	si = si + 0x0002
+	dx_13 = dx_13 + Mem0[ds:si:word16]
+	cx_18 = cx_18 - 0x0001
+	branch cx_39 != 0x0000 l0C00_0008
+	// succ:  l0C00_000D l0C00_0008
+l0C00_000D:		// pred: l0C00_0008
+	cx_18 = 0x0004
+	di_19 = di_19 - 0x0001
+	branch di_19 != 0x0000 l0C00_0008
+	// succ:  l0C00_0013 l0C00_0008
+l0C00_0013:
+	Mem37[ds:0x0300:word16] = dx_13
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
