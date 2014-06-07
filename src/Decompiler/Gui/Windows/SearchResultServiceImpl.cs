@@ -26,21 +26,17 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public class SearchResultServiceImpl : ISearchResultService
+    public class SearchResultServiceImpl : ISearchResultService, IWindowPane, ICommandTarget
     {
         private ListView listView;
         private IServiceProvider services;
         private ISearchResult result;
-        private IWindowFrame frame;
 
-        public SearchResultServiceImpl(IServiceProvider services, IWindowFrame frame, ListView listView)
+        public SearchResultServiceImpl(IServiceProvider services, ListView listView)
         {
             if (services == null)
                 throw new ArgumentNullException("services");
-            if (frame == null)
-                throw new ArgumentNullException("frame");
             this.services = services;
-            this.frame = frame;
             this.listView = listView;
             listView.VirtualMode = true;
             listView.View = View.Details;
@@ -49,14 +45,34 @@ namespace Decompiler.Gui.Windows
             this.listView.CacheVirtualItems += listView_CacheVirtualItems;
             this.listView.DoubleClick += listView_DoubleClick;
 
-            ShowSearchResults(new EmptyResult());
+            SetSearchResults(new EmptyResult());
+        }
+
+        public Control CreateControl()
+        {
+            return this.listView;
+        }
+
+        public void Close()
+        {
+        }
+
+        public void SetSite(IServiceProvider sp)
+        {
+            this.services = sp;
         }
 
         public void ShowSearchResults(ISearchResult result)
         {
+            SetSearchResults(result);
+            services.RequireService<IWindowFrame>().Show();
+        }
+
+        private void SetSearchResults(ISearchResult result)
+        {
             this.result = result;
-			if(!listView.VirtualMode)
-            	listView.Clear();
+            if (!listView.VirtualMode)
+                listView.Clear();
             listView.VirtualListSize = result.Count;
             var searchResultView = new SearchResultView(this.listView);
             result.CreateColumns(searchResultView);
@@ -67,7 +83,6 @@ namespace Decompiler.Gui.Windows
                     .RequireService<IDecompilerShellUiService>()
                     .GetContextMenu(ctxMenuID);
             }
-            frame.Show();
         }
 
         private ListViewItem GetItem(int i)
@@ -100,6 +115,28 @@ namespace Decompiler.Gui.Windows
 
         public void DoubleClickItem(int i)
         {
+            result.NavigateTo(i);
+        }
+
+        public void Advance(int distance)
+        {
+            int itemCount = this.result.Count;
+            if (itemCount < 2)
+                return;
+            int i;
+            if (listView.FocusedItem == null)
+            {
+                i = 0;
+            }
+            else
+            {
+
+                i = ((int) listView.FocusedItem.Tag + itemCount + distance) % itemCount;
+            }
+            listView.SelectedIndices.Clear();
+            listView.SelectedIndices.Add(i);
+            listView.FocusedItem = listView.Items[i];
+            listView.FocusedItem.EnsureVisible();
             result.NavigateTo(i);
         }
 
@@ -164,6 +201,24 @@ namespace Decompiler.Gui.Windows
             public void NavigateTo(int i)
             {
             }
+        }
+
+        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
+
+        public bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            if (cmdSet == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId)
+                {
+                case CmdIds.ActionNextSearchHit: Advance(1); return true;
+                case CmdIds.ActionPrevSearchHit: Advance(-1); return true;
+                }
+            }
+            return false;
         }
     }
 }

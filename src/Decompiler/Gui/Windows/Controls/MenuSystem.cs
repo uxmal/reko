@@ -74,13 +74,18 @@ namespace Decompiler.Gui.Windows.Controls
 
         public void AddBinding(string windowKey, Guid cmdSet, int id, Keys key, Keys modifiers)
         {
+            AddBinding(windowKey, cmdSet, id, key | modifiers);
+        }
+
+        public void AddBinding(string windowKey, Guid cmdSet, int id, Keys key)
+        {
             Dictionary<Keys, CommandID> bindingList;
             if (!bindingLists.TryGetValue(windowKey, out bindingList))
             {
                 bindingList = new Dictionary<Keys,CommandID>();
                 bindingLists.Add(windowKey, bindingList);
             }
-            bindingList[key | modifiers] = new CommandID(cmdSet, id);
+            bindingList[key] = new CommandID(cmdSet, id);
         }
 
         public void BuildMenu(SortedList menu, ToolStripItemCollection items)
@@ -217,22 +222,42 @@ namespace Decompiler.Gui.Windows.Controls
 
         public void ProcessKey(IDecompilerShellUiService uiSvc, KeyEventArgs e)
         {
-            var frame = uiSvc.ActiveFrame;
-            if (frame == null)
-                return;
-            var t = frame.Pane as ICommandTarget;
-            if (t == null)
-                return;
             Dictionary<Keys, CommandID> bindings;
-            if (bindingLists.TryGetValue(t.GetType().FullName, out bindings))
+            var frame = uiSvc.ActiveFrame;
+            if (frame != null)
+            {
+                var ct = frame.Pane as ICommandTarget;
+                if (ct != null)
+                {
+                    if (bindingLists.TryGetValue(ct.GetType().FullName, out bindings))
+                    {
+                        CommandID cmdID;
+                        if (bindings.TryGetValue(e.KeyData, out cmdID))
+                        {
+                            var guid = cmdID.Guid;
+                            if (ct.Execute(ref guid, cmdID.ID))
+                            {
+                                e.Handled = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            if (bindingLists.TryGetValue("", out bindings))
             {
                 CommandID cmdID;
                 if (bindings.TryGetValue(e.KeyData, out cmdID))
                 {
                     var guid = cmdID.Guid;
-                    e.Handled = t.Execute(ref guid, cmdID.ID);
+                    if (this.target.Execute(ref guid, cmdID.ID))
+                    {
+                        e.Handled = true;
+                        return;
+                    }
                 }
             }
+            e.Handled = false;
         }
 	}
 }

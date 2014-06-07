@@ -20,24 +20,35 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
+    /// <summary>
+    /// Implementation of an IWindowFrame that is hosted in a tab control page.
+    /// </summary>
     public class TabControlWindowFrame : IWindowFrame
     {
         private TabControl ctrl;
         private TabPage page;
+        private ServiceContainer sc;
 
-        public TabControlWindowFrame(TabControl ctrl, TabPage page)
+        public TabControlWindowFrame(TabControl ctrl, TabPage page, IWindowPane pane, IServiceProvider services)
         {
             this.ctrl = ctrl;
             this.page = page;
+            this.Pane = pane;
+            this.sc = new ServiceContainer(services);
+            sc.AddService(typeof(IWindowFrame), this);
+            page.Tag = this;
+            pane.SetSite(sc);
         }
 
         public IWindowPane Pane { get; private set; }
+        public string Title { get { return page.Text; } set { page.Text = value; } }
 
         public void Show()
         {

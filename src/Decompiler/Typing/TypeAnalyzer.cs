@@ -81,7 +81,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-            RestrictProcedures(0, 1, true);
+   //         RestrictProcedures(0, 1, true);
 			aen.Transform(prog);
 			eqb.Build(prog);
             eventListener.ShowStatus("Collecting datatype traits.");

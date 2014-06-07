@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             form = new Form();
             listSearchResults = new ListView();
             form.Controls.Add(listSearchResults);
-            svc = new SearchResultServiceImpl(sc, frame, listSearchResults);
+            svc = new SearchResultServiceImpl(sc, listSearchResults);
         }
 
         [TearDown]

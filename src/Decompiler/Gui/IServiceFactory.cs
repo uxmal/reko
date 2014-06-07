@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Services;
 using Decompiler.Gui.Controls;
+using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using Decompiler.Core.Configuration;
@@ -38,18 +39,21 @@ namespace Decompiler.Gui
     /// </summary>
     public interface IServiceFactory
     {
+        IArchiveBrowserService CreateArchiveBrowserService();
         IDecompilerConfigurationService CreateDecompilerConfiguration();
-        IDiagnosticsService CreateDiagnosticsService(ListView list);
-        IMemoryViewService CreateMemoryViewService();
-        IDisassemblyViewService  CreateDisassemblyViewService();
-        IDecompilerService CreateDecompilerService();
         DecompilerEventListener CreateDecompilerEventListener();
+        IDecompilerService CreateDecompilerService();
+        IDiagnosticsService CreateDiagnosticsService(ListView list);
+        IDisassemblyViewService CreateDisassemblyViewService();
+        IFileSystemService CreateFileSystemService();
         InitialPageInteractor CreateInitialPageInteractor();
         ILoadedPageInteractor CreateLoadedPageInteractor();
-        ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
+        IMemoryViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
+        IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
+        ITabControlHostService CreateTabControlHost(TabControl tabControl);
+        ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IUiPreferencesService CreateUiPreferencesService();
-        IFileSystemService CreateFileSystemService();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -60,6 +64,12 @@ namespace Decompiler.Gui
         {
             this.services = services;
         }
+
+        public IArchiveBrowserService CreateArchiveBrowserService()
+        {
+            return new ArchiveBrowserService(services);
+        }
+
         public IDecompilerConfigurationService CreateDecompilerConfiguration()
         {
             return new DecompilerConfiguration();
@@ -71,6 +81,12 @@ namespace Decompiler.Gui
             d.Attach(list);
             return d;
         }
+
+        public IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm)
+        {
+            return new DecompilerShellUiService((Form)form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
+        }
+
         public IMemoryViewService CreateMemoryViewService()
         {
             return new MemoryViewServiceImpl(services);
@@ -109,6 +125,11 @@ namespace Decompiler.Gui
         public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
         {
             return new ProjectBrowserService(services, treeView);
+        }
+
+        public ITabControlHostService CreateTabControlHost(TabControl tabControl)
+        {
+            return new TabControlHost(services, tabControl);
         }
 
         public IUiPreferencesService CreateUiPreferencesService()

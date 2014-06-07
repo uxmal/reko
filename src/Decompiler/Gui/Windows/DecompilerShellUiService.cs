@@ -109,6 +109,7 @@ namespace Decompiler.Gui.Windows
                 return frame;
             }
         }
+
         private ICommandTarget ActiveMdiCommandTarget()
         {
             var frame = ActiveFrame as WindowFrame;
@@ -166,6 +167,7 @@ namespace Decompiler.Gui.Windows
             }
 
             public string WindowType { get { return key; } }
+            public string Title { get { return form.Text; } set { form.Text = value; } }
 
             public void Close()
             {

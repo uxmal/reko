@@ -72,6 +72,8 @@
 	<cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>
 	<cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
   <cmd id="ViewFindWhatPointsHere" cmdSet="Decompiler" container="GrpViewScanned">Find _what points here</cmd>
+  <cmd id="ActionNextSearchHit" cmdSet="Decompiler" key1="F8" />
+  <cmd id="ActionPrevSearchHit" cmdSet="Decompiler" key1="F8" alt1="Shift" />
 
   <cmd id="ActionNextPhase" cmdSet="Decompiler" container="GrpActions" image="2">_Next Phase</cmd>
   <cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions" image="3">Finish _Decompilation</cmd>
@@ -112,5 +114,8 @@
 <!-- Accelerators ================================================== -->
 
   <keybinding id="ActionMarkType" cmdSet="Decompiler" editor="Decompiler.Gui.Windows.LowLevelViewInteractor" key1="T" alt1="Control" />
+  <keybinding id="ActionNextSearchHit" cmdSet="Decompiler" editor="" key1="F8" />
+  <keybinding id="ActionPrevSearchHit" cmdSet="Decompiler" editor="" key1="F8" alt1="Shift" />
+
 </menu-definitions>
  

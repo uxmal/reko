@@ -36,7 +36,7 @@ namespace Decompiler.Arch.X86
 
         public override uint ReadOpcode(ImageReader rdr)
         {
-            return rdr.ReadByte(0);
+            return rdr.PeekByte(0);
         }
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
@@ -45,7 +45,7 @@ namespace Decompiler.Arch.X86
                 &&
                 rdr.IsValidOffset(rdr.Offset + 4u))
             {
-                int callOffset = rdr.ReadLeInt32(1);
+                int callOffset = rdr.PeekLeInt32(1);
                 target = (uint) (callOffset + rdr.Address.Linear + 5);
                 return true;
             }
@@ -59,21 +59,21 @@ namespace Decompiler.Arch.X86
                 &&
                 rdr.IsValidOffset(rdr.Offset + 5u))
             {
-                int callOffset = rdr.ReadLeInt32(1);
+                int callOffset = rdr.PeekLeInt32(1);
                 target = (uint) (callOffset + rdr.Address.Linear + 5);
                 return true;
             }
             if (0x70 <= opcode && opcode <= 0x7F &&       // short branch.
                 rdr.IsValidOffset(rdr.Offset + 1u))
             {
-                sbyte callOffset = rdr.ReadSByte(1);
+                sbyte callOffset = rdr.PeekSByte(1);
                 target = (uint) (rdr.Address.Linear + callOffset + 2);
                 return true;
             }
             if (opcode == 0x0F && rdr.IsValidOffset(rdr.Offset + 5u))
             {
-                opcode = rdr.ReadByte(1);
-                int callOffset = rdr.ReadLeInt32(2);
+                opcode = rdr.PeekByte(1);
+                int callOffset = rdr.PeekLeInt32(2);
                 uint linAddr = rdr.Address.Linear;
                 if (0x80 <= opcode && opcode <= 0x8F)   // long branch
                 {
@@ -94,7 +94,7 @@ namespace Decompiler.Arch.X86
             }
             else
             {
-                target = rdr.ReadLeUInt32(0);
+                target = rdr.PeekLeUInt32(0);
                 return true;
             }
         }

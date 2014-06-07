@@ -47,6 +47,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IMainForm form;
 		private TestMainFormInteractor interactor;
         private Program prog;
+        private IArchiveBrowserService archSvc;
         private IDialogFactory dlgFactory;
         private IServiceFactory svcFactory;
         private ServiceContainer services;
@@ -237,6 +238,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void MainForm_IsNextPhaseEnabled()
         {
             Given_MainFormInteractor();
+            Given_UiSvc_IgnoresCommands();
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
@@ -335,6 +337,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Given_MainFormInteractor();
             var disasmSvc = mr.StrictMock<IDisassemblyViewService>();
+            Given_UiSvc_IgnoresCommands();
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);       //$REVIEW: this shouldn't be necessary -- only if user explicitly asks for it.
             memSvc.Expect(x => x.ShowWindow());
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
@@ -366,6 +369,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Given_MainFormInteractor();
             disasmSvc.Expect(x => x.ShowWindow());
+            Given_UiSvc_IgnoresCommands();
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
@@ -374,6 +378,18 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
+
+        private void Given_UiSvc_IgnoresCommands()
+        {
+            uiSvc.Stub(u => u.QueryStatus(
+                ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(),new Guid()).Dummy,
+                Arg<int>.Is.Anything,
+                Arg<CommandStatus>.Is.NotNull,
+                Arg<CommandText>.Is.Anything)).Return(false);
+            uiSvc.Stub(u => u.Execute(
+                ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(), new Guid()).Dummy,
+                Arg<int>.Is.Anything)).Return(false);
+        }
 
         [Test]
         public void MainForm_CloseAllWindows()
@@ -414,6 +430,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private class TestForm : Form, IWindowFrame
         {
             public IWindowPane Pane { get; private set; }
+            public string Title { get { return Text; } set { Text = value; } }
         }
 
         private Program CreateFakeProgram()
@@ -428,6 +445,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             prog = CreateFakeProgram();
             svcFactory = mr.StrictMock<IServiceFactory>();
+            archSvc = mr.StrictMock<IArchiveBrowserService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             memSvc = mr.StrictMock<IMemoryViewService>();
@@ -440,6 +458,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
+            svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
             svcFactory.Stub(s => s.CreateDiagnosticsService(Arg<ListView>.Is.Anything)).Return(diagnosticSvc);
             svcFactory.Stub(s => s.CreateDecompilerService()).Return(new DecompilerService { }); 
@@ -452,6 +471,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(projectBrowserSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
+            svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull,Arg<DecompilerMenus>.Is.NotNull)).Return(uiSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 
@@ -490,7 +510,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
             interactor = new TestMainFormInteractor(prog, services);
-            interactor.Test_UiSvc = uiSvc;
             interactor.LoadForm();
             form.Raise(f => f.Load += null, form, EventArgs.Empty);
         }
@@ -551,15 +570,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 return decompiler;
             return base.CreateDecompiler(ldr);
 		}
-
-        public IDecompilerShellUiService Test_UiSvc { get; set; }
-        protected override IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
-        {
-            if (Test_UiSvc != null)
-                return Test_UiSvc;
-            else 
-                return new FakeShellUiService();
-        }
 
         public override TextWriter CreateTextWriter(string filename)
         {

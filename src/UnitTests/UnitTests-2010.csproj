@@ -153,6 +153,7 @@
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
+    <Compile Include="Gui\TabControlHostTests.cs" />
     <Compile Include="Gui\Windows\TextSpanFormatterTests.cs" />
     <Compile Include="Gui\Windows\Forms\OpenAsInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SearchDialogInteractorTests.cs" />

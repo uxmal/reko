@@ -37,7 +37,7 @@ namespace Decompiler.Arch.M68k
 
         public override uint ReadOpcode(ImageReader rdr)
         {
-            return rdr.ReadBeUInt16(0);
+            return rdr.PeekBeUInt16(0);
         }
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
@@ -77,7 +77,7 @@ namespace Decompiler.Arch.M68k
             }
             else
             {
-                target = rdr.ReadBeUInt32(0);
+                target = rdr.PeekBeUInt32(0);
                 return true;
             }
         }
@@ -88,7 +88,7 @@ namespace Decompiler.Arch.M68k
             {
                 if (rdr.IsValidOffset(rdr.Offset + 2u))
                 {
-                    target = (uint) (int) rdr.ReadBeInt16(2);
+                    target = (uint) (int) rdr.PeekBeInt16(2);
                     return true;
                 }
             }
@@ -96,7 +96,7 @@ namespace Decompiler.Arch.M68k
             {
                 if (rdr.IsValidOffset(rdr.Offset + 4u))
                 {
-                    target = rdr.ReadBeUInt32(2);
+                    target = rdr.PeekBeUInt32(2);
                     return true;
                 }
             }
@@ -111,7 +111,7 @@ namespace Decompiler.Arch.M68k
                 &&
                 rdr.IsValidOffset(rdr.Offset + 4u))
             {
-                callOffset = rdr.ReadBeInt32(2);
+                callOffset = rdr.PeekBeInt32(2);
                 target = (uint) (callOffset + rdr.Address.Linear + 2);
                 return true;
             }
@@ -119,7 +119,7 @@ namespace Decompiler.Arch.M68k
                 &&
                 rdr.IsValidOffset(rdr.Offset + 2u))
             {
-                callOffset = rdr.ReadBeInt16(2);
+                callOffset = rdr.PeekBeInt16(2);
                 target = (uint) (callOffset + rdr.Address.Linear + 2);
                 return true;
             }

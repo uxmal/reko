@@ -204,8 +204,21 @@ namespace Decompiler.Gui.Windows.Forms
            "Decompiler.Gui.Windows.LowLevelViewInteractor", 
           new Guid(CmdSets.Decompiler), 
           CmdIds.ActionMarkType, 
-          Keys.T,
-          Keys.Control);
+          Keys.T
+          , Keys.Control);
+      
+        AddBinding(
+           "", 
+          new Guid(CmdSets.Decompiler), 
+          CmdIds.ActionNextSearchHit, 
+          Keys.F8);
+      
+        AddBinding(
+           "", 
+          new Guid(CmdSets.Decompiler), 
+          CmdIds.ActionPrevSearchHit, 
+          Keys.F8
+          , Keys.Shift);
       
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
