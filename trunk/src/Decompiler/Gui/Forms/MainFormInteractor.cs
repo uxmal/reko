@@ -56,6 +56,7 @@ namespace Decompiler.Gui.Forms
         private ISearchResultService srSvc;
         private IWorkerDialogService workerDlgSvc;
         private IDialogFactory dlgFactory;
+        private ITabControlHostService searchResultsTabControl;
 
         private IPhasePageInteractor currentPhase;
         private InitialPageInteractor pageInitial;
@@ -131,7 +132,7 @@ namespace Decompiler.Gui.Forms
         }
 
 
-        protected void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
+        private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
         {
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IDecompilerConfigurationService), config);
@@ -144,7 +145,7 @@ namespace Decompiler.Gui.Forms
             decompilerSvc = svcFactory.CreateDecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
-            uiSvc = CreateShellUiService(dm);
+            uiSvc = svcFactory.CreateShellUiService(form, dm);
             subWindowCommandTarget = uiSvc;
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
@@ -157,14 +158,11 @@ namespace Decompiler.Gui.Forms
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
             sc.AddService(typeof(DecompilerEventListener), del);
 
-            ArchiveBrowserService abSvc = new ArchiveBrowserService(sc);
+            var abSvc = svcFactory.CreateArchiveBrowserService();
             sc.AddService(typeof(IArchiveBrowserService), abSvc);
 
             sc.AddService(typeof(IMemoryViewService), svcFactory.CreateMemoryViewService());
             sc.AddService(typeof(IDisassemblyViewService), svcFactory.CreateDisassemblyViewService());
-
-            srSvc = new SearchResultServiceImpl(sc, new TabControlWindowFrame(form.TabControl, form.FindResultsPage), form.FindResultsList);
-            sc.AddService(typeof(ISearchResultService), srSvc);
 
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();
             sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
@@ -177,11 +175,13 @@ namespace Decompiler.Gui.Forms
 
             var fsSvc = svcFactory.CreateFileSystemService();
             sc.AddService<IFileSystemService>(fsSvc);
-        }
 
-        protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
-        {
-            return new DecompilerShellUiService((Form)this.form, dm, form.OpenFileDialog, form.SaveFileDialog, this.sc);
+            this.searchResultsTabControl = svcFactory.CreateTabControlHost(form.TabControl);
+            sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
+
+            srSvc = new SearchResultServiceImpl(sc, form.FindResultsList);
+            sc.AddService(typeof(ISearchResultService), srSvc);
+            searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -486,6 +486,8 @@ namespace Decompiler.Gui.Forms
 
         public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus cmdStatus, CommandText cmdText)
         {
+            if (searchResultsTabControl.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+                return true;
             if (subWindowCommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
                 return true;
             if (currentPhase != null && currentPhase.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
@@ -540,6 +542,8 @@ namespace Decompiler.Gui.Forms
         /// <returns></returns>
         public bool Execute(ref Guid cmdSet, int cmdId)
         {
+            if (searchResultsTabControl.Execute(ref cmdSet, cmdId))
+                return true;
             if (subWindowCommandTarget.Execute(ref cmdSet, cmdId))
                 return true;
             if (currentPhase != null && currentPhase.Execute(ref cmdSet, cmdId))

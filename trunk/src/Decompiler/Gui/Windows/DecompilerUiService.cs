@@ -48,7 +48,7 @@ namespace Decompiler.Gui.Windows
         private DialogResult ShowModalDialog(Form dlg)
         {
             return (DialogResult)
-                form.Invoke(new Converter<Form, DialogResult>(delegate(Form dlgToShow)
+                form.Invoke(new Func<Form, DialogResult>(delegate(Form dlgToShow)
                 {
                     return dlgToShow.ShowDialog(form);
                 }), dlg);

@@ -30,5 +30,7 @@ namespace Decompiler.Gui
 
         void Show();
         void Close();
+
+        string Title { get; set; }
     }
 }

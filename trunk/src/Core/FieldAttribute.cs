@@ -55,7 +55,7 @@ namespace Decompiler.Core
         public override object ReadValue(FieldInfo f, ImageReader rdr, ReaderContext ctx)
         {
             int i = 0;
-            for (; rdr.ReadByte(i) != 0; ++i)
+            for (; rdr.PeekByte(i) != 0; ++i)
             {
             }
             var s = Encoding.UTF8.GetString(rdr.ReadBytes(i));

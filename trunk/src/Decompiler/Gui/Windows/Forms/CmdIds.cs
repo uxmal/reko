@@ -86,17 +86,19 @@ namespace Decompiler.Gui
 		public const int ViewShowUnscanned = 11 + 2000;
 		public const int ViewFindFragments = 12 + 2000;
 		public const int ViewFindWhatPointsHere = 13 + 2000;
-		public const int ActionNextPhase = 14 + 2000;
-		public const int ActionFinishDecompilation = 15 + 2000;
-		public const int ActionMarkProcedure = 16 + 2000;
-		public const int ActionEditSignature = 17 + 2000;
-		public const int ActionMarkType = 18 + 2000;
-		public const int WindowsCascade = 19 + 2000;
-		public const int WindowsTileVertical = 20 + 2000;
-		public const int WindowsTileHorizontal = 21 + 2000;
-		public const int WindowsCloseAll = 22 + 2000;
-		public const int HelpAbout = 23 + 2000;
-		public const int ShowProcedureCallHierarchy = 24 + 2000;
+		public const int ActionNextSearchHit = 14 + 2000;
+		public const int ActionPrevSearchHit = 15 + 2000;
+		public const int ActionNextPhase = 16 + 2000;
+		public const int ActionFinishDecompilation = 17 + 2000;
+		public const int ActionMarkProcedure = 18 + 2000;
+		public const int ActionEditSignature = 19 + 2000;
+		public const int ActionMarkType = 20 + 2000;
+		public const int WindowsCascade = 21 + 2000;
+		public const int WindowsTileVertical = 22 + 2000;
+		public const int WindowsTileHorizontal = 23 + 2000;
+		public const int WindowsCloseAll = 24 + 2000;
+		public const int HelpAbout = 25 + 2000;
+		public const int ShowProcedureCallHierarchy = 26 + 2000;
 		public const int FileMru = 2200;
 	}
 }

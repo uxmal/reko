@@ -114,13 +114,12 @@ namespace Decompiler.Core
             return (sbyte) ReadByte();
         }
 
-        //$REFACTOR: should be called PeekByte as it doesn't actually _read_.
-        public byte ReadByte(int offset)
+        public byte PeekByte(int offset)
         {
             return bytes[off + offset];
         }
 
-        public sbyte ReadSByte(int offset) { return (sbyte) bytes[off + offset]; }
+        public sbyte PeekSByte(int offset) { return (sbyte) bytes[off + offset]; }
 
         public byte[] ReadBytes(int length) { return ReadBytes((uint) length); }
 
@@ -203,11 +202,10 @@ namespace Decompiler.Core
         public short ReadBeInt16() { return (short)ReadBeUInt16(); }
         public short ReadLeInt16() { return (short)ReadLeUInt16(); }
 
-        //$REVIEW: these should all be called "Peek".
-        public ushort ReadLeUInt16(uint offset) { return LoadedImage.ReadLeUInt16(bytes, offset + off); }
-        public ushort ReadBeUInt16(uint offset) { return LoadedImage.ReadBeUInt16(bytes, offset + off); }
-        public short ReadLeInt16(uint offset) { return (short) LoadedImage.ReadLeUInt16(bytes, offset + off); }
-        public short ReadBeInt16(uint offset) { return (short) LoadedImage.ReadBeUInt16(bytes, offset + off); }
+        public ushort PeekLeUInt16(uint offset) { return LoadedImage.ReadLeUInt16(bytes, offset + off); }
+        public ushort PeekBeUInt16(uint offset) { return LoadedImage.ReadBeUInt16(bytes, offset + off); }
+        public short PeekLeInt16(uint offset) { return (short) LoadedImage.ReadLeUInt16(bytes, offset + off); }
+        public short PeekBeInt16(uint offset) { return (short) LoadedImage.ReadBeUInt16(bytes, offset + off); }
 
         public uint ReadLeUInt32()
         {
@@ -226,10 +224,10 @@ namespace Decompiler.Core
         public int ReadBeInt32() { return (int)ReadBeUInt32(); }
         public int ReadLeInt32() { return (int)ReadLeUInt32(); }
 
-        public uint ReadLeUInt32(uint offset) { return LoadedImage.ReadLeUInt32(bytes, offset + off); }
-        public uint ReadBeUInt32(uint offset) { return LoadedImage.ReadBeUInt32(bytes, offset + off); }
-        public int ReadLeInt32(uint offset) { return (int) LoadedImage.ReadLeUInt32(bytes, offset + off); }
-        public int ReadBeInt32(uint offset) { return (int) LoadedImage.ReadBeUInt32(bytes, offset + off); }
+        public uint PeekLeUInt32(uint offset) { return LoadedImage.ReadLeUInt32(bytes, offset + off); }
+        public uint PeekBeUInt32(uint offset) { return LoadedImage.ReadBeUInt32(bytes, offset + off); }
+        public int PeekLeInt32(uint offset) { return (int) LoadedImage.ReadLeUInt32(bytes, offset + off); }
+        public int PeekBeInt32(uint offset) { return (int) LoadedImage.ReadBeUInt32(bytes, offset + off); }
 
         public ulong ReadLeUint64()
         {
@@ -248,10 +246,10 @@ namespace Decompiler.Core
         public long ReadBeInt64() { return (long)ReadBeUInt64(); }
         public long ReadLeInt64() { return (long)ReadLeUint64(); }
 
-        public ulong ReadLeUint64(uint offset) { return LoadedImage.ReadLeUInt64(bytes, off); }
-        public ulong ReadBeUInt64(uint offset) { return LoadedImage.ReadBeUInt64(bytes, off); }
-        public long ReadLeInt64(uint offset) { return (long)LoadedImage.ReadLeUInt64(bytes, off); }
-        public long ReadBeInt64(uint offset) { return (long)LoadedImage.ReadBeUInt64(bytes, off); }
+        public ulong PeekLeUint64(uint offset) { return LoadedImage.ReadLeUInt64(bytes, off); }
+        public ulong PeekBeUInt64(uint offset) { return LoadedImage.ReadBeUInt64(bytes, off); }
+        public long PeekLeInt64(uint offset) { return (long)LoadedImage.ReadLeUInt64(bytes, off); }
+        public long PeekBeInt64(uint offset) { return (long)LoadedImage.ReadBeUInt64(bytes, off); }
 
         public virtual short ReadInt16() { throw new NotSupportedException(); }
         public virtual int ReadInt32() { throw new NotSupportedException(); }
@@ -351,12 +349,12 @@ namespace Decompiler.Core
         public override uint ReadUInt32() { return ReadLeUInt32(); }
         public override ulong ReadUInt64() { return ReadLeUint64(); }
 
-        public override short ReadInt16(uint offset) { return ReadLeInt16(offset); }
-        public override int ReadInt32(uint offset) { return ReadLeInt32(offset); }
-        public override long ReadInt64(uint offset) { return ReadLeInt64(offset); }
-        public override ushort ReadUInt16(uint offset) { return ReadLeUInt16(offset); }
-        public override uint ReadUInt32(uint offset) { return ReadLeUInt32(offset); }
-        public override ulong ReadUInt64(uint offset) { return ReadLeUint64(offset); }
+        public override short ReadInt16(uint offset) { return PeekLeInt16(offset); }
+        public override int ReadInt32(uint offset) { return PeekLeInt32(offset); }
+        public override long ReadInt64(uint offset) { return PeekLeInt64(offset); }
+        public override ushort ReadUInt16(uint offset) { return PeekLeUInt16(offset); }
+        public override uint ReadUInt32(uint offset) { return PeekLeUInt32(offset); }
+        public override ulong ReadUInt64(uint offset) { return PeekLeUint64(offset); }
 
         public override Constant Read(PrimitiveType dataType) { return ReadLe(dataType); }
     }
@@ -376,12 +374,12 @@ namespace Decompiler.Core
         public override uint ReadUInt32() { return ReadBeUInt32(); }
         public override ulong ReadUInt64() { return ReadBeUInt64(); }
 
-        public override short ReadInt16(uint offset) { return ReadBeInt16(offset); }
-        public override int ReadInt32(uint offset) { return ReadBeInt32(offset); }
-        public override long ReadInt64(uint offset) { return ReadBeInt64(offset); }
-        public override ushort ReadUInt16(uint offset) { return ReadBeUInt16(offset); }
-        public override uint ReadUInt32(uint offset) { return ReadBeUInt32(offset); }
-        public override ulong ReadUInt64(uint offset) { return ReadBeUInt64(offset); }
+        public override short ReadInt16(uint offset) { return PeekBeInt16(offset); }
+        public override int ReadInt32(uint offset) { return PeekBeInt32(offset); }
+        public override long ReadInt64(uint offset) { return PeekBeInt64(offset); }
+        public override ushort ReadUInt16(uint offset) { return PeekBeUInt16(offset); }
+        public override uint ReadUInt32(uint offset) { return PeekBeUInt32(offset); }
+        public override ulong ReadUInt64(uint offset) { return PeekBeUInt64(offset); }
 
         public override Constant Read(PrimitiveType dataType) { return ReadBe(dataType); }
     }

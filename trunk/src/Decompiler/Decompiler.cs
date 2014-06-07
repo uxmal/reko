@@ -262,7 +262,16 @@ namespace Decompiler
         public void ReconstructTypes()
         {
             TypeAnalyzer analyzer = new TypeAnalyzer(Program, eventListener);
-            analyzer.RewriteProgram();
+            try
+            {
+                analyzer.RewriteProgram();
+            }
+            catch (Exception ex)
+            {
+                eventListener.AddDiagnostic(
+                    new NullCodeLocation(""),
+                    new ErrorDiagnostic("Error when reconstructing types.", ex));
+            }
             host.WriteTypes(analyzer.WriteTypes);
         }
 

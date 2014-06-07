@@ -34,6 +34,7 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.treeBrowser = new System.Windows.Forms.TreeView();
+            this.imlBrowser = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDiagnostics = new System.Windows.Forms.TabPage();
             this.listDiagnostics = new System.Windows.Forms.ListView();
@@ -46,7 +47,6 @@
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.imlBrowser = new System.Windows.Forms.ImageList(this.components);
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
@@ -79,6 +79,15 @@
             this.treeBrowser.SelectedImageIndex = 0;
             this.treeBrowser.Size = new System.Drawing.Size(195, 328);
             this.treeBrowser.TabIndex = 0;
+            // 
+            // imlBrowser
+            // 
+            this.imlBrowser.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlBrowser.ImageStream")));
+            this.imlBrowser.TransparentColor = System.Drawing.Color.Transparent;
+            this.imlBrowser.Images.SetKeyName(0, "Binary.ico");
+            this.imlBrowser.Images.SetKeyName(1, "Header.ico");
+            this.imlBrowser.Images.SetKeyName(2, "Code.ico");
+            this.imlBrowser.Images.SetKeyName(3, "Data.ico");
             // 
             // tabControl1
             // 
@@ -153,6 +162,7 @@
             // 
             this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listFindResults.FullRowSelect = true;
+            this.listFindResults.HideSelection = false;
             this.listFindResults.Location = new System.Drawing.Point(3, 3);
             this.listFindResults.Name = "listFindResults";
             this.listFindResults.Size = new System.Drawing.Size(770, 148);
@@ -176,15 +186,6 @@
             this.splitter2.Size = new System.Drawing.Size(781, 3);
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
-            // 
-            // imlBrowser
-            // 
-            this.imlBrowser.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlBrowser.ImageStream")));
-            this.imlBrowser.TransparentColor = System.Drawing.Color.Transparent;
-            this.imlBrowser.Images.SetKeyName(0, "Binary.ico");
-            this.imlBrowser.Images.SetKeyName(1, "Header.ico");
-            this.imlBrowser.Images.SetKeyName(2, "Code.ico");
-            this.imlBrowser.Images.SetKeyName(3, "Data.ico");
             // 
             // MainForm
             // 
