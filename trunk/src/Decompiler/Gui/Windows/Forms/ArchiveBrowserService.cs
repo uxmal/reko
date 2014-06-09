@@ -36,15 +36,16 @@ namespace Decompiler.Gui.Windows.Forms
             this.sp = sp;
         }
 
-        public byte[] UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
+        public ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
             IDecompilerUIService uiSvc = (IDecompilerUIService)sp.GetService(typeof(IDecompilerUIService));
             if (uiSvc == null)
                 return null;
-            using (ArchiveBrowserDialog dlg = new ArchiveBrowserDialog())
+            using (var dlg = new ArchiveBrowserDialog())
             {
+                dlg.ArchiveEntries = archiveEntries;
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                    return dlg.GetSelectedFileBytes();
+                    return dlg.GetSelectedFile();
                 else
                     return null;
             }

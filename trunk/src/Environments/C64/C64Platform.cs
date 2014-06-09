@@ -18,38 +18,42 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
+using Decompiler.Arch.Mos6502;
+using Decompiler.Core;
+using Decompiler.Core.Rtl;
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Decompiler.Environments.C64
 {
-    public class FakeDecompilerConfiguration : IDecompilerConfigurationService
+    public class C64Platform : Platform
     {
-        private ArrayList imageLoaders = new ArrayList();
+        private Mos6502ProcessorArchitecture arch;
 
-        public System.Collections.ICollection GetImageLoaders()
+        public C64Platform(IServiceProvider services, Arch.Mos6502.Mos6502ProcessorArchitecture arch)
+            : base(services, arch)
         {
-            return imageLoaders;
+            this.arch = arch;
         }
 
-        public System.Collections.ICollection GetArchitectures()
+        public override string DefaultCallingConvention
+        {
+            get { return ""; }
+        }
+
+        public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
+        {
+            return base.FindService(rtl, state);
+        }
+
+        public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public System.Collections.ICollection GetEnvironments()
-        {
-            throw new NotImplementedException();
-        }
-
-        public OperatingEnvironment GetEnvironment(string envName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DefaultPreferences GetDefaultPreferences()
+        public override ProcedureSignature LookupProcedure(string procName)
         {
             throw new NotImplementedException();
         }

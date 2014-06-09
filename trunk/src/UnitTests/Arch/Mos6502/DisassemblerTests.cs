@@ -68,5 +68,26 @@ namespace Decompiler.UnitTests.Arch.Mos6502
             var instr = RunTest(0xFE, 0x34, 0x12);
             Assert.AreEqual("inc\t$1234,x", instr.ToString());
         }
+
+        [Test]
+        public void Dis6502_and_largeaddress()
+        {
+            var instr = RunTest(0x3D, 0xC0, 0xAE);
+            Assert.AreEqual("and\t$AEC0,x", instr.ToString());
+        }
+
+        [Test]
+        public void Dis6502_rol_a()
+        {
+            var instr = RunTest(0x2A);
+            Assert.AreEqual("rol\t", instr.ToString());
+        }
+
+        [Test]
+        public void Dis6502_asl_a()
+        {
+            var instr = RunTest(0x0A);
+            Assert.AreEqual("asl\t", instr.ToString());
+        }
     }
 }

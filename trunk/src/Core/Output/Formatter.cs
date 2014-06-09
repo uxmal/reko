@@ -114,6 +114,5 @@ namespace Decompiler.Core.Output
 				--n;
 			}
 		}
-
     }
 }

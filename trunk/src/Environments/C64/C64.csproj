@@ -39,12 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="C64Platform.cs" />
+    <Compile Include="D64Loader.cs" />
+    <Compile Include="DirectoryEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="C64.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj">
+      <Project>{dc11ed7f-97f6-4488-86b4-eec67dd1f511}</Project>
+      <Name>Mos6502</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core-2010</Name>

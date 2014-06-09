@@ -271,7 +271,7 @@ namespace Decompiler.Gui.Forms
                 mru.Use(dlg.FileName.Text);
 
                 var typeName = (string)((ListOption)dlg.Architectures.SelectedValue).Value;
-                Type t = Type.GetType(typeName);
+                Type t = Type.GetType(typeName, true);
                 arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
 
                 typeName = (string)((ListOption)dlg.Platforms.SelectedValue).Value;

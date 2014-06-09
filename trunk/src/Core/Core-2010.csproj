@@ -240,7 +240,6 @@
     <Compile Include="Lib\Dequeue.cs" />
     <Compile Include="Output\PrettyPrinter.cs" />
     <Compile Include="Output\PrettyPrinterOutput.cs" />
-    <Compile Include="Output\RtfCodeFormatter.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

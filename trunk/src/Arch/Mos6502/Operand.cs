@@ -42,10 +42,11 @@ namespace Decompiler.Arch.Mos6502
 
         public override string ToString()
         {
-            int o = Offset != null ? Offset.ToInt16() : 0;
+            int o = Offset != null ? Offset.ToUInt16() : 0;
             string fmt;
             switch (Mode)
             {
+            case AddressMode.Accumulator: return "";        // Implicit, never displayed
             case AddressMode.Immediate: fmt = "#${0:X2}"; break;
             case AddressMode.ZeroPage: fmt = "${0:X2}"; break;
             case AddressMode.ZeroPageX: 
@@ -76,5 +77,6 @@ namespace Decompiler.Arch.Mos6502
         Indirect,           // ($AABB)
         IndexedIndirect,    // $(AA,x)
         IndirectIndexed,    // $(AA),y
+        Accumulator,
     }
 }

@@ -64,6 +64,13 @@ namespace Decompiler.Arch.Mos6502
                         Offset = rdr.Read(PrimitiveType.Byte)
                     };
                     break;
+                case 'a':
+                    operand = new Operand(PrimitiveType.Byte)
+                    {
+                        Mode = AddressMode.Accumulator,
+                        Register = Registers.a,
+                    };
+                    break;
                 case 'x':
                     operand = new Operand(PrimitiveType.Byte)
                     {

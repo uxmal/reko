@@ -59,11 +59,11 @@ namespace Decompiler.Loading
         /// </summary>
         /// <param name="rawBytes"></param>
         /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
-        private ImageLoader FindImageLoader(byte[] rawBytes)
+        public ImageLoader FindImageLoader(byte[] rawBytes)
         {
             foreach (LoaderElement e in config.GetImageLoaders())
             {
-                if (ImageBeginsWithMagicNumber(rawBytes, e.MagicNumber))
+                if (ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset))
                     return CreateImageLoader(e.TypeName, rawBytes);
             }
             eventListener.AddDiagnostic(
@@ -101,17 +101,29 @@ namespace Decompiler.Loading
             return prog;
         }
 
-        public bool ImageBeginsWithMagicNumber(byte [] image, string magicNumber)
+        public bool ImageHasMagicNumber(byte [] image, string magicNumber, string sOffset)
         {
+            int offset = ConvertOffset(sOffset);
             byte[] magic = ConvertHexStringToBytes(magicNumber);
-            if (image.Length < magic.Length)
+            if (image.Length < magic.Length + offset)
                 return false;
-            for (int i = 0; i < magic.Length; ++i)
+            
+            for (int i = 0, j = offset; i < magic.Length; ++i, ++j)
             {
-                if (magic[i] != image[i])
+                if (magic[i] != image[j])
                     return false;
             }
             return true;
+        }
+
+        private int ConvertOffset(string sOffset)
+        {
+            if (string.IsNullOrEmpty(sOffset))
+                return 0;
+            int offset;
+            if (Int32.TryParse(sOffset, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out offset))
+                return offset;
+            return 0;
         }
 
         private byte[] ConvertHexStringToBytes(string hexString)
@@ -147,8 +159,7 @@ namespace Decompiler.Loading
             Type t = Type.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            ConstructorInfo ci = t.GetConstructor(new Type[] { typeof (IServiceProvider), typeof(byte[]) });
-            return (ImageLoader) ci.Invoke(new object[] { this.services, bytes });
+            return (ImageLoader) Activator.CreateInstance(t, this.services, bytes);
         }
 	}
 }
