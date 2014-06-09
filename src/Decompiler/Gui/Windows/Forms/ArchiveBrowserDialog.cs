@@ -53,12 +53,10 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-        public byte[] GetSelectedFileBytes()
+        public ArchivedFile GetSelectedFile()
         {
             ArchivedFile file = SelectedArchiveEntry as ArchivedFile;
-            return file != null
-                ? file.GetBytes()
-                : null;
+            return file;
         }
     }
 }

@@ -193,6 +193,8 @@ namespace Decompiler.Arch.Mos6502
             switch (op.Mode)
             {
             default: throw new NotImplementedException("Unimplemented address mode " + op.Mode);
+            case AddressMode.Accumulator:
+                return frame.EnsureRegister(Registers.a);
             case AddressMode.IndirectIndexed:
                 var y = frame.EnsureRegister(Registers.y);
                 offset = Constant.Word16((ushort) op.Offset.ToByte());
@@ -204,9 +206,11 @@ namespace Decompiler.Arch.Mos6502
                 var x = frame.EnsureRegister(Registers.x);
                 offset = Constant.Word16((ushort) op.Offset.ToByte());
                 return emitter.LoadB(
-                    emitter.IAdd(
-                        offset,
-                        emitter.Cast(PrimitiveType.UInt16, x)));
+                    emitter.Load(
+                        PrimitiveType.Ptr16,
+                        emitter.IAdd(
+                            offset,
+                            emitter.Cast(PrimitiveType.UInt16, x))));
                 break;
             case AddressMode.Absolute:
                 return emitter.LoadB(op.Offset);

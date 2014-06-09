@@ -20,12 +20,14 @@
 
 using Decompiler;
 using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Decompiler.Core.Configuration;
+using Decompiler.Core.Services;
 using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
@@ -37,48 +39,80 @@ namespace Decompiler.UnitTests.Loading
 	[TestFixture]
 	public class LoaderTests
 	{
+        private MockRepository mr;
         private IServiceContainer sc;
         FakeDecompilerEventListener eventListener;
+        private IDecompilerConfigurationService dcSvc;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             sc = new ServiceContainer();
             eventListener = new FakeDecompilerEventListener();
+            dcSvc = mr.Stub<IDecompilerConfigurationService>();
             sc.AddService(typeof(DecompilerEventListener), eventListener);
         }
 
         [Test]
         public void LoaderMatch()
         {
-            TestLoader ldr = new TestLoader(new Program(), sc);
-            Assert.IsTrue(ldr.ImageBeginsWithMagicNumber(new byte[] { 0x47, 0x11 }, "4711"));
+            mr.ReplayAll();
+
+            TestLoader ldr = new TestLoader(dcSvc, sc);
+            Assert.IsTrue(ldr.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", "0"));
+
+            mr.VerifyAll();
         }
 
         [Test]
         public void LoaderUnknownImageType()
         {
-            TestLoader ldr = new TestLoader(new Program(), sc);
-            ldr.Image = new byte[] { 42, 42, 42, 42, };
-            Program prog = ldr.Load(ldr.Image, null);
+            dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
+            mr.ReplayAll();
+
+            TestLoader ldr = new TestLoader(dcSvc, sc);
+            ldr.Test_Image = new byte[] { 42, 42, 42, 42, };
+            Program prog = ldr.Load(ldr.Test_Image, null);
 
             Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
             Assert.IsNull(prog.Architecture);
             Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
+            mr.VerifyAll();
+        }
 
+        [Test]
+        public void LoaderAtOffset()
+        {
+            dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList
+            {
+                new LoaderElementImpl {
+                    Offset = "0002",
+                    MagicNumber = "A0A0",
+                    TypeName = typeof(TestImageLoader).AssemblyQualifiedName,
+                }
+            });
+            mr.ReplayAll();
+
+            TestLoader ldr = new TestLoader(dcSvc, sc);
+            ldr.Test_Image = new byte[] { 42, 42, 0xA0, 0xA0 };
+            var imgLoader = ldr.FindImageLoader(ldr.Test_Image);
+
+            Assert.IsInstanceOf<TestImageLoader>(imgLoader);
+            mr.VerifyAll();
         }
 
 		private class TestLoader : Loader
 		{
-			public TestLoader(Program prog, IServiceProvider services)
-                : base(new FakeDecompilerConfiguration(), services)
+			public TestLoader(IDecompilerConfigurationService config, IServiceProvider services)
+                : base(config, services)
 			{
 			}
 
 			private byte [] image;
 
-			public byte [] Image
+			public byte [] Test_Image
 			{
 				get { return image; }
 				set { image = value; }
@@ -88,7 +122,28 @@ namespace Decompiler.UnitTests.Loading
 			{
 				return image;
 			}
-
 		}
+
+        public class TestImageLoader : ImageLoader
+        {
+            public TestImageLoader(IServiceProvider services, byte[] imgRaw) : base(services, imgRaw)
+            {
+            }
+
+            public override Address PreferredBaseAddress
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public override LoaderResults Load(Address addrLoad)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override RelocationResults Relocate(Address addrLoad)
+            {
+                throw new NotImplementedException();
+            }
+        }
 	}
 }

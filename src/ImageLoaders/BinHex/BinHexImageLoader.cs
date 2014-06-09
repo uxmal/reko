@@ -58,9 +58,10 @@ namespace Decompiler.ImageLoaders.BinHex
                 IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
                 if (abSvc != null)
                 {
-                    byte[] image = abSvc.UserSelectFileFromArchive(items);
-                    if (image != null)
+                    var selectedFile = abSvc.UserSelectFileFromArchive(items);
+                    if (selectedFile != null)
                     {
+                        var image = selectedFile.GetBytes();
                         this.rsrcFork = new ResourceFork(image, arch);
                         this.image = new LoadedImage(addrLoad, image);
                         this.imageMap = new ImageMap(addrLoad, image.Length);

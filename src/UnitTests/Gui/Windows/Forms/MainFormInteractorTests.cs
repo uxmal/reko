@@ -60,6 +60,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IFileSystemService fsSvc;
         private LoaderBase loader;
         private IUiPreferencesService uiPrefs;
+        private ITabControlHostService tcHostSvc;
 
 		[SetUp]
 		public void Setup()
@@ -455,6 +456,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             projectBrowserSvc = mr.StrictMock<IProjectBrowserService>();
             uiPrefs = mr.StrictMock<IUiPreferencesService>();
             fsSvc = mr.StrictMock<IFileSystemService>();
+            tcHostSvc = mr.StrictMock<ITabControlHostService>();
 
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
@@ -472,6 +474,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
             svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull,Arg<DecompilerMenus>.Is.NotNull)).Return(uiSvc);
+            svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 
@@ -501,6 +504,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.ProcessCommandKey += null;
             LastCall.IgnoreArguments();
             dlgFactory.Stub(d => d.CreateMainForm()).Return(form);
+            tcHostSvc.Stub(t => t.Attach(Arg<IWindowPane>.Is.NotNull, Arg<TabPage>.Is.NotNull));
+            tcHostSvc.Stub(t => t.QueryStatus(
+                ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(), CmdSets.GuidDecompiler).Dummy, 
+                Arg<int>.Is.Anything,
+                Arg<CommandStatus>.Is.Anything,
+                Arg<CommandText>.Is.Anything)).Return(false);
+            tcHostSvc.Stub(t => t.Execute(ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(), CmdSets.GuidDecompiler).Dummy, Arg<int>.Is.Anything)).Return(false);
         }
 
         private void When_CreateMainFormInteractor()

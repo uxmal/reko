@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Gui.Windows
     [TestFixture]
     public class SearchResultServiceTests
     {
-        private MockRepository repository;
+        private MockRepository mr;
         private Form form;
         private ListView listSearchResults;
         private SearchResultServiceImpl svc;
@@ -43,9 +43,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
-            frame = repository.DynamicMock<IWindowFrame>();
+            mr = new MockRepository();
+            frame = mr.DynamicMock<IWindowFrame>();
             sc = new ServiceContainer();
+            sc.AddService(typeof(IWindowFrame), frame);
         }
 
         private void CreateUI()
@@ -65,7 +66,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void SRS_Creation()
         {
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateUI();
 
@@ -76,7 +77,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void SRS_ShowSingleItem()
         {
-            var result = repository.StrictMock<ISearchResult>();
+            var result = mr.StrictMock<ISearchResult>();
             result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(1);
             result.Expect(s => s.CreateColumns(
@@ -90,7 +91,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             result.Expect(s => s.Count).Return(1);
             result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
             result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateUI();
             form.Show();
@@ -102,57 +103,57 @@ namespace Decompiler.UnitTests.Gui.Windows
             Assert.AreEqual("foo", listSearchResults.Items[0].SubItems[0].Text);
             Assert.AreEqual("bar", listSearchResults.Items[0].SubItems[1].Text);
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         [Test]
         public void SRS_CreateColumns()
         {
-            var result = repository.StrictMock<ISearchResult>();
+            var result = mr.StrictMock<ISearchResult>();
             result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(0);
             result.Expect(s => s.CreateColumns(
                 Arg<ISearchResultView>.Is.NotNull));
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateUI();
             form.Show();
             svc.ShowSearchResults(result);
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
 
         [Test]
         public void DoubleClickShouldNavigate()
         {
-            var result = repository.DynamicMock<ISearchResult>();
+            var result = mr.DynamicMock<ISearchResult>();
             result.Expect(s => s.NavigateTo(1));
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateUI();
             form.Show();
             svc.ShowSearchResults(result);
             svc.DoubleClickItem(1);
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         [Test]
         public void SRS_ShowResults_ChangesContextMenu()
         {
             var ctxMenu = new ContextMenu();
-            var result = repository.DynamicMock<ISearchResult>();
-            var uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
+            var result = mr.DynamicMock<ISearchResult>();
+            var uiSvc = mr.DynamicMock<IDecompilerShellUiService>();
             result.Expect(r => r.ContextMenuID).Return(42);
             uiSvc.Expect(u => u.GetContextMenu(42)).Return(ctxMenu);
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             CreateUI();
             form.Show(); svc.ShowSearchResults(result);
 
-            repository.VerifyAll();
+            mr.VerifyAll();
             Assert.AreEqual(ctxMenu, listSearchResults.ContextMenu);
         }
     }

@@ -30,6 +30,6 @@ namespace Decompiler.Core.Services
     /// </summary>
     public interface IArchiveBrowserService
     {
-        byte [] UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
+        ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
     }
 }

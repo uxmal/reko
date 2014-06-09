@@ -11,6 +11,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decompiler-2010", "Decompiler\Decompiler-2010.csproj", "{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler-2010", "WindowsDecompiler\WindowsDecompiler-2010.csproj", "{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FDFE3507-E8CE-4930-B9B5-8FB647CFC6DC} = {FDFE3507-E8CE-4930-B9B5-8FB647CFC6DC}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architectures", "Architectures", "{18994109-C4D5-49F9-86E0-3B5B1046C08E}"
 EndProject
