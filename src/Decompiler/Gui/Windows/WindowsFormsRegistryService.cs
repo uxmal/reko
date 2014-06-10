@@ -42,6 +42,8 @@ namespace Decompiler.Gui.Windows
 
             public RegistryKey(Microsoft.Win32.RegistryKey key)
             {
+                if (key == null)
+                    throw new ArgumentNullException("key");
                 this.key = key;
             }
 
@@ -52,7 +54,12 @@ namespace Decompiler.Gui.Windows
 
             public IRegistryKey OpenSubKey(string keyName, bool writeable)
             {
-                return new RegistryKey(key.OpenSubKey(keyName, writeable));
+                var subkey = key.OpenSubKey(keyName, writeable);
+                if (subkey == null)
+                {
+                    subkey = key.CreateSubKey(keyName);
+                }
+                return new RegistryKey(subkey);
             }
 
             public void SetValue(string name, object value)

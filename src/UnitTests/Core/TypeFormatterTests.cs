@@ -195,10 +195,10 @@ struct a {
                 new MemberPointer(seg, PrimitiveType.Word32, 2));
 
             tyfo.Write(s, "meeble");
-            string sExp = @"struct s {
+            string sExp = 
+@"struct s {
 	word32 seg::*ptr002A;	// 2A
 } meeble";
-
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -227,7 +227,6 @@ struct a {
                 "};" + nl;
             
             Assert.AreEqual(sExp, sw.ToString());
-
         }
 	}
 }

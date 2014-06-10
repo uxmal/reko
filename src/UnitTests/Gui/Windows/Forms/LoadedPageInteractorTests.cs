@@ -162,23 +162,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void ShowEditFindDialogButDontRunIt()
-        {
-            var memSvc = AddService<IMemoryViewService>();
-            var disSvc = AddService<IDisassemblyViewService>();
-            var uiSvc = AddService<IDecompilerShellUiService>();
-            interactor.Site = site;
-
-            uiSvc.Expect(s => s.ShowModalDialog(
-                Arg<FindDialog>.Is.TypeOf))
-                .Return(DialogResult.Cancel);
-            repository.ReplayAll();
-
-            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
-            uiSvc.VerifyAllExpectations();
-        }
-
-        [Test]
         public void LpiSetBrowserCaptionWhenEnteringPage()
         {
             AddService<IDecompilerShellUiService>();

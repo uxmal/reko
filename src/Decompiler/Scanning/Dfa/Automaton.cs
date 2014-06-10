@@ -33,7 +33,7 @@ namespace Decompiler.Scanning.Dfa
         private int[,] transitions;
         private State[] states;
 
-        public static Automaton CreateFromPatter(string pattern)
+        public static Automaton CreateFromPattern(string pattern)
         {
             var parser = new PatternParser(pattern);
             var tree = parser.Parse();

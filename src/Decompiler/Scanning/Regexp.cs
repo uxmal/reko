@@ -57,9 +57,10 @@ namespace Decompiler.Scanning
 			get { return pos; }
 		}
 
-		public bool Match(byte [] arr, int p)
+		public bool Match(byte [] arr, int position)
 		{
 			System.Diagnostics.Debug.WriteLine(this);
+            int p = position;
 			pos = p;
 			int s = 1;			// state 0 is the error state.
 			int posAcc = states[1].Accepts ? 0 : -1;

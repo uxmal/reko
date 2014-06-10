@@ -48,7 +48,6 @@ namespace Decompiler.Gui.Windows.Forms
         public LoadedPageInteractor()
         {
             mpCmdidToCommand = new Hashtable();
-            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
             AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
             AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
             AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);
@@ -67,8 +66,6 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 switch (cmdId)
                 {
-                case CmdIds.EditFind:
-                    return EditFindBytes();
                 case CmdIds.ViewGoToAddress:
                     return GotoAddress();
                 case CmdIds.ActionMarkProcedure:
@@ -78,24 +75,6 @@ namespace Decompiler.Gui.Windows.Forms
                 }
             }
             return base.Execute(ref cmdSet, cmdId);
-        }
-
-        public bool EditFindBytes()
-        {
-            FindDialogInteractor i = new FindDialogInteractor();
-            using (FindDialog dlg = i.CreateDialog())
-            {
-                if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
-                {
-                    FindMatchingBytes(i.ToHexadecimal(""));
-                }
-            }
-            return true;
-        }
-
-        private void FindMatchingBytes(byte[] pattern)
-        {
-            throw new NotImplementedException();
         }
 
         public bool GotoAddress()

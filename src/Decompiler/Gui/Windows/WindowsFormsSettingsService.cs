@@ -55,12 +55,14 @@ namespace Decompiler.Gui.Windows
 
         public string[] GetList(string settingName)
         {
-            throw new NotImplementedException();
+            byte[] bytes = (byte[]) Get(settingName, new byte[] { });
+            return Encoding.UTF8.GetString(bytes).Split((char) 0);
         }
 
         public void SetList(string name, IEnumerable<string> settings)
         {
-            throw new NotImplementedException();
+            Set(name, Encoding.UTF8.GetBytes(
+                string.Join("\0", settings)));
         }
 
         public void Set(string name, object value)

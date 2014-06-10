@@ -64,7 +64,6 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 switch (cmdId)
                 {
-                case CmdIds.EditFind:
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ViewShowAllFragments:
                 case CmdIds.ViewShowUnscanned:
