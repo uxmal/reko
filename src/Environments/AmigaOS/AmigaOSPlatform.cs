@@ -92,7 +92,7 @@ namespace Decompiler.Environments.AmigaOS
             var fsSvc = Services.RequireService<IFileSystemService>();
             var sser = new ProcedureSerializer(
                 Architecture,
-                new TypeLibraryLoader(Architecture),
+                new TypeLibraryLoader(Architecture,true),
                 DefaultCallingConvention);
 
             using (var rdr = new StreamReader(fsSvc.CreateFileStream("exec.funcs", FileMode.Open, FileAccess.Read)))

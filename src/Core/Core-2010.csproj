@@ -555,6 +555,7 @@
     <Compile Include="Types\DataTypeVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\EnumType.cs" />
     <Compile Include="Types\EquivalenceClass.cs">
       <SubType>Code</SubType>
     </Compile>

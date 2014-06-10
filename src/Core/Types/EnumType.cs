@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,27 +19,24 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Decompiler.Core.Types
 {
-	/// <summary>
-	/// Visitor methods for types.
-	/// </summary>
-    public interface IDataTypeVisitor<T>
+    public class EnumType : DataType
     {
-        T VisitArray(ArrayType at);
-        T VisitEnum(EnumType e);
-        T VisitEquivalenceClass(EquivalenceClass eq);
-        T VisitFunctionType(FunctionType ft);
-        T VisitPrimitive(PrimitiveType pt);
-        T VisitMemberPointer(MemberPointer memptr);
-        T VisitPointer(Pointer ptr);
-        T VisitString(StringType str);
-        T VisitStructure(StructureType str);
-        T VisitTypeReference(TypeReference typeref);
-        T VisitTypeVariable(TypeVariable tv);
-        T VisitUnion(UnionType ut);
-        T VisitUnknownType(UnknownType ut);
-        T VisitVoidType(VoidType voidType);
+        public override int Size { get; set; }
+
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitEnum(this);
+        }
+
+        public override DataType Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

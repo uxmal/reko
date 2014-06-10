@@ -33,6 +33,11 @@ namespace Decompiler.Core.Serialization
             throw new NotImplementedException();
         }
 
+        public SerializedType VisitEnum(EnumType e)
+        {
+            throw new NotImplementedException();
+        }
+
         public SerializedType VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();

@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             var p = new MsMangledNameParser(parse);
             var sp = p.Parse();
             var sb = new StringBuilder();
-            Assert.AreEqual(expected, new Renderer(sb).Render(p.Modifier, p.Scope, sp));
+            Assert.AreEqual(expected, new Renderer(sb).Render(p.Modifier, p.Scope, sp.Name, sp.Type));
         }
 
         class Renderer : ISerializedTypeVisitor<StringBuilder>
@@ -51,13 +51,13 @@ namespace Decompiler.UnitTests.Environments.Win32
                 this.sb = sb;
             }
 
-            internal string Render(string modifier, string scope, SerializedProcedure sp)
+            internal string Render(string modifier, string scope, string name, SerializedType sp)
             {
                 this.modifier = modifier;
-                this.name = sp.Name;
+                this.name = name;
                 if (scope != null)
-                    this.name = scope + "::" + sp.Name;
-                sp.Signature.Accept(this);
+                    this.name = scope + "::" + name;
+                sp.Accept(this);
                 return sb.ToString();
             }
 
@@ -65,6 +65,9 @@ namespace Decompiler.UnitTests.Environments.Win32
             {
                 switch (primitive.Domain)
                 {
+                case Domain.None:
+                    sb.Append("void");
+                    break;
                 case Domain.SignedInt:
                     switch (primitive.ByteSize)
                     {
@@ -73,21 +76,29 @@ namespace Decompiler.UnitTests.Environments.Win32
                     default: throw new NotImplementedException();
                     }
                     break;
+                case Domain.UnsignedInt:
+                    switch (primitive.ByteSize)
+                    {
+                    case 4: sb.Append("unsigned int");
+                        break;
+                    default: throw new NotImplementedException();
+                    }
+                    break;
                 case Domain.Character:
                     switch (primitive.ByteSize)
                     {
                     case 1: sb.Append("char"); break;
-                    default: throw new NotImplementedException();
+                    case 2: sb.Append("wchar_t"); break;
                     }
                     break;
-                case Domain.Character|Domain.UnsignedInt:
+                case Domain.Character | Domain.UnsignedInt:
                     switch (primitive.ByteSize)
                     {
                     case 1: sb.Append("char"); break;
                     default: throw new NotImplementedException();
                     }
                     break;
-                default: 
+                default:
                     throw new NotSupportedException(string.Format("Domain {0} is not supported.", primitive.Domain));
                 }
                 if (name != null)
@@ -131,6 +142,7 @@ namespace Decompiler.UnitTests.Environments.Win32
                 foreach (var arg in signature.Arguments)
                 {
                     sb.Append(sep);
+                    sep = ", ";
                     this.name = arg.Name;
                     arg.Type.Accept(this);
                 }
@@ -280,8 +292,72 @@ namespace Decompiler.UnitTests.Environments.Win32
         public void PMNP_string_ctor()
         {
             RunTest(
-                "__thiscall public: void std::basic_string::basic_string(std::basic_string *);",
+                "__thiscall public: void std::basic_string::basic_string(basic_string *)",
                 "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z");
+        }
+
+        [Test]
+        public void PMNP_wchar_t()
+        {
+            RunTest(
+                "__stdcall unsigned int HashKey(wchar_t *)",
+                "??$HashKey@PB_W@@YGIPB_W@Z");
+        }
+
+        [Test]
+        public void PMNP_BackRefs()
+        {
+            RunTest(
+                "__stdcall int Foo(void *, void *, int)",
+                "?Foo@@YGHPAX0H@Z");
+        }
+
+        [Test]
+        public void PMNP_reg()
+        {
+            RunTest(
+                "__thiscall public virtual: void CFile::Abort()",
+            "?Abort@CFile@@UAEXXZ");
+        }
+
+        [Test]
+        public void PMNP_function_ptr()
+        {
+            RunTest(
+                "__cdecl char install(char *, __cdecl int(int *, char *) *, int)",
+                "?install@@YADPADP6AHPAH0@ZJ@Z");
+        }
+
+        [Test]
+        public void PMNP_numeric_template()
+        {
+            RunTest(
+                "__thiscall public: void ATL::CSimpleStringT::~CSimpleStringT()",
+                "??1?$CSimpleStringT@D$00@ATL@@QAE@XZ");
+        }
+
+        [Test]
+        public void PMNP_destructor()
+        {
+            RunTest(
+                "__thiscall public: void afx::~afx()",
+                "??1afx@@QAE@XZ");
+        }
+
+        [Test]
+        public void PMNP_name_with_namespace()
+        {
+            RunTest(
+                "__thiscall public: void ATL::CSimpleStringT::CSimpleStringT(CSimpleStringT *)",
+                "??0?$CSimpleStringT@_W$00@ATL@@QAE@ABV?$CSimpleStringT@_W$0A@@1@@Z");
+        }
+
+        [Test]
+        public void PMNP_regression1()
+        {
+            RunTest(
+                "__thiscall public: void AFX_MAINTAIN_STATE2::AFX_MAINTAIN_STATE2(AFX_MODULE_STATE *)",
+                "??0AFX_MAINTAIN_STATE2@@QAE@PAVAFX_MODULE_STATE@@@Z");
         }
     }
 }

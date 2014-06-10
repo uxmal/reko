@@ -236,6 +236,11 @@ namespace Decompiler.Typing
             return arr;
         }
 
+        public DataType VisitEnum(EnumType e)
+        {
+            return e;
+        }
+
         public DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq;

@@ -209,6 +209,11 @@ namespace Decompiler.Typing
 			return complexExp;
 		}
 
+        public Expression VisitEnum(EnumType e)
+        {
+            return complexExp;
+        }
+
 		public Expression VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			EquivalenceClass eqOriginal = dtOriginal as EquivalenceClass;

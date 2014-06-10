@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -29,7 +30,7 @@ namespace Decompiler.Environments.Win32
 {
     public class SignatureGuesser
     {
-        public static ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
+        public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryLoader loader, IProcessorArchitecture arch)
         {
             int argBytes;
             if (fnName[0] == '_')
@@ -57,18 +58,28 @@ namespace Decompiler.Environments.Win32
             else if (fnName[0] == '?')
             {
                 var pmnp = new MsMangledNameParser(fnName);
-                SerializedProcedure sproc = null;
+                SerializedStructField field = null;
                 try
                 {
-                    sproc = pmnp.Parse();
+                    field = pmnp.Parse();
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
                     pmnp.ToString();
                     return null;
                 }
-                var sser = new ProcedureSerializer(arch, "__cdecl");
-                return sser.Deserialize(sproc.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+                var sproc = field.Type as SerializedSignature;
+                if (sproc != null)
+                {
+                    Debug.Print("Deserializing: {0}", sproc);
+                    var sser = new ProcedureSerializer(arch, loader, "__cdecl");
+                    return sser.Deserialize(sproc, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
                 return null;

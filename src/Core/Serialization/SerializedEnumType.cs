@@ -21,6 +21,7 @@
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
@@ -29,12 +30,34 @@ namespace Decompiler.Core.Serialization
 {
     public class SerializedEnumType : SerializedTaggedType
     {
+        [XmlAttribute("size")]
+        [DefaultValue(0)]
+        public int Size;
+
+        [XmlAttribute("Domain")]
+        [DefaultValue(Domain.None)]
+        public Domain Domain;
+
+        [XmlAttribute("name")]
+        public string Name;
+
         [XmlElement("member")]
         public SerializedEnumValue[]  Values;
 
-        public override DataType BuildDataType(Types.TypeFactory factory)
+        public SerializedEnumType()
         {
-            throw new NotImplementedException();
+        }
+
+        public SerializedEnumType(int size, Types.Domain domain, string p)
+        {
+            this.Size = size;
+            this.Domain = domain;
+            this.Name = p;
+        }
+
+        public override DataType BuildDataType(TypeFactory factory)
+        {
+            return factory.CreateEnum(Size, Domain, Name, Values);
         }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)

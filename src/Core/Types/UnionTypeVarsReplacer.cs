@@ -41,6 +41,11 @@ namespace Decompiler.Core.Types
             return at;
         }
 
+        public DataType VisitEnum(EnumType e)
+        {
+            return e;
+        }
+
         public DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq;

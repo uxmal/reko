@@ -74,6 +74,11 @@ namespace Decompiler.Typing
             throw new NotImplementedException();
         }
 
+        public DataType VisitEnum(EnumType e)
+        {
+            return e;
+        }
+
         public DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq;

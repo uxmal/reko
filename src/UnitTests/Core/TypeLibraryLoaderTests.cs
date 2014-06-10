@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Core
             Given_ArchitectureStub();
             repository.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch);
+            var tlLdr = new TypeLibraryLoader(arch, true);
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
         }
 
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Core
             Given_ArchitectureStub();
             repository.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch);
+            var tlLdr = new TypeLibraryLoader(arch, true);
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Core
             Given_Arch_PointerDataType(PrimitiveType.Pointer32);
             repository.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch);
+            var tlLdr = new TypeLibraryLoader(arch, true);
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Core
             Given_ArchitectureStub();
             repository.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch);
+            var tlLdr = new TypeLibraryLoader(arch, true);
             var slib = new SerializedLibrary
             {
                 Procedures = {
@@ -150,7 +150,7 @@ namespace Decompiler.UnitTests.Core
             Given_ArchitectureStub();
             repository.ReplayAll();
 
-            var tlLdr = new TypeLibraryLoader(arch);
+            var tlLdr = new TypeLibraryLoader(arch, true);
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]

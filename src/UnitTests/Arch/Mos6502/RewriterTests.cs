@@ -144,7 +144,6 @@ namespace Decompiler.UnitTests.Arch.Mos6502
                 "0|00000200(3): 2 instructions",
                 "1|L--|y = Mem0[0x1234 + x:byte]",
                 "2|L--|NZ = cond(y)");
-
         }
 
         [Test]

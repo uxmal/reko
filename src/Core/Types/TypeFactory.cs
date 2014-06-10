@@ -117,5 +117,10 @@ namespace Decompiler.Core.Types
         {
             return VoidType.Instance;
         }
-	}
+
+        public EnumType CreateEnum(int Size, Domain Domain, string Name, Serialization.SerializedEnumValue[] Values)
+        {
+            throw new NotImplementedException();
+        }
+    }
  }

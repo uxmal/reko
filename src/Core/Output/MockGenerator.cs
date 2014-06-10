@@ -422,6 +422,11 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        public int VisitEnum(EnumType e)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
