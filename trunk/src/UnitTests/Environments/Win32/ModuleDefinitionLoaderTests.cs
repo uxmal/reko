@@ -41,6 +41,16 @@ namespace Decompiler.UnitTests.Environments.Win32
             dfl = new ModuleDefinitionLoader(new StringReader(str), new X86ArchitectureFlat32());
         }
 
+        [Test][Ignore("Use as a test driver")]
+        public void DFL_Acc()
+        {
+            dfl = new ModuleDefinitionLoader(
+                new StreamReader(@"c:\dev\jkl\decompiler\src\Environments\Win32\mfc71d.def"),
+                new X86ArchitectureFlat32());
+            var lib = dfl.Load();
+            lib.ToString();
+        }
+
         [Test]
         public void DFL_Create()
         {
@@ -52,7 +62,7 @@ namespace Decompiler.UnitTests.Environments.Win32
         {
             CreateDefFileLoader("; hello\r\n");
             TypeLibrary lib = dfl.Load();
-            Assert.AreEqual(0, lib.Types.Count);
+            Assert.AreEqual(2, lib.Types.Count);
             Assert.AreEqual(0, lib.Signatures.Count);
         }
 
@@ -67,6 +77,28 @@ namespace Decompiler.UnitTests.Environments.Win32
             Assert.AreEqual("_Foo@4", svc.Name);
             Assert.IsFalse(svc.Signature.ArgumentsValid, "We don't know the arguments");
             Assert.AreEqual(8, svc.Signature.StackDelta, "StackDelta includes the return address, which stdapi calls pop.");
+        }
+
+
+        [Test]
+        public void DFL_Read_StdapiExport_With_Extra_Spaces()
+        {
+            CreateDefFileLoader(
+                "EXPORTS" + nl +
+                " _Foo@4 @ 4" + nl);
+            var lib = dfl.Load();
+            var svc = lib.ServicesByName["_Foo@4"];
+            Assert.AreEqual("_Foo@4", svc.Name);
+            Assert.AreEqual(4, svc.SyscallInfo.Vector);
+        }
+
+        [Test]
+        public void DFL_LibraryStatement()
+        {
+            CreateDefFileLoader(
+                " LIBRARY foo" + nl);
+            var lib = dfl.Load();
+            Assert.AreEqual("foo", lib.LibraryName);
         }
     }
 }

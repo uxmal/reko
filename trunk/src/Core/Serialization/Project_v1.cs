@@ -112,7 +112,7 @@ namespace Decompiler.Core.Serialization
         public string TypesFilename;
     }
 
-    public abstract class SerializedProcedureBase_v1
+    public abstract class SerializedProcedureBase_v1 
     {
         /// <summary>
         /// The name of a procedure.

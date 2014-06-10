@@ -46,54 +46,72 @@ namespace Decompiler.Environments.Win32
 
         public TypeLibrary Load()
         {
-            TypeLibrary lib = new TypeLibrary();
+            var loader = new TypeLibraryLoader(arch, true);
             for (; ; )
             {
                 var tok = Get();
                 switch (tok.Type)
                 {
-                case TokenType.EOF: return lib;
-                case TokenType.EXPORTS: ParseExports(lib); break;
-                default: throw new NotImplementedException(string.Format("Unknown token {0}.", tok.Type));
+                case TokenType.EOF: return loader.BuildLibrary();
+                case TokenType.EXPORTS: ParseExports(loader); break;
+                case TokenType.LIBRARY: ParseLibrary(loader); break;
+                default: throw new NotImplementedException(
+                    string.Format("Unknown token {0} ({1}) on line {2}.",
+                    tok.Type,
+                    tok.Text,
+                    tok.LineNumber));
                 }
             }
         }
 
-        private void ParseExports(TypeLibrary lib)
+        private void ParseExports(TypeLibraryLoader lib)
         {
-            string entryName = Expect(TokenType.Id);
-            string internalName = null;
-            if (PeekAndDiscard(TokenType.Eq))
+            while (Peek().Type == TokenType.Id)
             {
-                internalName = Expect(TokenType.Id);
-            }
-            int ordinal = -1;
-            var tok = Peek();
-            if (tok.Type == TokenType.Number)
-            {
-                this.Get();
-                ordinal = Convert.ToInt32(tok.Text);
-                PeekAndDiscard(TokenType.NONAME);
-            }
-            PeekAndDiscard(TokenType.PRIVATE);
-            PeekAndDiscard(TokenType.DATA);
+                string entryName = Expect(TokenType.Id);
+                string internalName = null;
+                if (PeekAndDiscard(TokenType.Eq))
+                {
+                    internalName = Expect(TokenType.Id);
+                }
+                int ordinal = -1;
+                if (PeekAndDiscard(TokenType.At))
+                {
+                    ordinal = Convert.ToInt32(Expect(TokenType.Number));
+                    PeekAndDiscard(TokenType.NONAME);
+                }
+                PeekAndDiscard(TokenType.PRIVATE);
+                PeekAndDiscard(TokenType.DATA);
 
-            var svc = new SystemService
-            {
-                Name = entryName,
-                Signature = ParseSignature(entryName),
-            };
-            if (ordinal != -1)
-            {
-                svc.SyscallInfo = new SyscallInfo { Vector = ordinal };
-                lib.ServicesByVector[ordinal] = svc;
+                var svc = new SystemService
+                {
+                    Name = entryName,
+                    Signature = ParseSignature(entryName, lib),
+                };
+                if (ordinal != -1)
+                {
+                    svc.SyscallInfo = new SyscallInfo { Vector = ordinal };
+                    lib.LoadService(ordinal, svc);
+                }
+                lib.LoadService(entryName, svc);
             }
-            lib.ServicesByName[entryName] = svc;
         }
 
-        private ProcedureSignature ParseSignature(string entryName)
+        private void ParseLibrary(TypeLibraryLoader lib)
         {
-            return SignatureGuesser.SignatureFromName(entryName, arch);
+            if (Peek().Type == TokenType.Id)
+            {
+                lib.SetLibraryName(Get().Text);
+            }
+            if (PeekAndDiscard(TokenType.BASE))
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private ProcedureSignature ParseSignature(string entryName, TypeLibraryLoader loader)
+        {
+            return SignatureGuesser.SignatureFromName(entryName, loader, arch);
         }
 
         private bool PeekAndDiscard(TokenType type)
@@ -133,42 +151,48 @@ namespace Decompiler.Environments.Win32
         {
             EOF,
 
+            BASE,
+            DATA,
             EXPORTS,
             LIBRARY,
             NAME,
             NONAME,
+            PRIVATE,
             SECTIONS,
 
+            At,
             Colon,
             Eq,
             Id,
             Number,
-            PRIVATE,
-            DATA,
         }
 
         public class Token
         {
             public TokenType Type;
             public string Text;
+            public int LineNumber;
 
-            public Token(TokenType tokenType)
+            public Token(TokenType tokenType, int lineNumber)
             {
-                Debug.Print("Token: {0}", tokenType);
+                //Debug.Print("Token: {0}", tokenType);
                 this.Type = tokenType;
+                this.LineNumber = lineNumber;
             }
 
-            public Token(TokenType tokenType, string p)
+            public Token(TokenType tokenType, string p, int lineNumber)
             {
-                Debug.Print("Token: {0} {1}", tokenType, p);
+                //Debug.Print("Token: {0} {1}", tokenType, p);
                 this.Type = tokenType;
                 this.Text = p;
+                this.LineNumber = lineNumber;
             }
         }
 
         private class Lexer
         {
             private Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType> {
+                { "BASE", TokenType.BASE},
                 { "DATA", TokenType.DATA },
                 { "EXPORTS", TokenType.EXPORTS },
                 { "LIBRARY" ,TokenType.LIBRARY },
@@ -188,10 +212,11 @@ namespace Decompiler.Environments.Win32
             }
 
             private TextReader rdr;
-
+            private int lineNumber;
             public Lexer(TextReader reader)
             {
                 this.rdr = reader;
+                this.lineNumber = 1;
             }
 
             public Token GetToken()
@@ -207,31 +232,39 @@ namespace Decompiler.Environments.Win32
                     case State.Initial:
                         switch (c)
                         {
-                        case -1: return new Token(TokenType.EOF);
+                        case -1: return new Token(TokenType.EOF, lineNumber);
                         case '\"':
                             sb = new StringBuilder();
                             rdr.Read();
                             st = State.String;
                             break;
-                        case '@': rdr.Read(); sb = new StringBuilder(); st = State.Number; break;
-                        case '=': rdr.Read(); return new Token(TokenType.Eq);
-                        case ':': rdr.Read(); return new Token(TokenType.Colon);
+                        case '@': rdr.Read(); return new Token(TokenType.At, lineNumber);
+                        case '=': rdr.Read(); return new Token(TokenType.Eq, lineNumber);
+                        case ':': rdr.Read(); return new Token(TokenType.Colon, lineNumber);
                         case ';': rdr.Read(); st = State.Comment; break;
+                        case '\r': rdr.Read(); break;
+                        case '\n': ++lineNumber; rdr.Read(); break;
                         default:
                             rdr.Read();
                             if (Char.IsWhiteSpace(ch))
                                 break;
                             sb = new StringBuilder();
                             sb.Append(ch);
-                            st = State.Id;
+                            if (char.IsDigit(ch))
+                                st = State.Number;
+                            else 
+                                st = State.Id;
                             break;
                         }
                         break;
                     case State.Comment:
                         if (c == -1)
-                            return new Token(TokenType.EOF);
+                            return new Token(TokenType.EOF, lineNumber);
                         if (ch == '\r' || ch == '\n')
+                        {
+                            ++lineNumber;
                             st = State.Initial;
+                        }
                         rdr.Read();
                         break;
                     case State.String:
@@ -240,7 +273,7 @@ namespace Decompiler.Environments.Win32
                         case -1: throw new FormatException("Unterminated string.");
                         case '\r':
                         case '\n': throw new FormatException("Newline in string.");
-                        case '\"': rdr.Read(); return new Token(TokenType.Id, sb.ToString());
+                        case '\"': rdr.Read(); return new Token(TokenType.Id, sb.ToString(), lineNumber);
                         default:
                             rdr.Read();
                             sb.Append(ch);
@@ -270,14 +303,14 @@ namespace Decompiler.Environments.Win32
                 var id = sb.ToString();
                 TokenType t;
                 if (keywords.TryGetValue(id, out t))
-                    return new Token(t);
+                    return new Token(t, lineNumber);
                 else
-                    return new Token(TokenType.Id, id);
+                    return new Token(TokenType.Id, id, lineNumber);
             }
 
             private Token Tok(TokenType type, StringBuilder sb)
             {
-                return new Token(type, sb.ToString());
+                return new Token(type, sb.ToString(), lineNumber);
             }
         }
     }

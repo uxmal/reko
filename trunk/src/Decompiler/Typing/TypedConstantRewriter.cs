@@ -86,6 +86,11 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
+        public Expression VisitEnum(EnumType e)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			throw new NotImplementedException();

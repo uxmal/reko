@@ -66,8 +66,6 @@ namespace Decompiler.Core.Types
 		
 		private PrimitiveType(Domain dom, short byteSize, string name)
 		{
-			if (dom == 0)
-				throw new ArgumentException("Domain is empty.");
 			this.Domain = dom;
 			this.byteSize = byteSize;
 			this.Name = name;

@@ -80,7 +80,7 @@ namespace Decompiler.Environments.Win32
 
         public override ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
         {
-            return SignatureGuesser.SignatureFromName(fnName, arch);
+            return SignatureGuesser.SignatureFromName(fnName, new TypeLibraryLoader(arch, true), arch);
         }
 	}
 }

@@ -127,6 +127,11 @@ namespace Decompiler.Core.Output
             return writer;
 		}
 
+        public Formatter VisitEnum(EnumType e)
+        {
+            throw new NotImplementedException();
+        }
+
 		public Formatter VisitEquivalenceClass(EquivalenceClass eq)
 		{
             if (eq.DataType == null)

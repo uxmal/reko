@@ -35,14 +35,14 @@ namespace Decompiler.Core
             new Dictionary<string, DataType>(),
             new Dictionary<string, ProcedureSignature>())
         {
-            ServicesByName = new Dictionary<string, SystemService>();
-            ServicesByVector = new Dictionary<int, SystemService>();
         }
 
         public TypeLibrary(IDictionary<string,DataType> types, IDictionary<string, ProcedureSignature> procedures)
         {
             this.Types = types;
             this.Signatures = procedures;
+            this.ServicesByName = new Dictionary<string, SystemService>();
+            this.ServicesByVector = new Dictionary<int, SystemService>();
         }
 
         public string LibraryName { get; set; }
@@ -83,7 +83,7 @@ namespace Decompiler.Core
 
         public void Load(IProcessorArchitecture arch, SerializedLibrary slib)
         {
-            var tlldr = new TypeLibraryLoader(arch);
+            var tlldr = new TypeLibraryLoader(arch, true);
             var tlib = tlldr.Load(slib);
             Signatures = tlib.Signatures;
             Types = tlib.Types;

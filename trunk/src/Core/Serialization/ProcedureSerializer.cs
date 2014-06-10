@@ -37,7 +37,7 @@ namespace Decompiler.Core.Serialization
 		private int identifierNumber;
 
         public ProcedureSerializer(IProcessorArchitecture arch, string defaultConvention)
-            : this(arch, new TypeLibraryLoader(arch), defaultConvention)
+            : this(arch, new TypeLibraryLoader(arch, true), defaultConvention)
         { }
 
 

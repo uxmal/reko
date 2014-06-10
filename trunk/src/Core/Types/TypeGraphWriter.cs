@@ -49,6 +49,11 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
+        public Formatter VisitEnum(EnumType e)
+        {
+            throw new NotImplementedException();
+        }
+
         public Formatter VisitEquivalenceClass(EquivalenceClass eq)
         {
             writer.Write(eq.Name);

@@ -43,6 +43,7 @@ namespace Decompiler.Environments.Win32
         private int i;
         private List<string> namesSeen;
         private List<string> templateNamesSeen;
+        private List<Argument_v1> compoundArgs;
 
         public MsMangledNameParser(string str)
         {
@@ -55,27 +56,24 @@ namespace Decompiler.Environments.Win32
         public string ClassName;
         public string Scope;
 
-        public SerializedProcedure Parse()
+        public SerializedStructField Parse()
         {
             Expect('?');
             string basicName = ParseBasicName();
-            SerializedType typeCode;
+            SerializedStructField typeCode;
+            var compoundArgs =     new List<Argument_v1>();
             if (PeekAndDiscard('@'))
             {
-                typeCode = ParseUnqualifiedTypeCode();
+                typeCode = ParseUnqualifiedTypeCode(basicName);
             }
             else
             {
                 string[] qualification = ParseQualification();
                 basicName = string.Format(basicName, qualification.Last());
-                typeCode = ParseQualifiedTypeCode(qualification);
+                typeCode = ParseQualifiedTypeCode(basicName, qualification, compoundArgs);
             }
             string storageClass = ParseStorageClass();
-            return new SerializedProcedure
-            {
-                Name = basicName,
-                Signature = (SerializedSignature) typeCode,
-            };
+            return typeCode;
         }
 
         private void Error(string format, params object[] args)
@@ -141,13 +139,44 @@ namespace Decompiler.Environments.Win32
 
         public List<SerializedType> ParseTemplateArguments()
         {
+            var old = this.compoundArgs;
+            this.compoundArgs = new List<Argument_v1>();
             var types = new List<SerializedType>();
             while (!PeekAndDiscard('@'))
             {
-                var t = ParseDataTypeCode();
-                types.Add(t);
+                if (PeekAndDiscard('$'))
+                {
+                    ParseNonTypeTemplateArgument();
+                }
+                else
+                {
+                    var t = ParseDataTypeCode();
+                    types.Add(t);
+                }
             }
+            this.compoundArgs = old;
             return types;
+        }
+
+        private void ParseNonTypeTemplateArgument()
+        {
+            switch (str[i++])
+            {
+            case '0':
+                if ('0' <= str[i] && str[i] <= '9')
+                {
+                    ++i;
+                }
+                else
+                {
+                    while (str[i++] != '@')
+                        ;
+                }
+                break;  // Integer value.
+            case '2': throw new NotSupportedException();    // real value
+            case 'D': throw new NotSupportedException();    // Anonymous
+            default: Error("Unknown template argument {0}.", str[i - 1]); break;
+            }
         }
 
         /// <summary>
@@ -164,6 +193,7 @@ namespace Decompiler.Environments.Win32
                 if (name.StartsWith("?$"))
                 {
                     name = name.Substring(2);
+                    namesSeen.Add(name);
                     var oldNames = namesSeen;
                     if (templateNamesSeen == null)
                     {
@@ -190,46 +220,68 @@ namespace Decompiler.Environments.Win32
             return qualifiers.ToArray();
         }
 
-        public SerializedType ParseQualifiedTypeCode(string [] qualification)
+        public SerializedStructField  ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
         {
+            this.compoundArgs = new List<Argument_v1>();
             this.Scope = string.Join("::", qualification);
+            SerializedSignature sig = null;
             switch (str[i++])
             {
-            case 'A': return ParseInstanceMethod("private");
-            case 'B': return ParseInstanceMethod("private far");
-            case 'C': return ParseStaticMethod("private static");
-            case 'D': return ParseStaticMethod("private static far");
-            case 'E': return ParseInstanceMethod("private virtual");
-            case 'F': return ParseInstanceMethod("private virtual far");
+            case 'A': sig = ParseInstanceMethod("private"); break;
+            case 'B': sig = ParseInstanceMethod("private far"); break;
+            case 'C': sig = ParseStaticMethod("private static"); break;
+            case 'D': sig = ParseStaticMethod("private static far"); break;
+            case 'E': sig = ParseInstanceMethod("private virtual"); break;
+            case 'F': sig = ParseInstanceMethod("private virtual far"); break;
 
-            case 'I': return ParseInstanceMethod("protected");
-            case 'J': return ParseInstanceMethod("protected far");
-            case 'K': return ParseStaticMethod("protected static");
-            case 'L': return ParseStaticMethod("protected static far");
-            case 'M': return ParseInstanceMethod("protected virtual");
-            case 'N': return ParseInstanceMethod("protected virtual far");
+            case 'I': sig = ParseInstanceMethod("protected"); break;
+            case 'J': sig = ParseInstanceMethod("protected far"); break;
+            case 'K': sig = ParseStaticMethod("protected static"); break;
+            case 'L': sig = ParseStaticMethod("protected static far"); break;
+            case 'M': sig = ParseInstanceMethod("protected virtual"); break;
+            case 'N': sig = ParseInstanceMethod("protected virtual far"); break;
 
-            case 'Q': return ParseInstanceMethod("public");
-            case 'R': return ParseInstanceMethod("public far");
-            case 'S': return ParseStaticMethod("public static");
-            case 'T': return ParseStaticMethod("public static far");
-            case 'U': return ParseInstanceMethod("public virtual");
-            case 'V': return ParseInstanceMethod("public virtual far");
+            case 'Q': sig = ParseInstanceMethod("public"); break;
+            case 'R': sig = ParseInstanceMethod("public far"); break;
+            case 'S': sig = ParseStaticMethod("public static"); break;
+            case 'T': sig = ParseStaticMethod("public static far"); break;
+            case 'U': sig = ParseInstanceMethod("public virtual"); break;
+            case 'V': sig = ParseInstanceMethod("public virtual far"); break;
             default:
                 Expect('2');
-                return ParseDataTypeCode();
+                return new SerializedStructField
+                {
+                    Type = ParseDataTypeCode(),
+                    Name = basicName
+                };
             }
+            return new SerializedStructField
+            {
+                Type = sig,
+                Name = basicName,
+            };
         }
 
-
-        public SerializedType ParseUnqualifiedTypeCode()
+        public SerializedStructField ParseUnqualifiedTypeCode(string basicName)
         {
+            this.compoundArgs = new List<Argument_v1>();
             if (PeekAndDiscard('Y'))
             {
-                return ParseFunctionTypeCode();
+                return new SerializedStructField
+                {
+                    Name = basicName,
+                    Type = (SerializedSignature) ParseFunctionTypeCode(),
+                };
             }
-            Expect('3');
-            return ParseDataTypeCode();
+            else
+            {
+                Expect('3');
+                return new SerializedStructField
+                {
+                    Name = basicName,
+                    Type = ParseDataTypeCode()
+                };
+            }
         }
 
         public SerializedSignature ParseInstanceMethod(string modifier)
@@ -302,6 +354,41 @@ namespace Decompiler.Environments.Win32
             case '0': return "{0}";
             case '1': return "~{0}";
             case '2': return "operator new";
+            case '3': return "operator delete";
+            case '4': return "operator =";
+            case '5': return "operator >>";
+            case '6': return "operator <<";
+            case '8': return "operator ==";
+            case '9': return "operator !=";
+            case 'A': return "operator []";
+            case 'B': return "operator returntype";
+            case 'C': return "operator ->";
+            case 'D': return "operator *";
+            case 'E': return "operator ++";
+            case 'F': return "operator --";
+            case 'G': return "operator -";
+            case 'H': return "operator + ";
+            case 'I': return "operator &";
+            case 'J': return "operator ->*";
+            case 'K': return "operator /";
+            case 'L': return "operator %";
+            case 'M': return "operator <";
+            case 'N': return "operator <=";
+            case 'O': return "operator >";
+            case 'P': return "operator >=";
+            case 'X': return "operator *=";
+            case 'Y': return "operator +=";
+            case 'Z': return "operator -=";
+            case '_':
+                switch (str[i++])
+                {
+                case '0': return "operator /=";
+                case 'A': return "typeof";
+                case 'U': return "operator new[]";
+                case 'V': return "operator delete[]";
+                default: Error("Unknown operator code '_{0}'.", str[i - 1]);
+                    return null;
+                }
             default: Error("Unknown operator code '{0}'.", str[i - 1]);
                 return null;
             }
@@ -327,16 +414,19 @@ namespace Decompiler.Environments.Win32
         public Argument_v1[] ParseArgumentList()
         {
             var args = new List<Argument_v1>();
-            var arg = ParseDataTypeCode();
-            if (arg != null)
+            if (!PeekAndDiscard('X'))
             {
-                args.Add(new Argument_v1 { Type = arg });
-                while (!PeekAndDiscard('@'))
+                var arg = ParseDataTypeCode();
+                if (arg != null)
                 {
-                    arg = ParseDataTypeCode();
-                    if (arg == null)
-                        break;
                     args.Add(new Argument_v1 { Type = arg });
+                    while (!PeekAndDiscard('@'))
+                    {
+                        arg = ParseDataTypeCode();
+                        if (arg == null)
+                            break;
+                        args.Add(new Argument_v1 { Type = arg });
+                    }
                 }
             }
             return args.ToArray();
@@ -344,9 +434,23 @@ namespace Decompiler.Environments.Win32
 
         public SerializedType ParseDataTypeCode()
         {
+            if (PeekAndDiscard('?'))
+            {
+                Expect('A');
+            }
             switch (str[i++])
             {
-            case 'A': return ParsePointer();        //$TODO: really is a reference but is implemented as a pointer on Win32...
+            case '0': return compoundArgs[0].Type;
+            case '1': return compoundArgs[1].Type;
+            case '2': return compoundArgs[2].Type;
+            case '3': return compoundArgs[3].Type;
+            case '4': return compoundArgs[4].Type;
+            case '5': return compoundArgs[5].Type;
+            case '6': return compoundArgs[6].Type;
+            case '7': return compoundArgs[7].Type;
+            case '8': return compoundArgs[8].Type;
+            case '9': return compoundArgs[9].Type;
+            case 'A': return ParsePointer(compoundArgs);        //$TODO: really is a reference but is implemented as a pointer on Win32...
             case 'C': return new SerializedPrimitiveType(Domain.Character | Domain.SignedInt, 1);
             case 'D': return new SerializedPrimitiveType(Domain.Character, 1);
             case 'E': return new SerializedPrimitiveType(Domain.Character | Domain.UnsignedInt, 1);
@@ -359,37 +463,52 @@ namespace Decompiler.Environments.Win32
             case 'M': return new SerializedPrimitiveType(Domain.Real, 4);
             case 'N': return new SerializedPrimitiveType(Domain.Real, 8);
             case 'O': return new SerializedPrimitiveType(Domain.Real, 10);
-            case 'P': return ParsePointer();
-            //case 'P': pointer        (see below)
-            //case 'Q': array          (see below)
-            case 'U': return ParseStructure(); // struct (see below)
-            case 'V': return ParseStructure(); // class (see below)
-            case 'X': return null;      // void           (terminates argument list)
+            case 'P': return ParsePointer(compoundArgs);    // pointer
+            case 'Q': return ParsePointer(compoundArgs);    // const pointer
+            case 'R': return ParsePointer(compoundArgs);    // volatile pointer
+            case 'T': return ParseStructure(compoundArgs);  // union 
+            case 'U': return ParseStructure(compoundArgs); // struct (see below)
+            case 'V': return ParseStructure(compoundArgs); // class (see below)
+            case 'W': return ParseEnum();
+            case 'X': return new SerializedPrimitiveType(Domain.None, 0);      // void           (terminates argument list)
             case 'Z': return null;      // elipsis        (terminates argument list)
+            case '_':
+                switch (str[i++])
+                {
+                case 'J': return new SerializedPrimitiveType(Domain.SignedInt, 8);  // __int64
+                case 'K': return new SerializedPrimitiveType(Domain.UnsignedInt, 8);  // unsigned __int64
+                case 'N': return new SerializedPrimitiveType(Domain.Boolean, 1);  // bool
+
+                case 'W': return new SerializedPrimitiveType(Domain.Character, 2);  // wchar_t
+                default: Error("Unsupported type code '_{0}'.", str[i - 1]); return null;
+                }
             default: Error("Unsupported type code '{0}'.", str[i - 1]); return null;
             }
         }
 
-        public SerializedPointerType ParsePointer()
+        public SerializedPointerType ParsePointer(List<Argument_v1> compoundArgs)
         {
             int size = 0;       //$REVIEW how to deal with 64-bitness
+            SerializedType type;
             switch (str[i++])
             {
-            case 'A': size = 4; break;      //$BUG: assumes 32-bitness
-            case 'B': size = 4; break;      // const ptr
-            case 'C': size = 4; break;      // volatile ptr
-            case 'D': size = 4; break;      // const volatile ptr
-            default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); break;
+            case 'A': size = 4; type = ParseDataTypeCode(); break;      //$BUG: assumes 32-bitness
+            case 'B': size = 4; type = ParseDataTypeCode();break;      // const ptr
+            case 'C': size = 4; type = ParseDataTypeCode();break;      // volatile ptr
+            case 'D': size = 4; type = ParseDataTypeCode();break;      // const volatile ptr
+            case '6': size = 4; type = ParseFunctionTypeCode(); ParseStorageClass(); break;
+            default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }
-            var type = ParseDataTypeCode();
-            return new SerializedPointerType
+            var pType = new SerializedPointerType
             {
                 DataType = type,
                 PointerSize = size,
             };
+            compoundArgs.Add(new Argument_v1 { Type = pType });
+            return pType;
         }
 
-        public SerializedTypeReference ParseStructure()
+        public SerializedTypeReference ParseStructure(List<Argument_v1> compoundArgs)
         {
             var q = ParseQualification();
             var tr = new SerializedTypeReference
@@ -397,15 +516,38 @@ namespace Decompiler.Environments.Win32
                 TypeName = q.Last(),
                 Scope = q.Take(q.Length - 1).ToArray()
             };
+            compoundArgs.Add(new Argument_v1 { Type = tr });
             return tr;
         }
+
+        public SerializedType ParseEnum()
+        {
+            int size;
+            Domain domain;
+            switch (str[i++])
+            {
+            case '0': size = 1; domain = Domain.Character; break;
+            case '1': size = 1; domain = Domain.Character|Domain.UnsignedInt; break;
+            case '2': size = 2; domain = Domain.SignedInt; break;
+            case '3': size = 2; domain = Domain.UnsignedInt; break;
+            case '4': size = 4; domain = Domain.SignedInt; break;
+            case '5': size = 4; domain = Domain.UnsignedInt; break;
+            case '6': size = 4; domain = Domain.SignedInt; break;
+            case '7': size = 4; domain = Domain.UnsignedInt; break;
+            default: Error("Unknown enum code {0}.", str[i - 1]); return null;
+            }
+            var n = ParseQualification();
+            return new SerializedEnumType(size, domain, n.Last());
+        }
+
+
 
         internal string ParseAtName()
         {
             int iStart = i;
             while (i < str.Length && str[i] != '@')
             {
-                if (Char.IsDigit(str[i]))
+                if (i == iStart && Char.IsDigit(str[i]))
                 {
                     return namesSeen[str[i++] - '0'];
                 }

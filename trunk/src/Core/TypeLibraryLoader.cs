@@ -41,33 +41,47 @@ namespace Decompiler.Core
         private Dictionary<string, ProcedureSignature> procedures;
         private bool caseInsensitive;
         private string defaultConvention;
+        private Dictionary<string, SystemService> servicesByName;
+        private Dictionary<int, SystemService> servicesByOrdinal;
+        private string libraryName;
 
-        public TypeLibraryLoader(IProcessorArchitecture arch)
+        public TypeLibraryLoader(IProcessorArchitecture arch, bool caseInsensitive)
         {
             this.arch = arch;
-        }
-
-        public TypeLibrary Load(SerializedLibrary serializedLibrary)
-        {
-            caseInsensitive = serializedLibrary.Case == "insensitive";
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
             this.types = new Dictionary<string, DataType>(cmp)
             {
-                { "va_list", PrimitiveType.Pointer32 } ,        //$BUGBUG: hardwired
-                { "size_t", PrimitiveType.UInt32 },             //$BUGBUG: hardwired
+                { "va_list", arch.FramePointerType } ,  
+                { "size_t", arch.WordWidth },          
             };
             this.procedures = new Dictionary<string, ProcedureSignature>(cmp);
             this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
-            ReadDefaults(serializedLibrary.Defaults);
+            this.servicesByName = new Dictionary<string, SystemService>(cmp);
+            this.servicesByOrdinal = new Dictionary<int, SystemService>();
+        }
 
-            if (serializedLibrary.Types != null)
+        public TypeLibrary Load(SerializedLibrary serializedLibrary)
+        {
+            ReadDefaults(serializedLibrary.Defaults);
+            LoadTypes(serializedLibrary);
+            LoadProcedures(serializedLibrary);
+            return BuildLibrary();
+        }
+
+        public TypeLibrary BuildLibrary()
+        {
+            var lib = new TypeLibrary(types, procedures);
+            lib.LibraryName = libraryName;
+            foreach (var de in servicesByName)
             {
-                foreach (var sType in serializedLibrary.Types)
-                {
-                    sType.Accept(this);
-                }
+                lib.ServicesByName.Add(de.Key, de.Value);
             }
+            return lib;
+        }
+
+        private void LoadProcedures(SerializedLibrary serializedLibrary)
+        {
             if (serializedLibrary.Procedures != null)
             {
                 foreach (object o in serializedLibrary.Procedures)
@@ -75,21 +89,41 @@ namespace Decompiler.Core
                     SerializedProcedure sp = o as SerializedProcedure;
                     if (sp != null)
                     {
-                        try
-                        {
-                            ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
-                            procedures[sp.Name] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new ApplicationException(
-                                string.Format("An error occurred when loading the signature of procedure {0}.", sp.Name),
-                                ex);
-                        }
+                        LoadProcedure(sp);
                     }
                 }
             }
-            return new TypeLibrary(types, procedures);
+        }
+
+        public void LoadProcedure(SerializedProcedure sp)
+        {
+            try
+            {
+                ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
+                procedures[sp.Name] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(
+                    string.Format("An error occurred when loading the signature of procedure {0}.", sp.Name),
+                    ex);
+            }
+        }
+
+        private void LoadTypes(SerializedLibrary serializedLibrary)
+        {
+            if (serializedLibrary.Types != null)
+            {
+                foreach (var sType in serializedLibrary.Types)
+                {
+                    LoadType(sType);
+                }
+            }
+        }
+
+        public void LoadType(SerializedType sType)
+        {
+            sType.Accept(this);
         }
         
         public void ReadDefaults(SerializedLibraryDefaults defaults)
@@ -101,6 +135,7 @@ namespace Decompiler.Core
                 defaultConvention = defaults.Signature.Convention;
             }
         }
+
         public DataType VisitPrimitive(SerializedPrimitiveType primitive)
         {
             return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
@@ -108,7 +143,11 @@ namespace Decompiler.Core
 
         public DataType VisitPointer(SerializedPointerType pointer)
         {
-            var dt = pointer.DataType.Accept(this);
+            DataType dt;
+            if (pointer.DataType == null)
+                dt = new UnknownType();
+            else 
+                dt = pointer.DataType.Accept(this);
             return new Pointer(dt, arch.PointerType.Size);
         }
 
@@ -153,7 +192,10 @@ namespace Decompiler.Core
 
         public DataType VisitTypeReference(SerializedTypeReference typeReference)
         {
-            return new TypeReference(typeReference.TypeName, types[typeReference.TypeName]);
+            DataType type;
+            if (types.TryGetValue(typeReference.TypeName, out type))
+                return new TypeReference(typeReference.TypeName, type);
+            return new TypeReference(typeReference.TypeName, new UnknownType());
         }
 
         public DataType VisitUnion(SerializedUnionType union)
@@ -187,6 +229,21 @@ namespace Decompiler.Core
         public DataType VisitVoidType(SerializedVoidType voidType)
         {
             return VoidType.Instance;
+        }
+
+        public void LoadService(string entryName, SystemService svc)
+        {
+            this.servicesByName[entryName] = svc;
+        }
+
+        public void SetLibraryName(string libName)
+        {
+            this.libraryName = libName;
+        }
+
+        public void LoadService(int ordinal, SystemService svc)
+        {
+            this.servicesByOrdinal[ordinal] = svc;
         }
     }
 }

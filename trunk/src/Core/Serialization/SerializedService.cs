@@ -58,7 +58,7 @@ namespace Decompiler.Core.Serialization
 			{
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
-            TypeLibraryLoader loader = new TypeLibraryLoader(arch);
+            TypeLibraryLoader loader = new TypeLibraryLoader(arch, true);
 			ProcedureSerializer sser = new ProcedureSerializer(arch, loader, "stdapi");
             svc.Signature = sser.Deserialize(Signature, arch.CreateFrame());
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;

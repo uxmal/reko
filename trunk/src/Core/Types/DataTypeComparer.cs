@@ -30,19 +30,20 @@ namespace Decompiler.Core.Types
 	/// </summary>
 	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor<int>
 	{
-		private const int Prim  =  0;
-		private const int Ptr =    1;
-		private const int MemPtr = 2;
-		private const int Fn =     3;
-		private const int Array =  4;
-        private const int String = 5;
-		private const int Struct = 6;
-		private const int Union =  7;
-        private const int TRef =   8;
-        private const int TVar =   9;
-		private const int EqClass= 10;
-		private const int Unk =    11;
-        private const int Void =   12;
+        private const int Prim   = 0;
+        private const int Enum   = 1;
+		private const int Ptr =    2;
+		private const int MemPtr = 3;
+		private const int Fn =     4;
+		private const int Array =  5;
+        private const int String = 6;
+		private const int Struct = 7;
+		private const int Union =  8;
+        private const int TRef =   9;
+        private const int TVar =   10;
+		private const int EqClass= 11;
+		private const int Unk =    12;
+        private const int Void =   13;
 
 		public DataTypeComparer()
 		{
@@ -85,7 +86,10 @@ namespace Decompiler.Core.Types
 				return -1;
 			if (iy != null)
 				return 1;
-			
+
+            if (x is EnumType || y is EnumType)
+                throw new NotImplementedException();
+
 			TypeVariable tx = x as TypeVariable;
 			TypeVariable ty = y as TypeVariable;
 			if (tx != null && ty != null)
@@ -233,6 +237,11 @@ namespace Decompiler.Core.Types
 		{
 			return Array;
 		}
+
+        public int VisitEnum(EnumType e)
+        {
+            return Enum;
+        }
 
 		public int VisitEquivalenceClass(EquivalenceClass eq)
 		{
