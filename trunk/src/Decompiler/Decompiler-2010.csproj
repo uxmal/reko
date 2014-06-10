@@ -240,6 +240,7 @@
     <Compile Include="Gui\Design\InputFileDesigner.cs" />
     <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
+    <Compile Include="Gui\Forms\IPatternSearchDialog.cs" />
     <Compile Include="Gui\Forms\OpenAsInteractor.cs" />
     <Compile Include="Gui\HtmlCodeFormatter.cs" />
     <Compile Include="Gui\HtmlFormatter.cs" />

@@ -33,6 +33,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -385,6 +386,25 @@ namespace Decompiler.Gui.Forms
             set { projectFileName = value; }
         }
 
+        public void EditFind()
+        {
+            using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
+                    var program = this.decompilerSvc.Decompiler.Program;
+                    var hits = re.GetMatches(program.Image.Bytes, 0);
+                    var srSvc = GetService<ISearchResultService>();
+                    var baseLin = program.Image.BaseAddress.Linear;
+                    srSvc.ShowSearchResults(new AddressSearchResult(
+                        this.sc,
+                        program,
+                        hits.Select(h => (uint) (baseLin + h))));
+                }
+            }
+        }
+
         public void FindProcedures(ISearchResultService svc)
         {
             svc.ShowSearchResults(new ProcedureSearchResult(this.sc, this.decompilerSvc.Decompiler.Program.Procedures));
@@ -502,6 +522,7 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.FileOpen:
                 case CmdIds.FileExit:
                 case CmdIds.HelpAbout:
+                case CmdIds.EditFind:
                     cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.FileMru:
@@ -562,6 +583,8 @@ namespace Decompiler.Gui.Forms
 
                 case CmdIds.ActionNextPhase: NextPhase(); return true;
                 case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
+
+                case CmdIds.EditFind: EditFind(); return true;
 
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); return true;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); return true;
