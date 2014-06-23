@@ -32,7 +32,7 @@ Eq_12: (segment "Eq_12" (0 (arr Eq_26) a0000))
 Eq_26: (struct "Eq_26" 26 (0 word16 w0000))
 	T_26
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 
@@ -48,7 +48,7 @@ T_4: (in 0x9A2E : word16)
   Class: Eq_4
   DataType: (memptr (ptr Eq_3) word16)
   OrigDataType: (memptr T_3 (struct (0 T_5 t0000)))
-T_5: (in Mem11[ds:0x9A2E:word16] : word16)
+T_5: (in Mem13[ds:0x9A2E:word16] : word16)
   Class: Eq_2
   DataType: word16
   OrigDataType: word16
@@ -60,14 +60,14 @@ T_7: (in 0x9A26 : word16)
   Class: Eq_7
   DataType: (memptr (ptr Eq_3) word16)
   OrigDataType: (memptr T_3 (struct (0 T_8 t0000)))
-T_8: (in Mem13[ds:0x9A26:word16] : word16)
+T_8: (in Mem15[ds:0x9A26:word16] : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
 T_9: (in si_16 : (memptr (ptr Eq_12) Eq_9))
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 26 (0 T_15 t0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
 T_10: (in 0x0000 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
@@ -79,7 +79,7 @@ T_11: (in 0xFFFF : word16)
 T_12: (in 0x5CE1 : selector)
   Class: Eq_12
   DataType: (ptr Eq_12)
-  OrigDataType: (ptr (segment (0 (arr (struct "Eq_26" 26 (0 word16 w0000))) a0000)))
+  OrigDataType: (ptr (segment (0 (arr (struct "Eq_26" 0026)) a0000)))
 T_13: (in 0x0000 : word16)
   Class: Eq_13
   DataType: word16

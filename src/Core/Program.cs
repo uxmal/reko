@@ -110,7 +110,7 @@ namespace Decompiler.Core
         {
             if (Architecture == null)
                 throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
-            globalFields = TypeFactory.CreateStructureType("Globals", 0);
+            globalFields = TypeFactory.CreateStructureType(null, 0);
             var ptrGlobals = TypeFactory.CreatePointer(globalFields, Architecture.PointerType.Size);
             globals = new Identifier("globals", 0,  ptrGlobals, new MemoryStorage());
         }

@@ -13,7 +13,7 @@ Eq_5: (struct "foo" 0008)
 	T_5 (in Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] : (ptr (struct "foo" 0008)))
 	T_6 (in 0x00000003 : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

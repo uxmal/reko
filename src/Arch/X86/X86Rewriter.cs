@@ -172,6 +172,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.imul: RewriteMultiply(Operator.SMul, Domain.SignedInt); break;
                 case Opcode.inc: RewriteIncDec(1); break;
+                case Opcode.insb: RewriteStringInstruction(); break;
                 case Opcode.ins: RewriteStringInstruction(); break;
                 case Opcode.@int: RewriteInt(); break;
                 case Opcode.iret: RewriteIret(); break;

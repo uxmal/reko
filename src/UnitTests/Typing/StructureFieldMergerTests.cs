@@ -37,7 +37,6 @@ namespace Decompiler.UnitTests.Typing
         {
             factory = new TypeFactory();
             sfm = new StructureFieldMerger();
-
         }
         
         [Test]
@@ -106,7 +105,6 @@ namespace Decompiler.UnitTests.Typing
             DataType dt = sfm.BuildOverlappedStructure(fields);
             Assert.AreEqual("(union (ptr32 u0) ((struct (0 word16 w0000) (2 selector pseg0002)) u1))", dt.ToString());
         }
-
 
         [Test]
         public void StrFldMerger_Merge()

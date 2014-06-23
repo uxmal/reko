@@ -168,8 +168,8 @@ namespace Decompiler.Analysis
                         block.Statements[cond.StatementIndex].Instruction =
                             new Assignment(
                                 cond.FlagGroup, new ConditionOf(dst));
+                        i = cond.StatementIndex;
                     }
-                    i = cond.StatementIndex;
                 }
             }
         }

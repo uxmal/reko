@@ -27,6 +27,7 @@ using System;
 namespace Decompiler.Typing
 {
 	/// <summary>
+    /// Determines whether something is a pointer
 	/// Some useful inferences can be made when looking at expressions like
 	/// reg + Const
 	/// if [[reg]] = ptr(struct(...))
@@ -112,7 +113,7 @@ namespace Decompiler.Typing
 				if (offset == 0)
 					return;
 
-				StructureType str = ptr.Pointee as StructureType;
+				var str = ptr.Pointee as StructureType;
 				if (str != null)
 				{
 					TypeVariable tvField = GetTypeVariableForField(ptr.Pointee);

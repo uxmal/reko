@@ -70,12 +70,15 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
 		protected void RunTest(string sourceFile, string outputFile, Address addrBase)
 		{
-			Program prog = new Program();
+			Program prog;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 var lr = asm.Assemble(addrBase, rdr);
-                prog.Image = lr.Image;
-                prog.ImageMap = lr.ImageMap;
+                prog = new Program(
+                    lr.Image,
+                    lr.ImageMap,
+                    lr.Architecture,
+                    lr.Platform);
             }
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
             {
@@ -106,11 +109,9 @@ namespace Decompiler.UnitTests.Assemblers.x86
 	[TestFixture]
 	public class AssemblerBasic : AssemblerBase
 	{
-
 		[Test]
 		public void AsFragment()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 @"		.i86
@@ -122,12 +123,9 @@ hello	endp
             LoadedImage img = lr.Image;
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
-				prog.Image = img;
-                prog.ImageMap = lr.ImageMap;
-				IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-				prog.Architecture = arch;
-				Dumper d = new Dumper(arch);
-				d.DumpData(prog.Image, img.BaseAddress, img.Bytes.Length, fut.TextWriter);
+				var arch = new IntelArchitecture(ProcessorMode.Real);
+				var d = new Dumper(arch);
+				d.DumpData(img, img.BaseAddress, img.Bytes.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -135,7 +133,6 @@ hello	endp
 		[Test]
 		public void AssembleLoopFragment()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 
@@ -158,7 +155,6 @@ hello	endp
 		[Test]
 		public void Extensions()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"		.i86
@@ -182,7 +178,6 @@ hello   endp
 		[Test]
 		public void Rotations()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"	.i86
@@ -200,7 +195,6 @@ foo		endp
 		[Test]
 		public void Shifts()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0x0C00, 0),
 				@"	.i86
@@ -218,7 +212,6 @@ foo		endp
 		[Test]
 		public void StringInstruction()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"	.i86
@@ -237,7 +230,6 @@ foo		endp
 		[Test]
 		public void AsCarryInstructions()
 		{
-			Program prog = new Program();
             LoaderResults lr;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/carryinsts.asm")))
             {
@@ -370,7 +362,6 @@ foo		endp
 
 		private void RunTest(string sourceFile, string outputFile)
 		{
-			Program prog = new Program();
             LoaderResults lr;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {

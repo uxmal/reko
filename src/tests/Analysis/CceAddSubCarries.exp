@@ -133,17 +133,17 @@ Mem54: orig: Mem0
     def:  Mem54[ds:0x0222:word16] = ax_52
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:
 	def Mem0
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_18 = Mem0[ds:0x0200:word16]
-	dx_19 = Mem0[ds:0x0202:word16]
+	ax_16 = Mem0[ds:0x0200:word16]
+	dx_17 = Mem0[ds:0x0202:word16]
+	cx_18 = Mem0[ds:0x0204:word16]
+	bx_19 = Mem0[ds:0x0206:word16]
+	bx_cx_20 = SEQ(bx_19, cx_18) (alias)
 	dx_ax_18 = SEQ(dx_19, ax_18) (alias)
-	cx_20 = Mem0[ds:0x0204:word16]
-	bx_21 = Mem0[ds:0x0206:word16]
-	bx_cx_21 = SEQ(bx_20, cx_19) (alias)
 	dx_ax_22 = dx_ax_18 + bx_cx_21
 	ax_23 = (word16) dx_ax_22 (alias)
 	dx_24 = SLICE(dx_ax_22, word16, 16) (alias)

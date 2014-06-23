@@ -250,7 +250,6 @@ namespace Decompiler.Tools.C2Xml
             return (nt) => conv.Declarator.Accept(this)(nt);
         }
 
-
         public SerializedType VisitSimpleType(SimpleTypeSpec simpleType)
         {
             switch (simpleType.Type)

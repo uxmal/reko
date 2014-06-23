@@ -44,6 +44,11 @@ namespace Decompiler.Typing
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
 
+        public TypeTransformer(TypeFactory factory, TypeStore store)
+            : this(factory, store, new NullDecompilerEventListener())
+        {
+        }
+
 		public TypeTransformer(TypeFactory factory, TypeStore store, DecompilerEventListener eventListener)
 		{
 			this.factory = factory;

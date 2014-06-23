@@ -33,7 +33,6 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		[Test]
 		public void StringTest()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"	.i86
@@ -54,7 +53,6 @@ data	db	'Hello',0
 		[Test]
 		public void SwitchStatement()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@"	.i86
@@ -119,7 +117,6 @@ foo		endp
 		[Test]
 		public void AssignPseudo()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
                 new Address(0xC00, 0), 
 				@".i86

@@ -83,7 +83,8 @@ namespace Decompiler.Typing
             DataType dtCurrent = store.GetDataTypeOf(exp);
             if (dtCurrent != null)
             {
-                dtNew = unifier.Unify(dtCurrent, dtNew);
+                var u = unifier.Unify(dtCurrent, dtNew);
+                dtNew = u;
             }
             store.SetDataTypeOf(exp, dtNew);
             return dtNew;
@@ -169,7 +170,7 @@ namespace Decompiler.Typing
 				throw new ArgumentOutOfRangeException("size must be positive");
 			var s = factory.CreateStructureType(null, size);
 			var ptr = tBase != null
-				? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, arch.FramePointerType.Size)
+                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, arch.FramePointerType.Size)
 				: (DataType)factory.CreatePointer(s, arch.PointerType.Size);
 			return MergeIntoDataType(tStruct, ptr);
 		}
