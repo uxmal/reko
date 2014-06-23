@@ -285,10 +285,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbGlobalArray()
 		{
-			ProcedureBuilder m = new ProcedureBuilder();
-			Identifier i = m.Local32("i");
-			Expression ea = m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000));
-			Expression e = m.Load(PrimitiveType.Int32, ea);
+			var m = new ProcedureBuilder();
+			var i = m.Local32("i");
+			Expression e = m.LoadDw(m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000)));
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -344,6 +343,7 @@ namespace Decompiler.UnitTests.Typing
             m.Add(new SegmentedPointerProc());
             RunTest(m.BuildProgram(), "Typing/DtbSegmentedPointer.txt");
         }
+
 		[Test]
 		public void DtbSegmentedDirectAddress()
 		{

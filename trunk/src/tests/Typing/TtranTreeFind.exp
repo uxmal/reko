@@ -31,7 +31,7 @@ Eq_2: (struct (0 int32 dw0000) (4 (ptr Eq_2) ptr0004) (8 (ptr Eq_2) ptr0008))
 	T_14 (in Mem0[t + 0x00000004:word32] : word32)
 	T_17 (in Mem0[t + 0x00000008:word32] : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

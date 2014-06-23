@@ -193,13 +193,8 @@ namespace Decompiler.Core.Types
 			{
 				if (pa == pb)
 					return pa;
-					
-				Domain d = pa.Domain & pb.Domain;
-				if (d != 0 && pa.Size == pb.Size)
-				{
-					return PrimitiveType.Create(d, pa.Size);
-				}
-				return MakeUnion(a, b);
+
+                return UnifyPrimitives(pa, pb);
 			}
 
 			TypeVariable tA = a as TypeVariable;
@@ -302,6 +297,18 @@ namespace Decompiler.Core.Types
 			return MakeUnion(a, b);
 		}
 
+        private DataType UnifyPrimitives(PrimitiveType pa, PrimitiveType pb)
+        {
+            Domain d = pa.Domain & pb.Domain;
+            if (d != 0 && pa.Size == pb.Size)
+            {
+                return PrimitiveType.Create(d, pa.Size);
+            }
+            if (pa.Domain == Domain.SegPointer && pb.Size == 2)
+                return pa;
+            return MakeUnion(pa, pb);
+        }
+
         private void MergeIntoStructure(DataType a, StructureType str)
         {
             StructureField f = str.Fields.AtOffset(0);
@@ -386,7 +393,6 @@ namespace Decompiler.Core.Types
 			{
 				newSize = b.Size;
 			}
-
 
 			string name = null;
 			if (a.Name != null)

@@ -41,7 +41,9 @@ namespace Decompiler.Typing
             foreach (List<StructureField> cluster in GetOverlappingClusters(str.Fields))
             {
                 if (cluster.Count == 1)
+                {
                     strNew.Fields.Add(cluster[0]);
+                }
                 else
                 {
                     int offset = CommonOffset(cluster);

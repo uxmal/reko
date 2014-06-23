@@ -11,7 +11,7 @@ RepeatedLoadsMock_exit:
 Eq_2: (struct (4 word32 dw0004))
 	T_2 (in pfoo : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

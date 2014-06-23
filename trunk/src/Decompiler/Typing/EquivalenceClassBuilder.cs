@@ -48,6 +48,8 @@ namespace Decompiler.Typing
 
 		public void Build(Program prog)
 		{
+            // Special case for the global variables. In essence,
+            // a memory map of all the globals.
 			EnsureTypeVariable(prog.Globals, "Globals");
 
             foreach (Procedure proc in prog.Procedures.Values)

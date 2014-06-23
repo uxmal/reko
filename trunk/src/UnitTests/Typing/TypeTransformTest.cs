@@ -82,7 +82,6 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-        [Ignore("Constant segment selectors should be part of globals?")]
 		public void TtranReg00008()
 		{
 			RunTest("Fragments/regressions/r00008.asm", "Typing/TtranReg00008.txt");
@@ -268,28 +267,28 @@ namespace Decompiler.UnitTests.Typing
             RunTest(m.BuildProgram(), "Typing/TtranSegmentedPointer.txt");
         }
 
-		protected override void RunTest(Program prog, string outputFileName)
+		protected override void RunTest(Program program, string outputFileName)
 		{
-			ExpressionNormalizer aen = new ExpressionNormalizer(prog.Architecture.PointerType);
-			aen.Transform(prog);
+			ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);
+			aen.Transform(program);
 			EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store);
-			eq.Build(prog);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
-			TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
-			coll.CollectProgramTraits(prog);
+			eq.Build(program);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Architecture);
+			TraitCollector coll = new TraitCollector(factory, store, dtb, program);
+			coll.CollectProgramTraits(program);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			DerivedPointerAnalysis cpf = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
-			cpf.FollowConstantPointers(prog);
+			DerivedPointerAnalysis cpf = new DerivedPointerAnalysis(factory, store, dtb, program.Architecture);
+			cpf.FollowConstantPointers(program);
 
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-			TypeTransformer trans = new TypeTransformer(factory, store, null);
+			TypeTransformer trans = new TypeTransformer(factory, store);
 			trans.Transform();
 			using (FileUnitTester fut = new FileUnitTester(outputFileName))
 			{
-				foreach (Procedure proc in prog.Procedures.Values)
+				foreach (Procedure proc in program.Procedures.Values)
 				{
 					proc.Write(false, fut.TextWriter);
 					fut.TextWriter.WriteLine();

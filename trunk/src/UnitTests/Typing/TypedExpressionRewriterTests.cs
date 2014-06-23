@@ -44,25 +44,26 @@ namespace Decompiler.UnitTests.Typing
 		private TypeTransformer trans;
 		private ComplexTypeNamer ctn;
 
-        protected override void RunTest(Program prog, string outputFile)
+        protected override void RunTest(Program program, string outputFile)
         {
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                SetupPreStages(prog.Architecture);
-                aen.Transform(prog);
-                eqb.Build(prog);
-                coll = new TraitCollector(factory, store, dtb, prog);
-                coll.CollectProgramTraits(prog);
+                SetupPreStages(program.Architecture);
+                aen.Transform(program);
+                eqb.Build(program);
+                coll = new TraitCollector(factory, store, dtb, program);
+                coll.CollectProgramTraits(program);
                 dtb.BuildEquivalenceClassDataTypes();
-                cpf.FollowConstantPointers(prog);
+
+                cpf.FollowConstantPointers(program);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(store);
 
-                ter = new TypedExpressionRewriter(store, prog.Globals);
+                ter = new TypedExpressionRewriter(store, program.Globals);
                 try
                 {
-                    ter.RewriteProgram(prog);
+                    ter.RewriteProgram(program);
                 }
                 catch (Exception ex)
                 {
@@ -71,7 +72,7 @@ namespace Decompiler.UnitTests.Typing
                 }
                 finally
                 {
-                    DumpProgAndStore(prog, fut);
+                    DumpProgAndStore(program, fut);
                 }
             }
         }
@@ -130,7 +131,8 @@ namespace Decompiler.UnitTests.Typing
 			Assert.AreEqual("v0->dw0004", cmp.ToString());
 		}
 
-		[Test] public void TerPtrPtrInt()
+		[Test] 
+        public void TerPtrPtrInt()
 		{
 			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new PtrPtrIntMock());

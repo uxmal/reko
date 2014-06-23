@@ -33,7 +33,6 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		[Test]
 		public void DataOverrides()
 		{
-			Program prog = new Program();
 			var lr = asm.AssembleFragment(
 				new Address(0xC00, 0),
 				@".86

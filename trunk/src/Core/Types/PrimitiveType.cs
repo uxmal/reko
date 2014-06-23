@@ -42,12 +42,12 @@ namespace Decompiler.Core.Types
 		Character = 4,
 		SignedInt = 8,
 		UnsignedInt = 16,
-        Bcd = 32,
+        Bcd = 32,               // Binary coded decimal; a decimal digit stored in each nybble of a byte.
         Real = 64,
 		Pointer = 128,
 		Selector = 256,
-        SegPointer = 512,   // Segmented pointer (x86-style)
-        PtrCode = 1024,      // Pointer to executable code.
+        SegPointer = 512,       // Segmented pointer (x86-style)
+        PtrCode = 1024,         // Pointer to executable code.
 
         Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Selector|SegPointer
 	}

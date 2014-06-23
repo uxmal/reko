@@ -124,7 +124,7 @@ namespace Decompiler.Typing
 
 								b.Right = new BinaryExpression(
 									Operator.IAdd, 
-									b.Left.DataType,
+									PrimitiveType.Create(Domain.Pointer, b.Left.DataType.Size),
 									b.Left,
 									bInner.Right);
 								b.Left = bbInner;

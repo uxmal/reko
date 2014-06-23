@@ -188,25 +188,31 @@ si_26: orig: si
     def:  si_26 = wLoc04_9
 // fn0C00_000F
 word16 fn0C00_000F(word16 dx)
-fn0C00_000F_entry:		// pred:
+fn0C00_000F_entry:
 	def Mem0
 	def fp
+	def sp
 	def si
-	def wLoc04
-	def SCZO
-	def dx
-	def SO
+	def ss
 	def SZO
+	def C
+	def dx
+	def SCZO
+	def SO
 	def ax
+	def wLoc02
 	// succ:  l0C00_000F
-l0C00_000F:		// pred: fn0C00_000F_entry
-	wLoc04_9 = si
-	si_10 = 0x0000
-	SCZO_11 = cond(si_10)
-	SO_12 = SCZO_11 (alias)
-	SZO_13 = SCZO_11 (alias)
+l0C00_000F:
+	sp_12 = fp - 0x0002
+	wLoc02_13 = si
+	si_14 = 0x0000
+	SZO_15 = cond(0x0000)
+	SO_16 = SZO_15 (alias)
+	C_17 = false
+	SCZO_18 = C_17 (alias)
+	goto l0C00_0018
 	// succ:  l0C00_0018
-l0C00_0018:		// pred: l0C00_000F l0C00_0015
+l0C00_0018:
 	dx_14 = PHI(dx, dx_21)
 	si_15 = PHI(si_10, si_19)
 	SCZO_16 = cond(dx_14 - 0x0000)
@@ -219,9 +225,7 @@ l0C00_001D:		// pred: l0C00_0018
 	si_26 = wLoc04_9
 	return ax_25
 	// succ:  fn0C00_000F_exit
-fn0C00_000F_exit:		// pred: l0C00_001D
-	// succ: 
-l0C00_0015:		// pred: l0C00_0018
+l0C00_0015:
 	si_19 = si_15 + dx_14
 	SCZO_20 = cond(si_19)
 	dx_21 = dx_14 - 0x0001
@@ -229,6 +233,8 @@ l0C00_0015:		// pred: l0C00_0018
 	SCZO_23 = SZO_22 (alias)
 	SO_24 = SZO_22 (alias)
 	// succ:  l0C00_0018
+fn0C00_000F_exit:
+	// succ: 
 
 Mem0:Global memory
 fp:Temporary
@@ -276,13 +282,13 @@ ax_25: orig: ax
 si_26: orig: si
 // fn0C00_000F
 word16 fn0C00_000F(word16 dx)
-fn0C00_000F_entry:		// pred:
+fn0C00_000F_entry:
 	def dx
 	// succ:  l0C00_000F
-l0C00_000F:		// pred: fn0C00_000F_entry
+l0C00_000F:
 	si_10 = 0x0000
 	// succ:  l0C00_0018
-l0C00_0018:		// pred: l0C00_000F l0C00_0015
+l0C00_0018:
 	dx_14 = PHI(dx, dx_21)
 	si_15 = PHI(si_10, si_19)
 	SCZO_16 = cond(dx_14)

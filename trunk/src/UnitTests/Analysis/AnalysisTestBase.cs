@@ -95,17 +95,12 @@ namespace Decompiler.UnitTests.Analysis
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            Program prog = new Program
-            {
-                Architecture = arch,
-                Platform = new MsdosPlatform(null, arch),
-            };
+            Program prog;
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(new Address(0xC00, 0), rdr);
-                prog.Image = lr.Image;
-                prog.ImageMap = lr.ImageMap;
+                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new MsdosPlatform(null, arch));
             }
             Rewrite(prog, asm, configFile);
             return prog;
@@ -118,15 +113,12 @@ namespace Decompiler.UnitTests.Analysis
 
         private Program RewriteFile32(string relativePath, string configFile)
         {
-            Program prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            Program prog;
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(new Address(0x10000000), rdr);
-                prog.Image = lr.Image;
-                prog.ImageMap = lr.ImageMap;
-                prog.Architecture = lr.Architecture;
+                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
             }
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
             {
@@ -138,12 +130,9 @@ namespace Decompiler.UnitTests.Analysis
 
         protected Program RewriteCodeFragment(string s)
         {
-            Program prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             Assembler asm = new IntelTextAssembler();
             var lr = asm.AssembleFragment(new Address(0xC00, 0), s);
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
+            var prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
             Rewrite(prog, asm, null);
             return prog;
         }

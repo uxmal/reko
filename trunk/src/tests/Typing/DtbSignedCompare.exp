@@ -27,7 +27,7 @@ Eq_8: (memptr T_2 (struct (0 T_9 t0000)))
 Eq_11: (memptr T_3 (struct (0 T_12 t0000)))
 	T_11 (in 0x5404 : word16)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: 
   OrigDataType: 

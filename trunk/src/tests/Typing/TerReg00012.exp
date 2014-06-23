@@ -1,100 +1,95 @@
 // fn0C00_0000
 void fn0C00_0000(word16 cx, int16 bx, Eq_5 * ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	fn0C00_0007(cx, ds)
 	fn0C00_001D(bx, ds)
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 // fn0C00_0007
 void fn0C00_0007(word16 cx, Eq_5 * ds)
-fn0C00_0007_entry:		// pred:
+fn0C00_0007_entry:
 	// succ:  l0C00_0007
-l0C00_0007:		// pred: fn0C00_0007_entry
+l0C00_0007:
 	word16 Eq_5::*di_11 = &Eq_5::a5388[0]
 	// succ:  l0C00_000A
-l0C00_000A:		// pred: l0C00_0007 l0C00_000A
+l0C00_000A:
 	fn0C00_003D(ds->*di_11, 0x2D, ds)
 	di_11 = di_11 + 1;
 	cx = cx - 0x0001;
 	branch cx != 0x0000 l0C00_000A
 	// succ:  l0C00_001C l0C00_000A
-l0C00_001C:		// pred: l0C00_000A
+l0C00_001C:
 	return
 	// succ:  fn0C00_0007_exit
-fn0C00_0007_exit:		// pred: l0C00_001C
-	// succ: 
+fn0C00_0007_exit:
 
 // fn0C00_001D
 void fn0C00_001D(int16 bx, Eq_5 * ds)
-fn0C00_001D_entry:		// pred:
+fn0C00_001D_entry:
 	// succ:  l0C00_001D
-l0C00_001D:		// pred: fn0C00_001D_entry
+l0C00_001D:
 	branch bx == ds->w53BA l0C00_003C
 	// succ:  l0C00_0023 l0C00_003C
-l0C00_0023:		// pred: l0C00_001D
+l0C00_0023:
 	branch bx >= ds->w53B8 l0C00_003C
 	// succ:  l0C00_0029 l0C00_003C
-l0C00_0029:		// pred: l0C00_0023
+l0C00_0029:
 	ds->w53BA = bx;
 	fn0C00_0046(0x4400, ds->a5388[bx * 0x0002], 0x0000, ds)
 	// succ:  l0C00_003C
-l0C00_003C:		// pred: l0C00_001D l0C00_0023 l0C00_0029
+l0C00_003C:
 	return
 	// succ:  fn0C00_001D_exit
-fn0C00_001D_exit:		// pred: l0C00_003C
-	// succ: 
+fn0C00_001D_exit:
 
 // fn0C00_003D
 void fn0C00_003D(word16 dx, byte ah, Eq_5 * ds)
-fn0C00_003D_entry:		// pred:
+fn0C00_003D_entry:
 	// succ:  l0C00_003D
-l0C00_003D:		// pred: fn0C00_003D_entry
+l0C00_003D:
 	ds->b0110 = ah;
 	ds->w0112 = dx;
 	return
 	// succ:  fn0C00_003D_exit
-fn0C00_003D_exit:		// pred: l0C00_003D
-	// succ: 
+fn0C00_003D_exit:
 
 // fn0C00_0046
 void fn0C00_0046(word16 ax, word16 dx, word16 bx, Eq_5 * ds)
-fn0C00_0046_entry:		// pred:
+fn0C00_0046_entry:
 	// succ:  l0C00_0046
-l0C00_0046:		// pred: fn0C00_0046_entry
+l0C00_0046:
 	ds->w0114 = ax;
 	ds->w0116 = bx;
 	ds->w0118 = dx;
 	return
 	// succ:  fn0C00_0046_exit
-fn0C00_0046_exit:		// pred: l0C00_0046
-	// succ: 
+fn0C00_0046_exit:
 
 // Equivalence classes ////////////
 Eq_2: (fn void (word16, (ptr Eq_5)))
 	T_2 (in fn0C00_0007 : ptr32)
-	T_3 (in signature of fn0C00_0007)
+	T_3 (in signature of fn0C00_0007 : void)
 Eq_5: (segment "Eq_5" (110 byte b0110) (112 word16 w0112) (114 word16 w0114) (116 word16 w0116) (118 word16 w0118) (5388 (arr word16) a5388) (53B8 int16 w53B8) (53BA int16 w53BA))
 	T_5 (in ds : (ptr Eq_5))
 	T_7 (in ds : (ptr Eq_5))
 	T_12 (in ds : (ptr Eq_5))
 	T_21 (in ds : (ptr Eq_5))
-	T_46 (in ds : (ptr Eq_5))
+	T_47 (in ds : (ptr Eq_5))
 Eq_9: (fn void (int16, (ptr Eq_5)))
 	T_9 (in fn0C00_001D : ptr32)
-	T_10 (in signature of fn0C00_001D)
+	T_10 (in signature of fn0C00_001D: void)
 Eq_17: (fn void (word16, byte, (ptr Eq_5)))
 	T_17 (in fn0C00_003D : ptr32)
-	T_18 (in signature of fn0C00_003D)
-Eq_41: (fn void (word16, word16, word16, (ptr Eq_5)))
-	T_41 (in fn0C00_0046 : ptr32)
-	T_42 (in signature of fn0C00_0046)
+	T_18 (in signature of fn0C00_003D : void)
+Eq_42: (fn void (word16, word16, word16, (ptr Eq_5)))
+	T_42 (in fn0C00_0046 : ptr32)
+	T_43 (in signature of fn0C00_0046 : void)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 
@@ -102,7 +97,7 @@ T_2: (in fn0C00_0007 : ptr32)
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr (fn T_8 (T_6, T_7)))
-T_3: (in signature of fn0C00_0007)
+T_3: (in signature of fn0C00_0007 : void)
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: 
@@ -270,11 +265,11 @@ T_44: (in dx : word16)
   Class: Eq_19
   DataType: word16
   OrigDataType: word16
-T_45: (in bx : word16)
-  Class: Eq_45
+T_46: (in bx : word16)
+  Class: Eq_46
   DataType: word16
   OrigDataType: word16
-T_46: (in ds : (ptr Eq_5))
+T_47: (in ds : (ptr Eq_5))
   Class: Eq_5
   DataType: (ptr Eq_5)
   OrigDataType: (ptr (segment (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118)))

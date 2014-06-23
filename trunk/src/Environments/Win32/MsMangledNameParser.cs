@@ -151,7 +151,8 @@ namespace Decompiler.Environments.Win32
                 else
                 {
                     var t = ParseDataTypeCode();
-                    types.Add(t);
+                    if (t != null)
+                        types.Add(t);
                 }
             }
             this.compoundArgs = old;
@@ -470,8 +471,8 @@ namespace Decompiler.Environments.Win32
             case 'U': return ParseStructure(compoundArgs); // struct (see below)
             case 'V': return ParseStructure(compoundArgs); // class (see below)
             case 'W': return ParseEnum();
-            case 'X': return new SerializedPrimitiveType(Domain.None, 0);      // void           (terminates argument list)
-            case 'Z': return null;      // elipsis        (terminates argument list)
+            case 'X': return new SerializedVoidType();      // void           (terminates argument list)
+            case 'Z': return new SerializedVoidType();      // elipsis        (terminates argument list)
             case '_':
                 switch (str[i++])
                 {
@@ -493,9 +494,9 @@ namespace Decompiler.Environments.Win32
             switch (str[i++])
             {
             case 'A': size = 4; type = ParseDataTypeCode(); break;      //$BUG: assumes 32-bitness
-            case 'B': size = 4; type = ParseDataTypeCode();break;      // const ptr
-            case 'C': size = 4; type = ParseDataTypeCode();break;      // volatile ptr
-            case 'D': size = 4; type = ParseDataTypeCode();break;      // const volatile ptr
+            case 'B': size = 4; type = ParseDataTypeCode(); break;      // const ptr
+            case 'C': size = 4; type = ParseDataTypeCode(); break;      // volatile ptr
+            case 'D': size = 4; type = ParseDataTypeCode(); break;      // const volatile ptr
             case '6': size = 4; type = ParseFunctionTypeCode(); ParseStorageClass(); break;
             default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }

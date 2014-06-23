@@ -15,7 +15,7 @@ Eq_3: (segment (1 (ptr Eq_2) ptr0001))
 Eq_4: (struct (0 (ptr Eq_2) ptr0000))
 	T_4 (in 0x00000001 : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

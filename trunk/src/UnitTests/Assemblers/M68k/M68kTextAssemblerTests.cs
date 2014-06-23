@@ -82,23 +82,17 @@ namespace Decompiler.UnitTests.Assemblers.M68k
 
         private Program RunTestFromFile(string sourceFile, Address addrBase)
         {
-            Program prog = new Program();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 var lr = asm.Assemble(addrBase, rdr);
-                prog.Image = lr.Image;
-                prog.ImageMap = lr.ImageMap;
+                return new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
             }
-            return prog;
         }
 
         private Program RunTestFromFragment(string fragment, Address addrBase)
         {
-            Program prog = new Program();
             var lr = asm.AssembleFragment(addrBase, fragment);
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
-            return prog;
+            return new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
         }
 
         [Test]

@@ -11,7 +11,7 @@ l1:
 	// succ:  PtrPtrIntMock_exit
 PtrPtrIntMock_exit:
 
-Globals (in globals : (ptr (struct "Globals")))
+Globals (in globals : (ptr (struct)))
 	trait_mem(T_12, 10000)
 	trait_mem(T_14, 10004)
 T_2 (in r1 : word32)

@@ -109,12 +109,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             codeViewSvc.Stub(s => s.DisplayProcedure(
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
-            memViewSvc.Expect(s => s.ShowMemoryAtAddress(
-                Arg<Program>.Is.NotNull,
-                Arg<Address>.Matches(address => address.Linear == 0x12346)));
+            //memViewSvc.Expect(s => s.ShowMemoryAtAddress(
+            //    Arg<Program>.Is.NotNull,
+            //    Arg<Address>.Matches(address => address.Linear == 0x12346)));
 
-            disasmViewSvc.Expect(s => s.DisassembleStartingAtAddress(
-                Arg<Address>.Matches(address => address.Linear == 0x12346)));
+            //disasmViewSvc.Expect(s => s.DisassembleStartingAtAddress(
+            //    Arg<Address>.Matches(address => address.Linear == 0x12346)));
             mr.ReplayAll();
 
             CreateInteractor();
@@ -137,6 +137,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
+        [Ignore("Other mechanism needed")]
         public void Anpi_ShowEditProcedureDialog()
         {
             uiSvc.Expect(s => s.ShowModalDialog(

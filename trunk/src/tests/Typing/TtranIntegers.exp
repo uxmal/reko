@@ -33,7 +33,7 @@ Eq_3: (segment)
 Eq_4: (struct (0 word32 dw0000) (4 word32 dw0004) (8 bcu8 b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E) (10 word16 w0010))
 	T_4 (in bx : word16)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

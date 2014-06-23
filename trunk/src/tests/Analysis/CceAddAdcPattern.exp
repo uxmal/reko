@@ -1,45 +1,59 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 r1:r1
     def:  def r1
-    uses: r1_9 = r1 + r2
+    uses: r1_11 = r1 + r2
 r2:r2
     def:  def r2
-    uses: r1_9 = r1 + r2
+    uses: r1_11 = r1 + r2
 r3:r3
     def:  def r3
-    uses: r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
+    uses: r3_r1_12 = SEQ(r3, r1_11) (alias)
 r4:r4
-    def:  def r4
-    uses: r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
 SZC:Flags
 C:Flags
 r63:r63
-r1_9: orig: r1
-    def:  r1_9 = r1 + r2
-    uses: Mem13[0x00444400:word32] = r1_9
-          r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
-SZC_10: orig: SZC
-C_11: orig: C
-r3_12: orig: r3
-    def:  r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
-    uses: Mem14[0x00444404:word32] = r3_12
-Mem13: orig: Mem0
-    def:  Mem13[0x00444400:word32] = r1_9
-Mem14: orig: Mem0
-    def:  Mem14[0x00444404:word32] = r3_12
+r3_r1:Sequence r3:r1
+r4_r2:Sequence r4:r2
+    def:  def r4_r2
+    uses: r3_r1_14 = r3_r1_12 + r4_r2
+r1_11: orig: r1
+    def:  r1_11 = r1 + r2
+    uses: r3_r1_12 = SEQ(r3, r1_11) (alias)
+r3_r1_12: orig: r3_r1
+    def:  r3_r1_12 = SEQ(r3, r1_11) (alias)
+    uses: r3_r1_14 = r3_r1_12 + r4_r2
+SZC_13: orig: SZC
+r3_r1_14: orig: r3_r1
+    def:  r3_r1_14 = r3_r1_12 + r4_r2
+    uses: r1_15 = (word32) r3_r1_14 (alias)
+          r3_16 = SLICE(r3_r1_14, word32, 32) (alias)
+r1_15: orig: r1
+    def:  r1_15 = (word32) r3_r1_14 (alias)
+    uses: Mem17[0x00444400:word32] = r1_15
+r3_16: orig: r3
+    def:  r3_16 = SLICE(r3_r1_14, word32, 32) (alias)
+    uses: Mem18[0x00444404:word32] = r3_16
+Mem17: orig: Mem0
+    def:  Mem17[0x00444400:word32] = r1_15
+Mem18: orig: Mem0
+    def:  Mem18[0x00444404:word32] = r3_16
 // main
 void main(word32 r1, word32 r2, word32 r3, word32 r4)
 main_entry:
 	def r1
 	def r2
 	def r3
-	def r4
+	def r4_r2
 	// succ:  l1
 l1:
-	r3_r1_9 = r3_r1 + r4_r2
-	Mem13[0x00444400:word32] = (word32) r3_r1_9
-	Mem14[0x00444404:word32] = SLICE(r3_r1_9, 32, 32)
+	r1_11 = r1 + r2
+	r3_r1_12 = SEQ(r3, r1_11) (alias)
+	r3_r1_14 = r3_r1_12 + r4_r2
+	r1_15 = (word32) r3_r1_14 (alias)
+	r3_16 = SLICE(r3_r1_14, word32, 32) (alias)
+	Mem17[0x00444400:word32] = r1_15
+	Mem18[0x00444404:word32] = r3_16
 	return
 	// succ:  main_exit
 main_exit:

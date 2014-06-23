@@ -13,7 +13,7 @@ Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 	T_3 (in x : word32)
 	T_4 (in 3F : real32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

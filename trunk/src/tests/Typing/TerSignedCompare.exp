@@ -13,7 +13,7 @@ Eq_2: (segment "Eq_2" (5400 bool f5400) (5404 int16 w5404))
 	T_2 (in ds : selector)
 	T_3 (in ds2 : selector)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct "Globals")))
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

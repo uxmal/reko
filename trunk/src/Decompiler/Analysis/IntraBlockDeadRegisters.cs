@@ -165,7 +165,9 @@ namespace Decompiler.Analysis
 
             public bool VisitMkSequence(MkSequence seq)
             {
-                throw new NotImplementedException();
+                var dead = seq.Head.Accept(this);
+                dead &= seq.Tail.Accept(this);
+                return dead;
             }
 
             public bool VisitPhiFunction(PhiFunction phi)
