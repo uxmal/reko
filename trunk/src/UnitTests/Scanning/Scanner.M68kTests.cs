@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Scanning
     {
         private MockRepository mr;
         private M68kArchitecture arch;
-        private Program prog;
+        private Program program;
         private Scanner scanner;
         private DecompilerEventListener listener;
 
@@ -60,13 +60,11 @@ namespace Decompiler.UnitTests.Scanning
         {
             arch = new M68kArchitecture();
             var image = new LoadedImage(addrBase, bytes);
-            prog = new Program
-            {
-                Architecture = arch,
-                Image = image,
-                ImageMap = new ImageMap(image),
-                Platform = new DefaultPlatform(null, arch)
-            };
+            program = new Program(
+                image,
+                new ImageMap(image),
+                arch,
+                new DefaultPlatform(null, arch));
             RunTest(addrBase);
         }
 
@@ -77,7 +75,7 @@ namespace Decompiler.UnitTests.Scanning
             asmProg(asm);
 
             var lr = asm.GetImage();
-            prog = new Program
+            program = new Program
             {
                 Architecture = arch,
                 Image = lr.Image,
@@ -91,7 +89,7 @@ namespace Decompiler.UnitTests.Scanning
         private void RunTest(Address addrBase)
         {
             scanner = new Scanner(
-                prog,
+                program,
                 new Dictionary<Address, ProcedureSignature>(),
                 listener);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));

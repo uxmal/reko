@@ -87,18 +87,16 @@ namespace Decompiler.Loading
 			}
 
             var result = loader.Load(addrLoad);
-            Program prog = new Program
-            {
-                Image = result.Image,
-                ImageMap = result.ImageMap,
-                Architecture = result.Architecture,
-                Platform = result.Platform,
-            };
+            Program program = new Program(
+                result.Image,
+                result.ImageMap,
+                result.Architecture,
+                result.Platform);
 
 		    var relocations = loader.Relocate(addrLoad);
             EntryPoints.AddRange(relocations.EntryPoints);
-            CopyImportThunks(loader.ImportThunks, prog);
-            return prog;
+            CopyImportThunks(loader.ImportThunks, program);
+            return program;
         }
 
         public bool ImageHasMagicNumber(byte [] image, string magicNumber, string sOffset)

@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class GlobalCallRewriterTests
 	{
-		private Program prog;
+		private Program program;
 		private GlobalCallRewriter gcr;
 		private Procedure proc;
 		private ProcedureFlow flow;
@@ -41,11 +41,11 @@ namespace Decompiler.UnitTests.Analysis
 		[SetUp]
 		public void Setup()
 		{
-			prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
-			gcr = new GlobalCallRewriter(prog, null);
-            proc = new Procedure("foo", prog.Architecture.CreateFrame());
-			flow = new ProcedureFlow(proc, prog.Architecture);
+			program = new Program();
+			program.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+			gcr = new GlobalCallRewriter(program, null);
+            proc = new Procedure("foo", program.Architecture.CreateFrame());
+			flow = new ProcedureFlow(proc, program.Architecture);
 		}
 
 		[Test]
@@ -97,7 +97,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
-            Procedure proc = new Procedure("foo", prog.Architecture.CreateFrame());
+            Procedure proc = new Procedure("foo", program.Architecture.CreateFrame());
 			proc.Signature = new ProcedureSignature(
 				new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void GcrStackArguments()
 		{
-            Frame f = prog.Architecture.CreateFrame();
+            Frame f = program.Architecture.CreateFrame();
             f.ReturnAddressKnown = true;
 			f.ReturnAddressSize = PrimitiveType.Word16.Size;
 
