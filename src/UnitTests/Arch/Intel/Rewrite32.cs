@@ -118,21 +118,22 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		private void RunTest(string sourceFile, string outputFile)
 		{
-			Program prog = new Program();
+			Program program;
             var asm = new IntelTextAssembler();
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 var lr = asm.Assemble(new Address(0x10000000), rdr);
-                prog.Image = lr.Image;
-                prog.ImageMap = lr.ImageMap;
-                prog.Platform = win32;
-                prog.Architecture = arch;
+                program = new Program(
+                    lr.Image,
+                    lr.ImageMap,
+                    arch,
+                    win32);
             }
             foreach (var item in asm.ImportThunks)
             {
-                prog.ImportThunks.Add(item.Key, item.Value);
+                program.ImportThunks.Add(item.Key, item.Value);
             }
-            Scanner scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            Scanner scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             foreach (var ep in asm.EntryPoints)
             {
                 scan.EnqueueEntryPoint(ep);
@@ -141,7 +142,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				foreach (Procedure proc in prog.Procedures.Values)
+				foreach (Procedure proc in program.Procedures.Values)
 				{
 					proc.Write(true, fut.TextWriter);
 					fut.TextWriter.WriteLine();

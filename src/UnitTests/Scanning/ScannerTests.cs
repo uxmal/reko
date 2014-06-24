@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Scanning
     public class ScannerTests
     {
         FakeArchitecture arch;
-        Program prog;
+        Program program;
         TestScanner scan;
         Identifier reg1;
 
@@ -81,16 +81,16 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildX86RealTest(Action<IntelAssembler> test)
         {
-            prog = new Program();
-            var addr = new Address(0xC00, 0);
+            var addr = new Address(0x0C00, 0);
             var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             test(m);
             var lr = m.GetImage();
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
-            prog.Architecture = lr.Architecture;
-            prog.Platform = new FakePlatform(null, arch);
-            scan = new TestScanner(prog);
+            program = new Program(
+                lr.Image,
+                lr.ImageMap,
+                lr.Architecture,
+                new FakePlatform(null, arch));
+            scan = new TestScanner(program);
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
         }
@@ -155,17 +155,17 @@ namespace Decompiler.UnitTests.Scanning
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
             var image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
-            prog = new Program(
+            program = new Program(
                 image,
                 new ImageMap(image),
                 arch,
                 new FakePlatform(null, arch));
-            return new TestScanner(prog);
+            return new TestScanner(program);
         }
 
         private TestScanner CreateScanner(Program prog, uint startAddress, int imageSize)
         {
-            this.prog = prog;
+            this.program = prog;
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
             prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
@@ -334,10 +334,10 @@ fn0C00_0000_exit:
         [Test]
         public void ScanImportedProcedure()
         {
-            prog = new Program();
-            prog.ImportThunks.Add(0x2000, new PseudoProcedure(
+            program = new Program();
+            program.ImportThunks.Add(0x2000, new PseudoProcedure(
                 "grox", CreateSignature("ax", "bx")));
-            var scan = CreateScanner(prog, 0x1000, 0x200);
+            var scan = CreateScanner(program, 0x1000, 0x200);
             var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
@@ -396,7 +396,7 @@ l00001100_thunk_fn00001000:
 fn00001100_exit:
 
 ";
-            AssertProgram(sExp, prog);
+            AssertProgram(sExp, program);
         }
 
         [Test]
@@ -479,7 +479,7 @@ l00001100:
 fn00001100_exit:
 
 ";
-            AssertProgram(sExp, prog);
+            AssertProgram(sExp, program);
         }
     }
 }

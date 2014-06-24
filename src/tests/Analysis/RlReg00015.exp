@@ -6,6 +6,7 @@
 	Preserved:
 // fn0C00_0000
 void fn0C00_0000()
+// SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ax dx bx ss
 // DataOut (flags): 
@@ -30,19 +31,18 @@ l0C00_0000:
 	dx = Mem0[ss:0x06B4:word16]
 	sp = 0x06B6
 	si = dx
-// DataOut: dx si ss ds
+// DataOut: dx bx si ss ds
 // DataOut (flags): 
-// SymbolicIn: sp:fp
-
+// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:<invalid> bx:<invalid> si:<invalid> al:<invalid>
 l0C00_0019:
 	al = Mem0[ds:si:byte]
 	si = si + 0x0001
 	SCZO = cond(al - 0x00)
 	branch Test(NE,Z) l0C00_0019
-// DataOut: dx si ss ds
+// DataOut: dx bx si ss ds
 // DataOut (flags): 
-// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:0x3D01 bx:0x3D01 si:<invalid> al:<invalid>
 
+// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:<invalid> bx:<invalid> si:<invalid> al:<invalid>
 l0C00_001E:
 	cx = si
 	cx = cx - dx
@@ -50,7 +50,7 @@ l0C00_001E:
 	cx = cx - 0x0001
 	SZO = cond(cx)
 	ah = 0x40
-	C = msdos_write_file(bx, cx, ds_dx, &bx)
+	C = msdos_write_file(bx, cx, ds_dx, &ax)
 	ax = Mem0[ss:0x06B6:word16]
 	sp = 0x06B8
 	sp = 0x06B6
@@ -64,12 +64,11 @@ l0C00_001E:
 	msdos_terminate(al)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:0x3D01 bx:0x3D01 si:<invalid> al:<invalid>
 
+// SymbolicIn:
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
 
 // fn0C00_0037 /////////////////////
 	LiveOut:   ss
@@ -79,6 +78,7 @@ fn0C00_0000_exit:
 	Preserved: sp
 // fn0C00_0037
 void fn0C00_0037()
+// SymbolicIn: sp:fp
 fn0C00_0037_entry:
 // DataOut: ax dx ss ds
 // DataOut (flags): 
@@ -94,6 +94,4 @@ l0C00_0037:
 
 fn0C00_0037_exit:
 // DataOut: ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+// DataOut (flags):

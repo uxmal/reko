@@ -25,8 +25,6 @@ using System.Text;
 
 namespace Decompiler.UnitTests
 {
-	public delegate void FileUnitTestHandler(FileUnitTester fut);
-
 	public class FileUnitTester : IDisposable
 	{
 		private string testOutputFile;
@@ -52,7 +50,7 @@ namespace Decompiler.UnitTests
 			return string.Format("{0}/{1}", TestDirectory, relativePath);
 		}
 
-		public static void RunTest(string testOutputFile, FileUnitTestHandler handler)
+		public static void RunTest(string testOutputFile, Action<FileUnitTester> handler)
 		{
 			using (FileUnitTester fut = new FileUnitTester(testOutputFile))
 			{

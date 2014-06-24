@@ -96,7 +96,6 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Dis_Sequence()
         {
-            Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
             var lr = asm.AssembleFragment(
                 new Address(0xB96, 0),
@@ -131,7 +130,6 @@ foo:
         [Test]
         public void SegmentOverrides()
         {
-            Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
             var lr = asm.AssembleFragment(
                 new Address(0xB96, 0),
@@ -156,7 +154,6 @@ foo:
         [Test]
         public void Rotations()
         {
-            Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
             var lr = asm.AssembleFragment(
                 new Address(0xB96, 0),
@@ -188,7 +185,6 @@ foo:
         [Test]
         public void Extensions()
         {
-            Program prog = new Program();
             IntelTextAssembler asm = new IntelTextAssembler();
             var lr = asm.AssembleFragment(
                 new Address(0xA14, 0),
@@ -219,7 +215,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void DisEdiTimes2()
         {
-            Program prog = new Program(); IntelTextAssembler asm = new IntelTextAssembler();
+            IntelTextAssembler asm = new IntelTextAssembler();
             var lr = asm.AssembleFragment(new Address(0x0B00, 0),
                 @"	.i386
 	mov ebx,[edi*2]
@@ -238,7 +234,6 @@ movzx	ax,byte ptr [bp+04]
         {
             using (FileUnitTester fut = new FileUnitTester("Intel/DisFpuInstructions.txt"))
             {
-                Program prog = new Program();
                 IntelTextAssembler asm = new IntelTextAssembler();
                 LoaderResults lr;
                 using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))

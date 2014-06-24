@@ -34,22 +34,22 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class OutParameterTransformerTests : AnalysisTestBase
 	{
-		private Program prog; 
+		private Program program; 
 
 		[Test]
 		public void OutpAsciiHex()
 		{
-			prog = RewriteFile("Fragments/ascii_hex.asm");
-			FileUnitTester.RunTest("Analysis/OutpAsciiHex.txt", new FileUnitTestHandler(PerformTest));
+			program = RewriteFile("Fragments/ascii_hex.asm");
+			FileUnitTester.RunTest("Analysis/OutpAsciiHex.txt", PerformTest);
 		}
 
 		private void PerformTest(FileUnitTester fut)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
 				SsaState ssa = sst.SsaState;
@@ -162,15 +162,15 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpParameters()
 		{
-			prog = RewriteFile("Fragments/multiple/outparameters.asm");
-			FileUnitTester.RunTest("Analysis/OutpParameters.txt", new FileUnitTestHandler(PerformTest));
+			program = RewriteFile("Fragments/multiple/outparameters.asm");
+			FileUnitTester.RunTest("Analysis/OutpParameters.txt", PerformTest);
 		}
 
 		[Test]
 		public void OutpMutual()
 		{
-			prog = RewriteFile("Fragments/multiple/mutual.asm");
-			FileUnitTester.RunTest("Analysis/OutpMutual.txt", new FileUnitTestHandler(PerformTest));
+			program = RewriteFile("Fragments/multiple/mutual.asm");
+			FileUnitTester.RunTest("Analysis/OutpMutual.txt", PerformTest);
 		}
 
 		private class IdentifierComparer : IComparer

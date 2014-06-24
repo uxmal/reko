@@ -42,10 +42,9 @@ namespace Decompiler.UnitTests.Loading
             ServiceContainer sc = new ServiceContainer();
             sc.AddService(typeof (DecompilerEventListener), new FakeDecompilerEventListener());
 			Loader l = new Loader(new FakeDecompilerConfiguration(), sc);
-            Program prog = new Program();
-			prog.Image = new LoadedImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
-			ExeImageLoader exe = new ExeImageLoader(sc, prog.Image.Bytes);
-			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, prog.Image.Bytes);
+			var image = new LoadedImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
+			ExeImageLoader exe = new ExeImageLoader(sc, image.Bytes);
+			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, image.Bytes);
 			LoaderResults lr = ldr.Load(new Address(0xC00, 0));
 			Assert.AreEqual(0x19EC0, lr.Image.Bytes.Length);
 			ldr.Relocate(new Address(0xC00, 0));

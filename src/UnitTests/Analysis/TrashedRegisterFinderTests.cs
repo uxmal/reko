@@ -179,7 +179,7 @@ namespace Decompiler.UnitTests.Analysis
             trf.StartProcessingBlock(m.Block);
 
             stm.Accept(trf);
-            Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage].ToString());
+            Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage) r1.Storage].ToString());
             Assert.IsTrue(trf.IsTrashed(r1.Storage), "r1 should have been marked as trashed.");
         }
 
@@ -222,7 +222,7 @@ namespace Decompiler.UnitTests.Analysis
             trf.StartProcessingBlock(m.Block);
 
             ass.Accept(trf);
-            Assert.AreEqual(r1, trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage], "r2 should now be equal to r1");
+            Assert.AreEqual(r1, trf.RegisterSymbolicValues[(RegisterStorage) r2.Storage], "r2 should now be equal to r1");
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace Decompiler.UnitTests.Analysis
             stm2.Accept(trf);
             stm3.Accept(trf);
 
-            Assert.AreEqual(r2, trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage]);
+            Assert.AreEqual(r2, trf.RegisterSymbolicValues[(RegisterStorage) r2.Storage]);
         }
 
         [Test]
@@ -257,7 +257,7 @@ namespace Decompiler.UnitTests.Analysis
             trf.EnsureEvaluationContext(CreateBlockFlow(m.Block, m.Frame));
 
             stm.Instruction.Accept(trf);
-            Assert.AreEqual("<invalid>", trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage].ToString());
+            Assert.AreEqual("<invalid>", trf.RegisterSymbolicValues[(RegisterStorage) r2.Storage].ToString());
         }
 
         [Test]
@@ -296,25 +296,25 @@ namespace Decompiler.UnitTests.Analysis
             trf = CreateTrashedRegisterFinder(prog);
             CreateBlockFlow(b, frame);
             trf.StartProcessingBlock(b);
-            trf.RegisterSymbolicValues[(RegisterStorage)ecx.Storage] = Constant.Invalid;
-            trf.RegisterSymbolicValues[(RegisterStorage)edx.Storage] = ebx;
+            trf.RegisterSymbolicValues[(RegisterStorage) ecx.Storage] = Constant.Invalid;
+            trf.RegisterSymbolicValues[(RegisterStorage) edx.Storage] = ebx;
 
-            flow[e].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage] = edx;
-            flow[e].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage] = ebx;
+            flow[e].SymbolicIn.RegisterState[(RegisterStorage) ecx.Storage] = edx;
+            flow[e].SymbolicIn.RegisterState[(RegisterStorage) edx.Storage] = ebx;
 
-            flow[t].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage] = Constant.Invalid;
-            flow[t].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage] = edx;
+            flow[t].SymbolicIn.RegisterState[(RegisterStorage) ecx.Storage] = Constant.Invalid;
+            flow[t].SymbolicIn.RegisterState[(RegisterStorage) edx.Storage] = edx;
 
             trf.PropagateToSuccessorBlock(e);
             trf.PropagateToSuccessorBlock(t);
             Assert.AreEqual(2, proc.ControlGraph.Successors(b).Count);
-            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage].ToString(), "trash & r2 => trash");
-            Assert.AreEqual("ebx", flow[e].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage].ToString(), "ebx & ebx => ebx");
-            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage].ToString(), "trash & r2 => trash");
-            Assert.AreEqual("ebx", flow[e].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage].ToString(), "ebx & ebx => ebx");
+            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage) ecx.Storage].ToString(), "trash & r2 => trash");
+            Assert.AreEqual("ebx", flow[e].SymbolicIn.RegisterState[(RegisterStorage) edx.Storage].ToString(), "ebx & ebx => ebx");
+            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage) ecx.Storage].ToString(), "trash & r2 => trash");
+            Assert.AreEqual("ebx", flow[e].SymbolicIn.RegisterState[(RegisterStorage) edx.Storage].ToString(), "ebx & ebx => ebx");
 
-            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)ecx.Storage].ToString(), "trash & trash => trash");
-            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)edx.Storage].ToString(), "r3 & r2 => trash");
+            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage) ecx.Storage].ToString(), "trash & trash => trash");
+            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage) edx.Storage].ToString(), "r3 & r2 => trash");
         }
 
         [Test]
@@ -366,9 +366,9 @@ namespace Decompiler.UnitTests.Analysis
             CreateBlockFlow(proc.ExitBlock, proc.Frame);
             trf.StartProcessingBlock(proc.ExitBlock);
 
-            trf.RegisterSymbolicValues[(RegisterStorage)eax.Storage] = eax;			// preserved
-            trf.RegisterSymbolicValues[(RegisterStorage)ebx.Storage] = ecx;			// trashed
-            trf.RegisterSymbolicValues[(RegisterStorage)esi.Storage] = Constant.Invalid;				// trashed
+            trf.RegisterSymbolicValues[(RegisterStorage) eax.Storage] = eax;			// preserved
+            trf.RegisterSymbolicValues[(RegisterStorage) ebx.Storage] = ecx;			// trashed
+            trf.RegisterSymbolicValues[(RegisterStorage) esi.Storage] = Constant.Invalid;				// trashed
             trf.PropagateToProcedureSummary(proc);
             ProcedureFlow pf = flow[proc];
             Assert.AreEqual(" ebx esi", pf.EmitRegisters(prog.Architecture, "", pf.TrashedRegisters));

@@ -98,7 +98,6 @@ namespace Decompiler.Evaluation
             return gotoInstruction;
         }
 
-
         public Instruction  VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotSupportedException("PhiAssignments shouldn't have been generated yet.");
