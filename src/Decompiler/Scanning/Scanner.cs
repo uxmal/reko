@@ -300,6 +300,8 @@ namespace Decompiler.Scanning
                 {
                     if (procDest == proc)
                     {
+                        proc.Signature.StackDelta = block.Procedure.Signature.StackDelta;
+                        proc.Signature.FpuStackDelta = block.Procedure.Signature.FpuStackDelta;
                         var wi = CreatePromoteWorkItem(addrStart, block, procDest);
                         queue.Enqueue(PriorityBlockPromote, wi);
                     }

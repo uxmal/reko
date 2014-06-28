@@ -26,7 +26,7 @@ namespace Decompiler.Gui.Windows.Controls
 {
     /// <summary>
     /// Describes a source of textual data as a list of lines,
-    /// where each line is 0 or more EditorSpans.
+    /// where each line is 0 or more TextSpans.
     /// </summary>
     public interface TextViewModel
     {

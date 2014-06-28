@@ -67,7 +67,6 @@ namespace Decompiler.UnitTests.Assemblers.x86
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
             Address addrBase=  new Address(0xC00, 0);
-            Program prog = new Program();
             IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
             LoaderResults lr = asm.GetImage();

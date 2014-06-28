@@ -27,7 +27,7 @@ l0C00_0019:
 	// succ:  l0C00_001E l0C00_0019
 l0C00_001E:
 	word16 ax_50
-	msdos_write_file(0x3D01, si_62 + 0x0000 - dx_35 - 0x0001, ds_dx_36, &ax_50)
+	msdos_write_file(ax_30, si_62 + 0x0000 - dx_35 - 0x0001, ds_dx_36, &ax_50)
 	Mem55[ss:0x06B6:word16] = Mem23[ss:0x06B6:word16]
 	fn0C00_0037(0x0000, 0x00FF, ds_33)
 	msdos_terminate((byte) Mem55[ss:0x06B6:word16])

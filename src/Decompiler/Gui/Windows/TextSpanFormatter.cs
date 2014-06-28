@@ -30,18 +30,18 @@ namespace Decompiler.Gui.Windows
 {
     public class TextSpanFormatter : Formatter
     {
-        private List<List<TextSpan>> textSpans;
+        private List<List<TextSpan>> textLines;
         private List<TextSpan> currentLine;
         private FixedTextSpan currentSpan;
         
         public TextSpanFormatter()
         {
-            this.textSpans = new List<List<TextSpan>>();
+            this.textLines = new List<List<TextSpan>>();
         }
 
         public TextViewModel GetModel()
         {
-            return new TextSpanModel(textSpans.Select(l => l.ToArray())
+            return new TextSpanModel(textLines.Select(l => l.ToArray())
                 .ToArray());
         }
 
@@ -113,7 +113,7 @@ namespace Decompiler.Gui.Windows
             if (currentLine == null)
             {
                 currentLine = new List<TextSpan>();
-                this.textSpans.Add(currentLine);
+                this.textLines.Add(currentLine);
             }
             if (currentSpan == null)
             {
