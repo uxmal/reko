@@ -270,5 +270,11 @@ join:
 				fut.AssertFilesEqual();
 			}
 		}
+
+        [Test]
+        public void RwEvenOdd()
+        {
+            RunTest("Fragments/multiple/even_odd.asm", "Intel/RwEvenOdd.txt");
+        }
 	}
 }

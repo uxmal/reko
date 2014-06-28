@@ -45,7 +45,7 @@ ds:ds
     def:  def ds
     uses: v7_14 = Mem0[ds:0x0201:word16] + 0x0001
           Mem15[ds:0x0201:word16] = v7_14
-v7:Temporary
+v7:v7
 SZO:Flags
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(al - 0x20)

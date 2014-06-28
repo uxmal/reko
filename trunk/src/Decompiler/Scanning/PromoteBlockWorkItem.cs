@@ -95,7 +95,6 @@ namespace Decompiler.Scanning
             foreach (var inboundBlock in inboundBlocks)
             {
                 var callRetThunkBlock = Scanner.CreateCallRetThunk(inboundBlock, inboundBlock.Procedure, ProcNew);
-                inboundBlock.Procedure.ControlGraph.AddEdge(inboundBlock, callRetThunkBlock);
                 ReplaceSuccessorsWith(inboundBlock, blockToPromote, callRetThunkBlock);
             }
             foreach (var p in inboundBlocks)

@@ -29,6 +29,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Controls
 {
+    /// <summary>
+    /// Renders text data in a window. 
+    /// </summary>
     public partial class TextView : Control
     {
         public event EventHandler ModelChanged;
