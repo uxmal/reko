@@ -225,7 +225,10 @@ namespace Decompiler.Gui.Windows
             if (dlg == null)
                 return;
             System.Threading.Interlocked.Exchange<string>(ref status, caption);
-            dlg.Worker.ReportProgress((int)((numerator * 100L) / denominator));
+            var percentDone = (int)((numerator * 100L) / denominator);
+            if (percentDone < 0)
+                percentDone.ToString();
+            dlg.Worker.ReportProgress(percentDone);
         }
 
         #endregion

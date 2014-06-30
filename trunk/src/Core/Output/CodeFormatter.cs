@@ -698,7 +698,7 @@ namespace Decompiler.Core.Output
 			}
 			else
 			{
-                new ProcedureFormatter(proc, this).WriteProcedureBlocks(false);
+                new ProcedureFormatter(proc, new BlockDecorator { ShowEdges=false }, this).WriteProcedureBlocks();
 			}
 			writer.Write("}");
             writer.WriteLine();

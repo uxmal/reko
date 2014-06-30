@@ -73,14 +73,14 @@ l0C00_0030_1:
 // DataOut: cx di es ds
 // DataOut (flags): 
 
-// SymbolicIn: di:<invalid> cx:<invalid> sp:fp al:0x00
+// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
 l0C00_0032:
 	Mem0[ds:0x0404:word16] = di
 	return
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: di:<invalid> cx:<invalid> sp:fp al:0x00
+// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
 fn0C00_0026_exit:
 // DataOut:
 // DataOut (flags): 

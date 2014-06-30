@@ -99,7 +99,7 @@ namespace Decompiler.Analysis
             {
                 var e = eventListener;
                 if (e != null)
-                    eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
+                    eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
                 ProcessBlock(block);
             }
         }
@@ -108,10 +108,7 @@ namespace Decompiler.Analysis
         {
             foreach (Procedure proc in procedures)
             {
-                foreach (Block block in proc.ControlGraph.Blocks)
-                {
-                    worklist.Add(block);
-                }
+                worklist.Add(proc.EntryBlock);
                 SetInitialValueOfStackPointer(proc);
             }
         }
@@ -217,7 +214,7 @@ namespace Decompiler.Analysis
         }
 
         public void PropagateToProcedureSummary(Procedure proc)
-        {
+       {
             var prop = new TrashedRegisterSummarizer(prog.Architecture, proc, flow[proc], ctx);
             bool changed = prop.PropagateToProcedureSummary();
             if (changed)

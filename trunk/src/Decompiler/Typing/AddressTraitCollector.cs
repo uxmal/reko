@@ -95,7 +95,8 @@ namespace Decompiler.Typing
 
         public void VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            var offset = (int) addr.Linear;
+            HandleConstantOffset(addr, offset);
         }
 
 		public void VisitApplication(Application appl)
@@ -156,13 +157,18 @@ namespace Decompiler.Typing
 		{
 			// Globals has a field at offset C that is a tvField: [[g->c]] = ptr(tvField)
 			int v = StructureField.ToOffset(c);
-			if (basePointer != null)
-				handler.MemAccessTrait(null, basePointer, basePointerSize, tvField, v);
-			else
-				handler.MemAccessTrait(null, prog.Globals, c.DataType.Size, tvField, v);
-			// C is a pointer to tvField: [[c]] = ptr(tvField)
-			handler.MemAccessTrait(basePointer, c, c.DataType.Size, tvField, 0);
+            HandleConstantOffset(c, v);
 		}
+
+        private void HandleConstantOffset(Expression c, int v)
+        {
+            if (basePointer != null)
+                handler.MemAccessTrait(null, basePointer, basePointerSize, tvField, v);
+            else
+                handler.MemAccessTrait(null, prog.Globals, c.DataType.Size, tvField, v);
+            // C is a pointer to tvField: [[c]] = ptr(tvField)
+            handler.MemAccessTrait(basePointer, c, c.DataType.Size, tvField, 0);
+        }
 
 		public void VisitDepositBits(DepositBits dpb)
 		{

@@ -70,7 +70,7 @@ T_8: (in Mem15[ds:0x9A26:word16] : word16)
 T_9: (in si_16 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 26 (0 T_15 t0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
 T_10: (in 0x0000 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)

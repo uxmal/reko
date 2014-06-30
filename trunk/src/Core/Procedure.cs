@@ -145,8 +145,20 @@ namespace Decompiler.Core
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new TextFormatter(writer));
 			writer.WriteLine();
             var formatter = new CodeFormatter(new TextFormatter(writer));
-            new ProcedureFormatter(this, formatter).WriteProcedureBlocks(showEdges);
+            new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
 		}
+
+        public void Write(bool emitFrame, BlockDecorator decorator, TextWriter writer)
+        {
+            writer.WriteLine("// {0}", Name);
+            if (emitFrame)
+                Frame.Write(writer);
+            var formatter = new TextFormatter(writer);
+            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new TextFormatter(writer));
+            writer.WriteLine();
+            var codeFormatter = new CodeFormatter(formatter);
+            new ProcedureFormatter(this, decorator, codeFormatter).WriteProcedureBlocks();
+        }
 
         public void WriteGraph(TextWriter writer)
         {

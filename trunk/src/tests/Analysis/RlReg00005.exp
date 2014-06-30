@@ -20,7 +20,7 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp cx:<invalid> bx:<invalid> cl:0x00 ah:<invalid> di:<invalid> al:0x00 es:<invalid>
+// SymbolicIn: sp:fp cx:<invalid> bx:<invalid> di:<invalid> al:0x00 cl:0x00 ah:<invalid> es:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -65,13 +65,13 @@ l0C00_0019_1:
 // DataOut: cx di al es ds
 // DataOut (flags): Z
 
-// SymbolicIn: di:<invalid> cx:<invalid> sp:fp es:ds al:0x00
+// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
 l0C00_001B:
 	branch Test(EQ,Z) l0C00_002D
 // DataOut: di al ds
 // DataOut (flags): 
 
-// SymbolicIn: di:<invalid> cx:<invalid> sp:fp es:ds al:0x00
+// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
 l0C00_001D:
 	ah = Mem0[ds:di + 0x0001:byte]
 	Z = ax == 0x0000
@@ -85,7 +85,7 @@ l0C00_001D:
 // DataOut: bx ds
 // DataOut (flags): 
 
-// SymbolicIn: di:<invalid> cx:<invalid> sp:fp es:ds al:0x00
+// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
 l0C00_002D:
 	bx = 0x0000
 	SZO = cond(0x0000)
@@ -97,7 +97,7 @@ l0C00_002D:
 // DataOut: bx ds
 // DataOut (flags): 
 
-// SymbolicIn: bx:<invalid> cl:0x00 ah:<invalid> cx:<invalid> di:<invalid> sp:fp es:ds al:0x00
+// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00 ah:<invalid> bx:<invalid> cl:0x00
 fn0C00_000C_exit:
 // DataOut: bx ds
 // DataOut (flags): 
