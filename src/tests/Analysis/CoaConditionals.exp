@@ -152,7 +152,7 @@ l0C00_0063:
 	// succ:  l0C00_0068
 l0C00_0068:
 	return
-	// succ:  18
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	// succ: 
 
@@ -168,11 +168,13 @@ SCZO_8: orig: SCZO, uses: {return cond(wArg00)}
 C_9: orig: C
 bp_10: orig: bp
 // fn0C00_0069
-bool fn0C00_0069(word16 wArg00)
+bool fn0C00_0069(word16 wArg02)
 fn0C00_0069_entry:
-	def wArg00
+	def wArg02
+	// succ:  l0C00_0069
 l0C00_0069:
-	return cond(wArg00)
-	// succ:  2
+	return cond(wArg02)
+	// succ:  fn0C00_0069_exit
 fn0C00_0069_exit:
+
 

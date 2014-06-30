@@ -22,8 +22,10 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Output;
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Decompiler.Analysis
@@ -206,27 +208,28 @@ namespace Decompiler.Analysis
 
 		public void Write(Procedure proc, TextWriter writer)
 		{
-			foreach (var block in proc.ControlGraph.Blocks)
-			{
-				writer.Write("liveIn: ");
-				foreach (SsaIdentifier v in records[block].LiveIn)
-				{
-					writer.Write(" {0}", v.Identifier.Name);
-				}
-				writer.WriteLine();
+            proc.Write(false, new SsaBlockDecorator(records), writer);
+        }
 
-				block.Write(writer);
+        private class SsaBlockDecorator : BlockDecorator
+        {
+            private Dictionary<Block, Record> records;
 
-				writer.Write("liveOut:");
-				foreach (SsaIdentifier v in records[block].LiveOut)
-				{
-					writer.Write(" {0}", v.Identifier.Name);
-				}
-				writer.WriteLine();
-				writer.WriteLine();
-			}
+            public SsaBlockDecorator(Dictionary<Block, Record> records)
+            {
+                this.records = records;
+            }
+
+            public override void BeforeBlock(Block block, List<string> lines)
+            {
+                lines.Add("liveIn: " + string.Join(" ", records[block].LiveIn.Select(v => v.Identifier.Name)));
+            }
+
+            public override void AfterBlock(Block block, List<string> lines)
+            {
+                lines.Add("liveOut: " + string.Join(" ", records[block].LiveOut.Select(v => v.Identifier.Name)));
+            }
 		}
-
 
 		// Returns true if v is also live in before executing s.
 

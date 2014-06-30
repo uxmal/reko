@@ -276,5 +276,12 @@ join:
         {
             RunTest("Fragments/multiple/even_odd.asm", "Intel/RwEvenOdd.txt");
         }
+
+        [Test]
+        public void RwPushPop()
+        {
+            RunTest("Fragments/pushpop.asm", "Intel/RwPushPop.txt");
+        }
+
 	}
 }

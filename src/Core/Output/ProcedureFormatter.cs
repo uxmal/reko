@@ -27,18 +27,30 @@ using System.Text;
 
 namespace Decompiler.Core.Output
 {
+    /// <summary>
+    /// Renders an intermediate code procedure.
+    /// </summary>
     public class ProcedureFormatter
     {
         private CodeFormatter formatter;
+        private BlockDecorator decorator;
         private Procedure proc;
 
         public ProcedureFormatter(Procedure procedure, CodeFormatter formatter)
         {
             this.proc = procedure;
+            this.decorator = new BlockDecorator();
             this.formatter = formatter;
         }
 
-        public void WriteProcedureBlocks(bool showEdges)
+        public ProcedureFormatter(Procedure procedure, BlockDecorator decorator, CodeFormatter formatter)
+        {
+            this.proc = procedure;
+            this.decorator = decorator;
+            this.formatter = formatter;
+        }
+
+        public void WriteProcedureBlocks()
         {
             var blocks = proc.SortBlocksByName().ToArray();
             for (var i = 0; i < blocks.Length; ++i)
@@ -46,6 +58,7 @@ namespace Decompiler.Core.Output
                 var block = blocks[i];
                 if (block == null)
                     continue;
+                Comment(block, decorator.BeforeBlock);
                 WriteBlock(block, formatter);
                 if (block != proc.ExitBlock)
                 {
@@ -66,16 +79,20 @@ namespace Decompiler.Core.Output
                             WriteGoto(succ[0].Name);
                         }
                     }
-                    if (showEdges && succ.Count > 0)
-                    {
-                        StringBuilder sb = new StringBuilder("// succ: ");
-                        foreach (var s in succ)
-                            sb.AppendFormat(" {0}", s.Name);
-                        formatter.InnerFormatter.Indent();
-                        formatter.InnerFormatter.WriteComment(sb.ToString());
-                        formatter.InnerFormatter.WriteLine();
-                    }
                 }
+                Comment(block, decorator.AfterBlock);
+            }
+        }
+
+        private void Comment(Block block, Action<Block, List<string>> generator)
+        {
+            var lines = new List<string>();
+            generator(block, lines);
+            foreach (var line in lines)
+            {
+                formatter.InnerFormatter.Indent();
+                formatter.InnerFormatter.WriteComment("// " + line);
+                formatter.InnerFormatter.WriteLine();
             }
         }
 

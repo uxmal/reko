@@ -195,5 +195,11 @@ namespace Decompiler.UnitTests.Analysis
         {
             RunTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
         }
+
+        [Test]
+        public void RlPushPop()
+        {
+            RunTest("Fragments/pushpop.asm", "Analysis/RlPushPop.txt");
+        }
 	}
 }

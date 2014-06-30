@@ -138,12 +138,6 @@ namespace Decompiler.UnitTests.Mocks
             return Emit(ci);
         }
 
-        public Statement Call(Expression expr)
-        {
-            var ic = new CallInstruction(expr, new CallSite(4, 0));
-            return Emit(ic);
-        }
-
         public void Compare(string flags, Expression a, Expression b)
         {
             Assign(Flags(flags), new ConditionOf(ISub(a, b)));
