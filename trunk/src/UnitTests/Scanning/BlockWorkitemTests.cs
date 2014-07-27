@@ -142,6 +142,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Is.Anything,
                     Arg<Procedure>.Is.Same(block.Procedure),
                     Arg<ProcessorState>.Is.Anything)).Return(next);
@@ -182,10 +183,12 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(arg => arg.Offset == 0x00100004),
                     Arg<Procedure>.Is.Same(block.Procedure),
                     Arg<ProcessorState>.Matches(arg => StashArg(ref s1, arg)))).Return(blockElse); 
                 scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(arg => arg.Offset == 0x4000),
                     Arg<Procedure>.Is.Same(block.Procedure),
                     Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
@@ -363,6 +366,7 @@ namespace Decompiler.UnitTests.Scanning
                     Debug.Print("{0}: {1}", d.GetType().Name, d.Message);
                 });
                 scanner.Stub(s => s.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(a => a.Linear == 0x00100004),
                     Arg<Procedure>.Is.NotNull,
                     Arg<ProcessorState>.Is.Anything)).Return(followBlock);
@@ -408,6 +412,7 @@ testProc_exit:
             scanner.Expect(s => s.FindContainingBlock(new Address(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
             scanner.Expect(s => s.GetImportedProcedure(0)).IgnoreArguments().Return(null);
             scanner.Expect(s => s.EnqueueJumpTarget(
+                Arg<Address>.Is.NotNull,
                 Arg<Address>.Matches(a => a.Linear == 0x00100004),
                 Arg<Procedure>.Is.NotNull,
                 Arg<ProcessorState>.Is.NotNull))

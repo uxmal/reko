@@ -552,7 +552,7 @@ namespace Decompiler.Typing
 					}
 				}
 			}
-            return sig.ReturnValue != null ? sig.ReturnValue.DataType : null;
+            return sig != null && sig.ReturnValue != null ? sig.ReturnValue.DataType : null;
 		}
 
         private void CollectProcedureCharacteristics()

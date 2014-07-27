@@ -36,8 +36,8 @@ l0C00_0000:
 	cx_8 = 0x0014
 	ax_9 = fn0C00_0008(cx_8, di, ds)
 	Mem10[ds:si:word16] = ax_9
-	// succ:  l0C00_0008_thunk_fn0C00_0008
-l0C00_0008_thunk_fn0C00_0008:
+	// succ:  l0C00_0006_thunk_fn0C00_0008
+l0C00_0006_thunk_fn0C00_0008:
 	fn0C00_0008(cx_8, di, ds)
 	return
 	// succ:  fn0C00_0000_exit

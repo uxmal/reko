@@ -405,6 +405,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override Expression Invert()
+        {
+            return new ConstantBool(DataType, !value);
+        }
+
         public override bool ToBoolean()
         {
             return value;

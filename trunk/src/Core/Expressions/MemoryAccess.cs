@@ -24,7 +24,7 @@ using System;
 namespace Decompiler.Core.Expressions
 {
     /// <summary>
-    /// Models an access to memory, using the effect address <paramref name="ea"/> and the datatype
+    /// Models an access to memory, using the effective address <paramref name="ea"/> and the datatype
     /// of the accessed memory.
     /// </summary>
     public class MemoryAccess : Expression

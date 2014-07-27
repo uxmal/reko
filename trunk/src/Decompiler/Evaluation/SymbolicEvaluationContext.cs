@@ -179,8 +179,7 @@ namespace Decompiler.Evaluation
                 var outId = outArg.Expression as Identifier;
                 if (outId != null)
                     SetValue(outId, Constant.Invalid);
-
-            }
+            } 
             return Constant.Invalid;
         }
 

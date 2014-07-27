@@ -84,5 +84,17 @@ namespace Decompiler.UnitTests.Environments.AmigaOS
             Assert.AreEqual("a1", ((SerializedRegister) p0.Kind).Name);
             Assert.AreEqual("d0", ((SerializedRegister) p1.Kind).Name);
         }
+
+        [Test]
+        public void FuncsExtReturnRegister_d0()
+        {
+            var file = "#0004 4   4  Frobnitz ( argIn / a1; ret/d0 )";
+            var ffp = CreateParser(file);
+            ffp.Parse();
+            Assert.AreEqual(1, ffp.FunctionsByA6Offset.Count);
+            var func = ffp.FunctionsByA6Offset[-4];
+            Assert.IsNotNull(func.Signature.ReturnValue);
+            Assert.AreEqual("d0", ((SerializedRegister) func.Signature.ReturnValue.Kind).Name);
+        }
     }
 }

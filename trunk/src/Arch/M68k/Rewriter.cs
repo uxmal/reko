@@ -63,7 +63,7 @@ namespace Decompiler.Arch.M68k
                 di = dasm.Current;
                 ric = new RtlInstructionCluster(di.Address, di.Length);
                 emitter = new RtlEmitter(ric.Instructions);
-                orw = new OperandRewriter(this, di.dataWidth);
+                orw = new OperandRewriter(arch, this.emitter, this.frame, di.dataWidth);
                 switch (di.code)
                 {
                 case Opcode.add: RewriteBinOp((s, d) => emitter.IAdd(d, s), FlagM.CVZNX); break;
@@ -147,8 +147,8 @@ VS Overflow Set 1001 V
                 case Opcode.smi: RewriteScc(ConditionCode.LT, FlagM.NF); break;
                 case Opcode.sne: RewriteScc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.spl: RewriteScc(ConditionCode.GT, FlagM.NF); break;
-                case Opcode.st: orw.RewriteMoveDst(di.op1, PrimitiveType.Bool, Constant.True()); break;
-                case Opcode.sf: orw.RewriteMoveDst(di.op1, PrimitiveType.Bool, Constant.False()); break;
+                case Opcode.st: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.True()); break;
+                case Opcode.sf: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.False()); break;
                 case Opcode.sub: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.suba: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => emitter.ISub(d, s)); break;
@@ -191,6 +191,5 @@ VS Overflow Set 1001 V
 
             return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
-
     }
 }

@@ -192,6 +192,13 @@ namespace Decompiler.Core
         /// </summary>
         public bool UserSpecified { get; set; }
 
+        public Block AddBlock(Address addr, string name)
+        {
+            Block block = new Block(this, name) { Address = addr };
+            blocks.Add(block);
+            return block;
+        }
+
         public Block AddBlock(string name)
         {
             Block block = new Block(this, name);

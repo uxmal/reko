@@ -716,6 +716,15 @@ namespace Decompiler.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_lea_mem()
+        {
+            Rewrite(0x43EB, 0xFFFE);
+            AssertCode(
+                "0|00010000(4): 1 instructions",
+                "1|L--|a1 = a3 + -2");
+        }
+
+        [Test]
         public void M68krw_bcc()
         {
             Rewrite(0x6438, 0x6636);

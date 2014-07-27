@@ -55,7 +55,7 @@ namespace Decompiler.Scanning
                 else
                 {
                     //$TODO: BlockFromAddress.
-                    scanner.EnqueueJumpTarget(vector[i], proc, st);
+                    scanner.EnqueueJumpTarget(AddrFrom, vector[i], proc, st);
                 }
             }
             vectorUses[AddrFrom] = new VectorUse(Table.TableAddress, builder.IndexRegister);
