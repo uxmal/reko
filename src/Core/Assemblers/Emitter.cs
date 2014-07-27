@@ -31,7 +31,6 @@ namespace Decompiler.Core.Assemblers
 	/// <summary>
 	/// Emits bytes into a bytestream belonging to a segment/section.
 	/// </summary>
-    /// //$TODO: create BeEmitter and LeEmitter subclasses.
 	public class Emitter
 	{
 		private MemoryStream stmOut = new MemoryStream();
@@ -46,7 +45,7 @@ namespace Decompiler.Core.Assemblers
             if (skip < 0)
                 throw new ArgumentException("skip", "Argument must be >= 0.");
             if ((alignment & (alignment - 1)) != 0 || alignment <= 0)
-                throw new ArgumentException("alignment", "Alignment must be a power of 2 largen than 0.");
+                throw new ArgumentException("alignment", "Alignment must be a power of 2 larger than 0.");
             EmitBytes(0, skip);
 
             var mask = alignment - 1;

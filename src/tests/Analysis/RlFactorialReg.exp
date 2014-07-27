@@ -65,7 +65,7 @@ l0C00_001C:
 // DataOut: ax ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> si:cx cx:<invalid> Sequence dx:ax:<invalid> dx:<invalid> -2(fp):si
+// SymbolicIn: sp:fp - 0x0002 si:cx cx:<invalid> Sequence dx:ax:<invalid> ax:<invalid> dx:<invalid> -2(fp):si
 l0C00_001F:
 	si = wLoc02
 	sp = fp
@@ -73,7 +73,7 @@ l0C00_001F:
 // DataOut: ax ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp ax:<invalid> si:si cx:<invalid> Sequence dx:ax:<invalid> dx:<invalid> -2(fp):si
+// SymbolicIn: sp:fp si:si cx:<invalid> Sequence dx:ax:<invalid> ax:<invalid> dx:<invalid> -2(fp):si
 fn0C00_000B_exit:
 // DataOut: ax ds
 // DataOut (flags): 

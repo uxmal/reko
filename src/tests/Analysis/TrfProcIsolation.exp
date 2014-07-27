@@ -2,7 +2,7 @@ fn0C00_0000 SCZO ax al ah
 const ax:<invalid>
     fn0C00_0000_entry sp:fp
     l0C00_0000 sp:fp
-    l0C00_000F_thunk_fn0C00_000F ax:<invalid> di:di sp:fp
+    l0C00_000E_thunk_fn0C00_000F ax:<invalid> di:di sp:fp
     fn0C00_0000_exit ax:<invalid> di:di sp:fp
 
 fn0C00_000F

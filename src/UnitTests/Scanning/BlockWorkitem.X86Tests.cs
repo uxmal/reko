@@ -309,6 +309,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             var block = new Block(proc, blockLabel);
             scanner.Expect(x => x.EnqueueJumpTarget(
+                Arg<Address>.Is.NotNull,
                 Arg<Address>.Matches(q => (Niz(q, selector, offset))),
                 Arg<Procedure>.Is.Anything,
                 Arg<ProcessorState>.Is.Anything)).Return(block);
@@ -331,14 +332,17 @@ namespace Decompiler.UnitTests.Scanning
                 m.Mov(m.bx, m.dx);
 
                 scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(a => a.Offset == 2),
                     Arg<Procedure>.Is.Same(proc),
                     Arg<ProcessorState>.Is.Anything)).Return(follow);
                 scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(a => a.Offset == 2),
                     Arg<Procedure>.Is.Same(proc),
                     Arg<ProcessorState>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(a => a.Offset == 0),
                     Arg<Procedure>.Is.Same(proc),
                     Arg<ProcessorState>.Is.Anything)).Return(block);
@@ -364,6 +368,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Jmp("x");
 
                 scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.NotNull,
                     Arg<Address>.Matches(a => a.Offset == 0x0003),
                     Arg<Procedure>.Is.Same(proc),
                     Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, "l0003"));

@@ -120,6 +120,7 @@
     <Compile Include="Arch\Intel\X86PointerScannerTests.cs" />
     <Compile Include="Arch\M68k\M68kStateTests.cs" />
     <Compile Include="Arch\M68k\M68kPointerScannerTests.cs" />
+    <Compile Include="Arch\M68k\OperandRewriterTests.cs" />
     <Compile Include="Arch\M68k\RewriterTests.cs" />
     <Compile Include="Arch\Mips\MipsDisassemblerTests.cs" />
     <Compile Include="Arch\Mips\MipsRewriterTests.cs" />

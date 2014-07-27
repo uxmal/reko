@@ -122,7 +122,7 @@ namespace Decompiler.Scanning
             var cont = scanner.FindContainingBlock(addr);
             if (cont == null || cont == blockCur)
                 return null;
-            return BlockFromAddress(addr, blockCur.Procedure, state);
+            return BlockFromAddress(ric.Address, addr, blockCur.Procedure, state);
         }
 
         private bool BlockHasBeenScanned(Block block)
@@ -198,9 +198,9 @@ namespace Decompiler.Scanning
             var proc = blockCur.Procedure;
             var fallthruAddress = ric.Address + ric.Length;
 
-            var blockThen = BlockFromAddress(b.Target, proc, state.Clone());
+            var blockThen = BlockFromAddress(ric.Address, b.Target, proc, state.Clone());
 
-            var blockElse = FallthroughBlock(proc, fallthruAddress);
+            var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
             branch.Target = blockThen;      // The back-patch referred to above.
             EnsureEdge(proc, branchingBlock, blockElse);
@@ -220,7 +220,7 @@ namespace Decompiler.Scanning
             var fallthruAddress = ric.Address + ric.Length;
 
             var blockInstr = AddIntraStatementBlock(proc);
-            var blockFollow = BlockFromAddress(fallthruAddress, proc, state);
+            var blockFollow = BlockFromAddress(ric.Address, fallthruAddress, proc, state);
 
             blockCur = blockInstr;
             rtlIf.Instruction.Accept(this);
@@ -235,9 +235,9 @@ namespace Decompiler.Scanning
             return true;
         }
 
-        private Block BlockFromAddress(Address addr, Procedure proc, ProcessorState state)
+        private Block BlockFromAddress(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
         {
-            return scanner.EnqueueJumpTarget(addr, proc, state);
+            return scanner.EnqueueJumpTarget(addrSrc, addrDst, proc, state);
         }
 
         private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
@@ -252,7 +252,7 @@ namespace Decompiler.Scanning
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
-                var blockTarget = BlockFromAddress(addrTarget, blockCur.Procedure, state);
+                var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
                 return false;
@@ -544,7 +544,7 @@ namespace Decompiler.Scanning
                 }
                 else
                 {
-                    BlockFromAddress(addr, blockCur.Procedure, state);
+                    BlockFromAddress(ric.Address, addr, blockCur.Procedure, state);
                 }
             }
         }
@@ -554,7 +554,7 @@ namespace Decompiler.Scanning
             blockCur.Statements.Add(ric.Address.Linear, instruction);
         }
 
-        private Block FallthroughBlock(Procedure proc, Address fallthruAddress)
+        private Block FallthroughBlock(Address addrSrc, Procedure proc, Address fallthruAddress)
         {
             if (ri.NextStatementRequiresLabel)
             {
@@ -565,7 +565,7 @@ namespace Decompiler.Scanning
             }
             else
             {
-                return BlockFromAddress(fallthruAddress, proc, state);
+                return BlockFromAddress(addrSrc, fallthruAddress, proc, state);
             }
         }
 

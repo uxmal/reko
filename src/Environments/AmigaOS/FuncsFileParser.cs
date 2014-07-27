@@ -27,8 +27,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+// http://amiga.sourceforge.net/amigadevhelp/phpwebdev.php?keyword=FindTask&funcgroup=AmigaOS&action=Search
 namespace Decompiler.Environments.AmigaOS
 {
+    /// <summary>
+    /// Parses AmigaOS funcs file, with extended support for return registers and data types.
+    /// </summary>
     public class FuncsFileParser
     {
         private M68kArchitecture arch;
@@ -69,6 +73,7 @@ namespace Decompiler.Environments.AmigaOS
             var name = (string) Expect(TokenType.Id);         // fn name
 
             var parameters = new List<Argument_v1>();
+            Argument_v1 returnValue = null;
             Expect(TokenType.LPAREN);
             if (!PeekAndDiscard(TokenType.RPAREN))
             {
@@ -82,6 +87,16 @@ namespace Decompiler.Environments.AmigaOS
                         Name = argName,
                     });
                 } while (PeekAndDiscard(TokenType.COMMA));
+                if (PeekAndDiscard(TokenType.SEMI))
+                {
+                    var argName = (string) Expect(TokenType.Id);
+                    Expect(TokenType.SLASH);
+                    var regName = (string) Expect(TokenType.Id);
+                    returnValue = new Argument_v1
+                    {
+                        Kind = new SerializedRegister { Name = regName }
+                    };
+                }
                 Expect(TokenType.RPAREN);
             }
             return new AmigaSystemFunction
@@ -90,7 +105,8 @@ namespace Decompiler.Environments.AmigaOS
                 Name = name,
                 Signature = new SerializedSignature
                 {
-                    Arguments = parameters.ToArray()
+                    Arguments = parameters.ToArray(),
+                    ReturnValue = returnValue,
                 }
             };
         }
@@ -176,6 +192,7 @@ namespace Decompiler.Environments.AmigaOS
                         case ')': return new Token(TokenType.RPAREN);
                         case '/': return new Token(TokenType.SLASH);
                         case ',': return new Token(TokenType.COMMA);
+                        case ';': return new Token(TokenType.SEMI);
                         case ' ':
                         case '\t':
                             break;       // Ignore whitespace
@@ -292,7 +309,8 @@ namespace Decompiler.Environments.AmigaOS
             Id,
             LPAREN,
             RPAREN,
-COMMA
+            COMMA,
+            SEMI
         }
 
         private class Token

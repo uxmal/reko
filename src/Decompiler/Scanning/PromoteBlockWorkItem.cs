@@ -94,13 +94,22 @@ namespace Decompiler.Scanning
             var inboundBlocks = blockToPromote.Pred.Where(p => p.Procedure != ProcNew).ToArray();
             foreach (var inboundBlock in inboundBlocks)
             {
-                var callRetThunkBlock = Scanner.CreateCallRetThunk(inboundBlock, inboundBlock.Procedure, ProcNew);
+                var lastAddress = GetAddressOfLastInstruction(inboundBlock);
+                var callRetThunkBlock = Scanner.CreateCallRetThunk(lastAddress, inboundBlock.Procedure, ProcNew);
                 ReplaceSuccessorsWith(inboundBlock, blockToPromote, callRetThunkBlock);
+                callRetThunkBlock.Pred.Add(inboundBlock);
             }
             foreach (var p in inboundBlocks)
             {
                 blockToPromote.Pred.Remove(p);
             }
+        }
+
+        private Address GetAddressOfLastInstruction(Block inboundBlock)
+        {
+            return inboundBlock.Address != null
+                ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
+                : new Address(0);
         }
 
         public void FixOutboundEdges(Block block)
@@ -112,7 +121,8 @@ namespace Decompiler.Scanning
                     continue;
                 if (s.Procedure.EntryBlock.Succ[0] == s)
                 {
-                    var retCallThunkBlock = Scanner.CreateCallRetThunk(block, block.Procedure, s.Procedure);
+                    var lastAddress = GetAddressOfLastInstruction(block);
+                    var retCallThunkBlock = Scanner.CreateCallRetThunk(lastAddress, block.Procedure, s.Procedure);
                     block.Succ[i] = retCallThunkBlock;
                 }
                 s.ToString();

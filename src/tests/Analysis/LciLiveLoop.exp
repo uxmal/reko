@@ -16,4 +16,3 @@ loop:
 	goto l1
 	// succ:  l1 loop
 LiveLoopMock_exit:
-	// succ: 

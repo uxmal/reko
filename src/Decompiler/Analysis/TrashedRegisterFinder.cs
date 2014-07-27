@@ -214,7 +214,7 @@ namespace Decompiler.Analysis
         }
 
         public void PropagateToProcedureSummary(Procedure proc)
-       {
+        {
             var prop = new TrashedRegisterSummarizer(prog.Architecture, proc, flow[proc], ctx);
             bool changed = prop.PropagateToProcedureSummary();
             if (changed)

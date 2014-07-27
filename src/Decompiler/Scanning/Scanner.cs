@@ -40,7 +40,7 @@ namespace Decompiler.Scanning
         void ScanImage();
 
         void EnqueueEntryPoint(EntryPoint ep);
-        Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
+        Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
@@ -71,7 +71,7 @@ namespace Decompiler.Scanning
 
         ImageReader CreateReader(Address addr);
 
-        Block CreateCallRetThunk(Block blockFrom, Procedure procOld, Procedure procNew);
+        Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
         IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame);
@@ -172,7 +172,7 @@ namespace Decompiler.Scanning
         /// <returns></returns>
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
-            Block b = new Block(proc, blockName);
+            Block b = new Block(proc, blockName) { Address = addr };
             blocks.Add(addr, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint)image.Bytes.Length));
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
@@ -258,27 +258,27 @@ namespace Decompiler.Scanning
             queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, ep));
         }
 
-        public Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
+        public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
         {
             Procedure procDest;
-            Block block = FindExactBlock(addrStart);
+            Block block = FindExactBlock(addrDest);
             if (block == null)
             {
                 // Target wasn't a block before. Make sure it exists.
-                block = FindContainingBlock(addrStart);
+                block = FindContainingBlock(addrDest);
                 if (block != null)
                 {
-                    block = SplitBlock(block, addrStart);
+                    block = SplitBlock(block, addrDest);
                 }
                 else
                 {
-                    block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
+                    block = AddBlock(addrDest, proc, GenerateBlockName(addrDest));
                 }
 
                 if (proc == block.Procedure)
                 {
                     // Easy case: split a block in our own procedure.
-                    var wi = CreateBlockWorkItem(addrStart, proc, state);
+                    var wi = CreateBlockWorkItem(addrDest, proc, state);
                     queue.Enqueue(PriorityJumpTarget, wi);
                 }
                 else if (IsBlockLinearProcedureExit(block))
@@ -288,41 +288,51 @@ namespace Decompiler.Scanning
                 else
                 {
                     // We just created a block in a foreign procedure. 
-                    procDest = EnsureProcedure(addrStart, null);
-                    block = CreateCallRetThunk(block, proc, procDest);
-                    var wi = CreatePromoteWorkItem(addrStart, block, procDest);
+                    procDest = EnsureProcedure(addrDest, null);
+                    block = CreateCallRetThunk(addrSrc, proc, procDest);
+                    var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                     queue.Enqueue(PriorityBlockPromote, wi);
                 }
             }
             else if (block.Procedure != proc)
             {
-                if (program.Procedures.TryGetValue(addrStart, out procDest))
+                // Jumped to a block with a different procedure than the current one.
+                // Was the jump to the entry of an existing procedure?
+                if (program.Procedures.TryGetValue(addrDest, out procDest))
                 {
                     if (procDest == proc)
                     {
                         proc.Signature.StackDelta = block.Procedure.Signature.StackDelta;
                         proc.Signature.FpuStackDelta = block.Procedure.Signature.FpuStackDelta;
-                        var wi = CreatePromoteWorkItem(addrStart, block, procDest);
+                        var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                         queue.Enqueue(PriorityBlockPromote, wi);
                     }
                     else
                     {
-                        block = CreateCallRetThunk(block, proc, procDest);
+                        // We jumped to the entry of a different procedure.
+                        block = CreateCallRetThunk(addrSrc, proc, procDest);
                     }
-                }
-                else if (IsBlockLinearProcedureExit(block))
-                {
-                    block = CloneBlockIntoOtherProcedure(block, proc);
                 }
                 else
                 {
-                    // We jumped into a pre-existing block of another procedure.
-                    procDest = EnsureProcedure(addrStart, null);
-                    var blockNew = CreateCallRetThunk(block, proc, procDest);
-                    procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
-                    var wi = CreatePromoteWorkItem(addrStart, block, procDest);
-                    queue.Enqueue(PriorityBlockPromote, wi);
-                    return blockNew;
+                    // Jumped into the middle of another procedure. Is it worth promoting the destination block
+                    // to a new procedure?
+                    if (IsBlockLinearProcedureExit(block))
+                    {
+                        // No, just clone the block into the new procedure.
+                        block = CloneBlockIntoOtherProcedure(block, proc);
+                    }
+                    else
+                    {
+                        // We jumped into a pre-existing block of another procedure which was hairy enough
+                        // that we need to promote the block to a new procedure.
+                        procDest = EnsureProcedure(addrDest, null);
+                        var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
+                        procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
+                        var wi = CreatePromoteWorkItem(addrDest, block, procDest);
+                        queue.Enqueue(PriorityBlockPromote, wi);
+                        return blockNew;
+                    }
                 }
             }
             return block;
@@ -344,11 +354,11 @@ namespace Decompiler.Scanning
             return clonedBlock;
         }
 
-        public Block CreateCallRetThunk(Block blockFrom, Procedure procOld, Procedure procNew)
+        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
         {
             var blockName = string.Format(
                 "{0}_thunk_{1}", 
-                blockFrom.Name,
+                GenerateBlockName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
@@ -428,7 +438,7 @@ namespace Decompiler.Scanning
             var st = state.Clone();
             st.OnProcedureEntered();
             st.SetValue(proc.Frame.EnsureRegister(program.Architecture.StackRegister), proc.Frame.FramePointer);
-            var block = EnqueueJumpTarget(addr, proc, st);
+            var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
             queue = oldQueue;

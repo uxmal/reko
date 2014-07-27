@@ -1,0 +1,94 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  si di ds
+	BypassIn: 
+	Trashed:   SCZO ax cx al cl ah ch
+	Preserved: sp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: si di ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	cx = 0x0014
+	call fn0C00_0008 (retsize: 2; depth: 2)
+	Mem0[ds:si:word16] = ax
+// DataOut: cx di ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp cx:0x0014 ax:<invalid>
+l0C00_0008_thunk_fn0C00_0008:
+	call fn0C00_0008 (retsize: 2; depth: 2)
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp cx:0x0014 ax:0x0000
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// fn0C00_0008 /////////////////////
+	LiveOut:   ax cx ds
+	MayUseIn:  cx di ds
+	BypassIn: 
+	Trashed:   SCZO ax al ah
+	Preserved: sp si di 
+// fn0C00_0008
+void fn0C00_0008()
+// SymbolicIn: sp:fp
+fn0C00_0008_entry:
+// DataOut: cx di ds
+// DataOut (flags): 
+// LocalsOut: fp(16)
+
+// SymbolicIn: sp:fp
+l0C00_0008:
+	sp = fp - 0x0002
+	wLoc02 = si
+	sp = fp - 0x0004
+	wLoc04 = di
+	si = 0x0000
+// DataOut: cx si di ds
+// DataOut (flags): 
+// LocalsOut: fp(16)
+
+// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+l0C00_000D:
+	SCZO = cond(cx - 0x0000)
+	branch Test(EQ,Z) l0C00_001A
+// DataOut: cx si di ds
+// DataOut (flags): 
+// LocalsOut: fp(16)
+
+// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+l0C00_0012:
+	si = si + Mem0[ds:di:word16]
+	SCZO = cond(si)
+	di = di + 0x0002
+	SCZO = cond(di)
+// DataOut: cx si di ds
+// DataOut (flags): 
+// LocalsOut: fp(16)
+
+// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+l0C00_001A:
+	ax = si
+	di = wLoc04
+	sp = fp - 0x0002
+	si = wLoc02
+	sp = fp
+	return
+// DataOut: ax cx ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp si:si ax:<invalid> di:di -4(fp):di -2(fp):si
+fn0C00_0008_exit:
+// DataOut: ax cx ds
+// DataOut (flags): 
+
+ 
+

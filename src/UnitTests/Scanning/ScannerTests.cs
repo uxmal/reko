@@ -195,7 +195,7 @@ namespace Decompiler.UnitTests.Scanning
                     m.Assign(m.LoadDw(m.Word32(0x3000)), m.Word32(42));
                 }
             });
-            scan.EnqueueJumpTarget(addr, proc, arch.CreateProcessorState());
+            scan.EnqueueJumpTarget(addr, addr, proc, arch.CreateProcessorState());
         }
 
         [Test]

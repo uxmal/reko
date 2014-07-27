@@ -75,6 +75,18 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
+        private class FlowDecorator : BlockDecorator
+        {
+            public override void BeforeBlock(Block block, List<string> lines)
+            {
+                base.BeforeBlock(block, lines);
+            }
+
+            public override void AfterBlock(Block block, List<string> lines)
+            {
+                base.AfterBlock(block, lines);
+            }
+        }
 
         protected Program BuildProgramMock(ProcedureBuilder mock)
         {

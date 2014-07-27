@@ -44,6 +44,10 @@ namespace Decompiler.Core
             this.Succ = new List<Block>(2);
 		}
 
+        /// <summary>
+        /// The starting address of the Block. Blocks are _not_ guaranteed to have a starting address. 
+        /// </summary>
+        public Address Address { get; set; }
         public string Name { get; private set; }
         public Procedure Procedure { get; set; }
         public bool IsSynthesized { get; set; }
