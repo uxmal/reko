@@ -32,6 +32,7 @@ using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -158,7 +159,7 @@ namespace Decompiler.UnitTests.Analysis
                 : new ProjectSerializer().LoadProject(FileUnitTester.MapTestPath(configFile));
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
-            foreach (var f in project.InputFiles)
+            foreach (var f in project.InputFiles.OfType<InputFile>())
             {
                 foreach (var sp in f.UserProcedures.Values)
                 {

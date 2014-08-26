@@ -103,7 +103,6 @@ namespace Decompiler.Gui.Windows
             e.Item = GetItem(e.ItemIndex);
         }
 
-
         void listView_CacheVirtualItems(object sender, CacheVirtualItemsEventArgs e)
         {
             ListViewItem[] cache = new ListViewItem[e.EndIndex - e.StartIndex + 1];
@@ -130,7 +129,6 @@ namespace Decompiler.Gui.Windows
             }
             else
             {
-
                 i = ((int) listView.FocusedItem.Tag + itemCount + distance) % itemCount;
             }
             listView.SelectedIndices.Clear();
@@ -146,7 +144,6 @@ namespace Decompiler.Gui.Windows
                 return;
             DoubleClickItem((int)listView.FocusedItem.Tag);
         }
-
 
         private class SearchResultView : ISearchResultView
         {
@@ -203,16 +200,16 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             return false;
         }
 
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ActionNextSearchHit: Advance(1); return true;
                 case CmdIds.ActionPrevSearchHit: Advance(-1); return true;

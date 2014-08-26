@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Argument_v1 arg = new Argument_v1();
 			arg.Name = "eax"; 
 			arg.Kind = reg;
-			Identifier id = argser.Deserialize(arg);
+			Identifier id = argser.Deserialize(arg, 0);
 			Assert.AreEqual("eax", id.Name);
 			Assert.AreEqual(32, id.DataType.BitSize);
 		}

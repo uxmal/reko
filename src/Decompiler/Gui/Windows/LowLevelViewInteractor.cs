@@ -26,6 +26,7 @@ using Decompiler.Gui.Windows.Controls;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -47,7 +48,6 @@ namespace Decompiler.Gui.Windows
         private bool ignoreAddressChange;
 
         public LowLevelView Control { get { return control; } }
-        //public virtual LowLevelView Control { get { return control; } }
 
         public IProcessorArchitecture Architecture
         {
@@ -89,7 +89,9 @@ namespace Decompiler.Gui.Windows
             set
             {
                 ignoreAddressChange = true;
+                var addrTop = value - ((int)value.Linear & 0x0F);
                 control.MemoryView.SelectedAddress = value;
+                control.MemoryView.TopAddress = addrTop;
                 control.DisassemblyView.SelectedAddress = value;
                 control.DisassemblyView.TopAddress = value;
                 ignoreAddressChange = false;
@@ -105,6 +107,7 @@ namespace Decompiler.Gui.Windows
             this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
             this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
+            this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
             this.control.MemoryView.Services = this.services;
 
             typeMarker = new TypeMarker(control.MemoryView);
@@ -132,11 +135,11 @@ namespace Decompiler.Gui.Windows
         {
         }
 
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ActionMarkType:
@@ -147,11 +150,11 @@ namespace Decompiler.Gui.Windows
             return false;
         }
 
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                 case CmdIds.ActionMarkType: return MarkType();
@@ -162,23 +165,26 @@ namespace Decompiler.Gui.Windows
             return false;
         }
 
-        public AddressRange GetSelectedAddressRange()
+        /// <summary>
+        /// Returns the range of address that are selected in the memory view.
+        /// </summary>
+        /// <returns></returns>
+        public virtual AddressRange GetSelectedAddressRange()
         {
             return control.MemoryView.GetAddressRange();
         }
 
         public void GotoAddress()
         {
-            Debug.Print("GotoAddress invoked");
-            var uiSvc = services.GetService<IDecompilerShellUiService>();
-            var dlgSvc = services.RequireService<IDialogFactory>();
-            using (IAddressPromptDialog dlg = dlgSvc.CreateAddressPromptDialog())
-            {
-                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                {
-                    control.MemoryView.ShowAddress(dlg.Address);
-                }
-            }
+            var addrRange = GetSelectedAddressRange();
+            if (addrRange == null)
+                return;
+            var rdr = arch.CreateImageReader(this.image, addrRange.Begin);
+            var addrDst = rdr.Read(arch.PointerType);
+            var txt = control.ToolBarAddressTextbox;
+            txt.Text = addrDst.ToString();
+            txt.SelectAll();
+            txt.Focus();
         }
 
         public void InvalidateControl()
@@ -188,26 +194,59 @@ namespace Decompiler.Gui.Windows
 
         public void MarkAndScanProcedure()
         {
-            AddressRange addrRange = control.MemoryView.GetAddressRange();
-            if (!addrRange.IsValid)
+            AddressRange addrRange;
+            if (!TryGetSelectedAddressRange(out addrRange))
                 return;
 
             try
             {
-                var decompiler = services.GetService<IDecompilerService>().Decompiler;
-                var proc = decompiler.ScanProcedure(addrRange.Begin);
-                var userp = new Decompiler.Core.Serialization.SerializedProcedure
-                {
-                    Address = addrRange.Begin.ToString(),
-                    Name = proc.Name,
-                };
-                decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
+                var address = addrRange.Begin;
+                MarkAndScanProcedure(address);
             }
             catch (Exception ex)
             {
                 services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error happened while scanning the procedure.");
             }
             control.MemoryView.Invalidate();
+            control.DisassemblyView.Invalidate();
+        }
+
+        private void MarkAndScanProcedure(Address address)
+        {
+            var decompiler = services.GetService<IDecompilerService>().Decompiler;
+            var proc = decompiler.ScanProcedure(address);
+            var userp = new Decompiler.Core.Serialization.Procedure_v1
+            {
+                Address = address.ToString(),
+                Name = proc.Name,
+            };
+            //$REVIEW: need to know what InputFile is in play.
+            var inputFile = (InputFile)decompiler.Project.InputFiles[0];
+            var ups = inputFile.UserProcedures;
+            if (!ups.ContainsKey(address))
+            {
+                ups.Add(address, userp);
+            }
+        }
+
+        private bool TryGetSelectedAddressRange(out AddressRange addrRange)
+        {
+            addrRange = null;
+            if (control.MemoryView.Focused)
+            {
+                addrRange = control.MemoryView.GetAddressRange();
+                if (!addrRange.IsValid)
+                    return false;
+            }
+            else if (control.DisassemblyView.Focused)
+            {
+                var addr = control.DisassemblyView.SelectedAddress;
+                if (addr == null)
+                    return false;
+                addrRange = new AddressRange(addr, addr);
+                return true;
+            }
+            return true;
         }
 
         public bool MarkType()
@@ -313,17 +352,35 @@ namespace Decompiler.Gui.Windows
             this.ignoreAddressChange = false;
         }
 
+        void ToolBarAddressTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData != Keys.Return)
+                return;
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+            GotoToolbarAddress();
+        }
+
         void ToolBarGoButton_Click(object sender, EventArgs e)
         {
             if (ignoreAddressChange)
                 return;
+            GotoToolbarAddress();
+        }
+
+        private void GotoToolbarAddress()
+        {
             Address addr;
-            if (!Address.TryParse(Control.ToolBarAddressTextbox.Text, 16, out addr))
+            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
+            if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
+                txtAddr = txtAddr.Substring(2);
+            if (!Address.TryParse(txtAddr, 16, out addr))
                 return;
             if (!image.IsValidAddress(addr))
                 return;
             this.ignoreAddressChange = true;
             this.Control.MemoryView.SelectedAddress = addr;
+            this.Control.MemoryView.TopAddress = addr;
             this.Control.DisassemblyView.SelectedAddress = addr;
             this.Control.DisassemblyView.TopAddress = addr;
             this.ignoreAddressChange = false;

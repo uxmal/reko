@@ -42,20 +42,81 @@ namespace Decompiler.Core.Serialization
 
         public Project_v2()
         {
-            this.Inputs = new List<DecompilerInput_v1>();
+            this.Inputs = new List<ProjectFile_v2>();
             this.Output = new DecompilerOutput_v1();
         }
 
-        [XmlElement("input")]
-        public List<DecompilerInput_v1> Inputs;
+        [XmlElement("input", typeof(DecompilerInput_v2))]
+        [XmlElement("metadata",typeof(MetadataFile_v2))]
+        public List<ProjectFile_v2> Inputs;
 
         [XmlElement("output")]
         public DecompilerOutput_v1 Output;
 
-        [XmlElement("procedure", typeof(SerializedProcedure))]
-        public List<SerializedProcedure> UserProcedures;
+        [XmlElement("procedure", typeof(Procedure_v1))]
+        public List<Procedure_v1> UserProcedures;
 
         [XmlElement("call", typeof(SerializedCall_v1))]
         public List<SerializedCall_v1> UserCalls;
+    }
+
+    public abstract class ProjectFile_v2
+    {
+        [XmlElement("filename")]
+        public string Filename;
+
+        public abstract T Accept<T>(IProjectFileVisitor_v2<T> visitor);
+    }
+
+    public interface IProjectFileVisitor_v2<T>
+    {
+        T VisitInputFile(DecompilerInput_v2 input);
+        T VisitMetadataFile(MetadataFile_v2 input);
+    }
+
+    public class DecompilerInput_v2 : ProjectFile_v2
+    {
+        [XmlElement("address")]
+        public string Address;
+
+        [XmlElement("comment")]
+        public string Comment;
+
+        [XmlElement("processor")]
+        public string Processor;
+
+        [XmlElement("procedure")]
+        public List<Procedure_v1> UserProcedures;
+
+        [XmlElement("call")]
+        public List<SerializedCall_v1> UserCalls;
+
+        [XmlElement("disassembly")]
+        public string DisassemblyFilename;
+
+        [XmlElement("intermediate-code")]
+        public string IntermediateFilename;
+
+        [XmlElement("output")]
+        public string OutputFilename;
+
+        [XmlElement("types-file")]
+        public string TypesFilename;
+
+        public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
+        {
+            return visitor.VisitInputFile(this);
+        }
+    }
+
+    public class MetadataFile_v2 : ProjectFile_v2
+    {
+        [XmlElement("loader")]
+        public string LoaderTypeName;
+
+        public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
+        {
+            return visitor.VisitMetadataFile(this);
+        }
     }
 }

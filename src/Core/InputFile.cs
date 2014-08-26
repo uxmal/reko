@@ -36,8 +36,13 @@ namespace Decompiler.Core
     {
         public InputFile()
         {
-            UserProcedures = new SortedList<Address, SerializedProcedure>();
+            UserProcedures = new SortedList<Address, Procedure_v1>();
             UserCalls = new SortedList<Address, SerializedCall_v1>();
+        }
+
+        public override T Accept<T>(IProjectFileVisitor<T> visitor)
+        {
+            return visitor.VisitInputFile(this);
         }
 
         /// <summary>
@@ -67,7 +72,7 @@ namespace Decompiler.Core
         /// </summary>
         public string TypesFilename { get; set; }
 
-        public SortedList<Address, Serialization.SerializedProcedure> UserProcedures { get;  set; }
+        public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get;  set; }
         public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
 
         public void SetDefaultFileNames(string inputFilename)

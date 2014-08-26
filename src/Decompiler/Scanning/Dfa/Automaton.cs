@@ -39,7 +39,7 @@ namespace Decompiler.Scanning.Dfa
             var tree = parser.Parse();
             var builder = new DfaBuilder(tree);
             builder.ExtendWithEos();
-            builder.BuildNodeSets(tree);
+            builder.BuildNodeSets();
             builder.BuildAutomaton(tree);
             return new Automaton(builder.States, builder.Transitions);
         }

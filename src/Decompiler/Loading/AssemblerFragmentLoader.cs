@@ -19,6 +19,8 @@
 using Decompiler.Core;
 using Decompiler.Core.Assemblers;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Configuration;
+using Decompiler.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,13 +35,13 @@ namespace Decompiler.Loading
         private string asmFragment;
         private Assembler asm;
 
-        public AssemblerFragmentLoader(string asmFragment, Assembler asm)
+        public AssemblerFragmentLoader(IServiceProvider services, string asmFragment, Assembler asm) : base(services)
         {
             this.asmFragment = asmFragment;
             this.asm = asm;
         }
 
-        public override Program Load(byte[] imageFile, Address userSpecifiedAddress)
+        public override Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress)
         {
             throw new NotImplementedException("Assembler asm = arch.CreateAssembler();");
             //asm.AssembleFragment(null, addrLoad, asmFragment);

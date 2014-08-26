@@ -23,6 +23,7 @@ using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
@@ -83,12 +84,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         #region ICommandTarget Members
 
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, Decompiler.Gui.CommandStatus status, Decompiler.Gui.CommandText text)
+        public bool QueryStatus(CommandID cmdId, Decompiler.Gui.CommandStatus status, Decompiler.Gui.CommandText text)
         {
             return false;
         }
 
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
             return false;
         }

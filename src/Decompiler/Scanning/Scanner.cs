@@ -42,7 +42,7 @@ namespace Decompiler.Scanning
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
-        void EnqueueUserProcedure(SerializedProcedure sp);
+        void EnqueueUserProcedure(Procedure_v1 sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
         //$REVIEW: the following fields look an awful lot like a Program to me?
@@ -458,7 +458,7 @@ namespace Decompiler.Scanning
             return proc;
         }
 
-        public void EnqueueUserProcedure(SerializedProcedure sp)
+        public void EnqueueUserProcedure(Procedure_v1 sp)
         {
             var addr = Address.Parse(sp.Address, 16);
             var proc = EnsureProcedure(addr, sp.Name);

@@ -53,7 +53,8 @@ namespace WindowsDecompiler
                 var listener = NullDecompilerEventListener.Instance;
 
                 services.AddService(typeof (DecompilerEventListener), listener);
-                var ldr = new Loader(new DecompilerConfiguration(), services);
+                services.AddService(typeof(IDecompilerConfigurationService), new DecompilerConfiguration());
+                var ldr = new Loader(services);
 				var dec = new DecompilerDriver(ldr, host, services);
 				dec.Decompile(args[0]);
 			}

@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Gui
         public void DecSvc_DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
-            var loader = mr.StrictMock<Decompiler.Loading.LoaderBase>();
+            var loader = mr.StrictMock<Decompiler.Loading.LoaderBase>(sc);
             var host = mr.StrictMock<DecompilerHost>();
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<Platform>(sc, arch);
@@ -84,12 +84,13 @@ namespace Decompiler.UnitTests.Gui
             var image = new LoadedImage(new Address(0x1000), bytes);
             var imageMap = new ImageMap(image);
             var prog = new Program(image, imageMap, arch, platform);
-            loader.Stub(l => l.LoadImageBytes("foo\\bar\\baz.exe", 0)).Return(bytes);
-            loader.Stub(l => l.Load(bytes, null)).Return(prog);
+            var fileName = "foo\\bar\\baz.exe";
+            loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
+            loader.Stub(l => l.Load(fileName, bytes, null)).Return(prog);
             mr.ReplayAll();
 
             svc.Decompiler = dec;
-            svc.Decompiler.LoadProgram("foo\\bar\\baz.exe");
+            svc.Decompiler.LoadProgram(fileName);
 
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");

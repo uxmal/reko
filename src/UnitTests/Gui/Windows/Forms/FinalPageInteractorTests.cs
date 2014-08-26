@@ -52,10 +52,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		[Test]
         public void Fpi_ConnectToBrowserService()
 		{
-            interactor = new FinalPageInteractor();
+            interactor = new FinalPageInteractor(sc);
             mr.ReplayAll();
 
-            interactor.Site = site;
             interactor.ConnectToBrowserService();
 
             mr.VerifyAll();

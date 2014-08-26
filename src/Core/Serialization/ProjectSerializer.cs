@@ -27,7 +27,7 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    public class ProjectSerializer
+    public class ProjectSerializer : IProjectFileVisitor_v2<ProjectFile>
     {
         public void Save(Project_v2 project, TextWriter sw)
         {
@@ -63,7 +63,12 @@ namespace Decompiler.Core.Serialization
             return project;
         }
 
-        private InputFile LoadInputFile(DecompilerInput_v1 sInput)
+        private ProjectFile LoadInputFile(ProjectFile_v2 sInput)
+        {
+            return sInput.Accept<ProjectFile>(this);
+        }
+
+        public ProjectFile VisitInputFile(DecompilerInput_v2 sInput)
         {
             var file = new InputFile
             {
@@ -73,7 +78,7 @@ namespace Decompiler.Core.Serialization
             if (sInput.UserProcedures != null)
             {
                 file.UserProcedures = sInput.UserProcedures
-                        .Select(sup => new KeyValuePair<Address, SerializedProcedure>(
+                        .Select(sup => new KeyValuePair<Address, Procedure_v1>(
                             Address.Parse(sup.Address, 16),
                             sup))
                         .Where(kv => kv.Key != null)
@@ -81,6 +86,12 @@ namespace Decompiler.Core.Serialization
             }
             return file;
         }
+
+        public ProjectFile VisitMetadataFile(MetadataFile_v2 sMetadata)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public Project LoadProject(Project_v1 sp)
         {
@@ -93,7 +104,7 @@ namespace Decompiler.Core.Serialization
                 OutputFilename = sp.Output.OutputFilename,
                 TypesFilename = sp.Output.TypesFilename,
                 UserProcedures = sp.UserProcedures
-                    .Select(sup => new KeyValuePair<Address, SerializedProcedure>(
+                    .Select(sup => new KeyValuePair<Address, Procedure_v1>(
                         Address.Parse(sup.Address, 16),
                         sup))
                     .Where(kv => kv.Key != null)

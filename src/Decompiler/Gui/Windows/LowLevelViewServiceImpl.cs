@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Decompiler.Gui.Windows
 {
-    public class MemoryViewServiceImpl : ViewService, IMemoryViewService
+    public class LowLevelViewServiceImpl : ViewService, ILowLevelViewService
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
@@ -33,7 +33,7 @@ namespace Decompiler.Gui.Windows
 
         public const string ViewWindowType = "memoryViewWindow";
 
-        public MemoryViewServiceImpl(IServiceProvider sp) : base(sp)
+        public LowLevelViewServiceImpl(IServiceProvider sp) : base(sp)
         {
         }
 

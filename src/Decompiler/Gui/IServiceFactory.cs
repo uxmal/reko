@@ -48,7 +48,7 @@ namespace Decompiler.Gui
         IFileSystemService CreateFileSystemService();
         InitialPageInteractor CreateInitialPageInteractor();
         ILoadedPageInteractor CreateLoadedPageInteractor();
-        IMemoryViewService CreateMemoryViewService();
+        ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
         IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
         ITabControlHostService CreateTabControlHost(TabControl tabControl);
@@ -87,9 +87,9 @@ namespace Decompiler.Gui
             return new DecompilerShellUiService((Form)form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
         }
 
-        public IMemoryViewService CreateMemoryViewService()
+        public ILowLevelViewService CreateMemoryViewService()
         {
-            return new MemoryViewServiceImpl(services);
+            return new LowLevelViewServiceImpl(services);
         }
 
         public IDisassemblyViewService CreateDisassemblyViewService()
@@ -109,12 +109,12 @@ namespace Decompiler.Gui
 
         public InitialPageInteractor CreateInitialPageInteractor()
         {
-            return new InitialPageInteractorImpl();
+            return new InitialPageInteractorImpl(this.services);
         }
 
         public ILoadedPageInteractor CreateLoadedPageInteractor()
         {
-            return new LoadedPageInteractor();
+            return new LoadedPageInteractor(services);
         }
 
         public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()

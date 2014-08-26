@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Gui
         [Test]
         public void NavigateToAddress()
         {
-            var memSvc = mr.DynamicMock<IMemoryViewService>();
+            var memSvc = mr.DynamicMock<ILowLevelViewService>();
             var decSvc = mr.DynamicMock<IDecompilerService>();
             var dec = mr.DynamicMock<IDecompiler>();
             memSvc.Expect(x => x.ShowMemoryAtAddress(
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Gui
             mr.ReplayAll();
 
             var sc = new ServiceContainer();
-            sc.AddService<IMemoryViewService>(memSvc);
+            sc.AddService<ILowLevelViewService>(memSvc);
             sc.AddService<IDecompilerService>(decSvc);
             var nav = new AddressNavigator(new Address(0x1234), sc);
             nav.NavigateTo();

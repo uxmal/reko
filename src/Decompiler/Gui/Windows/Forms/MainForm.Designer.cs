@@ -47,6 +47,7 @@
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.tabConsole = new System.Windows.Forms.TabPage();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
@@ -77,7 +78,7 @@
             this.treeBrowser.Location = new System.Drawing.Point(3, 0);
             this.treeBrowser.Name = "treeBrowser";
             this.treeBrowser.SelectedImageIndex = 0;
-            this.treeBrowser.Size = new System.Drawing.Size(195, 328);
+            this.treeBrowser.Size = new System.Drawing.Size(241, 328);
             this.treeBrowser.TabIndex = 0;
             // 
             // imlBrowser
@@ -93,11 +94,12 @@
             // 
             this.tabControl1.Controls.Add(this.tabDiagnostics);
             this.tabControl1.Controls.Add(this.tabFindResults);
+            this.tabControl1.Controls.Add(this.tabConsole);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControl1.Location = new System.Drawing.Point(0, 331);
+            this.tabControl1.Location = new System.Drawing.Point(3, 328);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(784, 180);
+            this.tabControl1.Size = new System.Drawing.Size(781, 180);
             this.tabControl1.TabIndex = 5;
             // 
             // tabDiagnostics
@@ -106,7 +108,7 @@
             this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
             this.tabDiagnostics.Name = "tabDiagnostics";
             this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDiagnostics.Size = new System.Drawing.Size(776, 154);
+            this.tabDiagnostics.Size = new System.Drawing.Size(773, 154);
             this.tabDiagnostics.TabIndex = 1;
             this.tabDiagnostics.Text = "Diagostics";
             this.tabDiagnostics.UseVisualStyleBackColor = true;
@@ -120,7 +122,7 @@
             this.listDiagnostics.FullRowSelect = true;
             this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
             this.listDiagnostics.Name = "listDiagnostics";
-            this.listDiagnostics.Size = new System.Drawing.Size(770, 148);
+            this.listDiagnostics.Size = new System.Drawing.Size(767, 148);
             this.listDiagnostics.SmallImageList = this.imageList;
             this.listDiagnostics.TabIndex = 2;
             this.listDiagnostics.UseCompatibleStateImageBehavior = false;
@@ -153,7 +155,7 @@
             this.tabFindResults.Location = new System.Drawing.Point(4, 22);
             this.tabFindResults.Name = "tabFindResults";
             this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFindResults.Size = new System.Drawing.Size(776, 154);
+            this.tabFindResults.Size = new System.Drawing.Size(773, 154);
             this.tabFindResults.TabIndex = 0;
             this.tabFindResults.Text = "Find results";
             this.tabFindResults.UseVisualStyleBackColor = true;
@@ -165,7 +167,7 @@
             this.listFindResults.HideSelection = false;
             this.listFindResults.Location = new System.Drawing.Point(3, 3);
             this.listFindResults.Name = "listFindResults";
-            this.listFindResults.Size = new System.Drawing.Size(770, 148);
+            this.listFindResults.Size = new System.Drawing.Size(767, 148);
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
             // 
@@ -173,7 +175,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 331);
+            this.splitter1.Size = new System.Drawing.Size(3, 511);
             this.splitter1.TabIndex = 6;
             this.splitter1.TabStop = false;
             // 
@@ -181,11 +183,20 @@
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(3, 328);
+            this.splitter2.Location = new System.Drawing.Point(3, 508);
             this.splitter2.Name = "splitter2";
             this.splitter2.Size = new System.Drawing.Size(781, 3);
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
+            // 
+            // tabConsole
+            // 
+            this.tabConsole.Location = new System.Drawing.Point(4, 22);
+            this.tabConsole.Name = "tabConsole";
+            this.tabConsole.Size = new System.Drawing.Size(773, 154);
+            this.tabConsole.TabIndex = 2;
+            this.tabConsole.Text = "Console";
+            this.tabConsole.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -193,9 +204,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 533);
             this.Controls.Add(this.treeBrowser);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
@@ -229,6 +240,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ImageList imlBrowser;
+        private System.Windows.Forms.TabPage tabConsole;
     }
 }
 

@@ -33,7 +33,7 @@ namespace Decompiler.Core.Lib
     {
         private IEnumerator<T> e;
         private List<T> peeked;
-        private int iPeeked;
+        private int iCur;
 
         public LookaheadEnumerator(IEnumerator<T> innerEnumerator)
         {
@@ -41,7 +41,7 @@ namespace Decompiler.Core.Lib
                 throw new ArgumentNullException("innerEnumerator");
             this.e = innerEnumerator;
             this.peeked = new List<T>();
-            this.iPeeked = 0;
+            this.iCur = 0;
         }
 
         public LookaheadEnumerator(IEnumerable<T> collection) : this(collection.GetEnumerator())
@@ -70,19 +70,19 @@ namespace Decompiler.Core.Lib
 
         public bool MoveNext()
         {
-            if (iPeeked < peeked.Count-1)
+            if (iCur < peeked.Count-1)
             {
-                ++iPeeked;
+                ++iCur;
                 return true;
             }
-            iPeeked = 0;
+            iCur = 0;
             peeked.Clear();
             return e.MoveNext();
         }
 
         public void Reset()
         {
-            iPeeked = 0;
+            iCur = 0;
             peeked.Clear();
             e.Reset();
         }
@@ -91,11 +91,11 @@ namespace Decompiler.Core.Lib
 
         public T Peek(int ahead)
         {
-            int itemsInBuffer = peeked.Count - iPeeked;
+            int itemsInBuffer = peeked.Count - iCur;
             Debug.Assert(itemsInBuffer >= 0);
             if (ahead < itemsInBuffer)
             {
-                return peeked[iPeeked + ahead];
+                return peeked[iCur + ahead];
             }
             if (itemsInBuffer == 0 && ahead == 0)
             {
@@ -112,10 +112,10 @@ namespace Decompiler.Core.Lib
 
         public void Skip(int skip)
         {
-            int itemsInBuffer = peeked.Count - iPeeked;
+            int itemsInBuffer = peeked.Count - iCur;
             if (skip < itemsInBuffer)
             {
-                iPeeked += skip;
+                iCur += skip;
                 return;
             }
         }

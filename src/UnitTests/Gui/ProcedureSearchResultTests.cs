@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Gui
         [Test]
         public void Navigate()
         {
-            var mvs = AddService<IMemoryViewService>();
+            var mvs = AddService<ILowLevelViewService>();
             var cvs = AddService<ICodeViewerService>();
             var decSvc = AddService<IDecompilerService>();
             var dec = repository.StrictMock<IDecompiler>();

@@ -34,25 +34,9 @@ namespace Decompiler.Gui.Windows.Forms
 
     public class FinalPageInteractor : PhasePageInteractorImpl, IFinalPageInteractor
     {
-        public FinalPageInteractor()
+        public FinalPageInteractor(IServiceProvider services) : base(services)
         {
         }
-
-        void DataTypeDefinitionLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            ShowExplorerWindow(Decompiler.Project.InputFiles[0].TypesFilename);
-        }
-
-        void ProgramCodeLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            ShowExplorerWindow(Decompiler.Project.InputFiles[0].OutputFilename);
-        }
-
-        private void ShowExplorerWindow(string filePath)
-        {
-            Process.Start("explorer.exe", string.Format("/select,\"{0}\"", filePath));
-        }
-
 
         public void ConnectToBrowserService()
         {

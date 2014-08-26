@@ -74,6 +74,16 @@ namespace Decompiler.Arch.Sparc
             return new Frame(pointerType);
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new BeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new BeImageReader(image, offset);
+        }
+
         public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

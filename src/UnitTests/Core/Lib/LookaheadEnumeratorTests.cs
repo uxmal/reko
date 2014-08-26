@@ -100,6 +100,7 @@ namespace Decompiler.UnitTests.Core.Lib
         {
             var e = new LookaheadEnumerator<char>("abc".GetEnumerator());
             e.MoveNext();
+            Assert.AreEqual('a', e.Current);
             Assert.AreEqual('b', e.Peek(1));
             e.MoveNext();
             Assert.AreEqual('b', e.Current);

@@ -117,6 +117,7 @@ namespace Decompiler.UnitTests.Analysis
 				proc.Write(false, fut.TextWriter);
 			}
 
+            proc.Dump(true, false);
 			Statement phiStm = proc.ControlGraph.Blocks[3].Statements[0];
 			Assert.AreEqual("reg_5 = PHI(reg, reg_6)", phiStm.Instruction.ToString());
 			Identifier reg   = ssa.Identifiers[3].Identifier;

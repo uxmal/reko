@@ -46,7 +46,7 @@ namespace Decompiler.Gui.Design
 
         public override void DoDefaultAction()
         {
-            var memSvc = Services.RequireService<IMemoryViewService>();
+            var memSvc = Services.RequireService<ILowLevelViewService>();
             var decSvc = Services.RequireService<IDecompilerService>();
             memSvc.ShowMemoryAtAddress(decSvc.Decompiler.Program, segment.Address);
         }

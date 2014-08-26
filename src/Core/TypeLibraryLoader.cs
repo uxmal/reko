@@ -86,7 +86,7 @@ namespace Decompiler.Core
             {
                 foreach (object o in serializedLibrary.Procedures)
                 {
-                    SerializedProcedure sp = o as SerializedProcedure;
+                    Procedure_v1 sp = o as Procedure_v1;
                     if (sp != null)
                     {
                         LoadProcedure(sp);
@@ -95,7 +95,7 @@ namespace Decompiler.Core
             }
         }
 
-        public void LoadProcedure(SerializedProcedure sp)
+        public void LoadProcedure(Procedure_v1 sp)
         {
             try
             {

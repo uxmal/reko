@@ -78,7 +78,7 @@ namespace Decompiler.Core.Serialization
             FpuStackOffset = 0;
 			if (ss.ReturnValue != null)
 			{
-				ret = argser.Deserialize(ss.ReturnValue);
+				ret = argser.DeserializeReturnValue(ss.ReturnValue);
                 fpuDelta += FpuStackOffset;
 			}
 
@@ -86,9 +86,13 @@ namespace Decompiler.Core.Serialization
 			var args = new List<Identifier>();
 			if (ss.Arguments != null)
 			{
-				foreach (Argument_v1 arg in ss.Arguments)
-				{
-					args.Add(argser.Deserialize(arg));
+                for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
+                {
+                    var sArg = ss.Arguments[iArg];
+                    var arg = argser.Deserialize(sArg, iArg);
+                    if (arg == null)    //$DEBUG
+                        args.ToArray();
+					args.Add(arg);
 				}
                 fpuDelta -= FpuStackOffset;
 			}
@@ -117,9 +121,9 @@ namespace Decompiler.Core.Serialization
             return ssig;
         }
 
-        public SerializedProcedure Serialize(Procedure proc, Address addr)
+        public Procedure_v1 Serialize(Procedure proc, Address addr)
         {
-            SerializedProcedure sproc = new SerializedProcedure();
+            Procedure_v1 sproc = new Procedure_v1();
             sproc.Address = addr.ToString();
             sproc.Name = proc.Name;
             if (proc.Signature != null)

@@ -20,7 +20,9 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Assemblers;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +38,7 @@ namespace Decompiler.Loading
         private string asmfile;
         private Assembler asm;
 
-        public AssemblerLoader(Assembler asm, string asmfile)
+        public AssemblerLoader(IServiceProvider services, Assembler asm, string asmfile) : base(services)
         {
             this.asm = asm;
             this.asmfile = asmfile;
@@ -45,10 +47,10 @@ namespace Decompiler.Loading
         public Program Load(Address addrLoad)
         {
             byte[] image = LoadImageBytes(asmfile, 0);
-            return Load(image, addrLoad);
+            return Load(asmfile, image, addrLoad);
         }
 
-        public override Program Load(byte[] image, Address addrLoad)
+        public override Program Load(string fileName, byte[] image, Address addrLoad)
         {
             var lr = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             Program prog = new Program(

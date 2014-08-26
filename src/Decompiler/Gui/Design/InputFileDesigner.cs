@@ -32,7 +32,7 @@ namespace Decompiler.Gui.Design
     {
         public override void Initialize(object obj)
         {
-            var inputFile =(InputFile) obj;
+            var inputFile = (InputFile) obj;
             TreeNode.Text = Path.GetFileName(inputFile.Filename);
             TreeNode.ImageName = "Binary.ico";
             TreeNode.ToolTipText = string.Format("{0}{1}{2}",

@@ -65,6 +65,7 @@ namespace Decompiler.UnitTests.Scanning
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
             AssemblerLoader ldr = new AssemblerLoader(
+                null,
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFile));
             Program prog = ldr.Load(addr);

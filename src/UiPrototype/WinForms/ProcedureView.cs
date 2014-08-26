@@ -39,7 +39,10 @@ namespace Decompiler.UiPrototype.WinForms
 
         public class EditorModel2 : TextViewModel
         {
+            public event EventHandler ModelChanged;
+
             private TextSpan[][] lines;
+
             public EditorModel2(params TextSpan[][] spans)
             {
                 this.lines = spans;
@@ -47,7 +50,14 @@ namespace Decompiler.UiPrototype.WinForms
 
             public int LineCount { get { return lines.Length; } }
 
-            public IEnumerable<TextSpan> GetLineSpans(int index) { return lines[index]; }
+            public IEnumerable<TextSpan> GetLineSpans(int index)
+            { 
+                return lines[index];
+            }
+
+            public void CacheHint(int index, int count)
+            {
+            }
         }
 
         public TextViewModel Model(params TextSpan[][] lines)

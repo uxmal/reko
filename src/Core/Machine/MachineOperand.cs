@@ -146,7 +146,7 @@ namespace Decompiler.Core.Machine
     }
 
     /// <summary>
-    /// Represents an address.
+    /// Represents a machine address.
     /// </summary>
     public class AddressOperand : MachineOperand
     {

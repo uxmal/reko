@@ -318,7 +318,7 @@ namespace Decompiler.Evaluation
                     {
                         if (otherReg.IsSubRegisterOf(reg))
                         {
-                            stateToSet[otherReg] = value;
+                            stateToSet[otherReg] = otherReg.GetSlice(value);
                         }
                         else if (reg.IsSubRegisterOf(otherReg))
                         {

@@ -146,7 +146,18 @@ namespace Decompiler.Gui.Windows.Controls
                 var writer = new StringWriter();
                 dumper.DumpAssemblerLine(image, instr, writer);
                 var s = writer.ToString();
-                g.DrawString(s, Font, SystemBrushes.ControlText, rc);
+                Brush brText;
+                if (instr.Address == selectedAddress)
+                {
+                    Debug.Print("NILZ");    //$DEBUG
+                    g.FillRectangle(SystemBrushes.Highlight, rc);
+                    brText = SystemBrushes.HighlightText;
+                }
+                else
+                {
+                    brText = SystemBrushes.ControlText;
+                }
+                g.DrawString(s, Font, brText, rc);
             }
         }
 

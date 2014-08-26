@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = new Address(0x12345);
             ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
-            SerializedProcedure sproc =  ser.Serialize(proc, addr);
+            Procedure_v1 sproc =  ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
             Assert.AreEqual("00012345", sproc.Address);
         }
@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             
             Address addr = new Address(0x567A0C);
             ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
-            SerializedProcedure sproc = ser.Serialize(proc, addr);
+            Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);
         }
 
@@ -163,6 +163,26 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ps = new ProcedureSerializer(arch, "stdapi");
             var sig = ps.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(1, sig.FpuStackDelta);
+        }
+
+        [Test]
+        public void ProcSer_Deserialize_thiscall()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "__thiscall",
+                Arguments = new Argument_v1[] {
+                    new Argument_v1 
+                    {
+                        Type = new SerializedTypeReference("int"),
+                        Name = "this"
+                    }
+                }
+            };
+
+            var ps = new ProcedureSerializer(arch, "stdcall");
+            var sig = ps.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual("ecx", sig.FormalArguments[0].ToString());
         }
 
         [Test]

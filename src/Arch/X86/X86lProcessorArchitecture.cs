@@ -103,7 +103,17 @@ namespace Decompiler.Arch.X86
             return new Frame(FramePointerType);
         }
 
-		public virtual BitSet CreateRegisterBitset()
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
+        public virtual BitSet CreateRegisterBitset()
 		{
 			return new BitSet((int) Registers.Max);
 		}

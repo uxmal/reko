@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -62,7 +63,7 @@ namespace Decompiler.Gui.Windows
             return tabCtrl.TabPages.Cast<TabPage>().Where(p => p.Tag == frame).FirstOrDefault();
         }
 
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             var frame = ActiveFrame;
             if (frame == null)
@@ -70,10 +71,10 @@ namespace Decompiler.Gui.Windows
             var ct = frame.Pane as ICommandTarget;
             if (ct == null)
                 return false;
-            return ct.QueryStatus(ref cmdSet, cmdId, status, text);
+            return ct.QueryStatus(cmdId, status, text);
         }
 
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
             var frame = ActiveFrame;
             if (frame == null)
@@ -81,7 +82,7 @@ namespace Decompiler.Gui.Windows
             var ct = frame.Pane as ICommandTarget;
             if (ct == null)
                 return false;
-            return ct.Execute(ref cmdSet, cmdId);
+            return ct.Execute(cmdId);
         }
     }
 }

@@ -34,9 +34,9 @@ namespace Decompiler.Gui.Windows.Forms
         protected ProcedureDialog dlg;
 
         private IProcessorArchitecture arch;
-        private SerializedProcedure proc;
+        private Procedure_v1 proc;
 
-        public ProcedureDialogInteractor(IProcessorArchitecture arch, SerializedProcedure proc)
+        public ProcedureDialogInteractor(IProcessorArchitecture arch, Procedure_v1 proc)
         {
             this.arch = arch;
             this.proc = proc;
@@ -55,7 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
             return dlg;
         }
 
-        public SerializedProcedure SerializedProcedure { get { return proc; } }
+        public Procedure_v1 SerializedProcedure { get { return proc; } }
 
         private void PopulateFields()
         {

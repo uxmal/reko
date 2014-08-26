@@ -1,21 +1,21 @@
-// ProcedureMock
-void ProcedureMock()
-ProcedureMock_entry:		// pred:
+// proc1
+void proc1()
+proc1_entry:
 	// succ:  l1
-l1:		// pred: ProcedureMock_entry
+l1:
 	word16 Eq_5::*di_5 = &Eq_5::a5388[0]
+	goto lupe
 	// succ:  lupe
-lupe:		// pred: l1 lupe
+l2:
+	return
+	// succ:  proc1_exit
+lupe:
 	ds->*di_5 = 0x0000;
 	di_5 = di_5 + 1;
 	cx = cx - 0x0001;
 	branch cx != 0x0000 lupe
 	// succ:  l2 lupe
-l2:		// pred: lupe
-	return
-	// succ:  ProcedureMock_exit
-ProcedureMock_exit:		// pred: l2
-	// succ: 
+proc1_exit:
 
 // Equivalence classes ////////////
 Eq_5: (struct "Eq_5" (5388 (arr word16) a5388))

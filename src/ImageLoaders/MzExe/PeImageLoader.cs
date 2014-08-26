@@ -386,6 +386,7 @@ namespace Decompiler.ImageLoaders.MzExe
                 AddUnresolvedImport(id, string.Format("Ordinal_{0}", rvaEntry & 0x7FFFFFF));
                 return;
             }
+
             string fnName = ReadUtf8String(rvaEntry + 2, 0);
             ProcedureSignature sig = platform.LookupProcedure(fnName);
             if (sig == null)

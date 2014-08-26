@@ -30,7 +30,6 @@ namespace Decompiler.ImageLoaders.MachO
     {
         public MachOLoader(IServiceProvider services, byte[] rawBytes) : base(services, rawBytes) { }
 
-
         public override Address PreferredBaseAddress
         {
             get { throw new NotImplementedException(); }

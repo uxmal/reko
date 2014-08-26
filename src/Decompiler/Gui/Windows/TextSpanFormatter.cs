@@ -69,6 +69,7 @@ namespace Decompiler.Gui.Windows
             span.Text.Append(comment);
             currentSpan = null;
         }
+
         public override void WriteHyperlink(string text, object href)
         {
             currentSpan = null;
@@ -125,6 +126,8 @@ namespace Decompiler.Gui.Windows
 
         private class TextSpanModel : TextViewModel
         {
+            public event EventHandler ModelChanged { add { } remove { } }
+
             private TextSpan[][] lines;
 
             public TextSpanModel(TextSpan[][] lines)
@@ -137,6 +140,10 @@ namespace Decompiler.Gui.Windows
             public IEnumerable<TextSpan> GetLineSpans(int index)
             {
                 return lines[index];
+            }
+
+            public void CacheHint(int index, int count)
+            {
             }
         }
 

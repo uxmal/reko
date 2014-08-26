@@ -47,7 +47,7 @@ namespace Decompiler.Gui
         public void NavigateTo()
         {
             var dec = sp.RequireService<IDecompilerService>();
-            var svc = sp.RequireService<IMemoryViewService>();
+            var svc = sp.RequireService<ILowLevelViewService>();
             svc.ShowMemoryAtAddress(dec.Decompiler.Program, Address);
         }
 

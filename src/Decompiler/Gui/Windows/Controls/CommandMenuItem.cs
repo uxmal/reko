@@ -71,6 +71,11 @@ namespace Decompiler.Gui.Windows.Controls
 			set { isTemp = value; }
 		}
 
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2}", Text, IsDynamic ? "Dyn" : "", IsTemporary ? "Tmp" : "   ");
+        }
+
 		public MenuCommand MenuCommand
 		{
 			get { return cmd; }

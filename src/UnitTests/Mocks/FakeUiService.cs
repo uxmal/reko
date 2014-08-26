@@ -21,6 +21,7 @@
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
@@ -128,12 +129,12 @@ namespace Decompiler.UnitTests.Mocks
 
         #region ICommandTarget Members
 
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             return false;
         }
 
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
             return false;
         }

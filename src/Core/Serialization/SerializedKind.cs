@@ -18,12 +18,13 @@
  */
 #endregion
 
+using Decompiler.Core.Expressions;
 using System;
 
 namespace Decompiler.Core.Serialization
 {
 	public abstract class SerializedKind
 	{
-		public abstract void Accept(ArgumentSerializer sser);
+		public abstract Identifier Accept(ArgumentSerializer sser);
 	}
 }

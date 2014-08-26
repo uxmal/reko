@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Core
             var slib = new SerializedLibrary
             {
                 Procedures = {
-                    new SerializedProcedure { 
+                    new Procedure_v1 { 
                         Name="foo",
                         Signature = new SerializedSignature
                         {
@@ -164,7 +164,7 @@ namespace Decompiler.UnitTests.Core
                     },
                 },
                 Procedures = {
-                    new SerializedProcedure { 
+                    new Procedure_v1 { 
                         Name="foo",
                         Signature = new SerializedSignature
                         {

@@ -41,24 +41,27 @@ namespace Decompiler.UnitTests.Gui.Windows
         private MockRepository repository;
         private IDecompilerShellUiService uiSvc;
 		private IDialogFactory dlgFactory;
-        private IServiceContainer sp;
+        private IServiceContainer sc;
+        private IDecompilerService dcSvc;
 
         [SetUp]
         public void Setup()
         {
             repository = new MockRepository();
             interactor = repository.Stub<DisassemblyViewInteractor>();
-            sp = new ServiceContainer();
+            sc = new ServiceContainer();
             uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
+            dcSvc = repository.Stub<IDecompilerService>();
 			dlgFactory = repository.DynamicMock<IDialogFactory>();
-            sp.AddService<IDecompilerShellUiService>(uiSvc);
-            sp.AddService<IDecompilerService>(repository.Stub<IDecompilerService>());
-			sp.AddService<IDialogFactory>(dlgFactory);
+            sc.AddService<IDecompilerShellUiService>(uiSvc);
+
+            sc.AddService<IDecompilerService>(dcSvc);
+			sc.AddService<IDialogFactory>(dlgFactory);
         }
 
         private void Initialize()
         {
-            interactor.SetSite(sp);
+            interactor.SetSite(sc);
             interactor.CreateControl();
         }
 
@@ -66,12 +69,12 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void GotoAddressEnabled()
         {
             var status = new CommandStatus();
-            Assert.IsTrue(interactor.QueryStatus(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress, status, null));
-            Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);
+            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress), status, null));
+            Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);
         }
 
         [Test]
-        public void GotoAddress()
+        public void DviGotoAddress()
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
             dlg.Stub(x => dlg.Address).Return(new Address(0x41104110));
@@ -83,10 +86,33 @@ namespace Decompiler.UnitTests.Gui.Windows
             repository.ReplayAll();
 
             Initialize();
-            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
+            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
 
             repository.VerifyAll();
             Assert.AreEqual(0x41104110, interactor.StartAddress.Linear);
+        }
+
+        [Test]
+        public void DviSupportMarkProcedure()
+        {
+            var status = new CommandStatus();
+            var text = new CommandText();
+            var ret = interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionMarkProcedure), status, null);
+            Assert.IsTrue(ret);
+            Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);
+        }
+
+        [Test]
+        public void DviMarkProcedure()
+        {
+            var dcSvc = repository.Stub<IDecompilerService>();
+            var decompiler = repository.StrictMock<IDecompiler>();
+            sc.AddService<IDecompilerService>(dcSvc);
+            dcSvc.Decompiler = decompiler;
+
+            var ret = interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionMarkProcedure));
+            
+            Assert.IsTrue(ret);
         }
     }
 }

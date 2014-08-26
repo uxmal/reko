@@ -77,6 +77,16 @@ namespace Decompiler.Arch.Pdp11
             return new Frame(PrimitiveType.Word16);
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new Pdp11ProcessorState(this);

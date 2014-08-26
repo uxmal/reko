@@ -24,6 +24,7 @@ using Decompiler.Gui.Windows;
 using Decompiler.Gui.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -43,7 +44,6 @@ namespace Decompiler.Gui.Windows
             if (decSvc == null)
                 throw new InvalidOperationException("Expected IDecompilerService to be available.");
             var Decompiler = decSvc.Decompiler;
-
 
             if (!IsProgramLoaded(Decompiler))
             {
@@ -75,15 +75,15 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        public Address StartAddress { 
+        public Address StartAddress
+        {
             get { return startAddress; }
             set
             {
                 startAddress = value;
                 DumpAssembler();
             }
-        } 
-
+        }
 
         private int CountVisibleLines()
         {
@@ -159,23 +159,24 @@ namespace Decompiler.Gui.Windows
 
         #region ICommandTarget Members
 
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress: status.Status = MenuStatus.Enabled | MenuStatus.Visible; return true;
+                case CmdIds.ActionMarkProcedure: status.Status = MenuStatus.Enabled | MenuStatus.Visible; return true;
                 }
             }
             return false;
         }
 
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                 }

@@ -23,6 +23,7 @@ using Decompiler.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows.Controls
@@ -110,26 +111,26 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
 			}
 		}
 
-		public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+		public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
 		{
-			if (mruFirst <= cmdId && cmdId < mruMax)
+			if (mruFirst <= cmdId.ID && cmdId.ID < mruMax)
 			{
 				status.Status = MenuStatus.Visible|MenuStatus.Enabled;
-				text.Text = string.Format("MRU {0}", cmdId - mruFirst);
+				text.Text = string.Format("MRU {0}", cmdId.ID - mruFirst);
 				return true;
 			}
 
-			if (mpCmdIdToStatus.Contains(cmdId))
+			if (mpCmdIdToStatus.Contains(cmdId.ID))
 			{
-				status.Status = (MenuStatus) mpCmdIdToStatus[cmdId];
-				Console.WriteLine("Testring cmd {0}: status {1}", cmdId, status.Status);
+				status.Status = (MenuStatus) mpCmdIdToStatus[cmdId.ID];
+				Console.WriteLine("Testring cmd {0}: status {1}", cmdId.ID, status.Status);
 
 				return true;
 			}
 			return false;
 		}
 
-		public bool Execute(ref Guid cmdSet, int cmdId)
+		public bool Execute(CommandID cmdId)
 		{
 			return false;
 		}

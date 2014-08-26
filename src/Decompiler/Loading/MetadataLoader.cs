@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,33 @@
  */
 #endregion
 
+using Decompiler.Core;
 using System;
-using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Loading
 {
+    public abstract class MetadataLoader
+    {
+        public MetadataLoader(IServiceProvider services, byte[] bytes)
+        {
+        }
 
+        public abstract TypeLibrary Load();
+    }
+
+    public class NullMetadataLoader : MetadataLoader
+    {
+        public NullMetadataLoader()
+            : base(null, null)
+        {
+        }
+
+        public override TypeLibrary Load()
+        {
+            return new TypeLibrary();
+        }
+    }
 }

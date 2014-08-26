@@ -50,7 +50,8 @@ namespace Decompiler.UnitTests.Loading
             sc = new ServiceContainer();
             eventListener = new FakeDecompilerEventListener();
             dcSvc = mr.Stub<IDecompilerConfigurationService>();
-            sc.AddService(typeof(DecompilerEventListener), eventListener);
+            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IDecompilerConfigurationService>(dcSvc);
         }
 
         [Test]
@@ -58,7 +59,7 @@ namespace Decompiler.UnitTests.Loading
         {
             mr.ReplayAll();
 
-            TestLoader ldr = new TestLoader(dcSvc, sc);
+            TestLoader ldr = new TestLoader(sc);
             Assert.IsTrue(ldr.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", "0"));
 
             mr.VerifyAll();
@@ -70,9 +71,9 @@ namespace Decompiler.UnitTests.Loading
             dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
             mr.ReplayAll();
 
-            TestLoader ldr = new TestLoader(dcSvc, sc);
+            TestLoader ldr = new TestLoader(sc);
             ldr.Test_Image = new byte[] { 42, 42, 42, 42, };
-            Program prog = ldr.Load(ldr.Test_Image, null);
+             Program prog = ldr.Load("", ldr.Test_Image, null);
 
             Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
@@ -94,9 +95,9 @@ namespace Decompiler.UnitTests.Loading
             });
             mr.ReplayAll();
 
-            TestLoader ldr = new TestLoader(dcSvc, sc);
+            TestLoader ldr = new TestLoader(sc);
             ldr.Test_Image = new byte[] { 42, 42, 0xA0, 0xA0 };
-            var imgLoader = ldr.FindImageLoader(ldr.Test_Image);
+            var imgLoader = ldr.FindImageLoader<ImageLoader>("", ldr.Test_Image, () => null);
 
             Assert.IsInstanceOf<TestImageLoader>(imgLoader);
             mr.VerifyAll();
@@ -104,8 +105,7 @@ namespace Decompiler.UnitTests.Loading
 
 		private class TestLoader : Loader
 		{
-			public TestLoader(IDecompilerConfigurationService config, IServiceProvider services)
-                : base(config, services)
+			public TestLoader( IServiceProvider services) : base(services)
 			{
 			}
 

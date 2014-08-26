@@ -68,16 +68,27 @@ namespace Decompiler.Gui
         {
             var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i]);
             var dasm = program.Architecture.CreateDisassembler(program.Image.CreateReader(addr));
-            var instr = dasm.MoveNext() ? dasm.Current.ToString().Replace('\t',' ') : "";
-            return new string[] {
-                addr.ToString(),
-                instr,
-            };
+            try
+            {
+                var instr = dasm.MoveNext() ? dasm.Current.ToString().Replace('\t', ' ') : "";
+
+                return new string[] {
+                    addr.ToString(),
+                    instr,
+                };
+            }
+            catch
+            {
+                return new string[] {
+                    addr.ToString(),
+                    "<invalid>"
+                };
+            }
         }
 
         public void NavigateTo(int i)
         {
-            var memSvc = services.RequireService<IMemoryViewService>();
+            var memSvc = services.RequireService<ILowLevelViewService>();
             memSvc.ShowMemoryAtAddress(program, program.ImageMap.MapLinearAddressToAddress(addresses[i]));
         }
     }

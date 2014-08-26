@@ -31,6 +31,7 @@ using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 
 namespace Decompiler.UnitTests.Typing
@@ -43,6 +44,7 @@ namespace Decompiler.UnitTests.Typing
 		protected Program RewriteFile(string relativePath)
 		{
             AssemblerLoader ldr = new AssemblerLoader(
+                new ServiceContainer(),
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(relativePath));
 

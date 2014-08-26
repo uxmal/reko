@@ -60,7 +60,8 @@ namespace Decompiler.Typing
 
         public Expression VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            var tcr = new TypedConstantRewriter(store, globals);
+            throw new NotImplementedException();    //$TODO
         }
 
 		public Expression VisitApplication(Application appl)

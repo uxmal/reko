@@ -41,28 +41,25 @@ namespace Decompiler.Gui.Windows.Forms
     /// </summary>
     public class InitialPageInteractorImpl : PhasePageInteractorImpl, InitialPageInteractor
     {
-        public InitialPageInteractorImpl()
+        public InitialPageInteractorImpl(IServiceProvider services) : base(services)
         {
         }
 
-        protected virtual IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host, IServiceProvider sp)
+        protected virtual IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host)
         {
-            return new DecompilerDriver(ldr, host, sp);
+            return new DecompilerDriver(ldr, host, Services);
         }
 
-        protected virtual LoaderBase CreateLoader(IServiceContainer sc)
+        protected virtual LoaderBase CreateLoader()
         {
-            return new Loader(
-                Site.GetService<IDecompilerConfigurationService>(),
-                sc);
+            return new Loader(Services);
         }
 
-
-        public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid== CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ViewShowAllFragments:
@@ -73,20 +70,11 @@ namespace Decompiler.Gui.Windows.Forms
                     return true;
                 }
             }
-            return base.QueryStatus(ref cmdSet, cmdId, status, text);
+            return base.QueryStatus(cmdId, status, text);
         }
 
         public void EnableControls()
         {
-        }
-
-        public override ISite Site
-        {
-            get { return base.Site; }
-            set
-            {
-                base.Site = value;
-            }
         }
 
         public override void PerformWork(IWorkerDialogService workerDlgSvc)
@@ -105,19 +93,18 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void OpenBinary(string file, DecompilerHost host)
         {
-            var sc = Site.RequireService<IServiceContainer>();
-            var ldr = CreateLoader(sc);
-            this.Decompiler = CreateDecompiler(ldr, host, sc);
-            IWorkerDialogService svc = Site.RequireService<IWorkerDialogService>();
+            var ldr = CreateLoader();
+            this.Decompiler = CreateDecompiler(ldr, host);
+            IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 Decompiler.LoadProgram(file);
             });
             if (Decompiler.Program != null)
             {
-                var browserSvc = Site.RequireService<IProjectBrowserService>();
+                var browserSvc = Services.RequireService<IProjectBrowserService>();
                 browserSvc.Load(Decompiler.Project, Decompiler.Program);
-                var memSvc = Site.RequireService<IMemoryViewService>();
+                var memSvc = Services.RequireService<ILowLevelViewService>();
                 memSvc.ViewImage(Decompiler.Program);
             }
         }
@@ -129,10 +116,10 @@ namespace Decompiler.Gui.Windows.Forms
             Address addrBase, 
             DecompilerHost host)
         {
-            var sc = Site.RequireService<IServiceContainer>();
-            var ldr = CreateLoader(sc);
-            this.Decompiler = CreateDecompiler(ldr, host, sc);
-            IWorkerDialogService svc = Site.RequireService<IWorkerDialogService>();
+            var sc = Services.RequireService<IServiceContainer>();
+            var ldr = CreateLoader();
+            this.Decompiler = CreateDecompiler(ldr, host);
+            IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 Decompiler.LoadRawImage(file, arch, platform, addrBase);
@@ -141,9 +128,9 @@ namespace Decompiler.Gui.Windows.Forms
             });
             if (Decompiler.Program != null)
             {
-                var browserSvc = Site.RequireService<IProjectBrowserService>();
+                var browserSvc = Services.RequireService<IProjectBrowserService>();
                 browserSvc.Load(Decompiler.Project, Decompiler.Program);
-                var memSvc = Site.RequireService<IMemoryViewService>();
+                var memSvc = Services.RequireService<ILowLevelViewService>();
                 memSvc.ViewImage(Decompiler.Program);
             }
         }

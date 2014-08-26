@@ -331,6 +331,7 @@ namespace Decompiler.Core
     {
         public LeImageReader(byte[] bytes, uint offset=0) : base(bytes, offset) { }
         public LeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
+        public LeImageReader(LoadedImage image, Address addr) : base(image, addr) { }
 
         public override ImageReader CreateNew(byte[] bytes, uint offset)
         {
@@ -366,6 +367,7 @@ namespace Decompiler.Core
     {
         public BeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
         public BeImageReader(LoadedImage image, uint offset) : base(image, offset) { }
+        public BeImageReader(LoadedImage image, Address addr) : base(image, addr) { }
 
         public override short ReadInt16() { return ReadBeInt16(); }
         public override int ReadInt32() { return ReadBeInt32(); }

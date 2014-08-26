@@ -31,6 +31,7 @@ using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
@@ -42,10 +43,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private Program prog;
         private LoadedPageInteractor interactor;
         private IDecompilerService decSvc;
-        private FakeComponentSite site;
+        private ServiceContainer sc;
         private MockRepository repository;
         private ImageMapSegment mapSegment1;
         private ImageMapSegment mapSegment2;
+        private IDecompilerShellUiService uiSvc;
+        private ILowLevelViewService memSvc;
 
         [SetUp]
         public void Setup()
@@ -64,18 +67,21 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mapSegment1 = prog.ImageMap.Segments.Values[0];
             mapSegment2 = prog.ImageMap.Segments.Values[1];
 
-            interactor = new LoadedPageInteractor();
-            site = new FakeComponentSite(interactor);
+            sc = new ServiceContainer();
             decSvc = new DecompilerService();
 
-            site.AddService(typeof(IDecompilerService), decSvc);
-            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
-            site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            site.AddService(typeof(IStatusBarService), new FakeStatusBarService());
-            TestLoader ldr = new TestLoader(new Project_v1(), prog);
-            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), site);
+            sc.AddService(typeof(IDecompilerService), decSvc);
+            sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
+            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            sc.AddService(typeof(IStatusBarService), new FakeStatusBarService());
+            uiSvc = AddService<IDecompilerShellUiService>();
+            memSvc = AddService<ILowLevelViewService>();
+
+            TestLoader ldr = new TestLoader(sc, new Project_v1(), prog);
+            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.LoadProgram("test.exe");
 
+            interactor = new LoadedPageInteractor(sc);
         }
 
         [TearDown]
@@ -88,10 +94,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Ignore]
         public void LpiPopulate()
         {
-            var memSvc = AddService<IMemoryViewService>();
             var disSvc = AddService<IDisassemblyViewService>();
-            var uiSvc = AddService<IDecompilerShellUiService>();
-            interactor.Site = site;
 
             interactor.EnterPage();
             //ListView lv = form.BrowserList;
@@ -100,11 +103,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private T AddService<T>() where T : class
         {
-            var oldSvc = site.GetService(typeof(T));
+            var oldSvc = sc.GetService(typeof(T));
             if (oldSvc != null)
-                site.RemoveService(typeof(T));
+                sc.RemoveService(typeof(T));
             var svc = repository.DynamicMock<T>();
-            site.AddService(typeof(T), svc);
+            sc.AddService(typeof(T), svc);
             return svc;
         }
 
@@ -112,12 +115,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Ignore]
         public void LpiPopulateBrowserWithScannedProcedures()
         {
-            var memSvc = AddService<IMemoryViewService>();
-            var disSvc = AddService<IDisassemblyViewService>();
-            var uiSvc = AddService<IDecompilerShellUiService>();
             // Instead write expectations for the two added items.
-
-            interactor.Site = site;
 
             AddProcedure(new Address(0xC20, 0x0000), "Test1");
             AddProcedure(new Address(0xC20, 0x0002), "Test2");
@@ -136,11 +134,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void LpiMarkingProceduresShouldAddToUserProceduresList()
         {
-            var memSvc = AddService<IMemoryViewService>();
-            var uiSvc = AddService<IDecompilerShellUiService>();
             var disSvc = AddService<IDisassemblyViewService>();
-            interactor.Site = site;
-            Assert.AreEqual(0, decSvc.Decompiler.Project.InputFiles[0].UserProcedures.Count);
+            Assert.AreEqual(0, ((InputFile) decSvc.Decompiler.Project.InputFiles[0]).UserProcedures.Count);
             var addr = new Address(0x0C20, 0);
             memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
             memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
@@ -150,8 +145,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             repository.VerifyAll();
             //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            Assert.AreEqual(1, decSvc.Decompiler.Project.InputFiles[0].UserProcedures.Count);
-            SerializedProcedure uproc = (SerializedProcedure)decSvc.Decompiler.Project.InputFiles[0].UserProcedures.Values[0];
+            var inputFile = (InputFile)decSvc.Decompiler.Project.InputFiles[0];
+            Assert.AreEqual(1, inputFile.UserProcedures.Count);
+            Procedure_v1 uproc = (Procedure_v1)inputFile.UserProcedures.Values[0];
             Assert.AreEqual("0C20:0000", uproc.Address);
         }
 
@@ -162,14 +158,23 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
+        public void QQQ_Test()
+        {
+            Guid g = Guid.NewGuid();
+            CommandID cmd1 = new CommandID(g, 2014);
+            CommandID cmd2 = new CommandID(g, 2014);
+            Assert.AreEqual(cmd1.GetHashCode(), cmd2.GetHashCode());
+            Assert.AreEqual(cmd1, cmd2);
+        }
+
+        [Test]
         public void LpiSetBrowserCaptionWhenEnteringPage()
         {
             AddService<IDecompilerShellUiService>();
-            AddService<IMemoryViewService>();
+            AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             repository.ReplayAll();
 
-            interactor.Site = site;
             interactor.EnterPage();
 
             repository.VerifyAll();
@@ -186,12 +191,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             decompiler.Stub(x => x.Program).Return(prog);
             decSvc.Stub(x => x.Decompiler).Return(decompiler);
             AddService<IDecompilerShellUiService>();
-            AddService<IMemoryViewService>();
+            AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             repository.ReplayAll();
 
-            Assert.IsNotNull(site);
-            interactor.Site = site;
+            Assert.IsNotNull(sc);
             interactor.EnterPage();
 
             repository.VerifyAll();
@@ -200,7 +204,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private MenuStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            interactor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
+            interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null);
             return status.Status;
         }
 
@@ -209,13 +213,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             private Project_v1 project;
             private Program prog;
 
-            public TestLoader(Project_v1 project, Program prog)
+            public TestLoader(IServiceProvider services, Project_v1 project, Program prog) : base(services)
             {
                 this.project = project;
                 this.prog = prog;
             }
 
-            public override Program Load(byte[] imageFile, Address userSpecifiedAddress)
+            public override Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress)
             {
                 return prog;
             }
