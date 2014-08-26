@@ -45,7 +45,6 @@ namespace Decompiler.Gui.Forms
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
     public class MainFormInteractor :
-        Container,
         ICommandTarget,
         DecompilerHost,
         IStatusBarService
@@ -89,13 +88,8 @@ namespace Decompiler.Gui.Forms
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
             pageLoaded = svcFactory.CreateLoadedPageInteractor();
-            pageAnalyzed = new AnalyzedPageInteractorImpl();
-            pageFinal = new FinalPageInteractor();
-
-            Add(pageInitial);
-            Add(pageLoaded);
-            Add(pageAnalyzed);
-            Add(pageFinal);
+            pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
+            pageFinal = new FinalPageInteractor(sc);
 
             nextPage[pageInitial] = pageLoaded;
             nextPage[pageLoaded] = pageAnalyzed;
@@ -162,7 +156,7 @@ namespace Decompiler.Gui.Forms
             var abSvc = svcFactory.CreateArchiveBrowserService();
             sc.AddService(typeof(IArchiveBrowserService), abSvc);
 
-            sc.AddService(typeof(IMemoryViewService), svcFactory.CreateMemoryViewService());
+            sc.AddService(typeof(ILowLevelViewService), svcFactory.CreateMemoryViewService());
             sc.AddService(typeof(IDisassemblyViewService), svcFactory.CreateDisassemblyViewService());
 
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();
@@ -198,14 +192,13 @@ namespace Decompiler.Gui.Forms
             set { currentPhase = value; }
         }
 
-        protected override object GetService(Type service)
+        [Obsolete]
+        protected object GetService(Type service)
         {
-            object svc = sc.GetService(service);
-            if (svc != null)
-                return svc;
-            return base.GetService(service);
+            return sc.GetService(service);
         }
 
+        [Obsolete]
         private T GetService<T>()
         {
             return (T)GetService(typeof(T));
@@ -255,6 +248,15 @@ namespace Decompiler.Gui.Forms
                 Cursor.Current = Cursors.Arrow;
                 form.SetStatus("");
             }
+        }
+
+        public void AddMetadataFile()
+        {
+            var fileName = uiSvc.ShowOpenFileDialog(null);
+            if (fileName == null)
+                return;
+            mru.Use(fileName);
+            var loader = decompilerSvc.Decompiler.LoadMetadata(fileName);
         }
 
         public bool OpenBinaryAs()
@@ -418,7 +420,7 @@ namespace Decompiler.Gui.Forms
 
         public void ViewMemoryWindow()
         {
-            var memService = GetService<IMemoryViewService>();
+            var memService = GetService<ILowLevelViewService>();
             memService.ViewImage(this.decompilerSvc.Decompiler.Program);
             memService.ShowWindow();
         }
@@ -504,25 +506,30 @@ namespace Decompiler.Gui.Forms
 
         #region ICommandTarget members
 
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus cmdStatus, CommandText cmdText)
+        public bool QueryStatus(CommandID cmdId, CommandStatus cmdStatus, CommandText cmdText)
         {
-            if (searchResultsTabControl.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+            if (searchResultsTabControl.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
-            if (subWindowCommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+            if (subWindowCommandTarget.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
-            if (currentPhase != null && currentPhase.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+            if (currentPhase != null && currentPhase.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                if (QueryMruItem(cmdId, cmdStatus, cmdText))
+                if (QueryMruItem(cmdId.ID, cmdStatus, cmdText))
                     return true;
 
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.FileOpen:
                 case CmdIds.FileExit:
-                case CmdIds.HelpAbout:
-                case CmdIds.EditFind:
+                case CmdIds.FileSave:
+                case CmdIds.FileOpenAs:
+                case CmdIds.WindowsCascade: 
+                case CmdIds.WindowsTileVertical:
+                case CmdIds.WindowsTileHorizontal:
+                case CmdIds.WindowsCloseAll: 
+                case CmdIds.HelpAbout: 
                     cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.FileMru:
@@ -533,7 +540,10 @@ namespace Decompiler.Gui.Forms
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
+                case CmdIds.FileAddBinary:
+                case CmdIds.FileAddMetadata:
                 case CmdIds.ViewFindAllProcedures:
+                case CmdIds.EditFind:
                     cmdStatus.Status = IsDecompilerLoaded
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
@@ -561,24 +571,25 @@ namespace Decompiler.Gui.Forms
         /// <param name="cmdSet"></param>
         /// <param name="cmdId"></param>
         /// <returns></returns>
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
-            if (searchResultsTabControl.Execute(ref cmdSet, cmdId))
+            if (searchResultsTabControl.Execute(cmdId))
                 return true;
-            if (subWindowCommandTarget.Execute(ref cmdSet, cmdId))
+            if (subWindowCommandTarget.Execute(cmdId))
                 return true;
-            if (currentPhase != null && currentPhase.Execute(ref cmdSet, cmdId))
+            if (currentPhase != null && currentPhase.Execute(cmdId))
                 return true;
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                if (ExecuteMruFile(cmdId))
+                if (ExecuteMruFile(cmdId.ID))
                     return false;
 
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
-                case CmdIds.FileOpenAs: return OpenBinaryAs();;
+                case CmdIds.FileOpenAs: return OpenBinaryAs();
                 case CmdIds.FileSave: Save(); return true;
+                case CmdIds.FileAddMetadata: AddMetadataFile(); return true;
                 case CmdIds.FileExit: form.Close(); return true;
 
                 case CmdIds.ActionNextPhase: NextPhase(); return true;
@@ -653,33 +664,45 @@ namespace Decompiler.Gui.Forms
 
         public void WriteDisassembly(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].DisassemblyFilename))
+            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
             {
-                writer(output);
+                using (TextWriter output = CreateTextWriter(inputFile.DisassemblyFilename))
+                {
+                    writer(output);
+                }
             }
         }
 
         public void WriteIntermediateCode(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].IntermediateFilename))
+            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
             {
-                writer(output);
+                using (TextWriter output = CreateTextWriter(inputFile.IntermediateFilename))
+                {
+                    writer(output);
+                }
             }
         }
 
         public void WriteTypes(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].TypesFilename))
+            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
             {
-                writer(output);
+                using (TextWriter output = CreateTextWriter(inputFile.TypesFilename))
+                {
+                    writer(output);
+                }
             }
         }
 
         public void WriteDecompiledCode(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.InputFiles[0].OutputFilename))
+            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
             {
-                writer(output);
+                using (TextWriter output = CreateTextWriter(inputFile.OutputFilename))
+                {
+                    writer(output);
+                }
             }
         }
 
@@ -742,8 +765,7 @@ namespace Decompiler.Gui.Forms
         {
             MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
             if (cmd == null) throw new NotImplementedException("Button not hooked up.");
-            Guid g = cmd.CommandID.Guid;
-            Execute(ref g, cmd.CommandID.ID);
+            Execute(cmd.CommandID);
         }
 
         public void OnBrowserTreeItemSelected(object sender, TreeViewEventArgs e)

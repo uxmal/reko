@@ -198,6 +198,31 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
+        public void PBS_AddBinary()
+        {
+            var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_ProgramWithOneSegment();
+            var project = new Project
+            {
+                InputFiles = 
+                {
+                    new InputFile { Filename="foo.exe", BaseAddress=new Address(0x400000) }
+                }
+            };
+            pbs.Load(project, program);
+            mr.ReplayAll();
+
+            project.InputFiles.Add(new InputFile
+            {
+                Filename = "bar.exe",
+                BaseAddress = new Address(0x1231300)
+            });
+
+            Assert.AreEqual(2, fakeTree.Nodes.Count);
+            mr.VerifyAll();
+        }
+
+        [Test]
         public void PBS_AfterSelect_Calls_DoDefaultAction()
         {
             var des = mr.StrictMock<TreeNodeDesigner>();

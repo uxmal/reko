@@ -99,6 +99,12 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slFileSave = new CommandMenuItem("_Save", new Guid(CmdSets.Decompiler), CmdIds.FileSave);
             slFileSave.IsDynamic = false;
             slFileSave.ImageIndex = 1;
+            CommandMenuItem slFileAddBinary = new CommandMenuItem("Add _binary file...", new Guid(CmdSets.Decompiler), CmdIds.FileAddBinary);
+            slFileAddBinary.IsDynamic = false;
+            
+            CommandMenuItem slFileAddMetadata = new CommandMenuItem("Add _metadata file...", new Guid(CmdSets.Decompiler), CmdIds.FileAddMetadata);
+            slFileAddMetadata.IsDynamic = false;
+            
             CommandMenuItem slFileMru = new CommandMenuItem("", new Guid(CmdSets.Decompiler), CmdIds.FileMru);
             slFileMru.IsDynamic = true;
             slGrpFileMru.Add(0, slFileMru);
@@ -188,6 +194,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpFile.Add(0, slFileSave);
 			slGrpToolbarFileOps.Add(0, slFileOpen);
 			slGrpToolbarFileOps.Add(0, slFileSave);
+			slGrpFile.Add(0, slFileAddBinary);
+			slGrpFile.Add(0, slFileAddMetadata);
 			slGrpToolbarActions.Add(0, slActionNextPhase);
 			slGrpToolbarActions.Add(0, slActionFinishDecompilation);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);

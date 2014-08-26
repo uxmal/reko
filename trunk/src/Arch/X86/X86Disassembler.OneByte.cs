@@ -185,7 +185,7 @@ namespace Decompiler.Arch.X86
 				// 80
 				new GroupOpRec(1, "Eb,Ib"),
 				new GroupOpRec(1, "Ev,Iv"),
-				new SingleByteOpRec(Opcode.illegal),
+				new GroupOpRec(1, "Eb,Ib"), // invalid in 64-bit mode.
 				new GroupOpRec(1, "Ev,Ib"),
 				new SingleByteOpRec(Opcode.test, "Eb,Gb"),
 				new SingleByteOpRec(Opcode.test, "Ev,Gv"),

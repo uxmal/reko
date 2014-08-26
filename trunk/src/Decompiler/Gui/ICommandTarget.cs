@@ -42,14 +42,14 @@ namespace Decompiler.Gui
 		/// <param name="info">collecting parameter. If not null, asks for the text of the command item (for
 		/// displaying in menus, buttons, etc).</param>
 		/// <returns>false if the command is not supported, true if it is.</returns>
-		bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text);
+		bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text);
 
 		/// <summary>
 		/// Executes the specified command.
 		/// </summary>
 		/// <param name="cmd"></param>
 		/// <returns>false if the specified command is unknown, true otherwise.</returns>
-		bool Execute(ref Guid cmdSet, int cmdId);
+		bool Execute(CommandID cmdId);
 	}
 
 	public class CommandStatus
@@ -69,5 +69,4 @@ namespace Decompiler.Gui
 		Enabled = 0x0002,
 		Checked = 0x0004,
 	}
-
 }

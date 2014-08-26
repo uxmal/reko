@@ -19,6 +19,8 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
+using Decompiler.Core.Services;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -35,17 +37,24 @@ namespace Decompiler.Loading
     {
         private List<EntryPoint> entryPoints;
 
-		public LoaderBase()
-		{
-			this.entryPoints = new List<EntryPoint>();
-		}
+        public LoaderBase(IServiceProvider services)
+        {
+            this.Services = services;
+            this.entryPoints = new List<EntryPoint>();
+            this.ConfigurationService = services.GetService<IDecompilerConfigurationService>();
+            this.EventListener = services.GetService<DecompilerEventListener>();
+        }
 
         public List<EntryPoint> EntryPoints
         {
             get { return entryPoints; }
         }
 
-        public abstract Program Load(byte[] imageFile, Address userSpecifiedAddress);
+        public IDecompilerConfigurationService ConfigurationService { get; private set; }
+        public DecompilerEventListener EventListener { get; private set; }
+        public IServiceProvider Services { get; private set; }
+
+        public abstract Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress);
 
         /// <summary>
         /// Loads the contents of a file with the specified filename into an array 
@@ -62,6 +71,95 @@ namespace Decompiler.Loading
                 stm.Read(bytes, offset, (int)stm.Length);
                 return bytes;
             }
+        }
+
+        /// <summary>
+        /// Locates an image loader from the Decompiler configuration file, based on the magic number in the
+        /// begining of the program image.
+        /// </summary>
+        /// <param name="rawBytes"></param>
+        /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
+        public T FindImageLoader<T>(string fileName, byte[] rawBytes, Func<T> defaultLoader)
+        {
+            foreach (LoaderElement e in ConfigurationService.GetImageLoaders())
+            {
+                if (!string.IsNullOrEmpty(e.MagicNumber) &&
+                    ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset)
+                    ||
+                    (!string.IsNullOrEmpty(e.Extension) &&
+                        fileName.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    return CreateImageLoader<T>(e.TypeName, rawBytes);
+                }
+            }
+
+            EventListener.AddDiagnostic(
+                new NullCodeLocation(""),
+                new ErrorDiagnostic("The format of the file is unknown."));
+            return defaultLoader();
+        }
+
+
+        public bool ImageHasMagicNumber(byte[] image, string magicNumber, string sOffset)
+        {
+            int offset = ConvertOffset(sOffset);
+            byte[] magic = ConvertHexStringToBytes(magicNumber);
+            if (image.Length < magic.Length + offset)
+                return false;
+
+            for (int i = 0, j = offset; i < magic.Length; ++i, ++j)
+            {
+                if (magic[i] != image[j])
+                    return false;
+            }
+            return true;
+        }
+
+
+                private int ConvertOffset(string sOffset)
+        {
+            if (string.IsNullOrEmpty(sOffset))
+                return 0;
+            int offset;
+            if (Int32.TryParse(sOffset, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out offset))
+                return offset;
+            return 0;
+        }
+
+        private byte[] ConvertHexStringToBytes(string hexString)
+        {
+            List<byte> bytes = new List<byte>();
+            for (int i = 0; i < hexString.Length; i += 2)
+            {
+                uint hi = HexDigit(hexString[i]);
+                uint lo = HexDigit(hexString[i + 1]);
+                bytes.Add((byte) ((hi << 4) | lo));
+            }
+            return bytes.ToArray();
+        }
+
+        private uint HexDigit(char digit)
+        {
+            switch (digit)
+            {
+            case '0': case '1': case '2': case '3': case '4': 
+            case '5': case '6': case '7': case '8': case '9':
+                return (uint) (digit - '0');
+            case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
+                return (uint) ((digit - 'A') + 10);
+            case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
+                return (uint) ((digit - 'a') + 10);
+            default:
+                throw new ArgumentException(string.Format("Invalid hexadecimal digit '{0}'.", digit));
+            }
+        }
+
+        public T CreateImageLoader<T>(string typeName, byte[] bytes)
+        {
+            Type t = Type.GetType(typeName);
+            if (t == null)
+                throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
+            return (T) Activator.CreateInstance(t, this.Services, bytes);
         }
 
         protected void CopyImportThunks(Dictionary<uint, PseudoProcedure> importThunks, Program prog)

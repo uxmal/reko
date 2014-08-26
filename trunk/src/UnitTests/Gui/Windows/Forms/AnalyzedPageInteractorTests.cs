@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private AnalyzedPageInteractorImpl interactor;
         private IDecompilerShellUiService uiSvc;
         private ICodeViewerService codeViewSvc;
-        private IMemoryViewService memViewSvc;
+        private ILowLevelViewService memViewSvc;
         private IDisassemblyViewService disasmViewSvc;
         private ServiceContainer sc;
 
@@ -62,10 +62,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc = AddService<IDecompilerShellUiService>();
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
             codeViewSvc = AddService<ICodeViewerService>();
-            memViewSvc = AddService<IMemoryViewService>();
+            memViewSvc = AddService<ILowLevelViewService>();
             disasmViewSvc = AddService<IDisassemblyViewService>();
 
-            TestLoader ldr = new TestLoader();
+            TestLoader ldr = new TestLoader(sc);
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             DecompilerService decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
@@ -99,9 +99,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void CreateInteractor()
         {
-            interactor = new AnalyzedPageInteractorImpl();
-            var site = new FakeComponentSite(interactor, sc);
-            interactor.Site = site;
+            interactor = new AnalyzedPageInteractorImpl(sc);
         }
 
         [Test]
@@ -158,7 +156,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.EnterPage();
             //form.BrowserList.Items[0].Selected = true;
 
-            Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
+            Assert.IsTrue(interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionEditSignature)), "Should have executed command.");
             mr.VerifyAll();
         }
 
@@ -172,11 +170,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestLoader : LoaderBase
         {
-            public TestLoader()
+            public TestLoader(IServiceProvider services) : base(services)
             {
             }
 
-            public override Program Load(byte[] imageFile, Address userSpecifiedAddress)
+            public override Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress)
             {
                 Program prog = new Program();
                 prog.Image = new LoadedImage(new Address(0x00100000), imageFile);

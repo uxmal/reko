@@ -22,14 +22,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Decompiler.Gui.Controls
 {
     public interface ITextBox
     {
         event EventHandler TextChanged;
+        event KeyEventHandler KeyDown;
 
         bool Enabled { get; set; }
         string Text { get; set; }
+
+        void SelectAll();
+
+        void Focus();
     }
 }

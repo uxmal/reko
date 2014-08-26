@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Mocks
             LoadProgram_Called = true;
             byte [] image = loader.LoadImageBytes(fileName, 0);
 
-            this.prog = loader.Load(image, null);
+            this.prog = loader.Load(fileName, image, null);
             this.project = new Project
             {
                 InputFiles = {
@@ -69,6 +69,11 @@ namespace Decompiler.UnitTests.Mocks
                     }
                 }
             };
+        }
+
+        public TypeLibrary LoadMetadata(string filename)
+        {
+            throw new NotImplementedException();
         }
 
         public void ScanProgram()

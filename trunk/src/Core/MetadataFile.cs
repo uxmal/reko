@@ -18,33 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Core
 {
-    public class SelectionChangedEventArgs : EventArgs
+    /// <summary>
+    /// Represents a file that only used for the  metdata it contains.
+    /// </summary>
+    public class MetadataFile : ProjectFile
     {
-        private AddressRange range;
-
-        public SelectionChangedEventArgs(AddressRange range)
+        public override T Accept<T>(IProjectFileVisitor<T> visitor)
         {
-            this.range = range;
+            return visitor.VisitMetadataFile(this);
         }
 
-        public AddressRange AddressRange { get { return range; } }
-    }
+        public string MetadataType { get; set; }
 
-    public interface IMemoryViewService
-    {
-        event EventHandler<SelectionChangedEventArgs> SelectionChanged;
-
-        void ShowWindow();
-        void ViewImage(Program program);
-        void ShowMemoryAtAddress(Program program, Address addr);
-        AddressRange GetSelectedAddressRange();
-        void InvalidateWindow();
+        public TypeLibrary TypeLibrary { get; set; }
     }
 }

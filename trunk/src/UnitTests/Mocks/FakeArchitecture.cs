@@ -99,6 +99,16 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
         public FlagGroupStorage GetFlagGroup(uint grf)
 		{
 			return null;

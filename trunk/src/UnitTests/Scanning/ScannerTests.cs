@@ -349,55 +349,6 @@ fn0C00_0000_exit:
             scan.EnqueueEntryPoint(new EntryPoint(new Address(address), arch.CreateProcessorState()));
         }
 
-        [Test]
-        public void Scanner_Interprocedural_JumpToOtherProcStart_PromoteJump()
-        {
-            scan = CreateScanner(0x1000, 0x2000);
-            arch.Test_AddTrace(new RtlTrace(0x1000)
-            {
-                m => { m.Assign(reg1, m.Word32(0)); },
-                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
-                m => { m.Branch(reg1, new Address(0x1000), RtlClass.ConditionalTransfer); },
-            });
-            arch.Test_AddTrace(new RtlTrace(0x100C)
-            {   
-                m => { m.Return(0, 0); }
-            });
-            arch.Test_AddTrace(new RtlTrace(0x1100)
-            {
-                m => { m.Assign(reg1, m.Word32(1)); },
-                m => { m.Goto(new Address(0x1000)); },  // Expect this to be promoted to a call/ret thunk.
-            });
-
-            EnqueueEntryPoint(0x1000);
-            EnqueueEntryPoint(0x1100);
-            scan.ScanImage();
-
-            var sExp =
-@"// fn00001000
-void fn00001000()
-fn00001000_entry:
-l00001000:
-	r1 = 0x00000000
-	Mem0[0x00001800:word32] = r1
-	branch r1 l00001000
-l0000100C:
-	return
-fn00001000_exit:
-
-// fn00001100
-void fn00001100()
-fn00001100_entry:
-l00001100:
-	r1 = 0x00000001
-l00001100_thunk_fn00001000:
-	call fn00001000 (retsize: 0;)
-	return
-fn00001100_exit:
-
-";
-            AssertProgram(sExp, program);
-        }
 
         [Test]
         public void Scanner_IsLinearReturning_EmptyBlock()

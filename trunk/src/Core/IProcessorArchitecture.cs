@@ -65,6 +65,22 @@ namespace Decompiler.Core
 
         Frame CreateFrame();
 
+        /// <summary>
+        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
+        /// </summary>
+        /// <param name="img">Program image to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <returns>An imagereader of the appropriate endianness</returns>
+        ImageReader CreateImageReader(LoadedImage img, Address addr);
+
+        /// <summary>
+        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
+        /// </summary>
+        /// <param name="img">Program image to read</param>
+        /// <param name="addr">offset from the start of the image</param>
+        /// <returns>An imagereader of the appropriate endianness</returns>
+        ImageReader CreateImageReader(LoadedImage img, uint off);
+
 		RegisterStorage GetRegister(int i);			// Returns register corresponding to number i.
 		RegisterStorage GetRegister(string name);	// Returns register whose name is 'name'
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>

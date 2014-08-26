@@ -42,6 +42,7 @@ namespace Decompiler
         Project Project { get; }
 
         void LoadProgram(string fileName);
+        TypeLibrary LoadMetadata(string fileName);
         void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase);
         void ScanProgram();
         ProcedureBase ScanProcedure(Address procAddress);
@@ -176,16 +177,28 @@ namespace Decompiler
             Project = DeserializeProject(image);
             if (Project != null)
             {
+                //$REVIEW: support for multiple programs missing here.
+                InputFile inputFile = (InputFile) Project.InputFiles[0];
                 Program = loader.Load(
-                    loader.LoadImageBytes(Project.InputFiles[0].Filename, 0),
-                    Project.InputFiles[0].BaseAddress);
+                    inputFile.Filename,
+                    loader.LoadImageBytes(inputFile.Filename, 0),
+                    inputFile.BaseAddress);
             }
             else
             {
-                Program = loader.Load(image, null);
+                Program = loader.Load(fileName, image, null);
                 Project = CreateDefaultProject(fileName, Program);
             }
             eventListener.ShowStatus("Source program loaded.");
+        }
+
+        public TypeLibrary LoadMetadata(string fileName)
+        {
+            eventListener.ShowStatus("Loading metadata");
+            var rawBytes = this.loader.LoadImageBytes(fileName, 0);
+            MetadataLoader mdLoader = this.loader.FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
+            var result = mdLoader.Load();
+            return result;
         }
 
         /// <summary>
@@ -275,8 +288,10 @@ namespace Decompiler
 
         public void WriteDecompiledProcedures(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(Project.InputFiles[0].OutputFilename), w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(Project.InputFiles[0].TypesFilename));
+            //$REVIEW: what about multiple inputs, huh? Huh???
+            var inputFile = (InputFile) Project.InputFiles[0];
+            WriteHeaderComment(Path.GetFileName(inputFile.OutputFilename), w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(inputFile.TypesFilename));
             w.WriteLine();
             var fmt = new CodeFormatter(new TextFormatter(w));
             foreach (Procedure proc in Program.Procedures.Values)
@@ -296,7 +311,9 @@ namespace Decompiler
 
         public void WriteDecompiledTypes(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(Project.InputFiles[0].TypesFilename), w);
+            //$REVIEW: what about multiple inputs, huh? Huh???
+            var inputFile = (InputFile) Project.InputFiles[0];
+            WriteHeaderComment(Path.GetFileName(inputFile.TypesFilename), w);
             w.WriteLine("/*"); Program.TypeStore.Write(w); w.WriteLine("*/");
             TypeFormatter fmt = new TypeFormatter(new TextFormatter(w), false);
             foreach (EquivalenceClass eq in Program.TypeStore.UsedEquivalenceClasses)
@@ -342,7 +359,8 @@ namespace Decompiler
 				{
 					scanner.EnqueueEntryPoint(ep);
 				}
-				foreach (SerializedProcedure sp in Project.InputFiles[0].UserProcedures.Values)
+                var inputFile = (InputFile)Project.InputFiles[0];
+				foreach (Procedure_v1 sp in inputFile.UserProcedures.Values)
 				{
 					scanner.EnqueueUserProcedure(sp);
 				}
@@ -371,9 +389,11 @@ namespace Decompiler
 
         private IScanner CreateScanner(Program prog, DecompilerEventListener eventListener)
         {
+            //$TODO: what about multiple files?
+            var inputFile = (InputFile) Project.InputFiles[0];
             return new Scanner(
                 prog, 
-                LoadCallSignatures(Project.InputFiles[0].UserCalls.Values),
+                LoadCallSignatures(inputFile.UserCalls.Values),
                 eventListener);
         }
 

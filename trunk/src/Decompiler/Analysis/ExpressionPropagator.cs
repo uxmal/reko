@@ -365,7 +365,10 @@ namespace Decompiler.Analysis
 
         public Result VisitMkSequence(MkSequence seq)
         {
-            throw new NotImplementedException();
+            var h = SimplifyExpression(seq.Head).PropagatedExpression;
+            var t = SimplifyExpression(seq.Tail).PropagatedExpression;
+            return SimplifyExpression(new MkSequence(
+                seq.DataType, h, t));
         }
 
         public Result VisitPhiFunction(PhiFunction phi)

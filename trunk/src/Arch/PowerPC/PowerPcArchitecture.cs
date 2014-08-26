@@ -174,6 +174,18 @@ namespace Decompiler.Arch.PowerPC
             return new Frame(FramePointerType); 
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            //$TODO: PowerPC is bi-endian.
+            return new BeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            //$TODO: PowerPC is bi-endian.
+            return new BeImageReader(image, offset);
+        }
+
         public ProcessorState CreateProcessorState()
         {
             throw new NotImplementedException();

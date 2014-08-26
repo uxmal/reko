@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
 			Assert.AreEqual(1, lib.Procedures.Count);
-			SerializedProcedure proc = (SerializedProcedure) lib.Procedures[0];
+			Procedure_v1 proc = (Procedure_v1) lib.Procedures[0];
 			Assert.AreEqual("malloc", proc.Name);
 			Assert.AreEqual(1, proc.Signature.Arguments.Length);
 			Assert.AreEqual("int", proc.Signature.Arguments[0].Type.ToString());
@@ -85,9 +85,9 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
 
         }
-		private SerializedProcedure MkMalloc()
+		private Procedure_v1 MkMalloc()
 		{
-			SerializedProcedure proc = new SerializedProcedure();
+			Procedure_v1 proc = new Procedure_v1();
 			proc.Name = "malloc";
 			proc.Signature = new SerializedSignature();
 			proc.Signature.Convention = "cdecl";

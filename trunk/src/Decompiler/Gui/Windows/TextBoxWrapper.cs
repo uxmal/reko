@@ -39,6 +39,21 @@ namespace Decompiler.Gui.Windows
         public bool Enabled { get { return text.Enabled; } set { text.Enabled = value; } }
         public string Text { get { return text.Text; } set { text.Text = value;  } }
 
+        public void SelectAll() {
+            text.SelectAll();
+        }
+
+        public void Focus()
+        {
+            text.Focus();
+        }
+
+        public event KeyEventHandler KeyDown
+        {
+            add { text.KeyDown += value; }
+            remove { text.KeyDown -= value; }
+        }
+
         public event EventHandler TextChanged
         {
             add { text.TextChanged += value; }

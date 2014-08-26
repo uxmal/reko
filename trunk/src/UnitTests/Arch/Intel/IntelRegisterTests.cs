@@ -309,5 +309,14 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.IsTrue(ctx[Registers.edx] == Constant.Invalid);
             Assert.AreEqual("0x03", ctx[Registers.dl].ToString());
         }
+
+        [Test]
+        public void X86reg_GetSliceAh()
+        {
+            var c = Constant.Int32(0x1234);
+            var ah = Registers.ah;
+            var s = ah.GetSlice(c);
+            Assert.AreEqual(0x12, ((Constant) s).ToInt16());
+        }
 	}
 }

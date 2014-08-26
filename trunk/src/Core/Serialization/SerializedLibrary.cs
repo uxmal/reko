@@ -41,7 +41,7 @@ namespace Decompiler.Core.Serialization
         [XmlArray("types")]
         public SerializedType[] Types;
 
-        [XmlElement("procedure", typeof(SerializedProcedure))]
+        [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
         public List<SerializedProcedureBase_v1> Procedures;
 

@@ -63,6 +63,16 @@ namespace Decompiler.Arch.Z80
             return new Frame(PrimitiveType.Ptr16);
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
         public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

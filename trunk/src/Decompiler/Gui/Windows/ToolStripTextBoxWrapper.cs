@@ -21,6 +21,7 @@
 using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -38,6 +39,22 @@ namespace Decompiler.Gui.Windows
 
         public bool Enabled { get { return textbox.Enabled; } set { textbox.Enabled = value; } }
         public string Text { get { return textbox.Text; } set { textbox.Text = value; } }
+
+        public void SelectAll()
+        {
+            textbox.SelectAll();
+        }
+
+        public void Focus()
+        {
+            textbox.Focus();
+        }
+
+        public event KeyEventHandler KeyDown
+        {
+            add { textbox.KeyDown += value; }
+            remove { textbox.KeyDown -= value; }
+        }
 
         public event EventHandler TextChanged
         {

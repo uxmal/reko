@@ -96,6 +96,11 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Word32(c.ToUInt32());
+        }
+
         public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			if (bits[Number])
@@ -127,6 +132,11 @@ namespace Decompiler.Arch.X86
 			: base(name, number, PrimitiveType.Word32, number, regWord, regHiByte, regLoByte) 
 		{
 		}
+
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Word64(c.ToUInt64());
+        }
 
 		public override RegisterStorage GetSubregister(int offset, int size)
 		{
@@ -171,6 +181,11 @@ namespace Decompiler.Arch.X86
 			: base(name, number, regWord, regLoByte, regHiByte)
 		{
 		}
+
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Word32(c.ToUInt32());
+        }
 
 		public override RegisterStorage GetSubregister(int offset, int size)
 		{
@@ -257,6 +272,11 @@ namespace Decompiler.Arch.X86
             this.regDword = regDword;
         }
 
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Word64(c.ToUInt64());
+        }
+
         public override RegisterStorage GetSubregister(int offset, int size)
         {
             if (offset == 0)
@@ -341,6 +361,11 @@ namespace Decompiler.Arch.X86
         {
         }
 
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Word16(c.ToUInt16());
+        }
+
         public override RegisterStorage GetSubregister(int offset, int size)
         {
             if (offset == 0)
@@ -381,6 +406,11 @@ namespace Decompiler.Arch.X86
 			: base(name, number, regDword, regLoByte, regHiByte)
 		{
 		}
+
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Word16(c.ToUInt16());
+        }
 
         public override RegisterStorage GetSubregister(int offset, int size)
 		{
@@ -461,6 +491,11 @@ namespace Decompiler.Arch.X86
 		{
 		}
 
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Byte(c.ToByte());
+        }
+
         public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
@@ -522,6 +557,11 @@ namespace Decompiler.Arch.X86
 		{
 			get { return 8; }
 		}
+
+        protected override Expression GetSliceImpl(Constant c)
+        {
+            return Constant.Byte((byte)(c.ToUInt16() >> 8));
+        }
 
         public override RegisterStorage GetSubregister(int offset, int size)
 		{

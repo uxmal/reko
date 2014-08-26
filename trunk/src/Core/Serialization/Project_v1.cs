@@ -44,7 +44,7 @@ namespace Decompiler.Core.Serialization
         {
             this.Input = new DecompilerInput_v1();
             this.Output = new DecompilerOutput_v1();
-            this.UserProcedures = new List<SerializedProcedure>();
+            this.UserProcedures = new List<Procedure_v1>();
             this.UserCalls = new List<SerializedCall_v1>();
         }
 
@@ -54,8 +54,8 @@ namespace Decompiler.Core.Serialization
         [XmlElement("output")]
         public DecompilerOutput_v1 Output;
 
-        [XmlElement("procedure", typeof(SerializedProcedure))]
-        public List<SerializedProcedure> UserProcedures;
+        [XmlElement("procedure", typeof(Procedure_v1))]
+        public List<Procedure_v1> UserProcedures;
 
         [XmlElement("call", typeof(SerializedCall_v1))]
         public List<SerializedCall_v1> UserCalls;
@@ -76,7 +76,7 @@ namespace Decompiler.Core.Serialization
         public string Processor;
 
         [XmlElement("procedure")]
-        public List<SerializedProcedure> UserProcedures;
+        public List<Procedure_v1> UserProcedures;
 
         [XmlElement("call")]
         public List<SerializedCall_v1> UserCalls;
@@ -131,7 +131,7 @@ namespace Decompiler.Core.Serialization
         public ProcedureCharacteristics Characteristics;
     }
 
-    public class SerializedProcedure : SerializedProcedureBase_v1
+    public class Procedure_v1 : SerializedProcedureBase_v1
     {
         /// <summary>
         /// Address of the procedure.

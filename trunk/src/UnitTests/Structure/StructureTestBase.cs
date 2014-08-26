@@ -30,7 +30,9 @@ using Decompiler.Scanning;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
 using System;
-using System.Collections.Generic;   
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+
 namespace Decompiler.UnitTests.Structure
 {
 	public class StructureTestBase
@@ -45,6 +47,7 @@ namespace Decompiler.UnitTests.Structure
 		protected Program RewriteProgram(string sourceFilename, Address addrBase)
 		{
             AssemblerLoader ldr = new AssemblerLoader(
+                new ServiceContainer(),
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFilename));
 

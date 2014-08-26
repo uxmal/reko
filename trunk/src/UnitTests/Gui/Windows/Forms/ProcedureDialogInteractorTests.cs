@@ -33,12 +33,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     public class ProcedureDialogInteractorTests
     {
         private TestProcedureDialogInteractor interactor;
-        private SerializedProcedure proc;
+        private Procedure_v1 proc;
  
         [SetUp]
         public void Setup()
         {
-            proc = new SerializedProcedure();
+            proc = new Procedure_v1();
             interactor = new TestProcedureDialogInteractor(proc);
         }
 
@@ -145,10 +145,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             }
         }
 
-
         private class TestProcedureDialogInteractor : ProcedureDialogInteractor
         {
-            public TestProcedureDialogInteractor(SerializedProcedure proc)
+            public TestProcedureDialogInteractor(Procedure_v1 proc)
                 : base(new IntelArchitecture(ProcessorMode.Protected32), proc)
             {
             }

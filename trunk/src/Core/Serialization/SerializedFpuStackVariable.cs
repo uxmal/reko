@@ -18,6 +18,7 @@
  */
 #endregion 
 
+using Decompiler.Core.Expressions;
 using System;
 using System.Xml.Serialization;
 
@@ -35,9 +36,9 @@ namespace Decompiler.Core.Serialization
 		{
 		}
 
-		public override void Accept(ArgumentSerializer sser)
+		public override Identifier Accept(ArgumentSerializer sser)
 		{
-			sser.Deserialize(this);
+			return sser.Deserialize(this);
 		}
 	}
 }

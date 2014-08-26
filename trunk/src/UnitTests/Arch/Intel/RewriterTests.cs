@@ -79,7 +79,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
             //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            foreach (SerializedProcedure sp in project.InputFiles[0].UserProcedures.Values)
+            var inputFile = (InputFile) project.InputFiles[0];
+            foreach (Procedure_v1 sp in inputFile.UserProcedures.Values)
             {
                 scanner.EnqueueUserProcedure(sp);
             }

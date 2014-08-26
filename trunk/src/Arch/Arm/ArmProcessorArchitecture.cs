@@ -81,6 +81,16 @@ namespace Decompiler.Arch.Arm
             return new Frame(FramePointerType);
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
         public RegisterStorage GetRegister(int i)
         {
             return A32Registers.GpRegs[i];

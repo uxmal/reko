@@ -71,6 +71,17 @@ namespace Decompiler.Arch.M68k
             return new Frame(FramePointerType);
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new BeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new BeImageReader(image, offset);
+        }
+
+
         public RegisterStorage GetRegister(int i)
         {
             return Registers.GetRegister(i);

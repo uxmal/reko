@@ -63,6 +63,16 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
 
+        public ImageReader CreateImageReader(LoadedImage image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
         public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

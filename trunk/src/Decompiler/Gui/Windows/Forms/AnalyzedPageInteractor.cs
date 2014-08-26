@@ -25,6 +25,7 @@ using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
 
@@ -38,12 +39,17 @@ namespace Decompiler.Gui.Windows.Forms
 	{
         private IDecompilerService decompilerSvc;
         private ICodeViewerService codeViewerSvc;
-        private IMemoryViewService memViewerSvc;
+        private ILowLevelViewService memViewerSvc;
         private IDisassemblyViewService disasmViewerSvc;
         private bool canAdvance;
 
-		public AnalyzedPageInteractorImpl()
+		public AnalyzedPageInteractorImpl(IServiceProvider services) : base(services)
 		{
+            decompilerSvc = services.RequireService<IDecompilerService>();
+            codeViewerSvc = services.RequireService<ICodeViewerService>();
+            memViewerSvc = services.RequireService<ILowLevelViewService>();
+            disasmViewerSvc = services.RequireService<IDisassemblyViewService>();
+
             this.canAdvance = true;
 		}
 
@@ -95,7 +101,8 @@ namespace Decompiler.Gui.Windows.Forms
                 if (DialogResult.OK == UIService.ShowModalDialog(dlg))
                 {
                     //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-                    Decompiler.Project.InputFiles[0].UserProcedures[SelectedProcedureEntry.Key] =
+                    var inputFile = (InputFile) Decompiler.Project.InputFiles[0]; 
+                    inputFile.UserProcedures[SelectedProcedureEntry.Key] =
                         i.SerializedProcedure;
                     ser = new ProcedureSerializer(arch, "stdapi");
                     SelectedProcedureEntry.Value.Signature =
@@ -114,25 +121,12 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-        public override ISite Site
-        {
-            get { return base.Site; }
-            set 
-            {
-                base.Site = value;
-                decompilerSvc = Site.RequireService<IDecompilerService>();
-                codeViewerSvc = Site.RequireService<ICodeViewerService>();
-                memViewerSvc = Site.RequireService<IMemoryViewService>();
-                disasmViewerSvc = Site.RequireService<IDisassemblyViewService>();
-            }
-        }
-
         #region ICommandTarget interface 
-        public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ActionEditSignature:
                     status.Status = MenuStatus.Visible;
@@ -141,23 +135,22 @@ namespace Decompiler.Gui.Windows.Forms
                     return true;
                 }
             }
-            return base.QueryStatus(ref cmdSet, cmdId, status, text);
+            return base.QueryStatus(cmdId, status, text);
         }
 
-        public override bool Execute(ref Guid cmdSet, int cmdId)
+        public override bool Execute(CommandID cmdId)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ActionEditSignature:
                     EditSignature();
                     return true;
                 }
             }
-            return base.Execute(ref cmdSet, cmdId);
+            return base.Execute(cmdId);
         }
-
 
         #endregion
 

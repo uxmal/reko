@@ -14,5 +14,13 @@ namespace Decompiler.Core
         /// The file name of the file to be decompiled.
         /// </summary>
         public string Filename { get; set; }
+
+        public abstract T Accept<T>(IProjectFileVisitor<T> visitor);
+    }
+
+    public interface IProjectFileVisitor<T>
+    {
+        T VisitInputFile(InputFile inputFile);
+        T VisitMetadataFile(MetadataFile metadataFile);
     }
 }

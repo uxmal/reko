@@ -32,6 +32,7 @@ namespace Decompiler.Core.Configuration
         string MagicNumber { get; }
         string TypeName { get; }
         string Offset { get; }
+        string Extension { get; }
     }
 
     public class LoaderElementImpl : ConfigurationElement, LoaderElement
@@ -61,6 +62,13 @@ namespace Decompiler.Core.Configuration
         {
             get { return (string)this["Type"]; }
             set { this["Type"] = value; }
+        }
+
+        [ConfigurationProperty("Extension", IsRequired = false)]
+        public string Extension
+        {
+            get { return (string) this["Extension"]; }
+            set { this["Extension"] = value; }
         }
     }
 }

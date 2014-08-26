@@ -37,15 +37,11 @@ namespace Decompiler.Gui.Windows.Controls
 	public abstract class MenuSystem
 	{
 		private ICommandTarget target;
-		private CommandStatus cmdStatus;
-		private CommandText cmdText;
         private Dictionary<string, Dictionary<Keys, CommandID>> bindingLists;
 
 		public MenuSystem(ICommandTarget target)
 		{
 			this.target = target;
-			this.cmdStatus = new CommandStatus();
-			this.cmdText = new CommandText();
             this.bindingLists = new Dictionary<string, Dictionary<Keys, CommandID>>();
 		}
 
@@ -125,70 +121,18 @@ namespace Decompiler.Gui.Windows.Controls
 			item.Checked = (cmdStatus.Status & MenuStatus.Checked) != 0;
 		}
 
-        public void SetItemVisibility(ToolStripItem item, CommandStatus cmdStatus)
+        public int SetStatusForMenuItems(IList menuItems)
         {
-            item.Visible = (cmdStatus.Status & MenuStatus.Visible) != 0;
-            item.Enabled = (cmdStatus.Status & MenuStatus.Enabled) != 0;
+            var ms = new MenuStatusSetter(subMenu_Popup, item_Click);
+            return ms.SetStatus(new MenuItemAdapter(menuItems), target);
         }
 
-		public void SetStatusForMenuItems(IList menuItems)
-		{
-			for (int i = 0; i < menuItems.Count; ++i)
-			{
-				CommandMenuItem item = (CommandMenuItem) menuItems[i];
-				MenuCommand cmd = item.MenuCommand;
-				if (item.IsTemporary)
-				{
-					item.Popup -= new EventHandler(subMenu_Popup);
-					item.Click -= new CommandMenuEventHandler(item_Click);
-
-					menuItems.RemoveAt(i);
-					--i;
-				}
-				else if (cmd != null)
-				{
-					Guid guid = cmd.CommandID.Guid;
-					if (target.QueryStatus(ref guid, cmd.CommandID.ID, cmdStatus, cmdText))
-					{
-						if (item.IsDynamic)
-						{
-							item.Text = cmdText.Text;
-
-							int cmdId = cmd.CommandID.ID;
-							while (target.QueryStatus(ref guid, ++cmdId, cmdStatus, cmdText))
-							{
-								CommandMenuItem itemNew = new CommandMenuItem(cmdText.Text, guid, cmdId);
-								itemNew.IsTemporary = true;
-								itemNew.Popup += new EventHandler(subMenu_Popup);
-								itemNew.Click += new CommandMenuEventHandler(item_Click);
-
-								menuItems.Insert(++i, itemNew);
-							}
-						}
-						else
-						{
-							SetItemVisibility(item, cmdStatus);
-						}	
-					}
-				}
-			}
-		}
-
-        public void SetStatusForToolStripItems(ToolStripItemCollection items)
+        public int SetStatusForToolStripItems(ToolStripItemCollection items)
         {
-            foreach (ToolStripItem i in items)
-            {
-                CommandMenuItem item = (CommandMenuItem) i.Tag;
-                if (item.MenuCommand != null)
-                {
-                    Guid guid = item.MenuCommand.CommandID.Guid;
-                    if (target.QueryStatus(ref guid, item.MenuCommand.CommandID.ID, cmdStatus, cmdText))
-                    {
-                        SetItemVisibility(i, cmdStatus);
-                    }
-                }
-            }
+            var ms = new MenuStatusSetter(subMenu_Popup, item_Click);
+            return ms.SetStatus(new ToolStripItemAdapter(items), target);
         }
+
 		/// <summary>
 		/// Comparer is used to fold items into order according to priority.
 		/// </summary>
@@ -215,8 +159,7 @@ namespace Decompiler.Gui.Windows.Controls
 			MenuCommand cmd = e.Item.MenuCommand;
 			if (cmd != null)
 			{
-				Guid guid = cmd.CommandID.Guid;
-				target.Execute(ref guid, cmd.CommandID.ID);
+				target.Execute(cmd.CommandID);
 			}
 		}
 
@@ -234,8 +177,7 @@ namespace Decompiler.Gui.Windows.Controls
                         CommandID cmdID;
                         if (bindings.TryGetValue(e.KeyData, out cmdID))
                         {
-                            var guid = cmdID.Guid;
-                            if (ct.Execute(ref guid, cmdID.ID))
+                            if (ct.Execute(cmdID))
                             {
                                 e.Handled = true;
                                 return;
@@ -249,8 +191,7 @@ namespace Decompiler.Gui.Windows.Controls
                 CommandID cmdID;
                 if (bindings.TryGetValue(e.KeyData, out cmdID))
                 {
-                    var guid = cmdID.Guid;
-                    if (this.target.Execute(ref guid, cmdID.ID))
+                    if (this.target.Execute(cmdID))
                     {
                         e.Handled = true;
                         return;

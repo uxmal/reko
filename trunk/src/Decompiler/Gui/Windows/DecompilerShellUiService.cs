@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
@@ -129,20 +130,20 @@ namespace Decompiler.Gui.Windows
         /// <param name="status"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             ICommandTarget ct = ActiveMdiCommandTarget();
             if (ct == null)
                 return false;
-            return ct.QueryStatus(ref cmdSet, cmdId, status, text);
+            return ct.QueryStatus(cmdId, status, text);
         }
 
-        public bool Execute(ref Guid cmdSet, int cmdId)
+        public bool Execute(CommandID cmdId)
         {
             ICommandTarget ct = ActiveMdiCommandTarget();
             if (ct == null)
                 return false;
-            return ct.Execute(ref cmdSet, cmdId);
+            return ct.Execute(cmdId);
         }
 
 

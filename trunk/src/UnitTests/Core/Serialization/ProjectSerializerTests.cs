@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using NUnit.Framework;
@@ -37,7 +38,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ps = new ProjectSerializer();
             var proj = ps.LoadProject(FileUnitTester.MapTestPath("fragments/multiple/termination.xml"));
 
-            Assert.AreEqual(1, proj.InputFiles[0].UserProcedures.Count);
+            Assert.AreEqual(1, ((InputFile)proj.InputFiles[0]).UserProcedures.Count);
         }
 
         [Test]
@@ -50,7 +51,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     Filename = "f.exe",
                 },
                 UserProcedures = {
-                    new SerializedProcedure {
+                    new Procedure_v1 {
                         Name = "Fn",
                         Decompile = true,
                         Characteristics = new ProcedureCharacteristics
@@ -83,8 +84,9 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ps = new ProjectSerializer();
             var p = ps.LoadProject(sp);
             Assert.AreEqual(1, p.InputFiles.Count);
-            Assert.AreEqual(1, p.InputFiles[0].UserProcedures.Count);
-            Assert.AreEqual("Fn", p.InputFiles[0].UserProcedures.First().Value.Name);
+            var inputFile = (InputFile) p.InputFiles[0]; 
+            Assert.AreEqual(1, inputFile.UserProcedures.Count);
+            Assert.AreEqual("Fn", inputFile.UserProcedures.First().Value.Name);
         }
     }
 }

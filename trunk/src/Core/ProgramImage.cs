@@ -107,7 +107,6 @@ namespace Decompiler.Core
 			return acc;
 		}
 
-
 		public bool IsValidAddress(Address addr)
 		{
 			if (addr == null)

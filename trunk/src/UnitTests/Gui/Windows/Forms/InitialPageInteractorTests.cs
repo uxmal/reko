@@ -37,30 +37,31 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	[TestFixture]
 	public class InitialPageInteractorTests
 	{
-        MockRepository mr = new MockRepository();
+        private MockRepository mr;
         private IMainForm form;
 		private TestInitialPageInteractor i;
         private FakeUiService uiSvc;
-        private FakeComponentSite site;
+        private ServiceContainer site;
         private IProjectBrowserService browserSvc;
         private LoaderBase loader;
         private IDecompiler dec;
         private DecompilerHost host;
-        private IMemoryViewService memSvc;
+        private ILowLevelViewService memSvc;
         private Program program;
         private Project project;
 
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm();
-            loader = mr.StrictMock<LoaderBase>();
+            mr = new MockRepository();
+            form = new MainForm();
+            site = new ServiceContainer();
+            loader = mr.StrictMock<LoaderBase>(site);
             dec = mr.StrictMock<IDecompiler>();
-            i = new TestInitialPageInteractor(loader, dec);
-            site = new FakeComponentSite(i);
+            site = new ServiceContainer();
             uiSvc = new FakeShellUiService();
             host = mr.StrictMock<DecompilerHost>();
-            memSvc = mr.StrictMock<IMemoryViewService>();
+            memSvc = mr.StrictMock<ILowLevelViewService>();
             var image = new LoadedImage(new Address(0x10000), new byte[1000]);
             var imageMap = new ImageMap(image);
             var arch = mr.StrictMock<IProcessorArchitecture>();
@@ -76,8 +77,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             site.AddService(typeof(IProjectBrowserService), browserSvc);
-            site.AddService(typeof(IMemoryViewService), memSvc);
-            i.Site = site;
+            site.AddService(typeof(ILowLevelViewService), memSvc);
+
+            i = new TestInitialPageInteractor(site, loader, dec);
+
 		}
 
 		[TearDown]
@@ -177,11 +180,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private MenuStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            i.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
+            i.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null);
             return status.Status;
         }
 
-        private IMemoryViewService AddFakeMemoryViewService()
+        private ILowLevelViewService AddFakeMemoryViewService()
         {
             return memSvc;
         }
@@ -191,18 +194,18 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             private LoaderBase loader;
             public IDecompiler decompiler;
 
-            public TestInitialPageInteractor( LoaderBase loader, IDecompiler decompiler)
+            public TestInitialPageInteractor(IServiceProvider services, LoaderBase loader, IDecompiler decompiler) : base(services)
             {
                 this.loader = loader;
                 this.decompiler = decompiler;
             }
 
-            protected override LoaderBase CreateLoader(IServiceContainer sc)
+            protected override LoaderBase CreateLoader()
             {
                 return loader;
             }
 
-            protected override IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host, IServiceProvider sp)
+            protected override IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host)
             {
                 return decompiler;
             }

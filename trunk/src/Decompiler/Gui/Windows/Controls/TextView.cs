@@ -30,7 +30,7 @@ using System.Windows.Forms;
 namespace Decompiler.Gui.Windows.Controls
 {
     /// <summary>
-    /// Renders text data in a window. 
+    /// Renders textual data, which is stored in a <seealso cref="TextViewModel"/>, in a window. 
     /// </summary>
     public partial class TextView : Control
     {
@@ -175,13 +175,20 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
-        private class LineLayout
+        /// <summary>
+        /// Line of spans.
+        /// </summary>
+        private class LayoutLine
         {
             public RectangleF Extent;
-            public SpanLayout[] Spans;
+            public LayoutSpan[] Spans;
         }
 
-        private class SpanLayout
+
+        /// <summary>
+        /// Horizontal span of text
+        /// </summary>
+        private class LayoutSpan
         {
             public RectangleF Extent;
             public string Text;
@@ -192,16 +199,20 @@ namespace Decompiler.Gui.Windows.Controls
         protected void ComputeLayout(Graphics g)
         {
             float cyLine = GetLineHeight();
-            this.visibleLines = new SortedList<float, LineLayout>();
+            this.visibleLines = new SortedList<float, LayoutLine>();
             SizeF szClient = new SizeF(ClientSize);
             var rcLine = new RectangleF(0, 0, szClient.Width, cyLine);
             
+            // Warm up the cache.
             int iLine = vScroll.Value;
+            int cVisibleLines = (int) Math.Ceiling(szClient.Height + cyLine);
+            model.CacheHint(iLine, cVisibleLines);
+
             while (rcLine.Top < szClient.Height && 
                    iLine < model.LineCount)
             {
                 var line = model.GetLineSpans(iLine);
-                var ll = new LineLayout { 
+                var ll = new LayoutLine { 
                     Extent = rcLine,
                     Spans = ComputeSpanLayouts(line, rcLine, g)
                 };
@@ -211,9 +222,9 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
-        private SpanLayout[] ComputeSpanLayouts(IEnumerable<TextSpan> spans, RectangleF rcLine, Graphics g)
+        private LayoutSpan[] ComputeSpanLayouts(IEnumerable<TextSpan> spans, RectangleF rcLine, Graphics g)
         {
-            var spanLayouts = new List<SpanLayout>();
+            var spanLayouts = new List<LayoutSpan>();
             var pt = new PointF(rcLine.Left, rcLine.Top);
             foreach (var span in spans)
             {
@@ -221,7 +232,7 @@ namespace Decompiler.Gui.Windows.Controls
                 var font = GetFont(span.Style);
                 var szText = span.GetSize(text, font, g);
                 var rc = new RectangleF(pt, szText);
-                spanLayouts.Add(new SpanLayout
+                spanLayouts.Add(new LayoutSpan
                 {
                     Extent = rc,
                     Style = span.Style,
@@ -240,7 +251,12 @@ namespace Decompiler.Gui.Windows.Controls
             base.OnResize(e);
         }
 
-        private SpanLayout GetSpan(Point pt)
+        /// <summary>
+        /// Returns the span located at the point <paramref name="pt"/>.
+        /// </summary>
+        /// <param name="pt">Location specified in client coordinates.</param>
+        /// <returns></returns>
+        private LayoutSpan GetSpan(Point pt)
         {
             foreach (var line in this.visibleLines.Values)
             {
@@ -250,7 +266,7 @@ namespace Decompiler.Gui.Windows.Controls
             return null;
         }
 
-        private SpanLayout FindSpan(Point ptMouse, LineLayout line)
+        private LayoutSpan FindSpan(Point ptMouse, LayoutLine line)
         {
             foreach (var span in line.Spans)
             {
@@ -260,7 +276,7 @@ namespace Decompiler.Gui.Windows.Controls
             return null;
         }
 
-        private void PaintLine(LineLayout line, Graphics g)
+        private void PaintLine(LayoutLine line, Graphics g)
         {
             foreach (var span in line.Spans)
             {
@@ -291,6 +307,10 @@ namespace Decompiler.Gui.Windows.Controls
             Invalidate();
         }
 
+        /// <summary>
+        /// Returns the number of visible lines, including any partially visible ones.
+        /// </summary>
+        /// <returns></returns>
         private int GetVisibleLines()
         {
             float lines = ClientSize.Height / GetLineHeight();
@@ -303,14 +323,14 @@ namespace Decompiler.Gui.Windows.Controls
             return (int) Math.Floor(lines);
         }
 
-        public Dictionary<string, EditorStyle> Styles { get { return styles; } }
-        private Dictionary<string, EditorStyle> styles;
-        private SortedList<float, LineLayout> visibleLines;
-
         private float GetLineHeight()
         {
             return this.Font.Height;
         }
+
+        public Dictionary<string, EditorStyle> Styles { get { return styles; } }
+        private Dictionary<string, EditorStyle> styles;
+        private SortedList<float, LayoutLine> visibleLines;
 
         void model_ModelChanged(object sender, EventArgs e)
         {

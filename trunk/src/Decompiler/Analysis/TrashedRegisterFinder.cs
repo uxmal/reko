@@ -150,6 +150,8 @@ namespace Decompiler.Analysis
 
         public void ProcessBlock(Block block)
         {
+            if (block.Name == "l1796_05C7") //$DEBUG
+                block.ToString();
             StartProcessingBlock(block);
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
             if (block == block.Procedure.ExitBlock)

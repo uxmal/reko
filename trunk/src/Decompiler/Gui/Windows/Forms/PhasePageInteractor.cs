@@ -22,11 +22,12 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-    public interface IPhasePageInteractor : IComponent, ICommandTarget
+    public interface IPhasePageInteractor : ICommandTarget
     {
         bool CanAdvance { get; }
 
@@ -53,13 +54,16 @@ namespace Decompiler.Gui.Windows.Forms
     {
         public event EventHandler Disposed;
 
-        private ISite site;
         private IDecompilerService decompilerSvc;
         private IDecompilerShellUiService decompilerUiSvc;
         private IWorkerDialogService workerDlgSvc;
 
-        public PhasePageInteractorImpl()
+        public PhasePageInteractorImpl(IServiceProvider services)
         {
+            this.Services = services;
+            decompilerSvc = services.RequireService<IDecompilerService>();
+            decompilerUiSvc = services.RequireService<IDecompilerShellUiService>();
+            workerDlgSvc = services.RequireService<IWorkerDialogService>();
         }
 
         public virtual bool CanAdvance
@@ -72,6 +76,8 @@ namespace Decompiler.Gui.Windows.Forms
             get { return decompilerSvc.Decompiler; }
             set { decompilerSvc.Decompiler = value; }
         }
+
+        public IServiceProvider Services { get; private set; }
 
         /// <summary>
         /// Derived classes should copy populate editable controls with initial values.
@@ -94,47 +100,22 @@ namespace Decompiler.Gui.Windows.Forms
 
         #region ICommandTarget Members
 
-        public virtual bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public virtual bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             return false;
         }
 
-        public virtual bool Execute(ref Guid cmdSet, int cmdId)
+        public virtual bool Execute(CommandID cmdId)
         {
             return false;
         }
 
         #endregion
-
-        #region IComponent interface 
-        public virtual ISite Site
-        {
-            get { return site; }
-            set
-            {
-                site = value;
-                if (site != null)
-                {
-                    decompilerSvc = Site.RequireService<IDecompilerService>();
-                    decompilerUiSvc = Site.RequireService<IDecompilerShellUiService>();
-                    workerDlgSvc = Site.RequireService<IWorkerDialogService>();
-                }
-                else
-                {
-                    decompilerSvc = null;
-                    decompilerUiSvc = null;
-                }
-            }
-
-        }
 
         public virtual void Dispose()
         {
             if (Disposed != null)
                 Disposed(this, EventArgs.Empty);
         }
-        #endregion
-
-
     }
 }

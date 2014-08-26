@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.ImageLoaders.MzExe;
@@ -41,7 +42,8 @@ namespace Decompiler.UnitTests.Loading
 		{
             ServiceContainer sc = new ServiceContainer();
             sc.AddService(typeof (DecompilerEventListener), new FakeDecompilerEventListener());
-			Loader l = new Loader(new FakeDecompilerConfiguration(), sc);
+            sc.AddService(typeof(IDecompilerConfigurationService), new FakeDecompilerConfiguration());
+			Loader l = new Loader(sc);
 			var image = new LoadedImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
 			ExeImageLoader exe = new ExeImageLoader(sc, image.Bytes);
 			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, image.Bytes);

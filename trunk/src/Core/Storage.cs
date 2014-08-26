@@ -395,6 +395,22 @@ namespace Decompiler.Core
         public static RegisterStorage None { get { return none; } }
 
         private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Create(Domain.Any, 0));
+
+        public Expression GetSlice(Expression value)
+        {
+            var c = value as Constant;
+            if (c != null && c.IsValid)
+            {
+                return GetSliceImpl(c);
+            }
+            else
+                return Constant.Invalid;
+        }
+
+        protected virtual Expression GetSliceImpl(Constant c)
+        {
+            return c;
+        }
     }
 
 	public class SequenceStorage : Storage

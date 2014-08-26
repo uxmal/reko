@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var model = tsf.GetModel();
             var sb= new StringBuilder();
-            for (int i =0; i < model.LineCount; ++i)
+            for (int i = 0; i < model.LineCount; ++i)
             {
                 var spans = model.GetLineSpans(i);
                 foreach (var span in spans)

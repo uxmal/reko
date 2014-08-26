@@ -72,7 +72,7 @@ namespace Decompiler.Gui
             if (codeSvc != null)
                 codeSvc.DisplayProcedure(procs.Values[i]);
 
-            var mvs = sp.GetService<IMemoryViewService>();
+            var mvs = sp.GetService<ILowLevelViewService>();
             if (mvs == null)
                 return;
             var decSvc = sp.RequireService<IDecompilerService>();

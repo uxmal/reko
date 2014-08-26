@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
 using Decompiler.Gui;
@@ -51,22 +52,26 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IDialogFactory dlgFactory;
         private IServiceFactory svcFactory;
         private ServiceContainer services;
-        private IMemoryViewService memSvc;
+        private ILowLevelViewService memSvc;
         private IDisassemblyViewService disasmSvc;
         private IDiagnosticsService diagnosticSvc;
         private IDecompilerShellUiService uiSvc;
+        private IDecompilerConfigurationService configSvc;
         private ITypeLibraryLoaderService typeLibSvc;
         private IProjectBrowserService projectBrowserSvc;
         private IFileSystemService fsSvc;
         private LoaderBase loader;
         private IUiPreferencesService uiPrefs;
         private ITabControlHostService tcHostSvc;
+        private IDecompilerService dcSvc;
 
 		[SetUp]
 		public void Setup()
 		{
             mr = new MockRepository();
             services = new ServiceContainer();
+            configSvc = mr.Stub<IDecompilerConfigurationService>();
+            services.AddService<IDecompilerConfigurationService>(configSvc);
 		}
 
 		[Test]
@@ -153,11 +158,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void Given_Loader()
         {
-            loader = mr.StrictMock<LoaderBase>();
+            loader = mr.StrictMock<LoaderBase>(services);
             var bytes = new byte[1000];
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments()
                 .Return(bytes);
-            loader.Stub(l => l.Load(null, null)).IgnoreArguments()
+            loader.Stub(l => l.Load(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
                     Image = new LoadedImage(new Address(0x0C00,0x0000), bytes)
@@ -174,15 +179,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             When_CreateMainFormInteractor();
 
-            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
+            IDecompilerService svc = interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(loader);
             Assert.IsNotNull(loader);
             svc.Decompiler.LoadProgram("foo.exe");
-            var p = new Decompiler.Core.Serialization.SerializedProcedure {
+            var p = new Decompiler.Core.Serialization.Procedure_v1 {
                 Address = "12345",
                 Name = "MyProc", 
             };
-            svc.Decompiler.Project.InputFiles[0].UserProcedures.Add(new Address(0x12345), p);
+            var inputFile = (InputFile)svc.Decompiler.Project.InputFiles[0];
+            inputFile.UserProcedures.Add(new Address(0x12345), p);
 
             interactor.Save();
             string s =
@@ -201,7 +207,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
   </input>
   <output />
 </project>";
-            Assert.AreEqual(s, interactor.ProbeSavedProjectXml);
+            Assert.AreEqual(s, interactor.Test_SavedProjectXml);
             mr.VerifyAll();
         }
 
@@ -221,8 +227,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             Assert.IsTrue(string.IsNullOrEmpty(interactor.ProjectFileName), "project filename should be clear");
             interactor.Save();
-            Assert.IsTrue(interactor.ProbePromptedForSaving, "Should have prompted for saving as no file name was supplied.");
-            Assert.AreEqual("foo.dcproject", interactor.ProbeFilename);
+            Assert.IsTrue(interactor.Test_PromptedForSaving, "Should have prompted for saving as no file name was supplied.");
+            Assert.AreEqual("foo.dcproject", interactor.Test_Filename);
         }
 
         [Test]
@@ -294,7 +300,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private void Given_UiSvc_ReturnsFalseOnQueryStatus()
         {
             var cmdset = CmdSets.GuidDecompiler;
-            uiSvc.Stub(u => u.QueryStatus(ref cmdset, 0, null, null)).IgnoreArguments().Return(false);
+            uiSvc.Stub(u => u.QueryStatus(null, null, null)).IgnoreArguments().Return(false);
         }
 
         [Test]
@@ -314,7 +320,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void MainForm_ExecuteFindProcedures()
+        public void Mfi_ExecuteFindProcedures()
         {
             Given_MainFormInteractor();
 
@@ -325,12 +331,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
-            svc.Decompiler = interactor.CreateDecompiler(loader);
-            svc.Decompiler.LoadProgram("foo.exe");
+            When_DecompilerCreated();
+            dcSvc.Decompiler.LoadProgram("foo.exe");
             interactor.FindProcedures(srSvc);
 
             mr.VerifyAll();
+        }
+
+        private void When_DecompilerCreated()
+        {
+            this.dcSvc = (IDecompilerService) interactor.ProbeGetService<IDecompilerService>();
+            dcSvc.Decompiler = interactor.CreateDecompiler(loader);
         }
 
         [Test]
@@ -353,7 +364,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                     Image = new LoadedImage(new Address(0x0004), new byte[0x100])
                 }
             };
-            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewMemory);
+            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewMemory));
 
             mr.VerifyAll();
         }
@@ -374,7 +385,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
-            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewDisassembly);
+            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewDisassembly));
 
             mr.VerifyAll();
         }
@@ -383,13 +394,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private void Given_UiSvc_IgnoresCommands()
         {
             uiSvc.Stub(u => u.QueryStatus(
-                ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(),new Guid()).Dummy,
-                Arg<int>.Is.Anything,
+                Arg<CommandID>.Is.NotNull,
                 Arg<CommandStatus>.Is.NotNull,
                 Arg<CommandText>.Is.Anything)).Return(false);
             uiSvc.Stub(u => u.Execute(
-                ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(), new Guid()).Dummy,
-                Arg<int>.Is.Anything)).Return(false);
+                Arg<CommandID>.Is.NotNull)).Return(false);
         }
 
         [Test]
@@ -407,7 +416,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var mdi = new TestForm();
             form.DocumentWindows.Add(mdi);
             Assert.AreEqual(1, form.DocumentWindows.Count);
-            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll);
+            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll));
 
             mr.VerifyAll();
         }
@@ -422,10 +431,61 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void Expect_CommandNotHandledBySubwindow()
         {
-            Guid guid = new Guid();
-            uiSvc.Stub(u => u.Execute(ref guid, 0))
+            uiSvc.Stub(u => u.Execute(null))
                 .IgnoreArguments()
                 .Return(false);
+        }
+
+        [Test]
+        public void Mfi_AddMetadata()
+        {
+            Given_MainFormInteractor();
+            var dcSvc = mr.Stub<IDecompilerService>();
+            var decompiler = mr.Stub<IDecompiler>();
+            var loaderElement = mr.Stub<LoaderElement>();
+            var project = new Project {
+                InputFiles = 
+                { 
+                    new InputFile { }
+                }
+            };
+            dcSvc.Decompiler = decompiler;
+            loaderElement.Stub(l => l.Extension).Return("def");
+            loaderElement.Stub(l => l.MagicNumber).Return(null);
+            loaderElement.Stub(l => l.TypeName).Return(typeof(FakeMetadataLoader).AssemblyQualifiedName);
+            configSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderElement>{loaderElement});
+            decompiler.Stub(d => d.Project).Return(project);
+            services.AddService(typeof(IDecompilerService), dcSvc);
+            uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.def");
+            Given_Loader();
+            Expect_CommandNotHandledBySubwindow();
+            //Expect_UiPreferences_Loaded();
+            //Expect_MainForm_SizeSet();
+            this.tcHostSvc.Stub(t => t.Execute(null)).IgnoreArguments().Return(false);
+            mr.ReplayAll();
+
+            When_MainFormInteractorWithLoader();
+            When_DecompilerCreated();
+            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.FileAddMetadata));
+            
+            mr.VerifyAll();
+        }
+
+        public class FakeMetadataLoader : MetadataLoader
+        {
+            public FakeMetadataLoader( IServiceProvider services, byte[]bytes) :base(services, bytes)
+            {
+            }
+
+            public override TypeLibrary Load()
+            {
+                return new TypeLibrary();
+            }
+        }
+
+        private void When_LoadProject()
+        {
+            throw new NotImplementedException();
         }
 
         private class TestForm : Form, IWindowFrame
@@ -449,7 +509,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             archSvc = mr.StrictMock<IArchiveBrowserService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
-            memSvc = mr.StrictMock<IMemoryViewService>();
+            memSvc = mr.StrictMock<ILowLevelViewService>();
             disasmSvc = mr.StrictMock<IDisassemblyViewService>();
             diagnosticSvc = mr.StrictMock<IDiagnosticsService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
@@ -506,11 +566,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             dlgFactory.Stub(d => d.CreateMainForm()).Return(form);
             tcHostSvc.Stub(t => t.Attach(Arg<IWindowPane>.Is.NotNull, Arg<TabPage>.Is.NotNull));
             tcHostSvc.Stub(t => t.QueryStatus(
-                ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(), CmdSets.GuidDecompiler).Dummy, 
-                Arg<int>.Is.Anything,
+                Arg<CommandID>.Is.Anything,
                 Arg<CommandStatus>.Is.Anything,
                 Arg<CommandText>.Is.Anything)).Return(false);
-            tcHostSvc.Stub(t => t.Execute(ref Arg<Guid>.Ref(Rhino.Mocks.Constraints.Is.Anything(), CmdSets.GuidDecompiler).Dummy, Arg<int>.Is.Anything)).Return(false);
+            tcHostSvc.Stub(t => t.Execute(Arg<CommandID>.Is.Anything)).Return(false);
         }
 
         private void When_CreateMainFormInteractor()
@@ -538,7 +597,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private CommandStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            if (interactor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null))
+            if (interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, cmdId), status, null))
                 return status;
             else
                 return null;
@@ -600,18 +659,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return (T)base.GetService(typeof(T));
         }
 
-        public string ProbeSavedProjectXml
+        public string Test_SavedProjectXml
         {
             get { return sw.ToString(); }
         }
 
-        public string ProbeFilename
+        public string Test_Filename
         {
             get { return testFilename; }
         }
 
-
-        public bool ProbePromptedForSaving
+        public bool Test_PromptedForSaving
         {
             get { return promptedForSaving; }
         }

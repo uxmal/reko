@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_Interactor()
         {
-            interactor = new LowLevelViewInteractor();
+            interactor = mr.PartialMock<LowLevelViewInteractor>();
             interactor.SetSite(sp);
             control = (LowLevelView) interactor.CreateControl();
         }
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             interactor = new LowLevelViewInteractor();
             var status = new CommandStatus();
-            Assert.IsTrue(interactor.QueryStatus(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress, status, null));
+            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress), status, null));
             Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);
         }
 
@@ -101,22 +101,26 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_GotoAddress()
         {
-            var dlg = mr.Stub<IAddressPromptDialog>();
-            dlgFactory.Expect(d => d.CreateAddressPromptDialog()).Return(dlg);
-            dlg.Stub(x => dlg.Address).Return(new Address(0x12345678));
-            uiSvc.Expect(x => x.ShowModalDialog(
-                    Arg<IAddressPromptDialog>.Is.Same(dlg)))
-                .Return(DialogResult.OK);
-            dlg.Expect(x => x.Dispose());
+            var addr = new Address(0x1000);
+            var arch = mr.Stub<IProcessorArchitecture>();
+            Given_Interactor();
+            interactor.ProgramImage = new LoadedImage(addr, new byte[] { 0x4, 0x3, 0x2, 0x1 });
+            interactor.ImageMap = new ImageMap(interactor.ProgramImage);
+            arch.Stub(a => a.InstructionBitSize).Return(8);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.CreateImageReader(null, null))
+                .IgnoreArguments()
+                .Return(new LeImageReader(interactor.ProgramImage, 0));
+            interactor.Stub(i => i.GetSelectedAddressRange())
+                .Return(new AddressRange(addr,addr));
             mr.ReplayAll();
 
-            Given_Interactor();
-            interactor.ProgramImage = new LoadedImage(new Address(0x12345670), new byte[16]);
-            interactor.ImageMap = new ImageMap(interactor.ProgramImage);
-            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
+            interactor.Architecture = arch;
+            interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
 
             mr.VerifyAll();
-            Assert.AreEqual(0x12345670, interactor.Control.MemoryView.TopAddress.Linear);
+            Assert.AreEqual("0x01020304", interactor.Control.ToolBarAddressTextbox.Text);
+            mr.ReplayAll();
         }
 
         [Test]

@@ -23,6 +23,7 @@ using Decompiler.Gui.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -63,6 +64,8 @@ namespace Decompiler.Gui
             else
             {
                 AddComponents(project.InputFiles);
+                project.InputFiles.CollectionChanged += InputFiles_CollectionChanged;
+                //$TODO: dewd; this should be added by the Designer.
                 AddComponents(project.InputFiles[0], prog.ImageMap.Segments.Values);
                 tree.ShowNodeToolTips = true;
             }
@@ -159,6 +162,18 @@ namespace Decompiler.Gui
             if (des == null)
                 return;
             des.DoDefaultAction();
+        }
+
+        void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+            case NotifyCollectionChangedAction.Add:
+                AddComponents(e.NewItems);
+                break;
+            default:
+                throw new NotImplementedException();
+            }
         }
     }
 }

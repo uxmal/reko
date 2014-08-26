@@ -263,7 +263,7 @@ namespace Decompiler.Core.Expressions
 
         public byte ToByte()
         {
-            return Convert.ToByte(GetValue());
+            return (byte)Convert.ToInt32(GetValue());
         }
 
 		public double ToDouble()

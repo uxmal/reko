@@ -43,28 +43,32 @@ namespace Decompiler.Gui.Windows.Forms
         private Hashtable mpCmdidToCommand;
         private IDecompilerService decompilerSvc;
         private IStatusBarService sbSvc;
-        private IMemoryViewService memSvc;
+        private ILowLevelViewService memSvc;
 
-        public LoadedPageInteractor()
+        public LoadedPageInteractor(IServiceProvider services) : base(services)
         {
+            decompilerSvc = services.RequireService<IDecompilerService>();
+            sbSvc = services.RequireService<IStatusBarService>();
+            memSvc = services.RequireService<ILowLevelViewService>();
+
             mpCmdidToCommand = new Hashtable();
-            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
-            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
-            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);
+            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments));
+            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned));
+            AddCommand(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewFindFragments));
         }
 
-        protected MenuCommand AddCommand(ref Guid cmdSet, int cmdId)
+        protected MenuCommand AddCommand(CommandID cmdId)
         {
-            MenuCommand mc = new MenuCommand(null, new CommandID(cmdSet, cmdId));
+            MenuCommand mc = new MenuCommand(null, cmdId);
             mpCmdidToCommand.Add(mc.CommandID.ID, mc);
             return mc;
         }
 
-        public override bool Execute(ref Guid cmdSet, int cmdId)
+        public override bool Execute(CommandID cmdId)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                switch (cmdId)
+                switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
                     return GotoAddress();
@@ -74,7 +78,7 @@ namespace Decompiler.Gui.Windows.Forms
                     return ViewUnscannedBlocks();
                 }
             }
-            return base.Execute(ref cmdSet, cmdId);
+            return base.Execute(cmdId);
         }
 
         public bool GotoAddress()
@@ -112,12 +116,12 @@ namespace Decompiler.Gui.Windows.Forms
             if (addrRange.IsValid)
             {
                 var proc = Decompiler.ScanProcedure(addrRange.Begin);
-                SerializedProcedure userp = new SerializedProcedure {
+                Procedure_v1 userp = new Procedure_v1 {
                     Address = addrRange.Begin.ToString(),
                     Name = proc.Name,
                 };
                 //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-                Decompiler.Project.InputFiles[0].UserProcedures.Add(addrRange.Begin, userp);
+                ((InputFile)Decompiler.Project.InputFiles[0]).UserProcedures.Add(addrRange.Begin, userp);
                 memSvc.InvalidateWindow();
             }
             return true;
@@ -125,7 +129,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public bool ViewUnscannedBlocks()
         {
-            var srSvc = Site.RequireService<ISearchResultService>();
+            var srSvc = Services.RequireService<ISearchResultService>();
             foreach (var de in Decompiler.Program.ImageMap.Items
                 .Where(i => i.Value.DataType is UnknownType))
             {
@@ -134,35 +138,17 @@ namespace Decompiler.Gui.Windows.Forms
             return true;
         }
 
-        public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdSet == CmdSets.GuidDecompiler)
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
-                MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId];
+                MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId.ID];
                 if (cmd == null)
                     return false;
                 status.Status = (MenuStatus) cmd.OleStatus;
                 return true;
             }
             return false;
-        }
-
-        public override ISite Site
-        {
-            set
-            {
-                base.Site = value;
-                if (value != null)
-                {
-                    decompilerSvc = Site.RequireService<IDecompilerService>();
-                    sbSvc = Site.RequireService<IStatusBarService>();
-                    memSvc = Site.RequireService<IMemoryViewService>();
-                }
-                else
-                {
-                    sbSvc = null;
-                }
-            }
         }
 
         private void ShowMemoryControlRange(IStatusBarService sbSvc, AddressRange range)

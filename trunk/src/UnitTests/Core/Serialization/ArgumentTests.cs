@@ -32,11 +32,11 @@ using System;
 namespace Decompiler.UnitTests.Core.Serialization
 {
 	[TestFixture]
-	public class SerializedArgumentTests
+	public class ArgumentTests
 	{
 		private IProcessorArchitecture arch;
 
-		public SerializedArgumentTests()
+		public ArgumentTests()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
 		}

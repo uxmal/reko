@@ -38,7 +38,7 @@ using Is = Rhino.Mocks.Constraints.Is;
 namespace Decompiler.UnitTests.Gui.Windows
 {
     [TestFixture]
-    public class MemoryViewServiceTests
+    public class LowLevelViewServiceTests
     {
         private MockRepository mr;
 
@@ -60,11 +60,11 @@ namespace Decompiler.UnitTests.Gui.Windows
             sc.AddService<IDecompilerService>(decSvc);
             AddStubService<IUiPreferencesService>(sc);
 
-            var service = mr.Stub<MemoryViewServiceImpl>(sc);
+            var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             var interactor = new LowLevelViewInteractor();
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
 
-            var svc = (IMemoryViewService)service;
+            var svc = (ILowLevelViewService)service;
             Expect.Call(shellUi.FindWindow("memoryViewWindow")).Return(null);
             Expect.Call(shellUi.CreateWindow(
                 Arg<string>.Is.Anything,
@@ -103,7 +103,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                 .Return(mr.Stub<IWindowFrame>());
             uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
 
-            var service = mr.Stub<MemoryViewServiceImpl>(sc);
+            var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
             var image = new LoadedImage(new Address(0x1000), new byte[300]);
             var program = new Program {

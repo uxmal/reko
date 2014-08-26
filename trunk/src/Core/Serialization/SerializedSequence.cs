@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
 using System.Xml.Serialization;
@@ -42,9 +43,9 @@ namespace Decompiler.Core.Serialization
 			Registers[1] = new SerializedRegister(seq.Tail.Name);
 		}
 
-		public override void Accept(ArgumentSerializer sser)
+		public override Identifier Accept(ArgumentSerializer sser)
 		{
-			sser.Deserialize(this);
+			return sser.Deserialize(this);
 		}
 
 	}

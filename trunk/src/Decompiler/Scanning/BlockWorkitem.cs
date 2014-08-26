@@ -61,6 +61,8 @@ namespace Decompiler.Scanning
             this.state = state;
             this.eval = new ExpressionSimplifier(state);
             this.addrStart = addr;
+            if (addrStart.ToString().StartsWith("F2"))  //$DEBUG
+                addrStart.ToString();
             this.blockCur = null;
         }
 

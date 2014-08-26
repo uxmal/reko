@@ -380,6 +380,10 @@ namespace Decompiler.Evaluation
                     return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
                 }
             }
+            if (head == Constant.Invalid)
+                head = seq.Head;
+            if (tail == Constant.Invalid)
+                tail = seq.Tail;
             return new MkSequence(seq.DataType, head, tail);
         }
 
@@ -512,17 +516,17 @@ namespace Decompiler.Evaluation
 			{
 				if (left == right)
 					return MakeZero(left.DataType);
-				if (IsZero(cRight))
+				if (cRight.IsZero)
 					return left;
 			} 
 			else if (binOp == Operator.Or || binOp == Operator.Xor)
 			{
-				if (IsZero(cRight))
+				if (cRight.IsZero)
 					return left;
 			} 
             else if (binOp == Operator.And)
 			{
-				if (IsZero(cRight))
+				if (cRight.IsZero)
 					return MakeZero(left.DataType);
 			}
 			Identifier idLeft = left as Identifier;

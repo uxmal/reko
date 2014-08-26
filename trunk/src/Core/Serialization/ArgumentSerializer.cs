@@ -31,7 +31,6 @@ namespace Decompiler.Core.Serialization
 		private IProcessorArchitecture arch;
 		private Frame frame;
 		private Argument_v1 argCur;
-		private Identifier idArg;
         private string convention;
 
 		public ArgumentSerializer(ProcedureSerializer sig, IProcessorArchitecture arch, Frame frame, string callingConvention)
@@ -41,7 +40,7 @@ namespace Decompiler.Core.Serialization
 			this.frame = frame;
             this.convention = callingConvention;
 		}
-
+        
 		public string ArgumentName(string argName, string argName2)
 		{
 			if (argName != null)
@@ -50,73 +49,94 @@ namespace Decompiler.Core.Serialization
 				return argName2;
 		}
 
-		public void Deserialize(SerializedRegister reg)
+		public Identifier Deserialize(SerializedRegister reg)
 		{
-			idArg = frame.EnsureRegister(arch.GetRegister(reg.Name.Trim()));
+			var idArg = frame.EnsureRegister(arch.GetRegister(reg.Name.Trim()));
 			if (argCur.OutParameter)
 			{
                 idArg = frame.EnsureOutArgument(idArg, arch.FramePointerType);
 			}
+            return idArg;
 		}
 
-		public void Deserialize(SerializedStackVariable ss)
+		public Identifier Deserialize(SerializedStackVariable ss)
 		{
             if (argCur.Name == "...")
             {
-                idArg = ps.CreateId("...", new UnknownType(), new StackArgumentStorage(ps.StackOffset, new UnknownType()));
-                return;
+                return ps.CreateId("...", new UnknownType(), new StackArgumentStorage(ps.StackOffset, new UnknownType()));
             }
             if (argCur.Type == null)
                 throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));
 			var dt = this.argCur.Type.Accept(ps.TypeLoader);
             if (dt is VoidType)
             {
-                idArg = null;
-                return;
+                return null;
             }
-			idArg = ps.CreateId(
+			var idArg = ps.CreateId(
 				argCur.Name ?? "arg" + ps.StackOffset, 
 				dt,
 				new StackArgumentStorage(ps.StackOffset, dt));
             ps.StackOffset += dt.Size;
+            return idArg;
 		}
 
-		public void Deserialize(SerializedFpuStackVariable fs)
+		public Identifier Deserialize(SerializedFpuStackVariable fs)
 		{
-			idArg = ps.CreateId(argCur.Name ?? "fpArg" + ps.FpuStackOffset , PrimitiveType.Real64, new FpuStackStorage(ps.FpuStackOffset, PrimitiveType.Real64));
+			var idArg = ps.CreateId(argCur.Name ?? "fpArg" + ps.FpuStackOffset , PrimitiveType.Real64, new FpuStackStorage(ps.FpuStackOffset, PrimitiveType.Real64));
 			++ps.FpuStackOffset;
+            return idArg;
 		}
 
-		public void Deserialize(SerializedFlag flag)
+        public Identifier Deserialize(SerializedFlag flag)
 		{
 			var flags = arch.GetFlagGroup(flag.Name);
-			idArg = frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
+			return frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
 		}
 			
-		public void Deserialize(SerializedSequence sq)
+		public Identifier Deserialize(SerializedSequence sq)
 		{
 			var h = arch.GetRegister(sq.Registers[0].Name.Trim());
 			var t = arch.GetRegister(sq.Registers[1].Name.Trim());
 			Identifier head = frame.EnsureRegister(h);
 			Identifier tail = frame.EnsureRegister(t);
-			idArg = frame.EnsureSequence(head, tail, 
+			return frame.EnsureSequence(head, tail, 
 				PrimitiveType.CreateWord(head.DataType.Size + tail.DataType.Size));
 		}
 
-		public Identifier Deserialize(Argument_v1 arg)
+        public Identifier DeserializeReturnValue(Argument_v1 arg)
+        {
+            argCur = arg;
+            if (arg.Kind != null)
+                return arg.Kind.Accept(this);
+            //$PLATFORM-SPECIFIC!!!!
+			var dt = this.argCur.Type.Accept(ps.TypeLoader);
+            if (dt is VoidType)
+                return null;
+            var reg = arch.GetRegister("eax").GetSubregister(0, dt.BitSize);
+            return frame.EnsureRegister(reg);
+        }
+
+		public Identifier Deserialize(Argument_v1 arg, int idx)
 		{
 			argCur = arg;
             if (arg.Kind != null)
-                arg.Kind.Accept(this);
-            else
             {
-                //$PLATFORM-specifiC!!! We're encoding x86 conventions here.
-                if (convention == "stdapi" || convention == "__cdecl")
-                {
-                    Deserialize(new SerializedStackVariable{});
-                }
+                return arg.Kind.Accept(this);
             }
-			return idArg;
+            //$PLATFORM-specifiC!!! We're encoding Microsoft + x86 conventions here.
+            if (convention == "stdapi" || convention == "__cdecl")
+            {
+                return Deserialize(new SerializedStackVariable { });
+            }
+            if (convention == "__thiscall")
+            {
+                SerializedKind kind;
+                if (idx == 0)
+                    return Deserialize(new SerializedRegister("ecx"));
+                else
+                    return Deserialize(new SerializedStackVariable());
+            }
+            throw new NotImplementedException();
 		}
 
         public Argument_v1 Serialize(Identifier arg)

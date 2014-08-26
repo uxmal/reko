@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -29,15 +30,15 @@ using System.Text;
 
 namespace Decompiler.Core
 {
-    public class Project
+    public class Project : IProjectFileVisitor<ProjectFile_v2>
     {
         public Project()
         {
             UserGlobalData = new SortedList<Address, SerializedType>();
-            InputFiles = new List<InputFile>();
+            InputFiles = new ObservableRangeCollection<ProjectFile>();
         }
-
-        public List<InputFile> InputFiles { get; private set; }
+        
+        public ObservableRangeCollection<ProjectFile> InputFiles { get; private set; }
 
         /// <summary>
         /// Global data identified by the user.
@@ -46,7 +47,20 @@ namespace Decompiler.Core
 
         public Project_v2 Save()
         {
-            var inputs = this.InputFiles.Select(i => new DecompilerInput_v1
+            var inputs = this.InputFiles.Select(i => i.Accept(this));
+            var sp = new Project_v2()
+            {
+                Inputs = inputs.ToList()
+            };
+            foreach (var de in UserGlobalData)
+            {
+            }
+            return sp;
+        }
+
+        public ProjectFile_v2 VisitInputFile(InputFile i)
+        {
+            return new DecompilerInput_v2
             {
                 Address = i.BaseAddress.ToString(),
                 Filename = i.Filename,
@@ -60,15 +74,12 @@ namespace Decompiler.Core
                 IntermediateFilename = i.IntermediateFilename,
                 OutputFilename = i.OutputFilename,
                 TypesFilename = i.TypesFilename,
-            }).ToList();
-            var sp = new Project_v2()
-            {
-                Inputs = inputs,
             };
-            foreach (var de in UserGlobalData)
-            {
-            }
-            return sp;
+        }
+
+        public ProjectFile_v2 VisitMetadataFile(MetadataFile metadata)
+        {
+            throw new NotImplementedException();
         }
 
         public void Load(Project_v1 sp)

@@ -117,7 +117,7 @@ namespace Decompiler.Tools.C2Xml
                 var sSig = nt.DataType as SerializedSignature;
                 if (sSig != null)
                 {
-                    procs.Add(new SerializedProcedure
+                    procs.Add(new Procedure_v1
                     {
                         Name = nt.Name,
                         Signature = sSig,

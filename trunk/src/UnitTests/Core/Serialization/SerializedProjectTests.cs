@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			ud.Input.Address = "0x1000:0x0";
 			ud.Output.DisassemblyFilename = "foo.asm";
 			ud.Output.IntermediateFilename = "foo.cod";
-			SerializedProcedure proc = new SerializedProcedure();
+			Procedure_v1 proc = new Procedure_v1();
 			proc.Name = "foo";
 			proc.Signature = new SerializedSignature
 			{
@@ -87,11 +87,11 @@ namespace Decompiler.UnitTests.Core.Serialization
                         BaseAddress = new Address(0x1000, 0),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
-                        UserProcedures = new SortedList<Address,SerializedProcedure> 
+                        UserProcedures = new SortedList<Address,Procedure_v1> 
                         {
                             { 
                                 new Address(0x1000, 0x10), 
-                                new SerializedProcedure
+                                new Procedure_v1
                                 {
                                     Name = "foo",
                                     Signature = new SerializedSignature
@@ -139,7 +139,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			}
 			Assert.AreEqual("10003330", proj.Input.Address);
 			Assert.AreEqual(2, proj.UserProcedures.Count);
-			SerializedProcedure proc = (SerializedProcedure) proj.UserProcedures[0];
+			Procedure_v1 proc = (Procedure_v1) proj.UserProcedures[0];
 			Assert.IsNull(proc.Signature.ReturnValue);
 		}
 
@@ -181,12 +181,13 @@ namespace Decompiler.UnitTests.Core.Serialization
                 proj = (Project_v1)ser.Deserialize(rdr);
             }
             var project = new ProjectSerializer().LoadProject(proj);
-            Assert.AreEqual(0x10003330, project.InputFiles[0].BaseAddress.Linear);
-            Assert.AreEqual("foo.cod", project.InputFiles[0].IntermediateFilename);
-            Assert.AreEqual(2, project.InputFiles[0].UserProcedures.Count);
-            Assert.AreEqual("foo.asm", project.InputFiles[0].DisassemblyFilename);
-            Assert.AreEqual(0x10004000, project.InputFiles[0].UserProcedures.Keys[0].Linear);
-            SerializedProcedure proc = project.InputFiles[0].UserProcedures.Values[0];
+            var inputFile = (InputFile)project.InputFiles[0];
+            Assert.AreEqual(0x10003330, inputFile.BaseAddress.Linear);
+            Assert.AreEqual("foo.cod", inputFile.IntermediateFilename);
+            Assert.AreEqual(2, inputFile.UserProcedures.Count);
+            Assert.AreEqual("foo.asm", inputFile.DisassemblyFilename);
+            Assert.AreEqual(0x10004000, inputFile.UserProcedures.Keys[0].Linear);
+            Procedure_v1 proc = inputFile.UserProcedures.Values[0];
             Assert.IsNull(proc.Signature.ReturnValue);
         }
 
@@ -198,7 +199,8 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
                 proj = new ProjectSerializer().LoadProject(stm);
             }
-			var proc = (SerializedProcedure) proj.InputFiles[0].UserProcedures.Values[0];
+            var inputFile = (InputFile) proj.InputFiles[0];
+			var proc = (Procedure_v1) inputFile.UserProcedures.Values[0];
 			Assert.AreEqual("alloca", proc.Name);
 			Assert.IsTrue(proc.Characteristics.IsAlloca);
 		}
@@ -209,12 +211,12 @@ namespace Decompiler.UnitTests.Core.Serialization
             var sProject = new Project_v2
             {
                 Inputs = {
-                    new DecompilerInput_v1 {
+                    new DecompilerInput_v2 {
                         Filename = "foo.exe",
                         Address = "1000:0000",
                         Comment = "main file" 
                     },
-                    new DecompilerInput_v1 {
+                    new DecompilerInput_v2 {
                         Filename = "foo.bin",
                         Address = "1000:D000",
                         Comment = "overlay",

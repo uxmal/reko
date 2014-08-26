@@ -154,6 +154,7 @@
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
+    <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\TabControlHostTests.cs" />
     <Compile Include="Gui\Windows\TextSpanFormatterTests.cs" />
@@ -233,7 +234,7 @@
     <Compile Include="Core\RelocationDictionaryTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureCharacteristicsTests.cs" />
-    <Compile Include="Core\Serialization\SerializedArgumentTests.cs" />
+    <Compile Include="Core\Serialization\ArgumentTests.cs" />
     <Compile Include="Core\Serialization\SerializedCallTests.cs" />
     <Compile Include="Core\Serialization\SerializedLibraryTests.cs" />
     <Compile Include="Core\Serialization\SerializedProjectTests.cs" />
@@ -319,7 +320,7 @@
     <Compile Include="Gui\Windows\LowLevelViewInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\MemoryViewServiceTests.cs">
+    <Compile Include="Gui\Windows\LowLevelViewServiceTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\MruListTests.cs">
@@ -555,9 +556,7 @@
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gui\Design\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
