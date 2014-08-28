@@ -27,7 +27,6 @@ using System.IO;
 
 namespace Decompiler.Core.Assemblers
 {
-    //$TODO: may need a big-endian and little-endian version of this class.
 	public class Symbol
 	{
 		public string sym;

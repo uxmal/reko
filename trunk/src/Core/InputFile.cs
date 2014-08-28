@@ -29,7 +29,7 @@ using Path = System.IO.Path;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// An InputFile describes an binary file or other kind of file that is to be decompiled.
+    /// An InputFile describes a binary file that is to be decompiled.
     /// </summary>
     [Designer("Decompiler.Gui.Design.InputFileDesigner,Decompiler")]
     public class InputFile : ProjectFile
