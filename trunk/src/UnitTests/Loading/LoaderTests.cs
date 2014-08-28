@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Loading
 
             TestLoader ldr = new TestLoader(sc);
             ldr.Test_Image = new byte[] { 42, 42, 42, 42, };
-             Program prog = ldr.Load("", ldr.Test_Image, null);
+            Program prog = ldr.LoadExecutable("", ldr.Test_Image, null);
 
             Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.Image.BaseAddress.Offset);

@@ -402,7 +402,7 @@
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Gui\Windows\WindowsFormsRegistryService.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsService.cs" />
-    <Compile Include="Loading\LoadedProject.cs" />
+    <Compile Include="Loading\ILoader.cs" />
     <Compile Include="Loading\NullLoader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -457,11 +457,6 @@
     <Compile Include="Gui\Windows\Forms\RicheditFormatter.cs" />
     <Compile Include="Gui\Windows\ListViewItemWrapper.cs" />
     <Compile Include="Gui\MruList.cs" />
-    <Compile Include="Loading\AssemblerFragmentLoader.cs" />
-    <Compile Include="Loading\AssemblerLoader.cs" />
-    <Compile Include="Loading\Loader.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Loading\LoaderBase.cs" />
     <Compile Include="Scanning\EscapedAccessRewriter.cs">
       <SubType>Code</SubType>

@@ -149,9 +149,9 @@ namespace Decompiler.UnitTests.Structure
 			using (FileUnitTester fut = new FileUnitTester(outFilename))
 			{
 				RewriteProgram(sourceFilename, addrBase);
-				foreach (Procedure proc in prog.Procedures.Values)
+				foreach (Procedure proc in program.Procedures.Values)
 				{
-					ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(prog.Procedures.Values[0]);
+					ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
 					cfgc.Transform();
 					proc.Write(false, fut.TextWriter);
 					fut.TextWriter.WriteLine();

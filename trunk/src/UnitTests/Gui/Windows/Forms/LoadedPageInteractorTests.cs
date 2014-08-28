@@ -208,25 +208,46 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return status.Status;
         }
 
-        private class TestLoader : LoaderBase
+        //$TODO: use MockRepository for this.
+        private class TestLoader : ILoader
         {
             private Project_v1 project;
             private Program prog;
 
-            public TestLoader(IServiceProvider services, Project_v1 project, Program prog) : base(services)
+            public TestLoader(IServiceProvider services, Project_v1 project, Program prog) 
             {
                 this.project = project;
                 this.prog = prog;
             }
 
-            public override Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress)
+            public byte[] LoadImageBytes(string fileName, int offset)
+            {
+                return new byte[400];
+            }
+
+            public Program LoadExecutable(string fileName, Address loadAddress)
             {
                 return prog;
             }
 
-            public override byte[] LoadImageBytes(string fileName, int offset)
+            public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)
             {
-                return new byte[400];
+                return prog;
+            }
+
+            public Program AssembleExecutable(string fileName, Decompiler.Core.Assemblers.Assembler asm, Address loadAddress)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Program AssembleExecutable(string fileName, byte[] bytes, Decompiler.Core.Assemblers.Assembler asm, Address loadAddress)
+            {
+                throw new NotImplementedException();
+            }
+
+            public TypeLibrary LoadMetadata(string fileName)
+            {
+                throw new NotImplementedException();
             }
         }
     }

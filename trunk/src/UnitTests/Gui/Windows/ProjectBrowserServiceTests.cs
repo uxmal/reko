@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.Gui.Controls;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -98,8 +99,8 @@ namespace Decompiler.UnitTests.Gui.Windows
             public ITreeNodeCollection Nodes { get; private set; }
             public event EventHandler AfterSelect;
 
-            public object SelectedItem { get { return selectedItem; } set { selectedItem = value; AfterSelect.Fire(this); } }
-            private object selectedItem;
+            public ITreeNode SelectedNode { get { return selectedItem; } set { selectedItem = value; AfterSelect.Fire(this); } }
+            private ITreeNode selectedItem;
 
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
@@ -231,10 +232,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var node = mr.Stub<ITreeNode>();
             des.Expect(d => d.DoDefaultAction());
             des.Stub(d => d.Initialize(null)).IgnoreArguments();
-            mockTree.Stub(m => m.CreateNode()).Return(node);
-            mockTree.Stub(m => m.AfterSelect += null).IgnoreArguments();
-            mockTree.Stub(m => m.SelectedItem).Return(des);
-            mockNodes.Stub(m => m.AddRange(null)).IgnoreArguments();
+            mockTree = new FakeTree();
             mr.ReplayAll();
             
             var pbs = new ProjectBrowserService(sc, mockTree);
@@ -242,9 +240,199 @@ namespace Decompiler.UnitTests.Gui.Windows
             var desdes = pbs.GetDesigner(des);
             Assert.IsNotNull(desdes);
 
-            mockTree.Raise(f => f.AfterSelect += null, mockTree, EventArgs.Empty);
+            mockTree.SelectedNode = des.TreeNode;
 
             mr.VerifyAll();
+        }
+
+        public class FakeTree : ITreeView
+        {
+            public event EventHandler AfterSelect;
+
+            public FakeTree()
+            {
+                this.Nodes = new FakeNodeCollection();
+            }
+
+            public ITreeNode SelectedNode
+            {
+                get { return sel; }
+                set { sel = value; AfterSelect.Fire(this); }
+            }
+            private ITreeNode sel;
+
+            public bool ShowNodeToolTips { get; set; }
+            public bool ShowRootLines { get; set; }
+
+            public ITreeNodeCollection Nodes { get; private set; }
+
+            public ITreeNode CreateNode()
+            {
+                return new FakeNode();
+            }
+
+            public ITreeNode CreateNode(string text)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class FakeNodeCollection : ITreeNodeCollection
+        {
+            private List<ITreeNode> nodes = new List<ITreeNode>();
+
+            public ITreeNode Add(string text)
+            {
+                var node = new FakeNode { Text = text };
+                nodes.Add(node);
+                return node;
+            }
+
+            public void AddRange(IEnumerable<ITreeNode> nodes)
+            {
+                this.nodes.AddRange(nodes);
+            }
+
+            public int IndexOf(ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Insert(int index, ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveAt(int index)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ITreeNode this[int index]
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public void Add(ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Clear()
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool Contains(ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void CopyTo(ITreeNode[] array, int arrayIndex)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Count
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public bool IsReadOnly
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public bool Remove(ITreeNode item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerator<ITreeNode> GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class FakeNode : ITreeNode
+        {
+            public FakeNode()
+            {
+                Nodes = new FakeNodeCollection();
+            }
+
+            public ITreeNodeCollection Nodes { get; private set; }
+            public string ImageName { get; set; }
+            public object Tag {get; set; }
+            public string Text { get; set; }
+            public string ToolTipText { get; set; }
+
+            public void Expand()
+            {
+            }
+        }
+
+        [Designer(typeof(TestDesigner))]
+        public class TestComponent
+        {
+        }
+
+        [Designer(typeof(TestDesigner))]
+        public class ParentComponent
+        {
+        }
+
+        [Designer(typeof(TestDesigner))]
+        public class GrandParentComponent
+        {
+        }
+
+        public class TestDesigner : TreeNodeDesigner
+        {
+        }
+
+        [Test]
+        public void PBS_FindGrandParent()
+        {
+            mockTree = new FakeTree();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var gp = new GrandParentComponent();
+            var p = new ParentComponent();
+            var c = new TestComponent();
+
+            pbs.AddComponents(new[] { gp });
+            pbs.AddComponents(gp, new[] { p });
+            pbs.AddComponents(p, new[] { c });
+
+            var o = pbs.GetAncestorOfType<GrandParentComponent>(c);
+            Assert.AreSame(gp, o);
+        }
+
+        [Test]
+        public void PBS_NoGrandParent()
+        {
+            mockTree = new FakeTree();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var p = new ParentComponent();
+            var c = new TestComponent();
+
+            pbs.AddComponents(new[] { p });
+            pbs.AddComponents(p, new[] { c });
+
+            var o = pbs.GetAncestorOfType<GrandParentComponent>(c);
+            Assert.IsNull(o);
         }
     }
 }

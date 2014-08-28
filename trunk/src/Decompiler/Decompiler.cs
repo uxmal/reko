@@ -61,19 +61,19 @@ namespace Decompiler
 	public class DecompilerDriver : IDecompiler
 	{
 		private DecompilerHost host;
-		private LoaderBase loader;
+		private ILoader loader;
 		private IScanner scanner;
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
         private ObservableRangeCollection<Program> programs;
 
-        public DecompilerDriver(LoaderBase ldr, DecompilerHost host, IServiceProvider services)
+        public DecompilerDriver(ILoader ldr, DecompilerHost host, IServiceProvider services)
         {
             this.programs = new ObservableRangeCollection<Program>();
             this.loader = ldr;
             this.host = host;
             this.services = services;
-            this.eventListener = (DecompilerEventListener)services.GetService(typeof(DecompilerEventListener));
+            this.eventListener = (DecompilerEventListener) services.GetService(typeof(DecompilerEventListener));
         }
 
         public ICollection<Program> Programs { get { return programs; } }
@@ -124,6 +124,14 @@ namespace Decompiler
                 host.WriteIntermediateCode(writer => { EmitProgram(program, dfa, writer); });
             }
             eventListener.ShowStatus("Interprocedural analysis complete.");
+        }
+
+        public void DumpAssembler(Program program, TextWriter wr)
+        {
+            if (wr == null || program.Architecture == null)
+                return;
+            Dumper dump = new Dumper(program.Architecture);
+            dump.Dump(program, program.ImageMap, wr);
         }
 
         private void EmitProgram(Program program, DataFlowAnalysis dfa, TextWriter output)
@@ -182,15 +190,14 @@ namespace Decompiler
             {
                 foreach (var inputFile in Project.InputFiles.OfType<InputFile>())
                 {
-                    Programs.Add(loader.Load(
+                    Programs.Add(loader.LoadExecutable(
                         inputFile.Filename,
-                        loader.LoadImageBytes(inputFile.Filename, 0),
                         inputFile.BaseAddress));
                 }
             }
             else
             {
-                var program = loader.Load(fileName, image, null);
+                var program = loader.LoadExecutable(fileName, image, null);
                 Project = CreateDefaultProject(fileName, program);
                 Programs.Add(program);
             }
@@ -200,10 +207,7 @@ namespace Decompiler
         public TypeLibrary LoadMetadata(string fileName)
         {
             eventListener.ShowStatus("Loading metadata");
-            var rawBytes = this.loader.LoadImageBytes(fileName, 0);
-            MetadataLoader mdLoader = this.loader.FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
-            var result = mdLoader.Load();
-            return result;
+            return loader.LoadMetadata(fileName);
         }
 
         /// <summary>
@@ -337,7 +341,7 @@ namespace Decompiler
                 {
                     eventListener.ShowStatus("Rewriting reachable machine code.");
                     scanner = CreateScanner(program, eventListener);
-                    foreach (EntryPoint ep in loader.EntryPoints)
+                    foreach (EntryPoint ep in program.EntryPoints)
                     {
                         scanner.EnqueueEntryPoint(ep);
                     }
@@ -352,11 +356,12 @@ namespace Decompiler
                 finally
                 {
                     loader = null;
-                    host.WriteDisassembly(program.DumpAssembler);
-                    host.WriteIntermediateCode((w) => { EmitProgram(program, null, w); });
+                    host.WriteDisassembly(w => DumpAssembler(program, w));
+                    host.WriteIntermediateCode(w => EmitProgram(program, null, w));
                 }
             }
 		}
+
 
         public IDictionary<Address, ProcedureSignature> LoadCallSignatures(Program program, ICollection<SerializedCall_v1> serializedCalls)
         {

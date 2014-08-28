@@ -41,6 +41,8 @@ namespace Decompiler.Gui
         public virtual void DoDefaultAction()
         {
         }
+    
+        public TreeNodeDesigner Parent { get; set; }
     }
 
     public interface ITreeNodeDesignerHost
@@ -48,5 +50,24 @@ namespace Decompiler.Gui
         void AddComponents(System.Collections.IEnumerable components);
         void AddComponents(object parent, System.Collections.IEnumerable components);
         void RemoveComponent(object component);
+        TreeNodeDesigner GetDesigner(object component);
+    }
+
+    public static class TreeNodeDesignerEx
+    {
+        public static T GetAncestorOfType<T>(this ITreeNodeDesignerHost host, object component)
+        {
+            var des = host.GetDesigner(component);
+            if (des == null)
+                return default(T);
+            for (;;)
+            {
+                des = des.Parent;
+                if (des == null)
+                    return default(T);
+                if (des.Component is T)
+                    return (T) des.Component;
+            }
+        }
     }
 }

@@ -46,12 +46,12 @@ namespace Decompiler.Gui.Windows.Forms
         {
         }
 
-        protected virtual IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host)
+        protected virtual IDecompiler CreateDecompiler(ILoader ldr, DecompilerHost host)
         {
             return new DecompilerDriver(ldr, host, Services);
         }
 
-        protected virtual LoaderBase CreateLoader()
+        protected virtual ILoader CreateLoader()
         {
             return new Loader(Services);
         }

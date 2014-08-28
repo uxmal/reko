@@ -19,32 +19,22 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Serialization;
+using Decompiler.Core.Assemblers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Loading
 {
-    public class LoadedProject
+    public interface ILoader
     {
-        private Program prog;
-        private Project_v1 project;
+        byte[] LoadImageBytes(string fileName, int offset);
+        Program LoadExecutable(string fileName, Address loadAddress);
+        Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress);
+        Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress);
+        Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress);
 
-        public LoadedProject(Program prog, Project_v1 project)
-        {
-            this.prog = prog;
-            this.project = project;
-        }
-
-        public Program Program
-        {
-            get { return prog; }
-        }
-
-        public Project_v1 Project
-        {
-            get { return project; }
-        }
+        TypeLibrary LoadMetadata(string fileName);
     }
 }

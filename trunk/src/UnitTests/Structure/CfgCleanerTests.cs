@@ -52,11 +52,11 @@ namespace Decompiler.UnitTests.Structure
 			using (FileUnitTester fut = new FileUnitTester(testFile))
 			{
 				this.RewriteProgram(sourceFile, new Address(0xC00, 0));
-				prog.Procedures.Values[0].Write(false, fut.TextWriter);
+				program.Procedures.Values[0].Write(false, fut.TextWriter);
                 fut.TextWriter.WriteLine();
-				var cfgc = new ControlFlowGraphCleaner(prog.Procedures.Values[0]);
+				var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
 				cfgc.Transform();
-				prog.Procedures.Values[0].Write(false, fut.TextWriter);
+				program.Procedures.Values[0].Write(false, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}

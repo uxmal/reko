@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private FakeUiService uiSvc;
         private ServiceContainer site;
         private IProjectBrowserService browserSvc;
-        private LoaderBase loader;
+        private ILoader loader;
         private IDecompiler dec;
         private DecompilerHost host;
         private ILowLevelViewService memSvc;
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr = new MockRepository();
             form = new MainForm();
             site = new ServiceContainer();
-            loader = mr.StrictMock<LoaderBase>(site);
+            loader = mr.StrictMock<ILoader>(site);
             dec = mr.StrictMock<IDecompiler>();
             site = new ServiceContainer();
             uiSvc = new FakeShellUiService();
@@ -194,21 +194,21 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestInitialPageInteractor : InitialPageInteractorImpl
         {
-            private LoaderBase loader;
+            private ILoader loader;
             public IDecompiler decompiler;
 
-            public TestInitialPageInteractor(IServiceProvider services, LoaderBase loader, IDecompiler decompiler) : base(services)
+            public TestInitialPageInteractor(IServiceProvider services, ILoader loader, IDecompiler decompiler) : base(services)
             {
                 this.loader = loader;
                 this.decompiler = decompiler;
             }
 
-            protected override LoaderBase CreateLoader()
+            protected override ILoader CreateLoader()
             {
                 return loader;
             }
 
-            protected override IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host)
+            protected override IDecompiler CreateDecompiler(ILoader ldr, DecompilerHost host)
             {
                 return decompiler;
             }
