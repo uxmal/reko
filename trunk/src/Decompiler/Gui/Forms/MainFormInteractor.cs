@@ -306,7 +306,7 @@ namespace Decompiler.Gui.Forms
 
         public void CloseProject()
         {
-            if (decompilerSvc.Decompiler == null || !Save())
+            if (decompilerSvc.Decompiler != null && !Save())
                 return;
             form.CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
