@@ -9,7 +9,7 @@ namespace Decompiler.Gui.Controls
     {
         event EventHandler AfterSelect;
 
-        object SelectedItem { get; set; }
+        ITreeNode SelectedNode { get; set; }
         bool ShowNodeToolTips { get; set; }
         bool ShowRootLines { get; set; }
 

@@ -29,6 +29,7 @@ using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -64,18 +65,18 @@ namespace Decompiler.UnitTests.Scanning
 
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
-            AssemblerLoader ldr = new AssemblerLoader(
-                null,
-                new IntelTextAssembler(),
-                FileUnitTester.MapTestPath(sourceFile));
-            Program prog = ldr.Load(addr);
-			var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), null);
-			foreach (EntryPoint ep in ldr.EntryPoints)
+            var ldr = new Loader(new ServiceContainer());
+            Program program = ldr.AssembleExecutable(
+                 FileUnitTester.MapTestPath(sourceFile),
+                 new IntelTextAssembler(),
+                addr);
+			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), null);
+			foreach (EntryPoint ep in program.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
 			scan.ScanImage();
-			return prog;
+			return program;
 		}
 
 		private void RunTest(string sourceFile, Address addr, string outputFile)

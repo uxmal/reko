@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Gui
         public void DecSvc_DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
-            var loader = mr.StrictMock<Decompiler.Loading.LoaderBase>(sc);
+            var loader = mr.StrictMock<Decompiler.Loading.ILoader>(sc);
             var host = mr.StrictMock<DecompilerHost>();
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<Platform>(sc, arch);
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Gui
             var prog = new Program(image, imageMap, arch, platform);
             var fileName = "foo\\bar\\baz.exe";
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
-            loader.Stub(l => l.Load(fileName, bytes, null)).Return(prog);
+            loader.Stub(l => l.LoadExecutable(fileName, bytes, null)).Return(prog);
             mr.ReplayAll();
 
             svc.Decompiler = dec;

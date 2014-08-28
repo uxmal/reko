@@ -78,16 +78,25 @@ namespace Decompiler.Gui
 
         public void AddComponents(IEnumerable components)
         {
-            List<ITreeNode> nodes = new List<ITreeNode>();
-            foreach (object o in components)
-            {
-                var des = CreateDesigner(o);
-                if (des != null)
-                {
-                    nodes.Add(des.TreeNode);
-                }
-            }
+            var nodes = components
+                .Cast<object>()
+                .Select(o => CreateTreeNode(o, CreateDesigner(o), null));
             tree.Nodes.AddRange(nodes);
+        }
+
+        public void AddComponents(object parent, IEnumerable components)
+        {
+            TreeNodeDesigner parentDes = GetDesigner(parent);
+            if (parentDes == null)
+            {
+                Debug.Print("No designer for parent object {0}", parent ?? "(null)");
+                AddComponents(components);
+                return;
+            }
+            var nodes = components
+                .Cast<object>()
+                .Select(o => CreateTreeNode(o, CreateDesigner(o), parentDes));
+            parentDes.TreeNode.Nodes.AddRange(nodes);
         }
 
         private TreeNodeDesigner CreateDesigner(object o)
@@ -111,11 +120,10 @@ namespace Decompiler.Gui
                 }
             }
             mpitemToDesigner[o] = des;
-            var node = CreateTreeNode(o, des);
             return des;
         }
-
-        private ITreeNode CreateTreeNode(object o, TreeNodeDesigner des)
+        
+        private ITreeNode CreateTreeNode(object o, TreeNodeDesigner des, TreeNodeDesigner parentDes)
         {
             var node = tree.CreateNode();
             node.Tag = o;
@@ -123,24 +131,11 @@ namespace Decompiler.Gui
             des.Services = Services;
             des.Host = this;
             des.TreeNode = node;
+            des.Component = o;
+            des.Parent = parentDes;
             des.Initialize(o);
 
             return node;
-        }
-
-        public void AddComponents(object parent, IEnumerable components)
-        {
-            TreeNodeDesigner parentDes = GetDesigner(parent);
-            if (parentDes == null)
-            {
-                Debug.Print("No designer for parent object {0}", parent ?? "(null)");
-                AddComponents(components);
-                return;
-            }
-            var nodes = components
-                .Cast<object>()
-                .Select(o => CreateTreeNode(o, CreateDesigner(o)));
-            parentDes.TreeNode.Nodes.AddRange(nodes);
         }
 
         public TreeNodeDesigner GetDesigner(object o)
@@ -161,9 +156,9 @@ namespace Decompiler.Gui
 
         private void tree_AfterSelect(object sender, EventArgs e)
         {
-            if (tree.SelectedItem == null)
+            if (tree.SelectedNode == null)
                 return;
-            var des = GetDesigner(tree.SelectedItem);
+            var des = GetDesigner(tree.SelectedNode.Tag);
             if (des == null)
                 return;
             des.DoDefaultAction();

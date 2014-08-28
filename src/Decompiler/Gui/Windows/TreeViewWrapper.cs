@@ -48,24 +48,15 @@ namespace Decompiler.Gui.Windows
         public bool ShowNodeToolTips { get { return treeView.ShowNodeToolTips; } set { treeView.ShowNodeToolTips = value; } }
         public bool ShowRootLines { get { return treeView.ShowRootLines; } set { treeView.ShowRootLines = value; } }
 
-        public object SelectedItem
+        public ITreeNode SelectedNode
         {
             get
             {
-                if (treeView.SelectedNode != null)
-                    return treeView.SelectedNode.Tag;
-                return null;
+                return (ITreeNode) treeView.SelectedNode;
             }
             set
             {
-                if (value != null)
-                {
-                    var node = NodeOf(treeView.Nodes, value);
-                    if (node != null)
-                        treeView.SelectedNode = node;
-                }
-                else 
-                    treeView.SelectedNode = null;
+                treeView.SelectedNode = (WrappedNode)value;
             }
         }
 

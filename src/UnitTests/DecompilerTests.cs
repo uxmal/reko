@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests
     public class DecompilerTests
     {
         MockRepository mr;
-        LoaderBase loader;
+        ILoader loader;
         TestDecompiler decompiler;
 
         [SetUp]
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests
             var config = new FakeDecompilerConfiguration();
             var host = new FakeDecompilerHost();
             var sp = new ServiceContainer();
-            loader = mr.StrictMock<LoaderBase>(sp);
+            loader = mr.StrictMock<ILoader>(sp);
             sp.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             decompiler = new TestDecompiler(loader, host, sp);
         }
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests
                 .Return(new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
                     "<input><filename>foo.bar</filename></input></project>"));
             loader.Stub(l => l.LoadImageBytes("foo.bar", 0)).Return(bytes);
-            loader.Stub(l => l.Load("foo.bar", bytes, null));
+            loader.Stub(l => l.LoadExecutable("foo.bar", bytes, null));
             mr.ReplayAll();
 
             decompiler.LoadProject("test.dcproject");
@@ -97,11 +97,9 @@ namespace Decompiler.UnitTests
 
     public class TestDecompiler : DecompilerDriver
     {
-        public TestDecompiler(LoaderBase loader, DecompilerHost host, IServiceProvider sp)
+        public TestDecompiler(ILoader loader, DecompilerHost host, IServiceProvider sp)
             : base(loader, host, sp)
         {
         }
-
     }
-
 }

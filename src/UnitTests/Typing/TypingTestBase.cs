@@ -43,20 +43,19 @@ namespace Decompiler.UnitTests.Typing
 	{
 		protected Program RewriteFile(string relativePath)
 		{
-            AssemblerLoader ldr = new AssemblerLoader(
-                new ServiceContainer(),
+            ILoader ldr = new Loader(new ServiceContainer());
+            var program = ldr.AssembleExecutable(
+                FileUnitTester.MapTestPath(relativePath),
                 new IntelTextAssembler(),
-                FileUnitTester.MapTestPath(relativePath));
-
-            var prog = ldr.Load(new Address(0xC00, 0));
-            var ep = new EntryPoint(prog.Image.BaseAddress, prog.Architecture.CreateProcessorState());
-			var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+                new Address(0xC00, 0));
+            var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
+			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
 			scan.EnqueueEntryPoint(ep);
 			scan.ScanImage();
 
-			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
-            return prog;
+            return program;
 		}
 
         protected void RunTest(string srcfile, string outputFile)

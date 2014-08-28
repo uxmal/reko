@@ -52,6 +52,7 @@ namespace Decompiler.Core
 
 		public Program()
 		{
+            this.EntryPoints = new List<EntryPoint>();
 			this.procedures = new SortedList<Address,Procedure>();
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
 			this.CallGraph = new CallGraph();
@@ -77,13 +78,7 @@ namespace Decompiler.Core
 
         public CallGraph CallGraph { get; private set; }
 
-		public void DumpAssembler(TextWriter wr)
-		{
-			if (wr == null || Architecture == null)
-				return;
-			Dumper dump = new Dumper(Architecture);
-			dump.Dump(this, ImageMap, wr);
-		}
+
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
 		{
@@ -123,6 +118,8 @@ namespace Decompiler.Core
 		public LoadedImage Image { get; set; }
 
         public ImageMap ImageMap { get; set; }
+
+        public List<EntryPoint> EntryPoints { get; private set; }
 
 		public Dictionary<uint, PseudoProcedure> ImportThunks
 		{
@@ -171,8 +168,7 @@ namespace Decompiler.Core
 		{
 			get { return vectors; }
 		}
-
-    }
+    } 
 
 	public class VectorUse
 	{

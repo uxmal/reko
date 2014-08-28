@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private ITypeLibraryLoaderService typeLibSvc;
         private IProjectBrowserService brSvc;
         private IFileSystemService fsSvc;
-        private LoaderBase loader;
+        private ILoader loader;
         private IUiPreferencesService uiPrefs;
         private ITabControlHostService tcHostSvc;
         private IDecompilerService dcSvc;
@@ -79,6 +79,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
             Given_MainFormInteractor();
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
+            brSvc.Stub(d => d.Clear());
             form.Stub(f => f.CloseAllDocumentWindows());
             mr.ReplayAll();
 
@@ -161,11 +162,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void Given_Loader()
         {
-            loader = mr.StrictMock<LoaderBase>(services);
+            loader = mr.StrictMock<ILoader>(services);
             var bytes = new byte[1000];
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments()
                 .Return(bytes);
-            loader.Stub(l => l.Load(null, null, null)).IgnoreArguments()
+            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
                     Image = new LoadedImage(new Address(0x0C00,0x0000), bytes)
@@ -634,7 +635,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	public class TestMainFormInteractor : MainFormInteractor
 	{
 		private DecompilerDriver decompiler;
-        private LoaderBase ldr;
+        private ILoader ldr;
 		private Program program;
         private StringWriter sw;
         private string testFilename;
@@ -651,7 +652,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             this.decompiler = decompiler;
 		}
 
-        public TestMainFormInteractor(Program prog, LoaderBase ldr, IServiceProvider sp)
+        public TestMainFormInteractor(Program prog, ILoader ldr, IServiceProvider sp)
             : base(sp)
         {
             this.program = prog;
@@ -660,7 +661,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         // Overrides of creation methods.
 
-        public override IDecompiler CreateDecompiler(LoaderBase ldr)
+        public override IDecompiler CreateDecompiler(ILoader ldr)
 		{
             if (decompiler != null)
                 return decompiler;

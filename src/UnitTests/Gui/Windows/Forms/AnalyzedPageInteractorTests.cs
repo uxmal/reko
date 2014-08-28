@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
@@ -168,24 +169,44 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return svc;
         }
 
-        private class TestLoader : LoaderBase
+        private class TestLoader : ILoader
         {
-            public TestLoader(IServiceProvider services) : base(services)
+            public TestLoader(IServiceProvider services)
             {
             }
 
-            public override Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress)
+            public byte[] LoadImageBytes(string fileName, int offset)
+            {
+                return new byte[4711];
+            }
+
+            public Program LoadExecutable(string fileName, Address loadAddress)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)
             {
                 Program prog = new Program();
-                prog.Image = new LoadedImage(new Address(0x00100000), imageFile);
+                prog.Image = new LoadedImage(loadAddress, bytes);
                 prog.ImageMap = new ImageMap(prog.Image);
                 prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
                 return prog;
             }
 
-            public override byte[] LoadImageBytes(string fileName, int offset)
+            public Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress)
             {
-                return new byte[4711];
+                throw new NotImplementedException();
+            }
+
+            public Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress)
+            {
+                throw new NotImplementedException();
+            }
+
+            public TypeLibrary LoadMetadata(string fileName)
+            {
+                throw new NotImplementedException();
             }
         }
     }

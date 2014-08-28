@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Structure
 {
 	public class StructureTestBase
 	{
-		protected Program prog;
+		protected Program program;
 
         protected StructureNode GetNode(ProcedureStructure proc, string nodeName)
         {
@@ -46,25 +46,24 @@ namespace Decompiler.UnitTests.Structure
 
 		protected Program RewriteProgram(string sourceFilename, Address addrBase)
 		{
-            AssemblerLoader ldr = new AssemblerLoader(
-                new ServiceContainer(),
+            var ldr = new Loader(new ServiceContainer());
+            program = ldr.AssembleExecutable(
+                FileUnitTester.MapTestPath(sourceFilename),
                 new IntelTextAssembler(),
-                FileUnitTester.MapTestPath(sourceFilename));
+                addrBase);
 
-            prog = ldr.Load(addrBase);
-
-            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
-			foreach (EntryPoint ep in ldr.EntryPoints)
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+			foreach (EntryPoint ep in program.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
 			scan.ScanImage();
 
             DecompilerEventListener eventListener = new FakeDecompilerEventListener();
-			DataFlowAnalysis da = new DataFlowAnalysis(prog, eventListener);
+			DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
 			da.AnalyzeProgram();
 
-            return prog;
+            return program;
 		}
 	}
 }

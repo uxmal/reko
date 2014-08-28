@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Structure
         private ProcedureStructure CompileTest(string asmfile)
         {
             RewriteProgram(asmfile, new Address(0x0C00, 0));
-            return CompileTest(prog.Procedures.Values[0]);
+            return CompileTest(program.Procedures.Values[0]);
         }
 
     }

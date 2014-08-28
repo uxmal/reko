@@ -96,7 +96,7 @@ namespace Decompiler.Gui.Forms
             nextPage[pageAnalyzed] = pageFinal;
         }
 
-        public virtual IDecompiler CreateDecompiler(LoaderBase ldr)
+        public virtual IDecompiler CreateDecompiler(ILoader ldr)
         {
             return new DecompilerDriver(ldr, this, sc);
         }

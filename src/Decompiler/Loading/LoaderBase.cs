@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Services;
 using Decompiler.Core.Serialization;
@@ -30,31 +31,88 @@ using System.Text;
 namespace Decompiler.Loading
 {
     /// <summary>
-    /// Base class that abstracts the process of loading the "code", in whatever format it is in,
+    /// Class that abstracts the process of loading the "code", in whatever format it is in,
     /// into a program.
     /// </summary>
-    public abstract class LoaderBase
+    public class Loader : ILoader
     {
-        private List<EntryPoint> entryPoints;
         private IDecompilerConfigurationService cfgSvc;
-        private DecompilerEventListener eventListener ;
+        private DecompilerEventListener eventListener;
 
-        public LoaderBase(IServiceProvider services)
+        public Loader(IServiceProvider services)
         {
             this.Services = services;
-            this.entryPoints = new List<EntryPoint>();
             this.cfgSvc = services.GetService<IDecompilerConfigurationService>();
             this.eventListener = services.GetService<DecompilerEventListener>();
         }
 
-        public List<EntryPoint> EntryPoints
-        {
-            get { return entryPoints; }
-        }
-
         public IServiceProvider Services { get; private set; }
 
-        public abstract Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress);
+        public Program AssembleExecutable(string fileName, Assembler asm, Address addrLoad)
+        {
+            var bytes = LoadImageBytes(fileName, 0);
+            return AssembleExecutable(fileName, bytes, asm, addrLoad);
+        }
+
+        public Program AssembleExecutable(string fileName, byte[] image, Assembler asm, Address addrLoad)
+        {
+            var lr = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
+            Program program = new Program(
+                lr.Image,
+                new ImageMap(lr.Image),
+                lr.Architecture,
+                lr.Platform);
+            program.Name = Path.GetFileName(fileName);
+            program.EntryPoints.AddRange(asm.EntryPoints);
+            program.EntryPoints.Add(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
+            CopyImportThunks(asm.ImportThunks, program);
+            return program;
+        }
+
+        public Program LoadExecutable(string fileName, Address addrLoad)
+        {
+            return LoadExecutable(fileName, LoadImageBytes(fileName, 0), addrLoad);
+        }
+
+        /// <summary>
+        /// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
+        /// Relocation gives us a chance to determine the addresses of interesting items.
+        /// </summary>
+        /// <param name="rawBytes">Image of the executeable file.</param>
+        /// <param name="addrLoad">Address into which to load the file.</param>
+        public Program LoadExecutable(string fileName, byte[] image, Address addrLoad)
+        {
+            ImageLoader imgLoader = FindImageLoader<ImageLoader>(fileName, image, () => new NullLoader(Services, image));
+            if (addrLoad == null)
+            {
+                addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
+            }
+
+            var result = imgLoader.Load(addrLoad);
+            Program program = new Program(
+                result.Image,
+                result.ImageMap,
+                result.Architecture,
+                result.Platform);
+            program.Name = Path.GetFileName(fileName);
+            var relocations = imgLoader.Relocate(addrLoad);
+            program.EntryPoints.AddRange(relocations.EntryPoints);
+            CopyImportThunks(imgLoader.ImportThunks, program);
+            return program;
+        }
+
+        /// <summary>
+        /// Loads a metadata file into a type library.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public TypeLibrary LoadMetadata(string fileName)
+        {
+            var rawBytes = LoadImageBytes(fileName, 0);
+            MetadataLoader mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
+            var result = mdLoader.Load();
+            return result;
+        }
 
         /// <summary>
         /// Loads the contents of a file with the specified filename into an array 
@@ -100,12 +158,11 @@ namespace Decompiler.Loading
             return defaultLoader();
         }
 
-
         public bool ImageHasMagicNumber(byte[] image, string magicNumber, string sOffset)
         {
             int offset = ConvertOffset(sOffset);
             byte[] magic = ConvertHexStringToBytes(magicNumber);
-            if (image.Length < magic.Length + offset)
+            if (image.Length < offset + magic.Length)
                 return false;
 
             for (int i = 0, j = offset; i < magic.Length; ++i, ++j)
@@ -116,8 +173,12 @@ namespace Decompiler.Loading
             return true;
         }
 
-
-                private int ConvertOffset(string sOffset)
+        /// <summary>
+        /// Converts the offset, which is expressed as a string, into a hexadecimal value.
+        /// </summary>
+        /// <param name="sOffset"></param>
+        /// <returns></returns>
+        private int ConvertOffset(string sOffset)
         {
             if (string.IsNullOrEmpty(sOffset))
                 return 0;
