@@ -34,5 +34,7 @@ namespace Decompiler.Gui
         /// </summary>
         /// <param name="project"></param>
         void Load(Project project, IEnumerable<Program> programs);
+
+        void Clear();
     }
 }

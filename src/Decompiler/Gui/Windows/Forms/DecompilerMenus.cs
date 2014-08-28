@@ -105,6 +105,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slFileAddMetadata = new CommandMenuItem("Add _metadata file...", new Guid(CmdSets.Decompiler), CmdIds.FileAddMetadata);
             slFileAddMetadata.IsDynamic = false;
             
+            CommandMenuItem slFileCloseProject = new CommandMenuItem("Close projec_t", new Guid(CmdSets.Decompiler), CmdIds.FileCloseProject);
+            slFileCloseProject.IsDynamic = false;
+            
             CommandMenuItem slFileMru = new CommandMenuItem("", new Guid(CmdSets.Decompiler), CmdIds.FileMru);
             slFileMru.IsDynamic = true;
             slGrpFileMru.Add(0, slFileMru);
@@ -192,6 +195,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpFile.Add(0, slFileOpen);
 			slGrpFile.Add(0, slFileOpenAs);
 			slGrpFile.Add(0, slFileSave);
+			slGrpFile.Add(0, slFileCloseProject);
 			slGrpToolbarFileOps.Add(0, slFileOpen);
 			slGrpToolbarFileOps.Add(0, slFileSave);
 			slGrpFile.Add(0, slFileAddBinary);

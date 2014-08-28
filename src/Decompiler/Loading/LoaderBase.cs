@@ -36,13 +36,15 @@ namespace Decompiler.Loading
     public abstract class LoaderBase
     {
         private List<EntryPoint> entryPoints;
+        private IDecompilerConfigurationService cfgSvc;
+        private DecompilerEventListener eventListener ;
 
         public LoaderBase(IServiceProvider services)
         {
             this.Services = services;
             this.entryPoints = new List<EntryPoint>();
-            this.ConfigurationService = services.GetService<IDecompilerConfigurationService>();
-            this.EventListener = services.GetService<DecompilerEventListener>();
+            this.cfgSvc = services.GetService<IDecompilerConfigurationService>();
+            this.eventListener = services.GetService<DecompilerEventListener>();
         }
 
         public List<EntryPoint> EntryPoints
@@ -50,15 +52,14 @@ namespace Decompiler.Loading
             get { return entryPoints; }
         }
 
-        public IDecompilerConfigurationService ConfigurationService { get; private set; }
-        public DecompilerEventListener EventListener { get; private set; }
         public IServiceProvider Services { get; private set; }
 
         public abstract Program Load(string fileName, byte[] imageFile, Address userSpecifiedAddress);
 
         /// <summary>
         /// Loads the contents of a file with the specified filename into an array 
-        /// of bytes, optionally at the offset <paramref>offset</paramref>.
+        /// of bytes, optionally at the offset <paramref>offset</paramref>. No interpretation
+        /// of those bytes is done.
         /// </summary>
         /// <param name="fileName">File to open.</param>
         /// <param name="offset">The offset into the array into which the file will be loaded.</param>
@@ -81,7 +82,7 @@ namespace Decompiler.Loading
         /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
         public T FindImageLoader<T>(string fileName, byte[] rawBytes, Func<T> defaultLoader)
         {
-            foreach (LoaderElement e in ConfigurationService.GetImageLoaders())
+            foreach (LoaderElement e in cfgSvc.GetImageLoaders())
             {
                 if (!string.IsNullOrEmpty(e.MagicNumber) &&
                     ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset)
@@ -93,7 +94,7 @@ namespace Decompiler.Loading
                 }
             }
 
-            EventListener.AddDiagnostic(
+            eventListener.AddDiagnostic(
                 new NullCodeLocation(""),
                 new ErrorDiagnostic("The format of the file is unknown."));
             return defaultLoader();

@@ -64,10 +64,5 @@ namespace Decompiler.Loading
             CopyImportThunks(asm.ImportThunks, prog);
             return prog;
         }
-
-        public override byte[] LoadImageBytes(string fileName, int offset)
-        {
-            return base.LoadImageBytes(fileName, offset);
-        }
     }
 }

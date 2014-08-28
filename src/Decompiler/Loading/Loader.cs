@@ -41,35 +41,30 @@ namespace Decompiler.Loading
         {
         }
 
-        public override Program Load(string fileName, byte[] image, Address addrLoad)
-        {
-            return LoadExecutableFile(fileName, image, addrLoad);
-        }
-
-		/// <summary>
-		/// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
-		/// Relocation gives us a chance to determine the addresses of interesting items.
-		/// </summary>
+        /// <summary>
+        /// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
+        /// Relocation gives us a chance to determine the addresses of interesting items.
+        /// </summary>
         /// <param name="rawBytes">Image of the executeable file.</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
-		public Program LoadExecutableFile(string fileName, byte [] rawBytes, Address addrLoad)
-		{
-            ImageLoader loader = FindImageLoader<ImageLoader>(fileName, rawBytes, () => new NullLoader(Services, rawBytes));
+        public override Program Load(string fileName, byte[] image, Address addrLoad)
+        {
+            ImageLoader imgLoader = FindImageLoader<ImageLoader>(fileName, image, () => new NullLoader(Services, image));
             if (addrLoad == null)
 			{
-				addrLoad = loader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
+				addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
 			}
 
-            var result = loader.Load(addrLoad);
+            var result = imgLoader.Load(addrLoad);
             Program program = new Program(
                 result.Image,
                 result.ImageMap,
                 result.Architecture,
                 result.Platform);
             program.Name = Path.GetFileName(fileName);
-		    var relocations = loader.Relocate(addrLoad);
+		    var relocations = imgLoader.Relocate(addrLoad);
             EntryPoints.AddRange(relocations.EntryPoints);
-            CopyImportThunks(loader.ImportThunks, program);
+            CopyImportThunks(imgLoader.ImportThunks, program);
             return program;
         }
     }

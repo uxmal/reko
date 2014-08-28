@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IDecompilerShellUiService uiSvc;
         private IDecompilerConfigurationService configSvc;
         private ITypeLibraryLoaderService typeLibSvc;
-        private IProjectBrowserService projectBrowserSvc;
+        private IProjectBrowserService brSvc;
         private IFileSystemService fsSvc;
         private LoaderBase loader;
         private IUiPreferencesService uiPrefs;
@@ -144,7 +144,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             form.Expect(f => f.CloseAllDocumentWindows());
-            Expect_LoadPreferences();
+            Given_LoadPreferences();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -170,24 +170,22 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void MainForm_Save()
+        public void Mfi_Save()
         {
             Given_MainFormInteractor();
             Given_Loader();
-            Expect_LoadPreferences();
+            Given_LoadPreferences();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-
-            IDecompilerService svc = interactor.ProbeGetService<IDecompilerService>();
-            svc.Decompiler = interactor.CreateDecompiler(loader);
+            When_DecompilerCreated();
             Assert.IsNotNull(loader);
-            svc.Decompiler.LoadProject("foo.exe");
+            dcSvc.Decompiler.LoadProject("foo.exe");
             var p = new Decompiler.Core.Serialization.Procedure_v1 {
                 Address = "12345",
                 Name = "MyProc", 
             };
-            var inputFile = (InputFile)svc.Decompiler.Project.InputFiles[0];
+            var inputFile = (InputFile)dcSvc.Decompiler.Project.InputFiles[0];
             inputFile.UserProcedures.Add(new Address(0x12345), p);
 
             interactor.Save();
@@ -411,8 +409,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var docWindows = new List<IWindowFrame>();
             form.Stub(f => f.DocumentWindows).Return(docWindows);
             form.Expect(f => f.CloseAllDocumentWindows());
-            Expect_LoadPreferences();
-            Expect_CommandNotHandledBySubwindow();
+            Given_LoadPreferences();
+            Given_CommandNotHandledBySubwindow();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -424,15 +422,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        private void Expect_LoadPreferences()
+        private void Given_LoadPreferences()
         {
-            uiPrefs.Expect(u => u.Load());
+            uiPrefs.Stub(u => u.Load());
             uiPrefs.Stub(u => u.WindowSize).Return(new Size());
             uiPrefs.Stub(u => u.WindowState).Return(FormWindowState.Normal);
             form.Stub(f => f.WindowState = FormWindowState.Normal);
         }
 
-        private void Expect_CommandNotHandledBySubwindow()
+        private void Given_CommandNotHandledBySubwindow()
         {
             uiSvc.Stub(u => u.Execute(null))
                 .IgnoreArguments()
@@ -461,7 +459,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             services.AddService(typeof(IDecompilerService), dcSvc);
             uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.def");
             Given_Loader();
-            Expect_CommandNotHandledBySubwindow();
+            Given_CommandNotHandledBySubwindow();
             //Expect_UiPreferences_Loaded();
             //Expect_MainForm_SizeSet();
             this.tcHostSvc.Stub(t => t.Execute(null)).IgnoreArguments().Return(false);
@@ -474,9 +472,32 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
+        [Test]
+        public void Mfi_CloseProject()
+        {
+            Given_MainFormInteractor();
+            Given_Loader();
+            Given_LoadPreferences();
+            Given_CommandNotHandledBySubwindow();
+            form.Expect(f => f.CloseAllDocumentWindows());
+            brSvc.Expect(b => b.Clear());
+            diagnosticSvc.Expect(d => d.ClearDiagnostics());
+            mr.ReplayAll();
+
+            When_CreateMainFormInteractor();
+            When_DecompilerCreated();
+            When_LoadProject();
+            Assert.IsNotNull(dcSvc.Decompiler.Project);
+            var executed = interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.FileCloseProject));
+
+            Assert.IsTrue(executed);
+            Assert.IsNull(dcSvc.Decompiler);
+            mr.VerifyAll();
+        }
+
         public class FakeMetadataLoader : MetadataLoader
         {
-            public FakeMetadataLoader( IServiceProvider services, byte[]bytes) :base(services, bytes)
+            public FakeMetadataLoader(IServiceProvider services, byte[]bytes) :base(services, bytes)
             {
             }
 
@@ -488,7 +509,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void When_LoadProject()
         {
-            throw new NotImplementedException();
+            dcSvc.Decompiler.LoadProject("foo.exe");
         }
 
         private class TestForm : Form, IWindowFrame
@@ -516,7 +537,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             disasmSvc = mr.StrictMock<IDisassemblyViewService>();
             diagnosticSvc = mr.StrictMock<IDiagnosticsService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
-            projectBrowserSvc = mr.StrictMock<IProjectBrowserService>();
+            brSvc = mr.StrictMock<IProjectBrowserService>();
             uiPrefs = mr.StrictMock<IUiPreferencesService>();
             fsSvc = mr.StrictMock<IFileSystemService>();
             tcHostSvc = mr.StrictMock<ITabControlHostService>();
@@ -533,7 +554,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
             svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
-            svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(projectBrowserSvc);
+            svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
             svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull,Arg<DecompilerMenus>.Is.NotNull)).Return(uiSvc);
