@@ -25,11 +25,13 @@ using Decompiler.Core;
 using Decompiler.Core.Assemblers;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
+using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 
@@ -94,7 +96,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 using (Stream stm = new FileStream(FileUnitTester.MapTestPath(configFile), FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    project = new ProjectSerializer().LoadProject(stm);
+                    project = new ProjectSerializer(new Loader(new ServiceContainer())).LoadProject(stm);
                 }
             }
             else

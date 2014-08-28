@@ -62,27 +62,20 @@ namespace Decompiler.Core
 
         /// <summary>
         /// The name of the file in which final output is stored
-        /// //$REVIEW: there may be many of these as the user may want to fragment the procedures in groups.
         /// </summary>
         public string OutputFilename { get; set; }
 
         /// <summary>
         /// The name of the file in which recovered types are stored.
-        /// //$REVIEW: there may be many of these as the user may want to fragment the procedures in groups.
         /// </summary>
         public string TypesFilename { get; set; }
 
         public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get;  set; }
         public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
 
-        public void SetDefaultFileNames(string inputFilename)
-        {
-            Filename = inputFilename;
-
-            DisassemblyFilename = Path.ChangeExtension(inputFilename, ".asm");
-            IntermediateFilename = Path.ChangeExtension(inputFilename, ".dis");
-            OutputFilename = Path.ChangeExtension(inputFilename, ".c");
-            TypesFilename = Path.ChangeExtension(inputFilename, ".h");
-        }
+        /// <summary>
+        /// The resulting program.
+        /// </summary>
+        public Program Program { get; set; }
     }
 }

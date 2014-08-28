@@ -19,17 +19,14 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Services;
 using Decompiler.Gui.Controls;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
-using Decompiler.Core.Configuration;
+using Decompiler.Loading;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using System.Windows.Forms;
 
 namespace Decompiler.Gui
@@ -54,6 +51,7 @@ namespace Decompiler.Gui
         ITabControlHostService CreateTabControlHost(TabControl tabControl);
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IUiPreferencesService CreateUiPreferencesService();
+        ILoader CreateLoader();
     }
 
     public class ServiceFactory : IServiceFactory
@@ -100,6 +98,11 @@ namespace Decompiler.Gui
         public IDecompilerService CreateDecompilerService()
         {
             return new DecompilerService();
+        }
+
+        public ILoader CreateLoader()
+        {
+            return new Loader(services);
         }
 
         public DecompilerEventListener CreateDecompilerEventListener()

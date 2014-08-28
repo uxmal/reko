@@ -185,7 +185,7 @@ namespace Decompiler
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            Project = ProjectSerializer.DeserializeProject(image);
+            Project = ProjectSerializer.DeserializeProject(image, loader);
             if (Project != null)
             {
                 foreach (var inputFile in Project.InputFiles.OfType<InputFile>())
@@ -232,13 +232,17 @@ namespace Decompiler
             eventListener.ShowStatus("Raw bytes loaded.");
         }
 
-        protected Project CreateDefaultProject(string filename, Program prog)
+        protected Project CreateDefaultProject(string fileName, Program prog)
         {
             var inputFile = new InputFile {
-                Filename = filename,
+                Filename = fileName,
                 BaseAddress = prog.Image.BaseAddress,
+                DisassemblyFilename = Path.ChangeExtension(fileName, ".asm"),
+                IntermediateFilename = Path.ChangeExtension(fileName, ".dis"),
+                OutputFilename = Path.ChangeExtension(fileName, ".c"),
+                TypesFilename = Path.ChangeExtension(fileName, ".h"),
             };
-            inputFile.SetDefaultFileNames(filename);
+
             var project = new Project
             {
                 InputFiles = { inputFile },
@@ -346,9 +350,9 @@ namespace Decompiler
                         scanner.EnqueueEntryPoint(ep);
                     }
                     var inputFile = (InputFile) Project.InputFiles[0];
-                    foreach (Procedure_v1 sp in inputFile.UserProcedures.Values)
+                    foreach (Procedure_v1 up in inputFile.UserProcedures.Values)
                     {
-                        scanner.EnqueueUserProcedure(sp);
+                        scanner.EnqueueUserProcedure(up);
                     }
                     scanner.ScanImage();
                     eventListener.ShowStatus("Finished rewriting reachable machine code.");

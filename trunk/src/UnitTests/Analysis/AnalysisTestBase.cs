@@ -28,9 +28,11 @@ using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using Decompiler.Environments.Msdos;
 using Decompiler.Scanning;
+using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -154,9 +156,10 @@ namespace Decompiler.UnitTests.Analysis
         {
             var scan = new Scanner(prog, 
                 new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var loader = new Loader(new ServiceContainer());
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
-                : new ProjectSerializer().LoadProject(FileUnitTester.MapTestPath(configFile));
+                : new ProjectSerializer(new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
             foreach (var f in project.InputFiles.OfType<InputFile>())

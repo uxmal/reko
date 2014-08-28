@@ -21,9 +21,11 @@
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
+using Decompiler.Loading;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -35,7 +37,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
         public void Ps_Load()
         {
-            var ps = new ProjectSerializer();
+            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
             var proj = ps.LoadProject(FileUnitTester.MapTestPath("fragments/multiple/termination.xml"));
 
             Assert.AreEqual(1, ((InputFile)proj.InputFiles[0]).UserProcedures.Count);
@@ -81,7 +83,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectSerializer();
+            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
             var p = ps.LoadProject(sp);
             Assert.AreEqual(1, p.InputFiles.Count);
             var inputFile = (InputFile) p.InputFiles[0]; 

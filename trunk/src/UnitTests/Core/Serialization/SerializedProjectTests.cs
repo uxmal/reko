@@ -23,9 +23,11 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
+using Decompiler.Loading;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -224,8 +226,8 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ser = new ProjectSerializer();
-            var project = ser.LoadProject(sProject);
+            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
+            var project = ps.LoadProject(sProject);
             Assert.AreEqual(2, project.InputFiles.Count);
         }
 	}

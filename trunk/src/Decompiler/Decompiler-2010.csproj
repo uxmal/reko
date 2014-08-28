@@ -402,7 +402,6 @@
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Gui\Windows\WindowsFormsRegistryService.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsService.cs" />
-    <Compile Include="Loading\ILoader.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -145,9 +145,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		[Test]
 		public void MainForm_NextPhase_AdvanceToNextInteractor()
 		{
+            Given_Loader();
             Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             form.Expect(f => f.CloseAllDocumentWindows());
+            brSvc.Stub(b => b.Clear());
             Given_LoadPreferences();
             mr.ReplayAll();
 
@@ -162,7 +164,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private void Given_Loader()
         {
-            loader = mr.StrictMock<ILoader>(services);
+            loader = mr.StrictMock<ILoader>();
             var bytes = new byte[1000];
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments()
                 .Return(bytes);
@@ -308,9 +310,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void MainForm_FindAllProcedures_LoadedProgram_QueryStatusEnabled()
         {
+            Given_Loader();
             Given_MainFormInteractor();
             Given_UiSvc_ReturnsFalseOnQueryStatus();
-            Given_Loader();
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
@@ -444,10 +446,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Mfi_AddMetadata()
         {
+            Given_Loader();
             Given_MainFormInteractor();
             var dcSvc = mr.Stub<IDecompilerService>();
             var decompiler = mr.Stub<IDecompiler>();
-            var loaderElement = mr.Stub<LoaderElement>();
             var project = new Project {
                 InputFiles = 
                 { 
@@ -455,17 +457,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 }
             };
             dcSvc.Decompiler = decompiler;
-            loaderElement.Stub(l => l.Extension).Return("def");
-            loaderElement.Stub(l => l.MagicNumber).Return(null);
-            loaderElement.Stub(l => l.TypeName).Return(typeof(FakeMetadataLoader).AssemblyQualifiedName);
-            configSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderElement>{loaderElement});
+            loader.Expect(l => l.LoadMetadata("foo.def")).Return(new TypeLibrary());
             decompiler.Stub(d => d.Project).Return(project);
             services.AddService(typeof(IDecompilerService), dcSvc);
             uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.def");
-            Given_Loader();
             Given_CommandNotHandledBySubwindow();
-            //Expect_UiPreferences_Loaded();
-            //Expect_MainForm_SizeSet();
             this.tcHostSvc.Stub(t => t.Execute(null)).IgnoreArguments().Return(false);
             mr.ReplayAll();
 
@@ -563,6 +559,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateFileSystemService()).Return(fsSvc);
             svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull,Arg<DecompilerMenus>.Is.NotNull)).Return(uiSvc);
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
+            svcFactory.Stub(s => s.CreateLoader()).Return(loader);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 

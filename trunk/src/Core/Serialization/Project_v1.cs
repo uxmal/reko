@@ -75,9 +75,6 @@ namespace Decompiler.Core.Serialization
         [XmlElement("processor")]
         public string Processor;
 
-        [XmlElement("procedure")]
-        public List<Procedure_v1> UserProcedures;
-
         [XmlElement("call")]
         public List<SerializedCall_v1> UserCalls;
 

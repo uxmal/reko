@@ -37,7 +37,7 @@ namespace Decompiler.Core
             UserGlobalData = new SortedList<Address, SerializedType>();
             InputFiles = new ObservableRangeCollection<ProjectFile>();
         }
-        
+
         public ObservableRangeCollection<ProjectFile> InputFiles { get; private set; }
 
         /// <summary>
@@ -80,12 +80,6 @@ namespace Decompiler.Core
         public ProjectFile_v2 VisitMetadataFile(MetadataFile metadata)
         {
             throw new NotImplementedException();
-        }
-
-        public void Load(Project_v1 sp)
-        {
-            var serializer = new ProjectSerializer();
-            var project = serializer.LoadProject(sp);
         }
     }
 }
