@@ -83,7 +83,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			int nExports = rdr.ReadLeInt32();
 			int nNames = rdr.ReadLeInt32();
 			if (nExports != nNames)
-				throw new ApplicationException("Unexpected discrepancy in PE image.");
+				throw new BadImageFormatException("Unexpected discrepancy in PE image.");
 			uint rvaApfn = rdr.ReadLeUInt32();
 			uint rvaNames = rdr.ReadLeUInt32();
 
@@ -407,7 +407,7 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             unresolvedImports.Add(new ImportedFunction(id, fnName));
             Services.RequireService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
-                new Diagnostic(string.Format("Unable to locate signature for {0} ({1}).", fnName, id.DllName)));
+                new Diagnostic(string.Format("Unable to locate signature for {0}!{1}.", id.DllName, fnName)));
         }
 
         private bool ImportedFunctionNameSpecified(uint rvaEntry)
@@ -440,7 +440,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			rdr.ReadLeInt16();		// # of relocations
 			rdr.ReadLeInt16();		// # of line numbers
 			sec.Flags = rdr.ReadLeUInt32();
-
 			return sec;
 		}
 

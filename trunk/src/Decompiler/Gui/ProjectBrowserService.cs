@@ -49,6 +49,11 @@ namespace Decompiler.Gui
 
         public IServiceProvider Services { get; private set; }
 
+        public void Clear()
+        {
+            Load(null, null);
+        }
+
         public void Load(Project project, IEnumerable<Program> progs)
         {
             tree.Nodes.Clear();

@@ -218,10 +218,10 @@ namespace Decompiler.Gui.Forms
         {
             try
             {
-                diagnosticsSvc.ClearDiagnostics();
-                form.CloseAllDocumentWindows();
+                CloseProject();
                 SwitchInteractor(InitialPageInteractor);
                 openAction();
+                ProjectFileName = file;
             }
             catch (Exception ex)
             {
@@ -302,6 +302,16 @@ namespace Decompiler.Gui.Forms
                 uiSvc.ShowError(ex, "An error occurred when opening the binary.");
             }
             return true;
+        }
+
+        public void CloseProject()
+        {
+            if (decompilerSvc.Decompiler == null || !Save())
+                return;
+            form.CloseAllDocumentWindows();
+            sc.RequireService<IProjectBrowserService>().Clear();
+            diagnosticsSvc.ClearDiagnostics();
+            decompilerSvc.Decompiler = null;
         }
 
         public InitialPageInteractor InitialPageInteractor
@@ -433,7 +443,11 @@ namespace Decompiler.Gui.Forms
             memService.ShowWindow();
         }
 
-        public void Save()
+        /// <summary>
+        /// Saves the project. 
+        /// </summary>
+        /// <returns>False if the user cancelled the save, true otherwise.</returns>
+        public bool Save()
         {
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
@@ -442,7 +456,7 @@ namespace Decompiler.Gui.Forms
                         decompilerSvc.Decompiler.Project.InputFiles[0].Filename,
                         Project_v1.FileExtension));
                 if (newName == null)
-                    return;
+                    return false;
                 ProjectFileName = newName;
                 mru.Use(newName);
             }
@@ -453,6 +467,7 @@ namespace Decompiler.Gui.Forms
                 var sp = decompilerSvc.Decompiler.Project.Save();
                 new ProjectSerializer().Save(sp, sw);
             }
+            return true;
         }
 
         protected virtual string PromptForFilename(string suggestedName)
@@ -531,7 +546,6 @@ namespace Decompiler.Gui.Forms
                 {
                 case CmdIds.FileOpen:
                 case CmdIds.FileExit:
-                case CmdIds.FileSave:
                 case CmdIds.FileOpenAs:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
@@ -550,7 +564,9 @@ namespace Decompiler.Gui.Forms
                     return true;
                 case CmdIds.FileAddBinary:
                 case CmdIds.FileAddMetadata:
+                case CmdIds.FileCloseProject:
                 case CmdIds.ViewFindAllProcedures:
+                case CmdIds.FileSave:
                 case CmdIds.EditFind:
                     cmdStatus.Status = IsDecompilerLoaded
                         ? MenuStatus.Enabled | MenuStatus.Visible
@@ -598,6 +614,7 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.FileOpenAs: return OpenBinaryAs();
                 case CmdIds.FileSave: Save(); return true;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); return true;
+                case CmdIds.FileCloseProject: CloseProject(); return true;
                 case CmdIds.FileExit: form.Close(); return true;
 
                 case CmdIds.ActionNextPhase: NextPhase(); return true;

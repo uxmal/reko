@@ -41,6 +41,7 @@ namespace Decompiler.UnitTests.Gui.Windows
     public class LowLevelViewServiceTests
     {
         private MockRepository mr;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -59,7 +60,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             sc.AddService(typeof(IDecompilerShellUiService), shellUi);
             sc.AddService<IDecompilerService>(decSvc);
             AddStubService<IUiPreferencesService>(sc);
-
+            Given_Program();
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             var interactor = new LowLevelViewInteractor();
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
@@ -76,9 +77,18 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             interactor.SetSite(sc);
             interactor.CreateControl();
-            svc.ShowMemoryAtAddress(new Program(), new Address(0x10000));
+            svc.ShowMemoryAtAddress(program, program.Image.BaseAddress);
 
             mr.VerifyAll();
+        }
+
+        private void Given_Program()
+        {
+            var addrBase =     new Address(0x10000);
+            var image = new LoadedImage(addrBase, new byte[100]);
+            var map = new ImageMap(image);
+            
+            this.program = new Program(image, map, null, null);
         }
 
         private T AddStubService<T>(IServiceContainer sc)

@@ -59,6 +59,5 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             mr.VerifyAll();
 		}
-
 	}
 }

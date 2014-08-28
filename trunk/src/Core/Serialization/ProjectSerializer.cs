@@ -29,6 +29,36 @@ namespace Decompiler.Core.Serialization
 {
     public class ProjectSerializer : IProjectFileVisitor_v2<ProjectFile>
     {
+        public static Project DeserializeProject(byte[] image)
+        {
+            if (!IsXmlFile(image))
+                return null;
+            try
+            {
+                Stream stm = new MemoryStream(image);
+                return new ProjectSerializer().LoadProject(stm);
+            }
+            catch (XmlException)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Peeks at the beginning of the image to determine if it's an XML file.
+        /// </summary>
+        /// <remarks>
+        /// We do not attempt to handle UTF-8 encoded Unicode BOM characters.
+        /// </remarks>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        private static bool IsXmlFile(byte[] image)
+        {
+            if (LoadedImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
+                return true;
+            return false;
+        }
+
         public void Save(Project_v2 project, TextWriter sw)
         {
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v2));
@@ -91,7 +121,6 @@ namespace Decompiler.Core.Serialization
         {
             throw new NotImplementedException();
         }
-
 
         public Project LoadProject(Project_v1 sp)
         {
