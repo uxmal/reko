@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Gui
         public void DecSvc_DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
-            var loader = mr.StrictMock<Decompiler.Loading.ILoader>(sc);
+            var loader = mr.StrictMock<ILoader>();
             var host = mr.StrictMock<DecompilerHost>();
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<Platform>(sc, arch);

@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr = new MockRepository();
             form = new MainForm();
             site = new ServiceContainer();
-            loader = mr.StrictMock<ILoader>(site);
+            loader = mr.StrictMock<ILoader>();
             dec = mr.StrictMock<IDecompiler>();
             site = new ServiceContainer();
             uiSvc = new FakeShellUiService();
@@ -201,11 +201,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             {
                 this.loader = loader;
                 this.decompiler = decompiler;
-            }
-
-            protected override ILoader CreateLoader()
-            {
-                return loader;
             }
 
             protected override IDecompiler CreateDecompiler(ILoader ldr, DecompilerHost host)

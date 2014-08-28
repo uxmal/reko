@@ -6,7 +6,7 @@ using System.Text;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// Abstract class represeting all files that are in use by the project
+    /// Abstract class representing all files that are in use by the project
     /// </summary>
     public abstract class ProjectFile
     {

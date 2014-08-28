@@ -57,6 +57,7 @@ namespace Decompiler.Gui.Forms
         private IWorkerDialogService workerDlgSvc;
         private IDialogFactory dlgFactory;
         private ITabControlHostService searchResultsTabControl;
+        private ILoader loader;
 
         private IPhasePageInteractor currentPhase;
         private InitialPageInteractor pageInitial;
@@ -131,6 +132,9 @@ namespace Decompiler.Gui.Forms
         {
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IDecompilerConfigurationService), config);
+
+            loader = svcFactory.CreateLoader();
+            sc.AddService(typeof(ILoader), loader);
 
             sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
 
@@ -463,9 +467,9 @@ namespace Decompiler.Gui.Forms
 
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
-                //$REFACTOR: rule of demeter, push this into a Save() method.
+                //$REFACTOR: rule of Demeter, push this into a Save() method.
                 var sp = decompilerSvc.Decompiler.Project.Save();
-                new ProjectSerializer().Save(sp, sw);
+                new ProjectSerializer(loader).Save(sp, sw);
             }
             return true;
         }

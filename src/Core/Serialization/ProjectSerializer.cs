@@ -29,14 +29,25 @@ namespace Decompiler.Core.Serialization
 {
     public class ProjectSerializer : IProjectFileVisitor_v2<ProjectFile>
     {
-        public static Project DeserializeProject(byte[] image)
+        private ILoader loader;
+
+        public ProjectSerializer()
+        {
+            loader = null;  //$REVIEW: or the NullLoader?
+        }
+        public ProjectSerializer(ILoader loader)
+        {
+            this.loader = loader;
+        }
+
+        public static Project DeserializeProject(byte[] image, ILoader loader)
         {
             if (!IsXmlFile(image))
                 return null;
             try
             {
                 Stream stm = new MemoryStream(image);
-                return new ProjectSerializer().LoadProject(stm);
+                return new ProjectSerializer(loader).LoadProject(stm);
             }
             catch (XmlException)
             {
@@ -87,15 +98,10 @@ namespace Decompiler.Core.Serialization
 
         public Project LoadProject(Project_v2 sp)
         {
-            var inputFiles = sp.Inputs.Select(s => LoadInputFile(s));
+            var inputFiles = sp.Inputs.Select(s => s.Accept<ProjectFile>(this));
             var project = new Project();
             project.InputFiles.AddRange(inputFiles);
             return project;
-        }
-
-        private ProjectFile LoadInputFile(ProjectFile_v2 sInput)
-        {
-            return sInput.Accept<ProjectFile>(this);
         }
 
         public ProjectFile VisitInputFile(DecompilerInput_v2 sInput)

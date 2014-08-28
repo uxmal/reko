@@ -51,11 +51,6 @@ namespace Decompiler.Gui.Windows.Forms
             return new DecompilerDriver(ldr, host, Services);
         }
 
-        protected virtual ILoader CreateLoader()
-        {
-            return new Loader(Services);
-        }
-
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             if (cmdId.Guid== CmdSets.GuidDecompiler)
@@ -94,7 +89,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void OpenBinary(string file, DecompilerHost host)
         {
-            var ldr = CreateLoader();
+            var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr, host);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
@@ -117,8 +112,7 @@ namespace Decompiler.Gui.Windows.Forms
             Address addrBase, 
             DecompilerHost host)
         {
-            var sc = Services.RequireService<IServiceContainer>();
-            var ldr = CreateLoader();
+            var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr, host);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()

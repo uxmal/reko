@@ -196,6 +196,7 @@
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
     <Compile Include="ICodeLocation.cs" />
+    <Compile Include="ILoader.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="Output\BlockDecorator.cs" />

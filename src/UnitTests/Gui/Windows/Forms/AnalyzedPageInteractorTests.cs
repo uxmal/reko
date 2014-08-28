@@ -187,6 +187,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)
             {
+                loadAddress = loadAddress ?? new Address(0x100000);
                 Program prog = new Program();
                 prog.Image = new LoadedImage(loadAddress, bytes);
                 prog.ImageMap = new ImageMap(prog.Image);
