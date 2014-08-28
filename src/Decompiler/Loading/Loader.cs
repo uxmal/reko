@@ -82,7 +82,7 @@ namespace Decompiler.Loading
         /// <param name="addrLoad">Address into which to load the file.</param>
         public Program LoadExecutable(string fileName, byte[] image, Address addrLoad)
         {
-            ImageLoader imgLoader = FindImageLoader<ImageLoader>(fileName, image, () => new NullLoader(Services, image));
+            ImageLoader imgLoader = FindImageLoader<ImageLoader>(fileName, image, () => new NullImageLoader(Services, image));
             if (addrLoad == null)
             {
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.

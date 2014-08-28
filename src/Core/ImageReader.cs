@@ -26,7 +26,7 @@ using System.Text;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// Reads bytes and differently sized words sequentially from an associated ProgramImage.
+    /// Reads bytes and differently sized words sequentially from an associated LoadedImage.
     /// </summary>
     public class ImageReader
     {

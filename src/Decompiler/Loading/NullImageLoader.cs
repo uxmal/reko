@@ -29,11 +29,11 @@ namespace Decompiler.Loading
     /// The NullLoader is used when the decompiler is unable to determine what image loader to use.
     /// It supports no disassembly.
     /// </summary>
-    public class NullLoader : ImageLoader
+    public class NullImageLoader : ImageLoader
     {
         private byte[] imageBytes;
 
-        public NullLoader(IServiceProvider services, byte[] image) : base(services, image)
+        public NullImageLoader(IServiceProvider services, byte[] image) : base(services, image)
         {
             this.imageBytes = image;
         }
