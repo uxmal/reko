@@ -395,21 +395,28 @@ namespace Decompiler.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
-                    var program = this.decompilerSvc.Decompiler.Program;
-                    var hits = re.GetMatches(program.Image.Bytes, 0);
-                    var srSvc = GetService<ISearchResultService>();
-                    var baseLin = program.Image.BaseAddress.Linear;
+                    var hits = this.decompilerSvc.Decompiler.Programs
+                        .SelectMany(program => 
+                              re.GetMatches(program.Image.Bytes, 0)
+                                .Select(offset => new AddressSearchHit 
+                                {
+                                    Program = program,
+                                    LinearAddress = (uint)(program.Image.BaseAddress.Linear + offset)
+                                }));
                     srSvc.ShowSearchResults(new AddressSearchResult(
                         this.sc,
-                        program,
-                        hits.Select(h => (uint) (baseLin + h))));
+                        hits));
                 }
             }
         }
 
         public void FindProcedures(ISearchResultService svc)
         {
-            svc.ShowSearchResults(new ProcedureSearchResult(this.sc, this.decompilerSvc.Decompiler.Program.Procedures));
+            var hits = this.decompilerSvc.Decompiler.Programs
+                .SelectMany(program => program.Procedures.Select(proc =>
+                    new ProcedureSearchHit(program, proc.Key, proc.Value)))
+                .ToList();
+            svc.ShowSearchResults(new ProcedureSearchResult(this.sc, hits));
         }
 
         public void ViewDisassemblyWindow()
@@ -421,7 +428,8 @@ namespace Decompiler.Gui.Forms
         public void ViewMemoryWindow()
         {
             var memService = GetService<ILowLevelViewService>();
-            memService.ViewImage(this.decompilerSvc.Decompiler.Program);
+            //$TODO: determine "current program".
+            memService.ViewImage(this.decompilerSvc.Decompiler.Programs.First());
             memService.ShowWindow();
         }
 
@@ -634,7 +642,7 @@ namespace Decompiler.Gui.Forms
             {
                 if (decompilerSvc.Decompiler == null)
                     return false;
-                return decompilerSvc.Decompiler.Program != null;
+                return decompilerSvc.Decompiler.Programs.Count > 0;
             }
         }
         #endregion

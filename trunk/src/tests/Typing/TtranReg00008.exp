@@ -30,8 +30,6 @@ Eq_9: (struct 0026 (0 word16 w0000))
 	T_23 (in si_20 + 0x0026 : word16)
 Eq_12: (segment (0 (arr Eq_26) a0000))
 	T_12 (in 0x5CE1 : selector)
-Eq_13: (arr Eq_26)
-	T_13 (in 0x0000 : word16)
 Eq_26: (struct 0026 (0 word16 w0000))
 	T_26
 // Type Variables ////////////

@@ -1488,13 +1488,13 @@ namespace Decompiler.ImageLoaders.Elf
                 return ret;
             }
             int numEnt = pSect.uSectionSize / pSect.uSectionEntrySize;
-            SectionInfo* sym = GetSectionInfoByName(".dynsym");
+            SectionInfo sym = GetSectionInfoByName(".dynsym");
             if (sym == 0)
             {
                 Console.WriteLine("Could not find section .dynsym in source binary file");
                 return ret;
             }
-            Elf32_Sym* pSym = (Elf32_Sym*)sym.uHostAddr;
+            Elf32_Sym pSym = (Elf32_Sym*)sym.uHostAddr;
             int idxStr = GetSectionIndexByName(".dynstr");
             if (idxStr == -1)
             {

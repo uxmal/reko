@@ -18,29 +18,23 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
+using Decompiler.Core;
+using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Gui.Design
 {
-    public class SerializedVoidType :  SerializedType
+    public class ProgramDesigner : TreeNodeDesigner
     {
-        public override DataType BuildDataType(TypeFactory factory)
+        public override void Initialize(object obj)
         {
-            return VoidType.Instance;
-        }
-
-        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
-        {
-            return visitor.VisitVoidType(this);
-        }
-
-        public override string ToString()
-        {
-            return "void";
+            base.Initialize(obj);
+            var program = (Program) obj;
+            Host.AddComponents(program, program.ImageMap.Segments.Values);
         }
     }
 }

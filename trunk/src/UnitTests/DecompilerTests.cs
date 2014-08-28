@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests
             loader.Stub(l => l.Load("foo.bar", bytes, null));
             mr.ReplayAll();
 
-            decompiler.LoadProgram("test.dcproject");
+            decompiler.LoadProject("test.dcproject");
 
             Assert.AreEqual("foo.bar", decompiler.Project.InputFiles[0].Filename);
             mr.VerifyAll();
@@ -74,9 +74,9 @@ namespace Decompiler.UnitTests
         public void Dec_LoadCallSignatures()
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            Program prog = new Program();
-            prog.Architecture = arch;
-            decompiler.Program = prog;
+            Program program = new Program();
+            program.Architecture = arch;
+            decompiler.Programs.Add(program);
             List<SerializedCall_v1> al = new List<SerializedCall_v1>();
             SerializedSignature sig = new SerializedSignature();
             sig.Arguments = new Argument_v1[] {
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests
                 }
             };
             al.Add(new SerializedCall_v1(new Address(0x0C32, 0x3200), sig));
-            var sigs = decompiler.LoadCallSignatures(al);
+            var sigs = decompiler.LoadCallSignatures(program, al);
 
             ProcedureSignature ps = sigs[new Address(0x0C32, 0x3200)];
             Assert.IsNotNull(ps, "Expected a call signature for address");

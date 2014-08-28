@@ -24,6 +24,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 
@@ -36,9 +37,9 @@ namespace Decompiler.Core
     /// <remarks>
     /// A Decompiler project may consist of several Programs.
     /// </remarks>
-	public class Program
+    [Designer("Decompiler.Gui.Design.ProgramDesigner,Decompiler")]
+    public class Program
 	{
-		private LoadedImage image;
 		private SortedList<Address,Procedure> procedures;
         private SortedList<Address, ImageMapVectorTable> vectors;
         private Dictionary<uint, PseudoProcedure> mpuintfn;
@@ -48,7 +49,6 @@ namespace Decompiler.Core
 		private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Identifier, LinearInductionVariable> ivs;
 		private TypeFactory typefactory;
-        private ImageMap imageMap;
 
 		public Program()
 		{
@@ -70,6 +70,8 @@ namespace Decompiler.Core
             this.Architecture = arch;
             this.Platform = platform;
         }
+
+        public string Name { get; set; }
 
 		public IProcessorArchitecture Architecture { get; set; }
 
@@ -118,17 +120,9 @@ namespace Decompiler.Core
         /// <summary>
         /// The unpacked, relocated, in-memory image of the program to be decompiled.
         /// </summary>
-		public LoadedImage Image
-		{
-			get { return image; }
-            set { image = value; }
-		}
+		public LoadedImage Image { get; set; }
 
-        public ImageMap ImageMap
-        {
-            get { return imageMap; }
-            set { imageMap = value; }
-        }
+        public ImageMap ImageMap { get; set; }
 
 		public Dictionary<uint, PseudoProcedure> ImportThunks
 		{
@@ -177,6 +171,7 @@ namespace Decompiler.Core
 		{
 			get { return vectors; }
 		}
+
     }
 
 	public class VectorUse

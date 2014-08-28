@@ -1,24 +1,23 @@
 // fn0C00_0000
 void fn0C00_0000(Eq_3 * ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	ds->w9A2E = 0x0000;
 	ds->w9A26 = 0x0100;
-	Eq_9 Eq_12::*si_16 = &Eq_12::a0000[0]
+	Eq_9 Eq_12::*si_20 = &Eq_12::a0000[0]
 	// succ:  l0C00_0015
-l0C00_0015:		// pred: l0C00_0000 l0C00_0015
-	(0x5CE1->*si_16).w0000 = 0xFFFF;
+l0C00_0015:
+	(0x5CE1->*si_20).w0000 = 0xFFFF;
 	word16 v8_22 = ds->w9A26 - 0x0001
 	ds->w9A26 = v8_22;
-	si_16 = si_16 + 1;
+	si_20 = si_20 + 1;
 	branch v8_22 != 0x0000 l0C00_0015
 	// succ:  l0C00_0023 l0C00_0015
-l0C00_0023:		// pred: l0C00_0015
+l0C00_0023:
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0023
-	// succ: 
+fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_3: (segment "Eq_3" (9A26 word16 w9A26) (9A2E word16 w9A2E))
@@ -64,7 +63,7 @@ T_8: (in Mem15[ds:0x9A26:word16] : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_9: (in si_16 : (memptr (ptr Eq_12) Eq_9))
+T_9: (in si_20 : (memptr (ptr Eq_12) Eq_9))
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
   OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
@@ -88,7 +87,7 @@ T_14: (in si_16 + 0x0000 : word16)
   Class: Eq_14
   DataType: word16
   OrigDataType: word16
-T_15: (in Mem19[0x5CE1:si_16 + 0x0000:word16] : word16)
+T_15: (in Mem19[0x5CE1:si_20 + 0x0000:word16] : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16
@@ -112,7 +111,7 @@ T_20: (in ds->w9A26 - 0x0001 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_21: (in Mem23[ds:0x9A26:word16] : word16)
+T_21: (in Mem26[ds:0x9A26:word16] : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
@@ -120,7 +119,7 @@ T_22: (in 0x0026 : word16)
   Class: Eq_22
   DataType: word16
   OrigDataType: word16
-T_23: (in si_16 + 0x0026 : word16)
+T_23: (in si_20 + 0x0026 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
   OrigDataType: word16
@@ -128,7 +127,7 @@ T_24: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_25: (in v8_22 != 0x0000 : bool)
+T_25: (in v9_25 != 0x0000 : bool)
   Class: Eq_25
   DataType: bool
   OrigDataType: bool

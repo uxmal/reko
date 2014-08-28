@@ -21,45 +21,30 @@
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Decompiler.Core
 {
-    public class DisassemblyViewServiceImpl : ViewService, IDisassemblyViewService
+    public abstract class MetadataLoader
     {
-        private DisassemblyViewInteractor dvi;
-
-        public const string ViewWindowType = "disassemblyViewWindow";
-
-        public DisassemblyViewServiceImpl(IServiceProvider services)
-            : base(services)
+        public MetadataLoader(IServiceProvider services, byte[] bytes)
         {
         }
 
-        #region IDisassemblyViewService Members
+        public abstract TypeLibrary Load();
+    }
 
-        public void DisassembleStartingAtAddress(Program program, Address addr)
+    public class NullMetadataLoader : MetadataLoader
+    {
+        public NullMetadataLoader()
+            : base(null, null)
         {
-            ShowWindow();
-            dvi.StartAddress = addr;
-            dvi.Program = program;
-            dvi.DumpAssembler();
         }
 
-        public void Clear()
+        public override TypeLibrary Load()
         {
-            dvi.ClearText();
+            return new TypeLibrary();
         }
-
-        public void ShowWindow()
-        {
-            if (dvi == null)
-            {
-                dvi = new DisassemblyViewInteractor();
-            }
-            base.ShowWindow(ViewWindowType, "Disassembly", dvi);
-        }
-
-        #endregion
     }
 }

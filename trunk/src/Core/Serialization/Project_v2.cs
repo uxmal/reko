@@ -32,7 +32,7 @@ namespace Decompiler.Core.Serialization
     /// </summary>
     /// <remarks>
     /// Note that you may safely *add* attributes and elements to the serialization
-    /// format. However, should *rename* or delete XML nodes, you must copy the serialization
+    /// format. However, should you *rename* or delete XML nodes, you must copy the serialization
     /// file format into a new file, bump the namespace identifier and the class name. You will
     /// also have to modify the ProjectSerializer to handle the new format.</remarks>
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler/v2")]
@@ -53,6 +53,9 @@ namespace Decompiler.Core.Serialization
         [XmlElement("output")]
         public DecompilerOutput_v1 Output;
 
+        /// <summary>
+        /// Procedures that have been either marked by the user, or have been annotated by the user.
+        /// </summary>
         [XmlElement("procedure", typeof(Procedure_v1))]
         public List<Procedure_v1> UserProcedures;
 

@@ -71,8 +71,8 @@ namespace Decompiler.UnitTests.Environments.Win32
                 case Domain.SignedInt:
                     switch (primitive.ByteSize)
                     {
-                    case 4: sb.Append("int");
-                        break;
+                    case 4: sb.Append("int"); break;
+                    case 8: sb.Append("__int64");break;
                     default: throw new NotImplementedException();
                     }
                     break;
@@ -115,6 +115,15 @@ namespace Decompiler.UnitTests.Environments.Win32
                 name = n;
                 if (name != null)
                     sb.AppendFormat(" {0}", name);
+                return sb;
+            }
+
+            public StringBuilder VisitMemberPointer(MemberPointer_v1 memptr)
+            {
+                var n = name;
+                memptr.DeclaringClass.Accept(this);
+                sb.Append("::*");
+                sb.Append(n);
                 return sb;
             }
 
@@ -187,7 +196,8 @@ namespace Decompiler.UnitTests.Environments.Win32
 
             public StringBuilder VisitEnum(SerializedEnumType serializedEnumType)
             {
-                throw new NotImplementedException();
+                sb.AppendFormat("enum {0}", serializedEnumType.Name);
+                return sb;
             }
 
             public StringBuilder VisitTemplate(SerializedTemplate template)
@@ -359,6 +369,73 @@ namespace Decompiler.UnitTests.Environments.Win32
                 "__thiscall public: void AFX_MAINTAIN_STATE2::AFX_MAINTAIN_STATE2(AFX_MODULE_STATE *)",
                 "??0AFX_MAINTAIN_STATE2@@QAE@PAVAFX_MODULE_STATE@@@Z");
         }
+
+        [Test]
+        public void PMNP_regression2()
+        {
+            RunTest(
+                "__stdcall int ATL::AtlIAccessibleGetIDsOfNamesHelper(_GUID *, wchar_t * *, unsigned int, unsigned int, int *)",
+                "?AtlIAccessibleGetIDsOfNamesHelper@ATL@@YGJABU_GUID@@PAPA_WIKPAJ@Z");
+        }
+
+        [Test]
+        public void PMNP_regression3()
+        {
+            RunTest(
+                "unsigned int CEditView::dwStyleDefault",
+                "?dwStyleDefault@CEditView@@2KB");
+        }
+
+        [Test]
+        public void PMNP_regression4()
+        {
+            RunTest(
+                "__thiscall public: void CHtmlView::ExecWB(enum OLECMDID, enum OLECMDEXECOPT, tagVARIANT *, tagVARIANT *)",
+                "?ExecWB@CHtmlView@@QAEXW4OLECMDID@@W4OLECMDEXECOPT@@PAUtagVARIANT@@2@Z ");
+        }
+
+        [Test]
+        public void PMNP_Ellipses()
+        {
+            RunTest(
+                "__cdecl void AfxTrace(char *, void)",
+                "?AfxTrace@@YAXPBDZZ");
+        }
+
+        [Test]
+        public void PMNP_int64()
+        {
+            RunTest(
+                "__stdcall void DDV_MinMaxLongLong(CDataExchange *, __int64, __int64, __int64)",
+                "?DDV_MinMaxLongLong@@YGXPAVCDataExchange@@_J11@Z");
+        }
+
+        [Test]
+        public void PMNP_protected_static_field()
+        { 
+            RunTest(
+                "unsigned int COleDropTarget::nScrollDelay",
+                "?nScrollDelay@COleDropTarget@@1IA");
+        }
+
+        [Test][Ignore]
+        public void PMNP_regression6()
+        {
+            RunTest("@@@", "?GetStorageName@COleStreamFile@@UBE?BV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ");
+        }
+
+        [Test]
+        [Ignore]
+        public void PMNP_regression7()
+        {
+            RunTest("@@@", "?InvokeFromFuncInfo@CDHtmlControlSink@@QAEJP8CDHtmlSinkHandler@@AGXXZAAU_ATL_FUNC_INFO@ATL@@PAUtagDISPPARAMS@@PAUtagVARIANT@@@Z");
+        }
+
+        [Test]
+        [Ignore]
+        public void PMNP_regression5()
+        {
+            RunTest("@@@", "?NotifyAllInPlace@COleFrameHook@@QAEHHP81@AEHH@Z@Z");
+        }
     }
 }
-    

@@ -21,34 +21,31 @@
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing;
-using System.Reflection;
-using System.Windows.Forms;
+using System.Linq;
 
 namespace Decompiler.Gui
 {
     public class ProcedureSearchResult : ISearchResult
     {
         private IServiceProvider sp;
-        private SortedList<Address, Procedure> procs;
+        private List<ProcedureSearchHit> hits;
 
-        public ProcedureSearchResult(IServiceProvider sp, SortedList<Address, Procedure> procs)
+        public ProcedureSearchResult(IServiceProvider sp, List<ProcedureSearchHit> procs)
         {
             this.sp = sp;
-            this.procs = procs;
+            this.hits = procs;
         }
 
         public int Count
         {
-            get { return procs.Count; }
+            get { return hits.Count; }
         }
 
         public int ContextMenuID { get { return MenuIds.CtxProcedure; } }
 
         public void CreateColumns(ISearchResultView view)
         {
+            view.AddColumn("Program", 10);
             view.AddColumn("Address", 8);
             view.AddColumn("Procedure Name", 20);
         }
@@ -61,22 +58,37 @@ namespace Decompiler.Gui
         public string[] GetItemStrings(int i)
         {
             return new string[] {
-                procs.Keys[i].ToString(),
-                procs.Values[i].Name
+                hits[i].Program.Name,
+                hits[i].Address.ToString(),
+                hits[i].Procedure.Name
             };
         }
 
         public void NavigateTo(int i)
         {
             var codeSvc = sp.GetService<ICodeViewerService>();
+            var hit = hits[i];
             if (codeSvc != null)
-                codeSvc.DisplayProcedure(procs.Values[i]);
+                codeSvc.DisplayProcedure(hit.Procedure);
 
             var mvs = sp.GetService<ILowLevelViewService>();
             if (mvs == null)
                 return;
-            var decSvc = sp.RequireService<IDecompilerService>();
-            mvs.ShowMemoryAtAddress(decSvc.Decompiler.Program, procs.Keys[i]);
+            mvs.ShowMemoryAtAddress(hit.Program, hit.Address);
+        }
+    }
+
+    public class ProcedureSearchHit
+    {
+        public Program Program;
+        public Address Address;
+        public Procedure Procedure;
+
+        public ProcedureSearchHit(Program program, Address address, Procedure proc)
+        {
+            this.Program = program;
+            this.Address = address;
+            this.Procedure = proc;
         }
     }
 }

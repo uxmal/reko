@@ -79,7 +79,7 @@ namespace Decompiler.Environments.C64
 
         private static int [] trackOffset = new int[] {
             -1,
-            0x00000,0x01500,0x02A00,0x03F00,0x05400, 0x06900,0x07E00,0x09300,0x0A800,0x0BD00,
+            0x00000,0x01500,0x02A00,0x03F00,0x05400,  0x06900,0x07E00,0x09300,0x0A800,0x0BD00,
             0x0D200,0x0E700,0x0FC00,0x11100,0x12600,  0x13B00,0x15000,0x16500,0x17800,0x18B00,
             0x19E00,0x1B100,0x1C400,0x1D700,0x1EA00,  0x1FC00,0x20E00,0x22000,0x23200,0x24400,
             0x25600,0x26700,0x27800,0x28900,0x29A00,  0x2AB00,0x2BC00,0x2CD00,0x2DE00,0x2EF00,
@@ -153,8 +153,6 @@ namespace Decompiler.Environments.C64
                 loadedBytes);
         }
 
-        
-
         public override RelocationResults Relocate(Address addrLoad)
         {
             return new RelocationResults(
@@ -219,7 +217,6 @@ namespace Decompiler.Environments.C64
             {
                 return false;
             }
-
         }
 
         public class D64FileEntry : ArchivedFile
@@ -259,6 +256,7 @@ namespace Decompiler.Environments.C64
                 return stm.ToArray();
             }
         }
+
         public static int SectorOffset(byte track, byte sector)
         {
             return trackOffset[track] + sector * 256;

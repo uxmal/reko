@@ -58,6 +58,7 @@ namespace Decompiler.Loading
                 new ImageMap(lr.Image),
                 lr.Architecture,
                 lr.Platform);
+            prog.Name = Path.GetFileName(fileName);
             EntryPoints.AddRange(asm.EntryPoints);
             EntryPoints.Add(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
             CopyImportThunks(asm.ImportThunks, prog);

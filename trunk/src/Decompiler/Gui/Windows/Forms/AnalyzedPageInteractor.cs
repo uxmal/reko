@@ -53,15 +53,6 @@ namespace Decompiler.Gui.Windows.Forms
             this.canAdvance = true;
 		}
 
-        private void DisplayProcedure(Address addr, Procedure proc)
-        {
-            if (addr != null && proc != null)
-            {
-                memViewerSvc.ShowMemoryAtAddress(decompilerSvc.Decompiler.Program, addr);
-                codeViewerSvc.DisplayProcedure(proc);
-            }
-        }
-
         public override void PerformWork(IWorkerDialogService workerDlgSvc)
         {
             workerDlgSvc.SetCaption("Generating intermediate code");
@@ -91,8 +82,9 @@ namespace Decompiler.Gui.Windows.Forms
         }
 
         private void EditSignature()
-        {
-            var arch = Decompiler.Program.Architecture;
+        { 
+            //$TODO: need "current program"
+            IProcessorArchitecture arch = null; // Decompiler.Program.Architecture;
             var ser = new ProcedureSerializer(arch, "stdapi");
             var proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
             var i = new ProcedureDialogInteractor(arch, proc);
@@ -154,9 +146,5 @@ namespace Decompiler.Gui.Windows.Forms
 
         #endregion
 
-        public void BrowserList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DisplayProcedure(SelectedProcedureEntry.Key, SelectedProcedureEntry.Value);
-        }
 	}
 }

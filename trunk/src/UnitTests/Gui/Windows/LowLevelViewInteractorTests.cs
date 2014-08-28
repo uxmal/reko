@@ -50,6 +50,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private LoadedImage image;
         private ImageMap imageMap;
         private IUiPreferencesService uiPrefsSvc;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -101,26 +102,32 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_GotoAddress()
         {
-            var addr = new Address(0x1000);
             var arch = mr.Stub<IProcessorArchitecture>();
             Given_Interactor();
-            interactor.ProgramImage = new LoadedImage(addr, new byte[] { 0x4, 0x3, 0x2, 0x1 });
-            interactor.ImageMap = new ImageMap(interactor.ProgramImage);
+            Given_Program(arch, new byte[] { 0x4, 0x3, 0x2, 0x1 });
             arch.Stub(a => a.InstructionBitSize).Return(8);
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
-                .Return(new LeImageReader(interactor.ProgramImage, 0));
+                .Return(new LeImageReader(program.Image, 0));
             interactor.Stub(i => i.GetSelectedAddressRange())
-                .Return(new AddressRange(addr,addr));
+                .Return(new AddressRange(program.Image.BaseAddress, program.Image.BaseAddress));
             mr.ReplayAll();
 
-            interactor.Architecture = arch;
+            interactor.Program = program;
             interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
 
             mr.VerifyAll();
             Assert.AreEqual("0x01020304", interactor.Control.ToolBarAddressTextbox.Text);
             mr.ReplayAll();
+        }
+
+        private void Given_Program(IProcessorArchitecture arch, byte[] bytes)
+        {
+            var addr = new Address(0x1000);
+            var image = new LoadedImage(addr, bytes);
+            var map = new ImageMap(image);
+            this.program = new Program(image, map, arch, new DefaultPlatform(null, arch));
         }
 
         [Test]
@@ -145,8 +152,8 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             image = new LoadedImage(addrBase, bytes);
             imageMap = new ImageMap(image);
-            interactor.ProgramImage = image;
-            interactor.ImageMap = imageMap;
+            program = new Program(image, imageMap, null, null);
+            interactor.Program = program;
         }
 
         [Test]

@@ -20,17 +20,12 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Types;
-using Decompiler.Gui;
-using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows.Controls;
-using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
@@ -41,45 +36,26 @@ namespace Decompiler.Gui.Windows
 
         private IServiceProvider services;
         private LowLevelView control;
-        private IProcessorArchitecture arch;
         private TypeMarker typeMarker;
-        private LoadedImage image;
-        private ImageMap imageMap;
+        private Program program;
         private bool ignoreAddressChange;
 
         public LowLevelView Control { get { return control; } }
 
-        public IProcessorArchitecture Architecture
+        public Program Program
         {
-            get { return arch; }
+            get { return program; }
             set
             {
-                arch = value;
-                control.DisassemblyView.Architecture = value;
-            }
-        }
-
-        public LoadedImage ProgramImage
-        {
-            get { return image; }
-            set
-            {
-                image = value;
-                control.MemoryView.ProgramImage = value;
-                control.DisassemblyView.Image = value;
+                program = value;
                 if (value != null)
-                    control.DisassemblyView.StartAddress = value.BaseAddress;
-            }
-        }
-
-        public ImageMap ImageMap
-        {
-            get { return imageMap; }
-            set
-            {
-                imageMap = value;
-                control.MemoryView.ImageMap = value;
-                //control.DisassemblyView.ImageMap = value;
+                {
+                    control.MemoryView.ProgramImage = value.Image;
+                    control.MemoryView.ImageMap = value.ImageMap;
+                    control.DisassemblyView.Image = value.Image;
+                    control.DisassemblyView.StartAddress = value.Image.BaseAddress;
+                    control.DisassemblyView.Architecture = value.Architecture;
+                }
             }
         }
 
@@ -179,7 +155,8 @@ namespace Decompiler.Gui.Windows
             var addrRange = GetSelectedAddressRange();
             if (addrRange == null)
                 return;
-            var rdr = arch.CreateImageReader(this.image, addrRange.Begin);
+            var arch = program.Architecture;
+            var rdr = arch.CreateImageReader(program.Image, addrRange.Begin);
             var addrDst = rdr.Read(arch.PointerType);
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
@@ -214,7 +191,7 @@ namespace Decompiler.Gui.Windows
         private void MarkAndScanProcedure(Address address)
         {
             var decompiler = services.GetService<IDecompilerService>().Decompiler;
-            var proc = decompiler.ScanProcedure(address);
+            var proc = decompiler.ScanProcedure(program, address);
             var userp = new Decompiler.Core.Serialization.Procedure_v1
             {
                 Address = address.ToString(),
@@ -291,9 +268,9 @@ namespace Decompiler.Gui.Windows
                 DataType = dataType,
             };
             if (size != 0)
-                ImageMap.AddItemWithSize(address, item);
+                program.ImageMap.AddItemWithSize(address, item);
             else
-                ImageMap.AddItem(address, item);
+                program.ImageMap.AddItem(address, item);
             control.MemoryView.Invalidate();
             return item;
         }
@@ -306,7 +283,7 @@ namespace Decompiler.Gui.Windows
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.
-                var rdr = image.CreateReader(addr);
+                var rdr = program.Image.CreateReader(addr);
                 while (rdr.IsValid)
                 {
                     var ch = rdr.ReadChar(strDt.CharType);
@@ -323,21 +300,20 @@ namespace Decompiler.Gui.Windows
             AddressRange addrRange = control.MemoryView.GetAddressRange();
             if (!addrRange.IsValid)
                 return true;
-            var decompiler = services.GetService<IDecompilerService>().Decompiler;
-            if (decompiler == null)
+            if (program == null)
                 return true;
             var resultSvc = services.GetService<ISearchResultService>();
             if (resultSvc == null)
                 return true;
 
-            var arch = decompiler.Program.Architecture;
-            var image = decompiler.Program.Image;
-            var rdr = decompiler.Program.Image.CreateReader(0);
+            var arch = program.Architecture;
+            var image = program.Image;
+            var rdr = program.Image.CreateReader(0);
             var addrControl = arch.CreatePointerScanner(
                 rdr,
                 new HashSet<uint> { addrRange.Begin.Linear },
                 PointerScannerFlags.All);
-            resultSvc.ShowSearchResults(new AddressSearchResult(services, decompiler.Program, addrControl));
+            resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
             return true;
         }
 
@@ -376,7 +352,7 @@ namespace Decompiler.Gui.Windows
                 txtAddr = txtAddr.Substring(2);
             if (!Address.TryParse(txtAddr, 16, out addr))
                 return;
-            if (!image.IsValidAddress(addr))
+            if (!program.Image.IsValidAddress(addr))
                 return;
             this.ignoreAddressChange = true;
             this.Control.MemoryView.SelectedAddress = addr;

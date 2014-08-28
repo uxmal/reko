@@ -40,7 +40,6 @@ namespace Decompiler.Core.Serialization
             : this(arch, new TypeLibraryLoader(arch, true), defaultConvention)
         { }
 
-
 		public ProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader,  string defaultConvention)
 		{
 			this.arch = arch;

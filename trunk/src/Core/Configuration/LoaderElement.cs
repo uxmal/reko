@@ -43,7 +43,7 @@ namespace Decompiler.Core.Configuration
         /// </summary>
         /// <remarks>
         /// For instance, the 'MZ' signature of MS-DOS executables is expressed as the hexadecimal string 4D5A.</remarks>
-        [ConfigurationProperty("MagicNumber", IsRequired = true)]
+        [ConfigurationProperty("MagicNumber", IsRequired = false)]
         public string MagicNumber
         {
             get { return (string)this["MagicNumber"]; }

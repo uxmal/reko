@@ -150,7 +150,7 @@ namespace Decompiler.Environments.Win32
                 }
                 else
                 {
-                    var t = ParseDataTypeCode();
+                    var t = ParseDataTypeCode(this.compoundArgs);
                     if (t != null)
                         types.Add(t);
                 }
@@ -221,13 +221,21 @@ namespace Decompiler.Environments.Win32
             return qualifiers.ToArray();
         }
 
-        public SerializedStructField  ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
+        public SerializedStructField ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
         {
             this.compoundArgs = new List<Argument_v1>();
             this.Scope = string.Join("::", qualification);
             SerializedSignature sig = null;
             switch (str[i++])
             {
+            case '0':
+            case '1':
+            case '2':
+                return new SerializedStructField
+                {
+                    Type = ParseDataTypeCode(compoundArgs),
+                    Name = basicName
+                };
             case 'A': sig = ParseInstanceMethod("private"); break;
             case 'B': sig = ParseInstanceMethod("private far"); break;
             case 'C': sig = ParseStaticMethod("private static"); break;
@@ -248,13 +256,11 @@ namespace Decompiler.Environments.Win32
             case 'T': sig = ParseStaticMethod("public static far"); break;
             case 'U': sig = ParseInstanceMethod("public virtual"); break;
             case 'V': sig = ParseInstanceMethod("public virtual far"); break;
-            default:
-                Expect('2');
-                return new SerializedStructField
-                {
-                    Type = ParseDataTypeCode(),
-                    Name = basicName
-                };
+
+            case 'Y': sig = ParseGlobalFunction(""); break;
+            case 'Z': sig = ParseGlobalFunction("far"); break;
+            default: throw new NotImplementedException();
+               
             }
             return new SerializedStructField
             {
@@ -280,7 +286,7 @@ namespace Decompiler.Environments.Win32
                 return new SerializedStructField
                 {
                     Name = basicName,
-                    Type = ParseDataTypeCode()
+                    Type = ParseDataTypeCode(new List<Argument_v1>())
                 };
             }
         }
@@ -290,6 +296,37 @@ namespace Decompiler.Environments.Win32
             this.Modifier = modifier;
             ParseThisStorageClass();
             return ParseFunctionTypeCode();
+        }
+
+        public SerializedSignature ParseGlobalFunction(string modifier)
+        {
+            this.Modifier = modifier;
+            var convention = ParseCallingConvention();
+            var returnStorageClass = ParseReturnStorageClass();
+            var retType = ParseDataTypeCode(new List<Argument_v1>());
+            var args = ParseArgumentList();
+            return new SerializedSignature
+            {
+                Convention = convention,
+                Arguments = args,
+                ReturnValue = new Argument_v1 { Type = retType != null ? retType : new SerializedVoidType() }
+            };
+        }
+
+        public string ParseReturnStorageClass()
+        {
+            if (PeekAndDiscard('?'))
+            {
+                switch (str[i++])
+                {
+                case 'A': return "";
+                case 'B': return "const";
+                case 'C': return "volatile";
+                case 'D': return "const volatile";
+                default: return "?storage class?";
+                }
+            }
+            return "";
         }
 
         public SerializedSignature ParseStaticMethod(string modifier)
@@ -337,14 +374,34 @@ namespace Decompiler.Environments.Win32
             }
             else
             {
-                retType = ParseDataTypeCode();
+                retType = ParseDataTypeCode(new List<Argument_v1>());
             }
             Argument_v1[] args = ParseArgumentList();
             return new SerializedSignature
             {
                 Convention = convention,
                 Arguments = args,
-                ReturnValue = new Argument_v1 { Type=retType!= null ? retType : new SerializedVoidType() }
+                ReturnValue = new Argument_v1 { Type= retType ?? new SerializedVoidType() }
+            };
+        }
+
+        public MemberPointer_v1 ParseMemberFunctionPointerCode(int byteSize, List<Argument_v1> compoundArgs)
+        {
+            var className = ParseStructure(compoundArgs);
+            var storageClass = ParseThisStorageClass();
+            var callConv = ParseCallingConvention();
+            var retType = ParseDataTypeCode(compoundArgs);
+            var args = ParseArgumentList();
+            return new MemberPointer_v1
+            {
+                DeclaringClass = className,
+                Size = byteSize,
+                MemberType = new SerializedSignature
+                {
+                    Convention = callConv,
+                    Arguments = args,
+                    ReturnValue = new Argument_v1 { Type = retType ?? new SerializedVoidType() }
+                }
             };
         }
 
@@ -417,23 +474,25 @@ namespace Decompiler.Environments.Win32
             var args = new List<Argument_v1>();
             if (!PeekAndDiscard('X'))
             {
-                var arg = ParseDataTypeCode();
+                var arg = ParseDataTypeCode(this.compoundArgs);
                 if (arg != null)
                 {
                     args.Add(new Argument_v1 { Type = arg });
                     while (!PeekAndDiscard('@'))
                     {
-                        arg = ParseDataTypeCode();
+                        arg = ParseDataTypeCode(this.compoundArgs);
                         if (arg == null)
                             break;
                         args.Add(new Argument_v1 { Type = arg });
+                        if (arg is SerializedVoidType)
+                            break;
                     }
                 }
             }
             return args.ToArray();
         }
 
-        public SerializedType ParseDataTypeCode()
+        public SerializedType ParseDataTypeCode(List<Argument_v1> compoundArgs)
         {
             if (PeekAndDiscard('?'))
             {
@@ -470,34 +529,37 @@ namespace Decompiler.Environments.Win32
             case 'T': return ParseStructure(compoundArgs);  // union 
             case 'U': return ParseStructure(compoundArgs); // struct (see below)
             case 'V': return ParseStructure(compoundArgs); // class (see below)
-            case 'W': return ParseEnum();
+            case 'W': return ParseEnum(compoundArgs);
             case 'X': return new SerializedVoidType();      // void           (terminates argument list)
-            case 'Z': return new SerializedVoidType();      // elipsis        (terminates argument list)
+            case 'Z': return new SerializedVoidType();      // ellipsis       (terminates argument list)
             case '_':
+                SerializedPrimitiveType prim;
                 switch (str[i++])
                 {
-                case 'J': return new SerializedPrimitiveType(Domain.SignedInt, 8);  // __int64
-                case 'K': return new SerializedPrimitiveType(Domain.UnsignedInt, 8);  // unsigned __int64
-                case 'N': return new SerializedPrimitiveType(Domain.Boolean, 1);  // bool
-
-                case 'W': return new SerializedPrimitiveType(Domain.Character, 2);  // wchar_t
+                case 'J': prim = new SerializedPrimitiveType(Domain.SignedInt, 8); break;   // __int64
+                case 'K': prim = new SerializedPrimitiveType(Domain.UnsignedInt, 8); break; // unsigned __int64
+                case 'N': prim = new SerializedPrimitiveType(Domain.Boolean, 1); break;     // bool
+                case 'W': prim = new SerializedPrimitiveType(Domain.Character, 2); break;   // wchar_t
                 default: Error("Unsupported type code '_{0}'.", str[i - 1]); return null;
                 }
+                compoundArgs.Add(new Argument_v1 { Type = prim });
+                return prim;
             default: Error("Unsupported type code '{0}'.", str[i - 1]); return null;
             }
         }
 
-        public SerializedPointerType ParsePointer(List<Argument_v1> compoundArgs)
+        public SerializedType ParsePointer(List<Argument_v1> compoundArgs)
         {
             int size = 0;       //$REVIEW how to deal with 64-bitness
             SerializedType type;
             switch (str[i++])
             {
-            case 'A': size = 4; type = ParseDataTypeCode(); break;      //$BUG: assumes 32-bitness
-            case 'B': size = 4; type = ParseDataTypeCode(); break;      // const ptr
-            case 'C': size = 4; type = ParseDataTypeCode(); break;      // volatile ptr
-            case 'D': size = 4; type = ParseDataTypeCode(); break;      // const volatile ptr
-            case '6': size = 4; type = ParseFunctionTypeCode(); ParseStorageClass(); break;
+            case 'A': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       //$BUG: assumes 32-bitness
+            case 'B': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const ptr
+            case 'C': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // volatile ptr
+            case 'D': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const volatile ptr
+            case '6': size = 4; type = ParseFunctionTypeCode(); ParseStorageClass(); break;     // fn ptr
+            case '8': return ParseMemberFunctionPointerCode(4, compoundArgs);
             default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }
             var pType = new SerializedPointerType
@@ -521,7 +583,7 @@ namespace Decompiler.Environments.Win32
             return tr;
         }
 
-        public SerializedType ParseEnum()
+        public SerializedType ParseEnum(List<Argument_v1> compoundArgs)
         {
             int size;
             Domain domain;
@@ -538,10 +600,10 @@ namespace Decompiler.Environments.Win32
             default: Error("Unknown enum code {0}.", str[i - 1]); return null;
             }
             var n = ParseQualification();
-            return new SerializedEnumType(size, domain, n.Last());
+            var e = new SerializedEnumType(size, domain, n.Last());
+            compoundArgs.Add(new Argument_v1 { Type = e });
+            return e;
         }
-
-
 
         internal string ParseAtName()
         {

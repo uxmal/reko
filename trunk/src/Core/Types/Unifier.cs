@@ -35,6 +35,7 @@ namespace Decompiler.Core.Types
             : this(new TypeFactory())
         {
         }
+
 		public Unifier(TypeFactory factory)
 		{
 			this.factory = factory;

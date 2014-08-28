@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Gui
         [Test]
         public void Asr_Create()
         {
-            var results = new AddressSearchResult(sc, program, new List<uint>());
+            var results = new AddressSearchResult(sc, new List<AddressSearchHit>());
         }
     }
 

@@ -30,7 +30,7 @@ using System.Text;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// Knows how to persist and depersist type libraries.
+    /// Knows how to persist and depersist Decompiler type libraries (which are just XML files).
     /// </summary>
     public class TypeLibraryLoader : ISerializedTypeVisitor<DataType>
     {
@@ -52,7 +52,7 @@ namespace Decompiler.Core
             this.types = new Dictionary<string, DataType>(cmp)
             {
                 { "va_list", arch.FramePointerType } ,  
-                { "size_t", arch.WordWidth },          
+                { "size_t", arch.WordWidth },
             };
             this.procedures = new Dictionary<string, ProcedureSignature>(cmp);
             this.unions = new Dictionary<string, UnionType>(cmp);
@@ -149,6 +149,17 @@ namespace Decompiler.Core
             else 
                 dt = pointer.DataType.Accept(this);
             return new Pointer(dt, arch.PointerType.Size);
+        }
+
+        public DataType VisitMemberPointer(MemberPointer_v1 memptr)
+        {
+            var baseType = memptr.DeclaringClass.Accept(this);
+            DataType dt;
+            if (memptr.MemberType == null)
+                dt = new UnknownType();
+            else
+                dt = memptr.MemberType.Accept(this);
+            return new MemberPointer(baseType, dt, arch.PointerType.Size);
         }
 
         public DataType VisitArray(SerializedArrayType array)

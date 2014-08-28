@@ -26,6 +26,7 @@ using Decompiler.Loading;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
@@ -98,14 +99,14 @@ namespace Decompiler.Gui.Windows.Forms
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Decompiler.LoadProgram(file);
+                Decompiler.LoadProject(file);
             });
-            if (Decompiler.Program != null)
+            if (Decompiler.Programs.Count > 0)
             {
                 var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Project, Decompiler.Program);
+                browserSvc.Load(Decompiler.Project, Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Program);
+                memSvc.ViewImage(Decompiler.Programs.First());
             }
         }
 
@@ -126,12 +127,12 @@ namespace Decompiler.Gui.Windows.Forms
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanProgram();
             });
-            if (Decompiler.Program != null)
+            if (Decompiler.Programs.Count > 0)
             {
                 var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Project, Decompiler.Program);
+                browserSvc.Load(Decompiler.Project, Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Program);
+                memSvc.ViewImage(Decompiler.Programs.First());
             }
         }
     }

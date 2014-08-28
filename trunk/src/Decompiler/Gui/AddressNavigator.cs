@@ -29,13 +29,15 @@ namespace Decompiler.Gui
     {
         private IServiceProvider sp;
 
-        public AddressNavigator(Address addr, IServiceProvider sp)
+        public AddressNavigator(Program program, Address addr, IServiceProvider sp)
         {
+            this.Program = program;
             this.Address = addr;
             this.sp = sp;
         }
 
         public Address Address { get; private set; }
+        public Program Program { get; private set; }
 
         #region ICodeLocation Members
 
@@ -48,7 +50,7 @@ namespace Decompiler.Gui
         {
             var dec = sp.RequireService<IDecompilerService>();
             var svc = sp.RequireService<ILowLevelViewService>();
-            svc.ShowMemoryAtAddress(dec.Decompiler.Program, Address);
+            svc.ShowMemoryAtAddress(Program, Address);
         }
 
         #endregion

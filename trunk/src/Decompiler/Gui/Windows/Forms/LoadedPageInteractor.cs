@@ -70,28 +70,11 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 switch (cmdId.ID)
                 {
-                case CmdIds.ViewGoToAddress:
-                    return GotoAddress();
-                case CmdIds.ActionMarkProcedure:
-                    return MarkAndScanProcedure(); 
                 case CmdIds.ViewShowUnscanned:
                     return ViewUnscannedBlocks();
                 }
             }
             return base.Execute(cmdId);
-        }
-
-        public bool GotoAddress()
-        {
-            using (IAddressPromptDialog dlg = new AddressPromptDialog())
-            {
-                if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
-                {
-                    memSvc.ShowMemoryAtAddress(decompilerSvc.Decompiler.Program, dlg.Address);
-                    memSvc.ShowWindow();
-                }
-            }
-            return true;
         }
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
@@ -102,7 +85,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void EnterPage()
         {
-            memSvc.ViewImage(Decompiler.Program);
+            memSvc.ViewImage(Decompiler.Programs.First());
         }
 
         public override bool LeavePage()
@@ -110,31 +93,17 @@ namespace Decompiler.Gui.Windows.Forms
             return true;
         }
 
-        public bool MarkAndScanProcedure()
-        {
-            AddressRange addrRange = memSvc.GetSelectedAddressRange();
-            if (addrRange.IsValid)
-            {
-                var proc = Decompiler.ScanProcedure(addrRange.Begin);
-                Procedure_v1 userp = new Procedure_v1 {
-                    Address = addrRange.Begin.ToString(),
-                    Name = proc.Name,
-                };
-                //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-                ((InputFile)Decompiler.Project.InputFiles[0]).UserProcedures.Add(addrRange.Begin, userp);
-                memSvc.InvalidateWindow();
-            }
-            return true;
-        }
-
         public bool ViewUnscannedBlocks()
         {
             var srSvc = Services.RequireService<ISearchResultService>();
-            foreach (var de in Decompiler.Program.ImageMap.Items
-                .Where(i => i.Value.DataType is UnknownType))
-            {
-
-            }
+            var hits = Decompiler.Programs
+                .SelectMany(p => p.ImageMap.Items
+                        .Where(i => i.Value.DataType is UnknownType)
+                        .Select(i => new AddressSearchHit { Program = p, LinearAddress = i.Key.Linear }));
+            srSvc.ShowSearchResults(
+                new AddressSearchResult(
+                    Services,
+                    hits));
             return true;
         }
 

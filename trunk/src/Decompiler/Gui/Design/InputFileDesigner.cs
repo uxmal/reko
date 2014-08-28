@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Decompiler.Gui.Design
 {
-    public class InputFileDesigner  : TreeNodeDesigner
+    public class InputFileDesigner : TreeNodeDesigner
     {
         public override void Initialize(object obj)
         {

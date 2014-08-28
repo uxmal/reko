@@ -45,6 +45,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
         private Program program;
+        private Program[] programs;
 
         [SetUp]
         public void Setup()
@@ -159,6 +160,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = new DefaultPlatform(sc, arch);
             program = new Program(image, imageMap, arch, platform);
+            programs = new[] { program }; 
         }
 
         [Test]
@@ -176,7 +178,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                 },
             };
 
-            pbs.Load(project, program);
+            pbs.Load(project, programs);
 
             Assert.IsTrue(fakeTree.ShowNodeToolTips);
             var cr = Environment.NewLine == "\r\n"
@@ -209,7 +211,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                     new InputFile { Filename="foo.exe", BaseAddress=new Address(0x400000) }
                 }
             };
-            pbs.Load(project, program);
+            pbs.Load(project, programs);
             mr.ReplayAll();
 
             project.InputFiles.Add(new InputFile

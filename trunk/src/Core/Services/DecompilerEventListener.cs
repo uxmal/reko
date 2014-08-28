@@ -27,7 +27,7 @@ namespace Decompiler.Core.Services
 {
     public interface DecompilerEventListener
     {
-        ICodeLocation CreateAddressNavigator(Address address);
+        ICodeLocation CreateAddressNavigator(Program program, Address address);
         ICodeLocation CreateProcedureNavigator(Procedure proc);
         ICodeLocation CreateBlockNavigator(Block block);
         void AddDiagnostic(ICodeLocation location, Diagnostic d);
@@ -69,7 +69,7 @@ namespace Decompiler.Core.Services
             throw new NotImplementedException();
         }
 
-        public ICodeLocation CreateAddressNavigator(Address address)
+        public ICodeLocation CreateAddressNavigator(Program program, Address address)
         {
             return new NullCodeLocation(address.ToString());
         }

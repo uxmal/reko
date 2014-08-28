@@ -35,6 +35,7 @@ namespace Decompiler.Gui.Windows
     public class DisassemblyViewInteractor : IWindowPane, ICommandTarget
     {
         private Address startAddress;
+        private Program program;
         private TextBox txtDisassembly;
         private IServiceProvider sp;
 
@@ -43,9 +44,8 @@ namespace Decompiler.Gui.Windows
             var decSvc = sp.GetService<IDecompilerService>();
             if (decSvc == null)
                 throw new InvalidOperationException("Expected IDecompilerService to be available.");
-            var Decompiler = decSvc.Decompiler;
 
-            if (!IsProgramLoaded(Decompiler))
+            if (!IsProgramLoaded(program))
             {
                 txtDisassembly.Text = "";
             }
@@ -56,11 +56,11 @@ namespace Decompiler.Gui.Windows
                     lines = 1;
                 using (var writer = new StringWriter())
                 {
-                    var arch = Decompiler.Program.Architecture;
+                    var arch = program.Architecture;
                     var dumper = new Dumper(arch);
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
-                    var image = Decompiler.Program.Image;
+                    var image = program.Image;
                     var dasm = arch.CreateDisassembler(image.CreateReader(StartAddress));
                     while (dasm.MoveNext())
                     {
@@ -72,6 +72,16 @@ namespace Decompiler.Gui.Windows
                     }
                     txtDisassembly.Text = writer.ToString();
                 }
+            }
+        }
+
+        public Program Program
+        {
+            get { return program; }
+            set
+            {
+                program = value;
+                DumpAssembler();
             }
         }
 
@@ -95,12 +105,12 @@ namespace Decompiler.Gui.Windows
             txtDisassembly.Text = "";
         }
 
-        private bool IsProgramLoaded(IDecompiler decompiler)
+        private bool IsProgramLoaded(Program program)
         {
             return
-                decompiler != null &&
-                decompiler.Program.Architecture != null &&
-                decompiler.Program.Image != null &&
+                program != null &&
+                program.Architecture != null &&
+                program.Image != null &&
                 StartAddress != null;
         }
 
