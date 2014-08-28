@@ -95,6 +95,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.CloseAllDocumentWindows());
             diagnosticSvc.Stub(d => d.AddDiagnostic(null, null)).IgnoreArguments();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
+            brSvc.Stub(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
             mr.ReplayAll();
@@ -103,6 +104,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var svc = interactor.ProbeGetService<IDiagnosticsService>();
             svc.AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic("test"));
             interactor.OpenBinary(null);
+
             mr.VerifyAll();
         }
 
@@ -113,6 +115,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             form.Stub(f => f.DocumentWindows).Return(docWindows);
             form.Expect(f => f.CloseAllDocumentWindows());
+            brSvc.Expect(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
