@@ -31,20 +31,27 @@ namespace Decompiler.Environments.Win32
     /// <summary>
     /// http://msdn.microsoft.com/en-us/library/28d6s79h.aspx
     /// </summary>
-    public class ModuleDefinitionLoader
+    public class ModuleDefinitionLoader : MetadataLoader
     {
         private Lexer lexer;
         private Token bufferedTok;
         private IProcessorArchitecture arch;
 
-        public ModuleDefinitionLoader(TextReader rdr, IProcessorArchitecture arch)
+        public ModuleDefinitionLoader(IServiceProvider services, byte[] bytes) : base(services, bytes)
+        {
+            this.lexer = new Lexer( new StreamReader(new MemoryStream(bytes)));
+            this.bufferedTok = null;
+            this.arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
+        }
+
+        public ModuleDefinitionLoader(TextReader rdr, IProcessorArchitecture arch) : base(null, null)
         {
             this.lexer = new Lexer(rdr);
             this.bufferedTok = null;
             this.arch = arch;
         }
 
-        public TypeLibrary Load()
+        public override TypeLibrary Load()
         {
             var loader = new TypeLibraryLoader(arch, true);
             for (; ; )

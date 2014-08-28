@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Mocks
         }
 
 
-        public ICodeLocation CreateAddressNavigator(Address address)
+        public ICodeLocation CreateAddressNavigator(Program program, Address address)
         {
             return new NullCodeLocation(address.ToString());
         }

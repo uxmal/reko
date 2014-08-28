@@ -37,7 +37,6 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypeAnalyzer
 	{
-		private Program prog;
         private DecompilerEventListener eventListener;
 
 		private TypeFactory factory;
@@ -52,23 +51,9 @@ namespace Decompiler.Typing
 		private ComplexTypeNamer ctn;
 		private TypedExpressionRewriter ter;
 
-		public TypeAnalyzer(Program prog, DecompilerEventListener eventListener)
+		public TypeAnalyzer(DecompilerEventListener eventListener)
 		{
-			this.prog = prog;
 			this.eventListener = eventListener;
-
-			factory = prog.TypeFactory;
-			store = prog.TypeStore;
-
-			aen = new ExpressionNormalizer(prog.Architecture.PointerType);
-			eqb = new EquivalenceClassBuilder(factory, store);
-			dtb = new DataTypeBuilder(factory, store, prog.Architecture);
-			trco = new TraitCollector(factory, store, dtb, prog);
-			dpa = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
-			tvr = new TypeVariableReplacer(store);
-			trans = new TypeTransformer(factory, store, eventListener);
-			ctn = new ComplexTypeNamer();
-			ter = new TypedExpressionRewriter(store, prog.Globals);
 		}
 
 		/// <summary>
@@ -79,8 +64,21 @@ namespace Decompiler.Typing
 		/// accesses or array accesses as appropriate.
 		/// </remarks>
 		/// <param name="prog"></param>
-		public void RewriteProgram()
+		public void RewriteProgram(Program prog)
 		{
+            factory = prog.TypeFactory;
+            store = prog.TypeStore;
+
+            aen = new ExpressionNormalizer(prog.Architecture.PointerType);
+            eqb = new EquivalenceClassBuilder(factory, store);
+            dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+            trco = new TraitCollector(factory, store, dtb, prog);
+            dpa = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
+            tvr = new TypeVariableReplacer(store);
+            trans = new TypeTransformer(factory, store, eventListener);
+            ctn = new ComplexTypeNamer();
+            ter = new TypedExpressionRewriter(store, prog.Globals);
+
    //         RestrictProcedures(0, 1, true);
 			aen.Transform(prog);
 			eqb.Build(prog);
@@ -108,7 +106,7 @@ namespace Decompiler.Typing
         /// </summary>
         /// <param name="p"></param>
         /// <param name="p_2"></param>
-        private void RestrictProcedures(int start, int count, bool dumpProcedures)
+        private void RestrictProcedures(Program prog, int start, int count, bool dumpProcedures)
         {
             count = Math.Min(count, prog.Procedures.Values.Count);
             Procedure[] procs = new Procedure[count];

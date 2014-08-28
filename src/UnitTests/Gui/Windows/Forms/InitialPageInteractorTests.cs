@@ -30,6 +30,7 @@ using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
@@ -49,6 +50,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private ILowLevelViewService memSvc;
         private Program program;
         private Project project;
+        private Program[] programs;
 
 		[SetUp]
 		public void Setup()
@@ -67,6 +69,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<Platform>(null, null);
             program = new Program(image, imageMap, arch, platform);
+            programs = new[] { program }; 
             project = new Project();
 
             browserSvc = mr.StrictMock<IProjectBrowserService>();
@@ -98,10 +101,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             mr.Record();
 
-            dec.Stub(d => d.LoadProgram("floxe.exe"));
+            dec.Stub(d => d.LoadProject("floxe.exe"));
             dec.Stub(d => d.Project).Return(project);
-            dec.Stub(d => d.Program).Return(program);
-            browserSvc.Stub(b => b.Load(project, program));
+            dec.Stub(d => d.Programs).Return(programs);
+            browserSvc.Stub(b => b.Load(project, programs));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
@@ -114,13 +117,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Ipi_OpenBinary_ShouldPopulateFields()
         {
             dec.Stub(d => d.Project).Return(null);
-            dec.Stub(d => d.Program).Return(null);
+            dec.Stub(d => d.Programs).Return(new Program[0]);
             mr.ReplayAll();
 
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
             mr.Record();
-            dec.Stub(d => d.LoadProgram("floxe.exe"));
+            dec.Stub(d => d.LoadProject("floxe.exe"));
             mr.ReplayAll();
 
             i.OpenBinary("floxe.exe", host);
@@ -132,10 +135,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            dec.Stub(d => d.LoadProgram("floxe.exe"));
-            dec.Stub(d => d.Program).Return(program);
+            dec.Stub(d => d.LoadProject("floxe.exe"));
+            dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(d => d.Load(project, program));
+            browserSvc.Stub(d => d.Load(project, programs));
             memSvc.Expect(s => s.ViewImage(program));
             mr.ReplayAll();
 
@@ -147,10 +150,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            dec.Stub(d => d.LoadProgram("foo.exe"));
-            dec.Stub(d => d.Program).Return(program);
+            dec.Stub(d => d.LoadProject("foo.exe"));
+            dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Expect(b => b.Load(project, program));
+            browserSvc.Expect(b => b.Load(project, programs));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
@@ -162,10 +165,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_LeavePage()
         {
-            dec.Expect(d => d.LoadProgram("foo.exe"));
-            dec.Stub(d => d.Program).Return(program);
+            dec.Expect(d => d.LoadProject("foo.exe"));
+            dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(project, program));
+            browserSvc.Stub(b => b.Load(project, programs));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 

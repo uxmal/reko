@@ -47,9 +47,7 @@ namespace Decompiler.Gui.Windows
         public void ViewImage(Program program)
         {
             ShowWindow();
-            mvi.ProgramImage = program.Image;
-            mvi.ImageMap = program.ImageMap;
-            mvi.Architecture = program.Architecture;
+            mvi.Program = program;
         }
 
         public void ShowMemoryAtAddress(Program program, Address addr)

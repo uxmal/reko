@@ -47,8 +47,7 @@ namespace Decompiler.UnitTests.Analysis
         private IntelArchitecture arch;
         private ProgramBuilder p;
         private Frame frame;
-        private SymbolicEvaluationContext ctx1;
-        private SymbolicEvaluationContext ctx2;
+        private SymbolicEvaluationContext ctx;
         private BlockFlow blockflow;
 
         [SetUp]
@@ -643,8 +642,8 @@ const ax:0x0000 cx:<invalid>
         private void Given_Contexts()
         {
             frame = new Frame(PrimitiveType.Pointer32);
-            ctx1 = new SymbolicEvaluationContext(arch, frame);
-            blockflow = new BlockFlow(null, arch.CreateRegisterBitset(), ctx1);
+            ctx = new SymbolicEvaluationContext(arch, frame);
+            blockflow = new BlockFlow(null, arch.CreateRegisterBitset(), ctx);
             trf.EnsureEvaluationContext(blockflow);
         }
     }

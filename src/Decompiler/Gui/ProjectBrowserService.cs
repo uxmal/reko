@@ -49,7 +49,7 @@ namespace Decompiler.Gui
 
         public IServiceProvider Services { get; private set; }
 
-        public void Load(Project project, Program prog)
+        public void Load(Project project, IEnumerable<Program> progs)
         {
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
@@ -61,12 +61,12 @@ namespace Decompiler.Gui
                 tree.Nodes.Add(tree.CreateNode("(No project loaded)"));
                 return;
             }
-            else
+            else 
             {
                 AddComponents(project.InputFiles);
                 project.InputFiles.CollectionChanged += InputFiles_CollectionChanged;
                 //$TODO: dewd; this should be added by the Designer.
-                AddComponents(project.InputFiles[0], prog.ImageMap.Segments.Values);
+                AddComponents(project.InputFiles[0], progs.First().ImageMap.Segments.Values);
                 tree.ShowNodeToolTips = true;
             }
         }

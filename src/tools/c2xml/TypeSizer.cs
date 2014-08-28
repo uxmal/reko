@@ -55,6 +55,10 @@ namespace Decompiler.Tools.C2Xml
             return 4;           //$BUGBUG: architecture dependent
         }
 
+        public int VisitMemberPointer(MemberPointer_v1 memptr)
+        {
+            return 4;       //$BUGBUG: architecture dependent
+        }
         public int VisitArray(SerializedArrayType array)
         {
             return Align(array.ElementType.Accept(this)) * array.Length;

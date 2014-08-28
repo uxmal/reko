@@ -50,12 +50,14 @@ namespace Decompiler.UnitTests.Mocks
             get { return prog; }
         }
 
+        public ICollection<Program> Programs { get { throw new NotImplementedException(); } } 
+
         public Project Project
         {
             get { return project; }
         }
 
-        public void LoadProgram(string fileName)
+        public void LoadProject(string fileName)
         {
             LoadProgram_Called = true;
             byte [] image = loader.LoadImageBytes(fileName, 0);
@@ -86,12 +88,12 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public ProcedureBase ScanProcedure(Address procAddress)
+        public ProcedureBase ScanProcedure(Program program, Address procAddress)
         {
             throw new NotImplementedException();
         }
 
-        public DataFlowAnalysis AnalyzeDataFlow()
+        public void AnalyzeDataFlow()
         {
             throw new NotImplementedException();
         }

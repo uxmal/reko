@@ -144,9 +144,9 @@ namespace Decompiler.Gui.Windows
                 Action worker = (Action)e.Argument;
                 worker();
             }
-            catch (AddressCorrelatedException acex)
+            catch (Exception ex)
             {
-                AddDiagnostic(CreateAddressNavigator(acex.Address), new ErrorDiagnostic(acex.Message));
+                AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(ex.Message));
             }
         }
 
@@ -196,9 +196,9 @@ namespace Decompiler.Gui.Windows
             ShowStatus(caption);
         }
 
-        public ICodeLocation CreateAddressNavigator(Address addr)
+        public ICodeLocation CreateAddressNavigator(Program program, Address addr)
         {
-            return new AddressNavigator(addr, sp);
+            return new AddressNavigator(program, addr, sp);
         }
 
         ICodeLocation DecompilerEventListener.CreateBlockNavigator(Block block)

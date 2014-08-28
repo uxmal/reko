@@ -18,42 +18,26 @@
  */
 #endregion
 
-using Decompiler.Arch.Mos6502;
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Environments.C64
+namespace Decompiler.Core.Serialization
 {
-    public class C64Platform : Platform
+    public class MemberPointer_v1 : SerializedType
     {
-        private Mos6502ProcessorArchitecture arch;
+        public SerializedTypeReference DeclaringClass;
+        public SerializedType MemberType;
+        public int Size;
 
-        public C64Platform(IServiceProvider services, Mos6502ProcessorArchitecture arch)
-            : base(services, arch)
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
-            this.arch = arch;
+            return visitor.VisitMemberPointer(this);
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
-
-        public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
-        {
-            return base.FindService(rtl, state);
-        }
-
-        public override SystemService FindService(int vector, ProcessorState state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override DataType BuildDataType(TypeFactory factory)
         {
             throw new NotImplementedException();
         }

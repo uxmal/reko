@@ -205,7 +205,7 @@ namespace Decompiler.Scanning
 
         public void AddDiagnostic(Address addr, Diagnostic d)
         {
-            eventListener.AddDiagnostic(eventListener.CreateAddressNavigator(addr), d);
+            eventListener.AddDiagnostic(eventListener.CreateAddressNavigator(program, addr), d);
         }
 
         public ImageReader CreateReader(Address addr)

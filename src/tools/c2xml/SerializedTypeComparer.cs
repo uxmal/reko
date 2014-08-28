@@ -80,6 +80,16 @@ namespace Decompiler.Tools.C2Xml
             return pX.DataType.Accept(this);
         }
 
+        public bool VisitMemberPointer(MemberPointer_v1 mpX)
+        {
+            var mpY = (MemberPointer_v1) y;
+            
+            y = mpY.DeclaringClass;
+            if (!mpX.DeclaringClass.Accept(this))
+                return false;
+            y = mpY.MemberType;
+            return mpX.MemberType.Accept(this);
+        }
         public bool VisitArray(SerializedArrayType aX)
         {
             var aY = ((SerializedArrayType) y);

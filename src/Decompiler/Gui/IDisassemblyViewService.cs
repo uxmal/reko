@@ -28,7 +28,7 @@ namespace Decompiler.Gui
     public interface IDisassemblyViewService
     {
         void Clear();
-        void DisassembleStartingAtAddress(Address addr);
+        void DisassembleStartingAtAddress(Program program, Address addr);
         void ShowWindow();
     }
 }

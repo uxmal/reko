@@ -197,6 +197,7 @@
     <Compile Include="FieldAttribute.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
+    <Compile Include="MetadataLoader.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
     <Compile Include="Output\TextFormatter.cs" />
     <Compile Include="PointerScanner.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Rtl\RtlTransfer.cs" />
     <Compile Include="Serialization\DataTypeNameSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
+    <Compile Include="Serialization\MemberPointer_v1.cs" />
     <Compile Include="Serialization\ProjectSerializer.cs" />
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\SerializedArrayType.cs" />
@@ -449,7 +451,7 @@
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProgramImage.cs">
+    <Compile Include="LoadedImage.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PseudoProcedure.cs">

@@ -33,27 +33,32 @@ namespace Decompiler.UnitTests.Gui
     [TestFixture]
     public class ProcedureSearchResultTests
     {
-        private MockRepository repository;
-        private SortedList<Address, Procedure> procs;
+        private MockRepository mr;
+        private List<ProcedureSearchHit> procs;
         private ServiceContainer sc;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
+            mr = new MockRepository();
             sc = new ServiceContainer();
-            procs = new SortedList<Address, Procedure>();
+            procs = new List<ProcedureSearchHit>();
+            program = new Program { Name = "Proggie" };
         }
 
         [Test]
         public void CreateColumns()
         {
-            var psr = new ProcedureSearchResult(repository.Stub<IServiceProvider>(), procs);
+            var psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
 
-            procs.Add(new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32)));
-            procs.Add(new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32)));
+            procs.Add(new ProcedureSearchHit(program,  new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
 
-            var view = repository.StrictMock<ISearchResultView>();
+            var view = mr.StrictMock<ISearchResultView>();
+            view.Expect(s => view.AddColumn(
+                Arg<string>.Is.Equal("Program"),
+                Arg<int>.Is.Anything));
             view.Expect(s => view.AddColumn(
                 Arg<string>.Is.Equal("Address"),
                 Arg<int>.Is.Anything));
@@ -61,31 +66,32 @@ namespace Decompiler.UnitTests.Gui
                 Arg<string>.Is.Equal("Procedure Name"),
                 Arg<int>.Is.Anything));
 
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             psr.CreateColumns(view);
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
 
         [Test]
         public void GetItemData()
         {
-            ISearchResult psr = new ProcedureSearchResult(repository.Stub<IServiceProvider>(), procs);
-            procs.Add(new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32)));
-            procs.Add(new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32)));
+            ISearchResult psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
+            procs.Add(new ProcedureSearchHit(program, new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
 
             Assert.AreEqual(-1, psr.GetItemImageIndex(0));
             string [] str = psr.GetItemStrings(0);
-            Assert.AreEqual(2, str.Length);
-            Assert.AreEqual("00000001", str[0]);
-            Assert.AreEqual("foo", str[1]);
+            Assert.AreEqual(3, str.Length);
 
+            Assert.AreEqual("Proggie", str[0]);
+            Assert.AreEqual("00000001", str[1]);
+            Assert.AreEqual("foo", str[2]);
         }
 
         private T AddService<T>()
         {
-            var svc = repository.StrictMock<T>();
+            var svc = mr.StrictMock<T>();
             sc.AddService(typeof(T), svc);
             return svc;
         }
@@ -96,20 +102,20 @@ namespace Decompiler.UnitTests.Gui
             var mvs = AddService<ILowLevelViewService>();
             var cvs = AddService<ICodeViewerService>();
             var decSvc = AddService<IDecompilerService>();
-            var dec = repository.StrictMock<IDecompiler>();
+            var dec = mr.StrictMock<IDecompiler>();
 
             cvs.Stub(c => c.DisplayProcedure(null)).IgnoreArguments();
             mvs.Expect(s => s.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
                 Arg<Address>.Is.Equal(new Address(0x4234))));
             decSvc.Stub(d => d.Decompiler).Return(dec);
-            dec.Stub(d => d.Program).Return(new Program());
-            repository.ReplayAll();
+            dec.Stub(d => d.Programs).Return(new [] {new Program()});
+            mr.ReplayAll();
 
             ISearchResult psr = new ProcedureSearchResult(sc, procs);
-            procs.Add(new Address(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32)));
+            procs.Add(new ProcedureSearchHit(program, new Address(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32))));
             psr.NavigateTo(0);
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
     }
 }

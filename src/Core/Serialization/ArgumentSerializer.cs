@@ -124,7 +124,7 @@ namespace Decompiler.Core.Serialization
                 return arg.Kind.Accept(this);
             }
             //$PLATFORM-specifiC!!! We're encoding Microsoft + x86 conventions here.
-            if (convention == "stdapi" || convention == "__cdecl")
+            if (convention == "stdapi" || convention == "__cdecl" || convention == "__stdcall")
             {
                 return Deserialize(new SerializedStackVariable { });
             }

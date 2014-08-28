@@ -66,13 +66,11 @@ namespace Decompiler.Loading
                 result.ImageMap,
                 result.Architecture,
                 result.Platform);
-
+            program.Name = Path.GetFileName(fileName);
 		    var relocations = loader.Relocate(addrLoad);
             EntryPoints.AddRange(relocations.EntryPoints);
             CopyImportThunks(loader.ImportThunks, program);
             return program;
         }
-
-
     }
 }

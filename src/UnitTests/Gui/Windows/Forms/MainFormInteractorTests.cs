@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             IDecompilerService svc = interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(loader);
             Assert.IsNotNull(loader);
-            svc.Decompiler.LoadProgram("foo.exe");
+            svc.Decompiler.LoadProject("foo.exe");
             var p = new Decompiler.Core.Serialization.Procedure_v1 {
                 Address = "12345",
                 Name = "MyProc", 
@@ -223,7 +223,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(loader);
-            svc.Decompiler.LoadProgram("foo.exe");
+            svc.Decompiler.LoadProject("foo.exe");
 
             Assert.IsTrue(string.IsNullOrEmpty(interactor.ProjectFileName), "project filename should be clear");
             interactor.Save();
@@ -314,7 +314,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             When_MainFormInteractorWithLoader();
             IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(loader);
-            svc.Decompiler.LoadProgram("foo.exe");
+            svc.Decompiler.LoadProject("foo.exe");
             var status = QueryStatus(CmdIds.ViewFindAllProcedures);
             Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
         }
@@ -332,7 +332,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             When_MainFormInteractorWithLoader();
             When_DecompilerCreated();
-            dcSvc.Decompiler.LoadProgram("foo.exe");
+            dcSvc.Decompiler.LoadProject("foo.exe");
             interactor.FindProcedures(srSvc);
 
             mr.VerifyAll();
@@ -359,9 +359,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             When_MainFormInteractorWithLoader();
             interactor.ProbeGetService<IDecompilerService>().Decompiler = new DecompilerDriver(null, null, services)
             {
-                Program = new Program
+                Programs = 
                 {
-                    Image = new LoadedImage(new Address(0x0004), new byte[0x100])
+                    new Program
+                    {
+                        Image = new LoadedImage(new Address(0x0004), new byte[0x100])
+                    }
                 }
             };
             interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewMemory));

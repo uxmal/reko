@@ -28,15 +28,15 @@ namespace Decompiler.ImageLoaders.Elf
 {
     public class SectionInfo
     {
-        internal string pSectionName;
-        internal SectionHeaderType uType;
-        internal bool IsCode;
-        internal bool IsBss;
-        internal uint uNativeAddr;      // address in loaded image.
-        internal uint uHostAddr;        // offset within file
-        internal uint uSectionSize;
-        internal uint uSectionEntrySize;
-        internal bool bData;
+        public string pSectionName;
+        public SectionHeaderType uType;
+        public bool IsCode;
+        public bool IsBss;
+        public uint uNativeAddr;      // address in loaded image.
+        public uint uHostAddr;        // offset within file
+        public uint uSectionSize;
+        public uint uSectionEntrySize;
+        public bool bData;
         public bool IsReadOnly;
 
         [Conditional("DEBUG")]

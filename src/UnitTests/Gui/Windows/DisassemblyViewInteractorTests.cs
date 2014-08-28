@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private DisassemblyViewInteractor interactor;
         private MockRepository repository;
         private IDecompilerShellUiService uiSvc;
-		private IDialogFactory dlgFactory;
+        private IDialogFactory dlgFactory;
         private IServiceContainer sc;
         private IDecompilerService dcSvc;
 
@@ -52,11 +52,11 @@ namespace Decompiler.UnitTests.Gui.Windows
             sc = new ServiceContainer();
             uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
             dcSvc = repository.Stub<IDecompilerService>();
-			dlgFactory = repository.DynamicMock<IDialogFactory>();
+            dlgFactory = repository.DynamicMock<IDialogFactory>();
             sc.AddService<IDecompilerShellUiService>(uiSvc);
 
             sc.AddService<IDecompilerService>(dcSvc);
-			sc.AddService<IDialogFactory>(dlgFactory);
+            sc.AddService<IDialogFactory>(dlgFactory);
         }
 
         private void Initialize()
@@ -100,19 +100,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             var ret = interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionMarkProcedure), status, null);
             Assert.IsTrue(ret);
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);
-        }
-
-        [Test]
-        public void DviMarkProcedure()
-        {
-            var dcSvc = repository.Stub<IDecompilerService>();
-            var decompiler = repository.StrictMock<IDecompiler>();
-            sc.AddService<IDecompilerService>(dcSvc);
-            dcSvc.Decompiler = decompiler;
-
-            var ret = interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionMarkProcedure));
-            
-            Assert.IsTrue(ret);
         }
     }
 }

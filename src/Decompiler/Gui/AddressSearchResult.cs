@@ -33,13 +33,11 @@ namespace Decompiler.Gui
     public class AddressSearchResult : ISearchResult
     {
         private IServiceProvider services;
-        private List<uint> addresses;
-        private Program program;
+        private List<AddressSearchHit> addresses;
 
-        public AddressSearchResult(IServiceProvider services, Program program, IEnumerable<uint> linearAddresses)
+        public AddressSearchResult(IServiceProvider services, IEnumerable<AddressSearchHit> linearAddresses)
         {
             this.services = services;
-            this.program = program;
             this.addresses = linearAddresses.ToList();
         }
 
@@ -55,6 +53,7 @@ namespace Decompiler.Gui
 
         public void CreateColumns(ISearchResultView view)
         {
+            view.AddColumn("Program", 70);
             view.AddColumn("Address", 10);
             view.AddColumn("Data", 70);
         }
@@ -66,13 +65,16 @@ namespace Decompiler.Gui
 
         public string[] GetItemStrings(int i)
         {
-            var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i]);
+            var hit = addresses[i];
+            var program = hit.Program;
+            var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i].LinearAddress);
             var dasm = program.Architecture.CreateDisassembler(program.Image.CreateReader(addr));
             try
             {
                 var instr = dasm.MoveNext() ? dasm.Current.ToString().Replace('\t', ' ') : "";
 
                 return new string[] {
+                    program.Name ?? "<Program>",
                     addr.ToString(),
                     instr,
                 };
@@ -89,7 +91,24 @@ namespace Decompiler.Gui
         public void NavigateTo(int i)
         {
             var memSvc = services.RequireService<ILowLevelViewService>();
-            memSvc.ShowMemoryAtAddress(program, program.ImageMap.MapLinearAddressToAddress(addresses[i]));
+            var hit = addresses[i];
+            memSvc.ShowMemoryAtAddress(hit.Program, hit.Program.ImageMap.MapLinearAddressToAddress(hit.LinearAddress));
+        }
+    }
+
+    public class AddressSearchHit
+    {
+        public Program Program;
+        public uint LinearAddress;
+
+        public AddressSearchHit()
+        {
+        }
+
+        public AddressSearchHit(Program program, uint linearAddress)
+        {
+            this.Program = program;
+            this.LinearAddress = linearAddress;
         }
     }
 }

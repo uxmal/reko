@@ -35,6 +35,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
@@ -43,7 +44,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     public class AnalyzedPageInteractorTests
     {
         private MockRepository mr;
-        private Program prog;
+        private Program program;
         private IMainForm form;
         private AnalyzedPageInteractorImpl interactor;
         private IDecompilerShellUiService uiSvc;
@@ -69,8 +70,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             DecompilerService decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
-            decSvc.Decompiler.LoadProgram("test.exe");
-            prog = decSvc.Decompiler.Program;
+            decSvc.Decompiler.LoadProject("test.exe");
+            program = decSvc.Decompiler.Programs.First();
             decSvc.Decompiler.ScanProgram();
             sc.AddService(typeof(IDecompilerService), decSvc);
 
@@ -88,7 +89,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             CreateInteractor();
             form.Show();
-            prog.Procedures.Add(new Address(0x12345), new Procedure("foo", prog.Architecture.CreateFrame()));
+            program.Procedures.Add(new Address(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
             interactor.EnterPage();
 
             //Assert.AreEqual(1, form.BrowserList.Items.Count);
@@ -117,15 +118,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             CreateInteractor();
             form.Show();
-            Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
+            Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
                 new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
 
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", prog.Architecture.CreateFrame()));
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12346), p);
+            program.Procedures.Add(new Address(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
+            program.Procedures.Add(new Address(0x12346), p);
             interactor.EnterPage();
 
             //form.BrowserList.Items[1].Selected = true;
@@ -146,20 +147,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             CreateInteractor();
 
             form.Show();
-            Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
+            Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
                 new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", prog.Architecture.CreateFrame()));
+            program.Procedures.Add(new Address(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
             interactor.EnterPage();
             //form.BrowserList.Items[0].Selected = true;
 
             Assert.IsTrue(interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionEditSignature)), "Should have executed command.");
             mr.VerifyAll();
         }
-
 
         private T AddService<T>() where T : class
         {
