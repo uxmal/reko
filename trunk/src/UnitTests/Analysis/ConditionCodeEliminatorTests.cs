@@ -168,7 +168,8 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void CceFstswTextAxWithConstantBl()
+        [Ignore("Wait until we see this in real code? If we do, we have to move the logic for FPUF into an architecture specific branch.")]
+        public void CceFstswTestAxWithConstantBl()
         {
             Program prog = RewriteCodeFragment(@"
                 mov     bx,1
@@ -180,8 +181,130 @@ namespace Decompiler.UnitTests.Analysis
 done:
                 ret
 ");
-            SaveRunOutput(prog, RunTest, "Analysis/CceFstswTextAxWithConstantBl.txt");
+            SaveRunOutput(prog, RunTest, "Analysis/CceFstswTestAxWithConstantBl.txt");
         }
+
+        [Test]
+        public void CceFstswEq()
+        {
+            var prog = RewriteCodeFragment(@"
+    fld	QWORD PTR [si]
+	fldz
+	fcompp
+	fstsw	ax
+	test	ah, 68					; 00000044H
+	jpe	done
+	mov	word ptr[di], 1
+    ret
+done:
+    mov word ptr[di], 0
+    ret
+");
+            SaveRunOutput(prog, RunTest, "Analysis/CceFstswEq.txt");
+        }
+
+        [Test]
+        public void CceFstswNe()
+        {
+            var prog = RewriteCodeFragment(@"
+	fld	QWORD PTR [si]
+	fldz
+	fcompp
+	fstsw	ax
+	test	ah, 68					; 00000044H
+	jnp	done
+	mov	word ptr [di], 1
+	ret	
+done:
+	mov	word ptr [di], 0
+	ret	
+");
+            SaveRunOutput(prog, RunTest,"Analysis/CceFstswNe.txt");
+        }
+
+        [Test]
+        public void CceFstswGe()
+        {
+            var prog = RewriteCodeFragment(@"
+
+; 18   : 	return x >= 0;
+
+	fldz
+	fcomp	qword ptr [si]
+	fstsw	ax
+	test	ah, 65					; 00000041H
+	jp	done
+	mov	word ptr[di], 1
+	ret	
+done:
+	mov	word ptr[di], 0
+    ret
+");
+            SaveRunOutput(prog, RunTest, "Analysis/CceFstswGe.txt");
+        }
+
+        [Test]
+        public void CceFstswGt()
+        {
+            var prog = RewriteCodeFragment(@"
+; 13   : 	return x > 0;
+
+	fldz
+	fcomp	qword ptr [si]
+	fstsw	ax
+	test	ah, 5
+	jp	done
+	mov	word ptr[di], 1
+	ret	
+done:
+	mov	word ptr[di], 0
+    ret
+");
+            SaveRunOutput(prog, RunTest,"Analysis/CceFstswGt.txt");
+
+         }
+
+        [Test]
+        public void CceFstswLe()
+        {
+            var prog = RewriteCodeFragment(@"
+
+; 8    : 	return x <= 0;
+
+	fldz
+	fcomp	qword ptr [si]
+	fstsw	ax
+	test	ah, 1
+	jne	done
+	mov	word ptr[di], 1
+	ret	
+done:
+	mov	word ptr[di], 0
+    ret
+");
+            SaveRunOutput(prog, RunTest, "Analysis/CceFstswLe.txt");
+        }
+
+        [Test]
+        public void CceFstswLt()
+        {
+            var prog = RewriteCodeFragment(@"
+; 3    : 	return x < 0;
+
+	fldz
+	fcomp	qword ptr [si]
+	fstsw	ax
+	test	ah, 65					; 00000041H
+	jne	done
+	mov	word ptr[di], 1
+	ret	
+done:
+	mov	word ptr[di], 0
+    ret
+");
+            SaveRunOutput(prog, RunTest, "Analysis/CceFstswLt.txt");
+        }
+
 
 		[Test]
 		public void CceEqId()

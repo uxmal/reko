@@ -42,6 +42,7 @@ namespace Decompiler.Analysis
     /// <para>
     /// The results of the analysis are stored in the ProgramDataFlow.</para>
 	/// </summary>
+    //$TODO: bugger. Can use a queue here, but must use depth-first search.
     public class TrashedRegisterFinder : InstructionVisitor<Instruction>
     {
         private Program prog;
@@ -150,9 +151,7 @@ namespace Decompiler.Analysis
 
         public void ProcessBlock(Block block)
         {
-            if (block.Name == "l1796_05C7") //$DEBUG
-                block.ToString();
-            StartProcessingBlock(block);
+             StartProcessingBlock(block);
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
             if (block == block.Procedure.ExitBlock)
             {
@@ -431,5 +430,6 @@ namespace Decompiler.Analysis
                 return e;
             }
         }
+
     }
 }

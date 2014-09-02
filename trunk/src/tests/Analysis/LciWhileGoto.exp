@@ -26,13 +26,12 @@ l0C00_0016:
 	// succ:  l0C00_001A
 l0C00_001A:
 	si_14 = PHI(si_14, si_16, si_16)
-	Mem13 = PHI(Mem0, Mem19, Mem27)
-	ax_14 = Mem13[ds:si_12:word16]
-	si_15 = si_12 + 0x0002
-	branch ax_14 != 0x0020 l0C00_0005
+	ax_15 = Mem0[ds:si_14:word16]
+	si_16 = si_14 + 0x0002
+	branch ax_15 != 0x0020 l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
-	ax_33 = si_15 - si
+	ax_28 = si_16 - si
 	// succ:  l0C00_0024
 l0C00_0024:
 	ax_25 = PHI(ax_28, ax_39)

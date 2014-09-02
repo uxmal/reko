@@ -35,6 +35,7 @@ namespace Decompiler.Core.Serialization
         {
             loader = null;  //$REVIEW: or the NullLoader?
         }
+
         public ProjectSerializer(ILoader loader)
         {
             this.loader = loader;

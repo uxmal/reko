@@ -146,8 +146,11 @@ namespace Decompiler.Assemblers.x86
 			keywords["jnc"] = Token.JNC;
 			keywords["jne"] = Token.JNZ;
 			keywords["jno"] = Token.JNO;
-			keywords["jns"] = Token.JNS;
+            keywords["jnp"] = Token.JPO;
+            keywords["jns"] = Token.JNS;
 			keywords["jnz"] = Token.JNZ;
+            keywords["jp"] = Token.JPE;
+            keywords["jpe"] = Token.JPE;
             keywords["jpo"] = Token.JPO;
 			keywords["jo"] = Token.JO;
 			keywords["js"] = Token.JS;

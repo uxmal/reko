@@ -52,6 +52,7 @@ namespace Decompiler.Analysis
             this.proc = proc;
             this.evalCtx = new SsaEvaluationContext(ssaIds);
             this.eval = new ExpressionSimplifier(evalCtx);
+            trace.Level = TraceLevel.Verbose;
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -75,7 +76,6 @@ namespace Decompiler.Analysis
             stm.Instruction = stm.Instruction.Accept(this);
             if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
         }
-
 
         #region InstructionVisitor<Instruction> Members
 

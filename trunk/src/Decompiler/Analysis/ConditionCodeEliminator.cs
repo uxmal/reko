@@ -264,7 +264,7 @@ namespace Decompiler.Analysis
 			}
 
 			Expression e;
-			if (bin.Operator == Operator.ISub)
+			if (bin.Operator == Operator.ISub || bin.Operator == Operator.FSub)
 			{
 				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
 			}

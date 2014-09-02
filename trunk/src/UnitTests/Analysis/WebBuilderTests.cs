@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Analysis
 
 				DeadCode.Eliminate(proc, ssa);
 
-				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+				var vp = new ValuePropagator(ssa.Identifiers, proc);
 				vp.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

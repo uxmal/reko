@@ -142,6 +142,7 @@ namespace Decompiler.Analysis
 			return true;
 		}
 
+        [Conditional("DEBUG")]
         private static void PreCoalesceDump(SsaIdentifier sid, Statement def, Statement use)
         {
             if (trace.TraceInfo)
@@ -154,6 +155,7 @@ namespace Decompiler.Analysis
             }
         }
 
+        [Conditional("DEBUG")]
         private static void PostCoalesceDump(Statement use)
         {
             if (trace.TraceInfo)

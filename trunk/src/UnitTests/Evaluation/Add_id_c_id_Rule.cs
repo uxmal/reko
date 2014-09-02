@@ -86,7 +86,6 @@ namespace Decompiler.UnitTests.Evaluation
                 ssaIds.Add(i, null, null, false);
             }
             ctx = new SsaEvaluationContext(ssaIds);
-
         }
     }
 }
