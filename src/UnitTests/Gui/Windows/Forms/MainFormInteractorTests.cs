@@ -238,6 +238,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void DecompilerServiceInstalled()
         {
+            Given_Loader();
             Given_MainFormInteractor();
             mr.ReplayAll();
 

@@ -73,6 +73,7 @@ namespace Decompiler.Gui
                 //$TODO: dewd; this should be added by the Designer.
                 AddComponents(project.InputFiles[0], progs.First().ImageMap.Segments.Values);
                 tree.ShowNodeToolTips = true;
+                tree.ShowRootLines = true;
             }
         }
 

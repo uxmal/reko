@@ -171,36 +171,36 @@ fn0C00_000C_entry:
 	def ax
 	// succ:  l0C00_000C
 l0C00_000C:
-	di_19 = 0x7E0F
-	cx_20 = 0x000C
-	ax_23 = DPB(ax, 0x00, 0, 8) (alias)
-	SZO_24 = cond(0x00)
-	Z_25 = SZO_24 (alias)
+	di_18 = 0x7E0F
+	cx_19 = 0x000C
+	ax_22 = DPB(ax, 0x00, 0, 8) (alias)
+	SZO_23 = cond(0x00)
+	Z_24 = SZO_23 (alias)
 	// succ:  l0C00_0019
 l0C00_0019:
-	Z_29 = PHI(Z_25, Z_71)
-	di_33 = PHI(di_19, di_72)
-	cx_34 = PHI(cx_20, cx_73)
-	branch cx_34 == 0x0000 l0C00_001B
+	Z_28 = PHI(Z_24, Z_63)
+	di_32 = PHI(di_18, di_64)
+	cx_33 = PHI(cx_19, cx_65)
+	branch cx_33 == 0x0000 l0C00_001B
 	// succ:  l0C00_0019_1 l0C00_001B
 l0C00_0019_1:
-	SCZO_68 = cond(0x00 - Mem0[ds:di_33:byte])
-	Z_71 = SCZO_68 (alias)
-	di_72 = di_33 + 0x0001
-	cx_73 = cx_34 - 0x0001
-	branch 0x00 != Mem0[ds:di_33:byte] l0C00_0019
+	SCZO_60 = cond(0x00 - Mem0[ds:di_32:byte])
+	Z_63 = SCZO_60 (alias)
+	di_64 = di_32 + 0x0001
+	cx_65 = cx_33 - 0x0001
+	branch 0x00 != Mem0[ds:di_32:byte] l0C00_0019
 	// succ:  l0C00_001B l0C00_0019
 l0C00_001B:
-	Z_36 = PHI(Z_29, Z_71)
-	di_40 = PHI(di_33, di_72)
-	branch Z_36 l0C00_002D
+	Z_35 = PHI(Z_28, Z_63)
+	di_39 = PHI(di_32, di_64)
+	branch Z_35 l0C00_002D
 	// succ:  l0C00_001D l0C00_002D
 l0C00_001D:
-	ah_51 = Mem0[ds:di_40 + 0x0001:byte]
-	ax_52 = DPB(ax_23, ah_51, 8, 8) (alias)
-	cx_54 = __bsr(ax_52)
-	cl_56 = (byte) (cx_54 - 0x0008) (alias)
-	return di_40 - 0x7E03
+	ah_49 = Mem0[ds:di_39 + 0x0001:byte]
+	ax_50 = DPB(ax_23, ah_51, 8, 8) (alias)
+	cx_51 = __bsr(ax_50)
+	cl_56 = (byte) (cx_41 - 0x0008) (alias)
+	return di_39 - 0x7E03
 	// succ:  fn0C00_000C_exit
 l0C00_002D:
 	cl_64 = 0x00

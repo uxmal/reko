@@ -1,9 +1,8 @@
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // ax:ax
 // cx:cx
 // wLoc02:Local -0002
-// sp:sp
-// ss:ss
+// wArg00:Stack +0000
 // return address size: 0
-ax = bar(cx, wLoc02)
+ax = bar(cx, wArg00)

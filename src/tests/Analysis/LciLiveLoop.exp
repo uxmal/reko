@@ -12,7 +12,7 @@ loop:
 	i_4 = PHI(i, i_6)
 	i_6 = i_7 + 0x00000001
 	i_7 = i_4
-	branch Mem0[i_6:byte] != 0x00 loop
+	branch Mem0[i_6:byte] != 0 loop
 	goto l1
 	// succ:  l1 loop
 LiveLoopMock_exit:

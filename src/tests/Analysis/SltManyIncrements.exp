@@ -54,18 +54,18 @@ ManyIncrements_entry:		// pred:
 	def Mem0
 	def r0
 	// succ:  loopTop
-loopTop:		// pred: ManyIncrements_entry l1 l2
+l1:
+	Mem9[0x33333330:word32] = Mem5[r0_4 + 0x00000001:byte]
+	Mem12[0x33333331:word32] = Mem13[r0_4 + 0x00000002:byte]
+	r0_15 = r0_4 + 0x00000003
+	// succ:  loopTop
+loopTop:
 	r0_4 = PHI(r0, r0_15, r0_9)
 	Mem5 = PHI(Mem0, Mem16, Mem10)
 	r1_6 = Mem5[r0_4:byte]
 	r0_7 = r0_4 + 0x00000001
 	branch r1_6 != 0x01 not1
 	// succ:  l1 not1
-l1:		// pred: loopTop
-	Mem13[0x33333330:word32] = Mem5[r0_7:byte]
-	Mem16[0x33333331:word32] = Mem13[r0_4 + 0x00000002:byte]
-	r0_15 = r0_4 + 0x00000003
-	// succ:  loopTop
 not1:		// pred: loopTop
 	branch r1_6 != 0x02 done
 	// succ:  l2 done

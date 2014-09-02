@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IMainForm form;
 		private TestInitialPageInteractor i;
         private FakeUiService uiSvc;
-        private ServiceContainer site;
+        private ServiceContainer sc;
         private IProjectBrowserService browserSvc;
         private ILoader loader;
         private IDecompiler dec;
@@ -57,10 +57,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
             mr = new MockRepository();
             form = new MainForm();
-            site = new ServiceContainer();
+            sc = new ServiceContainer();
             loader = mr.StrictMock<ILoader>();
             dec = mr.StrictMock<IDecompiler>();
-            site = new ServiceContainer();
+            sc = new ServiceContainer();
             uiSvc = new FakeShellUiService();
             host = mr.StrictMock<DecompilerHost>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
@@ -74,15 +74,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             browserSvc = mr.StrictMock<IProjectBrowserService>();
 
-            site.AddService<IDecompilerUIService>(uiSvc);
-            site.AddService(typeof(IDecompilerShellUiService), uiSvc);
-            site.AddService(typeof(IDecompilerService), new DecompilerService());
-            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
-            site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            site.AddService(typeof(IProjectBrowserService), browserSvc);
-            site.AddService(typeof(ILowLevelViewService), memSvc);
+            sc.AddService<IDecompilerUIService>(uiSvc);
+            sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
+            sc.AddService(typeof(IDecompilerService), new DecompilerService());
+            sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
+            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            sc.AddService(typeof(IProjectBrowserService), browserSvc);
+            sc.AddService(typeof(ILowLevelViewService), memSvc);
+            sc.AddService<ILoader>(loader);
 
-            i = new TestInitialPageInteractor(site, loader, dec);
+            i = new TestInitialPageInteractor(sc, dec);
 
 		}
 
@@ -194,12 +195,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestInitialPageInteractor : InitialPageInteractorImpl
         {
-            private ILoader loader;
             public IDecompiler decompiler;
 
-            public TestInitialPageInteractor(IServiceProvider services, ILoader loader, IDecompiler decompiler) : base(services)
+            public TestInitialPageInteractor(IServiceProvider services, IDecompiler decompiler) : base(services)
             {
-                this.loader = loader;
                 this.decompiler = decompiler;
             }
 

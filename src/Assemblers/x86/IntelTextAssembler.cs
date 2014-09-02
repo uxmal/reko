@@ -808,6 +808,9 @@ namespace Decompiler.Assemblers.x86
 			case Token.JO:
 				ProcessBranch(0x00);
 				break;
+            case Token.JPE:
+                ProcessBranch(0x0A);
+                break;
             case Token.JPO:
                 ProcessBranch(0x0B);
                 break;

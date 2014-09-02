@@ -40,6 +40,7 @@ namespace Decompiler.Analysis
         SymbolicEvaluationContext ctx;
         private BitSet trashed;
         private BitSet preserved;
+        private ExpressionValueComparer cmp;
 
         public TrashedRegisterSummarizer(IProcessorArchitecture arch, Procedure proc, ProcedureFlow pf, SymbolicEvaluationContext ctx)
         {
@@ -49,6 +50,7 @@ namespace Decompiler.Analysis
             trashed = arch.CreateRegisterBitset();
             preserved = arch.CreateRegisterBitset();
             this.ctx = ctx;
+            this.cmp = new ExpressionValueComparer();
         }
 
         public bool PropagateToProcedureSummary()
@@ -73,7 +75,6 @@ namespace Decompiler.Analysis
                 }
                 return changed;
             }
-            var cmp = new ExpressionValueComparer();
             foreach (var de in ctx.RegisterState)
             {
                 var idValue = de.Value as Identifier;
@@ -111,12 +112,12 @@ namespace Decompiler.Analysis
                         }
                         else
                         {
-                            SetConstant(de.Key, Constant.Invalid);
+                            changed |= SetConstant(de.Key, Constant.Invalid);
                         }
                     }
                     else
                     {
-                        SetConstant(de.Key, Constant.Invalid);
+                        changed |= SetConstant(de.Key, Constant.Invalid);
                     }
                 }
             }
@@ -140,21 +141,20 @@ namespace Decompiler.Analysis
             return changed;
         }
 
-        private void SetConstant(Storage storage, Constant constant)
+        private bool SetConstant(Storage storage, Constant constant)
         {
+            bool changed = false;
             var seq = storage as SequenceStorage;
             if (seq != null)
             {
-                if (!constant.IsValid)
-                {
-                    SetConstant(seq.Head.Storage, constant);
-                    SetConstant(seq.Tail.Storage, constant);
-                    pf.ConstantRegisters[storage] = Constant.Invalid;
-                }
-                return;
+                changed |= SetConstant(seq.Head.Storage, constant);
+                changed |= SetConstant(seq.Tail.Storage, constant);
             }
-            RegisterStorage r;
-            pf.ConstantRegisters[storage] = Constant.Invalid;
+            Constant old;
+            if (!pf.ConstantRegisters.TryGetValue(storage, out old))
+                old = null;
+            pf.ConstantRegisters[storage] = constant;
+            return changed | !cmp.Equals(old , constant);
         }
 
         private void Preserve(Storage s)

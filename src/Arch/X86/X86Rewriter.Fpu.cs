@@ -251,7 +251,7 @@ namespace Decompiler.Arch.X86
                 switch (nextInstr.code)
                 {
                 case Opcode.jpe:
-                    if (mask == 0x05) { Branch(ConditionCode.LE, nextInstr.op1); return true;  }
+                    if (mask == 0x05) { Branch(ConditionCode.LE, nextInstr.op1); return true; }
                     if (mask == 0x41) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
                     if (mask == 0x44) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
                     break;

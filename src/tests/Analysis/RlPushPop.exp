@@ -20,13 +20,13 @@ l0C00_0000:
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp cx:0x0014 ax:<invalid>
-l0C00_0008_thunk_fn0C00_0008:
+l0C00_0006_thunk_fn0C00_0008:
 	call fn0C00_0008 (retsize: 2; depth: 2)
 	return
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp cx:0x0014 ax:0x0000
+// SymbolicIn: sp:fp cx:0x0014 ax:<invalid>
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -36,7 +36,7 @@ fn0C00_0000_exit:
 	MayUseIn:  cx di ds
 	BypassIn: 
 	Trashed:   SCZO ax al ah
-	Preserved: sp si di 
+	Preserved: sp si di
 // fn0C00_0008
 void fn0C00_0008()
 // SymbolicIn: sp:fp
@@ -89,6 +89,4 @@ l0C00_001A:
 fn0C00_0008_exit:
 // DataOut: ax cx ds
 // DataOut (flags): 
-
- 
 

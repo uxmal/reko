@@ -49,7 +49,6 @@ namespace Decompiler.Analysis
 	{
 		private Program prog;
 		private DecompilerEventListener eventListener;
-		private Procedure proc;
 		private WorkList<BlockFlow> worklist;
 		private ProgramDataFlow mpprocData;
 		private State state;
@@ -144,7 +143,7 @@ namespace Decompiler.Analysis
 
 		private void Def(Identifier id)
 		{
-			varLive.Def(proc.Frame.Identifiers[id.Number]);
+			varLive.Def(Procedure.Frame.Identifiers[id.Number]);
 		}
 
 		private void DumpBlock(Block block)
@@ -193,11 +192,7 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		public Procedure Procedure
-		{
-			get { return proc; }
-			set { proc = value; }
-		}
+		public Procedure Procedure { get; set; }
 
 		/// <summary>
 		/// Processes the data flow of a block by beginning with
@@ -395,7 +390,7 @@ namespace Decompiler.Analysis
 
 		private void Use(Identifier id)
 		{
-			varLive.Use(proc.Frame.Identifiers[id.Number], bitUseOffset, cbitsUse);
+			varLive.Use(Procedure.Frame.Identifiers[id.Number], bitUseOffset, cbitsUse);
 		}
  
 		public IdentifierLiveness IdentifierLiveness
@@ -510,7 +505,7 @@ namespace Decompiler.Analysis
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
                 var ab = new ApplicationBuilder(
                     prog.Architecture, 
-                    proc.Frame, 
+                    Procedure.Frame, 
                     ci.CallSite,
                     new ProcedureConstant(prog.Architecture.PointerType, procCallee), 
                     sig, 
@@ -551,7 +546,7 @@ namespace Decompiler.Analysis
 				// Update trash information.
 
 				ProcedureFlow pi = mpprocData[procCallee];
-				ProcedureFlow item = mpprocData[proc];
+				ProcedureFlow item = mpprocData[Procedure];
 
 				// The registers that are still live before a call are those
 				// that were live after the call and were bypassed by the called function
