@@ -162,13 +162,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arch\PowerPC\PowerPC-2010.csproj">
+    <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
-      <Name>PowerPC-2010</Name>
+      <Name>PowerPC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
+    <ProjectReference Include="..\Arch\X86\X86.csproj">
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86-2010</Name>
+      <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\Decompiler\Decompiler-2010.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>

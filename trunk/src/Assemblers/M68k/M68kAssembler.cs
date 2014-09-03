@@ -56,7 +56,7 @@ namespace Decompiler.Assemblers.M68k
 
         public Address BaseAddress { get; private set; }
         public SymbolTable Symbols { get; private set; }
-        public Emitter Emitter { get; private set; }
+        public IEmitter Emitter { get; private set; }
 
         public RegisterOperand d0 { get { return new RegisterOperand(Registers.d0); } }
         public RegisterOperand d1 { get { return new RegisterOperand(Registers.d1); } }
@@ -78,7 +78,7 @@ namespace Decompiler.Assemblers.M68k
 
         public LoaderResults GetImage()
         {
-            var image = new LoadedImage(BaseAddress, Emitter.Bytes);
+            var image = new LoadedImage(BaseAddress, Emitter.GetBytes());
             return new LoaderResults(
                 image,
                 new ImageMap(image),
@@ -234,7 +234,7 @@ namespace Decompiler.Assemblers.M68k
             }
             else
             {
-                psym.AddForwardReference(off, width);
+                psym.AddForwardReference(off, width, 1);
             }
         }
 

@@ -138,6 +138,7 @@
     <Compile Include="Arch\Z80\RewriterTests.cs" />
     <Compile Include="Assemblers\M68k\M68kAssemblerTests.cs" />
     <Compile Include="Assemblers\M68k\M68kTextAssemblerTests.cs" />
+    <Compile Include="Assemblers\Pdp11\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
@@ -445,17 +446,17 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arch\Arm\Arm-2010.csproj">
+    <ProjectReference Include="..\Arch\Arm\Arm.csproj">
       <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
-      <Name>Arm-2010</Name>
+      <Name>Arm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Cil\Cil.csproj">
       <Project>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</Project>
       <Name>Cil</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\M68k\M68k-2010.csproj">
+    <ProjectReference Include="..\Arch\M68k\M68k.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
-      <Name>M68k-2010</Name>
+      <Name>M68k</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Project>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</Project>
@@ -465,21 +466,21 @@
       <Project>{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}</Project>
       <Name>Mos6502</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Pdp11\Pdp11-2010.csproj">
+    <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
-      <Name>Pdp11-2010</Name>
+      <Name>Pdp11 %28Architectures\Pdp11%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\PowerPC\PowerPC-2010.csproj">
+    <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
-      <Name>PowerPC-2010</Name>
+      <Name>PowerPC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Sparc\Sparc-2010.csproj">
+    <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
       <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
-      <Name>Sparc-2010</Name>
+      <Name>Sparc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
+    <ProjectReference Include="..\Arch\X86\X86.csproj">
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86-2010</Name>
+      <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
       <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
@@ -488,6 +489,10 @@
     <ProjectReference Include="..\Assemblers\M68k\M68kAssembler-2010.csproj">
       <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
       <Name>M68kAssembler-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Assemblers\Pdp11\Pdp11.csproj">
+      <Project>{3bb6b0fb-6686-428b-9dc9-a32f349e50e6}</Project>
+      <Name>Pdp11 %28Assemblers\Pdp11%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\x86\X86Assembler-2010.csproj">
       <Project>{3805DE2C-659A-442D-8C34-E88822A4D27C}</Project>

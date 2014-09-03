@@ -113,7 +113,7 @@ namespace Decompiler.Arch.Pdp11
         {
             foreach (RegisterStorage reg in regs)
             {
-                if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) != 0)
+                if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0)
                     return reg;
             }
             return null;
@@ -124,7 +124,7 @@ namespace Decompiler.Arch.Pdp11
             result = null;
             foreach (RegisterStorage reg in regs)
             {
-                if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) != 0)
+                if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
                     result = reg;
                     return true;

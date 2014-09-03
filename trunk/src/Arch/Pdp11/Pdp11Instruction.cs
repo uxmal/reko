@@ -49,11 +49,23 @@ namespace Decompiler.Arch.Pdp11
             sb.AppendFormat("{0}\t", Opcode);
             if (op1 != null)
             {
-                sb.Append(op1);
+                sb.Append(OpToString(op1));
                 if (op2 != null)
-                    sb.AppendFormat(",{0}", op2);
+                    sb.AppendFormat(",{0}", OpToString(op2));
             }
             return sb.ToString();
+        }
+
+        private string OpToString(MachineOperand op)
+        {
+            if (op is ImmediateOperand)
+            {
+                return "#" + op.ToString();
+            }
+            else
+            {
+                return op.ToString();
+            }
         }
     }
 
@@ -82,6 +94,7 @@ namespace Decompiler.Arch.Pdp11
         mtpi,
         mtpd,
         mov,
+        movb,
         mul,
         neg,
         rol,
@@ -107,5 +120,22 @@ namespace Decompiler.Arch.Pdp11
         ble,
         bpl,
         xor,
+        halt,
+        wait,
+        emt,
+        trap,
+        reset,
+        iot,
+        bpt,
+        rti,
+        rtt,
+        rts,
+        sob,
+        ashc,
+        jmp,
+        jsr,
+        ash,
+        spl,
+        clrb,
     }
 }
