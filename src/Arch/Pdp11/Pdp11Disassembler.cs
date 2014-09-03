@@ -19,10 +19,12 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Decompiler.Arch.Pdp11
@@ -52,7 +54,16 @@ namespace Decompiler.Arch.Pdp11
             instrCur.Length = rdr.Address - addr;
             return true;
         }
-    
+        class OpRec
+        {
+            private string fmt;
+            private Opcodes opcode;
+
+            public OpRec(string fmt, Opcodes op)
+            {
+            }
+        }
+
         private Pdp11Instruction Disassemble()
         {
             ushort opcode = rdr.ReadLeUInt16();
@@ -63,10 +74,10 @@ namespace Decompiler.Arch.Pdp11
             case 1:
                 return new Pdp11Instruction
                 {
-                    Opcode = Opcodes.mov,
+                    Opcode = dataWidth.Size == 1 ? Opcodes.movb : Opcodes.mov,
                     DataWidth = dataWidth,
-                    op1 = DecodeOperand(opcode),
-                    op2 = DecodeOperand(opcode >> 6)
+                    op1 = DecodeOperand(opcode >> 6),
+                    op2 = DecodeOperand(opcode)
                 };
             case 2:
                 return new Pdp11Instruction
@@ -104,7 +115,7 @@ namespace Decompiler.Arch.Pdp11
                 return new Pdp11Instruction
                 {
                     Opcode = (opcode & 0x8000u) != 0 ? Opcodes.sub : Opcodes.add,
-                    DataWidth = dataWidth,
+                    DataWidth = PrimitiveType.Word16,
                     op1 = DecodeOperand(opcode),
                     op2 = DecodeOperand(opcode >> 6),
                 };
@@ -129,6 +140,24 @@ namespace Decompiler.Arch.Pdp11
                         op1 = DecodeOperand(opcode),
                         op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
                     };
+                case 2:
+                    dataWidth = PrimitiveType.Word16;
+                    return new Pdp11Instruction
+                    {
+                        Opcode = Opcodes.ash,
+                        DataWidth = dataWidth,
+                        op1 = DecodeOperand(opcode),
+                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
+                    };
+                case 3:
+                    dataWidth = PrimitiveType.Word16;
+                    return new Pdp11Instruction
+                    {
+                        Opcode = Opcodes.ashc,
+                        DataWidth = dataWidth,
+                        op1 = DecodeOperand(opcode),
+                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
+                    };
                 case 4:
                     dataWidth = PrimitiveType.Word16;
                     return new Pdp11Instruction
@@ -136,6 +165,17 @@ namespace Decompiler.Arch.Pdp11
                         Opcode = Opcodes.xor,
                         DataWidth = dataWidth,
                         op1 = DecodeOperand(opcode),
+                        op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
+                    };
+                case 5:
+                    return FpuArithmetic(opcode);
+                case 7:
+                    dataWidth = PrimitiveType.Word16;
+                    return new Pdp11Instruction
+                    {
+                        Opcode = Opcodes.sob,
+                        DataWidth = dataWidth,
+                        op1 = Imm6(opcode),
                         op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
                     };
                 }
@@ -146,6 +186,16 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
+        private MachineOperand Imm6(ushort opcode)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Pdp11Instruction FpuArithmetic(ushort opcode)
+        {
+            throw new NotImplementedException();
+        }
+
         private PrimitiveType DataWidthFromSizeBit(uint p)
         {
             return p != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
@@ -153,21 +203,85 @@ namespace Decompiler.Arch.Pdp11
 
         private Pdp11Instruction NonDoubleOperandInstruction(ushort opcode)
         {
+            switch ((opcode >> 8))
+            {
+            case 0x01:
+            case 0x02:
+            case 0x03:
+            case 0x04:
+            case 0x05:
+            case 0x06:
+            case 0x07:
+            case 0x80:
+            case 0x81:
+            case 0x82:
+            case 0x83:
+            case 0x84:
+            case 0x85:
+            case 0x86:
+            case 0x87:
+                return BranchInstruction(opcode);
+            }
+
+
             var dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
             var op = DecodeOperand(opcode);
             Opcodes oc = Opcodes.illegal;
             switch ((opcode >> 6) & 0x3FF)
             {
+            case 0x000:
+                switch (opcode & 0x3F)
+                {
+                case 0x00: op= null;oc = Opcodes.halt; break;
+                case 0x01: op= null;oc = Opcodes.wait; break;
+                case 0x02: op= null;oc = Opcodes.rti; break;
+                case 0x03: op= null;oc = Opcodes.bpt; break;
+                case 0x04: op= null;oc = Opcodes.iot; break;
+                case 0x05: op= null;oc = Opcodes.reset; break;
+                case 0x06: op= null;oc = Opcodes.rtt; break;
+                case 0x07: op = null;  oc = Opcodes.illegal; break;
+                }
+                break;
+            case 0x001: oc = Opcodes.jmp; break;
+            case 0x002:
+                switch (opcode & 0x38)
+                {
+                case 0: op = DecodeOperand(opcode & 7); oc = Opcodes.rts; break;
+                case 3: op = Imm3(opcode); oc = Opcodes.spl; break;
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    throw new NotImplementedException("Cond codes");
+                }
+                break;
             case 0x003:
                 oc = Opcodes.swab;
                 dataWidth = PrimitiveType.Byte;
                 break;
+            case 0x020:
+            case 0x021:
+            case 0x022:
+            case 0x023:
+            case 0x024:
+            case 0x025:
+            case 0x026:
+            case 0x027:
+                return new Pdp11Instruction { Opcode = Opcodes.jsr, op1= Reg(opcode >> 6), op2 = op };
+            case 0x220:
+            case 0x221:
+            case 0x222:
+            case 0x223:
+                oc = Opcodes.emt; op = null; break;
+            case 0x224:
+            case 0x225:
+            case 0x226:
+            case 0x227:
+                oc = Opcodes.trap; op = null; break;
 
-            case 0x203:
-                return BranchInstruction(opcode);
             case 0x028:
             case 0x228:
-                oc = Opcodes.clr;
+                oc = dataWidth.Size == 1 ? Opcodes.clrb : Opcodes.clr;
                 break;
             case 0x029:
             case 0x229:
@@ -246,6 +360,16 @@ namespace Decompiler.Arch.Pdp11
             };
         }
 
+        private MachineOperand Reg(int bits)
+        {
+            return new RegisterOperand(arch.GetRegister(bits & 7));
+        }
+
+        private MachineOperand Imm3(ushort opcode)
+        {
+            throw new NotImplementedException();
+        }
+
         private Pdp11Instruction BranchInstruction(ushort opcode)
         {
             var oc = Opcodes.illegal;
@@ -279,8 +403,19 @@ namespace Decompiler.Arch.Pdp11
         private MachineOperand DecodeOperand(int operandBits)
         {
             var reg = arch.GetRegister(operandBits & 7);
+            Debug.Print("operandBits {0:X} {1:X} ", (operandBits >> 3) & 7, operandBits & 7);
             if (reg == Registers.pc)
             {
+                switch ((operandBits >> 3) & 7)
+                {
+                case 0: return new RegisterOperand(reg);
+                case 1: return new MemoryOperand(AddressMode.RegDef, dataWidth, reg); 
+                case 2: return new ImmediateOperand(Constant.Word16(rdr.ReadLeUInt16()));
+                case 3: return new MemoryOperand(rdr.ReadLeUInt16(), dataWidth); 
+
+                    // PC relative
+
+                }
                 throw new NotImplementedException();
             }
             else
@@ -290,9 +425,14 @@ namespace Decompiler.Arch.Pdp11
                 case 0: return new RegisterOperand(reg);    //   Reg           Direct addressing of the register
                 case 1: return new MemoryOperand(AddressMode.RegDef, dataWidth, reg);      //   Reg Def       Contents of Reg is the address
                 case 2: return new MemoryOperand(AddressMode.AutoIncr, dataWidth, reg);   //   AutoIncr      Contents of Reg is the address, then Reg incremented
+                case 4: return new MemoryOperand(AddressMode.AutoDecr, dataWidth, reg);   //   AutoDecr      Reg incremented, then contents of Reg is the address
                 //case 3:    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
                 //case 4:    //   AutoDecr      Reg is decremented then contents is address
                 //case 5:    //   AutoDecrDef   Reg is decremented then contents is addr of addr
+                case 6: return new MemoryOperand(AddressMode.Indexed, dataWidth, reg)
+                        {
+                            EffectiveAddress = rdr.ReadLeUInt16()
+                        };
                 //case 6: return new MemoryOperand(reg, rdr.ReadLeUInt16());   //   Index         Contents of Reg + Following word is address
                 //case 7:   //   IndexDef      Contents of Reg + Following word is addr of addr
                 default: throw new NotSupportedException(string.Format("Address mode {0} not supported.", (operandBits >> 3) & 7));

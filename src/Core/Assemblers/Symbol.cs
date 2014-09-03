@@ -43,12 +43,12 @@ namespace Decompiler.Core.Assemblers
 		}
 
         // Add forward references to the backpatch list.
-        public void AddForwardReference(int offset, DataType width)
+        public void AddForwardReference(int offset, DataType width, int unitSize)
 		{
-			Patches.Add(new BackPatch(offset, width));
+			Patches.Add(new BackPatch(offset, width, unitSize));
 		}
 
-        public void ReferToBe(int off, DataType width, Emitter emitter)
+        public void ReferToBe(int off, DataType width, IEmitter emitter)
         {
             if (fResolved)
             {
@@ -57,11 +57,11 @@ namespace Decompiler.Core.Assemblers
             else
             {
                 // Add forward references to the backpatch list.
-                AddForwardReference(off, width);
+                AddForwardReference(off, width, 1);
             }
         }
 
-        public void ReferToLe(int off, DataType width, Emitter emitter)
+        public void ReferToLe(int off, DataType width, IEmitter emitter)
         {
             if (fResolved)
             {
@@ -70,11 +70,24 @@ namespace Decompiler.Core.Assemblers
             else
             {
                 // Add forward references to the backpatch list.
-                AddForwardReference(off, width);
+                AddForwardReference(off, width, 1);
             }
         }
 
-        public void ResolveBe(Emitter emitter)
+        public void ReferToLeWordCount(int off, DataType width, IEmitter emitter)
+        {
+            if (fResolved)
+            {
+                emitter.PatchLe(off, this.offset / 2, width);
+            }
+            else
+            {
+                // Add forward references to the backpatch list.
+                AddForwardReference(off, width, 2);
+            }
+        }
+
+        public void ResolveBe(IEmitter emitter)
         {
             Debug.Assert(fResolved);
             foreach (BackPatch patch in Patches)
@@ -83,12 +96,12 @@ namespace Decompiler.Core.Assemblers
             }
         }
 
-        public void ResolveLe(Emitter emitter)
+        public void ResolveLe(IEmitter emitter)
         {
             Debug.Assert(fResolved);
             foreach (BackPatch patch in Patches)
             {
-                emitter.PatchLe(patch.offset, offset, patch.Size);
+                emitter.PatchLe(patch.offset, this.offset / patch.UnitSize, patch.Size);
             }
         }
 
@@ -103,17 +116,16 @@ namespace Decompiler.Core.Assemblers
 	{
 		public int	offset;
 		private DataType size;
+        public int UnitSize;
 
-		public BackPatch(int o, DataType s)
+		public BackPatch(int o, DataType s, int unitSize)
 		{
 			offset = o; 
 			size = s;
+            this.UnitSize = unitSize;
 		}
 
-		public DataType Size
-		{
-			get { return size; }
-		}
+		public DataType Size { get { return size; } }
 	}
 
 	public class SymbolTable 

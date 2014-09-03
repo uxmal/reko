@@ -85,13 +85,13 @@
     <Content Include="wininet.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC-2010.csproj">
+    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
-      <Name>PowerPC-2010</Name>
+      <Name>PowerPC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Arch\X86\X86-2010.csproj">
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
       <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
-      <Name>X86-2010</Name>
+      <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>

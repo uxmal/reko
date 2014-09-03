@@ -36,7 +36,7 @@ namespace Decompiler.Assemblers.M68k
     {
         private M68kArchitecture arch;
         private Address addrBase;
-        private Emitter emitter;
+        private IEmitter emitter;
         private List<EntryPoint> entryPoints;
         private Lexer lexer;
         private M68kAssembler asm ;
@@ -130,7 +130,7 @@ namespace Decompiler.Assemblers.M68k
             {
             case 0: emitter.EmitByte(n); break;
             case 1: emitter.EmitBeUInt16(n); break;
-            case 2: emitter.EmitBeUint32(n); break;
+            case 2: emitter.EmitBeUInt32(n); break;
             default: Debug.Assert(false); break;
             }
         }
@@ -553,7 +553,7 @@ namespace Decompiler.Assemblers.M68k
 
         public LoadedImage GetImage()
         {
-            return new LoadedImage(addrBase, emitter.Bytes);
+            return new LoadedImage(addrBase, emitter.GetBytes());
         }
 
         public LoadedImage Image

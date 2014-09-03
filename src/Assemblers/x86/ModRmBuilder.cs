@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -35,11 +36,11 @@ namespace Decompiler.Assemblers.x86
 	{
 		public event ErrorEventHandler Error;
 
-		private IntelEmitter emitter;
+		private IEmitter emitter;
 		private PrimitiveType defaultWordSize;
 		private Constant offset;
 
-		public ModRmBuilder(PrimitiveType defaultWordSize, IntelEmitter emitter)
+		public ModRmBuilder(PrimitiveType defaultWordSize, IEmitter emitter)
 		{
 			this.emitter = emitter;
 			this.defaultWordSize = defaultWordSize;

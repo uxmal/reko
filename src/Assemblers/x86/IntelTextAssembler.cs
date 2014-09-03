@@ -43,8 +43,6 @@ namespace Decompiler.Assemblers.x86
 		private Address addrStart;
         private List<EntryPoint> entryPoints;
         private IntelAssembler asm;
-        private LoadedImage image;
-        private IntelEmitter emitter;
 
 		public IntelTextAssembler()
 		{
@@ -58,7 +56,7 @@ namespace Decompiler.Assemblers.x86
 
             // Default assembler is real-mode.
 
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new IntelArchitecture(ProcessorMode.Real);
             asm = new IntelAssembler(arch, addrBase, entryPoints);
 
             // Assemblers are strongly line-oriented.
@@ -124,15 +122,15 @@ namespace Decompiler.Assemblers.x86
 		{
             OperandParser opp = asm.CreateOperandParser(lexer);
             List<ParsedOperand> ops = new List<ParsedOperand>();
-			emitter.SegmentOverride = RegisterStorage.None;
-			emitter.AddressWidth = emitter.SegmentAddressWidth;
+			asm.SegmentOverride = RegisterStorage.None;
+			asm.AddressWidth = asm.SegmentAddressWidth;
 			if (lexer.PeekToken() != Token.EOL)
 			{
 				ops.Add(opp.ParseOperand());
 				if (opp.SegmentOverride != RegisterStorage.None)
-					emitter.SegmentOverride = opp.SegmentOverride;
+					asm.SegmentOverride = opp.SegmentOverride;
 				if (opp.AddressWidth != null)
-					emitter.AddressWidth = opp.AddressWidth;
+					asm.AddressWidth = opp.AddressWidth;
 
 				while (lexer.PeekToken() == Token.COMMA)
 				{
@@ -141,12 +139,12 @@ namespace Decompiler.Assemblers.x86
 					ops.Add(opp.ParseOperand());
 					if (opp.SegmentOverride != RegisterStorage.None)
 					{
-						if (emitter.SegmentOverride != RegisterStorage.None)
+						if (asm.SegmentOverride != RegisterStorage.None)
 							Error("Can't have two segment overrides in one instruction");
-						emitter.SegmentOverride = opp.SegmentOverride;
+						asm.SegmentOverride = opp.SegmentOverride;
 					}
 					if (opp.AddressWidth != null)
-						emitter.AddressWidth = opp.AddressWidth;
+						asm.AddressWidth = opp.AddressWidth;
 				}
 			}
 
@@ -404,7 +402,6 @@ namespace Decompiler.Assemblers.x86
             asm.ProcessIncDec(fDec, ops[0]);
         }
 
-
 		public void ProcessInclude()
 		{
 			lexer.SkipUntil(Token.EOL);
@@ -425,7 +422,7 @@ namespace Decompiler.Assemblers.x86
 		{
 			Expect(Token.ID);
             string externSymbol = lexer.StringLiteral;
-            asm.Extern(externSymbol, emitter.SegmentAddressWidth);     //$REVIEW: doesn't take into account NEAR, FAR for real mode.
+            asm.Extern(externSymbol, asm.SegmentAddressWidth);     //$REVIEW: doesn't take into account NEAR, FAR for real mode.
 			lexer.SkipUntil(Token.EOL);
 		}
 
@@ -471,13 +468,11 @@ namespace Decompiler.Assemblers.x86
             asm.Import(s, fnName, dllName);
 		}
 
-
 		private void ProcessImul()
 		{
 			ParsedOperand [] ops = ParseOperandList(1, 3);
             asm.ProcessImul(ops);
         }
-
 
 		private void ProcessInOut(bool fOut)
 		{
@@ -560,7 +555,6 @@ namespace Decompiler.Assemblers.x86
 			}
 		}
 
-
 		private void ProcessLea()
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
@@ -574,8 +568,7 @@ namespace Decompiler.Assemblers.x86
 
 		private void ProcessLine()
 		{
-            emitter = asm.Emitter;
-			emitter.AddressWidth = null;
+			asm.AddressWidth = null;
 			Token tok = lexer.GetToken();
 			switch (tok)
 			{

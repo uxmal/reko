@@ -18,33 +18,21 @@
  */
 #endregion
 
+using Decompiler.Arch.Pdp11;
+using Decompiler.Core;
 using Decompiler.Core.Assemblers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Decompiler.Core.Types;
 
-namespace Decompiler.Assemblers.x86
+namespace Decompiler.Assemblers.Pdp11
 {
-    public class AssembledSegment
+    public  class ParsedOperand
     {
-        public IEmitter Emitter { get; private set; } 
-        public Symbol Symbol { get; private set; }
-        public List<Relocation> Relocations { get; private set; }
-        public ushort Selector { get; set; }
-
-        public AssembledSegment(IEmitter emitter, Symbol sym)
-        {
-            this.Emitter = emitter;
-            this.Symbol = sym;
-            this.Relocations = new List<Relocation>();
-        }
-
-        public class Relocation
-        {
-            public AssembledSegment Segment;
-            public uint Offset;
-        }
-
+        public AddressMode Type;
+        public int Offset;
+        public Symbol Symbol;
+        public RegisterStorage Register;
     }
 }

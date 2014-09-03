@@ -66,6 +66,7 @@ namespace Decompiler.Arch.Z80
                     RewriteOp(dasm.Current.Op2));
                     break;
                 case Opcode.add: RewriteAdd(); break;
+                case Opcode.sub: RewriteSub(); break;
                 case Opcode.push: RewritePush(dasm.Current); break;
                 }
                 yield return rtlc;
@@ -78,6 +79,15 @@ namespace Decompiler.Arch.Z80
             var src = RewriteOp(dasm.Current.Op2);
             emitter.Assign(dst, emitter.IAdd(dst, src));
             var flags = FlagGroup(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF );
+            emitter.Assign(flags, emitter.Cond(dst));
+        }
+
+        private void RewriteSub()
+        {
+            var dst = RewriteOp(dasm.Current.Op1);
+            var src = RewriteOp(dasm.Current.Op2);
+            emitter.Assign(dst, emitter.ISub(dst, src));
+            var flags = FlagGroup(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF);
             emitter.Assign(flags, emitter.Cond(dst));
         }
 

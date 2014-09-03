@@ -279,7 +279,6 @@ namespace Decompiler.Assemblers.x86
 			}
 		}
 
-
 		private void OnError(string msg )
 		{
 			if (Error != null)

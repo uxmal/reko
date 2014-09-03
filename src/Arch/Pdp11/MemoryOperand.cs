@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -35,30 +36,48 @@ namespace Decompiler.Arch.Pdp11
             Register = reg;
         }
 
+        public MemoryOperand(ushort absolute, PrimitiveType type) : base (type)
+        {
+            Mode = AddressMode.Absolute;
+            EffectiveAddress = absolute;
+        }
+
         public AddressMode Mode { get; set; }
         public RegisterStorage Register { get;set;}
         public bool PreDec { get; set; }
         public bool PostInc { get; set; }
+        public ushort EffectiveAddress { get; set; }
 
         public override string ToString()
         {
             string fmt;
             switch (Mode)
             {
-            case AddressMode.RegDef: fmt = "({0})"; break;
+            case AddressMode.RegDef: fmt = "@{0}"; break;
             case AddressMode.AutoIncr: fmt = "({0})+"; break;
             case AddressMode.AutoDecr: fmt = "-({0})"; break;
+            case AddressMode.Indexed: fmt = "{1:X4}({0})"; break;
+
+            //case AddressMode.Immediate : fmt = "#{1:X4}"; break;
+            case AddressMode.Absolute: fmt = "@#{1:X4}"; break;
             default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));
             }
-            return string.Format(fmt, Register);
+            return string.Format(fmt, Register, EffectiveAddress);
         }
     }
 
     public enum AddressMode
     {
+        Register,
         RegDef,
         AutoIncr,
         AutoDecr,
+        Absolute,
+        Indexed,
+        Immediate,
+        AutoIncrDef,
+        AutoDecrDef,
+        IndexedDef,
     }
 
 }

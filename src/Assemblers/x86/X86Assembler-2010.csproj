@@ -59,9 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssembledSegment.cs" />
-    <Compile Include="IntelEmitter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ErrorEvent.cs" />
     <Compile Include="IntelAssembler.cs" />
     <Compile Include="IntelTextAssembler.cs" />
@@ -76,9 +73,9 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\X86\X86-2010.csproj">
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86-2010</Name>
+      <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>

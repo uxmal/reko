@@ -25,20 +25,50 @@ using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace Decompiler.Core.Assemblers
 {
 	/// <summary>
 	/// Emits bytes into a bytestream belonging to a segment/section.
 	/// </summary>
-	public class Emitter
+    public interface IEmitter
+    {
+        [Obsolete("Use GetBytes")]
+        byte[] Bytes { get; }
+        int Length { get; }
+        int Position { get; }
+
+        void Align(int extra, int align);
+        void EmitBeUInt16(int us);
+        void EmitBeUInt32(int ui);
+        void EmitByte(int b);
+        void EmitBytes(int b, int count);
+        void EmitLe(PrimitiveType width, int value);
+        void EmitLeImmediate(Constant c, PrimitiveType dt);
+        void EmitLeUInt16(int us);
+        void EmitLeUInt32(uint ui);
+        void EmitString(string str, Encoding encoding);
+        byte[] GetBytes();
+        void PatchBe(int offsetPatch, int offsetRef, DataType width);
+        void PatchLe(int offsetPatch, int offsetRef, DataType width);
+        void Reserve(int delta);
+    }
+    
+	public class Emitter : IEmitter
 	{
 		private MemoryStream stmOut = new MemoryStream();
 
+        [Obsolete("Use GetBytes")]
 		public byte [] Bytes
 		{
 			get { return stmOut.ToArray(); }
 		}
+
+        public byte[] GetBytes()
+        {
+            return stmOut.ToArray();
+        }
 
         public void Align(int skip, int alignment)
         {
@@ -67,7 +97,7 @@ namespace Decompiler.Core.Assemblers
 			}
 		}
 
-		public void EmitLeUint32(uint l)
+		public void EmitLeUInt32(uint l)
 		{
 			stmOut.WriteByte((byte)(l));
 			l >>= 8;
@@ -83,8 +113,8 @@ namespace Decompiler.Core.Assemblers
 			switch (dt.Size)
 			{
 			case 1: EmitByte(c.ToInt32()); return;
-			case 2: EmitLeUint16(c.ToInt32()); return;
-			case 4: EmitLeUint32(c.ToUInt32()); return;
+			case 2: EmitLeUInt16(c.ToInt32()); return;
+			case 4: EmitLeUInt32(c.ToUInt32()); return;
 			default: throw new NotSupportedException(string.Format("Unsupported type: {0}", dt));
 			}
 		}
@@ -94,21 +124,22 @@ namespace Decompiler.Core.Assemblers
 			switch (vt.Size)
 			{
 			case 1: EmitByte(v); return;
-			case 2: EmitLeUint16(v); return;
-			case 4: EmitLeUint32((uint) v); return;
+			case 2: EmitLeUInt16(v); return;
+			case 4: EmitLeUInt32((uint) v); return;
 			default: throw new ArgumentException();
 			}
 		}
 
-		public void EmitString(string pstr)
+		public void EmitString(string pstr, Encoding encoding)
 		{
-			for (int i = 0; i != pstr.Length; ++i)
+            var bytes = encoding.GetBytes(pstr);
+			for (int i = 0; i != bytes.Length; ++i)
 			{
-				EmitByte(pstr[i]);
+				EmitByte(bytes[i]);
 			}
 		}
 
-        public void EmitLeUint16(int s)
+        public void EmitLeUInt16(int s)
 		{
 			stmOut.WriteByte((byte)(s & 0xFF));
 			stmOut.WriteByte((byte)(s >> 8));
@@ -120,7 +151,7 @@ namespace Decompiler.Core.Assemblers
             stmOut.WriteByte((byte)(s & 0xFF));
         }
 
-        public void EmitBeUint32(int s)
+        public void EmitBeUInt32(int s)
         {
             stmOut.WriteByte((byte) (s >> 24));
             stmOut.WriteByte((byte) (s >> 16));
@@ -227,5 +258,15 @@ namespace Decompiler.Core.Assemblers
 		{
 			get { return (int) stmOut.Position; }
 		}
+
+        public void Reserve(int size)
+        {
+            if (size < 0) throw new NotImplementedException();
+            while (size > 0)
+            {
+                stmOut.WriteByte(0);
+                --size;
+            }
+        }
     }
 }
