@@ -153,15 +153,5 @@ namespace Decompiler.Arch.Arm
             }
             op.Write(false, writer);
         }
-
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

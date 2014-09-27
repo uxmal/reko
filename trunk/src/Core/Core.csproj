@@ -1,18 +1,13 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</ProjectGuid>
+    <ProjectGuid>{5C315C78-1F97-4B16-81AA-917284969DFE}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>Decompiler.Core</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -20,63 +15,66 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Decompiler.Core</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
     <Optimize>false</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
     <Optimize>true</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -89,6 +87,7 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Absyn\AbsynAssignment.cs">
@@ -139,17 +138,115 @@
     <Compile Include="Address.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AddressCorrelatedException.cs" />
     <Compile Include="AddressRange.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ApplicationBuilder.cs" />
-    <Compile Include="Assembler.cs">
-      <SubType>Code</SubType>
+    <Compile Include="Archives\Archive.cs" />
+    <Compile Include="Archives\ArchiveDirectoryEntry.cs" />
+    <Compile Include="Assemblers\Assembler.cs" />
+    <Compile Include="Assemblers\Emitter.cs" />
+    <Compile Include="Assemblers\Symbol.cs" />
+    <Compile Include="Code\GotoInstruction.cs" />
+    <Compile Include="Code\SwitchInstruction.cs" />
+    <Compile Include="Configuration\ArchitectureElement.cs" />
+    <Compile Include="Configuration\ArchitectureElementCollection.cs" />
+    <Compile Include="Configuration\ArchitectureReferenceElement.cs" />
+    <Compile Include="Configuration\ArchitectureReferenceElementCollection.cs" />
+    <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
+    <Compile Include="Configuration\DecompilerConfiguration.cs" />
+    <Compile Include="Configuration\DefaultPreferences.cs" />
+    <Compile Include="Configuration\LoaderElement.cs" />
+    <Compile Include="Configuration\LoaderElementCollection.cs" />
+    <Compile Include="Configuration\LoaderSectionHandler.cs" />
+    <Compile Include="Configuration\OperatingEnvironmentElement.cs" />
+    <Compile Include="Configuration\OperatingEnvironmentElementCollection.cs" />
+    <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
+    <Compile Include="Configuration\TypeLibraryElement.cs" />
+    <Compile Include="Configuration\TypeLibraryElementCollection.cs" />
+    <Compile Include="Configuration\UiPreferencesSectionHandler.cs" />
+    <Compile Include="EnumerableEx.cs" />
+    <Compile Include="EvaluationContext.cs" />
+    <Compile Include="EventEx.cs" />
+    <Compile Include="Expressions\Application.cs" />
+    <Compile Include="Expressions\ArrayAccess.cs" />
+    <Compile Include="Expressions\BinaryExpression.cs" />
+    <Compile Include="Expressions\Cast.cs" />
+    <Compile Include="Expressions\ConditionCode.cs" />
+    <Compile Include="Expressions\ConditionOf.cs" />
+    <Compile Include="Expressions\Constant.cs" />
+    <Compile Include="Expressions\DepositBits.cs" />
+    <Compile Include="Expressions\Dereference.cs" />
+    <Compile Include="Expressions\Expression.cs" />
+    <Compile Include="Expressions\ExpressionEmitter.cs" />
+    <Compile Include="Expressions\ExpressionMatcher.cs" />
+    <Compile Include="Expressions\ExpressionValueComparer.cs" />
+    <Compile Include="Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Expressions\FieldAccess.cs" />
+    <Compile Include="Expressions\Identifier.cs" />
+    <Compile Include="Expressions\MemberPointerSelector.cs" />
+    <Compile Include="Expressions\MemoryAccess.cs" />
+    <Compile Include="Expressions\MkSequence.cs" />
+    <Compile Include="Expressions\PhiFunction.cs" />
+    <Compile Include="Expressions\PointerAddition.cs" />
+    <Compile Include="Expressions\ProcedureConstant.cs" />
+    <Compile Include="Expressions\Slice.cs" />
+    <Compile Include="Expressions\TestCondition.cs" />
+    <Compile Include="Expressions\UnaryExpression.cs" />
+    <Compile Include="FieldAttribute.cs" />
+    <Compile Include="ICodeLocation.cs" />
+    <Compile Include="ILoader.cs" />
+    <Compile Include="Lib\ObservableRangeCollection.cs" />
+    <Compile Include="MetadataLoader.cs" />
+    <Compile Include="Output\BlockDecorator.cs" />
+    <Compile Include="Output\TextFormatter.cs" />
+    <Compile Include="PointerScanner.cs" />
+    <Compile Include="PointerScannerFlags.cs" />
+    <Compile Include="Lib\LookaheadEnumerator.cs" />
+    <Compile Include="Lib\PriorityQueue.cs">
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BackWalker.cs">
+    <Compile Include="LoaderResults.cs" />
+    <Compile Include="Machine\RegisterOperand.cs" />
+    <Compile Include="Operators\FAddOperator.cs" />
+    <Compile Include="Operators\FDivOperator.cs" />
+    <Compile Include="Operators\FMulOperator.cs" />
+    <Compile Include="Operators\FSubOperator.cs" />
+    <Compile Include="Output\ProcedureFormatter.cs" />
+    <Compile Include="ProjectFile.cs" />
+    <Compile Include="MetadataFile.cs" />
+    <Compile Include="RelocationResults.cs" />
+    <Compile Include="Rtl\RtlAssignment.cs" />
+    <Compile Include="Rtl\RtlBranch.cs" />
+    <Compile Include="Rtl\RtlCall.cs" />
+    <Compile Include="Rtl\RtlEmitter.cs" />
+    <Compile Include="Rtl\RtlGoto.cs" />
+    <Compile Include="Rtl\RtlIf.cs" />
+    <Compile Include="Rtl\RtlInstruction.cs" />
+    <Compile Include="Rtl\RtlInstructionMatcher.cs" />
+    <Compile Include="Rtl\RtlInstructionVisitor.cs" />
+    <Compile Include="Rtl\RtlReturn.cs" />
+    <Compile Include="Rtl\RtlSideEffect.cs" />
+    <Compile Include="Rtl\RtlTransfer.cs" />
+    <Compile Include="Serialization\DataTypeNameSerializer.cs" />
+    <Compile Include="Serialization\ISerializedTypeVisitor.cs" />
+    <Compile Include="Serialization\MemberPointer_v1.cs" />
+    <Compile Include="Serialization\ProjectSerializer.cs" />
+    <Compile Include="Serialization\Project_v2.cs" />
+    <Compile Include="Serialization\SerializedArrayType.cs" />
+    <Compile Include="Serialization\SerializedEnumType.cs" />
+    <Compile Include="Serialization\SerializedTemplate.cs" />
+    <Compile Include="Serialization\SerializedTypedef.cs" />
+    <Compile Include="Serialization\SerializedTypeReference.cs" />
+    <Compile Include="Serialization\SerializedUnionType.cs" />
+    <Compile Include="Serialization\SerializedVoidType.cs" />
+    <Compile Include="Services\DecompilerEventListener.cs" />
+    <Compile Include="Lib\BlockDominatorGraph.cs" />
+    <Compile Include="Lib\Dequeue.cs" />
+    <Compile Include="Output\PrettyPrinter.cs" />
+    <Compile Include="Output\PrettyPrinterOutput.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BackwalkOperation.cs">
@@ -168,19 +265,7 @@
     <Compile Include="CodeEmitter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CodeWalker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Application.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ArrayAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\Assignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\BinaryExpression.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Code\Branch.cs">
@@ -192,44 +277,10 @@
     <Compile Include="Code\CallSite.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\Cast.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ConditionOf.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Constant.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\Declaration.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Code\DelegatedInstructionVisitor.cs" />
-    <Compile Include="Code\DepositBits.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Dereference.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Expression.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ExpressionFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ExpressionValueComparer.cs" />
-    <Compile Include="Code\ExpressionVisitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\FieldAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Identifier.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\IExpressionTransformer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\Instruction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -239,43 +290,15 @@
     <Compile Include="Code\InstructionVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\MemberPointerSelector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\MemoryAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\MkSequence.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\PhiAssignment.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\PhiFunction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\PointerAddition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ProcedureConstant.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ScopeResolution.cs" />
+    <Compile Include="Expressions\ScopeResolution.cs" />
     <Compile Include="Code\SideEffect.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\Slice.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\TestCondition.cs" />
-    <Compile Include="Code\UnaryExpression.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Diagnostic.cs" />
-    <Compile Include="Disassembler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DominatorGraph.cs">
+    <Compile Include="DisassemblerBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dumper.cs">
@@ -291,9 +314,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IBackWalkHost.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ICodeWalkerListener.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageLoader.cs" />
@@ -313,9 +333,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageWriter.cs" />
-    <Compile Include="IProcedureRewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="IProcessorArchitecture.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -333,7 +350,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Lib\DisjointPartition.cs" />
-    <Compile Include="Lib\HashSet.cs" />
+    <Compile Include="Lib\DominatorGraph.cs" />
     <Compile Include="Lib\IntSet.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -344,15 +361,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LinearInductionVariable.cs" />
-    <Compile Include="MachineFlags.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MachineInstruction.cs" />
-    <Compile Include="MachineOperand.cs" />
-    <Compile Include="MachineRegister.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Operators\AddOperator.cs">
+    <Compile Include="Machine\MachineInstruction.cs" />
+    <Compile Include="Machine\MachineOperand.cs" />
+    <Compile Include="Operators\IAddOperator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\AndOperator.cs">
@@ -364,20 +375,20 @@
     <Compile Include="Operators\ConditionalOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\DivsOperator.cs">
+    <Compile Include="Operators\SDivOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\DivuOperator.cs">
+    <Compile Include="Operators\UDivOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\ModOperator.cs">
+    <Compile Include="Operators\IModOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\MulOperator.cs" />
-    <Compile Include="Operators\MulsOperator.cs">
+    <Compile Include="Operators\IMulOperator.cs" />
+    <Compile Include="Operators\SMulOperator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operators\MuluOperator.cs">
+    <Compile Include="Operators\UMulOperator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\Operator.cs">
@@ -397,7 +408,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\SignedIntOperators.cs" />
-    <Compile Include="Operators\SubOperator.cs">
+    <Compile Include="Operators\ISubOperator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\UnaryOperator.cs">
@@ -423,7 +434,6 @@
     <Compile Include="Platform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\DominatorGraph.cs" />
     <Compile Include="Procedure.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -442,37 +452,28 @@
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProgramImage.cs">
+    <Compile Include="LoadedImage.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PseudoProcedure.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RelocationDictionary.cs" />
-    <Compile Include="Rewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Serialization\ArgumentSerializer.cs" />
     <Compile Include="Serialization\ArraySizeCharacteristic.cs" />
-    <Compile Include="Serialization\DecompilerInput.cs">
+    <Compile Include="InputFile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\DecompilerOutput.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serialization\DecompilerProject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serialization\InputFormat.cs">
+    <Compile Include="Serialization\Project_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\ProcedureCharacteristics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedArgument.cs">
+    <Compile Include="Serialization\Argument_v1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedCall.cs">
+    <Compile Include="Serialization\SerializedCall_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedFlag.cs">
@@ -518,8 +519,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\ProcedureSerializer.cs" />
+    <Compile Include="Services\IArchiveBrowserService.cs" />
+    <Compile Include="Services\IFileSystemService.cs" />
+    <Compile Include="Services\ITypeLibraryLoaderService.cs" />
     <Compile Include="SignatureBuilder.cs" />
-    <Compile Include="SignatureLibrary.cs">
+    <Compile Include="StructureReader.cs" />
+    <Compile Include="TypeLibrary.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Statement.cs">
@@ -533,12 +538,16 @@
     <Compile Include="SystemService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TreeMatching\TreeMatcher.cs" />
+    <Compile Include="TypedServiceProvider.cs" />
+    <Compile Include="TypeLibraryLoader.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Types\DataType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\DataTypeBuilderUnifier.cs" />
     <Compile Include="Types\DataTypeComparer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -548,6 +557,7 @@
     <Compile Include="Types\DataTypeVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\EnumType.cs" />
     <Compile Include="Types\EquivalenceClass.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -563,6 +573,7 @@
     <Compile Include="Types\PrimitiveType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\StringType.cs" />
     <Compile Include="Types\StructureField.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -572,6 +583,8 @@
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\TypeGraphWriter.cs" />
+    <Compile Include="Types\TypeReference.cs" />
     <Compile Include="Types\TypeStore.cs" />
     <Compile Include="Types\TypeVariable.cs">
       <SubType>Code</SubType>
@@ -579,12 +592,15 @@
     <Compile Include="Types\TypeVarSet.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\Unifier.cs" />
     <Compile Include="Types\UnionType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\UnionTypeVarsReplacer.cs" />
     <Compile Include="Types\UnknownType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\VoidType.cs" />
     <Compile Include="WorkList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -595,6 +611,23 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Schemata\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

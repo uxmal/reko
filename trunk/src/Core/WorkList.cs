@@ -24,7 +24,7 @@ using System.Collections.Generic;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// A WorkList contains a list of items to be processed. 
+	/// A WorkList contains a queue of items to be processed. 
 	/// </summary>
 	public class WorkList<T>
 	{
@@ -93,4 +93,76 @@ namespace Decompiler.Core
 			inQ.Remove(t);
 		}
 	}
+
+    /// <summary>
+    /// A WorkStack contains a stack of items to be processed.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class WorkStack<T>
+    {
+		private HashSet<T> inStack;
+		private Stack<T> s;
+
+		public WorkStack()
+		{
+			s = new Stack<T>();
+			inStack = new HashSet<T>();
+		}
+
+		public WorkStack(IEnumerable<T> coll)
+		{
+			s = new Stack<T>(coll);
+			inStack = new HashSet<T>(coll);
+		}
+
+        /// <summary>
+        /// Adds an item to the work list, but only if it isn't there already.
+        /// </summary>
+        /// <param name="t"></param>
+		public void Add(T item)
+		{
+			if (!inStack.Contains(item))
+			{
+				s.Push(item);
+				inStack.Add(item);
+			}
+		}
+
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                Add(item);
+        }
+
+		public int Count
+		{
+			get { return inStack.Count; }
+		}
+
+		public bool IsEmpty
+		{
+			get { return inStack.Count == 0; }
+		}
+
+		public bool GetWorkItem(out T item)
+		{
+			while (!IsEmpty)
+			{
+				T t = s.Pop();
+				if (inStack.Contains(t))
+				{
+					inStack.Remove(t);
+                    item = t;
+					return true;
+				}
+			}
+			item = default(T);
+            return false;
+		}
+
+		public void Remove(T t)
+		{
+			inStack.Remove(t);
+		}
+    }
 }

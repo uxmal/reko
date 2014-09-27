@@ -31,16 +31,6 @@ namespace Decompiler.Arch.Mos6502
         public Opcode Code;
         public Operand Operand;
 
-        public override uint DefCc()
-        {
-            return (uint) DefCc(Code);
-        }
-
-        public override uint UseCc()
-        {
-            return (uint) UseCc(Code);
-        }
-
         public override string ToString()
         {
             var sb = new StringBuilder();

@@ -35,16 +35,6 @@ namespace Decompiler.Arch.M68k
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            return 0;
-        }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

@@ -32,16 +32,6 @@ namespace Decompiler.Arch.Z80
         public MachineOperand Op1;
         public MachineOperand Op2;
 
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             if (Code == Opcode.ex_af)

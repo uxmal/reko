@@ -98,16 +98,11 @@ namespace Decompiler.Arch.PowerPC
             return sb.ToString();
         }
 
-        public override uint DefCc()
+        public uint DefCc()
         {
             if (setsCR0)
                 return 0xF;
             return 0;
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
         }
     }
 

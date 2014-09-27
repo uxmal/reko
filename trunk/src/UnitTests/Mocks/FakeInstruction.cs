@@ -38,17 +38,8 @@ namespace Decompiler.UnitTests.Mocks
 
         public Operation Operation { get { return operation; } }
         public MachineOperand[] Operands { get { return ops; } }
-
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
     }
+
     public enum Operation
     {
         Add,

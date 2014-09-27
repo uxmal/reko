@@ -39,19 +39,5 @@ namespace Decompiler.Core.Machine
         /// 8-bit microprocessors, have variable length instructions.
         /// </summary>
         public int Length;
-
-        /// <summary>
-        /// Returns any processor flags that are defined by the instruction when it is executed.
-        /// Typically, ALU instructions will set flags to reflect the result of the operation.
-        /// </summary>
-        /// <returns></returns>
-        public abstract uint DefCc();
-
-        /// <summary>
-        /// Returns any processor flags that are used by the instruction when it is executed. For instance, 
-        /// conditional instructions and ADDC instructions will have a non-zero value here.
-        /// </summary>
-        /// <returns></returns>
-        public abstract uint UseCc();
     }
 }
