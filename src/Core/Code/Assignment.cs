@@ -69,7 +69,13 @@ namespace Decompiler.Core.Code
 			Src = src;
 		}
 
-        public Expression Dst { get; set; }
+        public Expression Dst
+        {
+            get { return dst; }
+            set { if (value.ToString() == "0x0800") { throw new ArgumentException(); }  dst = value; }
+        }
+        private Expression dst;
+
         public Expression Src { get; set; }
         public override bool IsControlFlow { get { return false; } }
         

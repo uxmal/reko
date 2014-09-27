@@ -33,16 +33,6 @@ namespace Decompiler.Arch.Pdp11
         public MachineOperand op1;
         public MachineOperand op2;
 
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             var sb = new StringBuilder();

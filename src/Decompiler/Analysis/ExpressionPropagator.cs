@@ -195,9 +195,17 @@ namespace Decompiler.Analysis
 
             var idDst = dst.PropagatedExpression as Identifier;
             if (idDst != null)
+            {
                 return new Assignment(idDst, src.PropagatedExpression);
-            else
+            }
+            else if (!(dst.PropagatedExpression is Constant))
+            {
                 return new Store(dst.PropagatedExpression, src.PropagatedExpression);
+            }
+            else
+            {
+                return new Store(store.Dst, src.PropagatedExpression);
+            }
         }
 
         public Instruction VisitSwitchInstruction(SwitchInstruction si)

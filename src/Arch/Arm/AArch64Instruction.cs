@@ -50,16 +50,6 @@ namespace Decompiler.Arch.Arm
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Write(TextWriter writer)
         {
             writer.Write(Opcode);

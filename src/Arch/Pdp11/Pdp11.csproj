@@ -71,9 +71,9 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core-2010.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core-2010</Name>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -159,13 +159,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core-2010.csproj">
+    <ProjectReference Include="..\Core\Core.csproj">
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
-      <Name>Core-2010</Name>
+      <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Decompiler\Decompiler-2010.csproj">
+    <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Project>{5e21c722-f9c6-4192-95ec-89fcef2acdb7}</Project>
-      <Name>Decompiler-2010</Name>
+      <Name>Decompiler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

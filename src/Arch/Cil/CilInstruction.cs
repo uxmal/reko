@@ -34,16 +34,6 @@ namespace Decompiler.Arch.Cil
             { OpCodes.Ldc_I4_0,  "ldc.i4.0"}
         };
 
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
-
         public OpCode Opcode { get; set; }
 
         public override string ToString()

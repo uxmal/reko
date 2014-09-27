@@ -1682,13 +1682,13 @@ namespace Decompiler.Arch.M68k
         static PrimitiveType[] float_data_format = new PrimitiveType[8] 
 	    {
             PrimitiveType.Int32,  // ".l",
-            PrimitiveType.Real32, //".s",
+            PrimitiveType.Real32, // ".s",
             PrimitiveType.Real80, // ".x",
-            null,                 //".p", 
+            null,                 // ".p", 
             PrimitiveType.Int16,  // ".w",
             PrimitiveType.Real64, // ".d", 
             PrimitiveType.Byte,   // ".b",
-            null,                   //".p"
+            null,                 // ".p"
 	    };
 
         private static M68kInstruction d68040_fpu(M68kDisassembler dasm)

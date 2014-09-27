@@ -390,7 +390,6 @@ namespace Decompiler.UnitTests.Typing
 			RunTest("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
         }
 
-
 		[Test]
 		public void DtbTreeFind()
 		{

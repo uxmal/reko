@@ -498,13 +498,13 @@
       <Project>{3805DE2C-659A-442D-8C34-E88822A4D27C}</Project>
       <Name>X86Assembler-2010</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core\Core-2010.csproj">
+    <ProjectReference Include="..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core-2010</Name>
+      <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Decompiler\Decompiler-2010.csproj">
+    <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
-      <Name>Decompiler-2010</Name>
+      <Name>Decompiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
       <Project>{0b2dcd75-44ff-4af6-aa08-aaf4ea30c402}</Project>

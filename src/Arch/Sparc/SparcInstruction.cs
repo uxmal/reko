@@ -36,16 +36,6 @@ namespace Decompiler.Arch.Sparc
         public MachineOperand Op2;
         public MachineOperand Op3;
 
-        public override uint DefCc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint UseCc()
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

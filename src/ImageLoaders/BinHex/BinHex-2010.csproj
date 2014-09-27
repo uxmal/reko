@@ -103,9 +103,9 @@
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\Core-2010.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core-2010</Name>
+      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\MacOS\MacOS-2010.csproj">
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>

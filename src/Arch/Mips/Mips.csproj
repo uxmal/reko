@@ -50,9 +50,9 @@
     <Compile Include="Registers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core-2010.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core-2010</Name>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

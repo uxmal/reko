@@ -96,16 +96,16 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Core\Core-2010.csproj">
-      <Name>Core-2010</Name>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Name>Core</Name>
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Decompiler\Decompiler-2010.csproj">
-      <Name>Decompiler-2010</Name>
+    <ProjectReference Include="..\Decompiler\Decompiler.csproj">
+      <Name>Decompiler</Name>
       <Project>{5e21c722-f9c6-4192-95ec-89fcef2acdb7}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>

@@ -57,9 +57,6 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
-        public override uint DefCc() { return (uint) DefCc(code); }		// Condition codes defined by this instruction.
-        public override uint UseCc() { return (uint) UseCc(code); }		// Condition codes used by this instruction.
-
 		private bool NeedsExplicitMemorySize()
 		{
 			if (code == Opcode.movsx || code == Opcode.movzx)
