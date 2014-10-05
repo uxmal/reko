@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Arm
             this.instr = instr;
         }
 
-        public override void Write(bool fExplicit, TextWriter writer)
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write('{');
             {

@@ -37,7 +37,7 @@ namespace Decompiler.Core.Expressions
 			this.Right = right;
 		}
 
-        public Operator Operator { get; set; } 
+        public Operator Operator { get; private set; } 
         public Expression Left { get; set; }
         public Expression Right { get; set; }
 

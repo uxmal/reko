@@ -96,7 +96,7 @@ namespace Decompiler.Typing
                     binExp, tvLeft.DataType, tvRight.DataType);
             }
 
-            TypedExpressionRewriter ter = new TypedExpressionRewriter(store, globals);
+            var ter = new TypedExpressionRewriter(store, globals);
 
             ComplexExpressionBuilder ceb;
             Constant cLeft = left as Constant;
@@ -116,16 +116,16 @@ namespace Decompiler.Typing
             }
             else
             {
-                binExp.Left = binExp.Left.Accept(ter);
-                binExp.Right = binExp.Right.Accept(ter);
+                var binLeft = binExp.Left.Accept(ter);
+                var binRight = binExp.Right.Accept(ter);
                 ceb = new ComplexExpressionBuilder(
                     binExp.DataType,
                     tvLeft.DataType,
                     tvLeft.OriginalDataType,
                     basePointer,
-                    binExp.Left,
+                    binLeft,
                     null,
-                    StructureField.ToOffset(right as Constant));
+                    StructureField.ToOffset(binRight as Constant));
             }
             ceb.Dereferenced = true;
             return ceb.BuildComplex();

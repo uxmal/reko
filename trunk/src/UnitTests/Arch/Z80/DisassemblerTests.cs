@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Arch.Z80
         public void Z80dis_hlt()
         {
             var instr = RunTest(0x76);
-            Assert.AreEqual("hlt\t", instr.ToString());
+            Assert.AreEqual("hlt", instr.ToString());
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace Decompiler.UnitTests.Arch.Z80
         public void Z80dis_daa()
         {
             var instr = RunTest(0x27);
-            Assert.AreEqual("daa\t", instr.ToString());
+            Assert.AreEqual("daa", instr.ToString());
         }
 
         [Test]

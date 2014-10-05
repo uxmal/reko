@@ -28,10 +28,10 @@ namespace Decompiler.Core.Expressions
     /// </summary>
 	public class ArrayAccess : Expression
 	{
-
 		public ArrayAccess(DataType elementType, Expression array, Expression index) : base(elementType)
 		{
-            if (array == null) throw new ArgumentNullException("array"); 
+            if (array == null) throw new ArgumentNullException("array");
+            if (index == null) throw new ArgumentNullException("index");
 			this.Array = array; this.Index = index;
 		}
 

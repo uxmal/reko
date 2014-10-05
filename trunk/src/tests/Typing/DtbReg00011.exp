@@ -18,10 +18,10 @@ l0C00_0004:
 	byte bl_18 = 0xFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	Mem44[0x4DE1:bx_50 + 0x0000:byte] = bl_17 & 0xF0 | SLICE((bl_17 & 0x0F) *u (bh_16 + 0x01) << 0x0004, byte, 8) & 0x0F
-	bx_15 = bx_15 - 0x0001
-	bh_16 = SLICE(bx_15, byte, 8) (alias)
-	bl_17 = (byte) bx_15 (alias)
+	Mem34[0x4DE1:bx_40 + 0x0000:byte] = bl_18 & 0xF0 | SLICE((bl_18 & 0x0F) *u (bh_17 + 0x01) << 0x0004, byte, 8) & 0x0F
+	bx_16 = bx_40 - 0x0001
+	bh_17 = SLICE(bx_40, byte, 8) (alias)
+	bl_18 = (byte) bx_40 (alias)
 	branch bx_15 >= 0x0000 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:

@@ -149,9 +149,9 @@ namespace Decompiler.Core.Code
 
 		public virtual Expression VisitBinaryExpression(BinaryExpression binExp)
 		{
-			binExp.Left = binExp.Left.Accept(this);
-			binExp.Right = binExp.Right.Accept(this);
-			return binExp;
+			var left = binExp.Left.Accept(this);
+			var right = binExp.Right.Accept(this);
+            return new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
 		}
 
 		public virtual Expression VisitCast(Cast cast)

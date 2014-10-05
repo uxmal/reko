@@ -52,7 +52,7 @@ namespace Decompiler.Arch.Z80
             var addr = rdr.Address;
             this.instr = new Z80Instruction
             {
-                Address = rdr.Address,
+                Address = addr,
             };
             var op = rdr.ReadByte();
             var opRef = oprecs[op];
@@ -300,13 +300,13 @@ namespace Decompiler.Arch.Z80
         {
             static Opcode[] cbOpcodes = new Opcode[] {
                 Opcode.rlc,
-                Opcode.rrc, 
-                Opcode.rl,  
-                Opcode.rr,  
-                Opcode.sla, 
-                Opcode.sra, 
+                Opcode.rrc,
+                Opcode.rl,
+                Opcode.rr,
+                Opcode.sla,
+                Opcode.sra,
                 Opcode.swap,
-                Opcode.srl, 
+                Opcode.srl,
             };
 
             static string[] cbFormats = new string[] {

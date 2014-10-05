@@ -32,22 +32,25 @@ namespace Decompiler.Arch.Z80
         public MachineOperand Op1;
         public MachineOperand Op2;
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
             if (Code == Opcode.ex_af)
-                return "ex\taf,af'";
-            
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}\t", Code);
+            {
+                writer.Opcode("ex");
+                writer.Tab();
+                writer.Write("af,af'");
+            }
+            writer.Opcode(Code.ToString());
             if (Op1 != null)
             {
-                sb.Append(Op1);
+                writer.Tab();
+                Op1.Write(true, writer);
                 if (Op2 != null)
                 {
-                    sb.AppendFormat(",{0}", Op2);
+                    writer.Write(",");
+                    Op2.Write(true, writer);
                 }
             }
-            return sb.ToString();
         }
     }
 }

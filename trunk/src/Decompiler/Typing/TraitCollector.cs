@@ -448,6 +448,15 @@ namespace Decompiler.Typing
 		{
 			var dt = handler.DataTypeTrait(c, c.DataType);
 			ivCur = null;
+            if (c.DataType == PrimitiveType.SegmentSelector)
+            {
+                handler.MemAccessTrait(
+                    null, 
+                    prog.Globals,
+                    2,
+                    c,
+                    c.ToInt32() * 0x10);   //$REVIEW Platform-dependent
+            }
             return dt;
 		}
 

@@ -31,7 +31,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.PowerPC
 {
     [TestFixture]
-    class PowerPcRewriterTests : RewriterTestBase
+    public class PowerPcRewriterTests : RewriterTestBase
     {
         private InstructionBuilder b;
         private PowerPcArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);

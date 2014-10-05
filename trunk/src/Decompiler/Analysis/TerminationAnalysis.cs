@@ -39,7 +39,6 @@ namespace Decompiler.Analysis
             this.flow = flow;
         }
 
-
         public void Analyze(Block b)
         {
             curBlock = b;
@@ -84,7 +83,6 @@ namespace Decompiler.Analysis
             }
         }
 
-
         public void Analyze(Procedure procedure)
         {
             if (!CanReachEntryFromExit(procedure))
@@ -122,7 +120,6 @@ namespace Decompiler.Analysis
                 Analyze(proc);
             }
         }
-
 
         private class ProgramGraph : DirectedGraph<Procedure>
         {

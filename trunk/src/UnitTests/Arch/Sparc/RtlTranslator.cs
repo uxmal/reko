@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         void translate(object pc_s, object pc_t)
         {
             trans:
-            // pit (pc_s, pc_t) in codemap if not already there
+            // put (pc_s, pc_t) in codemap if not already there
 
             // get instruction from pc_s
             var I =  GetNextInstr();

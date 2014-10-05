@@ -33,28 +33,30 @@ namespace Decompiler.Arch.Pdp11
         public MachineOperand op1;
         public MachineOperand op2;
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}\t", Opcode);
+            writer.Opcode(Opcode.ToString());
             if (op1 != null)
             {
-                sb.Append(OpToString(op1));
+                writer.Tab();
+                OpToString(op1, writer);
                 if (op2 != null)
-                    sb.AppendFormat(",{0}", OpToString(op2));
+                {
+                    writer.Write(",");
+                    OpToString(op2, writer);
+                }
             }
-            return sb.ToString();
         }
 
-        private string OpToString(MachineOperand op)
+        private void OpToString(MachineOperand op, MachineInstructionWriter writer)
         {
             if (op is ImmediateOperand)
             {
-                return "#" + op.ToString();
+                writer.Write("#" + op.ToString());
             }
             else
             {
-                return op.ToString();
+                writer.Write(op.ToString());
             }
         }
     }

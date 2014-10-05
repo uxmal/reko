@@ -80,20 +80,20 @@ namespace Decompiler.UnitTests.Analysis
             dfa.UntangleProcedures();
             foreach (Procedure proc in prog.Procedures.Values)
             {
-                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                var larw = new LongAddRewriter(proc, prog.Architecture);
                 larw.Transform();
 
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
-                SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+                var sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
                 SsaState ssa = sst.SsaState;
 
                 proc.Dump(true, false);
 
-                ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+                var vp = new ValuePropagator(ssa.Identifiers, proc);
                 vp.Transform();
 
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
                 cce.Transform();
                 DeadCode.Eliminate(proc, ssa);
 
@@ -108,7 +108,6 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			RunTest("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
 		}
-
 
 		[Test]
 		public void CceAddSubCarries()

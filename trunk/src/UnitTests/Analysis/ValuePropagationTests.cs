@@ -100,6 +100,33 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
 		}
 
+        [Test]
+        public void VpLoop()
+        {
+            var b = new ProgramBuilder();
+            b.Add("main", m =>
+            {
+                var r = m.Reg32("r0");
+                var zf = m.Flags("Z");
+                m.Label("l0000");
+                m.Store(r, 0);
+                m.Assign(r, m.ISub(r, 4));
+                m.Assign(m.Flags("Z"), m.Cond(r));
+                m.BranchCc(ConditionCode.NE, "l0000");
+
+                m.Label("l0001");
+                m.Assign(r, 42);
+
+                m.Label("l0002");
+                m.Store(r, 12);
+                m.Assign(r, m.ISub(r, 4));
+                m.BranchIf(m.Eq0(r), "l0002");
+
+                m.Return();
+            });
+            RunTest(b.BuildProgram(), "Analysis/VpLoop.txt");
+        }
+
 		[Test]
 		public void VpDbp()
 		{
@@ -384,7 +411,6 @@ namespace Decompiler.UnitTests.Analysis
 				Assign(edx, Int32(0x0AAA00AA));
 				Assign(edx, Dpb(edx, Int8(0x55), 8, 8));
 				Store(Int32(0x1000000), edx);
-
 
 				Assign(edx, Int32(0));
                 Assign(edx, Dpb(edx, dl, 0, 8));

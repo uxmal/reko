@@ -39,5 +39,16 @@ namespace Decompiler.Core.Machine
         /// 8-bit microprocessors, have variable length instructions.
         /// </summary>
         public int Length;
+
+        public virtual void Render(MachineInstructionWriter writer)
+        {
+        }
+
+        public sealed override string ToString()
+        {
+            var renderer = new StringRenderer();
+            this.Render(renderer);
+            return renderer.ToString();
+        }
     }
 }

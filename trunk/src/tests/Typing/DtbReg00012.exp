@@ -8,7 +8,6 @@ l0C00_0000:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	// succ: 
 
 // fn0C00_0007
 void fn0C00_0007(word16 cx, selector ds)
@@ -18,97 +17,94 @@ l0C00_0007:
 	word16 di_12 = 0x5388
 	// succ:  l0C00_000A
 l0C00_000A:
-	fn0C00_003D(Mem0[ds:di_11 + 0x0000:word16], 0x2D, ds)
-	di_11 = di_11 + 0x0002
-	cx = cx - 0x0001
-	branch cx != 0x0000 l0C00_000A
+	fn0C00_003D(Mem0[ds:di_12 + 0x0000:word16], 0x2D, ds)
+	di_12 = di_12 + 0x0002
+	cx_28 = cx - 0x0001
+	branch cx_28 != 0x0000 l0C00_000A
 	// succ:  l0C00_001C l0C00_000A
-l0C00_001C:		// pred: l0C00_000A
+l0C00_001C:
 	return
 	// succ:  fn0C00_0007_exit
-fn0C00_0007_exit:		// pred: l0C00_001C
-	// succ: 
+fn0C00_0007_exit:
 
 // fn0C00_001D
 void fn0C00_001D(word16 bx, selector ds)
-fn0C00_001D_entry:		// pred:
+fn0C00_001D_entry:
 	// succ:  l0C00_001D
-l0C00_001D:		// pred: fn0C00_001D_entry
+l0C00_001D:
 	branch bx == Mem0[ds:0x53BA:word16] l0C00_003C
 	// succ:  l0C00_0023 l0C00_003C
-l0C00_0023:		// pred: l0C00_001D
+l0C00_0023:
 	branch bx >= Mem0[ds:0x53B8:word16] l0C00_003C
 	// succ:  l0C00_0029 l0C00_003C
-l0C00_0029:		// pred: l0C00_0023
+l0C00_0029:
 	Mem13[ds:0x53BA:word16] = bx
 	fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds)
 	// succ:  l0C00_003C
-l0C00_003C:		// pred: l0C00_001D l0C00_0023 l0C00_0029
+l0C00_003C:
+l0C00_0029
 	return
 	// succ:  fn0C00_001D_exit
-fn0C00_001D_exit:		// pred: l0C00_003C
-	// succ: 
+fn0C00_001D_exit:
 
 // fn0C00_003D
 void fn0C00_003D(word16 dx, byte ah, selector ds)
-fn0C00_003D_entry:		// pred:
+fn0C00_003D_entry:
 	// succ:  l0C00_003D
-l0C00_003D:		// pred: fn0C00_003D_entry
+l0C00_003D:
 	Mem5[ds:0x0110:byte] = ah
 	Mem6[ds:0x0112:word16] = dx
 	return
 	// succ:  fn0C00_003D_exit
-fn0C00_003D_exit:		// pred: l0C00_003D
-	// succ: 
+fn0C00_003D_exit:
 
 // fn0C00_0046
 void fn0C00_0046(word16 ax, word16 dx, word16 bx, selector ds)
-fn0C00_0046_entry:		// pred:
+fn0C00_0046_entry:
 	// succ:  l0C00_0046
-l0C00_0046:		// pred: fn0C00_0046_entry
-	Mem6[ds:0x0114:word16] = ax
-	Mem7[ds:0x0116:word16] = bx
-	Mem8[ds:0x0118:word16] = dx
+l0C00_0046:
+	Mem7[ds:0x0114:word16] = ax
+	Mem8[ds:0x0116:word16] = bx
+	Mem9[ds:0x0118:word16] = dx
 	return
 	// succ:  fn0C00_0046_exit
-fn0C00_0046_exit:		// pred: l0C00_0046
-	// succ: 
+fn0C00_0046_exit:
 
 // Equivalence classes ////////////
 Eq_2: (ptr (fn T_8 (T_6, T_7)))
 	T_2 (in fn0C00_0007 : ptr32)
-	T_3 (in signature of fn0C00_0007)
+	T_3 (in signature of fn0C00_0007 : void)
 Eq_4: word16
 	T_4 (in cx : word16)
 	T_6 (in cx : word16)
 	T_30 (in cx - 0x0001 : word16)
 	T_31 (in 0x0000 : word16)
-Eq_5: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr (struct 2 (0 T_19 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+Eq_5: (ptr (segment (110 T_57 t0110) (112 T_59 t0112) (114 T_61 t0114) (116 T_63 t0116) (118 T_65 t0118) (5388 (arr (struct 0002 (0 T_19 t0000))) a5388) (53B8 T_38 t53B8) (53BA T_11 t53BA)))
 	T_5 (in ds : selector)
 	T_7 (in ds : selector)
 	T_12 (in ds : selector)
 	T_21 (in ds : selector)
-	T_46 (in ds : selector)
+	T_47 (in ds : selector)
 Eq_8: void
 	T_8 (in fn0C00_0007(cx, ds) : void)
 Eq_9: (ptr (fn T_14 (T_13, T_7)))
 	T_9 (in fn0C00_001D : ptr32)
-	T_10 (in signature of fn0C00_001D)
+	T_10 (in signature of fn0C00_001D : void)
 Eq_11: int16
 	T_11 (in bx : word16)
 	T_13 (in bx : word16)
-	T_34 (in Mem0[ds:0x53BA:word16] : word16)
-	T_37 (in Mem0[ds:0x53B8:word16] : word16)
-	T_40 (in Mem13[ds:0x53BA:word16] : word16)
+	T_35 (in Mem0[ds:0x53BA:word16] : word16)
+	T_38 (in Mem0[ds:0x53B8:word16] : word16)
+	T_41 (in Mem19[ds:0x53BA:word16] : word16)
 Eq_14: void
 	T_14 (in fn0C00_001D(bx, ds) : void)
-Eq_15: (memptr T_5 (struct 2 (0 T_24 t0000)))
-	T_15 (in di_11 : word16)
+Eq_15: (memptr T_5 (struct 0002 (0 T_24 t0000)))
+	T_15 (in di_12 : word16)
 	T_16 (in 0x5388 : word16)
-	T_28 (in di_11 + 0x0002 : word16)
+	T_28 (in di_12 + 0x0002 : word16)
 Eq_17: (ptr (fn T_26 (T_24, T_25, T_5)))
 	T_17 (in fn0C00_003D : ptr32)
-	T_18 (in signature of fn0C00_003D)
+	T_18 (in signature of fn0C00_003D : void)
 Eq_19: word16
 	T_19 (in dx : word16)
 	T_24 (in Mem0[ds:di_11 + 0x0000:word16] : word16)
@@ -128,8 +124,8 @@ Eq_26: void
 	T_26 (in fn0C00_003D(Mem0[ds:di_11 + 0x0000:word16], 0x2D, ds) : void)
 Eq_27: word16
 	T_27 (in 0x0002 : word16)
-Eq_29: word16
-	T_29 (in 0x0001 : word16)
+Eq_30: word16
+	T_30 (in 0x0001 : word16)
 Eq_32: bool
 	T_32 (in cx != 0x0000 : bool)
 Eq_33: (memptr T_12 (struct (0 T_34 t0000)))
@@ -157,24 +153,24 @@ Eq_48: word16
 	T_48 (in 0x5388 : word16)
 Eq_49: ptr32
 	T_49 (in SEQ(ds, 0x5388) : ptr32)
-Eq_50: word16
-	T_50 (in 0x0002 : word16)
-Eq_51: uis16
-	T_51 (in bx * 0x0002 : word16)
-Eq_54: void
-	T_54 (in fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds) : void)
-Eq_55: (memptr T_21 (struct (0 T_56 t0000)))
-	T_55 (in 0x0110 : word16)
-Eq_57: (memptr T_21 (struct (0 T_58 t0000)))
-	T_57 (in 0x0112 : word16)
-Eq_59: (memptr T_46 (struct (0 T_60 t0000)))
-	T_59 (in 0x0114 : word16)
-Eq_61: (memptr T_46 (struct (0 T_62 t0000)))
-	T_61 (in 0x0116 : word16)
-Eq_63: (memptr T_46 (struct (0 T_64 t0000)))
-	T_63 (in 0x0118 : word16)
+Eq_51: word16
+	T_51 (in 0x0002 : word16)
+Eq_52: uis16
+	T_52 (in bx * 0x0002 : word16)
+Eq_55: void
+	T_55 (in fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds) : void)
+Eq_56: (memptr T_21 (struct (0 T_57 t0000)))
+	T_56 (in 0x0110 : word16)
+Eq_58: (memptr T_21 (struct (0 T_59 t0000)))
+	T_58 (in 0x0112 : word16)
+Eq_60: (memptr T_47 (struct (0 T_61 t0000)))
+	T_60 (in 0x0114 : word16)
+Eq_62: (memptr T_47 (struct (0 T_63 t0000)))
+	T_62 (in 0x0116 : word16)
+Eq_64: (memptr T_47 (struct (0 T_65 t0000)))
+	T_64 (in 0x0118 : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr32)
+Globals: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: 
   OrigDataType: 

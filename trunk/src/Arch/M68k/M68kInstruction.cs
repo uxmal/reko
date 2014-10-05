@@ -35,12 +35,10 @@ namespace Decompiler.Arch.M68k
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
-            StringBuilder sb = new StringBuilder();
-            InstructionFormatter fmt = new InstructionFormatter(sb);
+            InstructionFormatter fmt = new InstructionFormatter(writer);
             fmt.Write(this);
-            return sb.ToString();
         }
     }
 }

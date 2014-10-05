@@ -36,63 +36,63 @@ namespace Decompiler.Arch.Sparc
         public MachineOperand Op2;
         public MachineOperand Op3;
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(Opcode);
-            if (Annul)
-                sb.Append(",a");
+            writer.Opcode(
+                string.Format("{0}{1}",
+                Opcode.ToString(),
+                Annul ? ",a" : ""));
+
             if (Op1 != null)
             {
-                sb.Append('\t');
-                Write(Op1, sb);
+                writer.Tab();
+                Write(Op1, writer);
                 if (Op2 != null)
                 {
-                    sb.Append(',');
-                    Write(Op2, sb);
+                    writer.Write(',');
+                    Write(Op2, writer);
                     if (Op3 != null)
                     {
-                        sb.Append(',');
-                        Write(Op3, sb);
+                        writer.Write(',');
+                        Write(Op3, writer);
                     }
                 }
             }
-            return sb.ToString();
         }
 
-        private void Write(MachineOperand op, StringBuilder sb)
+        private void Write(MachineOperand op, MachineInstructionWriter writer)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
             {
-                sb.AppendFormat("%{0}", reg.Register.Name);
+                writer.Write("%{0}", reg.Register.Name);
                 return;
             }
             var imm = op as ImmediateOperand;
             if (imm != null)
             {
-                sb.Append(imm.Value);
+                writer.Write(imm.Value.ToString());
                 return;
             }
             var mem = op as MemoryOperand;
             if (mem != null)
             {
-                sb.AppendFormat("[%{0}", mem.Base.Name);
+                writer.Write("[%{0}", mem.Base.Name);
                 if (!mem.Offset.IsNegative)
                 {
-                    sb.Append("+");
+                    writer.Write("+");
                 }
-                sb.Append(mem.Offset);
-                sb.Append("]");
+                writer.Write(mem.Offset.ToString());
+                writer.Write("]");
                 return;
             }
             var idx = op as IndexedMemoryOperand;
             if (idx != null)
             {
-                sb.AppendFormat("[%{0}+%{1}]", idx.Base, idx.Index);
+                writer.Write("[%{0}+%{1}]", idx.Base, idx.Index);
                 return;
             }
-            sb.Append(op);
+            writer.Write(op.ToString());
         }
 
         [Flags]

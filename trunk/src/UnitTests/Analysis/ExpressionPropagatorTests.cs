@@ -41,13 +41,14 @@ namespace Decompiler.UnitTests.Analysis
         public void EP_TestCondition()
         {
             var p = new ProgramBuilder();
-            var proc = p.Add("main", (m) =>
+            p.Add("main", (m) =>
             {
                 m.Label("foo");
                 m.BranchCc(ConditionCode.EQ, "foo");
                 m.Return();
             });
 
+            var proc = p.BuildProgram().Procedures.Values.First();
             var ctx = new SymbolicEvaluationContext(new IntelArchitecture(ProcessorMode.Protected32), proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());

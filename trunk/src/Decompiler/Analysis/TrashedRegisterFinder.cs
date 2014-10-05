@@ -50,6 +50,7 @@ namespace Decompiler.Analysis
         private ProgramDataFlow flow;
         private BlockFlow bf;
         private WorkList<Block> worklist;
+        private HashSet<Block> visited;
         private SymbolicEvaluator se;
         private SymbolicEvaluationContext ctx;
         private DecompilerEventListener eventListener;
@@ -66,6 +67,7 @@ namespace Decompiler.Analysis
             this.flow = flow;
             this.eventListener = eventListener;
             this.worklist = new WorkList<Block>();
+            this.visited = new HashSet<Block>();
             this.ecomp = new ExpressionValueComparer();
         }
 
@@ -151,7 +153,8 @@ namespace Decompiler.Analysis
 
         public void ProcessBlock(Block block)
         {
-             StartProcessingBlock(block);
+            visited.Add(block);
+            StartProcessingBlock(block);
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
             if (block == block.Procedure.ExitBlock)
             {
@@ -222,7 +225,8 @@ namespace Decompiler.Analysis
             {
                 foreach (Statement stm in prog.CallGraph.CallerStatements(proc))
                 {
-                    worklist.Add(stm.Block);
+                    if (visited.Contains(stm.Block))
+                        worklist.Add(stm.Block);
                 }
             }
         }

@@ -72,11 +72,12 @@ namespace Decompiler.Core.Code
         public Expression Dst
         {
             get { return dst; }
-            set { if (value.ToString() == "0x0800") { throw new ArgumentException(); }  dst = value; }
+            set { dst = value; }
         }
         private Expression dst;
 
         public Expression Src { get; set; }
+
         public override bool IsControlFlow { get { return false; } }
         
         public override Instruction Accept(InstructionTransformer xform)

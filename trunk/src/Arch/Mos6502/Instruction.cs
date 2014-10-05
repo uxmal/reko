@@ -31,15 +31,14 @@ namespace Decompiler.Arch.Mos6502
         public Opcode Code;
         public Operand Operand;
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}\t", Code);
+            writer.Opcode(Code.ToString());
             if (Operand != null)
             {
-                sb.Append(Operand);
+                writer.Tab();
+                Operand.Write(true, writer);
             }
-            return sb.ToString();
         }
 
         // http://www.obelisk.demon.co.uk/6502/instructions.html

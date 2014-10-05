@@ -108,6 +108,15 @@ namespace Decompiler.UnitTests.Arch.Mos6502
         }
 
         [Test]
+        public void Rw6502_pla()
+        {
+            BuildTest(0x68);
+            AssertCode(
+                "0|00000200(1): 2 instructions",
+                "1|L--|a = Mem0[s:byte]",
+                "2|L--|s = s + 0x01");
+        }
+        [Test]
         public void Rw6502_asl_zx()
         {
             BuildTest(0x16, 0x64);
@@ -157,5 +166,22 @@ namespace Decompiler.UnitTests.Arch.Mos6502
                 "3|L--|NCZ = cond(v3)");
         }
 
+        [Test]
+        public void Rw6502_jsr()
+        {
+            BuildTest(0x20, 0x13, 0xEA);
+            AssertCode(
+                "0|00000200(3): 1 instructions",
+                "1|T--|call 0xEA13 (2)");
+        }
+
+        [Test]
+        public void Rw6502_sta()
+        {
+            BuildTest(0x85, 0xD0);
+            AssertCode(
+                "0|00000200(2): 1 instructions",
+                "1|L--|Mem0[0x00D0:byte] = a");
+        }
     }
 }

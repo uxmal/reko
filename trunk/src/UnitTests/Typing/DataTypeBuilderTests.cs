@@ -371,7 +371,6 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(m, "Typing/DtbSegmentedDoubleReference.txt");
 		}
 
-
 		[Test]
 		public void DtbReg00008()
 		{

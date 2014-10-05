@@ -37,38 +37,35 @@ namespace Decompiler.Arch.Arm
         public MachineOperand Src2;
         public MachineOperand Src3;
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
-            var sb = new StringWriter();
-            sb.Write(Opcode.ToString());
-            if (Cond != Condition.al)
-                sb.Write(Cond.ToString());
-            if (OpFlags != OpFlags.None)
-                sb.Write(OpFlags.ToString().ToLower());
+            writer.Opcode(string.Format("{0}{1}{2}",
+                Opcode,
+                Cond != Condition.al ? Cond.ToString() : "",
+                OpFlags != OpFlags.None ? OpFlags.ToString().ToLower() : ""));
             if (Dst != null)
             {
-                sb.Write('\t');
-                Write(Dst, sb);
+                writer.Tab();
+                Write(Dst, writer);
                 if (Src1 != null)
                 {
-                    sb.Write(",");
-                    Write(Src1, sb);
+                    writer.Write(",");
+                    Write(Src1, writer);
                     if (Src2 != null)
                     {
-                        sb.Write(",");
-                        Write(Src2, sb);
+                        writer.Write(",");
+                        Write(Src2, writer);
                         if (Src3 != null)
                         {
-                            sb.Write(",");
-                            Write(Src3, sb);
+                            writer.Write(",");
+                            Write(Src3, writer);
                         }
                     }
                 }
             }
-            return sb.ToString();
         }
 
-        public void Write(MachineOperand op, StringWriter writer)
+        public void Write(MachineOperand op, MachineInstructionWriter writer)
         {
             var imm = op as ImmediateOperand;
             if (imm != null)
@@ -116,7 +113,7 @@ namespace Decompiler.Arch.Arm
             if (mem != null)
             {
                 writer.Write('[');
-                writer.Write(mem.Base);
+                writer.Write(mem.Base.ToString());
                 if (mem.Offset != null)
                 {
                     if (mem.Preindexed)
@@ -146,7 +143,7 @@ namespace Decompiler.Arch.Arm
             {
                 Write(sh.Operand, writer);
                 writer.Write(",");
-                writer.Write(sh.Opcode);
+                writer.Opcode(sh.Opcode.ToString());
                 writer.Write(' ');
                 Write(sh.Shift, writer);
                 return;

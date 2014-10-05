@@ -64,11 +64,22 @@ namespace Decompiler.Arch.Arm
             writer.Write(",{0}", op3);
         }
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
-            var sb = new StringWriter();
-            Write(sb);
-            return sb.ToString();
+            writer.Opcode(Opcode.ToString());
+            if (op1 == null)
+                return;
+            writer.Tab();
+            writer.Write(op1.ToString());
+            if (op2 == null)
+                return;
+            writer.Write(",");
+            writer.Write(op2.ToString());
+            if (op3 == null)
+                return;
+            writer.Write(",");
+            writer.Write(op3.ToString());
         }
+
     }
 }

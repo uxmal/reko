@@ -29,7 +29,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Mips
 {
     [TestFixture]
-    class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
+    public class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
         private MipsProcessorArchitecture arch = new MipsProcessorArchitecture();
 

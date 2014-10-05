@@ -1,14 +1,18 @@
 = fn0C00_0000 ========================
 Mem0:Global memory
     def:  def Mem0
-fp:Temporary
+fp:fp
     def:  def fp
-eax:Register eax
+sp:sp
+    def:  def sp
+eax:eax
     def:  def eax
-    uses: eax_12 = -eax
+    uses: eax_13 = -eax
+SCZO:Flags
+    def:  def SCZO
 C:Flags
     def:  def C
-ds:Register ds
+ds:ds
     def:  def ds
     uses: Mem15[ds:0x0300:word32] = eax_14
           v5_16 = Mem15[ds:0x0202:word16]
@@ -106,9 +110,10 @@ Mem34: orig: Mem0
     def:  Mem34[ds:0x0306:word16] = cx_30
 // fn0C00_0000
 void fn0C00_0000(word32 eax, word16 bx, selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def fp
+	def sp
 	def eax
 	def C
 	def ds
@@ -149,8 +154,7 @@ l0C00_0000:
 	Mem34[ds:0x0306:word16] = cx_30
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 Mem0:Global memory
 fp:Temporary
@@ -240,24 +244,30 @@ fn0C00_0000_entry:		// pred:
 	def ds
 	def bx
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	eax_12 = -eax
-	eax_14 = 0x00000000 - (eax_12 == 0x00000000)
-	Mem15[ds:0x0300:word32] = eax_14
-	v5_16 = Mem15[ds:0x0202:word16]
-	Mem17[ds:0x0202:word16] = -v5_16
-	v6_19 = Mem17[ds:0x0200:word16]
-	Mem20[ds:0x0200:word16] = -v6_19
-	ecx_22 = 0x00000000 - (v6_19 == 0x0000)
+l0C00_0000:
+	eax_13 = -eax
+	C_14 = eax_13 == 0x00000000
+	eax_15 = 0x00000000 - (eax_13 == 0x00000000)
+	Mem16[ds:0x0300:word32] = eax_15
+	v7_17 = -Mem16[ds:0x0202:word16]
+	Mem18[ds:0x0202:word16] = v7_17
+	v8_19 = -Mem18[ds:0x0200:word16]
+	Mem20[ds:0x0200:word16] = v8_19
+	C_21 = v8_19 == 0x0000
+	ecx_22 = 0x00000000 - (v8_19 == 0x0000)
 	Mem23[ds:0x0308:word32] = ecx_22
 	bx_24 = ~bx
 	Mem25[ds:0x0304:word16] = bx_24
-	v9_26 = Mem25[ds:0x0204:word16]
-	Mem27[ds:0x0204:word16] = ~v9_26
+	v11_26 = ~Mem25[ds:0x0204:word16]
+	Mem27[ds:0x0204:word16] = v11_26
 	cx_28 = Mem27[ds:0x0304:word16]
+	cx_29 = cx_28 - 0x03E8 
 	cx_30 = 0x03E8 - cx_28
-	Mem34[ds:0x0306:word16] = cx_30
+	ecx_31 = DPB(ecx_22, cx_30, 0, 16) (alias)
+	SCZO_32 = cond(cx_30)
+	C_33 = cx_30 == 0x0000
+	SCZO_34 = cx_30 == 0x0000 (alias)
+	Mem35[ds:0x0306:word16] = cx_30
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
