@@ -32,15 +32,14 @@ namespace Decompiler.Arch.Arm
 {
     public class ArmImmediateOperand : ImmediateOperand
     {
-        private ArmImmediateOperand(Constant c)
-            : base(c)
+        private ArmImmediateOperand(Constant c) : base(c)
         {
         }
 
         private new static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
         private new static ArmImmediateOperand Word32(uint w) { return new ArmImmediateOperand(Constant.Word32((int)w)); }
 
-        public override void Write(bool fExplicit, TextWriter writer)
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write("#");
             int imm8 = Value.ToInt32();

@@ -48,7 +48,7 @@ namespace Decompiler.Core.Machine
 			return ToString();
 		}
 
-        public virtual void Write(bool fExplicit, TextWriter writer)
+        public virtual void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write(ToString(fExplicit));
         }

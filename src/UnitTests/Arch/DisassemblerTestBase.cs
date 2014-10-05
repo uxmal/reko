@@ -41,9 +41,8 @@ namespace Decompiler.UnitTests.Arch
 
         public TInstruction DisassembleWord(uint instr)
         {
-            var bytes = new byte[256];
-            CreateImageWriter(bytes).WriteUInt32(0, instr);
-            var img = new LoadedImage(LoadAddress, bytes);
+            var img = new LoadedImage(LoadAddress, new byte[256]);
+            CreateImageWriter(img.Bytes).WriteUInt32(0, instr);
             return Disassemble(img);
         }
 

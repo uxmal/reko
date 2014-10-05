@@ -70,31 +70,30 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpReplaceSimple()
 		{
-            ProcedureBuilder m = new ProcedureBuilder();
-            Block block = m.Label("block");
+            var m = new ProcedureBuilder();
+            var block = m.Label("block");
 			var foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			var pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
-            var assDef = m.Assign(foo, 3);
+            m.Assign(foo, 3);
 			var sid = new SsaIdentifier(foo, foo, m.Block.Statements.Last, null, false);
 
-			var ssaIds = new SsaIdentifierCollection();
-			ssaIds.Add(sid);
+            var ssaIds = new SsaIdentifierCollection { sid };
 
 			var opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 
-			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000003", assDef.ToString());
+			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000003", m.Block.Statements[0].ToString());
 		}
 
 		[Test]
 		public void OutpReplacePhi()
 		{
-            ProcedureBuilder m = new ProcedureBuilder();
-			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-			Identifier foo1 = new Identifier("foo1", 0, PrimitiveType.Word32, null);
-			Identifier foo2 = new Identifier("foo2", 1, PrimitiveType.Word32, null);
-			Identifier foo3 = new Identifier("foo3", 2, PrimitiveType.Word32, null);
-			Identifier pfoo = new Identifier("pfoo", 4, PrimitiveType.Pointer32, null);
+            var m = new ProcedureBuilder();
+			var foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
+			var foo1 = new Identifier("foo1", 0, PrimitiveType.Word32, null);
+			var foo2 = new Identifier("foo2", 1, PrimitiveType.Word32, null);
+			var foo3 = new Identifier("foo3", 2, PrimitiveType.Word32, null);
+			var pfoo = new Identifier("pfoo", 4, PrimitiveType.Pointer32, null);
 
             Block block1 = m.Label("block1");
              m.Assign(foo1, Constant.Word32(1));

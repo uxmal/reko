@@ -29,7 +29,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.PowerPC
 {
     [TestFixture]
-    class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
+    public class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
     {
         private PowerPcArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
 

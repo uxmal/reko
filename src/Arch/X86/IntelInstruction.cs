@@ -80,10 +80,8 @@ namespace Decompiler.Arch.X86
             }
         }
 
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-
+        public override void Render(MachineInstructionWriter writer)
+        {
 			// Get opcode. 
 
 			string s = code.ToString();
@@ -117,27 +115,26 @@ namespace Decompiler.Arch.X86
 				}
 				break;
 			}
-			sb.Append(s);
+			writer.Write(s);
 
-			sb.Append('\t');
+			writer.Tab();
 
 			bool fExplicit = NeedsExplicitMemorySize();
 
 			if (Operands >= 1)
 			{
-				sb.Append(op1.ToString());
+				writer.Write(op1.ToString());
 				if (Operands >= 2)
 				{
-					sb.Append(',');
-					sb.Append(op2.ToString(fExplicit));
+					writer.Write(',');
+					writer.Write(op2.ToString(fExplicit));
 					if (Operands >= 3)
 					{
-						sb.Append(",");
-						sb.Append(op3.ToString(fExplicit));
+						writer.Write(",");
+						writer.Write(op3.ToString(fExplicit));
 					}
 				}
 			}
-			return sb.ToString();
 		}
 
 		// Returns the condition codes that an instruction modifies.

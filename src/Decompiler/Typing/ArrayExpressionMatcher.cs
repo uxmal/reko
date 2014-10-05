@@ -30,7 +30,6 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class ArrayExpressionMatcher
 	{
-		private Expression index;
 		private Constant elemSize;
         private PrimitiveType dtPointer;
 
@@ -40,6 +39,9 @@ namespace Decompiler.Typing
 		}
 
 		public Expression ArrayPointer { get; set; }
+
+        public Expression Index { get; set; }
+
 			
 		public Constant ElementSize
 		{
@@ -60,7 +62,7 @@ namespace Decompiler.Typing
 				if (c != null)
 				{
 					elemSize = c;
-					index = e;
+					Index = e;
 					return true;
 				}
 			}
@@ -70,7 +72,7 @@ namespace Decompiler.Typing
 				if (c != null)
 				{
 					elemSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), c);
-					index = b.Left;
+					Index = b.Left;
 					return true;
 				}
 			}
@@ -80,7 +82,7 @@ namespace Decompiler.Typing
 		public bool Match(Expression e)
 		{
 			elemSize = null;
-			index = null;
+			Index = null;
 			ArrayPointer = null;
 
 			BinaryExpression b = e as BinaryExpression;
@@ -114,24 +116,19 @@ namespace Decompiler.Typing
 					if (bInner.Operator == Operator.IAdd)
 					{
 						// (+ x (+ a b)) 
-						BinaryExpression bbInner = bInner.Left as BinaryExpression;
-						if (bbInner != null)
-						{
-							if (MatchMul(bbInner))
-							{
-								// (+ x (+ (* i c) y)) rearranges to become
-								// (+ (* i c) (+ x y))
+						var bbInner = bInner.Left as BinaryExpression;
+                        if (bbInner != null && MatchMul(bbInner))
+                        {
+                            // (+ x (+ (* i c) y)) rearranges to become
+                            // (+ (* i c) (+ x y))
 
-								b.Right = new BinaryExpression(
-									Operator.IAdd, 
-									PrimitiveType.Create(Domain.Pointer, b.Left.DataType.Size),
-									b.Left,
-									bInner.Right);
-								b.Left = bbInner;
-								ArrayPointer = b.Right;
-								return true;
-							}
-						}
+                            this.ArrayPointer = new BinaryExpression(
+                                Operator.IAdd,
+                                PrimitiveType.Create(Domain.Pointer, b.Left.DataType.Size),
+                                b.Left,
+                                bInner.Right);
+                            return true;
+                        }
 					}
 				}
 			}
@@ -149,8 +146,8 @@ namespace Decompiler.Typing
                 ArrayPointer,
                 new BinaryExpression(
                     BinaryOperator.IMul, 
-                    index.DataType,
-                    index,
+                    Index.DataType,
+                    Index,
                     ElementSize));
 		}
 	}

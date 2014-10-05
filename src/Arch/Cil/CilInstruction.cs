@@ -36,11 +36,11 @@ namespace Decompiler.Arch.Cil
 
         public OpCode Opcode { get; set; }
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
             try
             {
-                return mpopcodetostring[Opcode];
+                writer.Opcode(mpopcodetostring[Opcode]);
             }
             catch
             {

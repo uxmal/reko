@@ -196,6 +196,11 @@ namespace Decompiler.UnitTests.Analysis
             SaveRunOutput(prog, RunTest, outputFile);
 		}
 
+        protected void RunTest(Program prog, string outputFile)
+        {
+            SaveRunOutput(prog, RunTest, outputFile);
+        }
+
 		protected void RunTest32(string sourceFile, string outputFile)
 		{
 			Program prog = RewriteFile32(sourceFile);

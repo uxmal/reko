@@ -39,11 +39,11 @@ namespace Decompiler.Typing
     /// </remarks>
 	public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
 	{
-        private DataType dtResult;
-		private DataType dt;
+        private DataType dtResult;          // The data type of the resulting expression.
+		private DataType dt;                // Data type of the complex expression
 		private DataType dtOriginal;
-		private Expression basePointer;
-		private Expression complexExp;
+		private Expression basePointer;     // (possibly null) 'base' in Segmented address.
+		private Expression complexExp;      // 
         private Expression indexExp;
 		private int offset;
         //private Expression result;
@@ -146,7 +146,6 @@ namespace Decompiler.Typing
             return result;
 		}
 
-
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex, bool dereferenced)
         {
             arrayIndex = CreateArrayIndexExpression(offset, arrayIndex);
@@ -164,7 +163,7 @@ namespace Decompiler.Typing
         {
             BinaryOperator op = offset < 0 ? Operator.ISub : Operator.IAdd;
             offset = Math.Abs(offset);
-            Constant cOffset = Constant.Create(PrimitiveType.Create(Domain.SignedInt, arrayIndex.DataType.Size), offset);
+            Constant cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
             if (arrayIndex != null)
             {
                 if (offset != 0)
@@ -185,19 +184,17 @@ namespace Decompiler.Typing
 			set { dereferenced = value; }
 		}
 
-
 		public Expression VisitArray(ArrayType array)
 		{
 			int i = (int) (offset / array.ElementType.Size);
 			int r = (int) (offset % array.ElementType.Size);
 			dt = array.ElementType;
 			dtOriginal = array.ElementType;
-			complexExp.DataType = array;
+            complexExp.DataType = array;
 			complexExp = CreateArrayAccess(dt, array, i, indexExp, true);
 			offset = r;
 			return dt.Accept(this);
 		}
-
 
 		public Expression VisitFunctionType(FunctionType ft)
 		{

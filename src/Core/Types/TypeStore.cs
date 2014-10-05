@@ -75,6 +75,11 @@ namespace Decompiler.Core.Types
             return tv;
         }
 
+        public void SetTypeVariableExpression(TypeVariable typeVariable, BinaryExpression binExp)
+        {
+            tvSources[typeVariable] = binExp;
+        }
+
         private void AddDebugSource(TypeVariable tv, Expression e)
         {
             if (e != null)
@@ -251,5 +256,6 @@ namespace Decompiler.Core.Types
             expr.TypeVariable.DataType = dt;
             expr.TypeVariable.OriginalDataType = dt;
         }
+
     }
 }

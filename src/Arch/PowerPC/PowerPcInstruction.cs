@@ -69,33 +69,31 @@ namespace Decompiler.Arch.PowerPC
             get { return opcode; }
         }
 
-        public override string ToString()
+        public override void Render(MachineInstructionWriter writer)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(opcode);
+            writer.Opcode(opcode.ToString());
             if (setsCR0)
-                sb.Append('.');
+                writer.Write('.');
             if (op1 != null)
             {
-                sb.Append('\t');
-                sb.Append(op1);
+                writer.Tab();
+                op1.Write(true, writer);
                 if (op2 != null)
                 {
-                    sb.Append(',');
-                    sb.Append(op2);
+                    writer.Write(',');
+                    op2.Write(true, writer);
                     if (op3 != null)
                     {
-                        sb.Append(',');
-                        sb.Append(op3);
+                        writer.Write(',');
+                        op3.Write(true, writer);
                         if (op4 != null)
                         {
-                            sb.Append(",");
-                            sb.Append(op4);
+                            writer.Write(",");
+                            op4.Write(true, writer);
                         }
                     }
                 }
             }
-            return sb.ToString();
         }
 
         public uint DefCc()

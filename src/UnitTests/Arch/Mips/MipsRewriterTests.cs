@@ -30,7 +30,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Mips
 {
     [TestFixture]
-    class MipsRewriterTests : RewriterTestBase
+    public class MipsRewriterTests : RewriterTestBase
     {
         static MipsProcessorArchitecture arch = new MipsProcessorArchitecture();
         private MipsDisassembler dasm;

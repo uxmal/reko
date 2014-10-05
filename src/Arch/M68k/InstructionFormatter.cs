@@ -31,16 +31,16 @@ namespace Decompiler.Arch.M68k
 {
     public class InstructionFormatter : M68kOperandVisitor<M68kOperand>
     {
-        private StringWriter writer;
+        private MachineInstructionWriter writer;
 
-        public InstructionFormatter(StringBuilder sb)
+        public InstructionFormatter(MachineInstructionWriter writer)
         {
-            writer = new StringWriter(sb);
+            this.writer = writer;
         }
 
         public void Write(M68kInstruction instr)
         {
-            writer.Write(instr.code);
+            writer.Write(instr.code.ToString());
             if (instr.dataWidth != null)
             {
                 writer.Write(DataSizeSuffix(instr.dataWidth));
@@ -117,7 +117,7 @@ namespace Decompiler.Arch.M68k
                 writer.Write(MachineOperand.FormatSignedValue(mem.Offset));
             }
             writer.Write("(");
-            writer.Write(mem.Base);
+            writer.Write(mem.Base.ToString());
             writer.Write(")");
             return mem;
         }
@@ -190,7 +190,7 @@ namespace Decompiler.Arch.M68k
         /// <param name="incr"></param>
         /// <param name="regType"></param>
         /// <param name="writer"></param>
-        public void WriteRegisterSet(uint data, TextWriter writer)
+        public void WriteRegisterSet(uint data, MachineInstructionWriter writer)
         {
             string sep = "";
             int bitPos = 15;
@@ -247,7 +247,7 @@ namespace Decompiler.Arch.M68k
             if (op.base_reg != null)
             {
                 mode.Write(sep);
-                mode.Write(op.base_reg);
+                mode.Write(op.base_reg.ToString());
                 sep = ",";
             }
             if (op.postindex)

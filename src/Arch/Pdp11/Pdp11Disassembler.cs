@@ -54,71 +54,111 @@ namespace Decompiler.Arch.Pdp11
             instrCur.Length = rdr.Address - addr;
             return true;
         }
-        class OpRec
+
+        private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcodes opcode, string fmt)
+        {
+            List<MachineOperand> ops = new List<MachineOperand>(2);
+            int i = 0;
+            dataWidth = PrimitiveType.Word16;
+            switch (fmt[i])
+            {
+            case 'b': dataWidth = PrimitiveType.Byte; i += 2; break;
+            case 'w': dataWidth = PrimitiveType.Word16; i += 2; break;
+            }
+            while (i != fmt.Length)
+            {
+                if (fmt[i] == ',')
+                    ++i;
+                switch (fmt[i++])
+                {
+                case 'E': ops.Add(DecodeOperand(wOpcode)); break;
+                case 'e': ops.Add(DecodeOperand(wOpcode >> 6)); break;
+                default: throw new NotImplementedException();
+                }
+            }
+            var instr = new Pdp11Instruction
+            {
+                Opcode = opcode,
+                DataWidth = dataWidth,
+                op1 = ops.Count > 0 ? ops[0] : null,
+                op2 = ops.Count > 1 ? ops[1] : null,
+            };
+            return instr;
+        }
+
+        abstract class OpRec
+        {
+            public abstract Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm);
+        }
+
+        class FormatOpRec : OpRec
         {
             private string fmt;
             private Opcodes opcode;
 
-            public OpRec(string fmt, Opcodes op)
+            public FormatOpRec(string fmt, Opcodes op)
             {
+                this.fmt = fmt;
+                this.opcode = op;
             }
+
+            public override Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm)
+            {
+                return dasm.DecodeOperands(opcode, this.opcode, fmt);
+            }
+        }
+
+        class FnOpRec : OpRec
+        {
+            private Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn;
+
+            public FnOpRec(Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn)
+            {
+                this.fn = fn;
+            }
+
+            public override Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm)
+            {
+                return fn(opcode, dasm);
+            }
+        }
+
+        private static OpRec[] decoders;
+
+        static Pdp11Disassembler()
+        {
+            decoders = new OpRec[] {
+                null,
+                new FormatOpRec("w:e,E", Opcodes.mov),
+                new FormatOpRec("E,e", Opcodes.cmp),
+                new FormatOpRec("E,e", Opcodes.bit),
+                new FormatOpRec("E,e", Opcodes.bic),
+                new FormatOpRec("E,e", Opcodes.bis),
+                new FormatOpRec("w:E,e", Opcodes.add),
+                null,
+
+                null,
+                new FormatOpRec("b:e,E", Opcodes.movb),
+                new FormatOpRec("E,e", Opcodes.cmp),
+                new FormatOpRec("E,e", Opcodes.bit),
+                new FormatOpRec("E,e", Opcodes.bic),
+                new FormatOpRec("E,e", Opcodes.bis),
+                new FormatOpRec("w:E,e", Opcodes.sub),
+                null,
+            };
         }
 
         private Pdp11Instruction Disassemble()
         {
             ushort opcode = rdr.ReadLeUInt16();
             dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
-            switch ((opcode >> 0x0C) & 7)
+            var decoder = decoders[(opcode >> 0x0C) & 0x00F];
+            if (decoder != null)
+                return decoder.Decode(opcode, this);
+
+            switch ((opcode >> 0x0C) & 0x007)
             {
             case 0: return NonDoubleOperandInstruction(opcode);
-            case 1:
-                return new Pdp11Instruction
-                {
-                    Opcode = dataWidth.Size == 1 ? Opcodes.movb : Opcodes.mov,
-                    DataWidth = dataWidth,
-                    op1 = DecodeOperand(opcode >> 6),
-                    op2 = DecodeOperand(opcode)
-                };
-            case 2:
-                return new Pdp11Instruction
-                {
-                    Opcode = Opcodes.cmp,
-                    DataWidth = dataWidth,
-                    op1 = DecodeOperand(opcode),
-                    op2 = DecodeOperand(opcode >> 6),
-                };
-            case 3:
-                return new Pdp11Instruction
-                {
-                    Opcode = Opcodes.bit,
-                    DataWidth = dataWidth,
-                    op1 = DecodeOperand(opcode),
-                    op2 = DecodeOperand(opcode >> 6),
-                };
-            case 4:
-                return new Pdp11Instruction
-                {
-                    Opcode = Opcodes.bic,
-                    DataWidth = dataWidth,
-                    op1 = DecodeOperand(opcode),
-                    op2 = DecodeOperand(opcode >> 6),
-                };
-            case 5:
-                return new Pdp11Instruction
-                {
-                    Opcode = Opcodes.bis,
-                    DataWidth = dataWidth,
-                    op1 = DecodeOperand(opcode),
-                    op2 = DecodeOperand(opcode >> 6),
-                };
-            case 6:
-                return new Pdp11Instruction
-                {
-                    Opcode = (opcode & 0x8000u) != 0 ? Opcodes.sub : Opcodes.add,
-                    DataWidth = PrimitiveType.Word16,
-                    op1 = DecodeOperand(opcode),
-                    op2 = DecodeOperand(opcode >> 6),
-                };
             case 7:
                 switch ((opcode >> 0x09) & 7)
                 {
@@ -439,13 +479,5 @@ namespace Decompiler.Arch.Pdp11
                 }
             }
         }
-
-        private static OpRec[] oprecs = new OpRec[] 
-        { 
-            null,
-
-        };
     }
-    public class OpRec { }
-
 }

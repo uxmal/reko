@@ -213,43 +213,42 @@ namespace Decompiler.Typing
         /// <returns>The rewritten expression</returns>
 		public override Expression VisitBinaryExpression(BinaryExpression binExp)
 		{
-			base.VisitBinaryExpression(binExp);
-
+            var left = binExp.Left.Accept(this);
+            var right = binExp.Right.Accept(this);
 			DataType dtLeft = DataTypeOf(binExp.Left);
 			DataType dtRight = DataTypeOf(binExp.Right);
-            if (binExp.Operator == Operator.IAdd)
+            if (binExp.Operator == Operator.IAdd && dtLeft.IsComplex)
             {
-                return TransformSum(binExp, dtLeft, dtRight);
+                return TransformComplexSum(binExp, dtLeft, dtRight);
             }
             else
             {
+                binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
+                store.SetTypeVariableExpression(binExp.TypeVariable, binExp);
                 return binExp;
             }
 		}
 
-        private Expression TransformSum(BinaryExpression binExp, DataType dtLeft, DataType dtRight)
+        private Expression TransformComplexSum(BinaryExpression binExp, DataType dtLeft, DataType dtRight)
         {
-            if (dtLeft.IsComplex)
+            if (dtRight.IsComplex)
+                throw new TypeInferenceException(
+                    "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2}:[{3}] {4}:[{5}].",
+                    Environment.NewLine, binExp,
+                    binExp.Left.TypeVariable, dtLeft,
+                    binExp.Right.TypeVariable, dtRight);
+            Constant c = binExp.Right as Constant;
+            if (c != null)
             {
-                if (dtRight.IsComplex)
-                    throw new TypeInferenceException(
-                        "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2}:[{3}] {4}:[{5}].",
-                        Environment.NewLine, binExp,
-                        binExp.Left.TypeVariable, dtLeft,
-                        binExp.Right.TypeVariable, dtRight);
-                Constant c = binExp.Right as Constant;
-                if (c != null)
-                {
-                    ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
-                        binExp.TypeVariable.DataType,
-                        dtLeft,
-                        binExp.Left.TypeVariable.OriginalDataType,
-                        null,
-                        binExp.Left,
-                        null,
-                        StructureField.ToOffset(c));
-                    return ceb.BuildComplex();
-                }
+                ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                    binExp.TypeVariable.DataType,
+                    dtLeft,
+                    binExp.Left.TypeVariable.OriginalDataType,
+                    null,
+                    binExp.Left,
+                    null,
+                    StructureField.ToOffset(c));
+                return ceb.BuildComplex();
             }
             return binExp;
         }
