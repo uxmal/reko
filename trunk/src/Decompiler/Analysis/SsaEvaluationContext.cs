@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Evaluation;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -97,6 +98,41 @@ namespace Decompiler.Analysis
                 return;
             var xu = new ExpressionUseAdder(Statement, ssaIds);
             exp.Accept(xu);
+        }
+
+        public bool IsUsedInPhi(Identifier id)
+        {
+            var src = ssaIds[id].DefStatement;
+            if (src == null)
+                return false;
+            var assSrc = src.Instruction as Assignment;
+            if (assSrc == null)
+                return false;
+            new DefinedIdentifierFinder();
+            return UsedIdentifierFinder.Find(ssaIds, assSrc.Src)
+                .Select(c => ssaIds[c].DefStatement)
+                .Where(d => d != null)
+                .Select(ph => ph.Instruction as PhiAssignment)
+                .Where(ph => ph != null)
+                .Any();
+                //.SelectMany(ph => ssaIds[ph.Ops].DefStatement)
+                //.Where(opDef => IsOverwriting(opDef) &&
+                //    ( (opDef == src || 
+                //        PathFromTo(src, opDef) && PathFromTo(opDef, src))))
+                //.Any();
+            /*
+             function shouldPropagateInto(r )
+src := the assignment dening r
+for each subscripted component c of the RHS of r
+  if the denition for c is a phi-function ph then
+    for each operand op of ph
+      opdef := the denition for op
+      if opdef is an overwriting statement and either
+          (opdef = src) or
+          (there exists a CFG path from src to opdef and
+               from opdef to the statement containing r ) then
+         return false
+             */
         }
     }
 }

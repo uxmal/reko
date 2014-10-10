@@ -43,7 +43,8 @@ namespace Decompiler.Core.Expressions
 		void VisitMemberPointerSelector(MemberPointerSelector mps);
 		void VisitMemoryAccess(MemoryAccess access);
         void VisitMkSequence(MkSequence seq);
-		void VisitPhiFunction(PhiFunction phi);
+        void VisitOutArgument(OutArgument outArgument);
+        void VisitPhiFunction(PhiFunction phi);
 		void VisitPointerAddition(PointerAddition pa);
 		void VisitProcedureConstant(ProcedureConstant pc);
 		void VisitScopeResolution(ScopeResolution scopeResolution);
@@ -69,6 +70,7 @@ namespace Decompiler.Core.Expressions
         T VisitMemberPointerSelector(MemberPointerSelector mps);
         T VisitMemoryAccess(MemoryAccess access);
         T VisitMkSequence(MkSequence seq);
+        T VisitOutArgument(OutArgument outArgument);
         T VisitPhiFunction(PhiFunction phi);
         T VisitPointerAddition(PointerAddition pa);
         T VisitProcedureConstant(ProcedureConstant pc);
@@ -158,6 +160,11 @@ namespace Decompiler.Core.Expressions
 		public virtual void VisitIdentifier(Identifier id)
 		{
 		}
+
+        public virtual void VisitOutArgument(OutArgument outArg)
+        {
+            outArg.Expression.Accept(this);
+        }
 
 		public void VisitPhiFunction(PhiFunction phi)
 		{
@@ -277,6 +284,11 @@ namespace Decompiler.Core.Expressions
         public virtual T VisitMkSequence(MkSequence seq)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual T VisitOutArgument(OutArgument outArg)
+        {
+            return outArg.Expression.Accept(this);
         }
 
         public virtual T VisitPhiFunction(PhiFunction phi)

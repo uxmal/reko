@@ -24,7 +24,7 @@ using Decompiler.Core.Expressions;
 namespace Decompiler.Core.Code
 {
 	/// <summary>
-	/// An <Assignment copies data from <paramref name="Src" /> to <paramref name="Dst"/>.
+	/// An Assignment copies data from <paramref name="Src" /> to <paramref name="Dst" />.
 	/// </summary>
 	public class Assignment : Instruction
 	{

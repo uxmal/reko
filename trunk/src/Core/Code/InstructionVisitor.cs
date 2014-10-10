@@ -209,6 +209,11 @@ namespace Decompiler.Core.Code
 		{
 		}
 
+        public virtual void VisitOutArgument(OutArgument outArg)
+        {
+            outArg.Expression.Accept(this);
+        }
+
 		public virtual void VisitPhiFunction(PhiFunction phi)
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)

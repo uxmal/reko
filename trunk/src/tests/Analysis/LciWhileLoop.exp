@@ -7,8 +7,9 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
+	Mem13[ss:sp - 0x0002:word16] = bp
+	ax_18 = Mem13[ss:sp + 0x0004:word16]
 	bx_15 = 0x0000
-	ax_18 = Mem0[ss:bp + 0x0006:word16]
 	branch ax_18 <= 0x0000 l0C00_0015
 	// succ:  l0C00_000C l0C00_0015
 l0C00_000C:
@@ -18,9 +19,9 @@ l0C00_000E:
 	cx_33 = PHI(cx_32, cx_39)
 	bx_34 = PHI(bx_15, bx_35)
 	bx_35 = bx_34 + cx_33
-	cx_39 = cx_46 - 0x0001
-	branch cx_46 != 0x0000 l0C00_000E
-	// succ:  l0C00_000F l0C00_000E
+	cx_39 = cx_33 - 0x0001
+	branch cx_39 != 0x0000 l0C00_000E
+	// succ:  l0C00_0012 l0C00_000E
 l0C00_0012:
 	goto l0C00_0019
 	// succ:  l0C00_0019

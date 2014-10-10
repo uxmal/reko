@@ -130,6 +130,7 @@
     <Compile Include="Analysis\GrfDefinitionFinder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\UsedIdentifierFinder.cs" />
     <Compile Include="Analysis\IdentifierLiveness.cs" />
     <Compile Include="Analysis\Interference.cs">
       <SubType>Code</SubType>

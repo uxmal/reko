@@ -362,6 +362,15 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        void IExpressionVisitor.VisitOutArgument(OutArgument outArg)
+        {
+            writer.Write("Out(");
+            outArg.DataType.Accept(this);
+            writer.Write(", ");
+            outArg.Expression.Accept(this);
+            writer.Write(")");
+        }
+
         void IExpressionVisitor.VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();

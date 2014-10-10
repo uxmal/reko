@@ -10,13 +10,13 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	si_6 = Mem0[ds:0x0200:word16]
-	ax_8 = fn0C00_0025(si_6, ds, &si_7)
+	ax_8 = fn0C00_0025(si_6, ds, out si_7)
 	Mem9[ds:0x0310:word16] = ax_8
-	ax_11 = fn0C00_0027(si_7, ds, &si_10)
+	ax_11 = fn0C00_0027(si_7, ds, out si_10)
 	Mem12[ds:0x0320:word16] = ax_11
-	ax_14 = fn0C00_002F(si_10, ds, &si_13)
+	ax_14 = fn0C00_002F(si_10, ds, out si_13)
 	Mem15[ds:0x0330:word16] = ax_14
-	ax_17 = fn0C00_0036(si_13, ds, &si_16)
+	ax_17 = fn0C00_0036(si_13, ds, out si_16)
 	Mem18[ds:0x0340:word16] = ax_17
 	Mem19[ds:0x0400:word16] = si_16
 	return
@@ -31,13 +31,13 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	si_6 = Mem0[ds:0x0200:word16]
-	ax_8 = fn0C00_0025(si_6, ds, &si_7)
+	ax_8 = fn0C00_0025(si_6, ds, out si_7)
 	Mem9[ds:0x0310:word16] = ax_8
-	ax_11 = fn0C00_0027(si_7, ds, &si_10)
+	ax_11 = fn0C00_0027(si_7, ds, out si_10)
 	Mem12[ds:0x0320:word16] = ax_11
-	ax_14 = fn0C00_002F(si_10, ds, &si_13)
+	ax_14 = fn0C00_002F(si_10, ds, out si_13)
 	Mem15[ds:0x0330:word16] = ax_14
-	ax_17 = fn0C00_0036(si_13, ds, &si_16)
+	ax_17 = fn0C00_0036(si_13, ds, out si_16)
 	Mem18[ds:0x0340:word16] = ax_17
 	Mem19[ds:0x0400:word16] = si_16
 	return
@@ -189,7 +189,7 @@ fn0C00_0036_entry:
 l0C00_0036:
 	ax_7 = Mem0[ds:si:word16]
 	si_8 = si + 0x0002
-	ax_10 = fn0C00_0025(si_8, ds, &si_9)
+	ax_10 = fn0C00_0025(si_8, ds, out si_9)
 	return ax_10
 	// succ:  fn0C00_0036_exit
 fn0C00_0036_exit:
@@ -200,11 +200,10 @@ word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
 fn0C00_0036_entry:
 	def ds
 	def si
-	def siOut
 	// succ:  l0C00_0036
 l0C00_0036:
 	si_8 = si + 0x0002
-	ax_10 = fn0C00_0025(si_8, ds, siOut)
+	ax_10 = fn0C00_0025(si_8, ds, out si_9)
 	return ax_10
 	// succ:  fn0C00_0036_exit
 fn0C00_0036_exit:

@@ -170,6 +170,11 @@ namespace Decompiler.Analysis
                 return dead;
             }
 
+            public bool VisitOutArgument(OutArgument outArg)
+            {
+                return false;
+            }
+
             public bool VisitPhiFunction(PhiFunction phi)
             {
                 throw new NotImplementedException();

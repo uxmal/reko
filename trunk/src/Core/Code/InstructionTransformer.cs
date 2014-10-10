@@ -216,6 +216,11 @@ namespace Decompiler.Core.Code
 			return new MkSequence(seq.DataType, head, tail);
 		}
 
+        public virtual Expression VisitOutArgument(OutArgument outArg)
+        {
+            return new OutArgument(outArg.DataType, outArg.Expression.Accept(this));
+        }
+
 		public virtual Expression VisitPhiFunction(PhiFunction phi)
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)

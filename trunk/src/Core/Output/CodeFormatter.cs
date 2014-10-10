@@ -293,6 +293,13 @@ namespace Decompiler.Core.Output
 			writer.Write("]");
 		}
 
+        public void VisitOutArgument(OutArgument outArg)
+        {
+            writer.WriteKeyword("out");
+            writer.Write(" ");
+            WriteExpression(outArg.Expression);
+        }
+
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			writer.Write("PHI");

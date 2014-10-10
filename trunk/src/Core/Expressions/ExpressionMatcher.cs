@@ -71,10 +71,10 @@ namespace Decompiler.Core.Expressions
             return Match(Pattern, expr);
         }
 
-        private bool Match(Expression p, Expression expr)
+        private bool Match(Expression pattern, Expression expr)
         {
-            this.p = p;
-            var w = p as WildExpression;
+            this.p = pattern;
+            var w = pattern as WildExpression;
             if (w != null)
             {
                 capturedExpressions[w.Label] = expr;
@@ -236,6 +236,13 @@ namespace Decompiler.Core.Expressions
             throw new NotImplementedException();
         }
 
+        bool ExpressionVisitor<bool>.VisitOutArgument(OutArgument outArg)
+        {
+            var op = p as OutArgument;
+            if (outArg.DataType.Size != op.DataType.Size)
+                return false;
+            return Match(op.Expression, outArg.Expression);
+        }
         bool ExpressionVisitor<bool>.VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
@@ -283,7 +290,11 @@ namespace Decompiler.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            var tp = p as TestCondition;
+            if (tp == null)
+                return false;
+            return tp.ConditionCode == tc.ConditionCode &&
+                Match(tp.Expression, tc.Expression);
         }
 
         bool ExpressionVisitor<bool>.VisitUnaryExpression(UnaryExpression unary)

@@ -522,6 +522,14 @@ namespace Decompiler.Typing
             return dt;
 		}
 
+        public DataType VisitOutArgument(OutArgument outArg)
+        {
+            return handler.PointerTrait(
+                outArg,
+                outArg.DataType.Size,
+                outArg.Expression);
+        }
+
 		public DataType VisitPhiFunction(PhiFunction phi)
 		{
 			TypeVariable tPhi = phi.TypeVariable;

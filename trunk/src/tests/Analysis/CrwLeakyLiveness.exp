@@ -17,7 +17,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	C = fn0C00_000A(ds, &ax)
+	C = fn0C00_000A(ds, out ax)
 	branch Test(ULT,C) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:

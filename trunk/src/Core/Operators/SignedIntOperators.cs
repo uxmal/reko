@@ -73,7 +73,7 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			throw new NotImplementedException();
+            return Constant.Invalid;
 		}
 
 		public override string ToString()

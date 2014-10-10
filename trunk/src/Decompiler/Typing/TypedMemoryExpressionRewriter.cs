@@ -215,6 +215,11 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
+        public Expression VisitOutArgument(OutArgument outArg)
+        {
+            throw new NotImplementedException();
+        }
+
 		public Expression VisitPhiFunction(PhiFunction phi)
 		{
 			throw new NotImplementedException();

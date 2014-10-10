@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Output;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.UnitTests.TestCode;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
@@ -118,6 +119,11 @@ namespace Decompiler.UnitTests.Structure
             RunTest("Fragments/regressions/r00013.asm", "Structure/StrReg00013.txt");
         }
 
+        [Test]
+        public void StrManyIncrements()
+        {
+            RunTest(new ManyIncrements(), "Structure/StrManyIncrements.txt");
+        }
 
         private void RunTest(string sourceFilename, string outFilename)
 		{

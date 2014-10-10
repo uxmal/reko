@@ -7,7 +7,7 @@ bx:bx
 si:si
     def:  def si
     uses: si_14 = PHI(si, si_16, si_16)
-          ax_28 = si_14 + 0x0002 - si
+          ax_28 = si_16 - si
 ax:ax
 ds:ds
     def:  def ds
@@ -29,7 +29,6 @@ si_14: orig: si
     def:  si_14 = PHI(si, si_16, si_16)
     uses: ax_15 = Mem0[ds:si_14:word16]
           si_16 = si_14 + 0x0002
-          ax_28 = si_14 + 0x0002 - si
 ax_15: orig: ax
     def:  ax_15 = Mem0[ds:si_14:word16]
     uses: Mem33[ds:di:word16] = ax_15
@@ -40,6 +39,7 @@ si_16: orig: si
     def:  si_16 = si_14 + 0x0002
     uses: si_14 = PHI(si, si_16, si_16)
           si_14 = PHI(si, si_16, si_16)
+          ax_28 = si_16 - si
 SCZO_17: orig: SCZO
 Z_18: orig: Z
 SZO_19: orig: SZO
@@ -55,7 +55,7 @@ Mem26: orig: Mem0
     def:  Mem26[ds:0x0300:word16] = ax_25
 ax_27: orig: ax
 ax_28: orig: ax
-    def:  ax_28 = si_14 + 0x0002 - si
+    def:  ax_28 = si_16 - si
     uses: ax_25 = PHI(ax_28, ax_39)
 SCZO_29: orig: SCZO
 Z_30: orig: Z
@@ -115,7 +115,7 @@ l0C00_001A:
 	branch ax_15 != 0x0020 l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
-	ax_28 = si_14 + 0x0002 - si
+	ax_28 = si_16 - si
 	// succ:  l0C00_0024
 l0C00_0024:
 	ax_25 = PHI(ax_28, ax_39)

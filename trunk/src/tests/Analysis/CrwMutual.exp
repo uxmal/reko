@@ -14,7 +14,7 @@ void fn0C00_0000(word16 dx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = fn0C00_0004(dx, &dx)
+	ax = fn0C00_0004(dx, out dx)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -80,13 +80,13 @@ l0C00_0013:
 l0C00_0018:
 	dx = dx - 0x0001
 	SZO = cond(dx)
-	ax = fn0C00_0004(dx, &dx)
+	ax = fn0C00_0004(dx, out dx)
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
 	dx = dx - 0x000A
 	SCZO = cond(dx)
-	ax = fn0C00_0004(dx, &dx)
+	ax = fn0C00_0004(dx, out dx)
 	// succ:  l0C00_0025
 l0C00_0025:
 	ax = ax + 0x0001

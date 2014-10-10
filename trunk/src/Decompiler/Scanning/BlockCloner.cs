@@ -215,6 +215,12 @@ namespace Decompiler.Scanning
             return id.Storage.Accept(this);
         }
 
+        public Expression VisitOutArgument(OutArgument outArg)
+        {
+            var exp = outArg.Expression.Accept(this);
+            return new OutArgument(outArg.DataType, exp);
+        }
+
         public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();

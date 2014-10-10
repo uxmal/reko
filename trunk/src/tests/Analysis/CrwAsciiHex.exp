@@ -15,7 +15,7 @@ void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	C = fn0C00_000A(al, &al)
+	C = fn0C00_000A(al, out al)
 	branch Test(ULT,C) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:

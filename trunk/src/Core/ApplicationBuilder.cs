@@ -88,7 +88,7 @@ namespace Decompiler.Core
                 var actualArg = formalArg.Storage.Accept(this);
                 if (formalArg.Storage is OutArgumentStorage)
                 {
-                    actuals.Add(new UnaryExpression(UnaryOperator.AddrOf, frame.FramePointer.DataType, actualArg));
+                    actuals.Add(new OutArgument(frame.FramePointer.DataType, actualArg));
                 }
                 else
                 {

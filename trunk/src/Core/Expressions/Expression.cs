@@ -48,7 +48,7 @@ namespace Decompiler.Core.Expressions
         //$REVIEW: TypeVariable is only used for typing, perhaps move it to hashtable? Argument against: there may be a lot of these.
         public virtual bool IsZero { get { return false; } }
 
-        public abstract void Accept(IExpressionVisitor visit);
+        public abstract void Accept(IExpressionVisitor visitor);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
         public abstract Expression CloneExpression();
         

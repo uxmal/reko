@@ -88,7 +88,7 @@ l0C00_0026:
 	bx = Mem0[ds:0x5424:word16]
 	cx = 0x0004
 	dx = 0x5427
-	C = msdos_write_file(bx, 0x0004, ds_dx, &ax)
+	C = msdos_write_file(bx, 0x0004, ds_dx, out ax)
 	si = si + 0x0001
 	SZO = cond(si)
 	bp = bp - 0x0001

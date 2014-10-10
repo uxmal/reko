@@ -447,10 +447,10 @@ namespace Decompiler.Analysis
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;
-				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-				if (u != null && u.Operator == Operator.AddrOf)
-				{
-					Identifier id = u.Expression as Identifier;
+				var outArg = appl.Arguments[i] as OutArgument;
+                if (outArg != null)
+                {
+					Identifier id = outArg.Expression as Identifier;
                     if (id != null)
                     {
                         Def(id);
@@ -459,8 +459,8 @@ namespace Decompiler.Analysis
 			}
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{	
-				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-				if (u == null || u.Operator != Operator.AddrOf)
+				OutArgument u = appl.Arguments[i] as OutArgument;
+				if (u == null || !(u.Expression is Identifier))
 				{
 					appl.Arguments[i].Accept(this);
 				}
@@ -596,6 +596,11 @@ namespace Decompiler.Analysis
 			cbitsUse = 0;
 			base.VisitSegmentedAccess(access);
 		}
+
+        public override void VisitOutArgument(OutArgument outArg)
+        {
+            base.VisitOutArgument(outArg);
+        }
 
 		public override void VisitStore(Store store)
 		{
