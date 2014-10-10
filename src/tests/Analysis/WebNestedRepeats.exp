@@ -11,9 +11,9 @@ l0C00_0008:
 	si = si + 0x0002
 	dx_13 = dx_13 + Mem0[ds:si:word16]
 	cx_18 = cx_18 - 0x0001
-	branch cx_39 != 0x0000 l0C00_0008
+	branch cx_18 != 0x0000 l0C00_0008
 	// succ:  l0C00_000D l0C00_0008
-l0C00_000D:		// pred: l0C00_0008
+l0C00_000D:
 	cx_18 = 0x0004
 	di_19 = di_19 - 0x0001
 	branch di_19 != 0x0000 l0C00_0008

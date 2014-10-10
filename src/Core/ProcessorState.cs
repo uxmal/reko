@@ -32,10 +32,10 @@ namespace Decompiler.Core
     /// ProcessorState simulates the state of the processor and a part of the stack during scanning.
     /// </summary>
     public abstract class ProcessorState : EvaluationContext
-	{
+    {
         private Dictionary<RegisterStorage, Expression> linearDerived;
         private SortedList<int, Expression> stackState;
-        
+
         public ProcessorState()
         {
             this.linearDerived = new Dictionary<RegisterStorage, Expression>();
@@ -63,7 +63,7 @@ namespace Decompiler.Core
 
         public abstract void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
         public abstract void OnProcedureLeft(ProcedureSignature procedureSignature);
-        
+
         /// <summary>
         /// Captures the the processor's state before calling a procedure.
         /// </summary>
@@ -101,7 +101,7 @@ namespace Decompiler.Core
             var bin = ea as BinaryExpression;
             if (bin != null && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub) && IsStackRegister(bin.Left))
             {
-                offset = ((Constant)bin.Right).ToInt32();
+                offset = ((Constant) bin.Right).ToInt32();
                 if (bin.Operator == Operator.ISub)
                     offset = -offset;
                 return true;
@@ -215,6 +215,11 @@ namespace Decompiler.Core
             int stackOffset;
             if (GetStackOffset(ea, out stackOffset))
                 stackState[stackOffset] = value;
+        }
+
+        public bool IsUsedInPhi(Identifier id)
+        {
+            return false;
         }
     }
 }

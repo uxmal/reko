@@ -45,6 +45,8 @@ namespace Decompiler.Evaluation
             bin = ctx.GetValue(id) as BinaryExpression;
 			if (bin == null)
 				return false;
+            if (ctx.IsUsedInPhi(id))
+                return false;
 			return (bin.Left is Identifier) && (bin.Right is Constant);
 		}
 

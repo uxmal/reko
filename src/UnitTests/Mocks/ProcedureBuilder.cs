@@ -314,5 +314,6 @@ namespace Decompiler.UnitTests.Mocks
         {
             return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word32));
         }
+
     }
 }

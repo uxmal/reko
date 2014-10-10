@@ -24,6 +24,7 @@ using Decompiler.Core.Lib;
 using Decompiler.Core.Types;
 using Decompiler.Analysis;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.UnitTests.TestCode;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -141,11 +142,6 @@ namespace Decompiler.UnitTests.Analysis
 				sla2.InterferenceGraph.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
-			Statement phiStm = proc.ControlGraph.Blocks[1].Statements[0];
-			Identifier r0_4 = ssa.Identifiers[4].Identifier;
-			Identifier r0_15 = ssa.Identifiers[15].Identifier;
-			Console.WriteLine(r0_15);
-			Assert.IsFalse(sla2.InterferenceGraph.Interfere(r0_4, r0_15));
 		}
 
 		private void Build(Procedure proc, IProcessorArchitecture arch)
@@ -184,36 +180,5 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		public class ManyIncrements : ProcedureBuilder
-		{
-			protected override void BuildBody()
-			{
-				Identifier r0 = Register(0);
-				Identifier r1 = Register(1);
-				
-				Label("loopTop");
-				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, IAdd(r0, 1));
-				BranchIf(Ne(r1, base.Int8(1)), "not1");
-
-				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, IAdd(r0, 1));
-				Store(Int32(0x33333330), r1);
-				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, IAdd(r0, 1));
-				Store(Int32(0x33333331), r1);
-				Jump("loopTop");
-
-				Label("not1");
-				BranchIf(Ne(r1, base.Int8(2)), "done");
-				Assign(r1, Load(PrimitiveType.Byte, r0));
-				Assign(r0, IAdd(r0, 1));
-				Store(Int32(0x33333330), r1);
-				Jump("loopTop");
-
-				Label("done");
-				Return();
-			}
-		}
 	}
 }

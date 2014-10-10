@@ -16,12 +16,14 @@ namespace Decompiler.UnitTests.Structure
 @"Node 1: Block: ProcedureBuilder_entry
     Order: 6
     Interval: 0
+    iPDom: loopheader
     Structure type:
     Unstructured type: Structured
     Succ: loopheader
 Node 2: Block: loopheader
     Order: 5
     Interval: 1
+    iPDom: unstructuredexit
     Structure type: LoopCond
     Loop header:loopheader
     Latch: l2

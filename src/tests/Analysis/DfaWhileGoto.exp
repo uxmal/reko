@@ -34,7 +34,7 @@ l0C00_001A:
 	branch ax_17 != 0x0020 l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
-	ax_25 = si_16 + 0x0002 - si
+	ax_25 = si_16 - si
 	// succ:  l0C00_0024
 l0C00_0024:
 	Mem26[ds:0x0300:word16] = ax_25

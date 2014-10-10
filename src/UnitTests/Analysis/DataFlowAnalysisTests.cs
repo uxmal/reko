@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Core.Lib;
 using Decompiler.Analysis;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.UnitTests.TestCode;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
@@ -188,6 +189,12 @@ done:
                 ret
 ");
            SaveRunOutput(prog, RunTest, "Analysis/DfaFstsw.txt");
+        }
+
+        [Test]
+        public void DfaManyIncrements()
+        {
+            RunTest(new ManyIncrements(), "Analysis/DfaManyIncrements.txt");
         }
 
 		protected override void RunTest(Program prog, TextWriter writer)

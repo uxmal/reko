@@ -97,8 +97,6 @@ namespace Decompiler.UnitTests.Analysis
             m.Add(mock);
             var prog = m.BuildProgram();
             prog.CallGraph.AddProcedure(mock.Procedure);
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
-            dfa.UntangleProcedures();
             return prog;
         }
 

@@ -8,15 +8,15 @@ ds:ds
 bx:bx
 ax:ax
 bx_6: orig: bx
-    def:  fn0C00_000E(&bx_6)
+    def:  fn0C00_000E(out bx_6)
 ax_7: orig: ax
 Mem8: orig: Mem0
     def:  Mem8[ds:0x0300:word16] = 0x002B
 bx_9: orig: bx
-    def:  ax_10 = fn0C00_000E(&bx_9)
+    def:  ax_10 = fn0C00_000E(out bx_9)
     uses: fn0C00_0015(ax_10, bx_9, ds)
 ax_10: orig: ax
-    def:  ax_10 = fn0C00_000E(&bx_9)
+    def:  ax_10 = fn0C00_000E(out bx_9)
     uses: fn0C00_0015(ax_10, bx_9, ds)
 // fn0C00_0000
 void fn0C00_0000(selector ds)
@@ -24,9 +24,9 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	fn0C00_000E(&bx_6)
+	fn0C00_000E(out bx_6)
 	Mem8[ds:0x0300:word16] = 0x002B
-	ax_10 = fn0C00_000E(&bx_9)
+	ax_10 = fn0C00_000E(out bx_9)
 	fn0C00_0015(ax_10, bx_9, ds)
 	return
 	// succ:  fn0C00_0000_exit

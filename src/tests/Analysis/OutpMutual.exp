@@ -8,7 +8,7 @@ fn0C00_0000_entry:
 	def ax
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_6 = fn0C00_0004(dx, &dx_5)
+	ax_6 = fn0C00_0004(dx, out dx_5)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -19,7 +19,7 @@ fn0C00_0000_entry:
 	def dx
 	// succ:  l0C00_0000
 l0C00_0000:
-	fn0C00_0004(dx, &dx_5)
+	fn0C00_0004(dx, out dx_5)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -114,7 +114,7 @@ l0C00_0018:
 	SZO_18 = cond(dx_17)
 	SCZO_19 = SZO_18 (alias)
 	SO_20 = SZO_18 (alias)
-	ax_22 = fn0C00_0004(dx_17, &dx_21)
+	ax_22 = fn0C00_0004(dx_17, out dx_21)
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
@@ -122,7 +122,7 @@ l0C00_001F:
 	SCZO_24 = cond(dx_23)
 	SO_25 = SCZO_24 (alias)
 	SZO_26 = SCZO_24 (alias)
-	ax_28 = fn0C00_0004(dx_23, &dx_27)
+	ax_28 = fn0C00_0004(dx_23, out dx_27)
 	// succ:  l0C00_0025
 l0C00_0025:
 	ax_11 = PHI(ax_22, ax_28)
@@ -147,12 +147,12 @@ l0C00_0013:
 	// succ:  l0C00_0018 l0C00_001F
 l0C00_0018:
 	dx_17 = dx - 0x0001
-	fn0C00_0004(dx_17, &dx_21)
+	fn0C00_0004(dx_17, out dx_21)
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
 	dx_23 = dx - 0x000A
-	fn0C00_0004(dx_23, &dx_27)
+	fn0C00_0004(dx_23, out dx_27)
 	// succ:  l0C00_0025
 l0C00_0025:
 	dx_12 = PHI(dx_21, dx_27)

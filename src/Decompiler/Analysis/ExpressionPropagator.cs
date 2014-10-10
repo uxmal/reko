@@ -379,6 +379,26 @@ namespace Decompiler.Analysis
                 seq.DataType, h, t));
         }
 
+        public Result VisitOutArgument(OutArgument outArg)
+        {
+            var id = outArg.Expression as Identifier;
+            if (id != null)
+            {
+                ctx.SetValue(id, Constant.Invalid);
+                return new Result
+                {
+                    PropagatedExpression = outArg,
+                    Value = Constant.Invalid,
+                };
+            }
+            var exp = SimplifyExpression(outArg.Expression);
+            return new Result
+            {
+                PropagatedExpression = new OutArgument(outArg.DataType, exp.PropagatedExpression),
+                Value = Constant.Invalid
+            };
+        }
+
         public Result VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
@@ -428,17 +448,6 @@ namespace Decompiler.Analysis
 
         public Result VisitUnaryExpression(UnaryExpression unary)
         {
-            if (unary.Operator == Operator.AddrOf &&
-                unary.Expression is Identifier)
-            {
-                ctx.SetValue((Identifier) unary.Expression, Constant.Invalid);
-                return new Result
-                {
-                    PropagatedExpression = unary,
-                    Value = Constant.Invalid,
-                };
-
-            }
             return SimplifyExpression(
                 new UnaryExpression(unary.Operator, unary.DataType,
                     SimplifyExpression(unary.Expression).PropagatedExpression));

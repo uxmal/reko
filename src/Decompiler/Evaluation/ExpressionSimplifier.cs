@@ -112,15 +112,6 @@ namespace Decompiler.Evaluation
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
                 var arg = appl.Arguments[i];
-                var outArg = arg as UnaryExpression;
-                if (outArg != null && outArg.Operator == Operator.AddrOf)
-                {
-                    if (outArg.Expression is Identifier)
-                    {
-                        args[i] = arg;
-                        continue;
-                    }
-                }
                 args[i] = arg.Accept(this);
             }
             appl = new Application(appl.Procedure.Accept(this),
@@ -234,7 +225,7 @@ namespace Decompiler.Evaluation
                 Changed = true;
                 ctx.RemoveIdentifierUse(idLeft);
                 var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
-                var c = ExpressionSimplifierOld.SimplifyTwoConstants(op, cLeftRight, cRight);
+                var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
                 return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
             }
 
@@ -259,6 +250,15 @@ namespace Decompiler.Evaluation
             // No change, just return as is.
 
             return binExp;
+        }
+
+        public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)
+        {
+            PrimitiveType lType = (PrimitiveType) l.DataType;
+            PrimitiveType rType = (PrimitiveType) r.DataType;
+            if ((lType.Domain & rType.Domain) == 0)
+                throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
+            return ((BinaryOperator) op).ApplyConstants(l, r);
         }
 
         public virtual Expression VisitCast(Cast cast)
@@ -387,6 +387,16 @@ namespace Decompiler.Evaluation
             return new MkSequence(seq.DataType, head, tail);
         }
 
+        public virtual Expression VisitOutArgument(OutArgument outArg)
+        {
+            Expression exp;
+            if (outArg.Expression is Identifier)
+                exp = outArg.Expression;
+            else 
+                exp = outArg.Expression.Accept(this);
+            return new OutArgument(outArg.DataType, exp);
+        }
+
         public virtual Expression VisitPhiFunction(PhiFunction pc)
         {
             return pc;
@@ -455,344 +465,4 @@ namespace Decompiler.Evaluation
             return unary;
         }
     }
-}
-
-namespace Decompiler.Evaluation
-{
-    using Decompiler.Analysis;
-
-    #region OLD_SIMPLIFIER
-    /// <summary>
-	/// Simplifies expressions by using common algebraic tricks and 
-	/// other well known formulae.
-	/// </summary>
-	public class ExpressionSimplifierOld : ExpressionVisitor<Expression>
-	{
-		private Decompiler.Analysis.ValueNumbering dad;
-		private Dictionary<Expression,Expression> table;
-
-        public ExpressionSimplifierOld(Decompiler.Analysis.ValueNumbering d, Dictionary<Expression, Expression> table)
-		{
-			this.dad = d;
-			this.table = table;
-		}
-
-		private Expression AlgebraicSimplification(
-			Operator binOp, 
-			DataType valType,
-			Expression left,
-			Expression right)
-		{
-			Constant cLeft = PossibleConstant(left);
-			Constant cRight = PossibleConstant(right);
-				
-			if (cLeft != null && cRight != null)
-			{
-				PrimitiveType lType = (PrimitiveType) cLeft.DataType;
-				PrimitiveType rType = (PrimitiveType) cRight.DataType;
-				if (lType.Domain != Domain.Real && lType.Domain != Domain.Real)	
-				{
-					// Only integral values can be safely simplified.
-					if (binOp != Operator.Eq)
-						return SimplifyTwoConstants(binOp, cLeft, cRight);
-				}
-			}
-
-			// C op id should be transformed to id op C, but only if op commutes.
-
-			if (cLeft != null && BinaryExpression.Commutes(binOp))
-			{
-				Expression tmp = left; left = right; right = tmp;
-			}
-
-			//$REVIEW: identity on binaryoperators
-            // DO NOT simplify floating-point ops!
-			if (binOp == Operator.IAdd)
-			{
-				if (cRight.IsZero)
-					return left;
-			} 
-			else if (binOp == Operator.ISub)
-			{
-				if (left == right)
-					return MakeZero(left.DataType);
-				if (cRight.IsZero)
-					return left;
-			} 
-			else if (binOp == Operator.Or || binOp == Operator.Xor)
-			{
-				if (cRight.IsZero)
-					return left;
-			} 
-            else if (binOp == Operator.And)
-			{
-				if (cRight.IsZero)
-					return MakeZero(left.DataType);
-			}
-			Identifier idLeft = left as Identifier;
-			Identifier idRight = right as Identifier;
-
-			BinaryExpression binLeft = left as BinaryExpression;
-			BinaryExpression binRight = right as BinaryExpression;
-
-			// Order parameters in canonical order, so that two identifiers
-			// are sorted in ascending order for commutable operation.
-
-			if (BinaryExpression.Commutes(binOp) && IsLargerIdentifierNumber(left, right))
-			{
-				Expression tmp = left; left = right; right = tmp;
-			}
-			
-			if (binLeft != null)
-			{
-				Constant cLeftRight = binLeft.Right as Constant;
-				if (cLeftRight != null && cRight != null && binLeft.Operator == Operator.IAdd && binOp == Operator.IAdd)
-				{
-					return new BinaryExpression(binOp, valType, binLeft.Left, SimplifyTwoConstants(binOp, cLeftRight, cRight));
-				}
-			}
-
-			return new BinaryExpression(binOp, valType, left, right);
-		}
-
-		private Constant MakeZero(DataType type)
-		{
-			return Constant.Create(type, 0);
-		}
-
-		private Constant PossibleConstant(Expression e)
-		{
-			Constant c = e as Constant;
-			if (c == null)
-			{
-				Identifier left = e as Identifier;
-				if (left != null && left != ValueNumbering.AnyValueNumber.Instance)
-				{
-					c = dad.GetDefiningExpression(left) as Constant;
-				}
-			}
-			return c;
-		}
-
-		public Expression Simplify(Expression e)
-		{
-			return e.Accept(this);
-		}
-
-		private Expression SimplifyPhiFunction(Expression [] simpleParams)
-		{
-			Identifier any = ValueNumbering.AnyValueNumber.Instance;
-			Expression eq = any;
-			foreach (Expression vn in simpleParams)
-			{
-				if (vn != eq)
-				{
-					if (eq != any)
-						return new PhiFunction(eq.DataType, simpleParams);
-					else if (vn != any)
-						eq = vn;
-				}
-			}
-			return eq;
-		}
-
-        public Expression VisitAddress(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-		public Expression VisitApplication(Application app)
-		{
-			return app;
-		}
-
-		public Expression VisitArrayAccess(ArrayAccess acc)
-		{
-			var a = acc.Index.Accept(this);
-			var i = acc.Array.Accept(this);
-			return new ArrayAccess(acc.DataType, a, i);
-		}
-
-		/// <summary>
-		/// Simplifies a binary expression by finding algebraic equivalents.
-		/// </summary>
-		/// <param name="bin"></param>
-		/// <returns></returns>
-		public virtual Expression VisitBinaryExpression(BinaryExpression bin)
-		{
-			Expression simpleLeft = bin.Left.Accept(this);
-			Expression simpleRight = bin.Right.Accept(this);
-
-			return AlgebraicSimplification(bin.Operator, bin.DataType, simpleLeft, simpleRight);
-		}
-
-		public Expression VisitCast(Cast cast)
-		{
-			cast.Expression.Accept(this);
-			Constant c = cast.Expression as Constant;
-			if (c != null)
-			{
-				PrimitiveType p = c.DataType as PrimitiveType;
-				if (p != null && p.IsIntegral)
-				{
-					return Constant.Create(cast.DataType, c.ToInt32());
-				}
-			}
-			return cast;
-		}
-
-		public Expression VisitConditionOf(ConditionOf cc)
-		{
-			cc.Expression.Accept(this);
-			return cc;
-		}
-
-		public Expression VisitConstant(Constant c)
-		{
-			return c;
-		}
-
-		public Expression VisitDepositBits(DepositBits d)
-		{
-			Expression src = d.Source.Accept(this);
-			if (src is ValueNumbering.AnyValueNumber)
-				return d;
-			Expression ins = d.InsertedBits.Accept(this);
-			if (ins is ValueNumbering.AnyValueNumber)
-				return d;
-			d.Source = src;
-			d.InsertedBits = ins;
-			return d;
-		}
-
-		public Expression VisitDereference(Dereference deref)
-		{
-			deref.Expression = deref.Expression.Accept(this);
-			return deref;
-		}
-
-		public Expression VisitFieldAccess(FieldAccess acc)
-		{
-			acc.Structure = acc.Structure.Accept(this);
-			return acc;
-		}
-
-		public Expression VisitPointerAddition(PointerAddition pa)
-		{
-			return new PointerAddition(pa.DataType, pa.Pointer.Accept(this), pa.Offset);
-		}
-
-		public Expression VisitProcedureConstant(ProcedureConstant pc)
-		{
-			return pc;
-		}
-
-		public Expression VisitIdentifier(Identifier id)
-		{
-			if (id.Number >= 0)
-				return dad.GetValueNumber(id);
-			else
-				return id;
-		}
-
-		public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
-		{
-			Expression ptr = mps.BasePointer.Accept(this);
-			Expression memberPtr = mps.MemberPointer.Accept(this);
-			return new MemberPointerSelector(mps.DataType, ptr, memberPtr);
-		}
-
-		public Expression VisitMemoryAccess(MemoryAccess access)
-		{
-			Expression simpleExpr = access.EffectiveAddress.Accept(this);
-			return new MemoryAccess(access.MemoryId, simpleExpr, access.DataType);
-		}
-
-		public Expression VisitMkSequence(MkSequence seq)
-		{
-			Expression head = seq.Head.Accept(this);
-			Expression tail = seq.Tail.Accept(this);
-			return new MkSequence(seq.DataType, head, tail);
-		}
-
-		public Expression VisitScopeResolution(ScopeResolution scope)
-		{
-			return scope;
-		}
-
-		public Expression VisitSegmentedAccess(SegmentedAccess access)
-		{
-			Expression b = access.BasePointer.Accept(this);
-			Expression ea = access.EffectiveAddress.Accept(this);
-			return new SegmentedAccess(access.MemoryId, b, ea, access.DataType);
-		}
-
-		public Expression VisitPhiFunction(PhiFunction phi)
-		{
-			Expression [] simpleParams = new Expression[phi.Arguments.Length];
-			int i = 0;
-			foreach (Identifier id in phi.Arguments)
-			{
-				simpleParams[i] = id.Accept(this);
-				++i;
-			}
-			return SimplifyPhiFunction(simpleParams);
-		}
-			
-		public Expression VisitTestCondition(TestCondition tc)
-		{
-			return new TestCondition(tc.ConditionCode, tc.Expression.Accept(this));
-		}
-
-		public Expression VisitSlice(Slice slice)
-		{
-			return new Slice(slice.DataType, slice.Expression.Accept(this), (uint) slice.Offset);
-		}
-
-		public Expression VisitUnaryExpression(UnaryExpression unary)
-		{
-			if (unary.Operator == Operator.AddrOf)
-				return unary;
-			Expression u = unary.Expression.Accept(this);
-			if (u is ValueNumbering.AnyValueNumber)
-				return unary;
-			return new UnaryExpression(unary.Operator, unary.DataType, u);
-		}
-		
-
-		public bool IsLargerIdentifierNumber(Expression e1, Expression e2)
-		{
-			Identifier id1 = e1 as Identifier;
-			if (id1 == null)
-				return false;
-			Identifier id2 = e2 as Identifier;
-			if (id2 == null)
-				return false;
-			return id1.Number > id2.Number;
-		}
-
-        [Obsolete("Use Expression.IsZero")]
-		public bool IsZero(Expression expr)
-		{
-			Constant c = expr as Constant;
-			if (c == null)
-				return false;
-			return c.IsIntegerZero;
-		}
-
-		public Expression Lookup(Expression expr, Expression id)
-		{
-			return dad.Lookup(expr, table, id);
-		}
-
-		public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)
-		{
-			PrimitiveType lType = (PrimitiveType) l.DataType;
-			PrimitiveType rType = (PrimitiveType) r.DataType;
-			if ((lType.Domain & rType.Domain) == 0)
-				throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
-			return ((BinaryOperator)op).ApplyConstants(l, r);
-		}
-    }
-    #endregion
 }

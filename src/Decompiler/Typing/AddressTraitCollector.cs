@@ -289,6 +289,11 @@ namespace Decompiler.Typing
 			handler.MemAccessTrait(basePointer, access, access.DataType.Size, tvField, 0);
 		}
 
+        public void VisitOutArgument(OutArgument outArg)
+        {
+            throw new NotImplementedException();
+        }
+
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			throw new NotImplementedException();

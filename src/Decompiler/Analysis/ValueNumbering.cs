@@ -167,6 +167,11 @@ namespace Decompiler.Analysis
             {
                 throw new NotImplementedException();
             }
+
+            public bool IsUsedInPhi(Identifier id)
+            {
+                return false;
+            }
         }
 
 		/// <summary>

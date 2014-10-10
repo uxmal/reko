@@ -236,20 +236,7 @@ namespace Decompiler.Analysis
 				app.Procedure.Accept(this);
 				for (int i = app.Arguments.Length - 1; i >= 0; --i)
 				{
-					Expression exp = app.Arguments[i];
-					UnaryExpression u = exp as UnaryExpression;
-					if (u != null && u.Operator == Operator.AddrOf)
-					{
-						Identifier id = u.Expression as Identifier;
-						if (id != null)
-							MarkDefined(id);
-						else
-							u.Expression.Accept(this);
-					}
-					else
-					{
-						exp.Accept(this);
-					}
+                    app.Arguments[i].Accept(this);
 				}
 			}
 
@@ -284,6 +271,15 @@ namespace Decompiler.Analysis
                 dict.TryGetValue(id, out bits);
                 dict[id] = (byte)(bits & unchecked((byte)~BitDeadIn));
 			}
+
+            public override void VisitOutArgument(OutArgument outArg)
+            {
+                Identifier id = outArg.Expression as Identifier;
+                if (id != null)
+                    MarkDefined(id);
+                else
+                    outArg.Expression.Accept(this);
+            }
 		}
 
 		public class VariableRenamer : InstructionTransformer
@@ -476,6 +472,17 @@ namespace Decompiler.Analysis
 				}
 				return appl;
 			}
+
+            public override Expression VisitOutArgument(OutArgument outArg)
+            {
+                var id = outArg.Expression as Identifier;
+                Expression exp;
+                if (id != null)
+                    exp = NewDef(id, outArg, true);
+                else 
+                    exp = outArg.Expression.Accept(this);
+                return new OutArgument(outArg.DataType, exp);
+            }
 
 			public override Expression VisitIdentifier(Identifier id)
 			{

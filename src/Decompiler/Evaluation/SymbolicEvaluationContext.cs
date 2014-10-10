@@ -174,8 +174,9 @@ namespace Decompiler.Evaluation
             var args = appl.Arguments;
             for (int i = 0; i < args.Length; ++i)
             {
-                var outArg = args[i] as UnaryExpression;
-                if (outArg == null || outArg.Operator != Operator.AddrOf) continue;
+                var outArg = args[i] as OutArgument;
+                if (outArg == null)
+                    continue;
                 var outId = outArg.Expression as Identifier;
                 if (outId != null)
                     SetValue(outId, Constant.Invalid);
@@ -210,6 +211,11 @@ namespace Decompiler.Evaluation
         {
         }
 
+        public bool IsUsedInPhi(Identifier id)
+        {
+            return false;
+        }
+        
         public void UpdateRegistersTrashedByProcedure(ProcedureFlow pf)
         {
             foreach (int r in pf.TrashedRegisters)

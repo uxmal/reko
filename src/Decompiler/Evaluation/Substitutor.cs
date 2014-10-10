@@ -50,25 +50,12 @@ namespace Decompiler.Evaluation
             var exprs = new Expression[appl.Arguments.Length];
             for (int i = 0; i < exprs.Length; ++i)
             {
-                if (IsAddrOf(appl.Arguments[i]))
-                {
-                    exprs[i] = appl.Arguments[i];
-                }
-                else
-                {
-                    var exp = appl.Arguments[i].Accept(this);
-                    if (exp == Constant.Invalid)
-                        return exp;
-                    exprs[i] = exp;
-                }
+                var exp = appl.Arguments[i].Accept(this);
+                if (exp == Constant.Invalid)
+                    return exp;
+                exprs[i] = exp;
             }
             return new Application(fn, appl.DataType, exprs);
-        }
-
-        private bool IsAddrOf(Expression ex)
-        {
-            var un = ex as UnaryExpression;
-            return un != null && un.Operator == Operator.AddrOf;
         }
 
         public Expression VisitArrayAccess(ArrayAccess acc)
@@ -152,6 +139,11 @@ namespace Decompiler.Evaluation
         public Expression VisitMkSequence(MkSequence seq)
         {
             throw new NotImplementedException();
+        }
+
+        public Expression VisitOutArgument(OutArgument outArg)
+        {
+            return Constant.Invalid;
         }
 
         public Expression VisitPhiFunction(PhiFunction phi)

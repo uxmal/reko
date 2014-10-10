@@ -188,6 +188,7 @@
     <Compile Include="Expressions\MemberPointerSelector.cs" />
     <Compile Include="Expressions\MemoryAccess.cs" />
     <Compile Include="Expressions\MkSequence.cs" />
+    <Compile Include="Expressions\OutArgument.cs" />
     <Compile Include="Expressions\PhiFunction.cs" />
     <Compile Include="Expressions\PointerAddition.cs" />
     <Compile Include="Expressions\ProcedureConstant.cs" />

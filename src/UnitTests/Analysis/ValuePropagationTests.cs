@@ -101,6 +101,12 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
         [Test]
+        public void VpReg00011()
+        {
+            RunTest("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");
+        }
+
+        [Test]
         public void VpLoop()
         {
             var b = new ProgramBuilder();

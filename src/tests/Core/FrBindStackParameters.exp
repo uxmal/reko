@@ -1,8 +1,8 @@
 // Mem0:Global memory
-// fp:Temporary
+// fp:fp
 // wLoc02:Local -0002
 // wLoc04:Local -0004
-// sp:sp
-// ss:ss
+// wArg04:Stack +0004
+// wArg06:Stack +0006
 // return address size: 4
-foo(wLoc04, wLoc02)
+foo(wArg04, wArg06)

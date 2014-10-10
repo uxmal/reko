@@ -17,13 +17,13 @@ l0C00_000E:
 	word16 ax_22 = 0x0000
 	// succ:  l0C00_0014
 l0C00_0014:
-	word16 si_29 = Mem21[ds:si + 0x0002:word16]
+	word16 si_28 = Mem21[ds:si + 0x0002:word16]
 	ax_22 = ax_22 + Mem21[ds:si:word16]
-	si = si_29
-	branch si_29 != 0x0000 l0C00_0014
+	si = si_28
+	branch si_28 != 0x0000 l0C00_0014
 	// succ:  l0C00_001D l0C00_0014
 l0C00_001D:
-	Mem34[ds:0x0302:word16] = ax_22
+	Mem33[ds:0x0302:word16] = ax_22
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -40,12 +40,12 @@ void fn0C00_0000(word16 bx, word16 si, selector ds)
 	word16 ax_22 = 0x0000;
 	do
 	{
-		word16 si_29 = Mem21[ds:si + 0x0002:word16];
+		word16 si_28 = Mem21[ds:si + 0x0002:word16];
 		ax_22 = ax_22 + Mem21[ds:si:word16];
-		si = si_29;
+		si = si_28;
 	}
-	while (si_29 != 0x0000);
-	Mem34[ds:0x0302:word16] = ax_22;
+	while (si_28 != 0x0000);
+	Mem33[ds:0x0302:word16] = ax_22;
 	return;
 }
 ===========================

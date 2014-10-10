@@ -111,20 +111,17 @@ namespace Decompiler.Analysis
                 app.Procedure.Accept(this);
                 foreach (Expression exp in app.Arguments)
                 {
-                    UnaryExpression u = exp as UnaryExpression;
-                    if (u != null && u.Operator == Operator.AddrOf)
-                    {
-                        Identifier id = u.Expression as Identifier;
-                        if (id != null)
-                            Def(id, app, true);
-                        else
-                            u.Expression.Accept(this);
-                    }
-                    else
-                    {
-                        exp.Accept(this);
-                    }
+                    exp.Accept(this);
                 }
+            }
+
+            public override void VisitOutArgument(OutArgument outArg)
+            {
+                Identifier id = outArg.Expression as Identifier;
+                if (id != null)
+                    Def(id, outArg, true);
+                else
+                    outArg.Expression.Accept(this);
             }
         }
     }

@@ -10,7 +10,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	byte al_6
-	branch fn0C00_000A(al, &al_6) l0C00_0009
+	branch fn0C00_000A(al, out al_6) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
 	Mem8[ds:0x0300:byte] = al_6

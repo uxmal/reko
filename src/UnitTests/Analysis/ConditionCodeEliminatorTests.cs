@@ -309,8 +309,8 @@ done:
 		public void CceEqId()
 		{
 			Identifier r = Reg32("r");
-			Identifier z = Reg32("z");
-			Identifier y = Reg32("y");
+			Identifier z = FlagGroup("z");  // is a condition code.
+            Identifier y = FlagGroup("y");  // is a condition code.
 
             ProcedureBuilder m = new ProcedureBuilder();
             m.Assign(z, new ConditionOf(r));
@@ -318,7 +318,7 @@ done:
             m.Assign(y, z);
             ssaIds[y].DefStatement = m.Block.Statements.Last;
 			ssaIds[z].Uses.Add(m.Block.Statements.Last);
-			var stmBr = m.BranchIf(new TestCondition(ConditionCode.EQ, y), "foo");
+			var stmBr = m.BranchIf(m.Test(ConditionCode.EQ, y), "foo");
             ssaIds[y].Uses.Add(stmBr);
 
 			var cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());

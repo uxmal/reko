@@ -12,7 +12,7 @@ l0C00_0000:
 	word16 dx_20 = Mem0[ds:Mem0[ds:0x9CFD:word16] * 0x0002 - 0x6608:word16]
 	Mem21[ds:0x9CFF:word16] = dx_20
 	word16 ax_31
-	msdos_read_file(Mem21[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_20), &ax_31)
+	msdos_read_file(Mem21[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_20), out ax_31)
 	msdos_close_file(Mem21[ds:0x99D0:word16])
 	Mem42[ds:0xC36A:word16] = Mem21[ds:Mem21[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
 	Mem50[ds:0x0100:word16] = ds

@@ -7,12 +7,12 @@ ds:ds
     uses: Mem8[ds:0x0300:byte] = al_6
 al:al
     def:  def al
-    uses: C_7 = fn0C00_000A(al, &al_6)
+    uses: C_7 = fn0C00_000A(al, out al_6)
 al_6: orig: al
-    def:  C_7 = fn0C00_000A(al, &al_6)
+    def:  C_7 = fn0C00_000A(al, out al_6)
     uses: Mem8[ds:0x0300:byte] = al_6
 C_7: orig: C
-    def:  C_7 = fn0C00_000A(al, &al_6)
+    def:  C_7 = fn0C00_000A(al, out al_6)
     uses: branch C_7 l0C00_0009
 Mem8: orig: Mem0
     def:  Mem8[ds:0x0300:byte] = al_6
@@ -23,7 +23,7 @@ fn0C00_0000_entry:
 	def al
 	// succ:  l0C00_0000
 l0C00_0000:
-	C_7 = fn0C00_000A(al, &al_6)
+	C_7 = fn0C00_000A(al, out al_6)
 	branch C_7 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:

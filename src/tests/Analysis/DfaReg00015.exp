@@ -14,20 +14,20 @@ l0C00_0000:
 	Mem21[ss:0x06B4:word16] = ax
 	Mem23[ss:0x06B2:word16] = dx
 	word16 ax_30
-	msdos_open_file(0800:0887, 0x01, &ax_30)
+	msdos_open_file(0800:0887, 0x01, out ax_30)
 	selector ds_33 = Mem23[ss:0x06B2:selector]
 	word16 dx_35 = Mem23[ss:0x06B4:word16]
 	word32 ds_dx_36 = SEQ(ds_33, dx_35)
-	word16 si_38 = dx_35 + 0x0001
+	word16 si_38 = dx_35
 	// succ:  l0C00_0019
 l0C00_0019:
 	si_38 = si_62 + 0x0001
 	word16 si_62 = si_38
-	branch Mem23[ds_33:si_62:byte] != 0xFFFF l0C00_0019
+	branch Mem23[ds_33:si_62:byte] != 0x00 l0C00_0019
 	// succ:  l0C00_001E l0C00_0019
 l0C00_001E:
 	word16 ax_50
-	msdos_write_file(ax_30, si_62 + 0x0000 - dx_35 - 0x0001, ds_dx_36, &ax_50)
+	msdos_write_file(0x3D01, si_38 - dx_35 - 0x0001, ds_dx_36, out ax_50)
 	Mem55[ss:0x06B6:word16] = Mem23[ss:0x06B6:word16]
 	fn0C00_0037(0x0000, 0x00FF, ds_33)
 	msdos_terminate((byte) Mem55[ss:0x06B6:word16])

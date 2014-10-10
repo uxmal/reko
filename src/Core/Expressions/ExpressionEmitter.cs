@@ -229,6 +229,11 @@ namespace Decompiler.Core.Expressions
                 expr);
         }
 
+        public OutArgument Out(DataType dt, Expression expr)
+        {
+            return new OutArgument(dt, expr);
+        }
+
         public Expression Remainder(Expression a, Expression b)
         {
             return new BinaryExpression(

@@ -29,7 +29,6 @@ cx_15: orig: cx
     uses: ax_18 = ax_16 + cx_15 + cx_15
           ax_18 = ax_16 + cx_15 + cx_15
           cx_22 = cx_15 - 0x0001
-          branch cx_15 != 0x0001 l0C00_0004
 ax_16: orig: ax
     def:  ax_16 = PHI(ax_10, ax_18)
     uses: ax_18 = ax_16 + cx_15 + cx_15
@@ -44,7 +43,8 @@ SZO_20: orig: SZO
 C_21: orig: C
 cx_22: orig: cx
     def:  cx_22 = cx_15 - 0x0001
-    uses: cx_15 = PHI(cx_14, cx_22)
+    uses: branch cx_22 != 0x0000 l0C00_0004
+          cx_15 = PHI(cx_14, cx_22)
 Mem23: orig: Mem0
     def:  Mem23[ds:0x0300:word16] = ax_18
 // fn0C00_0000
@@ -63,7 +63,7 @@ l0C00_0004:
 	ax_16 = PHI(ax_10, ax_18)
 	ax_18 = ax_16 + cx_15 + cx_15
 	cx_22 = cx_15 - 0x0001
-	branch cx_15 != 0x0001 l0C00_0004
+	branch cx_22 != 0x0000 l0C00_0004
 	// succ:  l0C00_000A l0C00_0004
 l0C00_000A:
 	Mem23[ds:0x0300:word16] = ax_18

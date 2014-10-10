@@ -46,7 +46,6 @@ cx_31: orig: cx
     def:  cx_31 = PHI(cx_30, cx_35)
     uses: bx_33 = bx_32 + cx_31
           cx_35 = cx_31 - 0x0001
-          branch cx_31 != 0x0001 l0C00_000E
 bx_32: orig: bx
     def:  bx_32 = PHI(bx_17, bx_33)
     uses: bx_33 = bx_32 + cx_31
@@ -57,7 +56,8 @@ bx_33: orig: bx
 SCZO_34: orig: SCZO
 cx_35: orig: cx
     def:  cx_35 = cx_31 - 0x0001
-    uses: cx_31 = PHI(cx_30, cx_35)
+    uses: branch cx_35 != 0x0000 l0C00_000E
+          cx_31 = PHI(cx_30, cx_35)
 ax_36: orig: ax
     def:  ax_36 = -wArg04
     uses: bx_39 = ax_36
@@ -84,7 +84,7 @@ l0C00_000E:
 	bx_32 = PHI(bx_17, bx_33)
 	bx_33 = bx_32 + cx_31
 	cx_35 = cx_31 - 0x0001
-	branch cx_31 != 0x0001 l0C00_000E
+	branch cx_35 != 0x0000 l0C00_000E
 	// succ:  l0C00_0012 l0C00_000E
 l0C00_0012:
 	goto l0C00_0019

@@ -103,35 +103,12 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/nested_repeats.asm", "Analysis/SsaNestedRepeats.txt");
 		}
 
-
-
-        [Test]
-        public void SsaMockTest()
-        {
-            var m = new ProcedureBuilder("SsaMock");
-            Identifier r0 = m.Register(0);
-            Identifier r1 = m.Register(1);
-
-            m.Assign(r0, m.Int32(0));
-
-            m.Label("top");
-            m.Compare("Z", r0, m.Int32(2));
-            m.BranchCc(ConditionCode.NE, "skip");
-            m.Assign(r0, m.Int32(0));
-
-            m.Label("skip");
-            m.Compare("Z", r1, m.Int32(3));
-            m.BranchCc(ConditionCode.NE, "top");
-            m.Return();
-            RunTest(m, "Analysis/SsaMockTest.txt");
-        }
-
         [Test]
         public void SsaOutParamters()
         {
             ProcedureBuilder m = new ProcedureBuilder("foo");
             Identifier r4 = m.Register(4);
-            m.Store(m.Int32(0x400), m.Fn("foo", m.AddrOf(r4)));
+            m.Store(m.Int32(0x400), m.Fn("foo", m.Out(PrimitiveType.Pointer32, r4)));
             m.Return();
 
             RunTest(m, "Analysis/SsaOutParameters.txt");
