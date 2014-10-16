@@ -1,3 +1,15 @@
+// Before ///////
+// proc1
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	bx = bx >>u 0x02
+	f = bx < 0x0004
+	bx = 0x0004
+proc1_exit:
+
+// After ///////
 // proc1
 void proc1()
 proc1_entry:

@@ -38,6 +38,7 @@ namespace Decompiler.Core.Types
         EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2);
         void Write(TextWriter writer);
         void BuildEquivalenceClassDataTypes(TypeFactory factory);
+        TypeVariable CreateTypeVariable(TypeFactory factory);
     }
 
     public class TypeStore : ITypeStore
@@ -60,6 +61,15 @@ namespace Decompiler.Core.Types
             return EnsureExpressionTypeVariable(factory, e, null);
         }
 
+        public TypeVariable CreateTypeVariable(TypeFactory factory)
+        {
+            TypeVariable tv = factory.CreateTypeVariable();
+            tv.Class = new EquivalenceClass(tv);
+            this.TypeVariables.Add(tv);
+            this.usedClasses.Add(tv.Class.Number, tv.Class);
+            return tv;
+        }
+
         public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string name)
         {
             if (e != null && e.TypeVariable != null)
@@ -70,8 +80,8 @@ namespace Decompiler.Core.Types
             tv.Class = new EquivalenceClass(tv);
             if (e != null)
                 e.TypeVariable = tv;
-            TypeVariables.Add(tv);
-            usedClasses.Add(tv.Class.Number, tv.Class);
+            this.TypeVariables.Add(tv);
+            this.usedClasses.Add(tv.Class.Number, tv.Class);
             return tv;
         }
 
@@ -256,6 +266,5 @@ namespace Decompiler.Core.Types
             expr.TypeVariable.DataType = dt;
             expr.TypeVariable.OriginalDataType = dt;
         }
-
     }
 }

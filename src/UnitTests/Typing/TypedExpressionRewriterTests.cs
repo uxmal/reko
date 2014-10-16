@@ -48,13 +48,16 @@ namespace Decompiler.UnitTests.Typing
         {
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
+                fut.TextWriter.WriteLine("// Before ///////");
+                DumpProgram(program, fut);
+
                 SetupPreStages(program.Architecture);
                 aen.Transform(program);
                 eqb.Build(program);
                 coll = new TraitCollector(factory, store, dtb, program);
                 coll.CollectProgramTraits(program);
                 dtb.BuildEquivalenceClassDataTypes();
-
+                store.Dump();
                 cpf.FollowConstantPointers(program);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
@@ -72,8 +75,18 @@ namespace Decompiler.UnitTests.Typing
                 }
                 finally
                 {
+                    fut.TextWriter.WriteLine("// After ///////");
                     DumpProgAndStore(program, fut);
                 }
+            }
+        }
+
+        private void DumpProgram(Program program, FileUnitTester fut)
+        {
+            foreach (Procedure proc in program.Procedures.Values)
+            {
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
             }
         }
 
@@ -223,10 +236,8 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-        [Ignore("Need a constant pointer analysis phase")]
 		public void TerArrayConstantPointers()
 		{
-			
             ProgramBuilder pp = new ProgramBuilder();
             pp.Add("Fn", m =>
             {
@@ -234,7 +245,6 @@ namespace Decompiler.UnitTests.Typing
                 Identifier i = m.Local32("i");
                 m.Assign(a, 0x00123456);		// array pointer
                 m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
-                pp.Add(m);
             });
 			RunTest(pp.BuildProgram(), "Typing/TerArrayConstantPointers.txt");
 		}
@@ -344,7 +354,7 @@ namespace Decompiler.UnitTests.Typing
             {
                 Identifier p = m.Local32("p");
                 Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
-                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(3)));
+                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(40)));
             });
             RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
         }

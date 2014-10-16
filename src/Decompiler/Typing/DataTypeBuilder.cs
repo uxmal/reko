@@ -137,14 +137,16 @@ namespace Decompiler.Typing
 			return MergeIntoDataType(function, pfn);
 		}
 
-		public DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tField)
+		public DataType MemAccessArrayTrait(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, Expression expField)
 		{
 			var element = factory.CreateStructureType(null, elementSize);
-			if (tField != null)
-				element.Fields.Add(0, tField.TypeVariable);
-			var a = factory.CreateArrayType(element, length);
+			if (expField != null)
+				element.Fields.Add(0, expField.TypeVariable);
+            var tvElement = store.CreateTypeVariable(factory);
+            tvElement.OriginalDataType = element;
 
-			return MemoryAccessCommon(tBase, tStruct, offset, a, structPtrSize);
+			DataType dtArray = factory.CreateArrayType(tvElement, length);
+		    return MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
 		}
 		
 		public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)

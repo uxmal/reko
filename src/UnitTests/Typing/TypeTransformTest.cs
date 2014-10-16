@@ -267,6 +267,20 @@ namespace Decompiler.UnitTests.Typing
             RunTest(m.BuildProgram(), "Typing/TtranSegmentedPointer.txt");
         }
 
+        [Test]
+        public void TtranArrayConstantPointers()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier i = m.Local32("i");
+                m.Assign(a, 0x00123456);		// array pointer
+                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TtranArrayConstantPointers.txt");
+        }
+
 		protected override void RunTest(Program program, string outputFileName)
 		{
 			ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);

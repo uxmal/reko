@@ -1,3 +1,18 @@
+// Before ///////
+// SegmentedMemoryPointerMock
+void SegmentedMemoryPointerMock()
+SegmentedMemoryPointerMock_entry:
+	// succ:  l1
+l1:
+	si = 0x0001
+	ax = Mem0[cs:si:word16]
+	si2 = 0x0005
+	ax = Mem0[cs:si2:word16]
+	Mem0[cs:0x1234:word16] = ax
+	Mem0[cs:si + 0x0002:word16] = ax
+SegmentedMemoryPointerMock_exit:
+
+// After ///////
 // SegmentedMemoryPointerMock
 void SegmentedMemoryPointerMock()
 SegmentedMemoryPointerMock_entry:

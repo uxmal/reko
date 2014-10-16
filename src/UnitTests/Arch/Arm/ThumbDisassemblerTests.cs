@@ -18,41 +18,37 @@
  */
 #endregion
 
+using Decompiler.Arch.Arm;
+using Decompiler.Core;
+using Decompiler.Core.Machine;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Decompiler.UnitTests.Arch.Arm
 {
-    [Flags]
-    public enum OpFlags : short
+    [TestFixture]
+    public class ThumbDisassemblerTests : ArmTestBase
     {
-        None,
-        S = 1,
-        D = 2,
-        E = 3,
-        P = 4,
+        protected override IProcessorArchitecture CreateArchitecture()
+        {
+            return new ArmProcessorArchitecture();
+        }
 
-        // Rounding modes
-        Pl = 5,
-        Mi = 6,
-        Zr = 7,
+        protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
+        {
+            return new ThumbDisassembler(arch, rdr);
+        }
 
-        L = 0x10,
-     
-        // Ldm/stm
-        ED = 0x20,
-        EA = 0x30,
-        FD = 0x40,
-        FA = 0x50,
-
-        DA = 0x60,
-        DB = 0x70,
-        IA = 0x80,
-        IB = 0x80,
-
-        // 
-        T = 0x40,
+        [Test]
+        [Ignore("Start here if you want to!")]
+        public void Thumb_Initial()
+        {
+            var instr = Disassemble(0xE92CCFF3);
+            Assert.AreEqual("add.w\tr2,r1,r1,lsl #8", instr.ToString());
+        }
     }
 }

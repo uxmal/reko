@@ -38,6 +38,26 @@ namespace Decompiler.Arch.Arm
             this.instr = instr;
         }
 
+        public IEnumerable<int> GetRegisters()
+        {
+            uint m = 1u;
+            for (int i = 0; i < 16; ++i, m <<= 1)
+            {
+                if ((instr & m) != 0)
+                    yield return i;
+            }
+        }
+
+        public IEnumerable<int> GetRegistersInverted()
+        {
+            uint m = 0x8000u;
+            for (int i = 15; i >= 0; --i, m >>= 1)
+            {
+                if ((instr & m) != 0)
+                    yield return i;
+            }
+        }
+
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write('{');
@@ -57,7 +77,7 @@ namespace Decompiler.Arch.Arm
                     if (j - i != 0)
                     {
                         writer.Write((j - i > 1) ? '-' : ',');
-                        writer.Write(A32Registers.GpRegs[i].Name);
+                        writer.Write(A32Registers.GpRegs[j].Name);
                     }
                     i = j; w = (w >> (j + 1)) << (j + 1);
                     if (w != 0) writer.Write(',');

@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch.Arm
 {
-    [TestFixture]   
+    [TestFixture]
     class ArmRewriterTests : RewriterTestBase
     {
         private ArmProcessorArchitecture arch = new ArmProcessorArchitecture();
@@ -49,13 +49,21 @@ namespace Decompiler.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
-            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame);
+            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, null);
         }
 
         private void BuildTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
-                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u  >> 24)})
+                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
+                .ToArray();
+            image = new LoadedImage(new Address(0x00100000), bytes);
+        }
+
+        private void BuildTest(params uint[] words)
+        {
+            var bytes = words
+                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
             image = new LoadedImage(new Address(0x00100000), bytes);
         }
@@ -94,7 +102,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             BuildTest("1100 00 1 0010 0 0010 0001 0000 00000100");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|L--|if (Test(GT,SCZO)) r1 = r2 - 0x00000004");
+                "1|L--|if (Test(GT,NZV)) r1 = r2 - 0x00000004");
         }
 
         [Test]
@@ -103,7 +111,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             BuildTest("1110 00 0 1100 0 1100 0001 00100 000 0100");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|L--|r1 = r12 | r4 << 0x04");
+                "1|L--|r1 = ip | r4 << 0x04");
         }
 
         [Test]
@@ -112,7 +120,75 @@ namespace Decompiler.UnitTests.Arch.Arm
             BuildTest("1100 1010 000000000000000000000000");
             AssertCode(
                 "0|00100000(4): 1 instructions",
-                "1|T--|if (Test(GT,SCZO)) branch 00100008");
+                "1|T--|if (Test(GT,NZV)) branch 00100008");
+        }
+
+        [Test]
+        public void ArmRw_lsl()
+        {
+            BuildTest(0xE1a00200);  // mov\tr0,r0,lsl #4
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r0 << 0x04");
+        }
+
+        [Test]
+        public void ArmRw_stmdb()
+        {
+            BuildTest(0xE92C003B);  // stmdb ip!,{r0,r1,r3-r5},lr,pc}
+            AssertCode(
+                "0|00100000(4): 6 instructions",
+                "1|L--|Mem0[ip:word32] = r0",
+                "2|L--|Mem0[ip - 0x00000004:word32] = r1",
+                "3|L--|Mem0[ip - 0x00000008:word32] = r3",
+                "4|L--|Mem0[ip - 0x0000000C:word32] = r4",
+                "5|L--|Mem0[ip - 0x00000010:word32] = r5",
+                "6|L--|ip = ip - 0x00000014");
+        }
+
+        [Test]
+        public void ArmRw_bllt()
+        {
+            BuildTest(0xBB000330);  // bllt
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|T--|if (Test(LT,NV)) call 00100CC8 (0)");
+        }
+
+        [Test]
+        public void ArmRw_ldr()
+        {
+            BuildTest(0xE5940008);  // ldr r0,[r4,#8]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = Mem0[r4 + 0x00000008:word32]");
+        }
+
+        [Test]
+        public void ArmRw_bne()
+        {
+            BuildTest(0x1A000004);  // bne
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100018");
+        }
+
+        [Test]
+        public void ArmRw_bic()
+        {
+            BuildTest(0xE3CEB3FF);  // bic
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|fp = lr & ~0xFC000003");
+        }
+
+        [Test]
+        public void ArmRw_mov_pc_lr()
+        {
+            BuildTest(0xE1B0F00E);  // mov pc,lr
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|T--|return (0,0)");
         }
     }
 }

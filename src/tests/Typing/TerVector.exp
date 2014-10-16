@@ -1,3 +1,13 @@
+// Before ///////
+// VectorMock
+void VectorMock()
+VectorMock_entry:
+	// succ:  l1
+l1:
+	mod = Mem0[v:real32] + Mem0[v + 0x00000004:real32] + Mem0[v + 0x00000008:real32]
+VectorMock_exit:
+
+// After ///////
 // VectorMock
 void VectorMock()
 VectorMock_entry:

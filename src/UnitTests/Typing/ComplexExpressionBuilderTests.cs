@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Typing
 			        { 4, PrimitiveType.Word32, null }
                 }
             };
-			TypeVariable tvPoint = store.EnsureExpressionTypeVariable(factory, null);
+			TypeVariable tvPoint = store.CreateTypeVariable(factory);
             EquivalenceClass eq = new EquivalenceClass(tvPoint)
             {
                 DataType = point
@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Typing
 			        new UnionAlternative("r", PrimitiveType.Real32),
                 }
             };
-			TypeVariable tvUnion = store.EnsureExpressionTypeVariable(factory, null);
+			TypeVariable tvUnion = store.CreateTypeVariable(factory);
             eq = new EquivalenceClass(tvUnion)
             {
                 DataType = u

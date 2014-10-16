@@ -66,26 +66,52 @@ namespace Decompiler.Arch.Mos6502
                 switch (instrCur.Code)
                 {
                 default: throw NYI();
+                case Opcode.adc: Adc(); break;
+                case Opcode.and: And(); break;
                 case Opcode.asl: Asl(); break;
+                case Opcode.bcc: Branch(ConditionCode.UGE, FlagM.CF); break;
+                case Opcode.bcs: Branch(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.beq: Branch(ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.bit: Bit(); break;
+                case Opcode.bmi: Branch(ConditionCode.SG, FlagM.NF); break;
+                case Opcode.bne: Branch(ConditionCode.NE, FlagM.ZF); break;
+                case Opcode.bpl: Branch(ConditionCode.NS, FlagM.NF); break;
+                case Opcode.brk: Brk(); break;
+                case Opcode.bvc: Branch(ConditionCode.NO, FlagM.VF); break;
+                case Opcode.bvs: Branch(ConditionCode.OV, FlagM.VF); break;
+                case Opcode.clc: SetFlag(FlagM.CF, false); break;
+                case Opcode.cld: SetFlag(FlagM.DF, false); break;
+                case Opcode.cli: SetFlag(FlagM.IF, false); break;
+                case Opcode.clv: SetFlag(FlagM.VF, false); break;
                 case Opcode.cmp: Cmp(Registers.a); break;
                 case Opcode.cpx: Cmp(Registers.x); break;
                 case Opcode.cpy: Cmp(Registers.y); break;
                 case Opcode.dec: Dec(); break;
                 case Opcode.dex: Dec(Registers.x); break;
                 case Opcode.dey: Dec(Registers.y); break;
+                case Opcode.eor: Eor(); break;
                 case Opcode.inc: Inc(); break;
                 case Opcode.inx: Inc(Registers.x); break;
                 case Opcode.iny: Inc(Registers.y); break;
+                case Opcode.jmp: Jmp(); break;
                 case Opcode.jsr: Jsr(); break;
                 case Opcode.lda: Ld(Registers.a); break;
                 case Opcode.ldx: Ld(Registers.x); break;
                 case Opcode.ldy: Ld(Registers.y); break;
+                case Opcode.lsr: Lsr(); break;
+                case Opcode.nop: continue; 
                 case Opcode.ora: Ora(); break;
                 case Opcode.pha: Push(Registers.a); break;
+                case Opcode.php: Push(AllRegs()); break;
                 case Opcode.pla: Pull(Registers.a); break;
+                case Opcode.rol: Rotate("__rol"); break;
+                case Opcode.ror: Rotate("__ror"); break;
+                case Opcode.rti: Rti(); break;
                 case Opcode.rts: Rts(); break;
                 case Opcode.sbc: Sbc(); break;
+                case Opcode.sec: SetFlag(FlagM.CF, true); break;
+                case Opcode.sed: SetFlag(FlagM.DF, true); break;
+                case Opcode.sei: SetFlag(FlagM.IF, true); break;
                 case Opcode.sta: St(Registers.a); break;
                 case Opcode.stx: St(Registers.x); break;
                 case Opcode.sty: St(Registers.y); break;
@@ -103,6 +129,11 @@ namespace Decompiler.Arch.Mos6502
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private Identifier AllRegs()
+        {
+            return FlagGroupStorage(FlagM.NF | FlagM.VF | FlagM.BF | FlagM.DF | FlagM.IF | FlagM.ZF | FlagM.CF);
         }
 
         private void Copy(RegisterStorage regDst, RegisterStorage regSrc)
@@ -146,8 +177,37 @@ namespace Decompiler.Arch.Mos6502
             var tmp = frame.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             emitter.Assign(tmp, emitter.Shl(mem, 1));
-            emitter.Assign(RewriteOperand(instrCur.Operand), tmp);
+            emitter.Assign(mem, tmp);
             emitter.Assign(c, emitter.Cond(tmp));
+        }
+
+        private void Lsr()
+        {
+            var mem = RewriteOperand(instrCur.Operand);
+            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
+            emitter.Assign(tmp, emitter.Shr(mem, 1));
+            emitter.Assign(mem, tmp);
+            emitter.Assign(c, emitter.Cond(tmp));
+        }
+
+        private void Bit()
+        {
+            var a = frame.EnsureRegister(Registers.a);
+            var mem = RewriteOperand(instrCur.Operand);
+            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var flags = FlagGroupStorage(FlagM.NF | FlagM.VF | FlagM.CF);
+            emitter.Assign(tmp, emitter.And(a, mem));
+            emitter.Assign(flags, emitter.Cond(tmp));
+        }
+
+        private void Brk()
+        {
+            emitter.Call(
+                new ProcedureConstant(
+                    PrimitiveType.PtrCode16,
+                    host.EnsurePseudoProcedure("__brk", VoidType.Instance, 0)),
+                2);
         }
 
         private void Cmp(RegisterStorage r)
@@ -194,6 +254,12 @@ namespace Decompiler.Arch.Mos6502
             emitter.Assign(c, emitter.Cond(id));
         }
 
+        private void Jmp()
+        {
+            var mem = (MemoryAccess) RewriteOperand(instrCur.Operand);
+            emitter.Goto(mem.EffectiveAddress);
+        }
+
         private void Jsr()
         {
             var mem  = (MemoryAccess) RewriteOperand(instrCur.Operand);
@@ -209,6 +275,29 @@ namespace Decompiler.Arch.Mos6502
             emitter.Assign(c, emitter.Cond(r));
         }
 
+
+        private void And()
+        {
+            var a = frame.EnsureRegister(Registers.a);
+            var mem = RewriteOperand(instrCur.Operand);
+            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
+            emitter.Assign(
+                a,
+                emitter.And(a, mem));
+            emitter.Assign(c, emitter.Cond(a));
+        }
+
+        private void Eor()
+        {
+            var a = frame.EnsureRegister(Registers.a);
+            var mem = RewriteOperand(instrCur.Operand);
+            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
+            emitter.Assign(
+                a,
+                emitter.Xor(a, mem));
+            emitter.Assign(c, emitter.Cond(a));
+        }
+
         private void Ora()
         {
             var a = frame.EnsureRegister(Registers.a);
@@ -222,21 +311,69 @@ namespace Decompiler.Arch.Mos6502
 
         private void Push(RegisterStorage reg)
         {
+            Push(frame.EnsureRegister(reg));
+        }
+
+        private void Push(Identifier reg)
+        {
             var s = frame.EnsureRegister(arch.StackRegister);
             emitter.Assign(s, emitter.ISub(s, 1));
-            emitter.Assign(emitter.LoadB(s), frame.EnsureRegister(reg));
+            emitter.Assign(emitter.LoadB(s), reg);
         }
 
         private void Pull(RegisterStorage reg)
         {
             var s = frame.EnsureRegister(arch.StackRegister);
-            emitter.Assign(frame.EnsureRegister(reg), emitter.LoadB(s));
+            var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
+            var r = frame.EnsureRegister(reg);
+            emitter.Assign(r, emitter.LoadB(s));
             emitter.Assign(s, emitter.IAdd(s, 1));
+            emitter.Assign(c, emitter.Cond(r));
+        }
+
+        private void Plp()
+        {
+            var s = frame.EnsureRegister(arch.StackRegister);
+            var c = AllRegs();
+            emitter.Assign(c, emitter.LoadB(s));
+            emitter.Assign(s, emitter.IAdd(s, 1));
+        }
+
+        private void Rotate(string rot)
+        {
+            var fn = new ProcedureConstant(
+                PrimitiveType.PtrCode16,
+                host.EnsurePseudoProcedure(rot, PrimitiveType.Byte, 2));
+            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
+            var arg = RewriteOperand(instrCur.Operand);
+            emitter.Assign(arg, emitter.Fn(fn, arg, Constant.Byte(1)));
+            emitter.Assign(c, emitter.Cond(arg));
+        }
+
+        private void Rti()
+        {
+            Plp();
+            Rts();
         }
 
         private void Rts()
         {
             emitter.Return(2, 0);
+        }
+
+        private void Adc()
+        {
+            var mem = RewriteOperand(instrCur.Operand);
+            var a = frame.EnsureRegister(Registers.a);
+            var c = frame.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
+            emitter.Assign(
+                a,
+                emitter.IAdd(
+                    emitter.IAdd(a, mem),
+                    c));
+            emitter.Assign(
+                frame.EnsureFlagGroup((uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                emitter.Cond(a));
         }
 
         private void Sbc()
@@ -254,6 +391,12 @@ namespace Decompiler.Arch.Mos6502
                 emitter.Cond(a));
         }
 
+        private void SetFlag(FlagM flag, bool value)
+        {
+            var reg = FlagGroupStorage(flag);
+            var v = Constant.Bool(value);
+            emitter.Assign(reg, v);
+        }
         private void St(RegisterStorage reg)
         {
             var mem = RewriteOperand(instrCur.Operand);

@@ -55,7 +55,7 @@ namespace Decompiler.Arch.Arm
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame);
+            return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
         }
 
         public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
@@ -155,7 +155,7 @@ namespace Decompiler.Arch.Arm
 
         public RegisterStorage StackRegister
         {
-            get { return ArmRegisters.r13; }
+            get { return A32Registers.sp; }
         }
 
         public uint CarryFlagMask
@@ -166,6 +166,7 @@ namespace Decompiler.Arch.Arm
         #endregion
     }
 
+    [Obsolete("", true)]
     public static class ArmRegisters
     {
         public static readonly RegisterStorage r0 = new RegisterStorage("r0", 0, PrimitiveType.Word32);
@@ -181,12 +182,12 @@ namespace Decompiler.Arch.Arm
         public static readonly RegisterStorage r8 = new RegisterStorage("r8", 8, PrimitiveType.Word32);
         public static readonly RegisterStorage r9 = new RegisterStorage("r9", 9, PrimitiveType.Word32);
         public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, PrimitiveType.Word32);
-        public static readonly RegisterStorage r11 = new RegisterStorage("r11", 11, PrimitiveType.Word32);
+        public static readonly RegisterStorage r11 = new RegisterStorage("fp", 11, PrimitiveType.Word32);
 
         public static readonly RegisterStorage r12 = new RegisterStorage("r12", 12, PrimitiveType.Word32);
         public static readonly RegisterStorage r13 = new RegisterStorage("r13", 13, PrimitiveType.Word32);
-        public static readonly RegisterStorage r14 = new RegisterStorage("r14", 14, PrimitiveType.Word32);
-        public static readonly RegisterStorage r15 = new RegisterStorage("r15", 15, PrimitiveType.Word32);
+        public static readonly RegisterStorage r14 = new RegisterStorage("lr", 14, PrimitiveType.Word32);
+        public static readonly RegisterStorage r15 = new RegisterStorage("pc", 15, PrimitiveType.Word32);
 
         public static readonly RegisterStorage[] Registers;
 

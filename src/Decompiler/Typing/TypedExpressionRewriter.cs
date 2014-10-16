@@ -143,7 +143,28 @@ namespace Decompiler.Typing
         {
             var a = NormalizeArrayPointer(acc.Array.Accept(this));
             var i = acc.Index.Accept(this);
+            i = ScaleDownIndex(i, a.DataType.Size);
             return new ArrayAccess(acc.DataType, a, i);
+        }
+
+        private Expression ScaleDownIndex(Expression exp, int elementSize)
+        {
+            var bin = exp as BinaryExpression;
+            if (exp == null || (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul))
+                return exp;
+            var cRight = bin.Right as Constant;
+            if (cRight == null)
+                return exp;
+            if (cRight.ToInt32() % elementSize != 0)
+                return exp;
+            var index = cRight.ToInt32() / elementSize;
+            if (index == 1)
+                return bin.Left;
+            return new BinaryExpression(
+                bin.Operator,
+                bin.DataType,
+                bin.Left,
+                Constant.Int32(index));
         }
 
         private Expression NormalizeArrayPointer(Expression arrayExp)
@@ -166,8 +187,8 @@ namespace Decompiler.Typing
 
 		public Instruction MakeAssignment(Expression dst, Expression src)
 		{
-            var tvDst = dst.TypeVariable;
-            var tvSrc = src.TypeVariable;
+			var tvDst = dst.TypeVariable;
+			var tvSrc = src.TypeVariable;
 			src = src.Accept(this);
 			DataType dtSrc = DataTypeOf(src);
 			dst = dst.Accept(this);
@@ -191,7 +212,6 @@ namespace Decompiler.Typing
 			}
 			return new Decompiler.Core.Absyn.AbsynAssignment(dst, src);
 		}
-		
 
 		public override Instruction TransformStore(Store store)
 		{

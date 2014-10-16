@@ -1,3 +1,18 @@
+// Before ///////
+// PtrPtrIntMock
+void PtrPtrIntMock()
+PtrPtrIntMock_entry:
+	// succ:  l1
+l1:
+	r2 = Mem0[r1:word32]
+	r3 = Mem0[r2:word32]
+	Mem0[0x00010000:word32] = r3
+	Mem0[0x00010004:word32] = r1
+	return r3
+	// succ:  PtrPtrIntMock_exit
+PtrPtrIntMock_exit:
+
+// After ///////
 // PtrPtrIntMock
 void PtrPtrIntMock()
 PtrPtrIntMock_entry:

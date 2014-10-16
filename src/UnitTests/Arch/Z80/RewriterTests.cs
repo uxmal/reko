@@ -135,5 +135,57 @@ namespace Decompiler.UnitTests.Arch.Z80
                 "1|L--|a = a + e",
                 "2|L--|SZC = cond(a)");
         }
+
+        [Test]
+        public void Z80rw_djnz()
+        {
+            BuildTest(0x10, 0xFE);
+            AssertCode(
+                "0|00000100(2): 2 instructions",
+                "1|L--|b = b - 0x01",
+                "2|T--|if (b != 0x00) branch 00000100");
+        }
+
+        [Test]
+        public void Z80rw_jc()
+        {
+            BuildTest(0xC2, 0xFE, 0xCA);
+            AssertCode(
+                "0|00000100(3): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch CAFE");
+        }
+
+        [Test]
+        public void Z80rw_ldir()
+        {
+            BuildTest(0xED, 0xB0);
+            AssertCode(
+                "0|00000100(2): 6 instructions",
+                "1|L--|Mem0[de:byte] = Mem0[hl:byte]",
+                "2|L--|hl = hl + 0x0001",
+                "3|L--|de = de + 0x0001",
+                "4|L--|bc = bc - 0x0001",
+                "5|T--|if (bc != 0x0000) branch 00000100",
+                "6|L--|P = false");
+        }
+
+        [Test]
+        public void Z80rw_call()
+        {
+            BuildTest(0xCD, 0xFE, 0xCA);
+            AssertCode(
+                "0|00000100(3): 1 instructions",
+                "1|T--|call 0xCAFE (2)");
+        }
+
+        [Test]
+        public void Z80rw_call_Cond()
+        {
+            BuildTest(0xC4, 0xFE, 0xCA);
+            AssertCode(
+                "0|00000100(3): 2 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00000103",
+                "2|T--|call 0xCAFE (2)");
+        }
     }
 }

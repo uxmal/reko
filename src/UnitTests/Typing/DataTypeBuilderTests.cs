@@ -146,12 +146,11 @@ namespace Decompiler.UnitTests.Typing
             Verify("Typing/DtbArrayAccess2.txt");
         }
 
-
 		[Test]
         [Ignore("Frame pointers require escape and alias analysis.")]
 		public void DtbFramePointer()
 		{
-			ProgramBuilder mock = new Mocks.ProgramBuilder();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new FramePointerMock(factory));
 			RunTest(mock, "Typing/DtbFramePointer.txt");
             throw new NotImplementedException();
@@ -262,9 +261,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbBuildEqClassDataTypes()
 		{
-			TypeVariable tv1 = store.EnsureExpressionTypeVariable(factory, null);
+			TypeVariable tv1 = store.CreateTypeVariable(factory);
 			tv1.OriginalDataType = PrimitiveType.Word32;
-			TypeVariable tv2 = store.EnsureExpressionTypeVariable(factory, null);
+			TypeVariable tv2 = store.CreateTypeVariable(factory);
 			tv2.OriginalDataType = PrimitiveType.Real32;
 			store.MergeClasses(tv1, tv2);
 
@@ -483,6 +482,20 @@ namespace Decompiler.UnitTests.Typing
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
+        }
+
+        [Test]
+        public void DtbArrayConstantPointers()
+        {
+             ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier i = m.Local32("i");
+                m.Assign(a, 0x00123456);		// array pointer
+                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
+            });
+			RunTest(pp.BuildProgram(), "Typing/DtbArrayConstantPointers.txt");
         }
 
 		protected override void RunTest(Program prog, string outputFile)

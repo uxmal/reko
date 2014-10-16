@@ -40,7 +40,7 @@ namespace Decompiler.Arch.Arm
         public static readonly RegisterStorage r8 = new RegisterStorage("r8", 8, PrimitiveType.Word32);
         public static readonly RegisterStorage r9 = new RegisterStorage("r9", 9, PrimitiveType.Word32);
         public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, PrimitiveType.Word32);
-        public static readonly RegisterStorage r11 = new RegisterStorage("r11", 11, PrimitiveType.Word32);
+        public static readonly RegisterStorage r11 = new RegisterStorage("fp", 11, PrimitiveType.Word32);
         public static readonly RegisterStorage ip = new RegisterStorage("ip", 12, PrimitiveType.Word32);
         public static readonly RegisterStorage sp = new RegisterStorage("sp", 13, PrimitiveType.Word32);
         public static readonly RegisterStorage lr = new RegisterStorage("lr", 14, PrimitiveType.Word32);
@@ -78,5 +78,14 @@ namespace Decompiler.Arch.Arm
         {
             f0, f1, f2, f3, f4, f5, f6, f7
         };
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        NF = 8,
+        ZF = 4,
+        CF = 2,
+        VF = 1
     }
 }

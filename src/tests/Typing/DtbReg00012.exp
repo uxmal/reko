@@ -78,7 +78,7 @@ Eq_4: word16
 	T_6 (in cx : word16)
 	T_30 (in cx - 0x0001 : word16)
 	T_31 (in 0x0000 : word16)
-Eq_5: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr (struct 0002 (0 T_19 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+Eq_5: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr T_65) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
 	T_5 (in ds : selector)
 	T_7 (in ds : selector)
 	T_12 (in ds : selector)
@@ -168,6 +168,9 @@ Eq_61: (memptr T_46 (struct (0 T_62 t0000)))
 	T_61 (in 0x0116 : word16)
 Eq_63: (memptr T_46 (struct (0 T_64 t0000)))
 	T_63 (in 0x0118 : word16)
+Eq_65: (struct 0002 (0 T_19 t0000))
+	T_65
+	T_66
 // Type Variables ////////////
 Globals: (in globals : (ptr (struct)))
   Class: Eq_1
@@ -187,15 +190,15 @@ T_4: (in cx : word16)
   OrigDataType: word16
 T_5: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr (struct 0002 (0 T_19 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
-  OrigDataType: (ptr (segment (5388 (arr (struct 0002 (0 T_24 t0000))) a5388)))
+  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr T_65) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+  OrigDataType: (ptr (segment (5388 (arr T_65) a5388)))
 T_6: (in cx : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
 T_7: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr (struct 0002 (0 T_19 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr T_65) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
   OrigDataType: (ptr (segment))
 T_8: (in fn0C00_0007(cx, ds) : void)
   Class: Eq_8
@@ -215,8 +218,8 @@ T_11: (in bx : word16)
   OrigDataType: int16
 T_12: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr (struct 0002 (0 T_19 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
-  OrigDataType: (ptr (segment (5388 (arr (struct 0002 (0 T_52 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr T_65) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+  OrigDataType: (ptr (segment (5388 (arr T_66) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
 T_13: (in bx : word16)
   Class: Eq_11
   DataType: int16
@@ -251,7 +254,7 @@ T_20: (in ah : byte)
   OrigDataType: byte
 T_21: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr (struct 0002 (0 T_19 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr T_65) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
   OrigDataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112)))
 T_22: (in 0x0000 : word16)
   Class: Eq_22
@@ -351,7 +354,7 @@ T_45: (in bx : word16)
   OrigDataType: word16
 T_46: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr (struct 0002 (0 T_19 t0000))) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
+  DataType: (ptr (segment (110 T_56 t0110) (112 T_58 t0112) (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118) (5388 (arr T_65) a5388) (53B8 T_37 t53B8) (53BA T_11 t53BA)))
   OrigDataType: (ptr (segment (114 T_60 t0114) (116 T_62 t0116) (118 T_64 t0118)))
 T_47: (in 0x4400 : word16)
   Class: Eq_43
@@ -425,3 +428,11 @@ T_64: (in Mem9[ds:0x0118:word16] : word16)
   Class: Eq_19
   DataType: word16
   OrigDataType: word16
+T_65:
+  Class: Eq_65
+  DataType: (struct 0002 (0 T_19 t0000))
+  OrigDataType: (struct 0002 (0 T_24 t0000))
+T_66:
+  Class: Eq_65
+  DataType: (struct 0002 (0 T_19 t0000))
+  OrigDataType: (struct 0002 (0 T_52 t0000))

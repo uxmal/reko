@@ -361,8 +361,8 @@ namespace Decompiler.Arch.Z80
                 OpRec oprec = null;
                 if (0x40 <= op && op < 0x80)
                     oprec = edOprecs[op-0x40];
-                else if (0xA0 <= op && op < 0xB0)
-                    oprec = edOprecs[op - 0x20];
+                else if (0xA0 <= op && op < 0xC0)
+                    oprec = edOprecs[op - 0x60];
                 else 
                     return new Z80Instruction { Code = Opcode.illegal };
                 return oprec.Decode(disasm, op, ((SingleByteOpRec)oprec).Format);

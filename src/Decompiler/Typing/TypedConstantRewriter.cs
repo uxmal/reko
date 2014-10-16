@@ -53,7 +53,12 @@ namespace Decompiler.Typing
                     if (pGlob != null)
                     {
                         object o = store.ResolvePossibleTypeVar(pGlob.Pointee);
-                        return (StructureType)o;
+                        return (StructureType) o;
+                    }
+                    pGlob = globals.DataType as Pointer;
+                    if (pGlob != null)
+                    {
+                        return pGlob.Pointee as StructureType;
                     }
                 }
                 return null;
@@ -76,7 +81,7 @@ namespace Decompiler.Typing
 		{
 			this.c = c;
 			DataType dtInferred = store.ResolvePossibleTypeVar(c.TypeVariable.DataType);
-			pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
+			this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
 			this.dereferenced = dereferenced;
 			return dtInferred.Accept(this);
 		}

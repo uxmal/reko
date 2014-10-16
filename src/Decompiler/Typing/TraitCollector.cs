@@ -267,7 +267,7 @@ namespace Decompiler.Typing
 			acc.Array.Accept(this);
 			acc.Index.Accept(this);
 			BinaryExpression b = acc.Index as BinaryExpression;
-			if (b != null && b.Operator == Operator.IMul)
+			if (b != null && (b.Operator == Operator.IMul || b.Operator == Operator.SMul || b.Operator == Operator.UMul))
 			{
 				Constant c = b.Right as Constant;
 				if (c != null)

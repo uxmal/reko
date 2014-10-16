@@ -1,9 +1,19 @@
+// Before ///////
 // proc1
 void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	f = p->ptr0004 < 0x00000003;
+	f = Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] < 0x00000028
+proc1_exit:
+
+// After ///////
+// proc1
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	f = p->ptr0004 < &globals->t0028;
 proc1_exit:
 
 // Equivalence classes ////////////
@@ -11,9 +21,9 @@ Eq_2: (struct "Eq_2" (4 (ptr Eq_5) ptr0004))
 	T_2 (in p : word32)
 Eq_5: (struct "foo" 0008)
 	T_5 (in Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] : (ptr (struct "foo" 0008)))
-	T_6 (in 0x00000003 : word32)
+	T_6 (in 0x00000028 : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+Globals: (in globals : (ptr (struct (28 (struct "foo" 0008) t0028))))
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 
@@ -33,11 +43,11 @@ T_5: (in Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] : (ptr (struct "foo" 000
   Class: Eq_5
   DataType: (ptr Eq_5)
   OrigDataType: (ptr (struct "foo" 0008))
-T_6: (in 0x00000003 : word32)
+T_6: (in 0x00000028 : word32)
   Class: Eq_5
   DataType: (ptr Eq_5)
   OrigDataType: int32
-T_7: (in p->ptr0004 < 0x00000003 : bool)
+T_7: (in p->ptr0004 < &globals->t0028 : bool)
   Class: Eq_7
   DataType: bool
   OrigDataType: bool

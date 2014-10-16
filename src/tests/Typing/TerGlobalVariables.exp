@@ -1,3 +1,15 @@
+// Before ///////
+// GlobalVariablesMock
+void GlobalVariablesMock()
+GlobalVariablesMock_entry:
+	// succ:  l1
+l1:
+	word32 ptr = 0x10000004
+	Mem0[ptr:real32] = 0.75F
+	Mem0[0x10000000:real32] = 0.5F
+GlobalVariablesMock_exit:
+
+// After ///////
 // GlobalVariablesMock
 void GlobalVariablesMock()
 GlobalVariablesMock_entry:

@@ -71,7 +71,8 @@ namespace Decompiler.Typing
 
         public DataType VisitArray(ArrayType at)
         {
-            throw new NotImplementedException();
+            at.ElementType = at.ElementType.Accept(this);
+            return at;
         }
 
         public DataType VisitEnum(EnumType e)

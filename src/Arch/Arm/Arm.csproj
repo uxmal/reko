@@ -81,6 +81,8 @@
     <Compile Include="A32Registers.cs" />
     <Compile Include="RegisterRangeOperand.cs" />
     <Compile Include="ShiftOperand.cs" />
+    <Compile Include="ThumbDisassembler.cs" />
+    <Compile Include="ThumbInstruction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

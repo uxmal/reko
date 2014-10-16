@@ -1,0 +1,14 @@
+// fn0000002B
+void fn0000002B()
+fn0000002B_entry:
+	// succ:  l0000002B
+l0000002B:
+fn0000002B_exit:
+
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+fn0C00_0000_exit:
+

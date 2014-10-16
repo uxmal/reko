@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Mocks
             ++procCount;
             prog.Procedures[new Address(procCount * 0x1000u)] = proc;
             prog.CallGraph.AddProcedure(proc);
-            nameToProcedure.Add(proc.Name, proc);
+            nameToProcedure[proc.Name] = proc;
         }
 
         public void Add(ProcedureBuilder mock)

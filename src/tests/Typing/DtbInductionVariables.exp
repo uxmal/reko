@@ -1,5 +1,5 @@
 // Equivalence classes ////////////
-Eq_1: (ptr (struct (0 (arr (struct 0001 (0 T_3 t0000)) 10) a0000) (10000 (arr (struct 0004 (0 T_5 t0000)) 16) a10000)))
+Eq_1: (ptr (struct (0 (arr T_6 10) a0000) (10000 (arr T_7 16) a10000)))
 	T_1 (in globals : (ptr (struct)))
 Eq_2: (ptr (struct 0001 (0 T_3 t0000)))
 	T_2 (in i : word32)
@@ -9,11 +9,15 @@ Eq_4: (ptr (struct 0004 (0 T_5 t0000)))
 	T_4 (in i2 : word32)
 Eq_5: int32
 	T_5 (in Mem0[i2:int32] : int32)
+Eq_6: (struct 0001 (0 T_3 t0000))
+	T_6
+Eq_7: (struct 0004 (0 T_5 t0000))
+	T_7
 // Type Variables ////////////
 T_1: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: (ptr (struct (0 (arr (struct 0001 (0 T_3 t0000)) 10) a0000) (10000 (arr (struct 0004 (0 T_5 t0000)) 16) a10000)))
-  OrigDataType: (ptr (struct (0 (arr (struct 0001 (0 T_3 t0000)) 10) a0000) (10000 (arr (struct 0004 (0 T_5 t0000)) 16) a10000)))
+  DataType: (ptr (struct (0 (arr T_6 10) a0000) (10000 (arr T_7 16) a10000)))
+  OrigDataType: (ptr (struct (0 (arr T_6 10) a0000) (10000 (arr T_7 16) a10000)))
 T_2: (in i : word32)
   Class: Eq_2
   DataType: (ptr (struct 0001 (0 T_3 t0000)))
@@ -30,3 +34,11 @@ T_5: (in Mem0[i2:int32] : int32)
   Class: Eq_5
   DataType: int32
   OrigDataType: int32
+T_6:
+  Class: Eq_6
+  DataType: (struct 0001 (0 T_3 t0000))
+  OrigDataType: (struct 0001 (0 T_3 t0000))
+T_7:
+  Class: Eq_7
+  DataType: (struct 0004 (0 T_5 t0000))
+  OrigDataType: (struct 0004 (0 T_5 t0000))

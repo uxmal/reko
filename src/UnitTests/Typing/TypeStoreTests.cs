@@ -36,8 +36,8 @@ namespace Decompiler.UnitTests.Typing
 			TypeStore store = new TypeStore();
 			TypeFactory factory = new TypeFactory();
 
-			TypeVariable tv1 = store.EnsureExpressionTypeVariable(factory, null, null);
-			TypeVariable tv2 = store.EnsureExpressionTypeVariable(factory, null, null);
+			TypeVariable tv1 = store.CreateTypeVariable(factory);
+            TypeVariable tv2 = store.CreateTypeVariable(factory);
 			Assert.IsNotNull(tv1.Class, "Expected store.EnsureTypeVariable to create an equivalence class");
 			Assert.IsNotNull(tv2.Class, "Expected store.EnsureTypeVariable to create an equivalence class");
 			EquivalenceClass e = store.MergeClasses(tv1, tv2);

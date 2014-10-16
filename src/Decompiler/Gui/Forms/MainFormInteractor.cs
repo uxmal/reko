@@ -291,13 +291,14 @@ namespace Decompiler.Gui.Forms
                     })
                     .Invoke(new object[] { sc, arch });
 
+                var addrBase = new Address(arch.PointerType, Convert.ToUInt32(dlg.AddressTextBox.Text, 16));
                 OpenBinary(dlg.FileName.Text, delegate
                 {
                     pageInitial.OpenBinaryAs(
                         dlg.FileName.Text,
                         arch,
                         platform,
-                        new Address(0x0000000),
+                        addrBase,
                         this);
                 });
             }

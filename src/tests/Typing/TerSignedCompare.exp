@@ -1,3 +1,15 @@
+// Before ///////
+// proc1
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	ds2 = ds
+	Mem0[ds:0x5400:bool] = Mem0[ds:0x5404:word16] < 0x0014
+	Mem0[ds2:0x5404:word16] = 0x0000
+proc1_exit:
+
+// After ///////
 // proc1
 void proc1()
 proc1_entry:

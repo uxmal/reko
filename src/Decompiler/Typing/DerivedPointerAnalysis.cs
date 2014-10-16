@@ -113,30 +113,39 @@ namespace Decompiler.Typing
 				if (offset == 0)
 					return;
 
-				var str = ptr.Pointee as StructureType;
-				if (str != null)
+				if (ptr.Pointee is StructureType || ptr.Pointee is ArrayType)
 				{
 					TypeVariable tvField = GetTypeVariableForField(ptr.Pointee);
-					if (tvField == null)
-						return;
+                    if (tvField == null)
+                    {
+                        var sGlobals = (StructureType)((Pointer) Globals.DataType).Pointee;
+                        sGlobals.Fields.Add(offset, ptr.Pointee);
+                    }
+                    else
+                    {
+                        ptr = CreatePointerToField(offset, tvField);
+                        Globals.TypeVariable.OriginalDataType =
+                            unifier.Unify(Globals.TypeVariable.OriginalDataType, ptr);
 
-					ptr = CreatePointerToField(offset, tvField);
-					Globals.TypeVariable.OriginalDataType =
-						unifier.Unify(Globals.TypeVariable.OriginalDataType, ptr);
-
-					ptr = CreatePointerToField(offset, tvField);
-					Globals.TypeVariable.Class.DataType =
-						unifier.Unify(Globals.TypeVariable.Class.DataType, ptr);
+                        ptr = CreatePointerToField(offset, tvField);
+                        Globals.TypeVariable.Class.DataType =
+                            unifier.Unify(Globals.TypeVariable.Class.DataType, ptr);
+                    }
 				}
 				return;
 			}
 			MemberPointer mptr = dt as MemberPointer;
 			if (mptr != null)
 			{
-				VisitConstantMemberPointer(offset, mptr);
+//				VisitConstantMemberPointer(offset, mptr);
 			}
 		}
 
+        /// <summary>
+        /// If a constant pointer into a structure is found, make sure there is a variable there.
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="mptr"></param>
 		private void VisitConstantMemberPointer(int offset, MemberPointer mptr)
 		{
 			TypeVariable tvField = GetTypeVariableForField(mptr.Pointee);

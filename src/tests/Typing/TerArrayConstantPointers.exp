@@ -1,28 +1,43 @@
+// Before ///////
 // Fn
 void Fn()
-Fn_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
-	a = &globals->dw123456;
-	*a = 0x0000002A;
-	// succ: 
+Fn_entry:
+	// succ:  l1
+l1:
+	a = 0x00123456
+	Mem0[a + i * 0x00000008:word32] = 0x0000002A
+Fn_exit:
+
+// After ///////
+// Fn
+void Fn()
+Fn_entry:
+	// succ:  l1
+l1:
+	a = &globals->a00123456;
+	a[i].dw0000 = 0x0000002A;
+Fn_exit:
+
+
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (123456 word32 dw123456))
-	Globals (in globals : ptr0)
+	Globals (in globals : (ptr (struct (123456 (struct (0 (arr Eq_9) a0000)) t123456))))
+Eq_9: (struct "Eq_9" 0008 (0 word32 dw0000))
+	T_9
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : (ptr (struct (123456 (struct (0 (arr Eq_9) a0000)) t123456))))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (123456 T_9 t123456)))
+  DataType: Eq_1
+  OrigDataType: (ptr (arr (123456) t123456)))
 T_2: (in 0x00123456 : word32)
   Class: Eq_2
-  DataType: (ptr word32)
+  DataType: (ptr Eq_9)
   OrigDataType: word32
 T_3: (in a : word32)
   Class: Eq_2
-  DataType: (ptr word32)
-  OrigDataType: (ptr (struct (0 T_9 t0000)))
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (0 (arr T_9) a0000)))
 T_4: (in 0x0000002A : word32)
   Class: Eq_4
   DataType: word32
@@ -37,13 +52,13 @@ T_6: (in 0x00000008 : word32)
   OrigDataType: word32
 T_7: (in i * 0x00000008 : word32)
   Class: Eq_7
-  DataType: word32
-  OrigDataType: word32
-T_8: (in a + i * 0x00000008 : word32)
-  Class: Eq_8
-  DataType: word32
-  OrigDataType: word32
-T_9: (in Mem0[a + i * 0x00000008:word32] : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_8: (in a[i * 0x00000008] : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
+T_9: 
+  Class: Eq_9
+  DataType: Eq_9
+  OrigDataType: (struct 0008 (0 T_8 t0000))

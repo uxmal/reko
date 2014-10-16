@@ -31,7 +31,7 @@ using NUnit.Framework;
 namespace Decompiler.UnitTests.Typing
 {
 	[TestFixture]
-	public class PtrPrimitiveReplacerTests
+	public class PtrPrimitiveReplacerTests : TypingTestBase
 	{
 		private TypeStore store;
 
@@ -40,14 +40,14 @@ namespace Decompiler.UnitTests.Typing
 		{
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
-			TypeVariable tv1 = store.EnsureExpressionTypeVariable(factory, null);
-			TypeVariable tv2 = store.EnsureExpressionTypeVariable(factory, null);
+			TypeVariable tv1 = store.CreateTypeVariable(factory);
+            TypeVariable tv2 = store.CreateTypeVariable(factory);
 			Assert.IsNotNull(tv1.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 			Assert.IsNotNull(tv2.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 			tv1.Class.DataType = PrimitiveType.Word32;
 			tv2.Class.DataType = PrimitiveType.Word16;
 
-			TypeVariable tv3 = store.EnsureExpressionTypeVariable(factory, null);
+            TypeVariable tv3 = store.CreateTypeVariable(factory);
 			Assert.IsNotNull(tv3.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 
 			StructureType mem = factory.CreateStructureType(null, 0);
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Typing
             RunTest(mock.BuildProgram(), "Typing/PprMemberPointers.txt");
         }
 
-		private void RunTest(Program prog, string outputFilename)
+		protected override void RunTest(Program prog, string outputFilename)
 		{
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();

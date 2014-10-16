@@ -35,7 +35,8 @@ namespace Decompiler.Core
 			this.Offset = off;
 		}
 
-        private Address(PrimitiveType size, uint bitPattern) : base(size)
+
+        public Address(PrimitiveType size, uint bitPattern) : base(size)
         {
             this.Offset = bitPattern;
         }
