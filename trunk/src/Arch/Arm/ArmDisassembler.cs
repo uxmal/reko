@@ -65,19 +65,44 @@ namespace Decompiler.Arch.Arm
         private uint addr;
         private uint instr;
 
-        private static Opcode[] dataprocessingOps = new Opcode[16] {
+        private static Opcode[] dataprocessingOps = new Opcode[] {
             Opcode.and, Opcode.eor, Opcode.sub, Opcode.rsb, 
             Opcode.add, Opcode.adc, Opcode.sbc, Opcode.rsc,
             Opcode.tst, Opcode.teq, Opcode.cmp, Opcode.cmn,
             Opcode.orr, Opcode.mov, Opcode.bic, Opcode.mvn,
         };
-        private static Opcode[] shiftTypes = new Opcode[4] { 
+        private static Opcode[] shiftTypes = new Opcode[] { 
             Opcode.lsl, Opcode.lsr, Opcode.asr, Opcode.ror 
         };
 
         public class DisOptions
         {
         }
+
+        // Some important single-bit fields. 
+
+        const int Sbit = (1 << 20);	// set condition codes (data processing) 
+        const int Lbit = (1 << 20);	// load, not store (data transfer) 
+        const int Wbit = (1 << 21);	// writeback (data transfer) 
+        const int Bbit = (1 << 22);	// single byte (data transfer, SWP) 
+        const int Ubit = (1 << 23);	// up, not down (data transfer) 
+        const int Pbit = (1 << 24);	// pre-, not post-, indexed (data transfer) 
+        const int Ibit = (1 << 25);	// non-immediate (data transfer) 
+
+        // immediate (data processing) 
+        const int SPSRbit = (1 << 22);	// SPSR, not CPSR (MRS, MSR) 
+
+        // Some important 4-bit fields. 
+
+        private int RD(int x) { return ((x) << 12); }	// destination register 
+        private uint RN(uint x) { return ((x) << 16); }	// operand/base register 
+        private int CP(int x) { return ((x) << 8); }	// coprocessor number 
+        private int RDbits() { return RD(15); }
+        private uint RNbits() { return RN(15); }
+        private int CPbits() { return CP(15); }
+        private bool RD_is(int x) { return ((instr & RDbits()) == RD(x)); }
+        private bool RN_is(uint x) { return ((instr & RNbits()) == RN(x)); }
+        private bool CP_is(int x) { return ((instr & CPbits()) == CP(x)); }
 
         public ArmDisassembler2(ArmProcessorArchitecture arch, ImageReader rdr)
         {
@@ -152,6 +177,10 @@ namespace Decompiler.Arch.Arm
             case 0x7:
                 DecodeSingleDataTransfer();
                 break;
+            case 0x8:
+            case 0x9:
+                DecodeLdmStm();
+                break;
             case 0xA:
                 arm.Opcode = Opcode.b;
                 DecodeOperands(instr, "&");
@@ -159,6 +188,9 @@ namespace Decompiler.Arch.Arm
             case 0xB:
                 arm.Opcode = Opcode.bl;
                 DecodeOperands(instr, "&");
+                break;
+            case 0xC: case 0x0D: case 0x0E: case 0x0F:
+                DecodeSvcAndCoproc();
                 break;
             }
             return arm;
@@ -189,14 +221,58 @@ namespace Decompiler.Arch.Arm
 
         private void DecodeSingleDataTransfer()
         {
+            string format = "";
             switch ((instr >> 21) & 2 | (instr >> 20) & 1)
             {
-            case 0: arm.Opcode = Opcode.str; break;
-            case 1: arm.Opcode = Opcode.ldr; break;
-            case 2: arm.Opcode = Opcode.strb; break;
-            case 3: arm.Opcode = Opcode.ldrb; break;
+            case 0: arm.Opcode = Opcode.str; format = "3,/w"; break;
+            case 1: arm.Opcode = Opcode.ldr; format = "3,/w"; break;
+            case 2: arm.Opcode = Opcode.strb; format = "3,/b"; break;
+            case 3: arm.Opcode = Opcode.ldrb; format = "3,/b"; break;
             }
-            DecodeOperands(instr, "3,/");
+            DecodeOperands(instr, format);
+        }
+
+        private void DecodeLdmStm()
+        {
+            arm.Opcode = Bit_20_Set(instr) ? Opcode.ldm : Opcode.stm;
+            if (RN_is(13))
+            {
+                // r13, so treat as stack 
+                int x = (int) (instr & (3 << 23)) >> 22;
+                if ((instr & Lbit) != 0)
+                    x ^= 6;
+                arm.OpFlags = new OpFlags[] { 
+                    OpFlags.ED,
+                    OpFlags.EA,
+                    OpFlags.FD,
+                    OpFlags.FA
+                }[x >> 1];
+            }
+            else
+            {
+                // not r13, so don't treat as stack 
+                arm.OpFlags =  ((instr & Ubit) != 0) 
+                    ? ((instr & Pbit) != 0) ? OpFlags.IB : OpFlags.IA
+                    : ((instr & Pbit) != 0) ? OpFlags.DB : OpFlags.DA;
+            }
+            arm.Update = BitN_Set(instr, 21);
+            DecodeOperands(instr, "4,%");
+        }
+
+        private void DecodeSvcAndCoproc()
+        {
+            switch ((instr >> 24) & 0x3)
+            {
+            case 0:
+            case 1:
+            case 2:
+                IllegalInstruction(instr);
+                break;
+            case 3:
+                arm.Opcode = Opcode.svc;
+                DecodeOperands(instr, "$");
+                break;
+            }
         }
 
         private ArmInstruction DecodeUnconditional()
@@ -211,13 +287,16 @@ namespace Decompiler.Arch.Arm
                 // SRS / RFE 
             case 0xA: case 0xB:
                 // Branch with link and exchange
+                arm.Opcode = Opcode.blx;
+                DecodeOperands(instr, "x");
+                return arm;
             case 0xC: case 0xD: 
                 // Stored load coprocessor
             case 0xE:
                 // Coprocessor data operations.
             case 0xF:
             default:
-                return ThrowIllegalInstruction(instr);
+                return IllegalInstruction(instr);
             }
         }
 
@@ -236,15 +315,17 @@ namespace Decompiler.Arch.Arm
                     arm.Opcode = Opcode.setendbe;
                     return arm;
                 }
-                return ThrowIllegalInstruction(instr);
+                return IllegalInstruction(instr);
             }
-            return ThrowIllegalInstruction(instr);
+            return IllegalInstruction(instr);
         }
 
 
-        private ArmInstruction ThrowIllegalInstruction(uint instr)
+        private ArmInstruction IllegalInstruction(uint instr)
         {
-            throw new NotSupportedException(string.Format("Invalid instruction {0:X8}", instr));
+            arm.Opcode = Opcode.illegal;
+            arm.Cond = Condition.al;
+            return arm;
         }
 
         private static bool Bit_S_Set(word instr)
@@ -278,6 +359,8 @@ namespace Decompiler.Arch.Arm
         {
             var ops = new MachineOperand[4];
             int iOp = 0;
+            int offset;
+            uint dstAddr;
             for (int i = 0; i < format.Length; ++i)
             {
                 char ch = format[i];
@@ -286,24 +369,36 @@ namespace Decompiler.Arch.Arm
                 default:
                     throw new NotImplementedException(string.Format("Unknown format character '{0}'.", ch));
                 case '0': case '1': case '2': case '3': case '4':
-                    ops[iOp] = new RegisterOperand(ArmRegisters.Registers[(instr >> ((ch - '0') << 2)) & 0xF]);
+                    ops[iOp] = new RegisterOperand(A32Registers.GpRegs[(instr >> ((ch - '0') << 2)) & 0xF]);
                     break;
                 case '*':
                     ops[iOp] = DecodeImmediateOperand(instr);
                     break;
                 case '&':   // Offset for b and bl instructions.
-                    int offset = ((int)instr << 8) >> 6;
-                    uint dstAddr = (uint)(addr + 8 + offset);
+                    offset = ((int)instr << 8) >> 6;
+                    dstAddr = (uint)(addr + 8 + offset);
+                    ops[iOp] = new AddressOperand(new Address(dstAddr));
+                    break;
+                case 'x':   // Offset for blx instructions
+                    offset = ((int) instr << 8) >> 6;
+                    offset |= (int)((instr >> 23) & 2);
+                    dstAddr = (uint) (addr + 8 + offset);
                     ops[iOp] = new AddressOperand(new Address(dstAddr));
                     break;
                 case '/':   // Format for ldr, str
-                    ops[iOp] = DecodeIndirectOperand(instr);
+                    ops[iOp] = DecodeIndirectOperand(GetWidth(format[++i]), instr);
                     break;
                 case 'I':   // Indirect register, nibble in following character.
-                    ops[iOp] = new ArmMemoryOperand(null, ArmRegisters.Registers[(instr >> ((format[++i] - '0') << 2)) & 0xF]);
+                    ops[iOp] = new ArmMemoryOperand(null, A32Registers.GpRegs[(instr >> ((format[++i] - '0') << 2)) & 0xF]);
                     break;
                 case ',':
                     ++iOp;
+                    break;
+                case '%': // Register range
+                    ops[iOp] = new RegisterRangeOperand(instr & 0xFFFF);
+                    break;
+                case '$':
+                    ops[iOp] = new ImmediateOperand(Constant.Word32(instr & 0x00FFFFFF));
                     break;
                 }
             }
@@ -323,7 +418,17 @@ namespace Decompiler.Arch.Arm
                     }
                 }
             }
-            Debug.Print("{0} {1} {2} {3}", arm.Dst != null, arm.Src1 != null, arm.Src2 != null, arm.Src3 != null);
+        }
+
+        private PrimitiveType GetWidth(char w)
+        {
+            switch (w)
+            {
+            case 'b': return PrimitiveType.Byte;
+            case 'h': return PrimitiveType.Word16;
+            case 'w': return PrimitiveType.Word32;
+            default: throw new NotImplementedException();
+            }
         }
 
         private MachineOperand DecodeImmediateOperand(word instr)
@@ -378,45 +483,46 @@ namespace Decompiler.Arch.Arm
             }
         }
 
-        private ArmMemoryOperand DecodeIndirectOperand(uint instr)
+        private ArmMemoryOperand DecodeIndirectOperand(PrimitiveType width, uint instr)
         {
-            var rn = ArmRegisters.Registers[(instr >> 16) & 0xF];
+            var rn = A32Registers.GpRegs[(instr >> 16) & 0xF];
             MachineOperand offset;
-            if (((instr >> 25) & 1) == 0)
+            if (BitN_Set(instr, 25))
+            {
+                // Offset is shifted register
+                offset = DecodeShiftOperand(instr);
+            }
+            else
             {
                 // Offset is 12-bit immediate value-
                 var o = instr & 0xFFF;
                 offset = o != 0 ? ArmImmediateOperand.Word32(o) : null;
             }
-            else
-            {
-                // Offset is shifted register
-                offset = DecodeShiftOperand(instr);
-            }
             if (((instr >> 24) & 1) == 0)
             {
                 // Post index
-                return new ArmMemoryOperand(null, rn, offset)
+                return new ArmMemoryOperand(width, rn, offset)
                 {
                     Preindexed = false,
-                    Subtract = BitN_Set(instr, 23),
+                    Subtract = !BitN_Set(instr, 23),
                 };
             }
             else
             {
                 // Pre index
-                return new ArmMemoryOperand(null, rn, offset)
+                var op = new ArmMemoryOperand(width, rn, offset)
                 {
                     Preindexed = true,
                     Writeback = BitN_Set(instr, 21),
-                    Subtract = BitN_Set(instr, 23),
+                    Subtract = !BitN_Set(instr, 23),
                 };
+                return op;
             }
         }
 
         private static RegisterOperand get_regop(addrdiff bits)
         {
-            return new RegisterOperand(ArmRegisters.Registers[bits&0xF]);
+            return new RegisterOperand(A32Registers.GpRegs[bits&0xF]);
         }
     }
 
@@ -513,7 +619,7 @@ namespace Decompiler.Arch.Arm
             public eTargetType target_type;	// and what we expect to be there 
             public int offset;		// offset from register in LDR or STR or similar 
             public int addrstart;	// start of address part of instruction, or 0 
-        };
+        }
 
         [Flags]
         public enum disopt : uint

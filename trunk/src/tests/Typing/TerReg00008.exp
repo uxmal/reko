@@ -1,3 +1,26 @@
+// Before ///////
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	Mem13[ds:0x9A2E:word16] = 0x0000
+	Mem15[ds:0x9A26:word16] = 0x0100
+	word16 si_20 = 0x0000
+	// succ:  l0C00_0015
+l0C00_0015:
+	Mem22[0x5CE1:si_20:word16] = 0xFFFF
+	word16 v9_25 = Mem22[ds:0x9A26:word16] - 0x0001
+	Mem26[ds:0x9A26:word16] = v9_25
+	si_20 = si_20 + 0x0026
+	branch v9_25 != 0x0000 l0C00_0015
+	// succ:  l0C00_0023 l0C00_0015
+l0C00_0023:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// After ///////
 // fn0C00_0000
 void fn0C00_0000(Eq_3 * ds)
 fn0C00_0000_entry:
@@ -21,7 +44,7 @@ fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (5CE10 (ptr Eq_12) ptr5CE10))
-	Globals (in globals : (ptr (struct)))
+	Globals (in globals : (ptr (struct (5CE1 (segment "Eq_12") t5CE1))))
 Eq_3: (segment "Eq_3" (9A26 word16 w9A26) (9A2E word16 w9A2E))
 	T_3 (in ds : (ptr Eq_3))
 Eq_9: (struct "Eq_9" 0026 (0 word16 w0000))
@@ -33,7 +56,7 @@ Eq_12: (segment "Eq_12" (0 (arr Eq_26) a0000))
 Eq_26: (struct "Eq_26" 0026 (0 word16 w0000))
 	T_26
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+Globals: (in globals : (ptr (struct (5CE1 (segment "Eq_12") t5CE1))))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (5CE10 T_12 t5CE10)))
@@ -80,7 +103,7 @@ T_11: (in 0xFFFF : word16)
 T_12: (in 0x5CE1 : selector)
   Class: Eq_12
   DataType: (ptr Eq_12)
-  OrigDataType: (ptr (segment (0 (arr (struct "Eq_26" 0026)) a0000)))
+  OrigDataType: (ptr (segment (0 (arr T_26) a0000)))
 T_13: (in 0x0000 : word16)
   Class: Eq_13
   DataType: word16
@@ -136,4 +159,4 @@ T_25: (in v9_25 != 0x0000 : bool)
 T_26:
   Class: Eq_26
   DataType: Eq_26
-  OrigDataType: 
+  OrigDataType: (struct 0026 (0 T_15 t0000))

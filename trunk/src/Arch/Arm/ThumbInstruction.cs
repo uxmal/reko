@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,29 +18,15 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
-using Decompiler.Typing;
-using NUnit.Framework;
+using Decompiler.Core.Machine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Decompiler.UnitTests.Typing
+namespace Decompiler.Arch.Arm
 {
-	[TestFixture]
-	public class ComplexTypeNamerTests
-	{
-		[Test]
-		public void NameStructure()
-		{
-			var store = new TypeStore();
-			var factory = new TypeFactory();
-            var tv1 = store.CreateTypeVariable(factory);
-			tv1.Class.DataType = new StructureType(null, 0);
-			tv1.DataType = tv1.Class.DataType;
-
-			var ctn = new ComplexTypeNamer();
-			ctn.RenameAllTypes(store);
-			Assert.AreEqual("Eq_1", tv1.Class.DataType.Name);
-		}
-	}
+    public class ThumbInstruction : MachineInstruction
+    {
+    }
 }

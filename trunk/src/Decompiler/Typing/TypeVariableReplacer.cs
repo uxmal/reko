@@ -38,7 +38,7 @@ namespace Decompiler.Typing
 		}
 
 		/// <summary>
-		/// Replaces each type variable occurrence T with eq(T). 
+		/// Replaces each type variable occurrence T with its equivalence class eq(T). 
 		/// </summary>
 		public void ReplaceTypeVariables()
 		{

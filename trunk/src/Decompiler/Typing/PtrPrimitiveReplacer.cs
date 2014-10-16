@@ -25,7 +25,8 @@ using System.Collections.Generic;
 namespace Decompiler.Typing
 {
 	/// <summary>
-	/// Replaces references to classes which are PrimitiveType or Pointer to T,
+	/// Replaces references to classes which are PrimitiveType, Pointer to T, or
+    /// Pointer to Array of T
     /// with the actual primitive type or (ptr T) respectively.
     /// <remarks>
     /// If an expression e has the type [[e]] = Eq1 where Eq1 is PrimitiveType.Int16
@@ -64,7 +65,8 @@ namespace Decompiler.Typing
 				if (!classesVisited.Contains(eq))
 				{
 					classesVisited.Add(eq);
-					eq.DataType = Replace(eq.DataType);
+                    var dt = Replace(eq.DataType);
+                    eq.DataType = dt;
 				}
 			}
 
@@ -98,6 +100,13 @@ namespace Decompiler.Typing
 					eq.DataType = mp.Pointee;
 					changed = true;
 				}
+
+                ArrayType array = eq.DataType as ArrayType;
+                if (array != null)
+                {
+                    eq.DataType = array.ElementType;
+                    changed = true;
+                }
 			}
 			return changed;
 		}
@@ -131,13 +140,20 @@ namespace Decompiler.Typing
             if (ptr != null)
             {
                 changed = true;
-                return factory.CreatePointer(eq, ptr.Size);
+                DataType pointee = eq;
+                return factory.CreatePointer(pointee, ptr.Size);
             }
             MemberPointer mp = dt as MemberPointer;
             if (mp != null)
             {
                 changed = true;
                 return factory.CreateMemberPointer(mp.BasePointer, eq, mp.Size);
+            }
+            ArrayType array = dt as ArrayType;
+            if (array != null)
+            {
+                changed = true;
+                return factory.CreateArrayType(array.ElementType, array.Length);
             }
             EquivalenceClass eq2 = dt as EquivalenceClass;
             if (eq2 != null)

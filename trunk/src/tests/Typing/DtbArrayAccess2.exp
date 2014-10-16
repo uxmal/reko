@@ -3,7 +3,7 @@
 T_1: (in ds : selector)
   Class: Eq_1
   DataType: 
-  OrigDataType: (ptr (segment (300 (arr (struct 0008 (0 T_7 t0000))) a0300)))
+  OrigDataType: (ptr (segment (300 (arr T_8) a0300)))
 T_2: (in 0x0300 : word16)
   Class: Eq_2
   DataType: 
@@ -28,3 +28,7 @@ T_7: (in SEQ(ds, 0x0300)[bx * 0x0008] : word32)
   Class: Eq_7
   DataType: 
   OrigDataType: word32
+T_8:
+  Class: Eq_8
+  DataType: 
+  OrigDataType: (struct 0008 (0 T_7 t0000))

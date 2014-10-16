@@ -32,11 +32,15 @@ namespace Decompiler.Arch.Arm
     {
         public ArmMemoryOperand(PrimitiveType width, RegisterStorage regBase) :base(width)
         {
+            if (width == null)
+                throw new ArgumentNullException("width");
             Base = regBase;
         }
 
         public ArmMemoryOperand(PrimitiveType width, RegisterStorage regBase, MachineOperand offset) : base(width)
         {
+            if (width == null)
+                throw new ArgumentNullException("width");
             Base = regBase;
             Offset = offset;
         }

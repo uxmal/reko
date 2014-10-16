@@ -39,13 +39,15 @@ namespace Decompiler.Arch.Arm
         private ArmInstruction instr;
         private RtlInstructionCluster ric;
         private RtlEmitter emitter;
+        private IRewriterHost host;
 
-        public ArmRewriter(ArmProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, Frame frame)
+        public ArmRewriter(ArmProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.instrs = CreateInstructionStream(rdr);
             this.state = state;
             this.frame = frame;
+            this.host = host;
         }
 
         private IEnumerator<ArmInstruction> CreateInstructionStream(ImageReader rdr)
@@ -66,10 +68,22 @@ namespace Decompiler.Arch.Arm
                     throw NYI();
                 case Opcode.add: RewriteBinOp(Operator.IAdd); break;
                 case Opcode.b: RewriteB(false); break;
-                case Opcode.mov:
-                    emitter.Assign(Operand(instr.Dst), Operand(instr.Src1)); break;
+                case Opcode.bic: RewriteBic(); break;
+                case Opcode.bl: RewriteB(true); break;
+                case Opcode.cmn: RewriteCmn(); break;
+                case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.ldr: RewriteLdr(PrimitiveType.Word32); break;
+                case Opcode.ldrb: RewriteLdr(PrimitiveType.Byte); break;
+                case Opcode.ldm: RewriteLdm(); break;
+                case Opcode.mov: RewriteMov(); break;
                 case Opcode.orr: RewriteBinOp(Operator.Or); break;
+                case Opcode.stm: RewriteStm(); break;
+                case Opcode.str: RewriteStr(PrimitiveType.Word32); break;
+                case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
                 case Opcode.sub: RewriteBinOp(Operator.ISub); break;
+                case Opcode.svc: RewriteSvc(); break;
+                case Opcode.teq: RewriteTeq(); break;
+                case Opcode.tst: RewriteTst(); break;
                 }
                 yield return ric;
             }
@@ -88,7 +102,14 @@ namespace Decompiler.Arch.Arm
             Address addr = ((AddressOperand)instr.Dst).Address;
             if (link)
             {
-                throw NYI();
+                if (instr.Cond == Condition.al)
+                {
+                    NYI();
+                }
+                else
+                {
+                    emitter.If(TestCond(instr.Cond), new RtlCall(addr, 0, RtlClass.Transfer));
+                }
             }
             else
             {
@@ -110,6 +131,16 @@ namespace Decompiler.Arch.Arm
 
         private void AddConditional(RtlInstruction rtlInstr)
         {
+            if (instr.Cond != Condition.al)
+            {
+                rtlInstr = new RtlIf(TestCond(instr.Cond), rtlInstr);
+            }
+            ric.Instructions.Add(rtlInstr);
+        }
+
+        private void ConditionalAssign(Expression dst, Expression src)
+        {
+            RtlInstruction rtlInstr = new RtlAssignment(dst, src);
             if (instr.Cond != Condition.al)
             {
                 rtlInstr = new RtlIf(TestCond(instr.Cond), rtlInstr);
@@ -140,6 +171,19 @@ namespace Decompiler.Arch.Arm
                 default: throw new NotSupportedException(string.Format("Unsupported shift operation {0}.", shOp.Opcode));
                 }
             }
+            var memOp = op as ArmMemoryOperand;
+            if (memOp != null)
+            {
+                Expression ea = frame.EnsureRegister(memOp.Base);
+                if (memOp.Offset != null)
+                {
+                    var offset = Operand(memOp.Offset);
+                    ea = memOp.Subtract
+                        ? emitter.ISub(ea, offset)
+                        : emitter.IAdd(ea, offset);
+                }
+                return emitter.Load(memOp.Width, ea);
+            }
             throw new NotSupportedException(string.Format("Unsupported operand {0}.", op));
         }
 
@@ -150,10 +194,36 @@ namespace Decompiler.Arch.Arm
             default:
                 throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
             case Condition.eq:
-                return new TestCondition(ConditionCode.EQ, frame.EnsureFlagGroup(0xF, "SCZO", PrimitiveType.Byte));
+                return new TestCondition(ConditionCode.EQ, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case Condition.ge:
+                return new TestCondition(ConditionCode.GE, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
             case Condition.gt:
-                return new TestCondition(ConditionCode.GT, frame.EnsureFlagGroup(0xF, "SCZO", PrimitiveType.Byte));
+                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case Condition.hi:
+                return new TestCondition(ConditionCode.UGT, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+            case Condition.le:
+                return new TestCondition(ConditionCode.LE, FlagGroup(FlagM.ZF | FlagM.CF | FlagM.VF, "NZV", PrimitiveType.Byte));
+            case Condition.ls:
+                return new TestCondition(ConditionCode.ULE, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+            case Condition.lt:
+                return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte));
+            case Condition.ne:
+                return new TestCondition(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
+            case Condition.vs:
+                return new TestCondition(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
             }
+        }
+
+        private Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
+        {
+            return frame.EnsureFlagGroup((uint) bits, name, type);
+        }
+
+        private void RewriteSvc()
+        {
+            emitter.SideEffect(emitter.Fn(
+                host.EnsurePseudoProcedure("__syscall", VoidType.Instance, 2), 
+                Operand(instr.Dst)));
         }
     }
 }

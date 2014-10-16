@@ -33,52 +33,68 @@ namespace Decompiler.Arch.Arm
     public class ArmProcessorState : ProcessorState
     {
         private ArmProcessorArchitecture arch;
+        private uint isValid;
+        private uint[] regData;
 
         public ArmProcessorState(ArmProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.regData = new uint[16];
         }
+
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override ProcessorState Clone()
         {
             var state = new ArmProcessorState(arch);
+            state.isValid = this.isValid;
+            state.regData = (uint[])regData.Clone();
             return state;
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            if (((isValid >> r.Number) & 1) != 0)
+                return Constant.Word32(regData[r.Number]);
+            else
+                return Constant.Invalid;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
+            if (v.IsValid)
+            {
+                isValid |= 1u << r.Number;
+                regData[r.Number] = v.ToUInt32();
+            }
+            else
+            {
+                isValid &= ~(1u << r.Number);
+                regData[r.Number] = 0xCCCCCCCC;
+            }
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
+            regData[A32Registers.pc.Number] = addr.Linear;
+            isValid |= 1u << A32Registers.pc.Number;
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(ProcedureSignature procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
         {
-            throw new NotImplementedException();
         }
     }
 }

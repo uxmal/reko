@@ -1,4 +1,4 @@
-#region License
+ #region License
 /* 
  * Copyright (C) 1999-2014 John Källén.
  *
@@ -271,10 +271,18 @@ namespace Decompiler.Typing
             return mptr;
         }
 
-        public DataType VisitPointer(Pointer mptr)
+        public DataType VisitPointer(Pointer ptr)
         {
-            mptr.Pointee = mptr.Pointee.Accept(this);
-            return mptr;
+            ptr.Pointee = ptr.Pointee.Accept(this);
+            var array = ptr.Pointee as ArrayType;
+            if (array != null)
+            {
+                Changed = true;
+                return factory.CreatePointer(
+                    array.ElementType,
+                    ptr.Size);
+            }
+            return ptr;
         }
 
         public DataType VisitPrimitive(PrimitiveType pt)

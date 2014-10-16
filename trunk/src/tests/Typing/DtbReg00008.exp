@@ -46,7 +46,7 @@ Eq_9: (memptr T_12 (struct 0026 (0 T_15 t0000)))
 Eq_11: word16
 	T_11 (in 0xFFFF : word16)
 	T_15 (in Mem22[0x5CE1:si_20 + 0x0000:word16] : word16)
-Eq_12: (ptr (segment (0 (arr (struct 0026 (0 T_15 t0000))) a0000)))
+Eq_12: (ptr (segment (0 (arr T_26) a0000)))
 	T_12 (in 0x5CE1 : selector)
 Eq_13: word16
 	T_13 (in 0x0000 : word16)
@@ -60,6 +60,8 @@ Eq_22: word16
 	T_22 (in 0x0026 : word16)
 Eq_25: bool
 	T_25 (in v9_25 != 0x0000 : bool)
+Eq_26: (struct 0026 (0 T_15 t0000))
+	T_26
 // Type Variables ////////////
 Globals: (in globals : (ptr (struct)))
   Class: Eq_1
@@ -107,8 +109,8 @@ T_11: (in 0xFFFF : word16)
   OrigDataType: word16
 T_12: (in 0x5CE1 : selector)
   Class: Eq_12
-  DataType: (ptr (segment (0 (arr (struct 0026 (0 T_15 t0000))) a0000)))
-  OrigDataType: (ptr (segment (0 (arr (struct 0026 (0 T_15 t0000))) a0000)))
+  DataType: (ptr (segment (0 (arr T_26) a0000)))
+  OrigDataType: (ptr (segment (0 (arr T_26) a0000)))
 T_13: (in 0x0000 : word16)
   Class: Eq_13
   DataType: word16
@@ -161,3 +163,7 @@ T_25: (in v9_25 != 0x0000 : bool)
   Class: Eq_25
   DataType: bool
   OrigDataType: bool
+T_26:
+  Class: Eq_26
+  DataType: (struct 0026 (0 T_15 t0000))
+  OrigDataType: (struct 0026 (0 T_15 t0000))

@@ -1,3 +1,15 @@
+// Before ///////
+// proc1
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	Mem4[ds:0x0300:word16] = Mem0[ds:Mem0[ds:bx:word16]:word16]
+	return
+	// succ:  proc1_exit
+proc1_exit:
+
+// After ///////
 // proc1
 void proc1()
 proc1_entry:

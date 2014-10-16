@@ -1,3 +1,14 @@
+// Before ///////
+// ConstantUnionMock
+void ConstantUnionMock()
+ConstantUnionMock_entry:
+	// succ:  l1
+l1:
+	x = 3
+	x = 3F
+ConstantUnionMock_exit:
+
+// After ///////
 // ConstantUnionMock
 void ConstantUnionMock()
 ConstantUnionMock_entry:

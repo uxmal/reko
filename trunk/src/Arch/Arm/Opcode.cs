@@ -115,6 +115,7 @@ namespace Decompiler.Arch.Arm
         sub,
         sub16,
         sub8,
+        svc,
         swi,
         swp,
         swpb,

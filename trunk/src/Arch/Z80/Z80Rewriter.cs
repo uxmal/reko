@@ -60,12 +60,15 @@ namespace Decompiler.Arch.Z80
                     dasm.Current.Address,
                     "Rewriting of Z80 instruction {0} not implemented yet.",
                     dasm.Current.Code);
+                case Opcode.add: RewriteAdd(); break;
+                case Opcode.call: RewriteCall(dasm.Current); break;
+                case Opcode.djnz: RewriteDjnz(dasm.Current.Op1); break;
                 case Opcode.jp: RewriteJp(dasm.Current); break;
                 case Opcode.ld: emitter.Assign(
                     RewriteOp(dasm.Current.Op1),
                     RewriteOp(dasm.Current.Op2));
                     break;
-                case Opcode.add: RewriteAdd(); break;
+                case Opcode.ldir: RewriteBlockInstruction(); break;
                 case Opcode.or: RewriteOr(); break;
                 case Opcode.sub: RewriteSub(); break;
                 case Opcode.push: RewritePush(dasm.Current); break;
@@ -82,6 +85,21 @@ namespace Decompiler.Arch.Z80
             var flags = FlagGroup(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.CF );
             emitter.Assign(flags, emitter.Cond(dst));
         }
+
+        private void RewriteBlockInstruction()
+        {
+            var bc = frame.EnsureRegister(Registers.bc);
+            var de = frame.EnsureRegister(Registers.de);
+            var hl = frame.EnsureRegister(Registers.hl);
+            var V =  FlagGroup(FlagM.PF);
+            emitter.Assign(emitter.LoadB(de), emitter.LoadB(hl));
+            emitter.Assign(hl, emitter.IAdd(hl, 1));
+            emitter.Assign(de, emitter.IAdd(de, 1));
+            emitter.Assign(bc, emitter.ISub(bc, 1));
+            emitter.BranchInMiddleOfInstruction(emitter.Ne0(bc), dasm.Current.Address, RtlClass.Transfer);
+            emitter.Assign(V, emitter.Const(PrimitiveType.Bool, 0));
+        }
+        
 
         private void RewriteOr()
         {
@@ -113,24 +131,54 @@ namespace Decompiler.Arch.Z80
 
         private void EmitBranch(ConditionOperand cOp, ImmediateOperand dst)
         {
-            ConditionCode cc = ConditionCode.ALWAYS;
-            FlagM flags = 0;
-            string name = "";
-            switch (cOp.Code)
-            {
-            case CondCode.nz: cc = ConditionCode.NE; flags = FlagM.ZF; name="Z"; break;
-            case CondCode.z: cc = ConditionCode.EQ; flags = FlagM.ZF; name="Z"; break;
-            case CondCode.nc: cc = ConditionCode.UGE; flags = FlagM.CF; name="C"; break;
-            case CondCode.c: cc = ConditionCode.ULT; flags = FlagM.CF; name="C"; break;
-            case CondCode.po: cc = ConditionCode.PO; flags = FlagM.PF; name="P";break;
-            case CondCode.pe: cc = ConditionCode.PE; flags = FlagM.PF; name="P";  break;
-            case CondCode.p: cc = ConditionCode.NS; flags = FlagM.PF; name="S"; break;
-            case CondCode.m: cc = ConditionCode.SG; flags = FlagM.PF; name="S"; break;
-            }
             emitter.Branch(
-                emitter.Test(cc, frame.EnsureFlagGroup((uint)flags, name, PrimitiveType.Bool)),
+                GenerateTestExpression(cOp, false),
                 Address.Ptr16(dst.Value.ToUInt16()),
                 RtlClass.Transfer);
+        }
+
+        private TestCondition GenerateTestExpression(ConditionOperand cOp, bool invert)
+        {
+            ConditionCode cc = ConditionCode.ALWAYS;
+            FlagM flags = 0;
+            switch (cOp.Code)
+            {
+            case CondCode.nz:  cc = invert ? ConditionCode.EQ : ConditionCode.NE; flags = FlagM.ZF;  break;
+            case CondCode.z: cc = invert ? ConditionCode.NE : ConditionCode.EQ; flags = FlagM.ZF;    break;
+            case CondCode.nc: cc = invert ? ConditionCode.ULT : ConditionCode.UGE; flags = FlagM.CF; break;
+            case CondCode.c: cc = invert ? ConditionCode.UGE : ConditionCode.ULT; flags = FlagM.CF;  break;
+            case CondCode.po: cc = invert ? ConditionCode.PE : ConditionCode.PO; flags = FlagM.PF;  break;
+            case CondCode.pe: cc = invert ? ConditionCode.PO : ConditionCode.PE; flags = FlagM.PF;    break;
+            case CondCode.p: cc = invert ? ConditionCode.SG : ConditionCode.NS; flags = FlagM.PF;    break;
+            case CondCode.m: cc = invert ? ConditionCode.NS : ConditionCode.SG; flags = FlagM.PF;    break;
+            }
+            return emitter.Test(
+                cc,
+                FlagGroup(flags));
+        }
+
+        private void RewriteDjnz(MachineOperand dst)
+        {
+            var b = frame.EnsureRegister(Registers.b);
+            emitter.Assign(b, emitter.ISub(b, 1));
+            emitter.Branch(emitter.Ne0(b), ((AddressOperand) dst).Address, RtlClass.Transfer);
+        }
+
+        private void RewriteCall(Z80Instruction instr)
+        {
+            var cOp = instr.Op1 as ConditionOperand;
+            if (cOp != null)
+            {
+                emitter.BranchInMiddleOfInstruction(
+                    GenerateTestExpression(cOp, true),
+                    instr.Address + instr.Length,
+                    RtlClass.ConditionalTransfer);
+                emitter.Call(((ImmediateOperand) instr.Op2).Value, 2);
+            }
+            else
+            {
+                emitter.Call(((ImmediateOperand) instr.Op1).Value, 2);
+            }
         }
 
         private void RewriteJp(Z80Instruction instr)

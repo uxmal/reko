@@ -1,3 +1,14 @@
+// Before ///////
+// SegmentedMemoryPointerMock2
+void SegmentedMemoryPointerMock2()
+SegmentedMemoryPointerMock2_entry:
+	// succ:  l1
+l1:
+	ax = Mem0[ds:bx:word16]
+	ax = Mem0[ds:bx + 0x0004:word16]
+SegmentedMemoryPointerMock2_exit:
+
+// After ///////
 // SegmentedMemoryPointerMock2
 void SegmentedMemoryPointerMock2()
 SegmentedMemoryPointerMock2_entry:

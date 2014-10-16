@@ -32,6 +32,7 @@ namespace Decompiler.Arch.Arm
         public Opcode Opcode;
         public OpFlags OpFlags;
         public Condition Cond;
+        public bool Update;
         public MachineOperand Dst;
         public MachineOperand Src1;
         public MachineOperand Src2;
@@ -47,6 +48,7 @@ namespace Decompiler.Arch.Arm
             {
                 writer.Tab();
                 Write(Dst, writer);
+                if (Update) writer.Write("!");
                 if (Src1 != null)
                 {
                     writer.Write(",");
@@ -148,7 +150,10 @@ namespace Decompiler.Arch.Arm
                 Write(sh.Shift, writer);
                 return;
             }
-            op.Write(false, writer);
+            if (op == null)
+                writer.Write("<null>");
+            else 
+                op.Write(false, writer);
         }
     }
 }

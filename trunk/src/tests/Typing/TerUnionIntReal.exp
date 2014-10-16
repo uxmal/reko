@@ -1,3 +1,18 @@
+// Before ///////
+// UnionIntRealMock
+void UnionIntRealMock()
+UnionIntRealMock_entry:
+	// succ:  l1
+l1:
+	x = i
+	x = r
+	Mem0[ptr:int32] = i
+	Mem0[ptr + 0x00000004:real32] = r
+	return
+	// succ:  UnionIntRealMock_exit
+UnionIntRealMock_exit:
+
+// After ///////
 // UnionIntRealMock
 void UnionIntRealMock()
 UnionIntRealMock_entry:

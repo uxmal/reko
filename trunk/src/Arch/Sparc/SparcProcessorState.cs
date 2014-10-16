@@ -97,7 +97,6 @@ namespace Decompiler.Arch.Sparc
 
         public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
         {
-            throw new NotImplementedException();
         }
     }
 }
