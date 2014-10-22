@@ -95,6 +95,8 @@ namespace Decompiler.UnitTests.Gui.Windows
                 sb.Append("rem ");
             if (span.Style == "link")
                 sb.Append("_");
+            if (span.Style == "type")
+                sb.Append("`");
         }
 
         [Test]

@@ -158,6 +158,7 @@
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
+    <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\TabControlHostTests.cs" />
     <Compile Include="Gui\Windows\TextSpanFormatterTests.cs" />

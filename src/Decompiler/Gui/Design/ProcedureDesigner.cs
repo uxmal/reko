@@ -48,6 +48,8 @@ namespace Decompiler.Gui.Design
             this.Address = address;
         }
 
+        public Address Address { get; set; }
+
         public override void Initialize(object obj)
         {
             SetTreeNodeText();
@@ -60,6 +62,9 @@ namespace Decompiler.Gui.Design
             TreeNode.ImageName = procedure_v1 != null ? "Userproc.ico" : "Procedure.ico";
         }
 
-        public Address Address { get; set; }
+        public override void DoDefaultAction()
+        {
+            Services.RequireService<ICodeViewerService>().DisplayProcedure(procedure);
+        }
     }
 }

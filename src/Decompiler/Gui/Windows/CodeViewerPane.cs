@@ -31,46 +31,12 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public interface IWebBrowser
-    {
-        IHtmlDocument Document { get; }
-        string DocumentText {get;set;}
-        void SetInnerHtmlOfElement(string elementId, string innerHtml);
-
-        event WebBrowserDocumentCompletedEventHandler DocumentCompleted;
-        event WebBrowserNavigatingEventHandler Navigating;
-    }
-
-    public interface IHtmlDocument
-    {
-        HtmlElement GetElementById(string elementId);
-        void Write(string html);
-    }
-
-    public class HtmlDocumentAdapter : IHtmlDocument
-    {
-        private HtmlDocument doc;
-
-        public static HtmlDocumentAdapter Create(HtmlDocument doc)
-        {
-            return (doc != null) ? new HtmlDocumentAdapter(doc) : null;
-        }
-
-        private HtmlDocumentAdapter(HtmlDocument doc)
-        {
-            this.doc = doc;
-        }
-
-        public HtmlElement GetElementById(string elementId) { return doc.GetElementById(elementId); }
-        public void Write(string html) { doc.Write(html); }
-    }
-
     public class CodeViewerPane : IWindowPane
     {
-        private TextView textView; 
+        private CodeView codeView; 
         private IServiceProvider services;
 
-        public TextView TextView { get { return textView; } }
+        public TextView TextView { get { return codeView.TextView; } }
 
         #region IWindowPane Members
 
@@ -78,28 +44,32 @@ namespace Decompiler.Gui.Windows
         {
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
 
-            this.textView = new TextView();
-            this.textView.Dock = DockStyle.Fill;
-            this.textView.Name = "textView";
-            this.textView.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
-            this.textView.BackColor = SystemColors.Window;
 
-            this.textView.Styles.Add("keyword", new EditorStyle
+            this.codeView = new CodeView();
+            this.codeView.Dock = DockStyle.Fill;
+            this.TextView.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
+            this.TextView.BackColor = SystemColors.Window;
+
+            this.TextView.Styles.Add("kw", new EditorStyle
             {
                 Foreground = new SolidBrush(Color.Blue),
             });
-            this.textView.Styles.Add("link", new EditorStyle
+            this.TextView.Styles.Add("link", new EditorStyle
             {
                 Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x80)),
                 Cursor = Cursors.Hand,
             });
-            this.textView.Styles.Add("cmt", new EditorStyle
+            this.TextView.Styles.Add("cmt", new EditorStyle
             {
                 Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x00)),
             });
+            this.TextView.Styles.Add("type", new EditorStyle
+            {
+                Foreground = new SolidBrush(Color.FromArgb(0x00, 0x60, 0x60)),
+            });
 
-            this.textView.Navigate += textView_Navigate;
-            return this.textView;
+            this.TextView.Navigate += textView_Navigate;
+            return this.codeView;
         }
 
         public void SetSite(IServiceProvider sp)
@@ -109,22 +79,22 @@ namespace Decompiler.Gui.Windows
 
         public void Close()
         {
-            if (textView!=null)
-                ((Control)textView).Dispose();
+            if (codeView!=null)
+                ((Control)codeView).Dispose();
         }
 
         #endregion
 
         public void DisplayProcedure(Procedure proc)
         {
-            if (textView == null)
+            if (codeView == null)
                 return;
 
             var tsf = new TextSpanFormatter();
             var fmt = new CodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
             fmt.Write(proc);
-            textView.Model = tsf.GetModel();
+            this.TextView.Model = tsf.GetModel();
         }
 
         void textView_Navigate(object sender, EditorNavigationArgs e)

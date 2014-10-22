@@ -49,7 +49,11 @@ namespace Decompiler.Core
 
 		public int Arity
 		{
-			get { return sig != null ? sig.FormalArguments.Length : arity; }
+			get 
+            { return sig != null && sig.FormalArguments != null
+                ? sig.FormalArguments.Length 
+                : arity; 
+            }
 		}
 
         public DataType ReturnType

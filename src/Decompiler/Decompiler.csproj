@@ -265,6 +265,12 @@
     <Compile Include="Gui\ProjectBrowserService.cs" />
     <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\Controls\CodeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\CodeView.Designer.cs">
+      <DependentUpon>CodeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Windows\Controls\DisassemblyTextModel.cs" />
     <Compile Include="Gui\Windows\Controls\MenuStatusSetter.cs" />
     <Compile Include="Gui\Windows\Controls\TextBuffer.cs" />
@@ -587,6 +593,9 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Gui\Windows\Controls\CodeView.resx">
+      <DependentUpon>CodeView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Controls\DirtyManager.resx">
       <DependentUpon>DirtyManager.cs</DependentUpon>
       <SubType>Designer</SubType>

@@ -85,8 +85,8 @@ namespace Decompiler.Core.Output
 		{
 			if (comment != null)
 			{
-				writer.Write("\t// ");
-				writer.Write(comment);
+                writer.Write("\t");
+				writer.WriteComment("// " + comment);
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace Decompiler.Core.Output
             }
             else
             {
-                writer.Write(eq.DataType.Name);
+                writer.WriteType(eq.DataType.Name, eq.DataType);
             }
             WriteName(true);
             return writer;
@@ -262,7 +262,7 @@ namespace Decompiler.Core.Output
             if (mode == Mode.Writing)
             {
                 writer.Write(" ");
-                writer.Write(baseType.Name);
+                writer.WriteType(baseType.Name, baseType);
                 writer.Write("::*");
             }
 			name = oldName;
@@ -290,7 +290,7 @@ namespace Decompiler.Core.Output
 		{
 			if (mode == Mode.Writing)
 			{
-                writer.Write(pt.ToString());
+                writer.WriteKeyword(pt.ToString());
 				WriteName(true);
 			}
             return writer;
@@ -335,7 +335,7 @@ namespace Decompiler.Core.Output
 		{
 			if (mode == Mode.Writing)
 			{
-				writer.Write("void");
+				writer.WriteKeyword("void");
 			}
             return writer;
 		}
@@ -344,7 +344,7 @@ namespace Decompiler.Core.Output
         {
             if (mode == Mode.Writing)
             {
-                writer.Write("void");
+                writer.WriteKeyword("void");
             }
             return writer;
         }

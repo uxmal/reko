@@ -497,12 +497,13 @@ namespace Decompiler.Gui.Windows.Controls
 
                 // Enumerate all segments visible on screen.
 
+                uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
+                if (ctrl.addrTopVisible.Linear >= laEnd)
+                    return null;
                 ImageReader rdr = ctrl.ProgramImage.CreateReader(ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;
                 Size cell = ctrl.CellSize;
                 rc.Height = cell.Height;
-
-                uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
 
                 uint laSegEnd = 0;
                 while (rc.Top < ctrl.Height && rdr.Address.Linear < laEnd)

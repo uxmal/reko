@@ -18,18 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Configuration;
 using Decompiler.Core;
-using Decompiler.Core.Services;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Serialization;
-using Decompiler.Gui;
-using Decompiler.Loading;
+using Decompiler.Core.Services;
 using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Controls;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;

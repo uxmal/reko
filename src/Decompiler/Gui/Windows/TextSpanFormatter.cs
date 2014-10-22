@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Output;
+using Decompiler.Core.Types;
 using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,16 @@ namespace Decompiler.Gui.Windows
             var span = EnsureSpan();
             span.Style = "kw";
             span.Text.Append(keyword);
+            currentSpan = null;
+        }
+
+        public override void WriteType(string typeName, DataType dt)
+        {
+            currentSpan = null;
+            var span = EnsureSpan();
+            span.Style = "type";
+            span.Text.Append(typeName);
+            span.Tag = dt;
             currentSpan = null;
         }
 
