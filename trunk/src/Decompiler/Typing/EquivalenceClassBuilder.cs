@@ -218,7 +218,6 @@ namespace Decompiler.Typing
 			EnsureTypeVariable(mps);
 		}
 
-
 		public override void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress.Accept(this);
@@ -232,6 +231,11 @@ namespace Decompiler.Typing
 			EnsureTypeVariable(seq);
 		}
 
+        public override void VisitOutArgument(OutArgument outArg)
+        {
+            outArg.Expression.Accept(this);
+            EnsureTypeVariable(outArg);
+        }
 
 		public override void VisitSegmentedAccess(SegmentedAccess access)
 		{

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Types;
 using System;
 using System.IO;
 using System.Globalization;
@@ -92,6 +93,8 @@ namespace Decompiler.Core.Output
         public abstract void WriteHyperlink(string text, object href);
 
         public abstract void WriteKeyword(string keyword);
+
+        public abstract void WriteType(string typeName, DataType dt);
 
         public abstract void WriteLine();
 

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Types;
 using System;
 using System.IO;
 using System.Globalization;
@@ -90,6 +91,10 @@ namespace Decompiler.Core.Output
             TextWriter.WriteLine(format, args);
         }
 
+        public override void WriteType(string typeName, DataType dt)
+        {
+            TextWriter.Write(typeName);
+        }
 
     }
 }

@@ -276,7 +276,7 @@ namespace Decompiler.Core.Expressions
 			return Convert.ToSingle(GetValue());
 		}
 
-        public ushort ToUInt16()
+        public virtual ushort ToUInt16()
         {
             return unchecked(Convert.ToUInt16(GetValue()));
         }
@@ -599,6 +599,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort) value;
         }
 
         public override ulong ToUInt64()
