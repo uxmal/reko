@@ -43,11 +43,11 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.tabFindResults = new System.Windows.Forms.TabPage();
             this.listFindResults = new System.Windows.Forms.ListView();
+            this.tabConsole = new System.Windows.Forms.TabPage();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.tabConsole = new System.Windows.Forms.TabPage();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
@@ -87,8 +87,9 @@
             this.imlBrowser.TransparentColor = System.Drawing.Color.Transparent;
             this.imlBrowser.Images.SetKeyName(0, "Binary.ico");
             this.imlBrowser.Images.SetKeyName(1, "Header.ico");
-            this.imlBrowser.Images.SetKeyName(2, "Code.ico");
+            this.imlBrowser.Images.SetKeyName(2, "Userproc.ico");
             this.imlBrowser.Images.SetKeyName(3, "Data.ico");
+            this.imlBrowser.Images.SetKeyName(4, "Procedure.ico");
             // 
             // tabControl1
             // 
@@ -171,6 +172,15 @@
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
             // 
+            // tabConsole
+            // 
+            this.tabConsole.Location = new System.Drawing.Point(4, 22);
+            this.tabConsole.Name = "tabConsole";
+            this.tabConsole.Size = new System.Drawing.Size(773, 154);
+            this.tabConsole.TabIndex = 2;
+            this.tabConsole.Text = "Console";
+            this.tabConsole.UseVisualStyleBackColor = true;
+            // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
@@ -188,15 +198,6 @@
             this.splitter2.Size = new System.Drawing.Size(781, 3);
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
-            // 
-            // tabConsole
-            // 
-            this.tabConsole.Location = new System.Drawing.Point(4, 22);
-            this.tabConsole.Name = "tabConsole";
-            this.tabConsole.Size = new System.Drawing.Size(773, 154);
-            this.tabConsole.TabIndex = 2;
-            this.tabConsole.Text = "Console";
-            this.tabConsole.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

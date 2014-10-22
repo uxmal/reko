@@ -30,7 +30,7 @@ namespace Decompiler.Core
     public interface ILoader
     {
         byte[] LoadImageBytes(string fileName, int offset);
-        Program LoadExecutable(string fileName, Address loadAddress);
+        Program LoadExecutable(InputFile inputFile);
         Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress);
         Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress);
         Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress);

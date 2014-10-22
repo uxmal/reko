@@ -51,14 +51,14 @@ namespace Decompiler.Gui
 
         public void Clear()
         {
-            Load(null, null);
+            Load(null);
         }
 
-        public void Load(Project project, IEnumerable<Program> progs)
+        public void Load(IEnumerable<Program> progs)
         {
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
-            if (project == null)
+            if ((progs == null || progs.Count() == 0))
             {
                 tree.ShowRootLines = false;
                 tree.ShowNodeToolTips = false;
@@ -68,13 +68,17 @@ namespace Decompiler.Gui
             }
             else 
             {
-                AddComponents(project.InputFiles);
-                project.InputFiles.CollectionChanged += InputFiles_CollectionChanged;
-                //$TODO: dewd; this should be added by the Designer.
-                AddComponents(project.InputFiles[0], progs.First().ImageMap.Segments.Values);
+                AddComponents(progs);
+                //project.InputFiles.CollectionChanged += InputFiles_CollectionChanged;
                 tree.ShowNodeToolTips = true;
                 tree.ShowRootLines = true;
             }
+        }
+
+        public void Reload()
+        {
+            var programs = tree.Nodes.Select(n => (Program) n.Tag).ToArray();
+            Load(programs);
         }
 
         public void AddComponents(IEnumerable components)

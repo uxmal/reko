@@ -72,10 +72,5 @@ namespace Decompiler.Core
 
         public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get;  set; }
         public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
-
-        /// <summary>
-        /// The resulting program.
-        /// </summary>
-        public Program Program { get; set; }
     }
 }

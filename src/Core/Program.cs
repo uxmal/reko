@@ -74,11 +74,14 @@ namespace Decompiler.Core
 
         public string Name { get; set; }
 
+        /// <summary>
+        /// Project file that was used to load this program -- if any.
+        /// </summary>
+        public InputFile InputFile { get; set; }
+
 		public IProcessorArchitecture Architecture { get; set; }
 
         public CallGraph CallGraph { get; private set; }
-
-
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
 		{

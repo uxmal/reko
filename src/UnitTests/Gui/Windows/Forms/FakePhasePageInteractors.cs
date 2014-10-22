@@ -105,12 +105,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
         }
 
-        public void OpenBinary(string file, DecompilerHost host)
+        public bool OpenBinary(string file, DecompilerHost host)
         {
             OpenBinaryCalled = true;
-
+            return false;
         }
-        public void OpenBinaryAs(string file, Decompiler.Core.IProcessorArchitecture arch, Decompiler.Core.Platform platform, Decompiler.Core.Address addrBase, DecompilerHost host)
+        public bool OpenBinaryAs(string file, Decompiler.Core.IProcessorArchitecture arch, Decompiler.Core.Platform platform, Decompiler.Core.Address addrBase, DecompilerHost host)
         {
             throw new NotImplementedException();
         }

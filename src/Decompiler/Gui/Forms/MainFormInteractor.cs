@@ -85,6 +85,8 @@ namespace Decompiler.Gui.Forms
             this.nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
         }
 
+        public IServiceProvider Services { get { return sc; } }
+
         private void CreatePhaseInteractors(IServiceFactory svcFactory)
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
@@ -196,18 +198,6 @@ namespace Decompiler.Gui.Forms
             set { currentPhase = value; }
         }
 
-        [Obsolete]
-        protected object GetService(Type service)
-        {
-            return sc.GetService(service);
-        }
-
-        [Obsolete]
-        private T GetService<T>()
-        {
-            return (T)GetService(typeof(T));
-        }
-
         public IMainForm MainForm
         {
             get { return form; }
@@ -215,20 +205,23 @@ namespace Decompiler.Gui.Forms
 
         public void OpenBinary(string file)
         {
-            OpenBinary(file, delegate { pageInitial.OpenBinary(file, this); });
+            OpenBinary(file, (f) => pageInitial.OpenBinary(f, this));
         }
 
-        public void OpenBinary(string file, Action openAction)
+        public void OpenBinary(string file, Func<string,bool> openAction)
         {
             try
             {
                 CloseProject();
                 SwitchInteractor(InitialPageInteractor);
-                openAction();
-                ProjectFileName = file;
+                if (openAction(file))
+                {
+                    ProjectFileName = file;
+                }
             }
             catch (Exception ex)
             {
+                Debug.Print("Caught exeption: {0}\r\n{1}", ex.Message, ex.StackTrace);
                 uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
             }
         }
@@ -241,10 +234,8 @@ namespace Decompiler.Gui.Forms
                 if (form.ShowDialog(form.OpenFileDialog) == DialogResult.OK)
                 {
                     mru.Use(form.OpenFileDialog.FileName);
-                    OpenBinary(form.OpenFileDialog.FileName, delegate
-                    {
-                        pageInitial.OpenBinary(form.OpenFileDialog.FileName, this);
-                    });
+                    OpenBinary(form.OpenFileDialog.FileName, (filename) =>
+                        pageInitial.OpenBinary(filename, this));
                 }
             }
             finally
@@ -277,30 +268,28 @@ namespace Decompiler.Gui.Forms
 
                 mru.Use(dlg.FileName.Text);
 
-                var typeName = (string)((ListOption)dlg.Architectures.SelectedValue).Value;
+                var typeName = (string) ((ListOption) dlg.Architectures.SelectedValue).Value;
                 Type t = Type.GetType(typeName, true);
-                arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
+                arch = (IProcessorArchitecture) t.GetConstructor(Type.EmptyTypes).Invoke(null);
 
-                typeName = (string)((ListOption)dlg.Platforms.SelectedValue).Value;
+                typeName = (string) ((ListOption) dlg.Platforms.SelectedValue).Value;
                 t = Type.GetType(typeName);
                 if (t == null)
                     throw new TypeLoadException(string.Format("Unable to load type {0}.", typeName));
-                platform = (Platform)t.GetConstructor(new Type[] { 
+                platform = (Platform) t.GetConstructor(new Type[] { 
                         typeof(IServiceProvider),
                         typeof(IProcessorArchitecture)
                     })
                     .Invoke(new object[] { sc, arch });
 
                 var addrBase = new Address(arch.PointerType, Convert.ToUInt32(dlg.AddressTextBox.Text, 16));
-                OpenBinary(dlg.FileName.Text, delegate
-                {
+                OpenBinary(dlg.FileName.Text, (f) =>
                     pageInitial.OpenBinaryAs(
-                        dlg.FileName.Text,
+                        f,
                         arch,
                         platform,
                         addrBase,
-                        this);
-                });
+                        this));
             }
             catch (Exception ex)
             {
@@ -436,13 +425,13 @@ namespace Decompiler.Gui.Forms
 
         public void ViewDisassemblyWindow()
         {
-            var dasmService = GetService<IDisassemblyViewService>();
+            var dasmService = sc.GetService<IDisassemblyViewService>();
             dasmService.ShowWindow();
         }
 
         public void ViewMemoryWindow()
         {
-            var memService = GetService<ILowLevelViewService>();
+            var memService = sc.GetService<ILowLevelViewService>();
             //$TODO: determine "current program".
             memService.ViewImage(this.decompilerSvc.Decompiler.Programs.First());
             memService.ShowWindow();
@@ -648,10 +637,7 @@ namespace Decompiler.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = (string)mru.Items[iMru];
-                OpenBinary(file, delegate
-                {
-                    pageInitial.OpenBinary(file, this);
-                });
+                OpenBinary(file, (f) => pageInitial.OpenBinary(file, this));
                 mru.Use(file);
                 return true;
             }

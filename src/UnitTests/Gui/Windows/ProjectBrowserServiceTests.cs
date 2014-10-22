@@ -38,6 +38,9 @@ namespace Decompiler.UnitTests.Gui.Windows
     [TestFixture]
     public class ProjectBrowserServiceTests
     {
+        private readonly string cr = Environment.NewLine == "\r\n"
+                ? "&#xD;&#xA;"
+                : "&#xA;";
         private MockRepository mr;
         private ServiceContainer sc;
         private FakeTreeView fakeTree;
@@ -47,6 +50,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDecompiler decompiler;
         private Program program;
         private Program[] programs;
+        private Project project;
 
         [SetUp]
         public void Setup()
@@ -88,6 +92,8 @@ namespace Decompiler.UnitTests.Gui.Windows
             Assert.AreEqual(sExp, sb.ToString());
         }
 
+        #region Fake TreeView (Move to UnitTests.Fakes?)
+
 
         private class FakeTreeView : ITreeView
         {
@@ -114,135 +120,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             {
                 return new FakeTreeNode { Text = text };
             }
-        }
-
-        private class FakeTreeNodeCollection : List<ITreeNode>,  ITreeNodeCollection
-        {
-            public ITreeNode Add(string text)
-            {
-                var node = new FakeTreeNode { Text = text };
-                base.Add(node);
-                return node;
-            }
-        }
-
-        private class FakeTreeNode : ITreeNode
-        {
-            public FakeTreeNode()
-            {
-                Nodes = new FakeTreeNodeCollection();
-            }
-
-            public object Tag { get; set; }
-            public ITreeNodeCollection Nodes { get; private set; }
-            public string ImageName { get; set; }
-            public string Text { get; set; }
-            public string ToolTipText { get; set; }
-
-            public void Expand() { }
-        }
-
-        [Test]
-        public void PBS_NoProject()
-        {
-            var pbs = new ProjectBrowserService(sc, fakeTree);
-            pbs.Load(null, null);
-
-            Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?><root><node text=\"(No project loaded)\" /></root>");
-            Assert.IsFalse(fakeTree.ShowRootLines);
-            Assert.IsFalse(fakeTree.ShowNodeToolTips);
-        }
-
-        private void Given_ProgramWithOneSegment()
-        {
-            var image = new LoadedImage(new Address(0x12340000), new byte[0x1000]);
-            var imageMap = new ImageMap(image);
-            imageMap.AddSegment(new Address(0x12340000), ".text", AccessMode.Execute);
-            var arch = mr.StrictMock<IProcessorArchitecture>();
-            var platform = new DefaultPlatform(sc, arch);
-            program = new Program(image, imageMap, arch, platform);
-            programs = new[] { program }; 
-        }
-
-        [Test]
-        public void PBS_SingleBinary()
-        {
-            var pbs = new ProjectBrowserService(sc, fakeTree);
-            Given_ProgramWithOneSegment();
-            var project =  new Project
-            {
-                InputFiles = {
-                    new InputFile {
-                            Filename = "/home/fnord/project/executable",
-                            BaseAddress = new Address(0x12340000),
-                    }
-                },
-            };
-
-            pbs.Load(project, programs);
-
-            Assert.IsTrue(fakeTree.ShowNodeToolTips);
-            var cr = Environment.NewLine == "\r\n"
-                ? "&#xD;&#xA;"
-                : "&#xA;";
-            Expect(
-                "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
-                "<root>" +
-                "<node " +
-                    "text=\"executable\" " +
-                    "tip=\"/home/fnord/project/executable" + cr + "12340000\" " +
-                    "tag=\"InputFile\">" +
-                    "<node " + 
-                        "text=\"Image base\" " +
-                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
-                        "tag=\"ImageMapSegment\" />" +
-                "</node>" +
-                "</root>");
-        }
-
-        [Test]
-        public void PBS_AddBinary()
-        {
-            var pbs = new ProjectBrowserService(sc, fakeTree);
-            Given_ProgramWithOneSegment();
-            var project = new Project
-            {
-                InputFiles = 
-                {
-                    new InputFile { Filename="foo.exe", BaseAddress=new Address(0x400000) }
-                }
-            };
-            pbs.Load(project, programs);
-            mr.ReplayAll();
-
-            project.InputFiles.Add(new InputFile
-            {
-                Filename = "bar.exe",
-                BaseAddress = new Address(0x1231300)
-            });
-
-            Assert.AreEqual(2, fakeTree.Nodes.Count);
-            mr.VerifyAll();
-        }
-
-        [Test]
-        public void PBS_AfterSelect_Calls_DoDefaultAction()
-        {
-            var des = mr.StrictMock<TreeNodeDesigner>();
-            var node = mr.Stub<ITreeNode>();
-            des.Expect(d => d.DoDefaultAction());
-            des.Stub(d => d.Initialize(null)).IgnoreArguments();
-            mockTree = new FakeTree();
-            mr.ReplayAll();
-            
-            var pbs = new ProjectBrowserService(sc, mockTree);
-            pbs.AddComponents(new object[] { des });
-            var desdes = pbs.GetDesigner(des);
-            Assert.IsNotNull(desdes);
-
-            mockTree.SelectedNode = des.TreeNode;
-
-            mr.VerifyAll();
         }
 
         public class FakeTree : ITreeView
@@ -375,7 +252,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             public ITreeNodeCollection Nodes { get; private set; }
             public string ImageName { get; set; }
-            public object Tag {get; set; }
+            public object Tag { get; set; }
             public string Text { get; set; }
             public string ToolTipText { get; set; }
 
@@ -399,6 +276,179 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
         }
 
+
+        private class FakeTreeNodeCollection : List<ITreeNode>,  ITreeNodeCollection
+        {
+            public ITreeNode Add(string text)
+            {
+                var node = new FakeTreeNode { Text = text };
+                base.Add(node);
+                return node;
+            }
+        }
+
+        private class FakeTreeNode : ITreeNode
+        {
+            public FakeTreeNode()
+            {
+                Nodes = new FakeTreeNodeCollection();
+            }
+
+            public object Tag { get; set; }
+            public ITreeNodeCollection Nodes { get; private set; }
+            public string ImageName { get; set; }
+            public string Text { get; set; }
+            public string ToolTipText { get; set; }
+
+            public void Expand() { }
+        }
+
+        #endregion
+
+        [Test]
+        public void PBS_NoProject()
+        {
+            var pbs = new ProjectBrowserService(sc, fakeTree);
+            pbs.Load(null);
+
+            Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?><root><node text=\"(No project loaded)\" /></root>");
+            Assert.IsFalse(fakeTree.ShowRootLines);
+            Assert.IsFalse(fakeTree.ShowNodeToolTips);
+        }
+
+        private void Given_ProgramWithOneSegment()
+        {
+            var image = new LoadedImage(new Address(0x12340000), new byte[0x1000]);
+            var imageMap = new ImageMap(image);
+            imageMap.AddSegment(new Address(0x12340000), ".text", AccessMode.Execute);
+            var arch = mr.StrictMock<IProcessorArchitecture>();
+            var platform = new DefaultPlatform(sc, arch);
+            this.program = new Program(image, imageMap, arch, platform);
+            this.program.Name = "foo.exe";
+            this.program.InputFile = new InputFile { Filename = @"c:\test\foo.exe" };
+            this.programs = new[] { program }; 
+        }
+
+        [Test]
+        public void PBS_SingleBinary()
+        {
+            var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_ProgramWithOneSegment();
+
+            pbs.Load(programs);
+
+            Assert.IsTrue(fakeTree.ShowNodeToolTips);
+            
+            Expect(
+                "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+                "<root>" +
+                "<node " +
+                    "text=\"foo.exe\" " +
+                    "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
+                    "tag=\"Program\">" +
+                    "<node " + 
+                        "text=\"Image base\" " +
+                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
+                        "tag=\"ImageMapSegment\" />" +
+                "</node>" +
+                "</root>");
+        }
+
+        [Test]
+        [Ignore("Needs programs, not InputFiles")]
+        public void PBS_AddBinary()
+        {
+            var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_ProgramWithOneSegment();
+            Given_Project();
+            pbs.Load(programs);
+            mr.ReplayAll();
+
+            project.InputFiles.Add(new InputFile
+            {
+                Filename = "bar.exe",
+                BaseAddress = new Address(0x1231300)
+            });
+
+            Assert.AreEqual(2, fakeTree.Nodes.Count);
+            mr.VerifyAll();
+        }
+
+        private void Given_Project()
+        {
+            this.project = new Project
+            {
+                InputFiles = 
+                {
+                    new InputFile { Filename="foo.exe", BaseAddress=new Address(0x400000) }
+                }
+            };
+        }
+
+
+        private void Given_UserProcedure(uint addr, string name)
+        {
+            program.InputFile.UserProcedures.Add(
+                new Address(addr), new Decompiler.Core.Serialization.Procedure_v1
+                {
+                    Address = addr.ToString(),
+                    Name = name
+                });
+        }
+
+        [Test]
+        public void PBS_UserProcedures()
+        {
+            var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_ProgramWithOneSegment();
+            Given_Project();
+            Given_UserProcedure(0x13000050, "MyFoo");
+            mr.ReplayAll();
+
+            pbs.Load(programs);
+
+            Expect(
+                "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+                "<root>" +
+                "<node " +
+                    "text=\"foo.exe\" " +
+                    "tip=\"c:\\test\\foo.exe" + cr + "12340000\" " +
+                    "tag=\"Program\">" +
+                    "<node " +
+                        "text=\"Image base\" " +
+                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
+                        "tag=\"ImageMapSegment\">" +
+                        "<node " +
+                            "text=\"MyFoo\" " +
+                            "tip=\"13000050\" " +
+                            "tag=\"ProcedureDesigner\" />" +
+                    "</node>" +
+                "</node>" +
+                "</root>");
+        }
+
+         
+        [Test]
+        public void PBS_AfterSelect_Calls_DoDefaultAction()
+        {
+            var des = mr.StrictMock<TreeNodeDesigner>();
+            var node = mr.Stub<ITreeNode>();
+            des.Expect(d => d.DoDefaultAction());
+            des.Stub(d => d.Initialize(null)).IgnoreArguments();
+            mockTree = new FakeTree();
+            mr.ReplayAll();
+            
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            pbs.AddComponents(new object[] { des });
+            var desdes = pbs.GetDesigner(des);
+            Assert.IsNotNull(desdes);
+
+            mockTree.SelectedNode = des.TreeNode;
+
+            mr.VerifyAll();
+        }
+
+        
         public class TestDesigner : TreeNodeDesigner
         {
         }

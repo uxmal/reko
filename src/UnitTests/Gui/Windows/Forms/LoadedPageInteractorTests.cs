@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             TestLoader ldr = new TestLoader(sc, new Project_v1(), prog);
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
-            decSvc.Decompiler.LoadProject("test.exe");
+            decSvc.Decompiler.Load("test.exe");
 
             interactor = new LoadedPageInteractor(sc);
         }
@@ -152,27 +152,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void LpiQueryStatus()
+        public void Lpi_QueryStatus()
         {
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));
         }
 
-        [Test]
-        public void QQQ_Test()
-        {
-            Guid g = Guid.NewGuid();
-            CommandID cmd1 = new CommandID(g, 2014);
-            CommandID cmd2 = new CommandID(g, 2014);
-            Assert.AreEqual(cmd1.GetHashCode(), cmd2.GetHashCode());
-            Assert.AreEqual(cmd1, cmd2);
-        }
 
         [Test]
-        public void LpiSetBrowserCaptionWhenEnteringPage()
+        public void Lpi_SetBrowserCaptionWhenEnteringPage()
         {
             AddService<IDecompilerShellUiService>();
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
+            AddService<IProjectBrowserService>();
             repository.ReplayAll();
 
             interactor.EnterPage();
@@ -181,7 +173,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        public void LpiCallScanProgramWhenenteringPage()
+        public void Lpi_CallScanProgramWhenenteringPage()
         {
             var decSvc = AddService<IDecompilerService>();
             var decompiler = repository.Stub<IDecompiler>();
@@ -193,6 +185,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             AddService<IDecompilerShellUiService>();
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
+            AddService<IProjectBrowserService>();
             repository.ReplayAll();
 
             Assert.IsNotNull(sc);
@@ -225,7 +218,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 return new byte[400];
             }
 
-            public Program LoadExecutable(string fileName, Address loadAddress)
+            public Program LoadExecutable(InputFile file)
             {
                 return prog;
             }

@@ -35,10 +35,10 @@ namespace Decompiler.Core
         public Project()
         {
             UserGlobalData = new SortedList<Address, SerializedType>();
-            InputFiles = new ObservableRangeCollection<ProjectFile>();
+            InputFiles = new ObservableRangeCollection<InputFile>();
         }
 
-        public ObservableRangeCollection<ProjectFile> InputFiles { get; private set; }
+        public ObservableRangeCollection<InputFile> InputFiles { get; private set; }
 
         /// <summary>
         /// Global data identified by the user.

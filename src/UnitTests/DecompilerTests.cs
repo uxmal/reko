@@ -61,10 +61,10 @@ namespace Decompiler.UnitTests
                 .Return(new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
                     "<input><filename>foo.bar</filename></input></project>"));
             loader.Stub(l => l.LoadImageBytes("foo.bar", 0)).Return(bytes);
-            loader.Stub(l => l.LoadExecutable("foo.bar", null)).Return(new Program());
+            loader.Stub(l => l.LoadExecutable(null)).IgnoreArguments().Return(new Program());
             mr.ReplayAll();
 
-            decompiler.LoadProject("test.dcproject");
+            decompiler.Load("test.dcproject");
 
             Assert.AreEqual("foo.bar", decompiler.Project.InputFiles[0].Filename);
             mr.VerifyAll();

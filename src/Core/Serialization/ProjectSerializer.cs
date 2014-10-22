@@ -99,7 +99,8 @@ namespace Decompiler.Core.Serialization
 
         public Project LoadProject(Project_v2 sp)
         {
-            var inputFiles = sp.Inputs.Select(s => s.Accept<ProjectFile>(this));
+            var inputFiles = sp.Inputs.Select(s => s.Accept<ProjectFile>(this))
+				.Cast<InputFile>();
             var project = new Project();
             project.InputFiles.AddRange(inputFiles);
             return project;

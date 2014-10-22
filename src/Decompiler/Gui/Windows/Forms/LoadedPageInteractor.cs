@@ -86,6 +86,7 @@ namespace Decompiler.Gui.Windows.Forms
         public override void EnterPage()
         {
             memSvc.ViewImage(Decompiler.Programs.First());
+            Services.RequireService<IProjectBrowserService>().Reload();
         }
 
         public override bool LeavePage()
@@ -93,6 +94,10 @@ namespace Decompiler.Gui.Windows.Forms
             return true;
         }
 
+        /// <summary>
+        /// Shows a list of all blocks that have not yet been scanned.
+        /// </summary>
+        /// <returns></returns>
         public bool ViewUnscannedBlocks()
         {
             var srSvc = Services.RequireService<ISearchResultService>();

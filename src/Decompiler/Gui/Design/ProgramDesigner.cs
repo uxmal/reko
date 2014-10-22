@@ -35,6 +35,18 @@ namespace Decompiler.Gui.Design
             base.Initialize(obj);
             var program = (Program) obj;
             Host.AddComponents(program, program.ImageMap.Segments.Values);
+
+            SetTreeNodeProperties(program);
+        }
+
+        public void SetTreeNodeProperties(Program program)
+        {
+            TreeNode.Text = program.Name;
+            TreeNode.ImageName = "Binary.ico";
+            TreeNode.ToolTipText = string.Format("{0}{1}{2}",
+                program.InputFile != null ? program.InputFile.Filename : "(No file name)",
+                Environment.NewLine,
+                program.Image.BaseAddress);
         }
     }
 }
