@@ -477,7 +477,7 @@ namespace Decompiler.UnitTests.Typing
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
-            m.Store(m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
+            m.SegStore(ds, m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
 
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);

@@ -406,6 +406,14 @@ namespace Decompiler.UnitTests.Typing
             });
             RunTest(pm, "Typing/TerSegmentedLoadLoad.txt");
         }
+
+        [Test]
+        public void TerIntelIndexedAddressingMode()
+        {
+            ProgramBuilder m = new ProgramBuilder();
+            m.Add(new IntelIndexedAddressingMode());
+            RunTest(m.BuildProgram(), "Typing/TerIntelIndexedAddressingMode.txt");
+        }
 	}
 
 	public class SegmentedMemoryPointerMock : ProcedureBuilder

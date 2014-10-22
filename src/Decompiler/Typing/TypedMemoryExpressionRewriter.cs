@@ -58,6 +58,13 @@ namespace Decompiler.Typing
 			return access.EffectiveAddress.Accept(this);
 		}
 
+        public Expression Rewrite(ArrayAccess access)
+        {
+            basePointer = null;
+            dtResult = new ArrayType(access.TypeVariable.DataType, 0);
+            return access;
+        }
+
         public Expression VisitAddress(Address addr)
         {
             var tcr = new TypedConstantRewriter(store, globals);

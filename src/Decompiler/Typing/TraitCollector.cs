@@ -109,6 +109,7 @@ namespace Decompiler.Typing
 		public void CollectProgramTraits(Program prog)
 		{
 			this.prog = prog;
+            handler.DataTypeTrait(prog.Globals, prog.Architecture.PointerType);
             foreach (Procedure p in prog.Procedures.Values)
             {
                 proc = p;
@@ -453,7 +454,7 @@ namespace Decompiler.Typing
                 handler.MemAccessTrait(
                     null, 
                     prog.Globals,
-                    2,
+                    prog.Architecture.PointerType.Size,
                     c,
                     c.ToInt32() * 0x10);   //$REVIEW Platform-dependent
             }

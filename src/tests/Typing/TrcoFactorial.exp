@@ -28,6 +28,8 @@ l0C00_0029:
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
 
+globals_t (in globals : (ptr (struct)))
+	trait_primitive(ptr32)
 T_2 (in fn0C00_000F : ptr32)
 	trait_func(T_5 -> T_6)
 T_4 (in wArg02 : word16)

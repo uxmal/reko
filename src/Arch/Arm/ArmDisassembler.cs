@@ -143,14 +143,14 @@ namespace Decompiler.Arch.Arm
                     arm.Opcode = Opcode.mul;
                     if (Bit_S_Set(instr))
                         arm.OpFlags = OpFlags.S;
-                    DecodeOperands(instr, "4,0,2");
+                    DecodeOperands(instr, PrimitiveType.Word32, "4,0,2");
                 }
                 else if ((instr & 0x0FE000F0) == 0x00200090)
                 {
                     arm.Opcode = Opcode.mla;
                     if (Bit_S_Set(instr))
                         arm.OpFlags = OpFlags.S;
-                    DecodeOperands(instr, "4,0,2,3");
+                    DecodeOperands(instr, PrimitiveType.Word32, "4,0,2,3");
                 }
                 else
                 {
@@ -161,7 +161,10 @@ namespace Decompiler.Arch.Arm
                 if ((instr & 0x0FB00FF0) == 0x01000090)
                 {
                     arm.Opcode = BitN_Set(instr, 22) ? Opcode.swpb : Opcode.swp;
-                    DecodeOperands(instr, "3,0,I4");
+                    DecodeOperands(
+                        instr, 
+                        BitN_Set(instr, 22) ? PrimitiveType.Byte : PrimitiveType.Word32, 
+                        "3,0,I4");
                 }
                 else
                 {
@@ -183,11 +186,11 @@ namespace Decompiler.Arch.Arm
                 break;
             case 0xA:
                 arm.Opcode = Opcode.b;
-                DecodeOperands(instr, "&");
+                DecodeOperands(instr, null, "&");
                 break;
             case 0xB:
                 arm.Opcode = Opcode.bl;
-                DecodeOperands(instr, "&");
+                DecodeOperands(instr, null, "&");
                 break;
             case 0xC: case 0x0D: case 0x0E: case 0x0F:
                 DecodeSvcAndCoproc();
@@ -207,29 +210,29 @@ namespace Decompiler.Arch.Arm
             case 0: case 1: case 2: case 3:
             case 4: case 5: case 6: case 7:
             case 0xC: case 0xE:
-                DecodeOperands(instr, "3,4,*");
+                DecodeOperands(instr, PrimitiveType.Word32, "3,4,*");
                 break;
             case 8: case 9: case 0xA: case 0xB:
-                DecodeOperands(instr, "4,*");
+                DecodeOperands(instr, PrimitiveType.Word32, "4,*");
                 arm.OpFlags = OpFlags.None;
                 break;
             case 0xD: case 0xF:
-                DecodeOperands(instr, "3,*");
+                DecodeOperands(instr,PrimitiveType.Word32, "3,*");
                 break;
             }
         }
 
         private void DecodeSingleDataTransfer()
         {
-            string format = "";
+            PrimitiveType width = null;
             switch ((instr >> 21) & 2 | (instr >> 20) & 1)
             {
-            case 0: arm.Opcode = Opcode.str; format = "3,/w"; break;
-            case 1: arm.Opcode = Opcode.ldr; format = "3,/w"; break;
-            case 2: arm.Opcode = Opcode.strb; format = "3,/b"; break;
-            case 3: arm.Opcode = Opcode.ldrb; format = "3,/b"; break;
+            case 0: arm.Opcode = Opcode.str; width = PrimitiveType.Word32; break;
+            case 1: arm.Opcode = Opcode.ldr; width = PrimitiveType.Word32; break;
+            case 2: arm.Opcode = Opcode.strb;width = PrimitiveType.Byte; break;
+            case 3: arm.Opcode = Opcode.ldrb;width = PrimitiveType.Byte; break;
             }
-            DecodeOperands(instr, format);
+            DecodeOperands(instr, width, "3,/");
         }
 
         private void DecodeLdmStm()
@@ -256,7 +259,7 @@ namespace Decompiler.Arch.Arm
                     : ((instr & Pbit) != 0) ? OpFlags.DB : OpFlags.DA;
             }
             arm.Update = BitN_Set(instr, 21);
-            DecodeOperands(instr, "4,%");
+            DecodeOperands(instr, PrimitiveType.Word32, "4,%");
         }
 
         private void DecodeSvcAndCoproc()
@@ -270,7 +273,7 @@ namespace Decompiler.Arch.Arm
                 break;
             case 3:
                 arm.Opcode = Opcode.svc;
-                DecodeOperands(instr, "$");
+                DecodeOperands(instr, null, "$");
                 break;
             }
         }
@@ -288,7 +291,7 @@ namespace Decompiler.Arch.Arm
             case 0xA: case 0xB:
                 // Branch with link and exchange
                 arm.Opcode = Opcode.blx;
-                DecodeOperands(instr, "x");
+                DecodeOperands(instr, null,"x");
                 return arm;
             case 0xC: case 0xD: 
                 // Stored load coprocessor
@@ -355,7 +358,7 @@ namespace Decompiler.Arch.Arm
                 b[(instr >> 12) & 15], b[(instr >> 8) & 15], b[(instr >> 4) & 15], b[(instr) & 15]);
         }
 
-        private void DecodeOperands(word instr, string format)
+        private void DecodeOperands(word instr, PrimitiveType width, string format)
         {
             var ops = new MachineOperand[4];
             int iOp = 0;
@@ -386,10 +389,10 @@ namespace Decompiler.Arch.Arm
                     ops[iOp] = new AddressOperand(new Address(dstAddr));
                     break;
                 case '/':   // Format for ldr, str
-                    ops[iOp] = DecodeIndirectOperand(GetWidth(format[++i]), instr);
+                    ops[iOp] = DecodeIndirectOperand(width, instr);
                     break;
                 case 'I':   // Indirect register, nibble in following character.
-                    ops[iOp] = new ArmMemoryOperand(null, A32Registers.GpRegs[(instr >> ((format[++i] - '0') << 2)) & 0xF]);
+                    ops[iOp] = new ArmMemoryOperand(width, A32Registers.GpRegs[(instr >> ((format[++i] - '0') << 2)) & 0xF]);
                     break;
                 case ',':
                     ++iOp;

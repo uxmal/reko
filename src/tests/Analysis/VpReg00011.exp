@@ -1,0 +1,394 @@
+= fn0C00_0000 ========================
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+sp:sp
+    def:  def sp
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+	def Mem0
+	def fp
+	def sp
+	// succ:  l0C00_0000
+l0C00_0000:
+	fn0C00_0004()
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+sp:sp
+    def:  def sp
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+	def Mem0
+	def fp
+	def sp
+	// succ:  l0C00_0000
+l0C00_0000:
+	fn0C00_0004()
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+= fn0C00_0004 ========================
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+sp:sp
+    def:  def sp
+ax:ax
+    def:  def ax
+es:es
+    def:  def es
+bx:bx
+    def:  def bx
+al:al
+    def:  def al
+bh:bh
+    def:  def bh
+SZO:Flags
+    def:  def SZO
+ah:ah
+    def:  def ah
+bl:bl
+    def:  def bl
+C:Flags
+    def:  def C
+SCZO:Flags
+    def:  def SCZO
+S:Flags
+    def:  def S
+ax_14: orig: ax
+    def:  ax_14 = 0x4DE1
+    uses: al_15 = (byte) ax_14 (alias)
+          ah_16 = SLICE(ax_14, byte, 8) (alias)
+al_15: orig: al
+    def:  al_15 = (byte) ax_14 (alias)
+ah_16: orig: ah
+    def:  ah_16 = SLICE(ax_14, byte, 8) (alias)
+es_17: orig: es
+    def:  es_17 = 0x4DE1
+bx_18: orig: bx
+    def:  bx_18 = 0x0FFF
+    uses: bh_19 = SLICE(bx_18, byte, 8) (alias)
+          bl_20 = (byte) bx_18 (alias)
+          bx_23 = PHI(bx_18, bx_38)
+bh_19: orig: bh
+    def:  bh_19 = SLICE(bx_18, byte, 8) (alias)
+    uses: bh_22 = PHI(bh_19, bh_39)
+bl_20: orig: bl
+    def:  bl_20 = (byte) bx_18 (alias)
+    uses: bl_21 = PHI(bl_20, bl_40)
+bl_21: orig: bl
+    def:  bl_21 = PHI(bl_20, bl_40)
+    uses: ah_26 = bl_21
+          al_31 = bl_21
+bh_22: orig: bh
+    def:  bh_22 = PHI(bh_19, bh_39)
+    uses: al_24 = bh_22
+bx_23: orig: bx
+    def:  bx_23 = PHI(bx_18, bx_38)
+    uses: Mem37[0x4DE1:bx_23:byte] = al_34
+          bx_38 = bx_23 - 0x0001
+al_24: orig: al
+    def:  al_24 = bh_22
+    uses: al_25 = al_24 + 0x01
+al_25: orig: al
+    def:  al_25 = al_24 + 0x01
+    uses: ax_28 = ah_27 *u al_25
+ah_26: orig: ah
+    def:  ah_26 = bl_21
+    uses: ah_27 = ah_26 & 0x0F
+ah_27: orig: ah
+    def:  ah_27 = ah_26 & 0x0F
+    uses: ax_28 = ah_27 *u al_25
+ax_28: orig: ax
+    def:  ax_28 = ah_27 *u al_25
+    uses: ax_29 = ax_28 << 0x0004
+ax_29: orig: ax
+    def:  ax_29 = ax_28 << 0x0004
+    uses: ah_30 = SLICE(ax_29, byte, 8) (alias)
+          ax_35 = DPB(ax_29, al_34, 0, 8) (alias)
+ah_30: orig: ah
+    def:  ah_30 = SLICE(ax_29, byte, 8) (alias)
+    uses: ah_33 = ah_30 & 0x0F
+al_31: orig: al
+    def:  al_31 = bl_21
+    uses: al_32 = al_31 & 0xF0
+al_32: orig: al
+    def:  al_32 = al_31 & 0xF0
+    uses: al_34 = al_32 | ah_33
+ah_33: orig: ah
+    def:  ah_33 = ah_30 & 0x0F
+    uses: al_34 = al_32 | ah_33
+al_34: orig: al
+    def:  al_34 = al_32 | ah_33
+    uses: ax_35 = DPB(ax_29, al_34, 0, 8) (alias)
+          Mem37[0x4DE1:bx_23:byte] = al_34
+ax_35: orig: ax
+    def:  ax_35 = DPB(ax_29, al_34, 0, 8) (alias)
+C_36: orig: C
+    def:  C_36 = false
+Mem37: orig: Mem0
+    def:  Mem37[0x4DE1:bx_23:byte] = al_34
+bx_38: orig: bx
+    def:  bx_38 = bx_23 - 0x0001
+    uses: bh_39 = SLICE(bx_38, byte, 8) (alias)
+          bl_40 = (byte) bx_38 (alias)
+          SZO_41 = cond(bx_38)
+          bx_23 = PHI(bx_18, bx_38)
+          branch bx_38 >= 0x0000 l0C00_000C
+bh_39: orig: bh
+    def:  bh_39 = SLICE(bx_38, byte, 8) (alias)
+    uses: bh_22 = PHI(bh_19, bh_39)
+bl_40: orig: bl
+    def:  bl_40 = (byte) bx_38 (alias)
+    uses: bl_21 = PHI(bl_20, bl_40)
+SZO_41: orig: SZO
+    def:  SZO_41 = cond(bx_38)
+    uses: SCZO_42 = SZO_41 (alias)
+          S_43 = SZO_41 (alias)
+SCZO_42: orig: SCZO
+    def:  SCZO_42 = SZO_41 (alias)
+S_43: orig: S
+    def:  S_43 = SZO_41 (alias)
+// fn0C00_0004
+void fn0C00_0004()
+fn0C00_0004_entry:
+	def Mem0
+	def fp
+	def sp
+	def ax
+	def es
+	def bx
+	def al
+	def bh
+	def SZO
+	def ah
+	def bl
+	def C
+	def SCZO
+	def S
+	// succ:  l0C00_0004
+l0C00_0004:
+	ax_14 = 0x4DE1
+	al_15 = (byte) ax_14 (alias)
+	ah_16 = SLICE(ax_14, byte, 8) (alias)
+	es_17 = 0x4DE1
+	bx_18 = 0x0FFF
+	bh_19 = SLICE(bx_18, byte, 8) (alias)
+	bl_20 = (byte) bx_18 (alias)
+	// succ:  l0C00_000C
+l0C00_000C:
+	bl_21 = PHI(bl_20, bl_40)
+	bh_22 = PHI(bh_19, bh_39)
+	bx_23 = PHI(bx_18, bx_38)
+	al_24 = bh_22
+	al_25 = al_24 + 0x01
+	ah_26 = bl_21
+	ah_27 = ah_26 & 0x0F
+	ax_28 = ah_27 *u al_25
+	ax_29 = ax_28 << 0x0004
+	ah_30 = SLICE(ax_29, byte, 8) (alias)
+	al_31 = bl_21
+	al_32 = al_31 & 0xF0
+	ah_33 = ah_30 & 0x0F
+	al_34 = al_32 | ah_33
+	ax_35 = DPB(ax_29, al_34, 0, 8) (alias)
+	C_36 = false
+	Mem37[0x4DE1:bx_23:byte] = al_34
+	bx_38 = bx_23 - 0x0001
+	bh_39 = SLICE(bx_38, byte, 8) (alias)
+	bl_40 = (byte) bx_38 (alias)
+	SZO_41 = cond(bx_38)
+	SCZO_42 = SZO_41 (alias)
+	S_43 = SZO_41 (alias)
+	branch bx_38 >= 0x0000 l0C00_000C
+	// succ:  l0C00_0029 l0C00_000C
+l0C00_0029:
+	return
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:
+
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+sp:sp
+    def:  def sp
+ax:ax
+    def:  def ax
+es:es
+    def:  def es
+bx:bx
+    def:  def bx
+al:al
+    def:  def al
+bh:bh
+    def:  def bh
+SZO:Flags
+    def:  def SZO
+ah:ah
+    def:  def ah
+bl:bl
+    def:  def bl
+C:Flags
+    def:  def C
+SCZO:Flags
+    def:  def SCZO
+S:Flags
+    def:  def S
+ax_14: orig: ax
+    def:  ax_14 = 0x4DE1
+al_15: orig: al
+    def:  al_15 = 0xE1 (alias)
+ah_16: orig: ah
+    def:  ah_16 = 0x4D (alias)
+es_17: orig: es
+    def:  es_17 = 0x4DE1
+bx_18: orig: bx
+    def:  bx_18 = 0x0FFF
+    uses: bx_23 = PHI(bx_18, bx_38)
+bh_19: orig: bh
+    def:  bh_19 = 0x0F (alias)
+    uses: bh_22 = PHI(bh_19, bh_39)
+bl_20: orig: bl
+    def:  bl_20 = 0xFF (alias)
+    uses: bl_21 = PHI(bl_20, bl_40)
+bl_21: orig: bl
+    def:  bl_21 = PHI(bl_20, bl_40)
+    uses: ah_26 = bl_21
+          al_31 = bl_21
+          ah_27 = bl_21 & 0x0F
+          al_32 = bl_21 & 0xF0
+bh_22: orig: bh
+    def:  bh_22 = PHI(bh_19, bh_39)
+    uses: al_24 = bh_22
+          al_25 = bh_22 + 0x01
+bx_23: orig: bx
+    def:  bx_23 = PHI(bx_18, bx_38)
+    uses: Mem37[0x4DE1:bx_23:byte] = al_34
+          bx_38 = bx_23 - 0x0001
+al_24: orig: al
+    def:  al_24 = bh_22
+al_25: orig: al
+    def:  al_25 = bh_22 + 0x01
+    uses: ax_28 = ah_27 *u al_25
+ah_26: orig: ah
+    def:  ah_26 = bl_21
+ah_27: orig: ah
+    def:  ah_27 = bl_21 & 0x0F
+    uses: ax_28 = ah_27 *u al_25
+ax_28: orig: ax
+    def:  ax_28 = ah_27 *u al_25
+    uses: ax_29 = ax_28 << 0x0004
+          ah_30 = SLICE(ax_28 << 0x0004, byte, 8) (alias)
+          ax_35 = DPB(ax_28 << 0x0004, al_34, 0, 8) (alias)
+ax_29: orig: ax
+    def:  ax_29 = ax_28 << 0x0004
+ah_30: orig: ah
+    def:  ah_30 = SLICE(ax_28 << 0x0004, byte, 8) (alias)
+    uses: ah_33 = ah_30 & 0x0F
+          al_34 = al_32 | ah_30 & 0x0F
+al_31: orig: al
+    def:  al_31 = bl_21
+al_32: orig: al
+    def:  al_32 = bl_21 & 0xF0
+    uses: al_34 = al_32 | ah_30 & 0x0F
+ah_33: orig: ah
+    def:  ah_33 = ah_30 & 0x0F
+al_34: orig: al
+    def:  al_34 = al_32 | ah_30 & 0x0F
+    uses: ax_35 = DPB(ax_28 << 0x0004, al_34, 0, 8) (alias)
+          Mem37[0x4DE1:bx_23:byte] = al_34
+ax_35: orig: ax
+    def:  ax_35 = DPB(ax_28 << 0x0004, al_34, 0, 8) (alias)
+C_36: orig: C
+    def:  C_36 = false
+Mem37: orig: Mem0
+    def:  Mem37[0x4DE1:bx_23:byte] = al_34
+bx_38: orig: bx
+    def:  bx_38 = bx_23 - 0x0001
+    uses: bh_39 = SLICE(bx_38, byte, 8) (alias)
+          bl_40 = (byte) bx_38 (alias)
+          SZO_41 = cond(bx_38)
+          bx_23 = PHI(bx_18, bx_38)
+          branch bx_38 >= 0x0000 l0C00_000C
+bh_39: orig: bh
+    def:  bh_39 = SLICE(bx_38, byte, 8) (alias)
+    uses: bh_22 = PHI(bh_19, bh_39)
+bl_40: orig: bl
+    def:  bl_40 = (byte) bx_38 (alias)
+    uses: bl_21 = PHI(bl_20, bl_40)
+SZO_41: orig: SZO
+    def:  SZO_41 = cond(bx_38)
+    uses: SCZO_42 = SZO_41 (alias)
+          S_43 = SZO_41 (alias)
+SCZO_42: orig: SCZO
+    def:  SCZO_42 = SZO_41 (alias)
+S_43: orig: S
+    def:  S_43 = SZO_41 (alias)
+// fn0C00_0004
+void fn0C00_0004()
+fn0C00_0004_entry:
+	def Mem0
+	def fp
+	def sp
+	def ax
+	def es
+	def bx
+	def al
+	def bh
+	def SZO
+	def ah
+	def bl
+	def C
+	def SCZO
+	def S
+	// succ:  l0C00_0004
+l0C00_0004:
+	ax_14 = 0x4DE1
+	al_15 = 0xE1 (alias)
+	ah_16 = 0x4D (alias)
+	es_17 = 0x4DE1
+	bx_18 = 0x0FFF
+	bh_19 = 0x0F (alias)
+	bl_20 = 0xFF (alias)
+	// succ:  l0C00_000C
+l0C00_000C:
+	bl_21 = PHI(bl_20, bl_40)
+	bh_22 = PHI(bh_19, bh_39)
+	bx_23 = PHI(bx_18, bx_38)
+	al_24 = bh_22
+	al_25 = bh_22 + 0x01
+	ah_26 = bl_21
+	ah_27 = bl_21 & 0x0F
+	ax_28 = ah_27 *u al_25
+	ax_29 = ax_28 << 0x0004
+	ah_30 = SLICE(ax_28 << 0x0004, byte, 8) (alias)
+	al_31 = bl_21
+	al_32 = bl_21 & 0xF0
+	ah_33 = ah_30 & 0x0F
+	al_34 = al_32 | ah_30 & 0x0F
+	ax_35 = DPB(ax_28 << 0x0004, al_34, 0, 8) (alias)
+	C_36 = false
+	Mem37[0x4DE1:bx_23:byte] = al_34
+	bx_38 = bx_23 - 0x0001
+	bh_39 = SLICE(bx_38, byte, 8) (alias)
+	bl_40 = (byte) bx_38 (alias)
+	SZO_41 = cond(bx_38)
+	SCZO_42 = SZO_41 (alias)
+	S_43 = SZO_41 (alias)
+	branch bx_38 >= 0x0000 l0C00_000C
+	// succ:  l0C00_0029 l0C00_000C
+l0C00_0029:
+	return
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:

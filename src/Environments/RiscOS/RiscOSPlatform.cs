@@ -44,6 +44,7 @@ namespace Decompiler.Environments.RiscOS
         {
             switch (vector)
             {
+            // http://www.riscos.com/support/developers/prm/errors.html#89849
             case 0x2B:
                 return new SystemService
                 {

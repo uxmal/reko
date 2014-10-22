@@ -59,6 +59,8 @@ namespace Decompiler.Typing
 		{
 			changed = false;
 			classesVisited  = new HashSet<EquivalenceClass>();
+
+            // Replace the DataType of all the equivalence classes
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				EquivalenceClass eq = tv.Class;
@@ -70,6 +72,7 @@ namespace Decompiler.Typing
 				}
 			}
 
+            // Replace the DataType of all the TypeVariables
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
                 tv.DataType = Replace(tv.DataType);

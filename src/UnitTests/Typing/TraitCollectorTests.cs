@@ -578,15 +578,16 @@ namespace Decompiler.UnitTests.Typing
 	{
 		protected override void BuildBody()
 		{
+            Identifier ds = Local16("ds");
 			Identifier es = Local16("es");
 			Identifier ax = Local16("ax");
 			Identifier bx = Local16("bx");
 			Identifier si = Local16("si");
-			Assign(es, Load(PrimitiveType.Word16, Int16(0x7070)));
+			Assign(es, SegMem(PrimitiveType.Word16, ds, Int16(0x7070)));
 			Assign(ax, 0x4A);
-			Assign(si, SMul(ax, Load(PrimitiveType.Word16, Int16(0x1C0A))));
-			Load(bx, Int16(0x0CA4));
-			Store(IAdd(IAdd(bx, 10), si), Byte(0xF8));
+			Assign(si, SMul(ax, SegMem(PrimitiveType.Word16, ds, Int16(0x1C0A))));
+            Assign(bx, SegMem(PrimitiveType.Word16, ds, Int16(0x0CA4)));
+			SegStore(ds, IAdd(IAdd(bx, 10), si), Byte(0xF8));
 			Return();
 		}
 	}

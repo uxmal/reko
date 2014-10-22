@@ -8,6 +8,8 @@ l1:
 Fn_exit:
 
 // Equivalence classes ////////////
+Eq_1: ptr32
+	globals_t (in globals : (ptr (struct)))
 Eq_2: (ptr (struct (0 (arr T_9) a0000)))
 	T_2 (in 0x00123456 : word32)
 	T_3 (in a : word32)
@@ -23,10 +25,10 @@ Eq_7: uir32
 Eq_9: (struct 0008 (0 T_8 t0000))
 	T_9
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: 
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in 0x00123456 : word32)
   Class: Eq_2
   DataType: (ptr (struct (0 (arr T_9) a0000)))

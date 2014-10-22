@@ -24,10 +24,10 @@ proc1_exit:
 Eq_2: (segment "Eq_2" (300 word16 w0300))
 	T_2 (in ds : selector)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

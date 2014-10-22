@@ -29,7 +29,8 @@ l0C00_0029:
 	// succ:  fn0C00_0004_exit
 fn0C00_0004_exit:
 
-Globals (in globals : (ptr (struct)))
+globals_t (in globals : (ptr (struct)))
+	trait_primitive(ptr32)
 	trait_mem(T_24, 4DE10)
 T_2 (in fn0C00_0004 : ptr32)
 	trait_func( -> T_4)

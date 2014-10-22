@@ -39,7 +39,7 @@ namespace Decompiler.Typing
     /// </remarks>
 	public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
 	{
-        private DataType dtResult;          // The data type of the resulting expression.
+        private DataType dtResult;          // The data type of the resulting expression (field type).
 		private DataType dt;                // Data type of the complex expression
 		private DataType dtOriginal;
 		private Expression basePointer;     // (possibly null) 'base' in Segmented address.
@@ -51,7 +51,14 @@ namespace Decompiler.Typing
 		private bool seenPtr;
         private DataTypeComparer comp; 
         
-        public ComplexExpressionBuilder(DataType dtResult, DataType dt, DataType dtOrig, Expression basePointer, Expression complexExp, Expression indexExp, int offset)
+        public ComplexExpressionBuilder(
+            DataType dtResult, 
+            DataType dt, 
+            DataType dtOrig,
+            Expression basePointer,
+            Expression complexExp, 
+            Expression indexExp,
+            int offset)
         {
             this.dtResult = dtResult;
             this.dt = dt;

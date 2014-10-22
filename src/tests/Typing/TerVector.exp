@@ -20,10 +20,10 @@ VectorMock_exit:
 Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))
 	T_2 (in v : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in v : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

@@ -10,9 +10,9 @@ FnPointerMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct (10000000 pfn32 pfn10000000))
-	Globals (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct)))
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (10000000 T_2 t10000000)))

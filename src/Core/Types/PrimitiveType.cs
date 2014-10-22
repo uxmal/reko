@@ -38,16 +38,17 @@ namespace Decompiler.Core.Types
 	public enum Domain
 	{
 		None = 0,
-		Boolean = 2,
-		Character = 4,
-		SignedInt = 8,
-		UnsignedInt = 16,
-        Bcd = 32,               // Binary coded decimal; a decimal digit stored in each nybble of a byte.
-        Real = 64,
-		Pointer = 128,
-		Selector = 256,
-        SegPointer = 512,       // Segmented pointer (x86-style)
-        PtrCode = 1024,         // Pointer to executable code.
+		Boolean = 2,                // f
+		Character = 4,              // c
+		SignedInt = 8,              // s
+		UnsignedInt = 16,           // u
+        Integer = SignedInt|UnsignedInt,
+        Bcd = 32,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
+        Real = 64,                  // r
+		Pointer = 128,              // p
+		Selector = 256,             // S
+        SegPointer = 512,           // P - Segmented pointer (x86-style)
+        PtrCode = 1024,             // x - Pointer to executable code.
 
         Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Selector|SegPointer
 	}
@@ -58,7 +59,7 @@ namespace Decompiler.Core.Types
 	/// <remarks>
 	/// Examples of primitives are integers of different signedness and sizes, as well as real types and booleans.
 	/// Pointers to types are not considered primitives, as they are type constructors. Primitives are implemented
-	/// as flyweights since there are so many of them.
+	/// as immutable flyweights since there are so many of them.
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
@@ -116,31 +117,31 @@ namespace Decompiler.Core.Types
 			switch (byteSize)
 			{
 			case 1:
-				w = Domain.Boolean|Domain.Character|Domain.SignedInt|Domain.UnsignedInt|Domain.UnsignedInt;
+				w = Domain.Boolean|Domain.Character|Domain.Integer|Domain.UnsignedInt;
 				name = "byte";
 				break;
 			case 2:
-				w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Selector|Domain.PtrCode;
+				w = Domain.Integer|Domain.Pointer|Domain.Selector|Domain.PtrCode;
 				name = "word16";
 				break;
 			case 4:
-                w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real|Domain.PtrCode|Domain.SegPointer;
+                w = Domain.Integer|Domain.Pointer|Domain.Real|Domain.PtrCode|Domain.SegPointer;
 				name = "word32";
 				break;
 			case 8:
-                w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real|Domain.PtrCode;
+                w = Domain.Integer|Domain.Pointer|Domain.Real|Domain.PtrCode;
 				name = "word64";
 				break;
             case 16:
-                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Real;
+                w = Domain.Integer | Domain.Real;
                 name = "word128";
                 break;
             case 32:
-                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Real;
+                w = Domain.Integer| Domain.Real;
                 name = "word256";
                 break;
             default:
-				throw new ArgumentException("Only primitives of sizes 1, 2, 4, 8, and 16 bytes are supported.");
+				throw new ArgumentException("Only word sizes 1, 2, 4, 8, and 16 bytes are supported.");
 			}
 			return Create(w, (short) byteSize, name);
 		}

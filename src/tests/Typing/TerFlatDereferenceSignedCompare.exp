@@ -28,10 +28,10 @@ Eq_6: (struct "Eq_6" (4 int16 w0004))
 	T_6 (in Mem0[ds + 0x00005404:word32] : word32)
 	T_18 (in Mem0[ds2 + 0x00005404:word32] : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in ds : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

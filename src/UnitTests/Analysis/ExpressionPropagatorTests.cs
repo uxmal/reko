@@ -168,7 +168,7 @@ namespace Decompiler.UnitTests.Analysis
                 r2 = m.Register("r2");
                 r3 = m.Register("r3");
                 m.Assign(r2, 0x1234);                       // after which R2 has a definite value
-                m.SideEffect(m.Fn("Foo", m.AddrOf(r2)));    // Can't promise R2 is preserved after call, so should be invalid.
+                m.SideEffect(m.Fn("Foo", m.Out(PrimitiveType.Pointer32, r2)));    // Can't promise R2 is preserved after call, so should be invalid.
                 m.Assign(r3, r2);
             });
 
@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Analysis
             var instr1 = stms[0].Instruction.Accept(ep);
             Assert.AreEqual("0x00001234", ctx.GetValue(r2).ToString());
             var instr2 = stms[1].Instruction.Accept(ep);
-            Assert.AreEqual("Foo(&r2)", instr2.ToString());
+            Assert.AreEqual("Foo(out r2)", instr2.ToString());
             Assert.AreEqual("<invalid>", ctx.GetValue(r2).ToString());
             var instr3 = stms[2].Instruction.Accept(ep);
             Assert.AreEqual("r3 = r2", instr3.ToString());

@@ -92,7 +92,7 @@ wLoc08_44: orig: wLoc08
     uses: eax_48 = (int32) wLoc08_44
           ax_57 = wLoc08_44
           eax_59 = (int32) wLoc08_44
-          wLoc08_65 = wLoc08_44 + 0x0001
+          cx_63 = wLoc08_44 + 0x0001
 cx_45: orig: cx
 SO_46: orig: SO
 SCZO_47: orig: SCZO
@@ -120,9 +120,11 @@ SCZO_60: orig: SCZO
 SO_61: orig: SO
 cx_62: orig: cx
 cx_63: orig: cx
+    def:  cx_63 = wLoc08_44 + 0x0001
+    uses: wLoc08_65 = cx_63
 SCZO_64: orig: SCZO
 wLoc08_65: orig: wLoc08
-    def:  wLoc08_65 = wLoc08_44 + 0x0001
+    def:  wLoc08_65 = cx_63
     uses: wLoc08_44 = PHI(wLoc08_23, wLoc08_65)
 // fn10000017
 word16 fn10000017(word32 dwArg04)
@@ -149,7 +151,8 @@ l1000003E:
 	branch eax_59 >= 0x00007FFF l1000005A
 	// succ:  l10000049 l1000005A
 l10000049:
-	wLoc08_65 = wLoc08_44 + 0x0001
+	cx_63 = wLoc08_44 + 0x0001
+	wLoc08_65 = cx_63
 	goto l1000002F
 	// succ:  l1000002F
 l1000005A:

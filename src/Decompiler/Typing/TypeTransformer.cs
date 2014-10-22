@@ -64,6 +64,11 @@ namespace Decompiler.Typing
 			set { changed = value; }
 		}
 
+        /// <summary>
+        /// Removes duplicate alternatives from a UnionType.
+        /// </summary>
+        /// <param name="u"></param>
+        /// <returns>A (possibly) simplified UnionType.</returns>
 		public UnionType FactorDuplicateAlternatives(UnionType u)
 		{
 			UnionType uNew = new UnionType(u.Name, u.PreferredType);
@@ -74,6 +79,11 @@ namespace Decompiler.Typing
 			return uNew;
 		}
 
+        /// <summary>
+        /// Returns true if a StructureType has fields that start at the same offset.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
 		public bool HasCoincidentFields(StructureType s)
 		{
 			if (s.Fields.Count < 2)
@@ -107,31 +117,53 @@ namespace Decompiler.Typing
 		{
 			ArrayType arrMerged = null;
 			StructureType strMerged = null;
+            EquivalenceClass eqMerged = null;
 			int offset = 0;
 			for (int i = 0; i < s.Fields.Count; ++i)
 			{
 				ArrayType a = s.Fields[i].DataType as ArrayType;
 				if (a == null)
 					continue;
-				StructureType strElem = a.ElementType as StructureType;
+                EquivalenceClass eqElem = a.ElementType as EquivalenceClass;
+                StructureType strElem;
+                if (eqElem == null)
+                    strElem = a.ElementType as StructureType;
+                else
+                    strElem = eqElem.DataType as StructureType;
 				if (strElem == null)
 					continue;
 
 				if (StructuresOverlap(strMerged, offset, strElem, s.Fields[i].Offset))
 				{
 					strMerged = MergeOffsetStructures(strMerged, offset, strElem, s.Fields[i].Offset);
-					arrMerged.ElementType = strMerged;
+                    if (eqMerged != null)
+                        eqMerged.DataType = strMerged;
+                    else
+                        arrMerged.ElementType = strMerged;
 					s.Fields.RemoveAt(i);
+                    Changed = true;
 					--i;
 				}
 				else
 				{
 					arrMerged = a;
 					strMerged = strElem;
+                    eqMerged = eqElem;
 					offset = s.Fields[i].Offset;
 				}
 			}
 		}
+
+        private T ResolveAs<T>(DataType dt) where T : DataType
+        {
+            for (; ; )
+            {
+                EquivalenceClass eq = dt as EquivalenceClass;
+                if (eq == null)
+                    return dt as T;
+                dt = eq.DataType;
+            }
+        }
 
 		public StructureType MergeStructureFields(StructureType str)
 		{
@@ -215,6 +247,10 @@ namespace Decompiler.Typing
 					{
 						eq.DataType = eq.DataType.Accept(this);
 					}
+                    if (tv.DataType != null)
+                    {
+                        tv.DataType = tv.DataType.Accept(this);
+                    }
 				}
 				if (ppr.ReplaceAll())
 					Changed = true;
@@ -268,15 +304,25 @@ namespace Decompiler.Typing
         {
             mptr.BasePointer = mptr.BasePointer.Accept(this);
             mptr.Pointee = mptr.Pointee.Accept(this);
+            var array = mptr.Pointee as ArrayType;
+            if (array != null)
+            {
+                Changed = true;
+                return factory.CreatePointer(
+                    array.ElementType,
+                    mptr.Size);
+            }
             return mptr;
         }
 
         public DataType VisitPointer(Pointer ptr)
         {
             ptr.Pointee = ptr.Pointee.Accept(this);
-            var array = ptr.Pointee as ArrayType;
+            var array = ResolveAs<ArrayType>(ptr.Pointee);
             if (array != null)
             {
+                // According to the C type system, a pointer to an array
+                // is really a pointer to its element type.
                 Changed = true;
                 return factory.CreatePointer(
                     array.ElementType,

@@ -153,5 +153,12 @@ namespace Decompiler.Core
 				++i;
 			}
 		}
-	}
+
+        public void Dump()
+        {
+            var sb = new StringWriter();
+            Write(sb);
+            Debug.Print("{0}", sb);
+        }
+    }
 }
