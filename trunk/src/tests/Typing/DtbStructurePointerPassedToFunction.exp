@@ -20,6 +20,8 @@ l1:
 Fn2_exit:
 
 // Equivalence classes ////////////
+Eq_1: ptr32
+	globals_t (in globals : (ptr (struct)))
 Eq_2: word32
 	T_2 (in 0x00000042 : word32)
 	T_6 (in Mem0[p + 0x00000004:word32] : word32)
@@ -43,10 +45,10 @@ Eq_12: word32
 Eq_13: word32
 	T_13 (in arg1 + 0x00000008 : word32)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: 
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in 0x00000042 : word32)
   Class: Eq_2
   DataType: word32

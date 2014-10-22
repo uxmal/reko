@@ -69,6 +69,8 @@ l0C00_0046:
 	// succ:  fn0C00_0046_exit
 fn0C00_0046_exit:
 
+globals_t (in globals : (ptr (struct)))
+	trait_primitive(ptr32)
 T_2 (in fn0C00_0007 : ptr32)
 	trait_func(T_6, T_7 -> T_8)
 T_4 (in cx : word16)

@@ -46,10 +46,10 @@ Eq_7: (fn void ((ptr Eq_4)))
 	T_7 (in fn0C00_0015 : ptr32)
 	T_8 (in signature of fn0C00_0015 : void)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in fn0C00_000C : ptr32)
   Class: Eq_2
   DataType: (ptr Eq_2)

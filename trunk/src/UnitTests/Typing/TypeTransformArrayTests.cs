@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void MergedDistinctArrays()
+		public void MergeDistinctArrays()
 		{
 			StructureType s = BuildDistinctArrays();
 			trans.MergeStaggeredArrays(s);

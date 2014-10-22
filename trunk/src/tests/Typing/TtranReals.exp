@@ -50,10 +50,10 @@ Eq_16: (struct (0 real64 r0000) (8 real64 r0008) (10 real64 r0010))
 Eq_33: (struct (0 real64 r0000) (20 int16 w0020) (28 real64 r0028))
 	T_33 (in wArg04 : word16)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in fn0C00_0010 : ptr32)
   Class: Eq_2
   DataType: (ptr Eq_2)

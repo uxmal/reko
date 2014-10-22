@@ -112,9 +112,10 @@ namespace Decompiler.UnitTests.Arch.Mos6502
         {
             BuildTest(0x68);
             AssertCode(
-                "0|00000200(1): 2 instructions",
+                "0|00000200(1): 3 instructions",
                 "1|L--|a = Mem0[s:byte]",
-                "2|L--|s = s + 0x01");
+                "2|L--|s = s + 0x01",
+                "3|L--|NZ = cond(a)");
         }
         [Test]
         public void Rw6502_asl_zx()

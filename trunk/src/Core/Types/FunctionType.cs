@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Decompiler.Core.Types
 {
@@ -47,6 +48,15 @@ namespace Decompiler.Core.Types
 			this.ArgumentTypes = argumentTypes; 
 			this.ArgumentNames = argumentNames;
 		}
+
+        public FunctionType(ProcedureSignature sig) : base()
+        {
+            this.ReturnType = sig.ReturnValue != null
+                ? sig.ReturnValue.DataType
+                : VoidType.Instance;
+            this.ArgumentTypes = sig.FormalArguments.Select(a => a.DataType).ToArray();
+            this.ArgumentNames = sig.FormalArguments.Select(a => a.Name).ToArray();
+        }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {

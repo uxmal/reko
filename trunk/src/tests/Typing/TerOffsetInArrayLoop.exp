@@ -44,10 +44,10 @@ proc1_exit:
 Eq_5: (struct "Eq_5" (5388 (arr word16) a5388))
 	T_5 (in ds : word16)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in di_5 : (memptr (ptr Eq_5) word16))
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)

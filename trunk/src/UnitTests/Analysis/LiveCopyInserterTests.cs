@@ -99,11 +99,10 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
-
-			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.ControlGraph.Blocks[1], 2);
+            proc.ControlGraph.Blocks[1].Dump();
+			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.ControlGraph.Blocks[2], 2);
 			lci.RenameDominatedIdentifiers(ssaIds[4], ssaIds[idNew]);
-            Assert.AreEqual("return i_7", proc.ControlGraph.Blocks[1].ElseBlock.Statements[0].Instruction.ToString());
-
+            Assert.AreEqual("return i_7", proc.ControlGraph.Blocks[2].ElseBlock.Statements[0].Instruction.ToString());
 		}
 
 		[Test]

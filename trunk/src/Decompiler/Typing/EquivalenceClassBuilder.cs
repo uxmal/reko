@@ -50,7 +50,7 @@ namespace Decompiler.Typing
 		{
             // Special case for the global variables. In essence,
             // a memory map of all the globals.
-			EnsureTypeVariable(prog.Globals, "Globals");
+			EnsureTypeVariable(prog.Globals, "globals_t");
 
             foreach (Procedure proc in prog.Procedures.Values)
             {

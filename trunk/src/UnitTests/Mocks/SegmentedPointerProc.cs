@@ -33,13 +33,14 @@ namespace Decompiler.UnitTests.Mocks
         protected override void BuildBody()
         {
             var m = this;
-            Identifier es = m.Frame.EnsureRegister(new RegisterStorage("es", 1, PrimitiveType.SegmentSelector));
-            Identifier bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 2, PrimitiveType.Word16));
+            Identifier ds = m.Frame.EnsureRegister(new RegisterStorage("ds", 1, PrimitiveType.SegmentSelector));
+            Identifier es = m.Frame.EnsureRegister(new RegisterStorage("es", 2, PrimitiveType.SegmentSelector));
+            Identifier bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, PrimitiveType.Word16));
             Identifier es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.SegPtr32);
-            m.Store(m.Word16(0x300), m.Word16(0x1234));
-            m.Store(m.Word16(0x302), m.Word16(0x5550));
-            m.Assign(es_bx, m.Load(PrimitiveType.SegPtr32, m.Word16(0x300)));
-            m.Store(m.Word16(0x304), m.SegMem(
+            m.SegStore(ds, m.Word16(0x300), m.Word16(0x1234));
+            m.SegStore(ds, m.Word16(0x302), m.Word16(0x5550));
+            m.Assign(es_bx, m.SegMem(PrimitiveType.SegPtr32, ds, m.Word16(0x300)));
+            m.SegStore(ds, m.Word16(0x304), m.SegMem(
                 PrimitiveType.Word16,
                 m.Slice(PrimitiveType.SegmentSelector, es_bx, 16),
                 m.IAdd(m.Slice(PrimitiveType.Word16, es_bx, 0), 4)));

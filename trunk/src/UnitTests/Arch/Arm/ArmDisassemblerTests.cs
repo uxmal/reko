@@ -244,10 +244,10 @@ namespace Decompiler.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ldr_r5_r7_neg_r1()
+        public void ArmDasm_ldr_r5_r7_neg_r1()
         {
             var instr = DisassembleBits("1101 01 111101 0111 0101 00000 000 0001");
-            Assert.AreEqual("ldrble\tr5,[r7,-r1]", instr.ToString());
+            Assert.AreEqual("ldrble\tr5,[r7,r1]", instr.ToString());
         }
 
         [Test]

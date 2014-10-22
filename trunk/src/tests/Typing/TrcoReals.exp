@@ -34,6 +34,8 @@ l0C00_0037:
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
 
+globals_t (in globals : (ptr (struct)))
+	trait_primitive(ptr32)
 T_2 (in fn0C00_0010 : ptr32)
 	trait_func(T_7, T_8, T_9 -> T_10)
 T_4 (in ds : selector)

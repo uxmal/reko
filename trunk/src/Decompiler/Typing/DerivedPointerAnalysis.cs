@@ -111,7 +111,7 @@ namespace Decompiler.Typing
 			{
 				// C is a constant pointer.
 				if (offset == 0)
-					return;
+					return;				// null pointer is null.
 
 				if (ptr.Pointee is StructureType || ptr.Pointee is ArrayType)
 				{
@@ -120,6 +120,7 @@ namespace Decompiler.Typing
                     {
                         var sGlobals = (StructureType)((Pointer) Globals.DataType).Pointee;
                         sGlobals.Fields.Add(offset, ptr.Pointee);
+                        Globals.TypeVariable.Class.DataType = Globals.DataType;
                     }
                     else
                     {
@@ -137,6 +138,7 @@ namespace Decompiler.Typing
 			MemberPointer mptr = dt as MemberPointer;
 			if (mptr != null)
 			{
+                // C is a constant offset into a segment.
 //				VisitConstantMemberPointer(offset, mptr);
 			}
 		}

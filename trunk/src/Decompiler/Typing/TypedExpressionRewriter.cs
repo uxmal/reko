@@ -141,10 +141,8 @@ namespace Decompiler.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var a = NormalizeArrayPointer(acc.Array.Accept(this));
-            var i = acc.Index.Accept(this);
-            i = ScaleDownIndex(i, a.DataType.Size);
-            return new ArrayAccess(acc.DataType, a, i);
+            var tmr = new TypedMemoryExpressionRewriter(store, globals);
+            return tmr.Rewrite(acc);
         }
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)

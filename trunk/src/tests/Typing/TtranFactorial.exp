@@ -36,10 +36,10 @@ Eq_2: (fn int16 (word16))
 Eq_7: (segment (64 int16 w0064))
 	T_7 (in ds : selector)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in fn0C00_000F : ptr32)
   Class: Eq_2
   DataType: (ptr Eq_2)

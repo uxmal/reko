@@ -31,25 +31,26 @@ l2:
 l3:
 	fs_41 = Mem0[0x7E50:word16]
 	branch Mem0[0x7E50:word16] != Mem0[0x53C2:word16] block6
-	// succ:  4 5
+	// succ:  l4 block6
 l4:
 	fn1B96_0540(Mem0[0x7E52:word16], ds, &dx_49, &bx_50)
-	// succ:  5
+	goto block6
+	// succ:  block6
 
 l5:
 	ax_88 = fn1B96_0540(loc02_26, ds)
 	v19_89 = Mem0[0x8416:word16] - 0x0001
 	Mem0[0x8416:word16] = v19_89
 	branch v19_89 != 0x0000 block11
-	// succ:  8 9
+	// succ:  l6 block11
 l6:
 	Mem0[0x8414:word16] = 0x0000
 	branch Mem0[0x8414:word16] == 0x0000 block11
-	// succ:  10 9
+	// succ:  l7 block11
 l7:
 	fn1B96_02A9(ds, &ax_96)
 	return ax_96
-	// succ:  11
+	// succ:  Reg00011Mock_exit
 Reg00011Mock_exit:
 
 void Reg00011Mock()

@@ -28,9 +28,15 @@ namespace Decompiler.Core.Types
     /// <summary>
     /// This class is used to model strings, including size prefix and null termination.
     /// </summary>
+    /// <remarks>
+    /// Strings are commonly either length-prefixed (as is the case in many Pascal implementations
+    /// and Visual Basic, for instance) or zero-terminated (as is the case for C). 
+    //$TODO: what about strings where the last ASCII character has its MSBit set?</remarks>
     public class StringType : DataType
     {
+        // The type of the code units of the string
         public PrimitiveType CharType { get; private set; }
+        // The type of the length prefix, if any, otherwise null.
         public PrimitiveType LengthPrefixType { get; private set; }
         public int PrefixOffset { get; private set; }
 
