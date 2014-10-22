@@ -660,7 +660,9 @@
     <Content Include="Images\NewBo.ico" />
     <Content Include="Images\NextPhase.ico" />
     <Content Include="Images\Open.ico" />
+    <Content Include="Images\Procedure.ico" />
     <Content Include="Images\Save.ico" />
+    <Content Include="Images\Userproc.ico" />
     <Content Include="Images\warning.png" />
   </ItemGroup>
   <ItemGroup>

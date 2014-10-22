@@ -42,6 +42,36 @@ namespace Decompiler.Gui.Design
                 segment.Address,
                 Environment.NewLine,
                 segment.Access);
+            PopulateChildren();
+        }
+
+        private void PopulateChildren()
+        {
+            if (this.Parent == null)
+                return;
+            var program = this.Parent.Component as Program;
+            if (program == null)
+                return;
+            var desDictionary = program.Procedures
+                .Where(p => segment.IsInRange(p.Key))
+                .Select(p => new ProcedureDesigner(p.Value, p.Key))
+                .ToDictionary(d => d.Address.ToString());
+            if (program.InputFile != null)
+            {
+                foreach (var up in program.InputFile.UserProcedures)
+                {
+                    ProcedureDesigner pd;
+                    if (desDictionary.TryGetValue(up.Key.ToString(), out pd))
+                    {
+
+                    }
+                    else
+                    {
+                        desDictionary.Add(up.Key.ToString(), new ProcedureDesigner(up.Value, up.Key));
+                    }
+                }
+            }
+            Host.AddComponents(Component, desDictionary.OrderBy(d => d.Key).Select(d => d.Value));
         }
 
         public override void DoDefaultAction()

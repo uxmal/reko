@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Gui
             mr.ReplayAll();
 
             svc.Decompiler = dec;
-            svc.Decompiler.LoadProject(fileName);
+            svc.Decompiler.Load(fileName);
 
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");

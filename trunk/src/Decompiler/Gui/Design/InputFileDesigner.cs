@@ -30,6 +30,13 @@ namespace Decompiler.Gui.Design
 {
     public class InputFileDesigner : TreeNodeDesigner
     {
+        private Program program;
+
+        public InputFileDesigner(InputFile inputFile, Program program)
+        {
+            this.program = program;
+        }
+
         public override void Initialize(object obj)
         {
             var inputFile = (InputFile) obj;

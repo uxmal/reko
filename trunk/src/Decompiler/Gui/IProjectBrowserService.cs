@@ -33,8 +33,10 @@ namespace Decompiler.Gui
         /// Loading a null project clears the project browser.
         /// </summary>
         /// <param name="project"></param>
-        void Load(Project project, IEnumerable<Program> programs);
+        void Load(IEnumerable<Program> programs);
 
         void Clear();
+
+        void Reload();
     }
 }

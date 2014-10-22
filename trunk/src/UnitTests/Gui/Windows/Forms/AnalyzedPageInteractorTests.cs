@@ -53,6 +53,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private ILowLevelViewService memViewSvc;
         private IDisassemblyViewService disasmViewSvc;
         private ServiceContainer sc;
+        private IProjectBrowserService pbSvc;
+        private DecompilerService decSvc;
 
         [SetUp]
         public void Setup()
@@ -66,12 +68,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             codeViewSvc = AddService<ICodeViewerService>();
             memViewSvc = AddService<ILowLevelViewService>();
             disasmViewSvc = AddService<IDisassemblyViewService>();
+            pbSvc = AddService<IProjectBrowserService>();
 
             TestLoader ldr = new TestLoader(sc);
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            DecompilerService decSvc = new DecompilerService();
+            this.decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
-            decSvc.Decompiler.LoadProject("test.exe");
+            decSvc.Decompiler.Load("test.exe");
             program = decSvc.Decompiler.Programs.First();
             decSvc.Decompiler.ScanProgram();
             sc.AddService(typeof(IDecompilerService), decSvc);
@@ -85,10 +88,20 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Close();
         }
 
+        private T AddService<T>() where T : class
+        {
+            var svc = mr.DynamicMock<T>();
+            sc.AddService(typeof(T), svc);
+            return svc;
+        }
+
         [Test]
         public void Anpi_Populate()
         {
-            CreateInteractor();
+            Given_Interactor();
+            pbSvc.Expect(p => p.Reload());
+            mr.ReplayAll();
+            
             form.Show();
             program.Procedures.Add(new Address(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
             interactor.EnterPage();
@@ -97,9 +110,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             //KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) form.BrowserList.Items[0].Tag;
             //Assert.AreEqual(0x12345, entry.Key.Offset);
             //Assert.AreEqual("foo", entry.Value.Name);
+            mr.VerifyAll();
         }
 
-        private void CreateInteractor()
+        private void Given_Interactor()
         {
             interactor = new AnalyzedPageInteractorImpl(sc);
         }
@@ -117,7 +131,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             //    Arg<Address>.Matches(address => address.Linear == 0x12346)));
             mr.ReplayAll();
 
-            CreateInteractor();
+            Given_Interactor();
             form.Show();
             Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
@@ -145,7 +159,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 .Return(DialogResult.Cancel);
             mr.ReplayAll();
 
-            CreateInteractor();
+            Given_Interactor();
 
             form.Show();
             Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
@@ -162,13 +176,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        private T AddService<T>() where T : class
-        {
-            var svc = mr.DynamicMock<T>();
-            sc.AddService(typeof(T), svc);
-            return svc;
-        }
-
         private class TestLoader : ILoader
         {
             public TestLoader(IServiceProvider services)
@@ -180,7 +187,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 return new byte[4711];
             }
 
-            public Program LoadExecutable(string fileName, Address loadAddress)
+            public Program LoadExecutable(InputFile file)
             {
                 throw new NotImplementedException();
             }

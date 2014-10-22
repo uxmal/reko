@@ -56,7 +56,7 @@ namespace Decompiler.Gui.Windows
             }
             set
             {
-                treeView.SelectedNode = (WrappedNode)value;
+                treeView.SelectedNode = (WrappedNode) value;
             }
         }
 
@@ -191,17 +191,13 @@ namespace Decompiler.Gui.Windows
 
             public IEnumerator<ITreeNode> GetEnumerator()
             {
-                throw new NotImplementedException();
+                return nodes.Cast<WrappedNode>().GetEnumerator();
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
-                throw new NotImplementedException();
+                return GetEnumerator();
             }
         }
-
-
     }
-
-
 }

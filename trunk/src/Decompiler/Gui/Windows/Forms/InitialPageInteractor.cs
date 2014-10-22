@@ -33,8 +33,8 @@ namespace Decompiler.Gui.Windows.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
     {
-        void OpenBinary(string file, DecompilerHost host);
-        void OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host);
+        bool OpenBinary(string file, DecompilerHost host);
+        bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host);
     }
 
     /// <summary>
@@ -87,25 +87,27 @@ namespace Decompiler.Gui.Windows.Forms
             return (Decompiler != null);
         }
 
-        public void OpenBinary(string file, DecompilerHost host)
+        public bool OpenBinary(string file, DecompilerHost host)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr, host);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
+            bool isOldProject = false;
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Decompiler.LoadProject(file);
+                isOldProject = Decompiler.Load(file);
             });
             if (Decompiler.Programs.Count > 0)
             {
                 var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Project, Decompiler.Programs);
+                browserSvc.Load(Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
                 memSvc.ViewImage(Decompiler.Programs.First());
             }
+            return isOldProject;
         }
 
-        public void OpenBinaryAs(
+        public bool OpenBinaryAs(
             string file, 
             IProcessorArchitecture arch,
             Platform platform, 
@@ -124,10 +126,11 @@ namespace Decompiler.Gui.Windows.Forms
             if (Decompiler.Programs.Count > 0)
             {
                 var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Project, Decompiler.Programs);
+                browserSvc.Load(Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
                 memSvc.ViewImage(Decompiler.Programs.First());
             }
+            return false;   // We never open projects this way.
         }
     }
 }

@@ -69,9 +69,11 @@ namespace Decompiler.Loading
             return program;
         }
 
-        public Program LoadExecutable(string fileName, Address addrLoad)
+        public Program LoadExecutable(InputFile inputFile)
         {
-            return LoadExecutable(fileName, LoadImageBytes(fileName, 0), addrLoad);
+            var program = LoadExecutable(inputFile.Filename, LoadImageBytes(inputFile.Filename, 0), inputFile.BaseAddress);
+            program.InputFile = inputFile;
+            return program;
         }
 
         /// <summary>

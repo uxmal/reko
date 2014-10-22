@@ -30,17 +30,7 @@ namespace Decompiler.WindowsItp
             var arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
             var program = new Core.Program(image, imageMap, arch, new DefaultPlatform(null, arch));
             var programs = new[] { program };
-            pbs.Load(new Project
-            {
-                InputFiles = {
-                    new InputFile 
-                    {
-                        Filename = "c:\\test\\foo.exe",
-                        BaseAddress = image.BaseAddress,
-                    }
-                }
-            },
-            programs);
+            pbs.Load(programs);
         }
     }
 }

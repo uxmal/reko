@@ -102,10 +102,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             mr.Record();
 
-            dec.Stub(d => d.LoadProject("floxe.exe"));
+            dec.Stub(d => d.Load("floxe.exe")).Return(false);
             dec.Stub(d => d.Project).Return(project);
             dec.Stub(d => d.Programs).Return(programs);
-            browserSvc.Stub(b => b.Load(project, programs));
+            browserSvc.Stub(b => b.Load(programs));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
             mr.Record();
-            dec.Stub(d => d.LoadProject("floxe.exe"));
+            dec.Stub(d => d.Load("floxe.exe")).Return(false);
             mr.ReplayAll();
 
             i.OpenBinary("floxe.exe", host);
@@ -136,10 +136,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            dec.Stub(d => d.LoadProject("floxe.exe"));
+            dec.Stub(d => d.Load("floxe.exe")).Return(false);
             dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(d => d.Load(project, programs));
+            browserSvc.Stub(d => d.Load(programs));
             memSvc.Expect(s => s.ViewImage(program));
             mr.ReplayAll();
 
@@ -151,10 +151,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            dec.Stub(d => d.LoadProject("foo.exe"));
+            dec.Stub(d => d.Load("foo.exe")).Return(false);
             dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Expect(b => b.Load(project, programs));
+            browserSvc.Expect(b => b.Load(programs));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 
@@ -166,10 +166,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Ipi_LeavePage()
         {
-            dec.Expect(d => d.LoadProject("foo.exe"));
+            dec.Expect(d => d.Load("foo.exe")).Return(false);
             dec.Stub(d => d.Programs).Return(programs);
             dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(project, programs));
+            browserSvc.Stub(b => b.Load(programs));
             memSvc.Stub(m => m.ViewImage(program));
             mr.ReplayAll();
 

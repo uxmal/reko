@@ -41,6 +41,7 @@ namespace Decompiler.Gui.Windows.Forms
         private ICodeViewerService codeViewerSvc;
         private ILowLevelViewService memViewerSvc;
         private IDisassemblyViewService disasmViewerSvc;
+        private IProjectBrowserService projectSvc;
         private bool canAdvance;
 
 		public AnalyzedPageInteractorImpl(IServiceProvider services) : base(services)
@@ -49,6 +50,7 @@ namespace Decompiler.Gui.Windows.Forms
             codeViewerSvc = services.RequireService<ICodeViewerService>();
             memViewerSvc = services.RequireService<ILowLevelViewService>();
             disasmViewerSvc = services.RequireService<IDisassemblyViewService>();
+            projectSvc = services.RequireService<IProjectBrowserService>();
 
             this.canAdvance = true;
 		}
@@ -66,19 +68,13 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void EnterPage()
         {
-            PopulateBrowserListWithProcedures();
+            projectSvc.Reload();
         }
 
 
 		public override bool LeavePage()
 		{
 			return true;
-        }
-
-
-        private void PopulateBrowserListWithProcedures()
-        {
-            //$TODO!
         }
 
         private void EditSignature()

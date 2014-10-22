@@ -41,7 +41,7 @@ namespace Decompiler
         ICollection<Program> Programs { get; }
         Project Project { get; }
 
-        void LoadProject(string fileName);
+        bool Load(string fileName);
         TypeLibrary LoadMetadata(string fileName);
         void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase);
         void ScanProgram();
@@ -89,7 +89,7 @@ namespace Decompiler
         {
             try
             {
-                LoadProject(filename);
+                Load(filename);
                 ScanProgram();
                 AnalyzeDataFlow();
                 ReconstructTypes();
@@ -179,29 +179,32 @@ namespace Decompiler
 		/// Loads (or assembles) the decompiler project. If a binary file is specified instead,
         /// we create a simple project for the file.
 		/// </summary>
+        /// <returns>True if what was loaded was an actual project</returns>
 		/// <param name="program"></param>
 		/// <param name="cfg"></param>
-        public void LoadProject(string fileName)
+        public bool Load(string fileName)
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
             Project = ProjectSerializer.DeserializeProject(image, loader);
+            bool isProject;
             if (Project != null)
             {
-                foreach (var inputFile in Project.InputFiles.OfType<InputFile>())
+                foreach (var inputFile in Project.InputFiles)
                 {
-                    Programs.Add(loader.LoadExecutable(
-                        inputFile.Filename,
-                        inputFile.BaseAddress));
+                    Programs.Add(loader.LoadExecutable(inputFile));
                 }
+                isProject = true;
             }
             else
             {
                 var program = loader.LoadExecutable(fileName, image, null);
                 Project = CreateDefaultProject(fileName, program);
                 Programs.Add(program);
+                isProject = false;
             }
             eventListener.ShowStatus("Source program loaded.");
+            return isProject;
         }
 
         public TypeLibrary LoadMetadata(string fileName)
