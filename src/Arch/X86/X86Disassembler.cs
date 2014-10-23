@@ -485,7 +485,7 @@ namespace Decompiler.Arch.X86
                     memOp.SegOverride = segmentOverride;
                     break;
                 case 'S':		// Segment register encoded by reg field of modRM byte.
-                    Debug.Assert(strFormat[i++] == 'w');
+                    ++i;        // Skip over the 'w'.
                     pOperand = new RegisterOperand(SegFromBits(EnsureModRM() >> 3));
                     break;
                 case 'V':		// XMM operand specified by the reg field of the modRM byte.
@@ -524,7 +524,7 @@ namespace Decompiler.Arch.X86
                     pOperand = new FpuOperand(0);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("unknown format specifier: " + chFmt.ToString());
+                    throw new ArgumentOutOfRangeException(string.Format("Unknown format specifier '{0}' at position {1} of format string '{2}'.", chFmt, i, strFormat));
                 }
                 if (pOperand != null)
                 {
@@ -544,7 +544,7 @@ namespace Decompiler.Arch.X86
 			switch (ch)
 			{
 			default:
-				throw new ArgumentOutOfRangeException();
+				throw new ArgumentOutOfRangeException(string.Format("Unknown operand width specifier '{0}'.", ch));
 			case 'b':
 				dataWidth = PrimitiveType.Byte;
 				break;
