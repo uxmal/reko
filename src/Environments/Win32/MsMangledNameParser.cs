@@ -72,7 +72,6 @@ namespace Decompiler.Environments.Win32
                 basicName = string.Format(basicName, qualification.Last());
                 typeCode = ParseQualifiedTypeCode(basicName, qualification, compoundArgs);
             }
-            string storageClass = ParseStorageClass();
             return typeCode;
         }
 
@@ -472,23 +471,20 @@ namespace Decompiler.Environments.Win32
         public Argument_v1[] ParseArgumentList()
         {
             var args = new List<Argument_v1>();
-            if (!PeekAndDiscard('X'))
+            if (!PeekAndDiscard('X'))    // Empty arg list
             {
-                var arg = ParseDataTypeCode(this.compoundArgs);
-                if (arg != null)
+                while (!PeekAndDiscard('@'))
                 {
-                    args.Add(new Argument_v1 { Type = arg });
-                    while (!PeekAndDiscard('@'))
+                    if (PeekAndDiscard('Z'))    // Ellipses ('...')
                     {
-                        arg = ParseDataTypeCode(this.compoundArgs);
-                        if (arg == null)
-                            break;
-                        args.Add(new Argument_v1 { Type = arg });
-                        if (arg is SerializedVoidType)
-                            break;
+                        args.Add(new Argument_v1 { Name="...", Type=new SerializedVoidType() });
+                        break;      // Ellipses can only be the last arg, so arglist is done!
                     }
+                    var arg = ParseDataTypeCode(this.compoundArgs);
+                    args.Add(new Argument_v1 { Type = arg });
                 }
             }
+            Expect('Z');
             return args.ToArray();
         }
 
@@ -496,7 +492,12 @@ namespace Decompiler.Environments.Win32
         {
             if (PeekAndDiscard('?'))
             {
-                Expect('A');
+                switch (str[i++])
+                {
+                case 'A': break;
+                case 'B': /* const */ break;
+                default: Error("Expected 'A' or 'B', but saw '{0}'.", str[i - 1]); break;
+                }
             }
             switch (str[i++])
             {
@@ -530,8 +531,7 @@ namespace Decompiler.Environments.Win32
             case 'U': return ParseStructure(compoundArgs); // struct (see below)
             case 'V': return ParseStructure(compoundArgs); // class (see below)
             case 'W': return ParseEnum(compoundArgs);
-            case 'X': return new SerializedVoidType();      // void           (terminates argument list)
-            case 'Z': return new SerializedVoidType();      // ellipsis       (terminates argument list)
+            case 'X': return new SerializedVoidType();      // void (as in 'void return value', 'X' terminates argument list)
             case '_':
                 SerializedPrimitiveType prim;
                 switch (str[i++])
@@ -558,7 +558,7 @@ namespace Decompiler.Environments.Win32
             case 'B': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const ptr
             case 'C': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // volatile ptr
             case 'D': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const volatile ptr
-            case '6': size = 4; type = ParseFunctionTypeCode(); ParseStorageClass(); break;     // fn ptr
+            case '6': size = 4; type = ParseFunctionTypeCode(); break;     // fn ptr
             case '8': return ParseMemberFunctionPointerCode(4, compoundArgs);
             default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }
