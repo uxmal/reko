@@ -398,7 +398,7 @@ namespace Decompiler.UnitTests.Environments.Win32
         public void PMNP_Ellipses()
         {
             RunTest(
-                "__cdecl void AfxTrace(char *, void)",
+                "__cdecl void AfxTrace(char *, void ...)",
                 "?AfxTrace@@YAXPBDZZ");
         }
 
@@ -418,24 +418,36 @@ namespace Decompiler.UnitTests.Environments.Win32
                 "?nScrollDelay@COleDropTarget@@1IA");
         }
 
-        [Test][Ignore]
+        [Test]
+        public void PMNP_regression5()
+        {
+            RunTest(
+                "__thiscall public: int COleFrameHook::NotifyAllInPlace(int, COleFrameHook::*)",
+                "?NotifyAllInPlace@COleFrameHook@@QAEHHP81@AEHH@Z@Z");
+        }
+        [Test]
         public void PMNP_regression6()
         {
-            RunTest("@@@", "?GetStorageName@COleStreamFile@@UBE?BV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ");
+            RunTest(
+                "__thiscall public virtual: CStringT COleStreamFile::GetStorageName()", 
+                "?GetStorageName@COleStreamFile@@UBE?BV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ");
         }
 
         [Test]
         [Ignore]
         public void PMNP_regression7()
         {
-            RunTest("@@@", "?InvokeFromFuncInfo@CDHtmlControlSink@@QAEJP8CDHtmlSinkHandler@@AGXXZAAU_ATL_FUNC_INFO@ATL@@PAUtagDISPPARAMS@@PAUtagVARIANT@@@Z");
+            RunTest(
+                "__thiscall public: int CDHtmlControlSink::InvokeFromFuncInfo(CDHtmlSinkHandler::*, void)", 
+                "?InvokeFromFuncInfo@CDHtmlControlSink@@QAEJP8CDHtmlSinkHandler@@AGXXZAAU_ATL_FUNC_INFO@ATL@@PAUtagDISPPARAMS@@PAUtagVARIANT@@@Z");
         }
 
         [Test]
-        [Ignore]
-        public void PMNP_regression5()
+        public void PMNP_regression8()
         {
-            RunTest("@@@", "?NotifyAllInPlace@COleFrameHook@@QAEHHP81@AEHH@Z@Z");
+            RunTest(
+                "__thiscall public: CNoTrackObject * CProcessLocalObject::GetData(__stdcall public: CNoTrackObject *() *)",
+                "?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z");
         }
     }
 }

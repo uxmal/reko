@@ -61,7 +61,7 @@ namespace Decompiler
 	public class DecompilerDriver : IDecompiler
 	{
 		private DecompilerHost host;
-		private ILoader loader;
+		private readonly ILoader loader;
 		private IScanner scanner;
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
@@ -69,6 +69,8 @@ namespace Decompiler
 
         public DecompilerDriver(ILoader ldr, DecompilerHost host, IServiceProvider services)
         {
+            if (ldr == null)
+                throw new ArgumentNullException("ldr");
             this.programs = new ObservableRangeCollection<Program>();
             this.loader = ldr;
             this.host = host;
@@ -362,7 +364,6 @@ namespace Decompiler
                 }
                 finally
                 {
-                    loader = null;
                     host.WriteDisassembly(w => DumpAssembler(program, w));
                     host.WriteIntermediateCode(w => EmitProgram(program, null, w));
                 }
