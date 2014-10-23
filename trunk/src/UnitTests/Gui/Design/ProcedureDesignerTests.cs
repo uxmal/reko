@@ -36,7 +36,6 @@ namespace Decompiler.UnitTests.Gui.Design
     public class ProcedureDesignerTests
     {
         private MockRepository mr;
-        private IProcessorArchitecture arch;
         private IServiceProvider services;
 
         [SetUp]
@@ -65,7 +64,6 @@ namespace Decompiler.UnitTests.Gui.Design
             des.DoDefaultAction();
 
             mr.VerifyAll();
-
         }
     }
 }

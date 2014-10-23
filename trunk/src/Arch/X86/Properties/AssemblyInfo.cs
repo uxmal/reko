@@ -26,11 +26,11 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Intel")]
+[assembly: AssemblyTitle("X86")]
 [assembly: AssemblyDescription("Decompiler support for x86-32 architecture.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
 [assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		

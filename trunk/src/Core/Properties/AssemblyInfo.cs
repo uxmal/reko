@@ -29,22 +29,11 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Decompiler core")]
 [assembly: AssemblyDescription("Core functionality for decompiler.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
 [assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
 
 [assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]
@@ -53,8 +42,8 @@ namespace Decompiler
 {
     public static class AssemblyMetadata
     {
-        public const string AssemblyVersion = "0.2.6.*";
-        public const string AssemblyFileVersion = "0.2.6.0";
+        public const string AssemblyVersion = "0.3.0.0";
+        public const string AssemblyFileVersion = "0.3.0.0";
         public const string Product = "Decompiler";
         public const string Copyright = "Copyright © 1999-2014 John Källén";
         public const string Company = "John Källén Konsult AB";
