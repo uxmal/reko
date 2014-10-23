@@ -1,0 +1,45 @@
+Mem0:Global memory
+    def:  def Mem0
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+fp:fp
+sp:sp
+rArg0:FPU stack
+    def:  def rArg0
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+bx:bx
+    def:  def bx
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+ds:ds
+    def:  def ds
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+FPUF:Flags
+SCZO:Flags
+ecx:ecx
+SZO:Flags
+C:Flags
+FPUF_11: orig: FPUF
+SCZO_12: orig: SCZO
+C_13: orig: C
+SZO_14: orig: SZO
+ecx_15: orig: ecx
+ecx_16: orig: ecx
+SZO_17: orig: SZO
+C_18: orig: C
+// fn0C00_0000
+void fn0C00_0000(word16 bx, selector ds, real64 rArg0)
+fn0C00_0000_entry:
+	def Mem0
+	def rArg0
+	def bx
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+	// succ:  l0C00_0009 l0C00_000C
+l0C00_0009:
+	// succ:  l0C00_000C
+l0C00_000C:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

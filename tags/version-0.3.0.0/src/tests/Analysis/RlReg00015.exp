@@ -1,0 +1,97 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ax dx bx ss
+	BypassIn: 
+	Trashed:  
+	Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: ax dx bx ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0000:
+	sp = fp
+	sp = fp - 0x0002
+	Mem0[ss:fp - 0x0002:word16] = bx
+	sp = 0x06B4
+	Mem0[ss:0x06B4:word16] = ax
+	sp = 0x06B2
+	Mem0[ss:0x06B2:word16] = dx
+	dx = 0x0800
+	ds = 0x0800
+	dx = 0x0887
+	ax = 0x3D01
+	C = msdos_open_file(ds_dx, al, &ax)
+	bx = ax
+	ds = Mem0[ss:0x06B2:selector]
+	sp = 0x06B4
+	dx = Mem0[ss:0x06B4:word16]
+	sp = 0x06B6
+	si = dx
+// DataOut: dx bx si ss ds
+// DataOut (flags): 
+// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:<invalid> bx:<invalid> si:<invalid> al:<invalid>
+l0C00_0019:
+	al = Mem0[ds:si:byte]
+	si = si + 0x0001
+	SCZO = cond(al - 0x00)
+	branch Test(NE,Z) l0C00_0019
+// DataOut: dx bx si ss ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:0x06B6 dx:<invalid> ds:<invalid> ax:<invalid> bx:<invalid> si:<invalid> al:<invalid>
+l0C00_001E:
+	cx = si
+	cx = cx - dx
+	SCZO = cond(cx)
+	cx = cx - 0x0001
+	SZO = cond(cx)
+	ah = 0x40
+	C = msdos_write_file(bx, cx, ds_dx, &ax)
+	ax = Mem0[ss:0x06B6:word16]
+	sp = 0x06B8
+	sp = 0x06B6
+	Mem0[ss:0x06B6:word16] = ax
+	ax = 0x0000
+	dx = 0x00FF
+	call fn0C00_0037 (retsize: 2; depth: 2)
+	ax = Mem0[ss:0x06B6:word16]
+	sp = 0x06B8
+	ah = 0x4C
+	msdos_terminate(al)
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn:
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// fn0C00_0037 /////////////////////
+	LiveOut:   ss
+	MayUseIn:  ax dx ds
+	BypassIn: 
+	Trashed:  
+	Preserved: sp
+// fn0C00_0037
+void fn0C00_0037()
+// SymbolicIn: sp:fp
+fn0C00_0037_entry:
+// DataOut: ax dx ss ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0037:
+	Mem0[ds:0x0300:word16] = ax
+	Mem0[ds:0x0302:word16] = dx
+	return
+// DataOut: ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_0037_exit:
+// DataOut: ss
+// DataOut (flags):

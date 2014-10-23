@@ -1,0 +1,97 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   SCZO ax bx si di al bl ah bh
+	Preserved: sp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	di = Mem0[ds:0x0100:word16]
+	si = Mem0[ds:di:word16]
+	call fn0C00_0026 (retsize: 2; depth: 2)
+	Mem0[ds:di + 0x0002:word16] = ax
+	bx = Mem0[ds:0x0102:word16]
+	si = Mem0[ds:bx + 0x0004:word16]
+	call fn0C00_0026 (retsize: 2; depth: 2)
+	Mem0[ds:bx + 0x0008:word16] = ax
+	di = Mem0[ds:0x0104:word16]
+	si = Mem0[ds:di:word16]
+	call fn0C00_0033 (retsize: 2; depth: 2)
+	Mem0[ds:di + 0x0002:word16] = ax
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp di:<invalid> si:<invalid> bx:<invalid> ax:<invalid>
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// fn0C00_0026 /////////////////////
+	LiveOut:   ax bx ds
+	MayUseIn:  si ds
+	BypassIn: 
+	Trashed:   SCZO ax al ah
+	Preserved: sp di
+// fn0C00_0026
+void fn0C00_0026()
+// SymbolicIn: sp:fp
+fn0C00_0026_entry:
+// DataOut: bx si ds
+// DataOut (flags): 
+// LocalsOut: fp(16)
+
+// SymbolicIn: sp:fp
+l0C00_0026:
+	sp = fp - 0x0002
+	wLoc02 = di
+	di = Mem0[ds:0x0104:word16]
+	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
+	Mem0[ds:di + 0x0030:word16] = v6
+	SZO = cond(v6)
+	call fn0C00_0033 (retsize: 2; depth: 4)
+	di = wLoc02
+	sp = fp
+	return
+// DataOut: ax bx ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp di:di ax:<invalid> -2(fp):di
+fn0C00_0026_exit:
+// DataOut: ax bx ds
+// DataOut (flags): 
+
+// fn0C00_0033 /////////////////////
+	LiveOut:   ax bx di ds
+	MayUseIn:  si ds
+	BypassIn: 
+	Trashed:   SCZO ax al ah
+	Preserved: sp
+// fn0C00_0033
+void fn0C00_0033()
+// SymbolicIn: sp:fp
+fn0C00_0033_entry:
+// DataOut: bx si di ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0033:
+	ax = Mem0[ds:si:word16]
+	ax = ax + ax
+	SCZO = cond(ax)
+	return
+// DataOut: ax bx di ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp ax:<invalid>
+fn0C00_0033_exit:
+// DataOut: ax bx di ds
+// DataOut (flags): 
+

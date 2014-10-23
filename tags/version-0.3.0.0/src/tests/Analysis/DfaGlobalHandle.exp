@@ -1,0 +1,18 @@
+// void fn10000000(Stack word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse: 
+// LiveOut:
+// Trashed: eax ax al ah
+// Preserved: esp esi edi
+// Stack args: Stack +0004(32)
+// fn10000000
+void fn10000000(word32 dwArg04)
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
+	GlobalUnlock(GlobalHandle(dwArg04))
+	GlobalFree(GlobalHandle(dwArg04))
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+

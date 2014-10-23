@@ -1,0 +1,113 @@
+// fn0C00_0000
+void fn0C00_0000(byte al, selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	byte al_6
+	branch fn0C00_000A(al, out al_6) l0C00_0009
+	// succ:  l0C00_0005 l0C00_0009
+l0C00_0005:
+	Mem8[ds:0x0300:byte] = al_6
+	// succ:  l0C00_0009
+l0C00_0009:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// fn0C00_0000
+void fn0C00_0000(byte al, selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	byte al_6
+	branch fn0C00_000A(al, out al_6) l0C00_0009
+	// succ:  l0C00_0005 l0C00_0009
+l0C00_0005:
+	Mem8[ds:0x0300:byte] = al_6
+	// succ:  l0C00_0009
+l0C00_0009:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+================
+// fn0C00_000A
+byte fn0C00_000A(byte al, ptr16 alOut)
+fn0C00_000A_entry:
+	Mem0[alOut:byte] = al
+	// succ:  l0C00_000A
+l0C00_000A:
+	branch al <u 0x30 l0C00_0032
+	// succ:  l0C00_000E l0C00_0032
+l0C00_000E:
+	branch al <=u 0x39 l0C00_0022
+	// succ:  l0C00_0012 l0C00_0022
+l0C00_0012:
+	branch al <u 0x41 l0C00_0032
+	// succ:  l0C00_0016 l0C00_0032
+l0C00_0016:
+	branch al <=u 0x46 l0C00_0022
+	// succ:  l0C00_001A l0C00_0022
+l0C00_001A:
+	branch al <u 0x61 l0C00_0032
+	// succ:  l0C00_001E l0C00_0032
+l0C00_001E:
+	branch al >u 0x66 l0C00_0032
+	// succ:  l0C00_0022 l0C00_0032
+l0C00_0022:
+	byte al_20
+	Mem0[alOut:byte] = al - 0x30
+	branch al <u 0x3A l0C00_0030
+	// succ:  l0C00_0028 l0C00_0030
+l0C00_0028:
+	byte al_27
+	Mem0[alOut:byte] = al - 0x37
+	branch al <u 0x47 l0C00_0030
+	// succ:  l0C00_002E l0C00_0030
+l0C00_002E:
+	byte al_30
+	Mem0[alOut:byte] = al - 0x57
+	// succ:  l0C00_0030
+l0C00_0030:
+	return false
+	// succ:  fn0C00_000A_exit
+l0C00_0032:
+	return true
+	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:
+
+// fn0C00_000A
+byte fn0C00_000A(byte al, ptr16 alOut)
+fn0C00_000A_entry:
+	Mem0[alOut:byte] = al
+	// succ:  l0C00_000A
+l0C00_000A:
+	branch al <u 0x30 || al >u 0x39 && (al <u 0x41 || al >u 0x46 && (al <u 0x61 || al >u 0x66)) l0C00_0032
+	goto l0C00_0022
+	// succ:  l0C00_0022 l0C00_0032
+l0C00_000E:
+l0C00_0012:
+l0C00_0016:
+l0C00_001A:
+l0C00_001E:
+l0C00_0022:
+	byte al_20
+	Mem0[alOut:byte] = al - 0x30
+	branch al <u 0x3A l0C00_0030
+	// succ:  l0C00_0028 l0C00_0030
+l0C00_0028:
+	byte al_27
+	Mem0[alOut:byte] = al - 0x37
+	branch al <u 0x47 l0C00_0030
+	// succ:  l0C00_002E l0C00_0030
+l0C00_002E:
+	byte al_30
+	Mem0[alOut:byte] = al - 0x57
+	// succ:  l0C00_0030
+l0C00_0030:
+	return false
+	// succ:  fn0C00_000A_exit
+l0C00_0032:
+	return true
+	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:
+================

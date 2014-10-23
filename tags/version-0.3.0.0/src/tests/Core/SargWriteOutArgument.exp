@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Argument_v1 name="bxOut" out="true">
+  <type xmlns="http://schemata.jklnet.org/Decompiler">int</type>
+  <reg>bx</reg>
+</Argument_v1>

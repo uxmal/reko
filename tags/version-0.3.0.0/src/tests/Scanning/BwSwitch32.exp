@@ -1,0 +1,21 @@
+// ProcedureBuilder
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	goto l1
+	// succ:  l1
+default:
+l1:
+	eax = Mem0[esp + 0x00000004:word32]
+	SCZO = cond(eax - 0x00000003)
+	branch Test(UGT,SCZO) default
+	// succ:  l2 default
+l2:
+	edx = edx ^ edx
+	SCZO = cond(edx)
+	dl = Mem0[eax + 0x00010000:byte]
+ProcedureBuilder_exit:
+cmp 3
+branch UGT
+deref 00010000 1
+* 4
+Index register: eax

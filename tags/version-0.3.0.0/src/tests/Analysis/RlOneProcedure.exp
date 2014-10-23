@@ -1,0 +1,40 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ax ds
+	BypassIn: 
+	Trashed:   SCZO ax si al ah
+	Preserved: sp bp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: ax ds
+// DataOut (flags): 
+// LocalsOut: fp(16) Stack +0004(16)
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	si = ax
+	ax = Mem0[ds:si + 0x0004:word16]
+	ax = ax + Mem0[ds:si + 0x0006:word16]
+	SCZO = cond(ax)
+	si = wArg04
+	ax = ax + Mem0[ds:si + 0x0004:word16]
+	SCZO = cond(ax)
+	ax = ax + Mem0[ds:si + 0x0006:word16]
+	SCZO = cond(ax)
+	sp = fp - 0x0002
+	bp = wLoc02
+	sp = fp
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp bp:bp si:<invalid> ax:<invalid> -2(fp):bp
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+

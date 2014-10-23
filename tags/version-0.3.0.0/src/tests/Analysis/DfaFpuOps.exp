@@ -1,0 +1,55 @@
+// void fn0C00_0000(Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO bx bl bh
+// Preserved: sp
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	fn0C00_0010(ds, 0x0300, 0x0320)
+	fn0C00_0037(ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  ds
+// LiveOut:
+// Trashed: bx bl bh
+// Preserved: sp bp
+// Stack args: Stack +0002(16) Stack +0004(16)
+// fn0C00_0010
+void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
+fn0C00_0010_entry:
+	// succ:  l0C00_0010
+l0C00_0010:
+	real64 rLoc1_16 = Mem0[ds:wArg02:real64]
+	real64 rLoc2_18 = Mem0[ds:wArg02 + 0x0008:real64]
+	real64 rLoc2_21 = Mem0[ds:wArg02 + 0x0010:real64]
+	Mem25[ds:wArg04:real64] = rLoc1_16 *s rLoc1_16 + rLoc2_18 *s rLoc2_18 + rLoc2_21 *s rLoc2_21
+	Mem27[ds:wArg04 + 0x0028:real64] = (real64) Mem25[ds:wArg04 + 0x0020:int16]
+	return
+	// succ:  fn0C00_0010_exit
+fn0C00_0010_exit:
+
+// void fn0C00_0037(Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  ds
+// LiveOut:
+// Trashed:
+// Preserved: sp
+// fn0C00_0037
+void fn0C00_0037(selector ds)
+fn0C00_0037_entry:
+	// succ:  l0C00_0037
+l0C00_0037:
+	Mem6[ds:0x0400:real64] = 0
+	Mem8[ds:0x0408:int32] = (int32) 1
+	return
+	// succ:  fn0C00_0037_exit
+fn0C00_0037_exit:
+

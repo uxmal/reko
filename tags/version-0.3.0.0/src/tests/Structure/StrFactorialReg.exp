@@ -1,0 +1,45 @@
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	Mem8[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	return
+	// succ:  fn0C00_0000_exit
+l0C00_0000:
+fn0C00_0000_exit:
+
+void fn0C00_0000(selector ds)
+{
+	Mem8[ds:0x0064:word16] = fn0C00_000B(0x0005);
+	return;
+}
+===========================
+// fn0C00_000B
+word16 fn0C00_000B(word16 cx)
+fn0C00_000B_entry:
+	// succ:  l0C00_000B
+l0C00_000B:
+	word16 ax_18
+	branch cx <= 0x0001 l0C00_001C
+	// succ:  l0C00_0011 l0C00_001C
+l0C00_0011:
+	ax_18 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+	goto l0C00_001F
+	// succ:  l0C00_001F
+l0C00_001C:
+	ax_18 = 0x0001
+	// succ:  l0C00_001F
+l0C00_001F:
+	return ax_18
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:
+
+word16 fn0C00_000B(word16 cx)
+{
+	word16 ax_18;
+	if (cx > 0x0001)
+		ax_18 = (word16) (cx *s fn0C00_000B(cx - 0x0001));
+	else
+		ax_18 = 0x0001;
+	return ax_18;
+}
+===========================
