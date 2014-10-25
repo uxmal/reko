@@ -115,8 +115,8 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				var id = Local32("id");
 				var ix = Local32("ix");
-				Load(id, Int32(0x1000000));
-				Load(ix, Int32(0x1000004));
+				LoadId(id, Int32(0x1000000));
+				LoadId(ix, Int32(0x1000004));
 				Store(Int32(0x10000008), id);
 			}
 

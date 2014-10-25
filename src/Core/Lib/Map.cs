@@ -105,5 +105,95 @@ namespace Decompiler.Core.Lib
             }
             return set;
         }
+
+        public bool TryGetUpperBoundKey(K key, out K closestKey)
+        {
+            int lo = 0;
+            int hi = base.Count - 1;
+            closestKey = default(K);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                K k = base.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestKey = k;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    lo = mid + 1;
+                }
+                else
+                {
+                    closestKey = k;
+                    set = true;
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
+
+        public bool TryGetLowerBoundIndex(K key, out int closestIndex)
+        {
+            int lo = 0;
+            int hi = base.Count - 1;
+            closestIndex = -1;
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                K k = base.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestIndex = mid;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    lo = mid + 1;
+                    closestIndex = mid;
+                    set = true;
+                }
+                else
+                {
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
+
+        public bool TryGetUpperBoundIndex(K key, out int closestIndex)
+        {
+            int lo = 0;
+            int hi = base.Count - 1;
+            closestIndex = -1;
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                K k = base.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestIndex = mid;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    lo = mid + 1;
+                }
+                else
+                {
+                    closestIndex = mid;
+                    set = true;
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
     }
 }

@@ -450,7 +450,7 @@ namespace Decompiler.UnitTests.Typing
                 "T_5 (in 0x0008 : word16)" + nl +
                 "	trait_primitive(word16)" + nl +
                 "T_6 (in bx * 0x0008 : word16)" + nl +
-                "	trait_primitive(uis16)" + nl +
+                "	trait_primitive(ui16)" + nl +
                 "T_7 (in SEQ(ds, 0x0300)[bx * 0x0008] : word32)" + nl +
                 "	trait_primitive(word32)" + nl;
             Assert.AreEqual(sExp, sb.ToString());

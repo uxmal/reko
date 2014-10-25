@@ -25,7 +25,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	word16 Eq_5::*di_5 = &Eq_5::a5388[0]
+	word16 Eq_5::*di_5 = Eq_5::a5388
 	goto lupe
 	// succ:  lupe
 l2:

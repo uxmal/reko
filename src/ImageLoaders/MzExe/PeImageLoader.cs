@@ -203,11 +203,11 @@ namespace Decompiler.ImageLoaders.MzExe
 		public void ReadOptionalHeader(ImageReader rdr, short expectedMagic)
 		{
 			if (optionalHeaderSize <= 0)
-				throw new ApplicationException("Optional header size should be larger than 0 in a PE executable image file.");
+				throw new BadImageFormatException("Optional header size should be larger than 0 in a PE executable image file.");
 
 			short magic = rdr.ReadLeInt16();
 			if (magic != expectedMagic) // 0x010B || magic != 0x020B)
-				throw new ApplicationException("Not a valid PE Header.");
+				throw new BadImageFormatException("Not a valid PE Header.");
 			rdr.ReadByte();		// Linker major version
 			rdr.ReadByte();		// Linker minor version
 			rdr.ReadLeUInt32();		// code size (== .text section size)

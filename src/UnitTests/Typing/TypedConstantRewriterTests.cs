@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Typing
 			globals.TypeVariable.DataType = new Pointer(eqGlobals, 4);
 			globals.DataType = globals.TypeVariable.DataType;
 
-			tcr = new TypedConstantRewriter(store, globals);
+			tcr = new TypedConstantRewriter(new Mocks.FakeArchitecture(), store, globals);
 		}
 
 		[Test]

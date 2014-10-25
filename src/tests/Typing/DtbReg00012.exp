@@ -156,7 +156,7 @@ Eq_49: ptr32
 	T_49 (in SEQ(ds, 0x5388) : ptr32)
 Eq_50: word16
 	T_50 (in 0x0002 : word16)
-Eq_51: uis16
+Eq_51: ui16
 	T_51 (in bx * 0x0002 : word16)
 Eq_54: void
 	T_54 (in fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds) : void)
@@ -376,8 +376,8 @@ T_50: (in 0x0002 : word16)
   OrigDataType: word16
 T_51: (in bx * 0x0002 : word16)
   Class: Eq_51
-  DataType: uis16
-  OrigDataType: uis16
+  DataType: ui16
+  OrigDataType: ui16
 T_52: (in SEQ(ds, 0x5388)[bx * 0x0002] : word16)
   Class: Eq_19
   DataType: word16

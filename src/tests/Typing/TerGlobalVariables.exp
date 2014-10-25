@@ -27,7 +27,7 @@ Eq_1: (struct "Eq_1" (10000000 real32 r10000000) (10000004 real32 r10000004))
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (10000000 T_10 t10000000) (10000004 T_7 t10000004)))
+  OrigDataType: (ptr (struct (10000000 T_10 t10000000)))
 T_2: (in ptr : (ptr real32))
   Class: Eq_2
   DataType: (ptr real32)

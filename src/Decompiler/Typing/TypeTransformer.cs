@@ -318,16 +318,6 @@ namespace Decompiler.Typing
         public DataType VisitPointer(Pointer ptr)
         {
             ptr.Pointee = ptr.Pointee.Accept(this);
-            var array = ResolveAs<ArrayType>(ptr.Pointee);
-            if (array != null)
-            {
-                // According to the C type system, a pointer to an array
-                // is really a pointer to its element type.
-                Changed = true;
-                return factory.CreatePointer(
-                    array.ElementType,
-                    ptr.Size);
-            }
             return ptr;
         }
 

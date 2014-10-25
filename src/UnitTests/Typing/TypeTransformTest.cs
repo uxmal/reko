@@ -101,6 +101,14 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(mock.BuildProgram(), "Typing/TtranPtrPtrInt.txt");
 		}
 
+        [Test]
+        public void TtranSegMem3()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new SegMem3Mock());
+            RunTest(mock.BuildProgram(), "Typing/TtranSegMem3.txt");
+        }
+
 		[Test]
 		public void TtranGlobalVariables()
 		{
@@ -292,8 +300,8 @@ namespace Decompiler.UnitTests.Typing
 			coll.CollectProgramTraits(program);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			DerivedPointerAnalysis cpf = new DerivedPointerAnalysis(factory, store, dtb, program.Architecture);
-			cpf.FollowConstantPointers(program);
+            //DerivedPointerAnalysis cpf = new DerivedPointerAnalysis(factory, store, dtb, program.Architecture);
+            //cpf.FollowConstantPointers(program);
 
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
@@ -337,8 +345,8 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier pfoo = Local32("pfoo");
 			Identifier x = Local32("x");
-			Load(x, IAdd(pfoo, 4));
-			Load(x, IAdd(pfoo, 4));
+			LoadId(x, IAdd(pfoo, 4));
+			LoadId(x, IAdd(pfoo, 4));
 		}
 	}
 
@@ -349,8 +357,8 @@ namespace Decompiler.UnitTests.Typing
 			Identifier p = Local32("p");
 			Identifier x = Local32("x");
 			Identifier i = Local32("i");
-			Load(x, IAdd(p, SMul(i, 8)));
-			Load(x, IAdd(p, IAdd(SMul(i, 8), 4)));
+			LoadId(x, IAdd(p, SMul(i, 8)));
+			LoadId(x, IAdd(p, IAdd(SMul(i, 8), 4)));
 		}
 	}
 

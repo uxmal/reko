@@ -32,8 +32,8 @@ namespace Decompiler.UnitTests.Typing
 			var id2 = Local32("r2");
 			var id3 = Local32("r3");
 
-			Load(id2, id1);
-			Load(id3, id2);
+			LoadId(id2, id1);
+			LoadId(id3, id2);
 			Store(Int32(0x10000), id3);
 			Store(Int32(0x10004), id1);
 			Return(id3);

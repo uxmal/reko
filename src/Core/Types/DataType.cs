@@ -30,7 +30,7 @@ namespace Decompiler.Core.Types
 	/// <remarks>
 	/// The name 'DataType' is used to avoid conflicts with 'System.Type', which is part of the CLR.
 	/// </remarks>
-	public abstract class DataType
+	public abstract class DataType : ICloneable
 	{
 		public const int BitsPerByte = 8;
 
@@ -50,6 +50,7 @@ namespace Decompiler.Core.Types
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
         public abstract DataType Clone();
+        object ICloneable.Clone() { return Clone(); }
 
 		protected void ThrowBadSize()
 		{

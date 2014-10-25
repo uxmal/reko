@@ -87,7 +87,7 @@ void fn0C00_0007(word16 cx, Eq_5 * ds)
 fn0C00_0007_entry:
 	// succ:  l0C00_0007
 l0C00_0007:
-	word16 Eq_5::*di_12 = &Eq_5::a5388[0]
+	word16 Eq_5::*di_12 = Eq_5::a5388
 	// succ:  l0C00_000A
 l0C00_000A:
 	fn0C00_003D(ds->*di_12, 0x2D, ds)
@@ -162,7 +162,7 @@ Eq_41: (fn void (word16, word16, word16, (ptr Eq_5)))
 	T_41 (in fn0C00_0046 : ptr32)
 	T_42 (in signature of fn0C00_0046 : void)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: ptr32
   OrigDataType: ptr32 

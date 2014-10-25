@@ -27,7 +27,24 @@ namespace Decompiler.Core.Types
 {
     public class EnumType : DataType
     {
+        public EnumType()
+        {
+            this.Members = new SortedList<long,string>();
+        }
+
+        public EnumType(string name)
+            : base(name)
+        {
+            this.Members = new SortedList<long, string>();
+        }
+
+        public EnumType(EnumType other) : this(other.Name)
+        {
+            this.Members = new SortedList<long, string>(other.Members);
+        }
+
         public override int Size { get; set; }
+        public SortedList<long, string> Members { get; private set; }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
@@ -36,7 +53,7 @@ namespace Decompiler.Core.Types
 
         public override DataType Clone()
         {
-            throw new NotImplementedException();
+            return new EnumType(this);
         }
     }
 }

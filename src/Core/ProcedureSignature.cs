@@ -178,5 +178,10 @@ namespace Decompiler.Core
             LowLevelInfo = 2,
         }
         #endregion
+
+        public ProcedureSignature Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
