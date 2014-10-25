@@ -25,7 +25,7 @@ using System.Linq;
 namespace Decompiler.Core.Types
 {
     /// <summary>
-    /// Models a function type. Note the similarity to ProcedureSignature.
+    /// Models a function type. Note the similarity to ProcedureSignature: it's likely we'll want to merge these two.
     /// </summary>
 	public class FunctionType : DataType
 	{

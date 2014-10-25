@@ -24,7 +24,7 @@ Eq_6: word32
 	T_6 (in i : word32)
 Eq_7: word32
 	T_7 (in 0x0000000A : word32)
-Eq_8: uir32
+Eq_8: ui32
 	T_8 (in i * 0x0000000A : word32)
 Eq_10: word32
 	T_10 (in 0x00000010 : word32)
@@ -32,7 +32,7 @@ Eq_11: word32
 	T_11 (in r + 0x00000010 : word32)
 Eq_12: word32
 	T_12 (in 0x0000000A : word32)
-Eq_13: uir32
+Eq_13: ui32
 	T_13 (in i * 0x0000000A : word32)
 Eq_14: word16
 	T_14 (in (r + 0x00000010)[i * 0x0000000A] : word16)
@@ -71,8 +71,8 @@ T_7: (in 0x0000000A : word32)
   OrigDataType: word32
 T_8: (in i * 0x0000000A : word32)
   Class: Eq_8
-  DataType: uir32
-  OrigDataType: uir32
+  DataType: ui32
+  OrigDataType: ui32
 T_9: (in (r + 0x00000014)[i * 0x0000000A] : word32)
   Class: Eq_2
   DataType: word32
@@ -91,8 +91,8 @@ T_12: (in 0x0000000A : word32)
   OrigDataType: word32
 T_13: (in i * 0x0000000A : word32)
   Class: Eq_13
-  DataType: uir32
-  OrigDataType: uir32
+  DataType: ui32
+  OrigDataType: ui32
 T_14: (in (r + 0x00000010)[i * 0x0000000A] : word16)
   Class: Eq_14
   DataType: word16

@@ -163,14 +163,10 @@ namespace Decompiler.Core.Types
 			return fPrev;
 		}
 
-
-
         public void RemoveAt(int i)
         {
             innerList.RemoveAt(i);
         }
-
-
 
         #region ICollection<StructureField> Members
 

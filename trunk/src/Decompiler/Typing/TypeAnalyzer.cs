@@ -45,7 +45,7 @@ namespace Decompiler.Typing
 		private EquivalenceClassBuilder eqb;
 		private TraitCollector trco;
 		private DataTypeBuilder dtb;
-		private DerivedPointerAnalysis dpa;
+        //private DerivedPointerAnalysis dpa;
 		private TypeVariableReplacer tvr;
 		private TypeTransformer trans;
 		private ComplexTypeNamer ctn;
@@ -73,11 +73,11 @@ namespace Decompiler.Typing
             eqb = new EquivalenceClassBuilder(factory, store);
             dtb = new DataTypeBuilder(factory, store, prog.Architecture);
             trco = new TraitCollector(factory, store, dtb, prog);
-            dpa = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
+            //dpa = new DerivedPointerAnalysis(factory, store, prog.Architecture);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store, eventListener);
             ctn = new ComplexTypeNamer();
-            ter = new TypedExpressionRewriter(store, prog.Globals);
+            ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
 
    //         RestrictProcedures(0, 1, true);
 			aen.Transform(prog);
@@ -86,7 +86,7 @@ namespace Decompiler.Typing
 			trco.CollectProgramTraits(prog);
             eventListener.ShowStatus("Building equivalence classes.");
 			dtb.BuildEquivalenceClassDataTypes();
-			dpa.FollowConstantPointers(prog);
+            //dpa.FollowConstantPointers(prog);
 			tvr.ReplaceTypeVariables();
 
             eventListener.ShowStatus("Transforming datatypes.");
@@ -106,6 +106,7 @@ namespace Decompiler.Typing
         /// </summary>
         /// <param name="p"></param>
         /// <param name="p_2"></param>
+        [Conditional("DEBUG")]
         private void RestrictProcedures(Program prog, int start, int count, bool dumpProcedures)
         {
             count = Math.Min(count, prog.Procedures.Values.Count);

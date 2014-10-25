@@ -198,6 +198,14 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
+        public void DtbSegMem3()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new SegMem3Mock());
+            RunTest(mock.BuildProgram(), "Typing/DtbSegMem3.txt");
+        }
+
+        [Test]
         public void DtbMems()
         {
             Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);

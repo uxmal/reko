@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
+using Decompiler.Core.Operators;
 using System;
 
 namespace Decompiler.Typing
@@ -30,13 +31,17 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedMemoryExpressionRewriter : ExpressionVisitor<Expression>
 	{
-		private TypeStore store;
+        private IProcessorArchitecture arch;
+        private TypeStore store;
 		private Identifier globals;
 		private Expression basePointer;
         private DataType dtResult;
+        private TypedConstantRewriter tcr;
 
-		public TypedMemoryExpressionRewriter(TypeStore store, Identifier globals)
+		public TypedMemoryExpressionRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
 		{
+            this.arch = arch;
+            this.tcr = new TypedConstantRewriter(arch, store, globals);
 			this.store = store;
 			this.globals = globals;
 		}
@@ -58,16 +63,62 @@ namespace Decompiler.Typing
 			return access.EffectiveAddress.Accept(this);
 		}
 
-        public Expression Rewrite(ArrayAccess access)
+        internal Expression RewriteArrayAccess(TypeVariable typeVariable, Expression arr, Expression idx)
         {
             basePointer = null;
-            dtResult = new ArrayType(access.TypeVariable.DataType, 0);
-            return access;
+            dtResult = new Pointer(typeVariable.DataType, arch.PointerType.Size);
+            var dtElement = Dereference(arr.TypeVariable.DataType);
+            var dtElementOrig = Dereference(arr.TypeVariable.OriginalDataType);
+            idx = RescaleIndex(idx, dtElement);
+            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                dtResult,
+                dtElement,
+                dtElementOrig,
+                basePointer,
+                new ArrayAccess(dtElement, arr, idx),
+                null, 
+                0);
+            ceb.Dereferenced = true;
+            return ceb.BuildComplex();
+        }
+
+        private Expression RescaleIndex(Expression idx, DataType dtElement)
+        {
+            if (dtElement.Size == 1)
+                return idx;
+            var bin = idx as BinaryExpression;
+            if (bin != null && bin.Operator is IMulOperator)
+            {
+                var k = bin.Right as Constant;
+                if (k != null)
+                {
+                    var kk = k.ToInt32();
+                    if (kk % dtElement.Size == 0)
+                    {
+                        kk /= dtElement.Size;
+                        if (kk == 1)
+                            return bin.Left;
+                        else
+                            return new BinaryExpression(bin.Operator, bin.DataType, bin.Left, Constant.Create(k.DataType, kk));
+                    }
+                }
+            }
+            return new BinaryExpression(Operator.SDiv, idx.DataType, idx, Constant.Create(idx.DataType, dtElement.Size));
+        }
+
+        private DataType Dereference(DataType dt)
+        {
+            var pt = dt as Pointer;
+            if (pt != null)
+                return Dereference(pt.Pointee);
+            var at = dt as ArrayType;
+            if (at != null)
+                return at.ElementType;
+            return dt;
         }
 
         public Expression VisitAddress(Address addr)
         {
-            var tcr = new TypedConstantRewriter(store, globals);
             throw new NotImplementedException();    //$TODO
         }
 
@@ -103,7 +154,7 @@ namespace Decompiler.Typing
                     binExp, tvLeft.DataType, tvRight.DataType);
             }
 
-            var ter = new TypedExpressionRewriter(store, globals);
+            var ter = new TypedExpressionRewriter(arch, store, globals);
 
             ComplexExpressionBuilder ceb;
             Constant cLeft = left as Constant;
@@ -176,7 +227,6 @@ namespace Decompiler.Typing
             }
             else
             {
-                TypedConstantRewriter tcr = new TypedConstantRewriter(store, globals);
                 return tcr.Rewrite(c, dereferenced);
             }
         }
@@ -244,7 +294,7 @@ namespace Decompiler.Typing
 
 		public Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
-            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(store, globals);
+            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(arch, store, globals);
             Expression e = r.Rewrite(access);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 dtResult,
@@ -275,5 +325,7 @@ namespace Decompiler.Typing
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+      
+    }
 }

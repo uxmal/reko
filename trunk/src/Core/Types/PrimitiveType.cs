@@ -327,7 +327,8 @@ namespace Decompiler.Core.Types
 		public static PrimitiveType Bool {get; private set; }
 
 		public static PrimitiveType Byte {get; private set; }
-		public static PrimitiveType Char {get; private set; }
+        // 8-bit character
+        public static PrimitiveType Char { get; private set; }
 		public static PrimitiveType SByte {get; private set; }
 		public static PrimitiveType UInt8 {get; private set; }
 

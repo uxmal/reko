@@ -34,17 +34,23 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
 	{
+        private IProcessorArchitecture arch;
 		private TypeStore store;
         private Identifier globals;
 		private DataTypeComparer compTypes;
 		private TypedConstantRewriter tcr;
+        private ExpressionEmitter m;
+        private Unifier unifier;
 
-		public TypedExpressionRewriter(TypeStore store, Identifier globals)
+		public TypedExpressionRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
 		{
+            this.arch = arch;
 			this.store = store;
             this.globals = globals;
 			this.compTypes = new DataTypeComparer();
-			this.tcr = new TypedConstantRewriter(store, globals);
+			this.tcr = new TypedConstantRewriter(arch, store, globals);
+            this.m = new ExpressionEmitter();
+            this.unifier = new Unifier();
 		}
 
 		public UnionType AsUnion(DataType dt)
@@ -141,8 +147,10 @@ namespace Decompiler.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var tmr = new TypedMemoryExpressionRewriter(store, globals);
-            return tmr.Rewrite(acc);
+            var arr = acc.Array.Accept(this);
+            var idx = acc.Index.Accept(this);
+            var tmr = new TypedMemoryExpressionRewriter(arch, store, globals);
+            return tmr.RewriteArrayAccess(acc.TypeVariable, arr, idx);
         }
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)
@@ -191,7 +199,7 @@ namespace Decompiler.Typing
 			DataType dtSrc = DataTypeOf(src);
 			dst = dst.Accept(this);
 			DataType dtDst = DataTypeOf(dst);
-			if (compTypes.Compare(dtSrc, dtDst) != 0)
+            if (!TypesAreCompatible(dtSrc, dtDst))
 			{
 				UnionType uDst = AsUnion(dtDst);
 				UnionType uSrc = AsUnion(dtSrc);
@@ -210,6 +218,13 @@ namespace Decompiler.Typing
 			}
 			return new Decompiler.Core.Absyn.AbsynAssignment(dst, src);
 		}
+
+        private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
+        {
+            if (compTypes.Compare(dtSrc, dtDst) == 0)
+                return true;
+            return unifier.AreCompatible(dtSrc, dtDst);
+        }
 
 		public override Instruction TransformStore(Store store)
 		{
@@ -286,13 +301,13 @@ namespace Decompiler.Typing
 
 		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(arch, store, globals);
 			return tmer.Rewrite(access);
 		}
 
 		public override Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(arch, store, globals);
 			return tmer.Rewrite(access);
 		}
 

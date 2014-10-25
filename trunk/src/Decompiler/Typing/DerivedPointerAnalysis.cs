@@ -36,17 +36,15 @@ namespace Decompiler.Typing
 	{
 		private TypeFactory factory;
 		private TypeStore store;
-		private ITraitHandler handler;
 		private Program prog;
 		private Identifier globals;
 		private Unifier unifier;
         private IProcessorArchitecture arch;
 
-		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, ITraitHandler handler, IProcessorArchitecture arch)
+		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, IProcessorArchitecture arch)
 		{
 			this.factory = factory;
 			this.store = store;
-			this.handler = handler;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
             this.arch = arch;
 		}
@@ -119,8 +117,8 @@ namespace Decompiler.Typing
                     if (tvField == null)
                     {
                         var sGlobals = (StructureType)((Pointer) Globals.DataType).Pointee;
-                        sGlobals.Fields.Add(offset, ptr.Pointee);
-                        Globals.TypeVariable.Class.DataType = Globals.DataType;
+                        sGlobals.Fields.Add(offset, c.TypeVariable.Class);
+                        //Globals.TypeVariable.Class.DataType = Globals.DataType;
                     }
                     else
                     {

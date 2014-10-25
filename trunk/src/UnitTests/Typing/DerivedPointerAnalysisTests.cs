@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Typing
 			mem.Accept(tc);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			var cf = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
+            var cf = new DerivedPointerAnalysis(factory, store, prog.Architecture);
 			mem.Accept(cf);
 
 			Verify(null, "Typing/CpfSimple.txt");
@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Typing
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			DerivedPointerAnalysis dpa = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
+			DerivedPointerAnalysis dpa = new DerivedPointerAnalysis(factory, store, prog.Architecture);
 			dpa.FollowConstantPointers(prog);
 
 			Verify(null, outputFile);

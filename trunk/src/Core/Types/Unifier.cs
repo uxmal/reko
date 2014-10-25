@@ -123,8 +123,19 @@ namespace Decompiler.Core.Types
 		public bool IsCompatibleWithPointer(Pointer ptrA, DataType b)
 		{
 			Pointer ptrB = b as Pointer;
-			if (ptrB != null)
-				return AreCompatible(ptrA.Pointee, ptrB.Pointee);
+            if (ptrB != null)
+            {
+                if (AreCompatible(ptrA.Pointee, ptrB.Pointee))
+                    return true;
+                var arrayA = ptrA.Pointee as ArrayType;
+                var arrayB = ptrB.Pointee as ArrayType;
+                if (arrayA != null)
+                    return AreCompatible(arrayA.ElementType, ptrB.Pointee);
+                else if (arrayB != null)
+                    return AreCompatible(ptrA.Pointee, arrayB.ElementType);
+                else
+                    return false;
+            }
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{

@@ -35,7 +35,7 @@ namespace Decompiler.Core
 	/// as well as storing any user-specified information.
 	/// </summary>
     /// <remarks>
-    /// A Decompiler project may consist of several Programs.
+    /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
     [Designer("Decompiler.Gui.Design.ProgramDesigner,Decompiler")]
     public class Program

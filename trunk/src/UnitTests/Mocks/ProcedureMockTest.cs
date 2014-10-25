@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Mocks
 			{
 				Identifier r = Local32("r0");
 
-				Load(r, Int32(0x20000000));
+				LoadId(r, Int32(0x20000000));
 				Store(Int32(0x20000000), r);
 				Return();
 			}

@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Typing
 			eq.DataType = point;
 			tv.DataType = new Pointer(eq, 4);
 
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, null);
+			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
             MemoryAccess access = new MemoryAccess(ptr, PrimitiveType.Word32);
             TypeVariable tvAccess = store.EnsureExpressionTypeVariable(factory, access);
             tvAccess.DataType = PrimitiveType.Word32;
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Typing
 			bin.TypeVariable.DataType = bin.DataType;
 			bin.TypeVariable.OriginalDataType = bin.DataType;
 
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, null);
+			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
 			Expression e = bin.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());
 		}

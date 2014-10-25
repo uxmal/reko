@@ -350,6 +350,11 @@ namespace Decompiler.Core.Expressions
             return new ConstantReal64(PrimitiveType.Real64, d);
         }
 
+        public static Constant UInt32(uint w)
+        {
+            return new ConstantUInt32(PrimitiveType.UInt32, w);
+        }
+
         public static Constant Word16(ushort n)
         {
             return new ConstantUInt16(PrimitiveType.Word16, n);

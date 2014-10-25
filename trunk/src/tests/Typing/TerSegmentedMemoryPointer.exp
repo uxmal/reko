@@ -18,7 +18,7 @@ void SegmentedMemoryPointerMock()
 SegmentedMemoryPointerMock_entry:
 	// succ:  l1
 l1:
-	si = &Eq_4::w0001;
+	si = &Eq_4::t0001;
 	ax = (cs->*si).w0000;
 	si2 = &Eq_4::w0005;
 	ax = cs->*si2;
@@ -30,13 +30,13 @@ SegmentedMemoryPointerMock_exit:
 Eq_2: (struct "Eq_2" (0 word16 w0000) (2 word16 w0002))
 	T_2 (in 0x0001 : word16)
 	T_3 (in si : word16)
-Eq_4: (segment "Eq_4" (1 word16 w0001) (5 word16 w0005) (1234 word16 w1234))
+Eq_4: (segment "Eq_4" (1 (struct "Eq_2" (0 word16 w0000) (2 word16 w0002)) t0001) (5 word16 w0005) (1234 word16 w1234))
 	T_4 (in cs : selector)
 // Type Variables ////////////
-Globals: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_2: (in 0x0001 : word16)
   Class: Eq_2
   DataType: (memptr (ptr Eq_4) Eq_2)
@@ -48,7 +48,7 @@ T_3: (in si : word16)
 T_4: (in cs : selector)
   Class: Eq_4
   DataType: (ptr Eq_4)
-  OrigDataType: (ptr (segment (1 T_7 t0001) (5 T_13 t0005) (1234 T_15 t1234)))
+  OrigDataType: (ptr (segment (1234 T_15 t1234)))
 T_5: (in 0x0000 : word16)
   Class: Eq_5
   DataType: word16

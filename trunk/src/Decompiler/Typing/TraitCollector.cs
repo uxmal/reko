@@ -135,6 +135,14 @@ namespace Decompiler.Typing
             return p.MaskDomain(~(Domain.Pointer | Domain.PtrCode));
         }
 
+        private DataType MakeIntegral(DataType dataType)
+        {
+            var p = dataType as PrimitiveType;
+            if (p == null)
+                return null;
+            return p.MaskDomain(Domain.Integer);
+        }
+
 		public PrimitiveType MakeNotSigned(DataType t)
 		{
 			PrimitiveType p = t as PrimitiveType;
@@ -352,8 +360,7 @@ namespace Decompiler.Typing
 			}
 			else if (binExp.Operator == Operator.IMul)
 			{
-                //$REVIEW: even more detailed knowledge!
-                return handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
+                return handler.DataTypeTrait(binExp, MakeIntegral(binExp.DataType));
 			}
 			else if (binExp.Operator == Operator.Sar)
 			{

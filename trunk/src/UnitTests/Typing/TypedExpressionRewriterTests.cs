@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Typing
 		private EquivalenceClassBuilder eqb;
 		private TraitCollector coll;
 		private DataTypeBuilder dtb;
-		private DerivedPointerAnalysis cpf;
+        //private DerivedPointerAnalysis cpf;
 		private TypeVariableReplacer tvr;
 		private TypeTransformer trans;
 		private ComplexTypeNamer ctn;
@@ -58,12 +58,12 @@ namespace Decompiler.UnitTests.Typing
                 coll.CollectProgramTraits(program);
                 dtb.BuildEquivalenceClassDataTypes();
                 store.Dump();
-                cpf.FollowConstantPointers(program);
+                //cpf.FollowConstantPointers(program);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(store);
 
-                ter = new TypedExpressionRewriter(store, program.Globals);
+                ter = new TypedExpressionRewriter(program.Architecture, store, program.Globals);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Typing
             aen = new ExpressionNormalizer(arch.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store);
             dtb = new DataTypeBuilder(factory, store, arch);
-            cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);
+            //cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store, null);
             ctn = new ComplexTypeNamer();
@@ -139,7 +139,7 @@ namespace Decompiler.UnitTests.Typing
 			trans.Transform();
 			ctn.RenameAllTypes(store);
 
-			ter = new TypedExpressionRewriter(store, prog.Globals);
+			ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
 			cmp = cmp.Accept(ter);
 			Assert.AreEqual("v0->dw0004", cmp.ToString());
 		}
@@ -190,7 +190,7 @@ namespace Decompiler.UnitTests.Typing
 			tvI.DataType = u;
 			tvX.DataType = u;
 			ctn.RenameAllTypes(store);
-			TypedExpressionRewriter ter = new TypedExpressionRewriter(store, prog.Globals);
+			TypedExpressionRewriter ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
 			Instruction instr = ter.TransformAssignment(ass);
 			Assert.AreEqual("x.u1 = 3F;", instr.ToString());
 		}

@@ -391,5 +391,15 @@ namespace Decompiler.UnitTests.Typing
 			MemberPointer mp2 = new MemberPointer(new TypeVariable(1), PrimitiveType.Word16, 0);
 			Assert.IsTrue(un.AreCompatible(mp1, mp2));
 		}
+
+        [Test]
+        public void CompatiblePtrToArray()
+        {
+            var eq = new EquivalenceClass(new TypeVariable(3));
+            var a = new ArrayType(eq, 0);
+            var p1 = new Pointer(eq, 4);
+            var p2 = new Pointer(a, 4);
+            Assert.IsTrue(un.AreCompatible(p1, p2));
+        }
 	}
 }

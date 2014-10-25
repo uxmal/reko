@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Mocks
 			Identifier r1 = Register(1);
 			Identifier r2 = Register(2);
 
-			Load(r0, Int32(0x01001000));
+			LoadId(r0, Int32(0x01001000));
 			Compare("SZC", r1, Int32(2));
 			Assign(cf, Flags("SZC"));
 			Assign(r0, IAdd(r0,r0));

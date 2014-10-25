@@ -46,12 +46,12 @@ namespace Decompiler.UnitTests.Structure
 			Label("looptest");
 			BranchIf(Eq(r1, Int32(0)), "done");
 
-			Load(r3, r1);
+			LoadId(r3, r1);
 			Assign(r2, IAdd(r2, r3));
-			Load(r3, IAdd(r1, Int32(4)));
+			LoadId(r3, IAdd(r1, Int32(4)));
 			BranchIf(Eq(r3, Int32(0)), "done");
 
-			Load(r1, IAdd(r1, Int32(0x00C)));
+			LoadId(r1, IAdd(r1, Int32(0x00C)));
 			Jump("looptest");
 
 			Label("done");

@@ -31,17 +31,35 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
+        private IProcessorArchitecture arch;
 		private TypeStore store;
 		private Identifier globals;
 		private Constant c;
 		private PrimitiveType pOrig;
 		private bool dereferenced;
 
-		public TypedConstantRewriter(TypeStore store, Identifier globals)
+		public TypedConstantRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
 		{
+            this.arch = arch;
 			this.store = store;
 			this.globals = globals;
 		}
+
+        /// <summary>
+        /// Rewrites a machine word constant depending on its data type.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="dereferenced"></param>
+        /// <returns></returns>
+
+        public Expression Rewrite(Constant c, bool dereferenced)
+        {
+            this.c = c;
+            DataType dtInferred = store.ResolvePossibleTypeVar(c.TypeVariable.DataType);
+            this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
+            this.dereferenced = dereferenced;
+            return dtInferred.Accept(this);
+        }
 
 		private StructureType GlobalVars
 		{
@@ -76,24 +94,18 @@ namespace Decompiler.Typing
                 return false;
             return str.IsSegment;
         }
-
-		public Expression Rewrite(Constant c, bool dereferenced)
-		{
-			this.c = c;
-			DataType dtInferred = store.ResolvePossibleTypeVar(c.TypeVariable.DataType);
-			this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
-			this.dereferenced = dereferenced;
-			return dtInferred.Accept(this);
-		}
-
+        
         public Expression VisitArray(ArrayType at)
 		{
-			throw new NotImplementedException();
+			throw new ArgumentException("Constants cannot have array values yet.");
 		}
 
         public Expression VisitEnum(EnumType e)
         {
-            throw new NotImplementedException();
+            string name;
+            if (e.Members.TryGetValue(c.ToInt64(), out name))
+                return new Identifier(name, 0, e, TemporaryStorage.None);
+            return new Cast(e, c);
         }
 
         public Expression VisitEquivalenceClass(EquivalenceClass eq)
@@ -109,26 +121,30 @@ namespace Decompiler.Typing
 		public Expression VisitMemberPointer(MemberPointer memptr)
 		{
 			// The constant is a member pointer.
+
 			Pointer p = (Pointer) memptr.BasePointer;
 			EquivalenceClass eq = (EquivalenceClass) p.Pointee;
 			StructureType baseType = (StructureType) eq.DataType;
 			Expression baseExpr = new ScopeResolution(baseType, baseType.Name);
 
-			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
-                c.DataType,
-				baseType, baseType,
-                null,
-                null,
-                null,
-                StructureField.ToOffset(c));
-			Expression ex = ceb.BuildComplex();
+            var dt = store.ResolvePossibleTypeVar(memptr.Pointee);
+            var f = EnsureFieldAtOffset(baseType, dt, c.ToInt32());
+            Expression ex = new ScopeResolution(memptr.Pointee, baseType.Name + "::" + f.Name);
 			if (dereferenced)
 			{
 				ex.DataType = memptr.Pointee;
 			}
 			else
 			{
-				ex = new UnaryExpression(Operator.AddrOf, memptr, ex);
+                var array = f.DataType as ArrayType;
+                if (array != null)
+                {
+                    ex.DataType = new MemberPointer(p, array.ElementType, arch.PointerType.Size);
+                }
+                else
+                {
+                    ex = new UnaryExpression(Operator.AddrOf, memptr, ex);
+                }
 			}
             return ex;
 		}
@@ -142,11 +158,9 @@ namespace Decompiler.Typing
             } 
             else if (GlobalVars != null)
             {
-                StructureField f = GlobalVars.Fields.AtOffset(c.ToInt32());
-                if (f == null)
-                    throw new InvalidOperationException(string.Format("Expected a global variable with address 0x{0:X8}.", c.ToInt32()));
-
-                var ptrGlobals = new Pointer(GlobalVars, 4);    //$REVIEW: hard coded ptr size
+                var dt = store.ResolvePossibleTypeVar(ptr.Pointee);
+                StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
+                var ptrGlobals = new Pointer(GlobalVars, arch.PointerType.Size);
                 e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f.Name);
                 if (dereferenced)
                 {
@@ -154,11 +168,33 @@ namespace Decompiler.Typing
                 }
                 else
                 {
-                    e = new UnaryExpression(Operator.AddrOf, ptr, e);
+                    var array = dt as ArrayType;
+                    if (array != null) // C language rules 'promote' arrays to pointers.
+                    {
+                        //$BUG: no factory?
+                        e.DataType = new Pointer(array.ElementType, arch.PointerType.Size);
+                    }
+                    else
+                    {
+                        e = new UnaryExpression(Operator.AddrOf, ptr, e);
+                    }
                 }
             }
 			return e;
 		}
+
+        private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)
+        {
+            StructureField f = str.Fields.AtOffset(offset);
+            if (f == null)
+            {
+                //$TODO: overlaps and conflicts.
+                //$TODO: strings.
+                f = new StructureField(offset, dt);
+                str.Fields.Add(f);
+            }
+            return f;
+        }
 
 		public Expression VisitPrimitive(PrimitiveType pt)
 		{

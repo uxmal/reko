@@ -83,7 +83,7 @@ namespace Decompiler.Core
             return gi;
         }
 
-        public void Load(Identifier reg, Expression ea)
+        public void LoadId(Identifier reg, Expression ea)
         {
             Assign(reg, new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, reg.DataType));
         }
