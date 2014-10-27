@@ -58,6 +58,23 @@ namespace Decompiler.UnitTests.Typing
             return program;
 		}
 
+        protected void RunHexTest(string hexFile, string outputFile)
+        {
+            var svc = new ServiceContainer();
+            ILoader ldr = new Loader(svc);
+            var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
+            var img = imgLoader.Load(null);
+            var program = new Program(img.Image, new ImageMap(img.Image), img.Architecture, img.Platform);
+            var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            scan.EnqueueEntryPoint(ep);
+            scan.ScanImage();
+
+            var dfa = new DataFlowAnalysis(program, new FakeDecompilerEventListener());
+            dfa.AnalyzeProgram();
+            RunTest(program, outputFile);
+        }
+
         protected void RunTest(string srcfile, string outputFile)
         {
             RunTest(RewriteFile(srcfile), outputFile);

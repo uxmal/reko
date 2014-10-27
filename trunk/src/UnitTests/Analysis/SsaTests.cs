@@ -145,6 +145,18 @@ namespace Decompiler.UnitTests.Analysis
             RunUnitTest(m, "Analysis/SsaStackReference.txt");
         }
 
+        [Test]
+        public void SsaCallIndirect()
+        {
+            var m = new ProcedureBuilder("SsaCallIndirect");
+            var r1 = m.Reg32("r1");
+            var r2 = m.Reg32("r2");
+            m.Assign(r1, m.LoadDw(r2));
+            m.Call(r1);
+            m.Return();
+
+            RunUnitTest(m, "Analysis/SsaCallIndirect.txt");
+        }
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var proc = m.Procedure;

@@ -28,6 +28,9 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
+    /// <summary>
+    /// Decodes M86k operands using a simple format language.
+    /// </summary>
     public class OperandFormatDecoder
     {
         private M68kDisassembler dasm;

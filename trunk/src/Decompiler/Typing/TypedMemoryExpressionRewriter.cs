@@ -119,7 +119,7 @@ namespace Decompiler.Typing
 
         public Expression VisitAddress(Address addr)
         {
-            throw new NotImplementedException();    //$TODO
+            return tcr.Rewrite(addr, true);
         }
 
 		public Expression VisitApplication(Application appl)

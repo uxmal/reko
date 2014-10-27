@@ -79,6 +79,11 @@ namespace Decompiler.Core.Types
             else
                 return (int) offset.ToUInt32();
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}: {2}", Offset, Name, DataType);
+        }
 	}
 
 	public class StructureFieldCollection : ICollection<StructureField>

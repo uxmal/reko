@@ -40,22 +40,22 @@ namespace Decompiler.Arch.M68k
 
         private void RewriteBra()
         {
-            emitter.Goto(orw.RewriteSrc(di.op1, di.Address));
+            emitter.Goto(orw.RewriteSrc(di.op1, di.Address, true));
         }
 
         private void RewriteBsr()
         {
-            emitter.Call(orw.RewriteSrc(di.op1, di.Address), 4);
+            emitter.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
         }
 
         private void RewriteJmp()
         {
-            emitter.Goto(orw.RewriteSrc(di.op1, di.Address));
+            emitter.Goto(orw.RewriteSrc(di.op1, di.Address, true));
         }
 
         private void RewriteJsr()
         {
-            var src = orw.RewriteSrc(di.op1, di.Address);
+            var src = orw.RewriteSrc(di.op1, di.Address, true);
             emitter.Call(src, 4);
         }
 
@@ -73,7 +73,7 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(src, emitter.ISub(src, 1));
             emitter.Branch(
                 emitter.Ne(src, emitter.Int32(-1)),
-                (Address) orw.RewriteSrc(di.op2, di.Address),
+                (Address) orw.RewriteSrc(di.op2, di.Address, true),
                 RtlClass.ConditionalTransfer);
         }
     }

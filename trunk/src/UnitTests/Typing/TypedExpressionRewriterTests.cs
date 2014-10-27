@@ -29,20 +29,20 @@ using System;
 
 namespace Decompiler.UnitTests.Typing
 {
-	[TestFixture]
-	public class TypedExpressionRewriterTests : TypingTestBase
-	{
-		private TypeFactory factory;
-		private TypeStore store;
-		private TypedExpressionRewriter ter;
+    [TestFixture]
+    public class TypedExpressionRewriterTests : TypingTestBase
+    {
+        private TypeFactory factory;
+        private TypeStore store;
+        private TypedExpressionRewriter ter;
         private ExpressionNormalizer aen;
-		private EquivalenceClassBuilder eqb;
-		private TraitCollector coll;
-		private DataTypeBuilder dtb;
+        private EquivalenceClassBuilder eqb;
+        private TraitCollector coll;
+        private DataTypeBuilder dtb;
         //private DerivedPointerAnalysis cpf;
-		private TypeVariableReplacer tvr;
-		private TypeTransformer trans;
-		private ComplexTypeNamer ctn;
+        private TypeVariableReplacer tvr;
+        private TypeTransformer trans;
+        private ComplexTypeNamer ctn;
 
         protected override void RunTest(Program program, string outputFile)
         {
@@ -120,124 +120,124 @@ namespace Decompiler.UnitTests.Typing
             e.DataType = t;
         }
 
-		[Test]
-		public void TerComplex()
-		{
+        [Test]
+        public void TerComplex()
+        {
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
             SetupPreStages(prog.Architecture);
-			Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
-			Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
+            Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
+            Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
             cmp.Accept(aen);
-			cmp.Accept(eqb);
-			coll = new TraitCollector(factory, store, dtb, prog);
-			cmp.Accept(coll);
-			dtb.BuildEquivalenceClassDataTypes();
+            cmp.Accept(eqb);
+            coll = new TraitCollector(factory, store, dtb, prog);
+            cmp.Accept(coll);
+            dtb.BuildEquivalenceClassDataTypes();
 
-			tvr.ReplaceTypeVariables();
-			trans.Transform();
-			ctn.RenameAllTypes(store);
+            tvr.ReplaceTypeVariables();
+            trans.Transform();
+            ctn.RenameAllTypes(store);
 
-			ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
-			cmp = cmp.Accept(ter);
-			Assert.AreEqual("v0->dw0004", cmp.ToString());
-		}
+            ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
+            cmp = cmp.Accept(ter);
+            Assert.AreEqual("v0->dw0004", cmp.ToString());
+        }
 
-		[Test] 
+        [Test]
         public void TerPtrPtrInt()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new PtrPtrIntMock());
-			RunTest(mock.BuildProgram(), "Typing/TerPtrPtrInt.txt");
-		}
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new PtrPtrIntMock());
+            RunTest(mock.BuildProgram(), "Typing/TerPtrPtrInt.txt");
+        }
 
-		[Test]
-		public void TerUnionIntReal()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new UnionIntRealMock());
-			RunTest(mock.BuildProgram(), "Typing/TerUnionIntReal.txt");
-		}
+        [Test]
+        public void TerUnionIntReal()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new UnionIntRealMock());
+            RunTest(mock.BuildProgram(), "Typing/TerUnionIntReal.txt");
+        }
 
-		[Test]
-		public void TerConstantUnion()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new ConstantUnionMock());
-			RunTest(mock.BuildProgram(), "Typing/TerConstantUnion.txt");
-		}
+        [Test]
+        public void TerConstantUnion()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new ConstantUnionMock());
+            RunTest(mock.BuildProgram(), "Typing/TerConstantUnion.txt");
+        }
 
-		[Test]
-		public void TerConstants()
-		{
+        [Test]
+        public void TerConstants()
+        {
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
             SetupPreStages(prog.Architecture);
-			Constant r = Constant.Real32(3.0F);
-			Constant i = Constant.Int32(1);
-			Identifier x = new Identifier("x", 0, PrimitiveType.Word32, null);
-			Assignment ass = new Assignment(x, r);
-			TypeVariable tvR = r.TypeVariable = factory.CreateTypeVariable();
-			TypeVariable tvI = i.TypeVariable = factory.CreateTypeVariable();
-			TypeVariable tvX = x.TypeVariable = factory.CreateTypeVariable();
-			store.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
-			UnionType u = factory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
-			tvR.OriginalDataType = r.DataType;
-			tvI.OriginalDataType = i.DataType;
-			tvX.OriginalDataType = x.DataType;
-			tvR.DataType = u;
-			tvI.DataType = u;
-			tvX.DataType = u;
-			ctn.RenameAllTypes(store);
-			TypedExpressionRewriter ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
-			Instruction instr = ter.TransformAssignment(ass);
-			Assert.AreEqual("x.u1 = 3F;", instr.ToString());
-		}
+            Constant r = Constant.Real32(3.0F);
+            Constant i = Constant.Int32(1);
+            Identifier x = new Identifier("x", 0, PrimitiveType.Word32, null);
+            Assignment ass = new Assignment(x, r);
+            TypeVariable tvR = r.TypeVariable = factory.CreateTypeVariable();
+            TypeVariable tvI = i.TypeVariable = factory.CreateTypeVariable();
+            TypeVariable tvX = x.TypeVariable = factory.CreateTypeVariable();
+            store.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
+            UnionType u = factory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
+            tvR.OriginalDataType = r.DataType;
+            tvI.OriginalDataType = i.DataType;
+            tvX.OriginalDataType = x.DataType;
+            tvR.DataType = u;
+            tvI.DataType = u;
+            tvX.DataType = u;
+            ctn.RenameAllTypes(store);
+            TypedExpressionRewriter ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
+            Instruction instr = ter.TransformAssignment(ass);
+            Assert.AreEqual("x.u1 = 3F;", instr.ToString());
+        }
 
-		[Test]
-		public void TerVector()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new VectorMock());
-			RunTest(mock.BuildProgram(), "Typing/TerVector.txt");
-		}
+        [Test]
+        public void TerVector()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new VectorMock());
+            RunTest(mock.BuildProgram(), "Typing/TerVector.txt");
+        }
 
-		[Test]
-		public void TerGlobalVariables()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new GlobalVariablesMock());
-			RunTest(mock.BuildProgram(), "Typing/TerGlobalVariables.txt");
-		}
+        [Test]
+        public void TerGlobalVariables()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new GlobalVariablesMock());
+            RunTest(mock.BuildProgram(), "Typing/TerGlobalVariables.txt");
+        }
 
-		[Test]
-		public void TerSegmentedMemoryPointer()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new SegmentedMemoryPointerMock());
-			RunTest(mock.BuildProgram(), "Typing/TerSegmentedMemoryPointer.txt");
-		}
+        [Test]
+        public void TerSegmentedMemoryPointer()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new SegmentedMemoryPointerMock());
+            RunTest(mock.BuildProgram(), "Typing/TerSegmentedMemoryPointer.txt");
+        }
 
-		[Test]
-		public void TerSegMemPtr2()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new SegmentedMemoryPointerMock2());
-			RunTest(mock.BuildProgram(), "Typing/TerSegMemPtr2.txt");
-		}
-		
-		[Test]
-		public void TerSegMem3()
-		{
-			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new SegMem3Mock());
-			RunTest(mock.BuildProgram(), "Typing/TerSegMem3.txt");
-		}
+        [Test]
+        public void TerSegMemPtr2()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new SegmentedMemoryPointerMock2());
+            RunTest(mock.BuildProgram(), "Typing/TerSegMemPtr2.txt");
+        }
 
-		[Test]
-		public void TerArrayConstantPointers()
-		{
+        [Test]
+        public void TerSegMem3()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new SegMem3Mock());
+            RunTest(mock.BuildProgram(), "Typing/TerSegMem3.txt");
+        }
+
+        [Test]
+        public void TerArrayConstantPointers()
+        {
             ProgramBuilder pp = new ProgramBuilder();
             pp.Add("Fn", m =>
             {
@@ -246,8 +246,8 @@ namespace Decompiler.UnitTests.Typing
                 m.Assign(a, 0x00123456);		// array pointer
                 m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
             });
-			RunTest(pp.BuildProgram(), "Typing/TerArrayConstantPointers.txt");
-		}
+            RunTest(pp.BuildProgram(), "Typing/TerArrayConstantPointers.txt");
+        }
 
         [Test]
         public void TerReg00008()
@@ -414,7 +414,13 @@ namespace Decompiler.UnitTests.Typing
             m.Add(new IntelIndexedAddressingMode());
             RunTest(m.BuildProgram(), "Typing/TerIntelIndexedAddressingMode.txt");
         }
-	}
+
+        [Test]
+        public void TerReg00016()
+        {
+            RunHexTest("fragments/regressions/r00016.dchex", "Typing/TerReg00016.txt");
+        }
+    }
 
 	public class SegmentedMemoryPointerMock : ProcedureBuilder
 	{

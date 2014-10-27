@@ -189,18 +189,20 @@ namespace Decompiler.Core.Expressions
 			}
 		}
 
-		public bool IsNegative
+		public virtual bool IsNegative
 		{
 			get 
 			{
 				PrimitiveType p = (PrimitiveType) DataType;
-				if (p.Domain == Domain.SignedInt)
-					return Convert.ToInt64(GetValue()) < 0;
-				else if (p == PrimitiveType.Real32)
-					return ToFloat() < 0.0F;
-				else if (p == PrimitiveType.Real64)
-					return ToDouble() < 0.0;
-				else 
+                if (p.Domain == Domain.SignedInt)
+                    return Convert.ToInt64(GetValue()) < 0;
+                else if (p == PrimitiveType.Real32)
+                    return ToFloat() < 0.0F;
+                else if (p == PrimitiveType.Real64)
+                    return ToDouble() < 0.0;
+                else if (p.Domain == Domain.Pointer || p.Domain == Domain.PtrCode)
+                    return false;
+                else
 					throw new InvalidOperationException(string.Format("Type {0} can't be negative", DataType));
 			}
 		}

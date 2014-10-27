@@ -212,6 +212,17 @@ namespace Decompiler.ImageLoaders.Elf
             }
         }
 
+        private ImageWriter CreateWriter(uint fileOffset)
+        {
+            switch (endianness)
+            {
+            case LITTLE_ENDIAN: return new LeImageWriter(RawImage, fileOffset);
+            case BIG_ENDIAN: return new BeImageWriter(RawImage, fileOffset);
+            default: throw new BadImageFormatException("Endianness is incorrectly specified.");
+            }
+        }
+
+
         public string GetStringTableEntry(uint idxString)
         {
             var offset = (int)(SectionHeaders[Header.e_shstrndx].sh_offset + idxString);
@@ -415,11 +426,6 @@ namespace Decompiler.ImageLoaders.Elf
                 ++u;
             }
             return Encoding.ASCII.GetString(image.Bytes, (int) fileOffset, u - (int) fileOffset);
-        }
-
-        private ImageWriter CreateWriter(int p)
-        {
-            throw new NotImplementedException();
         }
 
         // A map for extra symbols, those not in the usual Elf symbol tables
