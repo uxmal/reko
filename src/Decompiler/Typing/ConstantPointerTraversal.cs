@@ -25,123 +25,151 @@ using Decompiler.Core.Types;
 using Decompiler.Typing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Decompiler.Typing
 {
-    public class ConstantPointerTraversal : IDataTypeVisitor<DataType>
+    public class ConstantPointerTraversal : IDataTypeVisitor<IEnumerable<ConstantPointerTraversal.WorkItem>>
     {
         StructureType globalStr;
         LoadedImage image;
         HashSet<int> visited;
+        Stack<IEnumerator<WorkItem>> stack;
         private int gOffset;
+
+        public struct WorkItem
+        {
+            public int GlobalOffset;
+            public DataType DataType;
+        }
 
         public ConstantPointerTraversal(StructureType globalStr, LoadedImage image)
         {
-            this. globalStr =  globalStr;
+            this.globalStr =  globalStr;
             this.image = image;
         }
 
         public void Traverse()
         {
+            this.stack = new Stack<IEnumerator<WorkItem>>();
             this.visited = new HashSet<int>();
-            this.gOffset = 0;
-            globalStr.Accept(this);
+            stack.Push(Single(new WorkItem { GlobalOffset = 0, DataType = globalStr }).GetEnumerator());
+            while (stack.Count > 0)
+            {
+                var item = stack.Pop();
+                if (!item.MoveNext())
+                    continue;
+                stack.Push(item);
+                this.gOffset = item.Current.GlobalOffset;
+                var children = item.Current.DataType.Accept(this);
+                if (children != null)
+                {
+                    stack.Push(children.GetEnumerator());
+                }
+            }
         }
 
-        public DataType VisitArray(ArrayType at)
+        private IEnumerable<T> Single<T>(T dt)
+        {
+            yield return dt;
+        }
+
+        public IEnumerable<WorkItem> VisitArray(ArrayType at)
         {
             int offset = gOffset;
+            Debug.Print("Iterating array at {0:X}", gOffset);
             for (int i = 0; i < at.Length; ++i)
             {
                 int off = i * at.ElementType.Size;
                 if (visited.Contains(off))
                     break;
-                this.gOffset = offset + off;
-                at.ElementType.Accept(this);
+                yield return new WorkItem { GlobalOffset = offset + off, DataType = at.ElementType };
             }
-            return at;
         }
 
-        public DataType VisitEnum(EnumType e)
+        public IEnumerable<WorkItem> VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitEquivalenceClass(EquivalenceClass eq)
+        public IEnumerable<WorkItem> VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq.DataType.Accept(this);
         }
 
-        public DataType VisitFunctionType(FunctionType ft)
+        public IEnumerable<WorkItem> VisitFunctionType(FunctionType ft)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitPrimitive(PrimitiveType pt)
+        public IEnumerable<WorkItem> VisitPrimitive(PrimitiveType pt)
         {
-            return pt;
+            return null;
         }
 
-        public DataType VisitMemberPointer(MemberPointer memptr)
+        public IEnumerable<WorkItem> VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitPointer(Pointer ptr)
+        public IEnumerable<WorkItem> VisitPointer(Pointer ptr)
         {
+            Debug.Print("Iterating pointer at {0:X}", gOffset);
             var rdr = image.CreateReader(gOffset - (int) image.BaseAddress.Linear);
-            if (!rdr.IsValidOffset((uint)ptr.Size))
-                return ptr;
+            if (!rdr.IsValidOffset((uint) ptr.Size))
+                return null;
             var c = rdr.ReadLe(PrimitiveType.Create(Domain.Pointer, ptr.Size));    //$REVIEW:Endianess?
-            this.gOffset = c.ToInt32(); 
-            if (visited.Contains(gOffset))
-                return ptr;
-            if (image.IsValidLinearAddress((uint) this.gOffset))
-                return ptr;
-            return ptr.Pointee.Accept(this);
+            int offset = c.ToInt32();
+            Debug.Print("  pointer value: {0:X}", offset);
+            if (visited.Contains(offset))
+                return null;
+            if (image.IsValidLinearAddress((uint) offset))
+                return null;
+            return Single(new WorkItem { DataType = ptr.Pointee, GlobalOffset = c.ToInt32() });
         }
 
-        public DataType VisitString(StringType str)
+        public IEnumerable<WorkItem> VisitString(StringType str)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitStructure(StructureType str)
+        public IEnumerable<WorkItem> VisitStructure(StructureType str)
         {
-            int[] offsets = str.Fields.Select(f => f.Offset).ToArray();
             int offset = gOffset;
-            foreach (int off in offsets)
+            Debug.Print("Iterating structure at {0:X}", gOffset);
+            foreach (var field in str.Fields)
             {
-                var field = str.Fields.AtOffset(off);
-                this.gOffset = offset + field.Offset;
-                if (!visited.Contains(gOffset))
-                    field.DataType.Accept(this);
+                int off = offset + field.Offset;
+                if (visited.Contains(off))
+                    continue;
+                Debug.Print("   Field {0} at {1:X}", field.Name, off);
+                yield return new WorkItem { DataType = field.DataType, GlobalOffset = off };
             }
-            return str;
+
         }
 
-        public DataType VisitTypeReference(TypeReference typeref)
+        public IEnumerable<WorkItem> VisitTypeReference(TypeReference typeref)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitTypeVariable(TypeVariable tv)
+        public IEnumerable<WorkItem> VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitUnion(UnionType ut)
+        public IEnumerable<WorkItem> VisitUnion(UnionType ut)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitUnknownType(UnknownType ut)
+        public IEnumerable<WorkItem> VisitUnknownType(UnknownType ut)
         {
             throw new NotImplementedException();
         }
 
-        public DataType VisitVoidType(VoidType voidType)
+        public IEnumerable<WorkItem> VisitVoidType(VoidType voidType)
         {
             throw new NotImplementedException();
         }

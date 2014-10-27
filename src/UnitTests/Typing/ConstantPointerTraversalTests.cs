@@ -36,6 +36,7 @@ namespace Decompiler.UnitTests.Typing
         private Expression globals;
         private TypeVariable globals_t;
         private StructureType globalStruct;
+        private EquivalenceClass eqLink;
 
         [SetUp]
         public void Setup()
@@ -45,6 +46,17 @@ namespace Decompiler.UnitTests.Typing
             };
             globals_t = new TypeVariable("globals_t", 1) { DataType = globalStruct };
             globals = new Identifier("globals", -1, PrimitiveType.Pointer32, null);
+
+            eqLink = new EquivalenceClass(new TypeVariable(2));
+            StructureType str = new StructureType
+            {
+                Fields = {
+                    { 0, new Pointer(eqLink, 4)},
+                    { 4, PrimitiveType.Int32 }
+                }
+            };
+            eqLink.DataType = str;
+
         }
 
         private ImageWriter Memory(uint address)
@@ -68,17 +80,8 @@ namespace Decompiler.UnitTests.Typing
                 .WriteLeUInt32(0x10000010)
                 .WriteLeUInt32(0x00000002)
                 .WriteLeUInt32(0);
-            var eq = new EquivalenceClass(new TypeVariable(2));
-            StructureType str = new StructureType
-            {
-                Fields = {
-                    { 0, new Pointer(eq, 4)},
-                    { 4, PrimitiveType.Int32 }
-                }
-            };
-            eq.DataType = str;
 
-            Root(0x10000000, str);
+            Root(0x10000000, eqLink);
 
             var cpt = new ConstantPointerTraversal(globalStruct, image);
             cpt.Traverse();
@@ -99,6 +102,18 @@ namespace Decompiler.UnitTests.Typing
             Root(0x010000, new ArrayType(new Pointer(PrimitiveType.Char, 4), 4));
             var cpt = new ConstantPointerTraversal(globalStruct, image);
             cpt.Traverse();
+        }
+
+        [Test]
+        public void CptCycle()
+        {
+            Memory(0x1000)
+                .WriteLeUInt32(0x1000)
+                .WriteLeUInt32(42);
+            Root(0x1000, eqLink);
+            var cpt = new ConstantPointerTraversal(globalStruct, image);
+            cpt.Traverse();
+ 
         }
     }
 }
