@@ -130,7 +130,10 @@ namespace Decompiler.Core.Output
         {
             if (addr.Selector == 0)
             {
-                writer.Write("0x{0:X8}", addr.Offset);
+                if (addr.Offset == 0)
+                    writer.WriteKeyword("null");
+                else 
+                    writer.Write("0x{0:X8}", addr.Offset);
             }
             else
             {

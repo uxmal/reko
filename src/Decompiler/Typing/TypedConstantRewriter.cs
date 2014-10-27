@@ -61,6 +61,15 @@ namespace Decompiler.Typing
             return dtInferred.Accept(this);
         }
 
+        public Expression Rewrite(Address addr, bool dereferenced)
+        {
+            this.c = Constant.UInt32(addr.Linear);  //$BUG: won't work for x86.
+            var dtInferred = store.ResolvePossibleTypeVar(addr.TypeVariable.DataType);
+            this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
+            this.dereferenced = dereferenced;
+            return dtInferred.Accept(this);
+        }
+
 		private StructureType GlobalVars
 		{
             get
@@ -158,6 +167,14 @@ namespace Decompiler.Typing
             } 
             else if (GlobalVars != null)
             {
+                // Null pointer.
+                if (c.IsZero)
+                {
+                    var np = new Address(0);
+                    np.TypeVariable = c.TypeVariable;
+                    np.DataType = c.DataType;
+                    return np;
+                }
                 var dt = store.ResolvePossibleTypeVar(ptr.Pointee);
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
                 var ptrGlobals = new Pointer(GlobalVars, arch.PointerType.Size);

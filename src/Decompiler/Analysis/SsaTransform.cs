@@ -442,6 +442,7 @@ namespace Decompiler.Analysis
 
 			public override Instruction TransformCallInstruction(CallInstruction ci)
 			{
+                ci.Callee = ci.Callee.Accept(this);
 				// Hell node implementation - use all register variables.
 
 				foreach (Identifier id in proc.Frame.Identifiers)

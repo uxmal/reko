@@ -37,6 +37,12 @@ namespace Decompiler.Core
             this.Position = 0;
         }
 
+        public ImageWriter(byte[] image, uint offset)
+        {
+            this.Bytes = image;
+            this.Position = (int) offset;
+        }
+
         public byte[] Bytes { get; private set;}
         public int Position { get; set; }
 
@@ -105,6 +111,13 @@ namespace Decompiler.Core
         }
 
         public abstract void WriteUInt32(uint offset, uint w);
+
+        public ImageWriter WriteLeUInt32(uint ui)
+        {
+            WriteLeUInt32((uint) Position, ui);
+            Position += 4;
+            return this;
+        }
     }
 
     public class BeImageWriter : ImageWriter
@@ -115,6 +128,11 @@ namespace Decompiler.Core
         }
 
         public BeImageWriter(byte [] image) : base(image)
+        {
+        }
+
+        public BeImageWriter(byte[] image, uint offset)
+            : base(image, offset)
         {
         }
 
@@ -129,6 +147,11 @@ namespace Decompiler.Core
         }
 
         public LeImageWriter(byte [] image) :base(image)
+        {
+        }
+
+        public LeImageWriter(byte[] image, uint offset)
+            : base(image, offset)
         {
         }
 

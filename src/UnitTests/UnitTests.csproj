@@ -149,6 +149,7 @@
     <Compile Include="Core\StructureReaderTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />
+    <Compile Include="DchexLoader.cs" />
     <Compile Include="Environments\AmigaOS\AmigaOSPlatformTests.cs" />
     <Compile Include="Environments\AmigaOS\FuncsFileParserTests.cs" />
     <Compile Include="Environments\C64\D64LoaderTests.cs" />
@@ -416,6 +417,7 @@
     <Compile Include="Typing\ArrayExpressionMatcherTests.cs" />
     <Compile Include="Typing\ComplexExpressionBuilderTests.cs" />
     <Compile Include="Typing\ComplexTypeNamerTests.cs" />
+    <Compile Include="Typing\ConstantPointerTraversalTests.cs" />
     <Compile Include="Typing\ConstantUnionMock.cs" />
     <Compile Include="Typing\DataTypeBuilderTests.cs" />
     <Compile Include="Typing\DerivedPointerAnalysisTests.cs" />
@@ -534,9 +536,9 @@
       <Project>{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}</Project>
       <Name>BinHex-2010</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\Elf\Elf-2010.csproj">
+    <ProjectReference Include="..\ImageLoaders\Elf\Elf.csproj">
       <Project>{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}</Project>
-      <Name>Elf-2010</Name>
+      <Name>Elf</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\Hunk\Hunk.csproj">
       <Project>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</Project>

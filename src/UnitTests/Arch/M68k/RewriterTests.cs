@@ -916,5 +916,16 @@ namespace Decompiler.UnitTests.Arch.M68k
                "0|00010000(4): 1 instructions",
                "1|L--|Mem0[a7 + 2:bool] = true");
         }
+
+        [Test]
+        public void M68krw_tst_mem()
+        {
+            Rewrite(0x4AB9, 0x0000, 0x13F8);
+            AssertCode(
+                "0|00010000(6): 3 instructions",
+                "1|L--|ZN = cond(Mem0[0x000013F8:word32] - 0x00000000)",
+                "2|L--|C = false",
+                "3|L--|V = false");
+        }
     }
 }

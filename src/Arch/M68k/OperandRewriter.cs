@@ -62,7 +62,7 @@ namespace Decompiler.Arch.M68k
         /// <param name="operand"></param>
         /// <param name="addrInstr">Address of the current instruction</param>
         /// <returns></returns>
-        public Expression RewriteSrc(MachineOperand operand, Address addrInstr)
+        public Expression RewriteSrc(MachineOperand operand, Address addrInstr, bool addressAsAddress = false)
         {
             var reg = operand as RegisterOperand;
             if (reg != null)
@@ -85,10 +85,13 @@ namespace Decompiler.Arch.M68k
             {
                 return RewriteMemoryAccess(mem, DataWidth, addrInstr);
             }
-            var addr = operand as AddressOperand;
+            var addr = operand as M68kAddressOperand;
             if (addr != null)
             {
-                return addr.Address;
+                if (addressAsAddress)
+                    return addr.Address;
+                else 
+                    return m.Load(DataWidth, addr.Address);
             }
             var pre = operand as PredecrementMemoryOperand;
             if (pre != null)

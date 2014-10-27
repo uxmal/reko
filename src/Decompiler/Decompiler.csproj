@@ -519,6 +519,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
+    <Compile Include="Typing\ConstantPointerTraversal.cs" />
     <Compile Include="Typing\StructureFieldMerger.cs" />
     <Compile Include="Structure\StructureNode.cs">
       <SubType>Code</SubType>

@@ -137,5 +137,12 @@ namespace Decompiler.UnitTests.Core
             Assert.AreEqual("Eq_2::i0004", sw.ToString());
         }
 
+        [Test]
+        public void CfNullPointer()
+        {
+            var e = new Address(0);
+            e.Accept(cf);
+            Assert.AreEqual("null", sw.ToString());
+        }
 	}
 }

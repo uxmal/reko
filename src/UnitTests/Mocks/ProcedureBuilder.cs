@@ -138,6 +138,12 @@ namespace Decompiler.UnitTests.Mocks
             return Emit(ci);
         }
 
+        public Statement Call(Expression e)
+        {
+            CallInstruction ci = new CallInstruction(e, new CallSite(4, 0));     //$REVIEW: hard-wired 4-byte pointer.
+            return Emit(ci);
+        }
+
         public void Compare(string flags, Expression a, Expression b)
         {
             Assign(Flags(flags), new ConditionOf(ISub(a, b)));
