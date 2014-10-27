@@ -125,11 +125,11 @@ namespace Decompiler.Typing
 			Pointer p = (Pointer) memptr.BasePointer;
 			EquivalenceClass eq = (EquivalenceClass) p.Pointee;
 			StructureType baseType = (StructureType) eq.DataType;
-			Expression baseExpr = new ScopeResolution(baseType, baseType.Name);
+			Expression baseExpr = new ScopeResolution(baseType);
 
             var dt = store.ResolvePossibleTypeVar(memptr.Pointee);
             var f = EnsureFieldAtOffset(baseType, dt, c.ToInt32());
-            Expression ex = new ScopeResolution(memptr.Pointee, baseType.Name + "::" + f.Name);
+            Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f.Name);
 			if (dereferenced)
 			{
 				ex.DataType = memptr.Pointee;

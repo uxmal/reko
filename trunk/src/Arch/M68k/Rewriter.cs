@@ -113,6 +113,7 @@ VS Overflow Set 1001 V
                 case Opcode.exg: RewriteExg(); break;
                 case Opcode.ext: RewriteExt(); break;
                 case Opcode.extb: RewriteExtb(); break;
+                case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.link: RewriteLink(); break;

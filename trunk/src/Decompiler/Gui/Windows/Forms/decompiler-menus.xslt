@@ -91,6 +91,7 @@ namespace Decompiler.Gui.Windows.Forms
           <with-param name="menuName" select="@id"/>
           <with-param name="itemCollectionName" select="'MenuItems'"/>
         </call-template>
+        this.<value-of select="@id"/>.Popup += subMenu_Popup;
       </when>
       <when test="@type='MainMenu'">
 				<call-template name="build-menu">
@@ -141,7 +142,7 @@ namespace Decompiler.Gui.Windows.Forms
     }
 
     }
-    }
+}
   </template>
   
   <template name="build-menu">

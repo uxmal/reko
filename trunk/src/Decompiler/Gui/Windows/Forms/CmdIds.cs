@@ -66,9 +66,11 @@ namespace Decompiler.Gui
 		public const int GrpHelp = 12 + 1000;
 		public const int GrpMemoryControl = 13 + 1000;
 		public const int GrpBrowser = 14 + 1000;
-		public const int GrpToolbarFileOps = 15 + 1000;
-		public const int GrpToolbarActions = 16 + 1000;
-		public const int GrpProcedure = 17 + 1000;
+		public const int GrpBrowserProc = 15 + 1000;
+		public const int GrpBrowserSegm = 16 + 1000;
+		public const int GrpToolbarFileOps = 17 + 1000;
+		public const int GrpToolbarActions = 18 + 1000;
+		public const int GrpProcedure = 19 + 1000;
 	}
 	
 	public class CmdIds
@@ -81,27 +83,28 @@ namespace Decompiler.Gui
 		public const int FileCloseProject = 6 + 2000;
 		public const int FileExit = 7 + 2000;
 		public const int EditFind = 8 + 2000;
-		public const int ViewMemory = 9 + 2000;
-		public const int ViewDisassembly = 10 + 2000;
-		public const int ViewGoToAddress = 11 + 2000;
-		public const int ViewFindAllProcedures = 12 + 2000;
-		public const int ViewShowAllFragments = 13 + 2000;
-		public const int ViewShowUnscanned = 14 + 2000;
-		public const int ViewFindFragments = 15 + 2000;
-		public const int ViewFindWhatPointsHere = 16 + 2000;
-		public const int ActionNextSearchHit = 17 + 2000;
-		public const int ActionPrevSearchHit = 18 + 2000;
-		public const int ActionNextPhase = 19 + 2000;
-		public const int ActionFinishDecompilation = 20 + 2000;
-		public const int ActionMarkProcedure = 21 + 2000;
-		public const int ActionEditSignature = 22 + 2000;
-		public const int ActionMarkType = 23 + 2000;
-		public const int WindowsCascade = 24 + 2000;
-		public const int WindowsTileVertical = 25 + 2000;
-		public const int WindowsTileHorizontal = 26 + 2000;
-		public const int WindowsCloseAll = 27 + 2000;
-		public const int HelpAbout = 28 + 2000;
-		public const int ShowProcedureCallHierarchy = 29 + 2000;
+		public const int EditCopy = 9 + 2000;
+		public const int ViewMemory = 10 + 2000;
+		public const int ViewDisassembly = 11 + 2000;
+		public const int ViewGoToAddress = 12 + 2000;
+		public const int ViewFindAllProcedures = 13 + 2000;
+		public const int ViewShowAllFragments = 14 + 2000;
+		public const int ViewShowUnscanned = 15 + 2000;
+		public const int ViewFindFragments = 16 + 2000;
+		public const int ViewFindWhatPointsHere = 17 + 2000;
+		public const int ActionNextSearchHit = 18 + 2000;
+		public const int ActionPrevSearchHit = 19 + 2000;
+		public const int ActionNextPhase = 20 + 2000;
+		public const int ActionFinishDecompilation = 21 + 2000;
+		public const int ActionMarkProcedure = 22 + 2000;
+		public const int ActionEditSignature = 23 + 2000;
+		public const int ActionMarkType = 24 + 2000;
+		public const int WindowsCascade = 25 + 2000;
+		public const int WindowsTileVertical = 26 + 2000;
+		public const int WindowsTileHorizontal = 27 + 2000;
+		public const int WindowsCloseAll = 28 + 2000;
+		public const int HelpAbout = 29 + 2000;
+		public const int ShowProcedureCallHierarchy = 30 + 2000;
 		public const int FileMru = 2200;
 	}
 }

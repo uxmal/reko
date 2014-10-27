@@ -64,7 +64,7 @@ namespace Decompiler.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt32(p, (int) value);
-                case Domain.Real: throw new NotImplementedException();
+                case Domain.Real: return new ConstantUInt32(p,  (uint) value);
                 default: return new ConstantUInt32(p, (uint) value);
                 }
             case 8:

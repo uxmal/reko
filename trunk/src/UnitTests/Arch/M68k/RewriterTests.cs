@@ -613,7 +613,8 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "2|L--|CVZNX = cond(d1)");
         }
 
-        //[Ignore("Hard to fit into the existing structure.")]
+        [Test]
+        [Ignore("Hard to fit into the existing structure.")]
         public void M68krw_bchg_s()
         {
             Rewrite((m) => { m.Bchg(3, m.Mem(m.a0)); });    // bchg #3,(a0)

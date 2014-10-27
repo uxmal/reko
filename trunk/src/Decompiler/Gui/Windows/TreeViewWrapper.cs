@@ -43,6 +43,8 @@ namespace Decompiler.Gui.Windows
             this.treeView.AfterSelect += treeView_AfterSelect;
         }
 
+        public ContextMenu ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = value; } }
+        public bool Focused { get { return treeView.Focused; } } 
         public ITreeNodeCollection Nodes { get; private set; }
         public bool ShowLines { get { return treeView.ShowLines; } set { treeView.ShowLines = value; } }
         public bool ShowNodeToolTips { get { return treeView.ShowNodeToolTips; } set { treeView.ShowNodeToolTips = value; } }

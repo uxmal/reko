@@ -91,7 +91,6 @@ namespace Decompiler.Arch.M68k
 
         public void RewriteBchg()
         {
-            throw new NotImplementedException("Haven't gotten this work yet.");
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var tmpMask = frame.CreateTemporary(PrimitiveType.UInt32);
             emitter.Assign(tmpMask, emitter.Shl(1, opSrc));

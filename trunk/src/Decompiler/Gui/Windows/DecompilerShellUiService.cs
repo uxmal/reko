@@ -190,6 +190,7 @@ namespace Decompiler.Gui.Windows
                     form.Controls.Add(ctrl);
                 }
                 form.Show();
+                form.BringToFront();
                 if (form.WindowState == FormWindowState.Minimized)
                     form.WindowState = FormWindowState.Normal;
             }

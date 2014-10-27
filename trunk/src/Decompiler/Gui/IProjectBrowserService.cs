@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.Gui
 {
-    public interface IProjectBrowserService
+    public interface IProjectBrowserService : ICommandTarget
     {
         /// <summary>
         /// Loads a project into the project browser and starts listening to changes. 

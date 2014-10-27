@@ -54,7 +54,7 @@ namespace Decompiler.Gui.Design
                 return;
             var desDictionary = program.Procedures
                 .Where(p => segment.IsInRange(p.Key))
-                .Select(p => new ProcedureDesigner(p.Value, p.Key))
+                .Select(p => new ProcedureDesigner(program, p.Value, p.Key))
                 .ToDictionary(d => d.Address.ToString());
             if (program.InputFile != null)
             {

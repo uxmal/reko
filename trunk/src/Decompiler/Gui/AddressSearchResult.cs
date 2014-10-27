@@ -68,6 +68,14 @@ namespace Decompiler.Gui
             var hit = addresses[i];
             var program = hit.Program;
             var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i].LinearAddress);
+            if (program.Architecture == null)
+            {
+                return new string[] { 
+                    "",
+                    addr.ToString(),
+                    ""
+                };
+            }
             var dasm = program.Architecture.CreateDisassembler(program.Image.CreateReader(addr));
             try
             {

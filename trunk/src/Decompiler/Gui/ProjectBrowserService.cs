@@ -25,16 +25,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Decompiler.Gui
 {
     /// <summary>
     /// Interactor class used to display the decompiler project as a tree view for user browsing.
     /// </summary>
-    public class ProjectBrowserService : IProjectBrowserService, ITreeNodeDesignerHost
+    public class ProjectBrowserService : IProjectBrowserService, ITreeNodeDesignerHost, ICommandTarget
     {
         private ITreeView tree;
         private Dictionary<object, TreeNodeDesigner> mpitemToDesigner;
@@ -56,6 +58,7 @@ namespace Decompiler.Gui
 
         public void Load(IEnumerable<Program> progs)
         {
+            tree.ContextMenu = Services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxBrowser);
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             if ((progs == null || progs.Count() == 0))
@@ -161,12 +164,18 @@ namespace Decompiler.Gui
 
         private void tree_AfterSelect(object sender, EventArgs e)
         {
+            var des = GetSelectedDesigner();
+            if (des != null)
+            {
+                des.DoDefaultAction();
+            }
+        }
+
+        private TreeNodeDesigner GetSelectedDesigner()
+        {
             if (tree.SelectedNode == null)
-                return;
-            var des = GetDesigner(tree.SelectedNode.Tag);
-            if (des == null)
-                return;
-            des.DoDefaultAction();
+                return null;
+            return GetDesigner(tree.SelectedNode.Tag);
         }
 
         void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -179,6 +188,22 @@ namespace Decompiler.Gui
             default:
                 throw new NotImplementedException();
             }
+        }
+
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            var des = GetSelectedDesigner();
+            if (des == null)
+                return false;
+            return des.QueryStatus(cmdId, status, text);
+        }
+
+        public bool Execute(System.ComponentModel.Design.CommandID cmdId)
+        {
+            var des = GetSelectedDesigner();
+            if (des == null)
+                return false;
+            return des.Execute(cmdId);
         }
     }
 }

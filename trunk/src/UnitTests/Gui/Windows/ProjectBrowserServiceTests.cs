@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -51,6 +52,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private Program program;
         private Program[] programs;
         private Project project;
+        private IDecompilerShellUiService uiSvc;
 
         [SetUp]
         public void Setup()
@@ -60,8 +62,11 @@ namespace Decompiler.UnitTests.Gui.Windows
             mockTree = mr.StrictMock<ITreeView>();
             mockNodes = mr.StrictMock<ITreeNodeCollection>();
             decompilerSvc = mr.StrictMock<IDecompilerService>();
+            uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             decompiler = mr.StrictMock<IDecompiler>();
             mockTree.Stub(t => t.Nodes).Return(mockNodes);
+            uiSvc.Stub(u => u.GetContextMenu(0)).IgnoreArguments().Return(new ContextMenu());
+            sc.AddService<IDecompilerShellUiService>(uiSvc);
             fakeTree = new FakeTreeView();
         }
 
@@ -97,17 +102,20 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private class FakeTreeView : ITreeView
         {
+            public event EventHandler AfterSelect;
+
             public FakeTreeView()
             {
                 this.Nodes = new FakeTreeNodeCollection();
             }
 
             public ITreeNodeCollection Nodes { get; private set; }
-            public event EventHandler AfterSelect;
 
             public ITreeNode SelectedNode { get { return selectedItem; } set { selectedItem = value; AfterSelect.Fire(this); } }
             private ITreeNode selectedItem;
 
+            public bool Focused { get; set; }
+            public ContextMenu ContextMenu { get; set; }
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
 
@@ -119,38 +127,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             public ITreeNode CreateNode(string text)
             {
                 return new FakeTreeNode { Text = text };
-            }
-        }
-
-        public class FakeTree : ITreeView
-        {
-            public event EventHandler AfterSelect;
-
-            public FakeTree()
-            {
-                this.Nodes = new FakeNodeCollection();
-            }
-
-            public ITreeNode SelectedNode
-            {
-                get { return sel; }
-                set { sel = value; AfterSelect.Fire(this); }
-            }
-            private ITreeNode sel;
-
-            public bool ShowNodeToolTips { get; set; }
-            public bool ShowRootLines { get; set; }
-
-            public ITreeNodeCollection Nodes { get; private set; }
-
-            public ITreeNode CreateNode()
-            {
-                return new FakeNode();
-            }
-
-            public ITreeNode CreateNode(string text)
-            {
-                throw new NotImplementedException();
             }
         }
 
@@ -435,7 +411,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var node = mr.Stub<ITreeNode>();
             des.Expect(d => d.DoDefaultAction());
             des.Stub(d => d.Initialize(null)).IgnoreArguments();
-            mockTree = new FakeTree();
+            mockTree = new FakeTreeView();
             mr.ReplayAll();
             
             var pbs = new ProjectBrowserService(sc, mockTree);
@@ -456,7 +432,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void PBS_FindGrandParent()
         {
-            mockTree = new FakeTree();
+            mockTree = new FakeTreeView();
             var pbs = new ProjectBrowserService(sc, mockTree);
             var gp = new GrandParentComponent();
             var p = new ParentComponent();
@@ -473,7 +449,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void PBS_NoGrandParent()
         {
-            mockTree = new FakeTree();
+            mockTree = new FakeTreeView();
             var pbs = new ProjectBrowserService(sc, mockTree);
             var p = new ParentComponent();
             var c = new TestComponent();
