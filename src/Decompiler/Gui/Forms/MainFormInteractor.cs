@@ -735,6 +735,17 @@ namespace Decompiler.Gui.Forms
             }
         }
 
+        public void WriteGlobals(Action<TextWriter> writer)
+        {
+            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            {
+                using (TextWriter output = CreateTextWriter(inputFile.GlobalsFilename))
+                {
+                    writer(output);
+                }
+            }
+        }
+
         #endregion ////////////////////////////////////////////////////
 
 

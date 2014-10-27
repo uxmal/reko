@@ -282,7 +282,7 @@ namespace Decompiler
         public void WriteDecompiledProcedures(Program program, TextWriter w)
         {
             //$REVIEW: what about multiple inputs, huh? Huh???
-            var inputFile = (InputFile) Project.InputFiles[0];
+            var inputFile = program.InputFile;
             WriteHeaderComment(Path.GetFileName(inputFile.OutputFilename), w);
             w.WriteLine("#include \"{0}\"", Path.GetFileName(inputFile.TypesFilename));
             w.WriteLine();
@@ -300,6 +300,18 @@ namespace Decompiler
                     w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
                 }
             }
+        }
+
+        private void WriteGlobals(Program program, TextWriter w)
+        {
+            var inputFile = program.InputFile;
+            WriteHeaderComment(Path.GetFileName(inputFile.OutputFilename), w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(inputFile.TypesFilename));
+            w.WriteLine();
+            var cpt = new ConstantPointerTraversal(program);
+            cpt.Traverse();
+            w.WriteLine();
+            throw new NotImplementedException();
         }
 
         public void WriteDecompiledTypes(Program program, TextWriter w)
@@ -433,6 +445,7 @@ namespace Decompiler
                 var program = p;
                 host.WriteTypes(w => WriteDecompiledTypes(program, w));
                 host.WriteDecompiledCode(w => WriteDecompiledProcedures(program, w));
+                host.WriteGlobals(w => WriteGlobals(program, w));
             }
 		}
 

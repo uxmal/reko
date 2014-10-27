@@ -39,6 +39,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		public void Setup()
 		{
 			asm = new IntelTextAssembler();
+            arch = new IntelArchitecture(ProcessorMode.Real);
 		}
 
         protected void AssertEqualBytes(string expected, byte[] actual)
@@ -346,7 +347,7 @@ foo		endp
             Address addr = new Address(0x0C00, 0);
             var lr = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
             var dasm = new X86Disassembler(
-                lr.Image.CreateReader(addr),
+                lr.Image.CreateLeReader(addr),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);

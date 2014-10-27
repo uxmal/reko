@@ -210,7 +210,7 @@ namespace Decompiler.Scanning
 
         public ImageReader CreateReader(Address addr)
         {
-            return image.CreateReader(addr);
+            return program.Architecture.CreateImageReader(image, addr);
         }
 
         /// <summary>

@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Arch.M68k
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
-            return arch.CreateRewriter(image.CreateReader(0), arch.CreateProcessorState(), arch.CreateFrame(), new RewriterHost());
+            return arch.CreateRewriter(image.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), new RewriterHost());
         }
 
         private void Rewrite(params ushort[] opcodes)

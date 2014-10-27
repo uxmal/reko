@@ -25,6 +25,7 @@ using Decompiler.Core.Types;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 
 namespace Decompiler.UnitTests.Typing
@@ -32,15 +33,21 @@ namespace Decompiler.UnitTests.Typing
     [TestFixture]
     public class ConstantPointerTraversalTests
     {
+        private MockRepository mr;
         private LoadedImage image;
         private Expression globals;
         private TypeVariable globals_t;
         private StructureType globalStruct;
         private EquivalenceClass eqLink;
+        private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
+            arch = mr.Stub<IProcessorArchitecture>();
+            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<LoadedImage, uint, ImageReader>((i, o) => i.CreateLeReader(o)));
+            arch.Replay();
             globalStruct = new StructureType
             {
             };
@@ -56,7 +63,6 @@ namespace Decompiler.UnitTests.Typing
                 }
             };
             eqLink.DataType = str;
-
         }
 
         private ImageWriter Memory(uint address)
@@ -83,8 +89,10 @@ namespace Decompiler.UnitTests.Typing
 
             Root(0x10000000, eqLink);
 
-            var cpt = new ConstantPointerTraversal(globalStruct, image);
+            var cpt = new ConstantPointerTraversal(arch, globalStruct, image);
             cpt.Traverse();
+            Assert.AreEqual(1, cpt.Discoveries.Count);
+            Assert.AreEqual("10000008: t10000008: Eq_2", cpt.Discoveries[0].ToString());
         }
 
         [Test]
@@ -100,8 +108,15 @@ namespace Decompiler.UnitTests.Typing
                 .WriteLeUInt32('c')
                 .WriteLeUInt32('d');
             Root(0x010000, new ArrayType(new Pointer(PrimitiveType.Char, 4), 4));
-            var cpt = new ConstantPointerTraversal(globalStruct, image);
+            var cpt = new ConstantPointerTraversal(arch, globalStruct, image);
             cpt.Traverse();
+
+            Assert.AreEqual(4, cpt.Discoveries.Count);
+            Assert.AreEqual("1010: b1010: char", cpt.Discoveries[0].ToString());
+            Assert.AreEqual("1014: b1014: char", cpt.Discoveries[1].ToString());
+            Assert.AreEqual("1018: b1018: char", cpt.Discoveries[2].ToString());
+            Assert.AreEqual("101C: b101C: char", cpt.Discoveries[3].ToString());
+
         }
 
         [Test]
@@ -111,9 +126,15 @@ namespace Decompiler.UnitTests.Typing
                 .WriteLeUInt32(0x1000)
                 .WriteLeUInt32(42);
             Root(0x1000, eqLink);
-            var cpt = new ConstantPointerTraversal(globalStruct, image);
+            var cpt = new ConstantPointerTraversal(arch, globalStruct, image);
             cpt.Traverse();
- 
+
+            Assert.AreEqual(0, cpt.Discoveries.Count);
+        }
+
+        [Test]
+        public void CptPfn()
+        {
         }
     }
 }

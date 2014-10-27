@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelInstruction Disassemble16(params byte[] bytes)
         {
             LoadedImage img = new LoadedImage(new Address(0xC00, 0), bytes);
-            ImageReader rdr = img.CreateReader(img.BaseAddress);
+            ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
             Assert.IsTrue(dasm.MoveNext());
             return dasm.Current;
@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelInstruction Disassemble32(params byte[] bytes)
         {
             var img = new LoadedImage(new Address(0x10000), bytes);
-            var rdr = img.CreateReader(img.BaseAddress);
+            var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             Assert.IsTrue(dasm.MoveNext());
             return dasm.Current;
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelInstruction Disassemble64(params byte[] bytes)
         {
             var img = new LoadedImage(new Address(0x10000), bytes);
-            var rdr = img.CreateReader(img.BaseAddress);
+            var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
             Assert.IsTrue(dasm.MoveNext());
             return dasm.Current;
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private void CreateDisassembler16(LoadedImage image)
         {
             dasm = new X86Disassembler(
-                image.CreateReader(image.BaseAddress),
+                image.CreateLeReader(image.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private void CreateDisassembler32(LoadedImage image)
         {
             dasm = new X86Disassembler(
-                image.CreateReader(image.BaseAddress),
+                image.CreateLeReader(image.BaseAddress),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
@@ -164,7 +164,7 @@ foo:
                 "rcl	ax,1\r\n");
 
             LoadedImage img = lr.Image;
-            CreateDisassembler16(img.CreateReader(img.BaseAddress));
+            CreateDisassembler16(img.CreateLeReader(img.BaseAddress));
             IntelInstruction[] instrs = new IntelInstruction[4];
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i != instrs.Length; ++i)
@@ -294,7 +294,7 @@ movzx	ax,byte ptr [bp+04]
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
             LoadedImage img = new LoadedImage(new Address(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001u - img.BaseAddress.Linear, 0x12345678);
-            ImageReader rdr = img.CreateReader(img.BaseAddress);
+            ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             Assert.IsTrue(dasm.MoveNext());
             IntelInstruction instr = dasm.Current;
@@ -308,7 +308,7 @@ movzx	ax,byte ptr [bp+04]
             byte[] image = new byte[] { 0x2E, 0xC7, 0x06, 0x01, 0x00, 0x00, 0x08 }; // mov cs:[0001],0800
             LoadedImage img = new LoadedImage(new Address(0x900, 0), image);
             img.Relocations.AddSegmentReference(5, 0x0800);
-            ImageReader rdr = img.CreateReader(img.BaseAddress);
+            ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             CreateDisassembler16(rdr);
             Assert.IsTrue(dasm.MoveNext());
             IntelInstruction instr = dasm.Current;

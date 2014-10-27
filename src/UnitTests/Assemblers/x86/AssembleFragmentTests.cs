@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
             LoaderResults lr = asm.GetImage();
 
             X86Disassembler dasm = new X86Disassembler(
-                lr.Image.CreateReader(lr.Image.BaseAddress),
+                lr.Image.CreateLeReader(lr.Image.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);

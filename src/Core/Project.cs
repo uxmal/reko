@@ -74,6 +74,7 @@ namespace Decompiler.Core
                 IntermediateFilename = i.IntermediateFilename,
                 OutputFilename = i.OutputFilename,
                 TypesFilename = i.TypesFilename,
+                GlobalsFilename = i.GlobalsFilename,
             };
         }
 

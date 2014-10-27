@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
-            return new X86Rewriter(arch, host, new X86State(arch), asmResult.Image.CreateReader(0), frame);
+            return new X86Rewriter(arch, host, new X86State(arch), asmResult.Image.CreateLeReader(0), frame);
         }
 
         public override Address LoadAddress

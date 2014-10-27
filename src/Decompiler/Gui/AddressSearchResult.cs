@@ -76,7 +76,7 @@ namespace Decompiler.Gui
                     ""
                 };
             }
-            var dasm = program.Architecture.CreateDisassembler(program.Image.CreateReader(addr));
+            var dasm = program.Architecture.CreateDisassembler(program.Architecture.CreateImageReader(program.Image, addr));
             try
             {
                 var instr = dasm.MoveNext() ? dasm.Current.ToString().Replace('\t', ' ') : "";

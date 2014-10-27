@@ -315,7 +315,7 @@ namespace Decompiler.Gui.Windows
             if (strDt.LengthPrefixType == null)
             {
                 // Zero-terminated string.
-                var rdr = program.Image.CreateReader(addr);
+                var rdr = program.Architecture.CreateImageReader(program.Image, addr);
                 while (rdr.IsValid)
                 {
                     var ch = rdr.ReadChar(strDt.CharType);
@@ -340,7 +340,7 @@ namespace Decompiler.Gui.Windows
 
             var arch = program.Architecture;
             var image = program.Image;
-            var rdr = program.Image.CreateReader(0);
+            var rdr = program.Architecture.CreateImageReader(program.Image, 0);
             var addrControl = arch.CreatePointerScanner(
                 rdr,
                 new HashSet<uint> { addrRange.Begin.Linear },

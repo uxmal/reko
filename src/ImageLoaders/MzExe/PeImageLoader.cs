@@ -74,7 +74,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
 		{
-			ImageReader rdr = imgLoaded.CreateReader(rvaExportTable);
+			ImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
 			rdr.ReadLeUInt32();	// Characteristics
 			rdr.ReadLeUInt32(); // timestamp
 			rdr.ReadLeUInt32();	// version.
@@ -87,8 +87,8 @@ namespace Decompiler.ImageLoaders.MzExe
 			uint rvaApfn = rdr.ReadLeUInt32();
 			uint rvaNames = rdr.ReadLeUInt32();
 
-			ImageReader rdrAddrs = imgLoaded.CreateReader(rvaApfn);
-			ImageReader rdrNames = imgLoaded.CreateReader(rvaNames);
+			ImageReader rdrAddrs = imgLoaded.CreateLeReader(rvaApfn);
+			ImageReader rdrNames = imgLoaded.CreateLeReader(rvaNames);
 			for (int i = 0; i < nNames; ++i)
 			{
                 EntryPoint ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
@@ -341,7 +341,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public string ReadUtf8String(uint rva, int maxLength)
 		{
-			ImageReader rdr = imgLoaded.CreateReader(rva);
+			ImageReader rdr = imgLoaded.CreateLeReader(rva);
 			List<byte> bytes = new List<byte>();
 			byte b;
 			while ((b = rdr.ReadByte()) != 0)
@@ -364,8 +364,8 @@ namespace Decompiler.ImageLoaders.MzExe
 			id.DllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
 			id.RvaThunks = rdr.ReadLeUInt32();		// first thunk
 
-			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
-			ImageReader rdrThunks  = imgLoaded.CreateReader(id.RvaThunks);
+			ImageReader rdrEntries = imgLoaded.CreateLeReader(id.RvaEntries);
+			ImageReader rdrThunks  = imgLoaded.CreateLeReader(id.RvaThunks);
 			for (;;)
 			{
 				Address addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
@@ -418,7 +418,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private void ReadImportDescriptors(Address addrLoad)
 		{
             unresolvedImports = new List<ImportedFunction>();
-			ImageReader rdr = imgLoaded.CreateReader(rvaImportTable);
+			ImageReader rdr = imgLoaded.CreateLeReader(rvaImportTable);
 			for (;;)
 			{
 				ImportDescriptor id = ReadImportDescriptor(rdr, addrLoad);

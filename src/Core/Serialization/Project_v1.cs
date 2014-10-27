@@ -107,6 +107,9 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("types-file")]
         public string TypesFilename;
+
+        [XmlElement("global-vars")]
+        public string GlobalsFilename;
     }
 
     public abstract class SerializedProcedureBase_v1 

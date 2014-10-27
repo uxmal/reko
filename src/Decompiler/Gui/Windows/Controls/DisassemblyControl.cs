@@ -135,7 +135,8 @@ namespace Decompiler.Gui.Windows.Controls
             dumper.ShowAddresses = true;
             dumper.ShowCodeBytes = true;
             var addrStart = TopAddress;
-            var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
+            var rdr = arch.CreateImageReader(image, addrStart);
+            var dasm = arch.CreateDisassembler(rdr);
             var cyRow = GetRowHeight(g);
             var rc = new RectangleF(g.ClipBounds.Left, g.ClipBounds.Top, rcClient.Width, cyRow);
             for (; rc.Top < rcClient.Bottom; rc.Offset(0, cyRow))

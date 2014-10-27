@@ -82,7 +82,7 @@ namespace Decompiler.Core.Types
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}: {2}", Offset, Name, DataType);
+            return string.Format("{0:X}: {1}: {2}", Offset, Name, DataType);
         }
 	}
 

@@ -185,7 +185,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private X86Rewriter CreateRewriter32(IntelAssembler m)
         {
             state = new X86State(arch32);
-            return new X86Rewriter(arch32, host, state, m.GetImage().Image.CreateReader(0), new Frame(arch32.WordWidth));
+            return new X86Rewriter(arch32, host, state, m.GetImage().Image.CreateLeReader(0), new Frame(arch32.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(byte [] bytes)
