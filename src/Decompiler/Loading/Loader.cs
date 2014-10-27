@@ -43,7 +43,6 @@ namespace Decompiler.Loading
         {
             this.Services = services;
             this.cfgSvc = services.GetService<IDecompilerConfigurationService>();
-            this.eventListener = services.GetService<DecompilerEventListener>();
         }
 
         public IServiceProvider Services { get; private set; }
@@ -154,7 +153,7 @@ namespace Decompiler.Loading
                 }
             }
 
-            eventListener.AddDiagnostic(
+            this.Services.RequireService<DecompilerEventListener>().AddDiagnostic(
                 new NullCodeLocation(""),
                 new ErrorDiagnostic("The format of the file is unknown."));
             return defaultLoader();

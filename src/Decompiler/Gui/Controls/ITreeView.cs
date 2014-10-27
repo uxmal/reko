@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 
 namespace Decompiler.Gui.Controls
 {
@@ -9,15 +10,16 @@ namespace Decompiler.Gui.Controls
     {
         event EventHandler AfterSelect;
 
+        bool Focused { get; }
         ITreeNode SelectedNode { get; set; }
         bool ShowNodeToolTips { get; set; }
         bool ShowRootLines { get; set; }
 
         ITreeNodeCollection Nodes { get; }
+        ContextMenu ContextMenu { get; set; }
 
         ITreeNode CreateNode();
         ITreeNode CreateNode(string text);
-
     }
 
     public interface ITreeNodeCollection : IList<ITreeNode>

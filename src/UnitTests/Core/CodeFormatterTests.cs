@@ -39,6 +39,14 @@ namespace Decompiler.UnitTests.Core
 		private StringWriter sw;
 		private string nl = Environment.NewLine;
 
+        [SetUp]
+        public void Setup()
+        {
+            sw = new StringWriter();
+            formatter = new TextFormatter(sw);
+            cf = new CodeFormatter(formatter);
+        }
+
 		[Test]
 		public void CfMulAdd()
 		{
@@ -119,13 +127,15 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual("ds.*bx", sw.ToString());
 		}
 
-		[SetUp]
-		public void Setup()
-		{
-			sw = new StringWriter();
-            formatter = new TextFormatter(sw);
-			cf = new CodeFormatter(formatter);
-		}
+        [Test]
+        public void CfScopeResolution()
+        {
+            var eq = new EquivalenceClass(new TypeVariable("Eq_2", 2));
+            var sr = new ScopeResolution(eq);
+            var e = new FieldAccess(PrimitiveType.Int32, sr, "i0004");
+            e.Accept(cf);
+            Assert.AreEqual("Eq_2::i0004", sw.ToString());
+        }
 
 	}
 }

@@ -48,6 +48,11 @@ namespace Decompiler.Arch.M68k
             emitter.Call(orw.RewriteSrc(di.op1, di.Address), 4);
         }
 
+        private void RewriteJmp()
+        {
+            emitter.Goto(orw.RewriteSrc(di.op1, di.Address));
+        }
+
         private void RewriteJsr()
         {
             var src = orw.RewriteSrc(di.op1, di.Address);

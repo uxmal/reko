@@ -149,9 +149,9 @@ namespace Decompiler.Gui.Windows.Controls
 			}
 		}
 
-		private void subMenu_Popup(object sender, EventArgs e)
+		protected void subMenu_Popup(object sender, EventArgs e)
 		{
-			SetStatusForMenuItems(((MenuItem) sender).MenuItems);
+			SetStatusForMenuItems(((Menu) sender).MenuItems);
 		}
 
 		private void item_Click(object sender, CommandMenuEventArgs e)

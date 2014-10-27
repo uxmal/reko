@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Controls
@@ -49,7 +50,15 @@ namespace Decompiler.Gui.Windows.Controls
 
 		public CommandMenuItem(string text, Guid cmdSet, int cmdId)
 		{
-			Text = text.Replace('_', '&');
+            if (text == null)
+            {
+                Debug.Print("************** {0} **************", cmdId); return;
+                Text = "@@@";
+            }
+            else
+            {
+                Text = text.Replace('_', '&');
+            }
 			cmd = new MenuCommand(null, new CommandID(cmdSet, cmdId));
 		}
 

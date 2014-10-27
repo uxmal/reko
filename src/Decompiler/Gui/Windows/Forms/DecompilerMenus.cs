@@ -81,6 +81,10 @@ namespace Decompiler.Gui.Windows.Forms
 			slCtxMemoryControl.Add(0, slGrpMemoryControl);
 			SortedList slGrpBrowser = CreatePriorityList();
 			slCtxBrowser.Add(0, slGrpBrowser);
+			SortedList slGrpBrowserProc = CreatePriorityList();
+			slCtxBrowser.Add(0, slGrpBrowserProc);
+			SortedList slGrpBrowserSegm = CreatePriorityList();
+			slCtxBrowser.Add(0, slGrpBrowserSegm);
 			SortedList slGrpToolbarFileOps = CreatePriorityList();
 			slMainToolbar.Add(0, slGrpToolbarFileOps);
 			SortedList slGrpToolbarActions = CreatePriorityList();
@@ -117,6 +121,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slEditFind = new CommandMenuItem("_Find...", new Guid(CmdSets.Decompiler), CmdIds.EditFind);
             slEditFind.IsDynamic = false;
             slGrpEdit.Add(0, slEditFind);
+            CommandMenuItem slEditCopy = new CommandMenuItem("_Copy", new Guid(CmdSets.Decompiler), CmdIds.EditCopy);
+            slEditCopy.IsDynamic = false;
+            
             CommandMenuItem slViewMemory = new CommandMenuItem("_Memory", new Guid(CmdSets.Decompiler), CmdIds.ViewMemory);
             slViewMemory.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewMemory);
@@ -196,19 +203,24 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpFile.Add(0, slFileOpenAs);
 			slGrpFile.Add(0, slFileSave);
 			slGrpFile.Add(0, slFileCloseProject);
-			slGrpToolbarFileOps.Add(0, slFileOpen);
-			slGrpToolbarFileOps.Add(0, slFileSave);
 			slGrpFile.Add(0, slFileAddBinary);
 			slGrpFile.Add(0, slFileAddMetadata);
+			slGrpToolbarFileOps.Add(0, slFileOpen);
+			slGrpToolbarFileOps.Add(0, slFileSave);
+			slGrpEdit.Add(0, slEditCopy);
 			slGrpToolbarActions.Add(0, slActionNextPhase);
 			slGrpToolbarActions.Add(0, slActionFinishDecompilation);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
+			slGrpMemoryControl.Add(0, slEditCopy);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slActionMarkType);
 			slGrpMemoryControl.Add(0, slViewFindWhatPointsHere);
-			slGrpBrowser.Add(0, slActionEditSignature);
+			slGrpProcedure.Add(0, slActionEditSignature);
+			slGrpProcedure.Add(0, slViewGoToAddress);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
+			slGrpBrowserProc.Add(0, slViewGoToAddress);
+			slGrpBrowserProc.Add(0, slActionEditSignature);
     
       // Build accelerators.
       
@@ -232,6 +244,13 @@ namespace Decompiler.Gui.Windows.Forms
           Keys.F8
           , Keys.Shift);
       
+        AddBinding(
+           "", 
+          new Guid(CmdSets.Decompiler), 
+          CmdIds.EditCopy, 
+          Keys.C
+          , Keys.Control);
+      
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
   
@@ -250,12 +269,18 @@ namespace Decompiler.Gui.Windows.Forms
 			this.CtxMemoryControl = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxMemoryControl, CtxMemoryControl.MenuItems);
   
+        this.CtxMemoryControl.Popup += subMenu_Popup;
+      
 			this.CtxBrowser = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxBrowser, CtxBrowser.MenuItems);
   
+        this.CtxBrowser.Popup += subMenu_Popup;
+      
 			this.CtxProcedure = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxProcedure, CtxProcedure.MenuItems);
   
+        this.CtxProcedure.Popup += subMenu_Popup;
+      
 			this.MainToolbar = new System.Windows.Forms.ToolStrip();
 			BuildMenu(slMainToolbar, MainToolbar.Items);
   
@@ -294,5 +319,5 @@ namespace Decompiler.Gui.Windows.Forms
     }
 
     }
-    }
+}
   

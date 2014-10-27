@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -121,6 +122,11 @@ namespace Decompiler.Gui.Windows
                 case CmdIds.ActionMarkType:
                 case CmdIds.ViewFindWhatPointsHere:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                case CmdIds.EditCopy:
+                    status.Status = ValidSelection()
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible;
+                    return true;
                 }
             }
             return false;
@@ -132,6 +138,7 @@ namespace Decompiler.Gui.Windows
             {
                 switch (cmdId.ID)
                 {
+                case CmdIds.EditCopy: return CopySelection();
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                 case CmdIds.ActionMarkType: return MarkType();
                 case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
@@ -226,6 +233,21 @@ namespace Decompiler.Gui.Windows
             return true;
         }
 
+        private bool CopySelection()
+        {
+            AddressRange range;
+            if (!TryGetSelectedAddressRange(out range))
+                return true;
+            if (control.MemoryView.Focused)
+            {
+                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
+                 var dumper = new Dumper(decompiler.Programs.First().Architecture);
+                var sb = new StringWriter();
+                dumper.DumpData(control.MemoryView.ProgramImage, range, sb);
+                Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
+            }
+            return true;
+        }
         public bool MarkType()
         {
             var addrRange = control.MemoryView.GetAddressRange();
@@ -236,6 +258,16 @@ namespace Decompiler.Gui.Windows
             return true;
         }
 
+        private bool ValidSelection()
+        {
+            if (control.MemoryView.Focused)
+            {
+                var addrRange = control.MemoryView.GetAddressRange();
+                if (addrRange.IsValid)
+                    return true;
+            }
+            return false;
+        }
         public void typeMarker_FormatType(object sender, TypeMarkerEventArgs e)
         {
             try

@@ -21,12 +21,13 @@
 using Decompiler.Gui.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
 namespace Decompiler.Gui
 {
-    public class TreeNodeDesigner
+    public class TreeNodeDesigner : ICommandTarget
     {
         public IServiceProvider Services { get; set; }
         public ITreeNode TreeNode { get; set; }
@@ -43,6 +44,17 @@ namespace Decompiler.Gui
         }
     
         public TreeNodeDesigner Parent { get; set; }
+
+
+        public virtual bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
+
+        public virtual bool Execute(CommandID cmdId)
+        {
+            return false;
+        }
     }
 
     public interface ITreeNodeDesignerHost

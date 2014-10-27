@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using Procedure_v1 = Decompiler.Core.Serialization.Procedure_v1;
@@ -30,12 +31,14 @@ namespace Decompiler.Gui.Design
 {
     public class ProcedureDesigner : TreeNodeDesigner
     {
+        private Program program;
         private Procedure procedure;
         private string name;
         private Procedure_v1 procedure_v1;
 
-        public ProcedureDesigner(Procedure procedure, Address address)
+        public ProcedureDesigner(Program program, Procedure procedure, Address address)
         {
+            this.program = program;
             this.procedure = procedure;
             this.Address = address;
             this.name = procedure.Name;
@@ -65,6 +68,37 @@ namespace Decompiler.Gui.Design
         public override void DoDefaultAction()
         {
             Services.RequireService<ICodeViewerService>().DisplayProcedure(procedure);
+        }
+
+        public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.ViewGoToAddress:
+                case CmdIds.ActionEditSignature:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override bool Execute(CommandID cmdId)
+        {
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.ViewGoToAddress:
+                    Services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);
+                    return true;
+                case CmdIds.ActionEditSignature:
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

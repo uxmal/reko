@@ -233,16 +233,25 @@ namespace Decompiler.Core.Output
 		{
 			int prec = SetPrecedence(PrecedenceFieldAccess);
 			Dereference d = acc.Structure as Dereference;
-			if (d != null)
-			{
-				d.Expression.Accept(this);
-				writer.Write("->{0}", acc.FieldName);
-			}
-			else
-			{
-				acc.Structure.Accept(this);
-				writer.Write(".{0}", acc.FieldName);
-			}
+            if (d != null)
+            {
+                d.Expression.Accept(this);
+                writer.Write("->{0}", acc.FieldName);
+            }
+            else
+            {
+                var scope = acc.Structure as ScopeResolution;
+                if (scope != null)
+                {
+                    scope.Accept(this);
+                    writer.Write("::{0}", acc.FieldName);
+                }
+                else
+                {
+                    acc.Structure.Accept(this);
+                    writer.Write(".{0}", acc.FieldName);
+                }
+            }
 			ResetPresedence(prec);
 		}
 
@@ -325,10 +334,10 @@ namespace Decompiler.Core.Output
 			writer.Write(")");
 		}
 
-		public void VisitScopeResolution(ScopeResolution scope)
-		{
-			writer.Write(scope.TypeName);
-		}
+        public void VisitScopeResolution(ScopeResolution scope)
+        {
+            writer.WriteType(scope.DataType.Name, scope.DataType);
+        }
 
 		public void VisitSlice(Slice slice)
 		{

@@ -82,7 +82,7 @@ namespace Decompiler.Typing
 			else if (e != null)
 				return new Dereference(dt, e);
 			else
-				return new ScopeResolution(dt, dt.Name);
+				return new ScopeResolution(dt);
 		}
 
         private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, string fieldName)
@@ -97,7 +97,8 @@ namespace Decompiler.Typing
             }
             else
             {
-                return new ScopeResolution(dtStructure, dtStructure.Name + "::" + fieldName);
+                var scope = new ScopeResolution(dtStructure);
+                return new FieldAccess(dtField, scope, fieldName);
             }
         }
 

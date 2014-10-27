@@ -311,7 +311,8 @@ namespace Decompiler.Analysis
 
         public bool VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new NotImplementedException();
+            si.Expression.Accept(expVisitor);
+            return false;
         }
 
         public bool VisitUseInstruction(UseInstruction use)

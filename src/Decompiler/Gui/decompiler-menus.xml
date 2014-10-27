@@ -46,6 +46,8 @@
 	<group id="GrpMemoryControl" cmdSet="Decompiler" container="CtxMemoryControl"/>
 
   <group id="GrpBrowser" cmdSet="Decompiler" container="CtxBrowser"/>
+  <group id="GrpBrowserProc" cmdSet="Decompiler" container="CtxBrowser"/>
+  <group id="GrpBrowserSegm" cmdSet="Decompiler" container="CtxBrowser"/>
 
   <group id="GrpToolbarFileOps" cmdSet="Decompiler" container="MainToolbar" />
 
@@ -65,7 +67,8 @@
 	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
 
   <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
-
+  <cmd id="EditCopy" cmdSet="Decompiler" container="EditCopy">_Copy</cmd>
+  
   <cmd id="ViewMemory" cmdSet="Decompiler" container="GrpLowLevel">_Memory</cmd>
   <cmd id="ViewDisassembly" cmdSet="Decompiler" container="GrpLowLevel">_Disassembly</cmd>
 
@@ -100,30 +103,38 @@
   <placement item="FileOpenAs" container="GrpFile" />
   <placement item="FileSave" container="GrpFile" />
   <placement item="FileCloseProject" container="GrpFile" />
+  <placement item="FileAddBinary" container="GrpFile"/>
+  <placement item="FileAddMetadata" container="GrpFile"/>
   
   <placement item="FileOpen" container="GrpToolbarFileOps"/>
   <placement item="FileSave" container="GrpToolbarFileOps"/>
-  <placement item="FileAddBinary" container="GrpFile"/>
-  <placement item="FileAddMetadata" container="GrpFile"/>
+  
+  <placement item="EditCopy" container="GrpEdit" />
   
   <placement item="ActionNextPhase" container="GrpToolbarActions"/>
   <placement item="ActionFinishDecompilation" container="GrpToolbarActions"/>
 
   <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
 	
+  <placement item="EditCopy" container="GrpMemoryControl"/>
   <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionMarkType" container="GrpMemoryControl"/>
   <placement item="ViewFindWhatPointsHere" container="GrpMemoryControl"/>
-  
-  <placement item="ActionEditSignature" container="GrpBrowser"/>
+
+  <placement item="ActionEditSignature" container="GrpProcedure"/>
+  <placement item="ViewGoToAddress" container="GrpProcedure"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />
 
-<!-- Accelerators ================================================== -->
+  <placement item="ViewGoToAddress" container="GrpBrowserProc"/>
+  <placement item="ActionEditSignature" container="GrpBrowserProc"/>
+
+  <!-- Accelerators ================================================== -->
 
   <keybinding id="ActionMarkType" cmdSet="Decompiler" editor="Decompiler.Gui.Windows.LowLevelViewInteractor" key1="T" alt1="Control" />
   <keybinding id="ActionNextSearchHit" cmdSet="Decompiler" editor="" key1="F8" />
   <keybinding id="ActionPrevSearchHit" cmdSet="Decompiler" editor="" key1="F8" alt1="Shift" />
+  <keybinding id="EditCopy" cmdSet="Decompiler" editor="" key1="C" alt1="Control" />
 
 </menu-definitions>
  

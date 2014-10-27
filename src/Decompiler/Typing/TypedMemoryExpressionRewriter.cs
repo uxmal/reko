@@ -325,7 +325,5 @@ namespace Decompiler.Typing
 		{
 			throw new NotImplementedException();
 		}
-
-      
     }
 }

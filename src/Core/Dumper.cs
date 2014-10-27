@@ -97,6 +97,11 @@ namespace Decompiler.Core
             DumpData(image, address, (uint)cbBytes, stm);
         }
 
+        public void DumpData(LoadedImage image, AddressRange range, TextWriter stm)
+        {
+            DumpData(image, range.Begin, (uint) (range.End - range.Begin), stm);
+        }
+
 		public void DumpData(LoadedImage image, Address address, uint cbBytes, TextWriter stm)
 		{
 			uint cSkip = address.Linear & 0x0F;
