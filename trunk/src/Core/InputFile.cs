@@ -66,11 +66,17 @@ namespace Decompiler.Core
         public string OutputFilename { get; set; }
 
         /// <summary>
-        /// The name of the file in which recovered types are stored.
+        /// The name of the file in which recovered types are written.
         /// </summary>
         public string TypesFilename { get; set; }
 
+        /// <summary>
+        /// The name of the file in which the global variables are written.
+        /// </summary>
+        public string GlobalsFilename { get; set; }
+
         public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get;  set; }
         public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
+
     }
 }

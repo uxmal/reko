@@ -30,7 +30,8 @@ namespace Decompiler.Core.Types
     /// </summary>
     /// <remarks>
     /// Strings are commonly either length-prefixed (as is the case in many Pascal implementations
-    /// and Visual Basic, for instance) or zero-terminated (as is the case for C). 
+    /// and Visual Basic, for instance) or zero-terminated (as is the case for C). They share
+    /// a lot of properties with ArrayType.
     //$TODO: what about strings where the last ASCII character has its MSBit set?</remarks>
     public class StringType : DataType
     {
@@ -38,6 +39,7 @@ namespace Decompiler.Core.Types
         public PrimitiveType CharType { get; private set; }
         // The type of the length prefix, if any, otherwise null.
         public PrimitiveType LengthPrefixType { get; private set; }
+
         public int PrefixOffset { get; private set; }
 
         public static StringType NullTerminated(PrimitiveType  charType)
@@ -59,14 +61,8 @@ namespace Decompiler.Core.Types
 
         public override int Size
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get { return 0; }   // string lengths vary.
+            set { throw new InvalidOperationException(); }
         }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)

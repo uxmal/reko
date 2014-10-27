@@ -126,6 +126,7 @@ namespace Decompiler.Gui.Windows.Forms
             project.Output.IntermediateFilename = dlg.IntermediateFilename.Text;
             project.Output.TypesFilename = dlg.TypesFilename.Text;
             project.Output.OutputFilename = dlg.OutputFilename.Text;
+            //project.Output.GloblalsFilename = dlg.OutputFilename.Text;
 
             return project;
         }
@@ -138,6 +139,7 @@ namespace Decompiler.Gui.Windows.Forms
             dlg.IntermediateFilename.Text = project.Output.IntermediateFilename;
             dlg.TypesFilename.Text = project.Output.TypesFilename;
             dlg.OutputFilename.Text = project.Output.OutputFilename;
+            // dlg.OutputFilename.Text = project.Output.GloblalsFilename 
         }
 
     }

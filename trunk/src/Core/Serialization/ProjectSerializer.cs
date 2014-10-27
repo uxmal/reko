@@ -140,6 +140,7 @@ namespace Decompiler.Core.Serialization
                 IntermediateFilename = sp.Output.IntermediateFilename,
                 OutputFilename = sp.Output.OutputFilename,
                 TypesFilename = sp.Output.TypesFilename,
+                GlobalsFilename = sp.Output.GlobalsFilename,
                 UserProcedures = sp.UserProcedures
                     .Select(sup => new KeyValuePair<Address, Procedure_v1>(
                         Address.Parse(sup.Address, 16),

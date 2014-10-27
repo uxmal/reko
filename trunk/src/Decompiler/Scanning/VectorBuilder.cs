@@ -95,7 +95,7 @@ namespace Decompiler.Scanning
         private int[] BuildMapping(BackwalkDereference deref, int limit)
         {
             int[] map = new int[limit];
-            var rdr = scanner.Image.CreateReader(new Address((uint)deref.TableOffset));
+            var rdr = arch.CreateImageReader(scanner.Image, new Address((uint)deref.TableOffset));
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();

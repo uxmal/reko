@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Arch.Cil
         private void RunTest(string sExp, params byte[] bytes)
         {
             var image = new LoadedImage(new Address(0x0100000), bytes);
-            var dasm = new CilDisassembler(image.CreateReader(0));
+            var dasm = new CilDisassembler(image.CreateLeReader(0));
             Assert.IsTrue(dasm.MoveNext());
             var instr = dasm.Current;
             Assert.AreEqual(sExp, instr.ToString());

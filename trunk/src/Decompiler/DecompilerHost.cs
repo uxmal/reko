@@ -34,6 +34,7 @@ namespace Decompiler
         void WriteIntermediateCode(Action<TextWriter> writer);
         void WriteTypes(Action<TextWriter> writer);
         void WriteDecompiledCode(Action<TextWriter> writer);
+        void WriteGlobals(Action<TextWriter> writer);
 
         IDecompilerConfigurationService Configuration { get; }
 	}
@@ -76,6 +77,10 @@ namespace Decompiler
             writer(TextWriter.Null);
         }
 
+        public void WriteGlobals(Action<TextWriter> writer)
+        {
+            writer(TextWriter.Null);
+        }
         #endregion
     }
 }

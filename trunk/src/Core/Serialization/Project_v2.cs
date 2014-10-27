@@ -106,6 +106,9 @@ namespace Decompiler.Core.Serialization
         [XmlElement("types-file")]
         public string TypesFilename;
 
+        [XmlElement("global-vars")]
+        public string GlobalsFilename;
+
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
             return visitor.VisitInputFile(this);

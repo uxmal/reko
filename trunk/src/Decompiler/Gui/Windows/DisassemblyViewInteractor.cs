@@ -61,7 +61,7 @@ namespace Decompiler.Gui.Windows
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
                     var image = program.Image;
-                    var dasm = arch.CreateDisassembler(image.CreateReader(StartAddress));
+                    var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, StartAddress));
                     while (dasm.MoveNext())
                     {
                         var instr = dasm.Current;

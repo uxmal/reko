@@ -54,7 +54,7 @@ namespace Decompiler.Scanning
                 .Select(addr => addr.Linear)
                 .ToHashSet();
             return prog.Architecture.CreatePointerScanner(
-                prog.Image.CreateReader(0),
+                prog.Architecture.CreateImageReader(prog.Image, 0),
                 procEntryLinearAddresses,
                 PointerScannerFlags.Calls);
         }

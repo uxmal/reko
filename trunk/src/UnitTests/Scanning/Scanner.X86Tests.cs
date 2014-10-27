@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void DumpProgram(Scanner scanner)
         {
-            var dasm = arch.CreateDisassembler(scanner.Image.CreateReader(0));
+            var dasm = arch.CreateDisassembler(scanner.Image.CreateLeReader(0));
             while (dasm.MoveNext())
             {
                 var instr = dasm.Current;

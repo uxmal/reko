@@ -32,11 +32,14 @@ namespace Decompiler.Typing
 {
     public class ConstantPointerTraversal : IDataTypeVisitor<IEnumerable<ConstantPointerTraversal.WorkItem>>
     {
-        StructureType globalStr;
-        LoadedImage image;
-        HashSet<int> visited;
-        Stack<IEnumerator<WorkItem>> stack;
+        private IProcessorArchitecture arch;
+        private StructureType globalStr;
+        private LoadedImage image;
+        private HashSet<int> visited;
+        private Stack<IEnumerator<WorkItem>> stack;
         private int gOffset;
+        private IEnumerator<WorkItem> eCurrent;
+        private Program program;
 
         public struct WorkItem
         {
@@ -44,11 +47,20 @@ namespace Decompiler.Typing
             public DataType DataType;
         }
 
-        public ConstantPointerTraversal(StructureType globalStr, LoadedImage image)
+        public ConstantPointerTraversal(IProcessorArchitecture arch, StructureType globalStr, LoadedImage image)
         {
+            this.arch = arch; Program p;
             this.globalStr =  globalStr;
             this.image = image;
+            this.Discoveries = new List<StructureField>();
         }
+
+        public ConstantPointerTraversal(Program program) 
+            : this(program.Architecture, (StructureType) program.Globals.TypeVariable.DataType, program.Image)
+        {
+        }
+
+        public List<StructureField> Discoveries { get; private set; }
 
         public void Traverse()
         {
@@ -57,12 +69,12 @@ namespace Decompiler.Typing
             stack.Push(Single(new WorkItem { GlobalOffset = 0, DataType = globalStr }).GetEnumerator());
             while (stack.Count > 0)
             {
-                var item = stack.Pop();
-                if (!item.MoveNext())
+                this.eCurrent = stack.Pop();
+                if (!eCurrent.MoveNext())
                     continue;
-                stack.Push(item);
-                this.gOffset = item.Current.GlobalOffset;
-                var children = item.Current.DataType.Accept(this);
+                stack.Push(eCurrent);
+                this.gOffset = eCurrent.Current.GlobalOffset;
+                var children = eCurrent.Current.DataType.Accept(this);
                 if (children != null)
                 {
                     stack.Push(children.GetEnumerator());
@@ -81,10 +93,8 @@ namespace Decompiler.Typing
             Debug.Print("Iterating array at {0:X}", gOffset);
             for (int i = 0; i < at.Length; ++i)
             {
-                int off = i * at.ElementType.Size;
-                if (visited.Contains(off))
-                    break;
-                yield return new WorkItem { GlobalOffset = offset + off, DataType = at.ElementType };
+                yield return new WorkItem { GlobalOffset = offset, DataType = at.ElementType };
+                offset += at.ElementType.Size;
             }
         }
 
@@ -116,16 +126,24 @@ namespace Decompiler.Typing
         public IEnumerable<WorkItem> VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
-            var rdr = image.CreateReader(gOffset - (int) image.BaseAddress.Linear);
+            var rdr = arch.CreateImageReader(image, (uint) gOffset - image.BaseAddress.Linear);
             if (!rdr.IsValidOffset((uint) ptr.Size))
                 return null;
-            var c = rdr.ReadLe(PrimitiveType.Create(Domain.Pointer, ptr.Size));    //$REVIEW:Endianess?
+            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));    //$REVIEW:Endianess?
             int offset = c.ToInt32();
             Debug.Print("  pointer value: {0:X}", offset);
             if (visited.Contains(offset))
                 return null;
+
+            // We've successfully traversed a pointer! The address must therefore be of type ptr.Pointee.
+            visited.Add(offset);
+            if (globalStr.Fields.AtOffset(offset) == null)
+            {
+                Discoveries.Add(new StructureField(offset, ptr.Pointee));
+            }
             if (image.IsValidLinearAddress((uint) offset))
                 return null;
+
             return Single(new WorkItem { DataType = ptr.Pointee, GlobalOffset = c.ToInt32() });
         }
 
@@ -141,12 +159,9 @@ namespace Decompiler.Typing
             foreach (var field in str.Fields)
             {
                 int off = offset + field.Offset;
-                if (visited.Contains(off))
-                    continue;
                 Debug.Print("   Field {0} at {1:X}", field.Name, off);
                 yield return new WorkItem { DataType = field.DataType, GlobalOffset = off };
             }
-
         }
 
         public IEnumerable<WorkItem> VisitTypeReference(TypeReference typeref)

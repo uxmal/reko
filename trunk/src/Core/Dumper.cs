@@ -105,7 +105,7 @@ namespace Decompiler.Core
 		public void DumpData(LoadedImage image, Address address, uint cbBytes, TextWriter stm)
 		{
 			uint cSkip = address.Linear & 0x0F;
-			ImageReader rdr = image.CreateReader(address);
+			ImageReader rdr = arch.CreateImageReader(image, address);
 			while (cbBytes > 0)
 			{
 				StringBuilder sb = new StringBuilder(0x12);
@@ -144,7 +144,7 @@ namespace Decompiler.Core
 
         public void DumpAssembler(LoadedImage image, Address addrStart, Address addrLast, TextWriter writer)
         {
-            var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
+            var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, addrStart));
             try
             {
                 while (dasm.MoveNext())
@@ -183,7 +183,7 @@ namespace Decompiler.Core
 
 		public void WriteByteRange(LoadedImage image, Address begin, Address addrEnd, TextWriter writer)
 		{
-			ImageReader rdr = image.CreateReader(begin);
+			ImageReader rdr = arch.CreateImageReader(image, begin);
 			while (rdr.Address < addrEnd)
 			{
 				writer.Write("{0:X2} ", rdr.ReadByte());

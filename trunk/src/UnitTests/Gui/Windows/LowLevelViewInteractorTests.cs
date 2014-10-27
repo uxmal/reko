@@ -42,6 +42,7 @@ namespace Decompiler.UnitTests.Gui.Windows
     {
         private LowLevelViewInteractor interactor;
         private MockRepository mr;
+        private IProcessorArchitecture arch;
         private IDecompilerShellUiService uiSvc;
         private IDialogFactory dlgFactory;
         private ServiceContainer sp;
@@ -102,16 +103,11 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_GotoAddress()
         {
-            var arch = mr.Stub<IProcessorArchitecture>();
             Given_Interactor();
-            Given_Program(arch, new byte[] { 0x4, 0x3, 0x2, 0x1 });
-            arch.Stub(a => a.InstructionBitSize).Return(8);
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
-            arch.Stub(a => a.CreateImageReader(null, null))
-                .IgnoreArguments()
-                .Return(new LeImageReader(program.Image, 0));
+            Given_Architecture();
             interactor.Stub(i => i.GetSelectedAddressRange())
                 .Return(new AddressRange(program.Image.BaseAddress, program.Image.BaseAddress));
+            Given_Program(new byte[] { 0x4, 0x3, 0x2, 0x1 });
             mr.ReplayAll();
 
             interactor.Program = program;
@@ -122,7 +118,18 @@ namespace Decompiler.UnitTests.Gui.Windows
             mr.ReplayAll();
         }
 
-        private void Given_Program(IProcessorArchitecture arch, byte[] bytes)
+        private void Given_Architecture()
+        {
+            arch = mr.Stub<IProcessorArchitecture>();
+            arch.Stub(a => a.InstructionBitSize).Return(8);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.CreateImageReader(null, null))
+                .IgnoreArguments()
+                .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+            arch.Replay();
+        }
+
+        private void Given_Program(byte[] bytes)
         {
             var addr = new Address(0x1000);
             var image = new LoadedImage(addr, bytes);
@@ -152,7 +159,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             image = new LoadedImage(addrBase, bytes);
             imageMap = new ImageMap(image);
-            program = new Program(image, imageMap, null, null);
+            program = new Program(image, imageMap, arch, null);
             interactor.Program = program;
         }
 
@@ -189,8 +196,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_GetDataSize_of_Integer()
         {
+            Given_Architecture();
             Given_Interactor();
             Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
+            mr.ReplayAll();
 
             Assert.AreEqual(4u, interactor.GetDataSize(addrBase, PrimitiveType.Int32));
         }
@@ -198,8 +207,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_GetDataSize_of_ZeroTerminatedString()
         {
+            Given_Architecture();
             Given_Interactor();
             Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
+            mr.ReplayAll();
 
             var dt = StringType.NullTerminated(PrimitiveType.Char);
             Assert.AreEqual(6u, interactor.GetDataSize(addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");

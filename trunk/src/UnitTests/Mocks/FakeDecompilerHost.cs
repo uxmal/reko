@@ -32,6 +32,7 @@ namespace Decompiler.UnitTests.Mocks
         private StringWriter intermediate = new StringWriter();
         private StringWriter decompiled = new StringWriter();
         private StringWriter typesWriter = new StringWriter();
+        private StringWriter globalsWriter = new StringWriter();
         private IDecompilerConfigurationService config = new FakeDecompilerConfiguration();
 
         public TextWriter CreateDecompiledCodeWriter(string file)
@@ -63,6 +64,11 @@ namespace Decompiler.UnitTests.Mocks
         {
             writer(decompiled);
         }
+        
+        public void WriteGlobals(Action<TextWriter> writer)
+        {
+            writer(globalsWriter);
+        }
 
         // probing methods.
 
@@ -76,5 +82,9 @@ namespace Decompiler.UnitTests.Mocks
             get { return typesWriter; }
         }
 
+        public StringWriter GlobalsWriter
+        {
+            get { return globalsWriter; }
+        }
     }
 }

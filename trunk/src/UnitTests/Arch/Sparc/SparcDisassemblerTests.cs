@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         private static SparcInstruction Disassemble(LoadedImage img)
         {
             var arch = new SparcArchitecture(PrimitiveType.Word32);
-            var dasm = new SparcDisassembler(arch, img.CreateReader(0U));
+            var dasm = new SparcDisassembler(arch, img.CreateBeReader(0U));
             Assert.IsTrue(dasm.MoveNext());
             return dasm.Current;
         }

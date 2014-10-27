@@ -58,20 +58,31 @@ namespace Decompiler.Core
             return true;
         }
 
+        [Obsolete("Callers should know endianness")]
 		public ImageReader CreateReader(Address addr)
 		{
 			return new ImageReader(this, addr);
 		}
 
-		public ImageReader CreateReader(int offset)
-		{
-			return new ImageReader(this, (uint) offset);
-		}
+        public BeImageReader CreateBeReader(Address addr)
+        {
+            return new BeImageReader(this, addr);
+        }
 
-		public ImageReader CreateReader(uint offset)
-		{
-			return new ImageReader(this, offset);
-		}
+        public BeImageReader CreateBeReader(uint offset)
+        {
+            return new BeImageReader(this, offset);
+        }
+
+        public LeImageReader CreateLeReader(Address addr)
+        {
+            return new LeImageReader(this, addr);
+        }
+
+        public LeImageReader CreateLeReader(uint offset)
+        {
+            return new LeImageReader(this, offset);
+        }
 
 		/// <summary>
 		/// Adds the delta to the ushort at the given offset.

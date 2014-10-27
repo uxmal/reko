@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
         {
-            return new Rewriter(arch, image.CreateReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType));
+            return new Rewriter(arch, image.CreateLeReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType));
         }
 
         public override Address LoadAddress

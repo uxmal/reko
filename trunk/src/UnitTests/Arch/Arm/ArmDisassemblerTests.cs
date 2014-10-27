@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         protected static ArmInstruction Disassemble(byte[] bytes)
         {
             var image = new LoadedImage(new Address(0x00100000), bytes);
-            var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateReader(0));
+            var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateLeReader(0));
             Assert.IsTrue(dasm.MoveNext());
             return dasm.Current;
         }
@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             LeImageWriter w = new LeImageWriter(image.Bytes);
             w.WriteLeUInt32(0, instr);
             var arch = CreateArchitecture();
-            var dasm = CreateDisassembler(arch, image.CreateReader(0));
+            var dasm = CreateDisassembler(arch, image.CreateLeReader(0));
             Assert.IsTrue(dasm.MoveNext());
             return dasm.Current;
         }
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             var b = image.Bytes;
             Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]);
             var arch = CreateArchitecture();
-            var dasm = arch.CreateDisassembler(image.CreateReader(0));
+            var dasm = arch.CreateDisassembler(image.CreateLeReader(0));
             Assert.IsTrue(dasm.MoveNext());
             return dasm.Current;
         }

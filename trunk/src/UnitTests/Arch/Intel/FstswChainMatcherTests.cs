@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             LoaderResults lr = asm.GetImage();
             X86Disassembler dasm = new X86Disassembler(
-                lr.Image.CreateReader(0),
+                lr.Image.CreateLeReader(0),
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 false);
