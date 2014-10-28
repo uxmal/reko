@@ -431,6 +431,12 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        public int VisitCode(CodeType c)
+        {
+            writer.Write("new CodeType()", c.Size);
+            return 0;
+        }
+
         public int VisitEnum(EnumType e)
         {
             throw new NotImplementedException();

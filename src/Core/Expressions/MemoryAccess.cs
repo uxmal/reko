@@ -46,6 +46,11 @@ namespace Decompiler.Core.Expressions
         public MemoryIdentifier MemoryId { get; set; }
         public Expression EffectiveAddress { get; set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitMemoryAccess(this, context);
+        }
+
         public override void Accept(IExpressionVisitor v)
         {
             v.VisitMemoryAccess(this);

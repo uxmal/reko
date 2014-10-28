@@ -33,6 +33,11 @@ namespace Decompiler.Core.Expressions
         {
         }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitScopeResolution(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitScopeResolution(this);

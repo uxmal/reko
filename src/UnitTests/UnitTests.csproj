@@ -157,6 +157,7 @@
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
+    <Compile Include="Fragments\IndirectCall.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />

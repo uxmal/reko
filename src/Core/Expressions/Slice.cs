@@ -27,8 +27,6 @@ namespace Decompiler.Core.Expressions
 	/// A slice is an improper subsequence of bits. Commonly used to isolate
 	/// a byte register from a wider word- or dword-width register
 	/// </summary>
-    /// <remarks>//$REVIEW: does it make more sense for this to be <see cref="PseudoProc"/>?
-    /// </remarks>
 	public class Slice : Expression
 	{
 		private byte offset;			// Bit-offset of value
@@ -42,6 +40,11 @@ namespace Decompiler.Core.Expressions
 
         public Expression Expression { get; set; }
         public int Offset { get { return offset; } }
+
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitSlice(this, context);
+        }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {

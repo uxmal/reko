@@ -567,9 +567,10 @@ namespace Decompiler.Core.Output
 			writer.Indent();
 			writer.WriteKeyword("do");
 			writer.Terminate();
-			WriteIndentedStatements(loop.Body);
+			WriteIndentedStatements(loop.Body, true);
 			
-			writer.Indent();
+			if (loop.Body.Count <= 1)
+                writer.Indent();
 			writer.WriteKeyword("while");
             writer.Write(" (");
 			WriteExpression(loop.Condition);
@@ -599,7 +600,7 @@ namespace Decompiler.Core.Output
 			writer.Write(")");
 			writer.Terminate();
 
-			WriteIndentedStatements(ifs.Then);
+			WriteIndentedStatements(ifs.Then, false);
 
 			if (ifs.Else != null && ifs.Else.Count > 0)
 			{
@@ -614,7 +615,7 @@ namespace Decompiler.Core.Output
 				else
 				{
 					writer.Terminate();
-					WriteIndentedStatements(ifs.Else);
+					WriteIndentedStatements(ifs.Else, false);
 				}
 			}
 		}
@@ -686,7 +687,7 @@ namespace Decompiler.Core.Output
             writer.Write(" (");
             WriteExpression(s.Expression);
             writer.Terminate(")");
-            WriteIndentedStatements(s.Statements);
+            WriteIndentedStatements(s.Statements, false);
         }
 
 		public void VisitWhile(AbsynWhile loop)
@@ -697,7 +698,7 @@ namespace Decompiler.Core.Output
 			WriteExpression(loop.Condition);
 			writer.Terminate(")");
 
-			WriteIndentedStatements(loop.Body);
+			WriteIndentedStatements(loop.Body, false);
 		}
 
 		#endregion
@@ -797,7 +798,7 @@ namespace Decompiler.Core.Output
 			writer.Indentation -= writer.TabSize;
 		}
 
-        public void WriteIndentedStatements(List<AbsynStatement> stms)
+        public void WriteIndentedStatements(List<AbsynStatement> stms, bool suppressNewline)
         {
             if (stms.Count <= 1)
             {
@@ -828,9 +829,11 @@ namespace Decompiler.Core.Output
 
                 writer.Indent();
                 writer.Write("}");
-                writer.Terminate();
+                if (suppressNewline)
+                    writer.Write(" ");
+                else
+                    writer.Terminate();
             }
-
         }
 
 		public void WriteStatementList(List<AbsynStatement> list)

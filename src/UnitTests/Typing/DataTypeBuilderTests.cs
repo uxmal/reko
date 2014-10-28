@@ -538,5 +538,13 @@ namespace Decompiler.UnitTests.Typing
             });
             RunTest(pp.BuildProgram(), "Typing/DtbArrayConstantPointers.txt");
         }
+
+        [Test]
+        public void DtbCallTable()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add(new IndirectCallFragment());
+            RunTest(pb.BuildProgram(), "Typing/DtbCallTable.txt");
+        }
     }
 }

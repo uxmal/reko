@@ -441,7 +441,7 @@ fn10004B58_entry:		// pred:
 l10004B58:		// pred: fn10004B58_entry
 	return
 	// succ:  fn10004B58_exit
-fn10004B58_exit:		// pred: l10004B58
+fn10004B58_exit:
 	// succ: 
 
 void fn10004B58()
@@ -451,7 +451,7 @@ void fn10004B58()
 ===========================
 // fn10004B59
 void fn10004B59(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
-fn10004B59_entry:		// pred:
+fn10004B59_entry:
 	// succ:  l10004B59
 l10004B59:		// pred: fn10004B59_entry
 	word32 edx_9 = Mem0[0x20000000:word32]
@@ -462,17 +462,16 @@ l10004B59:		// pred: fn10004B59_entry
 	Mem19[edx_9 + 0x00000014:word32] = dwArg10
 	return
 	// succ:  fn10004B59_exit
-fn10004B59_exit:		// pred: l10004B59
-	// succ: 
+fn10004B59_exit: 
 
-void fn10004B59(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
+void fn10004B59(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, word32 dwArg14)
 {
-	word32 edx_9 = Mem0[0x20000000:word32];
-	Mem11[edx_9 + 0x00000004:word32] = dwArg00;
-	Mem13[edx_9 + 0x00000008:word32] = dwArg04;
-	Mem15[edx_9 + 0x0000000C:word32] = dwArg08;
-	Mem17[edx_9 + 0x00000010:word32] = dwArg0C;
-	Mem19[edx_9 + 0x00000014:word32] = dwArg10;
+	word32 edx_10 = Mem0[0x20000000:word32];
+	Mem12[edx_10 + 0x00000004:word32] = dwArg04;
+	Mem14[edx_10 + 0x00000008:word32] = dwArg08;
+	Mem16[edx_10 + 0x0000000C:word32] = dwArg0C;
+	Mem18[edx_10 + 0x00000010:word32] = dwArg10;
+	Mem20[edx_10 + 0x00000014:word32] = dwArg14;
 	return;
 }
 ===========================

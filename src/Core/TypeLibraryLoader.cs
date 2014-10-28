@@ -171,7 +171,7 @@ namespace Decompiler.Core
         public DataType VisitSignature(SerializedSignature signature)
         {
             //$BUGBUG: what we want is to unify FunctionType and ProcedureSignature....
-            return PrimitiveType.PtrCode32;
+            return new Pointer(new CodeType(), arch.PointerType.Size);
         }
 
         public DataType VisitStructure(SerializedStructType structure)

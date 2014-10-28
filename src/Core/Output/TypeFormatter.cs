@@ -127,6 +127,13 @@ namespace Decompiler.Core.Output
             return writer;
 		}
 
+        public Formatter VisitCode(CodeType c)
+        {
+            writer.Write("code", c.Size);
+            WriteName(true);
+            return writer;
+        }
+
         public Formatter VisitEnum(EnumType e)
         {
             throw new NotImplementedException();

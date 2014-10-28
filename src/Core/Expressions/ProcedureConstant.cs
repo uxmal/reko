@@ -32,6 +32,11 @@ namespace Decompiler.Core.Expressions
 
         public ProcedureBase Procedure { get; private set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitProcedureConstant(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitProcedureConstant(this);

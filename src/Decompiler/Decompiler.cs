@@ -202,6 +202,7 @@ namespace Decompiler
             {
                 var program = loader.LoadExecutable(fileName, image, null);
                 Project = CreateDefaultProject(fileName, program);
+                program.InputFile = Project.InputFiles[0];
                 Programs.Add(program);
                 isProject = false;
             }
@@ -246,6 +247,7 @@ namespace Decompiler
                 IntermediateFilename = Path.ChangeExtension(fileName, ".dis"),
                 OutputFilename = Path.ChangeExtension(fileName, ".c"),
                 TypesFilename = Path.ChangeExtension(fileName, ".h"),
+                GlobalsFilename = Path.ChangeExtension(fileName, ".globals.c"),
             };
 
             var project = new Project
@@ -311,9 +313,8 @@ namespace Decompiler
             var cpt = new ConstantPointerTraversal(program);
             cpt.Traverse();
             w.WriteLine();
-            throw new NotImplementedException();
         }
-
+    
         public void WriteDecompiledTypes(Program program, TextWriter w)
         {
             //$REVIEW: what about multiple inputs, huh? Huh???

@@ -546,6 +546,7 @@
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\CodeType.cs" />
     <Compile Include="Types\DataType.cs">
       <SubType>Code</SubType>
     </Compile>

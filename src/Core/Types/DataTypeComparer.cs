@@ -42,8 +42,9 @@ namespace Decompiler.Core.Types
         private const int TRef =   9;
         private const int TVar =   10;
 		private const int EqClass= 11;
-		private const int Unk =    12;
-        private const int Void =   13;
+        private const int Code = 12;
+		private const int Unk =    13;
+        private const int Void =   14;
 
 		public DataTypeComparer()
 		{
@@ -89,6 +90,17 @@ namespace Decompiler.Core.Types
 
             if (x is EnumType || y is EnumType)
                 throw new NotImplementedException();
+
+            CodeType cx = x as CodeType;
+            CodeType cy = y as CodeType;
+            if (cx != null && cy != null)
+            {
+                return 0; 
+            }
+            if (cx != null)
+                return -1;
+            if (cy != null)
+                return 1;
 
 			TypeVariable tx = x as TypeVariable;
 			TypeVariable ty = y as TypeVariable;
@@ -237,6 +249,11 @@ namespace Decompiler.Core.Types
 		{
 			return Array;
 		}
+
+        public int VisitCode(CodeType c)
+        {
+            return Code;
+        }
 
         public int VisitEnum(EnumType e)
         {

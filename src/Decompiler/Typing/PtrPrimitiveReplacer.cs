@@ -82,7 +82,8 @@ namespace Decompiler.Typing
 			{
 				if (eq.DataType is PrimitiveType ||
                     eq.DataType is VoidType ||
-					eq.DataType is EquivalenceClass)
+					eq.DataType is EquivalenceClass ||
+                    eq.DataType is CodeType)
 				{
 					eq.DataType = null;
 					changed = true;
@@ -135,6 +136,11 @@ namespace Decompiler.Typing
                 return pr;
             }
             if (dt is VoidType)
+            {
+                changed = true;
+                return dt;
+            }
+            if (dt is CodeType)
             {
                 changed = true;
                 return dt;

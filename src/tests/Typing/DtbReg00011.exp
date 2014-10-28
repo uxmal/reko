@@ -66,7 +66,7 @@ Eq_17: uint16
 	T_17 (in (bl_18 & 0x0F) *u (bh_17 + 0x01) : uint16)
 Eq_18: word16
 	T_18 (in 0x0004 : word16)
-Eq_19: word16
+Eq_19: ui16
 	T_19 (in (bl_18 & 0x0F) *u (bh_17 + 0x01) << 0x0004 : word16)
 Eq_20: byte
 	T_20 (in SLICE((bl_18 & 0x0F) *u (bh_17 + 0x01) << 0x0004, byte, 8) : byte)
@@ -164,8 +164,8 @@ T_18: (in 0x0004 : word16)
   OrigDataType: word16
 T_19: (in (bl_18 & 0x0F) *u (bh_17 + 0x01) << 0x0004 : word16)
   Class: Eq_19
-  DataType: word16
-  OrigDataType: word16
+  DataType: ui16
+  OrigDataType: ui16
 T_20: (in SLICE((bl_18 & 0x0F) *u (bh_17 + 0x01) << 0x0004, byte, 8) : byte)
   Class: Eq_20
   DataType: byte

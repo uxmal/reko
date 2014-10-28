@@ -209,6 +209,11 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
+        public Expression VisitCode(CodeType ct)
+        {
+            return complexExp;
+        }
+
 		public Expression VisitPrimitive(PrimitiveType pt)
 		{
 			return complexExp;

@@ -35,6 +35,11 @@ namespace Decompiler.Core.Expressions
 
         public Expression[] Arguments { get; private set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitPhiFunction(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitPhiFunction(this);

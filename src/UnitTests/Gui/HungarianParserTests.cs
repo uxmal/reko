@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Gui
         public void Array_Pointers_To_Functions()
         {
             var dt = parser.Parse("apfn");
-            Assert.AreEqual("(arr pfn32)", dt.ToString());
+            Assert.AreEqual("(arr (ptr code))", dt.ToString());
         }
 
         [Test]

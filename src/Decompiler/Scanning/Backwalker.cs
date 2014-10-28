@@ -93,13 +93,13 @@ namespace Decompiler.Scanning
 
             bool continueBackwalking = BackwalkInstructions(Index, block);
             if (Index == null)
-                return null;	// unable to find guard. //$REVIEW: return warning.
+                return null;	// unable to find guard.
 
             if (continueBackwalking)
             {
                 block = host.GetSinglePredecessor(block);
                 if (block == null)
-                    return null;	// seems unguarded to me.	//$REVIEW: emit warning.
+                    return null;	// seems unguarded to me.
 
                 BackwalkInstructions(Index, block);
                 if (Index == null)

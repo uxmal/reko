@@ -154,7 +154,7 @@ Some examples:
                 if (i + 2 <= str.Length && str[i] == 'f' && str[i + 1] == 'n')
                 {
                     i += 2;
-                    return PrimitiveType.PtrCode32;
+                    return new Pointer(new CodeType(), 4);
                 }
                 var pointee = Parse(PrimitiveType.Char);
                 if (pointee is UnknownType)

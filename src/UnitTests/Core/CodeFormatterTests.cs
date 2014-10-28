@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
@@ -27,6 +28,7 @@ using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.UnitTests.Core
@@ -37,6 +39,7 @@ namespace Decompiler.UnitTests.Core
         private TextFormatter formatter;
 		private CodeFormatter cf;
 		private StringWriter sw;
+        private ExpressionEmitter m;
 		private string nl = Environment.NewLine;
 
         [SetUp]
@@ -45,6 +48,7 @@ namespace Decompiler.UnitTests.Core
             sw = new StringWriter();
             formatter = new TextFormatter(sw);
             cf = new CodeFormatter(formatter);
+            m = new ExpressionEmitter();
         }
 
 		[Test]
@@ -143,6 +147,46 @@ namespace Decompiler.UnitTests.Core
             var e = new Address(0);
             e.Accept(cf);
             Assert.AreEqual("null", sw.ToString());
+        }
+
+        private Identifier Id(string id)
+        {
+            return new Identifier(id, -1, PrimitiveType.Word32, new TemporaryStorage(id, -1, PrimitiveType.Word32));
+        }
+
+        [Test]
+        public void CfDoWhile_SmallBody()
+        {
+            var dw = new AbsynDoWhile(new List<AbsynStatement>
+                {
+                    new AbsynAssignment(Id("foo"), m.Int32(3))
+                },
+                m.Lt(Id("bar"), 0));
+            dw.Accept(cf);
+            var sExp =
+                "\tdo" + nl +
+                "\t\tfoo = 0x00000003;" + nl +
+                "\twhile (bar < 0x00000000);" + nl;
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void CfDoWhile_LargeBody()
+        {
+            var dw = new AbsynDoWhile(new List<AbsynStatement>
+                {
+                    new AbsynAssignment(Id("foo"), m.Int32(3)),
+                    new AbsynAssignment(Id("foo"), m.Int32(4))
+                },
+                m.Lt(Id("bar"), 0));
+            dw.Accept(cf);
+            var sExp =
+                "\tdo" + nl +
+                "\t{" + nl +
+                    "\t\tfoo = 0x00000003;" + nl + 
+                    "\t\tfoo = 0x00000004;" + nl + 
+                "\t} while (bar < 0x00000000);" + nl;
+            Assert.AreEqual(sExp, sw.ToString());
         }
 	}
 }

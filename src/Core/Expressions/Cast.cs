@@ -35,6 +35,11 @@ namespace Decompiler.Core.Expressions
 
         public Expression Expression { get; set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitCast(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitCast(this);

@@ -420,6 +420,14 @@ namespace Decompiler.UnitTests.Typing
         {
             RunHexTest("fragments/regressions/r00016.dchex", "Typing/TerReg00016.txt");
         }
+
+        [Test]
+        public void TerCallTable()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add(new IndirectCallFragment());
+            RunTest(pb.BuildProgram(), "Typing/TerCallTable.txt");
+        }
     }
 
 	public class SegmentedMemoryPointerMock : ProcedureBuilder
@@ -471,5 +479,23 @@ namespace Decompiler.UnitTests.Typing
 			Store(SegMemW(Seg(0x800), Int16(0x0066)), SegMemW(Seg(0x0800), Int16(0x5420)));
 		}
 	}
+
+    public class IndirectCallFragment : ProcedureBuilder
+    {
+        protected override void BuildBody()
+        {
+                var ds = Local(PrimitiveType.SegmentSelector, "ds");
+                var cx = Local16("cx");
+                var di = Local16("di");
+                Call(
+                    Seq(
+                        Constant.Create(PrimitiveType.SegmentSelector, 0x2700),
+                        this.Array(
+                            PrimitiveType.Word16,
+                            Seq(ds, Word16(0x2040)),
+                            IMul(di, 2))));
+                Return();
+        }
+    }
 }
  

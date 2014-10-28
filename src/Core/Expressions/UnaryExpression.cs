@@ -38,6 +38,11 @@ namespace Decompiler.Core.Expressions
         public UnaryOperator Operator { get; set; }
         public Expression Expression { get; set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitUnaryExpression(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitUnaryExpression(this);

@@ -38,11 +38,9 @@ void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 			bx = bx + 0x0004;
 			di = di + 0x0004;
 			cx_22 = cx_22 - 0x0001;
-		}
-		while (cx_22 != 0x0000);
+		} while (cx_22 != 0x0000);
 		dx_13 = dx_13 - 0x0001;
-	}
-	while (dx_13 != 0x0000);
+	} while (dx_13 != 0x0000);
 	return;
 }
 ===========================
