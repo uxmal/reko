@@ -132,7 +132,7 @@ namespace Decompiler.Typing
             PrimitiveType p = dataType as PrimitiveType;
             if (p == null)
                 return null;
-            return p.MaskDomain(~(Domain.Pointer | Domain.PtrCode));
+            return p.MaskDomain(~Domain.Pointer);
         }
 
         private DataType MakeIntegral(DataType dataType)
@@ -198,7 +198,11 @@ namespace Decompiler.Typing
 		public DataType VisitCallInstruction(CallInstruction call)
 		{
             call.Callee.Accept(this);
-            return handler.DataTypeTrait(call.Callee, PrimitiveType.Create(Domain.PtrCode, call.Callee.DataType.Size));
+            return handler.DataTypeTrait(
+                call.Callee, 
+                new Pointer(
+                    new CodeType(), 
+                    prog.Architecture.PointerType.Size));
         }
 
         public DataType VisitGotoInstruction(GotoInstruction g)
@@ -360,6 +364,8 @@ namespace Decompiler.Typing
 			}
 			else if (binExp.Operator == Operator.IMul)
 			{
+                handler.DataTypeTrait(binExp.Left, MakeIntegral(binExp.Left.DataType));
+                handler.DataTypeTrait(binExp.Right, MakeIntegral(binExp.Right.DataType));
                 return handler.DataTypeTrait(binExp, MakeIntegral(binExp.DataType));
 			}
 			else if (binExp.Operator == Operator.Sar)
@@ -371,7 +377,7 @@ namespace Decompiler.Typing
 			}
 			else if (binExp.Operator == Operator.Shl)
 			{
-				return handler.DataTypeTrait(binExp, binExp.DataType);
+                return handler.DataTypeTrait(binExp, MakeIntegral(binExp.DataType));
 			}
 			else if (binExp.Operator == Operator.IMod)
 			{
@@ -500,8 +506,8 @@ namespace Decompiler.Typing
 
         public DataType VisitMkSequence(MkSequence seq)
         {
-            seq.Head.Accept(this);
-            seq.Tail.Accept(this);
+            var dtHead = seq.Head.Accept(this);
+            var dtTail = seq.Tail.Accept(this);
             return handler.DataTypeTrait(seq, seq.DataType);
         }
 
@@ -562,12 +568,12 @@ namespace Decompiler.Typing
 				argTypes = new DataType[sig.FormalArguments.Length];
 				for (int i = 0; i < argTypes.Length; ++i)
 				{
-					argTypes[i] = sig.FormalArguments[i].DataType;
+					argTypes[i] = sig.FormalArguments[i].TypeVariable;
 				}
 			} 
 			else
 			{
-				PseudoProcedure ppp = pc.Procedure as PseudoProcedure;
+				var ppp = pc.Procedure as PseudoProcedure;
 				if (ppp != null)
 				{
 					argTypes = new DataType[ppp.Arity];

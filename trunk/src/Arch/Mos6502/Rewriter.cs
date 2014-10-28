@@ -205,7 +205,7 @@ namespace Decompiler.Arch.Mos6502
         {
             emitter.Call(
                 new ProcedureConstant(
-                    PrimitiveType.PtrCode16,
+                    new Pointer(new CodeType(), 2),
                     host.EnsurePseudoProcedure("__brk", VoidType.Instance, 0)),
                 2);
         }
@@ -342,7 +342,7 @@ namespace Decompiler.Arch.Mos6502
         private void Rotate(string rot)
         {
             var fn = new ProcedureConstant(
-                PrimitiveType.PtrCode16,
+                new Pointer(new CodeType(), 2),
                 host.EnsurePseudoProcedure(rot, PrimitiveType.Byte, 2));
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operand);

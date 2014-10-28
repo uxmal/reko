@@ -109,6 +109,11 @@ namespace Decompiler.Typing
 			throw new ArgumentException("Constants cannot have array values yet.");
 		}
 
+        public Expression VisitCode(CodeType c)
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression VisitEnum(EnumType e)
         {
             string name;

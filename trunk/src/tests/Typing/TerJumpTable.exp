@@ -1,0 +1,68 @@
+// Before ///////
+// IndirectCallFragment
+void IndirectCallFragment()
+IndirectCallFragment_entry:
+	// succ:  l1
+l1:
+	call SEQ(0x2700, Mem0[ds:di + di + 0x2040:word16]) (retsize: 4;)
+	return
+	// succ:  IndirectCallFragment_exit
+IndirectCallFragment_exit:
+
+// After ///////
+// IndirectCallFragment
+void IndirectCallFragment()
+IndirectCallFragment_entry:
+	// succ:  l1
+l1:
+	call SEQ(0x2700, Mem0[ds:di + di + 0x2040:word16]) (retsize: 4;)
+	return
+	// succ:  IndirectCallFragment_exit
+IndirectCallFragment_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Eq_1" (27000 (ptr Eq_2) ptr27000))
+	globals_t (in globals : (ptr (struct)))
+Eq_2: (segment "Eq_2")
+	T_2 (in 0x2700 : selector)
+Eq_5: (struct "Eq_5" (2040 word16 w2040))
+	T_5 (in di + di : word16)
+Eq_9: (union "Eq_9" (ptr32 u0) (pfn32 u1))
+	T_9 (in SEQ(0x2700, Mem0[ds:di + di + 0x2040:word16]) : ptr32)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct)))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct (27000 T_2 t27000)))
+T_2: (in 0x2700 : selector)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (segment))
+T_3: (in ds : word16)
+  Class: Eq_3
+  DataType: word16
+  OrigDataType: word16
+T_4: (in di : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_5: (in di + di : word16)
+  Class: Eq_5
+  DataType: (memptr word16 Eq_5)
+  OrigDataType: (memptr T_3 (struct (2040 T_8 t2040)))
+T_6: (in 0x2040 : word16)
+  Class: Eq_6
+  DataType: word16
+  OrigDataType: word16
+T_7: (in di + di + 0x2040 : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
+T_8: (in Mem0[ds:di + di + 0x2040:word16] : word16)
+  Class: Eq_8
+  DataType: word16
+  OrigDataType: word16
+T_9: (in SEQ(0x2700, Mem0[ds:di + di + 0x2040:word16]) : ptr32)
+  Class: Eq_9
+  DataType: Eq_9
+  OrigDataType: (union (ptr32 u0) (pfn32 u1))

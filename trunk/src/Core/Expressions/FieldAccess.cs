@@ -40,6 +40,11 @@ namespace Decompiler.Core.Expressions
 			this.Structure = expr; this.FieldName = fieldName;
 		}
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitFieldAccess(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitFieldAccess(this);

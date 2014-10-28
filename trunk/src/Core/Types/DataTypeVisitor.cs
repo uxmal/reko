@@ -28,6 +28,7 @@ namespace Decompiler.Core.Types
     public interface IDataTypeVisitor<T>
     {
         T VisitArray(ArrayType at);
+        T VisitCode(CodeType c);
         T VisitEnum(EnumType e);
         T VisitEquivalenceClass(EquivalenceClass eq);
         T VisitFunctionType(FunctionType ft);

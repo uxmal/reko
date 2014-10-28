@@ -33,6 +33,11 @@ namespace Decompiler.Core.Expressions
         public Expression Pointer { get; private set; }
         public int Offset { get; private set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitPointerAddition(this, context);
+        }
+        
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitPointerAddition(this);

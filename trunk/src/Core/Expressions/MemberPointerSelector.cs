@@ -40,6 +40,11 @@ namespace Decompiler.Core.Expressions
         public Expression BasePointer { get; set; }
         public Expression MemberPointer { get; set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitMemberPointerSelector(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitMemberPointerSelector(this);

@@ -49,6 +49,12 @@ namespace Decompiler.Core.Types
             return writer;
         }
 
+        public Formatter VisitCode(CodeType c)
+        {
+            writer.Write("code", c.Size);
+            return writer;
+        }
+
         public Formatter VisitEnum(EnumType e)
         {
             throw new NotImplementedException();

@@ -38,6 +38,11 @@ namespace Decompiler.Core.Expressions
         public Expression Procedure { get; set; }
         public Expression[] Arguments { get; set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitApplication(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitApplication(this);

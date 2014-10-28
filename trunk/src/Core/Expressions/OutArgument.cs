@@ -44,6 +44,11 @@ namespace Decompiler.Core.Expressions
             this.Expression = id;
         }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitOutArgument(this, context);
+        }
+
         public override void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitOutArgument(this);

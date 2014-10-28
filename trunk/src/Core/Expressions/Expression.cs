@@ -50,6 +50,7 @@ namespace Decompiler.Core.Expressions
 
         public abstract void Accept(IExpressionVisitor visitor);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
+        public abstract T Accept<T,C>(ExpressionVisitor<T, C> visitor, C context);
         public abstract Expression CloneExpression();
         
         /// <summary>

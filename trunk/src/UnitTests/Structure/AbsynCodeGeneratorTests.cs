@@ -229,8 +229,7 @@ namespace Decompiler.UnitTests.Structure
                 "		DoStuff();" + nl + 
                 "		if (NeedsBork())" + nl + 
                 "			Bork();" + nl + 
-                "	}" + nl + 
-                "	while (!Done());" + nl + 
+                "	} while (!Done());" + nl + 
                 "	return;" + nl + 
                 "}" + nl);
         }

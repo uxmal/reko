@@ -43,8 +43,7 @@ void fn0C00_0000(word16 bx, word16 si, selector ds)
 		word16 si_28 = Mem21[ds:si + 0x0002:word16];
 		ax_22 = ax_22 + Mem21[ds:si:word16];
 		si = si_28;
-	}
-	while (si_28 != 0x0000);
+	} while (si_28 != 0x0000);
 	Mem33[ds:0x0302:word16] = ax_22;
 	return;
 }

@@ -42,6 +42,11 @@ namespace Decompiler.Core.Expressions
         public int Number { get; private set; }
         public Storage Storage { get; private set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitIdentifier(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitIdentifier(this);

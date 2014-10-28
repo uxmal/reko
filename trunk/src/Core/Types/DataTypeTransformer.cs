@@ -34,6 +34,11 @@ namespace Decompiler.Core.Types
 			return at;
 		}
 
+        public virtual DataType VisitCode(CodeType c)
+        {
+            return c;
+        }
+
         public virtual DataType VisitEnum(EnumType e)
         {
             return e;

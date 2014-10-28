@@ -126,11 +126,21 @@ namespace Decompiler.Typing
                     if (iv != null)
                     {
                         VisitInductionVariable((Identifier) bin.Left, iv, offset);
+                        return;
                     }
-                    else
+                    else if (bin.Left is BinaryExpression)
                     {
-                        EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, offset.ToInt32());
+                        var bl = (BinaryExpression) bin.Left;
+                        //$HACK: we've already done the analysis of the mul operator!
+                        // We should be using the returned value of trait collection.
+                        if (bl.Operator is IMulOperator)
+                        {
+                            arrayContext = true;
+                            EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, offset.ToInt32());
+                            return;
+                        }
                     }
+                    EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, offset.ToInt32());
 					return;
 				}
 
@@ -275,7 +285,7 @@ namespace Decompiler.Typing
                 Constant c = seq.Tail as Constant;
                 if (c == null)
                     return;
-                handler.MemAccessArrayTrait(null, seq.Head, seq.Head.DataType.Size, c.ToInt32(), arrayElementSize, 0, tvField); 
+                handler.MemAccessArrayTrait(null, seq.Head, seq.Head.DataType.Size, c.ToInt32(), arrayElementSize, 0, tvField);
             }
 		}
 

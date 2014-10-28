@@ -45,6 +45,11 @@ namespace Decompiler.Core.Expressions
         public ConditionCode ConditionCode { get; set; }
         public Expression Expression { get; set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitTestCondition(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitTestCondition(this);

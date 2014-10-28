@@ -362,6 +362,14 @@ namespace Decompiler.UnitTests.Typing
             RunTest(m.BuildProgram(), "Typing/TrcoSegmentedPointer.txt");
         }
 
+        [Test]
+        public void TrcoCallTable()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add(new IndirectCallFragment());
+            RunTest(pb.BuildProgram(), "Typing/TrcoCallTable.txt");
+        }
+
 		[Test]
 		public void TrcoIcall()
 		{
@@ -381,7 +389,7 @@ namespace Decompiler.UnitTests.Typing
 				"\ttrait_mem(T_2, 0)" + nl + 
 				"T_2 (in Mem0[pfn:word32] : word32)" + nl +
 				"\ttrait_primitive(word32)" + nl +
-				"\ttrait_primitive(pfn32)" + nl;
+				"\ttrait_primitive((ptr code))" + nl;
             Console.WriteLine(sw.ToString());
 			Assert.AreEqual(exp, sw.ToString());
 		}
@@ -415,10 +423,10 @@ namespace Decompiler.UnitTests.Typing
 				"T_1 (in ds : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_equal(T_2)" + nl +
-				"\ttrait_primitive(upspfn16)" + nl +
+				"\ttrait_primitive(ups16)" + nl +
 				"T_2 (in 0x0800 : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
-				"\ttrait_primitive(upspfn16)" + nl +
+				"\ttrait_primitive(ups16)" + nl +
 				"T_3 (in ds >=u 0x0800 : bool)" + nl +
 				"\ttrait_primitive(bool)" + nl;
 			Assert.AreEqual(exp, sb.ToString());
@@ -447,8 +455,10 @@ namespace Decompiler.UnitTests.Typing
                 "	trait_primitive(ptr32)" + nl +
                 "T_4 (in bx : word16)" + nl +
                 "	trait_primitive(word16)" + nl +
+                "	trait_primitive(ui16)" + nl +
                 "T_5 (in 0x0008 : word16)" + nl +
                 "	trait_primitive(word16)" + nl +
+                "	trait_primitive(ui16)" + nl +
                 "T_6 (in bx * 0x0008 : word16)" + nl +
                 "	trait_primitive(ui16)" + nl +
                 "T_7 (in SEQ(ds, 0x0300)[bx * 0x0008] : word32)" + nl +
@@ -486,15 +496,21 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Complete the test by seeing the return type T_5 to be of type 'struct 3'")]
         public void TrcoCallFunctionWithArraySize()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
-            ProcedureSignature sig = new ProcedureSignature(null, 
+            var m = new ProcedureBuilder();
+            var sig = new ProcedureSignature(null, 
                 m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
-            ExternalProcedure ex = new ExternalProcedure("malloc", sig);
-            ex.Characteristics.ArraySize = new ArraySizeCharacteristic();
-            ex.Characteristics.ArraySize.Argument = "r";
-            ex.Characteristics.ArraySize.Factors = new ArraySizeFactor[1];
-            ex.Characteristics.ArraySize.Factors[0] = new ArraySizeFactor();
-            ex.Characteristics.ArraySize.Factors[0].Constant = "1";
+            var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics
+            {
+                Allocator = true,
+                ArraySize = new ArraySizeCharacteristic
+                {
+                    Argument = "r",
+                    Factors = new ArraySizeFactor[] 
+                    {
+                        new ArraySizeFactor { Constant = "1" }
+                    }
+                }
+            });
 
             Identifier eax = m.Local32("eax");
             var call = m.Assign(eax, m.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), m.Word32(3)));
@@ -516,7 +532,6 @@ namespace Decompiler.UnitTests.Typing
                 "\ttrait_primitive(word32)"; 
             Console.WriteLine(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
-
         }
 
         private TraitCollector CreateCollector()

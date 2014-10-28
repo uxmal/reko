@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Typing
 		private ExpressionNormalizer aen;
 
 		[Test]
-		public void SimpleArray()
+		public void EnSimpleArray()
 		{
 			Identifier globals = m.Local32("globals");
 			Identifier i = m.Local32("idx");
@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void Test2()
+		public void EnTest2()
 		{
 			Identifier p = m.Local32("p");
 			Identifier i = m.Local32("i");
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
         [Test]
-        public void TransformIdentifierPointer()
+        public void EnIdentifierPointer()
         {
             Identifier p = m.Local32("p");
             Expression e = m.Load(PrimitiveType.Word16, p);
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void TransformSegAccessMemPointer()
+        public void EnSegAccessMemPointer()
         {
             Identifier bx = m.Local16("bx");
             Identifier ds = m.Local16("ds");
@@ -75,15 +75,15 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void SegAccessArray()
+        public void EnSegAccessArray()
         {
             Identifier bx = m.Local16("bx");
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Expression e = m.SegMem(PrimitiveType.Int32, ds, m.IAdd(m.IMul(bx, 2), 0x42));
+            Assert.AreEqual("Mem0[ds:bx * 0x0002 + 0x0042:int32]", e.ToString());
             e = e.Accept(aen);
             Assert.AreEqual("SEQ(ds, 0x0042)[bx * 0x0002]", e.ToString());
         }
-
 
 		[SetUp]
 		public void Setup()

@@ -380,6 +380,11 @@ namespace Decompiler.Core.Expressions
 
             public string Label { get; private set; }
 
+            public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+            {
+                throw new NotImplementedException();
+            }
+
             public override T Accept<T>(ExpressionVisitor<T> visitor)
             {
                 throw new NotImplementedException();

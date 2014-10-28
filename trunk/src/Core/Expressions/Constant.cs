@@ -78,6 +78,11 @@ namespace Decompiler.Core.Expressions
             throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
         }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitConstant(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitConstant(this);
@@ -200,7 +205,7 @@ namespace Decompiler.Core.Expressions
                     return ToFloat() < 0.0F;
                 else if (p == PrimitiveType.Real64)
                     return ToDouble() < 0.0;
-                else if (p.Domain == Domain.Pointer || p.Domain == Domain.PtrCode)
+                else if (p.Domain == Domain.Pointer)
                     return false;
                 else
 					throw new InvalidOperationException(string.Format("Type {0} can't be negative", DataType));

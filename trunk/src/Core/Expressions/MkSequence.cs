@@ -40,6 +40,11 @@ namespace Decompiler.Core.Expressions
         public Expression Head { get; private set; }
         public Expression Tail { get; private set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitMkSequence(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitMkSequence(this);

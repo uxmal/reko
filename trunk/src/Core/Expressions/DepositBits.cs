@@ -40,6 +40,11 @@ namespace Decompiler.Core.Expressions
 			this.bitCount = bitCount;
 		}
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitDepositBits(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitDepositBits(this);

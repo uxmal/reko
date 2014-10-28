@@ -38,6 +38,11 @@ namespace Decompiler.Core.Expressions
         public Expression Array { get; private set; }
         public Expression Index { get; private set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitArrayAccess(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitArrayAccess(this);

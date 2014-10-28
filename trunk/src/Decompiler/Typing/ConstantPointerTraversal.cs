@@ -56,8 +56,12 @@ namespace Decompiler.Typing
         }
 
         public ConstantPointerTraversal(Program program) 
-            : this(program.Architecture, (StructureType) program.Globals.TypeVariable.DataType, program.Image)
         {
+            this.arch = program.Architecture;
+            var ptr = (Pointer) program.Globals.TypeVariable.DataType;
+            this.globalStr = (StructureType)((EquivalenceClass) ptr.Pointee).DataType;
+            this.image = program.Image;
+            this.Discoveries = new List<StructureField>();
         }
 
         public List<StructureField> Discoveries { get; private set; }
@@ -98,6 +102,11 @@ namespace Decompiler.Typing
             }
         }
 
+        public IEnumerable<WorkItem> VisitCode(CodeType c)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<WorkItem> VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
@@ -127,7 +136,7 @@ namespace Decompiler.Typing
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
             var rdr = arch.CreateImageReader(image, (uint) gOffset - image.BaseAddress.Linear);
-            if (!rdr.IsValidOffset((uint) ptr.Size))
+            if (!rdr.IsValid)
                 return null;
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));    //$REVIEW:Endianess?
             int offset = c.ToInt32();

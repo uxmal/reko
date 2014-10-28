@@ -41,6 +41,11 @@ namespace Decompiler.Core.Expressions
         public Expression Left { get; set; }
         public Expression Right { get; set; }
 
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitBinaryExpression(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitBinaryExpression(this);

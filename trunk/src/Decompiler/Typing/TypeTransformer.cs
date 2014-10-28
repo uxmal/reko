@@ -277,6 +277,11 @@ namespace Decompiler.Typing
             return arr;
         }
 
+        public DataType VisitCode(CodeType c)
+        {
+            return c;
+        }
+
         public DataType VisitEnum(EnumType e)
         {
             return e;

@@ -35,7 +35,6 @@ namespace Decompiler.Core
 			this.Offset = off;
 		}
 
-
         public Address(PrimitiveType size, uint bitPattern) : base(size)
         {
             this.Offset = bitPattern;
@@ -51,7 +50,6 @@ namespace Decompiler.Core
             throw new NotImplementedException("We need separate classes for addresses.");
         }
 
-
 		public Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = seg;
@@ -59,6 +57,11 @@ namespace Decompiler.Core
 			if (seg != 0)
 				this.Offset = (ushort) off;
 		}
+
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitAddress(this, context);
+        }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {

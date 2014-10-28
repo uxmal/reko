@@ -140,6 +140,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_MarkAreaWithType()
         {
+            Given_Architecture();
             Given_Interactor();
             Given_Image();
             interactor.SetTypeAtAddressRange(addrBase, "i32");
@@ -166,6 +167,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_NavigateToAddress()
         {
+            Given_Architecture();
             Given_Interactor();
             Given_Image();
 
