@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
+using Decompiler.UnitTests.Fragments;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -199,7 +200,7 @@ namespace Decompiler.UnitTests.Typing
         public void TerVector()
         {
             ProgramBuilder mock = new ProgramBuilder();
-            mock.Add(new VectorMock());
+            mock.Add(new VectorFragment());
             RunTest(mock.BuildProgram(), "Typing/TerVector.txt");
         }
 
@@ -428,6 +429,23 @@ namespace Decompiler.UnitTests.Typing
             pb.Add(new IndirectCallFragment());
             RunTest(pb.BuildProgram(), "Typing/TerCallTable.txt");
         }
+
+
+        [Test]
+        public void TerSegmentedCall()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add(new SegmentedCallFragment());
+            RunTest(pb.BuildProgram(), "Typing/TerSegmentedCall.txt");
+        }
+
+        [Test]
+        public void TerPointerChain()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add(new PointerChainFragment());
+            RunTest(pb.BuildProgram(), "Typing/TerPointerChain.txt");
+        }
     }
 
 	public class SegmentedMemoryPointerMock : ProcedureBuilder
@@ -479,23 +497,5 @@ namespace Decompiler.UnitTests.Typing
 			Store(SegMemW(Seg(0x800), Int16(0x0066)), SegMemW(Seg(0x0800), Int16(0x5420)));
 		}
 	}
-
-    public class IndirectCallFragment : ProcedureBuilder
-    {
-        protected override void BuildBody()
-        {
-                var ds = Local(PrimitiveType.SegmentSelector, "ds");
-                var cx = Local16("cx");
-                var di = Local16("di");
-                Call(
-                    Seq(
-                        Constant.Create(PrimitiveType.SegmentSelector, 0x2700),
-                        this.Array(
-                            PrimitiveType.Word16,
-                            Seq(ds, Word16(0x2040)),
-                            IMul(di, 2))));
-                Return();
-        }
-    }
 }
  

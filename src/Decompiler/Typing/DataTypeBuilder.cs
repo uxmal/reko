@@ -51,11 +51,6 @@ namespace Decompiler.Typing
             this.arch = arch;
 		}
 
-		public UnionType MakeUnion(DataType a, DataType b)
-		{
-			throw new NotImplementedException();
-		}
-
 		public void BuildEquivalenceClassDataTypes()
 		{
             store.BuildEquivalenceClassDataTypes(factory);

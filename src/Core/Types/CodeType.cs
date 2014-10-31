@@ -22,28 +22,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Decompiler.Core;
-using Decompiler.Core.Types;
-using Decompiler.Core.Expressions;
-using Decompiler.UnitTests.Mocks;
 
-namespace Decompiler.UnitTests.Fragments
+namespace Decompiler.Core.Types
 {
-    public class IndirectCallFragment : ProcedureBuilder
+    /// <summary>
+    /// Denotes a blob of executable code. The targets of gotos and functions 
+    /// point to this. The types of BasicBlocks are this.
+    /// </summary>
+    public class CodeType : DataType
     {
-        protected override void BuildBody()
+        public CodeType()
         {
-            var ds = Local(PrimitiveType.SegmentSelector, "ds");
-            var cx = Local16("cx");
-            var di = Local16("di");
-            Call(
-                Seq(
-                    Constant.Create(PrimitiveType.SegmentSelector, 0x2700),
-                    this.Array(
-                        PrimitiveType.Word16,
-                        Seq(ds, Word16(0x2040)),
-                        IMul(di, 2))));
-            Return();
+        }
+
+        public override int Size {get; set; }
+
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitCode(this);
+        }
+
+        public override DataType Clone()
+        {
+            return new CodeType { Size = this.Size } ;
         }
     }
 }

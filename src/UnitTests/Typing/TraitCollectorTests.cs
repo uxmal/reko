@@ -30,6 +30,7 @@ using Decompiler.Arch.X86;
 using Decompiler.Scanning;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.UnitTests.Fragments;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -40,7 +41,7 @@ namespace Decompiler.UnitTests.Typing
 	public class TraitCollectorTests : TypingTestBase
 	{
 		private TraitCollector coll;
-        private MockTraitHandler handler;
+        private TestTraitHandler handler;
 		private ExpressionNormalizer en;
 		private EquivalenceClassBuilder eqb;
 		private readonly string nl;
@@ -370,6 +371,14 @@ namespace Decompiler.UnitTests.Typing
             RunTest(pb.BuildProgram(), "Typing/TrcoCallTable.txt");
         }
 
+        [Test]
+        public void TrcoSegmentedCall()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add(new SegmentedCallFragment());
+            RunTest(pb.BuildProgram(), "Typing/TrcoSegmentedCall.txt");
+        }
+
 		[Test]
 		public void TrcoIcall()
 		{
@@ -383,13 +392,13 @@ namespace Decompiler.UnitTests.Typing
 			icall.Accept(coll);
 			StringWriter sw = new StringWriter();
 			handler.Traits.Write(sw);
-			string exp =
-				"T_1 (in pfn : word32)" + nl +
-				"\ttrait_primitive(word32)" + nl +
-				"\ttrait_mem(T_2, 0)" + nl + 
-				"T_2 (in Mem0[pfn:word32] : word32)" + nl +
-				"\ttrait_primitive(word32)" + nl +
-				"\ttrait_primitive((ptr code))" + nl;
+            string exp =
+                "T_1 (in pfn : word32)" + nl +
+                "\ttrait_primitive(word32)" + nl +
+                "\ttrait_mem(T_2, 0)" + nl +
+                "T_2 (in Mem0[pfn:word32] : word32)" + nl +
+                "\ttrait_primitive((ptr code))" + nl +
+                "\ttrait_primitive(word32)" + nl;
             Console.WriteLine(sw.ToString());
 			Assert.AreEqual(exp, sw.ToString());
 		}
@@ -543,13 +552,13 @@ namespace Decompiler.UnitTests.Typing
         {
             en = new ExpressionNormalizer(prog.Architecture.PointerType);
             eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
-            handler = new MockTraitHandler(prog.TypeStore);
+            handler = new TestTraitHandler(prog.TypeStore);
             return new TraitCollector(prog.TypeFactory, prog.TypeStore, handler, prog);
         }
 
         private ITraitHandler CreateHandler(TypeStore store)
         {
-            return new MockTraitHandler(store);
+            return new TestTraitHandler(store);
         }
 
         protected override void RunTest(Program prog, string outFile)
@@ -607,11 +616,11 @@ namespace Decompiler.UnitTests.Typing
 		}
 	}
 
-    public class MockTraitHandler : ITraitHandler
+    public class TestTraitHandler : ITraitHandler
     {
         private TypeFactory factory = new TypeFactory();
 
-        public MockTraitHandler(TypeStore store)
+        public TestTraitHandler(TypeStore store)
         {
             this.Traits = new TraitMapping(store);
         }

@@ -1,6 +1,6 @@
-ï»¿#region License
+#region License
 /* 
- * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2014 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,32 +18,27 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Decompiler.Core;
+using Decompiler.Core.Code;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
-using Decompiler.Core.Expressions;
 using Decompiler.UnitTests.Mocks;
+using System;
 
 namespace Decompiler.UnitTests.Fragments
 {
-    public class IndirectCallFragment : ProcedureBuilder
-    {
-        protected override void BuildBody()
-        {
-            var ds = Local(PrimitiveType.SegmentSelector, "ds");
-            var cx = Local16("cx");
-            var di = Local16("di");
-            Call(
-                Seq(
-                    Constant.Create(PrimitiveType.SegmentSelector, 0x2700),
-                    this.Array(
-                        PrimitiveType.Word16,
-                        Seq(ds, Word16(0x2040)),
-                        IMul(di, 2))));
-            Return();
-        }
-    }
+	public class VectorFragment : ProcedureBuilder
+	{
+		// Compute the sum of the members of a vector.
+		protected override void BuildBody()
+		{
+			var v = Local32("v");
+			var sum = Local32("mod");
+			PrimitiveType fl = PrimitiveType.Real32;
+
+			Assign(sum, IAdd(Load(fl, v),
+						IAdd(Load(fl, IAdd(v, 4)),
+							Load(fl, IAdd(v, 8)))));
+
+		}
+	}
 }

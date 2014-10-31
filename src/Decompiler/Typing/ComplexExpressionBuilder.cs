@@ -43,10 +43,9 @@ namespace Decompiler.Typing
 		private DataType dt;                // Data type of the complex expression
 		private DataType dtOriginal;
 		private Expression basePointer;     // (possibly null) 'base' in Segmented address.
-		private Expression complexExp;      // 
-        private Expression indexExp;
+		private Expression complexExp;      // The "root" expression we will wrap with 
+        private Expression indexExp;        // if not null, an index expression to use for arrays.
 		private int offset;
-        //private Expression result;
 		private bool dereferenced;
 		private bool seenPtr;
         private DataTypeComparer comp; 
@@ -70,9 +69,12 @@ namespace Decompiler.Typing
             this.comp = new DataTypeComparer();
         }
 
-		public Expression BuildComplex()
+        [Obsolete("Get rid of the tv parameter; all expressions should be typed appropriately.")]
+		public Expression BuildComplex(TypeVariable tv)
 		{
-			return dt.Accept(this);
+            var exp = dt.Accept(this);
+           // exp.TypeVariable = tv;
+            return exp;
 		}
 
 		private Expression CreateDereference(DataType dt, Expression e)
@@ -112,6 +114,7 @@ namespace Decompiler.Typing
 			seenPtr = true;
             Expression result;
 			if (dtPointee is PrimitiveType || dtPointee is Pointer || dtPointee is MemberPointer ||
+                dtPointee is CodeType ||
                 comp.Compare(dtPtr, dtResult) == 0)
 			{
                 if (offset == 0 || offset % dtPointee.Size == 0)
@@ -119,7 +122,7 @@ namespace Decompiler.Typing
                     int idx = offset == 0
                         ? 0
                         : offset / dtPointee.Size;
-                    if (idx == 0)
+                    if (idx == 0 && this.indexExp == null)
                     {
                         if (Dereferenced)
                             result = CreateDereference(dtPointee, complexExp);
@@ -128,7 +131,7 @@ namespace Decompiler.Typing
                     }
                     else
                     {
-                        result = CreateArrayAccess(dtPointee, dtPtr, idx, null, Dereferenced);
+                        result = CreateArrayAccess(dtPointee, dtPtr, idx, indexExp, Dereferenced);
                     }
                 }
                 else
@@ -138,6 +141,7 @@ namespace Decompiler.Typing
 			}
 			else
 			{
+                // Drill down.
 				dtOriginal = dtPointeeOriginal;
 				complexExp = CreateDereference(dtPointee, complexExp);
 				bool deref = Dereferenced;

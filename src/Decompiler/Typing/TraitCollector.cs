@@ -197,12 +197,12 @@ namespace Decompiler.Typing
 
 		public DataType VisitCallInstruction(CallInstruction call)
 		{
-            call.Callee.Accept(this);
-            return handler.DataTypeTrait(
+            handler.DataTypeTrait(
                 call.Callee, 
                 new Pointer(
                     new CodeType(), 
                     prog.Architecture.PointerType.Size));
+            return call.Callee.Accept(this);
         }
 
         public DataType VisitGotoInstruction(GotoInstruction g)

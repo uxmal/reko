@@ -62,7 +62,6 @@ namespace Decompiler.Typing
 			}
 		}
 
-
 		public override DataType VisitTypeVariable(TypeVariable tv)
 		{
 			return tv.Class;

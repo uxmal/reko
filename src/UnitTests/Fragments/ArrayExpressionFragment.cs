@@ -29,21 +29,15 @@ using Decompiler.UnitTests.Mocks;
 
 namespace Decompiler.UnitTests.Fragments
 {
-    public class IndirectCallFragment : ProcedureBuilder
+    public class ArrayExpressionFragment : ProcedureBuilder
     {
         protected override void BuildBody()
         {
-            var ds = Local(PrimitiveType.SegmentSelector, "ds");
-            var cx = Local16("cx");
-            var di = Local16("di");
-            Call(
-                Seq(
-                    Constant.Create(PrimitiveType.SegmentSelector, 0x2700),
-                    this.Array(
-                        PrimitiveType.Word16,
-                        Seq(ds, Word16(0x2040)),
-                        IMul(di, 2))));
-            Return();
+            var i = this.Temp(PrimitiveType.Int32, "i");
+            var pa = this.Temp(PrimitiveType.Word32, "pa");
+
+            Assign(pa, Word32(0xA0000));
+            Store(IAdd(IAdd(pa, 0x140), i), Byte(0xF8));
         }
     }
 }

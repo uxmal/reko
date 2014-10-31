@@ -206,12 +206,12 @@ namespace Decompiler.Typing
 				if (uDst != null)
 				{
 					var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
-					dst = ceb.BuildComplex();
+					dst = ceb.BuildComplex(tvDst);
 				}
 				else if (uSrc != null)
 				{
 					var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
-					src = ceb.BuildComplex();
+					src = ceb.BuildComplex(tvSrc);
 				}
 				else
 					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
@@ -281,7 +281,7 @@ namespace Decompiler.Typing
                     binExp.Left,
                     null,
                     StructureField.ToOffset(c));
-                return ceb.BuildComplex();
+                return ceb.BuildComplex(binExp.TypeVariable);
             }
             return binExp;
         }
@@ -328,7 +328,7 @@ namespace Decompiler.Typing
                     head,
                     null,
                     StructureField.ToOffset(c));
-                return ceb.BuildComplex();
+                return ceb.BuildComplex(seq.TypeVariable);
             }
             return new MkSequence(seq.DataType, head, tail);
         }

@@ -50,7 +50,7 @@ namespace Decompiler.Typing
 		{
             // Special case for the global variables. In essence,
             // a memory map of all the globals.
-			EnsureTypeVariable(prog.Globals, "globals_t");
+			store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
 
             foreach (Procedure proc in prog.Procedures.Values)
             {
@@ -70,11 +70,6 @@ namespace Decompiler.Typing
 		public TypeVariable EnsureTypeVariable(Expression e)
 		{
 			return store.EnsureExpressionTypeVariable(factory, e);
-		}
-
-		public TypeVariable EnsureTypeVariable(Expression e, string name)
-		{
-			return store.EnsureExpressionTypeVariable(factory, e, name);
 		}
 
 		public override void VisitApplication(Application appl)

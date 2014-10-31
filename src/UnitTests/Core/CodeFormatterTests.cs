@@ -188,5 +188,47 @@ namespace Decompiler.UnitTests.Core
                 "\t} while (bar < 0x00000000);" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
+
+        [Test]
+        public void CfSegmentedAccess()
+        {
+            var es = new Identifier("es", 1, PrimitiveType.SegmentSelector, TemporaryStorage.None);
+            var ds = new Identifier("ds", 1, PrimitiveType.SegmentSelector, TemporaryStorage.None);
+            var bx = new Identifier("bx", 1, PrimitiveType.SegmentSelector, TemporaryStorage.None);
+            var e =  new MemberPointerSelector(
+                PrimitiveType.Word16,
+                m.Deref(es),
+                new MemberPointerSelector(
+                    PrimitiveType.Word16,
+                    m.Deref(ds),
+                    bx));
+            e.Accept(cf);
+            Assert.AreEqual("es->*(ds->*bx)", sw.ToString());
+        }
+
+        [Test]
+        public void CfAssocSub()
+        {
+            var a = new Identifier("a", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var b = new Identifier("b", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var c = new Identifier("c", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var e = m.ISub(a, m.ISub(b, c));
+            e.Accept(cf);
+            Assert.AreEqual("a - (b - c)", sw.ToString());
+        }
+
+        [Test]
+        public void CfMpsAccess()
+        {
+            var a = new Identifier("a", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var b = new Identifier("b", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var c = new Identifier("c", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var e = m.Array(
+                PrimitiveType.Byte,
+                m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), "a0004"),
+                c);
+            e.Accept(cf);
+            Assert.AreEqual("(a->*b).a0004[c]", sw.ToString());
+        }
 	}
 }

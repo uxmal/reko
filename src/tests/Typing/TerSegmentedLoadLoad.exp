@@ -15,7 +15,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	ds->w0300 = ds->*ds->*bx;
+	ds->w0300 = ds->*(ds->*bx);
 	return
 	// succ:  proc1_exit
 proc1_exit:

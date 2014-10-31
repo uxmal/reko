@@ -1,20 +1,20 @@
 // Before ///////
-// VectorMock
-void VectorMock()
-VectorMock_entry:
+// VectorFragment
+void VectorFragment()
+VectorFragment_entry:
 	// succ:  l1
 l1:
-	mod = Mem0[v:real32] + Mem0[v + 0x00000004:real32] + Mem0[v + 0x00000008:real32]
-VectorMock_exit:
+	mod = Mem0[v:real32] + (Mem0[v + 0x00000004:real32] + Mem0[v + 0x00000008:real32])
+VectorFragment_exit:
 
 // After ///////
-// VectorMock
-void VectorMock()
-VectorMock_entry:
+// VectorFragment
+void VectorFragment()
+VectorFragment_entry:
 	// succ:  l1
 l1:
-	mod = v->r0000 + v->r0004 + v->r0008;
-VectorMock_exit:
+	mod = v->r0000 + (v->r0004 + v->r0008);
+VectorFragment_exit:
 
 // Equivalence classes ////////////
 Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))
@@ -68,7 +68,7 @@ T_12: (in v->r0004 + v->r0008 : real32)
   Class: Eq_12
   DataType: real32
   OrigDataType: real32
-T_13: (in v->r0000 + v->r0004 + v->r0008 : real32)
+T_13: (in v->r0000 + (v->r0004 + v->r0008) : real32)
   Class: Eq_13
   DataType: real32
   OrigDataType: real32

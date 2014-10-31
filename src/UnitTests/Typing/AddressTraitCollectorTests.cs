@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Typing
 		private TypeStore store;
 		private ProcedureBuilder m;
 		private AddressTraitCollector atrco;
-		private MockTraitHandler handler;
+		private TestTraitHandler handler;
 		private EquivalenceClassBuilder eqb;
 
 		[Test]
@@ -158,7 +158,7 @@ namespace Decompiler.UnitTests.Typing
             prog.Architecture = new FakeArchitecture();
 			factory = prog.TypeFactory;
 			store = prog.TypeStore;
-			handler = new MockTraitHandler(store);
+			handler = new TestTraitHandler(store);
 			eqb = new EquivalenceClassBuilder(factory, store);
 			store.EnsureExpressionTypeVariable(factory, prog.Globals);
 			

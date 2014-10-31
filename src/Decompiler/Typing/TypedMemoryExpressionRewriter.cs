@@ -79,7 +79,7 @@ namespace Decompiler.Typing
                 null, 
                 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(typeVariable);
         }
 
         private Expression RescaleIndex(Expression idx, DataType dtElement)
@@ -176,17 +176,18 @@ namespace Decompiler.Typing
             {
                 var binLeft = binExp.Left.Accept(ter);
                 var binRight = binExp.Right.Accept(ter);
+                var cRight = binRight as Constant;
                 ceb = new ComplexExpressionBuilder(
                     binExp.DataType,
                     tvLeft.DataType,
                     tvLeft.OriginalDataType,
                     basePointer,
                     binLeft,
-                    null,
+                    cRight != null ? null : binRight,
                     StructureField.ToOffset(binRight as Constant));
             }
             ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(binExp.TypeVariable);
         }
 		
 
@@ -223,7 +224,7 @@ namespace Decompiler.Typing
                     null,
                     StructureField.ToOffset(c));
                 ceb.Dereferenced = dereferenced;
-                return ceb.BuildComplex();
+                return ceb.BuildComplex(c.TypeVariable);
             }
             else
             {
@@ -254,7 +255,7 @@ namespace Decompiler.Typing
 				id.TypeVariable.OriginalDataType,
 				basePointer, id, null, 0);
 			ceb.Dereferenced = true;
-			return ceb.BuildComplex();
+			return ceb.BuildComplex(id.TypeVariable);
 		}
 
 		public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
@@ -262,10 +263,19 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
-		public Expression VisitMemoryAccess(MemoryAccess access)
-		{
-			throw new NotImplementedException();
-		}
+        public Expression VisitMemoryAccess(MemoryAccess access)
+        {
+            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(arch, store, globals);
+            Expression e = r.Rewrite(access);
+            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                dtResult,
+                e.DataType,
+                e.DataType,
+                null,
+                e, null, 0);
+            ceb.Dereferenced = true;
+            return ceb.BuildComplex(access.TypeVariable);
+        }
 
 		public Expression VisitMkSequence(MkSequence seq)
 		{
@@ -303,7 +313,7 @@ namespace Decompiler.Typing
                 basePointer,
                 e, null, 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex();
+            return ceb.BuildComplex(access.TypeVariable);
 		}
 
 		public Expression VisitScopeResolution(ScopeResolution scope)
