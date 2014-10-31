@@ -25,6 +25,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
+using Decompiler.UnitTests.Fragments;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -509,7 +510,6 @@ namespace Decompiler.UnitTests.Typing
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/DtbSignedCompare.txt");
-
         }
 
         [Test]

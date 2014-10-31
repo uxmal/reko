@@ -90,6 +90,11 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Cor, PrimitiveType.Bool, a, b);
         }
 
+        public Dereference Deref(Expression a)
+        {
+            return new Dereference(a.DataType, a);
+        }
+
         public DepositBits Dpb(Expression dst, Expression src, int offset, int bitCount)
         {
             return new DepositBits(dst, src, offset, bitCount);
@@ -108,6 +113,11 @@ namespace Decompiler.Core.Expressions
         public BinaryExpression Eq0(Expression exp)
         {
             return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, Constant.Create(exp.DataType, 0));
+        }
+
+        public FieldAccess Field(DataType dt, Expression e, string name)
+        {
+            return new FieldAccess(dt, e, name);
         }
 
         public Application Fn(Expression e, params Expression[] exps)

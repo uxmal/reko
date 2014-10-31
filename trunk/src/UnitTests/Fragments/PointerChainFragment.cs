@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,28 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Decompiler.Core;
+using Decompiler.Core.Types;
+using Decompiler.Core.Expressions;
+using Decompiler.UnitTests.Mocks;
 
-namespace Decompiler.UnitTests.Typing
+namespace Decompiler.UnitTests.Fragments
 {
-	public class VectorMock : ProcedureBuilder
-	{
-		// Compute the sum of the members of a vector.
-		protected override void BuildBody()
-		{
-			var v = Local32("v");
-			var sum = Local32("mod");
-			PrimitiveType fl = PrimitiveType.Real32;
-
-			Assign(sum, IAdd(Load(fl, v),
-						IAdd(Load(fl, IAdd(v, 4)),
-							Load(fl, IAdd(v, 8)))));
-
-		}
-	}
+    public class PointerChainFragment : ProcedureBuilder
+    {
+        protected override void BuildBody()
+        {
+            var r1 = Register(1);
+            var r2 = Register(2);
+            var r3 = Register(3);
+            var r4 = Register(4);
+            Assign(r2, Cast(r2.DataType, LoadB(IAdd(LoadDw(IAdd(LoadDw(IAdd(r1, 4)), 8)), 16))));
+            Assign(r4, Cast(r4.DataType, LoadW(LoadDw(LoadDw(LoadDw(r3))))));
+            Return();
+        }
+    }
 }

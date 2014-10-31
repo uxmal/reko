@@ -520,6 +520,8 @@
     </Compile>
     <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
     <Compile Include="Typing\ConstantPointerTraversal.cs" />
+    <Compile Include="Typing\ExpressionTypeAscender.cs" />
+    <Compile Include="Typing\ExpressionTypeDescender.cs" />
     <Compile Include="Typing\StructureFieldMerger.cs" />
     <Compile Include="Structure\StructureNode.cs">
       <SubType>Code</SubType>
@@ -568,9 +570,7 @@
     <Compile Include="Typing\TypedExpressionRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\TypedMemoryExpressionRewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Typing\TypedMemoryExpressionRewriter.cs" />
     <Compile Include="Typing\TypeInferenceException.cs">
       <SubType>Code</SubType>
     </Compile>

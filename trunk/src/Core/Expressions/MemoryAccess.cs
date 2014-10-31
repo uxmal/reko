@@ -95,6 +95,12 @@ namespace Decompiler.Core.Expressions
 
         public Expression BasePointer { get; set; }         // Segment selector
 
+
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        {
+            return v.VisitSegmentedAccess(this, context);
+        }
+
         public override T Accept<T>(ExpressionVisitor<T> visit)
         {
             return visit.VisitSegmentedAccess(this);

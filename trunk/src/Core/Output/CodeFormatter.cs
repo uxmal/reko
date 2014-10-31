@@ -35,11 +35,15 @@ namespace Decompiler.Core.Output
 	/// </summary>
 	public class CodeFormatter : InstructionVisitor, IAbsynVisitor, IExpressionVisitor
 	{
+        private enum Assoc { None, Left, Right };
+
 		private int precedenceCur = PrecedenceLeast;
+        private bool forceParensIfSamePrecedence = false;
         private Formatter writer;
 
         //$TODO: move this to a language-specific class.
 		private static Dictionary<Operator,int> precedences;
+        private static Assoc [] associativities;
 
 		private const int PrecedenceApplication = 1;
 		private const int PrecedenceArrayAccess = 1;
@@ -48,6 +52,7 @@ namespace Decompiler.Core.Output
 		private const int PrecedenceMemberPointerSelector = 3;
 		private const int PrecedenceCase = 2;
 		private const int PrecedenceLeast = 20;
+
         private TypeGraphWriter typeWriter;
 
 		public CodeFormatter(Formatter writer)
@@ -101,11 +106,21 @@ namespace Decompiler.Core.Output
 			precedences[Operator.Or] = 11;
 			precedences[Operator.Cand] = 12;
 			precedences[Operator.Cor] = 13;
+
+            associativities = new [] {
+                Assoc.Left,     // Scope
+                Assoc.Left,     // array, application
+                Assoc.Right,    // Unary
+                Assoc.Left,     // member pointer deref
+                Assoc.Left,     // mul
+
+            };
 		}
 
 		private void ResetPresedence(int precedenceOld)
 		{
-			if (precedenceOld < precedenceCur)
+			if (precedenceOld < precedenceCur ||
+                (forceParensIfSamePrecedence && precedenceCur == precedenceOld))
 			{
 				writer.Write(")");
 			}
@@ -114,7 +129,8 @@ namespace Decompiler.Core.Output
 
 		private int SetPrecedence(int precedence)
 		{
-			if (precedenceCur < precedence)
+			if (precedenceCur < precedence ||
+                (forceParensIfSamePrecedence && precedenceCur == precedence))
 			{
 				writer.Write("(");
 			}
@@ -164,7 +180,10 @@ namespace Decompiler.Core.Output
 			int prec = SetPrecedence((int) precedences[binExp.Operator]);
 			binExp.Left.Accept(this);
 			writer.Write(BinaryExpression.OperatorToString(binExp.Operator));
-			binExp.Right.Accept(this);
+            var old = forceParensIfSamePrecedence;
+            forceParensIfSamePrecedence = true;
+            binExp.Right.Accept(this);
+            forceParensIfSamePrecedence = old;
 			ResetPresedence(prec);
 		}
 
@@ -272,8 +291,11 @@ namespace Decompiler.Core.Output
 				mps.BasePointer.Accept(this);
 				writer.Write(".*");
 			}
+            var old = forceParensIfSamePrecedence;
+            forceParensIfSamePrecedence = true;
 			mps.MemberPointer.Accept(this);
-			ResetPresedence(prec);
+            forceParensIfSamePrecedence = old;
+            ResetPresedence(prec);
 		}
 
 		public void VisitIdentifier(Identifier id)

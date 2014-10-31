@@ -116,11 +116,11 @@ namespace Decompiler.Core.Types
 			switch (byteSize)
 			{
 			case 1:
-				w = Domain.Boolean|Domain.Character|Domain.Integer|Domain.UnsignedInt;
+				w = Domain.Boolean|Domain.Character|Domain.Integer;
 				name = "byte";
 				break;
 			case 2:
-				w = Domain.Integer|Domain.Pointer|Domain.Selector;
+				w = Domain.Character|Domain.Integer|Domain.Pointer|Domain.Selector;
 				name = "word16";
 				break;
 			case 4:
@@ -132,11 +132,11 @@ namespace Decompiler.Core.Types
 				name = "word64";
 				break;
             case 16:
-                w = Domain.Integer | Domain.Real;
+                w = Domain.Integer|Domain.Real;
                 name = "word128";
                 break;
             case 32:
-                w = Domain.Integer| Domain.Real;
+                w = Domain.Integer|Domain.Real;
                 name = "word256";
                 break;
             default:

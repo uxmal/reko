@@ -58,7 +58,8 @@ namespace Decompiler.Core.Code
 
 		public virtual Instruction TransformCallInstruction(CallInstruction ci)
 		{
-			return ci;
+			ci.Callee = ci.Callee.Accept(this);
+            return ci;
 		}
 
 		public virtual Instruction TransformDeclaration(Declaration decl)

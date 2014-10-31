@@ -170,6 +170,11 @@ namespace Decompiler.Core
             return Frame.EnsureStackLocal(localStackOffset, PrimitiveType.Word32, name);
         }
 
+        public Identifier Temp(DataType type, string name)
+        {
+            return Frame.CreateTemporary(name, type);
+        }
+
         public Statement Use(Identifier id)
         {
             return Emit(new UseInstruction(id));

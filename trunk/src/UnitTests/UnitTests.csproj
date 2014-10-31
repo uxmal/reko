@@ -157,7 +157,10 @@
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
+    <Compile Include="Fragments\ArrayExpressionFragment.cs" />
     <Compile Include="Fragments\IndirectCall.cs" />
+    <Compile Include="Fragments\PointerChainFragment.cs" />
+    <Compile Include="Fragments\SegmentedCallFragment.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
@@ -423,7 +426,9 @@
     <Compile Include="Typing\DataTypeBuilderTests.cs" />
     <Compile Include="Typing\DerivedPointerAnalysisTests.cs" />
     <Compile Include="Typing\EquivalenceClassBuilderTests.cs" />
+    <Compile Include="Typing\ExpressionTypeAscenderTests.cs" />
     <Compile Include="Typing\ExpressionNormalizerTests.cs" />
+    <Compile Include="Typing\ExpressionTypeDescenderTests.cs" />
     <Compile Include="Typing\GlobalVariablesMock.cs" />
     <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
     <Compile Include="Typing\PtrPrimitiveReplacerTests.cs" />
@@ -447,7 +452,7 @@
     <Compile Include="Typing\UnifierTests.cs" />
     <Compile Include="Typing\UnionIntRealMock.cs" />
     <Compile Include="Typing\UnionPointersStructuresMatcherTests.cs" />
-    <Compile Include="Typing\VectorMock.cs" />
+    <Compile Include="Fragments\VectorFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

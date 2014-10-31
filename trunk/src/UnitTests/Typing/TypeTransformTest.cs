@@ -25,6 +25,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
+using Decompiler.UnitTests.Fragments;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -36,7 +37,6 @@ namespace Decompiler.UnitTests.Typing
 	{
 		private TypeFactory factory;
 		private TypeStore store;
-
 
 		[SetUp]
 		public void SetUp()
@@ -287,6 +287,22 @@ namespace Decompiler.UnitTests.Typing
                 m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
             });
             RunTest(pp.BuildProgram(), "Typing/TtranArrayConstantPointers.txt");
+        }
+
+        [Test]
+        public void TtranSegmentedCall()
+        {
+            var m = new ProgramBuilder();
+            m.Add(new SegmentedCallFragment());
+            RunTest(m.BuildProgram(), "Typing/TtranSegmentedCall.txt");
+        }
+
+        [Test]
+        public void TtranArrayExpression()
+        {
+            var m = new ProgramBuilder();
+            m.Add(new ArrayExpressionFragment());
+            RunTest(m.BuildProgram(), "Typing/TtranArrayExpression.txt");
         }
 
 		protected override void RunTest(Program program, string outputFileName)

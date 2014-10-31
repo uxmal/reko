@@ -42,8 +42,16 @@ namespace Decompiler.UnitTests.Typing
 			point = new StructureType(null, 0);
 			point.Fields.Add(0, PrimitiveType.Word32, null);
 			point.Fields.Add(4, PrimitiveType.Word32, null);
-
 		}
+
+        private Expression Wrap(Expression e)
+        {
+            store.EnsureExpressionTypeVariable(factory, e);
+            e.TypeVariable.DataType = e.DataType;
+            e.TypeVariable.OriginalDataType = e.DataType;
+            return e;
+        }
+
 		[Test]
 		public void PointerToSingleItem()
 		{
@@ -54,11 +62,11 @@ namespace Decompiler.UnitTests.Typing
 			eq.DataType = point;
 			tv.DataType = new Pointer(eq, 4);
 
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
-            MemoryAccess access = new MemoryAccess(ptr, PrimitiveType.Word32);
-            TypeVariable tvAccess = store.EnsureExpressionTypeVariable(factory, access);
+			TypedExpressionRewriter tmer = new TypedExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
+            var access = Wrap(new MemoryAccess(ptr, PrimitiveType.Word32));
+            TypeVariable tvAccess = access.TypeVariable;
             tvAccess.DataType = PrimitiveType.Word32;
-            Expression e = tmer.Rewrite(access);
+            Expression e = access.Accept(tmer);
 			Assert.AreEqual("ptr->dw0000", e.ToString());
 		}
 
@@ -72,17 +80,11 @@ namespace Decompiler.UnitTests.Typing
 			ptr.TypeVariable.OriginalDataType = new Pointer(point, 4);
 			ptr.TypeVariable.DataType = new Pointer(eqPtr, 4);
 
-			Constant c = Constant.Word32(4);
-			store.EnsureExpressionTypeVariable(factory, c);
-			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-			c.TypeVariable.DataType = PrimitiveType.Word32;
-			BinaryExpression bin = new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c);
-			store.EnsureExpressionTypeVariable(factory, bin, null);
-			bin.TypeVariable.DataType = bin.DataType;
-			bin.TypeVariable.OriginalDataType = bin.DataType;
-
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
-			Expression e = bin.Accept(tmer);
+			var c = Wrap(Constant.Word32(4));
+			var bin = Wrap(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
+            var mem = Wrap(new MemoryAccess(bin, PrimitiveType.Word32));
+			var tmer = new TypedExpressionRewriter(new Mocks.FakeArchitecture(), store, null);
+			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());
 		}
 	}

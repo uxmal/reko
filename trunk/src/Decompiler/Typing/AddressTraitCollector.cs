@@ -39,7 +39,7 @@ namespace Decompiler.Typing
 		private Program prog;
 
         private Expression basePointer;
-        private Expression tvField;
+        private Expression eField;
 		private bool arrayContext;
 		private int basePointerSize;
 		private int arrayElementSize;
@@ -54,18 +54,18 @@ namespace Decompiler.Typing
 			this.arrayContext = false;
 		}
 
-		public void Collect(Expression tvBasePointer, int basePointerSize, Expression tvField, Expression effectiveAddress)
+		public void Collect(Expression tvBasePointer, int basePointerSize, Expression eField, Expression effectiveAddress)
 		{
 			this.basePointer = tvBasePointer;
 			this.basePointerSize = basePointerSize;
-			this.tvField = tvField;
+			this.eField = eField;
 			effectiveAddress.Accept(this);
 		}
 
 		public void CollectArray(Expression tvBasePointer, Expression tvField, Expression arrayBase, int elementSize, int length)
 		{
 			this.basePointer = tvBasePointer;
-			this.tvField = tvField;
+			this.eField = tvField;
 			bool c = arrayContext;
 			arrayContext = true;
 			arrayElementSize = elementSize;
@@ -77,14 +77,14 @@ namespace Decompiler.Typing
 		public void EmitAccessTrait(Expression baseExpr, Expression memPtr, int ptrSize, int offset)
 		{
 			if (arrayContext)
-				handler.MemAccessArrayTrait(baseExpr, memPtr, ptrSize, offset, arrayElementSize, arrayLength, tvField);
+				handler.MemAccessArrayTrait(baseExpr, memPtr, ptrSize, offset, arrayElementSize, arrayLength, eField);
 			else
-				handler.MemAccessTrait(baseExpr, memPtr, ptrSize, tvField, offset);
+				handler.MemAccessTrait(baseExpr, memPtr, ptrSize, eField, offset);
 		}
 
 		public LinearInductionVariable GetInductionVariable(Expression e)
 		{
-			Identifier id = e as Identifier;
+			var id = e as Identifier;
 			if (id == null) return null;
             LinearInductionVariable iv;
             if (!prog.InductionVariables.TryGetValue(id, out iv)) return null;
@@ -101,56 +101,58 @@ namespace Decompiler.Typing
 
 		public void VisitApplication(Application appl)
 		{
-			handler.MemAccessTrait(basePointer, appl, appl.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, appl, appl.DataType.Size, eField, 0);
 		}
 
 		public void VisitArrayAccess(ArrayAccess access)
 		{
-			handler.MemAccessTrait(basePointer, access, access.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.Size, eField, 0);
 		}
 
-		public void VisitBinaryExpression(BinaryExpression bin)
+        public void VisitBinaryExpression(BinaryExpression bin) { VisitBinaryExpression(bin.Operator, bin.DataType, bin.Left, bin.Right); }
+
+		public void VisitBinaryExpression(Operator op, DataType dataType, Expression left, Expression right)
 		{
-			if (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub)
+			if (op == Operator.IAdd || op == Operator.ISub)
 			{
 				// Handle mem[x+const] case. Array accesses of the form
 				// mem[x + (i * const) + const] will have been converted
-				// to ArrayAccesses by this point.
+				// to ArrayAccesses by a previous stage.
 
-				Constant offset = bin.Right as Constant;
+				Constant offset = right as Constant;
 				if (offset != null)
 				{
-                    if (bin.Operator == Operator.ISub)
+                    if (op == Operator.ISub)
                         offset = offset.Negate();
-					LinearInductionVariable iv = GetInductionVariable(bin.Left);
+					var iv = GetInductionVariable(left);
                     if (iv != null)
                     {
-                        VisitInductionVariable((Identifier) bin.Left, iv, offset);
+                        VisitInductionVariable((Identifier) left, iv, offset);
                         return;
                     }
-                    else if (bin.Left is BinaryExpression)
+                    else if (left is BinaryExpression)
                     {
-                        var bl = (BinaryExpression) bin.Left;
+                        var bl = (BinaryExpression) left;
                         //$HACK: we've already done the analysis of the mul operator!
                         // We should be using the returned value of trait collection.
                         if (bl.Operator is IMulOperator)
                         {
                             arrayContext = true;
-                            EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, offset.ToInt32());
+                            EmitAccessTrait(basePointer, left, dataType.Size, offset.ToInt32());
                             return;
                         }
                     }
-                    EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, offset.ToInt32());
+                    EmitAccessTrait(basePointer, left, dataType.Size, offset.ToInt32());
 					return;
 				}
 
 				// Handle odd mem[x + y] case; perhaps a later stage can detect that x (or y)
 				// is a pointer and therefore y isn't.
 
-				EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, 0);
+				EmitAccessTrait(basePointer, left, dataType.Size, 0);
 				return;
 			}
-            throw new TypeInferenceException("Couldn't generate address traits for expression {0}.", bin);
+            throw new TypeInferenceException("Couldn't generate address traits for binary operator {0}.", op);
 		}
 
 		public void VisitCast(Cast cast)
@@ -173,16 +175,16 @@ namespace Decompiler.Typing
         private void HandleConstantOffset(Expression c, int v)
         {
             if (basePointer != null)
-                handler.MemAccessTrait(null, basePointer, basePointerSize, tvField, v);
+                handler.MemAccessTrait(null, basePointer, basePointerSize, eField, v);
             else
-                handler.MemAccessTrait(null, prog.Globals, c.DataType.Size, tvField, v);
+                handler.MemAccessTrait(null, prog.Globals, c.DataType.Size, eField, v);
             // C is a pointer to tvField: [[c]] = ptr(tvField)
-            handler.MemAccessTrait(basePointer, c, c.DataType.Size, tvField, 0);
+            handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField, 0);
         }
 
 		public void VisitDepositBits(DepositBits dpb)
 		{
-			handler.MemAccessTrait(basePointer, dpb, dpb.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, dpb, dpb.DataType.Size, eField, 0);
 		}
 
 		public void VisitDereference(Dereference deref)
@@ -205,7 +207,7 @@ namespace Decompiler.Typing
 		/// <param name="id"></param>
 		public void VisitIdentifier(Identifier id)
 		{
-			LinearInductionVariable iv = GetInductionVariable(id);
+			var iv = GetInductionVariable(id);
 			if (iv != null)
 			{
 				VisitInductionVariable(id, iv, null);
@@ -224,19 +226,21 @@ namespace Decompiler.Typing
             int delta = iv.Delta.ToInt32();
             int offset = StructureField.ToOffset(cOffset);
             var tvBase = (basePointer != null) ? basePointer : prog.Globals;
+            var stride = Math.Abs(delta);
+            int init;
             if (delta < 0)
             {
                 // induction variable is decremented, so the actual array begins at ivFinal - delta.
                 if (iv.Final != null)
                 {
-                    int init = iv.Final.ToInt32() - delta;
+                    init = iv.Final.ToInt32() - delta;
                     if (iv.IsSigned)
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, cOffset.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                        handler.MemAccessArrayTrait(null, tvBase, cOffset.DataType.Size, init + offset, stride, iv.IterationCount, eField);
                     }
                     else
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, stride, iv.IterationCount, eField);
                     }
                 }
             }
@@ -244,16 +248,15 @@ namespace Decompiler.Typing
             {
                 if (iv.Initial != null)
                 {
-                    int init = iv.Initial.ToInt32();
+                    init = iv.Initial.ToInt32();
                     if (iv.IsSigned)
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, cOffset.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                        handler.MemAccessArrayTrait(null, tvBase, cOffset.DataType.Size, init + offset, stride, iv.IterationCount, eField);
                     }
                     else
                     {
-                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, stride, iv.IterationCount, eField);
                     }
-
                 }
             }
             if (iv.IsSigned)
@@ -273,30 +276,22 @@ namespace Decompiler.Typing
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
-			handler.MemAccessTrait(basePointer, mps, mps.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, mps, mps.DataType.Size, eField, 0);
 		}
 
 		public void VisitMkSequence(MkSequence seq)
 		{
-            if (arrayContext)
-            {
-                if (seq.Head.DataType != PrimitiveType.SegmentSelector)
-                    return;
-                Constant c = seq.Tail as Constant;
-                if (c == null)
-                    return;
-                handler.MemAccessArrayTrait(null, seq.Head, seq.Head.DataType.Size, c.ToInt32(), arrayElementSize, 0, tvField);
-            }
+            VisitBinaryExpression(Operator.IAdd, seq.DataType, seq.Head, seq.Tail);
 		}
 
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
-			handler.MemAccessTrait(basePointer, access, access.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.Size, eField, 0);
 		}
 
 		public void VisitSegmentedAccess(SegmentedAccess access)
 		{
-			handler.MemAccessTrait(basePointer, access, access.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.Size, eField, 0);
 		}
 
         public void VisitOutArgument(OutArgument outArg)

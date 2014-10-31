@@ -34,6 +34,7 @@ namespace Decompiler.Arch.M68k
     /// <summary>
     /// Rewrites <seealso cref="M68kInstruction"/>s to <see cref="RtlInstructionCluster"/>s.
     /// </summary>
+    /// http://www.easy68k.com/paulrsm/doc/trick68k.htm
     public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
         // These fields are internal so that the OperandRewriter can use them.
