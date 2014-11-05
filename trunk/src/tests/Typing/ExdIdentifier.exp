@@ -1,6 +1,6 @@
 // Equivalence classes ////////////
 // Type Variables ////////////
-globals_t: (in globals : ptr32)
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: 
   OrigDataType: 

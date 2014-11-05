@@ -37,6 +37,7 @@ namespace Decompiler.Typing
 		private bool changed;
 		private TypeFactory factory;
 		private TypeStore store;
+        private Program program;
 		private Unifier unifier;
 		private DataTypeComparer comparer;
 		private TypeVariable tvCur;
@@ -44,15 +45,16 @@ namespace Decompiler.Typing
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
 
-        public TypeTransformer(TypeFactory factory, TypeStore store)
-            : this(factory, store, new NullDecompilerEventListener())
+        public TypeTransformer(TypeFactory factory, TypeStore store, Program prog)
+            : this(factory, store, prog, new NullDecompilerEventListener())
         {
         }
 
-		public TypeTransformer(TypeFactory factory, TypeStore store, DecompilerEventListener eventListener)
+		public TypeTransformer(TypeFactory factory, TypeStore store, Program program, DecompilerEventListener eventListener)
 		{
 			this.factory = factory;
 			this.store = store;
+            this.program = program;
 			this.eventListener = eventListener;
 			this.unifier = new Unifier(factory);
 			this.comparer = new DataTypeComparer();
@@ -198,7 +200,6 @@ namespace Decompiler.Typing
 					else
 					{
 						strNew.Fields.Add(offset, ut.Simplify());
-
 						offset = f.Offset;
 						ut = new UnionType(null, null);
 						ut.Alternatives.Add(f.DataType);
@@ -226,7 +227,9 @@ namespace Decompiler.Typing
 
 		public void Transform()
 		{
+            var dpa = new DerivedPointerAnalysis(factory, store, program);
 			var ppr = new PtrPrimitiveReplacer(factory, store);
+            dpa.FollowDerivedPointers();
 			ppr.ReplaceAll();
 			int iteration = 0;
 			do

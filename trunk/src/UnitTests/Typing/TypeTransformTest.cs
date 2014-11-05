@@ -33,7 +33,8 @@ using System;
 namespace Decompiler.UnitTests.Typing
 {
 	[TestFixture]
-	public class TypeTransformTests : TypingTestBase
+    [Ignore("Try the new system first")]
+	public class TypeTransformTest : TypingTestBase
 	{
 		private TypeFactory factory;
 		private TypeStore store;
@@ -122,7 +123,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TtranFramePointer()
 		{
 			ProgramBuilder prog = new ProgramBuilder();
-			prog.Add(new FramePointerMock(factory));
+			prog.Add(new FramePointerFragment(factory));
 			RunTest(prog.BuildProgram(), "Typing/TtranFramePointer.txt");
 		}
 
@@ -131,7 +132,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TtranRepeatedLoads()
 		{
 			ProgramBuilder prog = new ProgramBuilder();
-			prog.Add(new RepeatedLoadsMock());
+			prog.Add(new RepeatedLoadsFragment());
 			RunTest(prog.BuildProgram(), "Typing/TtranRepeatedLoads.txt");
 		}
 
@@ -139,7 +140,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TtranStaggeredArrays()
 		{
 			ProgramBuilder prog = new ProgramBuilder();
-			prog.Add(new StaggeredArraysMock());
+			prog.Add(new StaggeredArraysFragment());
 			RunTest(prog.BuildProgram(), "Typing/TtranStaggeredArrays.txt");
 		}
 
@@ -147,7 +148,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TtranFnPointerMock()
 		{
 			ProgramBuilder prog = new ProgramBuilder();
-			prog.Add(new FnPointerMock());
+			prog.Add(new FnPointerFragment());
 			RunTest(prog.BuildProgram(), "Typing/TtranFnPointerMock.txt");
 		}
 
@@ -322,7 +323,7 @@ namespace Decompiler.UnitTests.Typing
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-			TypeTransformer trans = new TypeTransformer(factory, store);
+			TypeTransformer trans = new TypeTransformer(factory, store, program);
 			trans.Transform();
 			using (FileUnitTester fut = new FileUnitTester(outputFileName))
 			{
@@ -336,57 +337,4 @@ namespace Decompiler.UnitTests.Typing
 			}
 		}
 	}
-
-	public class FramePointerMock : ProcedureBuilder
-	{
-		private TypeFactory factory;
-
-		public FramePointerMock(TypeFactory factory)
-		{
-			this.factory = factory;
-		}
-
-		protected override void BuildBody()
-		{
-			Identifier frame = Declare(new StructureType("frame_t", 0), "frame");
-			Identifier fp = Local32("fp");
-			Assign(fp, AddrOf(frame));
-			Store(IAdd(fp, 4), Load(PrimitiveType.Word32, IAdd(fp, 8)));
-		}
-	}
-
-	public class RepeatedLoadsMock : ProcedureBuilder
-	{
-		protected override void BuildBody()
-		{
-			Identifier pfoo = Local32("pfoo");
-			Identifier x = Local32("x");
-			LoadId(x, IAdd(pfoo, 4));
-			LoadId(x, IAdd(pfoo, 4));
-		}
-	}
-
-	public class StaggeredArraysMock : ProcedureBuilder
-	{
-		protected override void BuildBody()
-		{
-			Identifier p = Local32("p");
-			Identifier x = Local32("x");
-			Identifier i = Local32("i");
-			LoadId(x, IAdd(p, SMul(i, 8)));
-			LoadId(x, IAdd(p, IAdd(SMul(i, 8), 4)));
-		}
-	}
-
-	public class FnPointerMock : ProcedureBuilder
-	{
-		protected override void BuildBody()
-		{
-			Identifier pfn = Local32("pfn");
-			Assign(pfn, Int32(0x1213130));
-			Store(Int32(0x10000000), pfn);
-			this.Emit(new CallInstruction(LoadDw(Int32(0x10000000)), new CallSite(0, 0)));
-		}
-	}
-
 }

@@ -108,6 +108,13 @@ namespace Decompiler.Core.Types
 			{
 				return fa.ArgumentTypes.Length == fb.ArgumentTypes.Length;
 			}
+
+            CodeType ca = a as CodeType;
+            CodeType cb = a as CodeType;
+            if (ca != null && cb != null)
+            {
+                return true;
+            }
 			return false;
 		}
 
@@ -306,6 +313,12 @@ namespace Decompiler.Core.Types
 			{
 				return MakeUnion(a, b);
 			}
+            CodeType ca = a as CodeType;
+            CodeType cb = b as CodeType;
+            if (ca != null && cb != null)
+            {
+                return ca;
+            }
 			return MakeUnion(a, b);
 		}
 

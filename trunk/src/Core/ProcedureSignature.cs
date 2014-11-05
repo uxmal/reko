@@ -54,7 +54,7 @@ namespace Decompiler.Core
         }
 
         public TypeVariable TypeVariable { get; set; }
-        public Identifier[] FormalArguments { get; private set; }
+        public Identifier[] FormalArguments { get; private set; }   //$REFACTOR: should be "Parameters".
         public Identifier ReturnValue { get; private set; }
         public int ReturnAddressOnStack { get; set; }           // The size of the return address if pushed on stack.
 

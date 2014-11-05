@@ -21,17 +21,25 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 
 namespace Decompiler.Typing
 {
 	/// <summary>
-    /// Determines whether something is a pointer
+    /// Determines whether something is a pointer.
+    /// </summary>
+    /// <remarks>
+    /// Given an expression of type (ptr(X)):
+    ///  [[C]] = ptr(T)                                      => merge field of type T at offset C in globals
+    ///  [[C]] = memptr(R,T)                                 => merge field of type T at offset C in R
+    ///  [[x + C]] = ptr(T) and [[x]] = ptr(S)               => merge field of type T at offset C in S
+    ///  [[x + C]] = memptr(*,T) and [[x]] = memptr(*,S)     => merge field of type T at offset C in S
+    /// </remarks>
 	/// Some useful inferences can be made when looking at expressions like
-	/// reg + Const
+	///     reg + Const
 	/// if [[reg]] = ptr(struct(...))
-	/// </summary>
 	public class DerivedPointerAnalysis : InstructionVisitorBase
 	{
 		private TypeFactory factory;
@@ -39,26 +47,24 @@ namespace Decompiler.Typing
 		private Program prog;
 		private Identifier globals;
 		private Unifier unifier;
-        private IProcessorArchitecture arch;
 
-		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, IProcessorArchitecture arch)
+		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, Program prog)
 		{
 			this.factory = factory;
 			this.store = store;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
-            this.arch = arch;
+            this.prog = prog;
 		}
 
 		public Pointer CreatePointerToField(int offset, TypeVariable tvField)
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
-				arch.PointerType.Size);
+				prog.Architecture.PointerType.Size);
 		}
 
-		public void FollowConstantPointers(Program prog)
+		public void FollowDerivedPointers()
 		{
-			this.prog = prog;
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
                 foreach (var stm in proc.Statements)
@@ -99,6 +105,50 @@ namespace Decompiler.Typing
 			}
 			set { globals = value; }
 		}
+
+        public T ResolveAs<T>(DataType dt) where T : DataType
+        {
+            for (; ; )
+            {
+                var t = dt as T;
+                if (t != null)
+                    return t;
+                var eq = dt as EquivalenceClass;
+                if (eq == null)
+                    return null;
+                dt = eq.DataType;   
+            }
+        }
+
+        public override void VisitBinaryExpression(BinaryExpression binExp)
+        {
+            base.VisitBinaryExpression(binExp);
+            if (binExp.Operator == Operator.IAdd)
+            {
+                var ptSum = ResolveAs<Pointer>(binExp.TypeVariable.DataType);
+                var ptAddend = ResolveAs<Pointer>(binExp.Left.TypeVariable.DataType);
+                var prtSum = ResolveAs < PrimitiveType> (binExp.TypeVariable.DataType);
+                var prtAddend = ResolveAs<PrimitiveType>(binExp.Left.TypeVariable.DataType);
+                var c = binExp.Right as Constant;
+                if (ptSum != null)
+                {
+                    if (ptAddend != null && c != null)
+                    {
+                        var strAddend = ResolveAs<StructureType>(ptAddend.Pointee);
+                        if (strAddend != null)
+                        {
+                            strAddend.Fields.Add(c.ToInt32(), ptSum.Pointee);
+                        }
+                    }
+                    else if (prtAddend != null && prtAddend.Domain == Domain.Pointer && c != null)
+                    {
+                        if (prtAddend != null && prtAddend.Domain == Domain.Pointer && ptAddend != null && c != null)
+                        {
+                        }
+                    }
+                }
+            }
+        }
 
 		public override void VisitConstant(Constant c)
 		{
@@ -160,11 +210,6 @@ namespace Decompiler.Typing
 			ptr = CreatePointerToField(offset, tvField);
 			tvBase.Class.DataType =
 				unifier.Unify(tvBase.Class.DataType, ptr);
-		}
-
-
-		public override void VisitMemoryAccess(MemoryAccess acc)
-		{
 		}
 	}
 }

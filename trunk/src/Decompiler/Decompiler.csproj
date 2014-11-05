@@ -522,6 +522,7 @@
     <Compile Include="Typing\ConstantPointerTraversal.cs" />
     <Compile Include="Typing\ExpressionTypeAscender.cs" />
     <Compile Include="Typing\ExpressionTypeDescender.cs" />
+    <Compile Include="Typing\InductionVariableCollector.cs" />
     <Compile Include="Typing\StructureFieldMerger.cs" />
     <Compile Include="Structure\StructureNode.cs">
       <SubType>Code</SubType>
@@ -564,6 +565,7 @@
     <Compile Include="Typing\TypeAnalyzer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Typing\TypeCollector.cs" />
     <Compile Include="Typing\TypedConstantRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

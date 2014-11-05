@@ -50,6 +50,7 @@ namespace Decompiler.Gui.Windows.Controls
 		private Address addrTopVisible;		// address of topmost visible row.
 		private uint wordSize;
 		private uint cbRow;
+        private IProcessorArchitecture arch;
 		private LoadedImage image;
         private ImageMap imageMap;
 		private Address addrSelected;
@@ -316,7 +317,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		protected override void OnPaint(PaintEventArgs pea)
 		{
-			if (image == null || imageMap == null)
+			if (image == null || imageMap == null || arch == null)
 			{
 				pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
 			}
@@ -365,6 +366,13 @@ namespace Decompiler.Gui.Windows.Controls
         {
             get { return imageMap; }
             set { imageMap = value; Invalidate(); }
+        }
+
+        [Browsable(false)]
+        public IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+            set { arch = value; Invalidate(); }
         }
 
 		private Address RoundToNearestRow(Address addr)
@@ -490,8 +498,8 @@ namespace Decompiler.Gui.Windows.Controls
             public Address PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
             {
                 this.cellSize = cellSize;
-                codeTheme = new BrushTheme { Background = Brushes.Pink, Foreground = Brushes.Black, StartMarker = Brushes.Red };
-                dataTheme = new BrushTheme { Background = Brushes.LightBlue, Foreground = Brushes.Black, StartMarker = Brushes.Blue };
+                codeTheme = new BrushTheme { Background = Brushes.Pink, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Red };
+                dataTheme = new BrushTheme { Background = Brushes.LightBlue, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Blue };
                 defaultTheme = new BrushTheme { Background = SystemBrushes.Window, Foreground = SystemBrushes.ControlText };
                 selectTheme = new BrushTheme { Background = SystemBrushes.Highlight, Foreground = SystemBrushes.HighlightText };
 
@@ -500,7 +508,7 @@ namespace Decompiler.Gui.Windows.Controls
                 uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
                 if (ctrl.addrTopVisible.Linear >= laEnd)
                     return null;
-                ImageReader rdr = ctrl.ProgramImage.CreateReader(ctrl.addrTopVisible);
+                ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;
                 Size cell = ctrl.CellSize;
                 rc.Height = cell.Height;
@@ -514,7 +522,7 @@ namespace Decompiler.Gui.Windows.Controls
                     if (rdr.Address.Linear >= laSegEnd)
                     {
                         laSegEnd = seg.Address.Linear + seg.Size;
-                        rdr = ctrl.ProgramImage.CreateReader(seg.Address + (rdr.Address - seg.Address));
+                        rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, seg.Address + (rdr.Address - seg.Address));
                     }
                     Address addr = PaintLine(g, rc, rdr, ptAddr, render);
                     if (addr != null)

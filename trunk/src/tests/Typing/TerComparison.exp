@@ -23,7 +23,7 @@ Eq_5: (struct "foo" 0008)
 	T_5 (in Mem0[p + 0x00000004:(ptr (struct "foo" 0008))] : (ptr (struct "foo" 0008)))
 	T_6 (in 0x00000028 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct (28 (struct "foo" 0008) t0028))))
+globals_t: (in globals : (ptr (struct (28 Eq_5 t0028))))
   Class: Eq_1
   DataType: ptr32
   OrigDataType: ptr32

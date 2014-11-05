@@ -75,7 +75,7 @@ namespace Decompiler.Typing
             trco = new TraitCollector(factory, store, dtb, prog);
             //dpa = new DerivedPointerAnalysis(factory, store, prog.Architecture);
             tvr = new TypeVariableReplacer(store);
-            trans = new TypeTransformer(factory, store, eventListener);
+            trans = new TypeTransformer(factory, store,prog, eventListener);
             ctn = new ComplexTypeNamer();
             ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
 

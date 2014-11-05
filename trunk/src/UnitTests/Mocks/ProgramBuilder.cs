@@ -32,7 +32,6 @@ namespace Decompiler.UnitTests.Mocks
 	/// </summary>
 	public class ProgramBuilder
 	{
-		private Program prog;
 		private uint procCount;
         private Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
         private Dictionary<string, Block> blocks = new Dictionary<string, Block>();
@@ -44,16 +43,18 @@ namespace Decompiler.UnitTests.Mocks
 
         public ProgramBuilder(IProcessorArchitecture arch)
         {
-            prog = new Program {
+            Program = new Program {
                 Architecture = arch,
             };
         }
 
+		public Program Program { get; set; }
+
         public void Add(Procedure proc)
         {
             ++procCount;
-            prog.Procedures[new Address(procCount * 0x1000u)] = proc;
-            prog.CallGraph.AddProcedure(proc);
+            Program.Procedures[new Address(procCount * 0x1000u)] = proc;
+            Program.CallGraph.AddProcedure(proc);
             nameToProcedure[proc.Name] = proc;
         }
 
@@ -66,7 +67,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Procedure Add(string procName, Action<ProcedureBuilder> testCodeBuilder)
         {
-            var mock = new ProcedureBuilder(prog.Architecture, procName, null);
+            var mock = new ProcedureBuilder(Program.Architecture, procName, null);
             mock.ProgramMock = this;
             mock.LinearAddress = (uint)((procCount + 1) * 0x1000);
             testCodeBuilder(mock);
@@ -77,7 +78,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public void BuildCallgraph()
         {
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in Program.Procedures.Values)
             {
                 foreach (Statement stm in proc.Statements)
                 {
@@ -90,7 +91,7 @@ namespace Decompiler.UnitTests.Mocks
                     var callee = pc.Procedure as Procedure;
                     if (callee == null)
                         continue;
-                    prog.CallGraph.AddEdge(stm, callee);
+                    Program.CallGraph.AddEdge(stm, callee);
                 }
             }
         }
@@ -102,13 +103,13 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Program BuildProgram(IProcessorArchitecture arch)
 		{
-            prog.Architecture = arch;
+            Program.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
-            prog.ImageMap = new ImageMap(new Address(0x1000), prog.Procedures.Count * 0x1000);
-            var seg = prog.ImageMap.AddSegment(new Address(0x1000), ".text", AccessMode.Execute);
-            seg.Size = (uint)(prog.Procedures.Count * 0x1000);
-			return prog;
+            Program.ImageMap = new ImageMap(new Address(0x1000), Program.Procedures.Count * 0x1000);
+            var seg = Program.ImageMap.AddSegment(new Address(0x1000), ".text", AccessMode.Execute);
+            seg.Size = (uint)(Program.Procedures.Count * 0x1000);
+			return Program;
 		}
 
 		public void ResolveUnresolved()

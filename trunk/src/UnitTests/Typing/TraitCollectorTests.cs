@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TrcoStaggeredArraysMock()
 		{
 			ProgramBuilder mock = new ProgramBuilder();
-			mock.Add(new StaggeredArraysMock());
+			mock.Add(new StaggeredArraysFragment());
 			Program prog = mock.BuildProgram();
             coll = CreateCollector(prog);
 
@@ -289,7 +289,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TrcoFnPointerMock()
 		{
 			ProgramBuilder p = new ProgramBuilder();
-			p.Add(new FnPointerMock());
+			p.Add(new FnPointerFragment());
 			RunTest(p.BuildProgram(), "Typing/TrcoFnPointerMock.txt");
 		}
 
