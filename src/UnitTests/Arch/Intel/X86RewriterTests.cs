@@ -794,7 +794,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode(
                 "0|0C00:0000(2): 1 instructions",
-                "1|L--|rArg0 = rArg0 *s rArg1");
+                "1|L--|rArg0 = rArg0 * rArg1");
         }
 
         [Test]

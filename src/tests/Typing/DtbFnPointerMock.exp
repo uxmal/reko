@@ -1,11 +1,13 @@
-// FnPointerMock
-void FnPointerMock()
-FnPointerMock_entry:
+// FnPointerFragment
+void FnPointerFragment()
+FnPointerFragment_entry:
 	// succ:  l1
 l1:
 	Mem4[0x10000000:word32] = 0x01213130
-	call Mem4[0x10000000:word32] (retsize: 0;)
-FnPointerMock_exit:
+	call Mem4[0x10000000:word32] (retsize: 4;)
+	return
+	// succ:  FnPointerFragment_exit
+FnPointerFragment_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (10000000 T_2 t10000000)))

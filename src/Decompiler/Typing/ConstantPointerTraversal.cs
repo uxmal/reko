@@ -138,7 +138,7 @@ namespace Decompiler.Typing
             var rdr = arch.CreateImageReader(image, (uint) gOffset - image.BaseAddress.Linear);
             if (!rdr.IsValid)
                 return null;
-            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));    //$REVIEW:Endianess?
+            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
             int offset = c.ToInt32();
             Debug.Print("  pointer value: {0:X}", offset);
             if (visited.Contains(offset))

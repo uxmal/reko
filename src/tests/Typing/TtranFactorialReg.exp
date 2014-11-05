@@ -83,7 +83,7 @@ T_11: (in ax_18 : word16)
 T_12: (in 0x0001 : word16)
   Class: Eq_4
   DataType: int16
-  OrigDataType: int16
+  OrigDataType: ci16
 T_13: (in cx <= 0x0001 : bool)
   Class: Eq_13
   DataType: bool
@@ -98,8 +98,8 @@ T_15: (in fn0C00_000B : ptr32)
   OrigDataType: (ptr (fn T_18 (T_17)))
 T_16: (in 0x0001 : word16)
   Class: Eq_16
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_17: (in cx - 0x0001 : word16)
   Class: Eq_4
   DataType: int16

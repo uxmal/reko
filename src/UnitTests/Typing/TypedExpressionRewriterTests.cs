@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Typing
                 fut.TextWriter.WriteLine("// Before ///////");
                 DumpProgram(program, fut);
 
-                SetupPreStages(program.Architecture);
+                SetupPreStages(program);
                 aen.Transform(program);
                 eqb.Build(program);
                 coll = new TraitCollector(factory, store, dtb, program);
@@ -103,16 +103,16 @@ namespace Decompiler.UnitTests.Typing
             fut.AssertFilesEqual();
         }
 
-        public void SetupPreStages(IProcessorArchitecture arch)
+        public void SetupPreStages(Program prog)
         {
             factory = new TypeFactory();
             store = new TypeStore();
-            aen = new ExpressionNormalizer(arch.PointerType);
+            aen = new ExpressionNormalizer(prog.Architecture.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store);
-            dtb = new DataTypeBuilder(factory, store, arch);
+            dtb = new DataTypeBuilder(factory, store, prog.Architecture);
             //cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);
             tvr = new TypeVariableReplacer(store);
-            trans = new TypeTransformer(factory, store, null);
+            trans = new TypeTransformer(factory, store, prog);
             ctn = new ComplexTypeNamer();
         }
 
@@ -126,7 +126,7 @@ namespace Decompiler.UnitTests.Typing
         {
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
-            SetupPreStages(prog.Architecture);
+            SetupPreStages(prog);
             Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
             Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
@@ -174,7 +174,7 @@ namespace Decompiler.UnitTests.Typing
         {
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
-            SetupPreStages(prog.Architecture);
+            SetupPreStages(prog);
             Constant r = Constant.Real32(3.0F);
             Constant i = Constant.Int32(1);
             Identifier x = new Identifier("x", 0, PrimitiveType.Word32, null);

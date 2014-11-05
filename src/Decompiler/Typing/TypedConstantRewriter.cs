@@ -51,7 +51,6 @@ namespace Decompiler.Typing
         /// <param name="c"></param>
         /// <param name="dereferenced"></param>
         /// <returns></returns>
-
         public Expression Rewrite(Constant c, bool dereferenced)
         {
             this.c = c;
@@ -220,7 +219,7 @@ namespace Decompiler.Typing
 
 		public Expression VisitPrimitive(PrimitiveType pt)
 		{
-			if (pt.Domain == Domain.Real && pOrig.IsIntegral)
+			if (pt.Domain == Domain.Real && (pOrig.Domain & Domain.Integer) != 0)
 			{
 				return(Constant.RealFromBitpattern(pt, c.ToInt64()));
 			}

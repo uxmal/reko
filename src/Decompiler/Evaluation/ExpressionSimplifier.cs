@@ -269,7 +269,7 @@ namespace Decompiler.Evaluation
             if (c != null)
             {
                 PrimitiveType p = c.DataType as PrimitiveType;
-                if (p != null && p.IsIntegral)
+                if (p != null && (p.Domain & Domain.Integer) != 0)
                 {
                     //$REVIEW: this is fixed to 32 bits; need a general solution to it.
                     Changed = true;

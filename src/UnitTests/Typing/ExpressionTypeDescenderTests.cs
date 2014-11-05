@@ -47,8 +47,10 @@ namespace Decompiler.UnitTests.Typing
             this.store = new TypeStore();
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
+            var prog = new Program { Architecture = arch };
             this.exa = new ExpressionTypeAscender(arch, store, factory);
-            this.exd = new ExpressionTypeDescender(arch, store, factory);
+            this.exd = new ExpressionTypeDescender(prog, store, factory);
+            store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
         }
 
         private Pointer PointerTo(DataType dt)
@@ -71,14 +73,13 @@ namespace Decompiler.UnitTests.Typing
 
         private void RunTest(Expression e, DataType dt)
         {
-            var globals = new Identifier("globals", 0, PrimitiveType.Pointer32, TemporaryStorage.None);
-            store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store);
             e.Accept(eq);
 
             var result = e.Accept(exa);
             Debug.Print("After exa: {0}", result);
-            e.Accept(exd, dt);
+            exd.MeetDataType(e, dt);
+            e.Accept(exd, e.TypeVariable);
 
             var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
             Verify(outputFileName);
@@ -86,8 +87,6 @@ namespace Decompiler.UnitTests.Typing
 
         private void RunTest(params Tuple<Expression,DataType> [] tests)
         {
-            var globals = new Identifier("globals", 0, PrimitiveType.Pointer32, TemporaryStorage.None);
-            store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
             foreach (var t in tests)
             {
                 var eq = new EquivalenceClassBuilder(factory, store);
@@ -98,7 +97,8 @@ namespace Decompiler.UnitTests.Typing
             {
                 var result = t.Item1.Accept(exa);
                 Debug.Print("After exa: {0}", result);
-                t.Item1.Accept(exd, t.Item2);
+                exd.MeetDataType(t.Item1, t.Item2);
+                t.Item1.Accept(exd, t.Item1.TypeVariable);
             }
             var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
             Verify(outputFileName);
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Typing
         public void ExdMem()
         {
             RunTest(
-                m.LoadB(
+                m.LoadW(
                     Id("x", PrimitiveType.Word32)),
                 PrimitiveType.WChar);
         }
@@ -147,7 +147,7 @@ namespace Decompiler.UnitTests.Typing
                 m.IAdd(
                     Id("p", PrimitiveType.Word32),
                     Constant.Word32(4)),
-                PointerTo(PrimitiveType.Byte));
+                PrimitiveType.Pointer32);
         }
 
         [Test]
@@ -168,7 +168,7 @@ namespace Decompiler.UnitTests.Typing
                 m.Seq(
                     Id("ds", PrimitiveType.SegmentSelector),
                     Constant.Word16(4)),
-                PointerTo(PrimitiveType.Byte));
+                PointerTo(store.CreateTypeVariable(factory)));
         }
 
         [Test]

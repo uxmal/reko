@@ -1,11 +1,11 @@
-// RepeatedLoadsMock
-void RepeatedLoadsMock()
-RepeatedLoadsMock_entry:
+// RepeatedLoadsFragment
+void RepeatedLoadsFragment()
+RepeatedLoadsFragment_entry:
 	// succ:  l1
 l1:
 	x = Mem0[pfoo + 0x00000004:word32]
 	x = Mem0[pfoo + 0x00000004:word32]
-RepeatedLoadsMock_exit:
+RepeatedLoadsFragment_exit:
 
 // Equivalence classes ////////////
 Eq_2: (struct (4 word32 dw0004))

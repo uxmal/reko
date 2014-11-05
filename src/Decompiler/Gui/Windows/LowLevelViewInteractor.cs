@@ -53,6 +53,7 @@ namespace Decompiler.Gui.Windows
                 {
                     control.MemoryView.ProgramImage = value.Image;
                     control.MemoryView.ImageMap = value.ImageMap;
+                    control.MemoryView.Architecture = value.Architecture;
                     control.DisassemblyView.Image = value.Image;
                     control.DisassemblyView.StartAddress = value.Image.BaseAddress;
                     control.DisassemblyView.Architecture = value.Architecture;

@@ -50,7 +50,6 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void IsIntegral()
 		{
-			Assert.IsTrue(PrimitiveType.Word16.IsIntegral);
 			Assert.IsTrue(PrimitiveType.Int32.IsIntegral);
 			Assert.IsFalse(PrimitiveType.Pointer64.IsIntegral);
 			Assert.IsFalse(PrimitiveType.Real32.IsIntegral);

@@ -11,7 +11,7 @@ Fn_exit:
 Eq_9: (struct 0008 (0 word32 dw0000))
 	T_9
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct (123456 (arr T_9) a123456)))
   Class: Eq_1
   DataType: ptr32
   OrigDataType: ptr32

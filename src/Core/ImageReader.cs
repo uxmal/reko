@@ -157,7 +157,7 @@ namespace Decompiler.Core
 
         public int ReadLeSigned(PrimitiveType w)
         {
-            if (w.IsIntegral)
+            if ((w.Domain & Domain.Integer) != 0)
             {
                 switch (w.Size)
                 {

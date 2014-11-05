@@ -58,12 +58,6 @@ namespace Decompiler.Core
             return true;
         }
 
-        [Obsolete("Callers should know endianness")]
-		public ImageReader CreateReader(Address addr)
-		{
-			return new ImageReader(this, addr);
-		}
-
         public BeImageReader CreateBeReader(Address addr)
         {
             return new BeImageReader(this, addr);

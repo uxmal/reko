@@ -216,7 +216,7 @@ namespace Decompiler.Core.Types
         /// </summary>
 		public bool IsIntegral
 		{
-			get { return (Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0; }
+			get { return (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0; }
 		}
 
         /// <summary>

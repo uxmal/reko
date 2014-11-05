@@ -1,11 +1,11 @@
-// StaggeredArraysMock
-void StaggeredArraysMock()
-StaggeredArraysMock_entry:
+// StaggeredArraysFragment
+void StaggeredArraysFragment()
+StaggeredArraysFragment_entry:
 	// succ:  l1
 l1:
 	x = p[i * 0x00000008]
 	x = (p + 4)[i * 0x00000008]
-StaggeredArraysMock_exit:
+StaggeredArraysFragment_exit:
 
 globals_t (in globals : (ptr (struct)))
 	trait_primitive(ptr32)
@@ -35,8 +35,8 @@ T_7 (in x : word32)
 	trait_equal(T_12)
 T_8 (in 4 : int32)
 	trait_primitive(int32)
-T_9 (in p + 4 : ptr32)
-	trait_primitive(ptr32)
+T_9 (in p + 4 : (ptr <unknown>))
+	trait_primitive((ptr <unknown>))
 T_10 (in 0x00000008 : word32)
 	trait_primitive(word32)
 	trait_primitive(ui32)

@@ -61,8 +61,8 @@ namespace Decompiler.UnitTests.Typing
         {
             aen.Transform(prog);
             eqb.Build(prog);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
-            trco.CollectProgramTraits(prog);
+            TypeCollector trco = new TypeCollector(factory, store, prog);
+            trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
             Verify(prog, outputFile);
         }
@@ -185,7 +185,7 @@ namespace Decompiler.UnitTests.Typing
         public void DtbFramePointer()
         {
             ProgramBuilder mock = new ProgramBuilder();
-            mock.Add(new FramePointerMock(factory));
+            mock.Add(new FramePointerFragment(factory));
             RunTest(mock, "Typing/DtbFramePointer.txt");
             throw new NotImplementedException();
         }
@@ -194,7 +194,7 @@ namespace Decompiler.UnitTests.Typing
         public void DtbFnPointerMock()
         {
             ProgramBuilder mock = new ProgramBuilder();
-            mock.Add(new FnPointerMock());
+            mock.Add(new FnPointerFragment());
             RunTest(mock, "Typing/DtbFnPointerMock.txt");
         }
 

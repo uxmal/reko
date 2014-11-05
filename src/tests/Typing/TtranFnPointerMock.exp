@@ -1,18 +1,20 @@
-// FnPointerMock
-void FnPointerMock()
-FnPointerMock_entry:
+// FnPointerFragment
+void FnPointerFragment()
+FnPointerFragment_entry:
 	// succ:  l1
 l1:
 	pfn = 0x01213130
 	Mem0[0x10000000:word32] = pfn
-	call Mem0[0x10000000:word32] (retsize: 0;)
-FnPointerMock_exit:
+	call Mem0[0x10000000:word32] (retsize: 4;)
+	return
+	// succ:  FnPointerFragment_exit
+FnPointerFragment_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct (10000000 (ptr code) ptr10000000))
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (ptr (struct (10000000 Eq_6 t10000000) (10000000 Eq_4 t10000000))))
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr (struct (10000000 Eq_6 t10000000) (10000000 Eq_4 t10000000))))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (10000000 T_2 t10000000)))

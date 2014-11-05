@@ -158,9 +158,13 @@
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Fragments\ArrayExpressionFragment.cs" />
-    <Compile Include="Fragments\IndirectCall.cs" />
+    <Compile Include="Fragments\FnPointerFragment.cs" />
+    <Compile Include="Fragments\FramePointerFragment.cs" />
+    <Compile Include="Fragments\IndirectCallFragment.cs" />
     <Compile Include="Fragments\PointerChainFragment.cs" />
+    <Compile Include="Fragments\RepeatedLoadsFragment.cs" />
     <Compile Include="Fragments\SegmentedCallFragment.cs" />
+    <Compile Include="Fragments\StaggeredArrayFragment.cs" />
     <Compile Include="Gui\AddressSearchResultTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
@@ -446,6 +450,7 @@
     <Compile Include="Typing\TypeStoreTests.cs" />
     <Compile Include="Typing\TypeTransformArrayTests.cs" />
     <Compile Include="Typing\TypeTransformTest.cs" />
+    <Compile Include="Typing\TypeTransformTests.cs" />
     <Compile Include="Typing\TypeVariableReplacerTests.cs" />
     <Compile Include="Typing\TypeVarReplacerTests.cs" />
     <Compile Include="Typing\TypingTestBase.cs" />

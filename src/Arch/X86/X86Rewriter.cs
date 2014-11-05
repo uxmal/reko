@@ -137,9 +137,9 @@ namespace Decompiler.Arch.X86
                 case Opcode.fimul: EmitCommonFpuInstruction(Operator.FMul, false, false, PrimitiveType.Real64); break;
                 case Opcode.fisub: EmitCommonFpuInstruction(Operator.FSub, false, false, PrimitiveType.Real64); break;
                 case Opcode.fisubr: EmitCommonFpuInstruction(Operator.FSub, true, false, PrimitiveType.Real64); break;
-                case Opcode.fidiv: EmitCommonFpuInstruction(Operator.SDiv, false, false, PrimitiveType.Real64); break;
-                case Opcode.fdivr: EmitCommonFpuInstruction(Operator.SDiv, true, false); break;
-                case Opcode.fdivrp: EmitCommonFpuInstruction(Operator.SDiv, true, true); break;
+                case Opcode.fidiv: EmitCommonFpuInstruction(Operator.FDiv, false, false, PrimitiveType.Real64); break;
+                case Opcode.fdivr: EmitCommonFpuInstruction(Operator.FDiv, true, false); break;
+                case Opcode.fdivrp: EmitCommonFpuInstruction(Operator.FDiv, true, true); break;
                 case Opcode.fild: RewriteFild(); break;
                 case Opcode.fistp: RewriteFistp(); break;
                 case Opcode.fld: RewriteFld(); break;
@@ -148,8 +148,8 @@ namespace Decompiler.Arch.X86
                 case Opcode.fldln2: RewriteFldConst(Constant.Ln2()); break;
                 case Opcode.fldpi: RewriteFldConst(Constant.Pi()); break;
                 case Opcode.fldz: RewriteFldConst(0.0); break;
-                case Opcode.fmul: EmitCommonFpuInstruction(Operator.SMul, false, false); break;
-                case Opcode.fmulp: EmitCommonFpuInstruction(Operator.SMul, false, true); break;
+                case Opcode.fmul: EmitCommonFpuInstruction(Operator.FMul, false, false); break;
+                case Opcode.fmulp: EmitCommonFpuInstruction(Operator.FMul, false, true); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.frndint: RewriteFUnary("__rndint"); break;
                 case Opcode.fsin: RewriteFUnary("sin"); break;

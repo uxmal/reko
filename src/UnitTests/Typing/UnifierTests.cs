@@ -401,5 +401,14 @@ namespace Decompiler.UnitTests.Typing
             var p2 = new Pointer(a, 4);
             Assert.IsTrue(un.AreCompatible(p1, p2));
         }
+
+        [Test]
+        public void CompatiblePtrToCode()
+        {
+            var code = new CodeType();
+            var p1 = new Pointer(code, 4);
+            var p2 = new Pointer(code, 4);
+            Assert.IsTrue(un.AreCompatible(p1, p2));
+        }
 	}
 }
