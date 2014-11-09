@@ -35,6 +35,28 @@ namespace Decompiler.UnitTests.Typing
 		private TypeStore store;
 		private TypeFactory factory;
 
+        [SetUp]
+        public void Setup()
+        {
+            store = new TypeStore();
+            factory = new TypeFactory();
+        }
+
+        private void RunTest(Program prog, string outputFile)
+        {
+            EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
+            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+            eqb.Build(prog);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+            trco.CollectProgramTraits(prog);
+            dtb.BuildEquivalenceClassDataTypes();
+
+            var dpa = new DerivedPointerAnalysis(factory, store, prog);
+            dpa.FollowDerivedPointers();
+
+            Verify(null, outputFile);
+        }
+
 		[Test]
 		public void CpfSimple()
 		{
@@ -96,28 +118,6 @@ namespace Decompiler.UnitTests.Typing
 			prog.Add(m);
 
 			RunTest(prog.BuildProgram(), "Typing/DpaConstantMemberPointer.txt");
-		}
-
-		private void RunTest(Program prog, string outputFile)
-		{
-			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
-			eqb.Build(prog);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
-			trco.CollectProgramTraits(prog);
-			dtb.BuildEquivalenceClassDataTypes();
-
-			var dpa = new DerivedPointerAnalysis(factory, store, prog);
-			dpa.FollowDerivedPointers();
-
-			Verify(null, outputFile);
-		}
-
-		[SetUp]
-		public void Setup()
-		{
-			store = new TypeStore();
-			factory = new TypeFactory();
 		}
 
 		private void Verify(Program prog, string outputFile)

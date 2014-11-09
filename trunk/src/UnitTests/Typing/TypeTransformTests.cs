@@ -350,5 +350,13 @@ namespace Decompiler.UnitTests.Typing
             });
             RunTest(p.BuildProgram(), "Typing/TtranGlobalArray.txt");
         }
+
+        [Test]
+        public void TtranCallTable()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add(new IndirectCallFragment());
+            RunTest(pb.BuildProgram(), "Typing/TtranCallTable.txt");
+        }
     }
 }

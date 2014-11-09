@@ -65,10 +65,13 @@ namespace Decompiler.Typing
 
         internal Expression RewriteArrayAccess(TypeVariable typeVariable, Expression arr, Expression idx)
         {
+            var ter = new TypedExpressionRewriter(arch, store, globals);
             basePointer = null;
             dtResult = new Pointer(typeVariable.DataType, arch.PointerType.Size);
             var dtElement = Dereference(arr.TypeVariable.DataType);
             var dtElementOrig = Dereference(arr.TypeVariable.OriginalDataType);
+            arr = arr.Accept(ter);
+            idx = idx.Accept(ter);
             idx = RescaleIndex(idx, dtElement);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 dtResult,
@@ -129,7 +132,19 @@ namespace Decompiler.Typing
 
 		public Expression VisitArrayAccess(ArrayAccess acc)
 		{
-			throw new NotImplementedException();
+            var ter = new TypedExpressionRewriter(arch, store, globals);
+            var arr = acc.Array.Accept(ter);
+            var idx = acc.Index.Accept(ter);
+            var ceb = new ComplexExpressionBuilder(
+                acc.TypeVariable.DataType,
+                acc.Array.TypeVariable.DataType,
+                acc.Array.TypeVariable.OriginalDataType,
+                basePointer,
+                arr,
+                idx,
+                0);
+            ceb.Dereferenced = true;
+            return ceb.BuildComplex(acc.TypeVariable);
 		}
 
         public Expression VisitBinaryExpression(BinaryExpression binExp)
@@ -279,8 +294,46 @@ namespace Decompiler.Typing
 
 		public Expression VisitMkSequence(MkSequence seq)
 		{
-			throw new NotImplementedException();
-		}
+            var ter = new TypedExpressionRewriter(arch, store, globals);
+            //$TODO: identical to TypedExpressionRewriter except for the ceb.Dereferenced statements. How to combine?
+            var head = seq.Head.Accept(ter);
+            var tail = seq.Tail.Accept(ter);
+            Constant c = tail as Constant;
+            var ptHead = head.TypeVariable.DataType as PrimitiveType;
+            if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
+            {
+                if (c != null)
+                {
+                    ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                        seq.TypeVariable.DataType,
+                        head.DataType,
+                        head.TypeVariable.OriginalDataType,
+                        null,
+                        head,
+                        null,
+                        StructureField.ToOffset(c));
+                    ceb.Dereferenced = true;
+                    return ceb.BuildComplex(seq.TypeVariable);
+                }
+                else
+                {
+                    var ceb = new ComplexExpressionBuilder(
+                        seq.TypeVariable.DataType,
+                        seq.TypeVariable.DataType,
+                        seq.TypeVariable.OriginalDataType,
+                        head,
+                        tail,
+                        null,
+                        0);
+                    ceb.Dereferenced = true;
+                    return ceb.BuildComplex(seq.TypeVariable);
+                }
+            }
+            else
+            {
+            }
+            return new MkSequence(seq.DataType, head, tail);
+        }
 
         public Expression VisitOutArgument(OutArgument outArg)
         {

@@ -117,6 +117,10 @@ namespace Decompiler.Typing
             {
                 dt = PrimitiveType.Create(Domain.Real, dtLeft.Size);
             }
+            else if (binExp.Operator == Operator.Shr)
+            {
+                dt = PrimitiveType.Create(Domain.UnsignedInt, dtLeft.Size);
+            }
             else
                 throw NYI(binExp);
             binExp.TypeVariable.DataType = dt;

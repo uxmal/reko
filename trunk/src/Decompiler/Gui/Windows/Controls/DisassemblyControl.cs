@@ -30,6 +30,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Controls
 {
+    /// <summary>
+    /// Renders disassembled machine instructions.
+    /// </summary>
 	public class DisassemblyControl : Control
 	{
         private VScrollBar vscroll;
@@ -150,7 +153,6 @@ namespace Decompiler.Gui.Windows.Controls
                 Brush brText;
                 if (instr.Address == selectedAddress)
                 {
-                    Debug.Print("NILZ");    //$DEBUG
                     g.FillRectangle(SystemBrushes.Highlight, rc);
                     brText = SystemBrushes.HighlightText;
                 }
@@ -246,7 +248,13 @@ namespace Decompiler.Gui.Windows.Controls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             Focus();
+            SelectedAddress = GetAddressFromMouseEvent(e.X, e.Y);
             base.OnMouseDown(e);
+        }
+
+        private Address GetAddressFromMouseEvent(int p1, int p2)
+        {
+            throw new NotImplementedException();
         }
 
         //public Control CreateControl()
@@ -264,6 +272,5 @@ namespace Decompiler.Gui.Windows.Controls
         //    txtDisassembly.KeyPress += txtDisassembly_KeyPress;
         //    return txtDisassembly;
         //}
-
 	}
 }

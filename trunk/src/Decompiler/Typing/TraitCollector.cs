@@ -109,7 +109,7 @@ namespace Decompiler.Typing
 		public void CollectProgramTraits(Program prog)
 		{
 			this.prog = prog;
-            handler.DataTypeTrait(prog.Globals, prog.Architecture.PointerType);
+            handler.DataTypeTrait(prog.Globals, prog.Globals.DataType);
             foreach (Procedure p in prog.Procedures.Values)
             {
                 proc = p;

@@ -228,9 +228,9 @@ namespace Decompiler.Typing
 		public void Transform()
 		{
             var dpa = new DerivedPointerAnalysis(factory, store, program);
-			var ppr = new PtrPrimitiveReplacer(factory, store);
+			var ppr = new PtrPrimitiveReplacer(factory, store, program);
+            ppr.ReplaceAll();
             dpa.FollowDerivedPointers();
-			ppr.ReplaceAll();
 			int iteration = 0;
 			do
 			{

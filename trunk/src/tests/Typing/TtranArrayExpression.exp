@@ -8,11 +8,13 @@ l1:
 ArrayExpressionFragment_exit:
 
 // Equivalence classes ////////////
+Eq_1: (struct)
+	globals_t (in globals : (ptr (struct)))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
 T_2: (in 0x000A0000 : word32)
   Class: Eq_2
   DataType: ptr32

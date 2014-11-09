@@ -68,6 +68,11 @@ namespace Decompiler.Core.Types
 			return PrimitiveType.Create(dom, size);
 		}
 
+        public DataType CreateStructureType()
+        {
+            return new StructureType();
+        }
+
 		public StructureType CreateStructureType(string name, int size)
 		{
 			return new StructureType(name, size);
@@ -122,5 +127,6 @@ namespace Decompiler.Core.Types
         {
             throw new NotImplementedException();
         }
+
     }
  }

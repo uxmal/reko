@@ -8,13 +8,15 @@ l1:
 RepeatedLoadsFragment_exit:
 
 // Equivalence classes ////////////
+Eq_1: (struct)
+	globals_t (in globals : (ptr (struct)))
 Eq_2: (struct (4 word32 dw0004))
 	T_2 (in pfoo : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
 T_2: (in pfoo : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

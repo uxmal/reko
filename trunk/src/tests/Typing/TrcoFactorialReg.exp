@@ -29,7 +29,7 @@ l0C00_001F:
 fn0C00_000B_exit:
 
 globals_t (in globals : (ptr (struct)))
-	trait_primitive(ptr32)
+	trait_primitive((ptr (struct)))
 T_2 (in fn0C00_000B : ptr32)
 	trait_func(T_5 -> T_6)
 T_4 (in cx : word16)

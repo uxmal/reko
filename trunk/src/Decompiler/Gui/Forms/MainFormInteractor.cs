@@ -132,9 +132,6 @@ namespace Decompiler.Gui.Forms
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IDecompilerConfigurationService), config);
 
-            loader = svcFactory.CreateLoader();
-            sc.AddService(typeof(ILoader), loader);
-
             sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
 
             diagnosticsSvc = svcFactory.CreateDiagnosticsService(form.DiagnosticsList);
@@ -155,6 +152,9 @@ namespace Decompiler.Gui.Forms
             workerDlgSvc = (IWorkerDialogService)del;
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
             sc.AddService(typeof(DecompilerEventListener), del);
+
+            loader = svcFactory.CreateLoader();
+            sc.AddService(typeof(ILoader), loader);
 
             var abSvc = svcFactory.CreateArchiveBrowserService();
             sc.AddService(typeof(IArchiveBrowserService), abSvc);

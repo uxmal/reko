@@ -136,7 +136,7 @@ namespace Decompiler.Typing
 
         public DataType VisitUnknownType(UnknownType ut)
         {
-            throw new NotImplementedException();
+            return ut;
         }
 
         public DataType VisitVoidType(VoidType vt)

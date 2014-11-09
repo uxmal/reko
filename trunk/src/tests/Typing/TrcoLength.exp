@@ -20,7 +20,7 @@ l0C00_000D:
 fn0C00_0000_exit:
 
 globals_t (in globals : (ptr (struct)))
-	trait_primitive(ptr32)
+	trait_primitive((ptr (struct)))
 T_2 (in ax_9 : word16)
 	trait_primitive(word16)
 	trait_equal(T_3)

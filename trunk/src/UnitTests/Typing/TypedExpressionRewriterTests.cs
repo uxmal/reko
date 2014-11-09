@@ -55,9 +55,14 @@ namespace Decompiler.UnitTests.Typing
                 SetupPreStages(program);
                 aen.Transform(program);
                 eqb.Build(program);
+#if OLD
                 coll = new TraitCollector(factory, store, dtb, program);
                 coll.CollectProgramTraits(program);
-                dtb.BuildEquivalenceClassDataTypes();
+#else
+                var coll = new TypeCollector(factory, store, program);
+                coll.CollectTypes();
+#endif
+                store.BuildEquivalenceClassDataTypes(factory);
                 store.Dump();
                 //cpf.FollowConstantPointers(program);
                 tvr.ReplaceTypeVariables();
@@ -130,6 +135,7 @@ namespace Decompiler.UnitTests.Typing
             Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
             Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
+            prog.Globals.Accept(eqb);
             cmp.Accept(aen);
             cmp.Accept(eqb);
             coll = new TraitCollector(factory, store, dtb, prog);
@@ -429,7 +435,6 @@ namespace Decompiler.UnitTests.Typing
             pb.Add(new IndirectCallFragment());
             RunTest(pb.BuildProgram(), "Typing/TerCallTable.txt");
         }
-
 
         [Test]
         public void TerSegmentedCall()

@@ -10,6 +10,8 @@ l1:
 SegmentedPointerProc_exit:
 
 // Equivalence classes ////////////
+Eq_1: (struct)
+	globals_t (in globals : (ptr (struct)))
 Eq_3: (segment (300 segptr32 ptr0300) (302 word16 w0302) (304 word16 w0304))
 	T_3 (in ds : selector)
 Eq_12: (segment)
@@ -19,8 +21,8 @@ Eq_13: (struct (4 word16 w0004))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
 T_2: (in 0x1234 : word16)
   Class: Eq_2
   DataType: segptr32

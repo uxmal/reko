@@ -82,13 +82,13 @@ namespace Decompiler.Typing
 
         private void BindActualTypesToFormalTypes(Application appl)
         {
-            ProcedureConstant pc = appl.Procedure as ProcedureConstant;
+            var pc = appl.Procedure as ProcedureConstant;
             if (pc == null)
-                throw new NotImplementedException("Indirect call.");
+                throw new NotImplementedException("The type inference of indirect calls are not implmented yet.");
             if (pc.Procedure.Signature == null)
                 return;
 
-            ProcedureSignature sig = pc.Procedure.Signature;
+            var sig = pc.Procedure.Signature;
             if (appl.Arguments.Length != sig.FormalArguments.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
@@ -207,14 +207,14 @@ namespace Decompiler.Typing
             }
             else if (binExp.Operator is SignedIntOperator)
             {
-                var dt = PrimitiveType.Create(Domain.SignedInt, eLeft.TypeVariable.DataType.Size);
+                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator is UnsignedIntOperator)
             {
-                var dt = PrimitiveType.Create(Domain.UnsignedInt, eLeft.TypeVariable.DataType.Size);
+                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.UnsignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.UnsignedInt|Domain.Character);
                 MeetDataType(eRight, dt);
@@ -227,6 +227,12 @@ namespace Decompiler.Typing
             else if (binExp.Operator == Operator.Shl)
             {
                 var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
+                MeetDataType(eLeft, dt);
+                dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
+            }
+            else if (binExp.Operator == Operator.Shr)
+            {
+                var dt = PrimitiveType.CreateWord(tv.DataType.Size).MaskDomain(Domain.Boolean | Domain.UnsignedInt| Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).Size);
             }
@@ -250,7 +256,15 @@ namespace Decompiler.Typing
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
                     return PrimitiveType.Create(Domain.Pointer, dtSum.Size);
             }
-            if (ptSum.IsIntegral)
+            if (dtSum is MemberPointer)
+            {
+                var mpSum  = dtSum as MemberPointer;
+                if (dtOther is MemberPointer)
+                    return PrimitiveType.Create(Domain.SignedInt, dtOther.Size);
+                if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
+                    return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.Size);
+            }
+            if (ptSum != null && ptSum.IsIntegral)
             {
                 if (ptOther != null && ptOther.Domain == Domain.Pointer || dtOther is Pointer)
                     return factory.CreateUnionType(null, null, new List<DataType> {dtSum, dtOther});

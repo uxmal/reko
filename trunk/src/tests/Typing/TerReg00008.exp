@@ -44,7 +44,7 @@ fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (5CE10 (ptr Eq_12) ptr5CE10))
-	globals_t (in globals : (ptr (struct (5CE1 Eq_12 t5CE1))))
+	globals_t (in globals : (ptr (struct)))
 Eq_3: (segment "Eq_3" (9A26 word16 w9A26) (9A2E word16 w9A2E))
 	T_3 (in ds : (ptr Eq_3))
 Eq_9: (struct "Eq_9" 0026 (0 word16 w0000))
@@ -56,7 +56,7 @@ Eq_12: (segment "Eq_12" (0 (arr Eq_26) a0000))
 Eq_26: (struct "Eq_26" 0026 (0 word16 w0000))
 	T_26
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct (5CE1 Eq_12 t5CE1))))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (5CE10 T_12 t5CE10)))
@@ -91,7 +91,7 @@ T_8: (in Mem15[ds:0x9A26:word16] : word16)
 T_9: (in si_20 : (memptr (ptr Eq_12) Eq_9))
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
 T_10: (in 0x0000 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
