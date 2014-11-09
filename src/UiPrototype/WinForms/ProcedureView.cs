@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.UiPrototype.WinForms
 {
+    /// <summary>
+    /// Renders IL code in colorized text format.
+    /// </summary>
     public partial class ProcedureView : Form
     {
         public ProcedureView()
@@ -19,31 +22,28 @@ namespace Decompiler.UiPrototype.WinForms
             this.editorView1.Styles.Add("keyword", new EditorStyle
             {
                 Foreground = new SolidBrush(Color.Blue),
-                //Background = new SolidBrush(Color.White),
             });
             this.editorView1.Styles.Add("fn", new EditorStyle
             {
                 Foreground = new SolidBrush(Color.FromArgb(0x00,0x80,0x80)),
-                //Background = new SolidBrush(Color.White),
                 Cursor = Cursors.Hand,
             });
             this.editorView1.Styles.Add("cmt", new EditorStyle
             {
                 Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x00)),
-                //Background = new SolidBrush(Color.White),
             });
             this.editorView1.Navigate += editorView1_Navigate;
         }
 
         public TextView EditorView { get { return editorView1; } }
 
-        public class EditorModel2 : TextViewModel
+        public class EditorModel : TextViewModel
         {
             public event EventHandler ModelChanged;
 
             private TextSpan[][] lines;
 
-            public EditorModel2(params TextSpan[][] spans)
+            public EditorModel(params TextSpan[][] spans)
             {
                 this.lines = spans;
             }
@@ -62,7 +62,7 @@ namespace Decompiler.UiPrototype.WinForms
 
         public TextViewModel Model(params TextSpan[][] lines)
         {
-            return new EditorModel2(lines);
+            return new EditorModel(lines);
         }
 
         public TextSpan[] Line(params TextSpan[] spans)
@@ -72,12 +72,12 @@ namespace Decompiler.UiPrototype.WinForms
 
         public TextSpan Span(string text)
         {
-            return new EditorSpan2(text);
+            return new EditorSpan(text);
         }
 
         public TextSpan Link(string text)
         {
-            return new EditorSpan2(text)
+            return new EditorSpan(text)
             {
                 Style = "fn",
                 Tag = text,
@@ -86,17 +86,17 @@ namespace Decompiler.UiPrototype.WinForms
 
         public TextSpan Span(string text, string style)
         {
-            return new EditorSpan2(text)
+            return new EditorSpan(text)
             {
                 Style = style,
             };
         }
 
-        public class EditorSpan2 : TextSpan
+        public class EditorSpan : TextSpan
         {
             private string text;
 
-            public EditorSpan2(string text) { this.text = text; }
+            public EditorSpan(string text) { this.text = text; }
 
             public override string GetText()
             {

@@ -142,15 +142,14 @@ namespace Decompiler.Typing
 			}
 		}
 
-
 		#region InstructionTransformer methods //////////////////////
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var arr = acc.Array.Accept(this);
-            var idx = acc.Index.Accept(this);
             var tmr = new TypedMemoryExpressionRewriter(arch, store, globals);
-            return tmr.RewriteArrayAccess(acc.TypeVariable, arr, idx);
+            //var arr = acc.Array.Accept(tmr);
+            //var idx = acc.Index.Accept(this);
+            return tmr.RewriteArrayAccess(acc.TypeVariable, acc.Array, acc.Index);
         }
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)
@@ -224,6 +223,13 @@ namespace Decompiler.Typing
             if (compTypes.Compare(dtSrc, dtDst) == 0)
                 return true;
             return unifier.AreCompatible(dtSrc, dtDst);
+        }
+
+        public override Instruction TransformCallInstruction(CallInstruction ci)
+        {
+            var proc = ci.Callee.Accept(new TypedMemoryExpressionRewriter(arch, store, globals));
+            return new SideEffect(
+                new Application(proc, VoidType.Instance));
         }
 
 		public override Instruction TransformStore(Store store)
@@ -316,19 +322,36 @@ namespace Decompiler.Typing
             var head = seq.Head.Accept(this);
             var tail = seq.Tail.Accept(this);
             Constant c = tail as Constant;
-            if (c == null)
-                return seq;
-            if (head.DataType is Pointer)
+            var ptHead = head.TypeVariable.DataType as PrimitiveType;
+            if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
             {
-                ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
-                    seq.TypeVariable.DataType,
-                    head.DataType,
-                    head.TypeVariable.OriginalDataType,
-                    null,
-                    head,
-                    null,
-                    StructureField.ToOffset(c));
-                return ceb.BuildComplex(seq.TypeVariable);
+                if (c != null)
+                {
+                    ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                        seq.TypeVariable.DataType,
+                        head.DataType,
+                        head.TypeVariable.OriginalDataType,
+                        head,
+                        tail,
+                        null,
+                        StructureField.ToOffset(c));
+                    return ceb.BuildComplex(seq.TypeVariable);
+                }
+                else
+                {
+                    var ceb = new ComplexExpressionBuilder(
+                        seq.TypeVariable.DataType,
+                        seq.TypeVariable.DataType,
+                        seq.TypeVariable.OriginalDataType,
+                        head,
+                        new MemberPointerSelector(seq.DataType, head, tail),
+                        null,
+                        0);
+                    return ceb.BuildComplex(seq.TypeVariable);
+                }
+            }
+            else
+            {
             }
             return new MkSequence(seq.DataType, head, tail);
         }

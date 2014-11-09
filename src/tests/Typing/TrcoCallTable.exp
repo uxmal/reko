@@ -9,7 +9,7 @@ l1:
 IndirectCallFragment_exit:
 
 globals_t (in globals : (ptr (struct)))
-	trait_primitive(ptr32)
+	trait_primitive((ptr (struct)))
 	trait_mem(T_2, 27000)
 T_2 (in 0x2700 : selector)
 	trait_primitive(selector)

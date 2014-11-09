@@ -56,7 +56,7 @@ namespace Decompiler.Typing
             this.prog = prog;
 		}
 
-		public Pointer CreatePointerToField(int offset, TypeVariable tvField)
+		public Pointer CreatePointerToField(int offset, DataType tvField)
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
@@ -120,7 +120,7 @@ namespace Decompiler.Typing
             }
         }
 
-        public override void VisitBinaryExpression(BinaryExpression binExp)
+        public void VisitBinaryExpression(BinaryExpression binExp)
         {
             base.VisitBinaryExpression(binExp);
             if (binExp.Operator == Operator.IAdd)
@@ -152,41 +152,38 @@ namespace Decompiler.Typing
 
 		public override void VisitConstant(Constant c)
 		{
-			DataType dt = store.ResolvePossibleTypeVar(c.TypeVariable);
+			DataType dt = c.TypeVariable.DataType;
             int offset = StructureField.ToOffset(c);
 			Pointer ptr = dt as Pointer;
 			if (ptr != null)
 			{
 				// C is a constant pointer.
 				if (offset == 0)
-					return;				// null pointer is null.
+					return;				// null pointer is null (//$REVIEW: except for some platforms + archs)
 
-				if (ptr.Pointee is StructureType || ptr.Pointee is ArrayType)
-				{
-					TypeVariable tvField = GetTypeVariableForField(ptr.Pointee);
-                    if (tvField == null)
-                    {
-                        var sGlobals = (StructureType)((Pointer) Globals.DataType).Pointee;
-                        sGlobals.Fields.Add(offset, c.TypeVariable.Class);
-                        //Globals.TypeVariable.Class.DataType = Globals.DataType;
-                    }
-                    else
-                    {
-                        ptr = CreatePointerToField(offset, tvField);
-                        Globals.TypeVariable.OriginalDataType =
-                            unifier.Unify(Globals.TypeVariable.OriginalDataType, ptr);
-
-                        ptr = CreatePointerToField(offset, tvField);
-                        Globals.TypeVariable.Class.DataType =
-                            unifier.Unify(Globals.TypeVariable.Class.DataType, ptr);
-                    }
-				}
+                var pointee = ptr.Pointee;
+                var segPointee = store.ResolvePossibleTypeVar(pointee) as StructureType;
+                if (segPointee != null && segPointee.IsSegment)
+                {
+                    //$TODO: these are getting merged earlier, perhaps this is the right place to do those merges?
+                    return;
+                }
+                var strGlobals =(StructureType)store.ResolvePossibleTypeVar(Globals.TypeVariable.Class.DataType);
+                if (strGlobals.Fields.AtOffset(offset) == null)
+                {
+                    strGlobals.Fields.Add(offset, pointee);
+                }
 				return;
 			}
 			MemberPointer mptr = dt as MemberPointer;
 			if (mptr != null)
 			{
                 // C is a constant offset into a segment.
+                var seg = (StructureType) store.ResolvePossibleTypeVar(((Pointer) mptr.BasePointer).Pointee);
+                if (seg.Fields.AtOffset(offset) == null)
+                {
+                    seg.Fields.Add(offset, mptr.Pointee);
+                }
 //				VisitConstantMemberPointer(offset, mptr);
 			}
 		}

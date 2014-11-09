@@ -12,7 +12,7 @@ l1:
 PtrPtrIntMock_exit:
 
 globals_t (in globals : (ptr (struct)))
-	trait_primitive(ptr32)
+	trait_primitive((ptr (struct)))
 	trait_mem(T_12, 10000)
 	trait_mem(T_14, 10004)
 T_2 (in r1 : word32)

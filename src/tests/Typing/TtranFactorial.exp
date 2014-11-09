@@ -29,6 +29,8 @@ l0C00_0029:
 fn0C00_000F_exit:
 
 // Equivalence classes ////////////
+Eq_1: (struct)
+	globals_t (in globals : (ptr (struct)))
 Eq_2: (fn int16 (word16))
 	T_2 (in fn0C00_000F : ptr32)
 	T_3 (in signature of fn0C00_000F : void)
@@ -38,8 +40,8 @@ Eq_7: (segment (64 int16 w0064))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
 T_2: (in fn0C00_000F : ptr32)
   Class: Eq_2
   DataType: (ptr Eq_2)

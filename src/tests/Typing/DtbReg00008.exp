@@ -39,7 +39,7 @@ Eq_6: word16
 	T_24 (in 0x0000 : word16)
 Eq_7: (memptr T_3 (struct (0 T_8 t0000)))
 	T_7 (in 0x9A26 : word16)
-Eq_9: (memptr T_12 (struct 0026 (0 T_15 t0000)))
+Eq_9: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
 	T_9 (in si_20 : word16)
 	T_10 (in 0x0000 : word16)
 	T_23 (in si_20 + 0x0026 : word16)
@@ -97,11 +97,11 @@ T_8: (in Mem15[ds:0x9A26:word16] : word16)
   OrigDataType: word16
 T_9: (in si_20 : word16)
   Class: Eq_9
-  DataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
-  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
+  DataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
 T_10: (in 0x0000 : word16)
   Class: Eq_9
-  DataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
+  DataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
   OrigDataType: word16
 T_11: (in 0xFFFF : word16)
   Class: Eq_11
@@ -153,7 +153,7 @@ T_22: (in 0x0026 : word16)
   OrigDataType: word16
 T_23: (in si_20 + 0x0026 : word16)
   Class: Eq_9
-  DataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
+  DataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
   OrigDataType: word16
 T_24: (in 0x0000 : word16)
   Class: Eq_6

@@ -9,6 +9,8 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // Equivalence classes ////////////
+Eq_1: (struct)
+	globals_t (in globals : (ptr (struct)))
 Eq_2: (segment)
 	T_2 (in ds : selector)
 Eq_3: (struct (0 word32 dw0000) (4 word32 dw0004))
@@ -16,8 +18,8 @@ Eq_3: (struct (0 word32 dw0000) (4 word32 dw0004))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

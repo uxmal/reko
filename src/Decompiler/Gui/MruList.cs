@@ -46,6 +46,8 @@ namespace Decompiler.Gui
 
 		public void Load(string fileLocation)
 		{
+            if (!File.Exists(fileLocation))
+                return;     // Save ourselves the pain of an exception.
 			try
 			{
 				using (var reader = new StreamReader(fileLocation, new UTF8Encoding(false)))

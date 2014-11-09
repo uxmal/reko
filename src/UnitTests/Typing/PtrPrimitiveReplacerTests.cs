@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Typing
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
+            var ppr = new PtrPrimitiveReplacer(factory, store, new Program { Architecture = new FakeArchitecture() });
 
 			ppr.ReplaceAll();
 
@@ -119,7 +119,7 @@ namespace Decompiler.UnitTests.Typing
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
+			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, prog);
 			ppr.ReplaceAll();
 
 			Verify(prog, outputFilename);

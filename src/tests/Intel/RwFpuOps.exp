@@ -41,12 +41,12 @@ l0C00_0010:
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
 	rLoc1 = Mem0[ds:bx:real64]
-	rLoc1 = rLoc1 *s rLoc1
+	rLoc1 = rLoc1 * rLoc1
 	rLoc2 = Mem0[ds:bx + 0x0008:real64]
-	rLoc2 = rLoc2 *s rLoc2
+	rLoc2 = rLoc2 * rLoc2
 	rLoc1 = rLoc1 + rLoc2
 	rLoc2 = Mem0[ds:bx + 0x0010:real64]
-	rLoc2 = rLoc2 *s rLoc2
+	rLoc2 = rLoc2 * rLoc2
 	rLoc1 = rLoc1 + rLoc2
 	bx = Mem0[ss:bp + 0x0006:word16]
 	Mem0[ds:bx:real64] = rLoc1

@@ -11,7 +11,7 @@ l1:
 FnPointerFragment_exit:
 
 globals_t (in globals : (ptr (struct)))
-	trait_primitive(ptr32)
+	trait_primitive((ptr (struct)))
 	trait_mem(T_5, 10000000)
 	trait_mem(T_7, 10000000)
 T_2 (in 0x01213130 : word32)

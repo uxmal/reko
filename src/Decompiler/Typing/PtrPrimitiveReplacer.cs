@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -40,12 +41,14 @@ namespace Decompiler.Typing
 		private TypeFactory factory;
 		private TypeStore store; 
 		private bool changed;
+        private Program program;
         private HashSet<EquivalenceClass> classesVisited;
 
-		public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store)
+		public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
+            this.program = program;
 		}
 
 		public DataType Replace(DataType dt)
@@ -80,10 +83,11 @@ namespace Decompiler.Typing
 
 			foreach (EquivalenceClass eq in classesVisited)
 			{
-				if (eq.DataType is PrimitiveType ||
+				if (eq != program.Globals.TypeVariable.Class &&
+                    (eq.DataType is PrimitiveType ||
                     eq.DataType is VoidType ||
 					eq.DataType is EquivalenceClass ||
-                    eq.DataType is CodeType)
+                    eq.DataType is CodeType))
 				{
 					eq.DataType = null;
 					changed = true;

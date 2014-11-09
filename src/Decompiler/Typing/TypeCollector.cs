@@ -48,7 +48,9 @@ namespace Decompiler.Typing
 
         public void CollectTypes()
         {
-            desc.MeetDataType(program.Globals, program.Architecture.PointerType);
+            desc.MeetDataType(program.Globals, factory.CreatePointer(
+                factory.CreateStructureType(),
+                program.Architecture.PointerType.Size));
             foreach (Procedure p in program.Procedures.Values)
             {
                 proc = p;
@@ -81,12 +83,13 @@ namespace Decompiler.Typing
 
         public bool VisitAssignment(Assignment ass)
         {
-            var dt = ass.Src.Accept(asc);
-            desc.MeetDataType(ass.Src, dt);
+            var dtSrc = ass.Src.Accept(asc);
+            desc.MeetDataType(ass.Src, dtSrc);
             ass.Src.Accept(desc, ass.Src.TypeVariable);
 
-            dt = ass.Dst.Accept(asc);
-            desc.MeetDataType(ass.Dst, dt);
+            var dtDst = ass.Dst.Accept(asc);
+            desc.MeetDataType(ass.Dst, dtDst);
+            desc.MeetDataType(ass.Dst, dtSrc);
             ass.Dst.Accept(desc, ass.Dst.TypeVariable);
             return false;
         }

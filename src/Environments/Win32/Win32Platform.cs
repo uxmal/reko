@@ -59,7 +59,8 @@ namespace Decompiler.Environments.Win32
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name)).ToArray();
+                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
+                    .Where(tl => tl != null).ToArray();
             }
             return TypeLibs.Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)

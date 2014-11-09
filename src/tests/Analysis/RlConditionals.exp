@@ -132,19 +132,19 @@ l0C00_005F:
 // DataOut: ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
 l0C00_0063:
 	Mem0[ds:0x0F07:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
 l0C00_0068:
 	return
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + bp - 0x0020 -2(fp):0x0003
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 

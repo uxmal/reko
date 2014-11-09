@@ -21,7 +21,7 @@ fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct (5CE10 (ptr Eq_12) ptr5CE10))
-	globals_t (in globals : (ptr (struct (5CE1 Eq_12 t5CE1))))
+	globals_t (in globals : (ptr (struct)))
 Eq_3: (segment (9A26 word16 w9A26) (9A2E word16 w9A2E))
 	T_3 (in ds : selector)
 Eq_9: (struct 0026 (0 word16 w0000))
@@ -33,7 +33,7 @@ Eq_12: (segment (0 (arr Eq_26) a0000))
 Eq_26: (struct 0026 (0 word16 w0000))
 	T_26
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct (5CE1 Eq_12 t5CE1))))
+globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (5CE10 T_12 t5CE10)))

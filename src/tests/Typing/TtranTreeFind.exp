@@ -25,6 +25,8 @@ l5_found:
 TreeFindMock_exit:
 
 // Equivalence classes ////////////
+Eq_1: (struct)
+	globals_t (in globals : (ptr (struct)))
 Eq_2: (struct (0 int32 dw0000) (4 (ptr Eq_2) ptr0004) (8 (ptr Eq_2) ptr0008))
 	T_2 (in t : word32)
 	T_3 (in 0x00000000 : word32)
@@ -33,8 +35,8 @@ Eq_2: (struct (0 int32 dw0000) (4 (ptr Eq_2) ptr0004) (8 (ptr Eq_2) ptr0008))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
 T_2: (in t : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)

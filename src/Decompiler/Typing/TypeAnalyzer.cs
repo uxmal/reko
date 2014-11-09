@@ -90,7 +90,7 @@ namespace Decompiler.Typing
 			tvr.ReplaceTypeVariables();
 
             eventListener.ShowStatus("Transforming datatypes.");
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
+			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, prog);
 			ppr.ReplaceAll();
 
 			trans.Transform();

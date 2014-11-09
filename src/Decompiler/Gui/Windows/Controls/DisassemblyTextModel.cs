@@ -47,9 +47,21 @@ namespace Decompiler.Gui.Windows.Controls
 
         public int LineCount { get { return GetPositionEstimate(image.Bytes.Length); } }
 
-        public IEnumerable<TextSpan> GetLineSpans(int position)
+        public IEnumerable<TextSpan[]> GetLineSpans(int position, int count)
         {
-            throw new NotImplementedException();
+            var rdr = arch.CreateImageReader(image, image.BaseAddress + (position * arch.InstructionBitSize) / 8);
+            var dasm = arch.CreateDisassembler(rdr);
+            var fmt = new DisassemblyFormatter();
+            while (count > 0)
+            {
+                if (!dasm.MoveNext())
+                    break;
+                var instr = dasm.Current;
+                instr.Render(fmt);
+                fmt.NewLine();
+                --count;
+            }
+            return fmt.GetTextSpans();
         }
 
         public int EstablishPosition(Address addr)
@@ -64,12 +76,23 @@ namespace Decompiler.Gui.Windows.Controls
             return idx;
         }
 
+        /// <summary>
+        /// Guesses at a scrollbar position by dividing the byte offset by the instruction size.
+        /// </summary>
+        /// <param name="byteOffset"></param>
+        /// <returns></returns>
         private int GetPositionEstimate(int byteOffset)
         {
             return 8 * byteOffset / arch.InstructionBitSize;
         }
 
         public void CacheHint(int index, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public IEnumerable<TextSpan> GetLineSpans(int index)
         {
             throw new NotImplementedException();
         }

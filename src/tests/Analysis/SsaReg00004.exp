@@ -169,8 +169,8 @@ dwArg0C_49: orig: dwArg0C
 Mem50: orig: Mem0
     def:  Mem50[edx_38:word32] = ecx_42
     uses: rLoc1_72 = (real64) Mem50[ebx_30:int32]
-          rLoc2_92 = rLoc2_91 *s Mem50[0x0099188A:real64]
-          rLoc1_108 = rLoc1_90 *s Mem50[0x10033290:real64]
+          rLoc2_92 = rLoc2_91 * Mem50[0x0099188A:real64]
+          rLoc1_108 = rLoc1_90 * Mem50[0x10033290:real64]
           FPUF_125 = cond(rLoc2_124 - Mem50[0x10033298:real64])
           FPUF_155 = cond(rLoc1_122 - Mem50[0x10033298:real64])
 dwLoc10_51: orig: dwLoc10
@@ -273,12 +273,12 @@ esi_89: orig: esi
     uses: esi_93 = esi_89 + 0x00000001
 rLoc1_90: orig: rLoc1
     def:  rLoc1_90 = PHI(rLoc1_85, rLoc1_122)
-    uses: rLoc1_108 = rLoc1_90 *s Mem50[0x10033290:real64]
+    uses: rLoc1_108 = rLoc1_90 * Mem50[0x10033290:real64]
 rLoc2_91: orig: rLoc2
     def:  rLoc2_91 = dwArg04_86
-    uses: rLoc2_92 = rLoc2_91 *s Mem50[0x0099188A:real64]
+    uses: rLoc2_92 = rLoc2_91 * Mem50[0x0099188A:real64]
 rLoc2_92: orig: rLoc2
-    def:  rLoc2_92 = rLoc2_91 *s Mem50[0x0099188A:real64]
+    def:  rLoc2_92 = rLoc2_91 * Mem50[0x0099188A:real64]
     uses: dwArg04_95 = rLoc2_92
           eax_96 = fn1000010A(rLoc2_92)
 esi_93: orig: esi
@@ -336,7 +336,7 @@ rLoc2_107: orig: rLoc2
     def:  rLoc2_107 = PHI(rLoc2_181, rLoc2_99)
     uses: rLoc2_109 = rLoc2_107
 rLoc1_108: orig: rLoc1
-    def:  rLoc1_108 = rLoc1_90 *s Mem50[0x10033290:real64]
+    def:  rLoc1_108 = rLoc1_90 * Mem50[0x10033290:real64]
     uses: rLoc1_122 = PHI(rLoc1_108, rLoc1_174)
           rLoc1_172 = rLoc1_108
 rLoc2_109: orig: rLoc2
@@ -674,7 +674,7 @@ l10000048:
 	esi_89 = PHI(esi_77, esi_93)
 	rLoc1_90 = PHI(rLoc1_85, rLoc1_122)
 	rLoc2_91 = dwArg04_86
-	rLoc2_92 = rLoc2_91 *s Mem50[0x0099188A:real64]
+	rLoc2_92 = rLoc2_91 * Mem50[0x0099188A:real64]
 	esi_93 = esi_89 + 0x00000001
 	SZO_94 = cond(esi_93)
 	dwArg04_95 = rLoc2_92
@@ -703,7 +703,7 @@ l10000072:
 l1000007F:
 	dwArg04_106 = PHI(dwArg04_182, dwArg04_95)
 	rLoc2_107 = PHI(rLoc2_181, rLoc2_99)
-	rLoc1_108 = rLoc1_90 *s Mem50[0x10033290:real64]
+	rLoc1_108 = rLoc1_90 * Mem50[0x10033290:real64]
 	rLoc2_109 = rLoc2_107
 	eax_110 = fn1000010A(rLoc2_109)
 	ecx_111 = eax_110

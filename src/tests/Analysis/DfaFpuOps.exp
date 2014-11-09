@@ -30,7 +30,7 @@ l0C00_0010:
 	real64 rLoc1_16 = Mem0[ds:wArg02:real64]
 	real64 rLoc2_18 = Mem0[ds:wArg02 + 0x0008:real64]
 	real64 rLoc2_21 = Mem0[ds:wArg02 + 0x0010:real64]
-	Mem25[ds:wArg04:real64] = rLoc1_16 *s rLoc1_16 + rLoc2_18 *s rLoc2_18 + rLoc2_21 *s rLoc2_21
+	Mem25[ds:wArg04:real64] = rLoc1_16 * rLoc1_16 + rLoc2_18 * rLoc2_18 + rLoc2_21 * rLoc2_21
 	Mem27[ds:wArg04 + 0x0028:real64] = (real64) Mem25[ds:wArg04 + 0x0020:int16]
 	return
 	// succ:  fn0C00_0010_exit
