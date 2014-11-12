@@ -59,7 +59,8 @@ namespace Decompiler.Typing
 
         public bool VisitAddress(Address addr, TypeVariable tv)
         {
-            throw new NotImplementedException();
+            MeetDataType(addr, tv.DataType);
+            return false;
         }
 
         public bool VisitApplication(Application appl, TypeVariable tv)
@@ -112,6 +113,18 @@ namespace Decompiler.Typing
         public bool VisitArrayAccess(ArrayAccess acc, TypeVariable tv)
         {
             MeetDataType(acc, acc.DataType);
+            Expression arr;
+            int offset;
+            if (fieldAccessPattern.Match(acc.Array))
+            {
+                arr = fieldAccessPattern.CapturedExpression("p");
+                offset = OffsetOf((Constant)fieldAccessPattern.CapturedExpression("c"));
+            }
+            else
+            {
+                arr = acc.Array;
+                offset = 0;
+            }
             BinaryExpression b = acc.Index as BinaryExpression;
             int stride = 1;
             if (b != null && (b.Operator == Operator.IMul || b.Operator == Operator.SMul || b.Operator == Operator.UMul))
@@ -122,7 +135,7 @@ namespace Decompiler.Typing
                     stride = c.ToInt32();
                 }
             }
-            ArrayField(null, acc.Array, acc.Array.DataType.Size, 0, stride, 0, acc);
+            ArrayField(null, arr, arr.DataType.Size, offset, stride, 0, acc);
             acc.Array.Accept(this, acc.Array.TypeVariable);
             acc.Index.Accept(this, acc.Index.TypeVariable);
             return false;
@@ -404,6 +417,15 @@ namespace Decompiler.Typing
                 offset = 0;
                 MemoryAccessCommon(null, globals, OffsetOf(c), access.TypeVariable, eaSize);
             }
+            else if (IsArrayAccess(effectiveAddress))
+            {
+                // Mem[p + i] where i is integer type.
+                var binEa = (BinaryExpression)effectiveAddress;
+                ArrayField(null, binEa.Left, binEa.DataType.Size, 0, 1, 0, access);
+                p = effectiveAddress;
+                offset = 0;
+
+            }
             else
             {
                 // Mem[anything]
@@ -413,6 +435,17 @@ namespace Decompiler.Typing
             MemoryAccessCommon(basePointer, p, offset, access.TypeVariable, eaSize);
             p.Accept(this, p.TypeVariable);
             return false;
+        }
+
+        private bool IsArrayAccess(Expression effectiveAddress)
+        {
+            var binEa = effectiveAddress as BinaryExpression;
+            if (binEa == null || binEa.Operator != Operator.IAdd)
+                return false;
+            var ptRight = binEa.Right.DataType as PrimitiveType;
+            if (ptRight == null || !ptRight.IsIntegral)
+                return false;
+            return true;
         }
 
         private bool IsByteArrayAccess(Expression effectiveAddress)

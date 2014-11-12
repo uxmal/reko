@@ -50,7 +50,9 @@ namespace Decompiler.Typing
 
         public DataType VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            return RecordDataType(
+                PrimitiveType.Create(Domain.Pointer, addr.DataType.Size),
+                addr);
         }
 
         public DataType VisitApplication(Application appl)

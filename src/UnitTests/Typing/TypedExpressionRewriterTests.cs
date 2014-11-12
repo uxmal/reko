@@ -115,7 +115,6 @@ namespace Decompiler.UnitTests.Typing
             aen = new ExpressionNormalizer(prog.Architecture.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store);
             dtb = new DataTypeBuilder(factory, store, prog.Architecture);
-            //cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store, prog);
             ctn = new ComplexTypeNamer();
@@ -450,6 +449,14 @@ namespace Decompiler.UnitTests.Typing
             var pb = new ProgramBuilder();
             pb.Add(new PointerChainFragment());
             RunTest(pb.BuildProgram(), "Typing/TerPointerChain.txt");
+        }
+
+        [Test]
+        public void TerStaggeredArrays()
+        {
+            ProgramBuilder prog = new ProgramBuilder();
+            prog.Add(new StaggeredArraysFragment());
+            RunTest(prog.BuildProgram(), "Typing/TerStaggeredArrays.txt");
         }
     }
 

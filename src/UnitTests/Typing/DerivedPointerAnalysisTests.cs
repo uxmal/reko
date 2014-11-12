@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Typing
         }
 
 		[Test]
-		public void CpfSimple()
+		public void DpaSimple()
 		{
 			var prog = new Program();
             prog.Architecture = new FakeArchitecture();
@@ -77,10 +77,14 @@ namespace Decompiler.UnitTests.Typing
 			mem.Accept(tc);
 			dtb.BuildEquivalenceClassDataTypes();
 
+            var tvr = new TypeVariableReplacer(store);
+            tvr.ReplaceTypeVariables();
+            var ppr = new PtrPrimitiveReplacer(factory, store, prog);
+            ppr.ReplaceAll();
             var cf = new DerivedPointerAnalysis(factory, store, prog);
 			mem.Accept(cf);
 
-			Verify(null, "Typing/CpfSimple.txt");
+			Verify(null, "Typing/DpaSimple.txt");
 		}
 
 		[Test]

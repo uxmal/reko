@@ -233,7 +233,12 @@ namespace Decompiler.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitMkSequence(MkSequence seq)
         {
-            throw new NotImplementedException();
+            var m = p as MkSequence;
+            if (m == null)
+                return false;
+            return 
+                Match(m.Head, seq.Head) &&
+                Match(m.Tail, seq.Tail);
         }
 
         bool ExpressionVisitor<bool>.VisitOutArgument(OutArgument outArg)
