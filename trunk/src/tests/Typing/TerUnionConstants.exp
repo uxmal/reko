@@ -21,7 +21,9 @@ l1:
 proc1_exit:
 
 // Equivalence classes ////////////
-Eq_2: (union "Eq_2" (int16 u0) (uint16 u1))
+Eq_1: (struct "Eq_1")
+	globals_t (in globals : (ptr (struct)))
+Eq_2: (union "Eq_2" (ci16 u0) (uint16 u1))
 	T_2 (in bx : word16)
 	T_4 (in bx >>u 0x02 : word16)
 	T_5 (in 0x0004 : word16)
@@ -29,24 +31,24 @@ Eq_2: (union "Eq_2" (int16 u0) (uint16 u1))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
 T_2: (in bx : word16)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: (union (int16 u0) (uint16 u1))
+  OrigDataType: (union (ci16 u0) (uint16 u1))
 T_3: (in 0x02 : byte)
   Class: Eq_3
-  DataType: uint8
-  OrigDataType: uint8
+  DataType: byte
+  OrigDataType: byte
 T_4: (in bx >>u 0x02 : word16)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: uint16
 T_5: (in 0x0004 : word16)
   Class: Eq_2
-  DataType: int16
-  OrigDataType: int16
+  DataType: ci16
+  OrigDataType: ci16
 T_6: (in bx < 0x0004 : bool)
   Class: Eq_6
   DataType: bool
@@ -57,5 +59,5 @@ T_7: (in f : bool)
   OrigDataType: bool
 T_8: (in 0x0004 : word16)
   Class: Eq_2
-  DataType: int16
+  DataType: ci16
   OrigDataType: word16

@@ -1,5 +1,5 @@
 Mem0:Global memory
-fp:Temporary
+fp:fp
 sp:sp
 ds:ds
     def:  def ds

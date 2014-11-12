@@ -78,27 +78,27 @@ T_11: (in si : word16)
   OrigDataType: int16
 T_12: (in 0x0CA4 : word16)
   Class: Eq_12
-  DataType: (memptr (ptr Eq_2) word16)
+  DataType: (memptr (ptr Eq_2) (memptr (ptr Eq_2) Eq_13))
   OrigDataType: (memptr T_2 (struct (0 T_13 t0000)))
 T_13: (in Mem0[ds:0x0CA4:word16] : word16)
   Class: Eq_13
-  DataType: word16
+  DataType: (memptr (ptr Eq_2) Eq_13)
   OrigDataType: word16
 T_14: (in bx : word16)
   Class: Eq_13
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_2) Eq_13)
+  OrigDataType: (memptr T_2 <unknown>)
 T_15: (in 0xF8 : byte)
   Class: Eq_15
   DataType: byte
   OrigDataType: byte
 T_16: (in 0x000A : word16)
   Class: Eq_16
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_17: (in bx + 0x000A : word16)
   Class: Eq_17
-  DataType: (memptr (ptr Eq_2) byte)
+  DataType: (memptr (ptr Eq_2) Eq_17)
   OrigDataType: (memptr T_2 (struct (0 T_19 t0000)))
 T_18: (in bx + 0x000A + si : word16)
   Class: Eq_18

@@ -33,8 +33,8 @@ T_5: (in 0x00000140 : word32)
   OrigDataType: int32
 T_6: (in pa + 0x00000140 : word32)
   Class: Eq_6
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr (arr byte))
+  OrigDataType: (ptr (struct (0 (arr T_10) a0000)))
 T_7: (in i : int32)
   Class: Eq_7
   DataType: int32
@@ -47,3 +47,7 @@ T_9: (in Mem0[pa + 0x00000140 + i:byte] : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
+T_10:
+  Class: Eq_10
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_9 t0000))

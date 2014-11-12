@@ -432,7 +432,7 @@ namespace Decompiler.UnitTests.Typing
 				"T_1 (in ds : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_equal(T_2)" + nl +
-				"\ttrait_primitive(ups16)" + nl +
+				"\ttrait_primitive(cups16)" + nl +
 				"T_2 (in 0x0800 : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_primitive(ups16)" + nl +

@@ -56,6 +56,50 @@ namespace Decompiler.Gui.Windows.Controls
         void CacheHint(int index, int count);
     }
 
+    public interface TextViewModel2
+    {
+        object CurrentPosition { get; }
+
+        object StartPosition { get; }
+
+        object EndPosition { get; }
+
+        /// <summary>
+        /// Estimated number of lines in the model.
+        /// </summary>
+        int LineCount { get; } 
+
+        /// <summary>
+        /// Move the current position relative to the parameter <paramref name="position"/>, offet
+        /// by <paramref name="offset"/> lines
+        /// </summary>
+        /// If the position would have overshot either the beginning or the end of the lines, clamp the
+        /// position to Beginning or End.
+        /// <param name="position"></param>
+        /// <param name="offset"></param>
+        void MoveTo(object position, int offset);
+
+        /// <summary>
+        /// Read <paramref name="count"/> lines, starting at the current position.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns>Array of arrays of text spans.</returns>
+        TextSpan[][] GetLineSpans(int count);
+
+        /// <summary>
+        /// Returns the current position as a fraction.
+        /// </summary>
+        /// <returns></returns>
+        Tuple<int, int> GetPositionAsFraction();
+
+        /// <summary>
+        /// Sets the current position to approximately numer / denom.
+        /// </summary>
+        /// <param name="numer"></param>
+        /// <param name="denom"></param>
+        void SetPositionAsFraction(int numer, int denom);
+    }
+
     /// <summary>
     /// A null object to use when there is no Editor.
     /// </summary>

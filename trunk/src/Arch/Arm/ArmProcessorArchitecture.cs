@@ -145,7 +145,7 @@ namespace Decompiler.Arch.Arm
 
         public PrimitiveType PointerType
         {
-            get { return PrimitiveType.Word32; }
+            get { return PrimitiveType.Pointer32; }
         }
 
         public PrimitiveType WordWidth
@@ -166,34 +166,4 @@ namespace Decompiler.Arch.Arm
         #endregion
     }
 
-    [Obsolete("", true)]
-    public static class ArmRegisters
-    {
-        public static readonly RegisterStorage r0 = new RegisterStorage("r0", 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r1 = new RegisterStorage("r1", 1, PrimitiveType.Word32);
-        public static readonly RegisterStorage r2 = new RegisterStorage("r2", 2, PrimitiveType.Word32);
-        public static readonly RegisterStorage r3 = new RegisterStorage("r3", 3, PrimitiveType.Word32);
-
-        public static readonly RegisterStorage r4 = new RegisterStorage("r4", 4, PrimitiveType.Word32);
-        public static readonly RegisterStorage r5 = new RegisterStorage("r5", 5, PrimitiveType.Word32);
-        public static readonly RegisterStorage r6 = new RegisterStorage("r6", 6, PrimitiveType.Word32);
-        public static readonly RegisterStorage r7 = new RegisterStorage("r7", 7, PrimitiveType.Word32);
-
-        public static readonly RegisterStorage r8 = new RegisterStorage("r8", 8, PrimitiveType.Word32);
-        public static readonly RegisterStorage r9 = new RegisterStorage("r9", 9, PrimitiveType.Word32);
-        public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, PrimitiveType.Word32);
-        public static readonly RegisterStorage r11 = new RegisterStorage("fp", 11, PrimitiveType.Word32);
-
-        public static readonly RegisterStorage r12 = new RegisterStorage("r12", 12, PrimitiveType.Word32);
-        public static readonly RegisterStorage r13 = new RegisterStorage("r13", 13, PrimitiveType.Word32);
-        public static readonly RegisterStorage r14 = new RegisterStorage("lr", 14, PrimitiveType.Word32);
-        public static readonly RegisterStorage r15 = new RegisterStorage("pc", 15, PrimitiveType.Word32);
-
-        public static readonly RegisterStorage[] Registers;
-
-        static ArmRegisters()
-        {
-            Registers = new RegisterStorage[] { r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15 };
-        }
-    }
 }

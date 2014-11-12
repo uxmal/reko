@@ -1,5 +1,5 @@
 // Equivalence classes ////////////
-Eq_1: ptr32
+Eq_1: (ptr (struct))
 	globals_t (in globals : (ptr (struct)))
 Eq_2: (memptr T_5 (struct (0 T_6 t0000)))
 	T_2 (in 0x1234 : word16)
@@ -12,8 +12,8 @@ Eq_5: (ptr (segment))
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr (struct))
+  OrigDataType: (ptr (struct))
 T_2: (in 0x1234 : word16)
   Class: Eq_2
   DataType: (memptr T_5 (struct (0 T_6 t0000)))

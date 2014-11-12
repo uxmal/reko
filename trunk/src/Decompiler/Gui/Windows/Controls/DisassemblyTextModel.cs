@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace Decompiler.Gui.Windows.Controls
     /// <summary>
     /// Presents disassembled instructions as lines of text
     /// </summary>
-    public class DisassemblyTextModel : TextViewModel
+    public class DisassemblyTextModel : TextViewModel2
     {
         public event EventHandler ModelChanged;
 
@@ -45,24 +46,10 @@ namespace Decompiler.Gui.Windows.Controls
             this.cache = new Dictionary<int, Address>();
         }
 
+        public object CurrentPosition { get { throw new NotImplementedException(); } }
+        public object StartPosition { get { throw new NotImplementedException(); } }
+        public object EndPosition { get { throw new NotImplementedException(); } }
         public int LineCount { get { return GetPositionEstimate(image.Bytes.Length); } }
-
-        public IEnumerable<TextSpan[]> GetLineSpans(int position, int count)
-        {
-            var rdr = arch.CreateImageReader(image, image.BaseAddress + (position * arch.InstructionBitSize) / 8);
-            var dasm = arch.CreateDisassembler(rdr);
-            var fmt = new DisassemblyFormatter();
-            while (count > 0)
-            {
-                if (!dasm.MoveNext())
-                    break;
-                var instr = dasm.Current;
-                instr.Render(fmt);
-                fmt.NewLine();
-                --count;
-            }
-            return fmt.GetTextSpans();
-        }
 
         public int EstablishPosition(Address addr)
         {
@@ -74,6 +61,50 @@ namespace Decompiler.Gui.Windows.Controls
                 { idx, addr }
             };
             return idx;
+        }
+
+        public TextSpan[][] GetLineSpans(int count)
+        {
+            var lines = new List<TextSpan[]>();
+            var dasm = arch.CreateDisassembler(
+                arch.CreateImageReader(image, image.BaseAddress));
+            while (count != 0 && dasm.MoveNext())
+            {
+                var line = new List<TextSpan>();
+                var addr = dasm.Current.Address;
+                line.Add(new InertTextSpan(addr.ToString() + " ", "addr"));
+                line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
+                var dfmt = new DisassemblyFormatter(line);
+                dasm.Current.Render(dfmt);
+                lines.Add(line.ToArray());
+            }
+            return lines.ToArray();
+        }
+
+        private string BuildBytes(MachineInstruction instr)
+        {
+            var sb = new StringBuilder();
+            var rdr = arch.CreateImageReader(image, instr.Address);
+            for (int i = 0; i < instr.Length; ++i)
+            {
+                sb.AppendFormat("{0:X2} ", rdr.ReadByte());
+            }
+            return sb.ToString();
+        }
+
+        public void MoveTo(object position, int offset)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tuple<int, int> GetPositionAsFraction()
+        {
+            return Tuple.Create(0, 1);
+        }
+
+        public void SetPositionAsFraction(int numer, int denom)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -92,9 +123,37 @@ namespace Decompiler.Gui.Windows.Controls
         }
 
 
-        public IEnumerable<TextSpan> GetLineSpans(int index)
+        public class InertTextSpan : TextSpan
         {
-            throw new NotImplementedException();
+            private string text;
+
+            public InertTextSpan(string text, string style)
+            {
+                this.text = text;
+                base.Style = style ;
+            }
+
+            public override string GetText()
+            {
+                return text;
+            }
+        }
+
+
+        public class AddressTextSpan : TextSpan
+        {
+            private Address addr;
+            private string txtAddress;
+
+            public AddressTextSpan(Address address, string addrAsText)
+            {
+                this.addr = address;
+                this.txtAddress = addrAsText;
+            }
+            public override string GetText()
+            {
+                return txtAddress;
+            }
         }
     }
 }
