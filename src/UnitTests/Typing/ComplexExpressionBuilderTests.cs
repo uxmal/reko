@@ -76,7 +76,6 @@ namespace Decompiler.UnitTests.Typing
 
             ptrInt = new Pointer(PrimitiveType.Int32, 4);
             ptrWord = new Pointer(PrimitiveType.Word32, 4);
-
 		}
 
 		[Test]

@@ -147,7 +147,7 @@ namespace Decompiler.Core.Output
             if (addr.Selector == 0)
             {
                 if (addr.Offset == 0)
-                    writer.WriteKeyword("null");
+                    WriteNull();
                 else 
                     writer.Write("0x{0:X8}", addr.Offset);
             }
@@ -644,10 +644,24 @@ namespace Decompiler.Core.Output
 
         private string FormatString(PrimitiveType type, object value)
         {
+            string format;
             switch (type.Domain)
             {
             case Domain.SignedInt:
                 return "{0}";
+            case Domain.Character:
+                switch (type.Size)
+                {
+                case 1: format = "'{0}'"; break;
+                case 2: format = "L'{0}'"; break;
+                default: throw new ArgumentOutOfRangeException("Only character types of size 1 and 2 are supported.");
+                }
+                var ch = Convert.ToChar(value);
+                if (Char.IsControl(ch))
+                    return string.Format(format, string.Format("\\x{0:X2}", (int) ch));
+                else if (ch == '\'' || ch == '\\')
+                    return string.Format(format, string.Format("\\{0}", ch));
+                return format;
             case Domain.Real:
                 switch (type.Size)
                 {
@@ -865,5 +879,10 @@ namespace Decompiler.Core.Output
 				s.Accept(this);
 			}
 		}
+
+        public void WriteNull()
+        {
+            writer.WriteKeyword("null");
+        }
     }
 }

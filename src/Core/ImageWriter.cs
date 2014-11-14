@@ -77,21 +77,29 @@ namespace Decompiler.Core
             WriteBytes(enc.GetBytes(str));
         }
 
-        public void WriteLeUInt16(ushort us)
+        public ImageWriter WriteLeInt16(short us)
+        {
+            return WriteLeUInt16((ushort) us);
+        }
+
+        public ImageWriter WriteLeUInt16(ushort us)
         {
             WriteByte((byte) us);
             WriteByte((byte) (us >> 8));
+            return this;
         }
 
-        public void WriteBeUInt16(ushort us)
+        public ImageWriter WriteBeUInt16(ushort us)
         {
             WriteByte((byte)(us >> 8));
             WriteByte((byte)us);
+            return this;
         }
 
-        public void WriteBeUInt32(uint offset, uint ui)
+        public ImageWriter WriteBeUInt32(uint offset, uint ui)
         {
             LoadedImage.WriteBeUInt32(Bytes, offset, ui);
+            return this;
         }
 
         public void WriteBeUInt32(uint ui)

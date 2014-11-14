@@ -304,14 +304,14 @@ namespace Decompiler
             }
         }
 
-        private void WriteGlobals(Program program, TextWriter w)
+        public void WriteGlobals(Program program, TextWriter w)
         {
             var inputFile = program.InputFile;
             WriteHeaderComment(Path.GetFileName(inputFile.OutputFilename), w);
             w.WriteLine("#include \"{0}\"", Path.GetFileName(inputFile.TypesFilename));
             w.WriteLine();
-            var cpt = new ConstantPointerTraversal(program);
-            cpt.Traverse();
+            var gdw = new GlobalDataWriter(program);
+            gdw.WriteGlobals(new TextFormatter(w));
             w.WriteLine();
         }
     

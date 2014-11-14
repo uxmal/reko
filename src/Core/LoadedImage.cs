@@ -142,6 +142,16 @@ namespace Decompiler.Core
 			Constant c = Relocations[imageOffset];
 			if (c != null && c.DataType.Size == type.Size)
 				return c;
+            if (type.Domain == Domain.Real)
+            {
+                switch (type.Size)
+                {
+                case 4:return Constant.FloatFromBitpattern(ReadLeInt32(abImage, imageOffset));
+                case 8: return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, imageOffset));
+                default: throw new InvalidOperationException(string.Format("Real type {0} not supported.", type));
+                }
+            }
+            
 			switch (type.Size)
 			{
 			case 1: return Constant.Create(type, abImage[imageOffset]);
@@ -156,6 +166,15 @@ namespace Decompiler.Core
             Constant c = Relocations[imageOffset];
             if (c != null && c.DataType.Size == type.Size)
                 return c;
+            if (type.Domain == Domain.Real)
+            {
+                switch (type.Size)
+                {
+                case 4:return Constant.FloatFromBitpattern(ReadLeInt32(abImage, imageOffset));
+                case 8: return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, imageOffset));
+                default: throw new InvalidOperationException(string.Format("Real type {0} not supported.", type));
+                }
+            }
             switch (type.Size)
             {
             case 1: return Constant.Create(type, abImage[imageOffset]);
