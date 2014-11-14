@@ -49,7 +49,7 @@ namespace Decompiler.Core.Serialization
 				return argName2;
 		}
 
-		public Identifier Deserialize(SerializedRegister reg)
+		public Identifier Deserialize(Register_v1 reg)
 		{
 			var idArg = frame.EnsureRegister(arch.GetRegister(reg.Name.Trim()));
 			if (argCur.OutParameter)
@@ -59,7 +59,7 @@ namespace Decompiler.Core.Serialization
             return idArg;
 		}
 
-		public Identifier Deserialize(SerializedStackVariable ss)
+		public Identifier Deserialize(StackVariable_v1 ss)
 		{
             if (argCur.Name == "...")
             {
@@ -80,7 +80,7 @@ namespace Decompiler.Core.Serialization
             return idArg;
 		}
 
-		public Identifier Deserialize(SerializedFpuStackVariable fs)
+		public Identifier Deserialize(FpuStackVariable_v1 fs)
 		{
 			var idArg = ps.CreateId(argCur.Name ?? "fpArg" + ps.FpuStackOffset , PrimitiveType.Real64, new FpuStackStorage(ps.FpuStackOffset, PrimitiveType.Real64));
 			++ps.FpuStackOffset;
@@ -121,20 +121,20 @@ namespace Decompiler.Core.Serialization
 			argCur = arg;
             if (arg.Kind != null)
             {
-                return arg.Kind.Accept(this);
+                var a = arg.Kind.Accept(this);
+                return a;
             }
             //$PLATFORM-specifiC!!! We're encoding Microsoft + x86 conventions here.
             if (convention == "stdapi" || convention == "__cdecl" || convention == "__stdcall")
             {
-                return Deserialize(new SerializedStackVariable { });
+                return Deserialize(new StackVariable_v1 { });
             }
             if (convention == "__thiscall")
             {
-                SerializedKind kind;
                 if (idx == 0)
-                    return Deserialize(new SerializedRegister("ecx"));
+                    return Deserialize(new Register_v1("ecx"));
                 else
-                    return Deserialize(new SerializedStackVariable());
+                    return Deserialize(new StackVariable_v1());
             }
             throw new NotImplementedException();
 		}

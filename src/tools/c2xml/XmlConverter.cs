@@ -49,18 +49,18 @@ namespace Decompiler.Tools.C2Xml
             this.Sizer = new TypeSizer(this);
             this.NamedTypes = new Dictionary<string, SerializedType>
             {
-                { "size_t", new SerializedPrimitiveType { Domain=Domain.UnsignedInt, ByteSize=4 } },    //$BUGBUG: arch-dependent!
-                { "va_list", new SerializedPrimitiveType { Domain=Domain.Pointer, ByteSize=4 } }, //$BUGBUG: arch-dependent!
+                { "size_t", new PrimitiveType_v1 { Domain=Domain.UnsignedInt, ByteSize=4 } },    //$BUGBUG: arch-dependent!
+                { "va_list", new PrimitiveType_v1 { Domain=Domain.Pointer, ByteSize=4 } }, //$BUGBUG: arch-dependent!
             };
             StructsSeen = new Dictionary<string, SerializedStructType>();
-            UnionsSeen = new Dictionary<string, SerializedUnionType>();
+            UnionsSeen = new Dictionary<string, UnionType_v1>();
             EnumsSeen = new Dictionary<string, SerializedEnumType>();
             Constants = new Dictionary<string, int>();
         }
 
         public List<SerializedType> Types { get; private set; }
         public Dictionary<string, SerializedStructType> StructsSeen { get; private set; }
-        public Dictionary<string, SerializedUnionType> UnionsSeen { get; private set; }
+        public Dictionary<string, UnionType_v1> UnionsSeen { get; private set; }
         public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
         public Dictionary<string, int> Constants { get; private set; }
         public Dictionary<string, SerializedType> NamedTypes { get; private set; }
@@ -188,7 +188,7 @@ namespace Decompiler.Tools.C2Xml
 
         public SerializedType VisitPrimitive(PrimitiveType pt)
         {
-            return new SerializedPrimitiveType
+            return new PrimitiveType_v1
             {
                 Domain = pt.Domain,
                 ByteSize = pt.Size,

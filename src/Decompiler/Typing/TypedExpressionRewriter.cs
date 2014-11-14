@@ -147,8 +147,6 @@ namespace Decompiler.Typing
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
             var tmr = new TypedMemoryExpressionRewriter(arch, store, globals);
-            //var arr = acc.Array.Accept(tmr);
-            //var idx = acc.Index.Accept(this);
             return tmr.RewriteArrayAccess(acc.TypeVariable, acc.Array, acc.Index);
         }
 
@@ -205,12 +203,12 @@ namespace Decompiler.Typing
 				if (uDst != null)
 				{
 					var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
-					dst = ceb.BuildComplex(tvDst);
+					dst = ceb.BuildComplex();
 				}
 				else if (uSrc != null)
 				{
 					var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
-					src = ceb.BuildComplex(tvSrc);
+					src = ceb.BuildComplex();
 				}
 				else
 					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
@@ -287,7 +285,7 @@ namespace Decompiler.Typing
                     binExp.Left,
                     null,
                     StructureField.ToOffset(c));
-                return ceb.BuildComplex(binExp.TypeVariable);
+                return ceb.BuildComplex();
             }
             return binExp;
         }
@@ -321,7 +319,7 @@ namespace Decompiler.Typing
         {
             var head = seq.Head.Accept(this);
             var tail = seq.Tail.Accept(this);
-            Constant c = tail as Constant;
+            Constant c = seq.Tail as Constant;
             var ptHead = head.TypeVariable.DataType as PrimitiveType;
             if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
             {
@@ -329,13 +327,13 @@ namespace Decompiler.Typing
                 {
                     ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                         seq.TypeVariable.DataType,
-                        head.DataType,
+                        head.TypeVariable.DataType,
                         head.TypeVariable.OriginalDataType,
+                        null,
                         head,
-                        tail,
                         null,
                         StructureField.ToOffset(c));
-                    return ceb.BuildComplex(seq.TypeVariable);
+                    return ceb.BuildComplex();
                 }
                 else
                 {
@@ -347,7 +345,7 @@ namespace Decompiler.Typing
                         new MemberPointerSelector(seq.DataType, head, tail),
                         null,
                         0);
-                    return ceb.BuildComplex(seq.TypeVariable);
+                    return ceb.BuildComplex();
                 }
             }
             else

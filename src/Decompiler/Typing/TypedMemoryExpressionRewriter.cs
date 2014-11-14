@@ -63,7 +63,7 @@ namespace Decompiler.Typing
 			return access.EffectiveAddress.Accept(this);
 		}
 
-        internal Expression RewriteArrayAccess(TypeVariable typeVariable, Expression arr, Expression idx)
+        public Expression RewriteArrayAccess(TypeVariable typeVariable, Expression arr, Expression idx)
         {
             var ter = new TypedExpressionRewriter(arch, store, globals);
             basePointer = null;
@@ -73,7 +73,7 @@ namespace Decompiler.Typing
             arr = arr.Accept(ter);
             idx = idx.Accept(ter);
             idx = RescaleIndex(idx, dtElement);
-            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+            var ceb = new ComplexExpressionBuilder(
                 dtResult,
                 dtElement,
                 dtElementOrig,
@@ -82,7 +82,7 @@ namespace Decompiler.Typing
                 null, 
                 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex(typeVariable);
+            return ceb.BuildComplex();
         }
 
         private Expression RescaleIndex(Expression idx, DataType dtElement)
@@ -117,6 +117,13 @@ namespace Decompiler.Typing
             var at = dt as ArrayType;
             if (at != null)
                 return at.ElementType;
+            var st = dt as StructureType;
+            if (st != null)
+            {
+                var f0 = st.Fields.AtOffset(0);
+                if (f0 != null && f0.DataType is ArrayType)
+                    return ((ArrayType) f0.DataType).ElementType;
+            }
             return dt;
         }
 
@@ -144,7 +151,7 @@ namespace Decompiler.Typing
                 idx,
                 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex(acc.TypeVariable);
+            return ceb.BuildComplex();
 		}
 
         public Expression VisitBinaryExpression(BinaryExpression binExp)
@@ -202,7 +209,7 @@ namespace Decompiler.Typing
                     StructureField.ToOffset(binRight as Constant));
             }
             ceb.Dereferenced = true;
-            return ceb.BuildComplex(binExp.TypeVariable);
+            return ceb.BuildComplex();
         }
 		
 
@@ -239,7 +246,7 @@ namespace Decompiler.Typing
                     null,
                     StructureField.ToOffset(c));
                 ceb.Dereferenced = dereferenced;
-                return ceb.BuildComplex(c.TypeVariable);
+                return ceb.BuildComplex();
             }
             else
             {
@@ -270,7 +277,7 @@ namespace Decompiler.Typing
 				id.TypeVariable.OriginalDataType,
 				basePointer, id, null, 0);
 			ceb.Dereferenced = true;
-			return ceb.BuildComplex(id.TypeVariable);
+			return ceb.BuildComplex();
 		}
 
 		public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
@@ -289,7 +296,7 @@ namespace Decompiler.Typing
                 null,
                 e, null, 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex(access.TypeVariable);
+            return ceb.BuildComplex();
         }
 
 		public Expression VisitMkSequence(MkSequence seq)
@@ -313,7 +320,7 @@ namespace Decompiler.Typing
                         null,
                         StructureField.ToOffset(c));
                     ceb.Dereferenced = true;
-                    return ceb.BuildComplex(seq.TypeVariable);
+                    return ceb.BuildComplex();
                 }
                 else
                 {
@@ -326,7 +333,7 @@ namespace Decompiler.Typing
                         null,
                         0);
                     ceb.Dereferenced = true;
-                    return ceb.BuildComplex(seq.TypeVariable);
+                    return ceb.BuildComplex();
                 }
             }
             else
@@ -366,7 +373,7 @@ namespace Decompiler.Typing
                 basePointer,
                 e, null, 0);
             ceb.Dereferenced = true;
-            return ceb.BuildComplex(access.TypeVariable);
+            return ceb.BuildComplex();
 		}
 
 		public Expression VisitScopeResolution(ScopeResolution scope)

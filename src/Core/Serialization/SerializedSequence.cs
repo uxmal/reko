@@ -30,7 +30,7 @@ namespace Decompiler.Core.Serialization
 	public class SerializedSequence : SerializedKind
 	{
 		[XmlElement("reg")]
-		public SerializedRegister [] Registers;
+		public Register_v1 [] Registers;
 
 		public SerializedSequence()
 		{
@@ -38,9 +38,9 @@ namespace Decompiler.Core.Serialization
 
 		public SerializedSequence(SequenceStorage seq)
 		{
-			Registers = new SerializedRegister[2];
-			Registers[0] = new SerializedRegister(seq.Head.Name);
-			Registers[1] = new SerializedRegister(seq.Tail.Name);
+			Registers = new Register_v1[2];
+			Registers[0] = new Register_v1(seq.Head.Name);
+			Registers[1] = new Register_v1(seq.Tail.Name);
 		}
 
 		public override Identifier Accept(ArgumentSerializer sser)

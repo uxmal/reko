@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Diagnostics;
 
 namespace Decompiler.UnitTests.Typing
 {
@@ -98,6 +99,11 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog, outputFile);
         }
 
+        protected void RunTest(Program prog)
+        {
+            var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
+            RunTest(prog, outputFileName);
+        }
 
         protected abstract void RunTest(Program prog, string outputFile);
 

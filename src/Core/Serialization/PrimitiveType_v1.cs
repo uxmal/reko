@@ -25,35 +25,40 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	public class SerializedPointerType : SerializedType
+	/// <summary>
+	/// Serialized representation of serialized primitive types.
+	/// </summary>
+	public class PrimitiveType_v1 : SerializedType
 	{
-		public SerializedType DataType;
-        [XmlAttribute("size")]
-        [DefaultValue(0)]
-        public int PointerSize;
+		[XmlAttribute("domain")]
+		public Domain Domain;
 
-		public SerializedPointerType()
+		[XmlAttribute("size")]
+		public int ByteSize;
+
+		public PrimitiveType_v1()
 		{
 		}
 
-		public SerializedPointerType(SerializedType pointee)
+		public PrimitiveType_v1(Domain domain, int byteSize)
 		{
-			DataType = pointee;
+			this.Domain = domain;	
+			this.ByteSize = byteSize;
 		}
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
-            return visitor.VisitPointer(this);
+            return visitor.VisitPrimitive(this);
         }
 
 		public override DataType BuildDataType(TypeFactory factory)
 		{
-			return factory.CreatePointer(DataType.BuildDataType(factory), PointerSize);
+			return factory.CreatePrimitiveType(Domain, ByteSize);
 		}
 
 		public override string ToString()
 		{
-			return string.Format("ptr({0})", DataType);
+			return string.Format("prim({0},{1})", Domain, ByteSize);
 		}
 	}
 }

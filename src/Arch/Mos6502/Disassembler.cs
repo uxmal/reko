@@ -33,10 +33,10 @@ namespace Decompiler.Arch.Mos6502
 
     public class Disassembler : DisassemblerBase<Instruction>
     {
-        LeImageReader rdr;
+        ImageReader rdr;
         Instruction instr;
 
-        public Disassembler(LeImageReader rdr)
+        public Disassembler(ImageReader rdr)
         {
             this.rdr = rdr;
         }

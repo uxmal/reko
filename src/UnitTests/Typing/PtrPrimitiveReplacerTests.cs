@@ -38,6 +38,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PprReplaceInts()
 		{
+            var program = new Program { Architecture = new FakeArchitecture() };
+
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
 			TypeVariable tv1 = store.CreateTypeVariable(factory);
@@ -46,20 +48,22 @@ namespace Decompiler.UnitTests.Typing
 			Assert.IsNotNull(tv2.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 			tv1.Class.DataType = PrimitiveType.Word32;
 			tv2.Class.DataType = PrimitiveType.Word16;
+            program.Globals.TypeVariable = store.CreateTypeVariable(factory);
+            program.Globals.DataType = factory.CreateStructureType();
 
             TypeVariable tv3 = store.CreateTypeVariable(factory);
 			Assert.IsNotNull(tv3.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 
 			StructureType mem = factory.CreateStructureType(null, 0);
-			mem.Fields.Add(new StructureField(0, tv1));
-			mem.Fields.Add(new StructureField(4, tv2));
+			mem.Fields.Add(0, tv1);
+			mem.Fields.Add(4, tv2);
 			tv3.Class.DataType = factory.CreatePointer(mem, 4);
 
 			store.CopyClassDataTypesToTypeVariables();
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-            var ppr = new PtrPrimitiveReplacer(factory, store, new Program { Architecture = new FakeArchitecture() });
+            var ppr = new PtrPrimitiveReplacer(factory, store, program);
 
 			ppr.ReplaceAll();
 

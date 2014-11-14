@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             var arg = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, Registers.ax);
             Argument_v1 sarg = argser.Serialize(arg);
             Assert.AreEqual("ax", sarg.Name);
-            SerializedRegister sreg = (SerializedRegister) sarg.Kind;
+            Register_v1 sreg = (Register_v1) sarg.Kind;
             Assert.IsNotNull(sreg);
             Assert.AreEqual("ax", sreg.Name);
         }
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void ArgSer_DeserializeRegister()
 		{
-			SerializedRegister reg = new SerializedRegister("eax");
+			Register_v1 reg = new Register_v1("eax");
 			Argument_v1 arg = new Argument_v1();
 			arg.Name = "eax"; 
 			arg.Kind = reg;
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             Argument_v1 arg = argser.Serialize(id);
             Assert.AreEqual("qOut", arg.Name);
             Assert.IsTrue(arg.OutParameter);
-            SerializedRegister sr = (SerializedRegister) arg.Kind;
+            Register_v1 sr = (Register_v1) arg.Kind;
             Assert.AreEqual("q", sr.Name);
         }
 	}

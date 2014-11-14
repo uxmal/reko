@@ -1,6 +1,6 @@
-ï»¿#region License
+#region License
 /* 
- * Copyright (C) 1999-2014 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2014 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,29 +18,31 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    public class SerializedVoidType :  SerializedType
-    {
-        public override DataType BuildDataType(TypeFactory factory)
-        {
-            return VoidType.Instance;
-        }
+	public class Register_v1 : SerializedKind
+	{
+		[XmlText]
+		public string Name;
 
-        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
-        {
-            return visitor.VisitVoidType(this);
-        }
+		public Register_v1()
+		{
+		}
 
-        public override string ToString()
-        {
-            return "void";
-        }
-    }
+		public Register_v1(string name)
+		{
+			this.Name = name;
+		}
+
+		public override Identifier Accept(ArgumentSerializer sser)
+		{
+			return sser.Deserialize(this);
+		}
+	}
 }

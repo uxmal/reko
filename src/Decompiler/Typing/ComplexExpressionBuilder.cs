@@ -69,11 +69,9 @@ namespace Decompiler.Typing
             this.comp = new DataTypeComparer();
         }
 
-        [Obsolete("Get rid of the tv parameter; all expressions should be typed appropriately.")]
-		public Expression BuildComplex(TypeVariable tv)
+		public Expression BuildComplex()
 		{
             var exp = dt.Accept(this);
-           // exp.TypeVariable = tv;
             return exp;
 		}
 
@@ -86,6 +84,28 @@ namespace Decompiler.Typing
 			else
 				return new ScopeResolution(dt);
 		}
+
+        private Expression CreateUnreferenced(DataType dt, Expression e)
+        {
+            if (basePointer != null)
+            {
+                var mps = new MemberPointerSelector(dt, new Dereference(dt, basePointer), e);
+                if (dt is ArrayType)
+                {
+                    return mps;
+                }
+                return new UnaryExpression(
+                    Operator.AddrOf,
+                    new Pointer(dt, 4),         //$BUG: hardwired '4'.
+                    mps);
+            }
+            else if (e != null)
+            {
+                return e;
+            }
+            else
+                throw new NotImplementedException();
+        }
 
         private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, string fieldName)
         {
@@ -117,9 +137,9 @@ namespace Decompiler.Typing
                 dtPointee is CodeType ||
                 comp.Compare(dtPtr, dtResult) == 0)
 			{
-                if (offset == 0 || offset % dtPointee.Size == 0)
+                if (offset == 0 || dtPointee is ArrayType || offset % dtPointee.Size == 0)
                 {
-                    int idx = offset == 0
+                    int idx = (offset == 0 || dtPointee is ArrayType)
                         ? 0
                         : offset / dtPointee.Size;
                     if (idx == 0 && this.indexExp == null)
@@ -127,7 +147,7 @@ namespace Decompiler.Typing
                         if (Dereferenced)
                             result = CreateDereference(dtPointee, complexExp);
                         else
-                            result = complexExp;
+                            result = CreateUnreferenced(dtPointee, complexExp);
                     }
                     else
                     {
@@ -144,15 +164,15 @@ namespace Decompiler.Typing
                 // Drill down.
 				dtOriginal = dtPointeeOriginal;
 				complexExp = CreateDereference(dtPointee, complexExp);
-				bool deref = Dereferenced;
-				Dereferenced = false;
+				//bool deref = Dereferenced;  //$REVIEW: causes problems with arrayType
+				Dereferenced = true;       //$REVUEW: causes problems with arrayType
 				basePointer = null;
 				result = dtPointee.Accept(this);
-				if (!deref)
+				if (!dereferenced)
 				{
 					result = new UnaryExpression(UnaryOperator.AddrOf, dtPtr, result);
 				}
-				Dereferenced = deref; 
+				//Dereferenced = deref;       //$REVIEW: causes problems with arrayType
 			}
 			seenPtr = false;
             return result;
@@ -160,6 +180,8 @@ namespace Decompiler.Typing
 
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex, bool dereferenced)
         {
+            if (offset == 0 && !dereferenced)
+                return complexExp;
             arrayIndex = CreateArrayIndexExpression(offset, arrayIndex);
             if (dereferenced)
             {
@@ -203,7 +225,8 @@ namespace Decompiler.Typing
 			dt = array.ElementType;
 			dtOriginal = array.ElementType;
             complexExp.DataType = array;
-			complexExp = CreateArrayAccess(dt, array, i, indexExp, true);
+			complexExp = CreateArrayAccess(dt, array, i, indexExp, dereferenced);
+            dereferenced = true;
 			offset = r;
 			return dt.Accept(this);
 		}
@@ -250,9 +273,9 @@ namespace Decompiler.Typing
 
 		public Expression VisitMemberPointer(MemberPointer memptr)
 		{
-			if (!(dtOriginal is MemberPointer))
-				throw new TypeInferenceException("MemberPointer expression {0}  was expected to have MemberPointer as its " +
-					"original type, but was {1}.", memptr, dtOriginal);
+            //if (!(dtOriginal is MemberPointer))
+            //    throw new TypeInferenceException("MemberPointer expression {0}  was expected to have MemberPointer as its " +
+            //        "original type, but was {1}.", memptr, dtOriginal);
 			return RewritePointer(memptr, memptr.Pointee, ((MemberPointer) dtOriginal).Pointee);
 		}
 

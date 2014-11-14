@@ -45,12 +45,12 @@ namespace Decompiler.Tools.C2Xml
             return size;
         }
 
-        public int VisitPrimitive(SerializedPrimitiveType primitive)
+        public int VisitPrimitive(PrimitiveType_v1 primitive)
         {
             return primitive.ByteSize;
         }
 
-        public int VisitPointer(SerializedPointerType pointer)
+        public int VisitPointer(PointerType_v1 pointer)
         {
             return 4;           //$BUGBUG: architecture dependent
         }
@@ -102,7 +102,7 @@ namespace Decompiler.Tools.C2Xml
             return converter.NamedTypes[typeReference.TypeName].Accept(this);
         }
 
-        public int VisitUnion(SerializedUnionType union)
+        public int VisitUnion(UnionType_v1 union)
         {
             if (union.Alternatives == null)
                 return tagSizes[union];
@@ -114,7 +114,7 @@ namespace Decompiler.Tools.C2Xml
             return size;
         }
 
-        public int VisitVoidType(SerializedVoidType voidType)
+        public int VisitVoidType(VoidType_v1 voidType)
         {
             return 0;
         }

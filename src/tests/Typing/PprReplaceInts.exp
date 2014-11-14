@@ -1,6 +1,6 @@
 // Equivalence classes ////////////
-Eq_3: (struct (0 word32 dw0000) (4 word16 w0004))
-	T_3
+Eq_4: (struct (0 word32 dw0000) (4 word16 w0004))
+	T_4
 // Type Variables ////////////
 T_1:
   Class: Eq_1
@@ -12,5 +12,9 @@ T_2:
   OrigDataType: 
 T_3:
   Class: Eq_3
-  DataType: (ptr Eq_3)
+  DataType: Eq_3
+  OrigDataType: 
+T_4:
+  Class: Eq_4
+  DataType: (ptr Eq_4)
   OrigDataType: 

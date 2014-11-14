@@ -81,8 +81,8 @@ namespace Decompiler.UnitTests.Environments.AmigaOS
             var p1 = func.Signature.Arguments[1];
             Assert.AreEqual("libName", p0.Name);
             Assert.AreEqual("version", p1.Name);
-            Assert.AreEqual("a1", ((SerializedRegister) p0.Kind).Name);
-            Assert.AreEqual("d0", ((SerializedRegister) p1.Kind).Name);
+            Assert.AreEqual("a1", ((Register_v1) p0.Kind).Name);
+            Assert.AreEqual("d0", ((Register_v1) p1.Kind).Name);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Environments.AmigaOS
             Assert.AreEqual(1, ffp.FunctionsByA6Offset.Count);
             var func = ffp.FunctionsByA6Offset[-4];
             Assert.IsNotNull(func.Signature.ReturnValue);
-            Assert.AreEqual("d0", ((SerializedRegister) func.Signature.ReturnValue.Kind).Name);
+            Assert.AreEqual("d0", ((Register_v1) func.Signature.ReturnValue.Kind).Name);
         }
     }
 }

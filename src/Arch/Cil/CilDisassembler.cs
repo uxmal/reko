@@ -198,13 +198,13 @@ namespace Decompiler.Arch.Cil
             case 0x22:
 
                 instr.Opcode = OpCodes.Ldc_R4;// <float32 (num)>
-                instr.Operand = rdr.ReadLeUint64();
+                instr.Operand = rdr.ReadLeUInt64();
                 break;
 
             //Push num of type float32 onto the stack as F. Base instruction 
             case 0x23:
                 instr.Opcode = OpCodes.Ldc_R8; // <float64 (num)>
-                instr.Operand = rdr.ReadLeUint64();
+                instr.Operand = rdr.ReadLeUInt64();
                 break;
 
             //Push num of type float64 onto the stack as F. Base instruction 

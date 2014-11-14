@@ -118,7 +118,7 @@ namespace Decompiler.UnitTests.Scanning
             m(asm);
             lr = asm.GetImage();
             host = new RewriterHost(asm.ImportThunks);
-            var rw = arch.CreateRewriter(new ImageReader(lr.Image, addr), this.state, proc.Frame, host);
+            var rw = arch.CreateRewriter(lr.Image.CreateLeReader(addr), this.state, proc.Frame, host);
             using (repository.Record())
             {
                 scanner.Stub(x => x.Platform).Return(platform);
@@ -267,7 +267,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
                 scanner.Expect(x => x.CreateReader(
-                    Arg<Address>.Is.Anything)).Return(new ImageReader(new byte[] {
+                    Arg<Address>.Is.Anything)).Return(new LeImageReader(new byte[] {
                         0x34, 0x12,
                         0x36, 0x12,
                         0x38, 0x12,

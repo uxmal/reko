@@ -27,6 +27,7 @@ namespace Decompiler.Core.Rtl
 {
     /// <summary>
     /// RtlInstructions are the low-level register-transfer instructions emitted by the Instruction rewriters.
+    /// They exists briefly while the binary program is being scanned, and are then converted to IL code.
     /// </summary>
     public abstract class RtlInstruction
     {

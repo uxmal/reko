@@ -39,7 +39,6 @@ namespace Decompiler.Core
         private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
         private Dictionary<string, ProcedureSignature> procedures;
-        private bool caseInsensitive;
         private string defaultConvention;
         private Dictionary<string, SystemService> servicesByName;
         private Dictionary<int, SystemService> servicesByOrdinal;
@@ -136,12 +135,12 @@ namespace Decompiler.Core
             }
         }
 
-        public DataType VisitPrimitive(SerializedPrimitiveType primitive)
+        public DataType VisitPrimitive(PrimitiveType_v1 primitive)
         {
             return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
         }
 
-        public DataType VisitPointer(SerializedPointerType pointer)
+        public DataType VisitPointer(PointerType_v1 pointer)
         {
             DataType dt;
             if (pointer.DataType == null)
@@ -209,7 +208,7 @@ namespace Decompiler.Core
             return new TypeReference(typeReference.TypeName, new UnknownType());
         }
 
-        public DataType VisitUnion(SerializedUnionType union)
+        public DataType VisitUnion(UnionType_v1 union)
         {
             UnionType un;
             if (union.Name == null || !unions.TryGetValue(union.Name, out un))
@@ -237,7 +236,7 @@ namespace Decompiler.Core
             throw new NotImplementedException();
         }
 
-        public DataType VisitVoidType(SerializedVoidType voidType)
+        public DataType VisitVoidType(VoidType_v1 voidType)
         {
             return VoidType.Instance;
         }

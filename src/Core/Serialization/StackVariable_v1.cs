@@ -16,7 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#endregion 
+#endregion
 
 using Decompiler.Core.Expressions;
 using System;
@@ -24,17 +24,9 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	/// <summary>
-	/// XML format for a FPU stack variable.
-	/// </summary>
-	public class SerializedFpuStackVariable : SerializedKind
+	public class StackVariable_v1 : SerializedKind
 	{
-		[XmlAttribute("size")]
-		public int ByteSize;
-
-		public SerializedFpuStackVariable()
-		{
-		}
+		public StackVariable_v1() {}
 
 		public override Identifier Accept(ArgumentSerializer sser)
 		{

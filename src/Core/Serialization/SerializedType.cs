@@ -41,6 +41,12 @@ namespace Decompiler.Core.Serialization
         public abstract DataType BuildDataType(TypeFactory factory);
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
 
+        /// <summary>
+        /// Generates attribute overrides for each field that holds a serialized DataType.
+        /// </summary>
+        /// <param name="typesToDecorate"></param>
+        /// <param name="xmlNamespace"></param>
+        /// <returns></returns>
         public static XmlAttributeOverrides GetAttributeOverrides(IEnumerable<Type> typesToDecorate, string xmlNamespace)
         {
             var overrides = typesToDecorate
@@ -79,16 +85,16 @@ namespace Decompiler.Core.Serialization
             {
                 XmlElements = 
                 {
-                    new XmlElementAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = @namespace},
-                    new XmlElementAttribute("ptr", typeof(SerializedPointerType)) { Namespace = @namespace},
+                    new XmlElementAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
+                    new XmlElementAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
                     new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
-                    new XmlElementAttribute("union", typeof(SerializedUnionType)) { Namespace = @namespace},
+                    new XmlElementAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
                     new XmlElementAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},
                     new XmlElementAttribute("type", typeof(SerializedTypeReference)) { Namespace = @namespace},
-                    new XmlElementAttribute("void", typeof(SerializedVoidType)) { Namespace = @namespace},
+                    new XmlElementAttribute("void", typeof(VoidType_v1)) { Namespace = @namespace},
                 }
             };
             return sertypeAttributes;
@@ -100,16 +106,16 @@ namespace Decompiler.Core.Serialization
             {
                 XmlArrayItems = 
                 {
-                    new XmlArrayItemAttribute("prim", typeof(SerializedPrimitiveType)) { Namespace = @namespace},
-                    new XmlArrayItemAttribute("ptr", typeof(SerializedPointerType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
-                    new XmlArrayItemAttribute("union", typeof(SerializedUnionType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("union", typeof(UnionType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("fn", typeof(SerializedSignature)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("typedef", typeof(SerializedTypedef)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("type", typeof(SerializedTypeReference)) { Namespace = @namespace},
-                    new XmlArrayItemAttribute("void", typeof(SerializedVoidType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("void", typeof(VoidType_v1)) { Namespace = @namespace},
                 }
             };
             return sertypeAttributes;

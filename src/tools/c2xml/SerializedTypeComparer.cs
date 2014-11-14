@@ -43,10 +43,10 @@ namespace Decompiler.Tools.C2Xml
         public int GetHashCode(SerializedType obj)
         {
             int hash = obj.GetType().GetHashCode() * 11;
-            var prim = obj as SerializedPrimitiveType;
+            var prim = obj as PrimitiveType_v1;
             if (prim != null)
                 return hash ^ ((int) prim.Domain << 8) ^ prim.ByteSize;
-            var ptr = obj as SerializedPointerType;
+            var ptr = obj as PointerType_v1;
             if (ptr != null)
                 return hash ^ GetHashCode(ptr.DataType);
             var arr = obj as SerializedArrayType;
@@ -55,28 +55,28 @@ namespace Decompiler.Tools.C2Xml
             var str = obj as SerializedStructType;
             if (str != null)
                 return hash ^ (str.Name != null ? str.Name.GetHashCode() : 0);
-            var uni = obj as SerializedUnionType;
+            var uni = obj as UnionType_v1;
             if (uni != null)
                 return hash ^ (uni.Name != null ? uni.Name.GetHashCode() : 0);
 
             throw new NotImplementedException();
         }
 
-        public bool VisitPrimitive(SerializedPrimitiveType pX)
+        public bool VisitPrimitive(PrimitiveType_v1 pX)
         {
-            var pY = (SerializedPrimitiveType) y;
+            var pY = (PrimitiveType_v1) y;
             return pX.Domain == pY.Domain && pX.ByteSize == pY.ByteSize;
         }
 
-        public bool VisitVoidType(SerializedVoidType vX)
+        public bool VisitVoidType(VoidType_v1 vX)
         {
-            var vY = (SerializedVoidType) y;
+            var vY = (VoidType_v1) y;
             return vX == vY && vX != null;
         }
 
-        public bool VisitPointer(SerializedPointerType pX)
+        public bool VisitPointer(PointerType_v1 pX)
         {
-            y = ((SerializedPointerType) y).DataType;
+            y = ((PointerType_v1) y).DataType;
             return pX.DataType.Accept(this);
         }
 
@@ -130,9 +130,9 @@ namespace Decompiler.Tools.C2Xml
             throw new NotImplementedException();
         }
 
-        public bool VisitUnion(SerializedUnionType uX)
+        public bool VisitUnion(UnionType_v1 uX)
         {
-            var uY = (SerializedUnionType) y;
+            var uY = (UnionType_v1) y;
             return uX.Name == uY.Name && uX.Name != null;
         }
     }

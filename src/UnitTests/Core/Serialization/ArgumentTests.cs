@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Argument_v1 sarg = new Argument_v1 {
 			    Name = "foo",
 			    Type = new SerializedTypeReference("int"),
-			    Kind = new SerializedRegister("eax"),
+			    Kind = new Register_v1("eax"),
             };
 			Verify(sarg, "Core/SargWriteRegisterArgument.txt");
 		}
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Argument_v1 sarg = new Argument_v1
             {
 			    Type = new SerializedTypeReference("int"),
-			    Kind = new SerializedRegister("eax"),
+			    Kind = new Register_v1("eax"),
             };
 			Verify(sarg, "Core/SargWriteNamelessRegisterArgument.txt");
 		}
@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             {
 			    Name = "bar",
 			    Type = new SerializedTypeReference("int"),
-			    Kind = new SerializedStackVariable()
+			    Kind = new StackVariable_v1()
             };
 			Verify(sarg, "Core/SargWriteStackArgument.txt");
 		}
@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			    Name = "bxOut",
 			    Type = new SerializedTypeReference("int"),
 			    OutParameter = true,
-			    Kind = new SerializedRegister("bx")
+			    Kind = new Register_v1("bx")
             };
 			Verify(sarg, "Core/SargWriteOutArgument.txt");
 		}

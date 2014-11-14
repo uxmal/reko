@@ -40,7 +40,6 @@ namespace Decompiler.UnitTests.Typing
         private EquivalenceClassBuilder eqb;
         private TraitCollector coll;
         private DataTypeBuilder dtb;
-        //private DerivedPointerAnalysis cpf;
         private TypeVariableReplacer tvr;
         private TypeTransformer trans;
         private ComplexTypeNamer ctn;

@@ -36,12 +36,14 @@ namespace Decompiler.UnitTests.Typing
 		private Pointer ptrUnion;
         private Pointer ptrInt;
         private Pointer ptrWord;
+        private Identifier globals;
 
         [SetUp]
 		public void Setup()
 		{
 			store = new TypeStore();
 			factory = new TypeFactory();
+            globals = new Identifier("globals", 1, PrimitiveType.Word32, null);
             StructureType point = new StructureType("Point", 0)
             {
                 Fields = {
@@ -82,7 +84,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier id = new Identifier("id", 3, PrimitiveType.Word32, null);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, PrimitiveType.Word32, PrimitiveType.Word32, null, id, null, 0);
-			Assert.AreEqual("id", ceb.BuildComplex(null).ToString());
+			Assert.AreEqual("id", ceb.BuildComplex().ToString());
 		}
 
 		[Test]
@@ -91,7 +93,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
 			store.EnsureExpressionTypeVariable(factory, ptr);
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
-			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex(ptr.TypeVariable).ToString());
+			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex().ToString());
 		}
 
 		[Test]
@@ -100,7 +102,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
             ceb.Dereferenced = true;
-			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex(ptr.TypeVariable).ToString());
+			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex().ToString());
 		}
 
 		[Test]
@@ -113,14 +115,13 @@ namespace Decompiler.UnitTests.Typing
 				new Pointer(PrimitiveType.Real32, 4),
 				null, ptr, null, 0);
 			ceb.Dereferenced = true;
-			Assert.AreEqual("ptr->r", ceb.BuildComplex(ptr.TypeVariable).ToString());
+			Assert.AreEqual("ptr->r", ceb.BuildComplex().ToString());
 		}
 
 		[Test]
 		public void CEB_BuildByteArrayFetch()
 		{
-            Identifier globals = new Identifier("globals", 3, PrimitiveType.Word32, null);
-            Identifier i = new Identifier("i", 4, PrimitiveType.Word32, null);
+            var i = new Identifier("i", 4, PrimitiveType.Word32, null);
             DataType arrayOfBytes = new ArrayType(PrimitiveType.Byte, 0);
             StructureType str = Struct(
                 Fld(0x01000, arrayOfBytes));
@@ -133,8 +134,27 @@ namespace Decompiler.UnitTests.Typing
                 null,
                 globals, i, 0x1000);
             ceb.Dereferenced = true;
-            Assert.AreEqual("globals->a1000[i]", ceb.BuildComplex(globals.TypeVariable).ToString());
+            Assert.AreEqual("globals->a1000[i]", ceb.BuildComplex().ToString());
 		}
+
+        [Test]
+        public void CEB_SegmentedArray()
+        {
+            var m = new Decompiler.UnitTests.Mocks.ProcedureBuilder("CEB_SegmentedArray");
+            var aw = new ArrayType(PrimitiveType.Int16, 0);
+            var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
+            var bx = m.Temp(PrimitiveType.Word16, "bx");
+            var acc =
+                m.Array(
+                    PrimitiveType.Word16,
+                    m.Seq(
+                        ds,
+                        m.Word16(0x5388)),
+                    m.IMul(bx, 2));
+
+            CreateTv(globals, Ptr32(factory.CreateStructureType()), Ptr32(factory.CreateStructureType()));
+            CreateTv(ds, Ptr16(factory.CreateStructureType()), Ptr16(factory.CreateStructureType()));
+        }
 
         private StructureType Struct(params StructureField [] fields)
         {
@@ -174,7 +194,7 @@ namespace Decompiler.UnitTests.Typing
                 new Pointer(PrimitiveType.Word16, 2),
                 tvBx.Class.DataType, tvBx.OriginalDataType, ds, bx, null, 0);
             ceb.Dereferenced = true;
-            Assert.AreEqual("ds->*bx", ceb.BuildComplex(sa.TypeVariable).ToString());
+            Assert.AreEqual("ds->*bx", ceb.BuildComplex().ToString());
         }
 
         private Pointer Ptr32(DataType dataType)

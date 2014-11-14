@@ -107,7 +107,7 @@ namespace Decompiler.Gui
                 return new Argument_v1(
                     reg.Name,
                     null,
-                    new SerializedRegister(reg.Name),
+                    new Register_v1(reg.Name),
                     true);
             }
             if (w.Contains("_"))
@@ -120,13 +120,13 @@ namespace Decompiler.Gui
         private Argument_v1 ParseRegisterSequenceWithUnderscore(string w)
         {
             string[] subregs = w.Split('_');
-            var regs = new List<SerializedRegister>();
+            var regs = new List<Register_v1>();
             foreach (string subReg in subregs)
             {
                 RegisterStorage r;
                 if (!arch.TryGetRegister(subReg, out r))
                     return null;
-                regs.Add(new SerializedRegister(r.Name));
+                regs.Add(new Register_v1(r.Name));
             }
             var seq = new SerializedSequence();
             seq.Registers = regs.ToArray();
@@ -203,7 +203,7 @@ namespace Decompiler.Gui
             var arg = new Argument_v1()
             {
                 Name = reg.Name,
-                Kind = new SerializedRegister(reg.Name),
+                Kind = new Register_v1(reg.Name),
                 OutParameter = false,
                 Type = new SerializedTypeReference { TypeName = type },
             };
@@ -222,9 +222,9 @@ namespace Decompiler.Gui
             var seqArgName = reg.Name + "_" + reg2.Name;
             var seqArgType = new SerializedTypeReference { TypeName = type };
             var seqKind = new SerializedSequence();
-            seqKind.Registers = new SerializedRegister[]{ 
-                    new SerializedRegister(reg.Name), 
-                    new SerializedRegister(reg2.Name)
+            seqKind.Registers = new Register_v1[]{ 
+                    new Register_v1(reg.Name), 
+                    new Register_v1(reg2.Name)
                 };
             return new Argument_v1(seqArgName, seqArgType, seqKind, false);
         }
@@ -251,7 +251,7 @@ namespace Decompiler.Gui
 			Argument_v1 arg = new Argument_v1();
 			arg.Name = argName;
 			arg.Type = new SerializedTypeReference { TypeName = typeName };
-			arg.Kind = new SerializedStackVariable(); //  (sizeInWords * wordSize);
+			arg.Kind = new StackVariable_v1(); //  (sizeInWords * wordSize);
 			return arg;
 		}
 

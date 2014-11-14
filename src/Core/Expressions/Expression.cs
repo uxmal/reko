@@ -33,8 +33,6 @@ namespace Decompiler.Core.Expressions
     {
         public Expression(DataType dataType)
         {
-            if (dataType == null)
-                throw new ArgumentNullException("dataType");
             this.DataType = dataType;
         }
 
@@ -44,10 +42,20 @@ namespace Decompiler.Core.Expressions
         public DataType DataType { get { return dt; } set { if (value == null) new ArgumentNullException(); dt = value; } } 
         private DataType dt;
 
+        /// <summary>
+        /// Type variable for the expression.
+        /// </summary>
+        /// <remarks>
+        ///$REVIEW: TypeVariable is only used during type inference. It might be better to store it in
+        /// the TypeStore.
         public TypeVariable TypeVariable { get; set; } 		// index to high-level type of this expression.
-        //$REVIEW: TypeVariable is only used for typing, perhaps move it to hashtable? Argument against: there may be a lot of these.
+
+        /// <summary>
+        /// Returns true if the expression evaluates to a constant zero.
+        /// </summary>
         public virtual bool IsZero { get { return false; } }
 
+        // Visitor methods that must be implemented by concrete derived classes.
         public abstract void Accept(IExpressionVisitor visitor);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
         public abstract T Accept<T,C>(ExpressionVisitor<T, C> visitor, C context);
@@ -68,11 +76,6 @@ namespace Decompiler.Core.Expressions
             var fmt = new CodeFormatter(new TextFormatter(sw));
             fmt.WriteExpression(this);
             return sw.ToString();
-        }
-
-        public static string OperatorToString(Operator op)
-        {
-            return op.ToString();
         }
     }
 }

@@ -28,7 +28,6 @@ using System.Text;
 namespace Decompiler.Core
 {
 	public delegate void ItemSplitHandler(object o, ItemSplitArgs isa);
-	public delegate void SegmentSplitHandler(object o, SegmentSplitArgs ssa);
 
 	/// <summary>
 	/// Describes the contents of the image in terms of regions. The image map is two-tier:
@@ -38,10 +37,6 @@ namespace Decompiler.Core
 	{
 		private Map<Address,ImageMapItem> items;
         private Map<Address,ImageMapSegment> segments;
-
-		public event ItemSplitHandler ItemSplit;
-		public event ItemSplitHandler ItemCoincides;
-		public event SegmentSplitHandler SegmentSplit;
 
         public ImageMap(LoadedImage image)
             : this(image.BaseAddress, image.Bytes.Length)
@@ -87,12 +82,10 @@ namespace Decompiler.Core
                     item.Size = (uint) delta;
                     items.Add(itemNew.Address, itemNew);
 
-                    OnSplitItem(item, itemNew);
                     return itemNew;
                 }
                 else
                 {
-                    OnItemCoincides(item, itemNew);
                     if (itemNew.Size > 0)
                     {
                         Debug.Assert(item.Size > itemNew.Size);
@@ -100,7 +93,6 @@ namespace Decompiler.Core
                         item.Address += itemNew.Size;
                         items[itemNew.Address] = itemNew;
                         items[item.Address] = item;
-                        OnSplitItem(itemNew, item);
                         return itemNew;
                     }
                     if (item.GetType() != itemNew.GetType())    //$BUGBUG: replaces the type.
@@ -183,7 +175,6 @@ namespace Decompiler.Core
             items.Add(itemNew.Address, itemNew);
 
             item.Size = (uint)delta;
-            OnSplitItem(item, itemNew);
         }
 
 		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access)
@@ -208,7 +199,6 @@ namespace Decompiler.Core
 				segNew.Size = (uint)(seg.Size - delta);
 				seg.Size = (uint) delta;
 				segments.Add(segNew.Address, segNew);
-				OnSplitSegment(seg, segNew);
 
 				// And split any items in the segment.
 
@@ -286,30 +276,6 @@ namespace Decompiler.Core
 			throw new ArgumentOutOfRangeException(
                 string.Format("Linear address {0:X8} exceeeds known address range.",
                 linearAddress));
-		}
-
-		private void OnItemCoincides(ImageMapItem item, ImageMapItem itemNew)
-		{
-			if (ItemCoincides != null)
-			{
-				ItemCoincides(this, new ItemSplitArgs(item, itemNew));
-			}
-		}
-
-		private void OnSplitItem(ImageMapItem item, ImageMapItem itemNew)
-		{
-			if (ItemSplit != null)
-			{
-				ItemSplit(this, new ItemSplitArgs(item, itemNew));
-			}
-		}
-
-		private void OnSplitSegment(ImageMapSegment seg, ImageMapSegment segNew)
-		{
-			if (SegmentSplit != null)
-			{
-				SegmentSplit(this, new SegmentSplitArgs(seg, segNew));
-			}
 		}
 
 		public Map<Address, ImageMapItem> Items

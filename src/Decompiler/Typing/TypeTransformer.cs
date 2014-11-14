@@ -316,7 +316,8 @@ namespace Decompiler.Typing
             if (array != null)
             {
                 Changed = true;
-                return factory.CreatePointer(
+                return factory.CreateMemberPointer(
+                    mptr.BasePointer,
                     array.ElementType,
                     mptr.Size);
             }

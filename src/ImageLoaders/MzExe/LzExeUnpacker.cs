@@ -189,7 +189,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			// Extract the LZ stuff.
 
-			ImageReader rdr = new ImageReader(abC, (uint) lzHdrOffset);
+			ImageReader rdr = new LeImageReader(abC, (uint) lzHdrOffset);
 			lzIp = rdr.ReadLeUInt16();
 			lzCs = rdr.ReadLeUInt16();
 			ushort lzSp = rdr.ReadLeUInt16();

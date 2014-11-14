@@ -82,13 +82,13 @@ namespace Decompiler.Core.Serialization
 
         private static Type[] TypesToDecorate = new Type[] 
         {
-            typeof(SerializedPrimitiveType),
-            typeof(SerializedPointerType),
+            typeof(PrimitiveType_v1),
+            typeof(PointerType_v1),
             typeof(SerializedArrayType),
             typeof(SerializedEnumType),
             typeof(SerializedStructType),
             typeof(SerializedStructField),
-            typeof(SerializedUnionType),
+            typeof(UnionType_v1),
             typeof(SerializedUnionAlternative),
             typeof(SerializedSignature),
             typeof(SerializedTypedef),

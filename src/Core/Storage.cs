@@ -362,7 +362,7 @@ namespace Decompiler.Core
 
 		public override SerializedKind Serialize()
 		{
-			return new SerializedRegister(Name);
+			return new Register_v1(Name);
 		}
 
         public virtual void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
@@ -534,7 +534,7 @@ namespace Decompiler.Core
 
         public override SerializedKind Serialize()
         {
-            return new SerializedStackVariable();
+            return new StackVariable_v1();
         }
 
 		public override void Write(TextWriter writer)

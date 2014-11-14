@@ -35,9 +35,9 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void StCreate()
 		{
-			SerializedType st = new SerializedPrimitiveType(Domain.SignedInt, 4);
+			SerializedType st = new PrimitiveType_v1(Domain.SignedInt, 4);
 			Assert.AreEqual("prim(SignedInt,4)", st.ToString());
-			st = new SerializedPointerType(new SerializedPrimitiveType(Domain.UnsignedInt, 4));
+			st = new PointerType_v1(new PrimitiveType_v1(Domain.UnsignedInt, 4));
 			Assert.AreEqual("ptr(prim(UnsignedInt,4))", st.ToString());
 		}
 
@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Core.Serialization
             SerializedStructType str = new SerializedStructType
             {
                 Fields = new SerializedStructField[] {
-                    new SerializedStructField(0, null, new SerializedPrimitiveType(Domain.UnsignedInt, 4)),
-			        new SerializedStructField(4, null, new SerializedPrimitiveType(Domain.Real, 8)),
+                    new SerializedStructField(0, null, new PrimitiveType_v1(Domain.UnsignedInt, 4)),
+			        new SerializedStructField(4, null, new PrimitiveType_v1(Domain.Real, 8)),
                 }
             };
 			Assert.AreEqual("struct((0, ?, prim(UnsignedInt,4))(4, ?, prim(Real,8)))", str.ToString());
@@ -62,8 +62,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 			    ByteSize = 32,
 			    Fields = new SerializedStructField []
                 {
-                    new SerializedStructField(0, null, new SerializedPrimitiveType(Domain.SignedInt, 4)),
-			        new SerializedStructField(4, null, new SerializedPrimitiveType(Domain.Real, 8)),
+                    new SerializedStructField(0, null, new PrimitiveType_v1(Domain.SignedInt, 4)),
+			        new SerializedStructField(4, null, new PrimitiveType_v1(Domain.Real, 8)),
                 }
             };
 			StringWriter writer = new StringWriter();
@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void StWritePrimitive()
 		{
-			SerializedType st = new SerializedPointerType(new SerializedPrimitiveType(Domain.SignedInt, 4));
+			SerializedType st = new PointerType_v1(new PrimitiveType_v1(Domain.SignedInt, 4));
 			StringWriter writer = new StringWriter();
 			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(st.GetType());
 			ser.Serialize(writer, st);

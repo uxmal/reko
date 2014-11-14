@@ -20,12 +20,16 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Machine;
+using Decompiler.Gui;
+using Decompiler.Gui.Windows.Controls;
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Controls
@@ -33,8 +37,8 @@ namespace Decompiler.Gui.Windows.Controls
     /// <summary>
     /// Renders disassembled machine instructions.
     /// </summary>
-	public class DisassemblyControl : Control
-	{
+    public class DisassemblyControl : Control
+    {
         private VScrollBar vscroll;
 
         public DisassemblyControl()
@@ -46,7 +50,7 @@ namespace Decompiler.Gui.Windows.Controls
             ArchitectureChanged += DisassemblyControl_StateChange;
             StartAddressChanged += DisassemblyControl_StateChange;
             TopAddressChanged += DisassemblyControl_StateChange;
-     
+
             vscroll = new VScrollBar();
             vscroll.Margin = new Padding(10);
 
@@ -272,5 +276,183 @@ namespace Decompiler.Gui.Windows.Controls
         //    txtDisassembly.KeyPress += txtDisassembly_KeyPress;
         //    return txtDisassembly;
         //}
-	}
+    }
+
+    public class DisassemblyTextModel2 : TextViewModel2
+    {
+        public event EventHandler ModelChanged;
+
+        private LoadedImage image;
+        private Address position;
+        private IProcessorArchitecture arch;
+
+        public DisassemblyTextModel2(IProcessorArchitecture arch, LoadedImage image)
+        {
+            this.arch = arch;
+            this.image = image;
+            this.position = image.BaseAddress;
+        }
+
+        public Tuple<int, int> GetPositionAsFraction()
+        {
+            return Tuple.Create(position - image.BaseAddress, image.Bytes.Length);
+        }
+
+        public void MoveToPosition(object token, int offset)
+        {
+            var addr = (Address) token;
+            position = addr + offset;
+        }
+
+        public void MoveToFractionalPosition(int numerator, int denominator)
+        {
+            if (denominator <= 0)
+                throw new ArgumentException("denominator");
+            if (numerator < 0 || numerator > denominator)
+                throw new ArgumentException("numerator");
+            long offset = Math.BigMul(numerator, image.Bytes.Length) / denominator;
+            if (offset < 0)
+                offset = 0;
+            else if (offset > image.Bytes.Length)
+                offset = image.Bytes.Length;
+            this.position = image.BaseAddress + (int) offset;
+        }
+
+        public IEnumerable<TextSpan>[] Load(int count)
+        {
+            var items = new List<IEnumerable<TextSpan>>();
+            var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, position));
+            while (dasm.MoveNext())
+            {
+                var rendrer = new DisassemblyRenderer();
+                rendrer.Address(dasm.Current.Address.ToString(), dasm.Current.Address);
+                dasm.Current.Render(rendrer);
+                items.Add(rendrer.GetSpans());
+            }
+            return items.ToArray();
+        }
+
+        public object BeginningToken
+        {
+            get { return image.BaseAddress; }
+        }
+
+        public object CurrentPositionToken
+        {
+            get { return image.BaseAddress + image.Bytes.Length; }
+        }
+
+        public object EndToken
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        
+        public object CurrentPosition { get { return position; } }
+        public object EndPosition { get { return this.image.BaseAddress + this.image.Bytes.Length; } }
+
+        public int LineCount { get { return image.Bytes.Length / (arch.InstructionBitSize / 8); } }
+
+
+        public object StartPosition
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void MoveTo(object position, int offset)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TextSpan[][] GetLineSpans(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPositionAsFraction(int numer, int denom)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class DisassemblyRenderer : MachineInstructionWriter
+    {
+        List<TextSpan> spans = new List<TextSpan>();
+        private StringBuilder sb = new StringBuilder();
+
+        public void Opcode(string opcode)
+        {
+            new DisassemblySpan(opcode, "opcode");
+        }
+
+        public void Address(string formattedAddress, Address addr)
+        {
+            new AddressSpan(formattedAddress, addr, "address");
+        }
+
+        public void Tab()
+        {
+        }
+
+        public void Write(char c)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Write(uint n)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Write(string s)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Write(string fmt, params object[] parms)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal IEnumerable<TextSpan> GetSpans()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AddressSpan : TextSpan
+    {
+        private string formattedAddress;
+        private Address addr;
+        private string p;
+
+        public AddressSpan(string formattedAddress, Address addr, string p)
+        {
+            // TODO: Complete member initialization
+            this.formattedAddress = formattedAddress;
+            this.addr = addr;
+            this.p = p;
+        }
+        public override string GetText()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class DisassemblySpan : TextSpan
+    {
+        private string opcode;
+        private string p;
+
+        public DisassemblySpan(string opcode, string p)
+        {
+            // TODO: Complete member initialization
+            this.opcode = opcode;
+            this.p = p;
+        }
+        public override string GetText()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
