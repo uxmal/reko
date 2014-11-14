@@ -64,7 +64,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public override RelocationResults Relocate(Address addrLoad)
 		{
 			ImageMap imageMap = imgLoadedMap;
-			ImageReader rdr = new ImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
+			ImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
             var relocations = new RelocationDictionary();
 			int i = exe.e_cRelocations;
 			while (i != 0)

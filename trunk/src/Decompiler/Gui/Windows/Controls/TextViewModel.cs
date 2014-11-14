@@ -64,7 +64,7 @@ namespace Decompiler.Gui.Windows.Controls
 
         object EndPosition { get; }
 
-        /// <summary>
+    /// <summary>
         /// Estimated number of lines in the model.
         /// </summary>
         int LineCount { get; } 

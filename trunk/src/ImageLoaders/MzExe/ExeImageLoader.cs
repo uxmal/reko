@@ -157,7 +157,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public void ReadCommonExeFields()
 		{
-			ImageReader rdr = new ImageReader(RawImage, 0);
+			ImageReader rdr = new LeImageReader(RawImage, 0);
 
 			e_magic = rdr.ReadLeUInt16();
 			e_cbLastPage = rdr.ReadLeUInt16();

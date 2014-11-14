@@ -240,8 +240,8 @@
     <Compile Include="Serialization\SerializedTemplate.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
     <Compile Include="Serialization\SerializedTypeReference.cs" />
-    <Compile Include="Serialization\SerializedUnionType.cs" />
-    <Compile Include="Serialization\SerializedVoidType.cs" />
+    <Compile Include="Serialization\UnionType_v1.cs" />
+    <Compile Include="Serialization\VoidType_v1.cs" />
     <Compile Include="Services\DecompilerEventListener.cs" />
     <Compile Include="Lib\BlockDominatorGraph.cs" />
     <Compile Include="Lib\Dequeue.cs" />
@@ -481,7 +481,7 @@
     <Compile Include="Serialization\SerializedFlag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedFpuStackVariable.cs" />
+    <Compile Include="Serialization\FpuStackVariable_v1.cs" />
     <Compile Include="Serialization\SerializedKind.cs" />
     <Compile Include="Serialization\SerializedLibrary.cs">
       <SubType>Code</SubType>
@@ -489,17 +489,17 @@
     <Compile Include="Serialization\SerializedLibraryDefaults.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedPointerType.cs">
+    <Compile Include="Serialization\PointerType_v1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedPrimitiveType.cs">
+    <Compile Include="Serialization\PrimitiveType_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedProcedure.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedProcedureBase.cs" />
-    <Compile Include="Serialization\SerializedRegister.cs">
+    <Compile Include="Serialization\Register_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedSequence.cs">
@@ -511,7 +511,7 @@
     <Compile Include="Serialization\SerializedSignature.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedStackVariable.cs">
+    <Compile Include="Serialization\StackVariable_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\SerializedStructType.cs">

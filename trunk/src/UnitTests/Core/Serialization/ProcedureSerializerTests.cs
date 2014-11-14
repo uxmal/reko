@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             SerializedSignature ssig = ser.Serialize(sig);
             Assert.IsNotNull(ssig.ReturnValue);
             Assert.AreEqual("qax", ssig.ReturnValue.Name);
-            SerializedRegister sreg = (SerializedRegister) ssig.ReturnValue.Kind;
+            Register_v1 sreg = (Register_v1) ssig.ReturnValue.Kind;
             Assert.AreEqual("eax", sreg.Name);
         }
 
@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             return new Argument_v1
             {
                 Type = type,
-                Kind = new SerializedRegister { Name = "eax" },
+                Kind = new Register_v1 { Name = "eax" },
                 Name = regName
             };
         }
@@ -144,7 +144,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             return new Argument_v1(
                 name, 
                 type, 
-                new SerializedFpuStackVariable { ByteSize = 8 },
+                new FpuStackVariable_v1 { ByteSize = 8 },
                 false);
         }
 
@@ -157,7 +157,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                 ReturnValue = new Argument_v1
                 {
                     Type = new SerializedTypeReference("double"),
-                    Kind = new SerializedFpuStackVariable { ByteSize = 8 },
+                    Kind = new FpuStackVariable_v1 { ByteSize = 8 },
                 }
             };
             var ps = new ProcedureSerializer(arch, "stdapi");
@@ -195,7 +195,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     new Argument_v1
                     {
                         Name = "foo",
-                        Type = new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize = 4 },
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
                     }
                 }
             };
@@ -214,7 +214,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     new Argument_v1
                     {
                         Name = "foo",
-                        Type = new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize = 4 },
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
                     }
                 }
             };

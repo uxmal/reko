@@ -89,8 +89,6 @@ namespace Decompiler.Core.Serialization
                 {
                     var sArg = ss.Arguments[iArg];
                     var arg = argser.Deserialize(sArg, iArg);
-                    if (arg == null)    //$DEBUG
-                        args.ToArray();
 					args.Add(arg);
 				}
                 fpuDelta -= FpuStackOffset;

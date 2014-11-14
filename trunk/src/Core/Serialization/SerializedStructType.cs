@@ -80,8 +80,8 @@ namespace Decompiler.Core.Serialization
 		[XmlAttribute("name")]
 		public string Name;
 
-		[XmlElement("prim", typeof (SerializedPrimitiveType))]
-		[XmlElement("ptr", typeof (SerializedPointerType))]
+		[XmlElement("prim", typeof (PrimitiveType_v1))]
+		[XmlElement("ptr", typeof (PointerType_v1))]
 		public SerializedType Type;
 
 		public SerializedStructField()

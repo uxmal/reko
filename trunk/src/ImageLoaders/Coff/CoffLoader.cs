@@ -49,7 +49,7 @@ namespace Decompiler.ImageLoaders.Coff
 
         private FileHeader LoadHeader()
         {
-            var rdr = new ImageReader(RawImage, 0);
+            var rdr = new LeImageReader(RawImage, 0);
             var magic = rdr.ReadLeUInt16();
             switch (magic)
             {

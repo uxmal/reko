@@ -29,13 +29,13 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    public class SerializedUnionType : SerializedTaggedType
+    public class UnionType_v1 : SerializedTaggedType
     {
         [XmlAttribute("size")]
         [DefaultValue(0)]
         public int ByteSize;
 
-        public SerializedUnionType()
+        public UnionType_v1()
         {
         }
 

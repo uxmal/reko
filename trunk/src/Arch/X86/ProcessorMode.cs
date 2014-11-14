@@ -226,7 +226,7 @@ namespace Decompiler.Arch.X86
 
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
-            return Address.Ptr64(rdr.ReadLeUint64());
+            return Address.Ptr64(rdr.ReadLeUInt64());
         }
     }
 }

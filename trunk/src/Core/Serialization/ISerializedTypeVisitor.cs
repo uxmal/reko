@@ -27,17 +27,17 @@ namespace Decompiler.Core.Serialization
 {
     public interface ISerializedTypeVisitor<T>
     {
-        T VisitPrimitive(SerializedPrimitiveType primitive);
-        T VisitPointer(SerializedPointerType pointer);
+        T VisitPrimitive(PrimitiveType_v1 primitive);
+        T VisitPointer(PointerType_v1 pointer);
         T VisitMemberPointer(MemberPointer_v1 memptr);
         T VisitArray(SerializedArrayType array);
         T VisitSignature(SerializedSignature signature);
         T VisitStructure(SerializedStructType structure);
         T VisitTypedef(SerializedTypedef typedef);
         T VisitTypeReference(SerializedTypeReference typeReference);
-        T VisitUnion(SerializedUnionType union);
+        T VisitUnion(UnionType_v1 union);
         T VisitEnum(SerializedEnumType serializedEnumType);
         T VisitTemplate(SerializedTemplate serializedTemplate);
-        T VisitVoidType(SerializedVoidType serializedVoidType);
+        T VisitVoidType(VoidType_v1 serializedVoidType);
     }
 }

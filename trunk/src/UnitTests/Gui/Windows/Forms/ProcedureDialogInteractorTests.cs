@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private static void CreateReturnValue(SerializedSignature sig)
         {
             sig.ReturnValue = new Argument_v1();
-            sig.ReturnValue.Kind = new SerializedRegister("eax");
+            sig.ReturnValue.Kind = new Register_v1("eax");
             sig.ReturnValue.Type = new SerializedTypeReference("int32");
         }
 

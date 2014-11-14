@@ -107,7 +107,7 @@ namespace Decompiler.ImageLoaders.Elf
 
         public void LoadElfIdentification()
         {
-            var rdr = new ImageReader(base.RawImage, 0);
+            var rdr = new BeImageReader(base.RawImage, 0);
             var elfMagic = rdr.ReadBeInt32();
             if (elfMagic != ELF_MAGIC)
                 throw new BadImageFormatException("File is not in ELF format.");

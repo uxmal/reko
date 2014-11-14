@@ -71,10 +71,10 @@ namespace Decompiler.Tools.C2Xml.UnitTests
                     Pointee = new IdDeclarator { Name="Sue" }
                 });
             Assert.AreEqual("Sue", nt.Name);
-            Assert.IsInstanceOf<SerializedPointerType>(nt.DataType);
-            var ptr = (SerializedPointerType) nt.DataType;
-            Assert.IsInstanceOf<SerializedPrimitiveType>(ptr.DataType);
-            var p = (SerializedPrimitiveType) ptr.DataType;
+            Assert.IsInstanceOf<PointerType_v1>(nt.DataType);
+            var ptr = (PointerType_v1) nt.DataType;
+            Assert.IsInstanceOf<PrimitiveType_v1>(ptr.DataType);
+            var p = (PrimitiveType_v1) ptr.DataType;
             Assert.AreEqual(Domain.Character, p.Domain);
             Assert.AreEqual(1, p.ByteSize);
         }

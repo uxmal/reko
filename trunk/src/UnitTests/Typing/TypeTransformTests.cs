@@ -45,6 +45,7 @@ namespace Decompiler.UnitTests.Typing
             store = new TypeStore();
         }
 
+
         protected override void RunTest(Program program, string outputFileName)
         {
             ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);
@@ -357,6 +358,23 @@ namespace Decompiler.UnitTests.Typing
             var pb = new ProgramBuilder();
             pb.Add(new IndirectCallFragment());
             RunTest(pb.BuildProgram(), "Typing/TtranCallTable.txt");
+        }
+
+        [Test]
+        public void TtranSegmentedArray()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("SegmentedArray", m =>
+            {
+                var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
+                var bx = m.Temp(PrimitiveType.Word16, "bx");
+                m.SegStore(
+                    ds, m.Word16( 0x1234),
+                    m.SegMemW(
+                        ds,
+                        m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));
+            });
+            RunTest(pb.BuildProgram());
         }
     }
 }

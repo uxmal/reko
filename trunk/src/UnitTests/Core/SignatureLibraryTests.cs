@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Core
                 {
                     new SerializedTypedef { 
                         Name="int", 
-                        DataType=new SerializedPrimitiveType { Domain = Decompiler.Core.Types.Domain.SignedInt, ByteSize = 4 }
+                        DataType=new PrimitiveType_v1 { Domain = Decompiler.Core.Types.Domain.SignedInt, ByteSize = 4 }
                     }
                 }
             };

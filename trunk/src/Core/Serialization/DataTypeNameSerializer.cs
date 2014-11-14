@@ -55,7 +55,7 @@ namespace Decompiler.Core.Serialization
 
         public SerializedType VisitPrimitive(PrimitiveType pt)
         {
-            return new SerializedPrimitiveType
+            return new PrimitiveType_v1
             {
                 Domain = pt.Domain,
                 ByteSize = pt.Size,

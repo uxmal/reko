@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Core
             {
                 Types = new SerializedType[]
                 {
-                    new SerializedTypedef { Name="int", DataType=new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize=4 }}
+                    new SerializedTypedef { Name="int", DataType=new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize=4 }}
                 }
             };
             var lib = tlLdr.Load(slib);
@@ -102,9 +102,9 @@ namespace Decompiler.UnitTests.Core
                 {
                     new SerializedTypedef { 
                         Name="pint", 
-                        DataType= new SerializedPointerType
+                        DataType= new PointerType_v1
                         {
-                            DataType = new SerializedPrimitiveType { Domain = Domain.SignedInt, ByteSize=4 } 
+                            DataType = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize=4 } 
                         }
                     }
                 }
@@ -130,7 +130,7 @@ namespace Decompiler.UnitTests.Core
                         {
                             Convention="__cdecl",
                             ReturnValue = new Argument_v1 {
-                                Type = new SerializedVoidType()
+                                Type = new VoidType_v1()
                             },
                         }
                     }
@@ -159,7 +159,7 @@ namespace Decompiler.UnitTests.Core
                         Name = "tagFoo",
                         Fields = new SerializedStructField [] 
                         {
-                            new SerializedStructField { Name="Bob", Offset=3, Type=new SerializedPrimitiveType { Domain=Domain.SignedInt, ByteSize=4 } }
+                            new SerializedStructField { Name="Bob", Offset=3, Type=new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=4 } }
                         }
                     },
                 },
@@ -170,13 +170,13 @@ namespace Decompiler.UnitTests.Core
                         {
                             Convention="__cdecl",
                             ReturnValue = new Argument_v1 {
-                                Type = new SerializedVoidType {}
+                                Type = new VoidType_v1 {}
                             },
                             Arguments = new Argument_v1[] {
                                 new Argument_v1 {
                                     Name = "bar",
                                     Type = new SerializedStructType { Name="tagFoo" },
-                                    Kind = new SerializedStackVariable(),
+                                    Kind = new StackVariable_v1(),
                                 }
                             }
                         }

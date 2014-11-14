@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Gui
             Assert.IsTrue(sp.IsValid);
             Assert.AreEqual(0, sp.Signature.Arguments.Length);
             Assert.IsNotNull(sp.Signature.ReturnValue);
-            Assert.AreEqual("eax", ((SerializedRegister) sp.Signature.ReturnValue.Kind).Name);
+            Assert.AreEqual("eax", ((Register_v1) sp.Signature.ReturnValue.Kind).Name);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Gui
             sp.Parse("void zzz(word32 eax)");
             Assert.IsNotNull(sp.Signature.Arguments);
             Assert.AreEqual(1, sp.Signature.Arguments.Length);
-            Assert.IsAssignableFrom(typeof (SerializedRegister), sp.Signature.Arguments[0].Kind);
+            Assert.IsAssignableFrom(typeof (Register_v1), sp.Signature.Arguments[0].Kind);
             Assert.AreEqual("eax", sp.Signature.Arguments[0].Name);
             Assert.AreEqual("word32", sp.Signature.Arguments[0].Type.ToString());
         }
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Gui
             sp.Parse("void zzz(word32 eax, byte cl)");
             Assert.IsNotNull(sp.Signature.Arguments);
             Assert.AreEqual(2, sp.Signature.Arguments.Length);
-            Assert.IsAssignableFrom(typeof(SerializedRegister), sp.Signature.Arguments[0].Kind);
+            Assert.IsAssignableFrom(typeof(Register_v1), sp.Signature.Arguments[0].Kind);
             Assert.AreEqual("eax", sp.Signature.Arguments[0].Name);
             Assert.AreEqual("word32", sp.Signature.Arguments[0].Type.ToString());
             Assert.AreEqual("cl", sp.Signature.Arguments[1].Name);
@@ -109,12 +109,12 @@ namespace Decompiler.UnitTests.Gui
             sp.Parse("void zzz(word32 stackie, byte stackb)");
             Assert.IsNotNull(sp.Signature.Arguments);
             Assert.AreEqual(2, sp.Signature.Arguments.Length);
-            Assert.IsAssignableFrom<SerializedStackVariable>(sp.Signature.Arguments[0].Kind);
-            Assert.IsAssignableFrom<SerializedStackVariable>(sp.Signature.Arguments[1].Kind);
+            Assert.IsAssignableFrom<StackVariable_v1>(sp.Signature.Arguments[0].Kind);
+            Assert.IsAssignableFrom<StackVariable_v1>(sp.Signature.Arguments[1].Kind);
             Assert.AreEqual("stackie", sp.Signature.Arguments[0].Name);
             Assert.AreEqual("stackb", sp.Signature.Arguments[1].Name);
-            var k0 = (SerializedStackVariable)sp.Signature.Arguments[0].Kind;
-            var k1 = (SerializedStackVariable)sp.Signature.Arguments[1].Kind;
+            var k0 = (StackVariable_v1)sp.Signature.Arguments[0].Kind;
+            var k1 = (StackVariable_v1)sp.Signature.Arguments[1].Kind;
             Assert.AreEqual("word32", sp.Signature.Arguments[0].Type.ToString());
             Assert.AreEqual("byte", sp.Signature.Arguments[1].Type.ToString());
         }

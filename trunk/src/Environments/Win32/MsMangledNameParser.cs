@@ -308,7 +308,7 @@ namespace Decompiler.Environments.Win32
             {
                 Convention = convention,
                 Arguments = args,
-                ReturnValue = new Argument_v1 { Type = retType != null ? retType : new SerializedVoidType() }
+                ReturnValue = new Argument_v1 { Type = retType != null ? retType : new VoidType_v1() }
             };
         }
 
@@ -380,7 +380,7 @@ namespace Decompiler.Environments.Win32
             {
                 Convention = convention,
                 Arguments = args,
-                ReturnValue = new Argument_v1 { Type= retType ?? new SerializedVoidType() }
+                ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }
             };
         }
 
@@ -399,7 +399,7 @@ namespace Decompiler.Environments.Win32
                 {
                     Convention = callConv,
                     Arguments = args,
-                    ReturnValue = new Argument_v1 { Type = retType ?? new SerializedVoidType() }
+                    ReturnValue = new Argument_v1 { Type = retType ?? new VoidType_v1() }
                 }
             };
         }
@@ -477,7 +477,7 @@ namespace Decompiler.Environments.Win32
                 {
                     if (PeekAndDiscard('Z'))    // Ellipses ('...')
                     {
-                        args.Add(new Argument_v1 { Name="...", Type=new SerializedVoidType() });
+                        args.Add(new Argument_v1 { Name="...", Type=new VoidType_v1() });
                         break;      // Ellipses can only be the last arg, so arglist is done!
                     }
                     var arg = ParseDataTypeCode(this.compoundArgs);
@@ -512,18 +512,18 @@ namespace Decompiler.Environments.Win32
             case '8': return compoundArgs[8].Type;
             case '9': return compoundArgs[9].Type;
             case 'A': return ParsePointer(compoundArgs);        //$TODO: really is a reference but is implemented as a pointer on Win32...
-            case 'C': return new SerializedPrimitiveType(Domain.Character | Domain.SignedInt, 1);
-            case 'D': return new SerializedPrimitiveType(Domain.Character, 1);
-            case 'E': return new SerializedPrimitiveType(Domain.Character | Domain.UnsignedInt, 1);
-            case 'F': return new SerializedPrimitiveType(Domain.SignedInt, 2);
-            case 'G': return new SerializedPrimitiveType(Domain.UnsignedInt, 2);
-            case 'H': return new SerializedPrimitiveType(Domain.SignedInt, 4);
-            case 'I': return new SerializedPrimitiveType(Domain.UnsignedInt, 4);
-            case 'J': return new SerializedPrimitiveType(Domain.SignedInt, 4);      // 'long' on Win32 is actually 4 bytes
-            case 'K': return new SerializedPrimitiveType(Domain.UnsignedInt, 4);  // 'long' on Win32 is actually 4 bytes
-            case 'M': return new SerializedPrimitiveType(Domain.Real, 4);
-            case 'N': return new SerializedPrimitiveType(Domain.Real, 8);
-            case 'O': return new SerializedPrimitiveType(Domain.Real, 10);
+            case 'C': return new PrimitiveType_v1(Domain.Character | Domain.SignedInt, 1);
+            case 'D': return new PrimitiveType_v1(Domain.Character, 1);
+            case 'E': return new PrimitiveType_v1(Domain.Character | Domain.UnsignedInt, 1);
+            case 'F': return new PrimitiveType_v1(Domain.SignedInt, 2);
+            case 'G': return new PrimitiveType_v1(Domain.UnsignedInt, 2);
+            case 'H': return new PrimitiveType_v1(Domain.SignedInt, 4);
+            case 'I': return new PrimitiveType_v1(Domain.UnsignedInt, 4);
+            case 'J': return new PrimitiveType_v1(Domain.SignedInt, 4);      // 'long' on Win32 is actually 4 bytes
+            case 'K': return new PrimitiveType_v1(Domain.UnsignedInt, 4);  // 'long' on Win32 is actually 4 bytes
+            case 'M': return new PrimitiveType_v1(Domain.Real, 4);
+            case 'N': return new PrimitiveType_v1(Domain.Real, 8);
+            case 'O': return new PrimitiveType_v1(Domain.Real, 10);
             case 'P': return ParsePointer(compoundArgs);    // pointer
             case 'Q': return ParsePointer(compoundArgs);    // const pointer
             case 'R': return ParsePointer(compoundArgs);    // volatile pointer
@@ -531,15 +531,15 @@ namespace Decompiler.Environments.Win32
             case 'U': return ParseStructure(compoundArgs); // struct (see below)
             case 'V': return ParseStructure(compoundArgs); // class (see below)
             case 'W': return ParseEnum(compoundArgs);
-            case 'X': return new SerializedVoidType();      // void (as in 'void return value', 'X' terminates argument list)
+            case 'X': return new VoidType_v1();      // void (as in 'void return value', 'X' terminates argument list)
             case '_':
-                SerializedPrimitiveType prim;
+                PrimitiveType_v1 prim;
                 switch (str[i++])
                 {
-                case 'J': prim = new SerializedPrimitiveType(Domain.SignedInt, 8); break;   // __int64
-                case 'K': prim = new SerializedPrimitiveType(Domain.UnsignedInt, 8); break; // unsigned __int64
-                case 'N': prim = new SerializedPrimitiveType(Domain.Boolean, 1); break;     // bool
-                case 'W': prim = new SerializedPrimitiveType(Domain.Character, 2); break;   // wchar_t
+                case 'J': prim = new PrimitiveType_v1(Domain.SignedInt, 8); break;   // __int64
+                case 'K': prim = new PrimitiveType_v1(Domain.UnsignedInt, 8); break; // unsigned __int64
+                case 'N': prim = new PrimitiveType_v1(Domain.Boolean, 1); break;     // bool
+                case 'W': prim = new PrimitiveType_v1(Domain.Character, 2); break;   // wchar_t
                 default: Error("Unsupported type code '_{0}'.", str[i - 1]); return null;
                 }
                 compoundArgs.Add(new Argument_v1 { Type = prim });
@@ -562,7 +562,7 @@ namespace Decompiler.Environments.Win32
             case '8': return ParseMemberFunctionPointerCode(4, compoundArgs);
             default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }
-            var pType = new SerializedPointerType
+            var pType = new PointerType_v1
             {
                 DataType = type,
                 PointerSize = size,

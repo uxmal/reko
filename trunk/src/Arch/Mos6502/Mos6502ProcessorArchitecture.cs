@@ -35,7 +35,7 @@ namespace Decompiler.Arch.Mos6502
     {
         public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            return new Disassembler(imageReader.CreateLeReader());
+            return new Disassembler(imageReader.Clone());
         }
 
         public ProcessorState CreateProcessorState()
@@ -50,7 +50,7 @@ namespace Decompiler.Arch.Mos6502
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Rewriter(this, rdr.CreateLeReader(), state, frame);
+            return new Rewriter(this, rdr.Clone(), state, frame);
         }
 
         public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)

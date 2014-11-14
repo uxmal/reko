@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Environments.Win32
                 return sb.ToString();
             }
 
-            public StringBuilder VisitPrimitive(SerializedPrimitiveType primitive)
+            public StringBuilder VisitPrimitive(PrimitiveType_v1 primitive)
             {
                 switch (primitive.Domain)
                 {
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Environments.Win32
                 return sb;
             }
 
-            public StringBuilder VisitPointer(SerializedPointerType pointer)
+            public StringBuilder VisitPointer(PointerType_v1 pointer)
             {
                 var n = name;
                 name = null;
@@ -189,7 +189,7 @@ namespace Decompiler.UnitTests.Environments.Win32
                 return sb;
             }
 
-            public StringBuilder VisitUnion(SerializedUnionType union)
+            public StringBuilder VisitUnion(UnionType_v1 union)
             {
                 throw new NotImplementedException();
             }
@@ -218,7 +218,7 @@ namespace Decompiler.UnitTests.Environments.Win32
                     sb.AppendFormat(" {0}", name);
                 return sb;
             }
-            public StringBuilder VisitVoidType(SerializedVoidType serializedVoidType)
+            public StringBuilder VisitVoidType(VoidType_v1 serializedVoidType)
             {
                 sb.Append("void");
                 if (name != null)

@@ -179,7 +179,7 @@ namespace Decompiler.Core.Output
 		{
 			int prec = SetPrecedence((int) precedences[binExp.Operator]);
 			binExp.Left.Accept(this);
-			writer.Write(BinaryExpression.OperatorToString(binExp.Operator));
+			writer.Write(binExp.Operator.ToString());
             var old = forceParensIfSamePrecedence;
             forceParensIfSamePrecedence = true;
             binExp.Right.Accept(this);
@@ -374,7 +374,7 @@ namespace Decompiler.Core.Output
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			int prec = SetPrecedence((int) precedences[unary.Operator]);
-			writer.Write(UnaryExpression.OperatorToString(unary.Operator));
+			writer.Write(unary.Operator.ToString());
 			unary.Expression.Accept(this);
 			ResetPresedence(prec);
 		}

@@ -132,7 +132,7 @@ namespace Decompiler.Tools.C2Xml
             }
             return (nt) =>
             {
-                nt.DataType = new SerializedPointerType
+                nt.DataType = new PointerType_v1
                 {
                     DataType = nt.DataType,
                 };
@@ -158,8 +158,8 @@ namespace Decompiler.Tools.C2Xml
                 Argument_v1 ret = null;
                 if (nt.DataType != null)
                 {
-                    var kind = !(nt.DataType is SerializedVoidType)
-                        ? new SerializedRegister { Name = "eax" }       //$REVIEW platform-specific.
+                    var kind = !(nt.DataType is VoidType_v1)
+                        ? new Register_v1 { Name = "eax" }       //$REVIEW platform-specific.
                         : null;
                     ret = new Argument_v1
                     {
@@ -183,7 +183,7 @@ namespace Decompiler.Tools.C2Xml
         {
             if (parameters == null || parameters.Length != 1)
                 return false;
-            return parameters[0].Type is SerializedVoidType;
+            return parameters[0].Type is VoidType_v1;
         }
 
         private Argument_v1 ConvertParameter(ParamDecl decl)
@@ -192,7 +192,7 @@ namespace Decompiler.Tools.C2Xml
             {
                 return new Argument_v1
                 {
-                    Kind = new SerializedStackVariable { },
+                    Kind = new StackVariable_v1 { },
                     Name = "...",
                 };
             }
@@ -202,7 +202,7 @@ namespace Decompiler.Tools.C2Xml
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 return new Argument_v1
                 {
-                    Kind = new SerializedStackVariable(),
+                    Kind = new StackVariable_v1(),
                     Name = nt.Name,
                     Type = nt.DataType,
                 };
@@ -228,7 +228,7 @@ namespace Decompiler.Tools.C2Xml
                 return new NamedDataType
                 {
                     Name = nt.Name,
-                    DataType = new SerializedPointerType { DataType = at.ElementType },
+                    DataType = new PointerType_v1 { DataType = at.ElementType },
                     Size = 4   //$BUGBUG: this is different for z80 and x86-64
                 };
             }
@@ -259,7 +259,7 @@ namespace Decompiler.Tools.C2Xml
             case CTokenType.Void:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'void' after '{0}'.", domain));
-                return new SerializedVoidType();
+                return new VoidType_v1();
             case CTokenType.__W64:
                 return dt;      // Used by Microsoft compilers for 32->64 bit transition, deprecated.
             case CTokenType.Signed:
@@ -336,7 +336,7 @@ namespace Decompiler.Tools.C2Xml
             }
         }
 
-        private SerializedPrimitiveType CreatePrimitive()
+        private PrimitiveType_v1 CreatePrimitive()
         {
             //$BUG: all these are architecture depeendent.
             switch (simpleSize)
@@ -356,7 +356,7 @@ namespace Decompiler.Tools.C2Xml
             }
             if (domain == Domain.None)
                 domain = Domain.SignedInt;
-            return new SerializedPrimitiveType
+            return new PrimitiveType_v1
             {
                 Domain = domain,
                 ByteSize = byteSize
@@ -398,10 +398,10 @@ namespace Decompiler.Tools.C2Xml
             }
             else if (complexType.Type == CTokenType.Union)
             {
-                SerializedUnionType un;
+                UnionType_v1 un;
                 if (complexType.Name == null || !converter.UnionsSeen.TryGetValue(complexType.Name, out un))
                 {
-                    un = new SerializedUnionType { Name = complexType.Name };
+                    un = new UnionType_v1 { Name = complexType.Name };
                     if (un.Name != null)
                     {
                         converter.UnionsSeen.Add(un.Name, un);
@@ -414,7 +414,7 @@ namespace Decompiler.Tools.C2Xml
                     if (un.Name != null)
                     {
                         converter.Types.Add(un);
-                        un = new SerializedUnionType { Name = un.Name };
+                        un = new UnionType_v1 { Name = un.Name };
                     }
                 }
                 return un;

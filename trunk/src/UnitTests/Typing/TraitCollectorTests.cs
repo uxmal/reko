@@ -435,7 +435,7 @@ namespace Decompiler.UnitTests.Typing
 				"\ttrait_primitive(cups16)" + nl +
 				"T_2 (in 0x0800 : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
-				"\ttrait_primitive(ups16)" + nl +
+				"\ttrait_primitive(cups16)" + nl +
 				"T_3 (in ds >=u 0x0800 : bool)" + nl +
 				"\ttrait_primitive(bool)" + nl;
 			Assert.AreEqual(exp, sb.ToString());

@@ -152,7 +152,7 @@ namespace Decompiler.Typing
 
 		public override void VisitConstant(Constant c)
 		{
-			DataType dt = c.TypeVariable.DataType;
+			 DataType dt = c.TypeVariable.DataType;
             int offset = StructureField.ToOffset(c);
 			Pointer ptr = dt as Pointer;
 			if (ptr != null)

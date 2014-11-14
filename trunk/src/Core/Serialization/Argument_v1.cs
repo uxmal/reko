@@ -45,9 +45,9 @@ namespace Decompiler.Core.Serialization
 
         public SerializedType Type; // Reference to a type
 
-        [XmlElement("reg", typeof(SerializedRegister))]
-        [XmlElement("stack", typeof(SerializedStackVariable))]
-        [XmlElement("fpustack", typeof(SerializedFpuStackVariable))]
+        [XmlElement("reg", typeof(Register_v1))]
+        [XmlElement("stack", typeof(StackVariable_v1))]
+        [XmlElement("fpustack", typeof(FpuStackVariable_v1))]
         [XmlElement("seq", typeof(SerializedSequence))]
         [XmlElement("flag", typeof(SerializedFlag))]
         [ReadOnly(true)]

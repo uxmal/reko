@@ -85,32 +85,6 @@ namespace Decompiler.UnitTests.Core
 		}
 
 		[Test]
-		public void ImageItems()
-		{
-			ImageMap im = new ImageMap(new Address(0xC00, 0), 0x4000);
-			int cItemsSplit = 0;
-			im.ItemSplit += delegate { ++cItemsSplit; };
-
-			im.AddItem(new Address(0xC00, 30), new ImageMapItem());
-			im.AddItem(new Address(0xC00, 30), new ImageMapItem());
-			im.AddItem(new Address(0xC00, 0xF00), new ImageMapItem());
-
-			// Now add a segment, which should stir things up.
-
-			im.AddSegment(new Address(0xD00, 0), "0D00", AccessMode.ReadWrite);
-
-			Assert.IsTrue(cItemsSplit == 3);
-
-			IEnumerator<KeyValuePair<Address,ImageMapItem>> e = im.Items.GetEnumerator();
-			ImageMapItem mi = GetNextMapItem(e);
-			Assert.IsTrue(mi.Size == 30);
-			mi = GetNextMapItem(e);
-			Assert.IsTrue(mi.Size == 0x0EE2);
-			mi = GetNextMapItem(e);
-			Assert.IsTrue(mi.Size == 0x100);
-		}
-
-		[Test]
 		public void AddNamedSegment()
 		{
 			ImageMap map = new ImageMap(new Address(0x0B00, 0), 40000);

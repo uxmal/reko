@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Assemblers.M68k
         private void BuildTest(Action<M68kAssembler> builder)
         {
             builder(asm);
-            dasm = M68kDisassembler.Create68020(new ImageReader(asm.GetImage().Image, asm.BaseAddress));
+            dasm = M68kDisassembler.Create68020(asm.GetImage().Image.CreateBeReader(asm.BaseAddress));
         }
 
         private void Expect(string expectedInstr)

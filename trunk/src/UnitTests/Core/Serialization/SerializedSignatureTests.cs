@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void DeserializeOutArgument()
 		{
 			Argument_v1 arg = new Argument_v1();
-			arg.Kind = new SerializedRegister("bp");
+			arg.Kind = new Register_v1("bp");
 			arg.OutParameter = true;
 			SerializedSignature sig = new SerializedSignature();
 			sig.Arguments = new Argument_v1[] { arg };
@@ -100,15 +100,15 @@ namespace Decompiler.UnitTests.Core.Serialization
 			
 			Argument_v1 sarg = new Argument_v1();
 			sarg.Type = new SerializedTypeReference("int");
-			sarg.Kind = new SerializedRegister("ax");
+			sarg.Kind = new Register_v1("ax");
 			ssig.ReturnValue = sarg;
 
 			ssig.Arguments = new Argument_v1[2];
 			ssig.Arguments[0] = new Argument_v1();
-			ssig.Arguments[0].Kind = new SerializedRegister("bx");
+			ssig.Arguments[0].Kind = new Register_v1("bx");
 
 			ssig.Arguments[1] = new Argument_v1();
-			ssig.Arguments[1].Kind = new SerializedRegister("cl");
+			ssig.Arguments[1].Kind = new Register_v1("cl");
 			return ssig;
 		}
 
@@ -129,20 +129,20 @@ namespace Decompiler.UnitTests.Core.Serialization
                 ReturnValue = new Argument_v1
                 {
                     Type = new SerializedTypeReference("int"),
-                    Kind = new SerializedRegister("ax")
+                    Kind = new Register_v1("ax")
                 },
                 Arguments = new Argument_v1[]
                 {
                     new Argument_v1
                     {
                         Name = "lParam",
-			            Kind = new SerializedStackVariable(),
-                        Type = new SerializedPrimitiveType(Domain.SignedInt, 4),
+			            Kind = new StackVariable_v1(),
+                        Type = new PrimitiveType_v1(Domain.SignedInt, 4),
                     },
                     new Argument_v1 
                     {
-			            Kind = new SerializedStackVariable(),
-                        Type = new SerializedPrimitiveType(Domain.SignedInt, 2),
+			            Kind = new StackVariable_v1(),
+                        Type = new PrimitiveType_v1(Domain.SignedInt, 2),
                     }
                 }
             };

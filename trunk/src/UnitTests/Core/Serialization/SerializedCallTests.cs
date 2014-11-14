@@ -37,13 +37,13 @@ namespace Decompiler.UnitTests.Core.Serialization
                 {
 			        new Argument_v1
                     {
-			            Kind = new SerializedRegister("bx"),
+			            Kind = new Register_v1("bx"),
                     }
                 }
             };
 			SerializedCall_v1 sc = new SerializedCall_v1(new Address(0x01004000), sig);
 			Assert.AreEqual("01004000", sc.InstructionAddress);
-			Assert.AreEqual("bx", ((SerializedRegister) sc.Signature.Arguments[0].Kind).Name);
+			Assert.AreEqual("bx", ((Register_v1) sc.Signature.Arguments[0].Kind).Name);
 		}
 	}
 }

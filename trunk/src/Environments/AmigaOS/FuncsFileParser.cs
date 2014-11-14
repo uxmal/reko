@@ -83,7 +83,7 @@ namespace Decompiler.Environments.AmigaOS
                     var regName = (string)Expect(TokenType.Id);
                     parameters.Add(new Argument_v1
                     {
-                        Kind = new SerializedRegister { Name = regName },
+                        Kind = new Register_v1 { Name = regName },
                         Name = argName,
                     });
                 } while (PeekAndDiscard(TokenType.COMMA));
@@ -94,7 +94,7 @@ namespace Decompiler.Environments.AmigaOS
                     var regName = (string) Expect(TokenType.Id);
                     returnValue = new Argument_v1
                     {
-                        Kind = new SerializedRegister { Name = regName }
+                        Kind = new Register_v1 { Name = regName }
                     };
                 }
                 Expect(TokenType.RPAREN);

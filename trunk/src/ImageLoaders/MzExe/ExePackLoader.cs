@@ -58,7 +58,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
             this.hdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) * 0x10U;
-            ImageReader rdr = new ImageReader(RawImage, hdrOffset);
+            ImageReader rdr = new LeImageReader(RawImage, hdrOffset);
             this.ip = rdr.ReadLeUInt16();
             this.cs = rdr.ReadLeUInt16();
             rdr.ReadLeUInt16();
@@ -143,7 +143,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Address addrLoad)
         {
-            ImageReader rdr = new ImageReader(RawImage, hdrOffset + relocationsOffset);
+            ImageReader rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
             ushort segCode = (ushort)(addrLoad.Selector + (ExeImageLoader.CbPsp >> 4));
             ushort dx = 0;
             for (; ; )

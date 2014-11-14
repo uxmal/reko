@@ -450,7 +450,6 @@
     <Compile Include="Typing\TypedMemoryExpressionRewriterTests.cs" />
     <Compile Include="Typing\TypeStoreTests.cs" />
     <Compile Include="Typing\TypeTransformArrayTests.cs" />
-    <Compile Include="Typing\TypeTransformTest.cs" />
     <Compile Include="Typing\TypeTransformTests.cs" />
     <Compile Include="Typing\TypeVariableReplacerTests.cs" />
     <Compile Include="Typing\TypeVarReplacerTests.cs" />

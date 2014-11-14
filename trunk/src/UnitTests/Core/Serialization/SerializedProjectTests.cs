@@ -49,19 +49,19 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				ReturnValue = new Argument_v1
 				{
-					Kind = new SerializedRegister("eax")
+					Kind = new Register_v1("eax")
 				},
 				Arguments = new Argument_v1[]
 				{
 					new Argument_v1
 					{
-						Kind = new SerializedStackVariable(),
-						Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+						Kind = new StackVariable_v1(),
+						Type = new PrimitiveType_v1(Domain.SignedInt, 4)
 					},
 					new Argument_v1
 					{
-						Kind = new SerializedStackVariable(),
-						Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+						Kind = new StackVariable_v1(),
+						Type = new PrimitiveType_v1(Domain.SignedInt, 4)
 					}
 				}
 			};
@@ -98,18 +98,18 @@ namespace Decompiler.UnitTests.Core.Serialization
                                     Name = "foo",
                                     Signature = new SerializedSignature
                                     {
-                                        ReturnValue = new Argument_v1 { Kind = new SerializedRegister("eax") },
+                                        ReturnValue = new Argument_v1 { Kind = new Register_v1("eax") },
                                         Arguments = new Argument_v1[]
                                         {
                                             new Argument_v1
                                             {
-                                                Kind = new SerializedStackVariable(),
-                                                Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+                                                Kind = new StackVariable_v1(),
+                                                Type = new PrimitiveType_v1(Domain.SignedInt, 4)
                                             },
                                             new Argument_v1
                                             {
-                                                Kind = new SerializedStackVariable(),
-                                                Type = new SerializedPrimitiveType(Domain.SignedInt, 4)
+                                                Kind = new StackVariable_v1(),
+                                                Type = new PrimitiveType_v1(Domain.SignedInt, 4)
                                             }
                                         }
                                     }

@@ -59,7 +59,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public PeImageLoader(IServiceProvider services, byte [] img, uint peOffset) : base(services, img)
 		{
-			ImageReader rdr = new ImageReader(RawImage, peOffset);
+			ImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
 				rdr.ReadByte() != 'E' ||
 				rdr.ReadByte() != 0x0 ||
@@ -152,7 +152,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// <returns></returns>
 		private void LoadSections(Address addrLoad, uint sectionOffset, int sections)
 		{
-			ImageReader rdr = new ImageReader(RawImage, sectionOffset);
+			ImageReader rdr = new LeImageReader(RawImage, sectionOffset);
 			var section = ReadSection(rdr);
 			var sectionMax = section;
 			sectionMap[section.Name] = section;
@@ -315,7 +315,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage, RelocationDictionary relocations)
 		{
-			ImageReader rdr = new ImageReader(RawImage, rvaReloc);
+			ImageReader rdr = new LeImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;
 			while (rdr.Offset < rvaStop)
 			{

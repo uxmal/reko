@@ -81,10 +81,10 @@ namespace Decompiler.UnitTests
             SerializedSignature sig = new SerializedSignature();
             sig.Arguments = new Argument_v1[] {
 			    new Argument_v1 {
-			        Kind = new SerializedRegister("ds")
+			        Kind = new Register_v1("ds")
                 },
                 new Argument_v1 {
-			        Kind = new SerializedRegister("bx"),
+			        Kind = new Register_v1("bx"),
                 }
             };
             al.Add(new SerializedCall_v1(new Address(0x0C32, 0x3200), sig));
