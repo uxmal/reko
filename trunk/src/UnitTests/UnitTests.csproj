@@ -143,6 +143,7 @@
     <Compile Include="Assemblers\Pdp11\Pdp11TextAssemblerTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
+    <Compile Include="Core\Output\GlobalDataWriterTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Core\Serialization\DataTypeSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProjectSerializerTests.cs" />

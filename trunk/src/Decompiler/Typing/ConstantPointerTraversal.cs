@@ -30,6 +30,10 @@ using System.Linq;
 
 namespace Decompiler.Typing
 {
+    /// <summary>
+    /// This class follows constant pointers to discover structures in memory
+    /// and possibly new pointers.
+    /// </summary>
     public class ConstantPointerTraversal : IDataTypeVisitor<IEnumerable<ConstantPointerTraversal.WorkItem>>
     {
         private IProcessorArchitecture arch;
@@ -39,7 +43,6 @@ namespace Decompiler.Typing
         private Stack<IEnumerator<WorkItem>> stack;
         private int gOffset;
         private IEnumerator<WorkItem> eCurrent;
-        private Program program;
 
         public struct WorkItem
         {
@@ -49,7 +52,7 @@ namespace Decompiler.Typing
 
         public ConstantPointerTraversal(IProcessorArchitecture arch, StructureType globalStr, LoadedImage image)
         {
-            this.arch = arch; Program p;
+            this.arch = arch;
             this.globalStr =  globalStr;
             this.image = image;
             this.Discoveries = new List<StructureField>();
@@ -141,18 +144,17 @@ namespace Decompiler.Typing
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));
             int offset = c.ToInt32();
             Debug.Print("  pointer value: {0:X}", offset);
-            if (visited.Contains(offset))
-                return null;
+            if (visited.Contains(offset) || !image.IsValidLinearAddress((uint) offset))
+                return Enumerable.Empty<WorkItem>();
 
-            // We've successfully traversed a pointer! The address must therefore be of type ptr.Pointee.
+            // We've successfully traversed a pointer to a valid destination!
+            // The address must therefore be of type ptr.Pointee.
             visited.Add(offset);
             if (globalStr.Fields.AtOffset(offset) == null)
             {
+                Debug.Print("       Discovery: {0:X} {1}", offset, ptr.Pointee);
                 Discoveries.Add(new StructureField(offset, ptr.Pointee));
             }
-            if (image.IsValidLinearAddress((uint) offset))
-                return null;
-
             return Single(new WorkItem { DataType = ptr.Pointee, GlobalOffset = c.ToInt32() });
         }
 

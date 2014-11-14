@@ -202,6 +202,7 @@
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
+    <Compile Include="Output\GlobalDataWriter.cs" />
     <Compile Include="Output\TextFormatter.cs" />
     <Compile Include="PointerScanner.cs" />
     <Compile Include="PointerScannerFlags.cs" />
