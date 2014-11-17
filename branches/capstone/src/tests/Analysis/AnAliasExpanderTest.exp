@@ -1,0 +1,48 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// cx:cx
+// ss:ss
+// cl:cl
+// ax:ax
+// SZO:Flags
+// C:Flags
+// al:al
+// SCZO:Flags
+// Z:Flags
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp = sp - 0x0002
+	Mem0[ss:sp:word16] = cx
+	cl = 0x03
+	cx = DPB(cx, cl, 0, 8) (alias)
+	ax = ax ^ ax
+	al = (byte) ax (alias)
+	SZO = cond(ax)
+	Z = SZO (alias)
+	C = false
+	SCZO = C (alias)
+	// succ:  l0C00_0005
+l0C00_0005:
+	al = al + cl
+	ax = DPB(ax, al, 0, 8) (alias)
+	SCZO = cond(al)
+	C = SCZO (alias)
+	cl = cl - 0x01
+	cx = DPB(cx, cl, 0, 8) (alias)
+	SZO = cond(cl)
+	SCZO = SZO (alias)
+	Z = SZO (alias)
+	branch Test(NE,Z) l0C00_0005
+	// succ:  l0C00_000B l0C00_0005
+l0C00_000B:
+	cx = Mem0[ss:sp:word16]
+	cl = (byte) cx (alias)
+	sp = sp + 0x0002
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:

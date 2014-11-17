@@ -1,0 +1,103 @@
+// TreeFindMock
+void TreeFindMock()
+TreeFindMock_entry:
+	// succ:  l0_seek
+l0_seek:
+	branch t == 0x00000000 l5_found
+	// succ:  l1 l5_found
+l1:
+	vv = Mem0[t + 0x00000000:word32]
+	branch v == vv l5_found
+	// succ:  l2 l5_found
+l2:
+	branch v < vv l4_lt
+	// succ:  l3 l4_lt
+l3:
+	t = Mem0[t + 0x00000008:word32]
+	goto l0_seek
+	// succ:  l0_seek
+l4_lt:
+	t = Mem0[t + 0x00000004:word32]
+	// succ:  l5_found
+l5_found:
+	return t
+	// succ:  TreeFindMock_exit
+TreeFindMock_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct)
+	globals_t (in globals : (ptr (struct)))
+Eq_2: (struct (0 int32 dw0000) (4 (ptr Eq_2) ptr0004) (8 (ptr Eq_2) ptr0008))
+	T_2 (in t : word32)
+	T_3 (in 0x00000000 : word32)
+	T_14 (in Mem0[t + 0x00000004:word32] : word32)
+	T_17 (in Mem0[t + 0x00000008:word32] : word32)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct)))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
+T_2: (in t : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (0 T_7 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+T_3: (in 0x00000000 : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: word32
+T_4: (in t == 0x00000000 : bool)
+  Class: Eq_4
+  DataType: bool
+  OrigDataType: bool
+T_5: (in 0x00000000 : word32)
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_6: (in t + 0x00000000 : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_7: (in Mem0[t + 0x00000000:word32] : word32)
+  Class: Eq_7
+  DataType: int32
+  OrigDataType: word32
+T_8: (in vv : word32)
+  Class: Eq_7
+  DataType: int32
+  OrigDataType: int32
+T_9: (in v : word32)
+  Class: Eq_7
+  DataType: int32
+  OrigDataType: int32
+T_10: (in v == vv : bool)
+  Class: Eq_10
+  DataType: bool
+  OrigDataType: bool
+T_11: (in v < vv : bool)
+  Class: Eq_11
+  DataType: bool
+  OrigDataType: bool
+T_12: (in 0x00000004 : word32)
+  Class: Eq_12
+  DataType: word32
+  OrigDataType: word32
+T_13: (in t + 0x00000004 : word32)
+  Class: Eq_13
+  DataType: word32
+  OrigDataType: word32
+T_14: (in Mem0[t + 0x00000004:word32] : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: word32
+T_15: (in 0x00000008 : word32)
+  Class: Eq_15
+  DataType: word32
+  OrigDataType: word32
+T_16: (in t + 0x00000008 : word32)
+  Class: Eq_16
+  DataType: word32
+  OrigDataType: word32
+T_17: (in Mem0[t + 0x00000008:word32] : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: word32

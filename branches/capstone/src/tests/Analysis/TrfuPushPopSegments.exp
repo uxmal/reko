@@ -1,0 +1,15 @@
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	dx = 0x0123
+	ds = 0x0123
+	sp = fp - 0x0002
+	wLoc02 = 0x0123
+	es = wLoc02
+	sp = fp
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

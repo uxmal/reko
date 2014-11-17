@@ -1,0 +1,38 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// cx:cx
+// bx:bx
+// ds:ds
+// SCZO:Flags
+// ax:ax
+// cl:cl
+// SZO:Flags
+// C:Flags
+// al:al
+// return address size: 0
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	cx = Mem0[ds:bx:word16]
+	cx = cx + 0x0002
+	SCZO = cond(cx)
+	ax = cx
+	al = (byte) ax (alias)
+	cl = Mem0[ds:bx + 0x0002:byte]
+	cl = cl ^ 0x11
+	SZO = cond(cl)
+	C = false
+	cl = cl | Mem0[ds:bx + 0x0003:byte]
+	cx = DPB(cx, cl, 0, 8) (alias)
+	SZO = cond(cl)
+	C = false
+	al = al | cl
+	ax = DPB(ax, al, 0, 8) (alias)
+	SZO = cond(al)
+	C = false
+	SCZO = C (alias)
+	bx = ax
+fn0C00_0000_exit:

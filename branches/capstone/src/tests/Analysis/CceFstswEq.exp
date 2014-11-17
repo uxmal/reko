@@ -1,0 +1,53 @@
+Mem0:Global memory
+    def:  def Mem0
+    uses: rLoc1_10 = Mem0[ds:si:real64]
+fp:fp
+sp:sp
+rLoc1:FPU stack
+si:si
+    def:  def si
+    uses: rLoc1_10 = Mem0[ds:si:real64]
+ds:ds
+    def:  def ds
+    uses: rLoc1_10 = Mem0[ds:si:real64]
+          Mem14[ds:di:word16] = 0x0001
+          Mem15[ds:di:word16] = 0x0000
+rLoc2:FPU stack
+FPUF:Flags
+SCZO:Flags
+di:di
+    def:  def di
+    uses: Mem14[ds:di:word16] = 0x0001
+          Mem15[ds:di:word16] = 0x0000
+rLoc1_10: orig: rLoc1
+    def:  rLoc1_10 = Mem0[ds:si:real64]
+    uses: branch 0 != rLoc1_10 l0C00_0012
+rLoc2_11: orig: rLoc2
+FPUF_12: orig: FPUF
+SCZO_13: orig: SCZO
+Mem14: orig: Mem0
+    def:  Mem14[ds:di:word16] = 0x0001
+Mem15: orig: Mem0
+    def:  Mem15[ds:di:word16] = 0x0000
+// fn0C00_0000
+void fn0C00_0000(word16 si, word16 di, selector ds)
+fn0C00_0000_entry:
+	def Mem0
+	def si
+	def ds
+	def di
+	// succ:  l0C00_0000
+l0C00_0000:
+	rLoc1_10 = Mem0[ds:si:real64]
+	branch 0 != rLoc1_10 l0C00_0012
+	// succ:  l0C00_000D l0C00_0012
+l0C00_000D:
+	Mem14[ds:di:word16] = 0x0001
+	return
+	// succ:  fn0C00_0000_exit
+l0C00_0012:
+	Mem15[ds:di:word16] = 0x0000
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

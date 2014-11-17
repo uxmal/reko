@@ -1,0 +1,93 @@
+void fn0C00_0000(Register byte al, Register selector ds)
+// MayUse:  al ds
+// LiveOut:
+// Trashed: SCZO ax al
+// Preserved: sp
+// fn0C00_0000
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// C:Flags
+// ds:ds
+// al:al
+// return address size: 2
+void fn0C00_0000(byte al, selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	C = fn0C00_000A(al, out al)
+	branch Test(ULT,C) l0C00_0009
+	// succ:  l0C00_0005 l0C00_0009
+l0C00_0005:
+	Mem0[ds:0x0300:byte] = al
+	// succ:  l0C00_0009
+l0C00_0009:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
+// MayUse:  al
+// LiveOut: C al
+// Trashed: SCZO ax al
+// Preserved: sp
+// fn0C00_000A
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// al:al
+// SCZO:Flags
+// C:Flags
+// CZ:Flags
+// alOut:Out:al
+// return address size: 2
+byte fn0C00_000A(byte al, ptr16 alOut)
+fn0C00_000A_entry:
+	// succ:  l0C00_000A
+l0C00_000A:
+	SCZO = cond(al - 0x30)
+	branch Test(ULT,C) l0C00_0032
+	// succ:  l0C00_000E l0C00_0032
+l0C00_000E:
+	SCZO = cond(al - 0x39)
+	branch Test(ULE,CZ) l0C00_0022
+	// succ:  l0C00_0012 l0C00_0022
+l0C00_0012:
+	SCZO = cond(al - 0x41)
+	branch Test(ULT,C) l0C00_0032
+	// succ:  l0C00_0016 l0C00_0032
+l0C00_0016:
+	SCZO = cond(al - 0x46)
+	branch Test(ULE,CZ) l0C00_0022
+	// succ:  l0C00_001A l0C00_0022
+l0C00_001A:
+	SCZO = cond(al - 0x61)
+	branch Test(ULT,C) l0C00_0032
+	// succ:  l0C00_001E l0C00_0032
+l0C00_001E:
+	SCZO = cond(al - 0x66)
+	branch Test(UGT,CZ) l0C00_0032
+	// succ:  l0C00_0022 l0C00_0032
+l0C00_0022:
+	al = al - 0x30
+	SCZO = cond(al - 0x0A)
+	branch Test(ULT,C) l0C00_0030
+	// succ:  l0C00_0028 l0C00_0030
+l0C00_0028:
+	al = al - 0x07
+	SCZO = cond(al - 0x10)
+	branch Test(ULT,C) l0C00_0030
+	// succ:  l0C00_002E l0C00_0030
+l0C00_002E:
+	al = al - 0x20
+	SCZO = cond(al)
+	// succ:  l0C00_0030
+l0C00_0030:
+	C = false
+	return C
+	// succ:  fn0C00_000A_exit
+l0C00_0032:
+	C = true
+	return C
+	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:
+	use al (=> alOut)

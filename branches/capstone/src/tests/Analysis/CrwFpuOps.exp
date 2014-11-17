@@ -1,0 +1,99 @@
+void fn0C00_0000(Register selector ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO bx bl bh
+// Preserved: sp
+// fn0C00_0000
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ss:ss
+// SCZO:Flags
+// wLoc02:Local -0002
+// wLoc04:Local -0004
+// ds:ds
+// return address size: 2
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp = fp - 0x0002
+	wLoc02 = 0x0320
+	sp = fp - 0x0004
+	wLoc04 = 0x0300
+	fn0C00_0010(ds, wLoc04, wLoc02)
+	fn0C00_0037(ds)
+	sp = fp
+	SCZO = cond(fp)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
+// MayUse:  ds
+// LiveOut:
+// Trashed: bx bl bh
+// Preserved: sp bp
+// Stack args: Stack +0002(16) Stack +0004(16)
+// fn0C00_0010
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// bp:bp
+// ss:ss
+// bx:bx
+// rLoc1:FPU stack
+// ds:ds
+// rLoc2:FPU stack
+// wLoc02:Local -0002
+// wArg02:Stack +0002
+// wArg04:Stack +0004
+// return address size: 2
+void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
+fn0C00_0010_entry:
+	// succ:  l0C00_0010
+l0C00_0010:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	bx = wArg02
+	rLoc1 = Mem0[ds:bx:real64]
+	rLoc1 = rLoc1 * rLoc1
+	rLoc2 = Mem0[ds:bx + 0x0008:real64]
+	rLoc2 = rLoc2 * rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	rLoc2 = Mem0[ds:bx + 0x0010:real64]
+	rLoc2 = rLoc2 * rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	bx = wArg04
+	Mem0[ds:bx:real64] = rLoc1
+	rLoc1 = (real64) Mem0[ds:bx + 0x0020:int16]
+	Mem0[ds:bx + 0x0028:real64] = rLoc1
+	sp = fp - 0x0002
+	bp = wLoc02
+	sp = fp
+	return
+	// succ:  fn0C00_0010_exit
+fn0C00_0010_exit:
+void fn0C00_0037(Register selector ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed:
+// Preserved: sp
+// fn0C00_0037
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// rLoc1:FPU stack
+// ds:ds
+// return address size: 2
+void fn0C00_0037(selector ds)
+fn0C00_0037_entry:
+	// succ:  l0C00_0037
+l0C00_0037:
+	rLoc1 = 0
+	Mem0[ds:0x0400:real64] = rLoc1
+	rLoc1 = 1
+	Mem0[ds:0x0408:int32] = (int32) rLoc1
+	return
+	// succ:  fn0C00_0037_exit
+fn0C00_0037_exit:

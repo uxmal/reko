@@ -1,0 +1,13 @@
+// NotMock
+// Mem0:Global memory
+// fp:fp
+// a:Local -0004
+// return address size: 0
+void NotMock()
+NotMock_entry:
+	// succ:  l1
+l1:
+	a = !a
+	return
+	// succ:  NotMock_exit
+NotMock_exit:

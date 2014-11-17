@@ -1,0 +1,10 @@
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct)))
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in x : byte)
+  Class: Eq_2
+  DataType: char
+  OrigDataType: char

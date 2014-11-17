@@ -1,0 +1,66 @@
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+ax: ax:Register, def: {def ax}
+SCZO: SCZO:Flags, def: {def SCZO}
+bx: bx:Register, def: {def bx}, uses: {SCZO_7 = cond(bx - 0x0A)}
+Z: Z:Flags, def: {def Z}
+ax_6: orig: ax, def: {ax_6 = 0x0002}
+SCZO_7: orig: SCZO, def: {SCZO_7 = cond(bx - 0x0A)}, uses: {Z_8 = SCZO_7 (alias)}
+Z_8: orig: Z, def: {Z_8 = SCZO_7 (alias)}, uses: {branch Test(EQ,Z_8)}
+ax_9: orig: ax, def: {ax_9 = 0x0003}, uses: {ax_11 = PHI(ax_10, ax_9)}
+ax_10: orig: ax, def: {ax_10 = 0x0003}, uses: {ax_11 = PHI(ax_10, ax_9)}
+ax_11: orig: ax, def: {ax_11 = PHI(ax_10, ax_9)}
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ax
+	def SCZO
+	def bx
+	def Z
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_6 = 0x0002
+	SCZO_7 = cond(bx - 0x0A)
+	Z_8 = SCZO_7 (alias)
+	branch Test(EQ,Z_8)
+	// succ:  3 2
+l0C00_000E:		// block 2, pred: 1
+	ax_9 = 0x0003
+	// succ:  4
+l0C00_0008:		// block 3, pred: 1
+	ax_10 = 0x0003
+	// succ:  4
+l0C00_0011:		// block 4, pred: 3 2
+	ax_11 = PHI(ax_10, ax_9)
+	return
+	// succ:  5
+fn0C00_0000_exit:		// block 5, pred: 4
+	// succ: 
+Values:
+	0x0002: <ax_6>
+	0x0003: <ax_10>
+	0x0003: <ax_9>
+	ax: <ax>
+	bx: <bx>
+	cond(bx - 0x0A): <SCZO_7>
+	fp: <fp>
+	Mem0: <Mem0>
+	PHI(ax_10, ax_9): <ax_11>
+	SCZO: <SCZO>
+	SCZO_7: <Z_8>
+	Z: <Z>
+Identifiers:
+	Mem0: <Mem0>
+	fp: <fp>
+	ax: <ax>
+	SCZO: <SCZO>
+	bx: <bx>
+	Z: <Z>
+	ax_6: <ax_6>
+	SCZO_7: <SCZO_7>
+	Z_8: <Z_8>
+	ax_9: <ax_9>
+	ax_10: <ax_10>
+	ax_11: <ax_11>
