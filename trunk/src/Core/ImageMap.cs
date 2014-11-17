@@ -38,11 +38,6 @@ namespace Decompiler.Core
 		private Map<Address,ImageMapItem> items;
         private Map<Address,ImageMapSegment> segments;
 
-        public ImageMap(LoadedImage image)
-            : this(image.BaseAddress, image.Bytes.Length)
-        {
-        }
-
 		public ImageMap(Address addrBase, int imageSize)
 		{
             if (addrBase == null)
@@ -192,9 +187,9 @@ namespace Decompiler.Core
 			Debug.Assert(delta >= 0);
 			if (delta > 0)
 			{
-				// Need to split the segment.
+				// Need to split the segment. //$REVIEW: or do we? x86 segments can overlap.
 
-				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
+				var segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
 				segNew.Size = (uint)(seg.Size - delta);
 				seg.Size = (uint) delta;

@@ -99,7 +99,7 @@ namespace Decompiler.Assemblers.x86
             LoadSegments(stm);
             var image = new LoadedImage(addrBase, stm.ToArray());
             RelocateSegmentReferences(image);
-            return new LoaderResults(image, new ImageMap(image), arch, platform);
+            return new LoaderResults(image, image.CreateImageMap(), arch, platform);
         }
 
         private void LoadSegments(MemoryStream stm)

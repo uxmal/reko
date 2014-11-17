@@ -259,7 +259,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			// Create a new image based on the uncompressed data.
 
 			this.imgLoaded = new LoadedImage(addrLoad, abU);
-            this.imageMap = new ImageMap(imgLoaded);
+            this.imageMap = imgLoaded.CreateImageMap();
 			return imgLoaded;
 		}
 

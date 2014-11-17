@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             host = mr.StrictMock<DecompilerHost>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
             var image = new LoadedImage(new Address(0x10000), new byte[1000]);
-            var imageMap = new ImageMap(image);
+            var imageMap = image.CreateImageMap();
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<Platform>(null, null);
             program = new Program(image, imageMap, arch, platform);

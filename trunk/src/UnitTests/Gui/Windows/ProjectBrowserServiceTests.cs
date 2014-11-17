@@ -295,7 +295,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void Given_ProgramWithOneSegment()
         {
             var image = new LoadedImage(new Address(0x12340000), new byte[0x1000]);
-            var imageMap = new ImageMap(image);
+            var imageMap = image.CreateImageMap();
             imageMap.AddSegment(new Address(0x12340000), ".text", AccessMode.Execute);
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = new DefaultPlatform(sc, arch);

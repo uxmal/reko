@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Gui
             mr = new MockRepository();
             sc = new ServiceContainer();
             var image = new LoadedImage(new Address(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
-            var imageMap = new ImageMap(image);
+            var imageMap = image.CreateImageMap();
             var arch = new Mocks.FakeArchitecture();
             this.program = new Program(image, imageMap, arch, new DefaultPlatform(sc, arch));
         }

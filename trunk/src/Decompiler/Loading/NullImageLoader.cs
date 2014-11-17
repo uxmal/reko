@@ -43,7 +43,7 @@ namespace Decompiler.Loading
             var image = new LoadedImage(addrLoad, imageBytes);
             return new LoaderResults(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 null,
                 new DefaultPlatform(Services, null));
         }

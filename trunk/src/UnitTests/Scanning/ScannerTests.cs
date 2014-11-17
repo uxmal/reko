@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Scanning
                 m => { m.Return(4, 0); }
             });
             var image = new LoadedImage(new Address(0x12314), new byte[1]);
-            var imageMap = new ImageMap(image);
+            var imageMap = image.CreateImageMap();
             var prog = new Program
             {
                 Architecture = arch,
@@ -157,7 +157,7 @@ namespace Decompiler.UnitTests.Scanning
             var image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
             program = new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new FakePlatform(null, arch));
             return new TestScanner(program);
@@ -169,7 +169,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
             prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
-            prog.ImageMap = new ImageMap(prog.Image);
+            prog.ImageMap = prog.Image.CreateImageMap();
             return new TestScanner(prog);
         }
 

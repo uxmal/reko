@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Scanning
             var image = new LoadedImage(addrBase, bytes);
             program = new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new DefaultPlatform(null, arch));
             RunTest(addrBase);

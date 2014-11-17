@@ -29,19 +29,17 @@ namespace Decompiler.Core.Types
     /// This class is used to model strings, including size prefix and null termination.
     /// </summary>
     /// <remarks>
-    /// Strings are commonly either length-prefixed (as is the case in many Pascal implementations
+    /// Strings are variable-length arrays of characters, commonly either length-prefixed (as is the case in many Pascal implementations
     /// and Visual Basic, for instance) or zero-terminated (as is the case for C). They share
     /// a lot of properties with ArrayType.
-    //$TODO: what about strings where the last ASCII character has its MSBit set?</remarks>
-    public class StringType : DataType
+    /// <para>
+    /// Sometimes, strings are stored in field of well-known size. In those cases, the size property
+    /// will be non-zero. Otherwise, the string size will be zero and the length of the string
+    /// must be discovered by walking it.</para>
+    ///$TODO: what about strings where the last ASCII character has its MSBit set?
+    /// </remarks>
+    public class StringType : ArrayType
     {
-        // The type of the code units of the string
-        public PrimitiveType CharType { get; private set; }
-        // The type of the length prefix, if any, otherwise null.
-        public PrimitiveType LengthPrefixType { get; private set; }
-
-        public int PrefixOffset { get; private set; }
-
         public static StringType NullTerminated(PrimitiveType  charType)
         {
             return new StringType(charType, null, 0);
@@ -52,17 +50,11 @@ namespace Decompiler.Core.Types
             return new StringType(charType, lengthPrefixType, 0);
         }
 
-        public StringType(PrimitiveType charType, PrimitiveType lengthPrefixType, int prefixOffset)
+        public StringType(DataType charType, PrimitiveType lengthPrefixType, int prefixOffset)
+            : base(charType, 0)
         {
-            this.CharType = charType;
             this.LengthPrefixType = lengthPrefixType;
             this.PrefixOffset = prefixOffset;
-        }
-
-        public override int Size
-        {
-            get { return 0; }   // string lengths vary.
-            set { throw new InvalidOperationException(); }
         }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
@@ -72,7 +64,16 @@ namespace Decompiler.Core.Types
 
         public override DataType Clone()
         {
-            return new StringType(this.CharType, this.LengthPrefixType, this.PrefixOffset);
+            return new StringType(this.ElementType, this.LengthPrefixType, this.PrefixOffset);
         }
+
+        // The type of the length prefix, if any, otherwise null.
+        public PrimitiveType LengthPrefixType { get; private set; }
+
+        // The offset from the start of the string where the length is stored.
+        // This field is not valid if the LengthPrefixType is null.
+        public int PrefixOffset { get; private set; }
+
+        public override string Prefix { get { return "str"; } }
     }
 }

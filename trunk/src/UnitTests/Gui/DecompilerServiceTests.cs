@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Gui
             var dec = new DecompilerDriver(loader, host, sc);
             var bytes = new byte[100];
             var image = new LoadedImage(new Address(0x1000), bytes);
-            var imageMap = new ImageMap(image);
+            var imageMap = image.CreateImageMap();
             var prog = new Program(image, imageMap, arch, platform);
             var fileName = "foo\\bar\\baz.exe";
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);

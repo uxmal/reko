@@ -67,12 +67,15 @@ namespace Decompiler.Core.Output
             fmt.Write("{");
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
-
+            
             for (int i = 0; i < at.Length; ++i)
             {
+                var r = rdr.Clone();
                 fmt.Indent();
                 at.ElementType.Accept(this);
                 fmt.Terminate(",");
+                r.Offset += (uint) at.ElementType.Size;
+                rdr = r;
             }
 
             fmt.Indentation -= fmt.TabSize;
@@ -132,7 +135,24 @@ namespace Decompiler.Core.Output
 
         public CodeFormatter VisitString(StringType str)
         {
-            throw new NotImplementedException();
+            var s = rdr.ReadCString(str.ElementType, Encoding.UTF8);    //$BUG: should get this from platform / user-setting.
+            var fmt = codeFormatter.InnerFormatter;
+            fmt.Write('"');
+            foreach (var ch in s.ToString())
+            {
+                if (Char.IsControl(ch))
+                {
+                    fmt.Write("\\x{0:X2}", (int) ch);
+                }
+                else
+                {
+                    if (ch == '\\' || ch == '"')
+                        fmt.Write(ch);
+                    fmt.Write(ch);
+                }
+            }
+            fmt.Write('"');
+            return codeFormatter;
         }
 
         public CodeFormatter VisitStructure(StructureType str)

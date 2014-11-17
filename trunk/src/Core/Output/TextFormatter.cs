@@ -56,6 +56,12 @@ namespace Decompiler.Core.Output
             TextWriter.Write(s);
         }
 
+        public override Formatter Write(char ch)
+        {
+            TextWriter.Write(ch);
+            return this;
+        }
+
         public override void Write(string format, params object[] arguments)
         {
             TextWriter.Write(format, arguments);

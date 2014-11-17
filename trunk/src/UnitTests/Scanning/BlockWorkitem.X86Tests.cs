@@ -254,7 +254,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Label("table");
 
                 var image = new LoadedImage(new Address(0xc00, 0), new byte[100]);
-                var imageMap = new ImageMap(image);
+                var imageMap = image.CreateImageMap();
                 scanner.Expect(x => x.EnqueueVectorTable(
                     Arg<Address>.Is.Anything,
                     Arg<Address>.Is.Anything,

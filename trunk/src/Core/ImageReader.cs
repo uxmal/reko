@@ -67,7 +67,7 @@ namespace Decompiler.Core
             if (image != null)
             {
                 rdr = CreateNew(image, addrStart);
-                off = rdr.off;
+                rdr.off = off;
             }
             else
             {

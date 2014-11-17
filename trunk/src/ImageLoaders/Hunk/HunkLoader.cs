@@ -65,7 +65,7 @@ namespace Decompiler.ImageLoaders.Hunk
 
             return new LoaderResults(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new AmigaOSPlatform(Services, arch));
         }

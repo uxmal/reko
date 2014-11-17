@@ -132,8 +132,8 @@ namespace Decompiler.ImageLoaders.MzExe
                     }
                 }
             } while ((op & 1) == 0);
-            imageMap = new ImageMap(imgU);
-            return new LoaderResults(imgU, new ImageMap(imgU), new X86ArchitectureReal(), platform);
+            imageMap = imgU.CreateImageMap();
+            return new LoaderResults(imgU, imageMap, new X86ArchitectureReal(), platform);
         }
 
         public override Address PreferredBaseAddress

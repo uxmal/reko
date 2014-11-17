@@ -126,7 +126,7 @@ namespace Decompiler.ImageLoaders.Elf
                     Array.Copy(RawImage, ph.p_offset, bytes, ph.p_vaddr - v_base, ph.p_filesz);
             }
             this.image = new LoadedImage(addrPreferred, bytes);
-            this.imageMap = new ImageMap(image);
+            this.imageMap = image.CreateImageMap();
             foreach (var segment in SectionHeaders)
             {
                 if (segment.sh_name == 0 || segment.sh_addr == 0)

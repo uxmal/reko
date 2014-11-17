@@ -278,7 +278,7 @@ namespace Decompiler.Arch.Pdp11
                 case 0x03: op= null;oc = Opcodes.bpt; break;
                 case 0x04: op= null;oc = Opcodes.iot; break;
                 case 0x05: op= null;oc = Opcodes.reset; break;
-                case 0x06: op= null;oc = Opcodes.rtt; break;
+                case 0x06: op = null; oc = Opcodes.rtt; break;
                 case 0x07: op = null;  oc = Opcodes.illegal; break;
                 }
                 break;

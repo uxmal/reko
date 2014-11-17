@@ -81,7 +81,7 @@ namespace Decompiler.Assemblers.M68k
             var image = new LoadedImage(BaseAddress, Emitter.GetBytes());
             return new LoaderResults(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch, 
                 new DefaultPlatform(null, null));
         }

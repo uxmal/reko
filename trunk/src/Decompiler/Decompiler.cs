@@ -229,7 +229,7 @@ namespace Decompiler
             var loadedImage = new LoadedImage(addrBase, image);
             var program = new Program(
                 loadedImage,
-                new ImageMap(loadedImage),
+                loadedImage.CreateImageMap(),
                 arch,
                 platform);
             program.Name = Path.GetFileName(fileName);

@@ -52,7 +52,7 @@ namespace Decompiler.Assemblers.Pdp11
             var image = new LoadedImage(BaseAddress, emitter.GetBytes());
             return new LoaderResults(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new DefaultPlatform(null, null));
         }

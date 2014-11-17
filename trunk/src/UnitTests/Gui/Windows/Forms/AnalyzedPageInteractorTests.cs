@@ -197,7 +197,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 loadAddress = loadAddress ?? new Address(0x100000);
                 Program prog = new Program();
                 prog.Image = new LoadedImage(loadAddress, bytes);
-                prog.ImageMap = new ImageMap(prog.Image);
+                prog.ImageMap = prog.Image.CreateImageMap();
                 prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
                 return prog;
             }
