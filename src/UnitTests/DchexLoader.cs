@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests
             var img = new LoadedImage(addrStart, memStm.ToArray());
             results = new LoaderResults(
                 img,
-                new ImageMap(img),
+                img.CreateImageMap(),
                 arch,
                 new DefaultPlatform(Services, arch));
 

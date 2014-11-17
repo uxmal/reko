@@ -204,7 +204,7 @@ l01C8:
 */
 			l01C8:
 			imgU = new LoadedImage(addrLoad, abU);
-            imageMap = new ImageMap(imgU);
+            imageMap = imgU.CreateImageMap();
 			return new LoaderResults(imgU, imageMap, arch, platform);
 		}
 

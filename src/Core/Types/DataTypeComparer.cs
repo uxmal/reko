@@ -200,7 +200,7 @@ namespace Decompiler.Core.Types
 
         public int Compare(StringType x, StringType y, int count)
         {
-            int d = Compare(x.CharType, y.CharType, ++count);
+            int d = Compare(x.ElementType, y.ElementType, ++count);
             if (d != 0)
                 return d;
             if (x.LengthPrefixType == null && y.LengthPrefixType == null)

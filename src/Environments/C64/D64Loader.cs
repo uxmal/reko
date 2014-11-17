@@ -111,7 +111,7 @@ namespace Decompiler.Environments.C64
                     image = LoadImage(addrLoad, selectedFile);
                     this.lr = new LoaderResults(
                         image, 
-                        new ImageMap(image), 
+                        image.CreateImageMap(),
                         arch, new C64Platform(Services, arch));
                     return lr;
                 }
@@ -119,7 +119,7 @@ namespace Decompiler.Environments.C64
             image = new LoadedImage(new Address(0), RawImage);
             return new LoaderResults(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new DefaultPlatform(Services, arch));
         }

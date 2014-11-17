@@ -121,7 +121,7 @@ namespace Decompiler.Core.Types
                     writer.Write(" {0}", str.PrefixOffset);
             }
             writer.Write(" ");
-            str.CharType.Accept(this);
+            str.ElementType.Accept(this);
             writer.Write(")");
             return writer;
         }

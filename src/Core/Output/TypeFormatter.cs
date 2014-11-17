@@ -26,7 +26,7 @@ using System.IO;
 namespace Decompiler.Core.Output
 {
 	/// <summary>
-	/// Formats types using indentation settings specified by caller.
+	/// Formats type declarations using indentation settings specified by caller.
 	/// </summary>
 	public class TypeFormatter : IDataTypeVisitor<Formatter>
 	{
@@ -182,11 +182,7 @@ namespace Decompiler.Core.Output
 
         public Formatter VisitString(StringType str)
         {
-            //$REVIEW: yes, totally inadequate
-            str.CharType.Accept(this);
-            writer.Write(name);
-            writer.Write("[]");
-            return writer;
+            return VisitArray(str);
         }
 
 		public Formatter VisitStructure(StructureType str)
@@ -327,7 +323,8 @@ namespace Decompiler.Core.Output
 			{
 				BeginLine();
 				name = alt.MakeName(i);
-				alt.DataType.Accept(this);
+                var trf = new TypeReferenceFormatter(writer, true);
+                trf.WriteDeclaration(alt.DataType, name);
 				EndLine(";");
 				++i;
 			}

@@ -166,7 +166,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 
 			imgLoaded = new LoadedImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
-            imageMap = new ImageMap(imgLoaded);
+            imageMap = imgLoaded.CreateImageMap();
 
 			foreach (Section s in sectionMap.Values)
 			{

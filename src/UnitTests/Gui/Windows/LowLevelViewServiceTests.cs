@@ -84,10 +84,10 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_Program()
         {
-            var addrBase =     new Address(0x10000);
+            var addrBase = new Address(0x10000);
             var image = new LoadedImage(addrBase, new byte[100]);
-            var map = new ImageMap(image);
-            
+            var map = image.CreateImageMap();
+
             this.program = new Program(image, map, null, null);
         }
 
@@ -118,7 +118,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var image = new LoadedImage(new Address(0x1000), new byte[300]);
             var program = new Program {
                 Image = image,
-                ImageMap = new ImageMap(image)
+                ImageMap = image.CreateImageMap()
             };
             mr.ReplayAll();
 

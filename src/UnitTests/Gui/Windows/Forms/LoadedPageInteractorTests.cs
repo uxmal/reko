@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             prog.Image = new LoadedImage(new Address(0xC00, 0), new byte[10000]);
-            prog.ImageMap = new ImageMap(prog.Image);
+            prog.ImageMap = prog.Image.CreateImageMap();
 
             prog.ImageMap.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
             prog.ImageMap.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
@@ -179,7 +179,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var decompiler = repository.Stub<IDecompiler>();
             var prog = new Program();
             prog.Image = new LoadedImage(new Address(0x3000), new byte[10]);
-            prog.ImageMap = new ImageMap(prog.Image);
+            prog.ImageMap = prog.Image.CreateImageMap();
             decompiler.Stub(x => x.Programs).Return(new [] {prog});
             decSvc.Stub(x => x.Decompiler).Return(decompiler);
             AddService<IDecompilerShellUiService>();

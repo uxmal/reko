@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Core.Output
             var arch = new Mocks.FakeArchitecture();
             this.prog = new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 new DefaultPlatform(null, arch));
             var globalStruct = new StructureType();
@@ -153,7 +153,7 @@ int32 g_dw1008 = 1234;
         {
             Memory(0x1000)
                 .WriteLeUInt16(4)
-                .WriteLeUInt16(unchecked((ushort)-104));
+                .WriteLeUInt16(unchecked((ushort) -104));
             var eqStr = new EquivalenceClass(new TypeVariable(2));
             var str = new StructureType
             {
@@ -210,6 +210,46 @@ Eq_2 g_t1008 =
     null,
 };
 Eq_2 * g_ptr1010 = &g_t1000;
+");
+        }
+
+        [Test]
+        public void GdwNullTerminatedString()
+        {
+            Memory(0x1000)
+                .WriteString("Hello, world!", Encoding.UTF8)
+                .WriteByte(0);
+            Globals(
+                Field(0x1000, StringType.NullTerminated(PrimitiveType.Char)));
+            RunTest(
+@"char g_str1000[] = ""Hello, world!"";
+");
+        }
+
+        [Test]
+        public void GdwArrayStrings()
+        {
+            Memory(0x1000)
+                .WriteString("Low", Encoding.UTF8)
+                .WriteBytes(0, 5)
+                .WriteString("High", Encoding.UTF8)
+                .WriteBytes(0, 4)
+                .WriteString("Medium", Encoding.UTF8)
+                .WriteBytes(0, 2);
+            Globals(
+                Field(0x1000, new ArrayType(
+                    new StringType(
+                        PrimitiveType.Char,
+                        null,
+                        0) { Length = 8 },
+                    3)));
+            RunTest(
+@"char g_astr1000[][] = 
+{
+    ""Low"",
+    ""High"",
+    ""Medium""
+};
 ");
         }
     }

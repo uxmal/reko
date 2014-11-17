@@ -57,6 +57,12 @@ namespace Decompiler.Gui.Windows
             EnsureSpan().Text.Append(s);
         }
 
+        public override Formatter Write(char ch)
+        {
+            EnsureSpan().Text.Append(ch);
+            return this;
+        }
+
         public override void Write(string format, params object[] arguments)
         {
             EnsureSpan().Text.AppendFormat(format, arguments);

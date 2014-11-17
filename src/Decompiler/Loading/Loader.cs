@@ -58,7 +58,7 @@ namespace Decompiler.Loading
             var lr = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             Program program = new Program(
                 lr.Image,
-                new ImageMap(lr.Image),
+                lr.Image.CreateImageMap(),
                 lr.Architecture,
                 lr.Platform);
             program.Name = Path.GetFileName(fileName);

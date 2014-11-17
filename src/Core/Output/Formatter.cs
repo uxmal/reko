@@ -80,6 +80,12 @@ namespace Decompiler.Core.Output
         /// <param name="s"></param>
         public abstract void Write(string s);
 
+        /// <summary>
+        /// Write the character <paramref name="ch"/> with no special formatting.
+        /// </summary>
+        /// <param name="ch"></param>
+        public abstract Formatter Write(char ch);
+
         public void Write(object o)
         {
             if (o != null)

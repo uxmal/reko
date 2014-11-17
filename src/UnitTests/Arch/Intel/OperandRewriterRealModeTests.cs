@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var image = new LoadedImage(new Address(0x10000), new byte[4]);
 			var prog = new Program(
                 image,
-                new ImageMap(image),
+                image.CreateImageMap(),
                 arch,
                 null);
 			var procAddress = new Address(0x10000000);

@@ -133,7 +133,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var addr = new Address(0x1000);
             var image = new LoadedImage(addr, bytes);
-            var map = new ImageMap(image);
+            var map = image.CreateImageMap();
             this.program = new Program(image, map, arch, new DefaultPlatform(null, arch));
         }
 
@@ -159,7 +159,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void Given_Image(params byte[] bytes)
         {
             image = new LoadedImage(addrBase, bytes);
-            imageMap = new ImageMap(image);
+            imageMap = image.CreateImageMap();
             program = new Program(image, imageMap, arch, null);
             interactor.Program = program;
         }

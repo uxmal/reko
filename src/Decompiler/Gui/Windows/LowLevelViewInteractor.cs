@@ -319,7 +319,7 @@ namespace Decompiler.Gui.Windows
                 var rdr = program.Architecture.CreateImageReader(program.Image, addr);
                 while (rdr.IsValid)
                 {
-                    var ch = rdr.ReadChar(strDt.CharType);
+                    var ch = rdr.ReadChar(strDt.ElementType);
                     if (ch == 0)
                         break;
                 }

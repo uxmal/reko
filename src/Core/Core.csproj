@@ -203,7 +203,9 @@
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
     <Compile Include="Output\GlobalDataWriter.cs" />
+    <Compile Include="Output\output_buffer.cs" />
     <Compile Include="Output\TextFormatter.cs" />
+    <Compile Include="Output\TypeReferenceFormatter.cs" />
     <Compile Include="PointerScanner.cs" />
     <Compile Include="PointerScannerFlags.cs" />
     <Compile Include="Lib\LookaheadEnumerator.cs" />

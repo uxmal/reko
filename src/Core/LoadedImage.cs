@@ -78,6 +78,11 @@ namespace Decompiler.Core
             return new LeImageReader(this, offset);
         }
 
+        public ImageMap CreateImageMap()
+        {
+            return new ImageMap(BaseAddress, Bytes.Length);
+        }
+
 		/// <summary>
 		/// Adds the delta to the ushort at the given offset.
 		/// </summary>
