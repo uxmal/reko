@@ -74,6 +74,10 @@ namespace Decompiler.Arch.Z80
                     RewriteOp(dasm.Current.Op1),
                     RewriteOp(dasm.Current.Op2));
                     break;
+                    case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
+                    case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
+                    case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
+                    case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
                 case Opcode.ldir: RewriteBlockInstruction(); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.or: RewriteOr(); break;
@@ -140,6 +144,27 @@ namespace Decompiler.Arch.Z80
             emitter.Assign(dst, emitter.ISub(emitter.ISub(dst, src), FlagGroup(FlagM.CF)));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
+        private void RewriteRotation(string pseudoOp, bool useCarry)
+        {
+            var a = frame.EnsureRegister(Registers.a);
+                var C = FlagGroup(FlagM.CF);
+            Expression src;
+            if (useCarry)
+            {
+                src = emitter.Fn(
+                    new PseudoProcedure(pseudoOp, a.DataType, 2),
+                    a, C);
+            }
+            else 
+            {
+                src = emitter.Fn(
+                    new PseudoProcedure(pseudoOp, a.DataType, 1),
+                    a);
+            }
+            emitter.Assign(a, src);
+            emitter.Assign(C, emitter.Cond(a));
+        }
+
         private void RewriteSub()
         {
             var dst = RewriteOp(dasm.Current.Op1);

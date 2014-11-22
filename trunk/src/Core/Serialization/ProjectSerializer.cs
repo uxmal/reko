@@ -122,6 +122,18 @@ namespace Decompiler.Core.Serialization
                         .Where(kv => kv.Key != null)
                         .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
+            if (sInput.UserGlobalData != null)
+            {
+                file.UserGlobalData = sInput.UserGlobalData
+                    .Select(sud => new KeyValuePair<Address, GlobalDataItem_v2>(
+                        Address.Parse(sud.Address, 16),
+                        new GlobalDataItem_v2
+                        {
+                            Address = sud.Address,
+                            DataType = sud.DataType,
+                        }))
+                        .ToSortedList(kv => kv.Key, kv => kv.Value);
+            }
             return file;
         }
 

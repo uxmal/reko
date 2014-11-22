@@ -94,6 +94,9 @@ namespace Decompiler.Core.Serialization
         [XmlElement("call")]
         public List<SerializedCall_v1> UserCalls;
 
+        [XmlElement("global")]
+        public List<GlobalDataItem_v2> UserGlobalData;
+
         [XmlElement("disassembly")]
         public string DisassemblyFilename;
 

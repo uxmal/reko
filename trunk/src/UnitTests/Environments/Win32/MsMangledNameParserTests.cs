@@ -159,6 +159,11 @@ namespace Decompiler.UnitTests.Environments.Win32
                 return sb;
             }
 
+            public StringBuilder VisitString(StringType_v2 str)
+            {
+                throw new NotImplementedException();
+            }
+
             public StringBuilder VisitStructure(SerializedStructType structure)
             {
                 throw new NotImplementedException();

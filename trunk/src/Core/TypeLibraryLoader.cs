@@ -167,6 +167,14 @@ namespace Decompiler.Core
             return new ArrayType(dt, array.Length);
         }
 
+        public DataType VisitString(StringType_v2 str)
+        {
+            var dt = str.CharType.Accept(this);
+            if (str.Termination ==  StringType_v2.ZeroTermination)
+                return StringType.NullTerminated(dt);
+            throw new NotImplementedException();
+        }
+
         public DataType VisitSignature(SerializedSignature signature)
         {
             //$BUGBUG: what we want is to unify FunctionType and ProcedureSignature....

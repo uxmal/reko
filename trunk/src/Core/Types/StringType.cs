@@ -40,7 +40,7 @@ namespace Decompiler.Core.Types
     /// </remarks>
     public class StringType : ArrayType
     {
-        public static StringType NullTerminated(PrimitiveType  charType)
+        public static StringType NullTerminated(DataType charType)
         {
             return new StringType(charType, null, 0);
         }

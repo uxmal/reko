@@ -104,8 +104,8 @@ namespace Decompiler.Arch.Mos6502
                 case Opcode.pha: Push(Registers.a); break;
                 case Opcode.php: Push(AllRegs()); break;
                 case Opcode.pla: Pull(Registers.a); break;
-                case Opcode.rol: Rotate("__rol"); break;
-                case Opcode.ror: Rotate("__ror"); break;
+                case Opcode.rol: Rotate(PseudoProcedure.Rol); break;
+                case Opcode.ror: Rotate(PseudoProcedure.Ror); break;
                 case Opcode.rti: Rti(); break;
                 case Opcode.rts: Rts(); break;
                 case Opcode.sbc: Sbc(); break;

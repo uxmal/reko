@@ -70,7 +70,7 @@ namespace Decompiler.Analysis
                 eventListener.ShowProgress("Building complex expressions.", i, program.Procedures.Values.Count);
                 ++i;
 
-                LongAddRewriter larw = new LongAddRewriter(proc, program.Architecture);
+                var larw = new LongAddRewriter(proc, program.Architecture);
                 larw.Transform();
 
 				Aliases alias = new Aliases(proc, program.Architecture, flow);

@@ -90,10 +90,12 @@ namespace Decompiler.Core.Serialization
             typeof(SerializedStructField),
             typeof(UnionType_v1),
             typeof(SerializedUnionAlternative),
+            typeof(StringType_v2),
             typeof(SerializedSignature),
             typeof(SerializedTypedef),
             typeof(SerializedLibrary),
             typeof(Argument_v1),
+            typeof(GlobalDataItem_v2)
         };
     }
 }
