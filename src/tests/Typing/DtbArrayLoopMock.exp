@@ -1,22 +1,25 @@
 // ArrayLoopMock
 void ArrayLoopMock()
-ArrayLoopMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
-	word32 ptr_3 = 0x04000000
-	// succ:  2
-looptest:		// block 2, pred: 1 5
-	branch ptr_3 >=u 0x04001000
-	// succ:  5 3
-done:		// block 3, pred: 2
+ArrayLoopMock_entry:
+	goto l1
+	// succ:  l1
+done:
 	return
-	// succ:  4
-ArrayLoopMock_exit:		// block 4, pred: 3
-	// succ: 
-l2:		// block 5, pred: 2
-	Mem6[ptr_3:word32] = 0x00000000
+	// succ:  ArrayLoopMock_exit
+l1:
+	word32 ptr_3 = 0x04000000
+	goto looptest
+	// succ:  looptest
+l2:
+	Mem5[ptr_3 + 0x00000000:word32] = 0x00000000
 	ptr_3 = ptr_3 + 0x00000004
-	// succ:  2
+	// succ:  looptest
+looptest:
+	branch ptr_3 >=u 0x04001000 done
+	goto l2
+	// succ:  l2 done
+
+ArrayLoopMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (4000000 (arr (struct 4 (0 T_7 t0000)) 1024) a4000000)))

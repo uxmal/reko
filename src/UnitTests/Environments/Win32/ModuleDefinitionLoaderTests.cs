@@ -41,7 +41,6 @@ namespace Decompiler.UnitTests.Environments.Win32
             dfl = new ModuleDefinitionLoader(new StringReader(str), new X86ArchitectureFlat32());
         }
 
-        [Test][Ignore("Use as a test driver")]
         public void DFL_Acc()
         {
             dfl = new ModuleDefinitionLoader(

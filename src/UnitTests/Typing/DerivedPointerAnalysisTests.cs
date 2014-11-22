@@ -50,6 +50,11 @@ namespace Decompiler.UnitTests.Typing
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
             trco.CollectProgramTraits(prog);
             dtb.BuildEquivalenceClassDataTypes();
+            var tv = new TypeVariableReplacer(store);
+            tv.ReplaceTypeVariables();
+            store.CopyClassDataTypesToTypeVariables();
+            var ppr = new PtrPrimitiveReplacer(factory, store, prog);
+            ppr.ReplaceAll();
 
             var dpa = new DerivedPointerAnalysis(factory, store, prog);
             dpa.FollowDerivedPointers();
@@ -126,7 +131,6 @@ namespace Decompiler.UnitTests.Typing
 
 		private void Verify(Program prog, string outputFile)
 		{
-			store.CopyClassDataTypesToTypeVariables();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				if (prog != null)

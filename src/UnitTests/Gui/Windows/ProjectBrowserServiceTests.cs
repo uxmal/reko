@@ -331,14 +331,14 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        [Ignore("Needs programs, not InputFiles")]
         public void PBS_AddBinary()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_ProgramWithOneSegment();
             Given_Project();
-            pbs.Load(programs);
             mr.ReplayAll();
+
+            pbs.Load(programs);
 
             project.InputFiles.Add(new InputFile
             {
@@ -346,7 +346,11 @@ namespace Decompiler.UnitTests.Gui.Windows
                 BaseAddress = new Address(0x1231300)
             });
 
-            Assert.AreEqual(2, fakeTree.Nodes.Count);
+            Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+                "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"Program\">" +
+                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;12340000&#xD;&#xA;&#xD;&#xA;\" tag=\"ImageMapSegment\" />" +
+                 "</node>" +
+                 "</root>");
             mr.VerifyAll();
         }
 

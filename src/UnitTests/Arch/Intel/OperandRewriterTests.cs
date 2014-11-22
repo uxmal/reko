@@ -108,32 +108,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-        [Ignore("Escaping frame registers are ignored for now.")]
-		public void OrwEbpEscapes()
-		{
-            //state.FrameRegister = RegisterStorage.None;
-            //proc.Frame.FrameOffset = 0;
-            //Assert.AreEqual(false, proc.Frame.Escapes);
-
-            //RegisterOperand r = new RegisterOperand(Registers.ebp);
-            //orw.Transform(r, PrimitiveType.Word32, state);
-            //Assert.AreEqual(false, proc.Frame.Escapes);
-
-            //state.GrowStack(4);
-            //state.EnterFrame(Registers.ebp);
-            //Assert.AreEqual("fp", proc.Frame.FramePointer.Name);
-
-            //MemoryOperand m = new MemoryOperand(PrimitiveType.Word32);
-            //m.Base = Registers.ebp;
-            //m.Offset = new Constant(PrimitiveType.Byte, 0x08);
-            //Expression expr = orw.Transform(m, m.Width,  state);
-            //Assert.AreEqual(false, proc.Frame.Escapes);
-
-            //expr = orw.Transform(r, null, state);
-            //Assert.AreEqual(true, proc.Frame.Escapes);
-		}
-
-		[Test]
 		public void OrwMemAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);

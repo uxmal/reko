@@ -112,12 +112,11 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
         public void DtbArrayLoopMock()
         {
-            ProgramBuilder mock = new Mocks.ProgramBuilder();
-            mock.Add(new ArrayLoopMock());
-            RunTest(mock, "Typing/DtbArrayLoopMock.txt");
+            var pb = new Mocks.ProgramBuilder();
+            pb.Add(new ArrayLoopMock());
+            RunTest(pb, "Typing/DtbArrayLoopMock.txt");
         }
 
         [Test]
