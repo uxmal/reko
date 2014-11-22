@@ -293,40 +293,11 @@ namespace Decompiler.Gui.Windows
             if (dataType == null)
                 return null;
 
-            var size = GetDataSize(address, dataType);
-            var item = new ImageMapItem
-            {
-                Address = address,
-                Size = size,
-                DataType = dataType,
-            };
-            if (size != 0)
-                program.ImageMap.AddItemWithSize(address, item);
-            else
-                program.ImageMap.AddItem(address, item);
+            var item = program.AddUserGlobalItem(address, dataType);
             control.MemoryView.Invalidate();
             return item;
         }
 
-        public uint GetDataSize(Address addr, DataType dt)
-        {
-            var strDt = dt as StringType;
-            if (strDt == null)
-                return (uint) dt.Size;
-            if (strDt.LengthPrefixType == null)
-            {
-                // Zero-terminated string.
-                var rdr = program.Architecture.CreateImageReader(program.Image, addr);
-                while (rdr.IsValid)
-                {
-                    var ch = rdr.ReadChar(strDt.ElementType);
-                    if (ch == 0)
-                        break;
-                }
-                return (uint) (rdr.Address - addr);
-            }
-            throw new NotImplementedException();
-        }
         
         public bool ViewWhatPointsHere()
         {

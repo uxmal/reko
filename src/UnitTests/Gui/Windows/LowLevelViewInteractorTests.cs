@@ -76,6 +76,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             interactor = mr.PartialMock<LowLevelViewInteractor>();
             interactor.SetSite(sp);
             control = (LowLevelView) interactor.CreateControl();
+            interactor.Program = program;
         }
 
         [Test]
@@ -105,9 +106,9 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             Given_Interactor();
             Given_Architecture();
+            Given_Program(new byte[] { 0x4, 0x3, 0x2, 0x1 });
             interactor.Stub(i => i.GetSelectedAddressRange())
                 .Return(new AddressRange(program.Image.BaseAddress, program.Image.BaseAddress));
-            Given_Program(new byte[] { 0x4, 0x3, 0x2, 0x1 });
             mr.ReplayAll();
 
             interactor.Program = program;
@@ -133,16 +134,19 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var addr = new Address(0x1000);
             var image = new LoadedImage(addr, bytes);
-            var map = image.CreateImageMap();
-            this.program = new Program(image, map, arch, new DefaultPlatform(null, arch));
+            this.imageMap = image.CreateImageMap();
+            this.program = new Program(image, imageMap, arch, new DefaultPlatform(null, arch));
+            this.program.InputFile = new InputFile();
         }
 
         [Test]
         public void LLI_MarkAreaWithType()
         {
             Given_Architecture();
+            Given_Program(new byte[100]);
             Given_Interactor();
-            Given_Image();
+            mr.ReplayAll();
+
             interactor.SetTypeAtAddressRange(addrBase, "i32");
 
             ImageMapItem item;
@@ -193,29 +197,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void When_GoPushed()
         {
             control.ToolBarGoButton.PerformClick();
-        }
-
-        [Test]
-        public void LLI_GetDataSize_of_Integer()
-        {
-            Given_Architecture();
-            Given_Interactor();
-            Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
-            mr.ReplayAll();
-
-            Assert.AreEqual(4u, interactor.GetDataSize(addrBase, PrimitiveType.Int32));
-        }
-
-        [Test]
-        public void LLI_GetDataSize_of_ZeroTerminatedString()
-        {
-            Given_Architecture();
-            Given_Interactor();
-            Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
-            mr.ReplayAll();
-
-            var dt = StringType.NullTerminated(PrimitiveType.Char);
-            Assert.AreEqual(6u, interactor.GetDataSize(addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");
         }
     }
 }

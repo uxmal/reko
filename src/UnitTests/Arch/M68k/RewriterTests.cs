@@ -903,7 +903,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0xE391);
             AssertCode(
                "0|00010000(2): 3 instructions",
-               "1|L--|d1 = __roxl(d1, 0x00000001, X)",
+               "1|L--|d1 = __rcl(d1, 0x00000001, X)",
                "2|L--|CZNX = cond(d1)",
                "3|L--|V = false");
         }
@@ -926,6 +926,18 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|L--|ZN = cond(Mem0[0x000013F8:word32] - 0x00000000)",
                 "2|L--|C = false",
                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void M68krw_rorx()
+        {
+            Rewrite(0xE014);
+            AssertCode(
+                "0|00010000(2): 4 instructions",
+                "1|L--|v4 = __rcr((byte) d4, 0x08, X)",
+                "2|L--|d4 = DPB(d4, v4, 0, 8)",
+                "3|L--|CZNX = cond(v4)");
+                
         }
     }
 }

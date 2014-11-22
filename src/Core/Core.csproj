@@ -196,6 +196,7 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
+    <Compile Include="GlobalDataItem_v2.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="ILoader.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
@@ -203,7 +204,6 @@
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="Output\BlockDecorator.cs" />
     <Compile Include="Output\GlobalDataWriter.cs" />
-    <Compile Include="Output\output_buffer.cs" />
     <Compile Include="Output\TextFormatter.cs" />
     <Compile Include="Output\TypeReferenceFormatter.cs" />
     <Compile Include="PointerScanner.cs" />
@@ -243,6 +243,7 @@
     <Compile Include="Serialization\SerializedTemplate.cs" />
     <Compile Include="Serialization\SerializedTypedef.cs" />
     <Compile Include="Serialization\SerializedTypeReference.cs" />
+    <Compile Include="Serialization\StringType_v2.cs" />
     <Compile Include="Serialization\UnionType_v1.cs" />
     <Compile Include="Serialization\VoidType_v1.cs" />
     <Compile Include="Services\DecompilerEventListener.cs" />

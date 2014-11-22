@@ -115,6 +115,18 @@ namespace Decompiler.UnitTests.Core.Serialization
                                     }
                                 }
                             }
+                        },
+                        UserGlobalData =
+                        {
+                            { new Address(0x2000, 0) ,
+                              new GlobalDataItem_v2 {
+                                   Address = new Address(0x2000, 0).ToString(),
+                                   DataType = new StringType_v2 { 
+                                       Termination=StringType_v2.ZeroTermination, 
+                                       CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
+                                   }
+                              }
+                              }
                         }
                     }
                 }
@@ -216,7 +228,14 @@ namespace Decompiler.UnitTests.Core.Serialization
                     new DecompilerInput_v2 {
                         Filename = "foo.exe",
                         Address = "1000:0000",
-                        Comment = "main file" 
+                        Comment = "main file",
+                        UserGlobalData = new List<GlobalDataItem_v2>
+                        {
+                            new GlobalDataItem_v2 { Address = "1000:0400", DataType = new StringType_v2 { 
+                                Termination=StringType_v2.ZeroTermination,
+                                CharType= new PrimitiveType_v1 { ByteSize = 1, Domain=Domain.Character} } 
+                            }
+                        }
                     },
                     new DecompilerInput_v2 {
                         Filename = "foo.bin",
@@ -229,6 +248,11 @@ namespace Decompiler.UnitTests.Core.Serialization
             var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
             var project = ps.LoadProject(sProject);
             Assert.AreEqual(2, project.InputFiles.Count);
+            var input0 = (InputFile)project.InputFiles[0];
+            Assert.AreEqual(1, input0.UserGlobalData.Count);
+            Assert.AreEqual("1000:0400", input0.UserGlobalData.Values[0].Address);
+            var str_t = (StringType_v2)input0.UserGlobalData.Values[0].DataType;
+            Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
         }
 	}
 }

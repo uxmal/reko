@@ -226,10 +226,10 @@ namespace Decompiler.Arch.X86
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pusha: RewritePusha(); break;
                 case Opcode.pushf: RewritePushf(); break;
-                case Opcode.rcl: RewriteRotation("__rcl", true, true); break;
-                case Opcode.rcr: RewriteRotation("__rcr", true, false); break;
-                case Opcode.rol: RewriteRotation("__rol", false, true); break;
-                case Opcode.ror: RewriteRotation("__ror", false, false); break;
+                case Opcode.rcl: RewriteRotation(PseudoProcedure.RolC, true, true); break;
+                case Opcode.rcr: RewriteRotation(PseudoProcedure.RorC, true, false); break;
+                case Opcode.rol: RewriteRotation(PseudoProcedure.Rol, false, true); break;
+                case Opcode.ror: RewriteRotation(PseudoProcedure.Ror, false, false); break;
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;

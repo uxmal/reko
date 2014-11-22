@@ -39,7 +39,8 @@ namespace Decompiler.Analysis
     /// <remarks>Limitations: only does this on pairs within the same basic block, as dominator analysis
     /// and SSA analysis haven't been done this early. 
     /// //$TODO: consider doing this _after_ SSA, so that we reap the benefit of performing this across 
-    /// basic block boundaries.
+    /// basic block boundaries. The challenge is to introduce new variables xx_yy that interfere with existing xx 
+    /// and yy references.
     /// </remarks>
     public class LongAddRewriter
     {

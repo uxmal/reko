@@ -132,10 +132,10 @@ VS Overflow Set 1001 V
                 case Opcode.or: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 case Opcode.ori: RewriteLogical((s, d) => emitter.Or(d, s)); break;
                 case Opcode.pea: RewritePea(); break;
-                case Opcode.rol: RewriteRotation("__rol"); ; break;
-                case Opcode.ror: RewriteRotation("__ror"); ; break;
-                case Opcode.roxl: RewriteRotationX("__roxl"); ; break;
-                case Opcode.roxr: RewriteRotationX("__roxr"); ; break;
+                case Opcode.rol: RewriteRotation(PseudoProcedure.Rol); break;
+                case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
+                case Opcode.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
+                case Opcode.roxr: RewriteRotationX(PseudoProcedure.RorC);  break;
                 case Opcode.rts: emitter.Return(4, 0); break;
                 case Opcode.scc: RewriteScc(ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.scs: RewriteScc(ConditionCode.ULT, FlagM.CF); break;

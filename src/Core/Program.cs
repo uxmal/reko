@@ -79,8 +79,15 @@ namespace Decompiler.Core
         /// </summary>
         public InputFile InputFile { get; set; }
 
+        /// <summary>
+        /// The processor architecture to use for decompilation
+        /// </summary>
 		public IProcessorArchitecture Architecture { get; set; }
 
+        /// <summary>
+        /// The callgraph expresses the relationships between the callers (statements and procedures)
+        /// and their callees (procedures).
+        /// </summary>
         public CallGraph CallGraph { get; private set; }
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
@@ -122,6 +129,9 @@ namespace Decompiler.Core
 
         public ImageMap ImageMap { get; set; }
 
+        /// <summary>
+        /// The list of known entry points to the program.
+        /// </summary>
         public List<EntryPoint> EntryPoints { get; private set; }
 
 		public Dictionary<uint, PseudoProcedure> ImportThunks
@@ -171,6 +181,56 @@ namespace Decompiler.Core
 		{
 			get { return vectors; }
 		}
+
+        // Mutators /////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// This method is called when the user has created a global item.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        public ImageMapItem AddUserGlobalItem(Address address, DataType dataType)
+        {
+            var size = GetDataSize(address, dataType);
+            var item = new ImageMapItem
+            {
+                Address = address,
+                Size = size,
+                DataType = dataType,
+            };
+            if (size != 0)
+                this.ImageMap.AddItemWithSize(address, item);
+            else
+                this.ImageMap.AddItem(address, item);
+            this.InputFile.UserGlobalData.Add(address, new Serialization.GlobalDataItem_v2
+            {
+                Address = address.ToString(),
+                DataType = dataType.Accept(new  Serialization.DataTypeSerializer()),
+            });
+            return item;
+        }
+
+        public uint GetDataSize(Address addr, DataType dt)
+        {
+            var strDt = dt as StringType;
+            if (strDt == null)
+                return (uint)dt.Size;
+            if (strDt.LengthPrefixType == null)
+            {
+                // Zero-terminated string.
+                var rdr = this.Architecture.CreateImageReader(this.Image, addr);
+                while (rdr.IsValid)
+                {
+                    var ch = rdr.ReadChar(strDt.ElementType);
+                    if (ch == 0)
+                        break;
+                }
+                return (uint)(rdr.Address - addr);
+            }
+            throw new NotImplementedException();
+        }
+
     } 
 
 	public class VectorUse

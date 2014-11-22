@@ -24,6 +24,10 @@ using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// A disassembler can be considered an enumerator of disassembled instructions.
+    /// </summary>
+    /// <typeparam name="TInstr"></typeparam>
     public abstract class DisassemblerBase<TInstr> : IEnumerator<TInstr>
     {
         public abstract TInstr Current { get; }

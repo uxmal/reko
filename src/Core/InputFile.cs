@@ -38,6 +38,7 @@ namespace Decompiler.Core
         {
             UserProcedures = new SortedList<Address, Procedure_v1>();
             UserCalls = new SortedList<Address, SerializedCall_v1>();
+            UserGlobalData = new SortedList<Address, GlobalDataItem_v2>();
         }
 
         public override T Accept<T>(IProjectFileVisitor<T> visitor)
@@ -75,8 +76,9 @@ namespace Decompiler.Core
         /// </summary>
         public string GlobalsFilename { get; set; }
 
-        public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get;  set; }
-        public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
-
+        // 'Oracular' information provided by the user.
+        public SortedList<Address, Procedure_v1> UserProcedures { get;  set; }
+        public SortedList<Address, SerializedCall_v1> UserCalls { get; set; }
+        public SortedList<Address, GlobalDataItem_v2> UserGlobalData { get;  set; }
     }
 }

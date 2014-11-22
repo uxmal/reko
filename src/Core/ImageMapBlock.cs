@@ -32,8 +32,7 @@ namespace Decompiler.Core
 
         public ImageMapBlock()
         {
-            //$REVIEW: need a raw data type for "executable code".
-            DataType = new ArrayType(PrimitiveType.Byte, 0);
+            DataType = new CodeType();
         }
 
 		public override string ToString()

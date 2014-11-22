@@ -74,7 +74,10 @@ namespace Decompiler.Core.Serialization
 
         public SerializedType VisitString(StringType str)
         {
-            throw new NotImplementedException();
+            return new StringType_v2 { 
+                Termination = StringType_v2.ZeroTermination,    //$TODO: hardwired
+                CharType = str.ElementType.Accept(this)
+            };
         }
 
         public SerializedType VisitStructure(StructureType str)

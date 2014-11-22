@@ -34,16 +34,10 @@ namespace Decompiler.Core
     {
         public Project()
         {
-            UserGlobalData = new SortedList<Address, SerializedType>();
             InputFiles = new ObservableRangeCollection<InputFile>();
         }
 
         public ObservableRangeCollection<InputFile> InputFiles { get; private set; }
-
-        /// <summary>
-        /// Global data identified by the user.
-        /// </summary>
-        public SortedList<Address, SerializedType> UserGlobalData { get; private set; }
 
         public Project_v2 Save()
         {
@@ -52,14 +46,12 @@ namespace Decompiler.Core
             {
                 Inputs = inputs.ToList()
             };
-            foreach (var de in UserGlobalData)
-            {
-            }
             return sp;
         }
 
         public ProjectFile_v2 VisitInputFile(InputFile i)
         {
+            var dtSerializer = new DataTypeSerializer();
             return new DecompilerInput_v2
             {
                 Address = i.BaseAddress.ToString(),
@@ -69,6 +61,13 @@ namespace Decompiler.Core
                     .ToList(),
                 UserCalls = i.UserCalls
                     .Select(uc => uc.Value)
+                    .ToList(),
+                UserGlobalData = i.UserGlobalData
+                    .Select(de => new GlobalDataItem_v2 {
+                        Address = de.Key.ToString(),
+                        DataType = de.Value.DataType,
+                        Name = "g_" + Convert.ToString(de.Key.Linear, 16),
+                    })
                     .ToList(),
                 DisassemblyFilename = i.DisassemblyFilename,
                 IntermediateFilename = i.IntermediateFilename,

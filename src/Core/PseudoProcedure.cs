@@ -36,7 +36,10 @@ namespace Decompiler.Core
         private DataType returnType;
 		private ProcedureSignature sig;
 
-        // Commonly occurring pseudo procedures
+        /// <summary>
+        /// Well-known operations that many processors support but most high- or 
+        /// medium level languages do not support.
+        /// </summary>
         public const string Ror = "__ror";      // binary: Rotate right
         public const string Rol = "__rol";      // binary: Rotate left
         public const string RorC = "__rcr";     // ternary: rotate right, passing in the contents of a processor flag (not necessarily the Carry flag)
