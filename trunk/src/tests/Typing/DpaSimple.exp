@@ -6,13 +6,13 @@ Eq_2: (struct (0 real32 r0000))
 // Type Variables ////////////
 T_1: (in globals : (ptr (struct)))
   Class: Eq_1
-  DataType: (struct (10000000 real32 r10000000))
+  DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (10000000 T_3 t10000000)))
 T_2: (in 0x10000000 : word32)
   Class: Eq_2
-  DataType: (struct (0 real32 r0000))
+  DataType: (ptr Eq_2)
   OrigDataType: (ptr (struct (0 T_3 t0000)))
 T_3: (in Mem0[0x10000000:real32] : real32)
   Class: Eq_3
-  DataType: 
+  DataType: real32
   OrigDataType: real32
