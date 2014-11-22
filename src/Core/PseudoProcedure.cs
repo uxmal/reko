@@ -36,6 +36,19 @@ namespace Decompiler.Core
         private DataType returnType;
 		private ProcedureSignature sig;
 
+        // Commonly occurring pseudo procedures
+        public const string Ror = "__ror";      // binary: Rotate right
+        public const string Rol = "__rol";      // binary: Rotate left
+        public const string RorC = "__rcr";     // ternary: rotate right, passing in the contents of a processor flag (not necessarily the Carry flag)
+        public const string RolC = "__rcl";     // ternary: rotate left, passing in the contents of a processor flag
+        /// <summary>
+        /// Use this for pseudoprocedures that model operators that may have parameters of varying sizes.
+        /// </summary>
+        /// <remarks>
+        /// E.g. the rotate pseudoprocedures.</remarks>
+        /// <param name="name"></param>
+        /// <param name="returnType"></param>
+        /// <param name="arity"></param>
 		public PseudoProcedure(string name, DataType returnType, int arity) : base(name)
 		{
             this.returnType = returnType;
@@ -64,7 +77,7 @@ namespace Decompiler.Core
 		public override ProcedureSignature Signature
 		{
 			get { return sig; }
-			set { throw new InvalidOperationException("Not allowed to change the signature of a PseudoProcedure."); }
+			set { throw new InvalidOperationException("Changing the signature of a PseudoProcedure is not allowed."); }
 		}
 
 		public override string ToString()
@@ -78,6 +91,5 @@ namespace Decompiler.Core
 				return string.Format("{0} {1}({2} args)", ReturnType, Name, arity);
 			}
 		}
-
 	}
 }

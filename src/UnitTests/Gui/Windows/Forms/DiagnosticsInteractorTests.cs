@@ -43,6 +43,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             lv = new ListView();
+            lv.CreateControl();
             interactor = new TestDiagnosticsInteractor();
             interactor.Attach(lv);
             svc = interactor;

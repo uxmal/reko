@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
 			store.EnsureExpressionTypeVariable(factory, ptr);
-			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
+			var ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
 			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex().ToString());
 		}
 
@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Typing
         public void CEB_BuildPointerFetch()
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
-            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
+            var ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
             ceb.Dereferenced = true;
 			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex().ToString());
 		}

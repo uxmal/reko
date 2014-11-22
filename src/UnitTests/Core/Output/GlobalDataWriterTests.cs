@@ -25,6 +25,7 @@ using Rhino.Mocks;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -35,6 +36,7 @@ namespace Decompiler.UnitTests.Core.Output
     {
         private LoadedImage image;
         private Program prog;
+        private ServiceContainer sc;
 
         private ImageWriter Memory(uint address)
         {
@@ -54,13 +56,16 @@ namespace Decompiler.UnitTests.Core.Output
             var globalStruct = new StructureType();
             globalStruct.Fields.AddRange(fields);
             prog.Globals.TypeVariable = new TypeVariable("globals_t", 1) { DataType = globalStruct };
-            prog.Globals.TypeVariable.DataType = globalStruct;
+            var eq = new EquivalenceClass(prog.Globals.TypeVariable);
+            eq.DataType = globalStruct;
+            var ptr = new Pointer(eq, 4);
+            prog.Globals.TypeVariable.DataType = ptr;
         }
 
         private void RunTest(string sExp)
         {
             var sw = new StringWriter();
-            var gdw = new GlobalDataWriter(prog);
+            var gdw = new GlobalDataWriter(prog, sc);
             gdw.WriteGlobals(new TextFormatter(sw)
             {
                 Indentation = 0,
@@ -72,6 +77,12 @@ namespace Decompiler.UnitTests.Core.Output
         private StructureField Field(int offset, DataType dt)
         {
             return new StructureField(offset, dt);
+        }
+
+        [SetUp]
+        public void SEtup()
+        {
+            this.sc = new ServiceContainer();
         }
 
         [Test]
@@ -143,7 +154,7 @@ char g_b1004 = 'H';
                 Field(0x1008, PrimitiveType.Int32));
 
             RunTest(
-@"int32 * g_ptr1000 = &g_dw1008;
+@"int32* g_ptr1000 = &g_dw1008;
 int32 g_dw1008 = 1234;
 ");
         }
@@ -209,7 +220,7 @@ Eq_2 g_t1008 =
     2,
     null,
 };
-Eq_2 * g_ptr1010 = &g_t1000;
+Eq_2* g_ptr1010 = &g_t1000;
 ");
         }
 
@@ -244,11 +255,11 @@ Eq_2 * g_ptr1010 = &g_t1000;
                         0) { Length = 8 },
                     3)));
             RunTest(
-@"char g_astr1000[][] = 
+@"char g_a1000[3][8] = 
 {
     ""Low"",
     ""High"",
-    ""Medium""
+    ""Medium"",
 };
 ");
         }

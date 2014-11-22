@@ -185,10 +185,7 @@ namespace Decompiler.Gui.Windows
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
-            if (dlg != null)
-                dlg.Invoke(new Action<ICodeLocation, Diagnostic>(diagnosticSvc.AddDiagnostic), location, d);
-            else
-                diagnosticSvc.AddDiagnostic(location, d);
+            diagnosticSvc.AddDiagnostic(location, d);
         }
 
         void DecompilerEventListener.ShowStatus(string caption)

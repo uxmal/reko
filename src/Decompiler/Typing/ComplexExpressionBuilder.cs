@@ -164,15 +164,15 @@ namespace Decompiler.Typing
                 // Drill down.
 				dtOriginal = dtPointeeOriginal;
 				complexExp = CreateDereference(dtPointee, complexExp);
-				//bool deref = Dereferenced;  //$REVIEW: causes problems with arrayType
+				bool deref = Dereferenced;  //$REVIEW: causes problems with arrayType
 				Dereferenced = true;       //$REVUEW: causes problems with arrayType
 				basePointer = null;
 				result = dtPointee.Accept(this);
-				if (!dereferenced)
+				if (!deref)
 				{
 					result = new UnaryExpression(UnaryOperator.AddrOf, dtPtr, result);
 				}
-				//Dereferenced = deref;       //$REVIEW: causes problems with arrayType
+				Dereferenced = deref;       //$REVIEW: causes problems with arrayType
 			}
 			seenPtr = false;
             return result;
@@ -288,7 +288,7 @@ namespace Decompiler.Typing
 		{
 			StructureField field = str.Fields.LowerBound(this.offset);
 			if (field == null)
-				throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1}.", str.Name, offset);
+				throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1} ({1:X}).", str.Name, offset);
 		
 			dt = field.DataType;
 			dtOriginal = field.DataType;

@@ -45,12 +45,6 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void VpAddSubCarries()
-		{
-			RunTest("Fragments/addsubcarries.asm", "Analysis/VpAddSubCarries.txt");
-		}
-
-		[Test]
 		public void VpChainTest()
 		{
 			RunTest("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");

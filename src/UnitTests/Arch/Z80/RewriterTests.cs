@@ -133,7 +133,7 @@ namespace Decompiler.UnitTests.Arch.Z80
             BuildTest(0x83);
             AssertCode("0|00000100(1): 2 instructions",
                 "1|L--|a = a + e",
-                "2|L--|SZC = cond(a)");
+                "2|L--|SZPC = cond(a)");
         }
 
         [Test]
@@ -186,6 +186,52 @@ namespace Decompiler.UnitTests.Arch.Z80
                 "0|00000100(3): 2 instructions",
                 "1|T--|if (Test(EQ,Z)) branch 00000103",
                 "2|T--|call 0xCAFE (2)");
+        }
+
+        [Test]
+        public void Z80rw_cp_ix_d()
+        {
+            BuildTest(0xDD, 0xBE, 0x08);
+            AssertCode(
+                "0|00000100(3): 1 instructions",
+                "1|L--|SZPC = a - Mem0[ix + 0x0008:byte]");
+        }
+
+        [Test]
+        public void Z80rw_cpl()
+        {
+            BuildTest(0x2F);
+            AssertCode(
+                "0|00000100(1): 1 instructions",
+                "1|L--|a = ~a");
+        }
+
+        [Test]
+        public void Z80rw_neg()
+        {
+            BuildTest(0xED, 0x44);
+            AssertCode(
+                "0|00000100(2): 2 instructions",
+                "1|L--|a = -a",
+                "2|L--|SZPC = cond(a)");
+        }
+
+        [Test]
+        public void Z80rw_jr()
+        {
+            BuildTest(0x18, 0x03);
+            AssertCode(
+                "0|00000100(2): 1 instructions",
+                "1|T--|goto 00000105");
+        }
+
+        [Test]
+        public void Z80rw_ret()
+        {
+            BuildTest(0xC9);
+            AssertCode(
+                "0|00000100(1): 1 instructions",
+                "1|T--|return (2,0)");
         }
     }
 }

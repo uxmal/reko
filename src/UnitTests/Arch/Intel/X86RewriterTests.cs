@@ -168,6 +168,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             arch = arch32;
             image = new LoadedImage(baseAddr32, bytes);
+            host = new RewriterHost(null);
         }
 
         [Test]
@@ -1068,6 +1069,17 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode(
                 "0|10000000(3): 1 instructions",
                 "1|L--|SCZO = cond(Mem0[edi:word32] - 0xFFFFFFFF)");
+         }
+
+        [Test]
+        public void X86Rw_rol_Eb()
+        {
+            Run32bitTest(0xC0, 0xC0, 0xC0);
+            AssertCode(
+                "0|10000000(3): 3 instructions",
+                "1|L--|v2 = (al & 0x01 << 0x08 - 0xC0) != 0x00",
+                "2|L--|al = __rol(al, 0xC0)",
+                "3|L--|C = v2");
          }
     }
 }

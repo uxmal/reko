@@ -310,7 +310,7 @@ namespace Decompiler
             WriteHeaderComment(Path.GetFileName(inputFile.OutputFilename), w);
             w.WriteLine("#include \"{0}\"", Path.GetFileName(inputFile.TypesFilename));
             w.WriteLine();
-            var gdw = new GlobalDataWriter(program);
+            var gdw = new GlobalDataWriter(program, services);
             gdw.WriteGlobals(new TextFormatter(w));
             w.WriteLine();
         }
