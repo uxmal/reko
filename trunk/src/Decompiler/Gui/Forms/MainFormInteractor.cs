@@ -290,7 +290,9 @@ namespace Decompiler.Gui.Forms
             }
             catch (Exception ex)
             {
-                uiSvc.ShowError(ex, "An error occurred when opening the binary.");
+                uiSvc.ShowError(
+                    ex,
+                    string.Format("An error occurred when opening the binary file {0}.", dlg.FileName.Text));
             }
             return true;
         }

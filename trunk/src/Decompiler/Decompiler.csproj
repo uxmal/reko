@@ -587,7 +587,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\ILoadedPage.cs" />
-    <Compile Include="Gui\IDiagnosticsService.cs" />
     <Compile Include="Gui\IListViewItem.cs" />
     <Compile Include="Gui\Forms\IAddressPromptDialog.cs" />
     <Compile Include="Gui\IDialogFactory.cs" />

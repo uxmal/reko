@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -36,24 +37,42 @@ namespace Decompiler.Core.Output
         private ImageReader rdr;
         private CodeFormatter codeFormatter;
         private StructureType globals;
+        private IServiceProvider services;
 
-        public GlobalDataWriter(Program program)
+        public GlobalDataWriter(Program program, IServiceProvider services)
         {
             this.program = program;
+            this.services = services;
         }
 
         public void WriteGlobals(Formatter formatter)
         {
             this.codeFormatter = new CodeFormatter(formatter);
-            var tw = new TypeFormatter(formatter, true);
-            this.globals = (StructureType) program.Globals.TypeVariable.DataType;
+            var tw = new TypeReferenceFormatter(formatter, true);
+            this.globals = (StructureType)((EquivalenceClass) ((Pointer)program.Globals.TypeVariable.DataType).Pointee).DataType;
             foreach (var field in globals.Fields)
             {
                 var name = string.Format("g_{0:X}", field.Name);
-                tw.Write(field.DataType, name);
-                formatter.Write(" = ");
-                this.rdr = program.Architecture.CreateImageReader(program.Image, new Address((uint) field.Offset));
-                field.DataType.Accept(this);
+                var addr = new Address((uint) field.Offset);
+                try
+                {
+                    tw.WriteDeclaration(field.DataType, name);
+                    if (program.Image.IsValidAddress(addr))
+                    {
+                        formatter.Write(" = ");
+                        this.rdr = program.Architecture.CreateImageReader(program.Image, addr);
+                        field.DataType.Accept(this);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var dc = services.RequireService<DecompilerEventListener>();
+                    dc.AddDiagnostic(
+                        dc.CreateAddressNavigator(program, addr),
+                        new ErrorDiagnostic(
+                            string.Format("Failed to write global variable {0}.", name),
+                            ex));
+                }
                 formatter.Terminate(";");
             }
         }

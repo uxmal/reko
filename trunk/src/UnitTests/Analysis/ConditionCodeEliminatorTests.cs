@@ -400,5 +400,25 @@ done:
             });
             RunTest(p, "Analysis/CceAddAdcPattern.txt");
         }
+
+        [Test]
+        public void CceShrRcrPattern()
+        {
+            var p = new ProgramBuilder(new FakeArchitecture());
+            p.Add("main", (m) =>
+            {
+                var C = m.Flags("C");
+                var r1 = MockReg(m, 1);
+                var r2 = MockReg(m, 2);
+
+                m.Assign(r1, m.Shr(r1, 1));
+                m.Assign(C, m.Cond(r1));
+                m.Assign(r2, m.Fn(new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2), r2, C));
+                m.Assign(C, m.Cond(r2));
+                m.Store(m.Word32(0x3000), r1);
+                m.Store(m.Word32(0x3004), r2);
+            });
+            RunTest(p, "Analysis/CceShrRcrPattern.txt");
+        }
 	}
 }

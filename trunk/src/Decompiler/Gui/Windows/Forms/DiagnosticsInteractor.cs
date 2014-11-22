@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
@@ -44,12 +45,17 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
-            var li = new ListViewItem();
-            li.Text = location.Text;
-            li.Tag = location;
-            li.ImageKey = d.ImageKey;
-            li.SubItems.Add(d.Message);
-            listView.Items.Add(li);
+            // This may be called from a worker thread, so we have to be careful to 
+            // call the listView on the UI thread.
+            listView.Invoke(new Action(() =>
+            {
+                var li = new ListViewItem();
+                li.Text = location.Text;
+                li.Tag = location;
+                li.ImageKey = d.ImageKey;
+                li.SubItems.Add(d.Message);
+                listView.Items.Add(li);
+            }));
         }
 
         public void ClearDiagnostics()

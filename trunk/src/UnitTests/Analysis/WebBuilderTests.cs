@@ -33,12 +33,6 @@ namespace Decompiler.UnitTests.Analysis
 	public class WebBuilderTests : AnalysisTestBase
 	{
 		[Test]
-		public void WebAddSubCarries()
-		{
-			RunTest("Fragments/addsubcarries.asm", "Analysis/WebAddSubCarries.txt");
-		}
-
-		[Test]
 		public void WebNestedRepeats()
 		{
 			RunTest("Fragments/nested_repeats.asm", "Analysis/WebNestedRepeats.txt");
