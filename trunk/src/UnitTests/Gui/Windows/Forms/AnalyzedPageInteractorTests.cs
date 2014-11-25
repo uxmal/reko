@@ -187,11 +187,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 return new byte[4711];
             }
 
-            public Program LoadExecutable(InputFile file)
-            {
-                throw new NotImplementedException();
-            }
-
             public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)
             {
                 loadAddress = loadAddress ?? new Address(0x100000);

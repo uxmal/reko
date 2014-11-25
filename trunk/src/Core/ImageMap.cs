@@ -27,8 +27,6 @@ using System.Text;
 
 namespace Decompiler.Core
 {
-	public delegate void ItemSplitHandler(object o, ItemSplitArgs isa);
-
 	/// <summary>
 	/// Describes the contents of the image in terms of regions. The image map is two-tier:
 	/// Segments lie on the first level, and under these, we find the procedures.
@@ -48,9 +46,7 @@ namespace Decompiler.Core
 		}
 
         /// <summary>
-        /// Adds an image map item at the specified address. If <paramref name="addr"/> is 
-        /// located inside of an existing address, a notification is sent that that location has
-        /// been split.
+        /// Adds an image map item at the specified address. 
         /// </summary>
         /// <param name="addr"></param>
         /// <param name="itemNew"></param>
@@ -336,30 +332,6 @@ namespace Decompiler.Core
 		public override string ToString()
 		{
             return string.Format("{0}, size: {1}, type:{2}", Address, Size, DataType);
-		}
-	}
-
-	public class SegmentSplitArgs : EventArgs
-	{
-		public ImageMapSegment SegmentOld;
-		public ImageMapSegment SegmentNew;
-
-		public SegmentSplitArgs(ImageMapSegment seg, ImageMapSegment segNew)
-		{
-			SegmentOld = seg;
-			SegmentNew = segNew;
-		}
-	}
-
-	public class ItemSplitArgs : EventArgs
-	{
-		public ImageMapItem ItemOld;
-		public ImageMapItem ItemNew;
-
-		public ItemSplitArgs(ImageMapItem it, ImageMapItem itNew)
-		{
-			ItemOld = it;
-			ItemNew = itNew;
 		}
 	}
 }

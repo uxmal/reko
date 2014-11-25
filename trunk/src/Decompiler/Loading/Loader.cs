@@ -68,13 +68,6 @@ namespace Decompiler.Loading
             return program;
         }
 
-        public Program LoadExecutable(InputFile inputFile)
-        {
-            var program = LoadExecutable(inputFile.Filename, LoadImageBytes(inputFile.Filename, 0), inputFile.BaseAddress);
-            program.InputFile = inputFile;
-            return program;
-        }
-
         /// <summary>
         /// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
         /// Relocation gives us a chance to determine the addresses of interesting items.

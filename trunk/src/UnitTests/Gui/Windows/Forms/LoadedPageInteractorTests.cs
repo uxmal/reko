@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void LpiMarkingProceduresShouldAddToUserProceduresList()
         {
             var disSvc = AddService<IDisassemblyViewService>();
-            Assert.AreEqual(0, ((InputFile) decSvc.Decompiler.Project.InputFiles[0]).UserProcedures.Count);
+            Assert.AreEqual(0, decSvc.Decompiler.Project.Programs[0].UserProcedures.Count);
             var addr = new Address(0x0C20, 0);
             memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
             memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
@@ -145,9 +145,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             repository.VerifyAll();
             //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            var inputFile = (InputFile)decSvc.Decompiler.Project.InputFiles[0];
-            Assert.AreEqual(1, inputFile.UserProcedures.Count);
-            Procedure_v1 uproc = (Procedure_v1)inputFile.UserProcedures.Values[0];
+            var program = decSvc.Decompiler.Project.Programs[0];
+            Assert.AreEqual(1, program.UserProcedures.Count);
+            Procedure_v1 uproc = (Procedure_v1)program.UserProcedures.Values[0];
             Assert.AreEqual("0C20:0000", uproc.Address);
         }
 
@@ -216,11 +216,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             public byte[] LoadImageBytes(string fileName, int offset)
             {
                 return new byte[400];
-            }
-
-            public Program LoadExecutable(InputFile file)
-            {
-                return prog;
             }
 
             public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)

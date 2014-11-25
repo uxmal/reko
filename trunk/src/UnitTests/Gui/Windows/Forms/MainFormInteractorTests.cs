@@ -202,8 +202,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 Address = "12345",
                 Name = "MyProc", 
             };
-            var inputFile = (InputFile)dcSvc.Decompiler.Project.InputFiles[0];
-            inputFile.UserProcedures.Add(new Address(0x12345), p);
+            var program = dcSvc.Decompiler.Project.Programs[0];
+            program.UserProcedures.Add(new Address(0x12345), p);
 
             interactor.Save();
             string s =
@@ -331,7 +331,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             // Having a compiler presupposes having a project.
             var project = new Project
             {
-                InputFiles = { new InputFile { Filename="foo.exe" , BaseAddress = new Address(0x00010000), } }
+                Programs = { new Program 
+                { 
+                    Filename="foo.exe" ,
+                    Image = new LoadedImage(new Address(0x00010000), new byte[100]) 
+                }
+                }
             };
             dcSvc.Stub(d => d.Decompiler).Return(decompiler);
             decompiler.Stub(d => d.Project).Return(project);

@@ -89,8 +89,8 @@ namespace Decompiler.Gui.Windows.Forms
                 if (DialogResult.OK == UIService.ShowModalDialog(dlg))
                 {
                     //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-                    var inputFile = (InputFile) Decompiler.Project.InputFiles[0]; 
-                    inputFile.UserProcedures[SelectedProcedureEntry.Key] =
+                    var program =  Decompiler.Project.Programs[0]; 
+                    program.UserProcedures[SelectedProcedureEntry.Key] =
                         i.SerializedProcedure;
                     ser = new ProcedureSerializer(arch, "stdapi");
                     SelectedProcedureEntry.Value.Signature =

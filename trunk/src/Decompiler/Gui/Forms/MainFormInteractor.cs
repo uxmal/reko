@@ -178,7 +178,7 @@ namespace Decompiler.Gui.Forms
             sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 
             srSvc = new SearchResultServiceImpl(sc, form.FindResultsList);
-            sc.AddService(typeof(ISearchResultService), srSvc);
+            sc.AddService<ISearchResultService>(srSvc);
             searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
         }
 
@@ -446,7 +446,7 @@ namespace Decompiler.Gui.Forms
             {
                 string newName = PromptForFilename(
                     Path.ChangeExtension(
-                        decompilerSvc.Decompiler.Project.InputFiles[0].Filename,
+                        decompilerSvc.Decompiler.Project.Programs[0].Filename,
                         Project_v1.FileExtension));
                 if (newName == null)
                     return false;
@@ -457,8 +457,8 @@ namespace Decompiler.Gui.Forms
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
                 //$REFACTOR: rule of Demeter, push this into a Save() method.
-                var sp = decompilerSvc.Decompiler.Project.Save();
-                new ProjectSerializer(loader).Save(sp, sw);
+                var sp =  new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
+                new ProjectLoader(loader).Save(sp, sw);
             }
             return true;
         }
@@ -695,9 +695,9 @@ namespace Decompiler.Gui.Forms
 
         public void WriteDisassembly(Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
             {
-                using (TextWriter output = CreateTextWriter(inputFile.DisassemblyFilename))
+                using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
                 {
                     writer(output);
                 }
@@ -706,9 +706,9 @@ namespace Decompiler.Gui.Forms
 
         public void WriteIntermediateCode(Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
             {
-                using (TextWriter output = CreateTextWriter(inputFile.IntermediateFilename))
+                using (TextWriter output = CreateTextWriter(program.IntermediateFilename))
                 {
                     writer(output);
                 }
@@ -717,9 +717,9 @@ namespace Decompiler.Gui.Forms
 
         public void WriteTypes(Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
             {
-                using (TextWriter output = CreateTextWriter(inputFile.TypesFilename))
+                using (TextWriter output = CreateTextWriter(program.TypesFilename))
                 {
                     writer(output);
                 }
@@ -728,9 +728,9 @@ namespace Decompiler.Gui.Forms
 
         public void WriteDecompiledCode(Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
             {
-                using (TextWriter output = CreateTextWriter(inputFile.OutputFilename))
+                using (TextWriter output = CreateTextWriter(program.OutputFilename))
                 {
                     writer(output);
                 }
@@ -739,9 +739,9 @@ namespace Decompiler.Gui.Forms
 
         public void WriteGlobals(Action<TextWriter> writer)
         {
-            foreach (var inputFile in decompilerSvc.Decompiler.Project.InputFiles.OfType<InputFile>())
+            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
             {
-                using (TextWriter output = CreateTextWriter(inputFile.GlobalsFilename))
+                using (TextWriter output = CreateTextWriter(program.GlobalsFilename))
                 {
                     writer(output);
                 }
