@@ -157,10 +157,10 @@ namespace Decompiler.UnitTests.Analysis
             var loader = new Loader(new ServiceContainer());
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
-                : new ProjectSerializer(new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
+                : new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
-            foreach (var f in project.InputFiles.OfType<InputFile>())
+            foreach (var f in project.Programs)
             {
                 foreach (var sp in f.UserProcedures.Values)
                 {

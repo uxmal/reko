@@ -136,7 +136,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             var image = new LoadedImage(addr, bytes);
             this.imageMap = image.CreateImageMap();
             this.program = new Program(image, imageMap, arch, new DefaultPlatform(null, arch));
-            this.program.InputFile = new InputFile();
         }
 
         [Test]

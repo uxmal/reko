@@ -63,6 +63,7 @@ namespace Decompiler.Gui
             }
         }
 
+        //$REVIEW" huh?
         public string ProjectName
         {
             get
@@ -71,7 +72,7 @@ namespace Decompiler.Gui
                     return "";
                 if (decompiler.Project== null)
                     return "";
-                return Path.GetFileName(decompiler.Project.InputFiles[0].Filename);
+                return Path.GetFileName(decompiler.Project.Programs[0].Filename);
             }
         }
 

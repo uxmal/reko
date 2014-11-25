@@ -37,10 +37,10 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
         public void Ps_Load()
         {
-            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
+            var ps = new ProjectLoader(new Loader(new ServiceContainer()));
             var proj = ps.LoadProject(FileUnitTester.MapTestPath("fragments/multiple/termination.xml"));
 
-            Assert.AreEqual(1, ((InputFile)proj.InputFiles[0]).UserProcedures.Count);
+            Assert.AreEqual(1, proj.Programs[0].UserProcedures.Count);
         }
 
         [Test]
@@ -83,10 +83,10 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
+            var ps = new ProjectLoader(new Loader(new ServiceContainer()));
             var p = ps.LoadProject(sp);
-            Assert.AreEqual(1, p.InputFiles.Count);
-            var inputFile = (InputFile) p.InputFiles[0]; 
+            Assert.AreEqual(1, p.Programs.Count);
+            var inputFile = p.Programs[0]; 
             Assert.AreEqual(1, inputFile.UserProcedures.Count);
             Assert.AreEqual("Fn", inputFile.UserProcedures.First().Value.Name);
         }

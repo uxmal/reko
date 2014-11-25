@@ -56,19 +56,16 @@ namespace Decompiler.Gui.Design
                 .Where(p => segment.IsInRange(p.Key))
                 .Select(p => new ProcedureDesigner(program, p.Value, p.Key))
                 .ToDictionary(d => d.Address.ToString());
-            if (program.InputFile != null)
+            foreach (var up in program.UserProcedures)
             {
-                foreach (var up in program.InputFile.UserProcedures)
+                ProcedureDesigner pd;
+                if (desDictionary.TryGetValue(up.Key.ToString(), out pd))
                 {
-                    ProcedureDesigner pd;
-                    if (desDictionary.TryGetValue(up.Key.ToString(), out pd))
-                    {
 
-                    }
-                    else
-                    {
-                        desDictionary.Add(up.Key.ToString(), new ProcedureDesigner(up.Value, up.Key));
-                    }
+                }
+                else
+                {
+                    desDictionary.Add(up.Key.ToString(), new ProcedureDesigner(up.Value, up.Key));
                 }
             }
             Host.AddComponents(Component, desDictionary.OrderBy(d => d.Key).Select(d => d.Value));

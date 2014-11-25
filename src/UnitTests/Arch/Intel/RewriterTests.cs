@@ -80,9 +80,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
-            //$REVIEW: Need to pass InputFile into the SelectedProcedureEntry piece.
-            var inputFile = (InputFile) project.InputFiles[0];
-            foreach (Procedure_v1 sp in inputFile.UserProcedures.Values)
+            var program =  project.Programs[0];
+            foreach (Procedure_v1 sp in program.UserProcedures.Values)
             {
                 scanner.EnqueueUserProcedure(sp);
             }
@@ -96,12 +95,12 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 using (Stream stm = new FileStream(FileUnitTester.MapTestPath(configFile), FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    project = new ProjectSerializer(new Loader(new ServiceContainer())).LoadProject(stm);
+                    project = new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(stm);
                 }
             }
             else
             {
-                project = new Project { InputFiles = { new InputFile() } };
+                project = new Project();
             }
             return project;
         }

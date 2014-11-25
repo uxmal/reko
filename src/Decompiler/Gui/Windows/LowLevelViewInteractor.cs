@@ -205,9 +205,7 @@ namespace Decompiler.Gui.Windows
                 Address = address.ToString(),
                 Name = proc.Name,
             };
-            //$REVIEW: need to know what InputFile is in play.
-            var inputFile = (InputFile)decompiler.Project.InputFiles[0];
-            var ups = inputFile.UserProcedures;
+            var ups = program.UserProcedures;
             if (!ups.ContainsKey(address))
             {
                 ups.Add(address, userp);

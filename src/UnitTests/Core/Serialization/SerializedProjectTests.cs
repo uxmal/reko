@@ -82,11 +82,11 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
             Project project = new Project
             {
-                InputFiles = 
+                Programs = 
                 {
-                    new InputFile
+                    new Program
                     {
-                        BaseAddress = new Address(0x1000, 0),
+                        Image = new LoadedImage(new Address(0x1000, 0), new byte[100]),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
                         UserProcedures = new SortedList<Address,Procedure_v1> 
@@ -136,7 +136,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
-                Project_v2 ud = project.Save();
+                Project_v2 ud = new ProjectSaver().Save(project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -194,14 +194,14 @@ namespace Decompiler.UnitTests.Core.Serialization
                 var ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v1));
                 proj = (Project_v1)ser.Deserialize(rdr);
             }
-            var project = new ProjectSerializer().LoadProject(proj);
-            var inputFile = (InputFile)project.InputFiles[0];
-            Assert.AreEqual(0x10003330, inputFile.BaseAddress.Linear);
-            Assert.AreEqual("foo.cod", inputFile.IntermediateFilename);
-            Assert.AreEqual(2, inputFile.UserProcedures.Count);
-            Assert.AreEqual("foo.asm", inputFile.DisassemblyFilename);
-            Assert.AreEqual(0x10004000, inputFile.UserProcedures.Keys[0].Linear);
-            Procedure_v1 proc = inputFile.UserProcedures.Values[0];
+            var project = new ProjectLoader().LoadProject(proj);
+            var program = project.Programs[0];
+            Assert.AreEqual(0x10003330, program.Image.BaseAddress.Linear);
+            Assert.AreEqual("foo.cod", program.IntermediateFilename);
+            Assert.AreEqual(2, program.UserProcedures.Count);
+            Assert.AreEqual("foo.asm", program.DisassemblyFilename);
+            Assert.AreEqual(0x10004000, program.UserProcedures.Keys[0].Linear);
+            Procedure_v1 proc = program.UserProcedures.Values[0];
             Assert.IsNull(proc.Signature.ReturnValue);
         }
 
@@ -211,10 +211,10 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Project proj;
             using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"), FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                proj = new ProjectSerializer().LoadProject(stm);
+                proj = new ProjectLoader().LoadProject(stm);
             }
-            var inputFile = (InputFile) proj.InputFiles[0];
-			var proc = (Procedure_v1) inputFile.UserProcedures.Values[0];
+            var program = proj.Programs[0];
+			var proc = (Procedure_v1) program.UserProcedures.Values[0];
 			Assert.AreEqual("alloca", proc.Name);
 			Assert.IsTrue(proc.Characteristics.IsAlloca);
 		}
@@ -245,10 +245,10 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectSerializer(new Loader(new ServiceContainer()));
+            var ps = new ProjectLoader(new Loader(new ServiceContainer()));
             var project = ps.LoadProject(sProject);
-            Assert.AreEqual(2, project.InputFiles.Count);
-            var input0 = (InputFile)project.InputFiles[0];
+            Assert.AreEqual(2, project.Programs.Count);
+            var input0 = project.Programs[0];
             Assert.AreEqual(1, input0.UserGlobalData.Count);
             Assert.AreEqual("1000:0400", input0.UserGlobalData.Values[0].Address);
             var str_t = (StringType_v2)input0.UserGlobalData.Values[0].DataType;

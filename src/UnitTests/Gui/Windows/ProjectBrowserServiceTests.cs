@@ -301,7 +301,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var platform = new DefaultPlatform(sc, arch);
             this.program = new Program(image, imageMap, arch, platform);
             this.program.Name = "foo.exe";
-            this.program.InputFile = new InputFile { Filename = @"c:\test\foo.exe" };
+            this.program.Filename = @"c:\test\foo.exe";
             this.programs = new[] { program }; 
         }
 
@@ -340,10 +340,10 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             pbs.Load(programs);
 
-            project.InputFiles.Add(new InputFile
+            project.Programs.Add(new Program
             {
                 Filename = "bar.exe",
-                BaseAddress = new Address(0x1231300)
+                Image = new LoadedImage(new Address(0x1231300), new byte[128])
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -358,9 +358,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             this.project = new Project
             {
-                InputFiles = 
+                Programs = 
                 {
-                    new InputFile { Filename="foo.exe", BaseAddress=new Address(0x400000) }
+                    new Program { Filename="foo.exe",
+                        Image = new LoadedImage(new Address(0x400000), new byte[1000]) }
                 }
             };
         }
@@ -368,7 +369,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_UserProcedure(uint addr, string name)
         {
-            program.InputFile.UserProcedures.Add(
+            program.UserProcedures.Add(
                 new Address(addr), new Decompiler.Core.Serialization.Procedure_v1
                 {
                     Address = addr.ToString(),

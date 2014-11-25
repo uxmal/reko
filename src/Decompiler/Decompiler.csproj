@@ -238,7 +238,6 @@
     <Compile Include="Gui\Controls\ITextBox.cs" />
     <Compile Include="Gui\Controls\ITreeView.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesigner.cs" />
-    <Compile Include="Gui\Design\InputFileDesigner.cs" />
     <Compile Include="Gui\Design\ProcedureDesigner.cs" />
     <Compile Include="Gui\Design\ProgramDesigner.cs" />
     <Compile Include="Gui\FindResult.cs" />

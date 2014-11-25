@@ -188,21 +188,15 @@ namespace Decompiler
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            Project = ProjectSerializer.DeserializeProject(image, loader);
+            Project = ProjectLoader.LoadProject(image, loader);
             bool isProject;
             if (Project != null)
             {
-                foreach (var inputFile in Project.InputFiles)
-                {
-                    Programs.Add(loader.LoadExecutable(inputFile));
-                }
                 isProject = true;
-            }
-            else
+            } else 
             {
                 var program = loader.LoadExecutable(fileName, image, null);
                 Project = CreateDefaultProject(fileName, program);
-                program.InputFile = Project.InputFiles[0];
                 Programs.Add(program);
                 isProject = false;
             }
@@ -238,21 +232,18 @@ namespace Decompiler
             eventListener.ShowStatus("Raw bytes loaded.");
         }
 
-        protected Project CreateDefaultProject(string fileName, Program prog)
+        protected Project CreateDefaultProject(string fileName, Program program)
         {
-            var inputFile = new InputFile {
-                Filename = fileName,
-                BaseAddress = prog.Image.BaseAddress,
-                DisassemblyFilename = Path.ChangeExtension(fileName, ".asm"),
-                IntermediateFilename = Path.ChangeExtension(fileName, ".dis"),
-                OutputFilename = Path.ChangeExtension(fileName, ".c"),
-                TypesFilename = Path.ChangeExtension(fileName, ".h"),
-                GlobalsFilename = Path.ChangeExtension(fileName, ".globals.c"),
-            };
+            program.Filename = fileName;
+            program.DisassemblyFilename = Path.ChangeExtension(fileName, ".asm");
+            program.IntermediateFilename = Path.ChangeExtension(fileName, ".dis");
+            program.OutputFilename = Path.ChangeExtension(fileName, ".c");
+            program.TypesFilename = Path.ChangeExtension(fileName, ".h");
+            program.GlobalsFilename = Path.ChangeExtension(fileName, ".globals.c");
 
             var project = new Project
             {
-                InputFiles = { inputFile },
+                Programs = { program},
             };
             return project;
         }
@@ -283,10 +274,8 @@ namespace Decompiler
 
         public void WriteDecompiledProcedures(Program program, TextWriter w)
         {
-            //$REVIEW: what about multiple inputs, huh? Huh???
-            var inputFile = program.InputFile;
-            WriteHeaderComment(Path.GetFileName(inputFile.OutputFilename), w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(inputFile.TypesFilename));
+            WriteHeaderComment(Path.GetFileName(program.OutputFilename), program, w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(program.TypesFilename));
             w.WriteLine();
             var fmt = new CodeFormatter(new TextFormatter(w));
             foreach (Procedure proc in program.Procedures.Values)
@@ -306,9 +295,8 @@ namespace Decompiler
 
         public void WriteGlobals(Program program, TextWriter w)
         {
-            var inputFile = program.InputFile;
-            WriteHeaderComment(Path.GetFileName(inputFile.OutputFilename), w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(inputFile.TypesFilename));
+            WriteHeaderComment(Path.GetFileName(program.OutputFilename), program, w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(program.TypesFilename));
             w.WriteLine();
             var gdw = new GlobalDataWriter(program, services);
             gdw.WriteGlobals(new TextFormatter(w));
@@ -317,9 +305,7 @@ namespace Decompiler
     
         public void WriteDecompiledTypes(Program program, TextWriter w)
         {
-            //$REVIEW: what about multiple inputs, huh? Huh???
-            var inputFile = (InputFile) Project.InputFiles[0];
-            WriteHeaderComment(Path.GetFileName(inputFile.TypesFilename), w);
+            WriteHeaderComment(Path.GetFileName(program.TypesFilename), program, w);
             w.WriteLine("/*"); program.TypeStore.Write(w); w.WriteLine("*/");
             TypeFormatter fmt = new TypeFormatter(new TextFormatter(w), false);
             foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
@@ -367,8 +353,7 @@ namespace Decompiler
                     {
                         scanner.EnqueueEntryPoint(ep);
                     }
-                    var inputFile = (InputFile) Project.InputFiles[0];
-                    foreach (Procedure_v1 up in inputFile.UserProcedures.Values)
+                    foreach (Procedure_v1 up in program.UserProcedures.Values)
                     {
                         scanner.EnqueueUserProcedure(up);
                     }
@@ -382,7 +367,6 @@ namespace Decompiler
                 }
             }
 		}
-
 
         public IDictionary<Address, ProcedureSignature> LoadCallSignatures(Program program, ICollection<SerializedCall_v1> serializedCalls)
         {
@@ -399,10 +383,9 @@ namespace Decompiler
         private IScanner CreateScanner(Program program, DecompilerEventListener eventListener)
         {
             //$TODO: what about multiple files?
-            var inputFile = (InputFile) Project.InputFiles[0];
             return new Scanner(
                 program, 
-                LoadCallSignatures(program, inputFile.UserCalls.Values),
+                LoadCallSignatures(program, program.UserCalls.Values),
                 eventListener);
         }
 
@@ -450,10 +433,10 @@ namespace Decompiler
             }
 		}
 
-		public void WriteHeaderComment(string filename, TextWriter w)
+		public void WriteHeaderComment(string filename, Program program, TextWriter w)
 		{
 			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, Project.InputFiles[0].Filename);
+			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, program.Filename);
 			w.WriteLine("// using Decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}

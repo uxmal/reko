@@ -20,7 +20,6 @@ namespace Decompiler.Core
 
     public interface IProjectFileVisitor<T>
     {
-        T VisitInputFile(InputFile inputFile);
         T VisitMetadataFile(MetadataFile metadataFile);
     }
 }

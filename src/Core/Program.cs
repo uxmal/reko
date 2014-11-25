@@ -62,6 +62,9 @@ namespace Decompiler.Core
             this.ivs = new Dictionary<Identifier, LinearInductionVariable>();
 			this.typefactory = new TypeFactory();
 			this.TypeStore = new TypeStore();
+            this.UserProcedures = new SortedList<Address, Serialization.Procedure_v1>();
+            this.UserCalls = new SortedList<Address, Serialization.SerializedCall_v1>();
+            this.UserGlobalData = new SortedList<Address, Serialization.GlobalDataItem_v2>();
 		}
 
         public Program(LoadedImage image, ImageMap imageMap, IProcessorArchitecture arch, Platform platform) : this()
@@ -73,11 +76,6 @@ namespace Decompiler.Core
         }
 
         public string Name { get; set; }
-
-        /// <summary>
-        /// Project file that was used to load this program -- if any.
-        /// </summary>
-        public InputFile InputFile { get; set; }
 
         /// <summary>
         /// The processor architecture to use for decompilation
@@ -118,8 +116,7 @@ namespace Decompiler.Core
             if (Architecture == null)
                 throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
             globalFields = TypeFactory.CreateStructureType(null, 0);
-            var ptrGlobals = TypeFactory.CreatePointer(globalFields, Architecture.PointerType.Size);
-            globals = new Identifier("globals", 0,  ptrGlobals, new MemoryStorage());
+            globals = new Identifier("globals", 0, globalFields, new MemoryStorage());
         }
 		
         /// <summary>
@@ -133,6 +130,8 @@ namespace Decompiler.Core
         /// The list of known entry points to the program.
         /// </summary>
         public List<EntryPoint> EntryPoints { get; private set; }
+
+        public string Filename { get; set; }
 
 		public Dictionary<uint, PseudoProcedure> ImportThunks
 		{
@@ -182,6 +181,36 @@ namespace Decompiler.Core
 			get { return vectors; }
 		}
 
+        // 'Oracular' information provided by the user.
+        public SortedList<Address, Serialization.Procedure_v1> UserProcedures { get; set; }
+        public SortedList<Address, Serialization.SerializedCall_v1> UserCalls { get; set; }
+        public SortedList<Address, Serialization.GlobalDataItem_v2> UserGlobalData { get; set; }
+
+        /// <summary>
+        /// The name of the file in which disassemblies are dumped.
+        /// </summary>
+        public string DisassemblyFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which intermediate results are stored.
+        /// </summary>
+        public string IntermediateFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which final output is stored
+        /// </summary>
+        public string OutputFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which recovered types are written.
+        /// </summary>
+        public string TypesFilename { get; set; }
+
+        /// <summary>
+        /// The name of the file in which the global variables are written.
+        /// </summary>
+        public string GlobalsFilename { get; set; }
+
         // Mutators /////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -203,7 +232,8 @@ namespace Decompiler.Core
                 this.ImageMap.AddItemWithSize(address, item);
             else
                 this.ImageMap.AddItem(address, item);
-            this.InputFile.UserGlobalData.Add(address, new Serialization.GlobalDataItem_v2
+
+            this.UserGlobalData.Add(address, new Serialization.GlobalDataItem_v2
             {
                 Address = address.ToString(),
                 DataType = dataType.Accept(new  Serialization.DataTypeSerializer()),

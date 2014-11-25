@@ -30,56 +30,14 @@ using System.Text;
 
 namespace Decompiler.Core
 {
-    public class Project : IProjectFileVisitor<ProjectFile_v2>
+    public class Project 
     {
         public Project()
         {
-            InputFiles = new ObservableRangeCollection<InputFile>();
+            Programs = new ObservableRangeCollection<Program>();
         }
 
-        public ObservableRangeCollection<InputFile> InputFiles { get; private set; }
+        public ObservableRangeCollection<Program> Programs { get; private set; }
 
-        public Project_v2 Save()
-        {
-            var inputs = this.InputFiles.Select(i => i.Accept(this));
-            var sp = new Project_v2()
-            {
-                Inputs = inputs.ToList()
-            };
-            return sp;
-        }
-
-        public ProjectFile_v2 VisitInputFile(InputFile i)
-        {
-            var dtSerializer = new DataTypeSerializer();
-            return new DecompilerInput_v2
-            {
-                Address = i.BaseAddress.ToString(),
-                Filename = i.Filename,
-                UserProcedures = i.UserProcedures
-                    .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
-                    .ToList(),
-                UserCalls = i.UserCalls
-                    .Select(uc => uc.Value)
-                    .ToList(),
-                UserGlobalData = i.UserGlobalData
-                    .Select(de => new GlobalDataItem_v2 {
-                        Address = de.Key.ToString(),
-                        DataType = de.Value.DataType,
-                        Name = "g_" + Convert.ToString(de.Key.Linear, 16),
-                    })
-                    .ToList(),
-                DisassemblyFilename = i.DisassemblyFilename,
-                IntermediateFilename = i.IntermediateFilename,
-                OutputFilename = i.OutputFilename,
-                TypesFilename = i.TypesFilename,
-                GlobalsFilename = i.GlobalsFilename,
-            };
-        }
-
-        public ProjectFile_v2 VisitMetadataFile(MetadataFile metadata)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
