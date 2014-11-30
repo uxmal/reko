@@ -341,12 +341,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             dcSvc.Stub(d => d.Decompiler).Return(decompiler);
             decompiler.Stub(d => d.Project).Return(project);
             decompiler.Stub(d => d.Load(Arg<string>.Is.NotNull)).Return(false);
-            decompiler.Stub(d => d.Programs).Return(new List<Program> {
-                new Program
-                {
-                    Image = new LoadedImage(new Address(0x0004), new byte[0x100])
-                }
-            });
         }
 
         private void Given_NoDecompilerInstance()

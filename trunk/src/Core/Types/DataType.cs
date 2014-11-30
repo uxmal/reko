@@ -52,6 +52,24 @@ namespace Decompiler.Core.Types
         public abstract DataType Clone();
         object ICloneable.Clone() { return Clone(); }
 
+        public T ResolveAs<T>() where T : DataType
+        {
+            DataType dt = this;
+            TypeVariable tv = dt as TypeVariable;
+            while (tv != null)
+            {
+                dt = tv.Class.DataType ?? tv.DataType;
+                tv = dt as TypeVariable;
+            }
+            EquivalenceClass eq = dt as EquivalenceClass;
+            while (eq != null)
+            {
+                dt = eq.DataType;
+                eq = dt as EquivalenceClass;
+            }
+            return dt as T;
+        }
+
 		protected void ThrowBadSize()
 		{
 			throw new InvalidOperationException(string.Format("Can't set size of {0}.", GetType().Name));

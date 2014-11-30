@@ -53,12 +53,6 @@ namespace Decompiler.Typing
             this.unifier = new Unifier();
 		}
 
-		public UnionType AsUnion(DataType dt)
-		{
-			dt = store.ResolvePossibleTypeVar(dt);
-			return dt as UnionType;
-		}
-
 		public DataType DataTypeOf(Expression e)
 		{
 			if (e.TypeVariable != null)
@@ -198,8 +192,8 @@ namespace Decompiler.Typing
 			DataType dtDst = DataTypeOf(dst);
             if (!TypesAreCompatible(dtSrc, dtDst))
 			{
-				UnionType uDst = AsUnion(dtDst);
-				UnionType uSrc = AsUnion(dtSrc);
+				UnionType uDst = dtDst.ResolveAs<UnionType>();
+				UnionType uSrc = dtSrc.ResolveAs<UnionType>();
 				if (uDst != null)
 				{
 					var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);

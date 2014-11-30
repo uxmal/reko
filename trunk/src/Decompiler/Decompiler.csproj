@@ -239,7 +239,9 @@
     <Compile Include="Gui\Controls\ITreeView.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesigner.cs" />
     <Compile Include="Gui\Design\ProcedureDesigner.cs" />
+    <Compile Include="Gui\Design\SystemServiceDesigner.cs" />
     <Compile Include="Gui\Design\ProgramDesigner.cs" />
+    <Compile Include="Gui\Design\MetadataFileDesigner.cs" />
     <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
     <Compile Include="Gui\Forms\IPatternSearchDialog.cs" />
@@ -664,15 +666,23 @@
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
     <None Include="Images\Back.bmp" />
+    <Content Include="Images\Back.ico" />
+    <Content Include="Images\Binary.ico" />
+    <Content Include="Images\Code.ico" />
+    <Content Include="Images\Data.ico" />
     <Content Include="Images\Delete.ico" />
     <Content Include="Images\error.png" />
     <Content Include="Images\FinishDecompilation.ico" />
     <None Include="Images\Forward.bmp" />
+    <Content Include="Images\Forward.ico" />
+    <Content Include="Images\Header.ico" />
     <Content Include="Images\NewBo.ico" />
     <Content Include="Images\NextPhase.ico" />
     <Content Include="Images\Open.ico" />
     <Content Include="Images\Procedure.ico" />
     <Content Include="Images\Save.ico" />
+    <Content Include="Images\typelib.ico" />
+    <Content Include="Images\Usercode.ico" />
     <Content Include="Images\Userproc.ico" />
     <Content Include="Images\warning.png" />
   </ItemGroup>

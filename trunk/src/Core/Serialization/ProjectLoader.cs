@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Decompiler.Core;
+using Decompiler.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +32,6 @@ namespace Decompiler.Core.Serialization
     public class ProjectLoader 
     {
         private ILoader loader;
-
-        public ProjectLoader()
-        {
-            loader = null;  //$REVIEW: or the NullLoader?
-        }
 
         public ProjectLoader(ILoader loader)
         {
@@ -105,9 +102,11 @@ namespace Decompiler.Core.Serialization
 
         public Project LoadProject(Project_v2 sp)
         {
+            var typelibs = sp.Inputs.OfType<MetadataFile_v2>().Select(m => VisitMetadataFile(m));
             var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(s));
             var project = new Project();
             project.Programs.AddRange(programs);
+            project.MetaDataFiles.AddRange(typelibs);
             return project;
         }
 
@@ -140,21 +139,38 @@ namespace Decompiler.Core.Serialization
             return program;
         }
 
-        public ProjectFile VisitMetadataFile(MetadataFile_v2 sMetadata)
+        public MetadataFile VisitMetadataFile(MetadataFile_v2 sMetadata)
         {
-            throw new NotImplementedException();
+            return new MetadataFile
+            {
+                Filename = sMetadata.Filename,
+                LibraryName = sMetadata.LibraryName,
+                TypeLibrary = loader.LoadMetadata(sMetadata.Filename)
+            };
         }
 
         public Project LoadProject(Project_v1 sp)
         {
-            var bytes = loader.LoadImageBytes(sp.Input.Filename, 0);
-            var program = loader.LoadExecutable(sp.Input.Filename, bytes, Address.Parse(sp.Input.Address, 16));
-            program.Filename = sp.Input.Filename;
-            program.DisassemblyFilename = sp.Output.DisassemblyFilename;
-            program.IntermediateFilename = sp.Output.IntermediateFilename;
-            program.OutputFilename = sp.Output.OutputFilename;
-            program.TypesFilename = sp.Output.TypesFilename;
-            program.GlobalsFilename = sp.Output.GlobalsFilename;
+            Program program;
+            if (sp.Input != null && !string.IsNullOrEmpty(sp.Input.Filename))
+            {
+                var bytes = loader.LoadImageBytes(sp.Input.Filename, 0);
+                program = loader.LoadExecutable(sp.Input.Filename, bytes, Address.Parse(sp.Input.Address, 16));
+                program.Filename = sp.Input.Filename;
+            }
+            else
+            {
+                program = new Program();
+            }
+            if (sp.Output != null)
+            {
+
+                program.DisassemblyFilename = sp.Output.DisassemblyFilename;
+                program.IntermediateFilename = sp.Output.IntermediateFilename;
+                program.OutputFilename = sp.Output.OutputFilename;
+                program.TypesFilename = sp.Output.TypesFilename;
+                program.GlobalsFilename = sp.Output.GlobalsFilename;
+            }
             program.UserProcedures = sp.UserProcedures
                     .Select(sup => new KeyValuePair<Address, Procedure_v1>(
                         Address.Parse(sup.Address, 16),

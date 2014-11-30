@@ -23,6 +23,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using Decompiler.Loading;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -34,10 +35,25 @@ namespace Decompiler.UnitTests.Core.Serialization
     [TestFixture]
     public class ProjectSerializerTests
     {
+        private MockRepository mr;
+        private ILoader loader;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+            loader = mr.Stub<ILoader>();
+        }
+        
         [Test]
         public void Ps_Load()
         {
-            var ps = new ProjectLoader(new Loader(new ServiceContainer()));
+            var bytes = new byte[100];
+            loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
+            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
+            mr.ReplayAll();
+
+            var ps = new ProjectLoader(loader);
             var proj = ps.LoadProject(FileUnitTester.MapTestPath("fragments/multiple/termination.xml"));
 
             Assert.AreEqual(1, proj.Programs[0].UserProcedures.Count);
@@ -46,6 +62,11 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
         public void Ps_Load_v1()
         {
+            var bytes = new byte[100];
+            loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
+            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
+            mr.ReplayAll();
+
             var sp = new Project_v1
             {
                 Input = new DecompilerInput_v1
@@ -83,7 +104,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(new Loader(new ServiceContainer()));
+            var ps = new ProjectLoader(loader);
             var p = ps.LoadProject(sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 

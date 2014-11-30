@@ -25,6 +25,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using Decompiler.Loading;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -36,9 +37,18 @@ namespace Decompiler.UnitTests.Core.Serialization
 	[TestFixture]
 	public class SerializedProjectTests
 	{
+        private MockRepository mr;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+        }
+
 		[Test]
 		public void SudWrite()
 		{
+            this.mr = new MockRepository();
 			Project_v1 ud = new Project_v1();
 			ud.Input.Address = "0x1000:0x0";
 			ud.Output.DisassemblyFilename = "foo.asm";
@@ -157,61 +167,14 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Assert.IsNull(proc.Signature.ReturnValue);
 		}
 
-        [Test]
-        public void SudLoadProject()
-        {
-            string input = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler"">
-  <input>
-    <address>10003330</address>
-  </input>
-  <output>
-    <disassembly>foo.asm</disassembly>
-    <intermediate-code>foo.cod</intermediate-code>
-  </output>
-  <procedure name=""foo"">
-    <address>10004000</address>
-    <signature>
-      <arg>
-        <stack size=""4"" />
-      </arg>
-      <arg>
-        <stack size=""4"" />
-      </arg>
-    </signature>
-  </procedure>
-  <procedure name=""bar"">
-    <address>10005000</address>
-    <signature>
-      <return><reg>eax</reg></return>
-      <arg><reg>ecx</reg></arg>
-    </signature>
-  </procedure>
-</project>";
-            Project_v1 proj = null;
-            using (StringReader rdr = new StringReader(input))
-            {
-                var ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v1));
-                proj = (Project_v1)ser.Deserialize(rdr);
-            }
-            var project = new ProjectLoader().LoadProject(proj);
-            var program = project.Programs[0];
-            Assert.AreEqual(0x10003330, program.Image.BaseAddress.Linear);
-            Assert.AreEqual("foo.cod", program.IntermediateFilename);
-            Assert.AreEqual(2, program.UserProcedures.Count);
-            Assert.AreEqual("foo.asm", program.DisassemblyFilename);
-            Assert.AreEqual(0x10004000, program.UserProcedures.Keys[0].Linear);
-            Procedure_v1 proc = program.UserProcedures.Values[0];
-            Assert.IsNull(proc.Signature.ReturnValue);
-        }
-
 		[Test]
 		public void SudReadAlloca()
 		{
+            var loader = mr.Stub<ILoader>();
 			Project proj;
             using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"), FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                proj = new ProjectLoader().LoadProject(stm);
+                proj = new ProjectLoader(loader).LoadProject(stm);
             }
             var program = proj.Programs[0];
 			var proc = (Procedure_v1) program.UserProcedures.Values[0];
@@ -220,8 +183,9 @@ namespace Decompiler.UnitTests.Core.Serialization
 		}
 
         [Test]
-        public void LoadProject_Inputs_v2()
+        public void Sud_LoadProject_Inputs_v2()
         {
+            var loader = mr.Stub<ILoader>();
             var sProject = new Project_v2
             {
                 Inputs = {
@@ -245,7 +209,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(new Loader(new ServiceContainer()));
+            var ps = new ProjectLoader(loader);
             var project = ps.LoadProject(sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
@@ -253,6 +217,55 @@ namespace Decompiler.UnitTests.Core.Serialization
             Assert.AreEqual("1000:0400", input0.UserGlobalData.Values[0].Address);
             var str_t = (StringType_v2)input0.UserGlobalData.Values[0].DataType;
             Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
+        }
+
+        [Test]
+        public void Sud_SaveMetadataReference()
+        {
+            var project = new Project
+            {
+                Programs =
+                {
+                    new Program
+                    {
+                        Filename = "c:\\test\\foo.exe",
+                    }
+                },
+                MetaDataFiles =
+                {
+                    new MetadataFile
+                    {
+                        Filename = "c:\\test\\foo.def",
+                        LibraryName = "foo.def",
+                    }
+                }
+            };
+            var ps = new ProjectSaver();
+            var sProject = ps.Save(project);
+            Assert.AreEqual(1, project.MetaDataFiles.Count);
+            Assert.AreEqual("c:\\test\\foo.def", project.MetaDataFiles[0].Filename);
+            Assert.AreEqual("foo.def", project.MetaDataFiles[0].LibraryName);
+        }
+
+        [Test]
+        public void SudLoadMetadata()
+        {
+            var sProject = new Project_v2 {
+                Inputs =
+                {
+                    new MetadataFile_v2
+                    {
+                        Filename = "c:\\tmp\\foo.def"
+                    }
+                }
+            };
+            var loader = mr.Stub<ILoader>();
+            mr.ReplayAll();
+
+            var ploader = new ProjectLoader(loader);
+            var project = ploader.LoadProject(sProject);
+            Assert.AreEqual(1, project.MetaDataFiles.Count);
+            Assert.AreEqual("c:\\tmp\\foo.def", project.MetaDataFiles[0].Filename);
         }
 	}
 }

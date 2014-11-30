@@ -22,6 +22,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Serialization;
 using System;
+using System.ComponentModel;
 
 namespace Decompiler.Core
 {
@@ -29,6 +30,8 @@ namespace Decompiler.Core
     /// Models a system service. The syscallinfo member indicates how the system service
     /// is selected (typically by loading specific values in processor registers).
     /// </summary>
+    
+    [Designer("Decompiler.Gui.Design.SystemServiceDesigner,Decompiler")]
 	public class SystemService
 	{
 		public string Name;

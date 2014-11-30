@@ -29,10 +29,12 @@ namespace Decompiler.Core.Serialization
     {
         public Project_v2 Save(Project project)
         {
-            var inputs = project.Programs.Select(prog =>  VisitProgram(prog));
+            var inputs = new List<ProjectFile_v2>();
+            inputs.AddRange(project.Programs.Select(prog => VisitProgram(prog)));
+            inputs.AddRange(project.MetaDataFiles.Select(m => VisitMetadataFile(m)));
             var sp = new Project_v2()
             {
-                Inputs = inputs.ToList()
+                Inputs = inputs
             };
             return sp;
         }
@@ -42,7 +44,9 @@ namespace Decompiler.Core.Serialization
             var dtSerializer = new DataTypeSerializer();
             return new DecompilerInput_v2
             {
-                Address = program.Image.BaseAddress.ToString(),
+                Address = program.Image != null 
+                    ? program.Image.BaseAddress.ToString()
+                    : null,
                 Filename = program.Filename,
                 UserProcedures = program.UserProcedures
                     .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
@@ -68,7 +72,11 @@ namespace Decompiler.Core.Serialization
 
         public ProjectFile_v2 VisitMetadataFile(MetadataFile metadata)
         {
-            throw new NotImplementedException();
+            return new MetadataFile_v2
+            {
+                 Filename = metadata.Filename,
+                  LibraryName = metadata.LibraryName,
+            };
         }
     }
 }

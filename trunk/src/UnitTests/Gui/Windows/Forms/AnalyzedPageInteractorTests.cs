@@ -70,12 +70,21 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             disasmViewSvc = AddService<IDisassemblyViewService>();
             pbSvc = AddService<IProjectBrowserService>();
 
-            TestLoader ldr = new TestLoader(sc);
+            var loadAddress =  new Address(0x100000);
+            var bytes = new byte[4711];
+            Program prog = new Program();
+            prog.Image = new LoadedImage(loadAddress, bytes);
+            prog.ImageMap = prog.Image.CreateImageMap();
+            prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            ILoader ldr = mr.StrictMock<ILoader>();
+            ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(prog);
+            ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
+            ldr.Replay();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             this.decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.Load("test.exe");
-            program = decSvc.Decompiler.Programs.First();
+            program = decSvc.Decompiler.Project.Programs.First();
             decSvc.Decompiler.ScanProgram();
             sc.AddService(typeof(IDecompilerService), decSvc);
 
@@ -106,10 +115,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             program.Procedures.Add(new Address(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
             interactor.EnterPage();
 
-            //Assert.AreEqual(1, form.BrowserList.Items.Count);
-            //KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) form.BrowserList.Items[0].Tag;
-            //Assert.AreEqual(0x12345, entry.Key.Offset);
-            //Assert.AreEqual("foo", entry.Value.Name);
             mr.VerifyAll();
         }
 
@@ -123,12 +128,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             codeViewSvc.Stub(s => s.DisplayProcedure(
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
-            //memViewSvc.Expect(s => s.ShowMemoryAtAddress(
-            //    Arg<Program>.Is.NotNull,
-            //    Arg<Address>.Matches(address => address.Linear == 0x12346)));
-
-            //disasmViewSvc.Expect(s => s.DisassembleStartingAtAddress(
-            //    Arg<Address>.Matches(address => address.Linear == 0x12346)));
             mr.ReplayAll();
 
             Given_Interactor();
@@ -176,41 +175,5 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        private class TestLoader : ILoader
-        {
-            public TestLoader(IServiceProvider services)
-            {
-            }
-
-            public byte[] LoadImageBytes(string fileName, int offset)
-            {
-                return new byte[4711];
-            }
-
-            public Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress)
-            {
-                loadAddress = loadAddress ?? new Address(0x100000);
-                Program prog = new Program();
-                prog.Image = new LoadedImage(loadAddress, bytes);
-                prog.ImageMap = prog.Image.CreateImageMap();
-                prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
-                return prog;
-            }
-
-            public Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress)
-            {
-                throw new NotImplementedException();
-            }
-
-            public TypeLibrary LoadMetadata(string fileName)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

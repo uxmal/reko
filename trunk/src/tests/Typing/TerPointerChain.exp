@@ -24,7 +24,7 @@ PointerChainFragment_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (struct))
 Eq_2: (struct "Eq_2" (4 (ptr Eq_5) ptr0004))
 	T_2 (in r1 : word32)
 Eq_5: (struct "Eq_5" (8 (ptr Eq_8) ptr0008))
@@ -32,7 +32,7 @@ Eq_5: (struct "Eq_5" (8 (ptr Eq_8) ptr0008))
 Eq_8: (struct "Eq_8" (10 byte b0010))
 	T_8 (in Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (struct))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

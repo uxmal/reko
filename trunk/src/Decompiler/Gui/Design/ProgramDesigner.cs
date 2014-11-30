@@ -34,7 +34,8 @@ namespace Decompiler.Gui.Design
         {
             base.Initialize(obj);
             var program = (Program) obj;
-            Host.AddComponents(program, program.ImageMap.Segments.Values);
+            if (program.ImageMap != null)
+                Host.AddComponents(program, program.ImageMap.Segments.Values);
 
             SetTreeNodeProperties(program);
         }

@@ -402,6 +402,7 @@ done:
         }
 
         [Test]
+        [Ignore]
         public void CceShrRcrPattern()
         {
             var p = new ProgramBuilder(new FakeArchitecture());

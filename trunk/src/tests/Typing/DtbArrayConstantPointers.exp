@@ -9,7 +9,7 @@ Fn_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct))
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (struct))
 Eq_2: (ptr (struct (0 (arr T_9) a0000)))
 	T_2 (in 0x00123456 : word32)
 	T_3 (in a : word32)
@@ -25,7 +25,7 @@ Eq_7: ui32
 Eq_9: (struct 0008 (0 T_8 t0000))
 	T_9
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (struct))
   Class: Eq_1
   DataType: (ptr (struct))
   OrigDataType: (ptr (struct))

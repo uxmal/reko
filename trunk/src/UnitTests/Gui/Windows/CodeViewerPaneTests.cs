@@ -119,8 +119,8 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             using (mr.Record())
             {
-                var prog = new Program();
-                decompiler.Stub(d => d.Programs).Return(new[] { prog});
+                var project = new Project { Programs = { new Program() } };
+                decompiler.Stub(d => d.Project).Return(project);
                 uiPreferencesSvc.SourceCodeFont = font;
             }
 

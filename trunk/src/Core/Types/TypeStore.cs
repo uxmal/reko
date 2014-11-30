@@ -166,23 +166,6 @@ namespace Decompiler.Core.Types
             }
         }
 
-        public DataType ResolvePossibleTypeVar(DataType dt)
-        {
-            TypeVariable tv = dt as TypeVariable;
-            while (tv != null)
-            {
-                dt = tv.Class.DataType;
-                tv = dt as TypeVariable;
-            }
-            EquivalenceClass eq = dt as EquivalenceClass;
-            while (eq != null)
-            {
-                dt = eq.DataType;
-                eq = dt as EquivalenceClass;
-            }
-            return dt;
-        }
-
         public IList<EquivalenceClass> UsedEquivalenceClasses
         {
             get { return usedClasses.Values; }

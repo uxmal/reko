@@ -76,7 +76,10 @@ namespace Decompiler.UnitTests
             var arch = new IntelArchitecture(ProcessorMode.Real);
             Program program = new Program();
             program.Architecture = arch;
-            decompiler.Programs.Add(program);
+            decompiler.Project = new Project
+            {
+                Programs = { program }
+            };
             List<SerializedCall_v1> al = new List<SerializedCall_v1>();
             SerializedSignature sig = new SerializedSignature();
             sig.Arguments = new Argument_v1[] {

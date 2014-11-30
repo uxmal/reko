@@ -248,7 +248,12 @@ namespace Decompiler.Gui.Forms
             if (fileName == null)
                 return;
             mru.Use(fileName);
-            var loader = decompilerSvc.Decompiler.LoadMetadata(fileName);
+            var typelib = decompilerSvc.Decompiler.LoadMetadata(fileName);
+            decompilerSvc.Decompiler.Project.MetaDataFiles.Add(new MetadataFile {
+                Filename = fileName,
+                LibraryName = Path.GetFileName(fileName),
+                TypeLibrary = typelib
+            });
         }
 
         public bool OpenBinaryAs()
@@ -398,7 +403,7 @@ namespace Decompiler.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
-                    var hits = this.decompilerSvc.Decompiler.Programs
+                    var hits = this.decompilerSvc.Decompiler.Project.Programs
                         .SelectMany(program => 
                               re.GetMatches(program.Image.Bytes, 0)
                                 .Select(offset => new AddressSearchHit 
@@ -415,7 +420,7 @@ namespace Decompiler.Gui.Forms
 
         public void FindProcedures(ISearchResultService svc)
         {
-            var hits = this.decompilerSvc.Decompiler.Programs
+            var hits = this.decompilerSvc.Decompiler.Project.Programs
                 .SelectMany(program => program.Procedures.Select(proc =>
                     new ProcedureSearchHit(program, proc.Key, proc.Value)))
                 .ToList();
@@ -432,7 +437,7 @@ namespace Decompiler.Gui.Forms
         {
             var memService = sc.GetService<ILowLevelViewService>();
             //$TODO: determine "current program".
-            memService.ViewImage(this.decompilerSvc.Decompiler.Programs.First());
+            memService.ViewImage(this.decompilerSvc.Decompiler.Project.Programs.First());
             memService.ShowWindow();
         }
 
@@ -665,7 +670,7 @@ namespace Decompiler.Gui.Forms
             {
                 if (decompilerSvc.Decompiler == null)
                     return false;
-                return decompilerSvc.Decompiler.Programs.Count > 0;
+                return decompilerSvc.Decompiler.Project != null;
             }
         }
         #endregion

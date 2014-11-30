@@ -40,6 +40,7 @@ namespace Decompiler.Core.Services
                 string libFileName = ImportFileLocation(name);
                 if (!File.Exists(libFileName))
                     return null;
+                lib.Filename = libFileName;
                 lib.Load(arch, libFileName);
                 return lib;
             }

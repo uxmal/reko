@@ -71,7 +71,9 @@
   <ItemGroup>
     <Content Include="advapi32.xml" />
     <Content Include="comdlg32.xml" />
-    <Content Include="commctrl.xml" />
+    <Content Include="commctrl.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="gdi32.xml" />
     <Content Include="kernel32.xml">
       <SubType>Designer</SubType>

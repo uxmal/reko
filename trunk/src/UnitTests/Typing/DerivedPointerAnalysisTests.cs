@@ -65,31 +65,13 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DpaSimple()
 		{
-			var prog = new Program();
-            prog.Architecture = new FakeArchitecture();
-
-			var eqb = new EquivalenceClassBuilder(factory, store);
-			var dtb = new DataTypeBuilder(factory, store, prog.Architecture);
-
-			var c = Constant.Word32(0x10000000);
-			var mem = new MemoryAccess(c, PrimitiveType.Real32);
-
-			prog.Globals.Accept(eqb);
-			mem.Accept(eqb);
-
-			var tc = new TraitCollector(factory, store, dtb, prog);
-			prog.Globals.Accept(tc);
-			mem.Accept(tc);
-			dtb.BuildEquivalenceClassDataTypes();
-
-            var tvr = new TypeVariableReplacer(store);
-            tvr.ReplaceTypeVariables();
-            var ppr = new PtrPrimitiveReplacer(factory, store, prog);
-            ppr.ReplaceAll();
-            var cf = new DerivedPointerAnalysis(factory, store, prog);
-			mem.Accept(cf);
-
-			Verify(null, "Typing/DpaSimple.txt");
+			var prog = new ProgramBuilder();
+            prog.Add("test", m=>
+               {
+                   var r1 = m.Register(1);
+                   m.Assign(r1, m.Load(PrimitiveType.Real32, m.Word32(0x10000000)));
+               });
+			RunTest(prog.BuildProgram(), "Typing/DpaSimple.txt");
 		}
 
 		[Test]

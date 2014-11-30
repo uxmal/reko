@@ -276,7 +276,7 @@ namespace Decompiler.Typing
             //if (!(dtOriginal is MemberPointer))
             //    throw new TypeInferenceException("MemberPointer expression {0}  was expected to have MemberPointer as its " +
             //        "original type, but was {1}.", memptr, dtOriginal);
-			return RewritePointer(memptr, memptr.Pointee, ((MemberPointer) dtOriginal).Pointee);
+			return RewritePointer(memptr, memptr.Pointee,  dtOriginal.ResolveAs<MemberPointer>().Pointee);
 		}
 
         public Expression VisitString(StringType str)

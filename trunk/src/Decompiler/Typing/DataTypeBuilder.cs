@@ -149,6 +149,14 @@ namespace Decompiler.Typing
 			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable, structPtrSize);
 		}
 
+		public DataType MemFieldTrait(Expression tBase, Expression tStruct, Expression tField, int offset)
+        {
+            var s = factory.CreateStructureType(null, 0);
+            var field = new StructureField(offset, tField.TypeVariable);
+            s.Fields.Add(field);
+            return MergeIntoDataType(tStruct, s);
+        }
+
         public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
         {
             var s = factory.CreateStructureType(null, 0);

@@ -23,13 +23,14 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace Decompiler.Core
 {
-	public class TypeLibrary
+    public class TypeLibrary
 	{
 		public TypeLibrary() : this(
             new Dictionary<string, DataType>(),
@@ -45,6 +46,7 @@ namespace Decompiler.Core
             this.ServicesByVector = new Dictionary<int, SystemService>();
         }
 
+        public string Filename { get; set; }
         public string LibraryName { get; set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, ProcedureSignature> Signatures { get; private set; }

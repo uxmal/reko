@@ -323,19 +323,6 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void DtbGlobalArray()
-        {
-            var m = new ProcedureBuilder();
-            var i = m.Local32("i");
-            Expression e = m.LoadDw(m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000)));
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
-            e = e.Accept(aen);
-            e.Accept(eqb);
-            e.Accept(trco);
-            Verify("Typing/DtbGlobalArray.txt");
-        }
-
-        [Test]
         public void DtbUnion()
         {
             Identifier id1 = new Identifier("foo", 0, PrimitiveType.Int32, null);		// note signed: can't be unified with real
