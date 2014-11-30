@@ -29,13 +29,13 @@ fn0C00_0000_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct)
-	globals_t (in globals : (ptr (struct)))
+	globals_t (in globals : (struct))
 Eq_3: (segment)
 	T_3 (in ds : selector)
 Eq_4: (struct (0 ui32 dw0000) (4 ui32 dw0004) (8 cu8 b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E) (10 word16 w0010))
 	T_4 (in bx : word16)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (struct))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

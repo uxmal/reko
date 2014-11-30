@@ -44,6 +44,7 @@ namespace Decompiler.UnitTests.Gui
         public void NavigateToAddress()
         {
             var program = new Program();
+            var project = new Project { Programs = { program } };
             var memSvc = mr.DynamicMock<ILowLevelViewService>();
             var decSvc = mr.DynamicMock<IDecompilerService>();
             var dec = mr.DynamicMock<IDecompiler>();
@@ -51,7 +52,7 @@ namespace Decompiler.UnitTests.Gui
                 Arg<Program>.Is.NotNull,
                 Arg<Address>.Matches(a => a.Linear == 0x1234)));
             decSvc.Stub(d => d.Decompiler).Return(dec);
-            dec.Stub(d => d.Programs).Return(new [] {program});
+            dec.Stub(d => d.Project).Return(project);
             mr.ReplayAll();
 
             var sc = new ServiceContainer();

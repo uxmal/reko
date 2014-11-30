@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using System;
+using Decompiler.Core.Lib;
 
 namespace Decompiler.UnitTests.Core.Lib
 {
@@ -32,12 +33,10 @@ namespace Decompiler.UnitTests.Core.Lib
         }
 
         [Test]
-        [Ignore]
         public void MakeSet()
         {
-//            DisjointPartition<string> partition = new DisjointPartition<string>();
-  //          partition.MakeSet("Hello");
-     //       Assert.AreEqual(1, Items.Count);
+            DisjointPartition<string> partition = new DisjointPartition<string>();
+            partition.Add("Hello");
         }
     }
 }

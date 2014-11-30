@@ -77,7 +77,6 @@ namespace Decompiler.Core.Lib
             }
         }
 
-
         private class Set
         {
             public Set(T item) { this.item = item;  parent = this; rank = 0; }

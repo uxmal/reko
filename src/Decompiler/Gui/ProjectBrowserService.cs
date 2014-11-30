@@ -40,6 +40,7 @@ namespace Decompiler.Gui
     {
         private ITreeView tree;
         private Dictionary<object, TreeNodeDesigner> mpitemToDesigner;
+        private Project project;
 
         public ProjectBrowserService(IServiceProvider services, ITreeView treeView)
         {
@@ -56,32 +57,32 @@ namespace Decompiler.Gui
             Load(null);
         }
 
-        public void Load(IEnumerable<Program> progs)
+        public void Load(Project project)
         {
             tree.ContextMenu = Services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxBrowser);
             tree.Nodes.Clear();
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
-            if ((progs == null || progs.Count() == 0))
+            if (project == null)
             {
                 tree.ShowRootLines = false;
                 tree.ShowNodeToolTips = false;
                 tree.Nodes.Clear();
                 tree.Nodes.Add(tree.CreateNode("(No project loaded)"));
-                return;
             }
             else 
             {
-                AddComponents(progs);
-                //project.InputFiles.CollectionChanged += InputFiles_CollectionChanged;
+                AddComponents(project.Programs);
+                AddComponents(project.MetaDataFiles);
+                project.MetaDataFiles.CollectionChanged += TypeLibraries_CollectionChanged;
                 tree.ShowNodeToolTips = true;
                 tree.ShowRootLines = true;
             }
+            this.project = project;
         }
 
         public void Reload()
         {
-            var programs = tree.Nodes.Select(n => (Program) n.Tag).ToArray();
-            Load(programs);
+            Load(project);
         }
 
         public void AddComponents(IEnumerable components)
@@ -178,7 +179,7 @@ namespace Decompiler.Gui
             return GetDesigner(tree.SelectedNode.Tag);
         }
 
-        void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void TypeLibraries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -205,5 +206,7 @@ namespace Decompiler.Gui
                 return false;
             return des.Execute(cmdId);
         }
+
+
     }
 }

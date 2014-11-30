@@ -341,18 +341,6 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void TtranGlobalArray()
-        {
-            var p = new ProgramBuilder();
-            p.Add("GlobalArray", m =>
-            {
-                var i = m.Local32("i");
-                m.SideEffect(m.LoadDw(m.IAdd(p.Program.Globals, m.IAdd(m.Shl(i, 2), 0x3000))));
-            });
-            RunTest(p.BuildProgram(), "Typing/TtranGlobalArray.txt");
-        }
-
-        [Test]
         public void TtranCallTable()
         {
             var pb = new ProgramBuilder();

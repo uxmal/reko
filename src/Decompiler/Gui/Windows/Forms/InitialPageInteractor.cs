@@ -97,12 +97,12 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 isOldProject = Decompiler.Load(file);
             });
-            if (Decompiler.Programs.Count > 0)
+            var browserSvc = Services.RequireService<IProjectBrowserService>();
+            browserSvc.Load(Decompiler.Project);
+            if (Decompiler.Project.Programs.Count > 0)
             {
-                var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Programs.First());
+                memSvc.ViewImage(Decompiler.Project.Programs.First());
             }
             return isOldProject;
         }
@@ -123,12 +123,12 @@ namespace Decompiler.Gui.Windows.Forms
                 svc.SetCaption("Scanning source program.");
                 Decompiler.ScanProgram();
             });
-            if (Decompiler.Programs.Count > 0)
+            var browserSvc = Services.RequireService<IProjectBrowserService>();
+            browserSvc.Load(Decompiler.Project);
+            if (Decompiler.Project.Programs.Count > 0)
             {
-                var browserSvc = Services.RequireService<IProjectBrowserService>();
-                browserSvc.Load(Decompiler.Programs);
                 var memSvc = Services.RequireService<ILowLevelViewService>();
-                memSvc.ViewImage(Decompiler.Programs.First());
+                memSvc.ViewImage(Decompiler.Project.Programs.First());
             }
             return false;   // We never open projects this way.
         }

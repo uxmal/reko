@@ -77,6 +77,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private void DoRewriteCore()
         {
             Project project = LoadProject();
+            project.Programs.Add(prog);
             scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);

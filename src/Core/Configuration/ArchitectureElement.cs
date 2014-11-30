@@ -36,6 +36,9 @@ namespace Decompiler.Core.Configuration
 
     public class ArchitectureElement : ConfigurationElement, Architecture
     {
+        /// <summary>
+        /// Short abbreviation for the architecture.
+        /// </summary>
         [ConfigurationProperty("Name", IsRequired = true)]
         public string Name
         {
@@ -43,6 +46,9 @@ namespace Decompiler.Core.Configuration
             set { this["Name"] = value; }
         }
 
+        /// <summary>
+        /// Human-readable description of the processor architecture
+        /// </summary>
         [ConfigurationProperty("Description", IsRequired = true)]
         public string Description
         {
@@ -50,6 +56,9 @@ namespace Decompiler.Core.Configuration
             set { this["Description"] = value; }
         }
 
+        /// <summary>
+        /// .NET type name for the architecture.
+        /// </summary>
         [ConfigurationProperty("Type", IsRequired = true)]
         public string TypeName
         {

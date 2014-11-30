@@ -50,7 +50,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
         private Program program;
-        private Program[] programs;
         private Project project;
         private IDecompilerShellUiService uiSvc;
 
@@ -302,16 +301,17 @@ namespace Decompiler.UnitTests.Gui.Windows
             this.program = new Program(image, imageMap, arch, platform);
             this.program.Name = "foo.exe";
             this.program.Filename = @"c:\test\foo.exe";
-            this.programs = new[] { program }; 
+            project.Programs.Add(program);
         }
 
         [Test]
         public void PBS_SingleBinary()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_Project();
             Given_ProgramWithOneSegment();
 
-            pbs.Load(programs);
+            pbs.Load(project);
 
             Assert.IsTrue(fakeTree.ShowNodeToolTips);
             
@@ -334,11 +334,11 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void PBS_AddBinary()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
-            Given_ProgramWithOneSegment();
             Given_Project();
+            Given_ProgramWithOneSegment();
             mr.ReplayAll();
 
-            pbs.Load(programs);
+            pbs.Load(project);
 
             project.Programs.Add(new Program
             {
@@ -358,11 +358,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             this.project = new Project
             {
-                Programs = 
-                {
-                    new Program { Filename="foo.exe",
-                        Image = new LoadedImage(new Address(0x400000), new byte[1000]) }
-                }
             };
         }
 
@@ -381,12 +376,12 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void PBS_UserProcedures()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
-            Given_ProgramWithOneSegment();
             Given_Project();
+            Given_ProgramWithOneSegment();
             Given_UserProcedure(0x13000050, "MyFoo");
             mr.ReplayAll();
 
-            pbs.Load(programs);
+            pbs.Load(project);
 
             Expect(
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -464,6 +459,23 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             var o = pbs.GetAncestorOfType<GrandParentComponent>(c);
             Assert.IsNull(o);
+        }
+
+        [Test]
+        public void PBS_AddTypeLib()
+        {
+            mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var project = new Project();
+            pbs.Load(project);
+
+            project.MetaDataFiles.Add(new MetadataFile
+            {
+                LibraryName = "..\\foo.tlb"
+            });
+
+            Assert.AreEqual(1, mockTree.Nodes.Count);
+            Assert.AreEqual("foo.tlb", mockTree.Nodes[0].Text);
         }
     }
 }

@@ -85,7 +85,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void EnterPage()
         {
-            memSvc.ViewImage(Decompiler.Programs.First());
+            memSvc.ViewImage(Decompiler.Project.Programs.First());
             Services.RequireService<IProjectBrowserService>().Reload();
         }
 
@@ -101,7 +101,7 @@ namespace Decompiler.Gui.Windows.Forms
         public bool ViewUnscannedBlocks()
         {
             var srSvc = Services.RequireService<ISearchResultService>();
-            var hits = Decompiler.Programs
+            var hits = Decompiler.Project.Programs
                 .SelectMany(p => p.ImageMap.Items
                         .Where(i => i.Value.DataType is UnknownType)
                         .Select(i => new AddressSearchHit { Program = p, LinearAddress = i.Key.Linear }));

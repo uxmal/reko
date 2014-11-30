@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -28,6 +29,7 @@ namespace Decompiler.Core
     /// <summary>
     /// Represents a file that only used for the  metdata it contains.
     /// </summary>
+    [Designer("Decompiler.Gui.Design.MetadataFileDesigner,Decompiler")]
     public class MetadataFile : ProjectFile
     {
         public override T Accept<T>(IProjectFileVisitor<T> visitor)
@@ -35,8 +37,11 @@ namespace Decompiler.Core
             return visitor.VisitMetadataFile(this);
         }
 
+        public string LibraryName { get; set; }
+
         public string MetadataType { get; set; }
 
         public TypeLibrary TypeLibrary { get; set; }
+
     }
 }

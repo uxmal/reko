@@ -76,7 +76,7 @@ namespace Decompiler.Gui.Design
             var memSvc = Services.RequireService<ILowLevelViewService>();
             var decSvc = Services.RequireService<IDecompilerService>();
             //$BUGBUG: ImagemapSegmentDesigner needs to find its parent!
-            memSvc.ShowMemoryAtAddress(decSvc.Decompiler.Programs.First(), segment.Address);
+            memSvc.ShowMemoryAtAddress(decSvc.Decompiler.Project.Programs.First(), segment.Address);
         }
     }
 }

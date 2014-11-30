@@ -38,7 +38,6 @@ namespace Decompiler
 {
     public interface IDecompiler
     {
-        ICollection<Program> Programs { get; }
         Project Project { get; }
 
         bool Load(string fileName);
@@ -65,20 +64,16 @@ namespace Decompiler
 		private IScanner scanner;
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
-        private ObservableRangeCollection<Program> programs;
 
         public DecompilerDriver(ILoader ldr, DecompilerHost host, IServiceProvider services)
         {
             if (ldr == null)
                 throw new ArgumentNullException("ldr");
-            this.programs = new ObservableRangeCollection<Program>();
             this.loader = ldr;
             this.host = host;
             this.services = services;
-            this.eventListener = (DecompilerEventListener) services.GetService(typeof(DecompilerEventListener));
+            this.eventListener = services.GetService<DecompilerEventListener>();
         }
-
-        public ICollection<Program> Programs { get { return programs; } }
 
         public Project Project { get { return project; } set { project = value; ProjectChanged.Fire(this); } }
         public event EventHandler ProjectChanged;
@@ -116,7 +111,7 @@ namespace Decompiler
 		///</summary>
         public virtual void AnalyzeDataFlow()
         {
-            foreach (var program in Programs)
+            foreach (var program in project.Programs)
             {
                 eventListener.ShowStatus("Performing interprocedural analysis.");
                 DataFlowAnalysis dfa = new DataFlowAnalysis(program, eventListener);
@@ -193,11 +188,11 @@ namespace Decompiler
             if (Project != null)
             {
                 isProject = true;
-            } else 
+            }
+            else 
             {
                 var program = loader.LoadExecutable(fileName, image, null);
                 Project = CreateDefaultProject(fileName, program);
-                Programs.Add(program);
                 isProject = false;
             }
             eventListener.ShowStatus("Source program loaded.");
@@ -228,7 +223,6 @@ namespace Decompiler
                 platform);
             program.Name = Path.GetFileName(fileName);
             Project = CreateDefaultProject(fileName, program);
-            programs.Add(program);
             eventListener.ShowStatus("Raw bytes loaded.");
         }
 
@@ -243,19 +237,19 @@ namespace Decompiler
 
             var project = new Project
             {
-                Programs = { program},
+                Programs = { program },
             };
             return project;
         }
 
 		/// <summary>
-		/// Extracts type information from the typeless rewritten program.
+		/// Extracts type information from the typeless rewritten programs.
 		/// </summary>
 		/// <param name="host"></param>
 		/// <param name="ivs"></param>
         public void ReconstructTypes()
         {
-            foreach (var program in Programs)
+            foreach (var program in Project.Programs)
             {
                 TypeAnalyzer analyzer = new TypeAnalyzer(eventListener);
                 try
@@ -340,10 +334,10 @@ namespace Decompiler
 		/// <param name="cfg">configuration information</param>
 		public void ScanProgram()
 		{
-			if (Programs.Count == 0)
+			if (Project.Programs.Count == 0)
 				throw new InvalidOperationException("Programs must be loaded first.");
 
-            foreach (Program program in Programs)
+            foreach (Program program in Project.Programs)
             {
                 try
                 {
@@ -396,7 +390,7 @@ namespace Decompiler
         /// </summary>
         public void StructureProgram()
 		{
-            foreach (var program in Programs)
+            foreach (var program in project.Programs)
             {
                 int i = 0;
 
@@ -424,9 +418,8 @@ namespace Decompiler
 
 		private void WriteDecompilerProducts()
 		{
-            foreach (var p in Programs)
+            foreach (var program in Project.Programs)
             {
-                var program = p;
                 host.WriteTypes(w => WriteDecompiledTypes(program, w));
                 host.WriteDecompiledCode(w => WriteDecompiledProcedures(program, w));
                 host.WriteGlobals(w => WriteGlobals(program, w));

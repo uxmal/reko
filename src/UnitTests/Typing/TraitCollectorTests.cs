@@ -668,6 +668,11 @@ namespace Decompiler.UnitTests.Typing
             return Traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable: null, structPtrSize, tField.TypeVariable, offset));
         }
 
+        public DataType MemFieldTrait(Expression tBase, Expression tStruct, Expression tField, int offset)
+        {
+            return Traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable : null, 0, tField.TypeVariable, offset));
+        }
+
         public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)
         {
             return Traits.AddTrait(tStruct.TypeVariable, new TraitMemSize(size));

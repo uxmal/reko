@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Gui
                 Arg<Program>.Is.NotNull,
                 Arg<Address>.Is.Equal(new Address(0x4234))));
             decSvc.Stub(d => d.Decompiler).Return(dec);
-            dec.Stub(d => d.Programs).Return(new [] {new Program()});
+            dec.Stub(d => d.Project).Return(new Project { Programs = { new Program() } });
             mr.ReplayAll();
 
             ISearchResult psr = new ProcedureSearchResult(sc, procs);

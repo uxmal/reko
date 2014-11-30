@@ -240,7 +240,7 @@ namespace Decompiler.Gui.Windows
             if (control.MemoryView.Focused)
             {
                  var decompiler = services.GetService<IDecompilerService>().Decompiler;
-                 var dumper = new Dumper(decompiler.Programs.First().Architecture);
+                 var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
                 var sb = new StringWriter();
                 dumper.DumpData(control.MemoryView.ProgramImage, range, sb);
                 Clipboard.SetText(sb.ToString());       //$TODO: abstract this.

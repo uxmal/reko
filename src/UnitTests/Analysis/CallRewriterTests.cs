@@ -21,6 +21,7 @@
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Output;
+using Decompiler.Core.Serialization;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -68,7 +69,6 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			RunTest("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
 		}
-
 
 		[Test]
 		public void CrwManyStackArgs()

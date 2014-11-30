@@ -54,7 +54,7 @@ namespace Decompiler.Typing
         public Expression Rewrite(Constant c, bool dereferenced)
         {
             this.c = c;
-            DataType dtInferred = store.ResolvePossibleTypeVar(c.TypeVariable.DataType);
+            DataType dtInferred = c.TypeVariable.DataType.ResolveAs<DataType>();
             this.pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
             this.dereferenced = dereferenced;
             return dtInferred.Accept(this);
@@ -63,7 +63,7 @@ namespace Decompiler.Typing
         public Expression Rewrite(Address addr, bool dereferenced)
         {
             this.c = Constant.UInt32(addr.Linear);  //$BUG: won't work for x86.
-            var dtInferred = store.ResolvePossibleTypeVar(addr.TypeVariable.DataType);
+            var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
             this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
             this.dereferenced = dereferenced;
             return dtInferred.Accept(this);
@@ -78,8 +78,7 @@ namespace Decompiler.Typing
                     var pGlob = globals.TypeVariable.DataType as Pointer;
                     if (pGlob != null)
                     {
-                        object o = store.ResolvePossibleTypeVar(pGlob.Pointee);
-                        return (StructureType) o;
+                        return pGlob.Pointee.ResolveAs<StructureType>();
                     }
                     pGlob = globals.DataType as Pointer;
                     if (pGlob != null)
@@ -140,7 +139,7 @@ namespace Decompiler.Typing
 			StructureType baseType = (StructureType) eq.DataType;
 			Expression baseExpr = new ScopeResolution(baseType);
 
-            var dt = store.ResolvePossibleTypeVar(memptr.Pointee);
+            var dt = memptr.Pointee.ResolveAs<DataType>();
             var f = EnsureFieldAtOffset(baseType, dt, c.ToInt32());
             Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f.Name);
 			if (dereferenced)
@@ -179,7 +178,7 @@ namespace Decompiler.Typing
                     np.DataType = c.DataType;
                     return np;
                 }
-                var dt = store.ResolvePossibleTypeVar(ptr.Pointee);
+                var dt = ptr.Pointee.ResolveAs<DataType>();
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
                 var ptrGlobals = new Pointer(GlobalVars, arch.PointerType.Size);
                 e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f.Name);

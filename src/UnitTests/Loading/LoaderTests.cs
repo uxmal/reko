@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Loading
         {
             mr.ReplayAll();
 
-            TestLoader ldr = new TestLoader(sc);
+            Loader ldr = new Loader(sc);
             Assert.IsTrue(ldr.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", "0"));
 
             mr.VerifyAll();
@@ -69,11 +69,12 @@ namespace Decompiler.UnitTests.Loading
         public void LoaderUnknownImageType()
         {
             dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
+
+            var testImage = new byte[] { 42, 42, 42, 42, };
+            Loader ldr = mr.PartialMock<Loader>(sc);
             mr.ReplayAll();
 
-            TestLoader ldr = new TestLoader(sc);
-            ldr.Test_Image = new byte[] { 42, 42, 42, 42, };
-            Program prog = ldr.LoadExecutable("", ldr.Test_Image, null);
+            Program prog = ldr.LoadExecutable("", testImage, null);
 
             Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
@@ -93,35 +94,16 @@ namespace Decompiler.UnitTests.Loading
                     TypeName = typeof(TestImageLoader).AssemblyQualifiedName,
                 }
             });
+            var testImage = new byte[] { 42, 42, 0xA0, 0xA0 };
+            Loader ldr = mr.PartialMock<Loader>(sc);
+            ldr.Stub(l => l.LoadImageBytes("", 0)).Return(testImage);
             mr.ReplayAll();
 
-            TestLoader ldr = new TestLoader(sc);
-            ldr.Test_Image = new byte[] { 42, 42, 0xA0, 0xA0 };
-            var imgLoader = ldr.FindImageLoader<ImageLoader>("", ldr.Test_Image, () => null);
+            var imgLoader = ldr.FindImageLoader<ImageLoader>("", testImage, () => null);
 
             Assert.IsInstanceOf<TestImageLoader>(imgLoader);
             mr.VerifyAll();
         }
-
-		private class TestLoader : Loader
-		{
-			public TestLoader( IServiceProvider services) : base(services)
-			{
-			}
-
-			private byte [] image;
-
-			public byte [] Test_Image
-			{
-				get { return image; }
-				set { image = value; }
-			}
-
-			public override byte[] LoadImageBytes(string fileName, int offset)
-			{
-				return image;
-			}
-		}
 
         public class TestImageLoader : ImageLoader
         {

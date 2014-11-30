@@ -39,7 +39,6 @@ namespace Decompiler.UnitTests.Typing
         private TypeVariable globals_t;
         private StructureType globalStruct;
         private EquivalenceClass eqLink;
-        private EquivalenceClass eqTreeNode;
         private IProcessorArchitecture arch;
 
         [SetUp]

@@ -65,7 +65,8 @@ namespace Decompiler.Typing
 		/// <param name="structPtrSize">Size of the pointer associated with the structure field reference.</param>
 		/// <param name="eField">Type variable for the field.</param>
 		/// <param name="offset">Field offset within the structure (in bytes).</param>
-		DataType MemAccessTrait(Expression eBase, Expression eStruct, int structPtrSize, Expression eField, int offset);
+        DataType MemAccessTrait(Expression eBase, Expression eStruct, int structPtrSize, Expression eField, int offset);
+        DataType MemFieldTrait(Expression eBase, Expression eStruct, Expression eField, int offset);
 
 		/// <summary>
 		/// <paramref>tStruct</paramref> has an array at offset <paramref>offset</paramref> whose elementsize is <paramref>elementSize</paramref>
