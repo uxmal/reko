@@ -123,22 +123,39 @@ namespace Decompiler.Arch.X86
         public static readonly IntelLoByteRegister r14b;
         public static readonly IntelLoByteRegister r15b;
 
-        public static readonly SseRegister xmm0;
-        public static readonly SseRegister xmm1;
-        public static readonly SseRegister xmm2;
-        public static readonly SseRegister xmm3;
-        public static readonly SseRegister xmm4;
-        public static readonly SseRegister xmm5;
-        public static readonly SseRegister xmm6;
-        public static readonly SseRegister xmm7;
-        public static readonly SseRegister xmm8;
-        public static readonly SseRegister xmm9;
-        public static readonly SseRegister xmm10;
-        public static readonly SseRegister xmm11;
-        public static readonly SseRegister xmm12;
-        public static readonly SseRegister xmm13;
-        public static readonly SseRegister xmm14;
-        public static readonly SseRegister xmm15;
+        public static readonly RegisterStorage xmm0;
+        public static readonly RegisterStorage xmm1;
+        public static readonly RegisterStorage xmm2;
+        public static readonly RegisterStorage xmm3;
+        public static readonly RegisterStorage xmm4;
+        public static readonly RegisterStorage xmm5;
+        public static readonly RegisterStorage xmm6;
+        public static readonly RegisterStorage xmm7;
+        public static readonly RegisterStorage xmm8;
+        public static readonly RegisterStorage xmm9;
+        public static readonly RegisterStorage xmm10;
+        public static readonly RegisterStorage xmm11;
+        public static readonly RegisterStorage xmm12;
+        public static readonly RegisterStorage xmm13;
+        public static readonly RegisterStorage xmm14;
+        public static readonly RegisterStorage xmm15;
+
+        public static readonly RegisterStorage mm0;
+        public static readonly RegisterStorage mm1;
+        public static readonly RegisterStorage mm2;
+        public static readonly RegisterStorage mm3;
+        public static readonly RegisterStorage mm4;
+        public static readonly RegisterStorage mm5;
+        public static readonly RegisterStorage mm6;
+        public static readonly RegisterStorage mm7;
+        public static readonly RegisterStorage mm8;
+        public static readonly RegisterStorage mm9;
+        public static readonly RegisterStorage mm10;
+        public static readonly RegisterStorage mm11;
+        public static readonly RegisterStorage mm12;
+        public static readonly RegisterStorage mm13;
+        public static readonly RegisterStorage mm14;
+        public static readonly RegisterStorage mm15;
 
         private static readonly RegisterStorage[] regs;
 
@@ -230,22 +247,39 @@ namespace Decompiler.Arch.X86
             r14b = new IntelLoByteRegister("r14b", 14, 15, -1, -1, -1);
             r15b = new IntelLoByteRegister("r15b", 15, 15, -1, -1, -1);
 
-            xmm0 = new SseRegister("xmm0", 0);
-            xmm1 = new SseRegister("xmm1", 1);
-            xmm2 = new SseRegister("xmm2", 2);
-            xmm3 = new SseRegister("xmm3", 3);
-            xmm4 = new SseRegister("xmm4", 4);
-            xmm5 = new SseRegister("xmm5", 5);
-            xmm6 = new SseRegister("xmm6", 6);
-            xmm7 = new SseRegister("xmm7", 7);
-            xmm8 = new SseRegister("xmm8", 8);
-            xmm9 = new SseRegister("xmm9", 9);
-            xmm10 = new SseRegister("xmm10", 10);
-            xmm11 = new SseRegister("xmm11", 11);
-            xmm12 = new SseRegister("xmm12", 12);
-            xmm13 = new SseRegister("xmm13", 13);
-            xmm14 = new SseRegister("xmm14", 14);
-            xmm15 = new SseRegister("xmm15", 15);
+            mm0 = new  RegisterStorage("mm0", 0, PrimitiveType.Word64);
+            mm1 = new  RegisterStorage("mm1", 1, PrimitiveType.Word64);
+            mm2 = new  RegisterStorage("mm2", 2, PrimitiveType.Word64);
+            mm3 = new  RegisterStorage("mm3", 3, PrimitiveType.Word64);
+            mm4 = new  RegisterStorage("mm4", 4, PrimitiveType.Word64);
+            mm5 = new  RegisterStorage("mm5", 5, PrimitiveType.Word64);
+            mm6 = new  RegisterStorage("mm6", 6, PrimitiveType.Word64);
+            mm7 = new  RegisterStorage("mm7", 7, PrimitiveType.Word64);
+            mm8 = new  RegisterStorage("mm8", 8, PrimitiveType.Word64);
+            mm9 = new  RegisterStorage("mm9", 9, PrimitiveType.Word64);
+            mm10 = new RegisterStorage("mm10", 10, PrimitiveType.Word64);
+            mm11 = new RegisterStorage("mm11", 11, PrimitiveType.Word64);
+            mm12 = new RegisterStorage("mm12", 12, PrimitiveType.Word64);
+            mm13 = new RegisterStorage("mm13", 13, PrimitiveType.Word64);
+            mm14 = new RegisterStorage("mm14", 14, PrimitiveType.Word64);
+            mm15 = new RegisterStorage("mm15", 15, PrimitiveType.Word64);
+                       
+            xmm0 = new RegisterStorage("xmm0", 0, PrimitiveType.Word128);
+            xmm1 = new RegisterStorage("xmm1", 1, PrimitiveType.Word128);
+            xmm2 = new RegisterStorage("xmm2", 2, PrimitiveType.Word128);
+            xmm3 = new RegisterStorage("xmm3", 3, PrimitiveType.Word128);
+            xmm4 = new RegisterStorage("xmm4", 4, PrimitiveType.Word128);
+            xmm5 = new RegisterStorage("xmm5", 5, PrimitiveType.Word128);
+            xmm6 = new RegisterStorage("xmm6", 6, PrimitiveType.Word128);
+            xmm7 = new RegisterStorage("xmm7", 7, PrimitiveType.Word128);
+            xmm8 = new RegisterStorage("xmm8", 8, PrimitiveType.Word128);
+            xmm9 = new RegisterStorage("xmm9", 9, PrimitiveType.Word128);
+            xmm10 = new RegisterStorage("xmm10", 10, PrimitiveType.Word128);
+            xmm11 = new RegisterStorage("xmm11", 11, PrimitiveType.Word128);
+            xmm12 = new RegisterStorage("xmm12", 12, PrimitiveType.Word128);
+            xmm13 = new RegisterStorage("xmm13", 13, PrimitiveType.Word128);
+            xmm14 = new RegisterStorage("xmm14", 14, PrimitiveType.Word128);
+            xmm15 = new RegisterStorage("xmm15", 15, PrimitiveType.Word128);
 
             regs = new RegisterStorage[] {
 				eax,

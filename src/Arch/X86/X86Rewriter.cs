@@ -208,6 +208,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
                 case Opcode.movsx: RewriteMovsx(); break;
@@ -226,6 +227,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pusha: RewritePusha(); break;
                 case Opcode.pushf: RewritePushf(); break;
+                case Opcode.pxor: RewritePxor(); break;
                 case Opcode.rcl: RewriteRotation(PseudoProcedure.RolC, true, true); break;
                 case Opcode.rcr: RewriteRotation(PseudoProcedure.RorC, true, false); break;
                 case Opcode.rol: RewriteRotation(PseudoProcedure.Rol, false, true); break;
