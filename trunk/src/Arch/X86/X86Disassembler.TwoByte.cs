@@ -314,7 +314,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.pxor, "Pq,Qq"),
 
 				// F0
 				new SingleByteOpRec(Opcode.illegal),

@@ -108,6 +108,7 @@
     <Compile Include="X86Disassembler.TwoByte.cs" />
     <Compile Include="X86Disassembler.x87.cs" />
     <Compile Include="X86lProcessorArchitecture.cs" />
+    <Compile Include="X86Rewriter.Ext.cs" />
     <Compile Include="X86Rewriter.Fpu.cs" />
     <Compile Include="X86State.cs">
       <SubType>Code</SubType>

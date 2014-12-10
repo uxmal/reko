@@ -209,6 +209,7 @@ namespace Decompiler.Arch.X86
 		push,
 		pusha,
 		pushf,
+        pxor,
 		rcl,
 		rcr,
 		rep,

@@ -96,6 +96,43 @@ namespace Decompiler.Arch.X86
             return fnReg((bits & 7) | ((rexPrefix & 4) << 1), dataWidth);
         }
 
+        private RegisterStorage MmxRegFromBits(int bits, PrimitiveType dataWidth)
+        {
+            if (this.defaultDataWidth != dataWidth)
+                dataWidth = PrimitiveType.Word128;
+            switch (dataWidth.BitSize)
+            {
+            case 64:
+                switch (bits)
+                {
+                case 0: return Registers.mm0;
+                case 1: return Registers.mm1;
+                case 2: return Registers.mm2;
+                case 3: return Registers.mm3;
+                case 4: return Registers.mm4;
+                case 5: return Registers.mm5;
+                case 6: return Registers.mm6;
+                case 7: return Registers.mm7;
+                }
+                break;
+            case 128:
+                switch (bits)
+                {
+                case 0: return Registers.xmm0;
+                case 1: return Registers.xmm1;
+                case 2: return Registers.xmm2;
+                case 3: return Registers.xmm3;
+                case 4: return Registers.xmm4;
+                case 5: return Registers.xmm5;
+                case 6: return Registers.xmm6;
+                case 7: return Registers.xmm7;
+                }
+                break;
+            }
+			throw new ArgumentOutOfRangeException(string.Format(
+                "Unsupported register {0} or data width {1}.",
+                bits, dataWidth));
+        }
         private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             return fnReg((bits & 7) | ((rexPrefix & 2) << 2), dataWidth);
@@ -454,9 +491,17 @@ namespace Decompiler.Arch.X86
                     width = OperandWidth(strFormat[i++]);
                     pOperand = DecodeModRM(width, segmentOverride, GpRegFromBits);
                     break;
+                case 'Q':		// memory or register MMX operand specified by mod & r/m fields.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = DecodeModRM(width, segmentOverride, MmxRegFromBits);
+                    break;
                 case 'G':		// register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
                     pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, GpRegFromBits));
+                    break;
+                case 'P':		// MMX register operand specified by the reg field of the modRM byte.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, MmxRegFromBits));
                     break;
                 case 'I':		// Immediate operand.
                     if (strFormat[i] == 'x')
@@ -572,7 +617,7 @@ namespace Decompiler.Arch.X86
 				dataWidth = PrimitiveType.Real80;
 				break;
             case 'q':
-                dataWidth = PrimitiveType.Word64;
+                dataWidth = dataWidth != defaultDataWidth ?  PrimitiveType.Word128 : PrimitiveType.Word64;
                 break;
             }
 			return dataWidth;
