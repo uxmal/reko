@@ -53,7 +53,7 @@ namespace Decompiler.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }

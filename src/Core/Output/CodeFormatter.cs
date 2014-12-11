@@ -677,7 +677,8 @@ namespace Decompiler.Core.Output
                 case 2: return "0x{0:X4}";
                 case 4: return "0x{0:X8}";
                 case 8: return "0x{0:X16}";
-                default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} are not supported.", type.Size));
+                case 16: return "0x{0:X16}";
+                default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bytes are not supported.", type.Size));
                 }
             }
         }

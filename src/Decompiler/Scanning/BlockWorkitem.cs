@@ -287,7 +287,7 @@ namespace Decompiler.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
-                var impProc = scanner.GetImportedProcedure(addr.Linear);
+                var impProc = scanner.GetImportedProcedure(addr);
                 if (impProc != null && impProc.Characteristics.IsAlloca)
                     return ProcessAlloca(site, impProc);
 
@@ -316,7 +316,7 @@ namespace Decompiler.Scanning
                 var ppp = procCallee.Procedure as PseudoProcedure;
                 if (ppp != null)
                 {
-                    sig = ppp.Signature; 
+                    sig = ppp.Signature;
                     if (sig != null && sig.ArgumentsValid)
                     {
                         Emit(BuildApplication(procCallee, sig, site));
@@ -326,6 +326,20 @@ namespace Decompiler.Scanning
                         Emit(new CallInstruction(procCallee, site));
                     }
                     return OnAfterCall(ppp.Signature, ppp.Characteristics);
+                } 
+                var ep = procCallee.Procedure as ExternalProcedure;
+                if (ep != null)
+                {
+                    sig = ep.Signature;
+                    if (sig != null && sig.ArgumentsValid)
+                    {
+                        Emit(BuildApplication(procCallee, sig, site));
+                    }
+                    else
+                    {
+                        Emit(new CallInstruction(procCallee, site));
+                    }
+                    return OnAfterCall(ep.Signature, ep.Characteristics);
                 }
             }
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
@@ -460,7 +474,7 @@ namespace Decompiler.Scanning
             // ("thiscall" in x86 µsoft world).
         }
 
-        public bool ProcessAlloca(CallSite site, PseudoProcedure impProc)
+        public bool ProcessAlloca(CallSite site, ExternalProcedure impProc)
         {
             if (impProc.Signature == null)
                 throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
@@ -592,7 +606,7 @@ namespace Decompiler.Scanning
         // Because the scanner constant propagation is doing its propagation by bits (see X86Processorstate)
         // but we want to propagate procedure constants. For the future: change processor state to handle
         // not only numeric constants, but all constants.
-        private PseudoProcedure SearchBackForProcedureConstant(Identifier id)
+        private ProcedureBase SearchBackForProcedureConstant(Identifier id)
         {
             var visited = new HashSet<Block>();
             Block block = blockCur;
@@ -610,7 +624,7 @@ namespace Decompiler.Scanning
                         ProcedureConstant pc = ass.Src as ProcedureConstant;
                         if (pc != null)
                         {
-                            return (PseudoProcedure) pc.Procedure;
+                            return pc.Procedure;
                         }
                         else
                             return null;
@@ -644,7 +658,7 @@ namespace Decompiler.Scanning
             }
         }
 
-        public PseudoProcedure ImportedProcedureName(Expression callTarget)
+        public ExternalProcedure ImportedProcedureName(Expression callTarget)
         {
             var mem = callTarget as MemoryAccess;
             if (mem == null)
@@ -654,7 +668,7 @@ namespace Decompiler.Scanning
             var offset = mem.EffectiveAddress as Constant;
             if (offset == null)
                 return null;
-            return (PseudoProcedure)scanner.GetImportedProcedure(offset.ToUInt32());
+            return scanner.GetImportedProcedure(new Address( offset.ToUInt32()));
         }
 
         //$TODO: merge the followng two procedures?

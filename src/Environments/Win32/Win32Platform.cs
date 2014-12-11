@@ -51,7 +51,7 @@ namespace Decompiler.Environments.Win32
             };
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
         {
             if (TypeLibs == null)
             {
@@ -79,7 +79,7 @@ namespace Decompiler.Environments.Win32
             get { return "stdapi"; }
         }
 
-        public override ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
+        public override ProcedureSignature SignatureFromName(string fnName)
         {
             return SignatureGuesser.SignatureFromName(fnName, new TypeLibraryLoader(arch, true), arch);
         }

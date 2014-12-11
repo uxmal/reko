@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Scanning
         public class TestScanner : Scanner
         {
             public TestScanner(Program prog)
-                : base(prog, null, new FakeDecompilerEventListener())
+                : base(prog, null, null, null, new FakeDecompilerEventListener())
             {
             }
 
@@ -132,7 +132,14 @@ namespace Decompiler.UnitTests.Scanning
                 ImageMap = imageMap,
                 Platform = new FakePlatform(null, arch)
             };
-            var sc = new Scanner(prog, null, new FakeDecompilerEventListener());
+            var project = new Project { Programs = { program } };
+            
+            var sc = new Scanner(
+                prog,
+                project,
+                null,
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     new Address(0x12314),
@@ -260,7 +267,8 @@ namespace Decompiler.UnitTests.Scanning
             prog.ImageMap = lr.ImageMap;
             prog.Architecture = lr.Architecture;
             prog.Platform = new FakePlatform(null, arch);
-            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var proj = new Project { Programs = { prog } };
+            var scan = new Scanner(prog, proj, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
@@ -335,8 +343,9 @@ fn0C00_0000_exit:
         public void ScanImportedProcedure()
         {
             program = new Program();
-            program.ImportThunks.Add(0x2000, new PseudoProcedure(
-                "grox", CreateSignature("ax", "bx")));
+            throw new NotImplementedException();
+            //program.ImportReferences.Add(0x2000, new PseudoProcedure(
+            //    "grox", CreateSignature("ax", "bx")));
             var scan = CreateScanner(program, 0x1000, 0x200);
             var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);

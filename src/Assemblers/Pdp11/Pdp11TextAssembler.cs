@@ -225,7 +225,7 @@ namespace Decompiler.Assemblers.Pdp11
             get { throw new NotImplementedException(); }
         }
 
-        public Dictionary<uint, PseudoProcedure> ImportThunks
+        public Dictionary<Address, ImportReference> ImportReferences
         {
             get { throw new NotImplementedException(); }
         }

@@ -241,8 +241,8 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.imul, "Gv,Ev"),
 
 				// B0
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.cmpxchg, "Eb,Gb"),
+				new SingleByteOpRec(Opcode.cmpxchg, "Ev,Gv"),
 				new SingleByteOpRec(Opcode.lss, "Gv,Mp"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.lfs, "Gv,Mp"),

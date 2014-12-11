@@ -29,6 +29,7 @@ namespace Decompiler.Core.Serialization
     {
         T VisitPrimitive(PrimitiveType_v1 primitive);
         T VisitPointer(PointerType_v1 pointer);
+        T VisitCode(CodeType_v1 code);
         T VisitMemberPointer(MemberPointer_v1 memptr);
         T VisitArray(SerializedArrayType array);
         T VisitSignature(SerializedSignature signature);
@@ -40,5 +41,6 @@ namespace Decompiler.Core.Serialization
         T VisitTemplate(SerializedTemplate serializedTemplate);
         T VisitVoidType(VoidType_v1 serializedVoidType);
         T VisitString(StringType_v2 str);
+
     }
 }

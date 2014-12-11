@@ -31,7 +31,7 @@ namespace Decompiler.Core.Serialization
         {
             var inputs = new List<ProjectFile_v2>();
             inputs.AddRange(project.Programs.Select(prog => VisitProgram(prog)));
-            inputs.AddRange(project.MetaDataFiles.Select(m => VisitMetadataFile(m)));
+            inputs.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(m)));
             var sp = new Project_v2()
             {
                 Inputs = inputs

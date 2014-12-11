@@ -63,9 +63,12 @@ namespace Decompiler.UnitTests.Scanning
                 lr.ImageMap,
                 arch,
                 platform);
+            var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
+                project,
                 new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
                 new FakeDecompilerEventListener());
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
             scanner.ScanImage();

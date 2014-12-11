@@ -42,7 +42,6 @@ namespace Decompiler.Core
 	{
 		private SortedList<Address,Procedure> procedures;
         private SortedList<Address, ImageMapVectorTable> vectors;
-        private Dictionary<uint, PseudoProcedure> mpuintfn;
         private Dictionary<uint, PseudoProcedure> trampolines;
 		private Identifier globals;
         private StructureType globalFields;
@@ -56,7 +55,7 @@ namespace Decompiler.Core
 			this.procedures = new SortedList<Address,Procedure>();
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
 			this.CallGraph = new CallGraph();
-            this.mpuintfn = new Dictionary<uint, PseudoProcedure>();		// uint (offset) -> string
+            this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
 			this.trampolines = new Dictionary<uint, PseudoProcedure>();	// linear address -> string
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
             this.ivs = new Dictionary<Identifier, LinearInductionVariable>();
@@ -133,10 +132,7 @@ namespace Decompiler.Core
 
         public string Filename { get; set; }
 
-		public Dictionary<uint, PseudoProcedure> ImportThunks
-		{
-			get { return mpuintfn; }
-		}
+		public Dictionary<Address, ImportReference> ImportReferences { get; private set; }
 
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables
         {

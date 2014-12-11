@@ -50,13 +50,11 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
 		}
 
-
 		[Test]
 		public void VpConstPropagation()
 		{
 			RunTest("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
 		}
-
 
 		[Test]
 		public void VpGlobalHandle()

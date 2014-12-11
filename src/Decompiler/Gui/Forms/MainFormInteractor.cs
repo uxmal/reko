@@ -249,7 +249,7 @@ namespace Decompiler.Gui.Forms
                 return;
             mru.Use(fileName);
             var typelib = decompilerSvc.Decompiler.LoadMetadata(fileName);
-            decompilerSvc.Decompiler.Project.MetaDataFiles.Add(new MetadataFile {
+            decompilerSvc.Decompiler.Project.MetadataFiles.Add(new MetadataFile {
                 Filename = fileName,
                 LibraryName = Path.GetFileName(fileName),
                 TypeLibrary = typelib

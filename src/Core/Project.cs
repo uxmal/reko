@@ -35,11 +35,11 @@ namespace Decompiler.Core
         public Project()
         {
             Programs = new ObservableRangeCollection<Program>();
-            MetaDataFiles = new ObservableRangeCollection<MetadataFile>();
+            MetadataFiles = new ObservableRangeCollection<MetadataFile>();
         }
 
         public ObservableRangeCollection<Program> Programs { get; private set; }
-        public ObservableRangeCollection<MetadataFile> MetaDataFiles { get; private set; }
+        public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
 
     }
 }

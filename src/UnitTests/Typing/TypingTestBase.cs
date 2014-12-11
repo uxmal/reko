@@ -49,8 +49,14 @@ namespace Decompiler.UnitTests.Typing
                 FileUnitTester.MapTestPath(relativePath),
                 new IntelTextAssembler(),
                 new Address(0xC00, 0));
+            var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
-			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+			var scan = new Scanner(
+                program,
+                project, 
+                new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
 			scan.EnqueueEntryPoint(ep);
 			scan.ScanImage();
 
@@ -66,8 +72,9 @@ namespace Decompiler.UnitTests.Typing
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var img = imgLoader.Load(null);
             var program = new Program(img.Image, img.Image.CreateImageMap(), img.Architecture, img.Platform);
+            var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var scan = new Scanner(program, project, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), new FakeDecompilerEventListener());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 

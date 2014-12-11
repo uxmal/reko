@@ -34,10 +34,10 @@ namespace Decompiler.Core
         {
             this.Services = services;
             this.RawImage = imgRaw;
+            this.ImportReferences = new Dictionary<Address, ImportReference>();
         }
 
-        public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get; private set; }
-
+        public virtual Dictionary<Address, ImportReference> ImportReferences { get; private set; }
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.
         /// </summary>

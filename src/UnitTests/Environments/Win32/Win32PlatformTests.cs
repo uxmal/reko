@@ -58,9 +58,9 @@ namespace Decompiler.UnitTests.Environments.Win32
             opEnv = repository.StrictMock<OperatingEnvironment>();
         }
 
-        private void When_Lookup_Procedure(string procName)
+        private void When_Lookup_Procedure(string moduleName, string procName)
         {
-            this.sig = this.win32.LookupProcedure(procName);
+            this.sig = this.win32.LookupProcedureByName(moduleName, procName);
         }
 
         private void Given_Win32_TypeLibraries(string name)
@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             repository.ReplayAll();
 
             When_Creating_Win32_Platform();
-            When_Lookup_Procedure("foo");
+            When_Lookup_Procedure("kernel32","foo");
 
             repository.VerifyAll();
         }
@@ -150,7 +150,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             var fnName = "_foo@4";
             When_Creating_Win32_Platform();
 
-            var sig = win32.SignatureFromName(fnName, arch);
+            var sig = win32.SignatureFromName(fnName);
 
             Assert.AreEqual("void ()()\r\n// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1\r\n", sig.ToString());
         }

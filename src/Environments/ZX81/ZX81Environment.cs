@@ -46,7 +46,7 @@ namespace Decompiler.Environments.ZX81
             get { throw new NotImplementedException(); }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }

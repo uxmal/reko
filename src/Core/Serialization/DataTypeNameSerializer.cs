@@ -35,7 +35,7 @@ namespace Decompiler.Core.Serialization
 
         public SerializedType VisitCode(CodeType c)
         {
-            throw new NotImplementedException();
+            return new CodeType_v1();
         }
 
         public SerializedType VisitEnum(EnumType e)
@@ -69,7 +69,11 @@ namespace Decompiler.Core.Serialization
 
         public SerializedType VisitPointer(Pointer ptr)
         {
-            throw new NotImplementedException();
+            return new PointerType_v1
+            {
+                DataType = ptr.Pointee.Accept(this),
+                PointerSize = ptr.Size
+            };
         }
 
         public SerializedType VisitString(StringType str)

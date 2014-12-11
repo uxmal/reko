@@ -54,7 +54,6 @@ namespace Decompiler.Core
             return null;
         }
 
-  
         public virtual SystemService FindService(string name)
         {
             throw new NotSupportedException();
@@ -71,11 +70,16 @@ namespace Decompiler.Core
 
         public abstract string DefaultCallingConvention { get; }
 
-        public abstract ProcedureSignature LookupProcedure(string procName);
+        public abstract ProcedureSignature LookupProcedureByName(string moduleName, string procName);
 
-        public virtual ProcedureSignature SignatureFromName(string fnName, IProcessorArchitecture arch)
+        public virtual ProcedureSignature SignatureFromName(string fnName)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual ProcedureSignature LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            return null;
         }
     }
 
@@ -98,7 +102,7 @@ namespace Decompiler.Core
             get { return ""; }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
         {
             return null;
         }

@@ -578,9 +578,9 @@ namespace Decompiler.Assemblers.M68k
             get { throw new NotImplementedException(); }
         }
 
-        public Dictionary<uint, PseudoProcedure> ImportThunks
+        public Dictionary<Address, ImportReference> ImportReferences
         {
-            get { return new Dictionary<uint,PseudoProcedure>(); }
+            get { return new Dictionary<Address,ImportReference>(); }
         }
 
         #endregion

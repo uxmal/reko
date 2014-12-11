@@ -91,9 +91,9 @@ namespace Decompiler.Assemblers.x86
             get { return addrStart; }
         }
 
-        public Dictionary<uint, PseudoProcedure> ImportThunks
+        public Dictionary<Address, ImportReference> ImportReferences
         {
-            get { return asm.ImportThunks; }
+            get { return asm.ImportReferences; }
         }
 
 		private bool Error(string pstr)

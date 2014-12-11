@@ -25,6 +25,7 @@ using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using NUnit.Framework;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -81,9 +82,9 @@ namespace Decompiler.UnitTests.Assemblers.x86
                     lr.Architecture,
                     lr.Platform);
             }
-            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            foreach (var item in asm.ImportReferences)
             {
-                prog.ImportThunks.Add(item.Key, item.Value);
+                prog.ImportReferences.Add(item.Key, item.Value);
             }
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
@@ -94,10 +95,9 @@ namespace Decompiler.UnitTests.Assemblers.x86
 				dumper.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
-				if (prog.ImportThunks.Count > 0)
+				if (prog.ImportReferences.Count > 0)
 				{
-					SortedList<uint, PseudoProcedure> list = new SortedList<uint, PseudoProcedure>(prog.ImportThunks);
-					foreach (KeyValuePair<uint, PseudoProcedure> de in list)
+					foreach (var de in prog.ImportReferences.OrderBy(d => d.Key))
 					{
 						fut.TextWriter.WriteLine("{0:X8}: {1}", de.Key, de.Value);
 					}

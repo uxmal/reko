@@ -72,8 +72,8 @@ namespace Decompiler.Gui
             else 
             {
                 AddComponents(project.Programs);
-                AddComponents(project.MetaDataFiles);
-                project.MetaDataFiles.CollectionChanged += TypeLibraries_CollectionChanged;
+                AddComponents(project.MetadataFiles);
+                project.MetadataFiles.CollectionChanged += TypeLibraries_CollectionChanged;
                 tree.ShowNodeToolTips = true;
                 tree.ShowRootLines = true;
             }

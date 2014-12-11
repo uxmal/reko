@@ -88,9 +88,12 @@ namespace Decompiler.UnitTests.Scanning
 
         private void RunTest(Address addrBase)
         {
+            var project =     new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
+                project,
                 new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
                 listener);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
             scanner.ScanImage();

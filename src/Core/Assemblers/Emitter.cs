@@ -34,8 +34,6 @@ namespace Decompiler.Core.Assemblers
 	/// </summary>
     public interface IEmitter
     {
-        [Obsolete("Use GetBytes")]
-        byte[] Bytes { get; }
         int Length { get; }
         int Position { get; }
 
@@ -58,12 +56,6 @@ namespace Decompiler.Core.Assemblers
 	public class Emitter : IEmitter
 	{
 		private MemoryStream stmOut = new MemoryStream();
-
-        [Obsolete("Use GetBytes")]
-		public byte [] Bytes
-		{
-			get { return stmOut.ToArray(); }
-		}
 
         public byte[] GetBytes()
         {

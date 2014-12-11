@@ -252,7 +252,11 @@ namespace Decompiler.Gui.Windows.Controls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             Focus();
-            SelectedAddress = GetAddressFromMouseEvent(e.X, e.Y);
+            try
+            {
+                SelectedAddress = GetAddressFromMouseEvent(e.X, e.Y);
+            }
+            catch { }
             base.OnMouseDown(e);
         }
 

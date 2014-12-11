@@ -64,7 +64,7 @@ namespace Decompiler.Loading
             program.Name = Path.GetFileName(fileName);
             program.EntryPoints.AddRange(asm.EntryPoints);
             program.EntryPoints.Add(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
-            CopyImportThunks(asm.ImportThunks, program);
+            CopyImportReferences(asm.ImportReferences, program);
             return program;
         }
 
@@ -91,7 +91,7 @@ namespace Decompiler.Loading
             program.Name = Path.GetFileName(fileName);
             var relocations = imgLoader.Relocate(addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
-            CopyImportThunks(imgLoader.ImportThunks, program);
+            CopyImportReferences(imgLoader.ImportReferences, program);
             return program;
         }
 
@@ -218,14 +218,14 @@ namespace Decompiler.Loading
             return (T) Activator.CreateInstance(t, this.Services, bytes);
         }
 
-        protected void CopyImportThunks(Dictionary<uint, PseudoProcedure> importThunks, Program prog)
+        protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program prog)
         {
-            if (importThunks == null)
+            if (importReference == null)
                 return;
 
-            foreach (KeyValuePair<uint, PseudoProcedure> item in importThunks)
+            foreach (var item in importReference)
             {
-                prog.ImportThunks.Add(item.Key, item.Value);
+                prog.ImportReferences.Add(item.Key, item.Value);
             }
         }
     }

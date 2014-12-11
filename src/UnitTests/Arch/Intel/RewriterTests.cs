@@ -78,7 +78,9 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             Project project = LoadProject();
             project.Programs.Add(prog);
-            scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            scanner = new Scanner(prog, project, new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
             var program =  project.Programs[0];

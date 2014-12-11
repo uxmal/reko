@@ -128,5 +128,10 @@ namespace Decompiler.Core.Types
             throw new NotImplementedException();
         }
 
+
+        public DataType CreateCodeType()
+        {
+            throw new NotImplementedException();
+        }
     }
  }
