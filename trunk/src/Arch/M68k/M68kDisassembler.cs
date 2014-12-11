@@ -1967,17 +1967,6 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        [Obsolete]
-        private static M68kInstruction d68000_move_to_ccr(M68kDisassembler dasm)
-        {
-            return new M68kInstruction 
-            {
-                code = Opcode.move,
-                op1 = dasm.get_ea_mode_str_8(dasm.instruction),
-                op2 = new RegisterOperand(Registers.ccr),
-            };
-        }
-
         private static M68kInstruction d68010_move_fr_ccr(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68010_PLUS);

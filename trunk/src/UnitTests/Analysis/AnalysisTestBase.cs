@@ -131,11 +131,11 @@ namespace Decompiler.UnitTests.Analysis
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(new Address(0x10000000), rdr);
-                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
+                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new Decompiler.Environments.Win32.Win32Platform(null, lr.Architecture));
             }
-            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            foreach (var item in asm.ImportReferences)
             {
-                prog.ImportThunks.Add(item.Key, item.Value);
+                prog.ImportReferences.Add(item.Key, item.Value);
             }
             Rewrite(prog, asm, configFile);
             return prog;
@@ -152,12 +152,16 @@ namespace Decompiler.UnitTests.Analysis
 
         private static void Rewrite(Program prog, Assembler asm, string configFile)
         {
-            var scan = new Scanner(prog, 
-                new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             var loader = new Loader(new ServiceContainer());
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
                 : new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
+            var scan = new Scanner(
+                prog,
+                project,
+                new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
             
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
             foreach (var f in project.Programs)

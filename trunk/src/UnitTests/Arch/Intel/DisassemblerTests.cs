@@ -442,5 +442,19 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble32(0x0F, 0x45, 0xC1);
             Assert.AreEqual("cmovnz\teax,ecx", instr.ToString());
         }
+
+        [Test]
+        public void Dis_x86_pxor()
+        {
+            var instr = Disassemble32(0x0F, 0xEF, 0xC1);
+            Assert.AreEqual("pxor\txmm0,xmm1", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_x86_Cmpxchg()
+        {
+            var instr = Disassemble32(0x0f, 0xb1, 0x0a, 0x85, 0xc0, 0x0f, 0x85, 0xdc);
+            Assert.AreEqual("cmpxchg\tdword ptr [edx],ecx", instr.ToString());
+        }
     }
 }

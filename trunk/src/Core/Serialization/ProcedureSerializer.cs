@@ -57,7 +57,7 @@ namespace Decompiler.Core.Serialization
 			string d = ssig.Convention;
 			if (d == null || d.Length == 0)
 				d = defaultConvention;
-			if (d != null && d == "stdapi")
+			if (d == "stdapi" || d == "__stdcall")  //$BUGBUG: platform-dependent!
 				sig.StackDelta = StackOffset;
 
 			sig.FpuStackDelta = FpuStackOffset;

@@ -82,7 +82,7 @@ namespace Decompiler.Environments.AmigaOS
             get { return ""; }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }

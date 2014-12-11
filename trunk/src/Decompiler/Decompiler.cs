@@ -379,7 +379,9 @@ namespace Decompiler
             //$TODO: what about multiple files?
             return new Scanner(
                 program, 
+                project,
                 LoadCallSignatures(program, program.UserCalls.Values),
+                new ImportResolver(project),
                 eventListener);
         }
 

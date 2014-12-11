@@ -51,8 +51,13 @@ namespace Decompiler.UnitTests.Structure
                 FileUnitTester.MapTestPath(sourceFilename),
                 new IntelTextAssembler(),
                 addrBase);
-
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var project = new Project { Programs = { program } };
+            var scan = new Scanner(
+                program, 
+                project, 
+                new Dictionary<Address, ProcedureSignature>(), 
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
 			foreach (EntryPoint ep in program.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);

@@ -469,7 +469,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var project = new Project();
             pbs.Load(project);
 
-            project.MetaDataFiles.Add(new MetadataFile
+            project.MetadataFiles.Add(new MetadataFile
             {
                 LibraryName = "..\\foo.tlb"
             });

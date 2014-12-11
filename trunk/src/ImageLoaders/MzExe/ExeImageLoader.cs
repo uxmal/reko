@@ -101,11 +101,11 @@ namespace Decompiler.ImageLoaders.MzExe
             return ldrDeferred;
         }
 
-        public override Dictionary<uint, PseudoProcedure> ImportThunks
+        public override Dictionary<Address, ImportReference> ImportReferences
         {
             get
             {
-                return GetDeferredLoader().ImportThunks;
+                return GetDeferredLoader().ImportReferences;
             }
         }
 

@@ -29,4 +29,4 @@
 10000042 00 00           	add	byte ptr [eax],al
 10000044 00 00           	add	byte ptr [eax],al
 10000046 00 00           	add	byte ptr [eax],al
-10000044: Register word32 malloc(Stack size_t arg0)
+10000044: msvcrt!malloc

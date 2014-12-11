@@ -37,5 +37,12 @@ namespace Decompiler.UnitTests.Core.Serialization
             var pt = PrimitiveType.Int32.Accept(new DataTypeSerializer());
             Assert.AreEqual("prim(SignedInt,4)", pt.ToString());
         }
+
+        [Test]
+        public void DTS_ptr_foo()
+        {
+            var pt = new Pointer(PrimitiveType.Int32, 4).Accept(new DataTypeSerializer());
+            Assert.AreEqual("ptr(prim(SignedInt,4),4)", pt.ToString());
+        }
     }
 }

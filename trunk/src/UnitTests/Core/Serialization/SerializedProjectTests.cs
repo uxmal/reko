@@ -231,7 +231,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                         Filename = "c:\\test\\foo.exe",
                     }
                 },
-                MetaDataFiles =
+                MetadataFiles =
                 {
                     new MetadataFile
                     {
@@ -242,9 +242,9 @@ namespace Decompiler.UnitTests.Core.Serialization
             };
             var ps = new ProjectSaver();
             var sProject = ps.Save(project);
-            Assert.AreEqual(1, project.MetaDataFiles.Count);
-            Assert.AreEqual("c:\\test\\foo.def", project.MetaDataFiles[0].Filename);
-            Assert.AreEqual("foo.def", project.MetaDataFiles[0].LibraryName);
+            Assert.AreEqual(1, project.MetadataFiles.Count);
+            Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
+            Assert.AreEqual("foo.def", project.MetadataFiles[0].LibraryName);
         }
 
         [Test]
@@ -264,8 +264,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 
             var ploader = new ProjectLoader(loader);
             var project = ploader.LoadProject(sProject);
-            Assert.AreEqual(1, project.MetaDataFiles.Count);
-            Assert.AreEqual("c:\\tmp\\foo.def", project.MetaDataFiles[0].Filename);
+            Assert.AreEqual(1, project.MetadataFiles.Count);
+            Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
         }
 	}
 }

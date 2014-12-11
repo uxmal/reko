@@ -74,6 +74,12 @@ namespace Decompiler.Core.Expressions
                 case Domain.Real: return new ConstantUInt64(p, (ulong) value);
                 default: return new ConstantUInt64(p, (ulong) value);
                 }
+            case 16:
+                switch (p.Domain)
+                {
+                case Domain.SignedInt: return new ConstantInt128(p, (long)value);
+                default: return new ConstantUInt128(p, (ulong)value);
+                }
             }
             throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
         }
@@ -270,7 +276,7 @@ namespace Decompiler.Core.Expressions
 
         public byte ToByte()
         {
-            return (byte)Convert.ToInt32(GetValue());
+            return unchecked((byte)Convert.ToUInt32(GetValue()));
         }
 
 		public double ToDouble()
@@ -307,7 +313,14 @@ namespace Decompiler.Core.Expressions
 
 		public long ToInt64()
 		{
-            long q = Convert.ToInt64(GetValue());
+            long q;
+            try
+            {
+                 q = Convert.ToInt64(GetValue());
+            }catch
+            {
+                q = unchecked((long)Convert.ToUInt64(GetValue()));
+            }
             long mask = (0L - (q & (1 << (DataType.BitSize - 1)))) << 1;
             return q | mask;
 		}
@@ -655,6 +668,58 @@ namespace Decompiler.Core.Expressions
         private ulong value;
 
         public ConstantUInt64(DataType dt, ulong value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantUInt64(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return value;
+        }
+    }
+
+    internal class ConstantInt128 : Constant
+    {
+        private long value;
+
+        public ConstantInt128(DataType dt, long value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantInt128(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return (ulong)value;
+        }
+    }
+
+    internal class ConstantUInt128 : Constant
+    {
+        private ulong value;
+
+        public ConstantUInt128(DataType dt, ulong value)
             : base(dt)
         {
             this.value = value;

@@ -331,8 +331,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-        public override Dictionary<uint, PseudoProcedure> ImportThunks { get { return importThunks; } }
-
 		public string ImportFileLocation(string dllName)
 		{
 			string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
@@ -381,26 +379,19 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private void ResolveImportedFunction(ImportDescriptor id, uint rvaEntry, Address addrThunk)
         {
+            ProcedureSignature sig;
             if (!ImportedFunctionNameSpecified(rvaEntry))
             {
-                AddUnresolvedImport(id, string.Format("Ordinal_{0}", rvaEntry & 0x7FFFFFF));
-                return;
+                ImportReferences.Add(addrThunk, new OrdinalImportReference(
+                    addrThunk, id.DllName, (int) rvaEntry & 0x7FFFFFF));
             }
-
-            string fnName = ReadUtf8String(rvaEntry + 2, 0);
-            ProcedureSignature sig = platform.LookupProcedure(fnName);
-            if (sig == null)
+            else
             {
-                // Can we guess at the signature?
-                sig = platform.SignatureFromName(fnName, arch);
-                if (sig != null)
-                {
-                    ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));   //$BUGBUG: mangled name!
-                }
-                AddUnresolvedImport(id, fnName);
-                return;
+                string fnName = ReadUtf8String(rvaEntry + 2, 0);
+                ImportReferences.Add(addrThunk, new NamedImportReference(
+                    addrThunk, id.DllName, fnName));
             }
-            ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
+           
         }
 
         private void AddUnresolvedImport(ImportDescriptor id, string fnName)

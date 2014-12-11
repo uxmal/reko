@@ -114,6 +114,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.cmovpo: RewriteConditionalMove(ConditionCode.PO, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovs: RewriteConditionalMove(ConditionCode.SG, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovz: RewriteConditionalMove(ConditionCode.EQ, instrCur.op1, instrCur.op2); break;
+                case Opcode.cmpxchg: RewriteCmpxchg(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmps: RewriteStringInstruction(); break;
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
@@ -201,6 +202,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.les: RewriteLxs(Registers.es); break;
                 case Opcode.lfs: RewriteLxs(Registers.fs); break;
                 case Opcode.lgs: RewriteLxs(Registers.gs); break;
+                case Opcode.@lock: RewriteLock(); break;
                 case Opcode.lods: RewriteStringInstruction(); break;
                 case Opcode.lodsb: RewriteStringInstruction(); break;
                 case Opcode.loop: RewriteLoop(0, ConditionCode.EQ); break;

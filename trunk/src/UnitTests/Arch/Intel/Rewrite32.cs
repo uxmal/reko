@@ -22,6 +22,7 @@ using Decompiler;
 using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Services;
 using Decompiler.Environments.Win32;
 using Decompiler.Scanning;
@@ -38,19 +39,38 @@ namespace Decompiler.UnitTests.Arch.Intel
 	[TestFixture]
 	public class Rewrite32
 	{
-        private MockRepository repository;
+        private MockRepository mr;
         private Win32Platform win32;
         private IntelArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
-            var services = repository.Stub<IServiceProvider>();
-            var tlSvc = repository.Stub<ITypeLibraryLoaderService>();
+            mr = new MockRepository();
+            var services = mr.Stub<IServiceProvider>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            var configSvc = mr.StrictMock<IDecompilerConfigurationService>();
+            var win32env = new OperatingEnvironmentElement
+            {
+                TypeLibraries = 
+                {
+                    new TypeLibraryElement {  Name= "msvcrt.xml" },
+                    new TypeLibraryElement {  Name= "windows.xml" },
+                }
+            };
+            configSvc.Stub(c => c.GetEnvironment("win32")).Return(win32env);
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
+            services.Stub(s => s.GetService(typeof(IDecompilerConfigurationService))).Return(configSvc);
+            tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
+                .Do(new Func<IProcessorArchitecture, string, TypeLibrary>((a, n) =>
+                {
+                    var lib = new TypeLibrary();
+                    lib.Load(a, Path.ChangeExtension(n, ".xml"));
+                    return lib;
+                }));
             services.Replay();
             tlSvc.Replay();
+            configSvc.Replay();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             win32 = new Decompiler.Environments.Win32.Win32Platform(services, arch);
         }
@@ -109,7 +129,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 			RunTest("Fragments/regressions/r00006.asm", "Intel/RwReg00006.txt");
 		}
 
-
 		[Test]
 		public void RwSwitch32()
 		{
@@ -129,11 +148,17 @@ namespace Decompiler.UnitTests.Arch.Intel
                     arch,
                     win32);
             }
-            foreach (var item in asm.ImportThunks)
+            foreach (var item in asm.ImportReferences)
             {
-                program.ImportThunks.Add(item.Key, item.Value);
+                program.ImportReferences.Add(item.Key, item.Value);
             }
-            Scanner scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            var project = new Project { Programs = { program } };
+            Scanner scan = new Scanner(
+                program,
+                project,
+                new Dictionary<Address, ProcedureSignature>(),
+                new ImportResolver(project),
+                new FakeDecompilerEventListener());
             foreach (var ep in asm.EntryPoints)
             {
                 scan.EnqueueEntryPoint(ep);

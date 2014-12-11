@@ -31,6 +31,6 @@ namespace Decompiler.Core.Assemblers
         LoaderResults AssembleFragment(Address baseAddress, string fragment);
 		Address StartAddress { get; }
         ICollection<EntryPoint> EntryPoints { get; }
-        Dictionary<uint, PseudoProcedure> ImportThunks { get; }
+        Dictionary<Address, ImportReference> ImportReferences { get; }
     }
 }

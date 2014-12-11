@@ -132,6 +132,11 @@ namespace Decompiler.UnitTests.Environments.Win32
                 throw new NotImplementedException();
             }
 
+            public StringBuilder VisitCode(CodeType_v1 array)
+            {
+                throw new NotImplementedException();
+            }
+
             public StringBuilder VisitSignature(SerializedSignature signature)
             {
                 if (!string.IsNullOrEmpty(signature.Convention))

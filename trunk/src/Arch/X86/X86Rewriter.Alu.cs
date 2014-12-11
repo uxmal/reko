@@ -192,6 +192,19 @@ namespace Decompiler.Arch.X86
                 new ConditionOf(emitter.ISub(op1, op2)));
         }
 
+        private void RewriteCmpxchg()
+        {
+            var op1 = SrcOp(instrCur.op1);
+            var op2 = SrcOp(instrCur.op2, instrCur.op1.Width);
+            var acc = orw.AluRegister(Registers.eax, instrCur.dataWidth);
+            var Z = orw.FlagGroup(FlagM.ZF);
+            emitter.Assign(
+                Z,
+                PseudoProc("__cmpxchg",
+                    PrimitiveType.Bool,
+                    op1, op2, acc, emitter.Out(instrCur.dataWidth, acc)));
+        }
+
         private void RewriteCwd()
         {
             if (instrCur.dataWidth == PrimitiveType.Word32)
@@ -300,6 +313,12 @@ namespace Decompiler.Arch.X86
                 SrcOp(instrCur.op1),
                 emitter.Const(instrCur.op1.Width, amount),
                 CopyFlags.ForceBreak|CopyFlags.EmitCc);
+        }
+
+        private void RewriteLock()
+        {
+            emitter.SideEffect(
+                PseudoProc("__lock", VoidType.Instance));
         }
 
         private void RewriteLogical(BinaryOperator op)
@@ -811,6 +830,12 @@ namespace Decompiler.Arch.X86
                 emitter.Assign(MemDi(), RegAl);
                 incDi = true;
                 break;
+            case Opcode.ret:
+                // "AMD recommends to avoid the penalty by adding rep prefix instead of nop
+                // because it saves decode bandwidth."
+                RewriteRet();
+                return;
+
             }
 
             if (incSi)

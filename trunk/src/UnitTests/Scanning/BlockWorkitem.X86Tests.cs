@@ -69,15 +69,19 @@ namespace Decompiler.UnitTests.Scanning
             BuildTest(arch, new Address(0x0C00, 0x000), new MsdosPlatform(null, arch), m);
         }
 
-        private class RewriterHost : IRewriterHost
+        private class RewriterHost : IRewriterHost, IImportResolver
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
             Dictionary<uint, ProcedureSignature> sigs = new Dictionary<uint, ProcedureSignature>();
-            Dictionary<uint, PseudoProcedure> importThunks;
+            Dictionary<Address, ImportReference> importThunks;
+            Dictionary<string, ProcedureSignature> signatures;
 
-            public RewriterHost(Dictionary<uint, PseudoProcedure> importThunks)
+            public RewriterHost(
+                Dictionary<Address, ImportReference> importThunks,
+                Dictionary<string, ProcedureSignature> signatures)
             {
                 this.importThunks = importThunks;
+                this.signatures = signatures;
             }
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
@@ -96,14 +100,27 @@ namespace Decompiler.UnitTests.Scanning
                 sigs.Add(addrCallInstruction.Linear, signature);
             }
 
-
-            public PseudoProcedure GetImportedProcedure(uint addrThunk)
+            public ExternalProcedure GetImportedProcedure(Address addrThunk)
             {
-                PseudoProcedure p;
+                ImportReference p;
                 if (importThunks.TryGetValue(addrThunk, out p))
-                    return p;
+                    return p.ResolveImportedProcedure(this, null);
                 else
                     return null;
+            }
+
+            public ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform)
+            {
+                ProcedureSignature sig;
+                if (signatures.TryGetValue(importName, out sig))
+                    return new ExternalProcedure(importName, sig);
+                else
+                    return null;
+            }
+
+            public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform)
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -117,7 +134,25 @@ namespace Decompiler.UnitTests.Scanning
             scanner = repository.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();
-            host = new RewriterHost(asm.ImportThunks);
+            host = new RewriterHost(asm.ImportReferences,
+                new Dictionary<string, ProcedureSignature>
+                {
+                {
+                    "GetDC", 
+                    new ProcedureSignature(
+                        new Identifier("",  3, new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, PrimitiveType.Word32)),
+                        new Identifier("arg", 0, 
+                            new TypeReference(
+                                "HWND",
+                                new Pointer(VoidType.Instance, 4)),
+                            new StackArgumentStorage(0, new TypeReference(
+                                "HWND",
+                                new Pointer(VoidType.Instance, 4)))))
+                                {
+                                    StackDelta = 4,
+}
+                }
+              });
             var rw = arch.CreateRewriter(lr.Image.CreateLeReader(addr), this.state, proc.Frame, host);
             using (repository.Record())
             {

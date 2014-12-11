@@ -122,6 +122,7 @@ namespace Decompiler.Gui.Windows
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ActionMarkType:
                 case CmdIds.ViewFindWhatPointsHere:
+                case CmdIds.ActionMarkProcedure:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                 case CmdIds.EditCopy:
                     status.Status = ValidSelection()

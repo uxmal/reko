@@ -21,6 +21,7 @@
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
@@ -239,5 +240,18 @@ namespace Decompiler.Core
         /// <param name="s"></param>
         /// <returns></returns>
         public static Address Parse(string s) { return Parse(s, 16); }
+
+        public class Comparer : IEqualityComparer<Address>
+        {
+            public bool Equals(Address x, Address y)
+            {
+                return x.Linear == y.Linear;
+            }
+
+            public int GetHashCode(Address obj)
+            {
+                return obj.Linear.GetHashCode();
+            }
+        }
     }
 }

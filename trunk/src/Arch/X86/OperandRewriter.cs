@@ -86,9 +86,9 @@ namespace Decompiler.Arch.X86
 
         public Expression CreateMemoryAccess(MemoryOperand mem, DataType dt, X86State state)
         {
-            PseudoProcedure ppp = ImportedProcedureName(mem.Width, mem);
-            if (ppp != null)
-                return new ProcedureConstant(arch.PointerType, ppp);
+            var exp = ImportedProcedureName(mem.Width, mem);
+            if (exp != null)
+                return new ProcedureConstant(arch.PointerType, exp);
 
             Expression expr = EffectiveAddressExpression(mem, state);
             if (arch.ProcessorMode != ProcessorMode.Protected32)
@@ -200,12 +200,12 @@ namespace Decompiler.Arch.X86
             return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
         }
 
-        public PseudoProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
+        public ExternalProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
         {
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                return (PseudoProcedure)host.GetImportedProcedure(mem.Offset.ToUInt32());
+                return host.GetImportedProcedure(new Address( mem.Offset.ToUInt32()));
             }
             return null;
         }

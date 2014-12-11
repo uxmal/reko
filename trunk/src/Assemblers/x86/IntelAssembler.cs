@@ -48,8 +48,7 @@ namespace Decompiler.Assemblers.x86
         private AssembledSegment unknownSegment;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
-        private SortedDictionary<string, TypeLibrary> importLibraries;
-        private Dictionary<uint, PseudoProcedure> importThunks;
+        private Dictionary<Address, ImportReference> importReferences;
         private List<AssembledSegment> segments;
         private Dictionary<string, AssembledSegment> mpNameToSegment;
         private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
@@ -63,8 +62,7 @@ namespace Decompiler.Assemblers.x86
             this.defaultWordSize = arch.WordWidth;
             this.textEncoding = Encoding.GetEncoding("ISO_8859-1");
             symtab = new SymbolTable();
-            importLibraries = new SortedDictionary<string, TypeLibrary>();
-            importThunks = new Dictionary<uint, PseudoProcedure>();
+            importReferences = new Dictionary<Address, ImportReference>();
             segments = new List<AssembledSegment>();
             mpNameToSegment = new Dictionary<string, AssembledSegment>();
             symbolSegments = new Dictionary<Symbol, AssembledSegment>();
@@ -88,9 +86,9 @@ namespace Decompiler.Assemblers.x86
             get { return platform; }
         }
 
-        public Dictionary<uint, PseudoProcedure> ImportThunks
+        public Dictionary<Address, ImportReference> ImportReferences
         {
-            get { return importThunks; }
+            get { return importReferences; }
         }
 
         public LoaderResults GetImage()
@@ -1389,14 +1387,7 @@ namespace Decompiler.Assemblers.x86
         public void Import(string symbolName, string fnName, string dllName)
         {
             DefineSymbol(symbolName);
-            TypeLibrary lib;
-            if (!importLibraries.TryGetValue(dllName, out lib))
-            {
-                lib = new TypeLibrary();
-                lib.Load(arch, Path.ChangeExtension(dllName, ".xml"));
-                importLibraries[dllName] = lib;
-            }
-            AddImport(fnName, lib.Lookup(fnName), PrimitiveType.Word32);
+            AddImport(dllName, fnName, PrimitiveType.Word32);
         }
 
         public void Imul(ParsedOperand op)
@@ -1508,7 +1499,7 @@ namespace Decompiler.Assemblers.x86
         internal void Extern(string externSymbol, PrimitiveType size)
         {
             DefineSymbol(externSymbol);
-            AddImport(externSymbol, null, size);
+            AddImport(null, externSymbol, size);
         }
 
         public void Neg(ParsedOperand op)
@@ -1684,10 +1675,10 @@ namespace Decompiler.Assemblers.x86
                 emitter.EmitByte((byte) immShift.Value.ToUInt32());
         }
 
-        public void AddImport(string fnName, ProcedureSignature sig, PrimitiveType size)
+        public void AddImport(string moduleName, string fnName,  PrimitiveType size)
         {
-            uint u = (uint) (addrBase.Linear + emitter.Position);
-            ImportThunks.Add(u, new PseudoProcedure(fnName, sig));
+            Address u =  (addrBase + emitter.Position);
+            ImportReferences.Add(u, new NamedImportReference(u, Path.GetFileNameWithoutExtension(moduleName), fnName));
             emitter.EmitLe(size, 0);
         }
 

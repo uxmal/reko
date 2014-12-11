@@ -99,6 +99,8 @@ namespace Decompiler.Core
             try
             {
                 ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
+                if (sp.Name == "GetDC") //$DEBUG
+                    sp.ToString();
                 procedures[sp.Name] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
             }
             catch (Exception ex)
@@ -165,6 +167,11 @@ namespace Decompiler.Core
         {
             var dt = array.ElementType.Accept(this);
             return new ArrayType(dt, array.Length);
+        }
+
+        public DataType VisitCode(CodeType_v1 code)
+        {
+            return new CodeType();
         }
 
         public DataType VisitString(StringType_v2 str)

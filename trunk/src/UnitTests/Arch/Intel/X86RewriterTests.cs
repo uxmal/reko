@@ -82,7 +82,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             arch = arch16;
             baseAddr = baseAddr16;
             var asm = new IntelAssembler(arch, baseAddr16, new List<EntryPoint>());
-            host = new RewriterHost(asm.ImportThunks);
+            host = new RewriterHost(asm.ImportReferences);
             return asm;
         }
 
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             arch = arch32;
             baseAddr = baseAddr32;
             var asm = new IntelAssembler(arch, baseAddr32, new List<EntryPoint>());
-            host = new RewriterHost(asm.ImportThunks);
+            host = new RewriterHost(asm.ImportReferences);
             return asm;
         }
 
@@ -117,9 +117,9 @@ namespace Decompiler.UnitTests.Arch.Intel
         private class RewriterHost : IRewriterHost
         {
             private Dictionary<string, PseudoProcedure> ppp;
-            private Dictionary<uint, PseudoProcedure> importThunks;
+            private Dictionary<Address, ImportReference> importThunks;
 
-            public RewriterHost(Dictionary<uint, PseudoProcedure> importThunks)
+            public RewriterHost(Dictionary<Address, ImportReference> importThunks)
             {
                 this.importThunks = importThunks;
                 this.ppp = new Dictionary<string, PseudoProcedure>();
@@ -140,11 +140,11 @@ namespace Decompiler.UnitTests.Arch.Intel
                 throw new NotImplementedException();
             }
 
-            public PseudoProcedure GetImportedProcedure(uint addrThunk)
+            public ExternalProcedure GetImportedProcedure(Address addrThunk)
             {
-                PseudoProcedure p;
+                ImportReference p;
                 if (importThunks.TryGetValue(addrThunk, out p))
-                    return p;
+                    throw new NotImplementedException();
                 else
                     return null;
             }
@@ -1081,5 +1081,32 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "2|L--|al = __rol(al, 0xC0)",
                 "3|L--|C = v2");
          }
+
+        [Test]
+        public void X86Rw_pxor_self()
+        {
+            Run32bitTest(0x0F, 0xEF, 0xC9);
+            AssertCode(
+                "0|10000000(3): 1 instructions",
+                "1|L--|xmm1 = (word128) 0");
+        }
+
+        [Test]
+        public void X86Rw_lock()
+        {
+            Run32bitTest(0xF0);
+            AssertCode(
+                  "0|10000000(1): 1 instructions",
+                  "1|L--|__lock()");
+        }
+
+        [Test]
+        public void X86Rw_Cmpxchg()
+        {
+            Run32bitTest(0x0F, 0xB1, 0x0A); // 0x85, 0xC0, 0x0F, 0x85, 0xDC);
+            AssertCode(
+              "0|10000000(3): 1 instructions",
+              "1|L--|Z = __cmpxchg(Mem0[edx:word32], ecx, eax, out eax)");
+        }
     }
 }

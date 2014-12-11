@@ -202,7 +202,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public PseudoProcedure GetImportedProcedure(uint linaddr)
+		public ExternalProcedure GetImportedProcedure(Address linaddr)
 		{
 			return null;
 		}

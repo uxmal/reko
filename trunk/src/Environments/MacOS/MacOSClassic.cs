@@ -50,7 +50,7 @@ namespace Decompiler.Environments.MacOS
             get { return encoding; }
         }
 
-        public override ProcedureSignature LookupProcedure(string procName)
+        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }

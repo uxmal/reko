@@ -106,7 +106,7 @@ namespace Decompiler.Core.Serialization
             var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(s));
             var project = new Project();
             project.Programs.AddRange(programs);
-            project.MetaDataFiles.AddRange(typelibs);
+            project.MetadataFiles.AddRange(typelibs);
             return project;
         }
 

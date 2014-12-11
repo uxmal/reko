@@ -56,7 +56,7 @@ namespace Decompiler.Scanning
         Block AddBlock(Address addr, Procedure proc, string blockName);
         void AddDiagnostic(Address addr, Diagnostic d);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
-        PseudoProcedure GetImportedProcedure(uint linAddr);
+        ExternalProcedure GetImportedProcedure(Address addr);
         void TerminateBlock(Block block, Address addrEnd);
 
         /// <summary>
@@ -89,15 +89,17 @@ namespace Decompiler.Scanning
     public class Scanner : IScanner, IRewriterHost
     {
         private Program program;
+        private Project project;
         private PriorityQueue<WorkItem> queue;
         private LoadedImage image;
         private ImageMap imageMap;
+        private IImportResolver importResolver;
         private Map<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private IDictionary<Address, ProcedureSignature> callSigs;
         private IDictionary<Address, ImageMapVectorTable> vectors;
-        private Dictionary<uint, PseudoProcedure> importThunks;
+        private Dictionary<Address, ImportReference> importReferences;
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
 
@@ -110,12 +112,16 @@ namespace Decompiler.Scanning
 
         public Scanner(
             Program program, 
+            Project project,
             IDictionary<Address, ProcedureSignature> callSigs,
+            IImportResolver importResolver,
             DecompilerEventListener eventListener)
         {
             this.program = program;
+            this.project = project;
             this.image = program.Image;
             this.imageMap = program.ImageMap;
+            this.importResolver = importResolver;
             this.callSigs = callSigs;
             this.eventListener = eventListener;
             if (imageMap == null)
@@ -127,7 +133,7 @@ namespace Decompiler.Scanning
             this.pseudoProcs = program.PseudoProcedures;
             this.vectors = program.Vectors;
             this.VectorUses = new Dictionary<Address, VectorUse>();
-            this.importThunks = program.ImportThunks;
+            this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }
 
@@ -422,7 +428,7 @@ namespace Decompiler.Scanning
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
-            PseudoProcedure imp = GetImportedProcedure(addr.Linear);
+            var imp = GetImportedProcedure(addr);
             if (imp != null)
                 return imp;
             Procedure proc = EnsureProcedure(addr, procedureName);
@@ -500,13 +506,14 @@ namespace Decompiler.Scanning
                 return null;
         }
 
-        public PseudoProcedure GetImportedProcedure(uint linearAddress)
+        public ExternalProcedure GetImportedProcedure(Address addr)
         {
-            PseudoProcedure ppp;
-            if (importThunks.TryGetValue(linearAddress, out ppp))
-                return ppp;
-            else
+            ImportReference impref;
+            if (addr != null && addr.ToString().EndsWith("120")) //$DEBUG
+                addr.ToString();
+            if (!importReferences.TryGetValue(addr, out impref))
                 return null;
+            return impref.ResolveImportedProcedure(new ImportResolver(project), program.Platform);
         }
 
         /// <summary>
