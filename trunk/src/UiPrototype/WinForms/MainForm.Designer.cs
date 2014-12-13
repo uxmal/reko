@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "fn00410120",
             "fn00410120",
             "int __cdecl fn00410120(char * szArg08)"}, -1);
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("fn00401000 (entry point)");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("fn00401400");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode(".text segment", new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode14});
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode(".data segment");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("PE Executable", new System.Windows.Forms.TreeNode[] {
-            treeNode15,
-            treeNode16});
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("fn05AC_0000 (entry point)");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("fn05AC_00C8");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("05AC - segment", new System.Windows.Forms.TreeNode[] {
-            treeNode18,
-            treeNode19});
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("060B - segment");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("MS-DOS Executable Stub", new System.Windows.Forms.TreeNode[] {
-            treeNode20,
-            treeNode21});
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("mainprog.exe", new System.Windows.Forms.TreeNode[] {
-            treeNode17,
-            treeNode22});
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("addin.dll");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("fn00401000 (entry point)");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("fn00401400");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode(".text segment", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode(".data segment");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("PE Executable", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode4});
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("fn05AC_0000 (entry point)");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("fn05AC_00C8");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("05AC - segment", new System.Windows.Forms.TreeNode[] {
+            treeNode6,
+            treeNode7});
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("060B - segment");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("MS-DOS Executable Stub", new System.Windows.Forms.TreeNode[] {
+            treeNode8,
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("mainprog.exe", new System.Windows.Forms.TreeNode[] {
+            treeNode5,
+            treeNode10});
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("addin.dll");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.listSearchResults = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -105,9 +105,9 @@
             this.listSearchResults.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.listSearchResults.FullRowSelect = true;
             this.listSearchResults.HideSelection = false;
-            listViewItem2.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
             this.listSearchResults.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem1});
             this.listSearchResults.Location = new System.Drawing.Point(3, 421);
             this.listSearchResults.Name = "listSearchResults";
             this.listSearchResults.Size = new System.Drawing.Size(1156, 132);
@@ -131,54 +131,55 @@
             // 
             // treeView1
             // 
+            this.treeView1.AllowDrop = true;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
             this.treeView1.ImageIndex = 0;
             this.treeView1.ImageList = this.imageList;
             this.treeView1.Location = new System.Drawing.Point(3, 24);
             this.treeView1.Name = "treeView1";
-            treeNode13.ImageKey = "Code.ico";
-            treeNode13.Name = "Node1";
-            treeNode13.SelectedImageKey = "Code.ico";
-            treeNode13.Text = "fn00401000 (entry point)";
-            treeNode14.ImageKey = "Code.ico";
-            treeNode14.Name = "Node2";
-            treeNode14.SelectedImageKey = "Code.ico";
-            treeNode14.Text = "fn00401400";
-            treeNode15.ImageKey = "Code.ico";
-            treeNode15.Name = "Node4";
-            treeNode15.SelectedImageKey = "Code.ico";
-            treeNode15.Text = ".text segment";
-            treeNode16.ImageKey = "Data.ico";
-            treeNode16.Name = "Node0";
-            treeNode16.SelectedImageKey = "Data.ico";
-            treeNode16.Text = ".data segment";
-            treeNode17.ImageKey = "Header.ico";
-            treeNode17.Name = "Node2";
-            treeNode17.SelectedImageKey = "Header.ico";
-            treeNode17.Text = "PE Executable";
-            treeNode18.ImageKey = "Code.ico";
-            treeNode18.Name = "Node5";
-            treeNode18.SelectedImageKey = "Code.ico";
-            treeNode18.Text = "fn05AC_0000 (entry point)";
-            treeNode19.ImageKey = "Code.ico";
-            treeNode19.Name = "Node6";
-            treeNode19.SelectedImageKey = "Code.ico";
-            treeNode19.Text = "fn05AC_00C8";
-            treeNode20.Name = "Node3";
-            treeNode20.Text = "05AC - segment";
-            treeNode21.Name = "Node4";
-            treeNode21.Text = "060B - segment";
-            treeNode22.ImageKey = "Header.ico";
-            treeNode22.Name = "Node3";
-            treeNode22.SelectedImageKey = "Header.ico";
-            treeNode22.Text = "MS-DOS Executable Stub";
-            treeNode23.Name = "Node0";
-            treeNode23.Text = "mainprog.exe";
-            treeNode24.Name = "Node1";
-            treeNode24.Text = "addin.dll";
+            treeNode1.ImageKey = "Code.ico";
+            treeNode1.Name = "Node1";
+            treeNode1.SelectedImageKey = "Code.ico";
+            treeNode1.Text = "fn00401000 (entry point)";
+            treeNode2.ImageKey = "Code.ico";
+            treeNode2.Name = "Node2";
+            treeNode2.SelectedImageKey = "Code.ico";
+            treeNode2.Text = "fn00401400";
+            treeNode3.ImageKey = "Code.ico";
+            treeNode3.Name = "Node4";
+            treeNode3.SelectedImageKey = "Code.ico";
+            treeNode3.Text = ".text segment";
+            treeNode4.ImageKey = "Data.ico";
+            treeNode4.Name = "Node0";
+            treeNode4.SelectedImageKey = "Data.ico";
+            treeNode4.Text = ".data segment";
+            treeNode5.ImageKey = "Header.ico";
+            treeNode5.Name = "Node2";
+            treeNode5.SelectedImageKey = "Header.ico";
+            treeNode5.Text = "PE Executable";
+            treeNode6.ImageKey = "Code.ico";
+            treeNode6.Name = "Node5";
+            treeNode6.SelectedImageKey = "Code.ico";
+            treeNode6.Text = "fn05AC_0000 (entry point)";
+            treeNode7.ImageKey = "Code.ico";
+            treeNode7.Name = "Node6";
+            treeNode7.SelectedImageKey = "Code.ico";
+            treeNode7.Text = "fn05AC_00C8";
+            treeNode8.Name = "Node3";
+            treeNode8.Text = "05AC - segment";
+            treeNode9.Name = "Node4";
+            treeNode9.Text = "060B - segment";
+            treeNode10.ImageKey = "Header.ico";
+            treeNode10.Name = "Node3";
+            treeNode10.SelectedImageKey = "Header.ico";
+            treeNode10.Text = "MS-DOS Executable Stub";
+            treeNode11.Name = "Node0";
+            treeNode11.Text = "mainprog.exe";
+            treeNode12.Name = "Node1";
+            treeNode12.Text = "addin.dll";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode23,
-            treeNode24});
+            treeNode11,
+            treeNode12});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.Size = new System.Drawing.Size(300, 397);
             this.treeView1.TabIndex = 1;
@@ -391,7 +392,7 @@
             this.showDisassemblyToolStripMenuItem,
             this.showCallGraphToolStripMenuItem});
             this.ctxmProc.Name = "ctxmProc";
-            this.ctxmProc.Size = new System.Drawing.Size(172, 70);
+            this.ctxmProc.Size = new System.Drawing.Size(172, 48);
             // 
             // showDisassemblyToolStripMenuItem
             // 

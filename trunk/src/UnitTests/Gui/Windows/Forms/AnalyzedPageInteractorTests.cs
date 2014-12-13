@@ -59,9 +59,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [SetUp]
         public void Setup()
         {
-            form = new MainForm();
             mr = new MockRepository();
 
+            form = mr.StrictMock<IMainForm>();
             sc = new ServiceContainer();
             uiSvc = AddService<IDecompilerShellUiService>();
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
@@ -69,6 +69,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             memViewSvc = AddService<ILowLevelViewService>();
             disasmViewSvc = AddService<IDisassemblyViewService>();
             pbSvc = AddService<IProjectBrowserService>();
+
+            form.Stub(f => f.Show());
 
             var loadAddress =  new Address(0x100000);
             var bytes = new byte[4711];
@@ -94,7 +96,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [TearDown]
         public void TearDown()
         {
-            form.Close();
         }
 
         private T AddService<T>() where T : class
@@ -110,7 +111,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Interactor();
             pbSvc.Expect(p => p.Reload());
             mr.ReplayAll();
-            
+
             form.Show();
             program.Procedures.Add(new Address(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
             interactor.EnterPage();

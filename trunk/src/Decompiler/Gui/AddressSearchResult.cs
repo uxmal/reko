@@ -53,7 +53,7 @@ namespace Decompiler.Gui
 
         public void CreateColumns(ISearchResultView view)
         {
-            view.AddColumn("Program", 70);
+            view.AddColumn("Program", 30);
             view.AddColumn("Address", 10);
             view.AddColumn("Data", 70);
         }

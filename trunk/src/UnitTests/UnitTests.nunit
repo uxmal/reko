@@ -2,10 +2,8 @@
   <Settings activeconfig="Debug" />
   <Config name="Debug" binpathtype="Auto">
     <assembly path="bin\Debug\Decompiler.UnitTests.dll" />
-    <assembly path="..\tools\c2xml\bin\Debug\c2xml.exe" />
   </Config>
   <Config name="Release" binpathtype="Auto">
     <assembly path="bin\Release\Decompiler.UnitTests.dll" />
-    <assembly path="..\tools\c2xml\bin\Release\c2xml.exe" />
   </Config>
 </NUnitProject>

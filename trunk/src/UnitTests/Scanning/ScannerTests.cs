@@ -46,7 +46,12 @@ namespace Decompiler.UnitTests.Scanning
         public class TestScanner : Scanner
         {
             public TestScanner(Program prog)
-                : base(prog, null, null, null, new FakeDecompilerEventListener())
+                : this(prog, new Project { Programs = { prog } })
+            {
+
+            }
+            public TestScanner(Program prog, Project project)
+                : base(prog, project, null, null, new FakeDecompilerEventListener())
             {
             }
 
@@ -178,6 +183,16 @@ namespace Decompiler.UnitTests.Scanning
             prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
             prog.ImageMap = prog.Image.CreateImageMap();
             return new TestScanner(prog);
+        }
+
+        private TestScanner CreateScanner(Program prog, Project project, uint startAddress, int imageSize)
+        {
+            this.program = prog;
+            prog.Architecture = arch;
+            prog.Platform = new FakePlatform(null, arch);
+            prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
+            prog.ImageMap = prog.Image.CreateImageMap();
+            return new TestScanner(prog, project);
         }
 
         [Test]
@@ -343,10 +358,36 @@ fn0C00_0000_exit:
         public void ScanImportedProcedure()
         {
             program = new Program();
-            throw new NotImplementedException();
-            //program.ImportReferences.Add(0x2000, new PseudoProcedure(
-            //    "grox", CreateSignature("ax", "bx")));
-            var scan = CreateScanner(program, 0x1000, 0x200);
+            program.ImportReferences.Add(
+                new Address(0x2000),
+                new NamedImportReference(
+                    new Address(0x2000),
+                    "module",
+                    "grox"));
+            var project = new Project
+            {
+                Programs = { program },
+                MetadataFiles = {
+                    new MetadataFile {
+                         LibraryName = "module",
+                        TypeLibrary = new TypeLibrary
+                        {
+                             ServicesByName = 
+                             {
+                                 { 
+                                     "grox",
+                                     new SystemService
+                                     {
+                                          Name = "grox",
+                                          Signature = CreateSignature("ax", "bx")
+                                     }
+                                 }
+                             }
+                        }
+                    }
+                }
+            };
+            var scan = CreateScanner(program, project, 0x1000, 0x200);
             var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);

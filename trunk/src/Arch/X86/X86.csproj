@@ -85,6 +85,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="X86Disassembler.F2.cs" />
     <Compile Include="X86PointerScanner.cs" />
     <Compile Include="X86AddressOperand.cs" />
     <Compile Include="FstswChainMatcher.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="X86lProcessorArchitecture.cs" />
     <Compile Include="X86Rewriter.Ext.cs" />
     <Compile Include="X86Rewriter.Fpu.cs" />
+    <Compile Include="X86Rewriter.Sse.cs" />
     <Compile Include="X86State.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -153,6 +155,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="intrinsics-data-3.3.1.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

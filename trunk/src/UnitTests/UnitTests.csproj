@@ -189,7 +189,7 @@
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
-    <Compile Include="Arch\Intel\DisassemblerTests.cs" />
+    <Compile Include="Arch\Intel\X86DisassemblerTests.cs" />
     <Compile Include="Arch\Intel\Fragments\Factorial.cs" />
     <Compile Include="Arch\Intel\ImportResolution.cs" />
     <Compile Include="Arch\Intel\IntelArchitectureTests.cs" />

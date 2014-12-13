@@ -31,11 +31,11 @@ using NUnit.Framework;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
-    public class DisassemblerTests
+    public class X86DisassemblerTests
     {
         private X86Disassembler dasm;
 
-        public DisassemblerTests()
+        public X86DisassemblerTests()
         {
         }
 
@@ -146,9 +146,9 @@ foo:
                 instrs[i] = dasm.Current;
             }
 
-            Assert.AreEqual(Registers.ss, ((MemoryOperand) instrs[0].op2).DefaultSegment);
-            Assert.AreEqual(Registers.ds, ((MemoryOperand) instrs[1].op2).DefaultSegment);
-            Assert.AreEqual(Registers.cs, ((MemoryOperand) instrs[2].op2).DefaultSegment);
+            Assert.AreEqual(Registers.ss, ((MemoryOperand)instrs[0].op2).DefaultSegment);
+            Assert.AreEqual(Registers.ds, ((MemoryOperand)instrs[1].op2).DefaultSegment);
+            Assert.AreEqual(Registers.cs, ((MemoryOperand)instrs[2].op2).DefaultSegment);
         }
 
         [Test]
@@ -223,7 +223,7 @@ movzx	ax,byte ptr [bp+04]
             CreateDisassembler32(lr.Image);
             Assert.IsTrue(dasm.MoveNext());
             IntelInstruction instr = dasm.Current;
-            MemoryOperand mem = (MemoryOperand) instr.op2;
+            MemoryOperand mem = (MemoryOperand)instr.op2;
             Assert.AreEqual(2, mem.Scale);
             Assert.AreEqual(RegisterStorage.None, mem.Base);
             Assert.AreEqual(Registers.edi, mem.Index);
@@ -455,6 +455,20 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble32(0x0f, 0xb1, 0x0a, 0x85, 0xc0, 0x0f, 0x85, 0xdc);
             Assert.AreEqual("cmpxchg\tdword ptr [edx],ecx", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_x86_Xadd()
+        {
+            var instr = Disassemble32(0x0f, 0xC1, 0xC2);
+            Assert.AreEqual("xadd\tedx,eax", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_x86_cvttsd2si()
+        {
+            var instr = Disassemble32(0xF2, 0x0F, 0x2C, 0xC3);
+            Assert.AreEqual("cvttsd2si\teax,xmm3", instr.ToString());
         }
     }
 }

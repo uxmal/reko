@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ContextMenu = System.Windows.Forms.ContextMenu;
+using DragEventHandler = System.Windows.Forms.DragEventHandler;
 
 namespace Decompiler.Gui.Controls
 {
     public interface ITreeView
     {
         event EventHandler AfterSelect;
+        event DragEventHandler DragEnter;
+        event DragEventHandler DragOver;
+        event DragEventHandler DragDrop;
+        event EventHandler DragLeave;
 
         bool Focused { get; }
         ITreeNode SelectedNode { get; set; }
@@ -20,6 +25,7 @@ namespace Decompiler.Gui.Controls
 
         ITreeNode CreateNode();
         ITreeNode CreateNode(string text);
+
     }
 
     public interface ITreeNodeCollection : IList<ITreeNode>

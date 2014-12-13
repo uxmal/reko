@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Arch.X86;
 using Decompiler.Core;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
@@ -33,7 +34,11 @@ namespace Decompiler.Environments.Win32
 	{
         private IProcessorArchitecture arch;
 		private SystemService int3svc;
-        private TypeLibrary [] TypeLibs;
+        private SystemService int29svc;
+        private TypeLibrary[] TypeLibs;
+
+        //$TODÖ: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
+        //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
@@ -48,6 +53,23 @@ namespace Decompiler.Environments.Win32
                 Name = "int3",
                 Signature = new ProcedureSignature(null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
+            };
+            var frame = arch.CreateFrame();
+            int29svc = new SystemService
+            {
+                SyscallInfo = new SyscallInfo
+                {
+                    Vector = 0x29,
+                    RegisterValues = new RegValue[0]
+                },
+                Name = "__fastfail",
+                Signature = new ProcedureSignature(
+                    null,
+                    frame.EnsureRegister(Registers.ecx)), //$bug what about win64?
+                Characteristics = new ProcedureCharacteristics
+                {
+                    Terminates = true
+                }
             };
         }
 
@@ -71,6 +93,8 @@ namespace Decompiler.Environments.Win32
 		{
 			if (int3svc.SyscallInfo.Matches(vector, state))
 				return int3svc;
+            if (int29svc.SyscallInfo.Matches(vector, state))
+                return int29svc;
 			throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
 		}
 

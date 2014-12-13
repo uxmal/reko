@@ -28,6 +28,8 @@ namespace Decompiler.Gui
 {
     public interface IProjectBrowserService : ICommandTarget
     {
+        event EventHandler<FileDropEventArgs> FileDropped;
+
         /// <summary>
         /// Loads a project into the project browser and starts listening to changes. 
         /// Loading a null project clears the project browser.

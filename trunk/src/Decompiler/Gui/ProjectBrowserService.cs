@@ -38,6 +38,8 @@ namespace Decompiler.Gui
     /// </summary>
     public class ProjectBrowserService : IProjectBrowserService, ITreeNodeDesignerHost, ICommandTarget
     {
+        public event EventHandler<FileDropEventArgs> FileDropped;
+
         private ITreeView tree;
         private Dictionary<object, TreeNodeDesigner> mpitemToDesigner;
         private Project project;
@@ -48,6 +50,10 @@ namespace Decompiler.Gui
             this.tree = treeView;
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
             this.tree.AfterSelect += tree_AfterSelect;
+            this.tree.DragEnter += tree_DragEnter;
+            this.tree.DragOver += tree_DragOver;
+            this.tree.DragDrop += tree_DragDrop;
+            this.tree.DragLeave += tree_DragLeave;
         }
 
         public IServiceProvider Services { get; private set; }
@@ -207,6 +213,34 @@ namespace Decompiler.Gui
             return des.Execute(cmdId);
         }
 
+        void tree_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
 
+        void tree_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        void tree_DragLeave(object sender, EventArgs e)
+        {
+        }
+
+        void tree_DragDrop(object sender, DragEventArgs e)
+        {
+            var eh = FileDropped;
+            if (eh != null && e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var filename = (string) e.Data.GetData(DataFormats.FileDrop);
+                eh(this, new FileDropEventArgs(filename));
+            }
+        }
     }
 }
