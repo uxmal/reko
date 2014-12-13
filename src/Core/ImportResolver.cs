@@ -42,6 +42,8 @@ namespace Decompiler.Core
 
         public ImportResolver(Project project)
         {
+            if (project == null)
+                throw new ArgumentNullException("project");
             this.project = project;
         }
 

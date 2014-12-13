@@ -118,6 +118,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmps: RewriteStringInstruction(); break;
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
+                case Opcode.cvttsd2si: RewriteCvttsd2si(); break;
                 case Opcode.cwd: RewriteCwd(); break;
                 case Opcode.daa: EmitDaaDas("__daa"); break;
                 case Opcode.das: EmitDaaDas("__das"); break;
@@ -262,6 +263,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.sub: RewriteAddSub(BinaryOperator.ISub); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.wait: break;	// used to slow down FPU.
+                case Opcode.xadd: RewriteXadd(); break;
                 case Opcode.xchg: RewriteExchange(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;

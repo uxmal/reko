@@ -31,8 +31,13 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using ContextMenu = System.Windows.Forms.ContextMenu;
+using DataObject = System.Windows.Forms.DataObject;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+using DragEventHandler = System.Windows.Forms.DragEventHandler;
+using DragDropEffects = System.Windows.Forms.DragDropEffects;
 using System.Xml;
 using System.Xml.Linq;
+using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows
 {
@@ -102,6 +107,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         private class FakeTreeView : ITreeView
         {
             public event EventHandler AfterSelect;
+            public event DragEventHandler DragEnter;
+            public event DragEventHandler DragOver;
+            public event DragEventHandler DragDrop;
+            public event EventHandler DragLeave;
 
             public FakeTreeView()
             {
@@ -126,6 +135,16 @@ namespace Decompiler.UnitTests.Gui.Windows
             public ITreeNode CreateNode(string text)
             {
                 return new FakeTreeNode { Text = text };
+            }
+
+            public void PerformDragEnter(DragEventArgs e)
+            {
+                DragEnter(this, e);
+            }
+
+            public void PerformDragDrop(DragEventArgs e)
+            {
+                DragDrop(this, e);
             }
         }
 
@@ -378,7 +397,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_Project();
             Given_ProgramWithOneSegment();
-            Given_UserProcedure(0x13000050, "MyFoo");
+            Given_UserProcedure(0x12340500, "MyFoo");
             mr.ReplayAll();
 
             pbs.Load(project);
@@ -396,7 +415,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                         "tag=\"ImageMapSegment\">" +
                         "<node " +
                             "text=\"MyFoo\" " +
-                            "tip=\"13000050\" " +
+                            "tip=\"12340500\" " +
                             "tag=\"ProcedureDesigner\" />" +
                     "</node>" +
                 "</node>" +
@@ -476,6 +495,74 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             Assert.AreEqual(1, mockTree.Nodes.Count);
             Assert.AreEqual("foo.tlb", mockTree.Nodes[0].Text);
+        }
+
+        [Test]
+        public void PBS_AcceptFiles()
+        {
+            var mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var e = Given_DraggedFile();
+            mr.ReplayAll();
+
+            var project = new Project();
+            pbs.Load(project);
+            mockTree.PerformDragEnter(e);
+            Assert.AreEqual(DragDropEffects.Copy, e.Effect);
+        }
+
+        [Test]
+        public void PBS_RejectTextDrop()
+        {
+            var mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            var e = Given_DraggedText();
+            mr.ReplayAll();
+
+            var project = new Project();
+            pbs.Load(project);
+            mockTree.PerformDragEnter(e);
+            Assert.AreEqual(DragDropEffects.None, e.Effect);
+        }
+
+        [Test]
+        public void PBS_AcceptDrop()
+        {
+            string filename = null;
+            var mockTree = new FakeTreeView();
+            var pbs = new ProjectBrowserService(sc, mockTree);
+            pbs.FileDropped += (sender, ee) => { filename = ee.Filename; };
+            var e = Given_DraggedFile();
+            mr.ReplayAll();
+
+            var project = new Project();
+            pbs.Load(project);
+            mockTree.PerformDragDrop(e);
+            Assert.AreEqual("/home/bob/foo.exe", filename);
+        }
+
+        private DragEventArgs Given_DraggedFile()
+        {
+            var dObject = new DataObject(
+                DataFormats.FileDrop,
+                "/home/bob/foo.exe");
+
+            return new DragEventArgs(
+                    dObject, 0, 40, 40,
+                    DragDropEffects.All,
+                    DragDropEffects.All);
+        }
+
+        private DragEventArgs Given_DraggedText()
+        {
+            var dObject = new DataObject(
+                DataFormats.UnicodeText,
+                "hello world");
+
+            return new DragEventArgs(
+                    dObject, 0, 40, 40,
+                    DragDropEffects.All,
+                    DragDropEffects.All);
         }
     }
 }

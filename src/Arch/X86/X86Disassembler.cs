@@ -241,6 +241,7 @@ namespace Decompiler.Arch.X86
             switch (dataWidth.BitSize)
             {
             default: throw new NotImplementedException();
+            case 64:
             case 128:
                 switch (bits)
                 {
@@ -412,6 +413,24 @@ namespace Decompiler.Arch.X86
             {
                 op = disasm.rdr.ReadByte();
                 return s_aOpRec0F[op].Decode(disasm, op, "");
+            }
+        }
+
+        public class F2ByteOpRec : OpRec
+        {
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.rdr.PeekByte(0) == 0x0F)
+                {
+                    OpRec oprec;
+                    op = disasm.rdr.PeekByte(1);
+                    if (s_aOpRecF2.TryGetValue(op, out oprec))
+                    {
+                        disasm.rdr.Offset += 2;
+                        return oprec.Decode(disasm, op, opFormat);
+                    }
+                }
+                return disasm.DecodeOperands(Opcode.repne, 0xF2, opFormat);
             }
         }
 
@@ -633,6 +652,8 @@ namespace Decompiler.Arch.X86
                 case 's': return PrimitiveType.Word128;
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
+            case 'q':
+                return PrimitiveType.Word64;
             case 'x':
                 return defaultDataWidth != dataWidth
                     ? PrimitiveType.Word128
@@ -798,6 +819,7 @@ namespace Decompiler.Arch.X86
 		private static OpRec [] s_aOpRec0F;
 		private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
+        private static Dictionary<byte, OpRec> s_aOpRecF2;
 
 		static X86Disassembler()
 		{
@@ -806,6 +828,7 @@ namespace Decompiler.Arch.X86
 
             s_aOpRecGrp = CreateGroupOprecs();
             s_aFpOpRec = CreateFpuOprecs();
+            s_aOpRecF2 = CreateF2Oprecs();
 		}
 	}
 }	

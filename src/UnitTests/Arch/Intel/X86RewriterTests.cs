@@ -1103,10 +1103,29 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Cmpxchg()
         {
-            Run32bitTest(0x0F, 0xB1, 0x0A); // 0x85, 0xC0, 0x0F, 0x85, 0xDC);
+            Run32bitTest(0x0F, 0xB1, 0x0A); 
             AssertCode(
               "0|10000000(3): 1 instructions",
               "1|L--|Z = __cmpxchg(Mem0[edx:word32], ecx, eax, out eax)");
+        }
+
+        [Test]
+        public void X86Rw_Xadd()
+        {
+            Run32bitTest(0x0f, 0xC1, 0xC2);
+            AssertCode(
+               "0|10000000(3): 2 instructions",
+               "1|L--|edx = __xadd(edx, eax)",
+               "2|L--|SCZO = cond(edx)");
+        }
+
+        [Test]
+        public void X86Rw_cvttsd2si()
+        {
+            Run32bitTest(0xF2, 0x0F, 0x2C, 0xC3);
+            AssertCode(
+              "0|10000000(4): 1 instructions",
+              "1|L--|eax = (int32) xmm3");
         }
     }
 }

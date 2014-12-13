@@ -47,36 +47,35 @@ namespace Decompiler.Gui.Design
 
         private void PopulateChildren()
         {
-            if (this.Parent == null)
-                return;
-            var program = this.Parent.Component as Program;
+            var program = GetProgram();
             if (program == null)
                 return;
-            var desDictionary = program.Procedures
-                .Where(p => segment.IsInRange(p.Key))
-                .Select(p => new ProcedureDesigner(program, p.Value, p.Key))
-                .ToDictionary(d => d.Address.ToString());
-            foreach (var up in program.UserProcedures)
-            {
-                ProcedureDesigner pd;
-                if (desDictionary.TryGetValue(up.Key.ToString(), out pd))
-                {
+            var desDictionary =
+                (from proc in program.Procedures.Where(p => segment.IsInRange(p.Key))
+                join up in program.UserProcedures on proc.Key.Linear equals up.Key.Linear into ups
+                from up in ups.DefaultIfEmpty()
+                select new ProcedureDesigner(program, proc.Value, up.Value, proc.Key)).
+                Union(
+                from up in program.UserProcedures.Where(p => segment.IsInRange(p.Key))
+                join proc in program.Procedures on up.Key.Linear equals proc.Key.Linear into ups
+                from proc in ups.DefaultIfEmpty()
+                select new ProcedureDesigner(program, proc.Value, up.Value, up.Key)
+                );
+            Host.AddComponents(Component, desDictionary);
+        }
 
-                }
-                else
-                {
-                    desDictionary.Add(up.Key.ToString(), new ProcedureDesigner(up.Value, up.Key));
-                }
-            }
-            Host.AddComponents(Component, desDictionary.OrderBy(d => d.Key).Select(d => d.Value));
+        private Program GetProgram()
+        {
+            if (this.Parent == null)
+                return null;
+            return this.Parent.Component as Program;
         }
 
         public override void DoDefaultAction()
         {
             var memSvc = Services.RequireService<ILowLevelViewService>();
             var decSvc = Services.RequireService<IDecompilerService>();
-            //$BUGBUG: ImagemapSegmentDesigner needs to find its parent!
-            memSvc.ShowMemoryAtAddress(decSvc.Decompiler.Project.Programs.First(), segment.Address);
+            memSvc.ShowMemoryAtAddress(GetProgram(), segment.Address);
         }
     }
 }

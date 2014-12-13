@@ -199,10 +199,10 @@ namespace Decompiler.Arch.X86
 				return FlagM.ZF;
 			case Opcode.and:
 			case Opcode.or:
-			case Opcode.test:
-			case Opcode.xor:
-				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;
-			case Opcode.sahf:
+            case Opcode.sahf:
+            case Opcode.test:
+            case Opcode.xadd:
+            case Opcode.xor:
 				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;
 			default:
 				return 0;

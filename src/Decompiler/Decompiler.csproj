@@ -242,6 +242,7 @@
     <Compile Include="Gui\Design\SystemServiceDesigner.cs" />
     <Compile Include="Gui\Design\ProgramDesigner.cs" />
     <Compile Include="Gui\Design\MetadataFileDesigner.cs" />
+    <Compile Include="Gui\FileDropEventArgs.cs" />
     <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
     <Compile Include="Gui\Forms\IPatternSearchDialog.cs" />

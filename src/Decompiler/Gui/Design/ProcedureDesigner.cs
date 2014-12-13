@@ -29,26 +29,23 @@ using Procedure_v1 = Decompiler.Core.Serialization.Procedure_v1;
 
 namespace Decompiler.Gui.Design
 {
-    public class ProcedureDesigner : TreeNodeDesigner
+    public class ProcedureDesigner : TreeNodeDesigner, IEquatable<ProcedureDesigner>
     {
         private Program program;
         private Procedure procedure;
         private string name;
-        private Procedure_v1 procedure_v1;
+        private Procedure_v1 userProc;
 
-        public ProcedureDesigner(Program program, Procedure procedure, Address address)
+        public ProcedureDesigner(Program program, Procedure procedure, Procedure_v1 userProc, Address address)
         {
             this.program = program;
             this.procedure = procedure;
+            this.userProc = userProc;
             this.Address = address;
-            this.name = procedure.Name;
-        }
-
-        public ProcedureDesigner(Procedure_v1 procedure_v1, Core.Address address)
-        {
-            this.name = procedure_v1.Name ?? name;
-            this.procedure_v1 = procedure_v1;
-            this.Address = address;
+            if (userProc != null && !string.IsNullOrEmpty(userProc.Name))
+                this.name = userProc.Name;
+            else
+                this.name = procedure.Name;
         }
 
         public Address Address { get; set; }
@@ -62,7 +59,7 @@ namespace Decompiler.Gui.Design
         {
             TreeNode.Text = name;
             TreeNode.ToolTipText = Address.ToString();
-            TreeNode.ImageName = procedure_v1 != null ? "Userproc.ico" : "Procedure.ico";
+            TreeNode.ImageName = userProc != null ? "Userproc.ico" : "Procedure.ico";
         }
 
         public override void DoDefaultAction()
@@ -99,6 +96,16 @@ namespace Decompiler.Gui.Design
                 }
             }
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Address.Linear.GetHashCode();
+        }
+
+        public bool Equals(ProcedureDesigner other)
+        {
+            return Address.Linear == other.Address.Linear;
         }
     }
 }

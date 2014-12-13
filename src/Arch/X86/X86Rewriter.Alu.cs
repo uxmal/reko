@@ -884,6 +884,16 @@ namespace Decompiler.Arch.X86
             EmitCopy(opDst, new UnaryExpression(op, opSrc.Width, SrcOp(opSrc)), flags);
         }
 
+        private void RewriteXadd()
+        {
+            var dst = SrcOp(instrCur.op1);
+            var src = SrcOp(instrCur.op2);
+            emitter.Assign(
+                dst,
+                PseudoProc("__xadd", instrCur.op1.Width, dst, src));
+            EmitCcInstr(dst, IntelInstruction.DefCc(instrCur.code));
+        }
+
         private void RewriteXlat()
         {
             var al = orw.AluRegister(Registers.al);

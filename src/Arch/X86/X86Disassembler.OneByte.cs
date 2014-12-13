@@ -318,7 +318,7 @@ namespace Decompiler.Arch.X86
 				// F0
 				new SingleByteOpRec(Opcode.@lock),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.repne),
+				new F2ByteOpRec(),
 				new SingleByteOpRec(Opcode.rep),
 				new SingleByteOpRec(Opcode.hlt),
 				new SingleByteOpRec(Opcode.cmc),
