@@ -76,7 +76,8 @@
   <cmd id="ViewFindAllProcedures" cmdSet="Decompiler" container="GrpViewScanned">Find all _procedures</cmd>
 	<cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
 	<cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>
-	<cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
+  <cmd id="ViewFindPattern" cmdSet="Decompiler" container="GrpViewScanned">Find selected _pattern...</cmd>
+  <cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
   <cmd id="ViewFindWhatPointsHere" cmdSet="Decompiler" container="GrpViewScanned">Find _what points here</cmd>
   <cmd id="ActionNextSearchHit" cmdSet="Decompiler" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Decompiler" key1="F8" alt1="Shift" />
@@ -120,6 +121,7 @@
   <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionMarkType" container="GrpMemoryControl"/>
+  <placement item="ViewFindPattern" container="GrpMemoryControl"/>
   <placement item="ViewFindWhatPointsHere" container="GrpMemoryControl"/>
 
   <placement item="ActionEditSignature" container="GrpProcedure"/>

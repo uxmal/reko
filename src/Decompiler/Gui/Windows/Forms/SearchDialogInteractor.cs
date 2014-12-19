@@ -113,6 +113,8 @@ namespace Decompiler.Gui.Windows.Forms
         {
             this.settingsSvc = dlg.Services.RequireService<ISettingsService>();
             dlg.Patterns.DataSource = settingsSvc.GetList("SearchDialog/Patterns");
+            if (dlg.InitialPattern != null)
+                dlg.Patterns.Text = dlg.InitialPattern;
             dlg.RegexCheckbox.Checked = (int)(settingsSvc.Get("SearchDialog/Regexp", 0) ?? 0)!= 0;
             dlg.Encodings.SelectedIndex = (int)(settingsSvc.Get("SearchDialog/Encoding", 0) ?? 0);
             dlg.Scopes.SelectedIndex = (int)(settingsSvc.Get("SearchDialog/Scope", 0) ?? 0);

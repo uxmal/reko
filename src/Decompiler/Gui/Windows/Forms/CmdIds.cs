@@ -90,21 +90,22 @@ namespace Decompiler.Gui
 		public const int ViewFindAllProcedures = 13 + 2000;
 		public const int ViewShowAllFragments = 14 + 2000;
 		public const int ViewShowUnscanned = 15 + 2000;
-		public const int ViewFindFragments = 16 + 2000;
-		public const int ViewFindWhatPointsHere = 17 + 2000;
-		public const int ActionNextSearchHit = 18 + 2000;
-		public const int ActionPrevSearchHit = 19 + 2000;
-		public const int ActionNextPhase = 20 + 2000;
-		public const int ActionFinishDecompilation = 21 + 2000;
-		public const int ActionMarkProcedure = 22 + 2000;
-		public const int ActionEditSignature = 23 + 2000;
-		public const int ActionMarkType = 24 + 2000;
-		public const int WindowsCascade = 25 + 2000;
-		public const int WindowsTileVertical = 26 + 2000;
-		public const int WindowsTileHorizontal = 27 + 2000;
-		public const int WindowsCloseAll = 28 + 2000;
-		public const int HelpAbout = 29 + 2000;
-		public const int ShowProcedureCallHierarchy = 30 + 2000;
+		public const int ViewFindPattern = 16 + 2000;
+		public const int ViewFindFragments = 17 + 2000;
+		public const int ViewFindWhatPointsHere = 18 + 2000;
+		public const int ActionNextSearchHit = 19 + 2000;
+		public const int ActionPrevSearchHit = 20 + 2000;
+		public const int ActionNextPhase = 21 + 2000;
+		public const int ActionFinishDecompilation = 22 + 2000;
+		public const int ActionMarkProcedure = 23 + 2000;
+		public const int ActionEditSignature = 24 + 2000;
+		public const int ActionMarkType = 25 + 2000;
+		public const int WindowsCascade = 26 + 2000;
+		public const int WindowsTileVertical = 27 + 2000;
+		public const int WindowsTileHorizontal = 28 + 2000;
+		public const int WindowsCloseAll = 29 + 2000;
+		public const int HelpAbout = 30 + 2000;
+		public const int ShowProcedureCallHierarchy = 31 + 2000;
 		public const int FileMru = 2200;
 	}
 }

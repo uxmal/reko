@@ -142,6 +142,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slViewShowUnscanned = new CommandMenuItem("Show _unscanned fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowUnscanned);
             slViewShowUnscanned.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewShowUnscanned);
+            CommandMenuItem slViewFindPattern = new CommandMenuItem("Find selected _pattern...", new Guid(CmdSets.Decompiler), CmdIds.ViewFindPattern);
+            slViewFindPattern.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewFindPattern);
             CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Decompiler), CmdIds.ViewFindFragments);
             slViewFindFragments.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewFindFragments);
@@ -215,6 +218,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slActionMarkType);
+			slGrpMemoryControl.Add(0, slViewFindPattern);
 			slGrpMemoryControl.Add(0, slViewFindWhatPointsHere);
 			slGrpProcedure.Add(0, slActionEditSignature);
 			slGrpProcedure.Add(0, slViewGoToAddress);
