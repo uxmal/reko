@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 				PrimitiveType.Byte,
 				Registers.bx,
 				Constant.Int32(32));
-			var e = orw.CreateMemoryAccess(m, state);
+			var e = orw.CreateMemoryAccess( null, m, state);
 			Assert.AreEqual("Mem0[ds:bx + 0x0020:byte]", e.ToString());
 		}
 	}

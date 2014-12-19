@@ -67,6 +67,7 @@ namespace Decompiler.Scanning.Dfa
             public SortedSet<TreeNode> Nodes;
             public int Number;
             public bool Starts;
+            public bool Accepts;
             private int hash;
 
             public override bool Equals(object obj)
@@ -126,7 +127,7 @@ namespace Decompiler.Scanning.Dfa
             unmarked.Enqueue(state);
             while (unmarked.Count > 0)
             {
-                IntermediateState T = unmarked.Dequeue();
+                var T = unmarked.Dequeue();
                 foreach (var p in T.Nodes.SelectMany(p => p.GetTransitionCharacters(), (p, c) => new { Node = p, Value = c }))
                 {
                     var U = CreateIntermediateState(p.Node.FollowPos);
@@ -139,12 +140,13 @@ namespace Decompiler.Scanning.Dfa
                         dstate = U;
                     }
                     dstate.Starts |= p.Node.Starts;
+                    dstate.Accepts |= p.Node.FollowPos.Any(n => n.Type == NodeType.EOS);
                     Dtran.Add(Tuple.Create(T.Number, (int) p.Value, dstate.Number));
                 }
             }
             this.States = Dstates.Values
                 .OrderBy(d => d.Number)
-                .Select(d => new State { Number = d.Number, Starts = d.Starts, Terminates = false })
+                .Select(d => new State { Number = d.Number, Starts = d.Starts, Accepts = d.Accepts })
                 .ToArray();
             this.Transitions = Compact(Dtran);
         }
@@ -152,8 +154,16 @@ namespace Decompiler.Scanning.Dfa
         [Conditional("DEBUG")]
         private void DumpState(IntermediateState state)
         {
-            Debug.Print("Created state {0}", state.Number);
+            Debug.Print("Created state {0}{1}{2}", state.Number, state.Starts ? " Starts" : "", state.Accepts ? " Accepts" : "");
             Debug.Print("    {0}", string.Join(",", state.Nodes.Select(n => n.Number.ToString())));
+            Debug.Print("    {0}", string.Join(",", state.Nodes.Select(
+                n => string.Format(
+                    Char.IsControl((char)n.Value)
+                        ? "\\x{0:X2}"
+                        : "{0}",
+                    Char.IsControl((char)n.Value)
+                        ? (object)(int)n.Value
+                        : (object)(char)n.Value))));
         }
 
         private int[,] Compact(List<Tuple<int, int, int>> Dtran)
@@ -207,8 +217,6 @@ namespace Decompiler.Scanning.Dfa
                 {
                     i.FollowPos.UnionWith(node.Right.FirstPos);
                 }
-                break;
-
                 break;
             case NodeType.Star:
                 BuildNodeSets(node.Left);
@@ -268,6 +276,7 @@ namespace Decompiler.Scanning.Dfa
                 }
                 break;
             default:
+                // A regular character.
                 node.Nullable = false;
                 node.FirstPos = new HashSet<TreeNode> { node };
                 node.LastPos = new HashSet<TreeNode> { node };

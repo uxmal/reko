@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwRegister()
 		{
 			var r = new RegisterOperand(Registers.ebp);
-			var id = (Identifier) orw.Transform(r, r.Width, state);
+			var id = (Identifier) orw.Transform(null, r, r.Width, state);
 			Assert.AreEqual("ebp", id.Name);
 			Assert.IsNotNull(proc.Frame.FramePointer);
 		}
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwImmediate()
 		{
 			var imm = new ImmediateOperand(Constant.Word16(0x0003));
-			var c = (Constant) orw.Transform(imm, imm.Width, state);
+			var c = (Constant) orw.Transform(null, imm, imm.Width, state);
 			Assert.AreEqual("0x0003", c.ToString());
 		}
 
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwImmediateExtend()
 		{
 			var imm = new ImmediateOperand(Constant.SByte(-1));
-			var c = (Constant) orw.Transform(imm, PrimitiveType.Word16, state);
+			var c = (Constant) orw.Transform(null, imm, PrimitiveType.Word16, state);
 			Assert.AreEqual("0xFFFF", c.ToString());
 		}
 
@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwFpu()
 		{
 			FpuOperand f = new FpuOperand(3);
-			Identifier id = (Identifier) orw.Transform(f, PrimitiveType.Real64,  state);
+			Identifier id = (Identifier) orw.Transform(null, f, PrimitiveType.Real64,  state);
 			Assert.AreEqual(PrimitiveType.Real64, id.DataType);
 		}
 
@@ -103,7 +103,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			mem.Index = Registers.eax;
 			mem.Scale = 4;
 			mem.Offset = Constant.Byte(0x02);
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(null, mem, PrimitiveType.Word32, state);
 			Assert.IsTrue(proc.Frame.Escapes);
 		}
 
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
 			mem.Base = Registers.ecx;
 			mem.Offset = Constant.Word32(4);
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(null, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
 		}	
 
@@ -121,7 +121,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwIndexedAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, Constant.Word32(0x24));
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(null, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[eax + 0x00000024 + edx * 0x00000004:word32]", expr.ToString());
 		}
 
@@ -202,7 +202,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public ExternalProcedure GetImportedProcedure(Address linaddr)
+		public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
 		{
 			return null;
 		}

@@ -80,8 +80,12 @@ namespace Decompiler.Arch.X86
             isModrmValid = false;
             rexPrefix = 0;
             segmentOverride = RegisterStorage.None;
-            byte op = rdr.ReadByte();
+            byte op;
+            if (!rdr.TryReadByte(out op))
+                return false;
             instrCur = s_aOpRec[op].Decode(this, op, "");
+            if (instrCur == null)
+                return false;
             instrCur.Address = addr;
             instrCur.Length = rdr.Address - addr;
             return true;
@@ -383,7 +387,10 @@ namespace Decompiler.Arch.X86
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 int grp = Group - 1;
-                OpRec opRec = s_aOpRecGrp[grp * 8 + ((disasm.EnsureModRM() >> 3) & 0x07)];
+                byte modRm;
+                if (!disasm.TryEnsureModRM(out modRm))
+                    return null;
+                OpRec opRec = s_aOpRecGrp[grp * 8 + ((modRm >> 3) & 0x07)];
                 return opRec.Decode(disasm, op, opFormat + format);
             }
         }
@@ -392,7 +399,9 @@ namespace Decompiler.Arch.X86
         {
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                byte modRM = disasm.EnsureModRM();
+                byte modRM;
+                if (!disasm.TryEnsureModRM(out modRM))
+                    return null;
                 OpRec opRec;
                 int iOpRec = (op & 0x07) * 0x48;
                 if (modRM < 0xC0)
@@ -462,14 +471,19 @@ namespace Decompiler.Arch.X86
 		/// If the ModR/M byte hasn't been read yet, do so now.
 		/// </summary>
 		/// <returns></returns>
-		private byte EnsureModRM()
+		private bool TryEnsureModRM(out byte modRm)
 		{
-			if (!isModrmValid)
-			{
-				this.modrm = rdr.ReadByte();
-				isModrmValid = true;
-			}
-			return this.modrm;
+            if (!isModrmValid)
+            {
+                if (!rdr.TryReadByte(out this.modrm))
+                {
+                    modRm = 0;
+                    return false;
+                }
+                isModrmValid = true;
+            }
+            modRm = this.modrm;
+            return true;
 		}
 
         private IntelInstruction DecodeOperands(Opcode opcode, byte op, string strFormat)
@@ -477,7 +491,7 @@ namespace Decompiler.Arch.X86
             MachineOperand pOperand;
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;
-
+            byte modRm;
             List<MachineOperand> ops = new List<MachineOperand>();
             int i = 0;
             while (i != strFormat.Length)
@@ -516,11 +530,15 @@ namespace Decompiler.Arch.X86
                     break;
                 case 'G':		// register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, GpRegFromBits));
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
                     break;
                 case 'P':		// MMX register operand specified by the reg field of the modRM byte.
                     width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, MmxRegFromBits));
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, MmxRegFromBits));
                     break;
                 case 'I':		// Immediate operand.
                     if (strFormat[i] == 'x')
@@ -550,11 +568,15 @@ namespace Decompiler.Arch.X86
                     break;
                 case 'S':		// Segment register encoded by reg field of modRM byte.
                     ++i;        // Skip over the 'w'.
-                    pOperand = new RegisterOperand(SegFromBits(EnsureModRM() >> 3));
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(SegFromBits(modRm >> 3));
                     break;
                 case 'V':		// XMM operand specified by the reg field of the modRM byte.
                     width = SseOperandWidth(strFormat, ref i);
-                    pOperand = new RegisterOperand(RegFromBitsRexR(EnsureModRM() >> 3, width, XmmRegFromBits));
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, XmmRegFromBits));
                     break;
                 case 'W':		// memory or XMM operand specified by mod & r/m fields.
                     width = SseOperandWidth(strFormat, ref i);
@@ -582,7 +604,9 @@ namespace Decompiler.Arch.X86
                     pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
                     break;
                 case 'F':		// Floating-point ST(x)
-                    pOperand = new FpuOperand(EnsureModRM() & 0x07);
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new FpuOperand(modRm & 0x07);
                     break;
                 case 'f':		// ST(0)
                     pOperand = new FpuOperand(0);
@@ -693,7 +717,9 @@ namespace Decompiler.Arch.X86
 
 		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
 		{
-			EnsureModRM();
+            byte modRm;
+            if (!TryEnsureModRM(out modRm))
+                return null;
 
 			int  rm = this.modrm & 0x07;
 			int  mod = this.modrm >> 6;

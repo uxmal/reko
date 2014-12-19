@@ -330,7 +330,7 @@ namespace Decompiler.Arch.X86
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 emitter.Assign(tmp, src);
-                var ea = orw.CreateMemoryAccess((MemoryOperand) opDst, state);
+                var ea = orw.CreateMemoryAccess(instrCur.Address, (MemoryOperand) opDst, state);
                 emitter.Assign(ea, tmp);
                 dst = tmp;
             }
@@ -346,12 +346,12 @@ namespace Decompiler.Arch.X86
     
         private Expression SrcOp(MachineOperand opSrc)
         {
-            return orw.Transform(opSrc, opSrc.Width, state);
+            return orw.Transform(instrCur.Address, opSrc, opSrc.Width, state);
         }
 
         private Expression SrcOp(MachineOperand opSrc, PrimitiveType dstWidth)
         {
-            return orw.Transform(opSrc, dstWidth, state);
+            return orw.Transform(instrCur.Address, opSrc, dstWidth, state);
         }
     }
 }

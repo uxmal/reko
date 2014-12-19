@@ -56,7 +56,7 @@ namespace Decompiler.Scanning
         Block AddBlock(Address addr, Procedure proc, string blockName);
         void AddDiagnostic(Address addr, Diagnostic d);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
-        ExternalProcedure GetImportedProcedure(Address addr);
+        ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace Decompiler.Scanning
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
-            var imp = GetImportedProcedure(addr);
+            var imp = GetImportedProcedure(addr, addr);
             if (imp != null)
                 return imp;
             Procedure proc = EnsureProcedure(addr, procedureName);
@@ -506,16 +506,17 @@ namespace Decompiler.Scanning
                 return null;
         }
 
-        public ExternalProcedure GetImportedProcedure(Address addr)
+        public ExternalProcedure GetImportedProcedure( Address addrImportThunk, Address addrInstruction)
         {
             ImportReference impref;
-            if (addr != null && addr.ToString().EndsWith("120")) //$DEBUG
-                addr.ToString();
-            if (!importReferences.TryGetValue(addr, out impref))
+            if (!importReferences.TryGetValue(addrImportThunk, out impref))
                 return null;
-            return impref.ResolveImportedProcedure(new ImportResolver(project), program.Platform);
+            var extProc = impref.ResolveImportedProcedure(
+                new ImportResolver(project), program.Platform,
+                new AddressContext(program, addrInstruction, this.eventListener));
+            return extProc;
         }
-
+        
         /// <summary>
         /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
         /// now truncated, with a single out edge to the new block. The second block receives the out edges of the first block.

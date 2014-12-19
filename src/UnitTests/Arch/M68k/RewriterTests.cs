@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Arch.M68k
                 return new PseudoProcedure(name, returnType, arity);
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk)
+            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();
             }

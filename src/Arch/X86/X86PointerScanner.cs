@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Decompiler.Arch.X86
 {
+    /// <summary>
+    /// Scans an image looking for uses of pointer values.
+    /// </summary>
     public class X86PointerScanner : PointerScanner
     {
         public X86PointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags) : base(rdr, knownLinAddresses, flags)

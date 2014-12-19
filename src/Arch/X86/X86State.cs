@@ -147,7 +147,9 @@ namespace Decompiler.Arch.X86
 
         public override void OnAfterCall(Identifier sp, ProcedureSignature sig, ExpressionVisitor<Expression> eval)
         {
-            var spReg = (RegisterStorage) sp.Storage;
+            if (sig == null)
+                return;
+            var spReg = (RegisterStorage)sp.Storage;
             var spVal = GetValue(spReg);
             var stackOffset = SetValue(
                 spReg,

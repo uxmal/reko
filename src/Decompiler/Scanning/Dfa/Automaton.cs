@@ -58,40 +58,42 @@ namespace Decompiler.Scanning.Dfa
         /// <returns></returns>
         public IEnumerable<int> GetMatches(byte[] bytes, int position)
         {
-            bool isMatching = false;
-            int lastMatchPos = -1;
+            bool isMatching = false; // true if we have found the beginning of a pattern and are matching.
+            int lastMatchPos = -1;   // Last position we found the start of a pattern.
+            int lastAcceptPos = -1;  // Last position we entered an accepting state.
             int iState = 0;
             for (int i = position; i < bytes.Length; ++i)
             {
                 var dst = transitions[iState,bytes[i]];
-                if (dst < 0)
+                if (dst == 0)
                 {
-                    if (lastMatchPos != -1)
+                    if (lastMatchPos != -1 && lastAcceptPos != -1)
                     {
                         yield return lastMatchPos;
-                        lastMatchPos = -1;
-                        isMatching = false;
+                        i = lastAcceptPos;
+                    }
+                    else if (isMatching)
+                    {
                         --i;
                     }
-                    iState = 0;
+                    isMatching = false;
+                    lastMatchPos = -1;
+                    lastAcceptPos = -1;
                 }
                 else
                 {
-                    iState = dst;
                     var st = states[dst];
-                    if (isMatching)
-                    {
-                        if (st.Starts)
-                        {
-                            lastMatchPos = i;
-                        }
-                    }
-                    else 
+                    if (!isMatching)
                     {
                         lastMatchPos = i;
                         isMatching = true;
                     }
+                    if (isMatching && st.Accepts)
+                    {
+                        lastAcceptPos = i;
+                    }
                 }
+                iState = dst;
             }
             if (isMatching)
                 yield return lastMatchPos;
