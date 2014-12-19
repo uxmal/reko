@@ -159,7 +159,7 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        IEnumerator<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
+        IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader rdr)
         {
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }

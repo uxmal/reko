@@ -110,12 +110,10 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override ArmInstruction Current { get { return arm; } }
-
-        public override bool MoveNext()
+        public override ArmInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
 
             arm = new ArmInstruction
             {
@@ -124,8 +122,7 @@ namespace Decompiler.Arch.Arm
             };
 
             addr = arm.Address.Linear;
-            this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
-            return true;
+            return this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
         }
 
         public ArmInstruction Disassemble(word instr, DisOptions opts)
@@ -584,18 +581,16 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override ArmInstruction Current { get { return arm; } }
-
-        public override bool MoveNext()
+        public override ArmInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var a = rdr.Address;
             addr = a.Linear;
             this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
             arm.Address = a;
             arm.Length = rdr.Address - a;
-            return true;
+            return arm;
         }
 
         public enum eTargetType

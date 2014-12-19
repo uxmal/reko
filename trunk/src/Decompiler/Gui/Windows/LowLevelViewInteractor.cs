@@ -339,11 +339,11 @@ namespace Decompiler.Gui.Windows
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits = 
                         re.GetMatches(program.Image.Bytes, 0)
-                                .Select(offset => new AddressSearchHit
-                                {
-                                    Program = program,
-                                    LinearAddress = (uint)(program.Image.BaseAddress.Linear + offset)
-                                });
+                        .Select(offset => new AddressSearchHit
+                        {
+                            Program = program,
+                            LinearAddress = (uint)(program.Image.BaseAddress.Linear + offset)
+                        });
                     srSvc.ShowSearchResults(new AddressSearchResult(this.services, hits));
                 }
             }

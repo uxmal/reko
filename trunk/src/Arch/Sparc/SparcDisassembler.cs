@@ -42,7 +42,6 @@ namespace Decompiler.Arch.Sparc
             this.imageReader = imageReader;
         }
 
-        public override SparcInstruction Current { get { return instrCur; } }
 
         // Format 1 (op == 1)
         // +----+-------------------------------------------------------------+
@@ -66,10 +65,10 @@ namespace Decompiler.Arch.Sparc
         // | op |    rd    |   op3  |  rs1 |           opf            |  rs2  |
         // +----+----------+--------+------+--------------------------+-------+
         // 31   29         24       18     13    12                   4
-        public override bool MoveNext()
+        public override SparcInstruction DisassembleInstruction()
         {
             if (!imageReader.IsValid)
-                return false;
+                return null;
             var addr = imageReader.Address;
             uint wInstr = imageReader.ReadBeUInt32();
             switch (wInstr >> 30)
@@ -95,7 +94,7 @@ namespace Decompiler.Arch.Sparc
             }
             instrCur.Address = addr;
             instrCur.Length = 4;
-            return true;
+            return instrCur;
         }
 
         private class OpRec

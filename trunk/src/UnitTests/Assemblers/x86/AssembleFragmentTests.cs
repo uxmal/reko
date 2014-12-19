@@ -79,9 +79,8 @@ namespace Decompiler.UnitTests.Assemblers.x86
             StringBuilder sb = new StringBuilder();
             try
             {
-                while (dasm.MoveNext())
+                foreach (var instr in dasm)
                 {
-                    IntelInstruction instr = dasm.Current;
                     sb.AppendFormat("{0}\t{1}", instr.Address, instr);
                     sb.AppendLine();
                 }

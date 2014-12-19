@@ -79,8 +79,7 @@ namespace Decompiler.Gui
             var dasm = program.Architecture.CreateDisassembler(program.Architecture.CreateImageReader(program.Image, addr));
             try
             {
-                var instr = dasm.MoveNext() ? dasm.Current.ToString().Replace('\t', ' ') : "";
-
+                var instr = string.Join("; ", dasm.Take(1).Select(inst => inst.ToString().Replace('\t', ' ')));
                 return new string[] {
                     program.Name ?? "<Program>",
                     addr.ToString(),

@@ -18,17 +18,15 @@ namespace Decompiler.UnitTests.Mocks
             this.instrs = e;
         }
 
-        public override MachineInstruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override MachineInstruction DisassembleInstruction()
         {
             if (!instrs.MoveNext())
-                return false;
+                return null;
             instr = instrs.Current;
             instr.Address = addr;
             instr.Length = 4;
             addr += 4;
-            return true;
+            return instr;
         }
     }
 }

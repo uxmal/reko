@@ -30,26 +30,42 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.M68k
 {
     [TestFixture]
-    public class M68kDisassemblerTests
+    public class M68kDisassemblerTests : DisassemblerTestBase<M68kInstruction>
     {
-        private M68kDisassembler dasm;
+        private M68kArchitecture arch = new M68kArchitecture();
+        private IEnumerator<M68kInstruction> dasm;
         private M68kInstruction instr;
 
-        private void DasmSingleInstruction(params byte[] bytes)
-        {
-            dasm = CreateDasm(bytes, 0x10000000);
-            Assert.IsTrue(dasm.MoveNext());
-            instr = dasm.Current;
-        }
-
-        private M68kDisassembler CreateDasm(byte[] bytes, uint address)
+        private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)
         {
             Address addr = new Address(address);
             LoadedImage img = new LoadedImage(addr, bytes);
-            return M68kDisassembler.Create68020(img.CreateBeReader(addr));
+            return M68kDisassembler.Create68020(img.CreateBeReader(addr)).GetEnumerator();
         }
 
-        private M68kDisassembler CreateDasm(params ushort[] words)
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public override Address LoadAddress
+        {
+            get { return new Address(0x10000000); }
+        }
+
+
+        protected override ImageWriter CreateImageWriter(byte[] bytes)
+        {
+            return new BeImageWriter(bytes);
+        }
+
+        private void RunTest(string expected, params ushort[] words)
+        {
+            dasm = CreateDasm(words);
+            Assert.AreEqual(expected, Disassemble().ToString());
+        }
+
+        private IEnumerator<M68kInstruction> CreateDasm(params ushort[] words)
         {
             byte[] bytes = words.SelectMany(w => new byte[] { (byte) (w >> 8), (byte) w }).ToArray();
             return CreateDasm(bytes, 0x10000000);
@@ -65,128 +81,97 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_moveQ()
         {
-            byte[] bytes = new byte[] {
-                0x72, 0x01
-            };
-            DasmSingleInstruction(bytes);
-            Assert.AreEqual("moveq\t#$+01,d1", instr.ToString());
+            Assert.AreEqual("moveq\t#$+01,d1", 0x7201);
         }
 
         [Test]
         public void M68kdis_addQ()
         {
-            byte[] bytes = new byte[] {
-                0x5E, 0x92
-            };
-            DasmSingleInstruction(bytes);
-            Assert.AreEqual("addq.l\t#$07,(a2)", instr.ToString());
+            RunTest("addq.l\t#$07,(a2)", 0x5E92);
         }
 
         [Test]
         public void M68kdis_Ori()
         {
-            byte[] bytes = new byte[] {
-                0x00, 0x00, 0x00, 0x12
-            };
-            DasmSingleInstruction(bytes);
-            Assert.AreEqual("ori.b\t#$12,d0", instr.ToString());
+            RunTest("ori.b\t#$12,d0", 0x0000, 0x0012);
         }
 
         [Test]
         public void M68kdis_OriCcr()
         {
-            byte[] bytes = new byte[] {
-                0x00, 0x3C, 0x00, 0x42
-                };
-            DasmSingleInstruction(bytes);
-            Assert.AreEqual("ori.b\t#$42,ccr", instr.ToString());
+            RunTest("ori.b\t#$42,ccr", 0x003C, 0x0042);
         }
 
         [Test]
         public void M68kdis_OriSr()
         {
-            byte[] bytes = new byte[] {
-                0x00, 0x7C, 0x00, 0x42
-                };
-            DasmSingleInstruction(bytes);
-            Assert.AreEqual("ori.w\t#$0042,sr", instr.ToString());
+            RunTest("ori.w\t#$0042,sr", 0x007C, 0x0042);
         }
 
         [Test]
         public void M68kdis_MoveW()
         {
-            DasmSingleInstruction(0x30, 0x2F, 0x47, 0x11);
-            Assert.AreEqual("move.w\t$4711(a7),d0", instr.ToString());
+            RunTest("move.w\t$4711(a7),d0", 0x302F, 0x4711);
         }
 
         [Test]
         public void Lea()
         {
-            DasmSingleInstruction(0x43, 0xEF, 0x00, 0x04);
-            Assert.AreEqual("lea\t$0004(a7),a1", instr.ToString());
+            RunTest ("lea\t$0004(a7),a1", 0x43EF, 0x0004);
         }
 
         [Test]
         public void LslD()
         {
-            DasmSingleInstruction(0xE5, 0x49, 0x00, 0x04);
-            Assert.AreEqual("lsl.w\t#$02,d1", instr.ToString());
+            RunTest("lsl.w\t#$02,d1", 0xE549, 0x0004);
         }
 
         [Test]
         public void AddaW()
         {
-            DasmSingleInstruction(0xD2, 0xC1, 0x00, 0x04);
-            Assert.AreEqual("adda.w\td1,a1", instr.ToString());
+            RunTest("adda.w\td1,a1", 0xD2C1, 0x0004);
         }
 
         [Test]
         public void Addal()
         {
-            dasm = CreateDasm(0xDBDC);
-            Assert.AreEqual("adda.l\t(a4)+,a5", Disassemble().ToString());
+            RunTest("adda.l\t(a4)+,a5", 0xDBDC);
         }
 
         [Test]
         public void MoveA()
         {
-            DasmSingleInstruction(0x20, 0x51, 0x00, 0x04);
-            Assert.AreEqual("movea.l\t(a1),a0", instr.ToString());
+            RunTest("movea.l\t(a1),a0", 0x2051, 0x0004);
         }
 
         [Test]
         public void MoveM()
         {
-            DasmSingleInstruction(0x48, 0xE7, 0x00, 0x04);
-            Assert.AreEqual("movem.l\ta5,-(a7)", instr.ToString());
+            RunTest("movem.l\ta5,-(a7)", 0x48E7, 0x0004);
         }
 
         [Test]
         public void BraB()
         {
-            DasmSingleInstruction(0x60, 0x1A);
-            Assert.AreEqual("bra\t$1000001C", instr.ToString());
+            RunTest("bra\t$1000001C", 0x601A);
         }
 
         [Test]
         public void M68kdis_Bchg()
         {
-            DasmSingleInstruction(0x01, 0x40);
-            Assert.AreEqual("bchg\td0,d0", instr.ToString());
+            RunTest("bchg\td0,d0", 0x0140);
         }
 
         [Test]
         public void Dbra()
         {
-            DasmSingleInstruction(0x51, 0xCA, 0xFF, 0xE4);
-            Assert.AreEqual("dbra\td2,$0FFFFFE6", instr.ToString());
+            RunTest("dbra\td2,$0FFFFFE6", 0x51CA, 0xFFE4);
         }
 
         [Test]
         public void Moveb()
         {
-            DasmSingleInstruction(0x14, 0x1A);
-            Assert.AreEqual("move.b\t(a2)+,d2", instr.ToString());
+            RunTest("move.b\t(a2)+,d2", 0x141A);
         }
 
         [Test]
@@ -204,8 +189,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void AddB()
         {
-            DasmSingleInstruction(0xD2, 0x02);
-            Assert.AreEqual("add.b\td2,d1", instr.ToString());
+            RunTest("add.b\td2,d1", 0xD202);
         }
 
         [Test]
@@ -222,12 +206,6 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             dasm = CreateDasm(0x6572);
             Assert.AreEqual("bcs\t$10000074", Disassemble().ToString());
-        }
-
-        private void RunTest(string expected, params ushort[] words)
-        {
-            dasm = CreateDasm(words);
-            Assert.AreEqual(expected, Disassemble().ToString());
         }
 
         [Test]

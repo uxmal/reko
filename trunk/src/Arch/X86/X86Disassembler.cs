@@ -63,17 +63,15 @@ namespace Decompiler.Arch.X86
             this.useRexPrefix = useRexPrefix;
         }
 
-        public override IntelInstruction Current { get { return instrCur; } }
-
         /// <summary>
         /// Disassembles the current instruction. The address is incremented
         /// to point at the first address after the instruction and returned to the caller.
         /// </summary>
         /// <returns>A single disassembled instruction.</returns>
-        public override bool MoveNext()
+        public override IntelInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             dataWidth = defaultDataWidth;
             addressWidth = defaultAddressWidth;
@@ -82,14 +80,15 @@ namespace Decompiler.Arch.X86
             segmentOverride = RegisterStorage.None;
             byte op;
             if (!rdr.TryReadByte(out op))
-                return false;
+                return null;
             instrCur = s_aOpRec[op].Decode(this, op, "");
             if (instrCur == null)
-                return false;
+                return null;
             instrCur.Address = addr;
             instrCur.Length = rdr.Address - addr;
-            return true;
+            return instrCur;
         }
+
         private IntelRegister RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
             return GpRegFromBits((bits & 7) | ((rexPrefix & 8)), dataWidth);

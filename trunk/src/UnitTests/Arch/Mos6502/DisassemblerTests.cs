@@ -37,8 +37,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
             var image = new LoadedImage(new Address(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Disassembler(rdr);
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         [Test]

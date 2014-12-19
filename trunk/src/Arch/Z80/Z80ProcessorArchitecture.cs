@@ -33,7 +33,7 @@ namespace Decompiler.Arch.Z80
 {
     public class Z80ProcessorArchitecture : IProcessorArchitecture
     {
-        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Z80Disassembler(imageReader);
         }

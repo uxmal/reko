@@ -36,8 +36,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         {
             var image = new LoadedImage(new Address(0x00100000), bytes);
             var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateLeReader(0));
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         protected MachineInstruction Disassemble(uint instr)
@@ -53,7 +52,7 @@ namespace Decompiler.UnitTests.Arch.Arm
 
         protected virtual IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
         {
-            return arch.CreateDisassembler(rdr);
+            return arch.CreateDisassembler(rdr).GetEnumerator();
         }
 
         protected MachineInstruction DisassembleBits(string bitPattern)
@@ -66,8 +65,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]);
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateLeReader(0));
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         protected abstract IProcessorArchitecture CreateArchitecture();

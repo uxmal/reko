@@ -45,7 +45,7 @@ namespace Decompiler.Arch.Z80
             this.state = state;
             this.frame = frame;
             this.host = host;
-            this.dasm = new Z80Disassembler(rdr);
+            this.dasm = new Z80Disassembler(rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

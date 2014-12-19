@@ -57,8 +57,7 @@ namespace Decompiler.UnitTests.Arch
         public TInstruction Disassemble(LoadedImage img)
         {
             var dasm = Architecture.CreateDisassembler(Architecture.CreateImageReader(img, 0U));
-            Assert.IsTrue(dasm.MoveNext());
-            return (TInstruction) dasm.Current; 
+            return (TInstruction) dasm.First();
         }
     }
 }

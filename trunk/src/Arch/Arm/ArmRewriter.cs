@@ -52,7 +52,7 @@ namespace Decompiler.Arch.Arm
 
         private IEnumerator<ArmInstruction> CreateInstructionStream(ImageReader rdr)
         {
-            return new ArmDisassembler2(arch, rdr);
+            return new ArmDisassembler2(arch, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

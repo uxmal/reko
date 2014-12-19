@@ -54,7 +54,7 @@ namespace Decompiler.Arch.M68k
             this.state = m68kState;
             this.frame = frame;
             this.host = host;
-            this.dasm = arch.CreateDisassembler(rdr);
+            this.dasm = arch.CreateDisassembler(rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

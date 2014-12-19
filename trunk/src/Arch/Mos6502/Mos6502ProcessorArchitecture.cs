@@ -33,7 +33,7 @@ namespace Decompiler.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : IProcessorArchitecture
     {
-        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new Disassembler(imageReader.Clone());
         }

@@ -50,8 +50,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             var arch = new SparcArchitecture(PrimitiveType.Word32);
             var dasm = new SparcDisassembler(arch, img.CreateBeReader(0U));
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         private void AssertInstruction(uint word, string expected)

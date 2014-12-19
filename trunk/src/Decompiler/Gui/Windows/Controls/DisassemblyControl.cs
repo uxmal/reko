@@ -143,7 +143,7 @@ namespace Decompiler.Gui.Windows.Controls
             dumper.ShowCodeBytes = true;
             var addrStart = TopAddress;
             var rdr = arch.CreateImageReader(image, addrStart);
-            var dasm = arch.CreateDisassembler(rdr);
+            var dasm = arch.CreateDisassembler(rdr).GetEnumerator();
             var cyRow = GetRowHeight(g);
             var rc = new RectangleF(g.ClipBounds.Left, g.ClipBounds.Top, rcClient.Width, cyRow);
             for (; rc.Top < rcClient.Bottom; rc.Offset(0, cyRow))
@@ -326,11 +326,11 @@ namespace Decompiler.Gui.Windows.Controls
         {
             var items = new List<IEnumerable<TextSpan>>();
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, position));
-            while (dasm.MoveNext())
+            foreach (var instr in dasm)
             {
                 var rendrer = new DisassemblyRenderer();
-                rendrer.Address(dasm.Current.Address.ToString(), dasm.Current.Address);
-                dasm.Current.Render(rendrer);
+                rendrer.Address(instr.Address.ToString(), instr.Address);
+                instr.Render(rendrer);
                 items.Add(rendrer.GetSpans());
             }
             return items.ToArray();

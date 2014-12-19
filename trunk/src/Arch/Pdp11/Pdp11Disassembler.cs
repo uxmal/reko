@@ -42,17 +42,15 @@ namespace Decompiler.Arch.Pdp11
             this.arch = arch;
         }
 
-        public override Pdp11Instruction Current { get { return instrCur; } }
-
-        public override bool MoveNext()
+        public override Pdp11Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             instrCur = Disassemble();
             instrCur.Address = addr;
             instrCur.Length = rdr.Address - addr;
-            return true;
+            return instrCur;
         }
 
         private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcodes opcode, string fmt)

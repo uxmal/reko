@@ -79,7 +79,6 @@ namespace Decompiler.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             var linAddr = rdr.Address.Linear;
@@ -155,7 +154,7 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
 		}
 
-		public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader rdr)
+		public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, DisassemblyStream.GetEnumerator());
 		}

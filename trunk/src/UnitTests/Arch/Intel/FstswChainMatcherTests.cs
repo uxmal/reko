@@ -27,6 +27,7 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Arch.Intel
@@ -127,11 +128,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 PrimitiveType.Word32,
                 false);
             instrs = new List<IntelInstruction>();
-            while (dasm.MoveNext())
-            {
-                instrs.Add(dasm.Current);
-            }
-            return new FstswChainMatcher(instrs.ToArray(), orw);
+            return new FstswChainMatcher(dasm.ToArray(), orw);
         }
     }
 }

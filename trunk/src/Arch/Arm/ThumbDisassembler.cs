@@ -44,12 +44,10 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override MachineInstruction Current { get { return thumb; } }
-
-        public override bool MoveNext()
+        public override MachineInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
 
             thumb = new ThumbInstruction
             {
@@ -57,7 +55,7 @@ namespace Decompiler.Arch.Arm
             };
             Disassemble();
             thumb.Length = rdr.Address - thumb.Address;
-            return true;
+            return thumb;
         }
 
         public ThumbInstruction Disassemble()
