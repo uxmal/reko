@@ -38,15 +38,10 @@ namespace Decompiler.Arch.Cil
             this.rdr = rdr;
         }
 
-        public override CilInstruction Current
-        {
-            get { return instr; }
-        }
-
-        public override bool MoveNext()
+        public override CilInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             var opcode = rdr.ReadByte();
             instr = new CilInstruction
@@ -1241,7 +1236,7 @@ namespace Decompiler.Arch.Cil
             #endregion
             }
             instr.Length = rdr.Address - addr;
-            return true;
+            return instr;
         }
     }
 }

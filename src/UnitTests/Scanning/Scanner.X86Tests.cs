@@ -77,9 +77,8 @@ namespace Decompiler.UnitTests.Scanning
         private void DumpProgram(Scanner scanner)
         {
             var dasm = arch.CreateDisassembler(scanner.Image.CreateLeReader(0));
-            while (dasm.MoveNext())
+            foreach (var instr in dasm)
             {
-                var instr = dasm.Current;
                 Console.Out.WriteLine("{0} {1}", instr.Address, instr);
             }
             

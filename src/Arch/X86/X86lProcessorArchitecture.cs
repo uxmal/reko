@@ -93,7 +93,7 @@ namespace Decompiler.Arch.X86
             return mode.CreateDisassembler(imageReader);
         }
 
-		IEnumerator<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
+		IEnumerable<MachineInstruction> IProcessorArchitecture.CreateDisassembler(ImageReader imageReader)
 		{
             return CreateDisassembler(imageReader);
 		}

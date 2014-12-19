@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
             arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
                 .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
             arch.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
-                .Return(instrs.GetEnumerator());
+                .Return(instrs);
         }
 
         private class TestInstruction : MachineInstruction

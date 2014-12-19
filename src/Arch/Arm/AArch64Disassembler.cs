@@ -38,18 +38,16 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override AArch64Instruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override AArch64Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             uint opcode = rdr.ReadLeUInt32();
             instr = oprecs[(opcode >> 25) & 0xF].Decode(this, opcode);
             instr.Address = addr;
             instr.Length = rdr.Address - addr;
-            return true;
+            return instr;
         }
 
         private abstract class OpDecoder2
@@ -499,18 +497,16 @@ namespace Decompiler.Arch.Arm
             this.rdr = rdr;
         }
 
-        public override AArch64Instruction Current { get { return instr; } }
-    
-        public override bool MoveNext()
+        public override AArch64Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             uint opcode = rdr.ReadLeUInt32();
             instr = oprecs[(opcode >> 24) & 0xFF].Decode(this, opcode);
             instr.Address = addr;
             instr.Length = rdr.Address - addr;
-            return true;
+            return instr;
         }
 
         private class RootDecoder : OpDecoder

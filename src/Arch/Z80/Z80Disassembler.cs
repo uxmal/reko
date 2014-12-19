@@ -43,12 +43,10 @@ namespace Decompiler.Arch.Z80
             this.rdr = rdr;
         }
 
-        public override Z80Instruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override Z80Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             this.instr = new Z80Instruction
             {
@@ -60,7 +58,7 @@ namespace Decompiler.Arch.Z80
             instr = opRef.Decode(this, op, "");
             instr.Address = addr;
             instr.Length = rdr.Address - addr;
-            return true;
+            return instr;
         }
 
         public Z80Instruction DecodeOperands(Opcode opcode, byte op, string fmt)

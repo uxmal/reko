@@ -147,9 +147,8 @@ namespace Decompiler.Core
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, addrStart));
             try
             {
-                while (dasm.MoveNext())
+                foreach (var instr in dasm)
                 {
-                    MachineInstruction instr = dasm.Current;
                     if (instr.Address >= addrLast)
                         break;
                     if (!DumpAssemblerLine(image, instr, writer))

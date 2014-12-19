@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Mips
             this.FramePointerType = PrimitiveType.Word32;
         }
 
-        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new MipsDisassembler(this, imageReader);
         }

@@ -35,12 +35,14 @@ namespace Decompiler.Core
 	public interface IProcessorArchitecture
 	{
         /// <summary>
-        /// Creates an IEnumerator of disassembled MachineInstructions which consumes 
+        /// Creates an IEnumerable of disassembled MachineInstructions which consumes 
         /// its input from the provided <paramref name="imageReader"/>.
         /// </summary>
+        /// <remarks>This was previously an IEnumerator, but making it IEnumerable lets us use Linq expressions
+        /// like Take().</remarks>
         /// <param name="imageReader"></param>
         /// <returns></returns>
-        IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader);
+        IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
 
         /// <summary>
         /// Creates an instance of a ProcessorState appropriate for this processor.

@@ -38,11 +38,11 @@ namespace Decompiler.Arch.Mips
         private RtlEmitter emitter;
         private MipsProcessorArchitecture arch;
 
-        public MipsRewriter(MipsProcessorArchitecture arch, IEnumerator<MipsInstruction> instrs, Frame frame)
+        public MipsRewriter(MipsProcessorArchitecture arch, IEnumerable<MipsInstruction> instrs, Frame frame)
         {
             this.arch = arch;
             this.frame = frame;
-            this.dasm = instrs;
+            this.dasm = instrs.GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

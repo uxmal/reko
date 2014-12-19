@@ -67,7 +67,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             var lines = new List<TextSpan[]>();
             var dasm = arch.CreateDisassembler(
-                arch.CreateImageReader(image, image.BaseAddress));
+                arch.CreateImageReader(image, image.BaseAddress)).GetEnumerator();
             while (count != 0 && dasm.MoveNext())
             {
                 var line = new List<TextSpan>();

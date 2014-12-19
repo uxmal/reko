@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Arch.Arm
 
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
         {
-            return new ThumbDisassembler(arch, rdr);
+            return new ThumbDisassembler(arch, rdr).GetEnumerator();
         }
 
         [Test]

@@ -41,12 +41,10 @@ namespace Decompiler.Arch.Mos6502
             this.rdr = rdr;
         }
 
-        public override Instruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override Instruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             var op = rdr.ReadByte();
             var opRec = opRecs[op];
@@ -143,7 +141,7 @@ namespace Decompiler.Arch.Mos6502
                 Address = addr,
                 Length = rdr.Address - addr,
             };
-            return true;
+            return instr;
         }
 
         private Operand Indirect()

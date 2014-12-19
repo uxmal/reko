@@ -35,7 +35,7 @@ namespace Decompiler.Arch.Mos6502
         private Frame frame;
         private IRewriterHost host;
         private Mos6502ProcessorArchitecture arch;
-        private IEnumerator<Instruction> instrs;
+        private IEnumerable<Instruction> instrs;
         private Instruction instrCur;
         private RtlInstructionCluster ric;
         private RtlEmitter emitter;
@@ -58,9 +58,10 @@ namespace Decompiler.Arch.Mos6502
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            while (instrs.MoveNext())
+            var dasm = this.instrs.GetEnumerator();
+            while (dasm.MoveNext())
             {
-                this.instrCur = instrs.Current;
+                this.instrCur = dasm.Current;
                 this.ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
                 this.emitter = new RtlEmitter(ric.Instructions);
                 switch (instrCur.Code)

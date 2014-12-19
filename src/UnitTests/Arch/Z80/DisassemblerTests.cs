@@ -37,8 +37,7 @@ namespace Decompiler.UnitTests.Arch.Z80
             var image = new LoadedImage(new Address(0x0100), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Z80Disassembler(rdr);
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         [Test]

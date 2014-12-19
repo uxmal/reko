@@ -63,7 +63,7 @@ namespace Decompiler.Arch.Sparc
             this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);
         }
 
-        private IEnumerator<SparcInstruction> CreateDisassemblyStream(ImageReader rdr)
+        private IEnumerable<SparcInstruction> CreateDisassemblyStream(ImageReader rdr)
         {
             return new SparcDisassembler(arch, rdr);
         }

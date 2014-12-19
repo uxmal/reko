@@ -41,10 +41,10 @@ namespace Decompiler.Arch.Pdp11
             this.arch = arch;
         }
 
-        public Pdp11Rewriter(Pdp11Architecture arch, IEnumerator<Pdp11Instruction> instrs, Frame frame)
+        public Pdp11Rewriter(Pdp11Architecture arch, IEnumerable<Pdp11Instruction> instrs, Frame frame)
         {
             this.arch = arch;
-            this.instrs = instrs;
+            this.instrs = instrs.GetEnumerator();
             this.frame = frame;
         }
 

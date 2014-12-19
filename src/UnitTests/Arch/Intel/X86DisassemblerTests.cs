@@ -25,6 +25,7 @@ using Decompiler.Core;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System.IO;
+using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
@@ -44,8 +45,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             LoadedImage img = new LoadedImage(new Address(0xC00, 0), bytes);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         private IntelInstruction Disassemble32(params byte[] bytes)
@@ -53,8 +53,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var img = new LoadedImage(new Address(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         private IntelInstruction Disassemble64(params byte[] bytes)
@@ -62,8 +61,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var img = new LoadedImage(new Address(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
-            Assert.IsTrue(dasm.MoveNext());
-            return dasm.Current;
+            return dasm.First();
         }
 
         private void CreateDisassembler16(LoadedImage image)
@@ -109,10 +107,8 @@ foo:
 
             CreateDisassembler16(lr.Image);
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i != 5; ++i)
+            foreach (var instr in dasm.Take(5))
             {
-                Assert.IsTrue(dasm.MoveNext());
-                var instr = dasm.Current;
                 Address addr = instr.Address;
                 sb.AppendFormat("{0}\t{1}\r\n", addr, instr.ToString());
             }
@@ -139,13 +135,7 @@ foo:
                 "		mov cx,cs:[si+4]\r\n");
 
             CreateDisassembler16(lr.Image);
-            IntelInstruction[] instrs = new IntelInstruction[3];
-            for (int i = 0; i != instrs.Length; ++i)
-            {
-                Assert.IsTrue(dasm.MoveNext());
-                instrs[i] = dasm.Current;
-            }
-
+            IntelInstruction[] instrs = dasm.Take(3).ToArray();
             Assert.AreEqual(Registers.ss, ((MemoryOperand)instrs[0].op2).DefaultSegment);
             Assert.AreEqual(Registers.ds, ((MemoryOperand)instrs[1].op2).DefaultSegment);
             Assert.AreEqual(Registers.cs, ((MemoryOperand)instrs[2].op2).DefaultSegment);
@@ -167,11 +157,9 @@ foo:
             CreateDisassembler16(img.CreateLeReader(img.BaseAddress));
             IntelInstruction[] instrs = new IntelInstruction[4];
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i != instrs.Length; ++i)
+            foreach (var instr in dasm.Take(4))
             {
-                dasm.MoveNext();
-                instrs[i] = dasm.Current;
-                sb.AppendFormat("{0}\r\n", instrs[i].ToString());
+                sb.AppendFormat("{0}\r\n", instr.ToString());
             }
             string s = sb.ToString();
             Assert.AreEqual(
@@ -197,10 +185,8 @@ foo		proc
 ");
             CreateDisassembler16(lr.Image);
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i != 4; ++i)
+            foreach (var ii in dasm.Take(4))
             {
-                Assert.IsTrue(dasm.MoveNext());
-                IntelInstruction ii = dasm.Current;
                 sb.AppendLine(string.Format("{0}", ii.ToString()));
             }
             string s = sb.ToString();
@@ -221,8 +207,7 @@ movzx	ax,byte ptr [bp+04]
 	mov ebx,[edi*2]
 ");
             CreateDisassembler32(lr.Image);
-            Assert.IsTrue(dasm.MoveNext());
-            IntelInstruction instr = dasm.Current;
+            var instr = dasm.First();
             MemoryOperand mem = (MemoryOperand)instr.op2;
             Assert.AreEqual(2, mem.Scale);
             Assert.AreEqual(RegisterStorage.None, mem.Base);
@@ -241,9 +226,8 @@ movzx	ax,byte ptr [bp+04]
                     lr = asm.Assemble(new Address(0xC32, 0), rdr);
                 }
                 CreateDisassembler16(lr.Image);
-                while (dasm.MoveNext())
+                foreach (IntelInstruction instr in dasm)
                 {
-                    IntelInstruction instr = dasm.Current;
                     fut.TextWriter.WriteLine("{0}", instr.ToString());
                 }
                 fut.AssertFilesEqual();
@@ -296,8 +280,7 @@ movzx	ax,byte ptr [bp+04]
             img.Relocations.AddPointerReference(0x00100001u - img.BaseAddress.Linear, 0x12345678);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
-            Assert.IsTrue(dasm.MoveNext());
-            IntelInstruction instr = dasm.Current;
+            IntelInstruction instr = dasm.First();
             Assert.AreEqual("mov\teax,12345678", instr.ToString());
             Assert.AreEqual("ptr32", instr.op2.Width.ToString());
         }
@@ -310,8 +293,7 @@ movzx	ax,byte ptr [bp+04]
             img.Relocations.AddSegmentReference(5, 0x0800);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             CreateDisassembler16(rdr);
-            Assert.IsTrue(dasm.MoveNext());
-            IntelInstruction instr = dasm.Current;
+            IntelInstruction instr = dasm.First();
             Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());
             Assert.AreEqual("selector", instr.op2.Width.ToString());
         }

@@ -43,12 +43,10 @@ namespace Decompiler.Arch.Mips
             this.rdr = imageReader;
         }
 
-        public override MipsInstruction Current { get { return instrCur; } }
-
-        public override bool MoveNext()
+        public override MipsInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false; 
+                return null; 
             this.addr = rdr.Address; 
             var wInstr = rdr.ReadBeUInt32();
             var opRec = opRecs[wInstr >> 26];
@@ -56,7 +54,7 @@ namespace Decompiler.Arch.Mips
             if (opRec == null)
                 throw new NotImplementedException((wInstr >> 26).ToString());    //$REVIEW: remove this when all oprecs are in place.
             instrCur = opRec.Decode(wInstr, this);
-            return true;
+            return instrCur;
         }
 
         private static OpRec[] opRecs = new OpRec[]

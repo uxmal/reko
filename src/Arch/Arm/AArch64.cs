@@ -33,7 +33,7 @@ namespace Decompiler.Arch.Arm
 {
     public class AArch64 : IProcessorArchitecture
     {
-        public IEnumerator<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new AArch64Disassembler(imageReader);
         }

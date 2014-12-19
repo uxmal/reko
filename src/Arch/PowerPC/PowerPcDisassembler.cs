@@ -43,12 +43,10 @@ namespace Decompiler.Arch.PowerPC
             this.defaultWordWidth = defaultWordWidth;
         }
 
-        public override PowerPcInstruction Current { get { return instrCur; } }
-
-        public override bool MoveNext()
+        public override PowerPcInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             this.addr = rdr.Address;
             uint wInstr = rdr.ReadBeUInt32();
             try
@@ -61,7 +59,7 @@ namespace Decompiler.Arch.PowerPC
             }
             instrCur.Address = addr;
             instrCur.Length = 4;
-            return true;
+            return instrCur;
         }
 
         private PowerPcInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt, bool setsCR0)

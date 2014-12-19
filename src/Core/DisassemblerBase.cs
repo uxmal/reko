@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Machine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Decompiler.Core
@@ -28,19 +29,24 @@ namespace Decompiler.Core
     /// A disassembler can be considered an enumerator of disassembled instructions.
     /// </summary>
     /// <typeparam name="TInstr"></typeparam>
-    public abstract class DisassemblerBase<TInstr> : IEnumerator<TInstr>
+    public abstract class DisassemblerBase<TInstr> : IEnumerable<TInstr>
     {
-        public abstract TInstr Current { get; }
-
-        object System.Collections.IEnumerator.Current { get { return Current; } }
-
-        public void Dispose() { }
-
-        public abstract bool MoveNext();
-
-        public void Reset()
+        public IEnumerator<TInstr> GetEnumerator()
         {
-            throw new NotSupportedException();
+            for (;;)
+            {
+                var instr = DisassembleInstruction();
+                if (instr == null)
+                    break;
+                yield return instr;
+            }
         }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public abstract TInstr DisassembleInstruction();
     }
 }

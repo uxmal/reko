@@ -54,12 +54,10 @@ namespace Decompiler.Arch.M68k
             build_opcode_table();
         }
 
-        public override M68kInstruction Current { get { return instr; } }
-
-        public override bool MoveNext()
+        public override M68kInstruction DisassembleInstruction()
         {
             if (!rdr.IsValid)
-                return false;
+                return null;
             var addr = rdr.Address;
             try
             {
@@ -78,11 +76,11 @@ namespace Decompiler.Arch.M68k
                     Address = addr,
                     code = Opcode.illegal
                 };
-                return false;
+                return null;
             }
             instr.Address = addr;
             instr.Length = rdr.Address - addr;
-            return true;
+            return instr;
         }
 
 #if !NEVER
