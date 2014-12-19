@@ -41,14 +41,14 @@ namespace Decompiler.Arch.X86
             this.host = host;
         }
 
-        public Expression Transform(MachineOperand op, PrimitiveType opWidth, X86State state)
+        public Expression Transform(Address addrInstruction, MachineOperand op, PrimitiveType opWidth, X86State state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
                 return AluRegister(reg);
             var mem = op as MemoryOperand;
             if (mem != null)
-                return CreateMemoryAccess(mem, opWidth, state);
+                return CreateMemoryAccess(addrInstruction, mem, opWidth, state);
             var imm = op as ImmediateOperand;
             if (imm != null)
                 return CreateConstant(imm, opWidth);
@@ -84,9 +84,9 @@ namespace Decompiler.Arch.X86
                 return Constant.Create(imm.Width, imm.Value.ToUInt32());
         }
 
-        public Expression CreateMemoryAccess(MemoryOperand mem, DataType dt, X86State state)
+        public Expression CreateMemoryAccess(Address addrInstruction, MemoryOperand mem, DataType dt, X86State state)
         {
-            var exp = ImportedProcedureName(mem.Width, mem);
+            var exp = ImportedProcedureName(addrInstruction, mem.Width, mem);
             if (exp != null)
                 return new ProcedureConstant(arch.PointerType, exp);
 
@@ -104,9 +104,9 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        public Expression CreateMemoryAccess(MemoryOperand memoryOperand, X86State state)
+        public Expression CreateMemoryAccess(Address addrInstr, MemoryOperand memoryOperand, X86State state)
         {
-            return CreateMemoryAccess(memoryOperand, memoryOperand.Width, state);
+            return CreateMemoryAccess(addrInstr, memoryOperand, memoryOperand.Width, state);
         }
 
         public MemoryAccess StackAccess(Expression expr, DataType dt)
@@ -200,12 +200,12 @@ namespace Decompiler.Arch.X86
             return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
         }
 
-        public ExternalProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
+        public ExternalProcedure ImportedProcedureName(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
         {
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                return host.GetImportedProcedure(new Address( mem.Offset.ToUInt32()));
+                return host.GetImportedProcedure(new Address( mem.Offset.ToUInt32()), addrInstruction);
             }
             return null;
         }

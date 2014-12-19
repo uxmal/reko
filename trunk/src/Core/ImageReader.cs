@@ -103,6 +103,18 @@ namespace Decompiler.Core
             return b;
         }
 
+        public bool TryReadByte(out byte b)
+        {
+            if (off >= bytes.Length)
+            {
+                b = 0;
+                return false;
+            }
+            b = bytes[off];
+            ++off;
+            return true;
+        }
+
         public sbyte ReadSByte()
         {
             return (sbyte) ReadByte();

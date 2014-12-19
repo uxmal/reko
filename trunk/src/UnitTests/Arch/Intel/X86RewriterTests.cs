@@ -140,7 +140,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 throw new NotImplementedException();
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk)
+            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstruction)
             {
                 ImportReference p;
                 if (importThunks.TryGetValue(addrThunk, out p))

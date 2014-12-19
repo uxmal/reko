@@ -221,7 +221,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 arch.Stub(x => x.PointerType).Return(PrimitiveType.Pointer32);
                 scanner.Stub(x => x.CallGraph).Return(cg);
-                scanner.Stub(x => x.GetImportedProcedure(null)).IgnoreArguments().Return(null);
+                scanner.Stub(x => x.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.ScanProcedure(
@@ -264,7 +264,8 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<Address>.Matches(a => a.Linear == 0x2000u))).Return(alloca);
+                    Arg<Address>.Matches(a => a.Linear == 0x2000u),
+                    Arg<Address>.Is.NotNull)).Return(alloca);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
                     
             }
@@ -299,7 +300,8 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<Address>.Is.Equal(new Address(0x2000u)))).Return(alloca);
+                    Arg<Address>.Is.Equal(new Address(0x2000u)),
+                    Arg<Address>.Is.NotNull)).Return(alloca);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
                     
             }
@@ -325,7 +327,7 @@ namespace Decompiler.UnitTests.Scanning
             scanner.Stub(s => s.Architecture).Return(arch);
             scanner.Stub(s => s.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             scanner.Stub(s => s.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
-            scanner.Stub(s => s.GetImportedProcedure(Arg<Address>.Is.Anything)).Return(null);
+            scanner.Stub(s => s.GetImportedProcedure(Arg<Address>.Is.Anything, Arg<Address>.Is.NotNull)).Return(null);
             scanner.Stub(s => s.CallGraph).Return(callGraph);
             scanner.Expect(s => s.ScanProcedure(
                 Arg<Address>.Is.Anything, 
@@ -409,7 +411,7 @@ testProc_exit:
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             scanner.Expect(s => s.FindContainingBlock(new Address(0x00001000))).IgnoreArguments().Return(block).Repeat.Times(2);
             scanner.Expect(s => s.FindContainingBlock(new Address(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
-            scanner.Expect(s => s.GetImportedProcedure(null)).IgnoreArguments().Return(null);
+            scanner.Expect(s => s.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
             scanner.Expect(s => s.EnqueueJumpTarget(
                 Arg<Address>.Is.NotNull,
                 Arg<Address>.Matches(a => a.Linear == 0x00100004),

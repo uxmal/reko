@@ -26,7 +26,7 @@ namespace Decompiler.Core
     public interface IRewriterHost
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
-        ExternalProcedure GetImportedProcedure(Address addrThunk);
+        ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
     }
 }
 

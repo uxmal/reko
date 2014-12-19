@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +36,8 @@ namespace Decompiler.Core
             this.ReferenceAddress = addr;
             this.ModuleName = moduleName;
         }
-
-        public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform);
+  
+        public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, Platform platform, AddressContext ctx);
     }
 
     public class NamedImportReference : ImportReference
@@ -49,7 +50,7 @@ namespace Decompiler.Core
             this.ImportName = importName;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform)
+        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform, AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
             if (ep != null)
@@ -59,6 +60,11 @@ namespace Decompiler.Core
             if (sig != null)
             {
                 ep = new ExternalProcedure(ImportName, sig);   //$BUGBUG: mangled name!
+            }
+            else
+            {
+                ctx.Warn("Unable to resolve imported reference {0}.", this);
+                return new ExternalProcedure(this.ToString(), null);
             }
             return ep;
         }
@@ -79,9 +85,13 @@ namespace Decompiler.Core
             this.Ordinal = ordinal;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform)
+        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform, AddressContext ctx)
         {
-            return resolver.ResolveProcedure(ModuleName, Ordinal, platform);
+            var ep = resolver.ResolveProcedure(ModuleName, Ordinal, platform);
+            if (ep != null)
+                return ep;
+            ctx.Warn("Unable to resolve imported reference {0}.", this);
+            return new ExternalProcedure(this.ToString(), null);
         }
 
         public override string ToString()

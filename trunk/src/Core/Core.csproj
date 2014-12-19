@@ -201,6 +201,7 @@
     <Compile Include="ILoader.cs" />
     <Compile Include="ImportReference.cs" />
     <Compile Include="ImportResolver.cs" />
+    <Compile Include="AddressContext.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="MetadataLoader.cs" />

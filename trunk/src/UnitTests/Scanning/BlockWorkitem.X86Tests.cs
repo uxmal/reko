@@ -100,11 +100,11 @@ namespace Decompiler.UnitTests.Scanning
                 sigs.Add(addrCallInstruction.Linear, signature);
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk)
+            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
             {
                 ImportReference p;
                 if (importThunks.TryGetValue(addrThunk, out p))
-                    return p.ResolveImportedProcedure(this, null);
+                    return p.ResolveImportedProcedure(this, null, new AddressContext(null, addrInstr, null));
                 else
                     return null;
             }

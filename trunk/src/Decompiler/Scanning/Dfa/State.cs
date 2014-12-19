@@ -32,6 +32,6 @@ namespace Decompiler.Scanning.Dfa
     {
         public int Number;
         public bool Starts;
-        public bool Terminates;
+        public bool Accepts;
     }
 }

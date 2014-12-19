@@ -61,8 +61,6 @@ namespace Decompiler.Scanning
             this.state = state;
             this.eval = new ExpressionSimplifier(state);
             this.addrStart = addr;
-            if (addrStart.ToString().StartsWith("F2"))  //$DEBUG
-                addrStart.ToString();
             this.blockCur = null;
         }
 
@@ -287,7 +285,7 @@ namespace Decompiler.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
-                var impProc = scanner.GetImportedProcedure(addr);
+                var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null && impProc.Characteristics.IsAlloca)
                     return ProcessAlloca(site, impProc);
 
@@ -356,7 +354,12 @@ namespace Decompiler.Scanning
                 if (ppp != null)
                 {
                     var e = CreateProcedureConstant(ppp);
-                    Emit(BuildApplication(e, ppp.Signature, site));
+                    if (ppp.Signature != null && ppp.Signature.ArgumentsValid)
+                    {
+                        Emit(BuildApplication(e, ppp.Signature, site));
+                    }
+                    else
+                        Emit(new CallInstruction(e, site));
                     return OnAfterCall(ppp.Signature, ppp.Characteristics);
                 }
             }
@@ -383,6 +386,8 @@ namespace Decompiler.Scanning
 
         private bool OnAfterCall(ProcedureSignature sigCallee, Decompiler.Core.Serialization.ProcedureCharacteristics characteristics)
         {
+            if (sigCallee == null)
+                return true;
             state.OnAfterCall(stackReg, sigCallee, eval);
             if (characteristics != null && characteristics.Terminates)
                 return false;
@@ -626,6 +631,9 @@ namespace Decompiler.Scanning
                         {
                             return pc.Procedure;
                         }
+                        var imp = ImportedProcedureName(ass.Src);
+                        if (imp != null)
+                            return new ExternalProcedure(imp.Name, imp.Signature, imp.Characteristics);
                         else
                             return null;
                     }
@@ -668,7 +676,7 @@ namespace Decompiler.Scanning
             var offset = mem.EffectiveAddress as Constant;
             if (offset == null)
                 return null;
-            return scanner.GetImportedProcedure(new Address( offset.ToUInt32()));
+            return scanner.GetImportedProcedure(new Address(offset.ToUInt32()), ric.Address);
         }
 
         //$TODO: merge the followng two procedures?
