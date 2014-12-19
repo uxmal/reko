@@ -49,6 +49,7 @@ namespace Decompiler.Gui.Windows.Forms
         }
 
         public IServiceProvider Services { get; set; }
+        public string InitialPattern { get; set; }
 
         public IComboBox Patterns { get; private set; }
         public ICheckBox RegexCheckbox { get; private set; }

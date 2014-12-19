@@ -663,7 +663,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Gui\decompiler-menus.xml" />
+    <Content Include="Gui\decompiler-menus.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
     <None Include="Images\Back.bmp" />

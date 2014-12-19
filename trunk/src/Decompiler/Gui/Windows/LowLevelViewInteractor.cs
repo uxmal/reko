@@ -27,6 +27,7 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
@@ -125,6 +126,7 @@ namespace Decompiler.Gui.Windows
                 case CmdIds.ActionMarkProcedure:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                 case CmdIds.EditCopy:
+                case CmdIds.ViewFindPattern:
                     status.Status = ValidSelection()
                         ? MenuStatus.Visible | MenuStatus.Enabled
                         : MenuStatus.Visible;
@@ -145,6 +147,7 @@ namespace Decompiler.Gui.Windows
                 case CmdIds.ActionMarkType: return MarkType();
                 case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
                 case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
+                case CmdIds.ViewFindPattern: return ViewFindPattern();
                 }
             }
             return false;
@@ -319,6 +322,48 @@ namespace Decompiler.Gui.Windows
             resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
             return true;
         }
+
+        public bool ViewFindPattern()
+        {
+            AddressRange addrRange = control.MemoryView.GetAddressRange();
+            if (!addrRange.IsValid || program == null)
+                return true;
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var srSvc = services.RequireService<ISearchResultService>();
+            using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
+            {
+                dlg.InitialPattern = SelectionToHex(addrRange);
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
+                    var hits = 
+                        re.GetMatches(program.Image.Bytes, 0)
+                                .Select(offset => new AddressSearchHit
+                                {
+                                    Program = program,
+                                    LinearAddress = (uint)(program.Image.BaseAddress.Linear + offset)
+                                });
+                    srSvc.ShowSearchResults(new AddressSearchResult(this.services, hits));
+                }
+            }
+            return true;
+        }
+
+        private string SelectionToHex(AddressRange addr)
+        {
+            var sb = new StringBuilder();
+            var rdr = program.Architecture.CreateImageReader(program.Image, addr.Begin);
+            var sep = "";
+            while (rdr.Address <= addr.End)
+            {
+                sb.Append(sep);
+                sep = " ";
+                sb.AppendFormat("{0:X2}", (uint)rdr.ReadByte());
+            }
+            return sb.ToString();
+        }
+        
 
         private void MemoryView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

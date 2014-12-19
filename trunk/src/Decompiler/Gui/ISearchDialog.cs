@@ -32,6 +32,7 @@ namespace Decompiler.Gui
         event EventHandler Load;
 
         IServiceProvider Services { get; }
+        string InitialPattern { get; set; }
 
         IComboBox Patterns { get; }
         ICheckBox RegexCheckbox { get; }
