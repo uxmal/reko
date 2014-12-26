@@ -106,7 +106,7 @@ namespace Decompiler.Arch.X86
         private void RewriteFcom(int pops)
         {
             Identifier op1 = FpuRegister(0);
-            Expression op2 = (instrCur.code == Opcode.fcompp)
+            Expression op2 = (instrCur.code == Opcode.fcompp || instrCur.code == Opcode.fucompp)
                 ? FpuRegister(1)
                 : SrcOp(instrCur.op1);
             emitter.Assign(

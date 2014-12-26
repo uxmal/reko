@@ -19,21 +19,17 @@
 #endregion
 
 using Decompiler.Arch.X86;
-using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using Decompiler.Evaluation;
-using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Decompiler.UnitTests.Scanning
@@ -47,6 +43,32 @@ namespace Decompiler.UnitTests.Scanning
         private ExpressionSimplifier expSimp;
         private Identifier SCZO;
         private IBackWalkHost host;
+
+
+        private class BackwalkerHost : IBackWalkHost
+        {
+            #region IBackWalkHost Members
+
+            public void AddDiagnostic(Address addr, Diagnostic diagnostic)
+            {
+            }
+            public AddressRange GetSinglePredecessorAddressRange(Address block)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Address GetBlockStartAddress(Address addr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Block GetSinglePredecessor(Block block)
+            {
+                return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
+            }
+
+            #endregion
+        }
 
         [SetUp]
         public void Setup()
@@ -283,6 +305,42 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
+        public void BwIndexInMemoryAddress()
+        {
+            // samples of switch statement emitted
+            // by the Microsoft VC compiler
+
+            var ebp = m.Frame.EnsureRegister(Registers.ebp);
+            var eax = m.Frame.EnsureRegister(Registers.eax);
+            var edx = m.Frame.EnsureRegister(Registers.edx);
+            var dl = m.Frame.EnsureRegister(Registers.dl);
+            var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+            
+            // cmp [ebp-66],1D                           
+
+            m.Assign(SCZO, m.Cond(m.ISub(m.LoadDw(m.ISub(ebp, 0xC4)), 0x1D)));
+            var block0 = m.CurrentBlock;
+            m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
+
+
+            // mov edx,[ebp-66]
+            // movzx eax,byte ptr [edx + 0x10000]
+            // jmp [eax + 0x12000]
+
+            m.Assign(edx, m.LoadDw(m.ISub(ebp, 0xC4)));
+            m.Assign(eax, m.Cast(PrimitiveType.Word32, m.LoadB(m.IAdd(edx, 0x10000))));
+            var block1 = m.CurrentBlock;
+
+            var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd( eax, 0x12000)), RtlClass.Transfer), expSimp);
+            var ret = bw.BackwalkInstructions(Registers.eax, block1);
+            Assert.AreEqual("None", bw.Index.ToString());
+            Assert.AreEqual("Mem0[ebp - 0x000000C4:word32]", bw.IndexExpression.ToString());
+            Assert.IsTrue(ret);
+
+            ret = bw.BackwalkInstructions(null, block0);
+        }
+
+        [Test]
         public void BwTempRegister()
         {
             var v1 = m.Frame.CreateTemporary(PrimitiveType.Word32);
@@ -296,7 +354,7 @@ namespace Decompiler.UnitTests.Scanning
             result = bw.BackwalkInstruction(m.Block.Statements[1].Instruction);
             result = bw.BackwalkInstruction(m.Block.Statements[0].Instruction);
 
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
             Assert.AreEqual("None", bw.Index.ToString());
         }
 
@@ -318,31 +376,6 @@ namespace Decompiler.UnitTests.Scanning
                 fut.AssertFilesEqual();
             }
         }
-         
-
-        private class BackwalkerHost : IBackWalkHost
-        {
-            #region IBackWalkHost Members
-
-            public void AddDiagnostic(Address addr, Diagnostic diagnostic)
-            {
-            }
-            public AddressRange GetSinglePredecessorAddressRange(Address block)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Address GetBlockStartAddress(Address addr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Block GetSinglePredecessor(Block block)
-            {
-                return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
-            }
-
-            #endregion
-        }
+       
 	}
 }

@@ -87,7 +87,7 @@ namespace Decompiler.Gui.Windows
 
         public void DisplayProcedure(Procedure proc)
         {
-            if (codeView == null)
+            if (codeView == null || proc == null)
                 return;
 
             var tsf = new TextSpanFormatter();

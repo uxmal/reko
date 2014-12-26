@@ -80,8 +80,8 @@ namespace Decompiler.UnitTests.Gui
             procs.Add(new ProcedureSearchHit(program, new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
             procs.Add(new ProcedureSearchHit(program, new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
 
-            Assert.AreEqual(-1, psr.GetItemImageIndex(0));
-            string [] str = psr.GetItemStrings(0);
+            Assert.AreEqual(-1, psr.GetItem(0).ImageIndex);
+            string [] str = psr.GetItem(0).Items;
             Assert.AreEqual(3, str.Length);
 
             Assert.AreEqual("Proggie", str[0]);

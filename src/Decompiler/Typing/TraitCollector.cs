@@ -249,7 +249,8 @@ namespace Decompiler.Typing
 
 		public DataType VisitUseInstruction(UseInstruction u)
 		{
-			throw new NotImplementedException();
+            u.Expression.Accept(this);
+            return VoidType.Instance;
 		}
 
 		#endregion

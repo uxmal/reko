@@ -50,17 +50,18 @@ namespace Decompiler.Gui
             view.AddColumn("Procedure Name", 20);
         }
 
-        public int GetItemImageIndex(int i)
-        {
-            return -1;
-        }
 
-        public string[] GetItemStrings(int i)
+        public SearchResultItem GetItem(int i)
         {
-            return new string[] {
-                hits[i].Program.Name,
-                hits[i].Address.ToString(),
-                hits[i].Procedure.Name
+            return new SearchResultItem
+            {
+                Items = new[] {
+                    hits[i].Program.Name,
+                    hits[i].Address.ToString(),
+                    hits[i].Procedure.Name
+                },
+                ImageIndex = -1,
+                BackgroundColor = -1,
             };
         }
 

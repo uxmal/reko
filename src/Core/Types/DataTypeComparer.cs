@@ -169,6 +169,13 @@ namespace Decompiler.Core.Types
             {
                 return Compare(strX, strY, ++count);
             }
+
+            FunctionType fnX = x as FunctionType;
+            FunctionType fnY = y as FunctionType;
+            if (fnX != null && fnY != null)
+            {
+                return Compare(fnX, fnY, ++count);
+            }
 			throw new NotImplementedException(string.Format("NYI: comparison between {0} and {1}", x.GetType(), y.GetType()));
 		}
 
@@ -242,6 +249,22 @@ namespace Decompiler.Core.Types
 			}
 			return 0;
 		}
+
+        public int Compare(FunctionType x, FunctionType y, int count)
+        {
+            int d = x.ArgumentTypes.Length - y.ArgumentTypes.Length;
+            if (d != 0)
+                return d;
+            var ex = 0;
+            ++count;
+            for (int i = 0; i < x.ArgumentTypes.Length; ++i)
+            {
+                d = Compare(x.ArgumentTypes[i], y.ArgumentTypes[i], count);
+                if (d != 0)
+                    return d;
+            }
+            return Compare(x.ReturnType, y.ReturnType, count);
+        }
 
 		#region IDataTypeVisitor Members /////////////////////////////////////////
 

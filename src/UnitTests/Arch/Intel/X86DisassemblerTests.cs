@@ -452,5 +452,12 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble32(0xF2, 0x0F, 0x2C, 0xC3);
             Assert.AreEqual("cvttsd2si\teax,xmm3", instr.ToString());
         }
+
+        [Test]
+        public void Dis_x86_fucompp()
+        {
+            var instr = Disassemble32(0xDA, 0xE9);
+            Assert.AreEqual("fucompp\t", instr.ToString());
+        }
     }
 }

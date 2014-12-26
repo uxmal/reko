@@ -260,7 +260,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal), 
 
 				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				new SingleByteOpRec(Opcode.fucompp), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 

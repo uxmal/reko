@@ -260,9 +260,11 @@ namespace Decompiler.Analysis
             if (simp is Constant)
                 return new Result { Value = simp, PropagatedExpression = simp };
 
-            if (IsConstantOffsetFromFramePointer(simp))
+            if (IsConstantOffsetFromFramePointer(simp) &&
+                !(e is MemoryAccess || e is SegmentedAccess))
+            {
                 return new Result { Value = simp, PropagatedExpression = simp };
-
+            }
             return new Result { Value = simp, PropagatedExpression = e };
         }
 

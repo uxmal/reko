@@ -189,5 +189,33 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("<invalid>", ctx.GetValue(r2).ToString());
             Assert.AreEqual("<invalid>", ctx.GetValue(r3).ToString());
         }
+
+        [Test]
+        public void EP_LValue()
+        {
+            var arch = new FakeArchitecture();
+            var p = new ProgramBuilder(arch);
+            Identifier r2 = null;
+            Identifier sp = null;
+            var proc = p.Add("main", (m) =>
+            {
+                r2 = m.Register("r2");
+                sp = m.Frame.EnsureRegister(arch.StackRegister);
+                m.Store(m.ISub(sp, 12), m.ISub(sp, 16));
+                m.Store(m.ISub(sp, 12), 2);
+            });
+
+            var ctx = new SymbolicEvaluationContext (arch, proc.Frame);
+            var simplifier = new ExpressionSimplifier(ctx);
+            var ep = new ExpressionPropagator(arch,simplifier,ctx, new ProgramDataFlow());
+
+            ctx.RegisterState[arch.StackRegister]= proc.Frame.FramePointer;
+
+            var stms = proc.EntryBlock.Succ[0].Statements;
+            var instr1 = stms[0].Instruction.Accept(ep);
+            Assert.AreEqual("dwLoc0C = fp - 0x00000010", instr1.ToString());
+            var instr2 = stms[1].Instruction.Accept(ep);
+            Assert.AreEqual("dwLoc0C = 0x00000002", instr2.ToString());
+        }
     }
 }

@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_moveQ()
         {
-            Assert.AreEqual("moveq\t#$+01,d1", 0x7201);
+            RunTest("moveq\t#$+01,d1", 0x7201);
         }
 
         [Test]

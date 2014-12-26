@@ -311,7 +311,7 @@ namespace Decompiler.Typing
 
 		public void VisitProcedureConstant(ProcedureConstant pc)
 		{
-			throw new NotImplementedException();
+			handler.DataTypeTrait(pc, prog.Architecture.PointerType);
 		}
 
 		public void VisitSlice(Slice slice)
