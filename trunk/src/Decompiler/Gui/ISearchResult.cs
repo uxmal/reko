@@ -38,11 +38,15 @@ namespace Decompiler.Gui
         int ContextMenuID { get; }      // Context menu to use.
 
         void CreateColumns(ISearchResultView view);
-        int GetItemImageIndex(int i);
-
-        string[] GetItemStrings(int i);
-
+        SearchResultItem GetItem(int i);
         void NavigateTo(int i);
+    }
+
+    public class SearchResultItem
+    {
+        public string [] Items;
+        public int ImageIndex;
+        public int BackgroundColor;
     }
 
     public interface ISearchResultView

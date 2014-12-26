@@ -72,7 +72,6 @@ namespace Decompiler.Environments.Win32
                 var sproc = field.Type as SerializedSignature;
                 if (sproc != null)
                 {
-                    Debug.Print("Deserializing: {0}", sproc);
                     var sser = new ProcedureSerializer(arch, loader, "__cdecl");
                     return sser.Deserialize(sproc, arch.CreateFrame());    //$BUGBUG: catch dupes?   
                 }

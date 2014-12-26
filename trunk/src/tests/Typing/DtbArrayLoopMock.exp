@@ -21,7 +21,7 @@ looptest:
 ArrayLoopMock_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct (4000000 (arr T_12 1024) a4000000)))
+Eq_1: (struct (4000000 (arr T_12 1024) a4000000))
 	globals_t (in globals : (struct))
 Eq_2: (union ((ptr (struct (0 T_9 t0000))) u0) ((memptr globals_t (struct 0004 (0 word32 dw0000))) u1))
 	T_2 (in ptr_3 : word32)
@@ -44,8 +44,8 @@ Eq_12: (struct 0004 (0 T_9 t0000))
 // Type Variables ////////////
 globals_t: (in globals : (struct))
   Class: Eq_1
-  DataType: (ptr (struct (4000000 (arr T_12 1024) a4000000)))
-  OrigDataType: (ptr (struct (4000000 (arr T_12 1024) a4000000)))
+  DataType: (struct (4000000 (arr T_12 1024) a4000000))
+  OrigDataType: (struct (4000000 (arr T_12 1024) a4000000))
 T_2: (in ptr_3 : word32)
   Class: Eq_2
   DataType: (union ((ptr (struct (0 T_9 t0000))) u0) ((memptr globals_t (struct 0004 (0 word32 dw0000))) u1))

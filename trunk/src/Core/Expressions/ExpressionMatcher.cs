@@ -369,6 +369,11 @@ namespace Decompiler.Core.Expressions
                 return new WildConstant(Label);
             }
 
+            public override uint ToUInt32()
+            {
+                throw new InvalidOperationException();
+            }
+
             public override object GetValue()
             {
                 throw new InvalidOperationException();

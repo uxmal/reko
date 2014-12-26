@@ -89,8 +89,13 @@ namespace Decompiler.Gui.Windows
         {
             if (0 <= i && i < result.Count)
             {
-                var item = new ListViewItem(result.GetItemStrings(i));
-                item.ImageIndex = result.GetItemImageIndex(i);
+                var sri = result.GetItem(i);
+                var item = new ListViewItem(sri.Items);
+                item.ImageIndex = sri.ImageIndex;
+                if (sri.BackgroundColor != -1)
+                {
+                    item.BackColor = System.Drawing.Color.FromArgb(sri.BackgroundColor);
+                }
                 item.Tag = i;
                 return item;
             }
@@ -185,14 +190,14 @@ namespace Decompiler.Gui.Windows
                 view.AddColumn("",40);
             }
 
-            public int GetItemImageIndex(int i)
+            public SearchResultItem GetItem(int i)
             {
-                return -1;
-            }
-
-            public string[] GetItemStrings(int i)
-            {
-                return new string[] { "No items found." };
+                return new SearchResultItem
+                {
+                    Items = new string[] { "No items found." },
+                    ImageIndex = -1,
+                    BackgroundColor = -1,
+                };
             }
 
             public void NavigateTo(int i)

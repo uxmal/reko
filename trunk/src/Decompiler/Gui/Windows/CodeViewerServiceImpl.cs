@@ -39,6 +39,8 @@ namespace Decompiler.Gui.Windows
 
         public void DisplayProcedure(Procedure proc)
         {
+            if (proc == null)
+                return;
             ShowWindow("codeViewerWindow", "Code Viewer", pane);
             pane.DisplayProcedure(proc);
         }

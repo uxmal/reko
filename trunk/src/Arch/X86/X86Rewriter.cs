@@ -166,6 +166,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.fsubr: EmitCommonFpuInstruction(Operator.ISub, true, false); break;
                 case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.ISub, true, true); break;
                 case Opcode.ftst: RewriteFtst(); break;
+                case Opcode.fucompp: RewriteFcom(2); break;
                 case Opcode.fxam: RewriteFxam(); break;
                 case Opcode.fxch: RewriteExchange(); break;
                 case Opcode.fyl2x: RewriteFyl2x(); break;

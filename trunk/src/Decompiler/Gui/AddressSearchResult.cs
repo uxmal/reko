@@ -63,34 +63,49 @@ namespace Decompiler.Gui
             return 0;
         }
 
-        public string[] GetItemStrings(int i)
+        public SearchResultItem GetItem(int i)
         {
             var hit = addresses[i];
             var program = hit.Program;
             var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i].LinearAddress);
             if (program.Architecture == null)
             {
-                return new string[] { 
+                return new SearchResultItem
+                {
+                    Items = new string[] { 
                     "",
                     addr.ToString(),
                     ""
+                },
+                    ImageIndex = 0,
+                    BackgroundColor = -1,
                 };
             }
             var dasm = program.Architecture.CreateDisassembler(program.Architecture.CreateImageReader(program.Image, addr));
             try
             {
-                var instr = string.Join("; ", dasm.Take(1).Select(inst => inst.ToString().Replace('\t', ' ')));
-                return new string[] {
+                var instr = string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
+                return new SearchResultItem
+                {
+                    Items = new string[] {
                     program.Name ?? "<Program>",
                     addr.ToString(),
                     instr,
+                    },
+                    ImageIndex = 0,
+                    BackgroundColor = -1,
                 };
             }
             catch
             {
-                return new string[] {
+                return new SearchResultItem
+                {
+                    Items = new string[] {
                     addr.ToString(),
                     "<invalid>"
+                    },
+                    ImageIndex = 0,
+                    BackgroundColor = -1,
                 };
             }
         }

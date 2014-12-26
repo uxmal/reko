@@ -306,10 +306,7 @@ namespace Decompiler.Core.Expressions
             return q | mask;
 		}
 
-		public uint ToUInt32()
-		{
-			return Convert.ToUInt32(GetValue());
-		}
+		public abstract uint ToUInt32();
 
 		public long ToInt64()
 		{
@@ -439,6 +436,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override uint ToUInt32()
+        {
+            return value ? 1u : 0u;
+        }
+
         public override ulong ToUInt64()
         {
             return value ? 1u : 0u;
@@ -463,6 +465,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return (uint)(int)value;
         }
 
         public override ulong ToUInt64()
@@ -491,6 +498,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
         public override ulong ToUInt64()
         {
             return (ulong)value;
@@ -517,6 +529,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
         public override ulong ToUInt64()
         {
             return value;
@@ -541,6 +558,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return (uint)value;
         }
 
         public override ulong ToUInt64()
@@ -574,6 +596,11 @@ namespace Decompiler.Core.Expressions
             return (short) value;
         }
 
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
         public override ulong ToUInt64()
         {
             return value;
@@ -598,6 +625,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return (uint)value;
         }
 
         public override ulong ToUInt64()
@@ -631,6 +663,11 @@ namespace Decompiler.Core.Expressions
             return (ushort) value;
         }
 
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
         public override ulong ToUInt64()
         {
             return value;
@@ -655,6 +692,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return (uint)value;
         }
 
         public override ulong ToUInt64()
@@ -683,6 +725,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
         public override ulong ToUInt64()
         {
             return value;
@@ -709,6 +756,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
         public override ulong ToUInt64()
         {
             return (ulong)value;
@@ -733,6 +785,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return (uint)value;
         }
 
         public override ulong ToUInt64()
@@ -778,6 +835,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override uint ToUInt32()
+        {
+            return Convert.ToUInt32(value);
+        }
+
         public override ulong ToUInt64()
         {
             return Convert.ToUInt64(value);
@@ -802,6 +864,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return Convert.ToUInt32(value);
         }
 
         public override ulong ToUInt64()
@@ -830,6 +897,11 @@ namespace Decompiler.Core.Expressions
         public override object GetValue()
         {
             return str;
+        }
+
+        public override uint ToUInt32()
+        {
+            throw new InvalidCastException();
         }
 
         public override string ToString()

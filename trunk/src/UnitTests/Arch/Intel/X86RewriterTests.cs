@@ -1127,5 +1127,15 @@ namespace Decompiler.UnitTests.Arch.Intel
               "0|10000000(4): 1 instructions",
               "1|L--|eax = (int32) xmm3");
         }
+
+
+        [Test]
+        public void X86Rw_fucompp()
+        {
+            Run32bitTest(0xDA, 0xE9);
+            AssertCode(
+              "0|10000000(2): 1 instructions",
+              "1|L--|FPUF = cond(rArg0 - rArg1)");
+        }
     }
 }

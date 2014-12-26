@@ -76,12 +76,9 @@ namespace Decompiler.UnitTests.Typing
 			Verify(outputFilename);
 		}
 
-
-
 		[SetUp]
 		public void Setup()
 		{
-            
 			factory = new TypeFactory();
 			store = new TypeStore();
 			eqb = new EquivalenceClassBuilder(factory, store);

@@ -83,14 +83,11 @@ namespace Decompiler.UnitTests.Gui.Windows
             result.Expect(s => s.CreateColumns(
                 Arg<ISearchResultView>.Is.NotNull));
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
-            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
-            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
-            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
             mr.ReplayAll();
 
             CreateUI();

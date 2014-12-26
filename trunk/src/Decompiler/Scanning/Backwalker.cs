@@ -68,6 +68,7 @@ namespace Decompiler.Scanning
         /// The register used to perform a table-dispatch switch.
         /// </summary>
         public RegisterStorage Index { get; private set; }
+        public Expression IndexExpression { get; set; }
         public Identifier UsedFlagIdentifier { get; set; } 
         public int Stride { get; private set; }
         public Address VectorAddress { get; private set; }
@@ -102,7 +103,7 @@ namespace Decompiler.Scanning
                     return null;	// seems unguarded to me.
 
                 BackwalkInstructions(Index, block);
-                if (Index == null)
+                if (Index == null && IndexExpression == null)
                     return null;
             }
             Operations.Reverse();
@@ -139,6 +140,11 @@ namespace Decompiler.Scanning
                             }
                             return false;
                         }
+                        if (binSrc.Operator is IMulOperator && immSrc != null)
+                        {
+                            Operations.Add(new BackwalkOperation(BackwalkOperator.mul, immSrc.ToInt32()));
+                            return true;
+                        }
                     }
                     if (binSrc.Operator == Operator.Xor && 
                         binSrc.Left == ass.Dst && 
@@ -161,8 +167,9 @@ namespace Decompiler.Scanning
                     if (binCmp != null && binCmp.Operator is ISubOperator)
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
-                        if (idLeft != RegisterStorage.None &&
-                            (idLeft == Index || idLeft == Index.GetPart(PrimitiveType.Byte)))
+                        if (idLeft != null &&
+                            (idLeft == Index || idLeft == Index.GetPart(PrimitiveType.Byte)) ||
+                           (IndexExpression != null && IndexExpression.ToString() == idLeft.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
                         {
                             var immSrc = binCmp.Right as Constant;
                             if (immSrc != null)
@@ -174,17 +181,22 @@ namespace Decompiler.Scanning
                     }
                 }
 
-                var memSrc = ass.Src as MemoryAccess;
+                var src = ass.Src;
+                var castSrc = src as Cast;
+                if (castSrc != null)
+                    src = castSrc.Expression;
+                var memSrc = src as MemoryAccess;
                 var regDst = RegisterOf(ass.Dst);
                 if (memSrc != null && (regDst == Index || regDst.IsSubRegisterOf(Index)))
                 {
                     // R = Mem[xxx]
                     var rIdx = Index;
                     var rDst = RegisterOf(ass.Dst);
-                    if (rDst != rIdx.GetSubregister(0, 8))
+                    if (rDst != rIdx.GetSubregister(0, 8) && castSrc == null)
                     {
                         Index = RegisterStorage.None;
-                        return false;
+                        IndexExpression = src;
+                        return true;
                     }
 
                     var binEa = memSrc.EffectiveAddress as BinaryExpression;
@@ -193,12 +205,13 @@ namespace Decompiler.Scanning
                     var memOffset = binEa.Right as Constant;
                     var scale = GetMultiplier(binEa.Left);
                     var baseReg = GetBaseRegister(binEa.Left);
-                    if (memOffset != null)
+                    if (memOffset != null && binEa.Operator == Operator.IAdd)
                     {
                         Operations.Add(new BackwalkDereference(memOffset.ToInt32(), scale));
                         Index = baseReg;
                         return true;
                     }
+                    return false;
                 }
 
                 if (regSrc != null && regDst == Index)
@@ -427,6 +440,7 @@ namespace Decompiler.Scanning
 		{
 			return n != 0 && (n & (n - 1)) == 0;
 		}
+
 
     }
 }

@@ -142,6 +142,7 @@ namespace Decompiler.Arch.X86
         fsubr,
         fsubrp,
         ftst,
+        fucompp,
         fxam,
         fxch,
         fxtract,
