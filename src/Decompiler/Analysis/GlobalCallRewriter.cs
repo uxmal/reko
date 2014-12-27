@@ -257,7 +257,9 @@ namespace Decompiler.Analysis
 		/// <returns></returns>
 		private bool IsSubRegisterOfRegisters(int r, BitSet regs)
 		{
-			var rr = prog.Architecture.GetRegister(r);
+            var rr = prog.Architecture.GetRegister(r);
+            if (rr == null)
+                return false;
 			foreach (int r2 in regs)
 			{
 				if (rr.IsSubRegisterOf(prog.Architecture.GetRegister(r2)))

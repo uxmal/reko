@@ -42,11 +42,11 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1")
-	globals_t (in globals : (struct))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_5: (segment "Eq_5" (5388 (arr word16) a5388))
 	T_5 (in ds : word16)
 // Type Variables ////////////
-globals_t: (in globals : (struct))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

@@ -233,13 +233,13 @@ namespace Decompiler.Analysis
             var reg = id.Storage as RegisterStorage;
             if (reg != null)
             {
-                Debug.Print("deadReg: {0}, F:{1}", reg, deadRegs.Contains(reg));
+                //Debug.Print("deadReg: {0}, F:{1}", reg, deadRegs.Contains(reg));
                 return deadRegs.Contains(reg);
             }
             var flags = id.Storage as FlagGroupStorage;
             if (flags != null)
             {
-                Debug.Print("deadFlags: {0}, F:{1}", deadFlags, flags.FlagGroupBits);
+                //Debug.Print("deadFlags: {0}, F:{1}", deadFlags, flags.FlagGroupBits);
                 return (flags.FlagGroupBits & deadFlags) == flags.FlagGroupBits;
             }
             if (id.Storage is FpuStackStorage || id.Storage is StackLocalStorage || id.Storage is SequenceStorage)

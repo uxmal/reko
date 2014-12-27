@@ -32,6 +32,9 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.X86
 {
+    /// <summary>
+    /// The state of an X86 processor. Used in the Scanning phase of the decompiler.
+    /// </summary>
 	public class X86State : ProcessorState
 	{
 		private ulong [] regs;

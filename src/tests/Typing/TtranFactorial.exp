@@ -30,7 +30,7 @@ fn0C00_000F_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct)
-	globals_t (in globals : (struct))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (fn int16 (word16))
 	T_2 (in fn0C00_000F : ptr32)
 	T_3 (in signature of fn0C00_000F : void)
@@ -38,7 +38,7 @@ Eq_2: (fn int16 (word16))
 Eq_7: (segment (64 int16 w0064))
 	T_7 (in ds : selector)
 // Type Variables ////////////
-globals_t: (in globals : (struct))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct))

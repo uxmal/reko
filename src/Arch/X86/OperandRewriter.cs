@@ -28,6 +28,10 @@ using System;
 
 namespace Decompiler.Arch.X86
 {
+    /// <summary>
+    /// Helper class used by the X86 rewriter to turn machine code operands into
+    /// IL expressions.
+    /// </summary>
     public class OperandRewriter
     {
         private IntelArchitecture arch;

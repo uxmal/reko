@@ -32,6 +32,9 @@ using System.Text;
 
 namespace Decompiler.Arch.X86
 {
+    /// <summary>
+    /// Rewrite rules for simple ALU operations.
+    /// </summary>
     public partial class X86Rewriter
     {
         private void RewriteAaa()

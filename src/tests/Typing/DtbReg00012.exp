@@ -71,7 +71,7 @@ fn0C00_0046_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct))
-	globals_t (in globals : (struct))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (ptr (fn T_8 (T_6, T_7)))
 	T_2 (in fn0C00_0007 : ptr32)
 	T_3 (in signature of fn0C00_0007 : void)
@@ -176,7 +176,7 @@ Eq_65: (struct 0002 (0 T_24 t0000))
 Eq_66: (struct 0002 (0 T_52 t0000))
 	T_66
 // Type Variables ////////////
-globals_t: (in globals : (struct))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct))
   OrigDataType: (ptr (struct))

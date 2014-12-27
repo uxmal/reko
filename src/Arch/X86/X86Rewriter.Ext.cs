@@ -32,6 +32,10 @@ using System.Text;
 
 namespace Decompiler.Arch.X86
 {
+    /// <summary>
+    /// Rewriter support for "extended" instructions of the x86 architecture. Basically, anything SSE or 
+    /// post-Pentium goes here.
+    /// </summary>
     public partial class X86Rewriter
     {
         public void RewritePxor()

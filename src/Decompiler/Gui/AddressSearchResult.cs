@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,7 @@ namespace Decompiler.Gui
         {
             view.AddColumn("Program", 30);
             view.AddColumn("Address", 10);
+            view.AddColumn("Type", 10);
             view.AddColumn("Data", 70);
         }
 
@@ -68,6 +70,8 @@ namespace Decompiler.Gui
             var hit = addresses[i];
             var program = hit.Program;
             var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i].LinearAddress);
+            ImageMapItem item;
+            var type = program.ImageMap.TryFindItem(addr, out item);
             if (program.Architecture == null)
             {
                 return new SearchResultItem
@@ -81,6 +85,7 @@ namespace Decompiler.Gui
                     BackgroundColor = -1,
                 };
             }
+            int bgColor = SelectBgColor(item);
             var dasm = program.Architecture.CreateDisassembler(program.Architecture.CreateImageReader(program.Image, addr));
             try
             {
@@ -88,12 +93,13 @@ namespace Decompiler.Gui
                 return new SearchResultItem
                 {
                     Items = new string[] {
-                    program.Name ?? "<Program>",
-                    addr.ToString(),
-                    instr,
+                        program.Name ?? "<Program>",
+                        addr.ToString(),
+                        item.DataType.ToString(),
+                        instr,
                     },
                     ImageIndex = 0,
-                    BackgroundColor = -1,
+                    BackgroundColor = bgColor,
                 };
             }
             catch
@@ -101,13 +107,22 @@ namespace Decompiler.Gui
                 return new SearchResultItem
                 {
                     Items = new string[] {
-                    addr.ToString(),
-                    "<invalid>"
+                        addr.ToString(),
+                        "<invalid>"
                     },
                     ImageIndex = 0,
                     BackgroundColor = -1,
                 };
             }
+        }
+
+        private int SelectBgColor(ImageMapItem item)
+        {
+            if (item.DataType is UnknownType)
+                return -1;
+            if (item.DataType is CodeType)  //$TODO: colors should come from settings.
+                return System.Drawing.Color.Pink.ToArgb();
+            throw new NotImplementedException();
         }
 
         public void NavigateTo(int i)

@@ -31,6 +31,9 @@ using System.Text;
 
 namespace Decompiler.Arch.Mips
 {
+    /// <summary>
+    /// Rewrites MIPS instructions into clusters of RTL instructions.
+    /// </summary>
     public class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<MipsInstruction> dasm;

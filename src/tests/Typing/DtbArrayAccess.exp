@@ -10,7 +10,7 @@ ArrayAccess_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct))
-	globals_t (in globals : (struct))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: word32
 	T_2 (in 0x00000000 : word32)
 	T_9 (in (r + 0x00000014)[i * 0x0000000A] : word32)
@@ -41,7 +41,7 @@ Eq_15: (struct 000A (0 T_9 t0000))
 Eq_16: (struct 000A (0 T_14 t0000))
 	T_16
 // Type Variables ////////////
-globals_t: (in globals : (struct))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct))
   OrigDataType: (ptr (struct))
