@@ -1,13 +1,13 @@
 // Equivalence classes ////////////
-Eq_1: (struct (10000000 real32 r10000000))
-	globals_t (in globals : (struct))
+Eq_1: (struct "Globals" (10000000 real32 r10000000))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct (0 real32 r0000))
 	T_2 (in 0x10000000 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (struct))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (struct (10000000 real32 r10000000))
-  OrigDataType: (struct (10000000 T_3 t10000000))
+  DataType: (ptr (struct "Globals"))
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in 0x10000000 : word32)
   Class: Eq_2
   DataType: (ptr (struct (0 real32 r0000)))

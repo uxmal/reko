@@ -26,8 +26,8 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("X86")]
-[assembly: AssemblyDescription("Decompiler support for x86-32 architecture.")]
+[assembly: AssemblyTitle("X86 architecture")]
+[assembly: AssemblyDescription("Decompiler support for x86-16, x86-32, and x86-64 architectures.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]

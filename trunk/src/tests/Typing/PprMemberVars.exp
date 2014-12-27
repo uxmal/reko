@@ -7,8 +7,8 @@ l1:
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
-Eq_1: (union ((ptr (struct (8000 (ptr Eq_2) ptr8000))) u0) ((struct) u1))
-	globals_t (in globals : (struct))
+Eq_1: (struct "Globals" (8000 (ptr Eq_2) ptr8000))
+	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment)
 	T_2 (in 0x0800 : selector)
 	T_5 (in Mem0[cs:0x00000001:word16] : word16)
@@ -17,10 +17,10 @@ Eq_3: (segment (1 (ptr Eq_2) ptr0001))
 Eq_4: (struct (0 (ptr Eq_2) ptr0000))
 	T_4 (in 0x00000001 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (struct))
+globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: Eq_1
-  OrigDataType: (union ((ptr (struct (8000 T_2 t8000))) u0) ((struct) u1))
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct "Globals"))
 T_2: (in 0x0800 : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)

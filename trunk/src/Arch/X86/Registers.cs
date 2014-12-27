@@ -29,7 +29,7 @@ using System.Text;
 namespace Decompiler.Arch.X86
 {
     /// <summary>
-    /// The registers of an Intel ia32 machine.
+    /// The registers of an x86 machine.
     /// </summary>
     public static class Registers
     {

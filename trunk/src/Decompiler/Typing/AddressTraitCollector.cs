@@ -177,7 +177,7 @@ namespace Decompiler.Typing
             if (basePointer != null)
                 handler.MemAccessTrait(null, basePointer, basePointerSize, eField, v);
             else
-                handler.MemFieldTrait(null, prog.Globals, eField, v);
+                handler.MemAccessTrait(null, prog.Globals, prog.Architecture.PointerType.Size, eField, v);
             // C is a pointer to tvField: [[c]] = ptr(tvField)
             handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField, 0);
         }

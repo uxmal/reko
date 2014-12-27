@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
 [assembly: AssemblyCopyright(Decompiler.AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 
 [assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]
@@ -43,7 +43,7 @@ namespace Decompiler
     public static class AssemblyMetadata
     {
         public const string AssemblyVersion = "0.3.0.0";
-        public const string AssemblyFileVersion = "0.3.0.0";
+        public const string AssemblyFileVersion = "0.3.1.0";
         public const string Product = "Decompiler";
         public const string Copyright = "Copyright © 1999-2014 John Källén";
         public const string Company = "John Källén Konsult AB";

@@ -30,6 +30,9 @@ using System.Text;
 
 namespace Decompiler.Arch.X86
 {
+    /// <summary>
+    /// Rewrite rules for control flow instructions.
+    /// </summary>
     public partial class X86Rewriter
     {
         private Expression CreateTestCondition(ConditionCode cc, Opcode opcode)
