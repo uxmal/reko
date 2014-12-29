@@ -31,11 +31,6 @@ namespace Decompiler.Gui.Windows.Controls
     public interface TextViewModel
     {
         /// <summary>
-        /// When this event fires, the listener should update.
-        /// </summary>
-        event EventHandler ModelChanged;
-
-        /// <summary>
         /// The total number of lines of the model.
         /// </summary>
         int LineCount { get; }
@@ -56,6 +51,14 @@ namespace Decompiler.Gui.Windows.Controls
         void CacheHint(int index, int count);
     }
 
+    /// <summary>
+    /// Models lines of text to be presented in a list widget.
+    /// </summary>
+    /// <remarks>
+    /// This model has the advantage that it can be used for texts that are defined
+    /// vaguely or inconsistently; notably a disassembly of a machinecode where instructions
+    /// can span differing number of bytes (e.g. x86, M68k). The calculation of an exact 
+    /// line count is expensive in such circumstances, so we opt for an estimate.</remarks>
     public interface TextViewModel2
     {
         object CurrentPosition { get; }
@@ -64,17 +67,19 @@ namespace Decompiler.Gui.Windows.Controls
 
         object EndPosition { get; }
 
-    /// <summary>
+        /// <summary>
         /// Estimated number of lines in the model.
         /// </summary>
         int LineCount { get; } 
 
         /// <summary>
-        /// Move the current position relative to the parameter <paramref name="position"/>, offet
+        /// Move the current position relative to the parameter <paramref name="position"/>, offset
         /// by <paramref name="offset"/> lines
         /// </summary>
+        /// <remarks>
         /// If the position would have overshot either the beginning or the end of the lines, clamp the
         /// position to Beginning or End.
+        /// </remarks>
         /// <param name="position"></param>
         /// <param name="offset"></param>
         void MoveTo(object position, int offset);
@@ -105,8 +110,6 @@ namespace Decompiler.Gui.Windows.Controls
     /// </summary>
     public class EmptyEditorModel : TextViewModel
     {
-        public event EventHandler ModelChanged;
-
         public int LineCount { get { return 0; } }
 
         public IEnumerable<TextSpan> GetLineSpans(int index)

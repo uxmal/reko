@@ -143,8 +143,6 @@ namespace Decompiler.Gui.Windows
 
         private class TextSpanModel : TextViewModel
         {
-            public event EventHandler ModelChanged { add { } remove { } }
-
             private TextSpan[][] lines;
 
             public TextSpanModel(TextSpan[][] lines)

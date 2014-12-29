@@ -30,7 +30,8 @@ using System.Windows.Forms;
 namespace Decompiler.Gui.Windows.Controls
 {
     /// <summary>
-    /// Renders textual data, which is stored in a <seealso cref="TextViewModel"/>, in a window. 
+    /// A Windows Forms control that renders textual data. The textual data
+    /// is fetched from a <seealso cref="TextViewModel"/>. 
     /// </summary>
     public partial class TextView : Control
     {

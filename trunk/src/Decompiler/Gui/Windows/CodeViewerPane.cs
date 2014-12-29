@@ -31,6 +31,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
+    /// <summary>
+    /// Pane that displays decompiled code.
+    /// </summary>
     public class CodeViewerPane : IWindowPane
     {
         private CodeView codeView; 
