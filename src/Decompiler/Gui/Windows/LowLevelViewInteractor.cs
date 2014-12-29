@@ -195,8 +195,6 @@ namespace Decompiler.Gui.Windows
             {
                 services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error happened while scanning the procedure.");
             }
-            control.MemoryView.Invalidate();
-            control.DisassemblyView.Invalidate();
         }
 
         private void MarkAndScanProcedure(Address address)

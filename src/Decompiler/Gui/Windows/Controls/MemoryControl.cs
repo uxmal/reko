@@ -365,7 +365,14 @@ namespace Decompiler.Gui.Windows.Controls
         public ImageMap ImageMap
         {
             get { return imageMap; }
-            set { imageMap = value; Invalidate(); }
+            set { 
+                if (imageMap != null) 
+                    imageMap.MapChanged -= imageMap_MapChanged;
+                imageMap = value;
+                if (imageMap != null)
+                    imageMap.MapChanged += imageMap_MapChanged;
+                Invalidate();
+            }
         }
 
         [Browsable(false)]
@@ -456,6 +463,11 @@ namespace Decompiler.Gui.Windows.Controls
 				Invalidate();
 			}
 		}
+
+        public void imageMap_MapChanged(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
 
 		private void vscroller_Scroll(object sender, ScrollEventArgs e)
 		{

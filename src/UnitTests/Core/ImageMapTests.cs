@@ -135,5 +135,16 @@ namespace Decompiler.UnitTests.Core
             Assert.IsTrue(map.TryFindItemExact(addrBase + 0x10, out item));
             Assert.IsInstanceOf<UnknownType>(item.DataType);
         }
+
+        [Test]
+        public void ImageMap_FireChangeEvent()
+        {
+            var map = new ImageMap(addrBase, 0x100);
+            var mapChangedFired = false;
+            map.MapChanged += (sender, e) => { mapChangedFired = true; };
+            map.AddItem(addrBase, new ImageMapItem { DataType = new CodeType() });
+            Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
+
+        }
 	}
 }
