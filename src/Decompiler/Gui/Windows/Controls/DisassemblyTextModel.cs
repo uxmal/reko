@@ -30,7 +30,7 @@ namespace Decompiler.Gui.Windows.Controls
     /// <summary>
     /// Presents disassembled instructions as lines of text
     /// </summary>
-    public class DisassemblyTextModel : TextViewModel2
+    public class DisassemblyTextModel : TextViewModel
     {
         private IProcessorArchitecture arch;
         private LoadedImage image;

@@ -73,10 +73,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         private string Flatten(TextViewModel model)
         {
             var sb = new StringBuilder();
-            for (int i = 0; i < model.LineCount; ++i)
+            var lines = model.GetLineSpans(model.LineCount);
+            foreach (var line in lines)
             {
-                var spans = model.GetLineSpans(i);
-                foreach (var span in spans)
+                foreach (var span in line)
                 {
                     EmitSpanWrapper(span, sb);
                     sb.Append(span.GetText());

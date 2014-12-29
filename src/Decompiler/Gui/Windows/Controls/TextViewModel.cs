@@ -28,38 +28,13 @@ namespace Decompiler.Gui.Windows.Controls
     /// Describes a source of textual data as a list of lines,
     /// where each line is 0 or more TextSpans.
     /// </summary>
-    public interface TextViewModel
-    {
-        /// <summary>
-        /// The total number of lines of the model.
-        /// </summary>
-        int LineCount { get; }
-
-        /// <summary>
-        /// Retrieves Line spans starting at the CurrentLine.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        IEnumerable<TextSpan> GetLineSpans(int index);
-
-        /// <summary>
-        /// Gives the view model a hint that the <paramref name="count"/> items starting
-        /// at <paramref name="index"/> will soon be fetched.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
-        void CacheHint(int index, int count);
-    }
-
-    /// <summary>
-    /// Models lines of text to be presented in a list widget.
-    /// </summary>
     /// <remarks>
     /// This model has the advantage that it can be used for texts that are defined
-    /// vaguely or inconsistently; notably a disassembly of a machinecode where instructions
+    /// vaguely or inconsistently; notably a disassembly of a machine code where instructions
     /// can span differing number of bytes (e.g. x86, M68k). The calculation of an exact 
-    /// line count is expensive in such circumstances, so we opt for an estimate.</remarks>
-    public interface TextViewModel2
+    /// line count is expensive in such circumstances, so we opt for an estimate.
+    /// </remarks>
+    public interface TextViewModel
     {
         object CurrentPosition { get; }
 
@@ -110,14 +85,26 @@ namespace Decompiler.Gui.Windows.Controls
     /// </summary>
     public class EmptyEditorModel : TextViewModel
     {
+        public object CurrentPosition { get { return this; } }
+        public object StartPosition { get { return this; } }
+        public object EndPosition{ get { return this; } }
         public int LineCount { get { return 0; } }
 
-        public IEnumerable<TextSpan> GetLineSpans(int index)
+        public void MoveTo(object position, int offset)
         {
-            yield break;
         }
 
-        public void CacheHint(int index, int count)
+        public TextSpan[][] GetLineSpans(int count)
+        {
+            return new TextSpan[0][];
+        }
+
+        public Tuple<int, int> GetPositionAsFraction()
+        {
+            return Tuple.Create(0, 1);
+        }
+
+        public void SetPositionAsFraction(int numer, int denom)
         {
         }
     }

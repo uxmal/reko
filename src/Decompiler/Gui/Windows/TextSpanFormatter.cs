@@ -144,6 +144,7 @@ namespace Decompiler.Gui.Windows
         private class TextSpanModel : TextViewModel
         {
             private TextSpan[][] lines;
+            private int position;
 
             public TextSpanModel(TextSpan[][] lines)
             {
@@ -152,13 +153,40 @@ namespace Decompiler.Gui.Windows
 
             public int LineCount { get { return lines.Length; } }
 
-            public IEnumerable<TextSpan> GetLineSpans(int index)
-            {
-                return lines[index];
-            }
-
             public void CacheHint(int index, int count)
             {
+            }
+
+            public object CurrentPosition { get { return position; } }
+
+            public object StartPosition { get { return position; } }
+
+            public object EndPosition { get { return position; } }
+
+            public void MoveTo(object position, int offset)
+            {
+                position = (int)position + offset;
+            }
+
+            public TextSpan[][] GetLineSpans(int count)
+            {
+                int p = (int)position;
+                int c = Math.Min(count, lines.Length - p);
+                if (c <= 0)
+                    return new TextSpan[0][];
+                var spans = new TextSpan[c][];
+                Array.Copy(lines, p, spans, 0, c);
+                return spans;
+            }
+
+            public Tuple<int, int> GetPositionAsFraction()
+            {
+                return Tuple.Create((int)position, lines.Length);
+            }
+
+            public void SetPositionAsFraction(int numer, int denom)
+            {
+                position = (int) (Math.BigMul(numer, lines.Length) / denom);
             }
         }
 

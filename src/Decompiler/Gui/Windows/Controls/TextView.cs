@@ -185,7 +185,6 @@ namespace Decompiler.Gui.Windows.Controls
             public LayoutSpan[] Spans;
         }
 
-
         /// <summary>
         /// Horizontal span of text
         /// </summary>
@@ -204,15 +203,14 @@ namespace Decompiler.Gui.Windows.Controls
             SizeF szClient = new SizeF(ClientSize);
             var rcLine = new RectangleF(0, 0, szClient.Width, cyLine);
             
-            // Warm up the cache.
-            int iLine = vScroll.Value;
+            // Get the lines.
             int cVisibleLines = (int) Math.Ceiling(szClient.Height + cyLine);
-            model.CacheHint(iLine, cVisibleLines);
-
+            var lines = model.GetLineSpans(cVisibleLines);
+            int iLine = 0;
             while (rcLine.Top < szClient.Height && 
-                   iLine < model.LineCount)
+                   iLine < lines.Length)
             {
-                var line = model.GetLineSpans(iLine);
+                var line = lines[iLine];
                 var ll = new LayoutLine { 
                     Extent = rcLine,
                     Spans = ComputeSpanLayouts(line, rcLine, g)
@@ -341,6 +339,7 @@ namespace Decompiler.Gui.Windows.Controls
         void vScroll_ValueChanged(object sender, EventArgs e)
         {
             var g = CreateGraphics();
+            model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
             ComputeLayout(g);
             g.Dispose();
             Invalidate();
