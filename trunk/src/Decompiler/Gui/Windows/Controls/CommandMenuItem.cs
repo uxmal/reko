@@ -52,8 +52,8 @@ namespace Decompiler.Gui.Windows.Controls
 		{
             if (text == null)
             {
-                Debug.Print("************** {0} **************", cmdId); return;
-                Text = "@@@";
+                Debug.Print("************** {0} **************", cmdId);
+                return;
             }
             else
             {

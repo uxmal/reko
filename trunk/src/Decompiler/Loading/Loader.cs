@@ -37,7 +37,6 @@ namespace Decompiler.Loading
     public class Loader : ILoader
     {
         private IDecompilerConfigurationService cfgSvc;
-        private DecompilerEventListener eventListener;
 
         public Loader(IServiceProvider services)
         {

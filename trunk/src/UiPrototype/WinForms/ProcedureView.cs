@@ -40,11 +40,16 @@ namespace Decompiler.UiPrototype.WinForms
         public class EditorModel : TextViewModel
         {
             private TextSpan[][] lines;
+            private int position;
 
             public EditorModel(params TextSpan[][] spans)
             {
                 this.lines = spans;
             }
+
+            public object CurrentPosition { get { return position; } }
+            public object StartPosition { get { return 0; } }
+            public object EndPosition { get { return lines.Length;  } }
 
             public int LineCount { get { return lines.Length; } }
 
@@ -53,8 +58,24 @@ namespace Decompiler.UiPrototype.WinForms
                 return lines[index];
             }
 
-            public void CacheHint(int index, int count)
+            public void MoveTo(object position, int offset)
             {
+                this.position = (int)position + offset;
+            }
+
+            TextSpan[][] TextViewModel.GetLineSpans(int count)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Tuple<int, int> GetPositionAsFraction()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetPositionAsFraction(int numer, int denom)
+            {
+                throw new NotImplementedException();
             }
         }
 

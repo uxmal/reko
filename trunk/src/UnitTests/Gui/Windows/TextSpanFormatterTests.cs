@@ -35,10 +35,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var model = tsf.GetModel();
             var sb= new StringBuilder();
-            for (int i = 0; i < model.LineCount; ++i)
+            var lines = model.GetLineSpans(model.LineCount);
+            foreach (var line in lines)
             {
-                var spans = model.GetLineSpans(i);
-                foreach (var span in spans)
+                foreach (var span in line)
                 {
                     EmitSpanWrapper(span, sb);
                     sb.Append(span.GetText());
