@@ -186,7 +186,6 @@ namespace Decompiler.Gui.Windows
             AddressRange addrRange;
             if (!TryGetSelectedAddressRange(out addrRange))
                 return;
-
             try
             {
                 var address = addrRange.Begin;

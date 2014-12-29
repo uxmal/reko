@@ -80,9 +80,10 @@ namespace Decompiler.Typing
             ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
 
    //         RestrictProcedures(0, 1, true);
+            eventListener.ShowStatus("Gathering primitive datatypes from instructions.");
 			aen.Transform(prog);
 			eqb.Build(prog);
-            eventListener.ShowStatus("Collecting datatype traits.");
+            eventListener.ShowStatus("Collecting datatype usage traits.");
 			trco.CollectProgramTraits(prog);
             eventListener.ShowStatus("Building equivalence classes.");
 			dtb.BuildEquivalenceClassDataTypes();

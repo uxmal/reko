@@ -17,6 +17,7 @@
 	<menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxBrowser" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxProcedure" cmdSet="Decompiler"/>
+  <menu type="ContextMenu" id="CtxAddressSearch" cmdSet="Decompiler"/>
 
   <!-- Toolbars -->
   <menu type="ToolStrip" id="MainToolbar" cmdSet="GuidCmdSet"/>
@@ -54,6 +55,8 @@
   <group id="GrpToolbarActions" cmdSet="Decompiler" container="MainToolbar" />
 
   <group id="GrpProcedure" cmdSet="Decompiler" container="CtxProcedure "/>
+
+  <group id="GrpAddressSearch" cmdSet="Decompiler" container="CtxAddressSearch" />
 
   <!-- Commands ========================================================== -->
 
@@ -130,6 +133,9 @@
 
   <placement item="ViewGoToAddress" container="GrpBrowserProc"/>
   <placement item="ActionEditSignature" container="GrpBrowserProc"/>
+
+  <placement item="ViewFindWhatPointsHere" container="GrpAddressSearch" />
+  <placement item="ActionMarkProcedure" container="GrpAddressSearch"/>
 
   <!-- Accelerators ================================================== -->
 

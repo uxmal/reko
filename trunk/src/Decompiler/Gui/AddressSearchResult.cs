@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -42,6 +43,8 @@ namespace Decompiler.Gui
             this.addresses = linearAddresses.ToList();
         }
 
+        public ISearchResultView View { get; set; }
+
         public int Count
         {
             get { return addresses.Count; }
@@ -49,15 +52,15 @@ namespace Decompiler.Gui
 
         public int ContextMenuID
         {
-            get { return 0; }
+            get { return MenuIds.CtxAddressSearch; }
         }
 
-        public void CreateColumns(ISearchResultView view)
+        public void CreateColumns()
         {
-            view.AddColumn("Program", 30);
-            view.AddColumn("Address", 10);
-            view.AddColumn("Type", 10);
-            view.AddColumn("Data", 70);
+            View.AddColumn("Program", 30);
+            View.AddColumn("Address", 10);
+            View.AddColumn("Type", 10);
+            View.AddColumn("Data", 70);
         }
 
         public int GetItemImageIndex(int i)
@@ -131,6 +134,56 @@ namespace Decompiler.Gui
             var hit = addresses[i];
             memSvc.ShowMemoryAtAddress(hit.Program, hit.Program.ImageMap.MapLinearAddressToAddress(hit.LinearAddress));
         }
+
+        public bool QueryStatus(CommandID cmdID, CommandStatus status, CommandText txt)
+        {
+            if (cmdID.Guid == CmdSets.GuidDecompiler)
+            {
+                switch (cmdID.ID)
+                {
+                case CmdIds.ActionMarkProcedure:
+                case CmdIds.ViewFindWhatPointsHere:
+                    status.Status = MenuStatus.Enabled|MenuStatus.Visible;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Execute(CommandID cmdID)
+        {
+            switch (cmdID.ID)
+            {
+            case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
+            }
+            return false;
+        }
+
+        public void MarkProcedures()
+        {
+            var decSvc = services.RequireService<IDecompilerService>();
+            var userProcs =
+                from i in View.SelectedIndices
+                let address = addresses[i].GetAddress()
+                let proc = decSvc.Decompiler.ScanProcedure(addresses[i].Program, address)
+                select new
+                {
+                    Program = addresses[i].Program,
+                    Address = address,
+                    UserProc = new Decompiler.Core.Serialization.Procedure_v1
+                    {
+                        Address = address.ToString(),
+                        Name = proc.Name
+                    }
+                };
+            foreach (var up in userProcs)
+            {
+                if (!up.Program.UserProcedures.ContainsKey(up.Address))
+                {
+                    up.Program.UserProcedures.Add(up.Address, up.UserProc);
+                }
+            }
+        }
     }
 
     public class AddressSearchHit
@@ -146,6 +199,11 @@ namespace Decompiler.Gui
         {
             this.Program = program;
             this.LinearAddress = linearAddress;
+        }
+
+        public Address GetAddress()
+        {
+            return Program.ImageMap.MapLinearAddressToAddress(LinearAddress);
         }
     }
 }

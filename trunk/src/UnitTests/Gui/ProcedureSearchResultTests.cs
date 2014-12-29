@@ -68,7 +68,8 @@ namespace Decompiler.UnitTests.Gui
 
             mr.ReplayAll();
 
-            psr.CreateColumns(view);
+            psr.View = view;
+            psr.CreateColumns();
 
             mr.VerifyAll();
         }

@@ -22,6 +22,7 @@ using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
@@ -70,12 +71,15 @@ namespace Decompiler.Gui.Windows
 
         private void SetSearchResults(ISearchResult result)
         {
+            if (this.result != null)
+                this.result.View = null;
             this.result = result;
             if (!listView.VirtualMode)
                 listView.Clear();
             listView.VirtualListSize = result.Count;
             var searchResultView = new SearchResultView(this.listView);
-            result.CreateColumns(searchResultView);
+            result.View = searchResultView;
+            result.CreateColumns();
             var ctxMenuID = result.ContextMenuID;
             if (ctxMenuID > 0)
             {
@@ -170,6 +174,10 @@ namespace Decompiler.Gui.Windows
                     listView.Columns.Add(colHeader);
             }
 
+            public IEnumerable<int> SelectedIndices
+            {
+                get { return listView.SelectedIndices.Cast<int>(); }
+            }
             #endregion
         }
 
@@ -185,9 +193,9 @@ namespace Decompiler.Gui.Windows
 
             public int ContextMenuID { get { return 0; } }
 
-            public void CreateColumns(ISearchResultView view)
+            public void CreateColumns()
             {
-                view.AddColumn("",40);
+                View.AddColumn("",40);
             }
 
             public SearchResultItem GetItem(int i)
@@ -203,15 +211,32 @@ namespace Decompiler.Gui.Windows
             public void NavigateTo(int i)
             {
             }
+
+            public ISearchResultView View {get;set;}
+
+      
+            public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+            {
+                return false;
+            }
+
+            public bool Execute(CommandID cmdId)
+            {
+                return false;
+            }
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            return false;
+            if (result == null)
+                return false;
+            return result.QueryStatus(cmdId, status, text);
         }
 
         public bool Execute(CommandID cmdId)
         {
+            if (result != null && result.Execute(cmdId))
+                return true;
             if (cmdId.Guid == CmdSets.GuidDecompiler)
             {
                 switch (cmdId.ID)

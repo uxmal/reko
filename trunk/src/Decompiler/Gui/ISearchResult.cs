@@ -32,12 +32,13 @@ namespace Decompiler.Gui
     /// display items and to navigate to items when requested by the user. Implementations of derived
     /// classes should behave as caches if possible.
     /// </summary>
-    public interface ISearchResult
+    public interface ISearchResult : ICommandTarget
     {
+        ISearchResultView View { get; set; }
         int Count { get; }
         int ContextMenuID { get; }      // Context menu to use.
 
-        void CreateColumns(ISearchResultView view);
+        void CreateColumns();
         SearchResultItem GetItem(int i);
         void NavigateTo(int i);
     }
@@ -51,6 +52,8 @@ namespace Decompiler.Gui
 
     public interface ISearchResultView
     {
+        IEnumerable<int> SelectedIndices { get; }
+
         void AddColumn(string columnTitle, int width);
     }
 }
