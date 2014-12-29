@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 
 namespace Decompiler.Gui
@@ -36,6 +37,8 @@ namespace Decompiler.Gui
             this.hits = procs;
         }
 
+        public ISearchResultView View { get; set; }
+
         public int Count
         {
             get { return hits.Count; }
@@ -43,11 +46,11 @@ namespace Decompiler.Gui
 
         public int ContextMenuID { get { return MenuIds.CtxProcedure; } }
 
-        public void CreateColumns(ISearchResultView view)
+        public void CreateColumns()
         {
-            view.AddColumn("Program", 10);
-            view.AddColumn("Address", 8);
-            view.AddColumn("Procedure Name", 20);
+            View.AddColumn("Program", 10);
+            View.AddColumn("Address", 8);
+            View.AddColumn("Procedure Name", 20);
         }
 
 
@@ -76,6 +79,16 @@ namespace Decompiler.Gui
             if (mvs == null)
                 return;
             mvs.ShowMemoryAtAddress(hit.Program, hit.Address);
+        }
+
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
+
+        public bool Execute(CommandID cmdId)
+        {
+            return false;
         }
     }
 

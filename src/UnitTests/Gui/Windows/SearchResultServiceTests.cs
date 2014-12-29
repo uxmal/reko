@@ -80,8 +80,8 @@ namespace Decompiler.UnitTests.Gui.Windows
             var result = mr.StrictMock<ISearchResult>();
             result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.CreateColumns(
-                Arg<ISearchResultView>.Is.NotNull));
+            result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
+            result.Expect(s => s.CreateColumns());
             result.Expect(s => s.Count).Return(1);
             result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
             result.Expect(s => s.Count).Return(1);
@@ -107,10 +107,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void SRS_CreateColumns()
         {
             var result = mr.StrictMock<ISearchResult>();
+            result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
             result.Expect(s => s.ContextMenuID).Return(0);
             result.Expect(s => s.Count).Return(0);
-            result.Expect(s => s.CreateColumns(
-                Arg<ISearchResultView>.Is.NotNull));
+            result.Expect(s => s.CreateColumns());
             mr.ReplayAll();
 
             CreateUI();

@@ -254,15 +254,21 @@ namespace Decompiler
                 TypeAnalyzer analyzer = new TypeAnalyzer(eventListener);
                 try
                 {
-                    analyzer.RewriteProgram(program);
-                }
-                catch (Exception ex)
+                    try
+                    {
+                        analyzer.RewriteProgram(program);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventListener.AddDiagnostic(
+                            new NullCodeLocation(""),
+                            new ErrorDiagnostic("Error when reconstructing types.", ex));
+                    }
+                } 
+                finally
                 {
-                    eventListener.AddDiagnostic(
-                        new NullCodeLocation(""),
-                        new ErrorDiagnostic("Error when reconstructing types.", ex));
+                    host.WriteTypes(analyzer.WriteTypes);
                 }
-                host.WriteTypes(analyzer.WriteTypes);
             }
         }
 

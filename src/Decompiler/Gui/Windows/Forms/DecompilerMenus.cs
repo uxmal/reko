@@ -35,7 +35,7 @@ namespace Decompiler.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ContextMenu CtxBrowser;	public readonly System.Windows.Forms.ContextMenu CtxProcedure;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
+    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ContextMenu CtxBrowser;	public readonly System.Windows.Forms.ContextMenu CtxProcedure;	public readonly System.Windows.Forms.ContextMenu CtxAddressSearch;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
     
         public DecompilerMenus(ICommandTarget target) : base(target)
         {
@@ -49,6 +49,7 @@ namespace Decompiler.Gui.Windows.Forms
 			SortedList slCtxMemoryControl = CreatePriorityList();
 			SortedList slCtxBrowser = CreatePriorityList();
 			SortedList slCtxProcedure = CreatePriorityList();
+			SortedList slCtxAddressSearch = CreatePriorityList();
 			SortedList slMainToolbar = CreatePriorityList();
 			
 			// Create groups
@@ -91,6 +92,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slMainToolbar.Add(0, slGrpToolbarActions);
 			SortedList slGrpProcedure = CreatePriorityList();
 			slCtxProcedure .Add(0, slGrpProcedure);
+			SortedList slGrpAddressSearch = CreatePriorityList();
+			slCtxAddressSearch.Add(0, slGrpAddressSearch);
     
 			// Create commands in containers.
             
@@ -225,6 +228,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			slGrpBrowserProc.Add(0, slViewGoToAddress);
 			slGrpBrowserProc.Add(0, slActionEditSignature);
+			slGrpAddressSearch.Add(0, slViewFindWhatPointsHere);
+			slGrpAddressSearch.Add(0, slActionMarkProcedure);
     
       // Build accelerators.
       
@@ -285,6 +290,11 @@ namespace Decompiler.Gui.Windows.Forms
   
         this.CtxProcedure.Popup += subMenu_Popup;
       
+			this.CtxAddressSearch = new System.Windows.Forms.ContextMenu();
+			BuildMenu(slCtxAddressSearch, CtxAddressSearch.MenuItems);
+  
+        this.CtxAddressSearch.Popup += subMenu_Popup;
+      
 			this.MainToolbar = new System.Windows.Forms.ToolStrip();
 			BuildMenu(slMainToolbar, MainToolbar.Items);
   
@@ -308,6 +318,7 @@ namespace Decompiler.Gui.Windows.Forms
 				case MenuIds.CtxMemoryControl: return this.CtxMemoryControl;
 				case MenuIds.CtxBrowser: return this.CtxBrowser;
 				case MenuIds.CtxProcedure: return this.CtxProcedure;
+				case MenuIds.CtxAddressSearch: return this.CtxAddressSearch;
 			}
 			throw new ArgumentException(string.Format("There is no context menu with id {0}.", menuId));
 		}

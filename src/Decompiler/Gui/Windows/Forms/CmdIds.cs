@@ -47,7 +47,8 @@ namespace Decompiler.Gui
 		public const int CtxMemoryControl = 8;
 		public const int CtxBrowser = 9;
 		public const int CtxProcedure = 10;
-		public const int MainToolbar = 11;
+		public const int CtxAddressSearch = 11;
+		public const int MainToolbar = 12;
 	}
 	
 	public class GroupIds
@@ -71,6 +72,7 @@ namespace Decompiler.Gui
 		public const int GrpToolbarFileOps = 17 + 1000;
 		public const int GrpToolbarActions = 18 + 1000;
 		public const int GrpProcedure = 19 + 1000;
+		public const int GrpAddressSearch = 20 + 1000;
 	}
 	
 	public class CmdIds
