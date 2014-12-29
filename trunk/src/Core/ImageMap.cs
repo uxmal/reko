@@ -33,6 +33,8 @@ namespace Decompiler.Core
 	/// </summary>
 	public class ImageMap
 	{
+        public event EventHandler MapChanged;
+
 		private Map<Address,ImageMapItem> items;
         private Map<Address,ImageMapSegment> segments;
 
@@ -59,6 +61,7 @@ namespace Decompiler.Core
             {
                 // Outside of range.
                 items.Add(itemNew.Address, itemNew);
+                MapChanged.Fire(this);
                 return itemNew;
             }
             else
@@ -72,7 +75,7 @@ namespace Decompiler.Core
                     itemNew.Size = (uint) (item.Size - delta);
                     item.Size = (uint) delta;
                     items.Add(itemNew.Address, itemNew);
-
+                    MapChanged.Fire(this);
                     return itemNew;
                 }
                 else
@@ -84,6 +87,7 @@ namespace Decompiler.Core
                         item.Address += itemNew.Size;
                         items[itemNew.Address] = itemNew;
                         items[item.Address] = item;
+                        MapChanged.Fire(this);
                         return itemNew;
                     }
                     if (item.GetType() != itemNew.GetType())    //$BUGBUG: replaces the type.
@@ -91,6 +95,7 @@ namespace Decompiler.Core
                         items[itemNew.Address] = itemNew;
                         itemNew.Size = item.Size;
                     }
+                    MapChanged.Fire(this);
                     return item;
                 }
             }
@@ -132,6 +137,7 @@ namespace Decompiler.Core
                 items.Add(addr, itemNew);
                 items.Add(item.Address, item);
             }
+            MapChanged.Fire(this);
         }
 
         private DataType ChopAfter(DataType type, int offset)
@@ -177,7 +183,8 @@ namespace Decompiler.Core
 				segNew.Address = addr;
 				segNew.Size = ~0U;
 				segments.Add(segNew.Address, segNew);
-				return segNew;
+                MapChanged.Fire(this);
+                return segNew;
 			}
 			int delta = addr - seg.Address;
 			Debug.Assert(delta >= 0);
@@ -194,7 +201,8 @@ namespace Decompiler.Core
 				// And split any items in the segment.
 
 				AddItem(addr, new ImageMapItem());
-				return segNew;
+                MapChanged.Fire(this);
+                return segNew;
 			}
 			return seg;
 		}
