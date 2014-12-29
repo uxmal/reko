@@ -39,8 +39,6 @@ namespace Decompiler.UiPrototype.WinForms
 
         public class EditorModel : TextViewModel
         {
-            public event EventHandler ModelChanged;
-
             private TextSpan[][] lines;
 
             public EditorModel(params TextSpan[][] spans)

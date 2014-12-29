@@ -32,36 +32,21 @@ namespace Decompiler.Gui.Windows.Controls
     /// </summary>
     public class DisassemblyTextModel : TextViewModel2
     {
-        public event EventHandler ModelChanged;
-
         private IProcessorArchitecture arch;
         private LoadedImage image;
-        private Dictionary<int, Address> cache;
-        private int mostRecentCacheSize;
+        private Address position;
 
         public DisassemblyTextModel(IProcessorArchitecture arch, LoadedImage image)
         {
             this.arch = arch;
             this.image = image;
-            this.cache = new Dictionary<int, Address>();
+            this.position = image.BaseAddress;
         }
 
-        public object CurrentPosition { get { throw new NotImplementedException(); } }
-        public object StartPosition { get { throw new NotImplementedException(); } }
-        public object EndPosition { get { throw new NotImplementedException(); } }
+        public object StartPosition { get { return this.image.BaseAddress; } }
+        public object CurrentPosition { get { return position; } }
+        public object EndPosition { get { return this.image.BaseAddress + this.image.Bytes.Length; } }
         public int LineCount { get { return GetPositionEstimate(image.Bytes.Length); } }
-
-        public int EstablishPosition(Address addr)
-        {
-            if (addr == null || !image.IsValidAddress(addr))
-                return -1;
-            int idx = GetPositionEstimate(addr - image.BaseAddress);
-            cache = new Dictionary<int, Address>
-            {
-                { idx, addr }
-            };
-            return idx;
-        }
 
         public TextSpan[][] GetLineSpans(int count)
         {
@@ -94,17 +79,33 @@ namespace Decompiler.Gui.Windows.Controls
 
         public void MoveTo(object position, int offset)
         {
-            throw new NotImplementedException();
+            var addr = (Address)position;
+            addr = addr + offset;
+            if (addr < image.BaseAddress)
+                addr = image.BaseAddress;
+            var addrEnd = image.BaseAddress + image.Bytes.Length;
+            if (addr > addrEnd)
+                addr = addrEnd;
+            position = addr;
         }
 
         public Tuple<int, int> GetPositionAsFraction()
         {
-            return Tuple.Create(0, 1);
+            return Tuple.Create(position - image.BaseAddress, image.Bytes.Length);
         }
 
-        public void SetPositionAsFraction(int numer, int denom)
+        public void SetPositionAsFraction(int numerator, int denominator)
         {
-            throw new NotImplementedException();
+            if (denominator <= 0)
+                throw new ArgumentException("denominator");
+            if (numerator < 0 || numerator > denominator)
+                throw new ArgumentException("numerator");
+            long offset = Math.BigMul(numerator, image.Bytes.Length) / denominator;
+            if (offset < 0)
+                offset = 0;
+            else if (offset > image.Bytes.Length)
+                offset = image.Bytes.Length;
+            this.position = image.BaseAddress + (int)offset;
         }
 
         /// <summary>
@@ -115,11 +116,6 @@ namespace Decompiler.Gui.Windows.Controls
         private int GetPositionEstimate(int byteOffset)
         {
             return 8 * byteOffset / arch.InstructionBitSize;
-        }
-
-        public void CacheHint(int index, int count)
-        {
-            throw new NotImplementedException();
         }
 
 

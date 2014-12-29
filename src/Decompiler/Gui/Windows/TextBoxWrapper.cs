@@ -27,6 +27,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
+    /// <summary>
+    /// Wraps the Windows Forms textbox with the ITextBox interface.
+    /// </summary>
     public class TextBoxWrapper : ITextBox
     {
         private TextBox text;
