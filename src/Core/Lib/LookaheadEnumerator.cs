@@ -93,15 +93,16 @@ namespace Decompiler.Core.Lib
         {
             int itemsInBuffer = peeked.Count - iCur;
             Debug.Assert(itemsInBuffer >= 0);
-            if (ahead < itemsInBuffer)
-            {
-                return peeked[iCur + ahead];
-            }
             if (itemsInBuffer == 0 && ahead == 0)
             {
                 return e.Current;
             }
-            peeked.Add(e.Current);
+            if (ahead < itemsInBuffer)
+            {
+                return peeked[iCur + ahead];
+            }
+            if (itemsInBuffer == 0)
+                peeked.Add(e.Current);
             for (int i = 0; i < ahead; ++i)
             {
                 e.MoveNext();

@@ -120,5 +120,20 @@ namespace Decompiler.UnitTests.Core.Lib
             Assert.AreEqual('c', e.Current);
             Assert.IsFalse(e.MoveNext());
         }
+
+        [Test]
+        public void LAET_Regression1()
+        {
+            var e = new LookaheadEnumerator<char>("abcd".GetEnumerator());
+            e.MoveNext();
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('b', e.Peek(1));
+            Assert.AreEqual('c', e.Peek(2));
+            Assert.AreEqual('c', e.Peek(2));
+            Assert.AreEqual('d', e.Peek(3));
+            Assert.AreEqual('d', e.Peek(3));
+        }
     }
 }
