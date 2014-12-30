@@ -210,7 +210,7 @@ namespace Decompiler.Gui.Windows.Controls
         /// <summary>
         /// Horizontal span of text
         /// </summary>
-        private class LayoutSpan
+        protected class LayoutSpan
         {
             public RectangleF Extent;
             public string Text;
@@ -285,7 +285,7 @@ namespace Decompiler.Gui.Windows.Controls
         /// </summary>
         /// <param name="pt">Location specified in client coordinates.</param>
         /// <returns></returns>
-        private LayoutSpan GetSpan(Point pt)
+        protected LayoutSpan GetSpan(Point pt)
         {
             foreach (var line in this.visibleLines.Values)
             {

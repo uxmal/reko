@@ -138,7 +138,7 @@ namespace Decompiler.Core
         }
 
         /// <summary>
-        /// Reads a chunk of bytes and interpret it in Little-Endian mode.
+        /// Reads a chunk of bytes and interprets it in Little-Endian mode.
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
@@ -150,7 +150,7 @@ namespace Decompiler.Core
         }
 
         /// <summary>
-        /// Reads a chunk of bytes and interret it in Big-Endian mode.
+        /// Reads a chunk of bytes and interprets it in Big-Endian mode.
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>

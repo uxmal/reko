@@ -58,7 +58,7 @@ namespace Decompiler.Gui.Windows
                     control.MemoryView.ProgramImage = value.Image;
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
-                    control.DisassemblyView.Model = new DisassemblyTextModel(value.Architecture, value.Image);
+                    control.DisassemblyView.Model = new DisassemblyTextModel(value.Architecture, value.Image, value.ImageMap);
                 }
             }
         }
@@ -84,6 +84,7 @@ namespace Decompiler.Gui.Windows
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
+            this.Control.DisassemblyView.SelectedAddressChanged += DisassemblyView_SelectedAddressChanged;
             this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
             this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
@@ -361,7 +362,6 @@ namespace Decompiler.Gui.Windows
             }
             return sb.ToString();
         }
-        
 
         private void MemoryView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -371,6 +371,16 @@ namespace Decompiler.Gui.Windows
             this.Control.DisassemblyView.SelectedAddress = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
             this.SelectionChanged.Fire(this, e);
+            this.ignoreAddressChange = false;
+        }
+
+        void DisassemblyView_SelectedAddressChanged(object sender, EventArgs e)
+        {
+            if (ignoreAddressChange)
+                return;
+            this.ignoreAddressChange = true;
+            this.Control.MemoryView.SelectedAddress = Control.DisassemblyView.SelectedAddress;
+            this.Control.MemoryView.TopAddress = Control.DisassemblyView.SelectedAddress;
             this.ignoreAddressChange = false;
         }
 
