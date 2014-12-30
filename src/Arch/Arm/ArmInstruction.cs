@@ -40,7 +40,7 @@ namespace Decompiler.Arch.Arm
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(string.Format("{0}{1}{2}",
+            writer.WriteOpcode(string.Format("{0}{1}{2}",
                 Opcode,
                 Cond != Condition.al ? Cond.ToString() : "",
                 OpFlags != OpFlags.None ? OpFlags.ToString().ToLower() : ""));
@@ -145,7 +145,7 @@ namespace Decompiler.Arch.Arm
             {
                 Write(sh.Operand, writer);
                 writer.Write(",");
-                writer.Opcode(sh.Opcode.ToString());
+                writer.WriteOpcode(sh.Opcode.ToString());
                 writer.Write(' ');
                 Write(sh.Shift, writer);
                 return;

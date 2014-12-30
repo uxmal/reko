@@ -94,6 +94,28 @@ namespace Decompiler.Gui.Windows.Controls
             return CacheBrush(ref bgBrush, new SolidBrush(BackColor));
         }
 
+        /// <summary>
+        /// Computes the size of a text span.
+        /// </summary>
+        /// <remarks>
+        /// The span is first asked to measure itself, then the currenty style is allowed to override the size.
+        /// </remarks>
+        /// <param name="span"></param>
+        /// <param name="text"></param>
+        /// <param name="font"></param>
+        /// <param name="g"></param>
+        /// <returns></returns>
+        private SizeF GetSize(TextSpan span, string text, Font font, Graphics g)
+        {
+            var size = span.GetSize(text, font, g);
+            EditorStyle style = GetStyle(span.Style);
+            if (style != null && style.Width.HasValue)
+            {
+                size.Width = style.Width.Value;
+            }
+            return size;
+        }
+
         private EditorStyle GetStyle(string styleSelector)
         {
             EditorStyle style;
@@ -204,7 +226,7 @@ namespace Decompiler.Gui.Windows.Controls
             var rcLine = new RectangleF(0, 0, szClient.Width, cyLine);
             
             // Get the lines.
-            int cVisibleLines = (int) Math.Ceiling(szClient.Height + cyLine);
+            int cVisibleLines = (int) Math.Ceiling(szClient.Height / cyLine);
             var lines = model.GetLineSpans(cVisibleLines);
             int iLine = 0;
             while (rcLine.Top < szClient.Height && 
@@ -221,6 +243,13 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
+        /// <summary>
+        /// Computes the layout for a line of spans.
+        /// </summary>
+        /// <param name="spans"></param>
+        /// <param name="rcLine"></param>
+        /// <param name="g"></param>
+        /// <returns></returns>
         private LayoutSpan[] ComputeSpanLayouts(IEnumerable<TextSpan> spans, RectangleF rcLine, Graphics g)
         {
             var spanLayouts = new List<LayoutSpan>();
@@ -229,7 +258,7 @@ namespace Decompiler.Gui.Windows.Controls
             {
                 var text = span.GetText();
                 var font = GetFont(span.Style);
-                var szText = span.GetSize(text, font, g);
+                var szText = GetSize(span, text, font, g);
                 var rc = new RectangleF(pt, szText);
                 spanLayouts.Add(new LayoutSpan
                 {
@@ -242,6 +271,7 @@ namespace Decompiler.Gui.Windows.Controls
             }
             return spanLayouts.ToArray();
         }
+
 
         protected override void OnResize(EventArgs e)
         {
@@ -352,6 +382,7 @@ namespace Decompiler.Gui.Windows.Controls
         public Brush Foreground { get; set; }
         public Brush Background { get; set; }
         public Cursor Cursor { get; set; }
+        public int? Width { get; set; } // If set, the width is fixed at a certain size.
     }
 
     public class EditorNavigationArgs : EventArgs

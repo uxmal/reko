@@ -27,8 +27,8 @@ namespace Decompiler.Core.Machine
 {
     public interface MachineInstructionWriter
     {
-        void Opcode(string opcode);
-        void Address(string formattedAddress, Address addr);
+        void WriteOpcode(string opcode);
+        void WriteAddress(string formattedAddress, Address addr);
         void Tab();
         void Write(char c);
         void Write(uint n);
@@ -42,7 +42,7 @@ namespace Decompiler.Core.Machine
 
         public StringRenderer() { sb = new StringBuilder(); }
 
-        public void Opcode(string opcode)
+        public void WriteOpcode(string opcode)
         {
             sb.Append(opcode);
         }
@@ -52,7 +52,7 @@ namespace Decompiler.Core.Machine
             sb.Append('\t');
         }
 
-        public void Address(string formattedAddress, Address addr)
+        public void WriteAddress(string formattedAddress, Address addr)
         {
             sb.Append(formattedAddress);
         }

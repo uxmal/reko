@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Sparc
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(
+            writer.WriteOpcode(
                 string.Format("{0}{1}",
                 Opcode.ToString(),
                 Annul ? ",a" : ""));

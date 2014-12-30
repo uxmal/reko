@@ -36,11 +36,11 @@ namespace Decompiler.Arch.Z80
         {
             if (Code == Opcode.ex_af)
             {
-                writer.Opcode("ex");
+                writer.WriteOpcode("ex");
                 writer.Tab();
                 writer.Write("af,af'");
             }
-            writer.Opcode(Code.ToString());
+            writer.WriteOpcode(Code.ToString());
             if (Op1 != null)
             {
                 writer.Tab();

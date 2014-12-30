@@ -35,7 +35,7 @@ namespace Decompiler.Arch.Pdp11
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(Opcode.ToString());
+            writer.WriteOpcode(Opcode.ToString());
             if (op1 != null)
             {
                 writer.Tab();

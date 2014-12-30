@@ -115,7 +115,7 @@ namespace Decompiler.Arch.X86
 				}
 				break;
 			}
-			writer.Opcode(s);
+			writer.WriteOpcode(s);
 
 			writer.Tab();
 

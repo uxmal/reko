@@ -96,7 +96,6 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             interactor.Control.MemoryView.SelectedAddress = new Address(0x12321);
 
-            Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.TopAddress.Linear);
             Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.SelectedAddress.Linear);
             mr.VerifyAll();
         }

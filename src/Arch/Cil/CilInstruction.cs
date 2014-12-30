@@ -40,7 +40,7 @@ namespace Decompiler.Arch.Cil
         {
             try
             {
-                writer.Opcode(mpopcodetostring[Opcode]);
+                writer.WriteOpcode(mpopcodetostring[Opcode]);
             }
             catch
             {

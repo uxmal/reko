@@ -32,6 +32,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
+    /// <summary>
+    /// This class manages user interaction with the LowLevelView control.
+    /// </summary>
     public class LowLevelViewInteractor : IWindowPane, ICommandTarget
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
@@ -55,9 +58,7 @@ namespace Decompiler.Gui.Windows
                     control.MemoryView.ProgramImage = value.Image;
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
-                    control.DisassemblyView.Image = value.Image;
-                    control.DisassemblyView.StartAddress = value.Image.BaseAddress;
-                    control.DisassemblyView.Architecture = value.Architecture;
+                    control.DisassemblyView.Model = new DisassemblyTextModel(value.Architecture, value.Image);
                 }
             }
         }

@@ -103,17 +103,12 @@
             // 
             // disassemblyControl1
             // 
-            this.dasmCtrl.Architecture = null;
             this.dasmCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dasmCtrl.Image = null;
             this.dasmCtrl.Location = new System.Drawing.Point(0, 18);
             this.dasmCtrl.Name = "disassemblyControl1";
-            this.dasmCtrl.SelectedAddress = null;
             this.dasmCtrl.Size = new System.Drawing.Size(858, 139);
-            this.dasmCtrl.StartAddress = null;
             this.dasmCtrl.TabIndex = 0;
             this.dasmCtrl.Text = "disassemblyControl1";
-            this.dasmCtrl.TopAddress = null;
             // 
             // lblDisassembly
             // 

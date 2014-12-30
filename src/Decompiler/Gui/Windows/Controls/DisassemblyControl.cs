@@ -37,43 +37,20 @@ namespace Decompiler.Gui.Windows.Controls
     /// <summary>
     /// Renders disassembled machine instructions.
     /// </summary>
-    public class DisassemblyControl : Control
+    public class DisassemblyControl : TextView
     {
-        private VScrollBar vscroll;
-
         public DisassemblyControl()
         {
             SetStyle(ControlStyles.DoubleBuffer, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
-            ImageChanged += DisassemblyControl_StateChange;
-            ArchitectureChanged += DisassemblyControl_StateChange;
             StartAddressChanged += DisassemblyControl_StateChange;
             TopAddressChanged += DisassemblyControl_StateChange;
 
-            vscroll = new VScrollBar();
-            vscroll.Margin = new Padding(10);
-
-            vscroll.Enabled = false;
-            vscroll.Visible = true;
-            vscroll.Value = 0;
-            vscroll.Minimum = 0;
-            vscroll.Maximum = 10000;
-            vscroll.MinimumSize = new Size(0, 20);
-            vscroll.Dock = DockStyle.Right;
-            Controls.Add(vscroll);
-            vscroll.ValueChanged += vscroll_ValueChanged;
+            //$TODO: allow user to manipulate these hard-wired constants.
+            Styles.Add("opcode", new EditorStyle { Width = 100 });
+            Styles.Add("bytes", new EditorStyle { Width = 200 });
         }
-
-        [Browsable(false)]
-        public LoadedImage Image { get { return image; } set { image = value; ImageChanged.Fire(this); } }
-        public event EventHandler ImageChanged;
-        private LoadedImage image;
-
-        [Browsable(false)]
-        public IProcessorArchitecture Architecture { get { return arch; } set { arch = value; ArchitectureChanged.Fire(this); } }
-        public event EventHandler ArchitectureChanged;
-        private IProcessorArchitecture arch;
 
         [Browsable(false)]
         public Address StartAddress { get { return startAddress; } set { startAddress = value; StartAddressChanged.Fire(this); } }
@@ -92,7 +69,6 @@ namespace Decompiler.Gui.Windows.Controls
             set
             {
                 selectedAddress = value;
-                TopAddress = value;
                 Invalidate();
                 SelectedAddressChanged.Fire(this);
             }
@@ -100,101 +76,13 @@ namespace Decompiler.Gui.Windows.Controls
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
 
-        private void vscroll_ValueChanged(object sender, EventArgs e)
-        {
-            if (image == null || arch == null || !image.IsValidAddress(startAddress))
-                return;
-            TopAddress = image.BaseAddress + vscroll.Value * (arch.InstructionBitSize / 8);
-        }
-
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
-            if (arch == null || image == null || !image.IsValidAddress(startAddress))
-            {
-                vscroll.Enabled = false;
-            }
-            else
-            {
-                vscroll.Enabled = true;
-                vscroll.Minimum = 0;
-                vscroll.Maximum = (image.Bytes.Length - 1) / (arch.InstructionBitSize / 8);
-
-                using (var g = CreateGraphics())
-                {
-                    var cyRow = g.MeasureString("M", Font).Height;
-                    int EstimateRows = (int) Math.Ceiling(Height / cyRow);
-                    int estimateByteSize = EstimateRows * 3;
-                }
-            }
+            var g = CreateGraphics();
+            Model.MoveTo(topAddress, 0);
+            ComputeLayout(g);
+            g.Dispose();
             Invalidate();
-        }
-
-        public void DumpAssembler(Graphics g)
-        {
-            var rcClient = ClientRectangle;
-            g.Clear(BackColor);
-            if (arch == null || image == null || !image.IsValidAddress(topAddress))
-            {
-                return;
-            }
-
-            var dumper = new Dumper(arch);
-            dumper.ShowAddresses = true;
-            dumper.ShowCodeBytes = true;
-            var addrStart = TopAddress;
-            var rdr = arch.CreateImageReader(image, addrStart);
-            var dasm = arch.CreateDisassembler(rdr).GetEnumerator();
-            var cyRow = GetRowHeight(g);
-            var rc = new RectangleF(g.ClipBounds.Left, g.ClipBounds.Top, rcClient.Width, cyRow);
-            for (; rc.Top < rcClient.Bottom; rc.Offset(0, cyRow))
-            {
-                var instr = NextInstruction(dasm);
-                if (instr == null)
-                    break;
-                var writer = new StringWriter();
-                dumper.DumpAssemblerLine(image, instr, writer);
-                var s = writer.ToString();
-                Brush brText;
-                if (instr.Address == selectedAddress)
-                {
-                    g.FillRectangle(SystemBrushes.Highlight, rc);
-                    brText = SystemBrushes.HighlightText;
-                }
-                else
-                {
-                    brText = SystemBrushes.ControlText;
-                }
-                g.DrawString(s, Font, brText, rc);
-            }
-        }
-
-        private MachineInstruction NextInstruction(IEnumerator<MachineInstruction> dasm)
-        {
-            try
-            {
-                if (!dasm.MoveNext())
-                {
-                    return null;
-                }
-            }
-            catch
-            {
-                return null;
-            }
-            return dasm.Current;
-        }
-
-        private int GetRowHeight(Graphics g)
-        {
-            return (int) g.MeasureString("M", Font).Height;
-        }
-
-        private void UpdateScrollbar(Address addrBegin, Address addrEnd)
-        {
-            //vscroll.Enabled = true;
-            //vscroll.Minimum = 0;
-            //vscroll.Maximum = Image.Bytes.Length - 0x10;
-            //vscroll.LargeChange = 100;
         }
 
         protected override bool IsInputKey(Keys keyData)
@@ -217,10 +105,10 @@ namespace Decompiler.Gui.Windows.Controls
             switch (e.KeyCode)
             {
             case Keys.Down:
-                DiffMove(arch.InstructionBitSize / 8);
+                Model.MoveTo(Model.CurrentPosition, 1);
                 break;
             case Keys.Up:
-                DiffMove(-arch.InstructionBitSize / 8);
+                Model.MoveTo(Model.CurrentPosition, -1);
                 break;
             default:
                 base.OnKeyDown(e);
@@ -229,24 +117,10 @@ namespace Decompiler.Gui.Windows.Controls
             e.Handled = true;
         }
 
-        private void DiffMove(int bytesToMove)
-        {
-            var topAddr = TopAddress + bytesToMove;
-            if (topAddr < this.image.BaseAddress)
-                return;
-            TopAddress = topAddr;
-            Invalidate();
-        }
-
         protected override void OnSizeChanged(EventArgs e)
         {
             Invalidate();
             base.OnSizeChanged(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            DumpAssembler(e.Graphics);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -272,12 +146,12 @@ namespace Decompiler.Gui.Windows.Controls
         List<TextSpan> spans = new List<TextSpan>();
         private StringBuilder sb = new StringBuilder();
 
-        public void Opcode(string opcode)
+        public void WriteOpcode(string opcode)
         {
             new DisassemblySpan(opcode, "opcode");
         }
 
-        public void Address(string formattedAddress, Address addr)
+        public void WriteAddress(string formattedAddress, Address addr)
         {
             new AddressSpan(formattedAddress, addr, "address");
         }

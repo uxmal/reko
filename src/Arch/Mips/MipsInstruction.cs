@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Mips
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(opcode.ToString());
+            writer.WriteOpcode(opcode.ToString());
             if (op1 != null)
             {
                 writer.Tab();

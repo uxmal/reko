@@ -139,7 +139,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
         {
             public override void Render(MachineInstructionWriter writer)
             {
-                writer.Opcode("opcode.l");
+                writer.WriteOpcode("opcode.l");
             }
         }
 
