@@ -66,7 +66,7 @@ namespace Decompiler.Arch.Arm
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(Opcode.ToString());
+            writer.WriteOpcode(Opcode.ToString());
             if (op1 == null)
                 return;
             writer.Tab();

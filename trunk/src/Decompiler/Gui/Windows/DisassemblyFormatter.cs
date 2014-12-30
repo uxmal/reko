@@ -30,6 +30,9 @@ using System.Text;
 
 namespace Decompiler.Gui.Windows
 {
+    /// <summary>
+    /// Used to render TextSpans for use in the disassembly viewer.
+    /// </summary>
     public class DisassemblyFormatter : MachineInstructionWriter 
     {
         StringBuilder sb = new StringBuilder();
@@ -40,12 +43,12 @@ namespace Decompiler.Gui.Windows
             this.line = line;
         }
 
-        public void Opcode(string opcode)
+        public void WriteOpcode(string opcode)
         {
             line.Add(new DisassemblyTextModel.InertTextSpan(opcode, "opcode"));
         }
 
-        public void Address(string formattedAddress, Address addr)
+        public void WriteAddress(string formattedAddress, Address addr)
         {
             var span = new DisassemblyTextModel.AddressTextSpan(addr, formattedAddress);
             line.Add(span);
@@ -97,7 +100,7 @@ namespace Decompiler.Gui.Windows
         {
             public override string GetText()
             {
-                throw new NotImplementedException();
+                return Text;
             }
 
             public string Text { get; set; }

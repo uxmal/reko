@@ -71,7 +71,7 @@ namespace Decompiler.Arch.PowerPC
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(opcode.ToString());
+            writer.WriteOpcode(opcode.ToString());
             if (setsCR0)
                 writer.Write('.');
             if (op1 != null)

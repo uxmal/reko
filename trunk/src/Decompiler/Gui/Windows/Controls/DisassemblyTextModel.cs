@@ -28,7 +28,8 @@ using System.Text;
 namespace Decompiler.Gui.Windows.Controls
 {
     /// <summary>
-    /// Presents disassembled instructions as lines of text
+    /// Implemented the TextViewModel interface to support
+    /// presentation of disassembled instructions as lines of text.
     /// </summary>
     public class DisassemblyTextModel : TextViewModel
     {
@@ -52,7 +53,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             var lines = new List<TextSpan[]>();
             var dasm = arch.CreateDisassembler(
-                arch.CreateImageReader(image, image.BaseAddress)).GetEnumerator();
+                arch.CreateImageReader(image, position)).GetEnumerator();
             while (count != 0 && dasm.MoveNext())
             {
                 var line = new List<TextSpan>();
@@ -61,7 +62,9 @@ namespace Decompiler.Gui.Windows.Controls
                 line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
                 var dfmt = new DisassemblyFormatter(line);
                 dasm.Current.Render(dfmt);
+                dfmt.NewLine();
                 lines.Add(line.ToArray());
+                --count;
             }
             return lines.ToArray();
         }
@@ -77,16 +80,16 @@ namespace Decompiler.Gui.Windows.Controls
             return sb.ToString();
         }
 
-        public void MoveTo(object position, int offset)
+        public void MoveTo(object basePosition, int offset)
         {
-            var addr = (Address)position;
+            var addr = (Address)basePosition;
             addr = addr + offset;
             if (addr < image.BaseAddress)
                 addr = image.BaseAddress;
             var addrEnd = image.BaseAddress + image.Bytes.Length;
             if (addr > addrEnd)
                 addr = addrEnd;
-            position = addr;
+            this.position = addr;
         }
 
         public Tuple<int, int> GetPositionAsFraction()
@@ -118,7 +121,6 @@ namespace Decompiler.Gui.Windows.Controls
             return 8 * byteOffset / arch.InstructionBitSize;
         }
 
-
         public class InertTextSpan : TextSpan
         {
             private string text;
@@ -146,6 +148,7 @@ namespace Decompiler.Gui.Windows.Controls
                 this.addr = address;
                 this.txtAddress = addrAsText;
             }
+
             public override string GetText()
             {
                 return txtAddress;

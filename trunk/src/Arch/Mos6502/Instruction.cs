@@ -33,7 +33,7 @@ namespace Decompiler.Arch.Mos6502
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Opcode(Code.ToString());
+            writer.WriteOpcode(Code.ToString());
             if (Operand != null)
             {
                 writer.Tab();
