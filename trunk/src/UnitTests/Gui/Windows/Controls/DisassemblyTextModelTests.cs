@@ -56,7 +56,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
 
         private void Given_Model()
         {
-             model = new DisassemblyTextModel(arch, Image(1000));
+            Image(1000);
+            var imageMap = new ImageMap(image.BaseAddress, image.Bytes.Length);
+             model = new DisassemblyTextModel(arch, image , imageMap);
         }
 
         [Test]

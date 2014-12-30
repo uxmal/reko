@@ -408,7 +408,9 @@ namespace Decompiler.Gui.Windows.Controls
 			get { return addrTopVisible; }
 			set
 			{
-				addrTopVisible = value;
+                addrTopVisible = value;
+                if (value != null)
+                    addrTopVisible -= (int)(value.Linear % cbRow);
 				UpdateScroll();
 				Invalidate();
 			}

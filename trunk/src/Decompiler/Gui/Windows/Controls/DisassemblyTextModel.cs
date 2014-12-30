@@ -35,12 +35,14 @@ namespace Decompiler.Gui.Windows.Controls
     {
         private IProcessorArchitecture arch;
         private LoadedImage image;
+        private ImageMap imageMap;
         private Address position;
 
-        public DisassemblyTextModel(IProcessorArchitecture arch, LoadedImage image)
+        public DisassemblyTextModel(IProcessorArchitecture arch, LoadedImage image, ImageMap imageMap)
         {
             this.arch = arch;
             this.image = image;
+            this.imageMap = imageMap;
             this.position = image.BaseAddress;
         }
 
@@ -58,7 +60,7 @@ namespace Decompiler.Gui.Windows.Controls
             {
                 var line = new List<TextSpan>();
                 var addr = dasm.Current.Address;
-                line.Add(new InertTextSpan(addr.ToString() + " ", "addr"));
+                line.Add(new AddressSpan(addr.ToString() + " ", addr, "addr"));
                 line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
                 var dfmt = new DisassemblyFormatter(line);
                 dasm.Current.Render(dfmt);
@@ -108,7 +110,8 @@ namespace Decompiler.Gui.Windows.Controls
                 offset = 0;
             else if (offset > image.Bytes.Length)
                 offset = image.Bytes.Length;
-            this.position = image.BaseAddress + (int)offset;
+
+            this.position = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint) offset);
         }
 
         /// <summary>

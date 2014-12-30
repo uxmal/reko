@@ -27,8 +27,8 @@ namespace Decompiler.Core
 {
 	public class Address : Expression, IComparable
 	{
-		public ushort Selector;			// Segment selector.
-		public uint Offset;
+		public readonly ushort Selector;			// Segment selector.
+		public readonly uint Offset;
 
 		public Address(uint off) : base(PrimitiveType.Pointer32)
 		{
@@ -159,13 +159,14 @@ namespace Decompiler.Core
 
 		public static Address operator + (Address a, int off)
 		{
+            ushort sel = a.Selector;
 			uint newOff = (uint) (a.Offset + off);
 			if (a.Selector != 0 && newOff > 0xFFFF)
 			{
-				a.Selector += 0x1000;
+				sel += 0x1000;
 				newOff &= 0xFFFF;
 			}
-			return new Address(a.Selector, newOff);
+			return new Address(sel, newOff);
 		}
 
 		public static Address operator - (Address a, int delta)

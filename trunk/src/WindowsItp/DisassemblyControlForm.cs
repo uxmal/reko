@@ -24,10 +24,12 @@ namespace Decompiler.WindowsItp
             var image =   new LoadedImage(new Address(0x00100000),
                 Enumerable.Range(0, 10000)
                 .Select(i => (byte)random.Next(256)).ToArray());
+            var imageMap = new ImageMap(image.BaseAddress, image.Bytes.Length);
             disassemblyControl1.Model = new DisassemblyTextModel(
                 //new Decompiler.Arch.X86.X86ArchitectureFlat32();
                 new Decompiler.Arch.PowerPC.PowerPcArchitecture(Core.Types.PrimitiveType.Word32),
-                image);
+                image,
+                imageMap);
             disassemblyControl1.StartAddress = image.BaseAddress;
         }
     }

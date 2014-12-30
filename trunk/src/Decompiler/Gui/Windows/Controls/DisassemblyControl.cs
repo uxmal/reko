@@ -126,17 +126,16 @@ namespace Decompiler.Gui.Windows.Controls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             Focus();
-            try
-            {
-                SelectedAddress = GetAddressFromMouseEvent(e.X, e.Y);
-            }
-            catch { }
+            SelectedAddress = GetAddressFromMouseEvent(e.X, e.Y);
             base.OnMouseDown(e);
         }
 
         private Address GetAddressFromMouseEvent(int p1, int p2)
         {
-            throw new NotImplementedException();
+            var span =  base.GetSpan(new Point(p1, p2));
+            if (span == null)
+                return null;
+            return span.Tag as Address;
         }
     }
 
@@ -189,19 +188,17 @@ namespace Decompiler.Gui.Windows.Controls
     public class AddressSpan : TextSpan
     {
         private string formattedAddress;
-        private Address addr;
-        private string p;
 
-        public AddressSpan(string formattedAddress, Address addr, string p)
+        public AddressSpan(string formattedAddress, Address addr, string style)
         {
-            // TODO: Complete member initialization
             this.formattedAddress = formattedAddress;
-            this.addr = addr;
-            this.p = p;
+            this.Tag = addr;
+            base.Style = style;
         }
+
         public override string GetText()
         {
-            throw new NotImplementedException();
+            return formattedAddress;
         }
     }
 
