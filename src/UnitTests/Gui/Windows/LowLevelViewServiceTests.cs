@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Gui;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
@@ -87,8 +88,20 @@ namespace Decompiler.UnitTests.Gui.Windows
             var addrBase = new Address(0x10000);
             var image = new LoadedImage(addrBase, new byte[100]);
             var map = image.CreateImageMap();
+            var arch = mr.Stub<IProcessorArchitecture>();
+            var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
+            var e = mr.Stub<IEnumerator<MachineInstruction>>();
 
-            this.program = new Program(image, map, null, null);
+            arch.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull)).Return(dasm);
+            arch.Stub(a => a.InstructionBitSize).Return(8);
+            arch.Stub(a => a.CreateImageReader(
+                Arg<LoadedImage>.Is.NotNull,
+                Arg<Address>.Is.NotNull)).Return(image.CreateLeReader(addrBase));
+            dasm.Stub(d => d.GetEnumerator()).Return(e);
+            arch.Replay();
+            dasm.Replay();
+            e.Replay();
+            this.program = new Program(image, map, arch, null);
         }
 
         private T AddStubService<T>(IServiceContainer sc)
@@ -107,6 +120,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
             AddStubService<IUiPreferencesService>(sc);
+            Given_Program();
             uiSvc.Stub(x => x.FindWindow(Arg<string>.Is.Anything)).Return(null);
             uiSvc.Stub(x => x.CreateWindow("", "", null))
                 .IgnoreArguments()
@@ -116,10 +130,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
             var image = new LoadedImage(new Address(0x1000), new byte[300]);
-            var program = new Program {
-                Image = image,
-                ImageMap = image.CreateImageMap()
-            };
             mr.ReplayAll();
 
             interactor.SetSite(sc);

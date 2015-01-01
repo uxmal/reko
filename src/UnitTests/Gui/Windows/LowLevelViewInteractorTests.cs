@@ -20,6 +20,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Gui;
 using Decompiler.Gui.Forms;
@@ -121,12 +122,19 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void Given_Architecture()
         {
             arch = mr.Stub<IProcessorArchitecture>();
+            var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
+            var e = mr.Stub<IEnumerator<MachineInstruction>>();
             arch.Stub(a => a.InstructionBitSize).Return(8);
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
                 .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
+            arch.Stub(a => a.CreateDisassembler(
+                Arg<ImageReader>.Is.NotNull)).Return(dasm);
+            dasm.Stub(d => d.GetEnumerator()).Return(e);
             arch.Replay();
+            dasm.Replay();
+            e.Replay();
         }
 
         private void Given_Program(byte[] bytes)

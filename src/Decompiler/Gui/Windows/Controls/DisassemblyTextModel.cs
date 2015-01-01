@@ -40,8 +40,12 @@ namespace Decompiler.Gui.Windows.Controls
 
         public DisassemblyTextModel(IProcessorArchitecture arch, LoadedImage image, ImageMap imageMap)
         {
+            if (arch == null)
+                throw new ArgumentNullException("arch");
             this.arch = arch;
             this.image = image;
+            if (image == null)
+                throw new ArgumentNullException("image");
             this.imageMap = imageMap;
             this.position = image.BaseAddress;
         }
