@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Decompiler
         public const string AssemblyVersion = "0.3.0.0";
         public const string AssemblyFileVersion = "0.3.1.0";
         public const string Product = "Decompiler";
-        public const string Copyright = "Copyright © 1999-2014 John Källén";
+        public const string Copyright = "Copyright © 1999-2015 John Källén";
         public const string Company = "John Källén Konsult AB";
     }
 }

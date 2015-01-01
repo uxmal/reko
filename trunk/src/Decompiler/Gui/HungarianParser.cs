@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2014 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,7 +164,7 @@ Some examples:
             case 'i':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
-                    return PrimitiveType.Int32;         // Convenient for 2014... most ints are 32 in C code.
+                    return PrimitiveType.Int32;         // Convenient for 2015... most ints are 32 in C code.
                 return PrimitiveType.Create(Domain.SignedInt, bitSize / 8);
             case 'u':
                 bitSize = ParseBitSize();
