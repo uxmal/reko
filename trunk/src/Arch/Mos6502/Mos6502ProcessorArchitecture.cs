@@ -40,7 +40,7 @@ namespace Decompiler.Arch.Mos6502
 
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Mos6502ProcessorState(this);
         }
 
         public BitSet CreateRegisterBitset()
