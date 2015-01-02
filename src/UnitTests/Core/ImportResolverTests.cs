@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Core
                 {
                     new MetadataFile
                     {
-                         LibraryName = "foo",
+                         ModuleName = "foo",
                          TypeLibrary = new TypeLibrary 
                          {
                               ServicesByName =
@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Core
                 {
                     new MetadataFile
                     {
-                         LibraryName = "foo",
+                         ModuleName = "foo",
                          TypeLibrary = new TypeLibrary 
                          {
                               ServicesByVector =

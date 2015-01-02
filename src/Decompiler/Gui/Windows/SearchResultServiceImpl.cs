@@ -163,8 +163,13 @@ namespace Decompiler.Gui.Windows
                 this.listView = lv;
                 this.listView.Columns.Clear();
             }
+            
+            public IEnumerable<int> SelectedIndices
+            {
+                get { return listView.SelectedIndices.Cast<int>(); }
+            }
 
-            #region ISearchResultView Members
+            public bool IsFocused { get { return listView.Focused; } }
 
             public void AddColumn(string columnText, int widthInCharacters)
             {
@@ -173,12 +178,6 @@ namespace Decompiler.Gui.Windows
                     colHeader.Width = listView.Font.Height * widthInCharacters;
                     listView.Columns.Add(colHeader);
             }
-
-            public IEnumerable<int> SelectedIndices
-            {
-                get { return listView.SelectedIndices.Cast<int>(); }
-            }
-            #endregion
         }
 
         /// <summary>

@@ -374,6 +374,12 @@ namespace Decompiler.Gui.Windows.Controls
             g.Dispose();
             Invalidate();
         }
+
+        internal void ShowFraction()
+        {
+            var frac = model.GetPositionAsFraction();
+            vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
+        }
     }
 
     public class EditorStyle

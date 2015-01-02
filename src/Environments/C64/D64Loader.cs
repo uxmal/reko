@@ -86,8 +86,8 @@ namespace Decompiler.Environments.C64
         };
         private LoaderResults lr;
 
-        public D64Loader(IServiceProvider services, byte[] rawImage)
-            : base(services, rawImage)
+        public D64Loader(IServiceProvider services, string filename, byte[] rawImage)
+            : base(services, filename, rawImage)
         {
         }
 

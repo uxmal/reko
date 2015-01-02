@@ -103,6 +103,9 @@ namespace Decompiler.Analysis
                 var e = eventListener;
                 if (e != null)
                     eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
+                //+		block	{l313C_B63E}	Decompiler.Core.Block
+                if (block.Name.EndsWith("l313C_B63E"))
+                    block.Name.ToArray();
                 ProcessBlock(block);
             }
         }

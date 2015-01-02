@@ -33,7 +33,7 @@ namespace Decompiler.Loading
     {
         private byte[] imageBytes;
 
-        public NullImageLoader(IServiceProvider services, byte[] image) : base(services, image)
+        public NullImageLoader(IServiceProvider services, string filename, byte[] image) : base(services, filename, image)
         {
             this.imageBytes = image;
         }

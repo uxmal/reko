@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
         {
             var bytes = File.ReadAllBytes(
                 FileUnitTester.MapTestPath("../UnitTests/Arch/M68k/images/FIBO"));
-            var ldr = new HunkLoader(null, bytes);
+            var ldr = new HunkLoader(null, "FIBO", bytes);
             ldr.Load(new Address(0x10000)); 
         }
 
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
                 0,
                 0,
                 0);
-            var ldr = new HunkLoader(null, bytes);
+            var ldr = new HunkLoader(null, "foo.bar", bytes);
             var ldImg = ldr.Load(new Address(0x00010000));
             Assert.AreEqual(1, ldImg.ImageMap.Segments.Count);
             Assert.AreEqual(new Address(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
@@ -82,7 +82,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
                 (ushort) 0x4E75,
                 (ushort) 0,
                 HunkType.HUNK_END);
-            var ldr = new HunkLoader(null, bytes);
+            var ldr = new HunkLoader(null, "foo.bar", bytes);
             var ldImg = ldr.Load(new Address(0x00010000));
             var rlImg = ldr.Relocate(new Address(0x00010000));
             Assert.AreEqual(1, rlImg.EntryPoints.Count);

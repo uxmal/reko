@@ -47,7 +47,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const uint signatureOffset = 0x1C;
 		private const uint PspSize = 0x0100;
 
-		public PkLiteUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
+		public PkLiteUnpacker(IServiceProvider services, ExeImageLoader exe, string filename, byte [] rawImg) : base(services, filename, rawImg)
 		{
             arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(services, arch);

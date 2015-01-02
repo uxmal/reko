@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.ImageLoaders.BinHex
             enc.Encode(0x00);
             enc.Flush();
 
-            BinHexImageLoader loader = new BinHexImageLoader(null, null);
+            BinHexImageLoader loader = new BinHexImageLoader(null, "foo.bar", null);
             BinHexHeader hdr = loader.LoadBinHexHeader(CreateDecoder(file).GetBytes().GetEnumerator());
             Assert.AreEqual("foo.bar", hdr.FileName);
             Assert.AreEqual("FTYP", hdr.FileType);

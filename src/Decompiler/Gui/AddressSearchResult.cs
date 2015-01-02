@@ -154,7 +154,7 @@ namespace Decompiler.Gui
         {
             switch (cmdID.ID)
             {
-            case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
+            case CmdIds.ActionMarkProcedure: if (!View.IsFocused) return false; MarkProcedures(); return true;
             }
             return false;
         }

@@ -28,7 +28,7 @@ namespace Decompiler.Core
 {
     public abstract class MetadataLoader
     {
-        public MetadataLoader(IServiceProvider services, byte[] bytes)
+        public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)
         {
         }
 
@@ -38,7 +38,7 @@ namespace Decompiler.Core
     public class NullMetadataLoader : MetadataLoader
     {
         public NullMetadataLoader()
-            : base(null, null)
+            : base(null, "", new byte[0])
         {
         }
 

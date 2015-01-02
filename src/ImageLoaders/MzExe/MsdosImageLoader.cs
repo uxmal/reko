@@ -37,7 +37,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private LoadedImage imgLoaded;
         private ImageMap imgLoadedMap;
 
-		public MsdosImageLoader(IServiceProvider services, ExeImageLoader exe) : base(services, exe.RawImage)
+		public MsdosImageLoader(IServiceProvider services, string filename, ExeImageLoader exe) : base(services, filename, exe.RawImage)
 		{
 			this.exe = exe;
             this.arch = new IntelArchitecture(ProcessorMode.Real);

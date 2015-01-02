@@ -42,7 +42,7 @@ namespace Decompiler.Core
         private string defaultConvention;
         private Dictionary<string, SystemService> servicesByName;
         private Dictionary<int, SystemService> servicesByOrdinal;
-        private string libraryName;
+        private string moduleName;
 
         public TypeLibraryLoader(IProcessorArchitecture arch, bool caseInsensitive)
         {
@@ -71,10 +71,14 @@ namespace Decompiler.Core
         public TypeLibrary BuildLibrary()
         {
             var lib = new TypeLibrary(types, procedures);
-            lib.LibraryName = libraryName;
+            lib.ModuleName = moduleName;
             foreach (var de in servicesByName)
             {
                 lib.ServicesByName.Add(de.Key, de.Value);
+            }
+            foreach (var de in servicesByOrdinal)
+            {
+                lib.ServicesByVector.Add(de.Key, de.Value);
             }
             return lib;
         }
@@ -261,9 +265,9 @@ namespace Decompiler.Core
             this.servicesByName[entryName] = svc;
         }
 
-        public void SetLibraryName(string libName)
+        public void SetModuleName(string libName)
         {
-            this.libraryName = libName;
+            this.moduleName = libName;
         }
 
         public void LoadService(int ordinal, SystemService svc)

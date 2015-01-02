@@ -50,8 +50,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private LoadedImage imgU;
 
-        public ExePackLoader(IServiceProvider services, ExeImageLoader exe, byte[] imgRaw)
-            : base(services, imgRaw)
+        public ExePackLoader(IServiceProvider services, ExeImageLoader exe, string filename, byte[] imgRaw)
+            : base(services, filename, imgRaw)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(Services, arch);

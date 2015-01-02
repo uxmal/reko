@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Loading
 
         public class TestImageLoader : ImageLoader
         {
-            public TestImageLoader(IServiceProvider services, byte[] imgRaw) : base(services, imgRaw)
+            public TestImageLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
             {
             }
 

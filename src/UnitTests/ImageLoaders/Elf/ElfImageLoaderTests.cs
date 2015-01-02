@@ -342,7 +342,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         [Test]
         public void Load()
         {
-            var el = new ElfImageLoader(null, rawImg);
+            var el = new ElfImageLoader(null, "foo", rawImg);
             var lr = el.Load(new Address(0));
             Assert.IsInstanceOf<IntelArchitecture>(lr.Architecture);
         }
@@ -350,7 +350,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         [Test]
         public void LoadStringTable()
         {
-            var el = new ElfImageLoader(null, rawImg);
+            var el = new ElfImageLoader(null, "foo", rawImg);
             el.Load(new Address(0));
             Assert.AreEqual(".symtab", el.GetStringTableEntry(1));
         }
@@ -358,7 +358,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         [Test]
         public void LoadSections()
         {
-            var el = new ElfImageLoader(null, rawImg);
+            var el = new ElfImageLoader(null, "foo", rawImg);
             el.Load(new Address(0));
 
             Assert.AreEqual("", el.GetStringTableEntry(el.SectionHeaders[0].sh_name));
@@ -394,7 +394,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         [Test]
         public void LoadProgramHeaders()
         {
-            var el = new ElfImageLoader(null, rawImg);
+            var el = new ElfImageLoader(null, "foo", rawImg);
             el.Load(new Address(0));
             el.Dump(Console.Out);
         }

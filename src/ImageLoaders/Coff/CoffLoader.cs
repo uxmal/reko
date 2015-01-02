@@ -31,8 +31,8 @@ namespace Decompiler.ImageLoaders.Coff
     {
         private IProcessorArchitecture arch;
 
-        public CoffLoader(IServiceProvider services, byte[] rawBytes)
-            : base(services, rawBytes)
+        public CoffLoader(IServiceProvider services, string filename, byte[] rawBytes)
+            : base(services, filename, rawBytes)
         {
             this.header = LoadHeader();
         }

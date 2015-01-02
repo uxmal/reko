@@ -251,7 +251,7 @@ namespace Decompiler.Gui.Forms
             var typelib = decompilerSvc.Decompiler.LoadMetadata(fileName);
             decompilerSvc.Decompiler.Project.MetadataFiles.Add(new MetadataFile {
                 Filename = fileName,
-                LibraryName = Path.GetFileName(fileName),
+                ModuleName = Path.GetFileName(fileName),
                 TypeLibrary = typelib
             });
         }
@@ -614,7 +614,8 @@ namespace Decompiler.Gui.Forms
             {
                 if (subWindowCommandTarget.Execute(cmdId))
                     return true;
-            } 
+            }
+          
             if (currentPhase != null && currentPhase.Execute(cmdId))
                 return true;
             if (cmdId.Guid == CmdSets.GuidDecompiler)

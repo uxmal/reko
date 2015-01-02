@@ -52,8 +52,10 @@ namespace Decompiler.Gui
 
     public interface ISearchResultView
     {
+        bool IsFocused { get; }
         IEnumerable<int> SelectedIndices { get; }
 
         void AddColumn(string columnTitle, int width);
+
     }
 }

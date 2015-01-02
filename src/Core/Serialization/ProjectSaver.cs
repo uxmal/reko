@@ -75,7 +75,7 @@ namespace Decompiler.Core.Serialization
             return new MetadataFile_v2
             {
                  Filename = metadata.Filename,
-                  LibraryName = metadata.LibraryName,
+                  ModuleName = metadata.ModuleName,
             };
         }
     }

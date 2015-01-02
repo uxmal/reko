@@ -236,7 +236,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     new MetadataFile
                     {
                         Filename = "c:\\test\\foo.def",
-                        LibraryName = "foo.def",
+                        ModuleName = "foo.def",
                     }
                 }
             };
@@ -244,7 +244,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             var sProject = ps.Save(project);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
-            Assert.AreEqual("foo.def", project.MetadataFiles[0].LibraryName);
+            Assert.AreEqual("foo.def", project.MetadataFiles[0].ModuleName);
         }
 
         [Test]
