@@ -122,7 +122,9 @@ namespace Decompiler.Core.Serialization
     {
         [XmlElement("loader")]
         public string LoaderTypeName;
-        public string LibraryName;
+
+        [XmlElement("module")]
+        public string ModuleName;
 
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {

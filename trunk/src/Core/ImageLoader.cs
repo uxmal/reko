@@ -30,9 +30,10 @@ namespace Decompiler.Core
 	/// </summary>
 	public abstract class ImageLoader
 	{
-        public ImageLoader(IServiceProvider services, byte[] imgRaw)
+        public ImageLoader(IServiceProvider services, string filename, byte[] imgRaw)
         {
             this.Services = services;
+            this.Filename = filename;
             this.RawImage = imgRaw;
             this.ImportReferences = new Dictionary<Address, ImportReference>();
         }
@@ -49,6 +50,7 @@ namespace Decompiler.Core
         public byte[] RawImage { get; private set; }
 
         public IServiceProvider Services { get; private set; }
+        public string Filename { get; private set; }
 
         /// <summary>
 		/// Loads the image into memory starting at the specified address

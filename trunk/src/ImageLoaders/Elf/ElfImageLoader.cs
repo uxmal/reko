@@ -83,8 +83,8 @@ namespace Decompiler.ImageLoaders.Elf
         private LoadedImage image;
         private ImageMap imageMap;
 
-        public ElfImageLoader(IServiceProvider services, byte[] rawBytes)
-            : base(services, rawBytes)
+        public ElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes)
+            : base(services, filename, rawBytes)
         {
         }
 

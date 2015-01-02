@@ -376,7 +376,7 @@ namespace Decompiler.Gui.Windows
 
         void DisassemblyView_SelectedAddressChanged(object sender, EventArgs e)
         {
-            if (ignoreAddressChange)
+            if (ignoreAddressChange || Control.DisassemblyView.SelectedAddress == null)
                 return;
             this.ignoreAddressChange = true;
             this.Control.MemoryView.SelectedAddress = Control.DisassemblyView.SelectedAddress;

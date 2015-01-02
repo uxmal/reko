@@ -512,6 +512,7 @@ namespace Decompiler.Gui.Windows.Controls
             public Address PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
             {
                 this.cellSize = cellSize;
+                //$TODO: these should be user-configurable.
                 codeTheme = new BrushTheme { Background = Brushes.Pink, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Red };
                 dataTheme = new BrushTheme { Background = Brushes.LightBlue, Foreground = SystemBrushes.WindowText, StartMarker = Brushes.Blue };
                 defaultTheme = new BrushTheme { Background = SystemBrushes.Window, Foreground = SystemBrushes.ControlText };

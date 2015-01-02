@@ -44,7 +44,6 @@ namespace Decompiler.UnitTests.Scanning
         private Identifier SCZO;
         private IBackWalkHost host;
 
-
         private class BackwalkerHost : IBackWalkHost
         {
             #region IBackWalkHost Members
@@ -52,6 +51,7 @@ namespace Decompiler.UnitTests.Scanning
             public void AddDiagnostic(Address addr, Diagnostic diagnostic)
             {
             }
+
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {
                 throw new NotImplementedException();
@@ -80,6 +80,25 @@ namespace Decompiler.UnitTests.Scanning
                     new IntelArchitecture(ProcessorMode.Protected32).CreateProcessorState());
             SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
+        }
+
+        private void RunTest(IntelArchitecture arch, RtlTransfer rtlTransfer, string outputFile)
+        {
+            using (var fut = new FileUnitTester(outputFile))
+            {
+                m.Procedure.Write(false, fut.TextWriter);
+                fut.TextWriter.Flush();
+
+                var ibw = new Backwalker(host, rtlTransfer, expSimp);
+                var bwoList = ibw.BackWalk(m.CurrentBlock);
+                Assert.IsNotNull(bwoList);
+                foreach (BackwalkOperation bwo in bwoList)
+                {
+                    fut.TextWriter.WriteLine(bwo);
+                }
+                fut.TextWriter.WriteLine("Index register: {0}", ibw.Index);
+                fut.AssertFilesEqual();
+            }
         }
 
         [Test]
@@ -358,24 +377,24 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual("None", bw.Index.ToString());
         }
 
-        private void RunTest(IntelArchitecture arch, RtlTransfer rtlTransfer, string outputFile)
+        [Test]
+        public void BwUnresolveableIndirect()
         {
-            using (var fut = new FileUnitTester(outputFile))
-            {
-                m.Procedure.Write(false, fut.TextWriter);
-                fut.TextWriter.Flush();
+            var eax = m.Frame.CreateTemporary("eax", PrimitiveType.Word32);
+            var esi = m.Frame.CreateTemporary("esi", PrimitiveType.Word32);
+            var Z = m.Frame.EnsureFlagGroup(1, "Z", PrimitiveType.Bool);
 
-                var ibw = new Backwalker(host, rtlTransfer, expSimp);
-                var bwoList = ibw.BackWalk(m.CurrentBlock);
-                Assert.IsNotNull(bwoList);
-                foreach (BackwalkOperation bwo in bwoList)
-                {
-                    fut.TextWriter.WriteLine(bwo);
-                }
-                fut.TextWriter.WriteLine("Index register: {0}", ibw.Index);
-                fut.AssertFilesEqual();
-            }
+            var xfer = new RtlCall(eax, 4, RtlClass.Transfer);
+            m.Assign(eax, m.LoadDw(esi));
+            m.Assign(Z, m.Cond(m.And(eax, eax)));
+            m.BranchIf(m.Test(ConditionCode.EQ, Z), "null_ptr");
+            m.Label("do_call");
+
+            var bw = new Backwalker(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            Assert.AreEqual("eax", bw.Index.Name);
+            bw.BackWalk(m.Block);
+            Assert.AreEqual("None", bw.Index.Name);
         }
-       
 	}
 }

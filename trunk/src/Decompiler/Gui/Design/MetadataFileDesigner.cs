@@ -41,7 +41,7 @@ namespace Decompiler.Gui.Design
 
         public void SetTreeNodeProperties(MetadataFile mf)
         {
-            TreeNode.Text = Path.GetFileName(mf.LibraryName);
+            TreeNode.Text = Path.GetFileName(mf.ModuleName);
             TreeNode.ImageName = "typelib.ico";
         }
     }

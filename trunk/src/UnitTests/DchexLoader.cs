@@ -16,7 +16,7 @@ namespace Decompiler.UnitTests
         private LoaderResults results;
 
         public DchexLoader(string filename, IServiceProvider services, byte[] imgRaw) :
-            base(services, imgRaw)
+            base(services, filename, imgRaw)
         {
             using (TextReader rdr = new StreamReader(filename))
             {

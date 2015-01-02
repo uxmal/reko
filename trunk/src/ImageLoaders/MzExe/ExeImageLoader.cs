@@ -62,7 +62,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public const int CbPsp = 0x0100;			// Program segment prefix size in bytes.
 		public const int CbPageSize = 0x0200;		// MSDOS pages are 512 bytes.
 
-		public ExeImageLoader(IServiceProvider services, byte [] image) : base(services, image)
+		public ExeImageLoader(IServiceProvider services, string filename, byte [] image) : base(services, filename, image)
 		{
             this.services = services;
             ReadCommonExeFields();	
@@ -71,26 +71,26 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new FormatException("Image is not an MS-DOS executable image.");
 		}
 
-        private ImageLoader CreateRealModeLoader(byte[] image)
+        private ImageLoader CreateRealModeLoader(string filename, byte[] image)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
             var platform = new MsdosPlatform(null, arch);
 
             if (LzExeUnpacker.IsCorrectUnpacker(this, image))
             {
-                return new LzExeUnpacker(services, this, image);
+                return new LzExeUnpacker(services, this, filename, image);
             }
             else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
             {
-                return new PkLiteUnpacker(services, this, image);
+                return new PkLiteUnpacker(services, this, filename, image);
             }
             else if (ExePackLoader.IsCorrectUnpacker(this, image))
             {
-                return new ExePackLoader(services, this, image);
+                return new ExePackLoader(services, this, filename, image);
             }
             else
             {
-                return new MsdosImageLoader(services, this);
+                return new MsdosImageLoader(services, filename, this);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             if (IsPortableExecutable)
             {
-                return new PeImageLoader(services, base.RawImage, e_lfanew);
+                return new PeImageLoader(services, Filename,  base.RawImage, e_lfanew);
             }
             else if (IsNewExecutable)
             {
@@ -146,7 +146,7 @@ namespace Decompiler.ImageLoaders.MzExe
             }
             else
             {
-                return CreateRealModeLoader(RawImage);
+                return CreateRealModeLoader(Filename, RawImage);
             }
         }
 

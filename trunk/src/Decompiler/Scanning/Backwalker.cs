@@ -29,6 +29,7 @@ using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Decompiler.Scanning
 {
@@ -55,7 +56,7 @@ namespace Decompiler.Scanning
             var mem = target as MemoryAccess;
             if (mem == null)
             {
-                Index = null;
+                Index = RegisterOf(target as Identifier);
             }
             else
             {
@@ -73,14 +74,6 @@ namespace Decompiler.Scanning
         public int Stride { get; private set; }
         public Address VectorAddress { get; private set; }
         public List<BackwalkOperation> Operations { get; private set; }
-
-        private IEnumerable<Statement> StatementsInReverseOrder(Block block)
-        {
-            for (int i = block.Statements.Count - 1; i >= 0; --i)
-            {
-                yield return block.Statements[i];
-            }
-        }
 
         /// <summary>
         /// Walks backward along the <paramref name="block"/>, recording the operations done to the idx register.
@@ -265,7 +258,7 @@ namespace Decompiler.Scanning
             Block block)
         {
             DumpBlock(regIdx, block);
-            return BackwalkInstructions(regIdx, StatementsInReverseOrder(block));
+            return BackwalkInstructions(regIdx, block.Statements.Reverse<Statement>());
         }
 
         [Conditional("DEBUG")]

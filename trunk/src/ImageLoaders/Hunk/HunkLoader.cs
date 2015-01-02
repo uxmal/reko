@@ -41,8 +41,8 @@ namespace Decompiler.ImageLoaders.Hunk
         private TextHunk firstCodeHunk;
         private HunkFile hunkFile;
 
-        public HunkLoader(IServiceProvider services, byte[] imgRaw)
-            : base(services, imgRaw)
+        public HunkLoader(IServiceProvider services, string filename, byte[] imgRaw)
+            : base(services, filename, imgRaw)
         {
         }
 

@@ -57,7 +57,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const short ImageFileRelocationsStripped = 0x0001;
 		private const short ImageFileExecutable = 0x0002;
 
-		public PeImageLoader(IServiceProvider services, byte [] img, uint peOffset) : base(services, img)
+		public PeImageLoader(IServiceProvider services, string filename, byte [] img, uint peOffset) : base(services, filename, img)
 		{
 			ImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
@@ -379,7 +379,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private void ResolveImportedFunction(ImportDescriptor id, uint rvaEntry, Address addrThunk)
         {
-            ProcedureSignature sig;
+            if (addrThunk.ToString().EndsWith("45B4C8"))    //$DEBUG
+                addrThunk.ToString();
             if (!ImportedFunctionNameSpecified(rvaEntry))
             {
                 ImportReferences.Add(addrThunk, new OrdinalImportReference(

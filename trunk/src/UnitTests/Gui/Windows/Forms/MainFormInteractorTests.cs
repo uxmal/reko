@@ -476,18 +476,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        public class FakeMetadataLoader : MetadataLoader
-        {
-            public FakeMetadataLoader(IServiceProvider services, byte[]bytes) :base(services, bytes)
-            {
-            }
-
-            public override TypeLibrary Load()
-            {
-                return new TypeLibrary();
-            }
-        }
-
         private class TestForm : Form, IWindowFrame
         {
             public IWindowPane Pane { get; private set; }

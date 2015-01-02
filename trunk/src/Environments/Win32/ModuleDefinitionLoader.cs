@@ -36,16 +36,19 @@ namespace Decompiler.Environments.Win32
         private Lexer lexer;
         private Token bufferedTok;
         private IProcessorArchitecture arch;
+        private string filename;
 
-        public ModuleDefinitionLoader(IServiceProvider services, byte[] bytes) : base(services, bytes)
+        public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[] bytes) : base(services, filename, bytes)
         {
+            this.filename = filename;
             this.lexer = new Lexer( new StreamReader(new MemoryStream(bytes)));
             this.bufferedTok = null;
             this.arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
         }
 
-        public ModuleDefinitionLoader(TextReader rdr, IProcessorArchitecture arch) : base(null, null)
+        public ModuleDefinitionLoader(TextReader rdr, string filename, IProcessorArchitecture arch) : base(null, filename, null)
         {
+            this.filename = filename;
             this.lexer = new Lexer(rdr);
             this.bufferedTok = null;
             this.arch = arch;
@@ -54,6 +57,7 @@ namespace Decompiler.Environments.Win32
         public override TypeLibrary Load()
         {
             var loader = new TypeLibraryLoader(arch, true);
+            loader.SetModuleName(DefaultModuleName(filename));
             for (; ; )
             {
                 var tok = Get();
@@ -69,6 +73,11 @@ namespace Decompiler.Environments.Win32
                     tok.LineNumber));
                 }
             }
+        }
+
+        private string DefaultModuleName(string filename)
+        {
+            return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
         }
 
         private void ParseExports(TypeLibraryLoader lib)
@@ -108,7 +117,7 @@ namespace Decompiler.Environments.Win32
         {
             if (Peek().Type == TokenType.Id)
             {
-                lib.SetLibraryName(Get().Text);
+                lib.SetModuleName(Get().Text);
             }
             if (PeekAndDiscard(TokenType.BASE))
             {

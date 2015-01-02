@@ -73,9 +73,9 @@ namespace Decompiler.Loading
         /// </summary>
         /// <param name="rawBytes">Image of the executeable file.</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
-        public Program LoadExecutable(string fileName, byte[] image, Address addrLoad)
+        public Program LoadExecutable(string filename, byte[] image, Address addrLoad)
         {
-            ImageLoader imgLoader = FindImageLoader<ImageLoader>(fileName, image, () => new NullImageLoader(Services, image));
+            ImageLoader imgLoader = FindImageLoader<ImageLoader>(filename, image, () => new NullImageLoader(Services, filename, image));
             if (addrLoad == null)
             {
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
@@ -87,7 +87,7 @@ namespace Decompiler.Loading
                 result.ImageMap,
                 result.Architecture,
                 result.Platform);
-            program.Name = Path.GetFileName(fileName);
+            program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
             CopyImportReferences(imgLoader.ImportReferences, program);
@@ -131,7 +131,7 @@ namespace Decompiler.Loading
         /// </summary>
         /// <param name="rawBytes"></param>
         /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
-        public T FindImageLoader<T>(string fileName, byte[] rawBytes, Func<T> defaultLoader)
+        public T FindImageLoader<T>(string filename, byte[] rawBytes, Func<T> defaultLoader)
         {
             foreach (LoaderElement e in cfgSvc.GetImageLoaders())
             {
@@ -139,9 +139,9 @@ namespace Decompiler.Loading
                     ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset)
                     ||
                     (!string.IsNullOrEmpty(e.Extension) &&
-                        fileName.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
+                        filename.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return CreateImageLoader<T>(e.TypeName, rawBytes);
+                    return CreateImageLoader<T>(e.TypeName, filename, rawBytes);
                 }
             }
 
@@ -209,12 +209,12 @@ namespace Decompiler.Loading
             }
         }
 
-        public T CreateImageLoader<T>(string typeName, byte[] bytes)
+        public T CreateImageLoader<T>(string typeName, string filename, byte[] bytes)
         {
             Type t = Type.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(t, this.Services, bytes);
+            return (T) Activator.CreateInstance(t, this.Services, filename, bytes);
         }
 
         protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program prog)

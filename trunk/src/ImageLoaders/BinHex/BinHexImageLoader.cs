@@ -37,7 +37,7 @@ namespace Decompiler.ImageLoaders.BinHex
         private LoadedImage image;
         private ImageMap imageMap;
 
-        public BinHexImageLoader(IServiceProvider services, byte [] imgRaw) : base(services, imgRaw)
+        public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
         {
         }
 

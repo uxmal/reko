@@ -78,11 +78,8 @@ namespace Decompiler.Gui.Windows.Controls
 
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
-            var g = CreateGraphics();
             Model.MoveTo(topAddress, 0);
-            ComputeLayout(g);
-            g.Dispose();
-            Invalidate();
+            base.ShowFraction();
         }
 
         protected override bool IsInputKey(Keys keyData)

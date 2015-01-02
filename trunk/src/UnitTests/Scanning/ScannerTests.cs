@@ -369,7 +369,7 @@ fn0C00_0000_exit:
                 Programs = { program },
                 MetadataFiles = {
                     new MetadataFile {
-                         LibraryName = "module",
+                         ModuleName = "module",
                         TypeLibrary = new TypeLibrary
                         {
                              ServicesByName = 

@@ -490,7 +490,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             project.MetadataFiles.Add(new MetadataFile
             {
-                LibraryName = "..\\foo.tlb"
+                ModuleName = "..\\foo.tlb"
             });
 
             Assert.AreEqual(1, mockTree.Nodes.Count);

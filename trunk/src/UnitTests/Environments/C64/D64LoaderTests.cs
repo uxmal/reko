@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Environments.C64
                 "CBM.COM",
                 0, 0,
                 new Dictionary<int, byte[]>());
-            var loader = new D64Loader(sc, image);
+            var loader = new D64Loader(sc, "CBM.COM", image);
             var items = loader.LoadDirectory();
             Assert.AreEqual(0, items.Count);
         }
@@ -168,7 +168,7 @@ namespace Decompiler.UnitTests.Environments.C64
                             Encoding.ASCII.GetBytes("Hello world"))
                     }
                 });
-            var loader = new D64Loader(sc, image);
+            var loader = new D64Loader(sc, "CBM.COM", image);
             var items = loader.LoadDirectory();
 
             Assert.AreEqual(1, items.Count);

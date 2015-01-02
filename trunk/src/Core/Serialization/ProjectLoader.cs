@@ -144,7 +144,7 @@ namespace Decompiler.Core.Serialization
             return new MetadataFile
             {
                 Filename = sMetadata.Filename,
-                LibraryName = sMetadata.LibraryName,
+                ModuleName = sMetadata.ModuleName,
                 TypeLibrary = loader.LoadMetadata(sMetadata.Filename)
             };
         }

@@ -37,7 +37,7 @@ namespace Decompiler.Core
             return visitor.VisitMetadataFile(this);
         }
 
-        public string LibraryName { get; set; }
+        public string ModuleName { get; set; }
 
         public string MetadataType { get; set; }
 

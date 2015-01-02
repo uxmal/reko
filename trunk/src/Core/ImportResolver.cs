@@ -49,7 +49,7 @@ namespace Decompiler.Core
 
         public ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform)
         {
-            foreach (var module in project.MetadataFiles.Where(m => m.LibraryName == moduleName && m.TypeLibrary != null))
+            foreach (var module in project.MetadataFiles.Where(m => m.ModuleName == moduleName && m.TypeLibrary != null))
             {
                 SystemService svc;
                 if (module.TypeLibrary.ServicesByName.TryGetValue(importName, out svc))
@@ -65,7 +65,9 @@ namespace Decompiler.Core
 
         public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform)
         {
-            foreach (var module in project.MetadataFiles.Where(m => m.LibraryName == moduleName && m.TypeLibrary != null))
+            foreach (var module in project.MetadataFiles.Where(m => 
+                string.Compare(m.ModuleName, moduleName, true) == 0 && //$BUGBUG: platform-dependent string comparison.
+                m.TypeLibrary != null))
             {
                 SystemService svc;
                 if (module.TypeLibrary.ServicesByVector.TryGetValue(ordinal, out svc))

@@ -28,7 +28,7 @@ namespace Decompiler.ImageLoaders.MachO
 {
     public class MachOLoader : ImageLoader
     {
-        public MachOLoader(IServiceProvider services, byte[] rawBytes) : base(services, rawBytes) { }
+        public MachOLoader(IServiceProvider services, string filename, byte[] rawBytes) : base(services, filename, rawBytes) { }
 
         public override Address PreferredBaseAddress
         {
