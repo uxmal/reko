@@ -139,6 +139,9 @@ namespace Decompiler.Evaluation
                     Expression v2;
                     if (StackState.TryGetValue(remainder, out v2))
                     {
+                        if (v2 == Constant.Invalid || value == Constant.Invalid)
+                            return Constant.Invalid;
+
                         //$BUGBUG: should evaluate the MkSequence, possibly creating a longer constant if v2 and value are 
                         // constant.
                         //$BUGBUG: the sequence below is little-endian!!!

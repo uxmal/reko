@@ -50,6 +50,10 @@ namespace Decompiler.Gui.Windows.Controls
             //$TODO: allow user to manipulate these hard-wired constants.
             Styles.Add("opcode", new EditorStyle { Width = 100 });
             Styles.Add("bytes", new EditorStyle { Width = 200 });
+            Styles.Add("addrText", new EditorStyle { 
+                Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x80)),
+                Cursor = Cursors.Hand
+            });
         }
 
         [Browsable(false)]

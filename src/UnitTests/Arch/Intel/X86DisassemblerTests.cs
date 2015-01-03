@@ -459,5 +459,20 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble32(0xDA, 0xE9);
             Assert.AreEqual("fucompp\t", instr.ToString());
         }
+
+        [Test]
+        public void Dis_x86_Call32()
+        {
+            var instr = Disassemble32(0xE9, 0x78, 0x56, 0x34, 012);
+            var addrOp = (X86AddressOperand) instr.op1;
+        }
+
+        [Test]
+        public void Dis_x86_Call16()
+        {
+            var instr = Disassemble16(0xE9, 0x78, 0x56);
+            var addrOp = (ImmediateOperand)instr.op1;
+            Assert.AreEqual("567B", addrOp.ToString());
+        }
     }
 }

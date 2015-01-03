@@ -173,12 +173,12 @@ namespace Decompiler.Core.Machine
             return new AddressOperand(new Address(a), PrimitiveType.Pointer64);
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             if (base.Width.Size == 2)
-                return string.Format("{0:X4}", Address.Linear);
+                writer.WriteAddress(string.Format("{0:X4}", Address.Linear), Address);
             else
-                return Address.ToString();
+                writer.WriteAddress(Address.ToString(), Address);
         }
     }
 

@@ -91,6 +91,8 @@ namespace Decompiler.Gui.Windows
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
             this.control.MemoryView.Services = this.services;
 
+            this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
+
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += typeMarker_FormatType;
             typeMarker.TextAccepted += typeMarker_TextAccepted;
@@ -98,6 +100,7 @@ namespace Decompiler.Gui.Windows
             return control;
         }
 
+        
         private void typeMarker_TextAccepted(object sender, TypeMarkerEventArgs e)
         {
             var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText);
@@ -114,6 +117,29 @@ namespace Decompiler.Gui.Windows
 
         public void Close()
         {
+        }
+
+        private void NavigateToToolbarAddress()
+        {
+            Address addr;
+            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
+            if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
+                txtAddr = txtAddr.Substring(2);
+            if (!Address.TryParse(txtAddr, 16, out addr))
+                return;
+            NavigateToAddress(addr);
+        }
+
+        private void NavigateToAddress(Address addr)
+        {
+            if (!program.Image.IsValidAddress(addr))
+                return;
+            this.ignoreAddressChange = true;
+            this.Control.MemoryView.SelectedAddress = addr;
+            this.Control.MemoryView.TopAddress = addr;
+            this.Control.DisassemblyView.SelectedAddress = addr;
+            this.Control.DisassemblyView.TopAddress = addr;
+            this.ignoreAddressChange = false;
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -270,6 +296,7 @@ namespace Decompiler.Gui.Windows
             }
             return false;
         }
+
         public void typeMarker_FormatType(object sender, TypeMarkerEventArgs e)
         {
             try
@@ -299,7 +326,6 @@ namespace Decompiler.Gui.Windows
             return item;
         }
 
-        
         public bool ViewWhatPointsHere()
         {
             AddressRange addrRange = control.MemoryView.GetAddressRange();
@@ -390,32 +416,22 @@ namespace Decompiler.Gui.Windows
                 return;
             e.Handled = true;
             e.SuppressKeyPress = true;
-            GotoToolbarAddress();
+            NavigateToToolbarAddress();
         }
 
         void ToolBarGoButton_Click(object sender, EventArgs e)
         {
             if (ignoreAddressChange)
                 return;
-            GotoToolbarAddress();
+            NavigateToToolbarAddress();
         }
 
-        private void GotoToolbarAddress()
+        private void DisassemblyControl_Navigate(object sender, EditorNavigationArgs e)
         {
-            Address addr;
-            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
-            if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
-                txtAddr = txtAddr.Substring(2);
-            if (!Address.TryParse(txtAddr, 16, out addr))
+            var addr = e.Destination as Address;
+            if (e == null)
                 return;
-            if (!program.Image.IsValidAddress(addr))
-                return;
-            this.ignoreAddressChange = true;
-            this.Control.MemoryView.SelectedAddress = addr;
-            this.Control.MemoryView.TopAddress = addr;
-            this.Control.DisassemblyView.SelectedAddress = addr;
-            this.Control.DisassemblyView.TopAddress = addr;
-            this.ignoreAddressChange = false;
+            NavigateToAddress(addr);
         }
     }
 }
