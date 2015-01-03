@@ -49,7 +49,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Pdp11\Pdp11.csproj">
       <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
-      <Name>Pdp11 %28Architectures\Pdp11%29</Name>
+      <Name>Pdp11</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>

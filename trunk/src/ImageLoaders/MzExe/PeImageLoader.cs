@@ -379,8 +379,6 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private void ResolveImportedFunction(ImportDescriptor id, uint rvaEntry, Address addrThunk)
         {
-            if (addrThunk.ToString().EndsWith("45B4C8"))    //$DEBUG
-                addrThunk.ToString();
             if (!ImportedFunctionNameSpecified(rvaEntry))
             {
                 ImportReferences.Add(addrThunk, new OrdinalImportReference(
@@ -392,7 +390,6 @@ namespace Decompiler.ImageLoaders.MzExe
                 ImportReferences.Add(addrThunk, new NamedImportReference(
                     addrThunk, id.DllName, fnName));
             }
-           
         }
 
         private void AddUnresolvedImport(ImportDescriptor id, string fnName)

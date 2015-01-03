@@ -287,6 +287,5 @@ join:
         {
             RunTest("Fragments/pushpop.asm", "Intel/RwPushPop.txt");
         }
-
 	}
 }

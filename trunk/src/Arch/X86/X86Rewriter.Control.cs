@@ -232,7 +232,7 @@ namespace Decompiler.Arch.X86
 
         public Address OperandAsCodeAddress(MachineOperand op)
         {
-            X86AddressOperand ado = op as X86AddressOperand;
+            AddressOperand ado = op as AddressOperand;
             if (ado != null)
                 return ado.Address;
             ImmediateOperand imm = op as ImmediateOperand;

@@ -373,7 +373,7 @@ namespace Decompiler.Scanning
             program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
             callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
-            SetProcedureReturnAddressBytes(procOld, procOld.Frame.ReturnAddressSize, addrFrom);
+            SetProcedureReturnAddressBytes(procOld, procNew.Frame.ReturnAddressSize, addrFrom);
             return callRetThunkBlock;
         }
 

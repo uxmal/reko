@@ -46,6 +46,11 @@ namespace Decompiler.Core
             return new Address(PrimitiveType.Ptr16, addr);
         }
 
+        public static Address Ptr32(uint uAddr)
+        {
+            return new Address(PrimitiveType.Pointer32, uAddr);
+        }
+
         public static Address Ptr64(ulong addr)
         {
             throw new NotImplementedException("We need separate classes for addresses.");

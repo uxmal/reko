@@ -488,7 +488,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
-      <Name>Pdp11 %28Architectures\Pdp11%29</Name>
+      <Name>Pdp11</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
@@ -512,11 +512,11 @@
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\Pdp11\Pdp11.csproj">
       <Project>{3bb6b0fb-6686-428b-9dc9-a32f349e50e6}</Project>
-      <Name>Pdp11 %28Assemblers\Pdp11%29</Name>
+      <Name>Pdp11</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Assemblers\x86\X86Assembler-2010.csproj">
+    <ProjectReference Include="..\Assemblers\x86\X86Assembler.csproj">
       <Project>{3805DE2C-659A-442D-8C34-E88822A4D27C}</Project>
-      <Name>X86Assembler-2010</Name>
+      <Name>X86Assembler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>

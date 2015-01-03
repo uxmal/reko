@@ -551,10 +551,14 @@ namespace Decompiler.Arch.X86
                     ++i;
                     pOperand = CreateImmediateOperand(width, dataWidth);
                     break;
-                case 'J':		// Relative jump.
+                case 'J':		// Relative ("near") jump.
                     width = OperandWidth(strFormat[i++]);
                     offset = rdr.ReadLeSigned(width);
-                    pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, (uint) (rdr.Address.Offset + offset)));
+                    uint uAddr = (uint) (rdr.Address.Offset + offset);
+                    if (defaultAddressWidth.BitSize == 32)
+                        pOperand = AddressOperand.Ptr32(uAddr);
+                    else
+                        pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, uAddr));
                     break;
                 case 'M':		// modRM may only refer to memory.
                     width = OperandWidth(strFormat[i++]);

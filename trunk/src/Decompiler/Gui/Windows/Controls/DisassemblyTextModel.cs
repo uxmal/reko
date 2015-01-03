@@ -144,16 +144,15 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
-
         public class AddressTextSpan : TextSpan
         {
-            private Address addr;
             private string txtAddress;
 
             public AddressTextSpan(Address address, string addrAsText)
             {
-                this.addr = address;
+                this.Tag = address;
                 this.txtAddress = addrAsText;
+                this.Style = "addrText";
             }
 
             public override string GetText()
