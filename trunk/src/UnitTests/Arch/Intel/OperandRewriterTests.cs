@@ -94,20 +94,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-        [Ignore("Frame escapes should be handled in Scanner/Rewriter, not in arch-dependent places")]
-		public void OrwFrameEscapes()
-		{
-			Assert.IsFalse(proc.Frame.Escapes);
-			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
-			mem.Base = Registers.esp;
-			mem.Index = Registers.eax;
-			mem.Scale = 4;
-			mem.Offset = Constant.Byte(0x02);
-			Expression expr = orw.Transform(null, mem, PrimitiveType.Word32, state);
-			Assert.IsTrue(proc.Frame.Escapes);
-		}
-
-		[Test]
 		public void OrwMemAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
@@ -152,7 +138,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 			callSignatures = new Dictionary<Address,ProcedureSignature>();
 			procedures = new Dictionary<Address,Procedure>();
 		}
-
 
 		public void AddCallSignature(Address addr, ProcedureSignature sig)
 		{

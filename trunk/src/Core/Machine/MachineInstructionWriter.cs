@@ -25,6 +25,10 @@ using System.Text;
 
 namespace Decompiler.Core.Machine
 {
+    /// <summary>
+    /// Used to render machine instructions into text. The abstraction
+    /// offers opportunities to perform syntax highlighting etc.
+    /// </summary>
     public interface MachineInstructionWriter
     {
         void WriteOpcode(string opcode);
@@ -36,6 +40,9 @@ namespace Decompiler.Core.Machine
         void Write(string fmt, params object[] parms);
     }
 
+    /// <summary>
+    /// "Dumb" renderer that renders machine instructions as simple text.
+    /// </summary>
     public class StringRenderer : MachineInstructionWriter
     {
         private StringBuilder sb;

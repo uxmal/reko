@@ -9,7 +9,7 @@
 0B00:0008 42              	inc	dx
 0B00:0009 EC              	in	al,dx
 0B00:000A AA              	stosb	
-0B00:000B 0F A3 06 00 30  	bt	word ptr [3000],ax
+0B00:000B 0F A3 06 00 30  	bt	[3000],ax
 0B00:0010 0F A3 C1        	bt	cx,ax
 0B00:0013 0F BA E1 02     	bt	cx,02
 0B00:0017 0F BD 0C        	bsr	cx,[si]

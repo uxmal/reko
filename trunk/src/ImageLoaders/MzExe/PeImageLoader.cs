@@ -260,7 +260,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public override RelocationResults Relocate(Address addrLoad)
 		{
             AddSectionsToImageMap(addrLoad, imageMap);
-            var relocations = new RelocationDictionary();
+            var relocations = imgLoaded.Relocations;
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
 			{

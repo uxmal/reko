@@ -774,7 +774,7 @@ namespace Decompiler.Arch.X86
 				case 0:
 					if (rm == 0x05)
 					{
-						offsetWidth = PrimitiveType.Word32;
+						offsetWidth = PrimitiveType.Pointer32;
 						b = RegisterStorage.None;
 					}
 					else

@@ -35,7 +35,7 @@ namespace Decompiler.Gui.Windows
     /// </summary>
     public class DisassemblyFormatter : MachineInstructionWriter 
     {
-        StringBuilder sb = new StringBuilder();
+        private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
 
         public DisassemblyFormatter(List<TextSpan> line)
@@ -50,6 +50,7 @@ namespace Decompiler.Gui.Windows
 
         public void WriteAddress(string formattedAddress, Address addr)
         {
+            TerminateSpan();
             var span = new DisassemblyTextModel.AddressTextSpan(addr, formattedAddress);
             line.Add(span);
         }
@@ -61,6 +62,8 @@ namespace Decompiler.Gui.Windows
 
         private void TerminateSpan()
         {
+            if (sb.Length == 0)
+                return;
             var span = new DasmTextSpan
             {
                 Text = sb.ToString(),

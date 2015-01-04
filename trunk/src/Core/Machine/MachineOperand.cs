@@ -109,6 +109,18 @@ namespace Decompiler.Core.Machine
 			return FormatValue(value);
 		}
 
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            var s = FormatValue(value);
+            var pt = value.DataType as PrimitiveType;
+            if (pt != null && pt.Domain == Domain.Pointer)
+                writer.WriteAddress(s, Address.FromConstant(value));
+            else if (value.DataType is Pointer)
+                writer.WriteAddress(s, Address.FromConstant(value));
+            else 
+                base.Write(fExplicit, writer);
+        }
+
 		public Constant Value
 		{
 			get { return value; }

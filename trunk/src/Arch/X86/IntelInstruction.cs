@@ -116,7 +116,7 @@ namespace Decompiler.Arch.X86
 				break;
 			}
 			writer.WriteOpcode(s);
-            if (s == "call") s.ToCharArray(); //$DEBUG
+            if (s == "push") s.ToCharArray(); //$DEBUG
 
 			writer.Tab();
 
@@ -124,7 +124,7 @@ namespace Decompiler.Arch.X86
 
 			if (Operands >= 1)
 			{
-				op1.Write(false, writer);
+				op1.Write(fExplicit, writer);
 				if (Operands >= 2)
 				{
 					writer.Write(',');

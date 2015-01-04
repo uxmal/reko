@@ -26,13 +26,13 @@
 10000012 8B 6C 24 10     	mov	ebp,[esp+10]
 10000016 2B CA           	sub	ecx,edx
 10000018 8B 54 24 18     	mov	edx,[esp+18]
-1000001C 89 0B           	mov	dword ptr [ebx],ecx
+1000001C 89 0B           	mov	[ebx],ecx
 1000001E 0F BF 48 04     	movsx	ecx,word ptr [eax+04]
 10000022 0F BF 00        	movsx	eax,word ptr [eax]
 10000025 2B C8           	sub	ecx,eax
 10000027 85 ED           	test	ebp,ebp
-10000029 89 4C 24 14     	mov	dword ptr [esp+14],ecx
-1000002D 89 0A           	mov	dword ptr [edx],ecx
+10000029 89 4C 24 14     	mov	[esp+14],ecx
+1000002D 89 0A           	mov	[edx],ecx
 1000002F 0F 84 D2 00 00 00 	jz	10000107
 10000035 DB 03           	fild	dword ptr [ebx]
 10000037 56              	push	esi
@@ -47,21 +47,21 @@
 10000053 D9 54 24 14     	fst	dword ptr [esp+14]
 10000057 E8 AE 00 00 00  	call	1000010A
 1000005C 8B C8           	mov	ecx,eax
-1000005E 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
+1000005E 89 4C 24 1C     	mov	[esp+1C],ecx
 10000062 DB 44 24 1C     	fild	dword ptr [esp+1C]
 10000066 D8 5C 24 14     	fcomp	dword ptr [esp+14]
 1000006A 66 DF E0        	fstsw	ax
 1000006D F6 C4 40        	test	ah,40
 10000070 75 0D           	jnz	1000007F
 10000072 41              	inc	ecx
-10000073 89 4C 24 14     	mov	dword ptr [esp+14],ecx
+10000073 89 4C 24 14     	mov	[esp+14],ecx
 10000077 DB 44 24 14     	fild	dword ptr [esp+14]
 1000007B D9 5C 24 14     	fstp	dword ptr [esp+14]
 1000007F DC 0D 90 32 03 10 	fmul	double ptr [10033290]
 10000085 D9 C0           	fld	st(0)
 10000087 E8 7E 00 00 00  	call	1000010A
 1000008C 8B C8           	mov	ecx,eax
-1000008E 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
+1000008E 89 4C 24 1C     	mov	[esp+1C],ecx
 10000092 DB 44 24 1C     	fild	dword ptr [esp+1C]
 10000096 D9 C1           	fld	st(1)
 10000098 DE D9           	fcompp	
@@ -70,7 +70,7 @@
 100000A0 75 0B           	jnz	100000AD
 100000A2 41              	inc	ecx
 100000A3 DD D8           	fstp	st(0)
-100000A5 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
+100000A5 89 4C 24 1C     	mov	[esp+1C],ecx
 100000A9 DB 44 24 1C     	fild	dword ptr [esp+1C]
 100000AD D9 44 24 14     	fld	dword ptr [esp+14]
 100000B1 DC 1D 98 32 03 10 	fcomp	double ptr [10033298]
@@ -88,13 +88,13 @@
 100000D9 0F 8C 69 FF FF FF 	jl	10000048
 100000DF D9 44 24 14     	fld	dword ptr [esp+14]
 100000E3 E8 22 00 00 00  	call	1000010A
-100000E8 89 03           	mov	dword ptr [ebx],eax
+100000E8 89 03           	mov	[ebx],eax
 100000EA E8 1B 00 00 00  	call	1000010A
 100000EF 8B 4C 24 20     	mov	ecx,[esp+20]
 100000F3 3B EF           	cmp	ebp,edi
 100000F5 5F              	pop	edi
 100000F6 5E              	pop	esi
-100000F7 89 01           	mov	dword ptr [ecx],eax
+100000F7 89 01           	mov	[ecx],eax
 100000F9 7E 0C           	jle	10000107
 100000FB C7 03 00 00 00 00 	mov	dword ptr [ebx],00000000
 10000101 C7 01 00 00 00 00 	mov	dword ptr [ecx],00000000
