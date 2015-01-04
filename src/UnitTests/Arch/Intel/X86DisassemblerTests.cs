@@ -164,7 +164,7 @@ foo:
             string s = sb.ToString();
             Assert.AreEqual(
                 "rol\tax,cl\r\n" +
-                "ror\tword ptr [bx+02],cl\r\n" +
+                "ror\t[bx+02],cl\r\n" +
                 "rcr\tword ptr [bp+04],04\r\n" +
                 "rcl\tax,01\r\n", s);
 
@@ -415,7 +415,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_64_movdqa()
         {
             var instr = Disassemble64(0x66, 0x0f, 0x7f, 0x44, 0x24, 0x20);
-            Assert.AreEqual("movdqa\txmmword ptr [rsp+20],xmm0", instr.ToString());
+            Assert.AreEqual("movdqa\t[rsp+20],xmm0", instr.ToString());
         }
 
         [Test]
@@ -436,7 +436,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_Cmpxchg()
         {
             var instr = Disassemble32(0x0f, 0xb1, 0x0a, 0x85, 0xc0, 0x0f, 0x85, 0xdc);
-            Assert.AreEqual("cmpxchg\tdword ptr [edx],ecx", instr.ToString());
+            Assert.AreEqual("cmpxchg\t[edx],ecx", instr.ToString());
         }
 
         [Test]
@@ -464,7 +464,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_Call32()
         {
             var instr = Disassemble32(0xE9, 0x78, 0x56, 0x34, 012);
-            var addrOp = (X86AddressOperand) instr.op1;
+            var addrOp = (AddressOperand) instr.op1;
         }
 
         [Test]
@@ -473,6 +473,24 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble16(0xE9, 0x78, 0x56);
             var addrOp = (ImmediateOperand)instr.op1;
             Assert.AreEqual("567B", addrOp.ToString());
+        }
+
+        [Test]
+        public void Dis_x86_DirectOperand32()
+        {
+            var instr = Disassemble32(0x8B, 0x15, 0x22, 0x33, 0x44, 0x55, 0x66);
+            Assert.AreEqual("mov\tedx,[55443322]", instr.ToString());
+            var memOp = (MemoryOperand)instr.op2;
+            Assert.AreEqual("ptr32", memOp.Offset.DataType.ToString());
+        }
+
+        [Test]
+        public void Dis_x86_DirectOperand16()
+        {
+            var instr = Disassemble16(0x8B, 0x16, 0x22, 0x33, 0x44);
+            Assert.AreEqual("mov\tdx,[3322]", instr.ToString());
+            var memOp = (MemoryOperand)instr.op2;
+            Assert.AreEqual("word16", memOp.Offset.DataType.ToString());
         }
     }
 }

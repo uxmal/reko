@@ -24,14 +24,14 @@
 0C00:0128 49              	dec	cx
 0C00:0129 7F F5           	jg	0120
 0C00:012B C3              	ret	
-0C00:012C 20 01           	and	byte ptr [bx+di],al
+0C00:012C 20 01           	and	[bx+di],al
 0C00:012E 27              	daa	
-0C00:012F 01 26 01 25     	add	word ptr [2501],sp
-0C00:0133 01 24           	add	word ptr [si],sp
-0C00:0135 01 23           	add	word ptr [bp+di],sp
-0C00:0137 01 22           	add	word ptr [bp+si],sp
-0C00:0139 01 21           	add	word ptr [bx+di],sp
-0C00:013B 01 40 40        	add	word ptr [bx+si+40],ax
-0C00:013E 00 00           	add	byte ptr [bx+si],al
-0C00:0140 00 00           	add	byte ptr [bx+si],al
-0C00:0142 00 00           	add	byte ptr [bx+si],al
+0C00:012F 01 26 01 25     	add	[2501],sp
+0C00:0133 01 24           	add	[si],sp
+0C00:0135 01 23           	add	[bp+di],sp
+0C00:0137 01 22           	add	[bp+si],sp
+0C00:0139 01 21           	add	[bx+di],sp
+0C00:013B 01 40 40        	add	[bx+si+40],ax
+0C00:013E 00 00           	add	[bx+si],al
+0C00:0140 00 00           	add	[bx+si],al
+0C00:0142 00 00           	add	[bx+si],al

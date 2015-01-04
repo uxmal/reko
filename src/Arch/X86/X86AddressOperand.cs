@@ -35,6 +35,13 @@ namespace Decompiler.Arch.X86
         {
         }
 
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("far");
+            writer.Write(" ");
+            writer.WriteAddress(Address.ToString(), Address);
+        }
+
         public override string ToString()
         {
             return "far " + Address.ToString();

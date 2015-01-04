@@ -56,6 +56,16 @@ namespace Decompiler.Core
             throw new NotImplementedException("We need separate classes for addresses.");
         }
 
+        public static Address FromConstant(Constant value)
+        {
+            switch (value.DataType.BitSize)
+            {
+            case 16: return Ptr16(value.ToUInt16());
+            case 32: return Ptr32(value.ToUInt32());
+            default: throw new NotImplementedException();
+            }
+        }
+
 		public Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = seg;

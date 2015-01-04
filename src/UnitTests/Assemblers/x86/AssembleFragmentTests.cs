@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
                 "0C00:0003	push	cx" + nl +
                 "0C00:0004	call	000F" + nl +
                 "0C00:0007	add	sp,02" + nl +
-                "0C00:000A	mov	word ptr [0100],ax" + nl +
+                "0C00:000A	mov	[0100],ax" + nl +
                 "0C00:000E	ret	" + nl +
                 "0C00:000F	push	bp" + nl +
                 "0C00:0010	mov	bp,sp" + nl +

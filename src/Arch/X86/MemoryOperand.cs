@@ -81,9 +81,15 @@ namespace Decompiler.Arch.X86
 			return ToString(true);
 		}
 
-		public override string ToString(bool fExplicit)
+        public override string ToString(bool fExplicit)
+        {
+            var s = new StringRenderer();
+            Write(fExplicit, s);
+            return s.ToString();
+        }
+
+		public override void Write(bool fExplicit, MachineInstructionWriter writer)
 		{
-			StringBuilder sb = new StringBuilder();
 			if (fExplicit)
 			{
 				string s;
@@ -107,48 +113,48 @@ namespace Decompiler.Arch.X86
                     s = "ymmword ptr ";
                 else
 					throw new ArgumentOutOfRangeException();
-				sb.Append(s);
+				writer.Write(s);
 			}
 
             if (SegOverride != RegisterStorage.None)
 			{
-				sb.Append(SegOverride.ToString());
-				sb.Append(":");
+				writer.Write(SegOverride.ToString());
+				writer.Write(":");
 			}
-			sb.Append("[");
+			writer.Write("[");
 			if (Base != RegisterStorage.None)
 			{
-				sb.Append(Base.ToString());
+				writer.Write(Base.ToString());
 			}
 			else
 			{
-				sb.AppendFormat(FormatUnsignedValue(Offset));
+                var s = FormatUnsignedValue(Offset);
+				writer.WriteAddress(s, Address.FromConstant(Offset));
 			}
 
 			if (Index != RegisterStorage.None)
 			{
-				sb.Append("+");
-				sb.Append(Index.ToString());
+				writer.Write("+");
+				writer.Write(Index.ToString());
 				if (Scale > 1)
 				{
-					sb.Append("*");
-					sb.Append(Scale);
+					writer.Write("*");
+					writer.Write(Scale);
 				}
 			}
 			if (Base != RegisterStorage.None && Offset != null && Offset.IsValid)
 			{
 				if (Offset.DataType == PrimitiveType.Byte || Offset.DataType == PrimitiveType.SByte)
 				{
-					sb.Append(FormatSignedValue(Offset));
+					writer.Write(FormatSignedValue(Offset));
 				}
 				else
 				{	
-					sb.Append("+");
-					sb.Append(FormatUnsignedValue(Offset));
+					writer.Write("+");
+					writer.Write(FormatUnsignedValue(Offset));
 				}
 			}
-			sb.Append("]");
-			return sb.ToString();
+			writer.Write("]");
 		}
 
 		/// <summary>
