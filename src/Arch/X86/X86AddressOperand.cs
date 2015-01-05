@@ -41,10 +41,5 @@ namespace Decompiler.Arch.X86
             writer.Write(" ");
             writer.WriteAddress(Address.ToString(), Address);
         }
-
-        public override string ToString()
-        {
-            return "far " + Address.ToString();
-        }
     }
 }

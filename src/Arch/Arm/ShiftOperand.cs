@@ -43,7 +43,7 @@ namespace Decompiler.Arch.Arm
         }
 
         public ShiftOperand(MachineOperand op, Opcode opcode, int shAmt)
-            : this(op, opcode, new ImmediateOperand(Constant.Byte((byte)shAmt)))
+            : this(op, opcode, ArmImmediateOperand.Byte((byte)shAmt))
         {
         }
 
@@ -58,9 +58,13 @@ namespace Decompiler.Arch.Arm
         public Opcode Opcode { get; set; }
         public MachineOperand Shift { get; set; }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return string.Format("{0},{1} {2}", Operand, Opcode, Shift);
+            Operand.Write(fExplicit, writer);
+            writer.Write(",");
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Write(' ');
+            Shift.Write(fExplicit, writer);
         }
     }
 }

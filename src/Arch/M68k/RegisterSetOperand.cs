@@ -55,5 +55,48 @@ namespace Decompiler.Arch.M68k
             v = ((v >> 8) & 0x00FF) | ((v & 0x00FF) << 8);
             return new RegisterSetOperand((ushort) v);
         }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            uint bitSet = BitSet;
+            WriteRegisterSet(bitSet, writer);
+        }
+
+        /// <summary>
+        /// Write register mask. Bits are:
+        ///  15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
+        ///  d0  d1  d2  d3  d4  d5  d6  d7  a0  a1  a2  a3  a4  a5  a6  a7
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="bitPos"></param>
+        /// <param name="incr"></param>
+        /// <param name="regType"></param>
+        /// <param name="writer"></param>
+        public void WriteRegisterSet(uint data, MachineInstructionWriter writer)
+        {
+            string sep = "";
+            int bitPos = 15;
+            for (int i = 0; i < 16; i++, --bitPos)
+            {
+                if (bit(data, bitPos))
+                {
+                    int first = i;
+                    int run_length = 0;
+                    while (i != 7 && i != 15 && bit(data, bitPos - 1))
+                    {
+                        --bitPos;
+                        ++i;
+                        ++run_length;
+                    }
+                    writer.Write(sep);
+                    writer.Write(Registers.GetRegister(first).ToString());
+                    if (run_length > 0)
+                        writer.Write("-{0}", Registers.GetRegister(first + run_length));
+                    sep = "/";
+                }
+            }
+        }
+
+        private static bool bit(uint data, int pos) { return (data & (1 << pos)) != 0; }
     }
 }

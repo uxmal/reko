@@ -37,12 +37,12 @@ namespace Decompiler.Arch.PowerPC
             this.Offset = offset;
         }
 
-        public override string ToString()
-        {
-            return string.Format("{0}({1})", Offset, BaseRegister);
-        }
-
         public RegisterStorage BaseRegister { get; private set; }
         public Constant Offset { get; private set; } 
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write(string.Format("{0}({1})", Offset, BaseRegister));
+        }
     }
 }

@@ -64,7 +64,7 @@ namespace Decompiler.Arch.Arm
                 case ',':
                     continue;
                 case 'B':   // Logical Bitmask
-                    op = LogicalBitmask(instr, fmt[i++] == 'x');
+                    op = LogicalBitmask(dasm, instr, fmt[i++] == 'x');
                     break;
                 case 'H':   // 16-bit Immediate constant
                     off = GetOffset(fmt, ref i);
@@ -139,7 +139,7 @@ namespace Decompiler.Arch.Arm
 
         /* Decode logical immediate for e.g. ORR <Wd|WSP>, <Wn>, #<imm>.  */
 
-        ImmediateOperand LogicalBitmask(uint value, bool is64)
+        ArmImmediateOperand LogicalBitmask(AArch64Disassembler dasm, uint value, bool is64)
         {
             ulong imm, mask;
             uint N, R, S;
@@ -270,8 +270,8 @@ namespace Decompiler.Arch.Arm
             }
 
             return is64
-                ? ImmediateOperand.Word64(imm)
-                : ImmediateOperand.Word32((int) imm);
+                ? dasm.Word64(imm)
+                : dasm.Word32((int) imm);
         }
     }
 

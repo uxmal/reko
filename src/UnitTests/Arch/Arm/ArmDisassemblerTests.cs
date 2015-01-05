@@ -140,7 +140,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_subccs_rr_lsl_3()
         {
             var instr = Disassemble(0x30521183);
-            Assert.AreEqual("subccs\tr1,r2,r3,lsl #3", instr.ToString());
+            Assert.AreEqual("subccs\tr1,r2,r3,lsl #&3", instr.ToString());
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_adcvss_rr_rrx_32()
         {
             var instr = Disassemble(0x60B21063);
-            Assert.AreEqual("adcvss\tr1,r2,r3,rrx #1", instr.ToString());
+            Assert.AreEqual("adcvss\tr1,r2,r3,rrx #&1", instr.ToString());
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_strb_r5_r9_post_r1_lsr_3_writeback()
         {
             var instr = DisassembleBits("1110 01 110110 1001 0101 00001 000 0001");
-            Assert.AreEqual("strb\tr5,[r9,-r1,lsl #1]!", instr.ToString());
+            Assert.AreEqual("strb\tr5,[r9,-r1,lsl #&1]!", instr.ToString());
         }
 
         [Test]
@@ -282,14 +282,14 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void ArmDasm_ldr()
         {
             var instr = Disassemble(0xE5940008);
-            Assert.AreEqual("ldr\tr0,[r4,#8]", instr.ToString());
+            Assert.AreEqual("ldr\tr0,[r4,#&8]", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_lsl()
         {
             var instr = Disassemble(0xE1a00200);
-            Assert.AreEqual("mov\tr0,r0,lsl #4", instr.ToString());
+            Assert.AreEqual("mov\tr0,r0,lsl #&4", instr.ToString());
         }
 
         [Test]

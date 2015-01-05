@@ -78,7 +78,7 @@
         <!-- Executable formats -->
         <File Source="$(var.BinHex-2010.TargetPath)" />
         <File Source="$(var.Coff-2010.TargetPath)" />
-        <File Source="$(var.Elf-2010.TargetPath)" />
+        <File Source="$(var.Elf.TargetPath)" />
         <File Source="$(var.Hunk.TargetPath)" />
         <File Source="$(var.MachO-2010.TargetPath)" />
         <File Source="$(var.MzExe-2010.TargetPath)" />

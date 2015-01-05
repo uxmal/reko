@@ -37,8 +37,32 @@ namespace Decompiler.Arch.M68k
 
         public override void Render(MachineInstructionWriter writer)
         {
-            InstructionFormatter fmt = new InstructionFormatter(writer);
-            fmt.Write(this);
+            writer.Write(code.ToString());
+            if (dataWidth != null)
+            {
+                writer.Write(DataSizeSuffix(dataWidth));
+            }
+            writer.Write('\t');
+            if (op1 != null)
+            {
+                op1.Write(false, writer);
+                if (op2 != null)
+                {
+                    writer.Write(',');
+                    op2.Write(false, writer);
+                }
+            }
+        }
+
+        private string DataSizeSuffix(PrimitiveType dataWidth)
+        {
+            switch (dataWidth.BitSize)
+            {
+            case 8: return ".b";
+            case 16: return ".w";
+            case 32: return ".l";
+            default: throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));
+            }
         }
     }
 }

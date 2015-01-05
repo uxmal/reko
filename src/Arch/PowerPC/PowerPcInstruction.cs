@@ -114,9 +114,9 @@ namespace Decompiler.Arch.PowerPC
             Address = a;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return "$" + Address.ToString();
+            writer.WriteAddress("$" + Address.ToString(), Address);
         }
     }
 }

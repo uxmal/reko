@@ -62,6 +62,11 @@ namespace Decompiler.Tools.C2Xml
             throw new NotImplementedException();
         }
 
+        public bool VisitCode(CodeType_v1 code)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitPrimitive(PrimitiveType_v1 pX)
         {
             var pY = (PrimitiveType_v1) y;
@@ -90,6 +95,7 @@ namespace Decompiler.Tools.C2Xml
             y = mpY.MemberType;
             return mpX.MemberType.Accept(this);
         }
+
         public bool VisitArray(SerializedArrayType aX)
         {
             var aY = ((SerializedArrayType) y);
@@ -113,6 +119,11 @@ namespace Decompiler.Tools.C2Xml
         {
             var sY = (SerializedStructType) y;
             return sX.Name == sY.Name && sX.Name != null;
+        }
+
+        public bool VisitString(StringType_v2 typedef)
+        {
+            throw new NotImplementedException();
         }
 
         public bool VisitTypedef(SerializedTypedef typedef)

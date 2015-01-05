@@ -77,19 +77,13 @@ namespace Decompiler.Arch.Sparc
             var mem = op as MemoryOperand;
             if (mem != null)
             {
-                writer.Write("[%{0}", mem.Base.Name);
-                if (!mem.Offset.IsNegative)
-                {
-                    writer.Write("+");
-                }
-                writer.Write(mem.Offset.ToString());
-                writer.Write("]");
+                mem.Write(false, writer);
                 return;
             }
             var idx = op as IndexedMemoryOperand;
             if (idx != null)
             {
-                writer.Write("[%{0}+%{1}]", idx.Base, idx.Index);
+                idx.Write(false, writer);
                 return;
             }
             writer.Write(op.ToString());

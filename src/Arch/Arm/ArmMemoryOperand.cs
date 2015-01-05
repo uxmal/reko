@@ -50,5 +50,33 @@ namespace Decompiler.Arch.Arm
         public bool Preindexed;
         public bool Writeback;
         public bool Subtract;
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write('[');
+            writer.Write(this.Base.ToString());
+            if (this.Offset != null)
+            {
+                if (this.Preindexed)
+                {
+                    writer.Write(",");
+                    if (this.Subtract)
+                        writer.Write("-");
+                    Offset.Write(false, writer);
+                    writer.Write("]");
+                    if (this.Writeback)
+                        writer.Write("!");
+                }
+                else
+                {
+                    writer.Write("],");
+                    if (this.Subtract)
+                        writer.Write("-");
+                    Offset.Write(false, writer);
+                }
+            }
+            else
+                writer.Write(']');
+        }
     }
 }

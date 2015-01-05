@@ -38,9 +38,10 @@ namespace Decompiler.Arch.Arm
             Address = a;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return Address.ToString();
+            writer.Write("$");
+            writer.WriteAddress(string.Format("{0,8:X}", Address), Address);
         }
     }
 }

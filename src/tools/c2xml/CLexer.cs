@@ -640,8 +640,6 @@ namespace Decompiler.Tools.C2Xml
                     break;
                 }
             }
-            Nyi(state, default(char));
-            return Tok(CTokenType.EOF);
         }
 
         private void Nyi(State state, char ch)

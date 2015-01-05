@@ -432,7 +432,6 @@ namespace Decompiler.Arch.Mos6502
                         emitter.IAdd(
                             offset,
                             emitter.Cast(PrimitiveType.UInt16, x))));
-                break;
             case AddressMode.Absolute:
                 return emitter.LoadB(op.Offset);
             case AddressMode.AbsoluteX:

@@ -76,11 +76,6 @@ namespace Decompiler.Arch.X86
             get { return Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
 		}
 
-		public override string ToString()
-		{
-			return ToString(true);
-		}
-
 		public override void Write(bool fExplicit, MachineInstructionWriter writer)
 		{
 			if (fExplicit)

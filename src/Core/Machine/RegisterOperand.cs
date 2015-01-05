@@ -44,9 +44,9 @@ namespace Decompiler.Core.Machine
             get { return reg; }
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return reg.ToString();
+            writer.Write(reg.ToString());
         }
     }
 }

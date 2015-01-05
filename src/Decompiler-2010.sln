@@ -97,7 +97,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "WixInstalle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDecompiler", "MonoDecompiler\MonoDecompiler.csproj", "{3269A135-4077-4BA0-B358-7974CCF09974}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pdp11", "Assemblers\Pdp11\Pdp11.csproj", "{3BB6B0FB-6686-428B-9DC9-A32F349E50E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pdp11Assembler", "Assemblers\Pdp11\Pdp11Assembler.csproj", "{3BB6B0FB-6686-428B-9DC9-A32F349E50E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiscOS", "Environments\RiscOS\RiscOS.csproj", "{1976B356-7C5E-411A-A409-D3EB349E44FA}"
 EndProject

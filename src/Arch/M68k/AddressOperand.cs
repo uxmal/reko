@@ -41,5 +41,10 @@ namespace Decompiler.Arch.M68k
         {
             return visitor.Visit(this);
         }
+
+        public override void Write(bool fExplicit, Core.Machine.MachineInstructionWriter writer)
+        {
+            writer.WriteAddress(string.Format("${0:X8}", Address.Offset), Address);
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace Decompiler.Arch.Mips
             this.Base = baseReg;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             string fmt;
             int offset;
@@ -55,7 +55,7 @@ namespace Decompiler.Arch.Mips
                 fmt = "-{0:X4}({1})";
                 offset = -Offset;
             }
-            return string.Format(fmt, offset, Base);
+            writer.Write(string.Format(fmt, offset, Base));
         }
     }
 }

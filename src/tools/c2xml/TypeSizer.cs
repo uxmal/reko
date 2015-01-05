@@ -45,6 +45,11 @@ namespace Decompiler.Tools.C2Xml
             return size;
         }
 
+        public int VisitCode(CodeType_v1 code)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitPrimitive(PrimitiveType_v1 primitive)
         {
             return primitive.ByteSize;
@@ -72,6 +77,11 @@ namespace Decompiler.Tools.C2Xml
         public int VisitSignature(SerializedSignature signature)
         {
             return 0;
+        }
+
+        public int VisitString(StringType_v2 str)
+        {
+            throw new NotImplementedException();
         }
 
         public int VisitStructure(SerializedStructType structure)
