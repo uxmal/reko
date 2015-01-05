@@ -38,9 +38,9 @@ namespace Decompiler.Arch.Sparc
             this.Address = address;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return Address.ToString();
+            writer.WriteAddress(Address.ToString(), Address);
         }
     }
 }

@@ -90,11 +90,11 @@ namespace Decompiler.Arch.Arm
                         break;
                     case 'H':   // 16-bit Immediate constant
                         off = GetOffset(fmt, ref i);
-                        op = new ImmediateOperand(Constant.Word32(GetImm(instr, off, 16)));
+                        op = ArmImmediateOperand.Word32(GetImm(instr, off, 16));
                         break;
                     case 'I':   // 12-bit Immediate constant
                         off = GetOffset(fmt, ref i);
-                        op = new ImmediateOperand(Constant.Word32(GetImm(instr, off, 12)));
+                        op = ArmImmediateOperand.Word32(GetImm(instr, off, 12));
                         break;
                     case 'J':   // long relative branch
                         int offset = (((int) instr) << 6) >> 4;
@@ -901,6 +901,16 @@ namespace Decompiler.Arch.Arm
             null,
             null, 
         };
+
+        internal ArmImmediateOperand Word64(ulong imm)
+        {
+            return ArmImmediateOperand.Word64(imm);
+        }
+
+        internal ArmImmediateOperand Word32(int imm)
+        {
+            return ArmImmediateOperand.Word32(imm);
+        }
     }
     /*
 Ronald Maas (rmaas.delete@this.wiwo.nl) on August 25, 2012 6:59 pm wrote:

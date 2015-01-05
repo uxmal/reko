@@ -107,47 +107,19 @@ namespace Decompiler.Arch.Arm
             var adr = op as AddressOperand;
             if (adr != null)
             {
-                writer.Write("$");
-                writer.Write("{0,8:X}", adr.Address);
+                adr.Write(false, writer);
                 return;
             }
             var mem = op as ArmMemoryOperand;
             if (mem != null)
             {
-                writer.Write('[');
-                writer.Write(mem.Base.ToString());
-                if (mem.Offset != null)
-                {
-                    if (mem.Preindexed)
-                    {
-                        writer.Write(",");
-                        if (mem.Subtract)
-                            writer.Write("-");
-                        Write(mem.Offset, writer);
-                        writer.Write("]");
-                        if (mem.Writeback)
-                            writer.Write("!");
-                    }
-                    else
-                    {
-                        writer.Write("],");
-                        if (mem.Subtract)
-                            writer.Write("-");
-                        Write(mem.Offset, writer);
-                    }
-                }
-                else
-                    writer.Write(']');
+                mem.Write(false, writer);
                 return;
             }
             var sh = op as ShiftOperand;
             if (sh != null)
             {
-                Write(sh.Operand, writer);
-                writer.Write(",");
-                writer.WriteOpcode(sh.Opcode.ToString());
-                writer.Write(' ');
-                Write(sh.Shift, writer);
+                sh.Write(false, writer);
                 return;
             }
             if (op == null)

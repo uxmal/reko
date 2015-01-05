@@ -48,7 +48,7 @@ namespace Decompiler.Arch.Pdp11
         public bool PostInc { get; set; }
         public ushort EffectiveAddress { get; set; }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             string fmt;
             switch (Mode)
@@ -57,12 +57,11 @@ namespace Decompiler.Arch.Pdp11
             case AddressMode.AutoIncr: fmt = "({0})+"; break;
             case AddressMode.AutoDecr: fmt = "-({0})"; break;
             case AddressMode.Indexed: fmt = "{1:X4}({0})"; break;
-
             //case AddressMode.Immediate : fmt = "#{1:X4}"; break;
             case AddressMode.Absolute: fmt = "@#{1:X4}"; break;
             default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));
             }
-            return string.Format(fmt, Register, EffectiveAddress);
+            writer.Write(string.Format(fmt, Register, EffectiveAddress));
         }
     }
 

@@ -36,8 +36,10 @@ namespace Decompiler.Arch.Arm
         {
         }
 
-        private new static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
-        private new static ArmImmediateOperand Word32(uint w) { return new ArmImmediateOperand(Constant.Word32((int)w)); }
+        public new static ArmImmediateOperand Byte(byte b) { return new ArmImmediateOperand(Constant.Byte(b)); }
+        public new static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
+        public new static ArmImmediateOperand Word32(uint w) { return new ArmImmediateOperand(Constant.Word32((int)w)); }
+        public new static ArmImmediateOperand Word64(ulong dw) { return new ArmImmediateOperand(Constant.Word64(dw)); }
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {

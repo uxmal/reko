@@ -40,7 +40,7 @@ namespace Decompiler.Core.Machine
 			this.width = width;
 		}
 
-        public override string ToString()
+        public sealed override string ToString()
         {
             return ToString(false);
         }
@@ -52,10 +52,7 @@ namespace Decompiler.Core.Machine
 			return sr.ToString();
 		}
 
-        public virtual void Write(bool fExplicit, MachineInstructionWriter writer)
-        {
-            writer.Write(ToString(fExplicit));
-        }
+        public abstract void Write(bool fExplicit, MachineInstructionWriter writer);
 
 		public static string FormatSignedValue(Constant c)
 		{
@@ -108,11 +105,6 @@ namespace Decompiler.Core.Machine
 			value = c;
 		}
 
-		public override string ToString()
-		{
-			return FormatValue(value);
-		}
-
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             var s = FormatValue(value);
@@ -122,7 +114,7 @@ namespace Decompiler.Core.Machine
             else if (value.DataType is Pointer)
                 writer.WriteAddress(s, Address.FromConstant(value));
             else 
-                base.Write(fExplicit, writer);
+                writer.Write(s);
         }
 
 		public Constant Value
@@ -215,9 +207,9 @@ namespace Decompiler.Core.Machine
 			get { return fpuReg; }
 		}
 
-		public override string ToString()
+		public override void Write(bool fExplicit, MachineInstructionWriter writer)
 		{
-			return "st(" + fpuReg + ")";
+			writer.Write("st(" + fpuReg + ")");
 		}
 	}
 }

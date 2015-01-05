@@ -60,7 +60,6 @@
   <ItemGroup>
     <Compile Include="AddressOperand.cs" />
     <Compile Include="IndexedOperand.cs" />
-    <Compile Include="InstructionFormatter.cs" />
     <Compile Include="M68kArchitecture.cs" />
     <Compile Include="M68kDisassembler.cs" />
     <Compile Include="M68kInstruction.cs" />

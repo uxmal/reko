@@ -30,15 +30,16 @@ namespace Decompiler.Arch.Z80
     public class ConditionOperand : MachineOperand
     {
         public CondCode Code;
+
         public ConditionOperand(CondCode code)
             : base(PrimitiveType.Byte)
         {
             this.Code = code;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            return Code.ToString();
+            writer.Write(Code.ToString());
         }
     }
 }

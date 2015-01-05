@@ -33,9 +33,6 @@ namespace Decompiler.Arch.Z80
     {
         public RegisterStorage Base;
         public Constant Offset;
-        private RegisterStorage baseReg;
-        private sbyte offset;
-        private PrimitiveType primitiveType;
 
         public MemoryOperand(RegisterStorage baseReg, PrimitiveType type): base(type)
         {
@@ -53,7 +50,7 @@ namespace Decompiler.Arch.Z80
             this.Offset = Constant.SByte(offset);
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             if (Base != null)
             {
@@ -74,16 +71,18 @@ namespace Decompiler.Arch.Z80
                     {
                         fmt = "({0})";
                     }
-                    return string.Format(fmt, Base, offset);
+                    writer.Write(string.Format(fmt, Base, offset));
                 }
                 else
                 {
-                    return string.Format("({0})", Base);
+                    writer.Write(string.Format("({0})", Base));
                 }
             }
             else
             {
-                return string.Format("({0:X4})", Offset.ToUInt16());
+                writer.Write("(");
+                writer.WriteAddress(string.Format("{0:X4}", Offset.ToUInt16()), Address.Ptr16(Offset.ToUInt16()));
+                writer.Write(")");
             }
         }
     }

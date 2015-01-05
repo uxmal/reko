@@ -38,12 +38,14 @@ namespace Decompiler.Arch.Pdp11
             Address = a;
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
+            string s;
             if (base.Width.Size == 2)
-                return string.Format("{0:X4}", Address.Linear);
+                s= string.Format("{0:X4}", Address.Linear);
             else
-                return Address.ToString();
+                s= Address.ToString();
+            writer.WriteAddress(s, Address);
         }
     }
 }

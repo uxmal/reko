@@ -39,6 +39,17 @@ namespace Decompiler.Arch.Sparc
             this.Base = b;
             this.Offset = offset;
         }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("[%{0}", Base.Name);
+            if (!Offset.IsNegative)
+            {
+                writer.Write("+");
+            }
+            writer.Write(Offset.ToString());
+            writer.Write("]");
+        }
     }
 
     public class IndexedMemoryOperand : MachineOperand
@@ -50,6 +61,11 @@ namespace Decompiler.Arch.Sparc
         {
             this.Base = r1;
             this.Index = r2;
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write("[%{0}+%{1}]", Base, Index);
         }
     }
 }

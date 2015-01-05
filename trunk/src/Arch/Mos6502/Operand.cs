@@ -40,13 +40,13 @@ namespace Decompiler.Arch.Mos6502
         {
         }
 
-        public override string ToString()
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             int o = Offset != null ? Offset.ToUInt16() : 0;
             string fmt;
             switch (Mode)
             {
-            case AddressMode.Accumulator: return "";        // Implicit, never displayed
+            case AddressMode.Accumulator: return;        // Implicit, never displayed
             case AddressMode.Immediate: fmt = "#${0:X2}"; break;
             case AddressMode.ZeroPage: fmt = "${0:X2}"; break;
             case AddressMode.ZeroPageX: 
@@ -60,7 +60,7 @@ namespace Decompiler.Arch.Mos6502
             case AddressMode.IndirectIndexed: fmt = "(%{0:X2}),{1}"; break;
             default: throw new NotSupportedException();
             }
-            return string.Format(fmt, o, Register);
+            writer.Write(string.Format(fmt, o, Register));
         }
     }
 
@@ -77,6 +77,6 @@ namespace Decompiler.Arch.Mos6502
         Indirect,           // ($AABB)
         IndexedIndirect,    // $(AA,x)
         IndirectIndexed,    // $(AA),y
-        Accumulator,
+        Accumulator,        // a
     }
 }
