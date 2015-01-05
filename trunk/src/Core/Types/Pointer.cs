@@ -33,8 +33,8 @@ namespace Decompiler.Core.Types
 
 		public Pointer(DataType pointee, int byteSize)
 		{
-            if (byteSize == 0)
-                throw new ArgumentOutOfRangeException("byteSize", "Zero-sized pointers are not allowed.");
+            if (byteSize <= 0)
+                throw new ArgumentOutOfRangeException("byteSize", "Invalid pointer size.");
 			this.Pointee = pointee;
 			this.byteSize = byteSize;
 		}

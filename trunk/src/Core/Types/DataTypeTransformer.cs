@@ -92,7 +92,6 @@ namespace Decompiler.Core.Types
 
         public virtual DataType VisitString(StringType str)
         {
-            return str.ElementType.Accept(this);
             return str;
         }
 

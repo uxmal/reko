@@ -142,9 +142,19 @@ namespace Decompiler.UnitTests.Gui.Windows
                 DragEnter(this, e);
             }
 
+            public void PerformDragOver(DragEventArgs e)
+            {
+                DragOver(this, e);
+            }
+
             public void PerformDragDrop(DragEventArgs e)
             {
                 DragDrop(this, e);
+            }
+
+            public void PerformDragLeave(EventArgs e)
+            {
+                DragLeave(this, e);
             }
         }
 

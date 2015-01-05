@@ -27,41 +27,19 @@ namespace Decompiler.Core.Serialization
 {
     public class ArraySizeCharacteristic
     {
-        private string argReference;
-        private ArraySizeFactor [] factors;
-
         [XmlAttribute("argument")]
-        public string Argument
-        {
-            get { return argReference; }
-            set { argReference = value; }
-        }
+        public string Argument {get; set; }
 
         [XmlElement("factor")]
-        public ArraySizeFactor [] Factors
-        {
-            get { return factors; }
-            set { factors = value; }
-        }
+        public ArraySizeFactor [] Factors { get; set; }
     }
 
     public class ArraySizeFactor
     {
-        private string constant;
-        private string argument;
-
         [XmlAttribute("argument")]
-        public string Argument
-        {
-            get { return argument; }
-            set { argument = value; }
-        }
+        public string Argument { get; set; }
 
         [XmlAttribute("constant")]
-        public string Constant
-        {
-            get { return constant; }
-            set { constant = value; }
-        }
+        public string Constant { get; set; }
     }
 }

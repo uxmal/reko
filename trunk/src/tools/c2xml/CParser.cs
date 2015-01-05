@@ -555,7 +555,6 @@ IGNORE tab + cr + lf
                 }
                 else if (s == "deprecated")
                 {
-                    lexer.ToString();       //$DEBUG
                     if (PeekThenDiscard(CTokenType.LParen))
                     {
                         ExpectToken(CTokenType.StringLiteral);

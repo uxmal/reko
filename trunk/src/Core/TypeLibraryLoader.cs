@@ -102,9 +102,7 @@ namespace Decompiler.Core
         {
             try
             {
-                ProcedureSerializer sser = new ProcedureSerializer(arch, this, this.defaultConvention);
-                if (sp.Name == "GetDC") //$DEBUG
-                    sp.ToString();
+                var sser = new ProcedureSerializer(arch, this, this.defaultConvention);
                 procedures[sp.Name] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
             }
             catch (Exception ex)

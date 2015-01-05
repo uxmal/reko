@@ -116,8 +116,6 @@ namespace Decompiler.Arch.X86
 				break;
 			}
 			writer.WriteOpcode(s);
-            if (s == "push") s.ToCharArray(); //$DEBUG
-
 			writer.Tab();
 
 			bool fExplicit = NeedsExplicitMemorySize();

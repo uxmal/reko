@@ -50,7 +50,7 @@ namespace Decompiler.Arch.Mos6502
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Rewriter(this, rdr.Clone(), state, frame);
+            return new Rewriter(this, rdr.Clone(), state, frame, host);
         }
 
         public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)

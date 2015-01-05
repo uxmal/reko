@@ -40,11 +40,12 @@ namespace Decompiler.Arch.Mos6502
         private RtlInstructionCluster ric;
         private RtlEmitter emitter;
 
-        public Rewriter(Mos6502ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame)
+        public Rewriter(Mos6502ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;
             this.frame = frame;
+            this.host = host;
             this.instrs = new Disassembler(rdr.CreateLeReader());
         }
 

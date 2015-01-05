@@ -47,6 +47,10 @@ namespace Decompiler.Core.Serialization
 		[DefaultValue(false)]
 		public virtual bool IsAlloca { get; set; }
 
+        /// <summary>
+        /// This property is set to true if calling it terminates the thread of execution, i.e. control
+        /// never returns.
+        /// </summary>
 		[XmlElement("terminates")]
 		[DefaultValue(false)]
 		public virtual bool Terminates { get;set; } 

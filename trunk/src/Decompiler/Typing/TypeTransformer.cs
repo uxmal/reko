@@ -255,13 +255,6 @@ namespace Decompiler.Typing
                         tv.DataType = tv.DataType.Accept(this);
                     }
                     Debug.Print("Transformed {0}:{1}", tv, tv.Class.DataType);
-                    if (tv.ToString().EndsWith("T_557"))  //$DEBUG
-                    {
-                        using (var w = new System.IO.StreamWriter("d:\\tmp\\dump.txt"))
-                        {
-                            store.Write(w);
-                        }
-                    }
 				}
 				if (ppr.ReplaceAll())
 					Changed = true;

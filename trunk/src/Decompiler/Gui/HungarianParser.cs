@@ -71,11 +71,11 @@ namespace Decompiler.Gui
 
     <dimension-size> ::=
 
-        <decimal integer>     // size in decimal
+        <decimal integer>   // size in decimal
 
-        $<hex integer>    // size in hexadecimal
+        $<hex integer>      // size in hexadecimal
 
-        x<hex integer>    // size in hexadecimal
+        x<hex integer>      // size in hexadecimal
 
         o<octal integer>    // size in octal
 
@@ -111,7 +111,7 @@ Some examples:
 
     a4,4r32    (4 x 4 array of 32-bit floats -- homogeneous matrix)
 
-    a,4r32        (array of arrays of 4 32-bit floats  --compare float (*)[4])
+    a,4r32     (array of arrays of 4 32-bit floats  --compare float (*)[4])
 
     qu8        (16-bit offset to unsigned 8-bit integer -- in x86 segmented architecture)
 

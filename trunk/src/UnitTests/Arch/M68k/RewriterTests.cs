@@ -937,7 +937,17 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|L--|v4 = __rcr((byte) d4, 0x08, X)",
                 "2|L--|d4 = DPB(d4, v4, 0, 8)",
                 "3|L--|CZNX = cond(v4)");
-                
+        }
+
+        [Test]
+        public void M68krw_ror_ea()
+        {
+            Rewrite(0xE6D4);
+            AssertCode(
+                "0|00010000(2): 4 instructions",
+                "1|L--|v3 = __ror(Mem0[a4:word32], 0x01)",
+                "2|L--|Mem0[a4:word32] = v3",
+                "3|L--|CZN = cond(v3)");
         }
     }
 }
