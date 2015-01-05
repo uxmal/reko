@@ -255,7 +255,6 @@ namespace Decompiler.Core.Types
             int d = x.ArgumentTypes.Length - y.ArgumentTypes.Length;
             if (d != 0)
                 return d;
-            var ex = 0;
             ++count;
             for (int i = 0; i < x.ArgumentTypes.Length; ++i)
             {

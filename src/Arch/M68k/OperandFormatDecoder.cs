@@ -86,10 +86,10 @@ namespace Decompiler.Arch.M68k
                 case 'm':   // Register bitset reversed
                     return RegisterSetOperand.CreateReversed(bitSet);
                 case 'q':   // "Small" quick constant (3-bit part of the opcode)
-                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.Byte);
+                    return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0x07, 8, PrimitiveType.Byte);
                 case 'Q':   // "Large" quick constant (8-bit part of the opcode)
                     return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
-                case 'R': // relative -- //$TODO: seems like a duplicate with 'J'?
+                case 'R': // relative
                     addr = rdr.Address;
                     int relative = 0;
                     switch (args[i++])
@@ -170,6 +170,7 @@ namespace Decompiler.Arch.M68k
             {
             case 'b': return PrimitiveType.Byte;
             case 'v': return dataWidth;
+            case 'u': return PrimitiveType.UInt16;
             case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
             default: return SizeField(opcode, GetOpcodeOffset(c)); ;

@@ -34,6 +34,8 @@ namespace Decompiler.Gui.Windows.Controls
 
         public TextBuffer() : this(new T[4096])
         {
+            iGapStart = 0;
+            iGapEnd = elements.Length;
         }
 
         public TextBuffer(T[] elements)
@@ -42,6 +44,11 @@ namespace Decompiler.Gui.Windows.Controls
             iGapEnd = 0;
             iLast = elements.Length;
             this.elements = elements;
+        }
+
+        public void Insert(T elem)
+        {
+            elements[iGapStart++] = elem;
         }
     }
 }

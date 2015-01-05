@@ -59,7 +59,6 @@ namespace Decompiler.Core
         void SetValueEa(Expression ea, Expression value);
         void SetValueEa(Expression basePointer, Expression ea, Expression value);
 
-        [Obsolete]
         bool IsUsedInPhi(Identifier id);
     }
 }

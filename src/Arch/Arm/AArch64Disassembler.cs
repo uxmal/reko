@@ -164,7 +164,6 @@ namespace Decompiler.Arch.Arm
             ImmediateOperand LogicalBitmask(uint value, bool is64)
             {
                 ulong imm, mask;
-                uint sf;
                 uint N, R, S;
                 uint simd_size;
 
@@ -328,12 +327,7 @@ namespace Decompiler.Arch.Arm
         }
 
         private static OpDecoder2[] oprecs;
-        private static OpDecoder2[] opLdStRecs;             // Load and Store instructions
-        private static OpDecoder2[] opDataRegRecs;          // Data processing - register
-        private static OpDecoder2[] opSimdFpRecs0;          // Data processSIMD and FP  
-        private static OpDecoder2 opDataIRecs;            // Data processing - immediate
         private static OpDecoder2[] opBesRecs;              // Branch; Exception and system instructions
-        private static OpDecoder2[] opSimdFpRecs1;          // Data processSIMD and FP  
 
         private class MaskDecoder : OpDecoder2
         {

@@ -173,6 +173,7 @@
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\TabControlHostTests.cs" />
     <Compile Include="Gui\Windows\Controls\DisassemblyTextModelTests.cs" />
+    <Compile Include="Gui\Windows\NavigationInteractorTests.cs" />
     <Compile Include="Gui\Windows\TextSpanFormatterTests.cs" />
     <Compile Include="Gui\Windows\Forms\OpenAsInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SearchDialogInteractorTests.cs" />

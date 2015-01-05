@@ -265,11 +265,9 @@ namespace Decompiler.Arch.X86
 
     public class Intel64AccRegister : Intel64Register
     {
-        private int regDword;
         public Intel64AccRegister(string name, int number, int regDword, int regWord, int regLoByte, int regHiByte)
             : base(name, number, regWord, regLoByte, regHiByte)
         {
-            this.regDword = regDword;
         }
 
         protected override Expression GetSliceImpl(Constant c)

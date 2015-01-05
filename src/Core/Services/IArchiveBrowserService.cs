@@ -25,8 +25,8 @@ using System.Text;
 namespace Decompiler.Core.Services
 {
     /// <summary>
-    /// Used by loaders that have encountered an archive and need the user to select the file in the archive that is to be 
-    /// decompiled.
+    /// Used by loaders that have encountered an archive and need the user to select 
+    /// the file in the archive that is to be decompiled.
     /// </summary>
     public interface IArchiveBrowserService
     {

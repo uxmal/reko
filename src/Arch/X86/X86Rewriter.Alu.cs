@@ -354,39 +354,36 @@ namespace Decompiler.Arch.X86
             switch (instrCur.Operands)
             {
             case 1:
-                {
-                    Identifier multiplicator;
+                Identifier multiplicator;
 
-                    switch (instrCur.op1.Width.Size)
-                    {
-                    case 1:
-                        multiplicator = orw.AluRegister(Registers.al);
-                        product = orw.AluRegister(Registers.ax);
-                        break;
-                    case 2:
-                        multiplicator = orw.AluRegister(Registers.ax);
-                        product = frame.EnsureSequence(
-                            orw.AluRegister(Registers.dx), multiplicator, PrimitiveType.Word32);
-                        break;
-                    case 4:
-                        multiplicator = orw.AluRegister(Registers.eax);
-                        product = frame.EnsureSequence(
-                            orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
-                        break;
-                    default:
-                        throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
-                    };
-                    emitter.Assign(
-                        product,
-                        new BinaryExpression(
-                            op, 
-                            PrimitiveType.Create(resultDomain, product.DataType.Size),
-                            SrcOp(instrCur.op1),
-                            multiplicator));
-                    EmitCcInstr(product, IntelInstruction.DefCc(instrCur.code));
-                    return;
-                }
-                break;
+                switch (instrCur.op1.Width.Size)
+                {
+                case 1:
+                    multiplicator = orw.AluRegister(Registers.al);
+                    product = orw.AluRegister(Registers.ax);
+                    break;
+                case 2:
+                    multiplicator = orw.AluRegister(Registers.ax);
+                    product = frame.EnsureSequence(
+                        orw.AluRegister(Registers.dx), multiplicator, PrimitiveType.Word32);
+                    break;
+                case 4:
+                    multiplicator = orw.AluRegister(Registers.eax);
+                    product = frame.EnsureSequence(
+                        orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
+                    break;
+                default:
+                    throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
+                };
+                emitter.Assign(
+                    product,
+                    new BinaryExpression(
+                        op, 
+                        PrimitiveType.Create(resultDomain, product.DataType.Size),
+                        SrcOp(instrCur.op1),
+                        multiplicator));
+                EmitCcInstr(product, IntelInstruction.DefCc(instrCur.code));
+                return;
             case 2:
                 EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), SrcOp(instrCur.op1), SrcOp(instrCur.op2), 
                     CopyFlags.ForceBreak|CopyFlags.EmitCc);

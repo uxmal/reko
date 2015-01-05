@@ -232,6 +232,7 @@
     <Compile Include="Gui\AddressSearchResult.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
+    <Compile Include="Gui\Components\ITimer.cs" />
     <Compile Include="Gui\Controls\IButton.cs" />
     <Compile Include="Gui\Controls\ICheckBox.cs" />
     <Compile Include="Gui\Controls\IComboBox.cs" />
@@ -397,6 +398,7 @@
     <Compile Include="Gui\Windows\LowLevelViewInteractor.cs" />
     <Compile Include="Gui\Windows\LowLevelViewServiceImpl.cs" />
     <Compile Include="Gui\Windows\MenuItemAdapter.cs" />
+    <Compile Include="Gui\Windows\NavigationInteractor.cs" />
     <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
     <Compile Include="Gui\Windows\TabControlHost.cs" />
     <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />

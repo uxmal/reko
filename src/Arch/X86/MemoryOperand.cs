@@ -81,13 +81,6 @@ namespace Decompiler.Arch.X86
 			return ToString(true);
 		}
 
-        public override string ToString(bool fExplicit)
-        {
-            var s = new StringRenderer();
-            Write(fExplicit, s);
-            return s.ToString();
-        }
-
 		public override void Write(bool fExplicit, MachineInstructionWriter writer)
 		{
 			if (fExplicit)

@@ -79,5 +79,4 @@ namespace Decompiler.Arch.Pdp11
         AutoDecrDef,
         IndexedDef,
     }
-
 }

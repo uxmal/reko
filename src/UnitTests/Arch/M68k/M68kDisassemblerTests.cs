@@ -34,7 +34,6 @@ namespace Decompiler.UnitTests.Arch.M68k
     {
         private M68kArchitecture arch = new M68kArchitecture();
         private IEnumerator<M68kInstruction> dasm;
-        private M68kInstruction instr;
 
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)
         {
@@ -587,6 +586,80 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68kdis_move_fr_ccr()
         {
             RunTest("move\tccr,(a3)", 0x42d3, 0x0000);
+        }
+
+        [Test]
+        public void M68kdis_bclr_r()
+        {
+            RunTest("bclr\td2,d1", 0x0581);
+        }
+
+        [Test]
+        public void M68kdis_bclr_s()
+        {
+            RunTest("bclr\t#$05,d4", 0x0884, 5);
+        }
+
+        [Test]
+        public void M68kdis_divu()
+        {
+            RunTest("divu.w\t(a4),d5", 0x8AD4);
+        }
+
+        [Test]
+        public void M68kdis_exg()
+        {
+            RunTest("exg\td1,d2", 0xc342);
+            RunTest("exg\ta2,a4", 0xc54C);
+            RunTest("exg\td3,a6", 0xc78E);
+        }
+
+        [Test]
+        public void M68kdis_ror_q()
+        {
+            RunTest("ror.b\t#$01,d4", 0xE21C);
+        }
+
+        [Test]
+        public void M68kdis_ror_reg()
+        {
+            RunTest("ror.b\td5,d3", 0xEA3B);
+        }
+
+        [Test]
+        public void M68kdis_ror_ea()
+        {
+            RunTest("ror.l\t(a4)", 0xE6D4);
+        }
+
+        [Test]
+        public void M68kdis_rte()
+        {
+            RunTest("rte\t", 0x4E73);
+        }
+
+        [Test]
+        public void M68kdis_tst_i()
+        {
+            RunTest("tst.l\t#$12345678", 0x4ABC, 0x1234, 0x5678);
+        }
+
+        [Test]
+        public void M68kdis_tst_w()
+        {
+            RunTest("tst.w\t(a5)", 0x4A55);
+        }
+
+        [Test]
+        public void M68kdis_sbcd()
+        {
+            RunTest("sbcd\t-(a2),-(a1)", 0x830A);
+        }
+
+        [Test]
+        public void M68kdis_rtd()
+        {
+            RunTest("rtd\t#$0012", 0x4E74, 0x0012);
         }
     }
 }

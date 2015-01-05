@@ -37,15 +37,19 @@ namespace Decompiler.Core.Machine
 
 		protected MachineOperand(PrimitiveType width)
 		{
-            //if (width == null)
-            //    throw new ArgumentNullException("width");
-
 			this.width = width;
 		}
 
-		public virtual string ToString(bool fExplicit)
+        public override string ToString()
+        {
+            return ToString(false);
+        }
+
+		public string ToString(bool fExplicit)
 		{
-			return ToString();
+            var sr = new StringRenderer();
+            Write(fExplicit, sr);
+			return sr.ToString();
 		}
 
         public virtual void Write(bool fExplicit, MachineInstructionWriter writer)

@@ -38,9 +38,6 @@ namespace Decompiler.Core.Serialization
         [DefaultValue(Domain.None)]
         public Domain Domain;
 
-        [XmlAttribute("name")]
-        public string Name;
-
         [XmlElement("member")]
         public SerializedEnumValue[]  Values;
 

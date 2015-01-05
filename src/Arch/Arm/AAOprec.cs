@@ -142,7 +142,6 @@ namespace Decompiler.Arch.Arm
         ImmediateOperand LogicalBitmask(uint value, bool is64)
         {
             ulong imm, mask;
-            uint sf;
             uint N, R, S;
             uint simd_size;
 

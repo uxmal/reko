@@ -44,9 +44,19 @@ namespace Decompiler.Arch.M68k
 
         public void RewriteRotation(string procName)
         {
-            var opSrc = orw.RewriteSrc(di.op1, di.Address);
-            var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
-                PseudoProc(procName, di.dataWidth, d, s));
+            Expression opDst;
+            if (di.op2 != null)
+            {
+                var opSrc = orw.RewriteSrc(di.op1, di.Address);
+                opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
+                    PseudoProc(procName, di.dataWidth, d, s));
+            }
+            else
+            {
+                opDst = orw.RewriteDst(di.op1, di.Address,
+                    Constant.Byte(1), (s, d) =>
+                        PseudoProc(procName, PrimitiveType.Word32, d, s));
+            }
             emitter.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.ZF),
                 emitter.Cond(opDst));

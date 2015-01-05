@@ -29,7 +29,7 @@ using System.Text;
 namespace Decompiler.Core.Output
 {
     /// <summary>
-    /// Writes out initialized data.
+    /// Writes out global initialized data.
     /// </summary>
     public class GlobalDataWriter : IDataTypeVisitor<CodeFormatter>
     {
