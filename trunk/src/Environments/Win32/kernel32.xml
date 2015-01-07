@@ -310,7 +310,7 @@
     </signature>
   </procedure>
   <procedure name="GetModuleHandleA">
-    <signature>
+    <signature convention="__stdcall">
       <return>
         <type>HMODULE</type>
         <reg>eax</reg>

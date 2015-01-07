@@ -74,21 +74,21 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void Arm64_add_Wn_imm()
         {
             var instr = DisassembleBits("000 10001 01 011111111111 10001 10011");
-            Assert.AreEqual("add\tw19,w17,000007FF,lsl #&C", instr.ToString());
+            Assert.AreEqual("add\tw19,w17,#&7FF,lsl #&C", instr.ToString());
         }
 
         [Test]
         public void Arm64_adds_Xn_imm()
         {
             var instr = DisassembleBits("101 10001 00 011111111111 10001 10011");
-            Assert.AreEqual("adds\tx19,x17,000007FF", instr.ToString());
+            Assert.AreEqual("adds\tx19,x17,#&7FF", instr.ToString());
         }
 
         [Test]
         public void Arm64_subs_Wn_imm()
         {
             var instr = DisassembleBits("011 10001 00 011111111111 10001 10011");
-            Assert.AreEqual("subs\tw19,w17,000007FF", instr.ToString());
+            Assert.AreEqual("subs\tw19,w17,#&7FF", instr.ToString());
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void Arm64_movk_imm()
         {
             var instr = DisassembleBits("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
-            Assert.AreEqual("movk\tx7,0000AAA4", instr.ToString());
+            Assert.AreEqual("movk\tx7,#&AAA4", instr.ToString());
         }
     }
 }
