@@ -70,7 +70,9 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             var ldr = peldr.Load(addrLoad);
             var rel=peldr.Relocate(addrLoad);
 
-            Assert.AreEqual(2, peldr.ImportReferences);
+            Assert.AreEqual(2, peldr.ImportReferences.Count);
+            Assert.AreEqual("user32.dll!GetDesktopWindow", peldr.ImportReferences[new Address(0x0010103C)].ToString());
+            Assert.AreEqual("user32.dll!GetFocus", peldr.ImportReferences[new Address(0x00101040)].ToString());
         }
 
         private void Given_Section(string section)
@@ -78,9 +80,9 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             var bytes = Encoding.UTF8.GetBytes(section);
             writer.WriteBytes(bytes).WriteBytes(0, 8 - (uint)bytes.Length);
             writer.WriteLeInt32(0x100);
-            writer.WriteLeInt32(0x4000);
+            writer.WriteLeInt32(0x1000);
             writer.WriteLeInt32(0x100); // raw data
-            writer.WriteLeInt32(0x4000);    // rva to raw data
+            writer.WriteLeInt32(0x1000);    // rva to raw data
             writer.WriteLeInt32(0);         // relocs
             writer.WriteLeInt32(0);         // line numbers
             writer.WriteLeInt32(0);         // #relocs
@@ -90,6 +92,7 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
 
         private void Given_DelayLoadDirectories(params DelayLoadDirectoryEntry [] delayLoadDirectory)
         {
+            writer.Position = 0x1000;
             foreach (var entry in delayLoadDirectory)
             {
                 entry.rvaName = writer.Position;
@@ -98,6 +101,7 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
                 foreach (var impName in entry.ImportNames)
                 {
                     entry.arvaImportNames.Add(writer.Position);
+                    writer.WriteLeInt16(0);
                     writer.WriteString(impName, Encoding.UTF8).WriteByte(0);
                 }
                 Align();
@@ -127,6 +131,7 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
                 writer.WriteLeUInt32(0); 
                 writer.WriteLeUInt32(0); 
             }
+            writer.WriteLeUInt32(0);
             writer.WriteLeUInt32(0);
             writer.Position = rvaPeHdr + 0xE0;
             writer.WriteLeInt32(rvaDld);
