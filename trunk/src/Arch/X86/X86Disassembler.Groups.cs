@@ -53,7 +53,7 @@ namespace Decompiler.Arch.X86
 
 				// group 3
 				new SingleByteOpRec(Opcode.test, ",Ix"),
-				new SingleByteOpRec(Opcode.test, ",Ix", OpFlag.X),
+				new SingleByteOpRec(Opcode.test, ",Ix"),
 				new SingleByteOpRec(Opcode.not),
 				new SingleByteOpRec(Opcode.neg),
 				new SingleByteOpRec(Opcode.mul),

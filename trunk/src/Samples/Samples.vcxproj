@@ -60,6 +60,7 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="delayload\delayload.cpp" />
     <ClCompile Include="exe_dll\driver.cpp" />
     <ClCompile Include="exe_dll\main.cpp" />
     <ClCompile Include="fib\fib.c" />

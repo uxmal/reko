@@ -29,7 +29,7 @@ namespace Decompiler.Arch.Arm
 {
     public class AArch64Instruction : MachineInstruction
     {
-        public static AArch64Instruction Create(AA64Opcode opcode,List<MachineOperand> ops)
+        public static AArch64Instruction Create(AA64Opcode opcode, List<MachineOperand> ops)
         {
             var instr = new AArch64Instruction();
             instr.Opcode = opcode;
@@ -50,36 +50,21 @@ namespace Decompiler.Arch.Arm
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public void Write(TextWriter writer)
-        {
-            writer.Write(Opcode);
-            if (op1 == null)
-                return;
-            writer.Write("\t{0}", op1);
-            if (op2 == null)
-                return;
-            writer.Write(",{0}", op2);
-            if (op3 == null)
-                return;
-            writer.Write(",{0}", op3);
-        }
-
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(Opcode.ToString());
             if (op1 == null)
                 return;
             writer.Tab();
-            writer.Write(op1.ToString());
+            op1.Write(false, writer);
             if (op2 == null)
                 return;
             writer.Write(",");
-            writer.Write(op2.ToString());
+            op2.Write(false, writer);
             if (op3 == null)
                 return;
             writer.Write(",");
-            writer.Write(op3.ToString());
+            op3.Write(false, writer);
         }
-
     }
 }

@@ -857,6 +857,8 @@ namespace Decompiler.Arch.X86
 
             s_aOpRecGrp = CreateGroupOprecs();
             s_aFpOpRec = CreateFpuOprecs();
+            Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
+
             s_aOpRecF2 = CreateF2Oprecs();
 		}
 	}

@@ -37,12 +37,149 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
     {
         private ServiceContainer sc;
         private MockRepository mr;
+        private LoadedImage image;
+        private PeImageLoader peldr;
+        private LeImageWriter writer;
+        private Address addrLoad;
+        private const int rvaPeHdr = 0x40;
 
         [SetUp]
         public void Setup()
         {
             sc = new ServiceContainer();
             mr = new MockRepository();
+            addrLoad = new Address(0x00100000);
+        }
+
+        [Test]
+        public void Pil_DelayLoads()
+        {
+            Given_PeHeader();
+            Given_Section(".text");
+            Given_DelayLoadDirectories(
+                new DelayLoadDirectoryEntry
+                {
+                    Name = "user32.dll",
+                    ImportNames = new string[] {
+                        "GetDesktopWindow",
+                        "GetFocus"
+                    }
+                });
+            Given_PeLoader();
+
+            var ldr = peldr.Load(addrLoad);
+            var rel=peldr.Relocate(addrLoad);
+
+            Assert.AreEqual(2, peldr.ImportReferences);
+        }
+
+        private void Given_Section(string section)
+        {
+            var bytes = Encoding.UTF8.GetBytes(section);
+            writer.WriteBytes(bytes).WriteBytes(0, 8 - (uint)bytes.Length);
+            writer.WriteLeInt32(0x100);
+            writer.WriteLeInt32(0x4000);
+            writer.WriteLeInt32(0x100); // raw data
+            writer.WriteLeInt32(0x4000);    // rva to raw data
+            writer.WriteLeInt32(0);         // relocs
+            writer.WriteLeInt32(0);         // line numbers
+            writer.WriteLeInt32(0);         // #relocs
+            writer.WriteLeInt32(0);         // #line numbers
+            writer.WriteLeInt32(0);         // characteristics
+        }
+
+        private void Given_DelayLoadDirectories(params DelayLoadDirectoryEntry [] delayLoadDirectory)
+        {
+            foreach (var entry in delayLoadDirectory)
+            {
+                entry.rvaName = writer.Position;
+                writer.WriteString(entry.Name, Encoding.UTF8).WriteByte(0);
+                entry.arvaImportNames = new List<int>();
+                foreach (var impName in entry.ImportNames)
+                {
+                    entry.arvaImportNames.Add(writer.Position);
+                    writer.WriteString(impName, Encoding.UTF8).WriteByte(0);
+                }
+                Align();
+                entry.rvaImportNames = writer.Position;
+                foreach (var rva in entry.arvaImportNames)
+                {
+                    writer.WriteLeUInt32((uint)rva);
+                }
+                writer.WriteLeUInt32(0);
+
+                entry.rvaImportAddressTable = writer.Position;
+                foreach (var rva in entry.arvaImportNames)
+                {
+                    writer.WriteLeUInt32(0xCCCCCCCC);
+                }
+                writer.WriteLeUInt32(0);
+            }
+            var rvaDld = writer.Position;
+            foreach (var entry in delayLoadDirectory)
+            {
+                writer.WriteLeUInt32(1);
+                writer.WriteLeUInt32((uint)entry.rvaName);
+                writer.WriteLeUInt32(0);    // module handle
+                writer.WriteLeUInt32((uint)entry.rvaImportAddressTable);
+                writer.WriteLeUInt32((uint)entry.rvaImportNames);
+                writer.WriteLeUInt32(0); 
+                writer.WriteLeUInt32(0); 
+                writer.WriteLeUInt32(0); 
+            }
+            writer.WriteLeUInt32(0);
+            writer.Position = rvaPeHdr + 0xE0;
+            writer.WriteLeInt32(rvaDld);
+        }
+
+        private void Align()
+        {
+            var misAlign = writer.Position & 0xF;
+            if (misAlign != 0)
+                writer.WriteBytes(0, 0x10u - (uint)misAlign);
+        }
+
+        public class DelayLoadDirectoryEntry
+        {
+            public string Name;
+            public string[] ImportNames;
+
+            public int rvaName;
+            public int rvaImportNames;
+            public int rvaImportAddressTable;
+            public List<int> arvaImportNames;
+        }
+
+        private void Given_PeHeader()
+        {
+            image = new LoadedImage(addrLoad, new byte[0x10000]);
+            writer = new LeImageWriter(image.Bytes, rvaPeHdr);
+            writer.WriteBytes(new byte[] { 0x50, 0x45, 0, 0 });
+
+            writer.WriteLeInt16(0x14C);
+            writer.WriteLeInt16(1); // sections.
+            writer.WriteLeInt32(0);		// timestamp.
+            writer.WriteLeInt32(0);		// COFF symbol
+            writer.WriteLeInt32(0);		// #of symbols
+            var rvaOptionalHeaderSize = writer.Position;
+            writer.WriteLeInt16(0);       // optionalHeaderSize
+            writer.WriteLeInt16(0);     //  short fileFlags 
+
+            // Optional header
+            var rvaOptHdr = writer.Position;
+            writer.WriteLeInt16(0x010B);
+            writer.WriteBytes(0, 0xCE);
+
+            var pos = writer.Position;
+            var optHdrSize = pos - rvaOptHdr;
+            writer.Position = rvaOptionalHeaderSize;
+            writer.WriteLeInt16((short)optHdrSize);
+            writer.Position = pos;
+        }
+
+        private void Given_PeLoader()
+        {
+            peldr = new PeImageLoader(null, "test.exe", image.Bytes, rvaPeHdr);
         }
     }
 }

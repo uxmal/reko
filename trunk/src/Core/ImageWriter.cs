@@ -132,6 +132,11 @@ namespace Decompiler.Core
             Position += 4;
             return this;
         }
+
+        public ImageWriter WriteLeInt32(int i)
+        {
+            return WriteLeUInt32((uint)i);
+        }
     }
 
     public class BeImageWriter : ImageWriter

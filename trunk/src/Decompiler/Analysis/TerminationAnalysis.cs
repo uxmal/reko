@@ -64,7 +64,7 @@ namespace Decompiler.Analysis
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {
-            if (proc.Characteristics.Terminates)
+            if (proc.Characteristics != null && proc.Characteristics.Terminates)
                 return true;
             var callee = proc as Procedure;
             if (callee == null)

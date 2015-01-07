@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void Arm64_add_Wn_imm()
         {
             var instr = DisassembleBits("000 10001 01 011111111111 10001 10011");
-            Assert.AreEqual("add\tw19,w17,000007FF,lsl 0C", instr.ToString());
+            Assert.AreEqual("add\tw19,w17,000007FF,lsl #&C", instr.ToString());
         }
 
         [Test]
@@ -95,28 +95,28 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void Arm64_sub_Xn_imm()
         {
             var instr = DisassembleBits("110 10001 00 011111111111 10001 10011");
-            Assert.AreEqual("sub\tx19,x17,000007FF", instr.ToString());
+            Assert.AreEqual("sub\tx19,x17,#&7FF", instr.ToString());
         }
 
         [Test]
         public void Arm64_and_Wn_imm()
         {
             var instr = DisassembleWord(0x120F3041);
-            Assert.AreEqual("and\tw1,w2,3FFE0000", instr.ToString());
+            Assert.AreEqual("and\tw1,w2,#&3FFE0000", instr.ToString());
         }
 
         [Test]
         public void Arm64_and_Xn_imm()
         {
             var instr = DisassembleWord(0x920F3041);
-            Assert.AreEqual("and\tx1,x2,3FFE00003FFE0000", instr.ToString());
+            Assert.AreEqual("and\tx1,x2,#&3FFE00003FFE0000", instr.ToString());
         }
 
         [Test]
         public void Arm64_ands_Xn_imm()
         {
             var instr = DisassembleBits("111 100100 0 010101 010101 00100 00111");
-            Assert.AreEqual("ands\tx7,x4,FFFFF801FFFFF801", instr.ToString());
+            Assert.AreEqual("ands\tx7,x4,#&FFFFF801FFFFF801", instr.ToString());
         }
 
         [Test]

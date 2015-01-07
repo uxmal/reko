@@ -83,7 +83,9 @@ namespace Decompiler.Gui.Windows.Controls
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
             Model.MoveTo(topAddress, 0);
+            RecomputeLayout();
             base.ShowFraction();
+            Invalidate();
         }
 
         protected override bool IsInputKey(Keys keyData)
@@ -140,52 +142,6 @@ namespace Decompiler.Gui.Windows.Controls
         }
     }
 
-
-    public class DisassemblyRenderer : MachineInstructionWriter
-    {
-        List<TextSpan> spans = new List<TextSpan>();
-        private StringBuilder sb = new StringBuilder();
-
-        public void WriteOpcode(string opcode)
-        {
-            new DisassemblySpan(opcode, "opcode");
-        }
-
-        public void WriteAddress(string formattedAddress, Address addr)
-        {
-            new AddressSpan(formattedAddress, addr, "address");
-        }
-
-        public void Tab()
-        {
-        }
-
-        public void Write(char c)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(uint n)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(string s)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(string fmt, params object[] parms)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal IEnumerable<TextSpan> GetSpans()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class AddressSpan : TextSpan
     {
         private string formattedAddress;
@@ -200,23 +156,6 @@ namespace Decompiler.Gui.Windows.Controls
         public override string GetText()
         {
             return formattedAddress;
-        }
-    }
-
-    public class DisassemblySpan : TextSpan
-    {
-        private string opcode;
-        private string p;
-
-        public DisassemblySpan(string opcode, string p)
-        {
-            // TODO: Complete member initialization
-            this.opcode = opcode;
-            this.p = p;
-        }
-        public override string GetText()
-        {
-            throw new NotImplementedException();
         }
     }
 }
