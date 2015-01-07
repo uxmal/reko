@@ -38,14 +38,20 @@ namespace Decompiler.Gui.Windows.Controls
     {
         ITextBox txtAddressWrapped;
         IButton btnGoWrapped;
+        IButton btnBackWrapped;
+        IButton btnFwdWrapped;
 
         public LowLevelView()
         {
             InitializeComponent();
             txtAddressWrapped = new ToolStripTextBoxWrapper(txtAddress);
+            btnBackWrapped = new ToolStripButtonWrapper(btnBack);
+            btnFwdWrapped = new ToolStripButtonWrapper(btnForward);
             btnGoWrapped = new ToolStripButtonWrapper(btnGo);
         }
 
+        public IButton ToolbarBackButton { get { return btnBackWrapped; } }
+        public IButton ToolbarForwardButton { get { return btnFwdWrapped; } }
         public ITextBox ToolBarAddressTextbox { get { return txtAddressWrapped; } }
         public IButton ToolBarGoButton { get { return btnGoWrapped; } } 
         public MemoryControl MemoryView { get { return this.memCtrl; } }

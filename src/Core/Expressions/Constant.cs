@@ -308,7 +308,7 @@ namespace Decompiler.Core.Expressions
 
 		public abstract uint ToUInt32();
 
-		public long ToInt64()
+		public virtual long ToInt64()
 		{
             long q;
             try
@@ -728,6 +728,11 @@ namespace Decompiler.Core.Expressions
         public override uint ToUInt32()
         {
             return (uint)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (long)value;
         }
 
         public override ulong ToUInt64()

@@ -219,9 +219,9 @@ namespace Decompiler.Typing
 
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
-            var proc = ci.Callee.Accept(new TypedMemoryExpressionRewriter(arch, store, globals));
+            //var proc = ci.Callee.Accept(new TypedMemoryExpressionRewriter(arch, store, globals));
             return new SideEffect(
-                new Application(proc, VoidType.Instance));
+                new Application(ci.Callee, VoidType.Instance));
         }
 
 		public override Instruction TransformStore(Store store)

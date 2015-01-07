@@ -44,27 +44,25 @@ namespace Decompiler.Arch.Arm
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write("#");
-            int imm8 = Value.ToInt32();
+            long imm8 = Value.ToInt64();
             if (imm8 > 256 && ((imm8 & (imm8 - 1)) == 0))
             {
                 /* only one bit set, and that later than bit 8.
                  * Represent as 1<<... .
                  */
                 writer.Write("1<<");
+                uint n = 0;
+                while ((imm8 & 0xF) == 0)
                 {
-                    uint n = 0;
-                    while ((imm8 & 15) == 0)
-                    {
-                        n += 4; imm8 = imm8 >> 4;
-                    }
-                    // Now imm8 is 1, 2, 4 or 8. 
-                    n += (uint)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
-                    writer.Write(n);
+                    n += 4; imm8 = imm8 >> 4;
                 }
+                // Now imm8 is 1, 2, 4 or 8. 
+                n += (uint)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
+                writer.Write(n);
             }
             else
             {
-                if (((int)imm8) < 0 && ((int)imm8) > -100)
+                if (imm8 < 0 && imm8 > -100)
                 {
                     writer.Write('-'); imm8 = -imm8;
                 }

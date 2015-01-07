@@ -161,7 +161,7 @@ namespace Decompiler.Arch.Arm
 
             /* Decode logical immediate for e.g. ORR <Wd|WSP>, <Wn>, #<imm>.  */
 
-            ImmediateOperand LogicalBitmask(uint value, bool is64)
+            ArmImmediateOperand LogicalBitmask(uint value, bool is64)
             {
                 ulong imm, mask;
                 uint N, R, S;
@@ -170,7 +170,7 @@ namespace Decompiler.Arch.Arm
                 // value = extract_fields (code, 0, 3, FLD_N, FLD_immr, FLD_imms);
                 //sf = aarch64_get_qualifier_esize (inst->operands[0].qualifier) != 4;
                 // value is N:immr:imms.
-                S = (value >> 10) & 0x3Fu;
+                S = (value >> 10) & 0x3F;
                 R = (value >> 16) & 0x3F;
                 N = (value >> 22) & 0x01;
 
@@ -291,8 +291,8 @@ namespace Decompiler.Arch.Arm
                 }
 
                 return is64
-                    ? ImmediateOperand.Word64(imm)
-                    : ImmediateOperand.Word32((int) imm);
+                    ? ArmImmediateOperand.Word64(imm)
+                    : ArmImmediateOperand.Word32((int) imm);
             }
         }
 

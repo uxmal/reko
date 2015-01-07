@@ -65,7 +65,7 @@ namespace Decompiler.Analysis
             this.prog = prog;
             this.procedures = procedures;
             this.flow = flow;
-            this.eventListener = eventListener;
+            this.eventListener = eventListener ?? NullDecompilerEventListener.Instance;
             this.worklist = new WorkList<Block>();
             this.visited = new HashSet<Block>();
             this.ecomp = new ExpressionValueComparer();
@@ -98,14 +98,10 @@ namespace Decompiler.Analysis
         {
             int initial = worklist.Count;
             Block block;
+            var e = eventListener;
             while (worklist.GetWorkItem(out block))
             {
-                var e = eventListener;
-                if (e != null)
-                    eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
-                //+		block	{l313C_B63E}	Decompiler.Core.Block
-                if (block.Name.EndsWith("l313C_B63E"))
-                    block.Name.ToArray();
+                eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
                 ProcessBlock(block);
             }
         }
@@ -396,7 +392,7 @@ namespace Decompiler.Analysis
             if (pc == null)
                 return false;
             var proc = pc.Procedure;
-            if (proc.Characteristics.Terminates)
+            if (proc.Characteristics != null && proc.Characteristics.Terminates)
                 return true;
             var p = proc as Procedure;
             return (p != null && flow[p].TerminatesProcess);

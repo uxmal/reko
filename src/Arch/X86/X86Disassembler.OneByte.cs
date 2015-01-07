@@ -147,7 +147,7 @@ namespace Decompiler.Arch.X86
 				// 60
 				new SingleByteOpRec(Opcode.pusha),
 				new SingleByteOpRec(Opcode.popa),
-				new SingleByteOpRec(Opcode.bound, "Gv,Mv", OpFlag.X),
+				new SingleByteOpRec(Opcode.bound, "Gv,Mv"),
 				new SingleByteOpRec(Opcode.arpl, "Ew,rw"),
 				new SegmentOverrideOprec(4),
 				new SegmentOverrideOprec(5),
@@ -274,7 +274,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.retf,	""),
 				new SingleByteOpRec(Opcode.@int,	"3"),
 				new SingleByteOpRec(Opcode.@int,	"Ib"),
-				new SingleByteOpRec(Opcode.into,	"", OpFlag.X),
+				new SingleByteOpRec(Opcode.into,	""),
 				new SingleByteOpRec(Opcode.iret,	""),
 
 				// D0

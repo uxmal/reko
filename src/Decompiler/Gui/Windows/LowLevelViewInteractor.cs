@@ -44,6 +44,7 @@ namespace Decompiler.Gui.Windows
         private TypeMarker typeMarker;
         private Program program;
         private bool ignoreAddressChange;
+        private NavigationInteractor navInteractor;
 
         public LowLevelView Control { get { return control; } }
 
@@ -75,6 +76,7 @@ namespace Decompiler.Gui.Windows
                 control.DisassemblyView.SelectedAddress = value;
                 control.DisassemblyView.TopAddress = value;
                 ignoreAddressChange = false;
+                navInteractor.UserNavigateTo(value);
             }
         }
 
@@ -91,6 +93,9 @@ namespace Decompiler.Gui.Windows
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
             this.control.MemoryView.Services = this.services;
 
+            this.navInteractor = new NavigationInteractor();
+            this.navInteractor.Attach(this.Control.ToolbarBackButton, this.Control.ToolbarForwardButton, null);
+            this.navInteractor.LocationChanged += navInteractor_LocationChanged;
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
             typeMarker = new TypeMarker(control.MemoryView);
@@ -99,6 +104,8 @@ namespace Decompiler.Gui.Windows
 
             return control;
         }
+
+
 
         
         private void typeMarker_TextAccepted(object sender, TypeMarkerEventArgs e)
@@ -127,19 +134,21 @@ namespace Decompiler.Gui.Windows
                 txtAddr = txtAddr.Substring(2);
             if (!Address.TryParse(txtAddr, 16, out addr))
                 return;
-            NavigateToAddress(addr);
+            UserNavigateToAddress(addr);
         }
 
-        private void NavigateToAddress(Address addr)
+        private void UserNavigateToAddress(Address addr)
         {
             if (!program.Image.IsValidAddress(addr))
                 return;
             this.ignoreAddressChange = true;
+            var addrTop = addr - ((int)addr.Linear & 0x0F);
             this.Control.MemoryView.SelectedAddress = addr;
-            this.Control.MemoryView.TopAddress = addr;
+            this.Control.MemoryView.TopAddress = addrTop;
             this.Control.DisassemblyView.SelectedAddress = addr;
             this.Control.DisassemblyView.TopAddress = addr;
             this.ignoreAddressChange = false;
+            navInteractor.UserNavigateTo(addr);
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -410,6 +419,17 @@ namespace Decompiler.Gui.Windows
             this.ignoreAddressChange = false;
         }
 
+        void navInteractor_LocationChanged(object sender, EventArgs e)
+        {
+            var address = navInteractor.Location;
+            this.ignoreAddressChange = true;
+            this.Control.MemoryView.SelectedAddress = address;
+            this.Control.MemoryView.TopAddress = address;
+            this.Control.DisassemblyView.SelectedAddress = address;
+            this.Control.DisassemblyView.TopAddress = address;
+            this.ignoreAddressChange = false;
+        }
+
         void ToolBarAddressTextbox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData != Keys.Return)
@@ -431,7 +451,7 @@ namespace Decompiler.Gui.Windows
             var addr = e.Destination as Address;
             if (e == null)
                 return;
-            NavigateToAddress(addr);
+            UserNavigateToAddress(addr);
         }
     }
 }

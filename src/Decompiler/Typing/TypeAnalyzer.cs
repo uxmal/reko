@@ -79,7 +79,7 @@ namespace Decompiler.Typing
             ctn = new ComplexTypeNamer();
             ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
 
-   //         RestrictProcedures(0, 1, true);
+            // RestrictProcedures(prog, 0, 1, true); //$DEBUG
             eventListener.ShowStatus("Gathering primitive datatypes from instructions.");
 			aen.Transform(prog);
 			eqb.Build(prog);

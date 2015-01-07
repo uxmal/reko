@@ -368,11 +368,16 @@ namespace Decompiler.Gui.Windows.Controls
 
         void vScroll_ValueChanged(object sender, EventArgs e)
         {
-            var g = CreateGraphics();
             model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
+            RecomputeLayout();
+            Invalidate();
+        }
+
+        protected void RecomputeLayout()
+        {
+            var g = CreateGraphics();
             ComputeLayout(g);
             g.Dispose();
-            Invalidate();
         }
 
         internal void ShowFraction()
