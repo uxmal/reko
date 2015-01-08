@@ -348,12 +348,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-		public string ImportFileLocation(string dllName)
-		{
-			string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
-			return Path.Combine(assemblyDir, Path.ChangeExtension(dllName, ".xml"));
-		}
-
 		public string ReadUtf8String(uint rva, int maxLength)
 		{
             if (rva == 0)
@@ -434,20 +428,6 @@ namespace Decompiler.ImageLoaders.MzExe
             }
         }
 
-        private void ResolveDeferLoadFunction(string dllName, uint rvaEntry, Address addrThunk)
-        {
-            if (!ImportedFunctionNameSpecified(rvaEntry))
-            {
-                ImportReferences.Add(addrThunk, new OrdinalImportReference(
-                    addrThunk, dllName, (int)rvaEntry & 0x7FFFFFF));
-            }
-            else
-            {
-                string fnName = ReadUtf8String(rvaEntry, 0);
-                ImportReferences.Add(addrThunk, new NamedImportReference(
-                    addrThunk, dllName, fnName));
-            }
-        }
         private bool ImportedFunctionNameSpecified(uint rvaEntry)
         {
             return (rvaEntry & 0x80000000) == 0;
@@ -511,25 +491,6 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const uint SectionFlagsDiscardable = 0x02000000;
 		private const uint SectionFlagsWriteable =   0x80000000;
 		private const uint SectionFlagsExecutable =  0x00000020;
-
-		public class ImportDescriptor
-		{
-			public uint RvaEntries;
-			public string DllName;
-			public uint RvaThunks;
-		}
-
-        public class ImportedFunction
-        {
-            public ImportDescriptor ImportDescriptor;
-            public string FunctionName;
-
-            public ImportedFunction(ImportDescriptor id, string functionName)
-            {
-                this.ImportDescriptor = id;
-                this.FunctionName = functionName;
-            }
-        }
 
 		public class Section
 		{

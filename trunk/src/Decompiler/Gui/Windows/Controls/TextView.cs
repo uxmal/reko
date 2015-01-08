@@ -370,7 +370,15 @@ namespace Decompiler.Gui.Windows.Controls
         {
             model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
             RecomputeLayout();
+            OnScroll();
             Invalidate();
+        }
+
+        /// <summary>
+        /// Called when the view is scrolled
+        /// </summary>
+        protected virtual void OnScroll()
+        {
         }
 
         protected void RecomputeLayout()

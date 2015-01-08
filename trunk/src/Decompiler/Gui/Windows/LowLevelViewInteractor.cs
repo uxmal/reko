@@ -69,14 +69,7 @@ namespace Decompiler.Gui.Windows
             get { return control.MemoryView.SelectedAddress; }
             set
             {
-                ignoreAddressChange = true;
-                var addrTop = value - ((int)value.Linear & 0x0F);
-                control.MemoryView.SelectedAddress = value;
-                control.MemoryView.TopAddress = addrTop;
-                control.DisassemblyView.SelectedAddress = value;
-                control.DisassemblyView.TopAddress = value;
-                ignoreAddressChange = false;
-                navInteractor.UserNavigateTo(value);
+                control.CurrentAddress = value;
             }
         }
 
@@ -85,6 +78,8 @@ namespace Decompiler.Gui.Windows
             var uiService = services.RequireService<IDecompilerShellUiService>();
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
+            this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
+
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
             this.Control.DisassemblyView.SelectedAddressChanged += DisassemblyView_SelectedAddressChanged;
             this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
@@ -94,8 +89,7 @@ namespace Decompiler.Gui.Windows
             this.control.MemoryView.Services = this.services;
 
             this.navInteractor = new NavigationInteractor();
-            this.navInteractor.Attach(this.Control.ToolbarBackButton, this.Control.ToolbarForwardButton, null);
-            this.navInteractor.LocationChanged += navInteractor_LocationChanged;
+            this.navInteractor.Attach(this.Control);
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
             typeMarker = new TypeMarker(control.MemoryView);
@@ -107,7 +101,6 @@ namespace Decompiler.Gui.Windows
 
 
 
-        
         private void typeMarker_TextAccepted(object sender, TypeMarkerEventArgs e)
         {
             var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText);
@@ -134,21 +127,14 @@ namespace Decompiler.Gui.Windows
                 txtAddr = txtAddr.Substring(2);
             if (!Address.TryParse(txtAddr, 16, out addr))
                 return;
-            UserNavigateToAddress(addr);
+            UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
         }
 
-        private void UserNavigateToAddress(Address addr)
+        private void UserNavigateToAddress(Address addrFrom, Address addrTo)
         {
-            if (!program.Image.IsValidAddress(addr))
+            if (!program.Image.IsValidAddress(addrTo))
                 return;
-            this.ignoreAddressChange = true;
-            var addrTop = addr - ((int)addr.Linear & 0x0F);
-            this.Control.MemoryView.SelectedAddress = addr;
-            this.Control.MemoryView.TopAddress = addrTop;
-            this.Control.DisassemblyView.SelectedAddress = addr;
-            this.Control.DisassemblyView.TopAddress = addr;
-            this.ignoreAddressChange = false;
-            navInteractor.UserNavigateTo(addr);
+            navInteractor.UserNavigateTo(addrTo);
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -179,7 +165,7 @@ namespace Decompiler.Gui.Windows
             {
                 switch (cmdId.ID)
                 {
-                case CmdIds.EditCopy: return CopySelection();
+                case CmdIds.EditCopy: return CopySelectionToClipboard();
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                 case CmdIds.ActionMarkType: return MarkType();
                 case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
@@ -270,7 +256,11 @@ namespace Decompiler.Gui.Windows
             return true;
         }
 
-        private bool CopySelection()
+        /// <summary>
+        /// Copies the selected range of bytes into the clipboard.
+        /// </summary>
+        /// <returns></returns>
+        private bool CopySelectionToClipboard()
         {
             AddressRange range;
             if (!TryGetSelectedAddressRange(out range))
@@ -285,6 +275,7 @@ namespace Decompiler.Gui.Windows
             }
             return true;
         }
+
         public bool MarkType()
         {
             var addrRange = control.MemoryView.GetAddressRange();
@@ -419,15 +410,16 @@ namespace Decompiler.Gui.Windows
             this.ignoreAddressChange = false;
         }
 
-        void navInteractor_LocationChanged(object sender, EventArgs e)
+        void LowLevelView_CurrentAddressChanged(object sender, EventArgs e)
         {
-            var address = navInteractor.Location;
-            this.ignoreAddressChange = true;
-            this.Control.MemoryView.SelectedAddress = address;
-            this.Control.MemoryView.TopAddress = address;
-            this.Control.DisassemblyView.SelectedAddress = address;
-            this.Control.DisassemblyView.TopAddress = address;
-            this.ignoreAddressChange = false;
+            ignoreAddressChange = true;
+            var value = Control.CurrentAddress;
+            var addrTop = value - ((int)value.Linear & 0x0F);
+            control.MemoryView.SelectedAddress = value;
+            control.MemoryView.TopAddress = addrTop;
+            control.DisassemblyView.SelectedAddress = value;
+            control.DisassemblyView.TopAddress = value;
+            ignoreAddressChange = false;
         }
 
         void ToolBarAddressTextbox_KeyDown(object sender, KeyEventArgs e)
@@ -451,7 +443,7 @@ namespace Decompiler.Gui.Windows
             var addr = e.Destination as Address;
             if (e == null)
                 return;
-            UserNavigateToAddress(addr);
+            UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }
     }
 }

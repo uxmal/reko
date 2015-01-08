@@ -27,8 +27,7 @@ using System.Diagnostics;
 
 namespace Decompiler.UnitTests.Analysis
 {
-	[TestFixture]
-	[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
+	//[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
 	public class ValueNumberingTests : AnalysisTestBase
 	{
 		[Test]

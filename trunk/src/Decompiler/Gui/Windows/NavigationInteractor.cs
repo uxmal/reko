@@ -33,30 +33,26 @@ namespace Decompiler.Gui.Windows
     /// Performs back/forward navigation.
     /// </summary>
     /// <remarks>
-    /// This interactor needs a pair of buttons -- for "Back" and "Forward" -- a timer, and 
+    /// This interactor is connected to a navigable control, which will have a pair of buttons -- for "Back" and "Forward" -- a timer, and 
     /// a way to show a menu to the user if the timer times out.
     /// </remarks>
     public class NavigationInteractor
     {
-        public event EventHandler LocationChanged;
-
-        private IButton btnBack;
-        private IButton btnForward;
-        private ITimer timer;
+        private INavigableControl navControl;
         private List<Address> navStack = new List<Address>();
-        private int stackPosition = -1;
+        private int stackPosition = 0;
 
-        public void Attach(IButton btnBack, IButton btnForward, ITimer timer)
+        public void Attach(INavigableControl navControl)
         {
-            this.btnBack = btnBack;
-            this.btnForward = btnForward;
-            this.timer = timer;
+            this.navControl = navControl;
 
-            btnBack.Click += btnBack_Click;
-            btnForward.Click += btnForward_Click;
+            EnableControls();
+
+            navControl.BackButton.Click += btnBack_Click;
+            navControl.ForwardButton.Click += btnForward_Click;
         }
 
-        public Address Location
+        private Address Location
         {
             get {
                 if (stackPosition >= navStack.Count)
@@ -67,8 +63,8 @@ namespace Decompiler.Gui.Windows
 
         private void EnableControls()
         {
-            btnBack.Enabled = stackPosition > 0;
-            btnForward.Enabled = stackPosition < navStack.Count - 1;
+            navControl.BackButton.Enabled = stackPosition > 0;
+            navControl.ForwardButton.Enabled = stackPosition < navStack.Count;
         }
 
         /// <summary>
@@ -78,15 +74,16 @@ namespace Decompiler.Gui.Windows
         /// <param name="address"></param>
         public void UserNavigateTo(Address address)
         {
-            int itemsAhead = navStack.Count - (stackPosition + 1);
+            int itemsAhead = navStack.Count - stackPosition;
             if (stackPosition >= 0 && itemsAhead > 0)
             {
-                Debug.Print("Removing {0}:{1}", stackPosition + 1, itemsAhead);
-                navStack.RemoveRange(stackPosition + 1, itemsAhead);
+                Debug.Print("Removing {0}:{1}", stackPosition, itemsAhead);
+                navStack.RemoveRange(stackPosition, itemsAhead);
             }
-            navStack.Add(address);
+            navStack.Add(navControl.CurrentAddress);    // Remember where we were...
             ++stackPosition;
             EnableControls();
+            navControl.CurrentAddress = address;        // ...and move to the new position.
         }
 
         void btnBack_Click(object sender, EventArgs e)
@@ -95,7 +92,7 @@ namespace Decompiler.Gui.Windows
                 return;
             --stackPosition;
             EnableControls();
-            LocationChanged.Fire(this);
+            navControl.CurrentAddress = Location;        // ...and move to the new position.
         }
 
         void btnForward_Click(object sender, EventArgs e)
@@ -104,7 +101,7 @@ namespace Decompiler.Gui.Windows
                 return;
             ++stackPosition;
             EnableControls();
-            LocationChanged.Fire(this);
+            navControl.CurrentAddress = Location;        // ...and move to the new position.
         }
     }
 }

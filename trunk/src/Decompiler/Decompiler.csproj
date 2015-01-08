@@ -236,6 +236,7 @@
     <Compile Include="Gui\Controls\IButton.cs" />
     <Compile Include="Gui\Controls\ICheckBox.cs" />
     <Compile Include="Gui\Controls\IComboBox.cs" />
+    <Compile Include="Gui\Controls\INavigableControl.cs" />
     <Compile Include="Gui\Controls\ITextBox.cs" />
     <Compile Include="Gui\Controls\ITreeView.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesigner.cs" />

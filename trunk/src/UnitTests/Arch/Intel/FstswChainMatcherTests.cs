@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         List<IntelInstruction> instrs;
 
         [SetUp]
-        public void Setup()
+        public void Fstsw_Setup()
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             asm = new IntelAssembler(arch, new Address(0x10000), new List<EntryPoint>());
@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void FailMatch()
+        public void Fstsw_FailMatch()
         {
             asm.Mov(asm.ax, asm.Const(1));
             var m = GetMatcher();
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void MatchSahfSequence()
+        public void Fstsw_MatchSahfSequence()
         {
             asm.Fstsw(asm.ax);
             asm.Sahf();
@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void EmitSahf()
+        public void Fstsw_EmitSahf()
         {
             asm.Fstsw(asm.ax);
             asm.Sahf();
@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
         
         [Test]
-        public void MatchTestAh40()
+        public void Fstsw_MatchTestAh40()
         {
             asm.Fstsw(asm.ax);
             asm.Test(asm.ah, asm.Const(0x40));
@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void EmitTestAh40()
+        public void Fstsw_EmitTestAh40()
         {
             asm.Fstsw(asm.ax);
             asm.Test(asm.ah, asm.Const(0x40));
@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void EmitTestAx01()
+        public void Fstsw_EmitTestAx01()
         {
             asm.Fstsw(asm.ax);
             asm.Test(asm.ax, asm.Const(0x0100));

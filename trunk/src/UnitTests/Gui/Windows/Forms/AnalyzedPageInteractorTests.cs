@@ -149,32 +149,5 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             mr.VerifyAll();
         }
-
-        [Test]
-        [Ignore("Other mechanism needed")]
-        public void Anpi_ShowEditProcedureDialog()
-        {
-            uiSvc.Expect(s => s.ShowModalDialog(
-                    Arg<ProcedureDialog>.Is.TypeOf))
-                .Return(DialogResult.Cancel);
-            mr.ReplayAll();
-
-            Given_Interactor();
-
-            form.Show();
-            Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
-            p.Signature = new ProcedureSignature(
-                new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
-                new Identifier[] {
-                    new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
-                });
-            program.Procedures.Add(new Address(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
-            interactor.EnterPage();
-            //form.BrowserList.Items[0].Selected = true;
-
-            Assert.IsTrue(interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionEditSignature)), "Should have executed command.");
-            mr.VerifyAll();
-        }
-
     }
 }
