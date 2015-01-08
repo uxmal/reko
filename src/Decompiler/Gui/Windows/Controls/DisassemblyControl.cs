@@ -88,6 +88,12 @@ namespace Decompiler.Gui.Windows.Controls
             Invalidate();
         }
 
+        protected override void OnScroll()
+        {
+            base.OnScroll();
+            topAddress = (Address)Model.CurrentPosition;
+        }
+
         protected override bool IsInputKey(Keys keyData)
         {
             switch (keyData & ~Keys.Modifiers)

@@ -38,7 +38,8 @@ namespace Decompiler.UnitTests.Scanning
     [TestFixture]
     public class ScannerTests
     {
-        FakeArchitecture arch;
+        IProcessorArchitecture arch;
+        FakeArchitecture fakeArch;
         Program program;
         TestScanner scan;
         Identifier reg1;
@@ -67,7 +68,8 @@ namespace Decompiler.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new FakeArchitecture();
+            fakeArch = new FakeArchitecture();
+            arch = fakeArch;
             var r1 = arch.GetRegister(1);
             reg1 = new Identifier(r1.Name, r1.Number, PrimitiveType.Word32, r1);
         }
@@ -119,28 +121,15 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Scanner_AddEntryPoint()
         {
-            arch.DisassemblyStream = new MachineInstruction[] {
-                new FakeInstruction(Operation.Add,
-                    new RegisterOperand(arch.GetRegister(1)), 
-                    ImmediateOperand.Word32(1))
-            };
-            arch.Test_AddTrace(new RtlTrace(0x12314) 
+            Given_Trace(new RtlTrace(0x12314) 
             {
                 m => { m.Return(4, 0); }
             });
-            var image = new LoadedImage(new Address(0x12314), new byte[1]);
-            var imageMap = image.CreateImageMap();
-            var prog = new Program
-            {
-                Architecture = arch,
-                Image = image,
-                ImageMap = imageMap,
-                Platform = new FakePlatform(null, arch)
-            };
+            Given_Program(new Address(0x12314));
             var project = new Project { Programs = { program } };
             
             var sc = new Scanner(
-                prog,
+                program,
                 project,
                 null,
                 new ImportResolver(project),
@@ -154,6 +143,24 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual(1, sc.Procedures.Count);
             Assert.AreEqual(0x12314, sc.Procedures.Keys[0].Offset);
             Assert.IsTrue(sc.CallGraph.EntryPoints.Contains(sc.Procedures.Values[0]));
+        }
+
+        private void Given_Program(Address address)
+        {
+            var image = new LoadedImage(address, new byte[1]);
+            var imageMap = image.CreateImageMap();
+            this.program = new Program
+            {
+                Architecture = arch,
+                Image = image,
+                ImageMap = imageMap,
+                Platform = new FakePlatform(null, arch)
+            };
+        }
+
+        private void Given_Trace( RtlTrace trace)
+        {
+            fakeArch.Test_AddTrace(trace);
         }
 
         [Test]
@@ -196,7 +203,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void SplitBlock()
+        public void Scanner_SplitBlock()
         {
             scan = CreateScanner(0x100, 0x100);
             var proc = new Procedure("foo", arch.CreateFrame());
@@ -211,7 +218,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void Enqueue(Address addr, Procedure proc)
         {
-            arch.Test_AddTrace(new RtlTrace(addr.Linear)
+            fakeArch.Test_AddTrace(new RtlTrace(addr.Linear)
             {
                 m => {
                     m.Assign(m.LoadDw(m.Word32(0x3000)), m.Word32(42));
@@ -221,7 +228,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void BuildExpr()
+        public void Scanner_BuildExpr()
         {
             Regexp re;
             re = Regexp.Compile("11.22");
@@ -239,7 +246,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void MatchTest()
+        public void Scanner_MatchTest()
         {
             byte[] data = new byte[] {
 										   0x30, 0x34, 0x32, 0x12, 0x55, 0xC3, 0xB8, 0x34, 0x00 
@@ -251,7 +258,7 @@ namespace Decompiler.UnitTests.Scanning
 
 
         [Test]
-        public void CallGraphTree()
+        public void Scanner_CallGraphTree()
         {
             Program prog = new Program();
             var addr = new Address(0xC00, 0);
@@ -292,7 +299,7 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void RepeatUntilBlock()
+        public void Scanner_RepeatUntilBlock()
         {
             BuildX86RealTest(delegate(IntelAssembler m)
             {
@@ -332,30 +339,13 @@ fn0C00_0000_exit:
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-        [Test]
-        [Category("FPU")]
-        [Ignore("Get back to work on FPU later")]
-        public void EnqueueingProcedureShouldResetItsFpuStack()
+        private void Given_x86_Flat32()
         {
-            var scan = CreateScanner(0x100000, 0x1000);
-            var rtls = new List<RtlInstructionCluster>();
-            arch.Test_AddTrace(new RtlTrace(0x100100)
-            {
-                m => m.Return(4, 0)
-            });
-
-            var st = (X86State) arch.CreateProcessorState();
-            st.GrowFpuStack(new Address(0x100000));
-            scan.ScanProcedure(new Address(0x100100), null, st);
-            var stNew = (X86State) null; // scan.Test_LastBlockWorkitem.Context;
-            Assert.IsNotNull(stNew);
-            Assert.AreNotSame(st, stNew);
-            Assert.AreEqual(1, st.FpuStackItems);
-            Assert.AreEqual(0, stNew.FpuStackItems);
+            arch = new X86ArchitectureFlat32();
         }
 
         [Test]
-        public void ScanImportedProcedure()
+        public void Scanner_ImportedProcedure()
         {
             program = new Program();
             program.ImportReferences.Add(
@@ -435,18 +425,18 @@ fn0C00_0000_exit:
         public void Scanner_Interprocedural_CloneBlocks()
         {
             var scan = CreateScanner(0x1000, 0x2000);
-            arch.Test_AddTrace(new RtlTrace(0x1000)
+            Given_Trace(new RtlTrace(0x1000)
             {
                 m => { m.Assign(reg1, m.Word32(0)); },
                 m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
-            arch.Test_AddTrace(new RtlTrace(0x1004)
+            Given_Trace(new RtlTrace(0x1004)
             {
                 m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
-            arch.Test_AddTrace(new RtlTrace(0x1100)
+            Given_Trace(new RtlTrace(0x1100)
             {
                 m => { m.Assign(reg1, m.Word32(1)); },
                 m => { m.Goto(new Address(0x1004)); },

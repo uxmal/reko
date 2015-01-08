@@ -48,6 +48,10 @@ namespace Decompiler.Gui.Windows
         {
             ShowWindow();
             mvi.Program = program;
+            if (program != null)
+            {
+                mvi.SelectedAddress = program.Image.BaseAddress;
+            }
         }
 
         public void ShowMemoryAtAddress(Program program, Address addr)
@@ -80,8 +84,7 @@ namespace Decompiler.Gui.Windows
 
         void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SelectionChanged != null)
-                SelectionChanged(this, e);
+            SelectionChanged.Fire(this, e);
         }
     }
 }

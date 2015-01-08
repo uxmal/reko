@@ -58,7 +58,6 @@ namespace Decompiler.Analysis
 			}
 		}
 
-
 		public ValueNumbering(SsaIdentifierCollection ssaIds)
 		{
 			this.ssaIds = ssaIds;

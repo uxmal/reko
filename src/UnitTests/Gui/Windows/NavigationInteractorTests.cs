@@ -44,6 +44,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private Address addr42;
         private Address addr43;
         private Address addr44;
+        private INavigableControl navControl;
 
         [SetUp]
         public void Setup()
@@ -52,7 +53,10 @@ namespace Decompiler.UnitTests.Gui.Windows
             btnBack = mr.Stub<IButton>();
             btnForward = mr.Stub<IButton>();
             timer = mr.Stub<ITimer>();
+            navControl = mr.Stub<INavigableControl>();
 
+            navControl.Stub(n => n.BackButton).Return(btnBack);
+            navControl.Stub(n => n.ForwardButton).Return(btnForward);
             addr42 = new Address(42);
             addr43 = new Address(43);
             addr44 = new Address(44);
@@ -72,23 +76,22 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void When_Attached()
         {
-            ni.Attach(btnBack, btnForward, timer);
+            ni.Attach(navControl);
         }
 
         [Test]
-        public void Ni_AddAddress()
+        public void Ni_UserNavigateTo()
         {
             ni = new NavigationInteractor();
             mr.ReplayAll();
 
-            When_Attached();
-            ni.UserNavigateTo(addr42);
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.AreSame(addr42, ni.Location);
 
+            When_Attached();
+            navControl.CurrentAddress = addr42;
+            Assert.IsFalse(btnBack.Enabled);
             ni.UserNavigateTo(addr43);
             Assert.IsTrue(btnBack.Enabled);
-            Assert.AreSame(addr43, ni.Location);
+            Assert.AreEqual(addr43, navControl.CurrentAddress);
 
             mr.VerifyAll();
         }
@@ -100,13 +103,13 @@ namespace Decompiler.UnitTests.Gui.Windows
             mr.ReplayAll();
 
             When_Attached();
-            ni.UserNavigateTo(addr42);
+            navControl.CurrentAddress = addr42;
             ni.UserNavigateTo(addr43);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
 
             Assert.IsFalse(btnBack.Enabled);
             Assert.IsTrue(btnForward.Enabled);
-            Assert.AreSame(addr42, ni.Location);
+            Assert.AreSame(addr42, navControl.CurrentAddress);
         }
 
         [Test]
@@ -116,7 +119,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             mr.ReplayAll();
 
             When_Attached();
-            ni.UserNavigateTo(addr42);
+            navControl.CurrentAddress = addr42;
             ni.UserNavigateTo(addr43);
             ni.UserNavigateTo(addr44);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
@@ -127,7 +130,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             ni.UserNavigateTo(addr44);
             btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreSame(addr42, ni.Location);
+            Assert.AreSame(addr42, navControl.CurrentAddress);
         }
     }
 }
