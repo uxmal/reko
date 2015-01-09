@@ -34,8 +34,14 @@ using System.Linq;
 namespace Decompiler.Scanning
 {
     /// <summary>
-    /// Scanner work item for processing basic blocks.
+    /// Scanner work item for processing a basic block.
     /// </summary>
+    /// <remarks>
+    /// The block work item will disassemble and rewrite instructions linearly until it reaches:
+    /// <list type="">
+    /// <item>An condition or unconditional branch</item>
+    /// <item>A call to a procedure that is known to terminate.</item>
+    /// </list></remarks>
     public class BlockWorkitem : WorkItem, RtlInstructionVisitor<bool>
     {
         private IScanner scanner;

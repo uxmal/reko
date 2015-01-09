@@ -342,7 +342,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbReals()
         {
-            RunTest(RewriteFile("Fragments/fpuops.asm"), "Typing/DtbReals.txt");
+            RunTest(RewriteFile16("Fragments/fpuops.asm"), "Typing/DtbReals.txt");
         }
 
         [Test]
@@ -401,19 +401,19 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbReg00008()
         {
-            RunTest("Fragments/regressions/r00008.asm", "Typing/DtbReg00008.txt");
+            RunTest16("Fragments/regressions/r00008.asm", "Typing/DtbReg00008.txt");
         }
 
         [Test]
         public void DtbReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
+            RunTest16("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
         }
 
         [Test]
         public void DtbReg00012()
         {
-            RunTest("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
+            RunTest16("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
         }
 
         [Test]

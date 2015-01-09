@@ -99,9 +99,10 @@ namespace Decompiler.Gui.Windows
         {
             if (stackPosition >= navStack.Count)
                 return;
+            var loc = Location;
             ++stackPosition;
             EnableControls();
-            navControl.CurrentAddress = Location;        // ...and move to the new position.
+            navControl.CurrentAddress = loc;        // ...and move to the new position.
         }
     }
 }

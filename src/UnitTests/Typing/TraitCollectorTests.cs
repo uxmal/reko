@@ -54,55 +54,55 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoFactorial()
 		{
-			RunTest("Fragments/factorial.asm", "Typing/TrcoFactorial.txt");
+			RunTest16("Fragments/factorial.asm", "Typing/TrcoFactorial.txt");
 		}
 
 		[Test]
 		public void TrcoFactorialReg()
 		{
-			RunTest("Fragments/factorial_reg.asm", "Typing/TrcoFactorialReg.txt");
+			RunTest16("Fragments/factorial_reg.asm", "Typing/TrcoFactorialReg.txt");
 		}
 
 		[Test]
 		public void TrcoFloatingPoint()
 		{
-			RunTest("Fragments/fpuops.asm", "Typing/TrcoFloatingPoint.txt");
+			RunTest16("Fragments/fpuops.asm", "Typing/TrcoFloatingPoint.txt");
 		}
 
 		[Test]
 		public void TrcoLength()
 		{
-			RunTest("Fragments/type/listlength.asm", "Typing/TrcoLength.txt");
+			RunTest16("Fragments/type/listlength.asm", "Typing/TrcoLength.txt");
 		}
 
 		[Test]
 		public void TrcoNestedStructs()
 		{
-			RunTest("Fragments/type/nestedstructs.asm", "Typing/TrcoNestedStructs.txt");
+			RunTest16("Fragments/type/nestedstructs.asm", "Typing/TrcoNestedStructs.txt");
 		}
 
 		[Test]
 		public void TrcoSimpleLinearCode()
 		{
-			RunTest("Fragments/simple_memoperations.asm", "Typing/TrcoSimpleLinearCode.txt");
+			RunTest16("Fragments/simple_memoperations.asm", "Typing/TrcoSimpleLinearCode.txt");
 		}
 
 		[Test]
 		public void TrcoUnknown()
 		{
-			RunTest("Fragments/type/unknown.asm", "Typing/TrcoUnknown.txt");
+			RunTest16("Fragments/type/unknown.asm", "Typing/TrcoUnknown.txt");
 		}
 
         [Test]
         public void TrcoReals()
         {
-            RunTest("Fragments/fpuops.asm", "Typing/TrcoReals.txt");
+            RunTest16("Fragments/fpuops.asm", "Typing/TrcoReals.txt");
         }
 
 		[Test]
 		public void TrcoMemAccesses()
 		{
-			RunTest("Fragments/multiple/memaccesses.asm", "Typing/TrcoMemAccesses.txt");
+			RunTest16("Fragments/multiple/memaccesses.asm", "Typing/TrcoMemAccesses.txt");
 		}
 
 		[Test]
@@ -304,25 +304,25 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoReg00008()
 		{
-			RunTest("Fragments/regressions/r00008.asm", "Typing/TrcoReg00008.txt");
+			RunTest16("Fragments/regressions/r00008.asm", "Typing/TrcoReg00008.txt");
 		}
 
         [Test]
         public void TrcoReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
+            RunTest16("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
         }
 
         [Test]
         public void TrcoReg00012()
         {
-            RunTest("Fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
+            RunTest16("Fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
         }
 
         [Test]
         public void TrcoReg00014()
         {
-            RunTest("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
+            RunTest32("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
         }
 
         [Test]

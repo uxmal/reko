@@ -72,9 +72,14 @@ namespace Decompiler.Core
 
         public abstract ProcedureSignature LookupProcedureByName(string moduleName, string procName);
 
+        /// <summary>
+        /// Guess signature from the name of the procedure.
+        /// </summary>
+        /// <param name="fnName"></param>
+        /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
         public virtual ProcedureSignature SignatureFromName(string fnName)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public virtual ProcedureSignature LookupProcedureByOrdinal(string moduleName, int ordinal)

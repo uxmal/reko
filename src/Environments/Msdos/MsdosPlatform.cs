@@ -57,7 +57,7 @@ namespace Decompiler.Environments.Msdos
 			string libPath = Path.Combine(prefix,"src","Environments","Msdos","realmodeintservices.xml");
 			if (!File.Exists (libPath))
 			{
-				prefix = Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location);
+                prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 				libPath = Path.Combine(prefix,"realmodeintservices.xml");
 				if (!File.Exists(libPath))
 				{

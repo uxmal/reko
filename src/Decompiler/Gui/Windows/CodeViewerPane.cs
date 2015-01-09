@@ -47,7 +47,6 @@ namespace Decompiler.Gui.Windows
         {
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
 
-
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
             this.TextView.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);

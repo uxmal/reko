@@ -32,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -43,6 +44,7 @@ namespace Decompiler.UnitTests.Scanning
         Program program;
         TestScanner scan;
         Identifier reg1;
+        private MockRepository mr;
 
         public class TestScanner : Scanner
         {
@@ -68,6 +70,7 @@ namespace Decompiler.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             fakeArch = new FakeArchitecture();
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
@@ -354,6 +357,9 @@ fn0C00_0000_exit:
                     new Address(0x2000),
                     "module",
                     "grox"));
+            Given_Trace(new RtlTrace(0x2000) {
+                    m => m.SideEffect(m.Word32(0x1234))
+            });
             var project = new Project
             {
                 Programs = { program },
@@ -377,7 +383,7 @@ fn0C00_0000_exit:
                     }
                 }
             };
-            var scan = CreateScanner(program, project, 0x1000, 0x200);
+            var scan = CreateScanner(program, project, 0x1000, 0x2000);
             var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
@@ -471,6 +477,26 @@ fn00001100_exit:
 
 ";
             AssertProgram(sExp, program);
+        }
+
+        [Test]
+        public void Scanner_Trampoline()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            var platform = mr.Stub<Platform>(null, program.Architecture);
+            platform.Stub(p => p.LookupProcedureByName("foo.dll", "bar")).Return(
+                new ProcedureSignature());
+            program.Platform = platform;
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => { m.Goto(m.LoadDw(m.Word32(0x2000))); }
+            });
+            program.ImportReferences.Add(
+                new Address(0x2000),
+                new NamedImportReference(new Address(0x2000), "foo.dll", "bar"));
+            var proc = scan.ScanProcedure(new Address(0x1000), "fn1000", arch.CreateProcessorState());
+
+            Assert.AreEqual("bar", proc.Name);
         }
     }
 }
