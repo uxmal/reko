@@ -95,7 +95,8 @@ namespace Decompiler.Arch.X86
                 return new ProcedureConstant(arch.PointerType, exp);
 
             Expression expr = EffectiveAddressExpression(mem, state);
-            if (arch.ProcessorMode != ProcessorMode.Protected32)
+            if (arch.ProcessorMode != ProcessorMode.Protected32 || 
+                ( mem.DefaultSegment != Registers.ds && mem.DefaultSegment != Registers.ss))
             {
                 Expression seg = ReplaceCodeSegment(mem.DefaultSegment, state);
                 if (seg == null)

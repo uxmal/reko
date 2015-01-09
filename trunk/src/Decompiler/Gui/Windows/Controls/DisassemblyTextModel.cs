@@ -47,7 +47,7 @@ namespace Decompiler.Gui.Windows.Controls
 
         public object StartPosition { get { return program.Image.BaseAddress; } }
         public object CurrentPosition { get { return position; } }
-        public object EndPosition { get { return program.Image.BaseAddress + program.Image.Bytes.Length; } }
+        public object EndPosition { get { return program.ImageMap.MapLinearAddressToAddress((uint)(program.Image.BaseAddress.Linear + program.Image.Bytes.Length)); } }
         public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
 
         public TextSpan[][] GetLineSpans(int count)
@@ -88,7 +88,7 @@ namespace Decompiler.Gui.Windows.Controls
             addr = addr + offset;
             if (addr < image.BaseAddress)
                 addr = image.BaseAddress;
-            var addrEnd = image.BaseAddress + image.Bytes.Length;
+            var addrEnd = program.ImageMap.MapLinearAddressToAddress((uint)(image.BaseAddress.Linear + image.Bytes.Length - 1));
             if (addr > addrEnd)
                 addr = addrEnd;
             this.position = addr;

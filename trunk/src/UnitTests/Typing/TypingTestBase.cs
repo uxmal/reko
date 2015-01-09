@@ -42,13 +42,17 @@ namespace Decompiler.UnitTests.Typing
 	/// </summary>
 	public abstract class TypingTestBase
 	{
-		protected Program RewriteFile(string relativePath)
+		protected Program RewriteFile16(string relativePath) { return RewriteFile(relativePath, new Address(0xC00, 0)); }
+
+		protected Program RewriteFile32(string relativePath) { return RewriteFile(relativePath, new Address(0x00100000)); }
+
+		protected Program RewriteFile(string relativePath, Address addrBase)
 		{
             ILoader ldr = new Loader(new ServiceContainer());
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
                 new IntelTextAssembler(),
-                new Address(0xC00, 0));
+                addrBase);
             var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
 			var scan = new Scanner(
@@ -83,10 +87,16 @@ namespace Decompiler.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
-        protected void RunTest(string srcfile, string outputFile)
+        protected void RunTest16(string srcfile, string outputFile)
         {
-            RunTest(RewriteFile(srcfile), outputFile);
+            RunTest(RewriteFile16(srcfile), outputFile);
         }
+
+        protected void RunTest32(string srcfile, string outputFile)
+        {
+            RunTest(RewriteFile32(srcfile), outputFile);
+        }
+        
         
         protected void RunTest(ProgramBuilder mock, string outputFile)
         {

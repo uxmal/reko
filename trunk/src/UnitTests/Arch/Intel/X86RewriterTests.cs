@@ -1137,5 +1137,14 @@ namespace Decompiler.UnitTests.Arch.Intel
               "0|10000000(2): 1 instructions",
               "1|L--|FPUF = cond(rArg0 - rArg1)");
         }
+
+        [Test]
+        public void X86rw_fs_prefix()
+        {
+            Run32bitTest(0x64, 0x8B, 0x0A);
+               AssertCode(
+              "0|10000000(3): 1 instructions",
+              "1|L--|ecx = Mem0[fs:edx:word32]");
+        }
     }
 }

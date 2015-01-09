@@ -257,19 +257,19 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerReg00008()
         {
-            RunTest("Fragments/regressions/r00008.asm", "Typing/TerReg00008.txt");
+            RunTest16("Fragments/regressions/r00008.asm", "Typing/TerReg00008.txt");
         }
 
         [Test]
         public void TerReg00011()
         {
-            RunTest("Fragments/regressions/r00011.asm", "Typing/TerReg00011.txt");
+            RunTest16("Fragments/regressions/r00011.asm", "Typing/TerReg00011.txt");
         }
 
         [Test]
         public void TerReg00012()
         {
-            RunTest("Fragments/regressions/r00012.asm", "Typing/TerReg00012.txt");
+            RunTest16("Fragments/regressions/r00012.asm", "Typing/TerReg00012.txt");
         }
 
         [Test]

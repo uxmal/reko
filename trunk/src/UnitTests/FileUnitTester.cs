@@ -62,10 +62,12 @@ namespace Decompiler.UnitTests
 		public static string TestDirectory
 		{
 			get 
-			{ 
-				string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR");
-                Assert.IsNotNullOrEmpty(prefix, "Must define the environment variable DECOMPILERROOTDIR.");
-				return Path.Combine(prefix,"src","tests");
+			{
+                string assemblyName = typeof(FileUnitTester).Assembly.Location;
+                var iUnitTests = assemblyName.IndexOf("UnitTests");
+                if (iUnitTests <= 0)
+                    throw new NotSupportedException("Directory structure is expected to be '.../UnitTests/...'");
+                return Path.Combine(assemblyName.Remove(iUnitTests), "tests");
 			}
 		}
 		

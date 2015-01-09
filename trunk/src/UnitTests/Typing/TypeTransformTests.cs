@@ -83,49 +83,49 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TtranUnknown()
         {
-            RunTest("Fragments/type/unknown.asm", "Typing/TtranUnknown.txt");
+            RunTest16("Fragments/type/unknown.asm", "Typing/TtranUnknown.txt");
         }
 
         [Test]
         public void TtranFactorial()
         {
-            RunTest("Fragments/factorial.asm", "Typing/TtranFactorial.txt");
+            RunTest16("Fragments/factorial.asm", "Typing/TtranFactorial.txt");
         }
 
         [Test]
         public void TtranFactorialReg()
         {
-            RunTest("Fragments/factorial_reg.asm", "Typing/TtranFactorialReg.txt");
+            RunTest16("Fragments/factorial_reg.asm", "Typing/TtranFactorialReg.txt");
         }
 
         [Test]
         public void TtranLength()
         {
-            RunTest("Fragments/type/listlength.asm", "Typing/TtranLength.txt");
+            RunTest16("Fragments/type/listlength.asm", "Typing/TtranLength.txt");
         }
 
         [Test]
         public void TtranIntegers()
         {
-            RunTest("Fragments/type/integraltypes.asm", "Typing/TtranIntegers.txt");
+            RunTest16("Fragments/type/integraltypes.asm", "Typing/TtranIntegers.txt");
         }
 
         [Test]
         public void TtranReals()
         {
-            RunTest("Fragments/fpuops.asm", "Typing/TtranReals.txt");
+            RunTest16("Fragments/fpuops.asm", "Typing/TtranReals.txt");
         }
 
         [Test]
         public void TtranReg00008()
         {
-            RunTest("Fragments/regressions/r00008.asm", "Typing/TtranReg00008.txt");
+            RunTest16("Fragments/regressions/r00008.asm", "Typing/TtranReg00008.txt");
         }
 
         [Test]
         public void TtranMemAccesses()
         {
-            RunTest("Fragments/multiple/memaccesses.asm", "Typing/TtranMemAccesses.txt");
+            RunTest16("Fragments/multiple/memaccesses.asm", "Typing/TtranMemAccesses.txt");
         }
 
         [Test]

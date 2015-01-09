@@ -428,6 +428,9 @@ namespace Decompiler.Scanning
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
+            var trampoline = GetTrampoline(addr);
+            if (trampoline != null)
+                return trampoline;
             var imp = GetImportedProcedure(addr, addr);
             if (imp != null)
                 return imp;
@@ -505,8 +508,51 @@ namespace Decompiler.Scanning
             else
                 return null;
         }
+        /// <summary>
+        /// Tries to determin if the instruction at <paramref name="addr"/> is a trampoline
+        /// instruction. If so, we return a call to the imported function directly.
+        /// procedure.
+        /// </summary>
+        /// <remarks>
+        /// A trampoline is a procedure whose only statement is an indirect
+        /// JUMP to a location that contains the address of an imported
+        /// function.
+        /// </remarks>
+        /// <param name="addr"></param>
+        /// <returns>Null if there was no trampoline.</returns>
+        public ProcedureBase GetTrampoline(Address addr)
+        {
+            var rdr = Architecture.CreateRewriter(
+                Architecture.CreateImageReader(program.Image, addr),
+                Architecture.CreateProcessorState(),
+                Architecture.CreateFrame(),
+                this);
+            var rtlc = rdr.FirstOrDefault();
+            if (rtlc == null)
+                return null;
+            var jump = rtlc.Instructions[0] as RtlGoto;
+            if (jump == null)
+                return null;
+            var pc = jump.Target as ProcedureConstant;
+            if (pc != null)
+                return pc.Procedure;
+            var access = jump.Target as MemoryAccess;
+            if (access == null)
+                return null;
+            var addrTarget = access.EffectiveAddress as Address;
+            if (addrTarget == null)
+            {
+                var wAddr = access.EffectiveAddress as Constant;
+                if (wAddr == null)
+                {
+                    return null;
+                }
+                addrTarget = Address.FromConstant(wAddr);
+            }
+            return GetImportedProcedure(addrTarget, addr);
+        }
 
-        public ExternalProcedure GetImportedProcedure( Address addrImportThunk, Address addrInstruction)
+        public ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
             ImportReference impref;
             if (!importReferences.TryGetValue(addrImportThunk, out impref))
