@@ -14,7 +14,8 @@
   <menu id="WindowsMenu" cmdSet="Decompiler" container="GrpMain">_Windows</menu>
 	<menu id="HelpMenu" cmdSet="Decompiler" container="GrpMain">_Help</menu>
 
-	<menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
+  <menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
+  <menu type="ContextMenu" id="CtxDisassembler" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxBrowser" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxProcedure" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxAddressSearch" cmdSet="Decompiler"/>
@@ -45,6 +46,8 @@
 	<group id="GrpHelp" cmdSet="Decompiler" container="HelpMenu" />
 
 	<group id="GrpMemoryControl" cmdSet="Decompiler" container="CtxMemoryControl"/>
+  <group id="GrpDisassemblerNav" cmdSet="Decompiler" container="CtxDisassembler" />
+  <group id="GrpDisassemblerEdit" cmdSet="Decompiler" container="CtxDisassembler" />
 
   <group id="GrpBrowser" cmdSet="Decompiler" container="CtxBrowser"/>
   <group id="GrpBrowserProc" cmdSet="Decompiler" container="CtxBrowser"/>
@@ -71,10 +74,13 @@
 
   <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
   <cmd id="EditCopy" cmdSet="Decompiler" container="EditCopy">_Copy</cmd>
+  <cmd id="EditRename" cmdSet="Decompiler" container="GrpEdit">_Rename</cmd>
   
   <cmd id="ViewMemory" cmdSet="Decompiler" container="GrpLowLevel">_Memory</cmd>
   <cmd id="ViewDisassembly" cmdSet="Decompiler" container="GrpLowLevel">_Disassembly</cmd>
-
+  <cmd id="OpenLink" cmdSet="Decompiler" container="OpenLink">_Open</cmd>
+  <cmd id="OpenLinkInNewWindow" cmdSet="Decompiler" container="OpenLinkInNewWindow">Open in ne_w window</cmd>
+  
   <cmd id="ViewGoToAddress" cmdSet="Decompiler" container="GrpViewScanned">_Go to Address...</cmd>
   <cmd id="ViewFindAllProcedures" cmdSet="Decompiler" container="GrpViewScanned">Find all _procedures</cmd>
 	<cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
@@ -127,6 +133,10 @@
   <placement item="ViewFindPattern" container="GrpMemoryControl"/>
   <placement item="ViewFindWhatPointsHere" container="GrpMemoryControl"/>
 
+  <placement item="OpenLink" container="GrpDisassemblerNav" />
+  <placement item="OpenLinkInNewWindow" container="GrpDisassemblerNav" />
+  <placement item="EditRename" container="GrpDisassemblerEdit" />
+             
   <placement item="ActionEditSignature" container="GrpProcedure"/>
   <placement item="ViewGoToAddress" container="GrpProcedure"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />

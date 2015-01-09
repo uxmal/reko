@@ -34,31 +34,33 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
     [TestFixture]
     public class DisassemblyTextModelTests
     {
-        private IProcessorArchitecture arch;
-        private LoadedImage image;
         private MockRepository mr;
         private DisassemblyTextModel model;
         private List<MachineInstruction> instrs;
+        private Program program;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
-            arch = mr.Stub<IProcessorArchitecture>();
+            program = new Program
+            {
+                Architecture = mr.Stub<IProcessorArchitecture>()
+            };
         }
 
-        private LoadedImage Image(int size)
+        private LoadedImage Given_Image(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
-            image = new LoadedImage(new Address(0x1000000), bytes);
-            return image;
+            program.Image = new LoadedImage(new Address(0x1000000), bytes);
+            program.ImageMap = new ImageMap(program.Image.BaseAddress, program.Image.Bytes.Length);
+            return program.Image;
         }
 
         private void Given_Model()
         {
-            Image(1000);
-            var imageMap = new ImageMap(image.BaseAddress, image.Bytes.Length);
-             model = new DisassemblyTextModel(arch, image , imageMap);
+            Given_Image(1000);
+            model = new DisassemblyTextModel(program);
         }
 
         [Test]
@@ -131,9 +133,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
 
         private void Given_Disassembler()
         {
-            arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
+            program.Architecture.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
                 .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
-            arch.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
+            program.Architecture.Stub(a => a.CreateDisassembler(Arg<ImageReader>.Is.NotNull))
                 .Return(instrs);
         }
 
@@ -152,7 +154,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
             {
                 instrs.Add(new TestInstruction
                 {
-                    Address = image.BaseAddress + i,
+                    Address = program.Image.BaseAddress + i,
                     Length = c % 5
                 });
             }

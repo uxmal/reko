@@ -276,7 +276,7 @@ namespace Decompiler.UnitTests.Analysis
             var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
             liv.Find();
 			var iv = liv.InductionVariables[0];
-			Assert.AreEqual("(0x0000000A -1 0 signed)", iv.ToString());
+			Assert.AreEqual("(9 -1 -1 signed)", iv.ToString());
 		}
 
 		[Test]

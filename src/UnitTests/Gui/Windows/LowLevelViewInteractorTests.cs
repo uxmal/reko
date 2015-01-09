@@ -53,6 +53,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private ImageMap imageMap;
         private IUiPreferencesService uiPrefsSvc;
         private Program program;
+        private Form form;
 
         [SetUp]
         public void Setup()
@@ -63,6 +64,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             uiPrefsSvc = mr.StrictMock<IUiPreferencesService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
             uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
+            uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
             uiSvc.Replay();
             uiPrefsSvc.Stub(u => u.DisassemblyFont).Return(new System.Drawing.Font("Lucida Console", 10));
             uiPrefsSvc.Replay();
@@ -70,6 +72,12 @@ namespace Decompiler.UnitTests.Gui.Windows
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
             sp.AddService(typeof(IUiPreferencesService), uiPrefsSvc);
             addrBase = new Address(0x1000);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            if (form != null) form.Dispose(); form = null;
         }
 
         private void Given_Interactor()
@@ -83,21 +91,37 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void LLI_GotoAddressEnabled()
         {
-            interactor = new LowLevelViewInteractor();
+            Given_Architecture();
+            Given_Program(new byte[0x13000]); 
+            Given_Interactor();
+            mr.ReplayAll();
+
+            When_ShowControl();
+            control.MemoryView.Focus();
             var status = new CommandStatus();
             Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress), status, null));
             Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);
         }
 
+        private void When_ShowControl()
+        {
+            form = new Form();
+            control.Parent = form;
+            control.Dock = DockStyle.Fill;
+            form.Show();
+        }
+
         [Test]
         public void LLI_SelectAddress()
         {
+            Given_Architecture();
+            Given_Program(new byte[0x13000]);
             Given_Interactor();
             mr.ReplayAll();
 
             interactor.Control.MemoryView.SelectedAddress = new Address(0x12321);
 
-            Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.SelectedAddress.Linear);
+            Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.TopAddress.Linear);
             mr.VerifyAll();
         }
 
@@ -111,6 +135,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                 .Return(new AddressRange(program.Image.BaseAddress, program.Image.BaseAddress));
             mr.ReplayAll();
 
+            When_ShowControl();
             interactor.Program = program;
             interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
 

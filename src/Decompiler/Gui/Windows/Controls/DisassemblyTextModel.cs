@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -33,40 +34,34 @@ namespace Decompiler.Gui.Windows.Controls
     /// </summary>
     public class DisassemblyTextModel : TextViewModel
     {
-        private IProcessorArchitecture arch;
-        private LoadedImage image;
-        private ImageMap imageMap;
+        private Program program;
         private Address position;
 
-        public DisassemblyTextModel(IProcessorArchitecture arch, LoadedImage image, ImageMap imageMap)
+        public DisassemblyTextModel( Program program)
         {
-            if (arch == null)
-                throw new ArgumentNullException("arch");
-            this.arch = arch;
-            this.image = image;
-            if (image == null)
-                throw new ArgumentNullException("image");
-            this.imageMap = imageMap;
-            this.position = image.BaseAddress;
+            if (program == null)
+                throw new ArgumentNullException("program");
+            this.program = program;
+            this.position = program.Image.BaseAddress;
         }
 
-        public object StartPosition { get { return this.image.BaseAddress; } }
+        public object StartPosition { get { return program.Image.BaseAddress; } }
         public object CurrentPosition { get { return position; } }
-        public object EndPosition { get { return this.image.BaseAddress + this.image.Bytes.Length; } }
-        public int LineCount { get { return GetPositionEstimate(image.Bytes.Length); } }
+        public object EndPosition { get { return program.Image.BaseAddress + program.Image.Bytes.Length; } }
+        public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
 
         public TextSpan[][] GetLineSpans(int count)
         {
             var lines = new List<TextSpan[]>();
-            var dasm = arch.CreateDisassembler(
-                arch.CreateImageReader(image, position)).GetEnumerator();
+            var dasm = program.Architecture.CreateDisassembler(
+                program.Architecture.CreateImageReader(program.Image, position)).GetEnumerator();
             while (count != 0 && dasm.MoveNext())
             {
                 var line = new List<TextSpan>();
                 var addr = dasm.Current.Address;
                 line.Add(new AddressSpan(addr.ToString() + " ", addr, "addr"));
                 line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
-                var dfmt = new DisassemblyFormatter(line);
+                var dfmt = new DisassemblyFormatter(program, line);
                 dasm.Current.Render(dfmt);
                 dfmt.NewLine();
                 lines.Add(line.ToArray());
@@ -78,7 +73,7 @@ namespace Decompiler.Gui.Windows.Controls
         private string BuildBytes(MachineInstruction instr)
         {
             var sb = new StringBuilder();
-            var rdr = arch.CreateImageReader(image, instr.Address);
+            var rdr = program.Architecture.CreateImageReader(program.Image, instr.Address);
             for (int i = 0; i < instr.Length; ++i)
             {
                 sb.AppendFormat("{0:X2} ", rdr.ReadByte());
@@ -89,6 +84,7 @@ namespace Decompiler.Gui.Windows.Controls
         public void MoveTo(object basePosition, int offset)
         {
             var addr = (Address)basePosition;
+            var image = program.Image;
             addr = addr + offset;
             if (addr < image.BaseAddress)
                 addr = image.BaseAddress;
@@ -100,6 +96,7 @@ namespace Decompiler.Gui.Windows.Controls
 
         public Tuple<int, int> GetPositionAsFraction()
         {
+            var image = program.Image;
             return Tuple.Create(position - image.BaseAddress, image.Bytes.Length);
         }
 
@@ -109,13 +106,14 @@ namespace Decompiler.Gui.Windows.Controls
                 throw new ArgumentException("denominator");
             if (numerator < 0 || numerator > denominator)
                 throw new ArgumentException("numerator");
+            var image = program.Image;
             long offset = Math.BigMul(numerator, image.Bytes.Length) / denominator;
             if (offset < 0)
                 offset = 0;
             else if (offset > image.Bytes.Length)
                 offset = image.Bytes.Length;
 
-            this.position = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint) offset);
+            this.position = program.ImageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint) offset);
         }
 
         /// <summary>
@@ -125,7 +123,7 @@ namespace Decompiler.Gui.Windows.Controls
         /// <returns></returns>
         private int GetPositionEstimate(int byteOffset)
         {
-            return 8 * byteOffset / arch.InstructionBitSize;
+            return 8 * byteOffset / program.Architecture.InstructionBitSize;
         }
 
         public class InertTextSpan : TextSpan
@@ -158,6 +156,23 @@ namespace Decompiler.Gui.Windows.Controls
             public override string GetText()
             {
                 return txtAddress;
+            }
+        }
+
+        public class ProcedureTextSpan : TextSpan
+        {
+            private ProcedureBase proc;
+
+            public ProcedureTextSpan(ProcedureBase proc, Address addr)
+            {
+                this.proc = proc;
+                this.Tag = addr;
+                this.Style = "addrText";
+            }
+
+            public override string GetText()
+            {
+                return proc.Name;
             }
         }
     }

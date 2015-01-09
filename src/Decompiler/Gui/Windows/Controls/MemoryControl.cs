@@ -214,8 +214,20 @@ namespace Decompiler.Gui.Windows.Controls
                 MoveSelection((int)wordSize, e.Modifiers);
 				break;
             default:
-			    base.OnKeyDown(e);
-                return;
+                switch (e.KeyData)
+                {
+                case Keys.Shift | Keys.F10:
+                    var addrRange = GetAddressRange();
+                    if (ContextMenu != null && addrRange.IsValid)
+                    {
+                        ContextMenu.Show(this, AddressToPoint(addrRange.Begin));
+                    }
+                    break;
+                default:
+                    base.OnKeyDown(e);
+                    return;
+                }
+                break;
             }
             e.Handled = true;
 		}

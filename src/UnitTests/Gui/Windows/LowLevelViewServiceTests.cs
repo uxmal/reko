@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void MVS_ShowMemoryAtAddressShouldChangeMemoryControl()
+        public void LLI_ShowMemoryAtAddressShouldChangeMemoryControl()
         {
             var sc = new ServiceContainer();
             var ctrl = new LowLevelView();
@@ -126,6 +126,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                 .IgnoreArguments()
                 .Return(mr.Stub<IWindowFrame>());
             uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
+            uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
 
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);

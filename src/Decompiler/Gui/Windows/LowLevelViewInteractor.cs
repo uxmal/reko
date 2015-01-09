@@ -19,11 +19,13 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -59,7 +61,7 @@ namespace Decompiler.Gui.Windows
                     control.MemoryView.ProgramImage = value.Image;
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
-                    control.DisassemblyView.Model = new DisassemblyTextModel(value.Architecture, value.Image, value.ImageMap);
+                    control.DisassemblyView.Model = new DisassemblyTextModel(value);
                 }
             }
         }
@@ -78,19 +80,22 @@ namespace Decompiler.Gui.Windows
             var uiService = services.RequireService<IDecompilerShellUiService>();
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
+            this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
 
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
-            this.Control.DisassemblyView.SelectedAddressChanged += DisassemblyView_SelectedAddressChanged;
-            this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
-            this.Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            this.Control.MemoryView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            this.control.MemoryView.Services = this.services;
+
+            this.Control.DisassemblyView.SelectedObjectChanged += DisassemblyView_SelectedObjectChanged;
+            this.Control.DisassemblyView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxDisassembler);
+            this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
+
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
-            this.control.MemoryView.Services = this.services;
 
             this.navInteractor = new NavigationInteractor();
             this.navInteractor.Attach(this.Control);
-            this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
             typeMarker = new TypeMarker(control.MemoryView);
             typeMarker.TextChanged += typeMarker_FormatType;
@@ -98,8 +103,6 @@ namespace Decompiler.Gui.Windows
 
             return control;
         }
-
-
 
         private void typeMarker_TextAccepted(object sender, TypeMarkerEventArgs e)
         {
@@ -139,21 +142,38 @@ namespace Decompiler.Gui.Windows
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (Control.MemoryView.Focused)
             {
-                switch (cmdId.ID)
+                if (cmdId.Guid == CmdSets.GuidDecompiler)
                 {
-                case CmdIds.ViewGoToAddress:
-                case CmdIds.ActionMarkType:
-                case CmdIds.ViewFindWhatPointsHere:
-                case CmdIds.ActionMarkProcedure:
-                    status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
-                case CmdIds.EditCopy:
-                case CmdIds.ViewFindPattern:
-                    status.Status = ValidSelection()
-                        ? MenuStatus.Visible | MenuStatus.Enabled
-                        : MenuStatus.Visible;
-                    return true;
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.ViewGoToAddress:
+                    case CmdIds.ActionMarkType:
+                    case CmdIds.ViewFindWhatPointsHere:
+                    case CmdIds.ActionMarkProcedure:
+                        status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                    case CmdIds.EditCopy:
+                    case CmdIds.ViewFindPattern:
+                        status.Status = ValidSelection()
+                            ? MenuStatus.Visible | MenuStatus.Enabled
+                            : MenuStatus.Visible;
+                        return true;
+                    }
+                }
+            }
+            else if (Control.DisassemblyView.Focused)
+            {
+                var selAddress = Control.DisassemblyView.SelectedObject as Address;
+                if (cmdId.Guid == CmdSets.GuidDecompiler)
+                {
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.OpenLink:
+                    case CmdIds.OpenLinkInNewWindow:
+                        status.Status = selAddress != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -161,16 +181,29 @@ namespace Decompiler.Gui.Windows
 
         public bool Execute(CommandID cmdId)
         {
-            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            if (Control.MemoryView.Focused)
             {
-                switch (cmdId.ID)
+                if (cmdId.Guid == CmdSets.GuidDecompiler)
                 {
-                case CmdIds.EditCopy: return CopySelectionToClipboard();
-                case CmdIds.ViewGoToAddress: GotoAddress(); return true;
-                case CmdIds.ActionMarkType: return MarkType();
-                case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
-                case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
-                case CmdIds.ViewFindPattern: return ViewFindPattern();
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.EditCopy: return CopySelectionToClipboard();
+                    case CmdIds.ViewGoToAddress: GotoAddress(); return true;
+                    case CmdIds.ActionMarkType: return MarkType();
+                    case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
+                    case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
+                    case CmdIds.ViewFindPattern: return ViewFindPattern();
+                    }
+                }
+            }
+            else if (Control.DisassemblyView.Focused)
+            {
+                if (cmdId.Guid == CmdSets.GuidDecompiler)
+                {
+                    switch (cmdId.ID)
+                    {
+
+                    }
                 }
             }
             return false;
@@ -247,7 +280,7 @@ namespace Decompiler.Gui.Windows
             }
             else if (control.DisassemblyView.Focused)
             {
-                var addr = control.DisassemblyView.SelectedAddress;
+                var addr = control.DisassemblyView.SelectedObject as Address;
                 if (addr == null)
                     return false;
                 addrRange = new AddressRange(addr, addr);
@@ -394,19 +427,21 @@ namespace Decompiler.Gui.Windows
             if (ignoreAddressChange)
                 return;
             this.ignoreAddressChange = true;
-            this.Control.DisassemblyView.SelectedAddress = e.AddressRange.Begin;
+            Debug.Print("Setting disassembly view to {0}", e.AddressRange.Begin);
+            this.Control.DisassemblyView.SelectedObject = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
             this.SelectionChanged.Fire(this, e);
             this.ignoreAddressChange = false;
         }
 
-        void DisassemblyView_SelectedAddressChanged(object sender, EventArgs e)
+        void DisassemblyView_SelectedObjectChanged(object sender, EventArgs e)
         {
-            if (ignoreAddressChange || Control.DisassemblyView.SelectedAddress == null)
+            var selectedAddr = Control.DisassemblyView.SelectedObject as Address;
+            if (ignoreAddressChange || selectedAddr == null)
                 return;
             this.ignoreAddressChange = true;
-            this.Control.MemoryView.SelectedAddress = Control.DisassemblyView.SelectedAddress;
-            this.Control.MemoryView.TopAddress = Control.DisassemblyView.SelectedAddress;
+            this.Control.MemoryView.SelectedAddress = selectedAddr;
+            this.Control.MemoryView.TopAddress = selectedAddr;
             this.ignoreAddressChange = false;
         }
 
@@ -417,7 +452,6 @@ namespace Decompiler.Gui.Windows
             var addrTop = value - ((int)value.Linear & 0x0F);
             control.MemoryView.SelectedAddress = value;
             control.MemoryView.TopAddress = addrTop;
-            control.DisassemblyView.SelectedAddress = value;
             control.DisassemblyView.TopAddress = value;
             ignoreAddressChange = false;
         }

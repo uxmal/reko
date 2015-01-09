@@ -18,14 +18,11 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
 using Decompiler.Core;
-using Decompiler.Core.Output;
+using Decompiler.Core.Machine;
 using Decompiler.Gui.Windows.Controls;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Drawing;
+using System;
 using System.Text;
 
 namespace Decompiler.Gui.Windows
@@ -35,11 +32,13 @@ namespace Decompiler.Gui.Windows
     /// </summary>
     public class DisassemblyFormatter : MachineInstructionWriter 
     {
+        private Program program;
         private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
 
-        public DisassemblyFormatter(List<TextSpan> line)
+        public DisassemblyFormatter(Program program, List<TextSpan> line)
         {
+            this.program = program;
             this.line = line;
         }
 
@@ -51,7 +50,16 @@ namespace Decompiler.Gui.Windows
         public void WriteAddress(string formattedAddress, Address addr)
         {
             TerminateSpan();
-            var span = new DisassemblyTextModel.AddressTextSpan(addr, formattedAddress);
+            Procedure proc;
+            TextSpan span;
+            if (program.Procedures.TryGetValue(addr, out proc))
+            {
+                span = new DisassemblyTextModel.ProcedureTextSpan(proc, addr);
+            }
+            else
+            {
+                span = new DisassemblyTextModel.AddressTextSpan(addr, formattedAddress);
+            }
             line.Add(span);
         }
 
