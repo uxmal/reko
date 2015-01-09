@@ -110,7 +110,7 @@ namespace Decompiler.Gui.Windows.Controls
     }
 
     /// <summary>
-    /// An TextSpan describes a span of text that has the same
+    /// A TextSpan describes a span of text that has the same
     /// formatting attributes and behaviour.
     /// </summary>
     public abstract class TextSpan
@@ -126,6 +126,7 @@ namespace Decompiler.Gui.Windows.Controls
         public abstract string GetText();
         public string Style { get; set; }
         public object Tag { get; set; }
+        public int ContextMenuID { get; set; }
 
         public virtual SizeF GetSize(string text, Font font, Graphics g)
         {

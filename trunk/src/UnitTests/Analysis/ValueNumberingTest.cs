@@ -30,7 +30,7 @@ namespace Decompiler.UnitTests.Analysis
 	//[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
 	public class ValueNumberingTests : AnalysisTestBase
 	{
-		[Test]
+		//[Test]
 		public void VnSumTest()
 		{
 			Program prog = RewriteCodeFragment(
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Analysis
 			proc.Write(false, writer);
 		}
 
-		[Test]
+		//[Test]
 		public void VnMemoryTest()
 		{
 			Program prog = RewriteCodeFragment(
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnLoopTest()
 		{
 			Program prog = this.RewriteCodeFragment(
@@ -134,7 +134,7 @@ done:
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnRedundantStore()
 		{
 			Program prog = RewriteCodeFragment(
@@ -166,7 +166,7 @@ done:
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnLoop()
 		{
 			Program prog = RewriteCodeFragment(@".i86
@@ -199,19 +199,19 @@ looptest:
 			}
 		}
 
-		[Test]
+		//[Test]
 		public void VnFactorial()
 		{
 			RunTest("Fragments/factorial.asm", "Analysis/VnFactorial.txt");
 		}
 
-		[Test]
+		//[Test]
 		public void VnReg00001()
 		{
 			RunTest("Fragments/regression00001.asm", "Analysis/VnReg00001.txt");
 		}
 
-		[Test]
+		//[Test]
 		public void VnStringInstructions()
 		{
 			RunTest("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");

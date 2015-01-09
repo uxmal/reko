@@ -58,6 +58,11 @@ namespace Decompiler.Core
             return true;
         }
 
+        public override string ToString()
+        {
+            return string.Format("Image {0}{1} - length {2}{3}", "{", BaseAddress, Bytes.Length, "}");
+        }
+
         public BeImageReader CreateBeReader(Address addr)
         {
             return new BeImageReader(this, addr);

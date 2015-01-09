@@ -37,11 +37,14 @@ namespace Decompiler.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    <for-each select="c:menu">
+<for-each select="c:menu">
         <choose>
-			<when test="@type='ContextMenu'">	public readonly System.Windows.Forms.ContextMenu <value-of select="@id"/>;</when>
-			<when test="@type='MainMenu'">	public readonly System.Windows.Forms.MainMenu <value-of select="@id"/>;</when>
-          <when test="@type='ToolStrip'">	public readonly System.Windows.Forms.ToolStrip <value-of select="@id"/>;</when>
+			<when test="@type='ContextMenu'">	public readonly System.Windows.Forms.ContextMenu <value-of select="@id"/>;
+</when>
+			<when test="@type='MainMenu'">	public readonly System.Windows.Forms.MainMenu <value-of select="@id"/>;
+</when>
+          <when test="@type='ToolStrip'">	public readonly System.Windows.Forms.ToolStrip <value-of select="@id"/>;
+</when>
         </choose></for-each>
     
         public DecompilerMenus(ICommandTarget target) : base(target)

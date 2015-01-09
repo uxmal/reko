@@ -67,18 +67,18 @@ namespace Decompiler.Gui.Windows.Controls
         private Address topAddress;
 
         [Browsable(false)]
-        public Address SelectedAddress
+        public object SelectedObject
         {
-            get { return selectedAddress; }
+            get { return selectedObject; }
             set
             {
-                selectedAddress = value;
+                selectedObject = value;
                 Invalidate();
-                SelectedAddressChanged.Fire(this);
+                SelectedObjectChanged.Fire(this);
             }
         }
-        public event EventHandler SelectedAddressChanged;
-        private Address selectedAddress;
+        public event EventHandler SelectedObjectChanged;
+        private object selectedObject;
 
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
@@ -135,16 +135,20 @@ namespace Decompiler.Gui.Windows.Controls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             Focus();
-            SelectedAddress = GetAddressFromMouseEvent(e.X, e.Y);
+            var obj = GetTagFromMouseEvent(e.X, e.Y);
+            if (e.Button == MouseButtons.Left)
+                SelectedObject = obj;       // Fire a notification only if left-click.
+            else
+                selectedObject = obj;
             base.OnMouseDown(e);
         }
 
-        private Address GetAddressFromMouseEvent(int p1, int p2)
+        private object GetTagFromMouseEvent(int p1, int p2)
         {
             var span =  base.GetSpan(new Point(p1, p2));
             if (span == null)
                 return null;
-            return span.Tag as Address;
+            return span.Tag;
         }
     }
 

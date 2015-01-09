@@ -35,7 +35,14 @@ namespace Decompiler.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ContextMenu CtxBrowser;	public readonly System.Windows.Forms.ContextMenu CtxProcedure;	public readonly System.Windows.Forms.ContextMenu CtxAddressSearch;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
+	public readonly System.Windows.Forms.MainMenu MainMenu;
+	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;
+	public readonly System.Windows.Forms.ContextMenu CtxDisassembler;
+	public readonly System.Windows.Forms.ContextMenu CtxBrowser;
+	public readonly System.Windows.Forms.ContextMenu CtxProcedure;
+	public readonly System.Windows.Forms.ContextMenu CtxAddressSearch;
+	public readonly System.Windows.Forms.ToolStrip MainToolbar;
+
     
         public DecompilerMenus(ICommandTarget target) : base(target)
         {
@@ -47,6 +54,7 @@ namespace Decompiler.Gui.Windows.Forms
 			SortedList slWindowsMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
 			SortedList slCtxMemoryControl = CreatePriorityList();
+			SortedList slCtxDisassembler = CreatePriorityList();
 			SortedList slCtxBrowser = CreatePriorityList();
 			SortedList slCtxProcedure = CreatePriorityList();
 			SortedList slCtxAddressSearch = CreatePriorityList();
@@ -80,6 +88,10 @@ namespace Decompiler.Gui.Windows.Forms
 			slHelpMenu.Add(0, slGrpHelp);
 			SortedList slGrpMemoryControl = CreatePriorityList();
 			slCtxMemoryControl.Add(0, slGrpMemoryControl);
+			SortedList slGrpDisassemblerNav = CreatePriorityList();
+			slCtxDisassembler.Add(0, slGrpDisassemblerNav);
+			SortedList slGrpDisassemblerEdit = CreatePriorityList();
+			slCtxDisassembler.Add(0, slGrpDisassemblerEdit);
 			SortedList slGrpBrowser = CreatePriorityList();
 			slCtxBrowser.Add(0, slGrpBrowser);
 			SortedList slGrpBrowserProc = CreatePriorityList();
@@ -127,12 +139,21 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slEditCopy = new CommandMenuItem("_Copy", new Guid(CmdSets.Decompiler), CmdIds.EditCopy);
             slEditCopy.IsDynamic = false;
             
+            CommandMenuItem slEditRename = new CommandMenuItem("_Rename", new Guid(CmdSets.Decompiler), CmdIds.EditRename);
+            slEditRename.IsDynamic = false;
+            slGrpEdit.Add(0, slEditRename);
             CommandMenuItem slViewMemory = new CommandMenuItem("_Memory", new Guid(CmdSets.Decompiler), CmdIds.ViewMemory);
             slViewMemory.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewMemory);
             CommandMenuItem slViewDisassembly = new CommandMenuItem("_Disassembly", new Guid(CmdSets.Decompiler), CmdIds.ViewDisassembly);
             slViewDisassembly.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewDisassembly);
+            CommandMenuItem slOpenLink = new CommandMenuItem("_Open", new Guid(CmdSets.Decompiler), CmdIds.OpenLink);
+            slOpenLink.IsDynamic = false;
+            
+            CommandMenuItem slOpenLinkInNewWindow = new CommandMenuItem("Open in ne_w window", new Guid(CmdSets.Decompiler), CmdIds.OpenLinkInNewWindow);
+            slOpenLinkInNewWindow.IsDynamic = false;
+            
             CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Decompiler), CmdIds.ViewGoToAddress);
             slViewGoToAddress.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewGoToAddress);
@@ -223,6 +244,9 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpMemoryControl.Add(0, slActionMarkType);
 			slGrpMemoryControl.Add(0, slViewFindPattern);
 			slGrpMemoryControl.Add(0, slViewFindWhatPointsHere);
+			slGrpDisassemblerNav.Add(0, slOpenLink);
+			slGrpDisassemblerNav.Add(0, slOpenLinkInNewWindow);
+			slGrpDisassemblerEdit.Add(0, slEditRename);
 			slGrpProcedure.Add(0, slActionEditSignature);
 			slGrpProcedure.Add(0, slViewGoToAddress);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
@@ -280,6 +304,11 @@ namespace Decompiler.Gui.Windows.Forms
   
         this.CtxMemoryControl.Popup += subMenu_Popup;
       
+			this.CtxDisassembler = new System.Windows.Forms.ContextMenu();
+			BuildMenu(slCtxDisassembler, CtxDisassembler.MenuItems);
+  
+        this.CtxDisassembler.Popup += subMenu_Popup;
+      
 			this.CtxBrowser = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxBrowser, CtxBrowser.MenuItems);
   
@@ -316,6 +345,7 @@ namespace Decompiler.Gui.Windows.Forms
 			switch (menuId)
 			{
 				case MenuIds.CtxMemoryControl: return this.CtxMemoryControl;
+				case MenuIds.CtxDisassembler: return this.CtxDisassembler;
 				case MenuIds.CtxBrowser: return this.CtxBrowser;
 				case MenuIds.CtxProcedure: return this.CtxProcedure;
 				case MenuIds.CtxAddressSearch: return this.CtxAddressSearch;

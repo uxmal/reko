@@ -102,7 +102,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void Cvp_Create()
         {
-
             using (Form f = new Form())
             {
                 f.Controls.Add(codeViewer.CreateControl());

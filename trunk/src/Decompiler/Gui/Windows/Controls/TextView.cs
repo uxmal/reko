@@ -53,6 +53,19 @@ namespace Decompiler.Gui.Windows.Controls
             this.vScroll.ValueChanged += vScroll_ValueChanged;
         }
 
+        public IServiceProvider Services { get; set; }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Shift|Keys.F10))
+            {
+                e.Handled = true;
+                ContextMenu.Show(this, new Point(0, 0));
+                return;
+            }
+            base.OnKeyDown(e);
+        }
+
         public new Size ClientSize
         {
             get
@@ -216,6 +229,7 @@ namespace Decompiler.Gui.Windows.Controls
             public string Text;
             public string Style;
             public object Tag;
+            public int ContextMenuID;
         }
 
         protected void ComputeLayout(Graphics g)
@@ -265,13 +279,13 @@ namespace Decompiler.Gui.Windows.Controls
                     Extent = rc,
                     Style = span.Style,
                     Text = text,
+                    ContextMenuID = span.ContextMenuID,
                     Tag = span.Tag,
                 });
                 pt.X = pt.X + szText.Width;
             }
             return spanLayouts.ToArray();
         }
-
 
         protected override void OnResize(EventArgs e)
         {
@@ -319,9 +333,12 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
+        /// <summary>
+        /// The Model provides text spans that the TextView uses to render itself.
+        /// </summary>
         public TextViewModel Model { get { return model; } set { this.model = value; vScroll.Value = 0; OnModelChanged(); ModelChanged.Fire(this); } }
         private TextViewModel model;
-        private void OnModelChanged()
+        protected virtual void OnModelChanged()
         {
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
@@ -334,6 +351,7 @@ namespace Decompiler.Gui.Windows.Controls
             g.Dispose();
 
             Invalidate();
+           
         }
 
         /// <summary>
@@ -375,7 +393,7 @@ namespace Decompiler.Gui.Windows.Controls
         }
 
         /// <summary>
-        /// Called when the view is scrolled
+        /// Called when the view is scrolled. 
         /// </summary>
         protected virtual void OnScroll()
         {
