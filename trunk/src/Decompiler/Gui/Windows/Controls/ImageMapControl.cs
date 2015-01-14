@@ -74,7 +74,6 @@ namespace Decompiler.Gui.Windows.Controls
 
 				PaintSegment(seg, pea.Graphics, rc);
 			}
-
 		}
 
 		private void PaintSegment(ImageMapSegment seg, Graphics g, Rectangle rc)

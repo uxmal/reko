@@ -163,6 +163,9 @@
     <Compile Include="Configuration\OperatingEnvironmentElement.cs" />
     <Compile Include="Configuration\OperatingEnvironmentElementCollection.cs" />
     <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
+    <Compile Include="Configuration\SignatureFileElement.cs" />
+    <Compile Include="Configuration\SignatureFileElementCollection.cs" />
+    <Compile Include="Configuration\SignatureFileSectionHandler.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\TypeLibraryElementCollection.cs" />
     <Compile Include="Configuration\UiPreferencesSectionHandler.cs" />
@@ -199,6 +202,7 @@
     <Compile Include="GlobalDataItem_v2.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="ILoader.cs" />
+    <Compile Include="ImageUnpacker.cs" />
     <Compile Include="ImportReference.cs" />
     <Compile Include="ImportResolver.cs" />
     <Compile Include="AddressContext.cs" />
@@ -250,6 +254,7 @@
     <Compile Include="Serialization\SerializedTypeReference.cs" />
     <Compile Include="Serialization\StringType_v2.cs" />
     <Compile Include="Serialization\UnionType_v1.cs" />
+    <Compile Include="Serialization\UnpackerSignatureFile_v1.cs" />
     <Compile Include="Serialization\VoidType_v1.cs" />
     <Compile Include="Services\DecompilerEventListener.cs" />
     <Compile Include="Lib\BlockDominatorGraph.cs" />
@@ -531,6 +536,7 @@
     <Compile Include="Services\IDiagnosticsService.cs" />
     <Compile Include="Services\IFileSystemService.cs" />
     <Compile Include="Services\ITypeLibraryLoaderService.cs" />
+    <Compile Include="Services\IUnpackerService.cs" />
     <Compile Include="SignatureBuilder.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypeLibrary.cs">

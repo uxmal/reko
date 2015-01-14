@@ -126,7 +126,7 @@ namespace Decompiler.Typing
 
         public DataType VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            return typeref;
         }
 
         public DataType VisitTypeVariable(TypeVariable tv)

@@ -66,7 +66,7 @@ namespace Decompiler.Gui.Forms
         {
             var noneOption = new ListOption
             {
-                Text = "- None -",
+                Text = "(None)",
                 Value = typeof(DefaultPlatform).AssemblyQualifiedName
             };
             var platforms = new ListOption[] { noneOption }

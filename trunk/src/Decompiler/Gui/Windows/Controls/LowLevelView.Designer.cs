@@ -30,33 +30,32 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LowLevelView));
+            Decompiler.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Decompiler.Gui.Windows.Controls.EmptyEditorModel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.memCtrl = new Decompiler.Gui.Windows.Controls.MemoryControl();
             this.lblMemoryView = new System.Windows.Forms.Label();
-            this.dasmCtrl = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
             this.lblDisassembly = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblSegmentCaption = new System.Windows.Forms.Label();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnBack = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.txtAddress = new System.Windows.Forms.ToolStripTextBox();
-            this.lowLeveImages = new System.Windows.Forms.ImageList(this.components);
             this.btnGo = new System.Windows.Forms.ToolStripButton();
+            this.lowLeveImages = new System.Windows.Forms.ImageList(this.components);
+            this.memCtrl = new Decompiler.Gui.Windows.Controls.MemoryControl();
+            this.dasmCtrl = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
+            this.imageMapControl1 = new Decompiler.Gui.Windows.Controls.ImageMapControl();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 86);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 48);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -69,24 +68,9 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dasmCtrl);
             this.splitContainer1.Panel2.Controls.Add(this.lblDisassembly);
-            this.splitContainer1.Size = new System.Drawing.Size(858, 395);
-            this.splitContainer1.SplitterDistance = 234;
+            this.splitContainer1.Size = new System.Drawing.Size(858, 433);
+            this.splitContainer1.SplitterDistance = 256;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // memCtrl
-            // 
-            this.memCtrl.BytesPerRow = ((uint)(16u));
-            this.memCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.memCtrl.ImageMap = null;
-            this.memCtrl.Location = new System.Drawing.Point(0, 18);
-            this.memCtrl.Name = "memCtrl";
-            this.memCtrl.ProgramImage = null;
-            this.memCtrl.SelectedAddress = null;
-            this.memCtrl.Size = new System.Drawing.Size(858, 216);
-            this.memCtrl.TabIndex = 0;
-            this.memCtrl.Text = "memoryControl1";
-            this.memCtrl.TopAddress = null;
-            this.memCtrl.WordSize = ((uint)(1u));
             // 
             // lblMemoryView
             // 
@@ -100,15 +84,6 @@
             this.lblMemoryView.TabIndex = 1;
             this.lblMemoryView.Text = "Memory View";
             this.lblMemoryView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // disassemblyControl1
-            // 
-            this.dasmCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dasmCtrl.Location = new System.Drawing.Point(0, 18);
-            this.dasmCtrl.Name = "disassemblyControl1";
-            this.dasmCtrl.Size = new System.Drawing.Size(858, 139);
-            this.dasmCtrl.TabIndex = 0;
-            this.dasmCtrl.Text = "disassemblyControl1";
             // 
             // lblDisassembly
             // 
@@ -124,28 +99,6 @@
             this.lblDisassembly.Text = "Disassembly";
             this.lblDisassembly.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.lblSegmentCaption);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.panel1.Location = new System.Drawing.Point(0, 25);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(858, 61);
-            this.panel1.TabIndex = 1;
-            // 
-            // lblSegmentCaption
-            // 
-            this.lblSegmentCaption.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.lblSegmentCaption.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblSegmentCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSegmentCaption.Location = new System.Drawing.Point(0, 0);
-            this.lblSegmentCaption.Name = "lblSegmentCaption";
-            this.lblSegmentCaption.Size = new System.Drawing.Size(858, 23);
-            this.lblSegmentCaption.TabIndex = 2;
-            this.lblSegmentCaption.Text = "Memory View";
-            this.lblSegmentCaption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -155,7 +108,7 @@
             this.toolStripSeparator1,
             this.txtAddress,
             this.btnGo});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip.Location = new System.Drawing.Point(0, 23);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(858, 25);
             this.toolStrip.TabIndex = 3;
@@ -195,12 +148,6 @@
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(100, 25);
             // 
-            // lowLeveImages
-            // 
-            this.lowLeveImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.lowLeveImages.ImageSize = new System.Drawing.Size(16, 16);
-            this.lowLeveImages.TransparentColor = System.Drawing.Color.Transparent;
-            // 
             // btnGo
             // 
             this.btnGo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -210,20 +157,69 @@
             this.btnGo.Size = new System.Drawing.Size(26, 22);
             this.btnGo.Text = "Go";
             // 
+            // lowLeveImages
+            // 
+            this.lowLeveImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.lowLeveImages.ImageSize = new System.Drawing.Size(16, 16);
+            this.lowLeveImages.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // memCtrl
+            // 
+            this.memCtrl.Architecture = null;
+            this.memCtrl.BytesPerRow = ((uint)(16u));
+            this.memCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.memCtrl.ImageMap = null;
+            this.memCtrl.Location = new System.Drawing.Point(0, 18);
+            this.memCtrl.Name = "memCtrl";
+            this.memCtrl.ProgramImage = null;
+            this.memCtrl.SelectedAddress = null;
+            this.memCtrl.Services = null;
+            this.memCtrl.Size = new System.Drawing.Size(858, 238);
+            this.memCtrl.TabIndex = 0;
+            this.memCtrl.Text = "memoryControl1";
+            this.memCtrl.TopAddress = null;
+            this.memCtrl.WordSize = ((uint)(1u));
+            // 
+            // dasmCtrl
+            // 
+            this.dasmCtrl.BackColor = System.Drawing.SystemColors.Window;
+            this.dasmCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dasmCtrl.Location = new System.Drawing.Point(0, 18);
+            this.dasmCtrl.Model = emptyEditorModel1;
+            this.dasmCtrl.Name = "dasmCtrl";
+            this.dasmCtrl.SelectedObject = null;
+            this.dasmCtrl.Services = null;
+            this.dasmCtrl.Size = new System.Drawing.Size(858, 155);
+            this.dasmCtrl.StartAddress = null;
+            this.dasmCtrl.TabIndex = 0;
+            this.dasmCtrl.Text = "disassemblyControl1";
+            this.dasmCtrl.TopAddress = null;
+            // 
+            // imageMapControl1
+            // 
+            this.imageMapControl1.BackColor = System.Drawing.SystemColors.Control;
+            this.imageMapControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.imageMapControl1.ImageMap = null;
+            this.imageMapControl1.Location = new System.Drawing.Point(0, 0);
+            this.imageMapControl1.Name = "imageMapControl1";
+            this.imageMapControl1.SelectedSegment = null;
+            this.imageMapControl1.Size = new System.Drawing.Size(858, 23);
+            this.imageMapControl1.TabIndex = 4;
+            this.imageMapControl1.Text = "imageMapControl1";
+            // 
             // LowLevelView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.imageMapControl1);
             this.Name = "LowLevelView";
             this.Size = new System.Drawing.Size(858, 481);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -237,9 +233,7 @@
         private MemoryControl memCtrl;
         private DisassemblyControl dasmCtrl;
         private System.Windows.Forms.Label lblDisassembly;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblMemoryView;
-        private System.Windows.Forms.Label lblSegmentCaption;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripButton btnBack;
         private System.Windows.Forms.ToolStripButton btnForward;
@@ -248,5 +242,6 @@
         private System.Windows.Forms.ToolStripTextBox txtAddress;
         private System.Windows.Forms.ImageList lowLeveImages;
         private System.Windows.Forms.ToolStripButton btnGo;
+        private ImageMapControl imageMapControl1;
     }
 }

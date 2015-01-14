@@ -148,6 +148,7 @@
     <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Core\Serialization\DataTypeSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProjectSerializerTests.cs" />
+    <Compile Include="Core\Serialization\UnpackerSignatureFileTests.cs" />
     <Compile Include="Core\StructureReaderTests.cs" />
     <Compile Include="Core\TestConditionTests.cs" />
     <Compile Include="Core\TypeLibraryLoaderTests.cs" />

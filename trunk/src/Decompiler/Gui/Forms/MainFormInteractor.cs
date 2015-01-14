@@ -284,7 +284,7 @@ namespace Decompiler.Gui.Forms
                     })
                     .Invoke(new object[] { sc, arch });
 
-                var addrBase = new Address(arch.PointerType, Convert.ToUInt32(dlg.AddressTextBox.Text, 16));
+                var addrBase = Address.Parse(dlg.AddressTextBox.Text, 16);
                 OpenBinary(dlg.FileName.Text, (f) =>
                     pageInitial.OpenBinaryAs(
                         f,
@@ -304,8 +304,15 @@ namespace Decompiler.Gui.Forms
 
         public void CloseProject()
         {
-            if (decompilerSvc.Decompiler != null && !Save())
-                return;
+            if (decompilerSvc.Decompiler != null && decompilerSvc.Decompiler.Project != null)
+            {
+                //$TODO: should prompt "Save changes to project?");
+                if (uiSvc.Prompt("Do you want to save any changes made to the decompiler project?"))
+                {
+                    if (!Save())
+                        return;
+                }
+            }
             form.CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
@@ -657,7 +664,7 @@ namespace Decompiler.Gui.Forms
             int iMru = cmdId - CmdIds.FileMru;
             if (0 <= iMru && iMru < mru.Items.Count)
             {
-                string file = (string)mru.Items[iMru];
+                string file = mru.Items[iMru];
                 OpenBinary(file, (f) => pageInitial.OpenBinary(file, this));
                 mru.Use(file);
                 return true;

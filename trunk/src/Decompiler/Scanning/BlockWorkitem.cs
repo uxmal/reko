@@ -512,6 +512,8 @@ namespace Decompiler.Scanning
 
         private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
+            if (addrSwitch.Linear == 0x004521c5)        //$DEBUG
+                addrStart.ToString();
             var bw = new Backwalker(new BackwalkerHost(scanner), xfer, eval);
             if (!bw.CanBackwalk())
             {
@@ -626,10 +628,10 @@ namespace Decompiler.Scanning
                 visited.Add(block);
                 for (int i = block.Statements.Count - 1; i >= 0; --i)
                 {
-                    Assignment ass = block.Statements[i].Instruction as Assignment;
+                    var ass = block.Statements[i].Instruction as Assignment;
                     if (ass == null)
                         continue;
-                    Identifier idAss = ass.Dst as Identifier;
+                    var idAss = ass.Dst ;
                     if (idAss != null && idAss == id)
                     {
                         ProcedureConstant pc = ass.Src as ProcedureConstant;

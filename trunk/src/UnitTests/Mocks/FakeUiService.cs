@@ -41,6 +41,11 @@ namespace Decompiler.UnitTests.Mocks
             throw new ApplicationException(string.Format(format, args), ex);
         }
 
+        public bool Prompt(string s)
+        {
+            throw new NotImplementedException();
+        }
+
         public DialogResult ShowModalDialog(Form dlg)
         {
             lastDialogShown = dlg;

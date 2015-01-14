@@ -33,6 +33,9 @@ namespace Decompiler.Core.Configuration
         string TypeName { get; }
         string Offset { get; }
         string Extension { get; }
+
+        string Label { get; set; }
+        string CmdLine { get; set; }
     }
 
     public class LoaderElementImpl : ConfigurationElement, LoaderElement
@@ -42,7 +45,8 @@ namespace Decompiler.Core.Configuration
         /// sequence of bytes selects this loader
         /// </summary>
         /// <remarks>
-        /// For instance, the 'MZ' signature of MS-DOS executables is expressed as the hexadecimal string 4D5A.</remarks>
+        /// For instance, the 'MZ' signature of MS-DOS executables is expressed as the hexadecimal string 4D5A.
+        /// </remarks>
         [ConfigurationProperty("MagicNumber", IsRequired = false)]
         public string MagicNumber
         {
@@ -50,6 +54,10 @@ namespace Decompiler.Core.Configuration
             set { this["MagicNumber"] = value; }
         }
 
+        /// <summary>
+        /// The offset at which to look for the magic number. By default, a missing value means
+        /// offset 0.
+        /// </summary>
         [ConfigurationProperty("Offset", IsRequired = false)]
         public string Offset
         {
@@ -57,18 +65,45 @@ namespace Decompiler.Core.Configuration
             set { this["Offset"] = value; }
         }
 
-        [ConfigurationProperty("Type", IsRequired = true)]
+        /// <summary>
+        /// The assembly-qualified name for the .NET type that is responsible for handling this
+        /// format.
+        /// </summary>
+        [ConfigurationProperty("Type", IsRequired = false)]
         public string TypeName
         {
             get { return (string)this["Type"]; }
             set { this["Type"] = value; }
         }
 
+        /// <summary>
+        /// If the file being opened has this file extension, this loader will be used.
+        /// </summary>
         [ConfigurationProperty("Extension", IsRequired = false)]
         public string Extension
         {
             get { return (string) this["Extension"]; }
             set { this["Extension"] = value; }
+        }
+
+        /// <summary>
+        /// A string label used to refer to specific loaders.
+        /// </summary>
+        [ConfigurationProperty("Label", IsRequired = false)]
+        public string Label
+        {
+            get { return (string) this["Label"]; }
+            set { this["Label"] = value; }
+        }
+
+        /// <summary>
+        /// A format string that can be used to pass parameters to a loader implemented as an executable.
+        /// </summary>
+        [ConfigurationProperty("CmdLine", IsRequired = false)]
+        public string CmdLine
+        {
+            get { return (string) this["CmdLine"]; }
+            set { this["CmdLine"] = value; }
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
-            Assert.AreEqual("- None -", platformNames[0].Text);
+            Assert.AreEqual("(None)", platformNames[0].Text);
             Assert.AreEqual("0", dlg.AddressTextBox.Text);
             mr.VerifyAll();
         }
@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
             Assert.AreEqual(2, archNames.Count());
             Assert.AreEqual(2, platformNames.Length);
-            Assert.AreEqual("- None -", platformNames[0].Text);
+            Assert.AreEqual("(None)", platformNames[0].Text);
         }
 
         private void When_Dialog_Loaded()

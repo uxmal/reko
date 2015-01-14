@@ -85,6 +85,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.CloseAllDocumentWindows());
             Given_DecompilerInstance();
             dcSvc.Stub(d => d.Decompiler = null);
+            Given_SavePrompt(true);
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -105,6 +106,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
             Given_DecompilerInstance();
+            Given_SavePrompt(true);
             dcSvc.Expect(d => d.Decompiler = null);
             mr.ReplayAll();
 
@@ -128,6 +130,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             brSvc.Expect(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
+            Given_SavePrompt(true);
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             mr.ReplayAll();
 
@@ -161,6 +164,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             brSvc.Stub(b => b.Clear());
             Given_LoadPreferences();
             Given_DecompilerInstance();
+            Given_SavePrompt(true);
             dcSvc.Stub(d => d.Decompiler = null);
             mr.ReplayAll();
 
@@ -428,6 +432,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.WindowState = FormWindowState.Normal);
         }
 
+        private void Given_SavePrompt(bool answer)
+        {
+            uiSvc.Stub(u => u.Prompt(Arg<string>.Is.NotNull)).Return(answer);
+        }
+
         private void Given_CommandNotHandledBySubwindow()
         {
             uiSvc.Stub(u => u.Execute(null))
@@ -465,6 +474,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             brSvc.Expect(b => b.Clear());
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             Given_DecompilerInstance();
+            Given_SavePrompt(true);
             dcSvc.Expect(d => d.Decompiler = Arg<IDecompiler>.Is.Anything);
             mr.ReplayAll();
 

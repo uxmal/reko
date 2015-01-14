@@ -49,7 +49,7 @@ namespace Decompiler.Gui.Windows
 
             this.codeView = new CodeView();
             this.codeView.Dock = DockStyle.Fill;
-            this.TextView.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
+            this.TextView.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
 
             this.TextView.Styles.Add("kw", new EditorStyle

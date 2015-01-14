@@ -144,14 +144,26 @@ namespace Decompiler.Scanning.Dfa
                 return ParseCharClass();
             }
             int d = MaybeHexByte();
-            if (d < 0)
-                return null;
-            return new TreeNode
+            if (d >= 0)
             {
-                Type = NodeType.Char,
-                Value = (byte) d,
-                Number = ++significantNodes,
-            };
+                return new TreeNode
+                {
+                    Type = NodeType.Char,
+                    Value = (byte)d,
+                    Number = ++significantNodes,
+                };
+            }
+            if (Peek('?'))
+            {
+                Expect('?');
+                Expect('?');
+                return new TreeNode
+                {
+                    Type = NodeType.Any,
+                    Number = ++significantNodes
+                };
+            }
+            return null;
         }
 
         private bool EatSpaces()

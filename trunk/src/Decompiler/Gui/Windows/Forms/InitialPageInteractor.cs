@@ -97,6 +97,8 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 isOldProject = Decompiler.Load(file);
             });
+            if (Decompiler.Project == null)
+                return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
             if (Decompiler.Project.Programs.Count > 0)

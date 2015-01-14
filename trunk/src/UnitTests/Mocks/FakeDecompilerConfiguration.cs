@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Configuration;
 using System;
 using System.Collections;
@@ -35,6 +36,11 @@ namespace Decompiler.UnitTests.Mocks
         }
 
         public System.Collections.ICollection GetArchitectures()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProcessorArchitecture GetArchitecture(string sArch)
         {
             throw new NotImplementedException();
         }

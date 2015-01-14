@@ -508,8 +508,9 @@ namespace Decompiler.Scanning
             else
                 return null;
         }
+
         /// <summary>
-        /// Tries to determin if the instruction at <paramref name="addr"/> is a trampoline
+        /// Tries to determine if the instruction at <paramref name="addr"/> is a trampoline
         /// instruction. If so, we return a call to the imported function directly.
         /// procedure.
         /// </summary>

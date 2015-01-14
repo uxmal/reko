@@ -79,6 +79,7 @@ namespace Decompiler.Scanning
             }
         }
 
+        [Conditional("DEBUG")]
         private void DumpBlocks(Procedure procedure)
         {
             Debug.Print("{0}", procedure.Name);
