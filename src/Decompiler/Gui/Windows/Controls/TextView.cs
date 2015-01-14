@@ -241,7 +241,7 @@ namespace Decompiler.Gui.Windows.Controls
             
             // Get the lines.
             int cVisibleLines = (int) Math.Ceiling(szClient.Height / cyLine);
-            var lines = model.GetLineSpans(cVisibleLines);
+            var lines = model != null ? model.GetLineSpans(cVisibleLines) : new TextSpan[0][];
             int iLine = 0;
             while (rcLine.Top < szClient.Height && 
                    iLine < lines.Length)
@@ -342,10 +342,16 @@ namespace Decompiler.Gui.Windows.Controls
         {
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
+            if (model != null)
+            { 
             vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
             vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
             vScroll.Enabled = visibleLines < model.LineCount;
-
+            }
+            else 
+            {
+                vScroll.Enabled = false;
+            }
             var g = CreateGraphics();
             ComputeLayout(g);
             g.Dispose();

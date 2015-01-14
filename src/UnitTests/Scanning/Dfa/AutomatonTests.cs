@@ -119,6 +119,24 @@ namespace Decompiler.UnitTests.Scanning.Dfa
                 automaton.GetMatches(new byte[] { 0x00, 0x00, 0x55, 0x55, 0x00, 0x00, 0x00, 0x55, 0x55, 0x8B }, 0).ToArray());
         }
 
+        [Test]
+        public void Dfa_MatchAny()
+        {
+            Given_TextAutomaton("??");
+            Assert.AreEqual(
+                new int[] { 0 },
+                automaton.GetMatches(new byte[] { 0x1 }, 0).ToArray());
+        }
+
+        [Test]
+        public void Dfa_MatchAny2()
+        {
+            Given_TextAutomaton("55 ??");
+            Assert.AreEqual(
+                new int[] { 2 },
+                automaton.GetMatches(new byte[] { 0x11, 0x22, 0x55, 0x41 }, 0).ToArray());
+        }
+
         private void Given_TextAutomaton(string pattern)
         {
             this.automaton = Automaton.CreateFromPattern(pattern);

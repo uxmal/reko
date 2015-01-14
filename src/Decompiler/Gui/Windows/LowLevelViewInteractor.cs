@@ -80,7 +80,7 @@ namespace Decompiler.Gui.Windows
             var uiService = services.RequireService<IDecompilerShellUiService>();
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
-            this.Control.Font = uiPrefsSvc.DisassemblyFont ?? new Font("Lucida Console", 10F);
+            this.Control.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F);
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
 
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;

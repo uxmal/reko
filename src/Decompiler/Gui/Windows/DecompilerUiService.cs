@@ -45,6 +45,14 @@ namespace Decompiler.Gui.Windows
 
         #region IDecompilerUIService Members
 
+        public bool Prompt(string prompt)
+        {
+            DialogResult dlgr = DialogResult.No;
+            form.Invoke(new Action(
+                () => { dlgr = MessageBox.Show(prompt, "Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
+            return dlgr == DialogResult.Yes;
+        }
+
         private DialogResult ShowModalDialog(Form dlg)
         {
             return (DialogResult)

@@ -292,6 +292,13 @@
       <DependentUpon>LowLevelView.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\DisassemblyFormatter.cs" />
+    <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.Designer.cs">
+      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\UserPreferencesInteractor.cs" />
     <Compile Include="Gui\Windows\IRegistryService.cs" />
     <Compile Include="Gui\ISearchDialog.cs" />
     <Compile Include="Gui\ISearchResult.cs" />
@@ -416,6 +423,7 @@
     <Compile Include="Gui\Windows\WindowsFormsRegistryService.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsService.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
+    <Compile Include="Loading\UnpackingServiceImpl.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -656,6 +664,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\UserPreferencesDialog.resx">
+      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
       <DependentUpon>WorkerDialog.cs</DependentUpon>

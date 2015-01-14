@@ -39,7 +39,12 @@ namespace Decompiler.Core.Configuration
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((LoaderElement) element).MagicNumber; 
+            var magic = ((LoaderElement)element).MagicNumber;
+            var label = ((LoaderElement)element).Label;
+            if (string.IsNullOrEmpty(magic))
+                return label;
+            else
+                return magic;
         }
     }
 }

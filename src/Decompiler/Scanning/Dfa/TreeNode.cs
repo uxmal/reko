@@ -36,6 +36,13 @@ namespace Decompiler.Scanning.Dfa
                         yield return (byte) i;
                     ++i;
                 }
+            } 
+            else if (Type == NodeType.Any)
+            {
+                for (int i = 0; i < 0x100; ++i)
+                {
+                    yield return (byte) i;
+                }
             }
         }
 

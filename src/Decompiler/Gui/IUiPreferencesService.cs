@@ -30,10 +30,27 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui
 {
+    public class UiStyle
+    {
+        public string Font;
+        public string ForegroundColor;
+        public string BackgroundColor;
+        public string Cursor;
+    }
+
     public interface IUiPreferencesService
     {
-        Font DisassemblyFont { get; set; }
+        event EventHandler UiPreferencesChanged;
+
+        UiStyle MemoryWindowStyle { get; set; }
+        Font DisassemblerFont { get; set; }
+        UiStyle DisassemblerWindowStyle { get; set; }
+        UiStyle CodeWindowStyle { get; set; }
+
         Font SourceCodeFont { get; set; }
+        Color SourceCodeForegroundColor { get; set; }
+        Color SourceCodeBackgroundColor { get; set; }
+
         Size WindowSize { get; set; }
         FormWindowState WindowState { get; set; }
 
@@ -46,19 +63,27 @@ namespace Decompiler.Gui
         private IDecompilerConfigurationService configSvc;
         private ISettingsService settingsSvc;
 
+        public event EventHandler UiPreferencesChanged;
+
         public UiPreferencesService(IDecompilerConfigurationService configSvc, ISettingsService settingsSvc)
         {
             this.configSvc = configSvc;
             this.settingsSvc = settingsSvc;
         }
 
-        public Font DisassemblyFont { get { return dasmFont; } set { dasmFont = value; DisassemblyFontChanged.Fire(this); } }
+        public Font MemoryStyle { get; set; }
+
+        public Font DisassemblerFont { get { return dasmFont; } set { dasmFont = value; DisassemblyFontChanged.Fire(this); } }
         public event EventHandler DisassemblyFontChanged;
-        private Font dasmFont;
+        private Font dasmFont; 
+        public Color DisassemblerForegroundColor { get; set; }
+        public Color DisassemblerBackgroundColor { get; set; }
 
         public Font SourceCodeFont { get { return srcFont; } set { srcFont = value; SourceCodeFontChanged.Fire(this); } }
         public event EventHandler SourceCodeFontChanged;
-        private Font srcFont;
+        private Font srcFont; 
+        public Color SourceCodeForegroundColor { get; set; }
+        public Color SourceCodeBackgroundColor { get; set; }
 
         [Browsable(false)]
         public Size WindowSize { get; set; }
@@ -91,6 +116,7 @@ namespace Decompiler.Gui
             settingsSvc.Set("SourceCodeFont", fontCvt.ConvertToInvariantString(srcFont));
             settingsSvc.Set("WindowSize", sizeCvt.ConvertToInvariantString(WindowSize));
             settingsSvc.Set("WindowState", WindowState.ToString());
+            UiPreferencesChanged.Fire(this);
         }
 
         private T ConvertFrom<T>(TypeConverter conv, object value)
@@ -104,6 +130,43 @@ namespace Decompiler.Gui
             catch
             {
                 return default(T);
+            }
+        }
+
+
+        public UiStyle MemoryWindowStyle
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public UiStyle DisassemblerWindowStyle
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public UiStyle CodeWindowStyle
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
     }

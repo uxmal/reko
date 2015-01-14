@@ -198,7 +198,9 @@ namespace Decompiler.Core.Output
 
         public CodeFormatter VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            var fmt = codeFormatter.InnerFormatter;
+            fmt.WriteType(typeref.Name, typeref);
+            return codeFormatter;
         }
 
         public CodeFormatter VisitTypeVariable(TypeVariable tv)

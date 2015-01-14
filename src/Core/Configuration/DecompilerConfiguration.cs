@@ -37,8 +37,10 @@ namespace Decompiler.Core.Configuration
          ICollection GetEnvironments();
 
          OperatingEnvironment GetEnvironment(string envName);
+         IProcessorArchitecture GetArchitecture(string archLabel);
 
          DefaultPreferences GetDefaultPreferences ();
+
     }
 
     public class DecompilerConfiguration : IDecompilerConfigurationService
@@ -51,12 +53,31 @@ namespace Decompiler.Core.Configuration
             return handler.ImageLoaders;
         }
 
+        public virtual ICollection GetSignatureFiles()
+        {
+            var handler = (SignatureFileSectionHandler)ConfigurationManager.GetSection("Decompiler/Signatures");
+            if (handler == null)
+                return new SignatureFileElement[0];
+            return handler.SignatureFiles;
+        }
+
         public virtual ICollection GetArchitectures()
         {
             var handler = (ArchitectureSectionHandler) ConfigurationManager.GetSection("Decompiler/Architectures");
             if (handler == null)
                 return new ArchitectureElement[0];
             return handler.Architectures;
+        }
+
+        public IProcessorArchitecture GetArchitecture(string archLabel)
+        {
+            var elem = GetEnvironments().OfType<ArchitectureElement>()
+                .Where(e => e.Name == archLabel).SingleOrDefault();
+            if (elem == null)
+                return null;
+
+            Type t = Type.GetType(elem.TypeName, true);
+            return (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
 
         public virtual ICollection GetEnvironments()

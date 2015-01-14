@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
             uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
             uiSvc.Replay();
-            uiPrefsSvc.Stub(u => u.DisassemblyFont).Return(new System.Drawing.Font("Lucida Console", 10));
+            uiPrefsSvc.Stub(u => u.DisassemblerFont).Return(new System.Drawing.Font("Lucida Console", 10));
             uiPrefsSvc.Replay();
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);

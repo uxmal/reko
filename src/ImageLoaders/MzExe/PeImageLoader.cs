@@ -142,7 +142,9 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
 		{
-			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress, s.VirtualSize);
+			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress,
+                s.SizeRawData);
+            // s.VirtualSize);
 		}
 
 		/// <summary>

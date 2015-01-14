@@ -34,11 +34,12 @@
             this.rTFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disassemblyControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disassemblyControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,12 +94,20 @@
             this.treeViewToolStripMenuItem.Text = "&Tree View";
             this.treeViewToolStripMenuItem.Click += new System.EventHandler(this.treeViewToolStripMenuItem_Click);
             // 
+            // disassemblyControlToolStripMenuItem
+            // 
+            this.disassemblyControlToolStripMenuItem.Name = "disassemblyControlToolStripMenuItem";
+            this.disassemblyControlToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.disassemblyControlToolStripMenuItem.Text = "&Disassembly Control";
+            this.disassemblyControlToolStripMenuItem.Click += new System.EventHandler(this.disassemblyControlToolStripMenuItem_Click);
+            // 
             // dialogsToolStripMenuItem
             // 
             this.dialogsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.searchToolStripMenuItem,
             this.projectBrowserToolStripMenuItem,
-            this.activationToolStripMenuItem});
+            this.activationToolStripMenuItem,
+            this.preferencesToolStripMenuItem});
             this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
             this.dialogsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.dialogsToolStripMenuItem.Text = "&Dialogs";
@@ -124,12 +133,12 @@
             this.activationToolStripMenuItem.Text = "&Activation...";
             this.activationToolStripMenuItem.Click += new System.EventHandler(this.activationToolStripMenuItem_Click);
             // 
-            // disassemblyControlToolStripMenuItem
+            // preferencesToolStripMenuItem
             // 
-            this.disassemblyControlToolStripMenuItem.Name = "disassemblyControlToolStripMenuItem";
-            this.disassemblyControlToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.disassemblyControlToolStripMenuItem.Text = "&Disassembly Control";
-            this.disassemblyControlToolStripMenuItem.Click += new System.EventHandler(this.disassemblyControlToolStripMenuItem_Click);
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.preferencesToolStripMenuItem.Text = "&Preferences...";
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -160,6 +169,7 @@
         private System.Windows.Forms.ToolStripMenuItem projectBrowserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem activationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disassemblyControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
     }
 }
 

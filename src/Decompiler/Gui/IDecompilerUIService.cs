@@ -34,6 +34,7 @@ namespace Decompiler.Gui
         DialogResult ShowModalDialog(IDialog dlg);
         string ShowOpenFileDialog(string fileName);
         string ShowSaveFileDialog(string fileName);
+        bool Prompt(string prompt);
     }
 
     public interface IDecompilerShellUiService : IDecompilerUIService, ICommandTarget
@@ -46,6 +47,7 @@ namespace Decompiler.Gui
         IWindowFrame FindDocumentWindow(string documentType, object docItem);
         IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
         IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane);
+
 
     }
 }

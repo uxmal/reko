@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Environments.Msdos;
 using System;
 using System.Collections.Generic;
@@ -75,6 +76,10 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
             var platform = new MsdosPlatform(null, arch);
+          /*var unpackerSvc = services.RequireService<IUnpackerService>();
+            var unpacker = unpackerSvc.FindUnpackerBySignature(filename, image);
+            if (unpacker != null)
+                return unpacker.CreateImageLoader(services, filename, image);*/
 
             if (LzExeUnpacker.IsCorrectUnpacker(this, image))
             {

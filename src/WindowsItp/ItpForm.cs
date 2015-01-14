@@ -27,6 +27,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Decompiler.Gui.Windows.Forms;
+using System.ComponentModel.Design;
+using Decompiler.Core.Configuration;
+using Decompiler.Arch.X86;
 
 namespace Decompiler.WindowsItp
 {
@@ -136,5 +140,51 @@ namespace Decompiler.WindowsItp
                 dlg.ShowDialog(this);
             }
         }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new UserPreferencesDialog())
+            {
+                var sc = new ServiceContainer();
+                var cfgSvc = new FakeConfigurationService();
+                sc.AddService(typeof(IDecompilerConfigurationService), cfgSvc);
+                dlg.Services = sc;
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private class FakeConfigurationService : IDecompilerConfigurationService
+        {
+            public System.Collections.ICollection GetImageLoaders()
+            {
+                throw new NotImplementedException();
+            }
+
+            public System.Collections.ICollection GetArchitectures()
+            {
+                throw new NotImplementedException();
+            }
+
+            public System.Collections.ICollection GetEnvironments()
+            {
+                throw new NotImplementedException();
+            }
+
+            public OperatingEnvironment GetEnvironment(string envName)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Core.IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                return new X86ArchitectureFlat32();
+            }
+
+            public DefaultPreferences GetDefaultPreferences()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
     }
 }
