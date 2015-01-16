@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Decompiler.Loading
 {
@@ -37,14 +38,15 @@ namespace Decompiler.Loading
     public class Loader : ILoader
     {
         private IDecompilerConfigurationService cfgSvc;
-        private List<ImageSignature> signatures;
+        private UnpackingService unpackerSvc;
 
         public Loader(IServiceProvider services)
         {
             this.Services = services;
             this.cfgSvc = services.GetService<IDecompilerConfigurationService>();
-            this.signatures = new List<ImageSignature>();
-            LoadSignatureFiles();
+            this.unpackerSvc = new UnpackingService(services);
+            this.unpackerSvc.LoadSignatureFiles();
+            Services.RequireService<IServiceContainer>().AddService(typeof(IUnpackerService), unpackerSvc);
         }
 
         public IServiceProvider Services { get; private set; }
@@ -144,7 +146,7 @@ namespace Decompiler.Loading
                     (!string.IsNullOrEmpty(e.Extension) &&
                         filename.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return CreateImageLoader<T>(e.TypeName, filename, rawBytes);
+                    return CreateImageLoader<T>(Services, e.TypeName, filename, rawBytes);
                 }
             }
 
@@ -196,7 +198,7 @@ namespace Decompiler.Loading
             return bytes.ToArray();
         }
 
-        private uint HexDigit(char digit)
+        public static uint HexDigit(char digit)
         {
             switch (digit)
             {
@@ -212,12 +214,12 @@ namespace Decompiler.Loading
             }
         }
 
-        public T CreateImageLoader<T>(string typeName, string filename, byte[] bytes)
+        public static T CreateImageLoader<T>(IServiceProvider services, string typeName, string filename, byte[] bytes)
         {
             Type t = Type.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(t, this.Services, filename, bytes);
+            return (T) Activator.CreateInstance(t, services, filename, bytes);
         }
 
         protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program prog)
@@ -228,27 +230,6 @@ namespace Decompiler.Loading
             foreach (var item in importReference)
             {
                 prog.ImportReferences.Add(item.Key, item.Value);
-            }
-        }
-
-        public void LoadSignatureFiles()
-        {
-            foreach (SignatureFileElement sfe in cfgSvc.GetSignatureFiles())
-            {
-                try
-                {
-                    Type t = Type.GetType(sfe.Type, true);
-                    var ldr = (SignatureLoader)Activator.CreateInstance(t);
-                    signatures.AddRange(ldr.Load(sfe.Filename));
-                } 
-                catch (Exception ex)
-                {
-                    Services.RequireService<IDiagnosticsService>().AddDiagnostic(
-                        new NullCodeLocation(sfe.Filename),
-                        new ErrorDiagnostic(
-                            string.Format("Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type),
-                            ex));
-                }
             }
         }
     }

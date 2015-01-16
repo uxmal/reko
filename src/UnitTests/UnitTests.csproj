@@ -188,6 +188,7 @@
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
     <Compile Include="Environments\Win32\MsMangledNameParserTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
+    <Compile Include="Loading\UnpackingServiceTests.cs" />
     <Compile Include="Mocks\SegmentedPointerProc.cs" />
     <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />

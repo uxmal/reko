@@ -74,13 +74,20 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private ImageLoader CreateRealModeLoader(string filename, byte[] image)
         {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
-            var platform = new MsdosPlatform(null, arch);
-          /*var unpackerSvc = services.RequireService<IUnpackerService>();
-            var unpacker = unpackerSvc.FindUnpackerBySignature(filename, image);
+            // The image has been identified as a real-mode MS-DOS program.
+            // It may have been packed, however. We ask the unpacker service whether
+            // it can determine if the image is packed, and if so provide us with an
+            // image loader that knows how to do unpacking.
+            
+            var loaderSvc = services.RequireService<IUnpackerService>();
+            var entryPointOffset = ((e_cparHeader + e_cs) << 4) + e_ip;
+            var unpacker = loaderSvc.FindUnpackerBySignature(filename, image, entryPointOffset);
             if (unpacker != null)
-                return unpacker.CreateImageLoader(services, filename, image);*/
+                return unpacker;
 
+            // Image can't be determined to be packed, so use the default MS-DOS image loader.
+
+            //$TODO: verify that these can go away.
             if (LzExeUnpacker.IsCorrectUnpacker(this, image))
             {
                 return new LzExeUnpacker(services, this, filename, image);
@@ -93,10 +100,8 @@ namespace Decompiler.ImageLoaders.MzExe
             {
                 return new ExePackLoader(services, this, filename, image);
             }
-            else
-            {
-                return new MsdosImageLoader(services, filename, this);
-            }
+             
+            return new MsdosImageLoader(services, filename, this);
         }
 
         private ImageLoader GetDeferredLoader()

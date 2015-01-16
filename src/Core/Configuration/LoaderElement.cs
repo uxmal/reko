@@ -30,7 +30,7 @@ namespace Decompiler.Core.Configuration
     public interface LoaderElement
     {
         string MagicNumber { get; }
-        string TypeName { get; }
+        string TypeName { get; set; }
         string Offset { get; }
         string Extension { get; }
 
