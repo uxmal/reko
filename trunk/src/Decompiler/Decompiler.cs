@@ -69,6 +69,10 @@ namespace Decompiler
         {
             if (ldr == null)
                 throw new ArgumentNullException("ldr");
+            if (host == null)
+                throw new ArgumentNullException("host");
+            if (services == null)
+                throw new ArgumentNullException("services");
             this.loader = ldr;
             this.host = host;
             this.services = services;

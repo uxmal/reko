@@ -37,11 +37,14 @@ namespace Decompiler.Loading
     public class Loader : ILoader
     {
         private IDecompilerConfigurationService cfgSvc;
+        private List<ImageSignature> signatures;
 
         public Loader(IServiceProvider services)
         {
             this.Services = services;
             this.cfgSvc = services.GetService<IDecompilerConfigurationService>();
+            this.signatures = new List<ImageSignature>();
+            LoadSignatureFiles();
         }
 
         public IServiceProvider Services { get; private set; }
@@ -225,6 +228,27 @@ namespace Decompiler.Loading
             foreach (var item in importReference)
             {
                 prog.ImportReferences.Add(item.Key, item.Value);
+            }
+        }
+
+        public void LoadSignatureFiles()
+        {
+            foreach (SignatureFileElement sfe in cfgSvc.GetSignatureFiles())
+            {
+                try
+                {
+                    Type t = Type.GetType(sfe.Type, true);
+                    var ldr = (SignatureLoader)Activator.CreateInstance(t);
+                    signatures.AddRange(ldr.Load(sfe.Filename));
+                } 
+                catch (Exception ex)
+                {
+                    Services.RequireService<IDiagnosticsService>().AddDiagnostic(
+                        new NullCodeLocation(sfe.Filename),
+                        new ErrorDiagnostic(
+                            string.Format("Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type),
+                            ex));
+                }
             }
         }
     }

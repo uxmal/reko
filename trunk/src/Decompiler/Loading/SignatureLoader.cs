@@ -20,36 +20,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Core.Configuration
+namespace Decompiler.Loading
 {
-    public class SignatureFileSectionHandler : ConfigurationSection
+    public abstract class SignatureLoader
     {
-        [ConfigurationProperty("", IsDefaultCollection = true, IsRequired = false)]
-        public SignatureFileElementCollection SignatureFiles
-        {
-            get { return (SignatureFileElementCollection)this[""]; }
-        }
-    }
-
-    public class SignatureFileElementCollection : ConfigurationElementCollection
-    {
-        public SignatureFileElementCollection()
-        {
-            AddElementName = "SignatureFile";
-        }
-
-        protected override ConfigurationElement CreateNewElement()
-        {
-            return new SignatureFileElement();
-        }
-
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            return ((SignatureFile)element).Filename;
-        }
+        public abstract IEnumerable<ImageSignature> Load(string filename);
     }
 }

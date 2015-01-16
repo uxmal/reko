@@ -35,12 +35,12 @@ namespace Decompiler.Core.Configuration
          ICollection GetImageLoaders();
          ICollection GetArchitectures();
          ICollection GetEnvironments();
+         ICollection GetSignatureFiles();
 
          OperatingEnvironment GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
 
          DefaultPreferences GetDefaultPreferences ();
-
     }
 
     public class DecompilerConfiguration : IDecompilerConfigurationService
@@ -55,7 +55,7 @@ namespace Decompiler.Core.Configuration
 
         public virtual ICollection GetSignatureFiles()
         {
-            var handler = (SignatureFileSectionHandler)ConfigurationManager.GetSection("Decompiler/Signatures");
+            var handler = (SignatureFileSectionHandler)ConfigurationManager.GetSection("Decompiler/SignatureFiles");
             if (handler == null)
                 return new SignatureFileElement[0];
             return handler.SignatureFiles;
@@ -100,5 +100,7 @@ namespace Decompiler.Core.Configuration
                 handler = new UiPreferencesSectionHandler();
             return handler.GetPreferences();
         }
+
+
     }
 }

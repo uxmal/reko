@@ -422,7 +422,10 @@
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Gui\Windows\WindowsFormsRegistryService.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsService.cs" />
+    <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
+    <Compile Include="Loading\SignatureLoader.cs" />
+    <Compile Include="Loading\UnpackerSignatureLoader.cs" />
     <Compile Include="Loading\UnpackingServiceImpl.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

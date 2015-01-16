@@ -32,6 +32,7 @@ namespace Decompiler.Gui.Windows.Forms
     public class DiagnosticsInteractor : IDiagnosticsService
     {
         private ListView listView;
+        private List<KeyValuePair<ICodeLocation, Diagnostic>> pending;
 
         public void Attach(ListView listView)
         {
@@ -39,12 +40,30 @@ namespace Decompiler.Gui.Windows.Forms
                 throw new ArgumentNullException("listView");
             this.listView = listView;
             listView.DoubleClick += listView_DoubleClick;
+            listView.HandleCreated += listView_HandleCreated;
+        }
+
+        void listView_HandleCreated(object sender, EventArgs e)
+        {
+            if (pending != null)
+            {
+                foreach (var d in pending)
+                    AddDiagnostic(d.Key, d.Value);
+            }
         }
 
         #region IDiagnosticsService Members
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
+            if (!listView.IsHandleCreated)
+            {
+                if (pending == null)
+                    pending = new List<KeyValuePair<ICodeLocation, Diagnostic>>();
+                pending.Add(new KeyValuePair<ICodeLocation, Diagnostic>(location, d));
+                return;
+            }
+
             // This may be called from a worker thread, so we have to be careful to 
             // call the listView on the UI thread.
             listView.Invoke(new Action(() =>
