@@ -6,6 +6,7 @@
 // Preserved: esp esi edi
 // Stack args: Stack +0004(32)
 // fn10000000
+// Return size: 0
 word32 fn10000000(word32 dwArg04)
 fn10000000_entry:
 	// succ:  l10000000

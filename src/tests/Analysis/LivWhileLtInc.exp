@@ -1,4 +1,5 @@
 // WhileLtIncMock
+// Return size: 0
 void WhileLtIncMock()
 WhileLtIncMock_entry:
 	def a

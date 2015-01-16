@@ -10,6 +10,7 @@ ax:ax
 ax_4: orig: ax
     def:  ax_4 = wArg04
 // SsaStackReference
+// Return size: 0
 void SsaStackReference()
 SsaStackReference_entry:
 	def Mem0

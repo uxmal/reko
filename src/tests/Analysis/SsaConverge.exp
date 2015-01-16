@@ -78,6 +78,7 @@ SCZO_26: orig: SCZO
     def:  SCZO_26 = C_25 (alias)
     uses: SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	def Mem0

@@ -1,5 +1,6 @@
 // Before ///////
 // IntelIndexedAddressingMode
+// Return size: 0
 void IntelIndexedAddressingMode()
 IntelIndexedAddressingMode_entry:
 	// succ:  l1
@@ -15,6 +16,7 @@ IntelIndexedAddressingMode_exit:
 
 // After ///////
 // IntelIndexedAddressingMode
+// Return size: 0
 void IntelIndexedAddressingMode()
 IntelIndexedAddressingMode_entry:
 	// succ:  l1

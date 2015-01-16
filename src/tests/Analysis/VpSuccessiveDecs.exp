@@ -21,6 +21,7 @@ ax_6: orig: ax
 Mem7: orig: Mem0
     def:  Mem7[ds:0x0302:word16] = ax_6
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -59,6 +60,7 @@ ax_6: orig: ax
 Mem7: orig: Mem0
     def:  Mem7[ds:0x0302:word16] = ax_6
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -166,6 +168,7 @@ C_27: orig: C
     def:  C_27 = false
     uses: C_12 = PHI(C_10, C_10, C_10, C_27)
 // fn0C00_000C
+// Return size: 0
 word16 fn0C00_000C(word16 ax)
 fn0C00_000C_entry:
 	def Mem0
@@ -307,6 +310,7 @@ C_27: orig: C
     def:  C_27 = false
     uses: C_12 = PHI(C_10, C_10, C_10, C_27)
 // fn0C00_000C
+// Return size: 0
 word16 fn0C00_000C(word16 ax)
 fn0C00_000C_entry:
 	def Mem0

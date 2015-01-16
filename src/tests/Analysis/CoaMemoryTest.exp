@@ -26,7 +26,6 @@ ax_10: orig: ax
     uses: Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
           Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
 ax_11: orig: ax
-    uses: Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
 Mem12: orig: Mem0
     def:  Mem12[ds:bx + 0x0006:word16] = ax_10 *s ax_10
 bx_13: orig: bx
@@ -37,6 +36,7 @@ SZO_16: orig: SZO
 C_17: orig: C
 SCZO_18: orig: SCZO
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
 	def Mem0

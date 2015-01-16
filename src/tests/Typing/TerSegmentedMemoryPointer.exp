@@ -1,5 +1,6 @@
 // Before ///////
 // SegmentedMemoryPointerMock
+// Return size: 0
 void SegmentedMemoryPointerMock()
 SegmentedMemoryPointerMock_entry:
 	// succ:  l1
@@ -14,6 +15,7 @@ SegmentedMemoryPointerMock_exit:
 
 // After ///////
 // SegmentedMemoryPointerMock
+// Return size: 0
 void SegmentedMemoryPointerMock()
 SegmentedMemoryPointerMock_entry:
 	// succ:  l1

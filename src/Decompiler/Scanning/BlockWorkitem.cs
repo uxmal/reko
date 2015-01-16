@@ -123,6 +123,12 @@ namespace Decompiler.Scanning
             }
         }
 
+        /// <summary>
+        /// Checks to see if the scanning process has wandered off
+        /// into another, previously existing basic block.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>The block we fell into or null if we remained in the same block.</returns>
         private Block FallenThroughNextBlock(Address addr)
         {
             var cont = scanner.FindContainingBlock(addr);
@@ -182,6 +188,11 @@ namespace Decompiler.Scanning
 
         #region RtlInstructionVisitor Members
 
+        /// <summary>
+        /// Assignments are simulated on the processor state.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public bool VisitAssignment(RtlAssignment a)
         {
             SetValue(a.Dst, GetValue(a.Src));
@@ -193,6 +204,12 @@ namespace Decompiler.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Branches need to terminate the current basic block and make links
+        /// to the 'true' and 'false' destinations.
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public bool VisitBranch(RtlBranch b)
         {
             // We don't know the 'then' block yet, as the following statements may chop up the block
@@ -217,6 +234,11 @@ namespace Decompiler.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Conditional instructions basic blocks to host them.
+        /// </summary>
+        /// <param name="rtlIf"></param>
+        /// <returns></returns>
         public bool VisitIf(RtlIf rtlIf)
         {
             var branch = new Branch(rtlIf.Condition.Invert(), null);
@@ -268,6 +290,7 @@ namespace Decompiler.Scanning
             {
                 if (mem.EffectiveAddress is Constant)
                 {
+                    // jmp [address]
                     var site = state.OnBeforeCall(this.stackReg, 4);            //$BUGBUG: hard coded.
                     Emit(new CallInstruction(g.Target, site));
                     Emit(new ReturnInstruction());
@@ -512,8 +535,6 @@ namespace Decompiler.Scanning
 
         private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
-            if (addrSwitch.Linear == 0x004521c5)        //$DEBUG
-                addrStart.ToString();
             var bw = new Backwalker(new BackwalkerHost(scanner), xfer, eval);
             if (!bw.CanBackwalk())
             {

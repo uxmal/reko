@@ -20,6 +20,7 @@ SCZO_12: orig: SCZO
 Mem13: orig: Mem0
     def:  Mem13[0x10003428:word16] = ax_10
 // fn10000000
+// Return size: 0
 void fn10000000()
 fn10000000_entry:
 	def Mem0
@@ -127,6 +128,7 @@ wLoc08_65: orig: wLoc08
     def:  wLoc08_65 = cx_63
     uses: wLoc08_44 = PHI(wLoc08_23, wLoc08_65)
 // fn10000017
+// Return size: 0
 word16 fn10000017(word32 dwArg04)
 fn10000017_entry:
 	def Mem0

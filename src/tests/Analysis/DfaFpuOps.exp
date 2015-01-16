@@ -5,6 +5,7 @@
 // Trashed: SCZO bx bl bh
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -23,6 +24,7 @@ fn0C00_0000_exit:
 // Preserved: sp bp
 // Stack args: Stack +0002(16) Stack +0004(16)
 // fn0C00_0010
+// Return size: 0
 void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
 fn0C00_0010_entry:
 	// succ:  l0C00_0010
@@ -43,6 +45,7 @@ fn0C00_0010_exit:
 // Trashed:
 // Preserved: sp
 // fn0C00_0037
+// Return size: 0
 void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037

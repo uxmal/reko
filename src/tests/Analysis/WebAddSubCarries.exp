@@ -3,14 +3,16 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 cx_19 = Mem0[ds:0x0204:word16]
-	ui32 dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
-	Mem26[ds:0x0208:word16] = (word16) dx_ax_22
-	Mem27[ds:0x020A:word16] = SLICE(dx_ax_22, word16, 16)
-	ui32 dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], selector, 16), cx_19)
-	Mem34[ds:0x0218:word16] = (word16) dx_ax_35
-	Mem37[ds:0x021A:word16] = SLICE(dx_ax_35, word16, 16)
-	Mem56[ds:0x0222:word16] = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
+	word16 ax_18 = Mem0[ds:0x0200:word16] + Mem0[ds:0x0204:word16]
+	word16 dx_21 = Mem0[ds:0x0202:word16] + Mem0[ds:0x0206:word16] + (ax_18 <u 0x0000)
+	Mem22[ds:0x0208:word16] = ax_18
+	Mem23[ds:0x020A:word16] = dx_21
+	ptr32 es_cx_26 = Mem23[ds:0x0214:segptr32]
+	word16 dx_25 = Mem23[ds:0x0212:word16]
+	word16 ax_30 = Mem23[ds:0x0210:word16] - (word16) es_cx_26
+	Mem33[ds:0x0218:word16] = ax_30
+	Mem35[ds:0x021A:word16] = dx_25 - SLICE(es_cx_26, selector, 16) - (ax_30 <u 0x0000)
+	Mem51[ds:0x0222:word16] = (Mem35[ds:0x0220:byte] <u 0x30) * 0x0002 + (Mem35[ds:0x0221:byte] >=u 0x3A)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

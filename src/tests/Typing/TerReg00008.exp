@@ -1,5 +1,6 @@
 // Before ///////
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -22,6 +23,7 @@ fn0C00_0000_exit:
 
 // After ///////
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(Eq_3 * ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000

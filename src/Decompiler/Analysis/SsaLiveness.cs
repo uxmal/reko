@@ -365,5 +365,6 @@ namespace Decompiler.Analysis
 			}
 			return null;
 		}
+
 	}
 }

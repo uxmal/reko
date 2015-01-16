@@ -443,7 +443,7 @@
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
-    <Compile Include="Scanning\UserProcedureWorkItem.cs" />
+    <Compile Include="Scanning\ProcedureWorkItem.cs" />
     <Compile Include="Scanning\VectorWorkItem.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
@@ -733,7 +733,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="obj\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

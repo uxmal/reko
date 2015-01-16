@@ -6,6 +6,7 @@
 // Preserved:
 // Terminates process
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 ax, word16 dx, word16 bx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -41,6 +42,7 @@ fn0C00_0000_exit:
 // Trashed:
 // Preserved: sp
 // fn0C00_0037
+// Return size: 0
 void fn0C00_0037(word16 ax, word16 dx, selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037

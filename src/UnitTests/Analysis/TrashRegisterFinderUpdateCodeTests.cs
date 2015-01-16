@@ -95,6 +95,7 @@ namespace Decompiler.UnitTests.Analysis
             });
 
             var sExp = @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -138,6 +139,7 @@ main_exit:
             });
 
             var sExp = @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -194,6 +196,7 @@ foo_exit:
             });
 
             var sExp = @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -206,6 +209,7 @@ l1:
 main_exit:
 
 // foo
+// Return size: 0
 void foo()
 foo_entry:
 	// succ:  l1
@@ -244,6 +248,7 @@ foo_exit:
 
             var sExp =
 @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1
@@ -290,6 +295,7 @@ main_exit:
 
             var sExp =
 @"// main
+// Return size: 0
 void main()
 main_entry:
 	// succ:  l1

@@ -23,6 +23,7 @@ using Decompiler.Core.Services;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
@@ -49,7 +50,7 @@ namespace Decompiler.UnitTests.Mocks
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0} - {1} - {2}", d.GetType().Name, location.Text, d.Message);
             lastDiagnostic = sb.ToString();
-            System.Diagnostics.Debug.WriteLine(lastDiagnostic);
+            Debug.WriteLine(lastDiagnostic);
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)

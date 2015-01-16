@@ -11,6 +11,7 @@ r4_4: orig: r4
 Mem5: orig: Mem0
     def:  Mem5[0x00000400:word32] = foo(out r4_4)
 // foo
+// Return size: 0
 void foo()
 foo_entry:
 	def Mem0

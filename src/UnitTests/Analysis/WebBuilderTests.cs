@@ -21,8 +21,10 @@
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,6 +34,14 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class WebBuilderTests : AnalysisTestBase
 	{
+        private MockRepository mr;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+        }
+
 		[Test]
 		public void WebNestedRepeats()
 		{
@@ -46,7 +56,11 @@ namespace Decompiler.UnitTests.Analysis
 
 		[Test]
 		public void WebGlobalHandle()
-		{
+        {
+            Given_FakeWin32Platform(mr);
+
+            mr.ReplayAll();
+
 			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
 		}
 

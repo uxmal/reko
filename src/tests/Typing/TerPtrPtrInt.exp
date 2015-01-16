@@ -1,5 +1,6 @@
 // Before ///////
 // PtrPtrIntMock
+// Return size: 0
 void PtrPtrIntMock()
 PtrPtrIntMock_entry:
 	// succ:  l1
@@ -14,6 +15,7 @@ PtrPtrIntMock_exit:
 
 // After ///////
 // PtrPtrIntMock
+// Return size: 0
 void PtrPtrIntMock()
 PtrPtrIntMock_entry:
 	// succ:  l1

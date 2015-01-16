@@ -6,6 +6,7 @@
 // Preserved:
 // Terminates process
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 di, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -23,6 +24,7 @@ fn0C00_0000_exit:
 // Preserved:
 // Terminates process
 // fn0C00_0007
+// Return size: 0
 void fn0C00_0007(word16 si, word16 di, selector ds)
 fn0C00_0007_entry:
 	// succ:  l0C00_0007
@@ -47,6 +49,7 @@ fn0C00_0007_exit:
 // Preserved:
 // Terminates process
 // fn0C00_0020
+// Return size: 0
 void fn0C00_0020(selector ds)
 fn0C00_0020_entry:
 	// succ:  l0C00_0020

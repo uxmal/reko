@@ -26,6 +26,7 @@ ecx_16: orig: ecx
 SZO_17: orig: SZO
 C_18: orig: C
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, selector ds, real64 rArg0)
 fn0C00_0000_entry:
 	def Mem0

@@ -383,6 +383,7 @@ namespace Decompiler.UnitTests.Scanning
             proc.Write(false, sw);
             var sExp =
 @"// testProc
+// Return size: 0
 void testProc()
 testProc_entry:
 l00100000:
@@ -435,6 +436,7 @@ testProc_exit:
             var sw = new StringWriter();
             proc.Write(false, sw);
             var sExp = @"// testProc
+// Return size: 0
 void testProc()
 testProc_entry:
 l00100000:

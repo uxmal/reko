@@ -1,4 +1,5 @@
 // DpbMock
+// Return size: 0
 void DpbMock()
 DpbMock_entry:
 	def Mem0

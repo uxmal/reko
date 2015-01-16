@@ -1,4 +1,5 @@
 // UnionIntRealMock
+// Return size: 0
 void UnionIntRealMock()
 UnionIntRealMock_entry:
 	// succ:  l1

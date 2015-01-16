@@ -118,6 +118,7 @@ namespace Decompiler.UnitTests.Scanning
             var sw = new StringWriter();
             program.Procedures.Values[0].Write(false, sw);
             var sExp = @"// fn0C00_0000
+// Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -166,6 +167,7 @@ fn0C00_0000_exit:
             });
             var sw = new StringWriter();
             var sExp = @"// fn00100000
+// Return size: 4
 void fn00100000()
 fn00100000_entry:
 l00100000:
@@ -176,6 +178,7 @@ l00100000:
 fn00100000_exit:
 
 // fn00100011
+// Return size: 4
 void fn00100011()
 fn00100011_entry:
 l00100011:

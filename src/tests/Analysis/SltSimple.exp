@@ -9,28 +9,23 @@ b:Local -0008
     uses: Mem6[0x10000000:word32] = a + b
 c:Local -000C
 c_5: orig: c
-    uses: Mem6[0x10000000:word32] = a + b
 Mem6: orig: Mem0
     def:  Mem6[0x10000000:word32] = a + b
 Mem7: orig: Mem0
     def:  Mem7[0x10000004:word32] = a
-liveIn:  c_5
 // SimpleMock
 void SimpleMock()
-	// liveIn: a b c_5
+	// liveIn: 
 SimpleMock_entry:
 	def a
 	def b
-	// liveOut: a b c_5
-
-	// liveIn:  a b c_5
+	// liveOut: a b
+	// liveIn: a b
 l1:
 	Mem6[0x10000000:word32] = a + b
 	Mem7[0x10000004:word32] = a
-	// liveOut:
-
-	// liveIn:
+	// liveOut: 
+	// liveIn: 
 SimpleMock_exit:
-	// liveOut:
-
+	// liveOut: 
 

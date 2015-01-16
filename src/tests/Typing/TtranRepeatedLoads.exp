@@ -1,4 +1,5 @@
 // RepeatedLoadsFragment
+// Return size: 0
 void RepeatedLoadsFragment()
 RepeatedLoadsFragment_entry:
 	// succ:  l1

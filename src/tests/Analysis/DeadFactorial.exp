@@ -22,6 +22,7 @@ SCZO_14: orig: SCZO
 Mem15: orig: Mem0
     def:  Mem15[ds:0x0064:word16] = ax_12
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def ds
@@ -102,6 +103,7 @@ ax_44: orig: ax
     uses: ax_29 = PHI(ax_39, ax_44)
 dx_ax_45: orig: dx_ax
 // fn0C00_000F
+// Return size: 0
 word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	def wArg02

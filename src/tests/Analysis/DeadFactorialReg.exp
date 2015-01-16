@@ -15,6 +15,7 @@ ax_7: orig: ax
 Mem8: orig: Mem0
     def:  Mem8[ds:0x0064:word16] = ax_7
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def ds
@@ -80,6 +81,7 @@ ax_33: orig: ax
     uses: ax_18 = PHI(ax_29, ax_33)
 dx_ax_34: orig: dx_ax
 // fn0C00_000B
+// Return size: 0
 word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:
 	def cx

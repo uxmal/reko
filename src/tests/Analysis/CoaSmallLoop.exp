@@ -33,7 +33,6 @@ ax_16: orig: ax
     def:  ax_16 = PHI(ax_10, ax_18)
     uses: ax_18 = ax_16 + cx_15 + cx_15
 ax_17: orig: ax
-    uses: ax_18 = ax_16 + cx_15 + cx_15
 ax_18: orig: ax
     def:  ax_18 = ax_16 + cx_15 + cx_15
     uses: ax_16 = PHI(ax_10, ax_18)
@@ -48,6 +47,7 @@ cx_22: orig: cx
 Mem23: orig: Mem0
     def:  Mem23[ds:0x0300:word16] = ax_18
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	def Mem0

@@ -698,6 +698,12 @@ namespace Decompiler.Core.Output
 			writer.Terminate(":");
 		}
 
+        public void VisitLineComment(AbsynLineComment comment)
+        {
+            writer.WriteComment("// " + comment);
+            writer.Terminate();
+        }
+
 		public void VisitReturn(AbsynReturn ret)
 		{
 			writer.Indent();

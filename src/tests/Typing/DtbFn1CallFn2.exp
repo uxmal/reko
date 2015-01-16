@@ -1,4 +1,5 @@
 // Fn1
+// Return size: 0
 void Fn1()
 Fn1_entry:
 	// succ:  l1
@@ -9,6 +10,7 @@ l1:
 Fn1_exit:
 
 // Fn2
+// Return size: 0
 word32 Fn2(word32 arg1)
 Fn2_entry:
 	// succ:  l1

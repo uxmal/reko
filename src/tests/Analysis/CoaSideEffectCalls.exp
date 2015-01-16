@@ -19,6 +19,7 @@ ax_10: orig: ax
     def:  ax_10 = fn0C00_000E(out bx_9)
     uses: fn0C00_0015(ax_10, bx_9, ds)
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def ds
@@ -43,6 +44,7 @@ bx_7: orig: bx
     def:  bx_7 = 0x002B
     uses: use bx_7 (=> bxOut)
 // fn0C00_000E
+// Return size: 0
 word16 fn0C00_000E(ptr16 bxOut)
 fn0C00_000E_entry:
 	// succ:  l0C00_000E
@@ -71,6 +73,7 @@ Mem6: orig: Mem0
 Mem7: orig: Mem0
     def:  Mem7[ds:0x0402:word16] = bx
 // fn0C00_0015
+// Return size: 0
 void fn0C00_0015(word16 ax, word16 bx, selector ds)
 fn0C00_0015_entry:
 	def ds

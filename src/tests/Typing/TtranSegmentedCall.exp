@@ -1,4 +1,5 @@
 // SegmentedCallFragment
+// Return size: 0
 void SegmentedCallFragment()
 SegmentedCallFragment_entry:
 	// succ:  l1

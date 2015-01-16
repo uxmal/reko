@@ -1,4 +1,5 @@
 // SegmentedPointerProc
+// Return size: 0
 void SegmentedPointerProc()
 SegmentedPointerProc_entry:
 	// succ:  l1

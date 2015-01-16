@@ -1,4 +1,5 @@
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	word16 ax_12 = 0x0000

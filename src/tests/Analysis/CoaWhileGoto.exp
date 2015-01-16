@@ -77,13 +77,13 @@ Z_41: orig: Z
 SZO_42: orig: SZO
 C_43: orig: C
 v12_44: orig: v12
-    uses: Mem45[ds:0x0302:word16] = Mem33[ds:0x0302:word16] + 0x0001
 Mem45: orig: Mem0
     def:  Mem45[ds:0x0302:word16] = Mem33[ds:0x0302:word16] + 0x0001
 SZO_46: orig: SZO
 SCZO_47: orig: SCZO
 Z_48: orig: Z
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
 	def Mem0

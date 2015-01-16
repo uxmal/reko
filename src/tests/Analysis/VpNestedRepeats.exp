@@ -109,6 +109,7 @@ Z_36: orig: Z
 Mem37: orig: Mem0
     def:  Mem37[ds:0x0300:word16] = dx_26
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -272,6 +273,7 @@ Z_36: orig: Z
 Mem37: orig: Mem0
     def:  Mem37[ds:0x0300:word16] = dx_26
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	def Mem0

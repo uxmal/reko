@@ -1,5 +1,6 @@
 // Before ///////
 // Fn
+// Return size: 0
 void Fn()
 Fn_entry:
 	// succ:  l1
@@ -10,6 +11,7 @@ Fn_exit:
 
 // After ///////
 // Fn
+// Return size: 0
 void Fn()
 Fn_entry:
 	// succ:  l1

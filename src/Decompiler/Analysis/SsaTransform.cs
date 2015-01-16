@@ -340,7 +340,7 @@ namespace Decompiler.Analysis
 				// Rename variables in all blocks except the starting block which
 				// only contains dummy 'def' variables.
 
-				if (RpoNumber(n) != 0)
+				if (n != n.Procedure.EntryBlock)
 				{
 					foreach (Statement stm in n.Statements)
 					{

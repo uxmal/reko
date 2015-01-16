@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Rhino.Mocks;
+using Decompiler.UnitTests.Scanning.Fragments;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -318,6 +319,7 @@ namespace Decompiler.UnitTests.Scanning
             scan.ScanImage();
             Assert.AreEqual(1, scan.Procedures.Count);
             var sExp = @"// fn0C00_0000
+// Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -454,6 +456,7 @@ fn0C00_0000_exit:
 
             var sExp =
 @"// fn00001000
+// Return size: 0
 void fn00001000()
 fn00001000_entry:
 l00001000:
@@ -464,6 +467,7 @@ l00001004:
 fn00001000_exit:
 
 // fn00001100
+// Return size: 0
 void fn00001100()
 fn00001100_entry:
 	goto l00001100
@@ -497,6 +501,22 @@ fn00001100_exit:
             var proc = scan.ScanProcedure(new Address(0x1000), "fn1000", arch.CreateProcessorState());
 
             Assert.AreEqual("bar", proc.Name);
+        }
+
+        [Test]
+        public void Scanner_EvenOdd()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            var platform = mr.Stub<Platform>(null, program.Architecture);
+            program.Platform = platform;
+            fakeArch.Test_AddTraces(RtlEvenOdd.Create(fakeArch));
+
+            var proc = scan.ScanProcedure(
+                new Address(0x1000),
+                "fn1000",
+                arch.CreateProcessorState());
+            var sExp = "";
+            AssertProgram(sExp, program);
         }
     }
 }

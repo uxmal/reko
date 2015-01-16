@@ -1,5 +1,6 @@
 // Before ///////
 // proc1
+// Return size: 0
 void proc1()
 proc1_entry:
 	// succ:  l1
@@ -11,6 +12,7 @@ proc1_exit:
 
 // After ///////
 // proc1
+// Return size: 0
 void proc1()
 proc1_entry:
 	// succ:  l1

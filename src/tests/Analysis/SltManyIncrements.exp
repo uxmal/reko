@@ -25,26 +25,24 @@ r0_6: orig: r0
           r0_11 = r0_6 + 0x00000002
           r0_11 = r0_6 + 0x00000002
 r1_7: orig: r1
-    uses: Mem9[0x33333330:word32] = Mem0[r0_6:byte]
 r0_8: orig: r0
 Mem9: orig: Mem0
     def:  Mem9[0x33333330:word32] = Mem0[r0_6:byte]
     uses: Mem12[0x33333331:word32] = Mem9[r0_6 + 0x00000001:byte]
 r1_10: orig: r1
-    uses: Mem12[0x33333331:word32] = Mem9[r0_6 + 0x00000001:byte]
 r0_11: orig: r0
     def:  r0_11 = r0_6 + 0x00000002
     uses: r0_4 = PHI(r0, r0_11, r0_14)
 Mem12: orig: Mem0
     def:  Mem12[0x33333331:word32] = Mem9[r0_6 + 0x00000001:byte]
 r1_13: orig: r1
-    uses: Mem15[0x33333330:word32] = Mem0[r0_6:byte]
 r0_14: orig: r0
     def:  r0_14 = r0_6 + 0x00000001
     uses: r0_4 = PHI(r0, r0_11, r0_14)
 Mem15: orig: Mem0
     def:  Mem15[0x33333330:word32] = Mem0[r0_6:byte]
 // ManyIncrements
+// Return size: 0
 void ManyIncrements()
 ManyIncrements_entry:
 	def Mem0
@@ -91,4 +89,3 @@ r1_5 interferes with r0_6
 r0_6 interferes with Mem9
 r0_6 interferes with Mem12
 r0_6 interferes with Mem15
-Mem9 interferes with r1_10

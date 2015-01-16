@@ -4,6 +4,7 @@ void main(Register selector ds)
 // Trashed: SCZO ax bx al bl ah bh
 // Preserved: sp
 // main
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -29,6 +30,7 @@ void memfoo()
 // Trashed: SCZO ax cx bx al cl bl ah ch bh
 // Preserved: sp
 // memfoo
+// Return size: 2
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -64,6 +66,7 @@ Register word16 membar(Register word16 ax, Register selector ds)
 // Trashed: SCZO ax bx al bl ah bh
 // Preserved: sp
 // membar
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp

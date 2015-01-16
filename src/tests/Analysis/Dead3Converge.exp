@@ -40,6 +40,7 @@ Z_24: orig: Z
 C_25: orig: C
 SCZO_26: orig: SCZO
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	def bx

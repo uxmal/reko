@@ -1,4 +1,5 @@
 // WhileGtDecMock
+// Return size: 0
 void WhileGtDecMock()
 WhileGtDecMock_entry:
 	def a
