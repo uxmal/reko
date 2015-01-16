@@ -44,34 +44,47 @@ namespace Decompiler.ImageLoaders.MzExe
 		private ushort lzIp;
 		private ushort lzCs;
 
-		// Code insipired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
+		// Code inspired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
+
+		public LzExeUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
+        {
+            var exe = new ExeImageLoader(services, filename, rawImg);
+            this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(services, arch);
+            Validate(exe);
+        }
 
 		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, string filename, byte [] rawImg) : base(services, filename, rawImg)
 		{
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(services, arch);
 
-			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
-
-			// Locate the LzExe header and verify signature.
-
-			byte [] abC = RawImage;
-			int entry = lzHdrOffset + exe.e_ip;
-			if (LoadedImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
-			{
-				// Untested binary version
-				isLz91 = false;
-				throw new NotImplementedException("Untested");
-			}			
-			else if (LoadedImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
-			{
-				isLz91 = true;
-			}			
-			else
-			{
-				throw new ApplicationException("Image is not an LzExe-compressed binary");
-			}
+            Validate(exe);
 		}
+
+        private void Validate(ExeImageLoader exe)
+        {
+            this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
+
+            // Locate the LzExe header and verify signature.
+
+            byte[] abC = RawImage;
+            int entry = lzHdrOffset + exe.e_ip;
+            if (LoadedImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length))
+            {
+                // Untested binary version
+                isLz91 = false;
+                throw new NotImplementedException("Untested");
+            }
+            else if (LoadedImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
+            {
+                isLz91 = true;
+            }
+            else
+            {
+                throw new ApplicationException("Image is not an LzExe-compressed binary");
+            }
+        }
 
 		// EXE header test (is it LZEXE file?) 
 

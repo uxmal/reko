@@ -36,22 +36,6 @@ namespace Decompiler.UnitTests.Loading
 	[TestFixture]
 	public class PkLiteUnpackerTests
 	{
-		[Test]
-        [Ignore("Don't rely on external files in unit tests.")]
-		public void PkLiteLoad()
-		{
-            ServiceContainer sc = new ServiceContainer();
-            sc.AddService(typeof (DecompilerEventListener), new FakeDecompilerEventListener());
-            sc.AddService(typeof(IDecompilerConfigurationService), new FakeDecompilerConfiguration());
-			Loader l = new Loader(sc);
-			var image = new LoadedImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
-			ExeImageLoader exe = new ExeImageLoader(sc, "foo.exe", image.Bytes);
-			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, "foo.exe", image.Bytes);
-			LoaderResults lr = ldr.Load(new Address(0xC00, 0));
-			Assert.AreEqual(0x19EC0, lr.Image.Bytes.Length);
-			ldr.Relocate(new Address(0xC00, 0));
-		}
-
         [Test]
         public void ValidateImage()
         {

@@ -27,6 +27,6 @@ namespace Decompiler.Core.Services
 {
     public interface IUnpackerService
     {
-        ImageUnpacker FindUnpackerBySignature(string filename, byte[] image);
+        ImageLoader FindUnpackerBySignature(string filename, byte[] image, int entryPointOffset);
     }
 }
