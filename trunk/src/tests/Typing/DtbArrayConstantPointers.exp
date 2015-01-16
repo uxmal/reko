@@ -1,4 +1,5 @@
 // Fn
+// Return size: 0
 void Fn()
 Fn_entry:
 	// succ:  l1

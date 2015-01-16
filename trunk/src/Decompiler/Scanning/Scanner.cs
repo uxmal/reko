@@ -107,8 +107,8 @@ namespace Decompiler.Scanning
         
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
-        private const int PriorityVector = 7;
-        private const int PriorityBlockPromote = 8;
+        private const int PriorityVector = 4;
+        private const int PriorityBlockPromote = 3;
 
         public Scanner(
             Program program, 
@@ -294,10 +294,13 @@ namespace Decompiler.Scanning
                 else
                 {
                     // We just created a block in a foreign procedure. 
-                    procDest = EnsureProcedure(addrDest, null);
-                    block = CreateCallRetThunk(addrSrc, proc, procDest);
+                    blocks.Remove(addrDest);
+                    block.Procedure.RemoveBlock(block);
+                    procDest = (Procedure) ScanProcedure(addrDest, null, state);
+                    var blockThunk = CreateCallRetThunk(addrSrc, proc, procDest);
                     var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                     queue.Enqueue(PriorityBlockPromote, wi);
+                    block = blockThunk;
                 }
             }
             else if (block.Procedure != proc)
@@ -480,7 +483,7 @@ namespace Decompiler.Scanning
             {
                 proc.Characteristics = sp.Characteristics;
             }
-            queue.Enqueue(PriorityEntryPoint, new UserProcedureWorkItem(this, addr, sp.Name));
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, addr, sp.Name));
         }
 
         public Block FindContainingBlock(Address address)

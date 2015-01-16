@@ -72,6 +72,12 @@ namespace Decompiler.UnitTests.Mocks
             rewriters.Add(trace);
         }
 
+        public void Test_AddTraces(IEnumerable<RtlTrace> traces)
+        {
+            foreach (var t in traces)
+                rewriters.Add(t);
+        }
+
 		public static RegisterStorage GetMachineRegister(int i)
 		{
 			return registers[i];

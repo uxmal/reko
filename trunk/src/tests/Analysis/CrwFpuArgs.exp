@@ -4,6 +4,7 @@ void fn0C00_0000(Register selector ds)
 // Trashed: SCZO ax bx al bl ah bh
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -44,6 +45,7 @@ void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg
 // Preserved: sp bp
 // Stack args: Stack +0002(16)
 // fn0C00_0024
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -78,6 +80,7 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // Preserved: sp bp
 // Stack args: Stack +0002(16)
 // fn0C00_0031
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp

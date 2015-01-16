@@ -15,6 +15,7 @@ r1_4: orig: r1
     uses: call r1_4 (retsize: 4;)
           call r1_4 (retsize: 4;)
 // SsaCallIndirect
+// Return size: 0
 void SsaCallIndirect()
 SsaCallIndirect_entry:
 	def Mem0

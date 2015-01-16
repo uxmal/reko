@@ -594,6 +594,7 @@ dwArg04_182: orig: dwArg04
     def:  dwArg04_182 = rLoc2_181
     uses: dwArg04_106 = PHI(dwArg04_182, dwArg04_95)
 // fn10000000
+// Return size: 0
 void fn10000000(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
 fn10000000_entry:
 	def Mem0
@@ -839,6 +840,7 @@ eax_7: orig: eax
     def:  eax_7 = dwLoc04_6
     uses: return eax_7
 // fn1000010A
+// Return size: 0
 word32 fn1000010A(real64 rArg0)
 fn1000010A_entry:
 	def Mem0

@@ -20,6 +20,7 @@ r0_9: orig: r0
     def:  r0_9 = r0 + r1
     uses: r0_7 = PHI(r0, r0_9)
 // CmpMock
+// Return size: 0
 void CmpMock(word32 r0, word32 r1)
 CmpMock_entry:
 	def r0

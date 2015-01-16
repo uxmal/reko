@@ -140,6 +140,7 @@ namespace Decompiler.Core
 		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
         {
 			writer.WriteLine("// {0}", Name);
+            writer.WriteLine("// Return size: {0}", this.Signature.ReturnAddressOnStack);
 			if (emitFrame)
 				Frame.Write(writer);
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new TextFormatter(writer));

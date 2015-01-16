@@ -26,6 +26,7 @@ Mem10: orig: Mem0
     def:  Mem10[ds:si:word16] = ax_9
 ax_11: orig: ax
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
 	def si
@@ -96,6 +97,7 @@ sp_28: orig: sp
 si_29: orig: si
 sp_30: orig: sp
 // fn0C00_0008
+// Return size: 0
 word16 fn0C00_0008(word16 cx, word16 di, selector ds)
 fn0C00_0008_entry:
 	def Mem0

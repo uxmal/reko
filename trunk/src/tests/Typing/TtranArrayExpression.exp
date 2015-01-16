@@ -1,4 +1,5 @@
 // ArrayExpressionFragment
+// Return size: 0
 void ArrayExpressionFragment()
 ArrayExpressionFragment_entry:
 	// succ:  l1

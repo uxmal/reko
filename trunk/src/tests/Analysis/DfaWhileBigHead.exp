@@ -5,6 +5,7 @@
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000

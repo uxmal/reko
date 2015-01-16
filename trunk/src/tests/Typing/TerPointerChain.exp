@@ -1,5 +1,6 @@
 // Before ///////
 // PointerChainFragment
+// Return size: 0
 void PointerChainFragment()
 PointerChainFragment_entry:
 	// succ:  l1
@@ -12,6 +13,7 @@ PointerChainFragment_exit:
 
 // After ///////
 // PointerChainFragment
+// Return size: 0
 void PointerChainFragment()
 PointerChainFragment_entry:
 	// succ:  l1

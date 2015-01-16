@@ -228,6 +228,11 @@ namespace Decompiler.Structure
             stms.Add(lbl);
         }
 
+        public void VisitLineComment(AbsynLineComment comment)
+        {
+            stms.Add(comment);
+        }
+
         public void VisitReturn(AbsynReturn ret)
         {
             stms.Add(ret);

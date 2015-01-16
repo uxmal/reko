@@ -114,6 +114,7 @@ namespace Decompiler.UnitTests.Scanning
 
             string sExp =
 @"// fn00100000
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // a7:a7
@@ -167,6 +168,7 @@ fn00100000_exit:
             scanner.Procedures.Values[0].Write(true, sw);
             Console.WriteLine(sw);
             string sExp = @"// fn00001020
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // a7:a7

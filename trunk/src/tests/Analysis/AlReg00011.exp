@@ -2,6 +2,7 @@ Mem0:Global memory (aliases:)
 fp:fp (aliases:)
 sp:sp (aliases:)
 // fn0C00_0000
+// Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -26,6 +27,7 @@ C:Flags (aliases: SCZO)
 SCZO:Flags (aliases: SZO C S)
 S:Flags (aliases: SZO SCZO)
 // fn0C00_0004
+// Return size: 2
 void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004

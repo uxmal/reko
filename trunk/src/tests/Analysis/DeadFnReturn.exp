@@ -4,6 +4,7 @@ unused:Local -0004
 r63:r63
 unused_4: orig: unused
 // foo
+// Return size: 0
 void foo()
 foo_entry:
 	// succ:  l1

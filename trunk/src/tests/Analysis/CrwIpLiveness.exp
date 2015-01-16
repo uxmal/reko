@@ -4,6 +4,7 @@ void fn0C00_0000(Register selector ds)
 // Trashed: SCZO ax bx si di al bl ah bh
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -38,6 +39,7 @@ Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // Trashed: SCZO ax al ah
 // Preserved: sp di
 // fn0C00_0026
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp
@@ -72,6 +74,7 @@ Register word16 fn0C00_0033(Register word16 si, Register selector ds)
 // Trashed: SCZO ax al ah
 // Preserved: sp
 // fn0C00_0033
+// Return size: 0
 // Mem0:Global memory
 // fp:fp
 // sp:sp

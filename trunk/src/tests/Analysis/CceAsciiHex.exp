@@ -17,6 +17,7 @@ C_7: orig: C
 Mem8: orig: Mem0
     def:  Mem8[ds:0x0300:byte] = al_6
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	def ds
@@ -100,6 +101,7 @@ C_37: orig: C
 SCZO_38: orig: SCZO
 CZ_39: orig: CZ
 // fn0C00_000A
+// Return size: 0
 byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:
 	def al

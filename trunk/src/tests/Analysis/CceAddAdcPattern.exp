@@ -39,6 +39,7 @@ Mem17: orig: Mem0
 Mem18: orig: Mem0
     def:  Mem18[0x00444404:word32] = r3_16
 // main
+// Return size: 0
 void main(word32 r1, word32 r2, word32 r3, word32 r4)
 main_entry:
 	def r1

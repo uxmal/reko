@@ -21,6 +21,7 @@ Mem7: orig: Mem0
 Mem8: orig: Mem0
     def:  Mem8[ds:0x0302:byte] = 0x00
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -284,6 +285,7 @@ cl_78: orig: cl
     uses: cl_34 = PHI(cl_27, cl_78)
           cl_27 = PHI(cl_20, cl_78)
 // fn0C00_000C
+// Return size: 0
 word16 fn0C00_000C(selector ds)
 fn0C00_000C_entry:
 	def Mem0

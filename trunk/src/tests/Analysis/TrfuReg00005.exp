@@ -1,4 +1,5 @@
 // fn0C00_0000
+// Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -11,6 +12,7 @@ l0C00_0000:
 fn0C00_0000_exit:
 
 // fn0C00_000C
+// Return size: 2
 void fn0C00_000C()
 fn0C00_000C_entry:
 	// succ:  l0C00_000C

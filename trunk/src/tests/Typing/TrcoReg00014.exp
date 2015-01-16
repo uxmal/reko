@@ -1,4 +1,5 @@
 // fn00100000
+// Return size: 0
 void fn00100000()
 fn00100000_entry:
 	// succ:  l00100000
@@ -11,6 +12,7 @@ l00100000:
 fn00100000_exit:
 
 // fn0010002B
+// Return size: 0
 word32 fn0010002B(word32 dwArg04)
 fn0010002B_entry:
 	// succ:  l0010002B
@@ -26,6 +28,7 @@ l0010003C:
 fn0010002B_exit:
 
 // fn00100057
+// Return size: 0
 void fn00100057(word32 dwArg08, word32 dwArg0C)
 fn00100057_entry:
 	// succ:  l00100057

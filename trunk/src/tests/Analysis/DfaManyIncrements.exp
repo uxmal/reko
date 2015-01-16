@@ -5,6 +5,7 @@
 // Trashed: r0 r1
 // Preserved: r63
 // ManyIncrements
+// Return size: 0
 void ManyIncrements(word32 r0)
 ManyIncrements_entry:
 	goto loopTop

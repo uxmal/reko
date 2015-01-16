@@ -67,6 +67,7 @@ bx_39: orig: bx
     def:  bx_39 = ax_36
     uses: bx_26 = PHI(bx_33, bx_39)
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds, word16 wArg04)
 fn0C00_0000_entry:
 	def ds

@@ -36,9 +36,11 @@ namespace Decompiler.Core.Absyn
 		void VisitGoto(AbsynGoto gotoStm);
 		void VisitIf(AbsynIf ifStm);
 		void VisitLabel(AbsynLabel lbl);
-		void VisitReturn(AbsynReturn ret);
+        void VisitLineComment(AbsynLineComment comment);
+        void VisitReturn(AbsynReturn ret);
 		void VisitSideEffect(AbsynSideEffect side);
         void VisitSwitch(AbsynSwitch absynSwitch);
         void VisitWhile(AbsynWhile loop);
+
     }
 }

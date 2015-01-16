@@ -25,13 +25,13 @@ Mem11: orig: Mem0
     def:  Mem11[ds:0x7964:byte] = cl
 eax_12: orig: eax
 eax_13: orig: eax
-    uses: Mem17[ds:si + 0x00C8:word32] = -edx
 SCZO_14: orig: SCZO
 C_15: orig: C
 SCZO_16: orig: SCZO
 Mem17: orig: Mem0
     def:  Mem17[ds:si + 0x00C8:word32] = -edx
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word32 edx, word16 si, byte cl, selector ds)
 fn0C00_0000_entry:
 	def ds

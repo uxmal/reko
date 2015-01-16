@@ -5,6 +5,7 @@
 // Trashed: SCZO ax al
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -27,6 +28,7 @@ fn0C00_0000_exit:
 // Trashed: SCZO ax al
 // Preserved: sp
 // fn0C00_000A
+// Return size: 0
 byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:
 	Mem0[alOut:byte] = al

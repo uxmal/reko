@@ -1,4 +1,5 @@
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -21,6 +22,7 @@ l0C00_0009:
 fn0C00_0000_exit:
 
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
 	def ds
@@ -39,6 +41,7 @@ l0C00_0009:
 fn0C00_0000_exit:
 ====================
 // fn0C00_000A
+// Return size: 0
 byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:
 	def Mem0
@@ -127,6 +130,7 @@ fn0C00_000A_exit:
 	use al_14 (=> alOut)
 
 // fn0C00_000A
+// Return size: 0
 byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:
 	def Mem0

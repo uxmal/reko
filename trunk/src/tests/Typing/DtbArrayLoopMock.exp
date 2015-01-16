@@ -1,4 +1,5 @@
 // ArrayLoopMock
+// Return size: 0
 void ArrayLoopMock()
 ArrayLoopMock_entry:
 	goto l1

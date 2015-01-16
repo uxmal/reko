@@ -1,4 +1,5 @@
 // TreeFindMock
+// Return size: 0
 void TreeFindMock()
 TreeFindMock_entry:
 	// succ:  l0_seek

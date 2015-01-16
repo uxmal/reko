@@ -46,6 +46,13 @@ namespace Decompiler.Core.Rtl
             return this;
         }
 
+        public RtlEmitter Assign(Expression dst, int src)
+        {
+            var ass = new RtlAssignment(dst, Constant.Create(dst.DataType, src));
+            instrs.Add(ass);
+            return this;
+        }
+
         public RtlEmitter Branch(Expression condition, Address target, RtlClass rtlClass)
         {
             instrs.Add(new RtlBranch(condition, target, rtlClass));

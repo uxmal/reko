@@ -22,6 +22,7 @@ r0_12: orig: r0
 Mem13: orig: Mem0
     def:  Mem13[0x01001004:word32] = r0_12
 // AdcMock
+// Return size: 0
 void AdcMock(word32 r1)
 AdcMock_entry:
 	def Mem0

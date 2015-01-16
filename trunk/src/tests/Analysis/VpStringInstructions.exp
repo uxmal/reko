@@ -78,6 +78,7 @@ si_21: orig: si
 Mem22: orig: Mem0
     def:  Mem22[ds:0x030A:word16] = ax_19
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -191,6 +192,7 @@ si_21: orig: si
 Mem22: orig: Mem0
     def:  Mem22[ds:0x030A:word16] = ax_19
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -308,6 +310,7 @@ cx_25: orig: cx
     uses: cx_20 = PHI(cx_16, cx_25)
           cx_16 = PHI(cx_10, cx_25)
 // fn0C00_0026
+// Return size: 0
 void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:
 	def Mem0
@@ -435,6 +438,7 @@ cx_25: orig: cx
     uses: cx_20 = PHI(cx_16, cx_25)
           cx_16 = PHI(cx_10, cx_25)
 // fn0C00_0026
+// Return size: 0
 void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:
 	def Mem0

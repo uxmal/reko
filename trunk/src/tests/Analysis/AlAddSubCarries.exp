@@ -15,6 +15,7 @@ cl:cl (aliases: cx es_cx bx_cx)
 dx_ax:Sequence dx:ax (aliases: ax dx)
 bx_cx:Sequence bx:cx (aliases: cx bx cl)
 // fn0C00_0000
+// Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000

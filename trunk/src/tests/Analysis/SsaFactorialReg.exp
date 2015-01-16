@@ -20,6 +20,7 @@ ax_7: orig: ax
 Mem8: orig: Mem0
     def:  Mem8[ds:0x0064:word16] = ax_7
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -140,6 +141,7 @@ dx_ax_34: orig: dx_ax
     def:  dx_ax_34 = SEQ(dx, ax_33) (alias)
     uses: dx_ax_16 = PHI(dx_ax_28, dx_ax_34)
 // fn0C00_000B
+// Return size: 0
 word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:
 	def Mem0

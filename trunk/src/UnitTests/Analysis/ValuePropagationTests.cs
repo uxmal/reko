@@ -30,6 +30,7 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Rhino.Mocks;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -37,11 +38,13 @@ namespace Decompiler.UnitTests.Analysis
 	public class ValuePropagationTests : AnalysisTestBase
 	{
 		SsaIdentifierCollection ssaIds;
+        private MockRepository mr;
 
 		[SetUp]
 		public void Setup()
 		{
 			ssaIds = new SsaIdentifierCollection();
+            mr = new MockRepository();
 		}
 
 		[Test]
@@ -59,6 +62,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void VpGlobalHandle()
 		{
+            Given_FakeWin32Platform(mr);
+            mr.ReplayAll();
 			RunTest32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
 		}
 

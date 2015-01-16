@@ -154,6 +154,7 @@ ax_48: orig: ax
     def:  ax_48 = 0x0000
     uses: ax_26 = PHI(ax_48, ax_46, ax_47, ax_45)
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si)
 fn0C00_0000_entry:
 	def Mem0

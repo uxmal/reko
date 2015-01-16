@@ -1,5 +1,6 @@
 // Before ///////
 // VectorFragment
+// Return size: 0
 void VectorFragment()
 VectorFragment_entry:
 	// succ:  l1
@@ -9,6 +10,7 @@ VectorFragment_exit:
 
 // After ///////
 // VectorFragment
+// Return size: 0
 void VectorFragment()
 VectorFragment_entry:
 	// succ:  l1

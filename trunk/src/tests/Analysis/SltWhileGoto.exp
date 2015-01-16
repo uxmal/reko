@@ -77,7 +77,6 @@ Z_41: orig: Z
 SZO_42: orig: SZO
 C_43: orig: C
 v12_44: orig: v12
-    uses: Mem45[ds:0x0302:word16] = Mem33[ds:0x0302:word16] + 0x0001
 Mem45: orig: Mem0
     def:  Mem45[ds:0x0302:word16] = Mem33[ds:0x0302:word16] + 0x0001
 SZO_46: orig: SZO
@@ -95,32 +94,32 @@ fn0C00_0000_entry:
 	// liveIn: Mem0 si ds di
 l0C00_0000:
 	goto l0C00_001A
-	// liveOut: Mem0 si ds di v12_44
-	// liveIn: Mem0 si ds di ax_15 si_16 v12_44
+	// liveOut: Mem0 si ds di
+	// liveIn: Mem0 si ds di ax_15 si_16
 l0C00_0005:
 	Mem33[ds:di:word16] = ax_15
 	branch ax_15 != 0x0000 l0C00_0011
-	// liveOut: Mem0 si ds di ax_15 si_16 Mem33 v12_44
+	// liveOut: Mem0 si ds di ax_15 si_16 Mem33
 	// liveIn: ds
 l0C00_000B:
 	ax_39 = 0xFFFF
 	goto l0C00_0024
 	// liveOut: ds ax_39
-	// liveIn: Mem0 si ds di ax_15 si_16 Mem33 v12_44
+	// liveIn: Mem0 si ds di ax_15 si_16 Mem33
 l0C00_0011:
 	branch ax_15 != 0x000D l0C00_001A
-	// liveOut: Mem0 si ds di si_16 Mem33 v12_44
-	// liveIn: Mem0 si ds di Mem33 v12_44
+	// liveOut: Mem0 si ds di si_16 Mem33
+	// liveIn: Mem0 si ds di Mem33
 l0C00_0016:
 	Mem45[ds:0x0302:word16] = Mem33[ds:0x0302:word16] + 0x0001
-	// liveOut: Mem0 si ds di v12_44
-	// liveIn: Mem0 si ds di v12_44
+	// liveOut: Mem0 si ds di
+	// liveIn: Mem0 si ds di
 l0C00_001A:
 	si_14 = PHI(si, si_16, si_16)
 	ax_15 = Mem0[ds:si_14:word16]
 	si_16 = si_14 + 0x0002
 	branch ax_15 != 0x0020 l0C00_0005
-	// liveOut: Mem0 si ds di ax_15 si_16 v12_44
+	// liveOut: Mem0 si ds di ax_15 si_16
 	// liveIn: si ds si_16
 l0C00_0020:
 	ax_28 = si_16 - si

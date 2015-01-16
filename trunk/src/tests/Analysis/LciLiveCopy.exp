@@ -1,4 +1,5 @@
 // LiveCopyMock
+// Return size: 0
 void LiveCopyMock()
 LiveCopyMock_entry:
 	def reg

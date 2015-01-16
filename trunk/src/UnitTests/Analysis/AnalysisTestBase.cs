@@ -18,28 +18,31 @@
  */
 #endregion
 
-using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Assemblers;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using Decompiler.Environments.Msdos;
-using Decompiler.Scanning;
 using Decompiler.Loading;
+using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
 
 namespace Decompiler.UnitTests.Analysis
 {
 	public abstract class AnalysisTestBase
 	{
+        private Platform platform;
+
 		protected void DumpProcedureFlows(Program prog, DataFlowAnalysis dfa, RegisterLiveness live, TextWriter w)
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
@@ -131,7 +134,11 @@ namespace Decompiler.UnitTests.Analysis
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(new Address(0x10000000), rdr);
-                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new Decompiler.Environments.Win32.Win32Platform(null, lr.Architecture));
+                if (this.platform == null)
+                {
+                    platform = new Decompiler.Environments.Win32.Win32Platform(null, lr.Architecture);
+                }
+                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, platform);
             }
             foreach (var item in asm.ImportReferences)
             {
@@ -227,5 +234,47 @@ namespace Decompiler.UnitTests.Analysis
                 fut.AssertFilesEqual();
 			}
 		}
+
+        protected void Given_Platform(Platform platform)
+        {
+            this.platform = platform;
+        }
+
+        protected void Given_FakeWin32Platform(MockRepository mr)
+        {
+            var platform = mr.StrictMock<Platform>(null, null);
+            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
+            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
+            var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
+            platform.Stub(p => p.LookupProcedureByName(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Equal("GlobalHandle")))
+                .Return(new ProcedureSignature(
+                    new Identifier("eax", 0, tHglobal, Decompiler.Arch.X86.Registers.eax),
+                    new Identifier("pv", 1, tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                {
+                    StackDelta = 4,
+                });
+            platform.Stub(p => p.LookupProcedureByName(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Equal("GlobalUnlock")))
+                .Return(new ProcedureSignature(
+                    new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
+                    new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                {
+                    StackDelta = 4,
+                });
+
+            platform.Stub(p => p.LookupProcedureByName(
+             Arg<string>.Is.Anything,
+             Arg<string>.Is.Equal("GlobalFree")))
+             .Return(new ProcedureSignature(
+                 new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
+                 new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+             {
+                 StackDelta = 4,
+             });
+            Given_Platform(platform);
+        }
 	}
 }

@@ -177,6 +177,7 @@ SZO_55: orig: SZO
 Mem56: orig: Mem0
     def:  Mem56[ds:0x0222:word16] = ax_52
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def Mem0

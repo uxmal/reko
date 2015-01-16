@@ -123,7 +123,7 @@ namespace Decompiler.Analysis
 		{
             PreCoalesceDump(sid, def, use);
 			def.Instruction.Accept(new UsedIdentifierAdjuster(def, ssa.Identifiers, use));
-			use.Instruction.Accept(new IdentifierReplacer(sid.Identifier, defExpr));
+            use.Instruction.Accept(new IdentifierReplacer(ssa, use, sid.Identifier, defExpr));
 
 			List<SsaIdentifier> sids;
 			if (defsByStatement.TryGetValue(def, out sids))
@@ -253,11 +253,15 @@ namespace Decompiler.Analysis
 	/// </summary>
     public class IdentifierReplacer : InstructionTransformer
     {
+        private SsaState ssaIds;
+        private Statement use;
         private Identifier idOld;
         private Expression exprNew;
 
-        public IdentifierReplacer(Identifier idOld, Expression exprNew)
+        public IdentifierReplacer(SsaState ssaIds, Statement use, Identifier idOld, Expression exprNew)
         {
+            this.ssaIds = ssaIds;
+            this.use = use;
             this.idOld = idOld;
             this.exprNew = exprNew;
         }
@@ -265,7 +269,10 @@ namespace Decompiler.Analysis
         public override Expression VisitIdentifier(Identifier id)
         {
             if (idOld == id)
+            {
+                ssaIds.Identifiers[id].Uses.Remove(use);
                 return exprNew;
+            }
             else
                 return id;
         }

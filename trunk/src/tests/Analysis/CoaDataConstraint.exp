@@ -33,14 +33,12 @@ Mem10: orig: Mem0
     def:  Mem10[ds:0x0300:word16] = ax_8
     uses: Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
 ax_11: orig: ax
-    uses: Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
 Mem12: orig: Mem0
     def:  Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
     uses: Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
           Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
 ax_13: orig: ax
 v6_14: orig: v6
-    uses: Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
 Mem15: orig: Mem0
     def:  Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
     uses: ax_17 = Mem15[ds:0x0200:word16]
@@ -51,6 +49,7 @@ ax_17: orig: ax
 Mem18: orig: Mem0
     def:  Mem18[ds:0x0200:word16] = ax_17
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -86,6 +85,7 @@ Mem9: orig: Mem0
 ax_10: orig: ax
 sp_11: orig: sp
 // fn0C00_002A
+// Return size: 0
 void fn0C00_002A(selector ds)
 fn0C00_002A_entry:
 	def ds

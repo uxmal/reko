@@ -1,4 +1,5 @@
 // SegMem3Mock
+// Return size: 0
 void SegMem3Mock()
 SegMem3Mock_entry:
 	// succ:  l1

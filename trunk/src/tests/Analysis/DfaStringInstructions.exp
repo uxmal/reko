@@ -5,6 +5,7 @@
 // Trashed: SCZO eax ax cx si di al cl ah ch
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -26,6 +27,7 @@ fn0C00_0000_exit:
 // Trashed: SCZO ax cx di al cl ch
 // Preserved: sp
 // fn0C00_0026
+// Return size: 0
 void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:
 	// succ:  l0C00_0026

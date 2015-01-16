@@ -27,6 +27,7 @@ using Decompiler.UnitTests.Mocks;
 using Decompiler.UnitTests.TestCode;
 using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Analysis
@@ -57,8 +58,8 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("i_4", i_4.Name);
 			Assert.AreEqual("i_6", i_6.Name);
 			Assert.IsFalse(sla.IsLiveOut(i, ssa.Identifiers[4].DefStatement));
-            var block1 = proc.ControlGraph.Blocks[1];
-			Assert.AreEqual("branch Mem0[i_6:byte] != 0x00 loop", block1.Statements[2].Instruction.ToString());
+            var block1 = proc.ControlGraph.Blocks.Where(b => b.Name =="loop").Single();
+			Assert.AreEqual("branch Mem0[i_6:byte] != 0 loop", block1.Statements[2].Instruction.ToString());
 			Assert.IsTrue(sla.IsLiveOut(i_4, block1.Statements[2]), "i_4 should be live at the end of block 1");
 			Assert.IsTrue(sla.IsLiveOut(i_6, block1.Statements[2]),"i_6 should be live at the end of block 1");
 			Assert.AreEqual("i_4 = PHI(i, i_6)", block1.Statements[0].Instruction.ToString());
@@ -78,7 +79,7 @@ namespace Decompiler.UnitTests.Analysis
 				fut.AssertFilesEqual();
 			}
 
-			Block block = proc.ControlGraph.Blocks[0];
+			Block block = proc.EntryBlock.Succ[0];
 			block.Write(Console.Out);
 			Assert.AreEqual("Mem6[0x10000000:word32] = a + b", block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("Mem7[0x10000004:word32] = a", block.Statements[1].Instruction.ToString());
@@ -105,29 +106,6 @@ namespace Decompiler.UnitTests.Analysis
 				fut.TextWriter.WriteLine();
 				fut.AssertFilesEqual();
 			}
-		}
-
-		[Test]
-		public void SltLiveCopy()
-		{
-			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
-			WebBuilder wb = new WebBuilder(proc, ssa.Identifiers, new Dictionary<Identifier,LinearInductionVariable>());
-			using (FileUnitTester fut = new FileUnitTester("Analysis/SltLiveCopy.txt"))
-			{
-				ssa.Write(fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
-			}
-
-            proc.Dump(true, false);
-			Statement phiStm = proc.ControlGraph.Blocks[3].Statements[0];
-			Assert.AreEqual("reg_5 = PHI(reg, reg_6)", phiStm.Instruction.ToString());
-			Identifier reg   = ssa.Identifiers[3].Identifier;
-			Assert.AreEqual("reg", reg.Name);
-			Identifier reg_5 = ssa.Identifiers[5].Identifier;
-			Identifier reg_6 = ssa.Identifiers[6].Identifier;
-			Assert.IsTrue(sla.IsLiveOut(reg,   phiStm), "reg is live!");
-			Assert.IsFalse(sla.IsLiveOut(reg_5, phiStm), "reg_5 should be dead");
-			Assert.IsTrue(sla.IsLiveOut(reg_6, phiStm), "reg_6 should be live");
 		}
 
 		[Test]

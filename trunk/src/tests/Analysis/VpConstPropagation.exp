@@ -29,6 +29,7 @@ Mem11: orig: Mem0
 Mem12: orig: Mem0
     def:  Mem12[ds:0x0304:word16] = 0x0000
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -80,6 +81,7 @@ Mem11: orig: Mem0
 Mem12: orig: Mem0
     def:  Mem12[ds:0x0304:word16] = 0x0000
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def Mem0

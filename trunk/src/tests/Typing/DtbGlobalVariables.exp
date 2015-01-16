@@ -1,4 +1,5 @@
 // GlobalVariablesMock
+// Return size: 0
 void GlobalVariablesMock()
 GlobalVariablesMock_entry:
 	// succ:  l1

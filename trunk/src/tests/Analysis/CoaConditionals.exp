@@ -44,7 +44,6 @@ SO:Flags
 O:Flags
 wLoc02:Local -0002
 ax_15: orig: ax
-    uses: branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F
 SCZO_16: orig: SCZO
 Z_17: orig: Z
 SZO_18: orig: SZO
@@ -52,7 +51,6 @@ C_19: orig: C
 SO_20: orig: SO
 O_21: orig: O
 ax_22: orig: ax
-    uses: v7_23 = Mem0[ds:0x0106:word16] - Mem0[ds:0x0104:word16]
 v7_23: orig: v7
     def:  v7_23 = Mem0[ds:0x0106:word16] - Mem0[ds:0x0104:word16]
     uses: Mem24[ds:0x0106:word16] = v7_23
@@ -72,7 +70,6 @@ SO_29: orig: SO
 O_30: orig: O
 ax_31: orig: ax
 ax_32: orig: ax
-    uses: branch (Mem24[ds:0x0106:word16] & Mem24[ds:0x0108:word16]) == 0x0000 l0C00_002D
 SZO_33: orig: SZO
 Z_34: orig: Z
 SO_35: orig: SO
@@ -80,7 +77,6 @@ O_36: orig: O
 C_37: orig: C
 SCZO_38: orig: SCZO
 ax_39: orig: ax
-    uses: branch Mem24[ds:0x010A:word16] >=u Mem24[ds:0x010C:word16] l0C00_003D
 SCZO_40: orig: SCZO
 Z_41: orig: Z
 SZO_42: orig: SZO
@@ -92,7 +88,6 @@ SCZO_47: orig: SCZO
 sp_48: orig: sp
 wLoc02_49: orig: wLoc02
 C_50: orig: C
-    uses: branch fn0C00_0069(0x0003) l0C00_0049
 SCZO_51: orig: SCZO
 SZO_52: orig: SZO
 Z_53: orig: Z
@@ -108,7 +103,6 @@ C_62: orig: C
 SO_63: orig: SO
 O_64: orig: O
 bp_65: orig: bp
-    uses: branch !OVERFLOW((bp - 0x0010) * 0x0002) l0C00_0068
 SCZO_66: orig: SCZO
 Z_67: orig: Z
 SZO_68: orig: SZO
@@ -132,6 +126,7 @@ Mem78: orig: Mem0
 Mem79: orig: Mem0
     def:  Mem79[ds:0x0F00:byte] = 0x01
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bp, selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -209,11 +204,11 @@ sp_9: orig: sp
 wLoc02_10: orig: wLoc02
 bp_11: orig: bp
 SCZO_12: orig: SCZO
-    uses: return cond(wArg02)
 C_13: orig: C
 bp_14: orig: bp
 sp_15: orig: sp
 // fn0C00_0069
+// Return size: 0
 bool fn0C00_0069(word16 wArg02)
 fn0C00_0069_entry:
 	def wArg02

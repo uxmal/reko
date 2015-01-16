@@ -1,4 +1,5 @@
 // fn10000000
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -350,6 +351,7 @@ l1000022E:
 fn10000000_exit:
 
 // fn10000233
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -365,6 +367,7 @@ l10000233:
 fn10000233_exit:
 
 // fn10000238
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -380,6 +383,7 @@ l10000238:
 fn10000238_exit:
 
 // fn1000023D
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -395,6 +399,7 @@ l1000023D:
 fn1000023D_exit:
 
 // fn10000242
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -410,6 +415,7 @@ l10000242:
 fn10000242_exit:
 
 // fn1000024C
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -425,6 +431,7 @@ l1000024C:
 fn1000024C_exit:
 
 // fn10000251
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -440,6 +447,7 @@ l10000251:
 fn10000251_exit:
 
 // fn10000256
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -455,6 +463,7 @@ l10000256:
 fn10000256_exit:
 
 // fn1000025B
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -470,6 +479,7 @@ l1000025B:
 fn1000025B_exit:
 
 // fn10000260
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -488,6 +498,7 @@ l10000260:
 fn10000260_exit:
 
 // fn10000269
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -503,6 +514,7 @@ l10000269:
 fn10000269_exit:
 
 // fn1000026E
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -521,6 +533,7 @@ l1000026E:
 fn1000026E_exit:
 
 // fn10000277
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -549,6 +562,7 @@ l10000277:
 fn10000277_exit:
 
 // fn100002A8
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -562,6 +576,7 @@ l100002A8:
 fn100002A8_exit:
 
 // fn100002A9
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp

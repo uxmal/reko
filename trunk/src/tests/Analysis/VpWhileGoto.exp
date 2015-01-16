@@ -151,6 +151,7 @@ SCZO_47: orig: SCZO
 Z_48: orig: Z
     def:  Z_48 = SZO_46 (alias)
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
 	def Mem0
@@ -377,6 +378,7 @@ SCZO_47: orig: SCZO
 Z_48: orig: Z
     def:  Z_48 = SZO_46 (alias)
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
 	def Mem0

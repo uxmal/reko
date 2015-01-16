@@ -30,6 +30,7 @@ ebp_9: orig: ebp
 esp_10: orig: esp
     def:  esp_10 = esp_5 + 0x00000004
 // SsaPushAndPop
+// Return size: 0
 void SsaPushAndPop()
 SsaPushAndPop_entry:
 	def Mem0

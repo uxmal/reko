@@ -1,4 +1,5 @@
 // fn10000000
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp
@@ -22,6 +23,7 @@ l10000000:
 fn10000000_exit:
 
 // fn10000017
+// Return size: 4
 // Mem0:Global memory
 // fp:fp
 // esp:esp

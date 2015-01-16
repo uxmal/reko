@@ -5,6 +5,7 @@
 // Trashed: ax sp al ah ss
 // Preserved: sp
 // fn0C00_0000
+// Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
@@ -21,6 +22,7 @@ fn0C00_0000_exit:
 // Trashed: ax sp al ah ss
 // Preserved: sp
 // fn0C00_0008
+// Return size: 0
 word16 fn0C00_0008(word16 bx, selector ds)
 fn0C00_0008_entry:
 	// succ:  l0C00_0008

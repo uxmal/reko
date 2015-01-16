@@ -26,13 +26,14 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
-    public class UserProcedureWorkItem : WorkItem
+    public class ProcedureWorkItem : WorkItem
     {
         private IScanner scanner;
         private Address addr;
         private string name;
+        private Procedure procDest;
 
-        public UserProcedureWorkItem(IScanner scanner, Address addr, string name)
+        public ProcedureWorkItem(IScanner scanner, Address addr, string name)
         {
             this.scanner = scanner;
             this.addr = addr;
