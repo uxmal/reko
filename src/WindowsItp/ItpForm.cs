@@ -184,6 +184,12 @@ namespace Decompiler.WindowsItp
             {
                 throw new NotImplementedException();
             }
+
+
+            public System.Collections.ICollection GetSignatureFiles()
+            {
+                throw new NotImplementedException();
+            }
         }
 
     }

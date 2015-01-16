@@ -59,5 +59,11 @@ namespace Decompiler.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+
+        public ICollection GetSignatureFiles()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
