@@ -48,6 +48,12 @@ namespace Decompiler.Arch.X86
                             orw.AddrOf(orw.AluRegister(Registers.ah))));
         }
 
+        private void RewriteCli()
+        {
+            var ppp = host.EnsurePseudoProcedure("__cli", VoidType.Instance, 0);
+            emitter.SideEffect(PseudoProc(ppp, VoidType.Instance));
+        }
+
         private void RewriteHlt()
         {
             var ppp = host.EnsurePseudoProcedure("__hlt", VoidType.Instance, 0);

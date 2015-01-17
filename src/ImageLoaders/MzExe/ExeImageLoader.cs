@@ -28,7 +28,7 @@ using System.Collections.Generic;
 namespace Decompiler.ImageLoaders.MzExe
 {
 	/// <summary>
-	/// Loads Microsoft EXE image files. 
+	/// Loads EXE image files. These may contain executable code in varying formats. 
 	/// </summary>
 	public class ExeImageLoader : ImageLoader
 	{

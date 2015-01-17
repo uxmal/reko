@@ -543,7 +543,7 @@ namespace Decompiler.Scanning
                 return;
             }
             var bwops = bw.BackWalk(blockCur);
-            if (bwops.Count == 0)
+            if (bwops == null || bwops.Count == 0)
                 return;     //$REVIEW: warn?
             var idIndex = blockCur.Procedure.Frame.EnsureRegister(bw.Index);
 

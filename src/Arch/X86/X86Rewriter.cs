@@ -96,7 +96,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.cbw: RewriteCbw(); break;
                 case Opcode.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
                 case Opcode.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
-                case Opcode.cli: break; //$TODO
+                case Opcode.cli: RewriteCli(); break;
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
                 case Opcode.cmova: RewriteConditionalMove(ConditionCode.UGT, instrCur.op1, instrCur.op2); break;
                 case Opcode.cmovbe: RewriteConditionalMove(ConditionCode.ULE, instrCur.op1, instrCur.op2); break;

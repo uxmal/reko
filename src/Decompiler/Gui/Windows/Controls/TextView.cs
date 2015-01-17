@@ -203,6 +203,14 @@ namespace Decompiler.Gui.Windows.Controls
             base.OnMouseUp(e);
         }
 
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
+            RecomputeLayout();
+            OnScroll();
+            Invalidate();
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             foreach (var line in visibleLines.Values)
@@ -343,12 +351,12 @@ namespace Decompiler.Gui.Windows.Controls
             int visibleLines = GetFullyVisibleLines();
             vScroll.Minimum = 0;
             if (model != null)
-            { 
-            vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
-            vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
-            vScroll.Enabled = visibleLines < model.LineCount;
+            {
+                vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
+                vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
+                vScroll.Enabled = visibleLines < model.LineCount;
             }
-            else 
+            else
             {
                 vScroll.Enabled = false;
             }

@@ -687,7 +687,9 @@
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml" />
-    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml" />
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
     <Content Include="Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
     <None Include="Images\Back.bmp" />

@@ -35,5 +35,6 @@ namespace Decompiler.Gui.Windows.Forms
         public DisassemblyControl DisassemblyControl { get { return dasmCtl; } }
 
         public ColorDialog ColorPicker { get { return colorPicker; } }
+        public FontDialog FontPicker { get { return fontPicker; } }
     }
 }

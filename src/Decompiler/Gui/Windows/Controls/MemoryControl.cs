@@ -279,6 +279,15 @@ namespace Decompiler.Gui.Windows.Controls
             base.OnMouseUp(e);
         }
 
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            var newTopAddress = TopAddress + (int)(e.Delta > 0 ? -cbRow : cbRow);
+            if (image.IsValidAddress(newTopAddress))
+            {
+                TopAddress = newTopAddress;
+            }
+        }
+
         private void AffectSelection(MouseEventArgs e)
         {
             using (Graphics g = this.CreateGraphics())
