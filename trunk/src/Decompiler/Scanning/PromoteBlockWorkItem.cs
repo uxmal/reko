@@ -93,12 +93,24 @@ namespace Decompiler.Scanning
         {
             // Get all blocks that are from "outside" blocks.
             var inboundBlocks = blockToPromote.Pred.Where(p => p.Procedure != ProcNew).ToArray();
-            foreach (var inboundBlock in inboundBlocks)
+            foreach (var inb in inboundBlocks)
             {
-                var lastAddress = GetAddressOfLastInstruction(inboundBlock);
-                var callRetThunkBlock = Scanner.CreateCallRetThunk(lastAddress, inboundBlock.Procedure, ProcNew);
-                ReplaceSuccessorsWith(inboundBlock, blockToPromote, callRetThunkBlock);
-                callRetThunkBlock.Pred.Add(inboundBlock);
+                if (inb.Statements.Count > 0)
+                {
+                    var lastAddress = GetAddressOfLastInstruction(inb);
+                    var callRetThunkBlock = Scanner.CreateCallRetThunk(lastAddress, inb.Procedure, ProcNew);
+                    ReplaceSuccessorsWith(inb, blockToPromote, callRetThunkBlock);
+                    callRetThunkBlock.Pred.Add(inb);
+                }
+                else
+                {
+                    inb.Statements.Add(0, new CallInstruction(
+                                    new ProcedureConstant(Scanner.Architecture.PointerType, ProcNew),
+                                    new CallSite(ProcNew.Signature.ReturnAddressOnStack, 0)));
+                    Scanner.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
+                    inb.Statements.Add(0, new ReturnInstruction());
+                    inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);
+                }
             }
             foreach (var p in inboundBlocks)
             {

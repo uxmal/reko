@@ -37,7 +37,7 @@ namespace Decompiler.Gui.Windows.Controls
         private Program program;
         private Address position;
 
-        public DisassemblyTextModel( Program program)
+        public DisassemblyTextModel(Program program)
         {
             if (program == null)
                 throw new ArgumentNullException("program");

@@ -139,7 +139,8 @@ namespace Decompiler.Scanning
                             return true;
                         }
                     }
-                    if (binSrc.Operator == Operator.Xor && 
+                    if (Index != null &&
+                        binSrc.Operator == Operator.Xor && 
                         binSrc.Left == ass.Dst && 
                         binSrc.Right == ass.Dst && 
                         RegisterOf(ass.Dst) == Index.GetSubregister(8,8))
