@@ -492,5 +492,22 @@ movzx	ax,byte ptr [bp+04]
             var memOp = (MemoryOperand)instr.op2;
             Assert.AreEqual("word16", memOp.Offset.DataType.ToString());
         }
+
+        [Test]
+        public void Dis_x86_Movdqa()
+        {
+            var instr = Disassemble32(0x66, 0x0F, 0x6F, 0x06, 0x12, 0x34, 0x56);
+            Assert.AreEqual("movdqa\txmm0,[esi]", instr.ToString());
+        }
+        //$TOD: copy only gives me n-1 bytes rathern than n. bytes
+        //   0048D4A8 
+        
+        // 66 0F 6F 06                    f.o    
+        [Test]
+        public void Dis_x86_bts()
+        {
+            var instr = Disassemble32(0x0F, 0xAB, 0x04, 0x24, 0xEB);
+            Assert.AreEqual("bts\t[esp],eax", instr.ToString());
+        }
     }
 }

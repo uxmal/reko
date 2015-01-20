@@ -158,7 +158,7 @@ namespace Decompiler.Arch.X86
                 {
                     BinaryOperator op = Operator.IAdd;
                     long l = mem.Offset.ToInt64();
-                    if (l < 0)
+                    if (l < 0 && l > -0x800)
                     {
                         l = -l;
                         op = Operator.ISub;

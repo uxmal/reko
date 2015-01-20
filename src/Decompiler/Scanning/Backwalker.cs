@@ -201,9 +201,13 @@ namespace Decompiler.Scanning
                     var baseReg = GetBaseRegister(binEa.Left);
                     if (memOffset != null && binEa.Operator == Operator.IAdd)
                     {
-                        Operations.Add(new BackwalkDereference(memOffset.ToInt32(), scale));
-                        Index = baseReg;
-                        return true;
+                        var mOff = memOffset.ToInt32();
+                        if (mOff > 0x200)
+                        { 
+                            Operations.Add(new BackwalkDereference(memOffset.ToInt32(), scale));
+                            Index = baseReg;
+                            return true;
+                        }
                     }
                     return false;
                 }

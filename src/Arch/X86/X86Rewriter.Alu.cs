@@ -138,6 +138,17 @@ namespace Decompiler.Arch.X86
 				PseudoProc("__bt", PrimitiveType.Bool, SrcOp(instrCur.op1), SrcOp(instrCur.op2)));
         }
 
+        private void RewriteBts()
+        {
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF),                    // lhs
+                PseudoProc(
+                        "__bts", PrimitiveType.Bool,      // rhs
+                        SrcOp(instrCur.op1),
+                        SrcOp(instrCur.op2),
+                        emitter.Out(instrCur.op1.Width, SrcOp(instrCur.op1))));
+        }
+
         public void RewriteBswap()
         {
             Identifier reg = (Identifier)orw.AluRegister(((RegisterOperand)instrCur.op1).Register);

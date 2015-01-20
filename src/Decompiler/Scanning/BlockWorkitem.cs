@@ -556,7 +556,8 @@ namespace Decompiler.Scanning
                 if (!rdr.IsValid)
                     return;
                 // Can't determine the size of the table, but surely it has one entry?
-                vector.Add(arch.ReadCodeAddress(xfer.Target.DataType.Size, rdr, state));
+                vector.Add(arch.ReadCodeAddress(bw.Stride, rdr, state));
+                scanner.AddDiagnostic(addrSwitch, new WarningDiagnostic("Can't determine size of the table, probing only one entry."));
             }
 
             ScanVectorTargets(xfer, vector);

@@ -38,8 +38,6 @@ namespace Decompiler.Core
                 throw new ArgumentException("Blocks must have a valid name.", "name"); 
 			this.Procedure = proc;
 			this.Name = name;
-            if (name.Contains("1100"))  //$DEBUG
-                name.ToCharArray();
 			this.Statements = new StatementList(this);
             // The great majority of blocks have at most two predecessors / successors.
             this.Pred = new List<Block>(2);
