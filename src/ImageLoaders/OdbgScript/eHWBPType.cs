@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    enum eHWBPType
+    public enum eHWBPType
     {
     }
 }

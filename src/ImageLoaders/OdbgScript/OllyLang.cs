@@ -4,6 +4,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
+    using System.Text;
     using rulong = System.UInt64;
     partial class OllyLang
     {
@@ -733,7 +735,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 else
                     sdir = dir;
 
-                List<string> unparsedScript = Helper.getlines_buff(new StringReader(buff), buff.Length);
+                List<string> unparsedScript = Helper.getlines_buff(new StringReader(buff));
                 parse_insert(unparsedScript, sdir);
 
                 //$LATER TSErrorExit = false;
@@ -750,20 +752,18 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
 
             // Global variables
-            variables["$INPUTFILE"] = Host.TE_GetTargetPath();
+            variables["$INPUTFILE"] = new var(Host.TE_GetTargetPath());
 
             string name = Host.TE_GetOutputPath();
-            if (name.Length == null)
+            if (string.IsNullOrEmpty(name))
             {
                 string ext;
                 int offs;
                 name = Host.TE_GetTargetPath();
-                if ((offs = name.rfind('.')) >= 0)
+                if ((offs = name.LastIndexOf('.')) >= 0)
                 {
-                    ext = name.substr(offs);
-                    ext.insert(0, ".unpacked");
-                    name.erase(offs);
-                    name.append(ext);
+                    ext = ".unpacked" + name.Substring(offs);
+                    name = name + ext;
                 }
             }
             variables["$OUTPUTFILE"] = new var(name);
@@ -790,7 +790,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             EOB_row = EOE_row = -1;
 
-            zf = cf = 0;
+            zf = cf = false;
             search_buffer = null;
 
             saved_bp = 0;
@@ -809,7 +809,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             reg_backup.loaded = false;
 
-            variables["$RESULT"] = 0;
+            variables["$RESULT"] = new var( 0);
 
             callbacks.Clear();
             debuggee_running = false;
@@ -846,15 +846,15 @@ namespace Decompiler.ImageLoaders.OdbgScript
             while (!back_to_debugloop && script.isloaded() && script_running)
             {
                 if (tickcount_startup == 0)
-                    tickcount_startup = MyTickCount();
+                    tickcount_startup = Helper.MyTickCount();
 
-                script_pos = script.next_command(script_pos_next);
+                script_pos = (uint) script.next_command((int)script_pos_next);
 
                 // Check if script out of bounds
                 if (script_pos >= script.lines.Count)
                     return false;
 
-                OllyScript.scriptline_t line = script.lines[script_pos];
+                OllyScript.scriptline_t line = script.lines[(int)script_pos];
 
                 script_pos_next = script_pos + 1;
 
@@ -880,11 +880,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                 if (cmd != null)
                 {
-                    result = cmd(line.args); // Call command
+                    result = cmd(line.args.ToArray()); // Call command
                 }
                 else errorstr = "Unknown command: " + line.command;
 
-                if (callbacks.Count && back_to_debugloop)
+                if (callbacks.Count != 0 && back_to_debugloop)
                 {
                     result = false;
                     errorstr = "Unallowed command during callback: " + line.command;
@@ -908,7 +908,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             bool restore_registers = false;
 
-            rulong ip = Debugger.GetContextData(eGetContextData.UE_CIP);
+            rulong ip = Debugger.GetContextData(eContextData.UE_CIP);
 
             for (int i = 0; i < tMemBlocks.Count; )
             {
@@ -949,7 +949,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 {
                     rulong ip = Debugger.GetContextData(eContextData.UE_CIP);
                     uint it;
-                    if (bpjumps.TryGetValue(op, out it))
+                    if (bpjumps.TryGetValue(ip, out it))
                     {
                         script_pos_next = it;
                     }
@@ -980,7 +980,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             //hide [pointer operations]
             while ((p = cache.IndexOf('[', p)) >= 0 && (e = cache.IndexOf(']', p)) >= 0)
             {
-                cache.erase(p, e - p + 1);
+                cache = cache.Remove(p) + cache.Substring(e - p + 1);
             }
             e = p = 0;
 
@@ -1023,8 +1023,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
             while ((b = ops.IndexOf('[', b)) >= 0)
             {
                 //Check Before
-                p = ops.IndexOfAny(operators);
-                if (r >= 0 && p < b)
+                p = ops.IndexOfAny(operators.ToCharArray());
+                if (e >= 0 && p < b)
                 {
                     return p;
                 }
@@ -1032,7 +1032,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 if (e >= 0)
                 {
                     //Check between
-                    if ((p = ops.IndexOfAny(operators, e + 1)) >= 0 && p < ops.IndexOf('[', e + 1))
+                    if ((p = ops.IndexOfAny(operators.ToCharArray(), e + 1)) >= 0 && p < ops.IndexOf('[', e + 1))
                     {
                         return p;
                     }
@@ -1042,7 +1042,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
 
             //Check after
-            return ops.IndexOfAny(operators, e);
+            return ops.IndexOfAny(operators.ToCharArray(), e);
         }
 
         int GetFloatOperatorPos(string ops)
@@ -1111,12 +1111,13 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
         */
 
-        bool ParseString(string arg, ref string result)
+        bool ParseString(string arg, out string result)
         {
             int start = 0, offs;
             char oper = '+';
             var val = new var("");
             string curval;
+            result = "";
 
             if ((offs = GetStringOperatorPos(arg)) >= 0)
             {
@@ -1124,7 +1125,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 {
                     string token = Helper.trim(arg.Substring(start, offs));
 
-                    if (!GetString(token, curval))
+                    if (!GetString(token, out curval))
                         return false;
 
                     switch (oper)
@@ -1140,7 +1141,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     start += offs + 1;
                     offs = GetRulongOperatorPos(arg.Substring(start));
                 }
-                while (start < arg.Count);
+                while (start < arg.Length);
 
                 if (!val.isbuf)
                     result = '\"' + val.str + '\"';
@@ -1152,25 +1153,26 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool ParseRulong(string arg, ref string result)
+        bool ParseRulong(string arg, out string result)
         {
             int start = 0, offs;
             char oper = '+';
             rulong val = 0, curval;
 
+            result = "";
             if ((offs = GetRulongOperatorPos(arg)) >= 0)
             {
                 do
                 {
-                    if (!start && !offs) // allow leading +/-
+                    if (start == 0 && offs == 0) // allow leading +/-
                     {
                         curval = 0;
                     }
                     else
                     {
-                        string token = trim(arg.substr(start, offs));
+                        string token = Helper.trim(arg.Substring(start, offs));
 
-                        if (!GetRulong(token, curval))
+                        if (!GetRulong(token, out curval))
                             return false;
                     }
 
@@ -1189,8 +1191,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     case '&': val &= curval; break;
                     case '|': val |= curval; break;
                     case '^': val ^= curval; break;
-                    case '>': val >>= curval; break;
-                    case '<': val <<= curval; break;
+                    case '>': val >>= (int)curval; break;
+                    case '<': val <<= (int)curval; break;
                     }
 
                     if (offs < 0)
@@ -1199,11 +1201,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     oper = arg[start + offs];
 
                     start += offs + 1;
-                    offs = GetRulongOperatorPos(arg.substr(start));
+                    offs = GetRulongOperatorPos(arg.Substring(start));
                 }
-                while (start < arg.Count);
+                while (start < arg.Length);
 
-                result = rul2hexstr(val);
+                result = Helper.rul2hexstr(val);
                 return true;
             }
 
@@ -1215,24 +1217,24 @@ namespace Decompiler.ImageLoaders.OdbgScript
             int start = 0, offs;
             char oper = '+';
             double val = 0, curval;
-
+            result = "";
             if ((offs = GetFloatOperatorPos(arg)) >= 0)
             {
                 do
                 {
-                    if (!start && !offs) // allow leading +/-
+                    if (start==0 && offs==0) // allow leading +/-
                     {
                         curval = 0.0;
                     }
                     else
                     {
-                        string token = trim(arg.substr(start, offs));
+                        string token = Helper.trim(arg.Substring(start, offs));
 
-                        if (!GetFloat(token, curval))
+                        if (!GetFloat(token, out curval))
                         {
                             //Convert integer to float (but not for first operand)
                             rulong dw;
-                            if (start && GetRulong(token, out dw))
+                            if (start != 0 && GetRulong(token, out dw))
                                 curval = dw;
                             else
                                 return false;
@@ -1274,7 +1276,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     do psize--;
                     while (psize > 1 && result[p + psize] == '0');
 
-                    result.resize(p + psize + 1);
+                    result = result.Remove(p + psize + 1);
                 }
                 return true;
             }
@@ -1285,6 +1287,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         bool GetAnyValue(string op, out string value, bool hex8forExec = false)
         {
             rulong dw;
+            value = null;
 
             if (is_variable(op))
             {
@@ -1294,21 +1297,21 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     value = v.str;
                     return true;
                 }
-                else if (v.type == var.DW)
+                else if (v.type == var.etype.DW)
                 {
                     if (hex8forExec) //For Assemble Command (EXEC/ENDE) ie. "0DEADBEEF"
-                        value = '0' + toupper(rul2hexstr(v.dw));
+                        value = '0' + Helper.toupper(Helper.rul2hexstr(v.dw));
                     else
-                        value = toupper(rul2hexstr(v.dw));
+                        value = Helper.toupper(Helper.rul2hexstr(v.dw));
                     return true;
                 }
             }
-            else if (is_float(op))
+            else if (Helper.is_float(op))
             {
                 value = op;
                 return true;
             }
-            else if (is_hex(op))
+            else if (Helper.is_hex(op))
             {
                 if (hex8forExec)
                     value = '0' + op;
@@ -1316,31 +1319,31 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     value = op;
                 return true;
             }
-            else if (is_dec(op))
+            else if (Helper.is_dec(op))
             {
-                value = toupper(rul2hexstr(decstr2rul(op.substr(0, op.Length - 1))));
+                value = Helper.toupper(Helper.rul2hexstr(Helper.decstr2rul(op.Substring(0, op.Length - 1))));
                 return true;
             }
-            else if (is_string(op))
+            else if (Helper.is_string(op))
             {
                 value = Helper.UnquoteString(op, '"');
                 return true;
             }
-            else if (is_bytestring(op))
+            else if (Helper.is_bytestring(op))
             {
                 value = op;
                 return true;
             }
             else if (Helper.is_memory(op))
             {
-                return GetString(op, value);
+                return GetString(op, out value);
             }
-            else if (GetRulong(op, dw))
+            else if (GetRulong(op, out dw))
             {
                 if (hex8forExec)
-                    value = '0' + toupper(rul2hexstr(dw));
+                    value = '0' + Helper.toupper(Helper.rul2hexstr(dw));
                 else
-                    value = toupper(rul2hexstr(dw));
+                    value = Helper.toupper(Helper.rul2hexstr(dw));
                 return true;
             }
             return false;
@@ -1348,6 +1351,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool GetString(string op, out string value, int size = 0)
         {
+            value = "";
             if (is_variable(op))
             {
                 if (variables[op].type == var.etype.STR)
@@ -1366,25 +1370,25 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     /*
                     // It's a string var, return value
                     if(size && size < v.size)
-                        value = v.to_string().substr(0, size);
+                        value = v.to_string().Substring(0, size);
                     else
                         value = v.str;
                     return true;
                     */
                 }
             }
-            else if (is_string(op))
+            else if (Helper.is_string(op))
             {
                 value = Helper.UnquoteString(op, '"');
 
-                if (size && size < value.Length)
-                    value.resize(size);
+                if (size!=0 && size < value.Length)
+                    value = value.Remove(size);
                 return true;
             }
-            else if (is_bytestring(op))
+            else if (Helper.is_bytestring(op))
             {
-                if (size && (size * 2) < (op.Length - 2))
-                    value = op.substr(0, (size * 2) + 1) + '#';
+                if (size!= 0 && (size * 2) < (op.Length - 2))
+                    value = op.Substring(0, (size * 2) + 1) + '#';
                 else
                     value = op;
                 return true;
@@ -1410,7 +1414,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                             value = '#' + Helper.bytes2hexstr(buffer, size) + '#';
                             return true;
                         }
-                        
 
                         /*
                         char* buffer;
@@ -1442,10 +1445,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     else
                     {
                         byte[] buffer = new byte[STRING_READSIZE];
-                        if (Host.TE_ReadMemory(src, sizeof(buffer), buffer))
+                        if (Host.TE_ReadMemory(src, (rulong)buffer.Length, buffer))
                         {
-                            buffer[_countof(buffer) - 1] = '\0';
-                            value = buffer;
+                            buffer[buffer.Length - 1] = 0;
+                            value = Encoding.UTF8.GetString(buffer);
                             return true;
                         }
                     }
@@ -1453,9 +1456,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
             else
             {
-                string parsed;
-                return (ParseString(op, parsed) && GetString(parsed, value, size));
+                string parsed = "";
+                return (ParseString(op, out parsed) && GetString(parsed, out value, size));
             }
+            value = "";
             return false;
         }
         /*
@@ -1504,7 +1508,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             else if(is_bytestring(op))
             {
                 if(size && (size*2) < (op.Length-2))
-                    value = op.substr(0, (size*2)+1) + '#';
+                    value = op.Substring(0, (size*2)+1) + '#';
                 else
                     value = op;
                 return true;
@@ -1516,7 +1520,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 rulong src;
                 if(GetRulong(tmp, src))
                 {
-                    ASSERT(src != 0);
+                    Debug.Assert(src != 0);
 
                     if(size)
                     {
@@ -1554,36 +1558,38 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             rulong temp;
 
-            if (GetRulong(op, temp))
+            if (GetRulong(op, out temp))
             {
                 value = temp != 0;
                 return true;
             }
+            value = false;
             return false;
         }
 
         bool GetRulong(string op, out rulong value)
         {
+            value = 0;
             if (is_register(op))
             {
-                const register_t* reg = find_register(op);
+                register_t reg = find_register(op);
                 value = Debugger.GetContextData(reg.id);
-                value = resize(value >> (reg.offset * 8), reg.size);
+                value = Helper.resize(value >> (reg.offset * 8), reg.size);
                 return true;
             }
             else if (is_flag(op))
             {
-                eflags_t flags;
-                flags.dw = Debugger.GetContextData(UE_EFLAGS);
+                eflags_t flags = new eflags_t();
+                flags.dw = Debugger.GetContextData(eContextData.UE_EFLAGS);
                 switch (op[1])
                 {
-                case 'a': value =(int)flags.bits.AF; break;
-                case 'c': value =(int)flags.bits.CF; break;
-                case 'd': value =(int)flags.bits.DF; break;
-                case 'o': value =(int)flags.bits.OF; break;
-                case 'p': value =(int)flags.bits.PF; break;
-                case 's': value =(int)flags.bits.SF; break;
-                case 'z': value =(int)flags.bits.ZF; break;
+                case 'a': value =(flags.bits.AF?1u:0u); break;
+                case 'c': value =(flags.bits.CF?1u:0u); break;
+                case 'd': value =(flags.bits.DF?1u:0u); break;
+                case 'o': value =(flags.bits.OF?1u:0u); break;
+                case 'p': value =(flags.bits.PF?1u:0u); break;
+                case 's': value =(flags.bits.SF?1u:0u); break;
+                case 'z': value =(flags.bits.ZF?1u:0u); break;
                 }
                 return true;
             }
@@ -1600,32 +1606,34 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 value = find_constant(op).value;
                 return true;
             }
-            else if (is_hex(op))
+            else if (Helper.is_hex(op))
             {
-                value = hexstr2rul(op);
+                value = Helper.hexstr2rul(op);
                 return true;
             }
-            else if (is_dec(op))
+            else if (Helper.is_dec(op))
             {
-                value = decstr2rul(op.substr(0, op.Length - 1));
+                value = Helper.decstr2rul(op.Substring(0, op.Length - 1));
                 return true;
             }
-            else if (IsQuotedString(op, '[', ']'))
+            else if (Helper.IsQuotedString(op, '[', ']'))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
                 rulong src;
-                if (GetRulong(tmp, src))
+                if (GetRulong(tmp, out src))
                 {
-                    ASSERT(src != 0);
-                    return Host.TE_ReadMemory(src, sizeof(value), out value);
+                    Debug.Assert(src != 0);
+                    return Host.TE_ReadMemory(src, out value);
                 }
             }
             else
             {
                 string parsed;
-                return (ParseRulong(op, ref parsed) && GetRulong(parsed, out value));
+                value = 0;
+                return (ParseRulong(op, out parsed) && GetRulong(parsed, out value));
             }
+            value = 0;
             return false;
         }
 
@@ -1670,7 +1678,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 rulong src;
                 if (GetRulong(tmp, src))
                 {
-                    ASSERT(src != 0);
+                    Debug.Assert(src != 0);
                     return Host.TE_ReadMemory(src, sizeof(value), &value);
                 }
             }
@@ -1750,24 +1758,24 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             if (is_variable(op))
             {
-                variables[op] = value;
+                variables[op] = new var(value);
                 return true;
             }
             else if (is_floatreg(op))
             {
                 int index = op[3] - '0';
-                double* preg;
+                double preg;
 #if _WIN64
 			XMM_SAVE_AREA32 fltctx;
 			preg = (double*)&fltctx.FloatRegisters + index;
 #else
-                FLOATING_SAVE_AREA fltctx;
-                preg = (double*)&fltctx.RegisterArea[0] + index;
+                FLOATING_SAVE_AREA fltctx = null;
+                //preg = (double*)&fltctx.RegisterArea[0] + index;
 #endif
-                if (Debugger.GetContextFPUDataEx(TE_GetCurrentThreadHandle(), &fltctx))
+                if (Debugger.GetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx))
                 {
-                    *preg = value;
-                    return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), &fltctx);
+                    //preg = value;
+                    return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx);
                 }
             }
             else if (Helper.is_memory(op))
@@ -1775,11 +1783,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
                 rulong target;
-                if (GetRulong(tmp, target))
+                if (GetRulong(tmp, out target))
                 {
-                    ASSERT(target != 0);
+                    Debug.Assert(target != 0);
 
-                    return TE_WriteMemory(target, sizeof(value), &value);
+                    return Host.TE_WriteMemory(target, sizeof(double), value);
                 }
             }
 
@@ -1790,8 +1798,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             if (is_variable(op))
             {
-                variables[op] = value;
-                if (size && size < variables[op].size)
+                variables[op] = new var(value);
+                if (size!=0 && size < variables[op].size)
                     variables[op].resize(size);
                 return true;
             }
@@ -1800,10 +1808,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
                 rulong target;
-                if (GetRulong(tmp, target))
+                if (GetRulong(tmp, out target))
                 {
-                    ASSERT(target != 0);
-                    return Host.TE_WriteMemory(target, min(size, value.Count), &value);
+                    Debug.Assert(target != 0);
+                    return Host.TE_WriteMemory(target, Math.Min(size, value.Length), value);
                 }
             }
             return false;
@@ -1811,7 +1819,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool SetBool(string op, bool value)
         {
-            return SetRulong(op, value, sizeof(value));
+            return SetRulong(op, value?1u:0u, 1);
         }
 
         register_t find_register(string name)
@@ -1845,12 +1853,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool is_floatreg(string s)
         {
-            return Array.Find(fpu_registers, x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
+            return fpu_registers.Any<string>(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
 
         bool is_flag(string s)
         {
-            return Array.Find(e_flags, x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
+            return e_flags.Any(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
 
         bool is_variable(string s)
@@ -1865,7 +1873,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool is_valid_variable_name(string s)
         {
-            return (s.Length && isalpha(s[0]) && !is_register(s) && !is_floatreg(s) && !is_constant(s));
+            return (s.Length != 0 && char.IsLetter(s[0]) && !is_register(s) && !is_floatreg(s) && !is_constant(s));
         }
 
         bool is_writable(string s)
@@ -1875,8 +1883,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         string ResolveVarsForExec(string @in, bool hex8forExec)
         {
-            string @out, varname;
-            const string ti = trim(@in);
+            string @out = "", varname = "";
+            string ti = Helper.trim(@in);
             bool in_var = false;
 
             for (int i = 0; i < ti.Length; i++)
@@ -1911,25 +1919,25 @@ namespace Decompiler.ImageLoaders.OdbgScript
             string cSep = "";
             int pos;
 
-            pos = asmLine.find_first_of(whitespaces);
+            pos = asmLine.IndexOfAny(Helper.whitespaces.ToCharArray());
 
             if (pos < 0)
                 return asmLine; //no args
 
-            command = asmLine.substr(0, pos) + ' ';
-            args = asmLine.substr(pos + 1);
+            command = asmLine.Substring(0, pos) + ' ';
+            args = asmLine.Substring(pos + 1);
 
-            while ((pos = args.find_first_of("+,[")) >= 0)
+            while ((pos = args.IndexOf("+,[")) >= 0)
             {
-                arg = trim(args.substr(0, pos));
-            ForLastArg:
+                arg = Helper.trim(args.Substring(0, pos));
+      //      ForLastArg:
                 if (cSep == "[")
                 {
-                    if (arg.Count && arg[arg.Count - 1] == ']')
+                    if (arg.Length!=0 && arg[arg.Length - 1] == ']')
                     {
-                        if (is_hex(arg.substr(0, arg.Count - 1)) && isalpha(arg[0]))
+                        if (Helper.is_hex(arg.Substring(0, arg.Length - 1)) && Char.IsLetter(arg[0]))
                         {
-                            arg.insert(0, 1, '0');
+                            arg = "0" + arg;
                         }
                     }
                 }
@@ -1937,7 +1945,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 {
                     if (Helper.is_hex(arg) && Char.IsLetter(arg[0]))
                     {
-                        arg.insert(0, 1, '0');
+                        arg = "0" + arg;
                     }
                 }
 
@@ -1946,19 +1954,19 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 if (args != "")
                 {
                     cSep = "" + args[pos];
-                    args.erase(0, pos + 1);
+                    args = args.Substring(pos + 1);
                 }
             }
 
-            args = trim(args);
+            args = Helper.trim(args);
             if (args != "")
             {
                 arg = args;
                 args = "";
-                goto ForLastArg;
+        //        goto ForLastArg;
             }
 
-            return trim(command);
+            return Helper.trim(command);
         }
 
         bool callCommand(Func<string[], bool> command, params string[] args)
@@ -1973,10 +1981,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         void regBlockToFree(rulong address, rulong size, bool autoclean)
         {
-            t_dbgmemblock block = { 0 };
+            t_dbgmemblock block = new t_dbgmemblock();
 
             block.address = address;
-            block.size = size;
+            block.size = (uint)size;
             block.autoclean = autoclean;
             block.script_pos = script_pos;
             block.restore_registers = false;
@@ -1990,7 +1998,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
                 if (tMemBlocks[i].address == address)
                 {
-                    tMemBlocks.erase(tMemBlocks.begin() + i);
+                    tMemBlocks.RemoveAt(i);
                     return true;
                 }
             }
@@ -2010,18 +2018,18 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool SaveRegisters(bool stackToo)
         {
-            for (int i = 0; i < _countof(registers); i++)
+            for (int i = 0; i < registers.Length; i++)
             {
                 if (registers[i].size == sizeof(rulong))
                 {
                     eContextData reg = registers[i].id;
-                    if (stackToo || (reg != UE_ESP && reg != UE_RSP && reg != UE_EBP && reg != UE_RBP))
+                    if (stackToo || (reg != eContextData.UE_ESP && reg != eContextData.UE_RSP && reg != eContextData.UE_EBP && reg != eContextData.UE_RBP))
                     {
                         reg_backup.regs[i] = Debugger.GetContextData(reg);
                     }
                 }
             }
-            reg_backup.eflags = Debugger.GetContextData(UE_EFLAGS);
+            reg_backup.eflags = Debugger.GetContextData(eContextData.UE_EFLAGS);
 
             reg_backup.threadid = Host.TE_GetCurrentThreadId();
             reg_backup.script_pos = script_pos;
@@ -2037,19 +2045,19 @@ namespace Decompiler.ImageLoaders.OdbgScript
             if (Host.TE_GetCurrentThreadId() != reg_backup.threadid)
                 return false;
 
-            for (int i = 0; i < _countof(registers); i++)
+            for (int i = 0; i <registers.Length; i++)
             {
                 if (registers[i].size == sizeof(rulong))
                 {
                     eContextData reg = registers[i].id;
-                    if (stackToo || (reg != UE_ESP && reg != UE_RSP && reg != UE_EBP && reg != UE_RBP))
+                    if (stackToo || (reg != eContextData.UE_ESP && reg != eContextData.UE_RSP && reg != eContextData.UE_EBP && reg != eContextData.UE_RBP))
                     {
                         Debugger.SetContextData(reg, reg_backup.regs[i]);
                     }
                 }
             }
 
-            Debugger.SetContextData(UE_EFLAGS, reg_backup.eflags);
+            Debugger.SetContextData(eContextData.UE_EFLAGS, reg_backup.eflags);
 
             return true;
         }
@@ -2096,8 +2104,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
             default: // continue stepping, count > 0
                 Instance().stepcount--;
+                goto case -1;
             case -1: // endless stepping, only enter script command loop on BP/exception
-                Debugger.StepInto(&StepIntoCallback);
+                Debugger.StepInto(StepIntoCallback);
                 break;
             case 0: // stop stepping, enter script command loop
                 Instance().StepChecked();
@@ -2111,6 +2120,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
             default:
                 Instance().stepcount--;
+                goto case -1;
             case -1:
                 if (Instance().return_to_usercode)
                 {
@@ -2124,7 +2134,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 else if (Instance().run_till_return)
                 {
-                    string cmd = DisassembleEx(Debugger.GetContextData(UE_CIP));
+                    string cmd = Host.DisassembleEx(Debugger.GetContextData(eContextData.UE_CIP));
                     if (cmd.IndexOf("RETN") == 0)
                     {
                         Instance().run_till_return = false;
@@ -2140,11 +2150,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     that's not gonna do us any good for jumps
                     so we'll stepinto except for a few exceptions
                     */
-                    string cmd = DisassembleEx(Debugger.GetContextData(UE_CIP));
+                    string cmd = Host.DisassembleEx(Debugger.GetContextData(eContextData.UE_CIP));
                     if (cmd.IndexOf("CALL") == 0 || cmd.IndexOf("REP") == 0)
-                        Debugger.StepOver(&StepOverCallback);
+                        Debugger.StepOver(StepOverCallback);
                     else
-                        Debugger.StepInto(&StepIntoCallback);
+                        Debugger.StepInto(StepIntoCallback);
                     break;
                 }
             case 0:
@@ -2163,10 +2173,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return true;
         }
 
-        bool StepCallback(uint pos, bool returns_value, var.etype return_type, out var result)
+        bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result)
         {
             callback_t callback;
-            callback.call = calls.Count;
+            callback.call = (uint) calls.Count;
             callback.returns_value = returns_value;
             callback.return_type = return_type;
 
@@ -2176,7 +2186,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             script_pos_next = pos;
 
             bool ret = Step();
-            if (ret!=0 && returns_value && result)
+            if (ret && returns_value && result != null)
                 result = callback_return;
 
             return ret;
@@ -2184,22 +2194,22 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId)
         {
-            var it = Instance().CustomHandlerLabels.IndexOf(ExceptionId);
-            if (it != Instance().CustomHandlerLabels.end())
+            string it;
+            if (Instance().CustomHandlerLabels.TryGetValue(ExceptionId, out it))
             {
                 //variables["$TE_ARG_1"] = (rulong)ExceptionData;
-                Instance().DoCALL(&it.second, 1);
+                Instance().DoCALL(it);
             }
         }
 
         object Callback_AutoFixIATEx(object fIATPointer)
         {
-            var ret;
+            var ret = new var();
 
             uint label = Instance().script.labels[Instance().Label_AutoFixIATEx];
-            Instance().variables["$TE_ARG_1"] = (rulong)fIATPointer;
-            if (Instance().StepCallback(label, true, var.etype.DW, &ret))
-                return (void*)ret.dw;
+            Instance().variables["$TE_ARG_1"] =  new var((rulong)fIATPointer);
+            if (Instance().StepCallback(label, true, var.etype.DW, ref ret))
+                return (object)ret.dw;
             else
                 return 0;
         }

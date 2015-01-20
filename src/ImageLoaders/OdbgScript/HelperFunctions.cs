@@ -209,21 +209,21 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return size;
         }
 
-        public static bool memcmp_mask(byte[] b1, byte[] b2, byte[] mask, int size)
+        public static bool memcmp_mask(byte[] b1, int offset, byte[] b2, byte[] mask, int size)
         {
             for (int i = 0; i < size; i++)
             {
-                if ((b1[i] & mask[i]) != (b2[i] & mask[i]))
+                if ((b1[i+offset] & mask[i]) != (b2[i] & mask[i]))
                     return false;
             }
             return true;
         }
 
-        public static bool memcpy_mask(byte[] b1, byte[] b2, byte[] mask, int size)
+        public static bool memcpy_mask(byte[] b1, int offset, byte[] b2, byte[] mask, int size)
         {
             for (int i = 0; i < size; i++)
             {
-                b1[i] = (byte)((b1[i] & ~mask[i]) | (b2[i] & mask[i]));
+                b1[i+offset] = (byte)((b1[i+offset] & ~mask[i]) | (b2[i] & mask[i]));
             }
             return true;
         }

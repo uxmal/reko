@@ -7,9 +7,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
     using rulong = System.UInt64;
     public partial class var
     {
-        public
-
-            enum etype { EMP, DW, STR, FLT };
+        public enum etype { EMP, DW, STR, FLT };
 
         public rulong dw;
         public string str;
@@ -126,7 +124,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
 		{
             return new var(lhs.str + Helper.toupper(Helper.rul2hexstr(rhs)));
 		}
-		break;
 	}
 	return lhs;
 }
@@ -189,7 +186,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     return str.CompareTo(rhs.str);
                 else
                     return to_bytes().CompareTo(rhs.to_bytes());
-                break;
             }
             return -2;
         }
@@ -241,7 +237,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
         }
 
-        void reverse()
+        public void reverse()
         {
             switch (type)
             {
