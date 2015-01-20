@@ -857,7 +857,6 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "5|T--|call Mem0[ds:bx + 0x0008:ptr32] (4)");
         }
 
-
         [Test]
         public void X86Rw_RewriteJp()
         {
@@ -1145,6 +1144,24 @@ namespace Decompiler.UnitTests.Arch.Intel
                AssertCode(
               "0|10000000(3): 1 instructions",
               "1|L--|ecx = Mem0[fs:edx:word32]");
+        }
+
+        [Test]
+        public void X86rw_seto()
+        {
+            Run32bitTest(0x0f, 0x90, 0xc1);
+            AssertCode(
+                "0|10000000(3): 1 instructions",
+                "1|L--|cl = Test(OV,O)");
+        }
+
+        [Test]
+        public void X86rw_bts()
+        {
+            Run32bitTest(0x0F, 0xAB, 0x04, 0x24);
+            AssertCode(
+                "0|10000000(4): 1 instructions",
+                "1|L--|C = __bts(Mem0[esp:word32],eax,out Mem[esp:word32])");
         }
     }
 }

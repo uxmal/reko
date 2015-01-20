@@ -162,7 +162,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.movdqa, "Vx,Wx"),
 
 				// 70
 				new SingleByteOpRec(Opcode.illegal),
@@ -234,7 +234,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.push, "s5"),
 				new SingleByteOpRec(Opcode.pop, "s5"),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.bts, "Ev,Gv"),
 				new SingleByteOpRec(Opcode.shrd, "Ev,Gv,Ib"),
 				new SingleByteOpRec(Opcode.shrd, "Ev,Gv,c"),
 				new SingleByteOpRec(Opcode.illegal),

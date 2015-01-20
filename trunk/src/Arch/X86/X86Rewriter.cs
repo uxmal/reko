@@ -52,7 +52,7 @@ namespace Decompiler.Arch.X86
             IntelArchitecture arch,
             IRewriterHost host,
             X86State state,
-            ImageReader rdr, 
+            ImageReader rdr,
             Frame frame)
         {
             if (host == null)
@@ -92,6 +92,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.bt: RewriteBt(); break;
+                case Opcode.bts: RewriteBts(); break;
                 case Opcode.call: RewriteCall(instrCur.op1, instrCur.op1.Width); break;
                 case Opcode.cbw: RewriteCbw(); break;
                 case Opcode.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
@@ -216,7 +217,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
                 case Opcode.movsx: RewriteMovsx(); break;
-                case Opcode.movzx: RewriteMovzx();  break;
+                case Opcode.movzx: RewriteMovzx(); break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.nop: continue;
@@ -250,6 +251,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.setl: RewriteSet(ConditionCode.LT); break;
                 case Opcode.setle: RewriteSet(ConditionCode.LE); break;
                 case Opcode.setnz: RewriteSet(ConditionCode.NE); break;
+                case Opcode.seto: RewriteSet(ConditionCode.OV); break;
                 case Opcode.sets: RewriteSet(ConditionCode.SG); break;
                 case Opcode.setz: RewriteSet(ConditionCode.EQ); break;
                 case Opcode.shl: RewriteBinOp(BinaryOperator.Shl); break;
@@ -331,7 +333,7 @@ namespace Decompiler.Arch.X86
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 emitter.Assign(tmp, src);
-                var ea = orw.CreateMemoryAccess(instrCur.Address, (MemoryOperand) opDst, state);
+                var ea = orw.CreateMemoryAccess(instrCur.Address, (MemoryOperand)opDst, state);
                 emitter.Assign(ea, tmp);
                 dst = tmp;
             }
@@ -344,7 +346,7 @@ namespace Decompiler.Arch.X86
                 emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(dst));
             }
         }
-    
+
         private Expression SrcOp(MachineOperand opSrc)
         {
             return orw.Transform(instrCur.Address, opSrc, opSrc.Width, state);
