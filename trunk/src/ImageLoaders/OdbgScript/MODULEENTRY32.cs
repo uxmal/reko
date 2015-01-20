@@ -9,5 +9,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
     {
         public ulong modBaseAddr;
         public ulong modBaseSize;
+        public string szModule;
     }
 }

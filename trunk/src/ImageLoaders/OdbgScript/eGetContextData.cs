@@ -5,9 +5,4 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    enum eGetContextData
-    {
-        UE_CIP,
-        
-    }
 }

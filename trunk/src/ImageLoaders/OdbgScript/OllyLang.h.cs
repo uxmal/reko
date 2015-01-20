@@ -156,9 +156,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         struct callback_t
         {
-            uint call;
-            bool returns_value;
-            var.etype return_type;
+            public uint call;
+            public bool returns_value;
+            public var.etype return_type;
         };
 
         List<callback_t> callbacks;
@@ -218,7 +218,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             public readonly byte offset;
         }
 
-        struct constant_t
+        public class constant_t
         {
             public constant_t(string name, byte value) { this.name = name; this.value = value; }
             public readonly string name;
@@ -248,6 +248,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 public bool AF { get { return ((eflags_t.dw & 16) != 0); } set { if (value) eflags_t.dw |= 16u; else eflags_t.dw &= ~16u; } }
                 public bool ZF { get { return ((eflags_t.dw & 32) != 0); } set { if (value) eflags_t.dw |= 32u; else eflags_t.dw &= ~32u; } }
                 public bool SF { get { return ((eflags_t.dw & 64) != 0); } set { if (value) eflags_t.dw |= 64u; else eflags_t.dw &= ~64u; } }
+                public bool TF { get { return ((eflags_t.dw & 128) != 0); } set { if (value) eflags_t.dw |= 128u; else eflags_t.dw &= ~128u; } }
+                public bool IF { get { return ((eflags_t.dw & 256) != 0); } set { if (value) eflags_t.dw |= 256u; else eflags_t.dw &= ~256u; } }
+                public bool DF { get { return ((eflags_t.dw & 512) != 0); } set { if (value) eflags_t.dw |= 512u; else eflags_t.dw &= ~512u; } }
+                public bool OF { get { return ((eflags_t.dw & 1024) != 0); } set { if (value) eflags_t.dw |= 1024u; else eflags_t.dw &= ~1024u; } }
             //bool dummy1 : 1;
             //bool PF : 1;
             //bool dummy2 : 1;
@@ -572,6 +576,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
         */
         bool GetNum<T>(string op, ref T value)
         {
+            throw new NotImplementedException();
+#if LATER
             rulong temp;
 
             if (GetRulong(op, out temp)/* && temp <= numeric_limits<T>::max()*/)
@@ -580,6 +586,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 return true;
             }
             return false;
+#endif
         }
 
         //bool GetFloat(const string& op, double& value);
@@ -594,9 +601,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool SetNum<T>(string op, T value, int size = -1)
         {
-            if (size < 0)
-                size = Marshal.SizeOf(value);
-            return SetRulong(op, (ulong)value, size);
+            throw new NotImplementedException();
+            //if (size < 0)
+            //    size = Marshal.SizeOf(value);
+            //return SetRulong(op, (rulong)value, size);
         }
 
         //bool SetFloat(const string& op, const double& value);

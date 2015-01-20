@@ -21,6 +21,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
         UE_DR2,
         UE_DR3,
         UE_DR6,
-        UE_DR7
+        UE_DR7,
+        UE_EFLAGS,
+        UE_RSP,
+        UE_RBP,
+
+        UE_CSP,
+        UE_CIP,
     }
 }

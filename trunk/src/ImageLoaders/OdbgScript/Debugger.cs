@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Decompiler.ImageLoaders.OdbgScript
 {
     using rulong = System.UInt64;
-    class Debugger
+    public class Debugger
     {
         public class fCustomHandlerCallback
         {
@@ -71,6 +71,26 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
 
         internal static rulong GetDebuggedFileBaseAddress()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool SetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool GetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void StepInto(Action StepIntoCallback)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void StepOver(Action StepOverCallback)
         {
             throw new NotImplementedException();
         }
