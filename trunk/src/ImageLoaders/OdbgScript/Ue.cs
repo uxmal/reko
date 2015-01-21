@@ -20,5 +20,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public static byte UE_HARDWARE_SIZE_1;
         public static object UE_ACCESS_READ;
         public static byte UE_SINGLESHOOT;
+        public const byte UE_PLUGIN_CALL_REASON_PREDEBUG = 1;
+        public const byte UE_PLUGIN_CALL_REASON_POSTDEBUG = 2;
+        public const byte UE_PLUGIN_CALL_REASON_EXCEPTION = 3;
     }
 }

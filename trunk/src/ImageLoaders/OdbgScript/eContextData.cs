@@ -28,5 +28,20 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         UE_CSP,
         UE_CIP,
+        UE_RAX,
+        UE_RBX,
+        UE_RCX,
+        UE_RDX,
+        UE_RSI,
+        UE_RDI,
+        UE_RIP,
+        UE_R8,
+        UE_R9,
+        UE_R10,
+        UE_R11,
+        UE_R12,
+        UE_R13,
+        UE_R14,
+        UE_R15,
     }
 }

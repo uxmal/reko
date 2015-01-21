@@ -99,11 +99,11 @@ namespace Decompiler.Core.Configuration
         /// <summary>
         /// A format string that can be used to pass parameters to a loader implemented as an executable.
         /// </summary>
-        [ConfigurationProperty("CmdLine", IsRequired = false)]
+        [ConfigurationProperty("Argument", IsRequired = false)]
         public string CmdLine
         {
-            get { return (string) this["CmdLine"]; }
-            set { this["CmdLine"] = value; }
+            get { return (string) this["Argument"]; }
+            set { this["Argument"] = value; }
         }
     }
 }

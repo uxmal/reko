@@ -45,11 +45,20 @@ namespace Decompiler.Core
         public abstract Address PreferredBaseAddress { get; }
 
         /// <summary>
+        /// Optional argument specified by app.config.
+        /// </summary>
+        public string Argument { get; set; }
+
+        /// <summary>
         /// The image as it appears on the storage medium before being loaded.
         /// </summary>
         public byte[] RawImage { get; private set; }
 
         public IServiceProvider Services { get; private set; }
+
+        /// <summary>
+        /// The name of the file the image was loaded from.
+        /// </summary>
         public string Filename { get; private set; }
 
         /// <summary>
