@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,60 @@ namespace Decompiler.Arch.X86
 {
     public class X86Emulator
     {
+       public event EventHandler BeforeStart    ;
+       public event EventHandler BreakpointHit  ;
+       public event EventHandler ExceptionRaised;
+
+        private Core.IProcessorArchitecture processorArchitecture;
+        private Core.LoadedImage loadedImage;
+        private X86State state;
+
+        public X86Emulator(Core.IProcessorArchitecture processorArchitecture, Core.LoadedImage loadedImage, X86State state)
+        {
+            this.processorArchitecture = processorArchitecture;
+            this.loadedImage = loadedImage;
+            this.state = state;
+        }
+        public Core.Address InstructionPointer { get; set; }
+
+        IEnumerator<IntelInstruction> dasm;
+
+        public void Run()
+        {
+            CreateStack();
+            BeforeStart.Fire(this);
+            try
+            {
+                while (dasm.MoveNext())
+                {
+                    CheckBreakPoints();
+                    Execute(dasm.Current);
+                }
+            }
+            catch (Exception)
+            {
+                ExceptionRaised.Fire(this);
+            }
+        }
+
+        public void CreateStack()
+        {
+
+        }
+
+        public void CheckBreakPoints()
+        {
+
+        }
+
+        public IntelInstruction Fetch()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Execute(IntelInstruction instr)
+        {
+
+        }
     }
 }

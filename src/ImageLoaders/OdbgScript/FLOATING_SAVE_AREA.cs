@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    class FLOATING_SAVE_AREA
+    public class FLOATING_SAVE_AREA
     {
     }
 }

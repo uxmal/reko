@@ -26,7 +26,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
     using System.Windows.Forms;
     using rulong = System.UInt64;
 
-    partial class OllyLang
+    public partial class OllyLang
     {
         const int MAX_INSTR_SIZE = 16;      // x86
         const int PAGE_SIZE = 4096;         // x86 sometimes.

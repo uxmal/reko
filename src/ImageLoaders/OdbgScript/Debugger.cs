@@ -7,90 +7,100 @@ using System.Threading.Tasks;
 namespace Decompiler.ImageLoaders.OdbgScript
 {
     using rulong = System.UInt64;
+
     public class Debugger
     {
         public class fCustomHandlerCallback
         {
-
         }
+
+	    public PROCESS_INFORMATION InitDebugEx(string szFileName, string szCommandLine, string szCurrentFolder, Action EntryCallBack)
+        {
+            return null;
+        }
+
 
         public static void SetHardwareBreakPoint(rulong addr, object o, eHWBPType type, byte size, Action callback)
         {
-
         }
-        internal static rulong GetContextData(eContextData eContextData)
+        public  rulong GetContextData(eContextData eContextData)
         {
             throw new NotImplementedException();
         }
 
-        internal static void DeleteHardwareBreakPoint(int i)
+        public  void DeleteHardwareBreakPoint(int i)
         {
             throw new NotImplementedException();
         }
 
-        internal static void RemoveMemoryBPX(rulong membpaddr, rulong membpsize)
+        public  void RemoveMemoryBPX(rulong membpaddr, rulong membpsize)
         {
             throw new NotImplementedException();
         }
 
-        internal static void RemoveAllBreakPoints(byte ue)
+        public  void RemoveAllBreakPoints(byte ue)
         {
             throw new NotImplementedException();
         }
 
-        internal static void DisableBPX(rulong addr)
+        public  void DisableBPX(rulong addr)
         {
             throw new NotImplementedException();
         }
 
-        internal static void SetBPX(rulong addr, byte p, Action SoftwareCallback)
+        public  void SetBPX(rulong addr, byte p, Action SoftwareCallback)
         {
             throw new NotImplementedException();
         }
 
-        internal static void DeleteBPX(rulong addr)
+        public  void DeleteBPX(rulong addr)
         {
             throw new NotImplementedException();
         }
 
-        internal static bool SetContextData(eContextData p1, rulong p2)
+        public  bool SetContextData(eContextData p1, rulong p2)
         {
             throw new NotImplementedException();
         }
 
-        internal static bool SetMemoryBPXEx(rulong addr, rulong size, byte p1, bool p2, Action MemoryCallback)
+        public  bool SetMemoryBPXEx(rulong addr, rulong size, byte p1, bool p2, Action MemoryCallback)
         {
             throw new NotImplementedException();
         }
 
 
 
-        internal static var GetJumpDestination(object p, rulong addr)
+        public  var GetJumpDestination(object p, rulong addr)
         {
             throw new NotImplementedException();
         }
 
-        internal static rulong GetDebuggedFileBaseAddress()
+        public  rulong GetDebuggedFileBaseAddress()
         {
             throw new NotImplementedException();
         }
 
-        internal static bool SetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
+        public  bool SetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
         {
             throw new NotImplementedException();
         }
 
-        internal static bool GetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
+        public  bool GetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
         {
             throw new NotImplementedException();
         }
 
-        internal static void StepInto(Action StepIntoCallback)
+        public  void StepInto(Action StepIntoCallback)
         {
             throw new NotImplementedException();
         }
 
-        internal static void StepOver(Action StepOverCallback)
+        public  void StepOver(Action StepOverCallback)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DebugLoop()
         {
             throw new NotImplementedException();
         }

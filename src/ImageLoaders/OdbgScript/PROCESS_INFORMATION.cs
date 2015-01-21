@@ -5,10 +5,7 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    public class MODULEENTRY32
+    public class PROCESS_INFORMATION
     {
-        public ulong modBaseAddr;
-        public ulong modBaseSize;
-        public string szModule;
     }
 }
