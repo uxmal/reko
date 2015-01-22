@@ -67,7 +67,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             // Initialize the emulator instruction pointer.
             X86State state = (X86State)lr.Architecture.CreateProcessorState();
-            X86Emulator emu = new X86Emulator(lr.Architecture, lr.Image, state);
+            X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image);    //$Create emulator?
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.BeforeStart += emu_BeforeStart;
             emu.BreakpointHit += emu_BreakPointHit;
@@ -75,6 +75,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             emu.Run();
 
+            IntelRegister r;
             //$TODO: somehow collect the results of the script.
             throw new NotImplementedException();
         }
@@ -116,11 +117,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             //    strcpy(TargetDirectory, folderfrompath(TargetPath).c_str());
             ollylang.InitGlobalVariables();
             //}
-
-
         }
-
-
 
         // 
         /*

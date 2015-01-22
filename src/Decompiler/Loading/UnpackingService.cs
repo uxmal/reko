@@ -48,7 +48,9 @@ namespace Decompiler.Loading
         /// </summary>
         public void LoadSignatureFiles()
         {
-            var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+            var cfgSvc = Services.GetService<IDecompilerConfigurationService>();
+            if (cfgSvc == null)
+                return;
             foreach (SignatureFileElement sfe in cfgSvc.GetSignatureFiles())
             {
                 try

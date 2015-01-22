@@ -311,6 +311,13 @@ namespace Decompiler.Core
             return addr.Linear - this.BaseAddress.Linear;
         }
 
+        public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
+
+        public void WriteByte(uint offset, byte b)
+        {
+            abImage[offset] = b;
+        }
+
         public void WriteLeUInt16(uint offset, ushort w)
 		{
 			abImage[offset] = (byte) (w & 0xFF);

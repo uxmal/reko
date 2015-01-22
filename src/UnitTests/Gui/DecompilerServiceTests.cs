@@ -53,9 +53,10 @@ namespace Decompiler.UnitTests.Gui
         public void DecSvc_NotifyOnChangedDecompiler()
         {
             var loader = mr.Stub<ILoader>();
+            var host = mr.Stub<Decompiler.DecompilerHost>();
             mr.ReplayAll();
 
-            DecompilerDriver d = new DecompilerDriver(loader, null, sc);
+            DecompilerDriver d = new DecompilerDriver(loader, host, sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
