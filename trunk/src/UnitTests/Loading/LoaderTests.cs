@@ -29,6 +29,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Text;
@@ -42,6 +43,7 @@ namespace Decompiler.UnitTests.Loading
         private IServiceContainer sc;
         FakeDecompilerEventListener eventListener;
         private IDecompilerConfigurationService dcSvc;
+        private List<SignatureFileElement> signatureFiles;
 
         [SetUp]
         public void Setup()
@@ -50,8 +52,10 @@ namespace Decompiler.UnitTests.Loading
             sc = new ServiceContainer();
             eventListener = new FakeDecompilerEventListener();
             dcSvc = mr.Stub<IDecompilerConfigurationService>();
+            signatureFiles = new List<SignatureFileElement>();
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IDecompilerConfigurationService>(dcSvc);
+            dcSvc.Stub(d => d.GetSignatureFiles()).Return(signatureFiles);
         }
 
         [Test]
@@ -71,8 +75,9 @@ namespace Decompiler.UnitTests.Loading
             dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
 
             var testImage = new byte[] { 42, 42, 42, 42, };
-            Loader ldr = mr.PartialMock<Loader>(sc);
             mr.ReplayAll();
+            Loader ldr = mr.PartialMock<Loader>(sc);
+            ldr.Replay();
 
             Program prog = ldr.LoadExecutable("", testImage, null);
 
@@ -95,6 +100,7 @@ namespace Decompiler.UnitTests.Loading
                 }
             });
             var testImage = new byte[] { 42, 42, 0xA0, 0xA0 };
+            mr.ReplayAll();
             Loader ldr = mr.PartialMock<Loader>(sc);
             ldr.Stub(l => l.LoadImageBytes("", 0)).Return(testImage);
             mr.ReplayAll();

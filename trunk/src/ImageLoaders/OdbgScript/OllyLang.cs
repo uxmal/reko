@@ -51,12 +51,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         const byte TS_VERSION_HI = 0;
         const byte TS_VERSION_LO = 7;
 
-        static OllyLang()
-        {
-            instance = new OllyLang();
-        }
-        static OllyLang Instance() { return instance; }
-        static OllyLang instance;
 
         //bool Pause();
         //bool Run();
@@ -2734,46 +2728,46 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         void StepIntoCallback()
         {
-            switch (Instance().stepcount)
+            switch (stepcount)
             {
             default: // continue stepping, count > 0
-                Instance().stepcount--;
+                stepcount--;
                 goto case -1;
             case -1: // endless stepping, only enter script command loop on BP/exception
                 Debugger.StepInto(StepIntoCallback);
                 break;
             case 0: // stop stepping, enter script command loop
-                Instance().StepChecked();
+                StepChecked();
                 break;
             }
         }
 
         void StepOverCallback()
         {
-            switch (Instance().stepcount)
+            switch (stepcount)
             {
             default:
-                Instance().stepcount--;
+                stepcount--;
                 goto case -1;
             case -1:
-                if (Instance().return_to_usercode)
+                if (return_to_usercode)
                 {
                     if (true/*is_this_user_code(EIP)*/)
                     {
-                        Instance().return_to_usercode = false;
-                        Instance().stepcount = 0;
-                        Instance().StepChecked();
+                        return_to_usercode = false;
+                        stepcount = 0;
+                        StepChecked();
                         break;
                     }
                 }
-                else if (Instance().run_till_return)
+                else if (run_till_return)
                 {
                     string cmd = Host.DisassembleEx(Debugger.GetContextData(eContextData.UE_CIP));
                     if (cmd.IndexOf("RETN") == 0)
                     {
-                        Instance().run_till_return = false;
-                        Instance().stepcount = 0;
-                        Instance().StepChecked();
+                        run_till_return = false;
+                        stepcount = 0;
+                        StepChecked();
                         break;
                     }
                 }
@@ -2792,7 +2786,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     break;
                 }
             case 0:
-                Instance().StepChecked();
+                StepChecked();
                 break;
             }
         }
@@ -2829,10 +2823,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
         void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId)
         {
             string it;
-            if (Instance().CustomHandlerLabels.TryGetValue(ExceptionId, out it))
+            if (CustomHandlerLabels.TryGetValue(ExceptionId, out it))
             {
                 //variables["$TE_ARG_1"] = (rulong)ExceptionData;
-                Instance().DoCALL(it);
+                DoCALL(it);
             }
         }
 
@@ -2840,9 +2834,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             var ret = new var();
 
-            uint label = Instance().script.labels[Instance().Label_AutoFixIATEx];
-            Instance().variables["$TE_ARG_1"] =  new var((rulong)fIATPointer);
-            if (Instance().StepCallback(label, true, var.etype.DW, ref ret))
+            uint label = script.labels[Label_AutoFixIATEx];
+            variables["$TE_ARG_1"] =  new var((rulong)fIATPointer);
+            if (StepCallback(label, true, var.etype.DW, ref ret))
                 return (object)ret.dw;
             else
                 return 0;
@@ -2857,7 +2851,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 string it;
                 if (labels.TryGetValue(Lib.szLibraryPath, out it))
                 {
-                    Instance().DoCALL(new[] { it });
+                    DoCALL(new[] { it });
                 }
             }
         }

@@ -2074,6 +2074,11 @@ namespace Decompiler.Assemblers.x86
             return Mem(PrimitiveType.Byte, @base, offset);
         }
 
+        public ParsedOperand MemB(int offset)
+        {
+            return Mem(PrimitiveType.Byte, RegisterStorage.None, offset);
+        }
+
         private ParsedOperand Mem(PrimitiveType width, SegmentRegister seg, RegisterStorage @base, int scale, string offset)
         {
             int val;
