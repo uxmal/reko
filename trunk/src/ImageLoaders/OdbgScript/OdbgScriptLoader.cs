@@ -75,7 +75,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             emu.Run();
 
-            IntelRegister r;
             //$TODO: somehow collect the results of the script.
             throw new NotImplementedException();
         }

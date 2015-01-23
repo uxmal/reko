@@ -28,10 +28,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public eContextData reg_to_return;
     }
 
-    struct t_export
+    public struct t_export
     {
-        rulong addr;
-        string label; // ;label[256];
+        public rulong addr;
+        public string label; // ;label[256];
     }
 
     partial class OllyLang
@@ -84,9 +84,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         private  const int STRING_READSIZE = 256;
 
-        public Dictionary<string, var> variables; // Variables that exist
-        private Dictionary<rulong, uint> bpjumps;  // Breakpoint Auto Jumps 
-        private List<uint> calls;         // Call/Ret in script
+        public Dictionary<string, var> variables = new Dictionary<string,var>(); // Variables that exist
+        private Dictionary<rulong, uint> bpjumps = new Dictionary<rulong,uint>();  // Breakpoint Auto Jumps 
+        private List<uint> calls = new List<uint>();         // Call/Ret in script
 
         // Debugger state
         private bool back_to_debugloop;
@@ -94,7 +94,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         private int stepcount;
 
         //allocated memory blocks to free at end of script
-        private List<t_dbgmemblock> tMemBlocks;
+        private List<t_dbgmemblock> tMemBlocks = new List<t_dbgmemblock>();
 
         //last breakpoint reason
         private rulong break_reason;
@@ -133,13 +133,13 @@ namespace Decompiler.ImageLoaders.OdbgScript
             public var.etype return_type;
         };
 
-        List<callback_t> callbacks;
+        List<callback_t> callbacks = new List<callback_t>();
         var callback_return;
 
         //bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result);
 
-        Dictionary<eCustomException, string> CustomHandlerLabels;
-        Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks;
+        Dictionary<eCustomException, string> CustomHandlerLabels = new Dictionary<eCustomException, string>();
+        Dictionary<eCustomException, Debugger.fCustomHandlerCallback> CustomHandlerCallbacks = new Dictionary<eCustomException, Debugger.fCustomHandlerCallback>();
 
         //void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId);
 
@@ -164,11 +164,13 @@ namespace Decompiler.ImageLoaders.OdbgScript
         //static void __stdcall CHC_UNLOADDLL(object  ExceptionData)               { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_UNLOADDLL); }
         //static void __stdcall CHC_OUTPUTDEBUGSTRING(object  ExceptionData)       { Instance().CHC_TRAMPOLINE(ExceptionData, UE_CH_OUTPUTDEBUGSTRING); }
 
-        string Label_AutoFixIATEx;
+        string Label_AutoFixIATEx = "";
         //static void __stdcall Callback_AutoFixIATEx(object fIATPointer);
 
-        Dictionary<eLibraryEvent, Dictionary<string, string>> LibraryBreakpointLabels; //<library path, label name>
-        Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback> LibraryBreakpointCallbacks;
+        Dictionary<eLibraryEvent, Dictionary<string, string>> LibraryBreakpointLabels = //<library path, label name>
+            new Dictionary<eLibraryEvent, Dictionary<string, string>>();
+        Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback> LibraryBreakpointCallbacks =
+            new Dictionary<eLibraryEvent, Librarian.fLibraryBreakPointCallback>();
 
         //void LBPC_TRAMPOLINE(const LOAD_DLL_DEBUG_INFO* SpecialDBG, eLibraryEvent bpxType);
 
@@ -261,7 +263,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         };
 
         // Commands that can be executed
-        Dictionary<string, Func<string[], bool>> commands;
+        Dictionary<string, Func<string[], bool>> commands = new Dictionary<string, Func<string[], bool>>();
 
         int EOB_row, EOE_row;
 
@@ -620,17 +622,17 @@ namespace Decompiler.ImageLoaders.OdbgScript
             public uint threadid;
             public uint script_pos;
         }
-        t_reg_backup reg_backup;
+        t_reg_backup reg_backup = new t_reg_backup();
 
         //bool SaveRegisters(bool stackToo);
         //bool RestoreRegisters(bool stackToo);
 
         //cache for GMEXP
-        List<t_export> tExportsCache;
+        List<t_export> tExportsCache = new List<t_export>();
         ulong exportsCacheAddr;
 
         //cache for GMIMP
-        List<t_export> tImportsCache;
+        List<t_export> tImportsCache = new List<t_export>();
         ulong importsCacheAddr;
     
 #if _WIN64
@@ -1228,7 +1230,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                     if (len > 5 && Char.IsWhiteSpace(lcline[4]))
                                     {
                                         string args = Helper.trim(scriptline.Substring(5));
-                                        string filename;
                                         if (args.Length > 2 && args[0] == '\"' && args.EndsWith("\""))
                                         {
                                             string dir;
@@ -2392,7 +2393,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             else if (is_floatreg(op))
             {
                 int index = op[3] - '0';
-                double preg;
+                double preg = 0.0;
 #if _WIN64
 			XMM_SAVE_AREA32 fltctx;
 			preg = (double*)&fltctx.FloatRegisters + index;
@@ -2402,7 +2403,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 #endif
                 if (Debugger.GetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx))
                 {
-                    //preg = value;
+                    preg = value;
                     return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx);
                 }
             }

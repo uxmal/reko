@@ -31,6 +31,9 @@ using Decompiler.Gui.Windows.Forms;
 using System.ComponentModel.Design;
 using Decompiler.Core.Configuration;
 using Decompiler.Arch.X86;
+using Decompiler.ImageLoaders.MzExe;
+using Decompiler.Core;
+using System.IO;
 
 namespace Decompiler.WindowsItp
 {
@@ -192,5 +195,23 @@ namespace Decompiler.WindowsItp
             }
         }
 
+        private void emulatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sc = new ServiceContainer();
+            var fs = new FileStream(@"D:\dev\jkl\dec\halsten\decompiler_paq\upx\W32HelloWorld.exe", FileMode.Open);
+            var size = fs.Length;
+            var abImage = new byte[size];
+            fs.Read(abImage, 0, (int) size);
+            var exe = new ExeImageLoader(sc, "foolexe", abImage);
+            var ldr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); // new Address(0x00100000), new List<EntryPoint>());
+            var addr = ldr.PreferredBaseAddress;
+            var lr = ldr.Load(addr);
+            var rr = ldr.Relocate(addr);
+            var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image);
+            emu.InstructionPointer = rr.EntryPoints[0].Address;
+            emu.ExceptionRaised += delegate { throw new Exception(); };
+            emu.WriteRegister(Registers.esp, ldr.PreferredBaseAddress.Linear + 0x0FFC);
+            emu.Run();
+        }
     }
 }

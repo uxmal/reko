@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    class Librarian
+    public class Librarian
     {
         public class fLibraryBreakPointCallback
         {

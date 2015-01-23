@@ -40,6 +40,8 @@
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +49,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.controlsToolStripMenuItem,
-            this.dialogsToolStripMenuItem});
+            this.dialogsToolStripMenuItem,
+            this.loadingToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(284, 24);
@@ -140,6 +143,21 @@
             this.preferencesToolStripMenuItem.Text = "&Preferences...";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
+            // loadingToolStripMenuItem
+            // 
+            this.loadingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.emulatorToolStripMenuItem});
+            this.loadingToolStripMenuItem.Name = "loadingToolStripMenuItem";
+            this.loadingToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.loadingToolStripMenuItem.Text = "&Loading";
+            // 
+            // emulatorToolStripMenuItem
+            // 
+            this.emulatorToolStripMenuItem.Name = "emulatorToolStripMenuItem";
+            this.emulatorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.emulatorToolStripMenuItem.Text = "&Emulator";
+            this.emulatorToolStripMenuItem.Click += new System.EventHandler(this.emulatorToolStripMenuItem_Click);
+            // 
             // ItpForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -170,6 +188,8 @@
         private System.Windows.Forms.ToolStripMenuItem activationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disassemblyControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem emulatorToolStripMenuItem;
     }
 }
 

@@ -288,6 +288,11 @@ namespace Decompiler.Core
             return (ushort)ReadLeInt16(img, off);
         }
 
+        public static byte ReadByte(byte[] img, uint off)
+        {
+            return img[off];
+        }
+
         public Constant ReadLeDouble(uint off) { return ReadLeDouble(abImage, off); }
         public Constant ReadLeFloat(uint off) { return ReadLeFloat(abImage, off); }
 		public long ReadLeInt64(uint off) {  return ReadLeInt64(this.abImage, off); }
@@ -296,6 +301,7 @@ namespace Decompiler.Core
         public uint ReadLeUInt32(uint off) { return ReadLeUInt32(this.abImage, off); }
         public short ReadLeInt16(uint off) { return ReadLeInt16(this.abImage, off); }
         public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.abImage, off); }
+        public byte ReadByte(uint off) { return ReadByte(this.abImage, off); }
 
         public Constant ReadLeDouble(Address addr) { return ReadLeDouble(abImage, ToOffset(addr)); }
         public Constant ReadLeFloat(Address addr) { return ReadLeFloat(abImage, ToOffset(addr)); }
@@ -305,13 +311,12 @@ namespace Decompiler.Core
         public uint ReadLeUInt32(Address addr) { return ReadLeUInt32(this.abImage, ToOffset(addr)); }
         public short ReadLeInt16(Address addr) { return ReadLeInt16(this.abImage, ToOffset(addr)); }
         public ushort ReadLeUInt16(Address addr) { return ReadLeUInt16(this.abImage, ToOffset(addr)); }
+        public byte ReadByte(Address addr) { return ReadByte(this.abImage, ToOffset(addr)); }
 
         private uint ToOffset(Address addr)
         {
             return addr.Linear - this.BaseAddress.Linear;
         }
-
-        public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
 
         public void WriteByte(uint offset, byte b)
         {
@@ -332,7 +337,7 @@ namespace Decompiler.Core
             abImage[offset + 3] = (byte) (dw & 0xFF);
         }
 
-        public void WriteLeUint32(uint offset, uint dw)
+        public void WriteLeUInt32(uint offset, uint dw)
         {
             abImage[offset] = (byte) (dw & 0xFF);
             abImage[offset + 1] = (byte) (dw >> 8);
@@ -347,5 +352,9 @@ namespace Decompiler.Core
             abImage[offset + 2] = (byte) (dw >> 8);
             abImage[offset + 3] = (byte) dw;
         }
+
+        public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
+        public void WriteLeUInt32(Address addr, uint dw) { WriteLeUInt32(ToOffset(addr), dw); }
+
     }
 }

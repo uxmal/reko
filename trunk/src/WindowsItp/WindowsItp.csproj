@@ -178,6 +178,10 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
+      <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
+      <Name>MzExe</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

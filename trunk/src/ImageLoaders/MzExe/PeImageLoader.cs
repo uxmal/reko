@@ -323,7 +323,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			{
 				uint offset = page + (fixup & 0x0FFFu);
 				uint n = (uint) (imgLoaded.ReadLeUInt32(offset) + (baseOfImage - preferredBaseOfImage));
-				imgLoaded.WriteLeUint32(offset, n);
+				imgLoaded.WriteLeUInt32(offset, n);
 				relocations.AddPointerReference(offset, n);
 				break;
 			}
