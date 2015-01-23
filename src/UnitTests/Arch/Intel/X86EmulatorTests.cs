@@ -98,16 +98,33 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Emu_Sub32_ov()
         {
-            Given_Code(m => { m.Sub(m.eax, m.ebx); });
+            Given_Code(m => {
+                m.Mov(m.eax, ~0x7FFFFFFF);
+                m.Mov(m.ebx, 0x00000001);
+                m.Sub(m.eax, m.ebx); 
+            });
 
-            Given_RegValue(Registers.eax, 0x80000000u);
-            Given_RegValue(Registers.ebx, 0x00000001u);
             emu.Run();
 
-            Assert.AreEqual(0x7FFFFFFFu, emu.Registers[Registers.eax.Number], string.Format("{0:X}", emu.Registers[Registers.eax.Number] ));
-            Assert.AreEqual(1  | (1 << 11), emu.Flags, "Should set carry + z + ov flag");
+            Assert.AreEqual(0x7FFFFFFFu, emu.Registers[Registers.eax.Number]);
+            Assert.AreEqual(X86Emulator.Omask, emu.Flags, "Should set ov flag");
         }
 
+        [Test]
+        public void X86Emu_Sub32_cy()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.eax, 0);
+                m.Mov(m.ebx, 4);
+                m.Sub(m.eax, m.ebx);
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(0xFFFFFFFCu, emu.Registers[Registers.eax.Number]);
+            Assert.AreEqual(X86Emulator.Cmask, emu.Flags, "Should set C flag");
+        }
 
         [Test]
         public void X86Emu_ReadDirect_W32()
@@ -328,6 +345,22 @@ namespace Decompiler.UnitTests.Arch.Intel
             emu.Run();
 
             Assert.AreEqual(16, emu.Registers[Registers.esi.Number]);
+        }
+
+        [Test]
+        public void X86Emu_sub_with_adc()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.esi, 0x0401000);
+                m.Xor(m.ebx, m.ebx);
+                m.Db(0x83, 0xEE, 0xFC);     // sub esi,-4
+                m.Adc(m.ebx, m.ebx);
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(1, emu.Registers[Registers.ebx.Number]);
         }
     }
 }

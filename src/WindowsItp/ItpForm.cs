@@ -210,8 +210,15 @@ namespace Decompiler.WindowsItp
             var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
+            emu.BreakpointHit += emu_BreakpointHit;
             emu.WriteRegister(Registers.esp, ldr.PreferredBaseAddress.Linear + 0x0FFC);
+            emu.SetBreakpoint(0x0408FFC);
             emu.Run();
+        }
+
+        void emu_BreakpointHit(object sender, EventArgs e)
+        {
+
         }
     }
 }

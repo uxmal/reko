@@ -48,6 +48,7 @@ namespace Decompiler.Arch.X86
         private LoadedImage img;
         IEnumerator<IntelInstruction> dasm;
         private bool running;
+        private HashSet<uint> bpExecute = new HashSet<TWord>();
 
         public readonly ulong[] Registers;
         public readonly bool[] Valid;
@@ -76,6 +77,7 @@ namespace Decompiler.Arch.X86
 
         public void Run()
         {
+            int counter = 0;
             running = true;
             CreateStack();
             BeforeStart.Fire(this);
@@ -84,7 +86,13 @@ namespace Decompiler.Arch.X86
                 while (running && dasm.MoveNext()) 
                 {
                     Debug.Print("emu: {0} {1}", dasm.Current.Address, dasm.Current);
-                    CheckBreakPoints();
+                    if (bpExecute.Contains(dasm.Current.Address.Linear))
+                    {
+                        ++counter;
+                        if (counter == 2050)
+                            counter.ToString();
+                        this.BreakpointHit.Fire(this);
+                    }
                     Execute(dasm.Current);
                 }
             }
@@ -98,11 +106,6 @@ namespace Decompiler.Arch.X86
         public void CreateStack()
         {
 
-        }
-
-        public void CheckBreakPoints()
-        {
-            BreakpointHit.Fire(this);
         }
 
         public void Execute(IntelInstruction instr)
@@ -186,7 +189,7 @@ namespace Decompiler.Arch.X86
             TWord diff = l + r;
             uint ov = ((~(l ^ r) & (l ^ diff)) & 0x80000000u) >> 20;
             Flags =
-                (l > diff ? 1u : 0u) |     // Carry
+                (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
                 (ov)                        // Overflow
                 ;
@@ -203,7 +206,7 @@ namespace Decompiler.Arch.X86
             Write(dst, diff);
             uint ov = ((~(l ^ r) & (l ^ diff)) & 0x80000000u) >> 20;
             Flags =
-                (l > diff ? 1u : 0u) |     // Carry
+                (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
                 (ov)                        // Overflow
                 ;
@@ -213,6 +216,8 @@ namespace Decompiler.Arch.X86
         {
             TWord l = Read(dst);
             TWord r = Read(src);
+            if (src.Width.Size < dst.Width.Size)
+                r = (TWord)(sbyte)r;
             var or = l | r;
             Write(dst, or);
             Flags =
@@ -249,6 +254,8 @@ namespace Decompiler.Arch.X86
         {
             TWord l = Read(dst);
             TWord r = Read(src);
+            if (src.Width.Size < dst.Width.Size)
+                r = (TWord)(sbyte)r;
             var xor = l ^ r;
             Write(dst, xor);
             Flags =
@@ -346,6 +353,11 @@ namespace Decompiler.Arch.X86
             var u = (uint)esp - img.BaseAddress.Linear;
             img.WriteLeUInt32(u, (uint) word);
             WriteRegister(X86.Registers.esp, (uint) esp);
+        }
+
+        public void SetBreakpoint(uint address)
+        {
+            bpExecute.Add(address);
         }
     }
 }
