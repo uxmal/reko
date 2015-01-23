@@ -154,6 +154,11 @@ namespace Decompiler.Assemblers.x86
             ProcessShiftRotation(0x7, op1, op2);
         }
 
+        public void Shl(ParsedOperand dst, byte c)
+        {
+            ProcessShiftRotation(0x04, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
         public void Shld(ParsedOperand op1, ParsedOperand op2, ParsedOperand op3)
         {
             ProcessDoubleShift(0, op1, op2, op3);
@@ -1265,6 +1270,11 @@ namespace Decompiler.Assemblers.x86
             ProcessPushPop(false, op);
         }
 
+        public void Pusha()
+        {
+            emitter.EmitByte(0x60);
+        }
+
         public void Pushf()
         {
             emitter.EmitByte(0x9C);
@@ -2031,32 +2041,37 @@ namespace Decompiler.Assemblers.x86
 
         public ParsedOperand MemDw(RegisterStorage @base, int scale, string offset)
         {
-            return Mem(PrimitiveType.Word32, null, @base, scale, offset);
+            return Mem(PrimitiveType.Word32, null, @base, null, scale, offset);
+        }
+
+        public ParsedOperand MemDw(RegisterStorage @base, RegisterStorage index, int scale, string offset)
+        {
+            return Mem(PrimitiveType.Word32, null, @base, index, scale, offset);
         }
 
         public ParsedOperand MemDw(string offset)
         {
-            return Mem(PrimitiveType.Word32, null, null, 1, offset);
+            return Mem(PrimitiveType.Word32, null, null, null, 1, offset);
         }
 
         public ParsedOperand MemDw(RegisterStorage @base, string offset)
         {
-            return Mem(PrimitiveType.Word32, null, @base, 1, offset);
+            return Mem(PrimitiveType.Word32, null, @base, null, 1, offset);
         }
 
         public ParsedOperand MemW(RegisterStorage @base, string offset)
         {
-            return Mem(PrimitiveType.Word16, null, @base,1, offset);
+            return Mem(PrimitiveType.Word16, null, @base, null, 1, offset);
         }
 
         public ParsedOperand MemB(RegisterStorage @base, string offset)
         {
-            return Mem(PrimitiveType.Byte, null, @base,1, offset);
+            return Mem(PrimitiveType.Byte, null, @base, null, 1, offset);
         }
 
         public ParsedOperand MemW(SegmentRegister seg, RegisterStorage @base, string offset)
         {
-            return Mem(PrimitiveType.Word16, seg, @base, 1, offset);
+            return Mem(PrimitiveType.Word16, seg, @base, null, 1, offset);
         }
 
         public ParsedOperand MemDw(RegisterStorage @base, int offset)
@@ -2079,25 +2094,40 @@ namespace Decompiler.Assemblers.x86
             return Mem(PrimitiveType.Byte, RegisterStorage.None, offset);
         }
 
-        private ParsedOperand Mem(PrimitiveType width, SegmentRegister seg, RegisterStorage @base, int scale, string offset)
+        private ParsedOperand Mem(
+            PrimitiveType width, 
+            SegmentRegister seg, 
+            RegisterStorage @base,  
+            RegisterStorage index, 
+            int scale, 
+            string offset)
         {
             int val;
             MemoryOperand mem;
-            Symbol sym;
-            if (symtab.Equates.TryGetValue(offset, out val))
+            Symbol sym = null;
+            if (offset != null)
             {
-                mem = new MemoryOperand(width, @base, IntegralConstant(val, @base.DataType));
-                sym = null;
+                if (symtab.Equates.TryGetValue(offset, out val))
+                {
+                    mem = new MemoryOperand(width, @base, IntegralConstant(val, @base.DataType));
+                    sym = null;
+                }
+                else
+                {
+                    sym = symtab.CreateSymbol(offset);
+                    val = (int)this.addrBase.Offset;
+                    Constant off = Constant.Create(@base == null
+                        ? seg != null ? PrimitiveType.Word16 : PrimitiveType.Word32
+                        : @base.DataType,
+                        val);
+                    mem = new MemoryOperand(width, @base ?? RegisterStorage.None, off);
+                }
             }
             else
             {
-                sym = symtab.CreateSymbol(offset);
-                val = (int)this.addrBase.Offset;
-                Constant off = Constant.Create(@base == null
-                    ? seg != null ? PrimitiveType.Word16 : PrimitiveType.Word32
-                    : @base.DataType,
-                    val);
-                mem = new MemoryOperand(width, @base ?? RegisterStorage.None, off);
+                mem = new MemoryOperand(width)
+                {
+                };
             }
             if (seg != null)
             {
@@ -2107,8 +2137,16 @@ namespace Decompiler.Assemblers.x86
             mem.Scale = (byte)scale;
             if (scale > 1)
             {
-                mem.Index = mem.Base;
-                mem.Base = RegisterStorage.None;
+                if (index == null)
+                {
+                    mem.Index = mem.Base;
+                    mem.Base = RegisterStorage.None;
+                }
+                else
+                {
+                    mem.Index = index;
+                    mem.Base = @base;
+                }
             }
             return new ParsedOperand(mem, sym);
         }

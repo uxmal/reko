@@ -1161,7 +1161,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             Run32bitTest(0x0F, 0xAB, 0x04, 0x24);
             AssertCode(
                 "0|10000000(4): 1 instructions",
-                "1|L--|C = __bts(Mem0[esp:word32],eax,out Mem[esp:word32])");
+                "1|L--|C = __bts(Mem0[esp:word32], eax, out Mem0[esp:word32])");
         }
     }
 }

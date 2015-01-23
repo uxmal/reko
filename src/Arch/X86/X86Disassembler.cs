@@ -837,14 +837,6 @@ namespace Decompiler.Arch.X86
 			return op is RegisterOperand || op is X86AddressOperand;
 		}
 
-		// A - direct address
-		// E - modrm specifies the argument
-		// G - reg part of modrm specifies the argument, which is a reg.
-		// J - relative from offset.
-		// r - register is encoded in the last 3 bits of the instruction.
-
-		// 'X' means the opcode hasn't been tested in the disassembler.
-
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
 		private static OpRec [] s_aOpRecGrp;

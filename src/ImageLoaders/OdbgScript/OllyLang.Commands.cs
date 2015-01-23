@@ -84,7 +84,7 @@ rulong size;
 	{
 		rulong addr =  Host.TE_AllocMemory(size);
         variables["$RESULT"] = new var(addr);
-		if(addr != null)
+		if(addr != 0)
 			regBlockToFree(addr, size, false);
 		return true;
 	}
@@ -183,7 +183,6 @@ string asmfile;
 
 	if(args.Length == 2 && GetRulong(args[0],  out addr) && GetString(args[1], out asmfile))
 	{
-		bool Success = false;
 		int totallen = 0;
 
 		List<string> lines = Host.getlines_file(asmfile);
@@ -1042,7 +1041,7 @@ private bool DoEXEC(string [] args)
 		int memsize = (int)(ende-first+1) * MAX_INSTR_SIZE;
 
 		pmemforexec = Host.TE_AllocMemory((uint)memsize);
-		if(pmemforexec != null)
+		if(pmemforexec != 0)
 		{
 			int len, totallen = 0;
 
@@ -1215,14 +1214,12 @@ rulong maxsize = 0;
 // TE?
 private bool DoFINDCALLS(string [] args)
 {
-bool bRefVisible = false, bResetDisam = false;
-rulong addr, @base, size, disamsel = 0;
+//bool bRefVisible = false, bResetDisam = false;
+rulong addr; //, @base, size, disamsel = 0;
 
 	if(args.Length >= 1 && args.Length <= 2 && GetRulong(args[0],  out addr))
 	{
 		errorstr = "Unsupported command!";
-		return false;
-
 		return true;
 	}
 	return false;
@@ -1307,12 +1304,12 @@ rulong addr, @base, size, disamsel = 0;
 // TE?
 private bool DoFINDCMD(string [] args)
 {
-bool bRefVisible = false, bResetDisam = false;
-string cmd, cmds;
-int len;
-int pos;
-rulong addr, @base,size, attempt, opsize = 3, disamsel = 0;
-int startadr = 0, endadr = 0, lps = 0, length, ncmd = 0, cmdpos = 0;
+//bool bRefVisible = false, bResetDisam = false;
+//string cmd, cmds;
+//int len;
+//int pos;
+//rulong addr, @base,size, attempt, opsize = 3, disamsel = 0;
+//int startadr = 0, endadr = 0, lps = 0, length, ncmd = 0, cmdpos = 0;
 //char error[256] = {0};
 
 	if(args.Length == 2)
@@ -1727,7 +1724,7 @@ rulong addr;
 		{
 			int size = 0;
 			string instr = Host.DisassembleEx(addr, out size);
-			if(size  != null)
+			if(size  != 0)
 				variables["$RESULT"] = new var(instr); 
 			else
 				variables["$RESULT"] = new var(0);
@@ -2387,7 +2384,7 @@ bool dofree;
 			return false;
 
 		rulong addr = Importer.GetRemoteAPIAddressEx(lib, proc);
-		if(addr != null)
+		if(addr != 0)
 		{
 			variables["$RESULT"] =   new var(addr );
 			variables["$RESULT_1"] = new var(lib );
@@ -3064,7 +3061,7 @@ rulong maxsize = 0;
 		double flt;
 		bool bl;
 
-		if(!is_writable(args[0]) && !DoVAR(args[0]));
+		if(!is_writable(args[0]) && !DoVAR(args[0]))
 		{
 			return false;
 		}
@@ -3142,7 +3139,7 @@ rulong maxsize = 0;
 
 			if(GetBool(args[1],  out flagval))
 			{
-				eflags_t flags;
+                eflags_t flags = new eflags_t();
                 flags.dw = Debugger.GetContextData(eContextData.UE_EFLAGS);
 
 				switch(args[0][1])
@@ -4304,7 +4301,6 @@ string filename, data, @out = "\r\n";
 
         using (FileStream hFile = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
 		{
-			int written;
 			@out += data;
 			hFile.Seek(0, SeekOrigin.End);
             byte [] b = Encoding.UTF8.GetBytes(@out);

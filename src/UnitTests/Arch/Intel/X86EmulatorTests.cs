@@ -55,6 +55,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             this.image = lr.Image;
             emu = new X86Emulator(arch, lr.Image);
             emu.InstructionPointer = lr.Image.BaseAddress;
+            emu.WriteRegister(Registers.esp, lr.Image.BaseAddress.Linear + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };
         }
 
@@ -179,5 +180,158 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             Assert.AreEqual(0xFFFF1234u, emu.Registers[Registers.eax.Number]);
         }
+
+        [Test]
+        public void X86Emu_Xor()
+        {
+            Given_Code(m => { m.Xor(m.eax, m.eax); });
+            Given_RegValue(Registers.eax, 0x1);
+
+            emu.Run();
+
+            Assert.AreEqual(0, emu.Registers[Registers.eax.Number]);
+            Assert.AreEqual(1 << 6, emu.Flags, "Expected ZF set ");
+        }
+
+        [Test]
+        public void X86Emu_or()
+        {
+            Given_Code(m => { m.Or(m.eax, m.eax); });
+            Given_RegValue(Registers.eax, 0x1);
+
+            emu.Run();
+
+            Assert.AreEqual(1, emu.Registers[Registers.eax.Number]);
+            Assert.AreEqual(0, emu.Flags, "Expected ZF clear ");
+        }
+
+        [Test]
+        public void X86Emu_halt()
+        {
+            Given_Code(m => {
+                m.Hlt();
+                m.Mov(m.eax, 42);
+            });
+
+            emu.Run();
+
+            Assert.AreNotEqual(42u, emu.Registers[Registers.eax.Number]);
+        }
+
+
+        [Test]
+        public void X86Emu_jz()
+        {
+            Given_Code(m =>
+            {
+                m.Sub(m.eax, m.eax);
+                m.Jz("z_flag_set");
+                m.Hlt();
+                m.Label("z_flag_set");
+                m.Mov(m.eax, 42);
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(42u, emu.Registers[Registers.eax.Number]);
+        }
+
+        [Test]
+        public void X86Emu_pusha()
+        {
+            Given_Code(m =>
+            {
+                m.Pusha();
+                m.Hlt();
+                m.Dw(0);
+                m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
+                m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
+            });
+            emu.WriteRegister(Registers.esp, image.BaseAddress.Linear + 0x24u);
+
+            emu.Run();
+
+            Assert.AreEqual(0x00100004u, emu.Registers[Registers.esp.Number]);
+        }
+
+        [Test]
+        public void X86Emu_lea()
+        {
+            Given_Code(m =>
+            {
+                m.Lea(m.eax, m.MemDw(Registers.edx, Registers.edx, 4, null));
+            });
+            emu.WriteRegister(Registers.edx, 4);
+
+            emu.Run();
+
+            Assert.AreEqual(20u, emu.Registers[Registers.eax.Number]);
+        }
+
+        [Test]
+        public void X86Emu_adc()
+        {
+            Given_Code(m =>
+            {
+                m.Add(m.eax, 1);
+                m.Adc(m.ebx, 0);
+            });
+            emu.WriteRegister(Registers.eax, 0xFFFFFFFF);
+            emu.WriteRegister(Registers.ebx, 1);
+
+            emu.Run();
+
+            Assert.AreEqual(2u, emu.Registers[Registers.ebx.Number]);
+        }
+
+        [Test]
+        public void X86Emu_inc()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.eax, 0x7FFFFFFF);
+                m.Inc(m.eax);
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(0x80000000u, emu.Registers[Registers.eax.Number]);
+            Assert.IsTrue((emu.Flags & X86Emulator.Zmask) == 0);
+            Assert.IsTrue((emu.Flags & X86Emulator.Omask) != 0);
+        }
+
+        [Test]
+        public void X86Emu_add_signextendedImmByte()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.esi, -0x4);
+                m.Db(0x83,0xEE,0xFC);     // sub esi,-4
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(0, emu.Registers[Registers.eax.Number]);
+            Assert.IsTrue((emu.Flags & X86Emulator.Zmask) != 0);
+            Assert.IsTrue((emu.Flags & X86Emulator.Omask) == 0);
+        }
+
+        [Test]
+        public void X86Emu_shl()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.esi, 4);
+                m.Shl(m.esi, 2);
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(16, emu.Registers[Registers.esi.Number]);
+        }
     }
 }
+/*
+ *    011111 => 100000 overflow
+ *    111111 => 000000 no overflow
+*/
