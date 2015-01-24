@@ -428,9 +428,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             string @out = path;
 
-            if (@out.Length > 0)
+            if (!string.IsNullOrEmpty(@out))
             {
-                ReplaceString(ref @out, "/", "\\");
+                @out = @out.Replace('/', '\\');
                 if (isfolder && !@out.EndsWith("\\"))
                     @out += '\\';
             }
@@ -520,7 +520,7 @@ HWND handle, desktop, parent;
 
         public static ulong MyTickCount()
         {
-            throw new NotImplementedException();
+            return (uint) System.Environment.TickCount * 1000uL;
 #if LATER
             ulong PerformanceCount = { 0 }, Frequency = { 0 };
             ulong result;

@@ -20,7 +20,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             Given_Engine();
             Given_Script("var foo\r\n");
 
-            engine.Step();
+            engine.Run();
 
             Assert.IsTrue(engine.variables.ContainsKey("foo"));
 
