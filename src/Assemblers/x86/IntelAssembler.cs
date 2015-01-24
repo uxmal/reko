@@ -139,6 +139,11 @@ namespace Decompiler.Assemblers.x86
             ProcessMov(dst, src);
         }
 
+        public void Rol(ParsedOperand dst, byte c)
+        {
+            ProcessShiftRotation(0x00, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
         public void Sahf()
         {
             emitter.EmitByte(0x9E);
@@ -157,6 +162,11 @@ namespace Decompiler.Assemblers.x86
         public void Shl(ParsedOperand dst, byte c)
         {
             ProcessShiftRotation(0x04, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
+        public void Shr(ParsedOperand dst, byte c)
+        {
+            ProcessShiftRotation(0x05, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
         }
 
         public void Shld(ParsedOperand op1, ParsedOperand op2, ParsedOperand op3)

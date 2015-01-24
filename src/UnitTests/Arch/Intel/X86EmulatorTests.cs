@@ -362,6 +362,107 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             Assert.AreEqual(1, emu.Registers[Registers.ebx.Number]);
         }
+
+        [Test]
+        public void X86Emu_shr()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.esi, 0x00040);
+                m.Shr(m.esi, 4);
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(4, emu.Registers[Registers.esi.Number]);
+        }
+
+        [Test]
+        public void X86Emu_rol()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.esi, -0x0FFFFFFF);
+                m.Rol(m.esi, 4);
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(0x1Fu, emu.Registers[Registers.esi.Number]);
+        }
+
+        [Test]
+        public void X86Emu_xchg()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.eax, 1);
+                m.Mov(m.ebx, 2);
+                m.Db(0x87, 0xC3);       // Xchg eax,ebx
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(2, emu.Registers[Registers.eax.Number]);
+            Assert.AreEqual(1, emu.Registers[Registers.ebx.Number]);
+        }
+
+        [Test]
+        public void X86Emu_loop()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.eax, 0);    // sum
+                m.Mov(m.ecx, 4);
+                m.Label("Lupe");
+                m.Add(m.eax, m.ecx);
+                m.Loop("Lupe");
+            });
+
+            emu.Run();
+
+            Assert.AreEqual(10, emu.Registers[Registers.eax.Number]);
+        }
+
+        [Test]
+        public void X86Emu_call()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.esi, 0x00100000 + 5);           // 5
+
+                m.Call(m.MemDw(Registers.esi, 4));      //3
+                m.Hlt();                                // 1
+                m.Dd(0x0010000D);                       // 4
+                m.Mov(m.esi, -1);
+                m.Hlt();
+
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+                m.Dd(0);
+            });
+
+            emu.Registers[Registers.esp.Number] = 0x00100020;
+            emu.Run();
+
+            Assert.AreEqual(~0u, emu.Registers[Registers.esi.Number]);
+        }
     }
 }
 /*
