@@ -116,6 +116,7 @@ namespace Decompiler.Arch.X86
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
             case Opcode.adc: Adc(instr.op1, instr.op2); return;
             case Opcode.add: Add(instr.op1, instr.op2); return;
+            case Opcode.call: Call(instr.op1); return;
             case Opcode.cmp: Cmp(instr.op1, instr.op2); return;
             case Opcode.dec: Dec(instr.op1); return;
             case Opcode.hlt: running = false; return;
@@ -128,15 +129,21 @@ namespace Decompiler.Arch.X86
             case Opcode.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
             case Opcode.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
             case Opcode.lea: Write(instr.op1, GetEffectiveAddress((MemoryOperand)instr.op2)); break;
+            case Opcode.loop: Loop(instr.op1); break;
             case Opcode.mov: Write(instr.op1, Read(instr.op2)); break;
             case Opcode.or: Or(instr.op1, instr.op2); return;
+            case Opcode.pop: Write(instr.op1, Pop()); return;
             case Opcode.push: Push(Read(instr.op1)); return;
             case Opcode.pusha: Pusha(); return;
+            case Opcode.rol: Rol(instr.op1, instr.op2); return;
             case Opcode.shl: Shl(instr.op1, instr.op2); return;
+            case Opcode.shr: Shr(instr.op1, instr.op2); return;
             case Opcode.sub: Sub(instr.op1, instr.op2); return;
             case Opcode.xor: Xor(instr.op1, instr.op2); return;
+            case Opcode.xchg: Xchg(instr.op1, instr.op2); return;
             }
         }
+
 
         private void Adc(MachineOperand dst, MachineOperand src)
         {
@@ -168,6 +175,16 @@ namespace Decompiler.Arch.X86
                 ;
         }
 
+        private void Rol(MachineOperand dst, MachineOperand src)
+        {
+            TWord l = Read(dst);
+            byte sh = (byte)Read(src);
+            TWord r = (l << sh) | (l >> (32 - sh));
+            Write(dst, r);
+            Flags =
+                (r == 0 ? Zmask : 0u);      // Zero
+        }
+
         private void Shl(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
@@ -176,7 +193,23 @@ namespace Decompiler.Arch.X86
             Write(dst, r);
             Flags =
                 (r == 0 ? Zmask : 0u);      // Zero
+        }
 
+        private void Shr(MachineOperand dst, MachineOperand src)
+        {
+            TWord l = Read(dst);
+            byte sh = (byte)Read(src);
+            TWord r = l >> sh;
+            Write(dst, r);
+            Flags =
+                (r == 0 ? Zmask : 0u);      // Zero
+        }
+
+        private void Call(MachineOperand op)
+        {
+            TWord l = Read(op);
+            Push(InstructionPointer.Linear + (uint) dasm.Current.Length);
+            InstructionPointer = new Address(l);
         }
 
         private void Cmp(MachineOperand dst, MachineOperand src)
@@ -334,6 +367,14 @@ namespace Decompiler.Arch.X86
             ((IntelRegister)r).SetRegisterFileValues(Registers, value, Valid);
         }
 
+        public void Loop(MachineOperand op)
+        {
+            var c = ReadRegister(X86.Registers.ecx)  -1u;
+            WriteRegister(X86.Registers.ecx, c);
+            if (c != 0)
+                InstructionPointer = ((AddressOperand)op).Address;
+        }
+
         public void Pusha()
         {
             var temp = Registers[X86.Registers.esp.Number];
@@ -347,12 +388,29 @@ namespace Decompiler.Arch.X86
             Push(Registers[X86.Registers.edi.Number]);
         }
 
+        public TWord Pop()
+        {
+            var esp = Registers[X86.Registers.esp.Number];
+            var u = (uint)esp - img.BaseAddress.Linear;
+            var word = img.ReadLeUInt32(u);
+            esp += 4;
+            WriteRegister(X86.Registers.esp, (uint)esp);
+            return word;
+        }
+
         public void Push(ulong word)
         {
             var esp = Registers[X86.Registers.esp.Number] - 4;
             var u = (uint)esp - img.BaseAddress.Linear;
             img.WriteLeUInt32(u, (uint) word);
             WriteRegister(X86.Registers.esp, (uint) esp);
+        }
+
+        private void Xchg(MachineOperand op1, MachineOperand op2)
+        {
+            var tmp = Read(op1);
+            Write(op1, Read(op2));
+            Write(op2, tmp);
         }
 
         public void SetBreakpoint(uint address)
