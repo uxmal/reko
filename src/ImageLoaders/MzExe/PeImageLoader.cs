@@ -366,27 +366,35 @@ namespace Decompiler.ImageLoaders.MzExe
 			return Encoding.UTF8.GetString(bytes.ToArray());
 		}
 
+
+        /// <summary>
+        /// Loads the import directory entry for one particular DLL.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <param name="addrLoad"></param>
+        /// <returns>True if there were entries in the import descriptor, otherwise 
+        /// false.</returns>
 		public bool ReadImportDescriptor(ImageReader rdr, Address addrLoad)
 		{
-			var rvaEntries = rdr.ReadLeUInt32();		// IAT
-			if (rvaEntries == 0)
-				return false;
-			rdr.ReadLeUInt32();		// datestamp
-			rdr.ReadLeUInt32();		// forwarder chain
+			var rvaILT = rdr.ReadLeUInt32();		// Import lookup table
+			rdr.ReadLeUInt32();		                    // datestamp
+			rdr.ReadLeUInt32();		                    // forwarder chain
 			var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
-			var rvaThunks = rdr.ReadLeUInt32();		// first thunk
+            var rvaIAT = rdr.ReadLeUInt32();		    // Import address table 
+            if (rvaILT == 0 && dllName == null)
+                return false;
 
-			ImageReader rdrEntries = imgLoaded.CreateLeReader(rvaEntries);
-			ImageReader rdrThunks  = imgLoaded.CreateLeReader(rvaThunks);
+			ImageReader rdrEntries = imgLoaded.CreateLeReader(rvaILT);
+			ImageReader rdrIAT  = imgLoaded.CreateLeReader(rvaIAT);
 			for (;;)
 			{
-				Address addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
+				Address addrThunk = imgLoaded.BaseAddress + rdrIAT.Offset;
 				uint rvaEntry = rdrEntries.ReadLeUInt32();
-				uint rvaThunk = rdrThunks.ReadLeUInt32();
-				if (rvaEntry == 0)
+				uint rvaThunk = rdrIAT.ReadLeUInt32();
+				if (rvaThunk == 0)
 					break;
 
-                ResolveImportedFunction(dllName, rvaEntry, addrThunk);
+                ResolveImportedFunction(dllName, rvaThunk, addrThunk);
 			}
 			return true;
 		}

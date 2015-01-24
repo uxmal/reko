@@ -67,7 +67,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             // Initialize the emulator instruction pointer.
             X86State state = (X86State)lr.Architecture.CreateProcessorState();
-            X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image);    //$Create emulator?
+            X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, pe.ImportReferences);    //$Create emulator?
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.BeforeStart += emu_BeforeStart;
             emu.BreakpointHit += emu_BreakPointHit;
