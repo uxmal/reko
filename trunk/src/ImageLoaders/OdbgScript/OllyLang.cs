@@ -781,6 +781,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             this.Debugger = new Debugger();
             this.Host = new Host();
+            this.script = new OllyScript(Host);
 
             // Init command array
             commands["add"] = DoADD;
@@ -1126,7 +1127,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
             public Dictionary<string, uint> labels;
 
             private Host Host;
-            public OllyScript(Host host) { this.Host = host; loaded = (false); log = (false); }
+            public OllyScript(Host host) {
+                this.Host = host; loaded = (false); log = (false);
+                lines = new List<scriptline_t>();
+                labels = new Dictionary<string, uint>();
+            }
 
             public bool isloaded() { return loaded; }
             public void clear() { loaded = false; path = ""; ; lines.Clear(); labels.Clear(); }
@@ -1272,7 +1277,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                     if (pos >= 0)
                                     {
                                         cur.command = Helper.tolower(scriptline.Substring(0, pos));
-                                        Helper.split(cur.args, scriptline.Substring(pos + 1), ',');
+                                        cur.args = new List<string>(scriptline.Substring(pos + 1).Split(','));
                                     }
                                     else
                                     {
