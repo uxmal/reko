@@ -46,6 +46,8 @@ namespace Decompiler.Arch.X86
 
         private IntelArchitecture arch;
         private LoadedImage img;
+        private Dictionary<Address, ImportReference> importReferences;
+        private Win32Emulator envEmulator;
         IEnumerator<IntelInstruction> dasm;
         private bool running;
         private HashSet<uint> bpExecute = new HashSet<TWord>();
@@ -53,13 +55,21 @@ namespace Decompiler.Arch.X86
         public readonly ulong[] Registers;
         public readonly bool[] Valid;
         public TWord Flags;
+        private Address ip;
+        private Dictionary<TWord, ImportReference> intereptedCalls;
+        private TWord uPseudoFn;
 
-        public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage)
+        public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage, Dictionary<Address, ImportReference> importReferences)
         {
             this.arch = arch;
             this.img = loadedImage;
+            this.importReferences = importReferences;
             this.Registers = new ulong[40];
             this.Valid = new bool[40];
+            this.envEmulator = new Win32Emulator();
+            this.uPseudoFn = 0xDEAD0000u;
+            this.intereptedCalls = new Dictionary<uint, ImportReference>();
+            InterceptCallsToImports();
         }
 
         public Core.Address InstructionPointer
@@ -73,7 +83,20 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        private Address ip;
+        private void InterceptCallsToImports()
+        {
+            foreach (var imp in importReferences)
+            {
+                uint pseudoPfn = AddInterceptedCall(imp.Value);
+                img.WriteLeUInt32(imp.Key, pseudoPfn);
+            }
+        }
+
+        private TWord AddInterceptedCall(ImportReference importReference)
+        {
+            intereptedCalls[++this.uPseudoFn] = importReference;
+            return uPseudoFn;
+        }
 
         public void Run()
         {
@@ -85,12 +108,10 @@ namespace Decompiler.Arch.X86
             {
                 while (running && dasm.MoveNext()) 
                 {
-                    Debug.Print("emu: {0} {1}", dasm.Current.Address, dasm.Current);
+                    //Debug.Print("emu: {0} {1}", dasm.Current.Address, dasm.Current);
                     if (bpExecute.Contains(dasm.Current.Address.Linear))
                     {
                         ++counter;
-                        if (counter == 2050)
-                            counter.ToString();
                         this.BreakpointHit.Fire(this);
                     }
                     Execute(dasm.Current);
@@ -101,6 +122,11 @@ namespace Decompiler.Arch.X86
                 Debug.Print("Emulator exception when executing {0}. {1}\r\n{2}", dasm.Current, ex.Message, ex.StackTrace);
                 ExceptionRaised.Fire(this);
             }
+        }
+
+        public void Stop()
+        {
+            running = false;
         }
 
         public void CreateStack()
@@ -116,6 +142,7 @@ namespace Decompiler.Arch.X86
                 throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
             case Opcode.adc: Adc(instr.op1, instr.op2); return;
             case Opcode.add: Add(instr.op1, instr.op2); return;
+            case Opcode.and: And(instr.op1, instr.op2); return;
             case Opcode.call: Call(instr.op1); return;
             case Opcode.cmp: Cmp(instr.op1, instr.op2); return;
             case Opcode.dec: Dec(instr.op1); return;
@@ -133,9 +160,12 @@ namespace Decompiler.Arch.X86
             case Opcode.mov: Write(instr.op1, Read(instr.op2)); break;
             case Opcode.or: Or(instr.op1, instr.op2); return;
             case Opcode.pop: Write(instr.op1, Pop()); return;
+            case Opcode.popa: Popa(); return;
             case Opcode.push: Push(Read(instr.op1)); return;
             case Opcode.pusha: Pusha(); return;
+            case Opcode.repne: Repne(); return;
             case Opcode.rol: Rol(instr.op1, instr.op2); return;
+            case Opcode.scasb: Scasb(); return;
             case Opcode.shl: Shl(instr.op1, instr.op2); return;
             case Opcode.shr: Shr(instr.op1, instr.op2); return;
             case Opcode.sub: Sub(instr.op1, instr.op2); return;
@@ -175,6 +205,25 @@ namespace Decompiler.Arch.X86
                 ;
         }
 
+        private void Repne()
+        {
+            dasm.MoveNext();
+            var strInstr = dasm.Current;
+            uint ecx = ReadRegister(X86.Registers.ecx);
+            if  (ecx != 0)
+            {
+                for (; ; )
+                {
+                    Execute(strInstr);
+                    --ecx;
+                    if (ecx == 0)
+                        break;
+                    if ((Flags & Zmask) != 0)
+                        break;
+                }
+            }
+        }
+
         private void Rol(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
@@ -183,6 +232,16 @@ namespace Decompiler.Arch.X86
             Write(dst, r);
             Flags =
                 (r == 0 ? Zmask : 0u);      // Zero
+        }
+
+        private void Scasb()
+        {
+            byte al = (byte) ReadRegister(X86.Registers.al);
+            TWord edi = ReadRegister(X86.Registers.edi);
+            byte mem = (byte)(al - img.Bytes[edi - img.BaseAddress.Linear]);
+            WriteRegister(X86.Registers.edi, edi + 1);      //$BUG: Direction flag not respected
+            Flags =
+                (mem == 0 ? Zmask : 0u);
         }
 
         private void Shl(MachineOperand dst, MachineOperand src)
@@ -207,8 +266,19 @@ namespace Decompiler.Arch.X86
 
         private void Call(MachineOperand op)
         {
+            Push(InstructionPointer.Linear + (uint)dasm.Current.Length);   // Push return value on stack
+
+      
             TWord l = Read(op);
-            Push(InstructionPointer.Linear + (uint) dasm.Current.Length);
+            ImportReference impProc;
+            if (this.intereptedCalls.TryGetValue(l, out impProc))
+            {
+                // Called an imported procedure. //$REVIEW: this should go into an "EnvironmentEmulator" 
+                // and a Win32Emulator would take of understanding what "loadLibraryA" does, for instance.
+                envEmulator.CallImportedProcedure(this, impProc);
+                return;
+            }
+
             InstructionPointer = new Address(l);
         }
 
@@ -243,6 +313,21 @@ namespace Decompiler.Arch.X86
                 (diff == 0 ? Zmask : 0u) | // Zero
                 (ov)                        // Overflow
                 ;
+        }
+
+
+        private void And(MachineOperand dst, MachineOperand src)
+        {
+            TWord l = Read(dst);
+            TWord r = Read(src);
+            if (src.Width.Size < dst.Width.Size)
+                r = (TWord)(sbyte)r;
+            var and = l & r;
+            Write(dst, and);
+            Flags =
+                0 |                         // Clear Carry
+                (and == 0 ? Zmask : 0u) |    // Zero
+                0;                          // Clear Overflow
         }
 
         private void Or(MachineOperand dst, MachineOperand src)
@@ -375,6 +460,18 @@ namespace Decompiler.Arch.X86
                 InstructionPointer = ((AddressOperand)op).Address;
         }
 
+        public void Popa()
+        {
+            Registers[X86.Registers.edi.Number] = Pop();
+            Registers[X86.Registers.esi.Number] = Pop();
+            Registers[X86.Registers.ebp.Number] = Pop();
+            Pop();
+            Registers[X86.Registers.ebx.Number] = Pop();
+            Registers[X86.Registers.edx.Number] = Pop();
+            Registers[X86.Registers.ecx.Number] = Pop();
+            Registers[X86.Registers.eax.Number] = Pop();
+        }
+
         public void Pusha()
         {
             var temp = Registers[X86.Registers.esp.Number];
@@ -417,5 +514,147 @@ namespace Decompiler.Arch.X86
         {
             bpExecute.Add(address);
         }
+
+        public class SimulatedProc : ExternalProcedure
+        {
+            public SimulatedProc(string name, Action<X86Emulator> emulator) : base(name, null) { Emulator = emulator; }
+
+            public Action<X86Emulator> Emulator;
+        }
+
+        public class Win32Emulator : IImportResolver
+        {
+            private List<string> modules; 
+
+            Dictionary<string, Dictionary<string, Action<X86Emulator>>> wellKnownFunctions;
+            private ExternalProcedure epDummy;
+
+            public Win32Emulator()
+            {
+                modules = new List<string>
+                {
+                    "kernel32.dll",
+                    "user32.dll"
+                };
+          
+                wellKnownFunctions = new Dictionary<string, Dictionary<string, Action<X86Emulator>>>(StringComparer.InvariantCultureIgnoreCase)
+                {
+                    { "kernel32.dll", new Dictionary<string, Action<X86Emulator>>
+                        {
+                            { "LoadLibraryA", LoadLibraryA },
+                            { "GetProcAddress", GetProcAddress },
+                            { "ExitProcess", ExitProcess },
+                            { "VirtualProtect", VirtualProtect }
+                        }
+                     },
+                     { "user32.dll", new Dictionary<string, Action<X86Emulator>>
+                     {
+                         { "MessageBoxA", MessageBoxA }
+                     }
+                     }
+                };
+                epDummy = new ExternalProcedure(">Dummy<", null);
+            }
+
+
+            void LoadLibraryA(X86Emulator emulator)
+            {
+                // M[Esp] is return address.
+                // M[Esp + 4] is pointer to DLL name.
+                uint esp = (uint)emulator.Registers[X86.Registers.esp.Number];
+                uint pstrLibName = emulator.img.ReadLeUInt32(esp + 4u - emulator.img.BaseAddress.Linear);
+                string szLibName = ReadMbString(emulator.img, pstrLibName);
+                uint hModule = (uint) modules.IndexOf(szLibName.ToLower());
+                if ((int)hModule < 0)
+                    throw new NotImplementedException(string.Format("Unknown library {0}.", szLibName));
+                hModule += 10;
+                emulator.WriteRegister(X86.Registers.eax, hModule);
+
+                // Clean up the stack.
+                emulator.WriteRegister(X86.Registers.esp, esp + 8);
+            }
+
+            void GetProcAddress(X86Emulator emulator)
+            {
+                // M[esp] is return address
+                // M[esp + 4] is hmodule
+                // M[esp + 4] is pointer to function name
+                uint esp = (uint)emulator.Registers[X86.Registers.esp.Number];
+                uint hmodule = emulator.img.ReadLeUInt32(esp + 4u - emulator.img.BaseAddress.Linear);
+                uint pstrFnName = emulator.img.ReadLeUInt32(esp + 8u - emulator.img.BaseAddress.Linear);
+                if ((pstrFnName & 0xFFFF0000) != 0)
+                {
+                    string importName = ReadMbString(emulator.img, pstrFnName);
+                    hmodule -= 10;
+                    var moduleName = modules[(int)hmodule];
+                    Dictionary<string, Action<X86Emulator>> module;
+                    wellKnownFunctions.TryGetValue(moduleName, out module);
+                    Action<X86Emulator> fn;
+                    if (!module.TryGetValue(importName, out fn))
+                        throw new NotImplementedException();
+                    uint uIntercept = emulator.AddInterceptedCall(new NamedImportReference(null, moduleName, importName));
+                    emulator.WriteRegister(X86.Registers.eax, uIntercept);
+                    emulator.WriteRegister(X86.Registers.esp, esp + 12);
+
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            void ExitProcess(X86Emulator emulator)
+            {
+                emulator.Stop();
+            }
+
+            void VirtualProtect(X86Emulator emulator)
+            {
+                uint esp = (uint)emulator.Registers[X86.Registers.esp.Number];
+                emulator.WriteRegister(X86.Registers.eax, 1u);
+                emulator.WriteRegister(X86.Registers.esp, esp + 20);
+            }
+
+            void MessageBoxA(X86Emulator emulator)
+            {
+                throw new NotImplementedException();
+            }
+
+            private string ReadMbString(LoadedImage img, TWord pstrLibName)
+            {
+                int iStart  = (int)(pstrLibName - img.BaseAddress.Linear);
+                int i = iStart;
+                for (i = iStart; img.Bytes[i] != 0; ++i)
+                {
+                }
+                return Encoding.ASCII.GetString(img.Bytes, iStart, i - iStart);
+            }
+
+            internal void CallImportedProcedure(X86Emulator emu, ImportReference impProc)
+            {
+                var proc = impProc.ResolveImportedProcedure(this, null, null);
+                var simProc = proc as SimulatedProc;
+                if (simProc == null)
+                    throw new NotImplementedException();
+                simProc.Emulator(emu);
+            }
+
+            ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, Platform platform)
+            {
+                Dictionary<string, Action<X86Emulator>> module;
+                if (!this.wellKnownFunctions.TryGetValue(moduleName, out module))
+                    return epDummy;
+                Action<X86Emulator> fn;
+                if (!module.TryGetValue(importName, out fn))
+                    return epDummy;
+                return new SimulatedProc(importName, fn);
+            }
+
+            ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, Platform platform)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
     }
 }

@@ -35,11 +35,13 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelArchitecture arch;
         private X86Emulator emu;
         private LoadedImage image;
+        private Dictionary<Address, ImportReference> importReferences;
 
         [SetUp]
         public void Setup()
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
+            importReferences = new Dictionary<Address, ImportReference>();
         }
 
         private void Given_RegValue(IntelRegister reg, uint value)
@@ -53,7 +55,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             coder(asm);
             var lr = asm.GetImage();
             this.image = lr.Image;
-            emu = new X86Emulator(arch, lr.Image);
+            emu = new X86Emulator(arch, lr.Image, importReferences);
             emu.InstructionPointer = lr.Image.BaseAddress;
             emu.WriteRegister(Registers.esp, lr.Image.BaseAddress.Linear + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };

@@ -203,15 +203,15 @@ namespace Decompiler.WindowsItp
             var abImage = new byte[size];
             fs.Read(abImage, 0, (int) size);
             var exe = new ExeImageLoader(sc, "foolexe", abImage);
-            var ldr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); // new Address(0x00100000), new List<EntryPoint>());
-            var addr = ldr.PreferredBaseAddress;
-            var lr = ldr.Load(addr);
-            var rr = ldr.Relocate(addr);
-            var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image);
+            var peLdr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); // new Address(0x00100000), new List<EntryPoint>());
+            var addr = peLdr.PreferredBaseAddress;
+            var lr = peLdr.Load(addr);
+            var rr = peLdr.Relocate(addr);
+            var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, peLdr.ImportReferences);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
             emu.BreakpointHit += emu_BreakpointHit;
-            emu.WriteRegister(Registers.esp, ldr.PreferredBaseAddress.Linear + 0x0FFC);
+            emu.WriteRegister(Registers.esp, peLdr.PreferredBaseAddress.Linear + 0x0FFC);
             emu.SetBreakpoint(0x0408FFC);
             emu.Run();
         }
