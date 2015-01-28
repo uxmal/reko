@@ -109,13 +109,13 @@ namespace Decompiler.Loading
                     {
                         var pat = Loader.HexDigit(msn) << 4 | Loader.HexDigit(lsn);
                         var img = image[iImage];
-                        if (true) // (pat != img)
+                        if (pat != img)
                             return false;
                     }
                     iImage += 1;
                     iPattern += 2;
                 }
-                return false; //  iPattern == sig.EntryPointPattern.Length;
+                return iPattern == sig.EntryPointPattern.Length;
             } catch
             {
                 Debug.Print("Pattern for '{0}' is unhandled: {1}", sig.Name, sig.EntryPointPattern);

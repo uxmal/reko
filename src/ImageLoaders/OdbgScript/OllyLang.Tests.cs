@@ -34,7 +34,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         private void Given_Engine()
         {
-            engine = new OllyLang();
+            engine = new OllyLang(new Host(null), new Debugger(null));
         }
     }
 }

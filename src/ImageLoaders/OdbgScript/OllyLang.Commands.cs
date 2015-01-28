@@ -1,76 +1,61 @@
-//#include "OllyLang.h"
-
-//#include <windows.h>
-//#include <tlhelp32.h>
-//#include <algorithm>
-//#include "Debug.h"
-//#include "HelperFunctions.h"
-//#include "Dialogs.h"
-//#include "SDK.hpp"
-//#include "TE_Interface.h"
-//#include "Opcodes.h"
-
-//using namespace TE;
-//using std::search;
-//using std::min;
-//using std::max;
+using Decompiler.Core;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Windows.Forms;
     using rulong = System.UInt64;
 
     public partial class OllyLang
     {
         const int MAX_INSTR_SIZE = 16;      // x86
         const int PAGE_SIZE = 4096;         // x86 sometimes.
-bool DoADD(string [] args)
-{
-rulong dw1, dw2;
-double flt1, flt2;
-string str1, str2;
+        bool DoADD(string[] args)
+        {
+            rulong dw1, dw2;
+            double flt1, flt2;
+            string str1, str2;
 
-	if(args.Length == 2)
-	{
-		if(GetRulong(args[0],  out dw1) && GetRulong(args[1],  out dw2))
-		{
-			return SetRulong(args[0], dw1+dw2);
-		}
-		else if(GetFloat(args[0],  out flt1) && GetFloat(args[1],  out flt2))
-		{
-			return SetFloat(args[0],  flt1+flt2);
-		}
-		else if(GetFloat(args[0],  out flt1) && GetRulong(args[1],  out dw2))
-		{
-			return SetFloat(args[0],  flt1+dw2);
-		}
-		else if(GetString(args[0],  out str1) && GetRulong(args[1],  out dw2))
-		{
-			var v1 = new var(str1), v2 = new var(dw2);
-			var v3 = v1 + v2;
-			return SetString(args[0],  v3.str);
-		}
-		else if((GetString(args[0],  out str1) && GetAnyValue(args[1],  out str2)) || (GetAnyValue(args[0],  out str1) && GetAnyValue(args[1],  out str2)))
-		{
-			var v1 = new var(str1), v2 = new var(str2);
-			var v3 = v1 + v2;
-			return SetString(args[0],  v3.str);
-		}
-	}
-	return false;
-}
+            if (args.Length == 2)
+            {
+                if (GetRulong(args[0], out dw1) && GetRulong(args[1], out dw2))
+                {
+                    return SetRulong(args[0], dw1 + dw2);
+                }
+                else if (GetFloat(args[0], out flt1) && GetFloat(args[1], out flt2))
+                {
+                    return SetFloat(args[0], flt1 + flt2);
+                }
+                else if (GetFloat(args[0], out flt1) && GetRulong(args[1], out dw2))
+                {
+                    return SetFloat(args[0], flt1 + dw2);
+                }
+                else if (GetString(args[0], out str1) && GetRulong(args[1], out dw2))
+                {
+                    Var v1 = new Var(str1), v2 = new Var(dw2);
+                    Var v3 = v1 + v2;
+                    return SetString(args[0], v3.str);
+                }
+                else if ((GetString(args[0], out str1) && GetAnyValue(args[1], out str2)) || (GetAnyValue(args[0], out str1) && GetAnyValue(args[1], out str2)))
+                {
+                    Var v1 = new Var(str1), v2 = new Var(str2);
+                    Var v3 = v1 + v2;
+                    return SetString(args[0], v3.str);
+                }
+            }
+            return false;
+        }
 
 private bool DoAI(string [] args)
 {
 	if(args.Length == 0)
 	{
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -83,7 +68,7 @@ rulong size;
 	if(args.Length == 1 && GetRulong(args[0],  out size))
 	{
 		rulong addr =  Host.TE_AllocMemory(size);
-        variables["$RESULT"] = new var(addr);
+        variables["$RESULT"] = new Var(addr);
 		if(addr != 0)
 			regBlockToFree(addr, size, false);
 		return true;
@@ -91,7 +76,11 @@ rulong size;
 	return false;
 }
 
-// Olly only
+/// <summary>
+/// Analyze the module containing the address <paramref name='addr' />
+/// </summary>
+/// <remarks>
+/// Only valid for ODBC, we ignore the command here.</remarks>
 private bool DoAN(string [] args)
 {
 rulong addr;
@@ -118,7 +107,7 @@ private bool DoAO(string [] args)
 {
 	if(args.Length == 0)
 	{
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -131,20 +120,20 @@ string returned;
 
 	if(args.Length == 1 && GetString(args[0],  out title))
 	{
-		variables["$RESULT"] = variables["$RESULT_1"] = new var(0);
+		variables["$RESULT"] = variables["$RESULT_1"] = new Var(0);
 
 		if(Host.DialogASK(title, out returned))
 		{
 			if(Helper.is_hex(returned)) 
 			{
-				variables["$RESULT"] = new var(Helper.hexstr2rul(returned));
-				variables["$RESULT_1"] = new var((returned.Length+1)/2); // size in bytes rounded to 2
+				variables["$RESULT"] = new Var(Helper.hexstr2rul(returned));
+				variables["$RESULT_1"] = new Var((returned.Length+1)/2); // size in bytes rounded to 2
 			}
 			else
 			{
 				returned = Helper.UnquoteString(returned, '"'); // To Accept input like "FFF" (forces string)
-				variables["$RESULT"] = new var(returned);
-				variables["$RESULT_1"] = new var(returned.Length);
+				variables["$RESULT"] = new Var(returned);
+				variables["$RESULT_1"] = new Var(returned.Length);
 			}
 		}
 		else 
@@ -170,7 +159,7 @@ rulong addr, attempt;
 			errorstr = "Invalid command: " + cmd;
 			return false;
 		}
-		variables["$RESULT"] = new var((rulong)len);
+		variables["$RESULT"] = new Var((rulong)len);
 		return true;
 	}
 	return false;
@@ -202,8 +191,8 @@ string asmfile;
 			}
 		}
 
-		variables["$RESULT"] = new var( totallen);
-		variables["$RESULT_1"] = new var( lines.Count);
+		variables["$RESULT"] = new Var( totallen);
+		variables["$RESULT_1"] = new Var( lines.Count);
 		return true;
 	}
 	return false;
@@ -219,7 +208,7 @@ rulong @base = 16;
 		if(args.Length == 2 && !GetRulong(args[1],  out @base))
 			return false;
 
-		variables["$RESULT"] = new var(Helper.str2rul(str, (uint) @base));
+		variables["$RESULT"] = new Var(Helper.str2rul(str, (uint) @base));
 		return true;
 	}
 	return false;
@@ -617,16 +606,16 @@ private bool DoBUF(string [] args)
 {
 	if(args.Length == 1 && is_variable(args[0]))
 	{
-		var v = variables[args[0]];
+		Var v = variables[args[0]];
 
 		switch(v.type)
 		{
-		case var.etype.STR: // empty buf + str . buf
+		case Var.etype.STR: // empty buf + str . buf
 			if(!v.isbuf)
-				v = new var("##") + v.str;
+				v = new Var("##") + v.str;
 			break;
-        case var.etype.DW: // empty buf + dw . buf
-			v = new var("##") + v.dw;
+        case Var.etype.DW: // empty buf + dw . buf
+			v = new Var("##") + v.dw;
 			break;
 		}
 		return true;
@@ -669,52 +658,53 @@ rulong hwnd;
 #endif
 }
 
-private bool DoCMP(string [] args)
+private bool DoCMP(string[] args)
 {
-rulong dw1, dw2;
-string s1, s2;
-double flt1, flt2;
-rulong size = 0;
+    rulong dw1, dw2;
+    string s1, s2;
+    double flt1, flt2;
+    rulong size = 0;
 
-	if(args.Length >= 2 && args.Length <= 3)
-	{
-		if(args.Length == 3 && !GetRulong(args[2],  out size))
-			return false;
-
-		var v1, v2;
-
-		if(GetRulong(args[0],  out dw1) && GetRulong(args[1],  out dw2))
-		{
-			v1 = new var(dw1);
-            v2 = new var(dw2);
-		}
-		else if(GetFloat(args[0],  out flt1) && GetFloat(args[1],  out flt2))
-		{
-			v1 = new var(flt1);
-            v2 = new var(flt2);
-		}
-		else if(GetAnyValue(args[0],  out s1, true) && GetAnyValue(args[1],  out s2, true))
-		{ // see also SCMP command, code is not finished here...
-            v1 = new var(s1);
-			v2 = new var(s2);
-		}
-		else
+    if (args.Length >= 2 && args.Length <= 3)
+    {
+        if (args.Length == 3 && !GetRulong(args[2], out size))
             return false;
 
-		if (size > 0)
-		{
-			v1.resize((int)size);
-			v2.resize((int)size);
-		}
+        Var v1, v2;
 
-		int res = v1.compare(v2); //Error if -2 (type mismatch)
-		if(res != -2)
-		{
-			SetCMPFlags(res);
-			return true;
-		}
-	}
-	return false;
+        if (GetRulong(args[0], out dw1) && GetRulong(args[1], out dw2))
+        {
+            v1 = new Var(dw1);
+            v2 = new Var(dw2);
+        }
+        else if (GetFloat(args[0], out flt1) && GetFloat(args[1], out flt2))
+        {
+            v1 = new Var(flt1);
+            v2 = new Var(flt2);
+        }
+        else if (GetAnyValue(args[0], out s1, true) && GetAnyValue(args[1], out s2, true))
+        {
+            // see also SCMP command, code is not finished here...
+            v1 = new Var(s1);
+            v2 = new Var(s2);
+        }
+        else
+            return false;
+
+        if (size > 0)
+        {
+            v1.resize((int)size);
+            v2.resize((int)size);
+        }
+
+        int res = v1.compare(v2); //Error if -2 (type mismatch)
+        if (res != -2)
+        {
+            SetCMPFlags(res);
+            return true;
+        }
+    }
+    return false;
 }
 
 // Olly only
@@ -944,7 +934,7 @@ private bool DoERUN(string [] args)
 	if(args.Length == 0)
 	{
 		ignore_exceptions = true;
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -957,7 +947,7 @@ private bool DoESTI(string [] args)
 		ignore_exceptions = true;
 		stepcount = 1;
 		StepIntoCallback();
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -970,7 +960,7 @@ private bool DoESTEP(string [] args)
 		ignore_exceptions = true;
 		stepcount = 1;
 		StepOverCallback();
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -1018,7 +1008,7 @@ string to_eval;
 
 	if(args.Length == 1 && GetString(args[0],  out to_eval))
 	{
-        variables["$RESULT"] = new var(ResolveVarsForExec(to_eval, false));
+        variables["$RESULT"] = new Var(ResolveVarsForExec(to_eval, false));
 		return true;
 	}
 	return false;
@@ -1091,7 +1081,7 @@ private bool DoEXEC(string [] args)
 			regBlockToFree(block);
 
 			require_addonaction = true;
-			back_to_debugloop = true;
+			resumeDebuggee = true;
 
 			return true;
 		}
@@ -1131,8 +1121,6 @@ byte val = 0;
 
 private bool DoFIND(string [] args)
 {
-    throw new NotImplementedException();
-#if NEVER
 rulong addr;
 string finddata;
 rulong maxsize = 0;
@@ -1143,72 +1131,72 @@ rulong maxsize = 0;
 			return false;
 
 		rulong dw;
-		if(GetRulong(args[1],  out dw))
+		if (GetRulong(args[1],  out dw))
 		{
-			finddata = Helper.rul2hexstr(reverse(dw));
+			finddata = Helper.rul2hexstr(Helper.reverse(dw));
 			// Remove trailing zeroes, keep even character args.Length
 			int end;
-			for(end = finddata.Length-1; end; end--)
+			for(end = finddata.Length-1; end!= 0; end--)
 			{
 				if(finddata[end] != '0')
 					break;
 			}
 			end++;
-			finddata = finddata.resize(end + (end % 2), '0');
+			finddata = finddata.PadRight(end + (end % 2), '0');
 		}
-		else if(GetString(args[1],  out finddata))
+		else if(GetString(args[1], out finddata))
 		{
-			var v = finddata;
+			var v = new Var(finddata);
 			finddata = v.to_bytes();
 			if(!v.isbuf)
-				ReplaceString(finddata, "3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
+				finddata = finddata.Replace("3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
 		}
 		else 
             return false;
 
 		if(Helper.is_hexwild(finddata))
 		{
-			variables["$RESULT"] = new var(0);
+			variables["$RESULT"] = new Var(0);
 
 			// search in current mem block
+            //$REVIEW: extremely inefficient O(n*m) algorithm, but who cares?
 			MEMORY_BASIC_INFORMATION MemInfo;
             if (Host.TE_GetMemoryInfo(addr, out MemInfo))
             {
-                rulong memlen = (rulong)MemInfo.BaseAddress + MemInfo.RegionSize - addr;
-                if (maxsize != 0 && maxsize < memlen)
-                    memlen = maxsize;
+                int memlen = (int)(MemInfo.BaseAddress + MemInfo.RegionSize - addr);
+                if (maxsize != 0 && (int) maxsize < memlen)
+                    memlen = (int) maxsize;
 
                 byte[] membuf = null;
                 byte[] mask = null;
                 byte[] bytes = null;
 
                 membuf = new byte[memlen];
-                if (Host.TE_ReadMemory(addr, memlen, membuf))
+                Stream s;
+                if (Host.Image.TryReadBytes(Address.Ptr32((uint)addr), memlen, membuf))
                 {
                     int bytecount = finddata.Length / 2;
 
                     mask = new byte[bytecount];
                     bytes = new byte[bytecount];
 
-                   Helper.hexstr2bytemask(finddata, mask, bytecount);
-                   Helper.hexstr2bytes(finddata, bytes, bytecount);
+                    Helper.hexstr2bytemask(finddata, mask, bytecount);
+                    Helper.hexstr2bytes(finddata, bytes, bytecount);
 
                     for (int i = 0; (i + bytecount) <= memlen; i++)
                     {
-                        if (memcmp_mask(membuf + i, bytes, mask, bytecount))
+                        if (Helper.memcmp_mask(membuf, i, bytes, mask, bytecount))
                         {
-                            variables["$RESULT"] = addr + i;
+                            variables["$RESULT"] = new Var(addr + (ulong)i);
                             break;
                         }
                     }
-
                 }
             }
 			return true;
 		}
 	}
 	return false;
-#endif
 }
 
 // TE?
@@ -1532,7 +1520,7 @@ rulong maxsize = 0;
 		}
 		else if(GetString(args[1],  out finddata))
 		{
-			var v = new var(finddata);
+			Var v = new Var(finddata);
 			finddata = v.to_bytes();
 			if(!v.isbuf)
 				Helper.ReplaceString(ref finddata, "3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
@@ -1541,7 +1529,7 @@ rulong maxsize = 0;
 
 		if(Helper.is_hexwild(finddata))
 		{
-			variables["$RESULT"] = new var(0);
+			variables["$RESULT"] = new Var(0);
 
 			// search in current mem block
 			MEMORY_BASIC_INFORMATION MemInfo;
@@ -1572,8 +1560,8 @@ rulong maxsize = 0;
 
 							if(len >= bytecount && Helper.memcmp_mask(membuf, i, bytes, mask, bytecount))
 							{
-                                variables["$RESULT"] = new var(addr + (uint)i);
-								variables["$RESULT_1"] = new var(len);
+                                variables["$RESULT"] = new Var(addr + (uint)i);
+								variables["$RESULT_1"] = new Var(len);
 								break;
 							}
 							i += len;
@@ -1595,7 +1583,7 @@ rulong addr = 0;
 		if(args.Length == 2 && !GetRulong(args[1],  out addr))
 			return false;
 
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 
 		MEMORY_BASIC_INFORMATION MemInfo;
 		while(Host.TE_GetMemoryInfo(addr, out MemInfo) && variables["$RESULT"].dw ==0)
@@ -1618,11 +1606,11 @@ rulong addr, size = 0;
 		if(args.Length == 2 && !GetRulong(args[1],  out size))
 			return false;
 
-		variables["$RESULT"] = new var( 0);
+		variables["$RESULT"] = new Var( 0);
 	
 		if((size == 0 && Host.TE_FreeMemory(addr)) || (size != 0 && Host.TE_FreeMemory(addr, size)))
 		{
-			variables["$RESULT"] = new var(1);
+			variables["$RESULT"] = new Var(1);
 			unregMemBlock(addr);
 		}
 		return true;
@@ -1685,7 +1673,7 @@ rulong addr;
 		    return true;
 		}
 		*/
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 		return true;
 	}
     return false;
@@ -1695,7 +1683,7 @@ private bool DoGBPM(string [] args)
 {
 	if(args.Length == 0)
 	{
-        variables["$RESULT"] = new var(break_memaddr);
+        variables["$RESULT"] = new Var(break_memaddr);
 		return true;
 	}
 	return false;
@@ -1705,7 +1693,7 @@ private bool DoGBPR(string [] args)
 {
 	if(args.Length == 0)
 	{
-		variables["$RESULT"] = new var(break_reason);
+		variables["$RESULT"] = new Var(break_reason);
 		return true;
 	}
 	return false;
@@ -1723,16 +1711,16 @@ rulong addr;
 		if(param == "COMMAND")
 		{
 			int size = 0;
-			string instr = Host.DisassembleEx(addr, out size);
+			var instr = Host.DisassembleEx(Address.Ptr32((uint)addr));
 			if(size  != 0)
-				variables["$RESULT"] = new var(instr); 
+				variables["$RESULT"] = new Var(instr.ToString()); 
 			else
-				variables["$RESULT"] = new var(0);
+				variables["$RESULT"] = new Var(0);
 			return true;
 		}
 		else if(param == "CONDITION") // Olly only
 		{
-			variables["$RESULT"] = new var(0);
+			variables["$RESULT"] = new Var(0);
 			return true;
 		}
 		else if(param == "DESTINATION") 
@@ -1751,7 +1739,7 @@ rulong addr;
 		}
 		else if(param == "TYPE") // Olly only
 		{
-			variables["$RESULT"] = new var(0);
+			variables["$RESULT"] = new Var(0);
 			return true;
 		}
 	}
@@ -1765,7 +1753,7 @@ rulong addr;
 
 	if(args.Length == 1 && GetRulong(args[0],  out addr))
 	{
-        variables["$RESULT"] = new var("");
+        variables["$RESULT"] = new Var("");
 		return true;
 	}
 	return false;
@@ -1810,7 +1798,7 @@ rulong addr;
 
 	if(args.Length == 1 && GetRulong(args[0],  out addr))
 	{
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 		return true;
 	}
 	return false;
@@ -1840,7 +1828,7 @@ string mod;
 				}
 			}
 		}
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 		return true;
 	}
 	return false;
@@ -1853,16 +1841,16 @@ private bool DoGMEMI(string[] args)
 
     if (args.Length == 2 && GetRulong(args[0], out addr))
     {
-        variables["$RESULT"] = new var(0);
+        variables["$RESULT"] = new Var(0);
 
         MEMORY_BASIC_INFORMATION MemInfo;
         if (Host.TE_GetMemoryInfo(addr, out MemInfo))
         {
             val = args[1].ToUpperInvariant();
 
-            if (val == "MEMORYBASE") variables["$RESULT"] = new var((rulong)MemInfo.BaseAddress);
-            else if (val == "MEMORYSIZE") variables["$RESULT"] = new var(MemInfo.RegionSize);
-            else if (val == "MEMORYOWNER") variables["$RESULT"] = new var((rulong)MemInfo.AllocationBase);
+            if (val == "MEMORYBASE") variables["$RESULT"] = new Var((rulong)MemInfo.BaseAddress);
+            else if (val == "MEMORYSIZE") variables["$RESULT"] = new Var(MemInfo.RegionSize);
+            else if (val == "MEMORYOWNER") variables["$RESULT"] = new Var((rulong)MemInfo.AllocationBase);
             else
             {
                 errorstr = "Second operand bad";
@@ -1899,7 +1887,7 @@ string str;
 		errorstr = "Unsupported command!";
 		return false;
 
-        variables["$RESULT"] = new var(0);
+        variables["$RESULT"] = new Var(0);
 
 		str = args[1].ToUpperInvariant();
 
@@ -2169,7 +2157,7 @@ string str;
 		errorstr = "Unsupported command!";
 		return false;
 
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 
         str = (args[1]).ToUpperInvariant();
 
@@ -2280,13 +2268,13 @@ rulong addr;
 			if((offset = DLL.LastIndexOf('.')) >= 0) // remove extension
 				DLL = DLL.Remove(offset);
 
-			variables["$RESULT"] =   new var(API);
-			variables["$RESULT_1"] = new var(DLL);
-			variables["$RESULT_2"] = new var(API);
+			variables["$RESULT"] =   new Var(API);
+			variables["$RESULT_1"] = new Var(DLL);
+			variables["$RESULT_2"] = new Var(API);
 		}
 		else
 		{
-			variables["$RESULT"] = variables["$RESULT_1"] = variables["$RESULT_2"] = new var(0);
+			variables["$RESULT"] = variables["$RESULT_1"] = variables["$RESULT_2"] = new Var(0);
 		}
 		return true;
 	}
@@ -2301,7 +2289,7 @@ rulong addr;
 	{
         Debugger.SetBPX(addr, Ue.UE_SINGLESHOOT, SoftwareCallback);
 		bInternalBP = true;
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -2386,13 +2374,13 @@ bool dofree;
 		rulong addr = Importer.GetRemoteAPIAddressEx(lib, proc);
 		if(addr != 0)
 		{
-			variables["$RESULT"] =   new var(addr );
-			variables["$RESULT_1"] = new var(lib );
-			variables["$RESULT_2"] = new var(proc );
+			variables["$RESULT"] =   new Var(addr );
+			variables["$RESULT_1"] = new Var(lib );
+			variables["$RESULT_2"] = new Var(proc );
 		}
 		else
 		{
-			variables["$RESULT"] = variables["$RESULT_1"] = variables["$RESULT_2"] = new var(0);
+			variables["$RESULT"] = variables["$RESULT_1"] = variables["$RESULT_2"] = new Var(0);
 		}
 		return true;
 	}
@@ -2401,54 +2389,48 @@ bool dofree;
 
 private bool DoGPI(string [] args)
 {
-throw new NotImplementedException();
-#if LATER
-string str;
-
+    string str;
 	if(args.Length == 1)
 	{
 		str = Helper.toupper(args[0]);
 
 		if(str == "HPROCESS") // Handle of debugged process 
 		{
-			variables["$RESULT"] = new var()(rulong)Host.TE_GetProcessHandle();
+			variables["$RESULT"] = new Var((rulong)Host.TE_GetProcessHandle());
 		}
 		else if(str == "PROCESSID") // Process ID of debugged process 
 		{
-			variables["$RESULT"] = Host.TE_GetProcessId();
+			variables["$RESULT"] = new Var(Host.TE_GetProcessId());
 		}
 		else if(str == "HMAINTHREAD") // Handle of main thread of debugged process 
 		{
-			variables["$RESULT"] = (rulong)Host.TE_GetMainThreadHandle();
+			variables["$RESULT"] = new Var((rulong)Host.TE_GetMainThreadHandle());
 		}
 		else if(str == "MAINTHREADID") // Thread ID of main thread of debugged process 
 		{
-			variables["$RESULT"] = Host.TE_GetMainThreadId();
+			variables["$RESULT"] = new Var(Host.TE_GetMainThreadId());
 		}
 		else if(str == "MAINBASE") // Base of main module in the debugged process (NOT DLL . loader base)
 		{
-            variables["$RESULT"] = new var(Debugger.GetDebuggedFileBaseAddress());
+            variables["$RESULT"] = new Var(Debugger.GetDebuggedFileBaseAddress());
 		}
 		else if(str == "PROCESSNAME") // File name of the debugged process/dll (no extension)
 		{
-			string name = Helper.filefrompath(Host.TE_GetTargetPath());
-			int offs;
-			if((offs = name.LastIndexOf('.')) >= 0)
-				name = name.Remove(offs);
-			variables["$RESULT"] = new var(name);
+			string name = Path.GetFileNameWithoutExtension(Host.TE_GetTargetPath());
+			variables["$RESULT"] = new Var(name);
 		}
 		else if(str == "EXEFILENAME") // Full path of the debugged file/dll
 		{
-            variables["$RESULT"] = new var(Host.TE_GetTargetPath());
+            variables["$RESULT"] = new Var(Host.TE_GetTargetPath());
 		}
 		else if(str == "CURRENTDIR") // Current directory for debugged process (with trailing '\')
 		{
-			variables["$RESULT"] = new var(Host.TE_GetTargetDirectory());
+			variables["$RESULT"] = new Var(Host.TE_GetTargetDirectory());
 		}
 		else if(str == "SYSTEMDIR") // Windows system directory (with trailing '\')
 		{
             string SysDir = Environment.GetFolderPath(Environment.SpecialFolder.SystemX86);
-            variables["$RESULT"] = new var(Helper.pathfixup(SysDir, true));
+            variables["$RESULT"] = new Var(Helper.pathfixup(SysDir, true));
 		}
 		else
 		{
@@ -2458,7 +2440,6 @@ string str;
 		return true;
 	}
 	return false;
-#endif
 }
 
 //in dev... i try to find API parameters number and types
@@ -2523,7 +2504,7 @@ rulong line;
 		if(args.Length == 1 && !GetRulong(args[0],  out line))
 			return false;
 
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 		return true;
 	}
 	return false;
@@ -2536,7 +2517,7 @@ rulong addr;
 
 	if(args.Length == 1 && GetRulong(args[0],  out addr))
 	{
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 		return true;
 	}
 	return false;
@@ -2575,7 +2556,7 @@ rulong addr, size = 2;
 		if(args.Length == 2 && !GetRulong(args[1],  out size))
 			return false;
 
-		variables["$RESULT"] = variables["$RESULT_1"] = new var(0);
+		variables["$RESULT"] = variables["$RESULT_1"] = new Var(0);
 
 		MEMORY_BASIC_INFORMATION MemInfo;
 		if(Host.TE_GetMemoryInfo(addr, out MemInfo))
@@ -2593,8 +2574,8 @@ rulong addr, size = 2;
 				rulong strsize = (uint)buffer.Length;
 				if(strsize != 0 && strsize >= size && strsize < memsize)
 				{
-					variables["$RESULT"] =   new var(buffer.ToString() );       //$BUGBUG! stringize buffer first.
-					variables["$RESULT_1"] = new var(strsize);
+					variables["$RESULT"] =   new Var(buffer.ToString() );       //$BUGBUG! stringize buffer first.
+					variables["$RESULT_1"] = new Var(strsize);
 				}
 			}
 		}
@@ -2610,7 +2591,7 @@ string sClassName;
 
 	if(args.Length == 3 && GetRulong(args[0],  out x) && GetRulong(args[1],  out y) && GetString(args[2],  out sClassName)) 
 	{
-		variables["$RESULT"] = new var((rulong)Host.FindHandle(Host.TE_GetMainThreadId(), sClassName, x, y));
+		variables["$RESULT"] = new Var((rulong)Host.FindHandle(Host.TE_GetMainThreadId(), sClassName, x, y));
 		return true;
 	}
 	return false;
@@ -2661,7 +2642,7 @@ rulong @base = 16;
 
 		if(@base >= 2 && @base <= 32)
 		{
-			variables["$RESULT"] = new var(Helper.rul2str((uint)dw, (uint)@base));
+			variables["$RESULT"] = new Var(Helper.rul2str((uint)dw, (uint)@base));
 			return true;
 		}
 		errorstr = "Invalid base";
@@ -2876,7 +2857,7 @@ string str;
 
 	if(args.Length == 1 && GetString(args[0],  out str))
 	{
-		variables["$RESULT"] = new var(str.Length);
+		variables["$RESULT"] = new Var(str.Length);
 		return true;
 	}
 	return false;
@@ -2888,7 +2869,7 @@ string str;
 
 	if(args.Length == 1 && GetString(args[0],  out str))
 	{
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 
 		errorstr = "Unsupported command!";
 		return false;
@@ -2896,7 +2877,7 @@ string str;
 		if (Remote.LoadLibrary(Host.TE_GetProcessHandle(), str, false))
 		{
 			// $RESULT EAX!!!
-			back_to_debugloop = true;
+			resumeDebuggee = true;
 			return true;
 		}
 
@@ -3015,7 +2996,7 @@ rulong dw = 0;
 		if(0==dw)
 			dw = 16;
 
-		var v = variables[args[0]];
+		Var v = variables[args[0]];
 
         string line = "";
 		string data = v.to_bytes();
@@ -3069,49 +3050,53 @@ rulong maxsize = 0;
 		register_t reg;
 
 		// Check destination
-		if(is_variable(args[0]))
+		if (is_variable(args[0]))
 		{
-			var v = variables[args[0]];
+			Var v;
 
 			if(maxsize > sizeof(rulong) && Helper.is_memory(args[1])) // byte string
 			{
 				string tmp = Helper.UnquoteString(args[1],  '[', ']');
 
 				rulong src;
-				if(GetRulong(tmp, out src))
-				{
-					Debug.Assert(src != 0);
+                if (GetRulong(tmp, out src))
+                {
+                    Debug.Assert(src != 0);
 
-					byte [] bytes;
+                    byte[] bytes;
 
-						bytes = new byte[maxsize];
+                    bytes = new byte[maxsize];
 
-					if(!Host.TE_ReadMemory(src, maxsize, bytes))
-					{
-						return false;
-					}
-                    v = new var("#" + Helper.bytes2hexstr(bytes, (int)maxsize) + '#');
-				}
+                    if (!Host.TE_ReadMemory(src, maxsize, bytes))
+                    {
+                        return false;
+                    }
+                    v = new Var("#" + Helper.bytes2hexstr(bytes, (int)maxsize) + '#');
+                }
+                else
+                    v = new Var(0);
 			}
 			else if(maxsize <= sizeof(rulong) && GetRulong(args[1],  out dw)) // rulong
 			{
 				// DW to DW/FLT var
 				if(maxsize == 0)
                     maxsize = sizeof(rulong);
-				dw = Helper.resize(dw, (int)maxsize);
-				v = new var(dw);
+				// dw = Helper.resize(dw, (int)maxsize);
+				v = new Var(dw);
 				v.size = (int)maxsize;
 			}
 			else if(GetString(args[1], out str, (int)maxsize)) // string
 			{
-				v = new var(str);
+				v = new Var(str);
 			}
 			else if(GetFloat(args[1],  out flt)) // float
 			{
-				v = new var(flt);
+				v = new Var(flt);
 			}
-			else return false;
+			else
+                return false;
 
+            variables[args[0]] = v;
 			return true;
 		}
 		else if((reg = find_register(args[0])) != null)
@@ -3217,7 +3202,7 @@ rulong maxsize = 0;
 				}
 				else if(GetString(args[1], out str, (int) maxsize))
 				{
-					var v = new var(str);
+					Var v = new Var(str);
 					if(maxsize == 0) 
                         maxsize = (rulong) v.size;
 					maxsize = Math.Min(maxsize, (rulong)v.size);
@@ -3262,13 +3247,13 @@ string msg;
 			switch(input)
 			{
 			case DialogResult.Cancel:
-				variables["$RESULT"] = new var(2);
+				variables["$RESULT"] = new Var(2);
 				return Pause();
 			case DialogResult.OK:
-				variables["$RESULT"] = new var( 1);
+				variables["$RESULT"] = new Var( 1);
 				break;
 			default:
-				variables["$RESULT"] = new var(0);
+				variables["$RESULT"] = new Var(0);
 				break;
 			}
 			return true;
@@ -3379,7 +3364,7 @@ rulong addr;
 	{
 		byte [] buffer = new byte[MAX_INSTR_SIZE];
 
-		variables["$RESULT"] = variables["$RESULT_1"] = variables["$RESULT_2"] = new var(0);
+		variables["$RESULT"] = variables["$RESULT_1"] = variables["$RESULT_2"] = new Var(0);
 
 		if(Host.TE_ReadMemory(addr, (rulong) buffer.Length, buffer))
 		{
@@ -3387,9 +3372,9 @@ rulong addr;
 			string opstring = Host.Disassemble(buffer, addr, out opsize);
 			if(opsize != 0)
 			{
-				variables["$RESULT"]   = new var(Helper.bytes2hexstr(buffer, opsize));
-				variables["$RESULT_1"] = new var(opstring);
-				variables["$RESULT_2"] = new var(opsize);
+				variables["$RESULT"]   = new Var(Helper.bytes2hexstr(buffer, opsize));
+				variables["$RESULT_1"] = new Var(opstring);
+				variables["$RESULT_2"] = new Var(opsize);
 			}
 		}
 		return true;
@@ -3414,7 +3399,7 @@ rulong addr, @base, size;
             break;
 		}
 
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 		return true;
 	}
 	return false;
@@ -3479,12 +3464,12 @@ private bool DoPREOP(string [] args)
 		else if(args.Length == 0)
 			addr = Debugger.GetContextData(eContextData.UE_CIP);
 
-		variables["$RESULT"] = new var(0);
+		variables["$RESULT"] = new Var(0);
 
 		int prevsize = Host.LengthDisassembleBackEx(addr);
 		if(prevsize!=0)
 		{
-			variables["$RESULT"] = new var(addr - (rulong)prevsize);
+			variables["$RESULT"] = new Var(addr - (rulong)prevsize);
 		}
 		return true;
 	}
@@ -3520,7 +3505,7 @@ string str;
 
 	if(args.Length == 2 && GetRulong(args[1],  out maxsize) && GetString(args[0],  out str, (int)maxsize)) 
 	{
-		variables["$RESULT"] =  new var(str);
+		variables["$RESULT"] =  new Var(str);
 		return true;
 	}
     return false;
@@ -3621,9 +3606,9 @@ string str = "MEMORY";
 
 		string[]valid_commands = {"MEMORY", "CODE", "MODULE"};
 
-        variables["$RESULT"] = new var(0);
-		variables["$RESULT_1"] = new var(0);
-		variables["$RESULT_2"] = new var(0);
+        variables["$RESULT"] = new Var(0);
+		variables["$RESULT_1"] = new Var(0);
+		variables["$RESULT_2"] = new Var(0);
 
 		return (valid_commands.Contains(str, StringComparer.InvariantCultureIgnoreCase));
 
@@ -3759,13 +3744,13 @@ private bool DoRET(string [] args)
 				{
 					if(callbacks.Last().returns_value)
 					{
-						variables["$TEMP"] = new var(0);
+						variables["$TEMP"] = new Var(0);
 						if(callCommand(DoMOV, "$TEMP", args[0]))
 						{
 							callback_return = variables["$TEMP"];
 							variables.Remove("$TEMP");
 
-							if(callback_return.type == var.etype.EMP || callback_return.type == callbacks.Last().return_type)
+							if(callback_return.type == Var.etype.EMP || callback_return.type == callbacks.Last().return_type)
 							{
 								callbacks.RemoveAt(callbacks.Count-1);
 								return true;
@@ -3792,12 +3777,12 @@ string str;
 	{
 		if(GetRulong(args[0],  out dw))
 		{
-			variables["$RESULT"] = new var(Helper.reverse(dw));
+			variables["$RESULT"] = new Var(Helper.reverse(dw));
 			return true;
 		}
 		else if(GetString(args[0],  out str))
 		{
-			var tmp = new var(str);
+			Var tmp = new Var(str);
 			tmp.reverse();
 			variables["$RESULT"] = tmp;
 			return true;
@@ -3841,7 +3826,7 @@ private bool DoRTR(string [] args)
 		run_till_return = true;
 		stepcount = -1;
 		StepOverCallback();
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -3854,7 +3839,7 @@ private bool DoRTU(string [] args)
 		return_to_usercode = true;
 		stepcount = -1;
 		StepOverCallback();
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -3862,9 +3847,9 @@ private bool DoRTU(string [] args)
 
 private bool DoRUN(string [] args)
 {
-	if(args.Length == 0)
+	if (args.Length == 0)
 	{
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -4011,7 +3996,7 @@ private bool DoSTI(params string [] args)
 	{
 		stepcount = 1;
 		StepIntoCallback();
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -4023,7 +4008,7 @@ private bool DoSTO(string [] args)
 	{
 		stepcount = 1;
 		StepOverCallback();
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -4033,15 +4018,15 @@ private bool DoSTR(string [] args)
 {
 	if(args.Length == 1 && is_variable(args[0]))
 	{
-		var v = variables[args[0]];
+		Var v = variables[args[0]];
 		switch(v.type)
 		{
-		case var.etype.DW: // empty buf + dw . buf
-			v = new var("##") + v.dw;
-            goto case var.etype.STR;
-		case var.etype.STR:
+		case Var.etype.DW: // empty buf + dw . buf
+			v = new Var("##") + v.dw;
+            goto case Var.etype.STR;
+		case Var.etype.STR:
 			if(v.isbuf)
-				v = new var(v.to_string());
+				v = new Var(v.to_string());
 			return true;
 		}
 	}
@@ -4093,7 +4078,7 @@ private bool DoTI(string [] args)
 {
 	if(args.Length == 0)
 	{
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -4112,14 +4097,14 @@ private bool DoTICK(string [] args)
 
 		if(args.Length == 0)
 		{
-			variables["$RESULT"] = new var(Helper.rul2decstr(tickcount/1000) + " ms");
+			variables["$RESULT"] = new Var(Helper.rul2decstr(tickcount/1000) + " ms");
 			return true;
 		}
 		else if(is_variable(args[0]) || DoVAR(args[0]))
 		{
-			variables[args[0]] = new var((uint)tickcount);
+			variables[args[0]] = new Var((uint)tickcount);
             if (args.Length == 2)
-                variables["$RESULT"] = new var((uint)(tickcount - timeref));
+                variables["$RESULT"] = new Var((uint)(tickcount - timeref));
 			return true;
 		}
 	}
@@ -4162,7 +4147,7 @@ private bool DoTO(string [] args)
 {
 	if(args.Length == 0)
 	{
-		back_to_debugloop = true;
+		resumeDebuggee = true;
 		return true;
 	}
 	return false;
@@ -4217,7 +4202,7 @@ private bool DoVAR(params string [] args)
 	{
 		if(is_valid_variable_name(args[0]))
 		{
-			variables[args[0]] = new var(0);
+			variables[args[0]] = new Var(0);
 			return true;
 		}
 		errorstr = "Bad variable name: " + args[0];
@@ -4242,7 +4227,7 @@ private bool DoXCHG(string[] args)
         }
         else if (is_variable(args[0]) && is_variable(args[1]))
         {
-            var tmp = variables[args[0]];
+            Var tmp = variables[args[0]];
             variables[args[0]] = variables[args[1]];
             variables[args[1]] = tmp;
             return true;

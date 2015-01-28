@@ -204,7 +204,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             for (int i = 0, e = s.Length; i < e; i++)
             {
                 if (s[i] != '?')
-                    mask[i / 2] |=  (byte) (0xF0 >> ((i % 2) * 4));
+                    mask[i / 2] |= (byte)(0xF0 >> ((i % 2) * 4));
             }
             return size;
         }
@@ -382,7 +382,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             result = s.Substring(1, s.Length - 2);
             if (cstart == '"')
-                ReplaceString(ref result, "\\r\\n", "\r\n");
+            {
+                result = result.Replace("\\r\\n", "\r\n");
+            }
             return result;
         }
 

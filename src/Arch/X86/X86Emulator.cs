@@ -37,7 +37,6 @@ namespace Decompiler.Arch.X86
     public class X86Emulator
     {
         public event EventHandler BeforeStart;
-        public event EventHandler BreakpointHit;
         public event EventHandler ExceptionRaised;
 
         public const uint Cmask = 1u << 0;
@@ -50,7 +49,7 @@ namespace Decompiler.Arch.X86
         private Win32Emulator envEmulator;
         IEnumerator<IntelInstruction> dasm;
         private bool running;
-        private HashSet<uint> bpExecute = new HashSet<TWord>();
+        private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
 
         public readonly ulong[] Registers;
         public readonly bool[] Valid;
@@ -58,6 +57,9 @@ namespace Decompiler.Arch.X86
         private Address ip;
         private Dictionary<TWord, ImportReference> intereptedCalls;
         private TWord uPseudoFn;
+        private Action stepAction;
+        private bool stepInto;
+        private TWord stepOverAddress;
 
         public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage, Dictionary<Address, ImportReference> importReferences)
         {
@@ -98,21 +100,58 @@ namespace Decompiler.Arch.X86
             return uPseudoFn;
         }
 
-        public void Run()
+        public void StepOver(Action callback)
         {
-            int counter = 0;
+            stepOverAddress = (TWord)(dasm.Current.Address.Linear + dasm.Current.Length);
+            stepAction = callback;
+            Run();
+        }
+
+        public void StepInto(Action callback)
+        {
+            stepInto = true;
+            stepAction = callback;
+            Run();
+        }
+
+        public void Start()
+        {
             running = true;
             CreateStack();
             BeforeStart.Fire(this);
+            Run();
+        }
+
+        private void Run()
+        {
+            int counter = 0;
             try
             {
-                while (running && dasm.MoveNext()) 
+                while (running && dasm.MoveNext())
                 {
                     //Debug.Print("emu: {0} {1}", dasm.Current.Address, dasm.Current);
-                    if (bpExecute.Contains(dasm.Current.Address.Linear))
+                    Action bpAction;
+                    TWord eip = dasm.Current.Address.Linear;
+                    if (bpExecute.TryGetValue(eip, out bpAction))
                     {
                         ++counter;
-                        this.BreakpointHit.Fire(this);
+                        stepOverAddress = 0;
+                        stepInto = false;
+                        bpAction();
+                    }
+                    else if (stepInto)
+                    {
+                        stepInto = false;
+                        var s = stepAction;
+                        stepAction = null;
+                        s();
+                    }
+                    else if (stepOverAddress == eip)
+                    {
+                        stepOverAddress = 0;
+                        var s = stepAction;
+                        stepAction = null;
+                        s();
                     }
                     Execute(dasm.Current);
                 }
@@ -151,7 +190,7 @@ namespace Decompiler.Arch.X86
             case Opcode.ja: if ((Flags & (Cmask | Zmask)) == 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
             case Opcode.jbe: if ((Flags & (Cmask | Zmask)) != 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
             case Opcode.jc: if ((Flags & Cmask) != 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
-            case Opcode.jmp: InstructionPointer = ((AddressOperand)instr.op1).Address; return;
+            case Opcode.jmp: Jump(instr.op1); return;
             case Opcode.jnc: if ((Flags & Cmask) == 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
             case Opcode.jnz: if ((Flags & Zmask) == 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
             case Opcode.jz: if ((Flags & Zmask) != 0) InstructionPointer = ((AddressOperand)instr.op1).Address; return;
@@ -267,7 +306,6 @@ namespace Decompiler.Arch.X86
         private void Call(MachineOperand op)
         {
             Push(InstructionPointer.Linear + (uint)dasm.Current.Length);   // Push return value on stack
-
       
             TWord l = Read(op);
             ImportReference impProc;
@@ -279,6 +317,17 @@ namespace Decompiler.Arch.X86
                 return;
             }
 
+            InstructionPointer = new Address(l);
+        }
+
+        private void Jump(MachineOperand op)
+        {
+            TWord l = Read(op);
+            ImportReference impProc;
+            if (this.intereptedCalls.TryGetValue(l, out impProc))
+            {
+                throw new NotImplementedException();
+            }
             InstructionPointer = new Address(l);
         }
 
@@ -392,6 +441,9 @@ namespace Decompiler.Arch.X86
             var i = op as ImmediateOperand;
             if (i != null)
                 return i.Value.ToUInt32();
+            var a = op as AddressOperand;
+            if (a != null)
+                return a.Address.Linear;
             var m = op as MemoryOperand;
             if (m != null)
             {
@@ -510,9 +562,14 @@ namespace Decompiler.Arch.X86
             Write(op2, tmp);
         }
 
-        public void SetBreakpoint(uint address)
+        public void SetBreakpoint(uint address, Action callback)
         {
-            bpExecute.Add(address);
+            bpExecute.Add(address, callback);
+        }
+
+        public void DeleteBreakpoint(uint address)
+        {
+            bpExecute.Remove(address);
         }
 
         public class SimulatedProc : ExternalProcedure
@@ -655,6 +712,5 @@ namespace Decompiler.Arch.X86
                 throw new NotImplementedException();
             }
         }
-
     }
 }

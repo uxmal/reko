@@ -32,9 +32,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
     using System.IO;
     using rulong = System.UInt64;
 
-
     /// <summary>
-    /// /
+    /// ImageLoader that uses OdbgScript to assist in the unpacking of 
+    /// compressed or obfuscated binaries.
     /// </summary>
     /// <remarks>Uses the optional Argument property from the app.config file to specify the
     /// script file to use.</remarks>
@@ -45,14 +45,16 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public OdbgScriptLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
-            ollylang = new OllyLang();
-            Debugger = new Debugger();
         }
 
         public override Address PreferredBaseAddress
         {
-            get { throw new NotImplementedException(); }
+            get { return new Address(0x00400000); }
         }
+
+        public LoadedImage Image { get; private set; }
+        public ImageMap ImageMap { get; set; }
+        public IntelArchitecture Architecture { get; set; }
 
         public override LoaderResults Load(Address addrLoad)
         {
@@ -61,19 +63,25 @@ namespace Decompiler.ImageLoaders.OdbgScript
             PeImageLoader pe = CreatePeImageLoader();
             LoaderResults lr = pe.Load(pe.PreferredBaseAddress);
             RelocationResults rr = pe.Relocate(pe.PreferredBaseAddress);
-
-            // Load the script.
-            LoadScript(Argument, ollylang.script);
+            this.Image = lr.Image;
+            this.ImageMap = lr.ImageMap;
+            this.Architecture = (IntelArchitecture)lr.Architecture;
 
             // Initialize the emulator instruction pointer.
             X86State state = (X86State)lr.Architecture.CreateProcessorState();
             X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, pe.ImportReferences);    //$Create emulator?
+            Debugger = new Debugger(emu);
+            ollylang = new OllyLang(new Host(this), Debugger);
+
             emu.InstructionPointer = rr.EntryPoints[0].Address;
+            emu.Registers[Registers.esp.Number] = Image.BaseAddress.Linear + 0x1000 - 4u;
             emu.BeforeStart += emu_BeforeStart;
-            emu.BreakpointHit += emu_BreakPointHit;
             emu.ExceptionRaised += emu_ExceptionRaised;
 
-            emu.Run();
+            // Load the script.
+            LoadScript(Argument, ollylang.script);
+
+            emu.Start();
 
             //$TODO: somehow collect the results of the script.
             throw new NotImplementedException();
@@ -96,11 +104,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             script.load_file(scriptFilename, null);
         }
 
-        private void emu_BreakPointHit(object sender, EventArgs e)
-        {
-            ollylang.Step();
-        }
-
         private void emu_ExceptionRaised(object sender, EventArgs e)
         {
 
@@ -111,11 +114,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
             ollylang.Reset();
             ollylang.debuggee_running = false;
             OldIP = 0;
-            //if(FileNameFromHandle(debugEvent->u.CreateProcessInfo.hFile, TargetPath))
-            //{
-            //    strcpy(TargetDirectory, folderfrompath(TargetPath).c_str());
             ollylang.InitGlobalVariables();
-            //}
+            ScripterResume();
         }
 
         // 
@@ -143,8 +143,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         */
 
 
-        //bool FileNameFromHandle(HANDLE hFile, char Name[MAX_PATH]);
-
 
         // TitanEngine plugin callbacks
 
@@ -154,11 +152,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             switch (CallReason)
             {
-            case Ue.UE_PLUGIN_CALL_REASON_PREDEBUG:
-                ollylang.Reset();
-                ollylang.debuggee_running = false;
-                OldIP = 0;
-                break;
+
             case Ue.UE_PLUGIN_CALL_REASON_POSTDEBUG:
                 break;
             case Ue.UE_PLUGIN_CALL_REASON_EXCEPTION:
@@ -211,7 +205,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return ollylang.script.load_buff(szScript);
         }
 
-        bool ScripterResume()
+        public bool ScripterResume()
         {
             return ollylang.Run();
         }
@@ -225,15 +219,15 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             ScripterResume();
         }
+
         bool ScripterAutoDebug(string szDebuggee)
         {
-            if (ollylang.script.isloaded() && ollylang.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
+            if (ollylang.script.IsLoaded && ollylang.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
             {
                 ollylang.Debugger.DebugLoop();
                 return true;
             }
             return false;
         }
-
     }
 }
