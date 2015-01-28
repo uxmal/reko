@@ -1,3 +1,4 @@
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,12 +37,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
     partial class OllyLang
     {
-        private
-            enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
+        private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
 
-        public
-
-       const byte OS_VERSION_HI = 1;  // High plugin version
+        const byte OS_VERSION_HI = 1;  // High plugin version
         const byte OS_VERSION_LO = 77; // Low plugin version
         //static const byte OS_VERSION_ST = 3;  // plugin state (0 hacked, 1 svn, 2 beta, 3 official release)
 
@@ -51,32 +49,14 @@ namespace Decompiler.ImageLoaders.OdbgScript
         const byte TS_VERSION_HI = 0;
         const byte TS_VERSION_LO = 7;
 
-
-        //bool Pause();
-        //bool Run();
-        //void Reset();
-        //void InitGlobalVariables();
-
         // "Events"
         //void OnBreakpoint(eBreakpointType reason);
         //void OnException();
 
-      public  bool debuggee_running;
-      public  bool script_running;
-
-      public  bool run_till_return;
-      public  bool return_to_usercode;
-
-        //private
-
-        //    // Constructor & destructor
-        //    OllyLang();
-        //    OllyLang(const OllyLang&);
-        //    ~OllyLang();
-
-        //OllyLang& operator=(const OllyLang&);
-
-        //typedef bool (OllyLang::*PFCOMMAND)(const string*, size_t);
+        public  bool debuggee_running;
+        public  bool script_running;
+        public  bool run_till_return;
+        public  bool return_to_usercode;
 
         public OllyScript script;
 
@@ -84,12 +64,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         private  const int STRING_READSIZE = 256;
 
-        public Dictionary<string, var> variables = new Dictionary<string,var>(); // Variables that exist
+        public Dictionary<string, Var> variables = new Dictionary<string,Var>(); // Variables that exist
         private Dictionary<rulong, uint> bpjumps = new Dictionary<rulong,uint>();  // Breakpoint Auto Jumps 
         private List<uint> calls = new List<uint>();         // Call/Ret in script
 
         // Debugger state
-        private bool back_to_debugloop;
+        private bool resumeDebuggee;
         private bool ignore_exceptions;
         private int stepcount;
 
@@ -103,38 +83,24 @@ namespace Decompiler.ImageLoaders.OdbgScript
         private rulong pmemforexec;
         private rulong membpaddr, membpsize;
 
-        // Free Allocated Virtual Memory
-        ////bool freeMemBlocks();
-        //void regBlockToFree(t_dbgmemblock block);
-        //void regBlockToFree(rulong address, int size, bool autoclean);
-        //bool unregMemBlock(rulong address);
-
-       private bool require_addonaction;
+        private bool require_addonaction;
 
         private string errorstr;
 
         void SoftwareCallback() { OnBreakpoint(eBreakpointType.PP_INT3BREAK); }
         void HardwareCallback() { OnBreakpoint(eBreakpointType.PP_HWBREAK); }
         void MemoryCallback()   { OnBreakpoint(eBreakpointType.PP_MEMBREAK); }
-
-#if LATER
-	static void StepIntoCallback();
-	static void StepOverCallback();
-
-	bool StepChecked();
-#endif
-
-        void EXECJMPCallback() { DoSTI(); }
+        void EXECJMPCallback()  { DoSTI(); }
 
         struct callback_t
         {
             public uint call;
             public bool returns_value;
-            public var.etype return_type;
-        };
+            public Var.etype return_type;
+        }
 
         List<callback_t> callbacks = new List<callback_t>();
-        var callback_return;
+        Var callback_return;
 
         //bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result);
 
@@ -177,8 +143,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         //static void __stdcall LBPC_LOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG)   { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_LOAD); }
         //static void __stdcall LBPC_UNLOAD(const LOAD_DLL_DEBUG_INFO* SpecialDBG) { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_UNLOAD); }
         //static void __stdcall LBPC_ALL(const LOAD_DLL_DEBUG_INFO* SpecialDBG)    { Instance().LBPC_TRAMPOLINE(SpecialDBG, UE_ON_LIB_ALL); }
-
-        // ---
 
         public class register_t
         {
@@ -268,7 +232,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         int EOB_row, EOE_row;
 
         bool bInternalBP;
-
         ulong tickcount_startup;
 
         byte[] search_buffer;
@@ -279,8 +242,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         // Cursor for REF / (NEXT)REF function
         int adrREF, curREF;
 
-        //bool ProcessAddonAction();
-
         void SetCMPFlags(int diff)
         {
             zf = (diff == 0);
@@ -288,266 +249,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
 
         // Commands
-        /*
-        bool DoADD(const string*, size_t);
-        bool DoAI(const string*, size_t);
-        bool DoALLOC(const string*, size_t);
-        bool DoAN(const string*, size_t);
-        bool DoAND(const string*, size_t);
-        bool DoAO(const string*, size_t);
-        bool DoASK(const string*, size_t);
-        bool DoASM(const string*, size_t);
-        bool DoASMTXT(const string*, size_t);
-        bool DoATOI(const string*, size_t);
-        bool DoBC(const string*, size_t);
-        bool DoBCA(const string*, size_t);
-        bool DoBD(const string*, size_t);
-        bool DoBDA(const string*, size_t);
-        bool DoBEGINSEARCH(const string*, size_t);
-        bool DoBP(const string*, size_t);
-        bool DoBPCND(const string*, size_t);
-        bool DoBPD(const string*, size_t);
-        bool DoBPGOTO(const string*, size_t);
-        bool DoBPHWCA(const string*, size_t);
-        bool DoBPHWC(const string*, size_t);
-        bool DoBPHWS(const string*, size_t);
-        bool DoBPL(const string*, size_t);
-        bool DoBPLCND(const string*, size_t);
-        bool DoBPMC(const string*, size_t);
-        bool DoBPRM(const string*, size_t);
-        bool DoBPWM(const string*, size_t);
-        bool DoBPX(const string*, size_t);
-        bool DoBUF(const string*, size_t);
-        bool DoCALL(const string*, size_t);
-        bool DoCLOSE(const string*, size_t);
-        bool DoCMP(const string*, size_t);
-        bool DoCMT(const string*, size_t);
-        bool DoCOB(const string*, size_t);
-        bool DoCOE(const string*, size_t);
-        bool DoDBH(const string*, size_t);
-        bool DoDBS(const string*, size_t);
-        bool DoDEC(const string*, size_t);
-        bool DoDIV(const string*, size_t);
-        bool DoDM(const string*, size_t);
-        bool DoDMA(const string*, size_t);
-        bool DoDPE(const string*, size_t);
-        bool DoENDE(const string*, size_t);
-        bool DoENDSEARCH(const string*, size_t);
-        bool DoEOB(const string*, size_t);
-        bool DoEOE(const string*, size_t);
-        bool DoERUN(const string*, size_t);
-        bool DoESTEP(const string*, size_t);
-        bool DoESTI(const string*, size_t);
-        bool DoEVAL(const string*, size_t);
-        bool DoEXEC(const string*, size_t);
-        bool DoFILL(const string*, size_t);
-        bool DoFIND(const string*, size_t);
-        bool DoFINDCALLS(const string*, size_t);
-        bool DoFINDCMD(const string*, size_t);
-        bool DoFINDOP(const string*, size_t);
-        bool DoFINDMEM(const string*, size_t);
-        bool DoFREE(const string*, size_t);
-        bool DoGAPI(const string*, size_t);
-        bool DoGBPM(const string*, size_t);
-        bool DoGBPR(const string*, size_t);
-        bool DoGCI(const string*, size_t);
-        bool DoGCMT(const string*, size_t);
-        bool DoGFO(const string*, size_t);
-        bool DoGLBL(const string*, size_t);
-        bool DoGMA(const string*, size_t);
-        bool DoGMEMI(const string*, size_t);
-        bool DoGMEXP(const string*, size_t);
-        bool DoGMI(const string*, size_t);
-        bool DoGMIMP(const string*, size_t);
-        bool DoGN(const string*, size_t);
-        bool DoGO(const string*, size_t);
-        bool DoGOPI(const string*, size_t);
-        bool DoGPA(const string*, size_t);
-        bool DoGPP(const string*, size_t);
-        bool DoGPI(const string*, size_t);
-        bool DoGREF(const string*, size_t);
-        bool DoGRO(const string*, size_t);
-        bool DoGSL(const string*, size_t);
-        bool DoGSTR(const string*, size_t);
-        bool DoHANDLE(const string*, size_t);
-        bool DoHISTORY(const string*, size_t);
-        bool DoINC(const string*, size_t);
-        bool DoITOA(const string*, size_t);
-        bool DoJA(const string*, size_t);
-        bool DoJAE(const string*, size_t);
-        bool DoJB(const string*, size_t);
-        bool DoJBE(const string*, size_t);
-        bool DoJE(const string*, size_t);
-        bool DoJMP(const string*, size_t);
-        bool DoJNE(const string*, size_t);
-        bool DoKEY(const string*, size_t);
-        bool DoLBL(const string*, size_t);
-        bool DoLC(const string*, size_t);	
-        bool DoLCLR(const string*, size_t);
-        bool DoLEN(const string*, size_t);
-        bool DoLOADLIB(const string*, size_t);
-        bool DoLOG(const string*, size_t);
-        bool DoLOGBUF(const string*, size_t);
-        bool DoLM(const string*, size_t);
-        bool DoMEMCPY(const string*, size_t);
-        bool DoMOV(const string*, size_t);
-        bool DoMSG(const string*, size_t);
-        bool DoMSGYN(const string*, size_t);
-        bool DoMUL(const string*, size_t);
-        bool DoNAMES(const string*, size_t);
-        bool DoNEG(const string*, size_t);
-        bool DoNOT(const string*, size_t);
-        bool DoOLLY(const string*, size_t);
-        bool DoOR(const string*, size_t);
-        bool DoOPCODE(const string*, size_t);
-        bool DoOPENDUMP(const string*, size_t);
-        bool DoOPENTRACE(const string*, size_t);
-        bool DoPAUSE(const string*, size_t);
-        bool DoPOP(const string*, size_t);
-        bool DoPOPA(const string*, size_t);
-        bool DoPREOP(const string*, size_t);
-        bool DoPUSH(const string*, size_t);
-        bool DoPUSHA(const string*, size_t);
-        bool DoRBP(const string*, size_t);
-        bool DoREADSTR(const string*, size_t);
-        bool DoREFRESH(const string*, size_t);
-        bool DoREPL(const string*, size_t);
-        bool DoRESET(const string*, size_t);
-        bool DoREF(const string*, size_t);
-        bool DoRET(const string*, size_t);
-        bool DoREV(const string*, size_t);
-        bool DoROL(const string*, size_t);
-        bool DoROR(const string*, size_t);
-        bool DoRTR(const string*, size_t);
-        bool DoRTU(const string*, size_t);
-        bool DoRUN(const string*, size_t);
-        bool DoSBP(const string*, size_t);
-        bool DoSCMP(const string*, size_t);
-        bool DoSCMPI(const string*, size_t);
-        bool DoSETOPTION(const string*, size_t);
-        bool DoSHL(const string*, size_t);
-        bool DoSHR(const string*, size_t);
-        bool DoSTI(const string*, size_t);
-        bool DoSTO(const string*, size_t);
-        bool DoSTR(const string*, size_t);
-        bool DoSUB(const string*, size_t);
-        bool DoTC(const string*, size_t);
-        bool DoTEST(const string*, size_t);
-        bool DoTI(const string*, size_t);
-        bool DoTICK(const string*, size_t);
-        bool DoTICND(const string*, size_t);
-        bool DoTO(const string*, size_t);
-        bool DoTOCND(const string*, size_t);
-        bool DoUNICODE(const string*, size_t);
-        bool DoVAR(const string*, size_t);
-        bool DoXOR(const string*, size_t);
-        bool DoXCHG(const string*, size_t);
-        bool DoWRT(const string*, size_t);
-        bool DoWRTA(const string*, size_t);
-
-        // TE commands
-        bool DoError(const string*, size_t);
-        bool DoDumpAndFix(const string*, size_t);
-        bool DoStopDebug(const string*, size_t);
-        bool DoDumpProcess(const string*, size_t);
-        bool DoDumpRegions(const string*, size_t);
-        bool DoDumpModule(const string*, size_t);
-        bool DoPastePEHeader(const string*, size_t);
-        bool DoExtractOverlay(const string*, size_t);
-        bool DoAddOverlay(const string*, size_t);
-        bool DoCopyOverlay(const string*, size_t);
-        bool DoRemoveOverlay(const string*, size_t);
-        bool DoResortFileSections(const string*, size_t);
-        bool DoMakeAllSectionsRWE(const string*, size_t);
-        bool DoAddNewSection(const string*, size_t);
-        bool DoResizeLastSection(const string*, size_t);
-        bool DoGetPE32Data(const string*, size_t);
-        bool DoSetPE32Data(const string*, size_t);
-        bool DoGetPE32SectionNumberFromVA(const string*, size_t);
-        bool DoConvertVAtoFileOffset(const string*, size_t);
-        bool DoConvertFileOffsetToVA(const string*, size_t);
-        bool DoIsFileDLL(const string*, size_t);
-        bool DoRealignPE(const string*, size_t);
-        bool DoRelocaterCleanup(const string*, size_t);
-        bool DoRelocaterInit(const string*, size_t);
-        bool DoRelocaterAddNewRelocation(const string*, size_t);
-        bool DoRelocaterEstimatedSize(const string*, size_t);
-        bool DoRelocaterExportRelocation(const string*, size_t);
-        bool DoRelocaterExportRelocationEx(const string*, size_t);
-        bool DoRelocaterMakeSnapshot(const string*, size_t);
-        bool DoRelocaterCompareTwoSnapshots(const string*, size_t);
-        bool DoRelocaterChangeFileBase(const string*, size_t);
-        bool DoThreaderPauseThread(const string*, size_t);
-        bool DoThreaderResumeThread(const string*, size_t);
-        bool DoThreaderTerminateThread(const string*, size_t);
-        bool DoThreaderPauseAllThreads(const string*, size_t);
-        bool DoThreaderResumeAllThreads(const string*, size_t);
-        bool DoGetDebuggedDLLBaseAddress(const string*, size_t);
-        bool DoGetDebuggedFileBaseAddress(const string*, size_t);
-        bool DoGetJumpDestination(const string*, size_t);
-        bool DoIsJumpGoingToExecute(const string*, size_t);
-        bool DoGetPEBLocation(const string*, size_t);
-        bool DoDetachDebuggerEx(const string*, size_t);
-        bool DoSetCustomHandler(const string*, size_t);
-        bool DoImporterCleanup(const string*, size_t);
-        bool DoImporterSetImageBase(const string*, size_t);
-        bool DoImporterInit(const string*, size_t);
-        bool DoImporterAddNewDll(const string*, size_t);
-        bool DoImporterAddNewAPI(const string*, size_t);
-        bool DoImporterAddNewOrdinalAPI(const string*, size_t);
-        bool DoImporterGetAddedDllCount(const string*, size_t);
-        bool DoImporterGetAddedAPICount(const string*, size_t);
-        bool DoImporterMoveIAT(const string*, size_t);
-        bool DoImporterRelocateWriteLocation(const string*, size_t);
-        bool DoImporterExportIAT(const string*, size_t);
-        bool DoImporterEstimatedSize(const string*, size_t);
-        bool DoImporterExportIATEx(const string*, size_t);
-        bool DoImporterGetNearestAPIAddress(const string*, size_t);
-        bool DoImporterAutoSearchIAT(const string*, size_t);
-        bool DoImporterAutoSearchIATEx(const string*, size_t);
-        bool DoImporterAutoFixIATEx(const string*, size_t);
-        bool DoImporterAutoFixIAT(const string*, size_t);
-        bool DoTracerLevel1(const string*, size_t);
-        bool DoHashTracerLevel1(const string*, size_t);
-        bool DoTracerDetectRedirection(const string*, size_t);
-        bool DoTracerFixKnownRedirection(const string*, size_t);
-        bool DoTracerFixRedirectionViaImpRecPlugin(const string*, size_t);
-        bool DoExporterCleanup(const string*, size_t);
-        bool DoExporterSetImageBase(const string*, size_t);
-        bool DoExporterInit(const string*, size_t);
-        bool DoExporterAddNewExport(const string*, size_t);
-        bool DoExporterAddNewOrdinalExport(const string*, size_t);
-        bool DoExporterGetAddedExportCount(const string*, size_t);
-        bool DoExporterEstimatedSize(const string*, size_t);
-        bool DoExporterBuildExportTable(const string*, size_t);
-        bool DoExporterBuildExportTableEx(const string*, size_t);
-        bool DoLibrarianSetBreakPoint(const string*, size_t);
-        bool DoLibrarianRemoveBreakPoint(const string*, size_t);
-        bool DoTLSRemoveCallback(const string*, size_t);
-        bool DoTLSRemoveTable(const string*, size_t);
-        bool DoTLSBackupData(const string*, size_t);
-        bool DoTLSRestoreData(const string*, size_t);
-        bool DoHandlerIsHandleOpen(const string*, size_t);
-        bool DoHandlerCloseRemoteHandle(const string*, size_t);
-        bool DoStaticFileLoad(const string*, size_t);
-        bool DoStaticFileUnload(const string*, size_t);
-
-        bool callCommand(PFCOMMAND command, int count, ...);
-
-        bool Step();
-
-        size_t GetStringOperatorPos(const string& ops);
-        size_t GetRulongOperatorPos(const string& ops);
-        size_t GetFloatOperatorPos(const string& ops);
-
-        bool ParseString(const string& arg, string& result);
-        bool ParseRulong(const string& arg, string& result);
-        bool ParseFloat (const string& arg, string& result);
-
-        //bool ParseOperands(const string* args, string* results, size_t count, bool preferstr = false);
-
-        bool GetRulong(const string& op, rulong& value);
-        */
         bool GetNum<T>(string op, ref T value)
         {
             throw new NotImplementedException();
@@ -777,10 +478,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public readonly Debugger Debugger;
         private Host Host;
 
-        public OllyLang()
+        public OllyLang(Host host, Debugger dbg)
         {
-            this.Debugger = new Debugger();
-            this.Host = new Host();
+            this.Debugger = dbg;
+            this.Host = host;
             this.script = new OllyScript(Host);
 
             // Init command array
@@ -1104,52 +805,55 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             if (search_buffer != null)
                 DoENDSEARCH();
-            //FreeBpMem();
             freeMemBlocks();
         }
 
-        // Loaded script state
+        /// <summary>
+        /// Represents loaded Odbg script state
+        /// </summary>
         public class OllyScript
         {
-            public class scriptline_t
+            public class Line
             {
                 public uint linenum;
                 public string line;
                 public bool is_command;
                 public string command;
                 public Func<string[], bool> commandptr;
-                public List<string> args;
+                public string[] args = new string[0];
             }
 
             public bool log;
             public string path;
-            public List<scriptline_t> lines;
+            public List<Line> lines;
             public Dictionary<string, uint> labels;
 
             private Host Host;
+
             public OllyScript(Host host) {
-                this.Host = host; loaded = (false); log = (false);
-                lines = new List<scriptline_t>();
+                this.Host = host; 
+                IsLoaded = false; 
+                log = false;
+                lines = new List<Line>();
                 labels = new Dictionary<string, uint>();
             }
 
-            public bool isloaded() { return loaded; }
-            public void clear() { loaded = false; path = ""; ; lines.Clear(); labels.Clear(); }
+            public bool IsLoaded { get; private set; }
+            public void clear() { 
+                IsLoaded = false; 
+                path = ""; 
+                lines.Clear(); 
+                labels.Clear();
+            }
 
-            //bool is_label(string  s);
 
-            private
-
-                bool loaded;
-
-            //void parse_insert(const List<string>& toInsert, const string& currentdir);
 
             void parse_insert(List<string> toInsert, string currentdir)
             {
                 uint curline = 1;
                 bool in_comment = false, in_asm = false;
 
-                loaded = true;
+                IsLoaded = true;
 
                 for (int i = 0; i < toInsert.Count; i++, curline++)
                 {
@@ -1261,7 +965,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                 // Add line
                                 else
                                 {
-                                    scriptline_t cur = new scriptline_t();
+                                    Line cur = new Line();
 
                                     if (in_asm && lcline == "ende")
                                         in_asm = false;
@@ -1277,7 +981,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                     if (pos >= 0)
                                     {
                                         cur.command = Helper.tolower(scriptline.Substring(0, pos));
-                                        cur.args = new List<string>(scriptline.Substring(pos + 1).Split(','));
+                                        cur.args = scriptline.Substring(pos + 1).
+                                            Split(',')
+                                            .Select(s => s.Trim())
+                                            .ToArray();
                                     }
                                     else
                                     {
@@ -1301,33 +1008,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 return from;
             }
-
-            /*
-            bool load_file(const char* file, const char* dir)
-            {
-                clear();
-
-                char cdir[MAX_PATH];
-                GetCurrentDirectory(_countof(cdir), cdir);
-                string curdir = Helper.pathfixup(cdir, true);
-                string sdir;
-
-                path = Helper.pathfixup(file, false);
-                if(!Helper.isfullpath(path))
-                {
-                    path = curdir + path;
-                }
-                if(!dir)
-                    sdir = Helper.folderfrompath(path);
-                else
-                    sdir = dir;
-
-                List<string> unparsedScript = getlines_file(path);
-                parse_insert(unparsedScript, sdir);
-
-                return true;
-            }
-            */
 
             public bool load_file(string file, string dir = null)
             {
@@ -1384,9 +1064,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public void InitGlobalVariables()
         {
-
             // Global variables
-            variables["$INPUTFILE"] = new var(Host.TE_GetTargetPath());
+            variables["$INPUTFILE"] = new Var(Host.TE_GetTargetPath());
 
             string name = Host.TE_GetOutputPath();
             if (string.IsNullOrEmpty(name))
@@ -1400,7 +1079,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     name = name + ext;
                 }
             }
-            variables["$OUTPUTFILE"] = new var(name);
+            variables["$OUTPUTFILE"] = new Var(name);
         }
 
         public void Reset()
@@ -1410,16 +1089,16 @@ namespace Decompiler.ImageLoaders.OdbgScript
             bpjumps.Clear();
             calls.Clear();
 
-            variables["$OS_VERSION"] = new var(Helper.rul2decstr(OS_VERSION_HI) + '.' + Helper.rul2decstr(OS_VERSION_LO));
-            variables["$TE_VERSION"] = new var(Helper.rul2decstr(TE_VERSION_HI) + '.' + Helper.rul2decstr(TE_VERSION_LO));
-            variables["$TS_VERSION"] = new var(Helper.rul2decstr(TS_VERSION_HI) + '.' + Helper.rul2decstr(TS_VERSION_LO));
+            variables["$OS_VERSION"] = new Var(Helper.rul2decstr(OS_VERSION_HI) + '.' + Helper.rul2decstr(OS_VERSION_LO));
+            variables["$TE_VERSION"] = new Var(Helper.rul2decstr(TE_VERSION_HI) + '.' + Helper.rul2decstr(TE_VERSION_LO));
+            variables["$TS_VERSION"] = new Var(Helper.rul2decstr(TS_VERSION_HI) + '.' + Helper.rul2decstr(TS_VERSION_LO));
             variables["$VERSION"] = variables["$OS_VERSION"];                   
-            variables["$WIN_VERSION"] = new var(Environment.OSVersion.VersionString);
+            variables["$WIN_VERSION"] = new Var(Environment.OSVersion.VersionString);
 
 #if _WIN64
 	variables["$PLATFORM"] = "x86-64";
 #else
-            variables["$PLATFORM"] = new var("x86-32");
+            variables["$PLATFORM"] = new Var("x86-32");
 #endif
 
             EOB_row = EOE_row = -1;
@@ -1443,7 +1122,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             reg_backup.loaded = false;
 
-            variables["$RESULT"] = new var( 0);
+            variables["$RESULT"] = new Var( 0);
 
             callbacks.Clear();
             debuggee_running = false;
@@ -1465,7 +1144,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return true;
         }
 
-       public bool Pause()
+        public bool Pause()
         {
             script_running = false;
             return true;
@@ -1473,11 +1152,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public bool Step()
         {
-            back_to_debugloop = false;
+            resumeDebuggee = false;
             ignore_exceptions = false;
             stepcount = 0;
 
-            while (!back_to_debugloop && script.isloaded() && script_running)
+            while (!resumeDebuggee && script.IsLoaded && script_running)
             {
                 if (tickcount_startup == 0)
                     tickcount_startup = Helper.MyTickCount();
@@ -1488,7 +1167,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 if (script_pos >= script.lines.Count)
                     return false;
 
-                OllyScript.scriptline_t line = script.lines[(int)script_pos];
+                var line = script.lines[(int)script_pos];
 
                 script_pos_next = script_pos + 1;
 
@@ -1514,11 +1193,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                 if (cmd != null)
                 {
-                    result = cmd(line.args.ToArray()); // Call command
+                    result = cmd(line.args); // Call command
                 }
                 else errorstr = "Unknown command: " + line.command;
 
-                if (callbacks.Count != 0 && back_to_debugloop)
+                if (callbacks.Count != 0 && resumeDebuggee)
                 {
                     result = false;
                     errorstr = "Unallowed command during callback: " + line.command;
@@ -1550,7 +1229,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 {
                     Host.TE_FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
                     if (tMemBlocks[i].result_register)
-                        variables["$RESULT"] = new var((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
+                        variables["$RESULT"] = new Var((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
                         restore_registers = true;
                     require_addonaction = false;
@@ -1581,13 +1260,14 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 else
                 {
-                    rulong ip = Debugger.GetContextData(eContextData.UE_CIP);
+                    rulong ip = Debugger.InstructionPointer.Linear;
                     uint it;
                     if (bpjumps.TryGetValue(ip, out it))
                     {
                         script_pos_next = it;
                     }
                 }
+                debuggee_running = false;
             }
 
             StepChecked();
@@ -1749,7 +1429,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             int start = 0, offs;
             char oper = '+';
-            var val = new var("");
+            Var val = new Var("");
             string curval;
             result = "";
 
@@ -1764,7 +1444,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                     switch (oper)
                     {
-                    case '+': val += new var(curval); break;
+                    case '+': val += new Var(curval); break;
                     }
 
                     if (offs < 0)
@@ -1925,13 +1605,13 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             if (is_variable(op))
             {
-                var  v = variables[op];
-                if (v.type == var.etype.STR)
+                Var  v = variables[op];
+                if (v.type == Var.etype.STR)
                 {
                     value = v.str;
                     return true;
                 }
-                else if (v.type == var.etype.DW)
+                else if (v.type == Var.etype.DW)
                 {
                     if (hex8forExec) //For Assemble Command (EXEC/ENDE) ie. "0DEADBEEF"
                         value = '0' + Helper.toupper(Helper.rul2hexstr(v.dw));
@@ -1988,11 +1668,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
             value = "";
             if (is_variable(op))
             {
-                if (variables[op].type == var.etype.STR)
+                if (variables[op].type == Var.etype.STR)
                 {
                     if (size != 0 && size < variables[op].size)
                     {
-                        var tmp = variables[op];
+                        Var tmp = variables[op];
                         tmp.resize(size);
                         value = tmp.str;
                     }
@@ -2208,7 +1888,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
                 register_t reg = find_register(op);
                 value = Debugger.GetContextData(reg.id);
-                value = Helper.resize(value >> (reg.offset * 8), reg.size);
                 return true;
             }
             else if (is_flag(op))
@@ -2229,7 +1908,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
             else if (is_variable(op))
             {
-                if (variables[op].type == var.etype.DW)
+                if (variables[op].type == Var.etype.DW)
                 {
                     value = variables[op].dw;
                     return true;
@@ -2273,17 +1952,17 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool GetFloat(string op, out double value)
         {
-            throw new NotImplementedException();
-#if LATER
+            value = 0.0;
             if (Helper.is_float(op))
             {
-                value =Helper.str2dbl(op);
+                value = Helper.str2dbl(op);
                 return true;
             }
             else if (is_floatreg(op))
             {
                 int index = op[3] - '0';
                 double reg;
+#if LATER
 #if _WIN64
 			XMM_SAVE_AREA32 fltctx;
 			//reg = (double)fltctx.FloatRegisters[index];
@@ -2296,10 +1975,14 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     value = reg;
                     return true;
                 }
+#else
+                value = 0;
+                throw new NotImplementedException();
+#endif
             }
             else if (is_variable(op))
             {
-                if (variables[op].type == var.etype.FLT)
+                if (variables[op].type == Var.etype.FLT)
                 {
                     value = variables[op].flt;
                     return true;
@@ -2310,19 +1993,19 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
                 rulong src;
-                if (GetRulong(tmp, src))
+                if (GetRulong(tmp, out src))
                 {
                     Debug.Assert(src != 0);
-                    return Host.TE_ReadMemory(src, sizeof(value), &value);
+                    value = Host.Image.ReadLeDouble(Address.Ptr32((uint)src)).ToDouble();
+                    return true;
                 }
             }
             else
             {
                 string parsed;
-                return (ParseFloat(op, parsed) && GetFloat(parsed, value));
+                return (ParseFloat(op, out parsed) && GetFloat(parsed, out value));
             }
             return false;
-#endif
         }
 
         bool SetRulong(string op, rulong value, int size = 0)
@@ -2392,7 +2075,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             if (is_variable(op))
             {
-                variables[op] = new var(value);
+                variables[op] = new Var(value);
                 return true;
             }
             else if (is_floatreg(op))
@@ -2432,7 +2115,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             if (is_variable(op))
             {
-                variables[op] = new var(value);
+                variables[op] = new Var(value);
                 if (size!=0 && size < variables[op].size)
                     variables[op].resize(size);
                 return true;
@@ -2517,10 +2200,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         string ResolveVarsForExec(string @in, bool hex8forExec)
         {
-            string @out = "", varname = "";
             string ti = Helper.trim(@in);
             bool in_var = false;
 
+            var sb = new StringBuilder();
+            var varname = new StringBuilder();
             for (int i = 0; i < ti.Length; i++)
             {
                 if (ti[i] == '{')
@@ -2530,19 +2214,21 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 else if (ti[i] == '}')
                 {
                     in_var = false;
-                    GetAnyValue(varname, out varname, hex8forExec);
-                    @out += varname;
-                    varname = "";
+                    string value;
+                    GetAnyValue(varname.ToString(), out value, hex8forExec);
+                    sb.Append(value);
+                    varname.Clear();
                 }
                 else
                 {
+                    char ch = ti[i];
                     if (in_var)
-                        varname += ti[i];
+                        varname.Append(ch);
                     else
-                        @out += ti[i];
+                        sb.Append(ch);
                 }
             }
-            return @out;
+            return sb.ToString();
         }
 
         //Add zero char before dw values, ex: 0DEADBEEF (to be assembled) usefull if first char is letter
@@ -2743,6 +2429,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 Debugger.StepInto(StepIntoCallback);
                 break;
             case 0: // stop stepping, enter script command loop
+                debuggee_running = false;
                 StepChecked();
                 break;
             }
@@ -2768,8 +2455,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 else if (run_till_return)
                 {
-                    string cmd = Host.DisassembleEx(Debugger.GetContextData(eContextData.UE_CIP));
-                    if (cmd.IndexOf("RETN") == 0)
+                    var instr = Host.DisassembleEx(Debugger.InstructionPointer);
+                    if (instr.code == Arch.X86.Opcode.ret ||
+                       instr.code == Arch.X86.Opcode.retf)
                     {
                         run_till_return = false;
                         stepcount = 0;
@@ -2784,8 +2472,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     that's not gonna do us any good for jumps
                     so we'll stepinto except for a few exceptions
                     */
-                    string cmd = Host.DisassembleEx(Debugger.GetContextData(eContextData.UE_CIP));
-                    if (cmd.IndexOf("CALL") == 0 || cmd.IndexOf("REP") == 0)
+                    var instr = Host.DisassembleEx(Debugger.InstructionPointer);
+                    if (instr.code == Arch.X86.Opcode.call || instr.code == Arch.X86.Opcode.rep ||
+                        instr.code == Arch.X86.Opcode.repne)
                         Debugger.StepOver(StepOverCallback);
                     else
                         Debugger.StepInto(StepIntoCallback);
@@ -2807,7 +2496,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return true;
         }
 
-        bool StepCallback(uint pos, bool returns_value, var.etype return_type, ref var result)
+        bool StepCallback(uint pos, bool returns_value, Var.etype return_type, ref Var result)
         {
             callback_t callback;
             callback.call = (uint) calls.Count;
@@ -2838,11 +2527,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         object Callback_AutoFixIATEx(object fIATPointer)
         {
-            var ret = new var();
+            Var ret = new Var();
 
             uint label = script.labels[Label_AutoFixIATEx];
-            variables["$TE_ARG_1"] =  new var((rulong)fIATPointer);
-            if (StepCallback(label, true, var.etype.DW, ref ret))
+            variables["$TE_ARG_1"] =  new Var((rulong)fIATPointer);
+            if (StepCallback(label, true, Var.etype.DW, ref ret))
                 return (object)ret.dw;
             else
                 return 0;

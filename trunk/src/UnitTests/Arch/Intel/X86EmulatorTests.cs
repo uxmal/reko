@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             Given_Code(m => { m.Mov(m.eax, m.ebx); });
             Given_RegValue(Registers.ebx, 4);
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(4, emu.Registers[Registers.eax.Number]);
         }
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             Given_RegValue(Registers.eax, 4);
             Given_RegValue(Registers.ebx, ~4u + 1u);
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0, emu.Registers[Registers.eax.Number]);
             Assert.AreEqual(1 + (1 << 6), emu.Flags, "Should set carry + zero flag");
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             Given_RegValue(Registers.eax, 0x80000000u);
             Given_RegValue(Registers.ebx, 0x80000000u);
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0, emu.Registers[Registers.eax.Number]);
             Assert.AreEqual(1 | (1 << 6) | (1 << 11), emu.Flags, "Should set carry + z + ov");
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Sub(m.eax, m.ebx); 
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x7FFFFFFFu, emu.Registers[Registers.eax.Number]);
             Assert.AreEqual(X86Emulator.Omask, emu.Flags, "Should set ov flag");
@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Sub(m.eax, m.ebx);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0xFFFFFFFCu, emu.Registers[Registers.eax.Number]);
             Assert.AreEqual(X86Emulator.Cmask, emu.Flags, "Should set C flag");
@@ -137,7 +137,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Mov(m.eax, m.MemDw("datablob")); 
             });
             emu.InstructionPointer += 4;
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x12345678u, emu.Registers[Registers.eax.Number]);
         }
@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             Given_RegValue(Registers.ebx, 0x00100010);
             emu.InstructionPointer += 4;
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x12345678u, emu.Registers[Registers.eax.Number]);
         }
@@ -166,7 +166,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Mov(m.eax, 0x1234);
             });
             Given_RegValue(Registers.eax, 0xFFFFFFFF);
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x00001234u, emu.Registers[Registers.eax.Number]);
         }
@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             Given_RegValue(Registers.eax, 0x40302010);
             emu.InstructionPointer += 4;
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x12345620u, image.ReadLeUInt32(0));
         }
@@ -195,7 +195,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Mov(m.ax, 0x1234);
             });
             Given_RegValue(Registers.eax, 0xFFFFFFFF);
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0xFFFF1234u, emu.Registers[Registers.eax.Number]);
         }
@@ -206,7 +206,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             Given_Code(m => { m.Xor(m.eax, m.eax); });
             Given_RegValue(Registers.eax, 0x1);
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0, emu.Registers[Registers.eax.Number]);
             Assert.AreEqual(1 << 6, emu.Flags, "Expected ZF set ");
@@ -218,7 +218,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             Given_Code(m => { m.Or(m.eax, m.eax); });
             Given_RegValue(Registers.eax, 0x1);
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(1, emu.Registers[Registers.eax.Number]);
             Assert.AreEqual(0, emu.Flags, "Expected ZF clear ");
@@ -232,7 +232,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Mov(m.eax, 42);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreNotEqual(42u, emu.Registers[Registers.eax.Number]);
         }
@@ -250,7 +250,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Mov(m.eax, 42);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(42u, emu.Registers[Registers.eax.Number]);
         }
@@ -268,7 +268,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             emu.WriteRegister(Registers.esp, image.BaseAddress.Linear + 0x24u);
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x00100004u, emu.Registers[Registers.esp.Number]);
         }
@@ -282,7 +282,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             emu.WriteRegister(Registers.edx, 4);
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(20u, emu.Registers[Registers.eax.Number]);
         }
@@ -298,7 +298,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             emu.WriteRegister(Registers.eax, 0xFFFFFFFF);
             emu.WriteRegister(Registers.ebx, 1);
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(2u, emu.Registers[Registers.ebx.Number]);
         }
@@ -312,7 +312,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Inc(m.eax);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x80000000u, emu.Registers[Registers.eax.Number]);
             Assert.IsTrue((emu.Flags & X86Emulator.Zmask) == 0);
@@ -328,7 +328,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Db(0x83,0xEE,0xFC);     // sub esi,-4
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0, emu.Registers[Registers.eax.Number]);
             Assert.IsTrue((emu.Flags & X86Emulator.Zmask) != 0);
@@ -344,7 +344,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Shl(m.esi, 2);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(16, emu.Registers[Registers.esi.Number]);
         }
@@ -360,7 +360,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Adc(m.ebx, m.ebx);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(1, emu.Registers[Registers.ebx.Number]);
         }
@@ -374,7 +374,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Shr(m.esi, 4);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(4, emu.Registers[Registers.esi.Number]);
         }
@@ -388,7 +388,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Rol(m.esi, 4);
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(0x1Fu, emu.Registers[Registers.esi.Number]);
         }
@@ -403,7 +403,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Db(0x87, 0xC3);       // Xchg eax,ebx
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(2, emu.Registers[Registers.eax.Number]);
             Assert.AreEqual(1, emu.Registers[Registers.ebx.Number]);
@@ -421,7 +421,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Loop("Lupe");
             });
 
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(10, emu.Registers[Registers.eax.Number]);
         }
@@ -461,7 +461,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
 
             emu.Registers[Registers.esp.Number] = 0x00100020;
-            emu.Run();
+            emu.Start();
 
             Assert.AreEqual(~0u, emu.Registers[Registers.esi.Number]);
         }

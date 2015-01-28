@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Decompiler.Arch.X86;
+using Decompiler.Core;
+using Decompiler.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +13,15 @@ namespace Decompiler.ImageLoaders.OdbgScript
     public class Host
     {
         public static object TS_LOG_COMMAND;
+        private OdbgScriptLoader loader;
+
+        public Host(OdbgScriptLoader loader)
+        {
+            this.loader = loader;
+        }
+
+        public LoadedImage Image { get { return loader.Image; } }
+
         public virtual ulong TE_AllocMemory(ulong size)
         {
             throw new NotImplementedException();
@@ -57,7 +69,23 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public virtual bool TE_GetMemoryInfo(ulong addr, out MEMORY_BASIC_INFORMATION MemInfo)
         {
-            throw new NotImplementedException();
+            ImageMap map = loader.ImageMap;
+            ImageMapSegment segment;
+            if (map.TryFindSegment(new Address((uint)addr), out segment))
+            {
+                MemInfo = new MEMORY_BASIC_INFORMATION
+                {
+                    AllocationBase = segment.Address.Linear,
+                    BaseAddress = segment.Address.Linear,
+                    RegionSize = segment.Size,
+                };
+                return true;
+            }
+            else
+            {
+                MemInfo = null;
+                return false;
+            }
         }
 
         public virtual bool TE_ReadMemory(ulong addr, ulong memlen, byte[] membuf)
@@ -85,17 +113,17 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual var LengthDisassembleEx(ulong addr)
+        public virtual Var LengthDisassembleEx(ulong addr)
         {
             throw new NotImplementedException();
         }
 
         public virtual string TE_GetTargetPath()
         {
-            throw new NotImplementedException();
+            return loader.Filename;
         }
 
-        public virtual var TE_GetProcessId()
+        public virtual ulong TE_GetProcessId()
         {
             throw new NotImplementedException();
         }
@@ -105,7 +133,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual var TE_GetMainThreadId()
+        public virtual ulong TE_GetMainThreadId()
         {
             throw new NotImplementedException();
         }
@@ -122,7 +150,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public virtual string TE_GetOutputPath()
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public virtual bool TE_WriteMemory(ulong addr, ulong len, byte[] membuf)
@@ -130,9 +158,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual string DisassembleEx(ulong p)
+        public virtual IntelInstruction DisassembleEx(Address addr)
         {
-            throw new NotImplementedException();
+            var rdr = loader.Architecture.CreateImageReader(loader.Image,  addr);
+            var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            return dasm.DisassembleInstruction();
         }
 
         public virtual uint TE_GetCurrentThreadId()
@@ -181,7 +211,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
 
 
-        public virtual ulong FindHandle(var var, string sClassName, ulong x, ulong y)
+        public virtual ulong FindHandle(ulong var, string sClassName, ulong x, ulong y)
         {
             throw new NotImplementedException();
         }
@@ -201,9 +231,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual string DisassembleEx(ulong addr, out int size)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

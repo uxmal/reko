@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Decompiler.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,20 @@ using System.Threading.Tasks;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    using rulong = System.UInt64;
+    using Decompiler.Arch.X86;
+using rulong = System.UInt64;
 
     public class Debugger
     {
+        private X86Emulator emu;
+
+        public Debugger(X86Emulator emu)
+        {
+            this.emu = emu;
+        }
+
+        public Address InstructionPointer { get { return this.emu.InstructionPointer; } }
+
         public class fCustomHandlerCallback
         {
         }
@@ -25,7 +36,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
         public  rulong GetContextData(eContextData eContextData)
         {
-            throw new NotImplementedException();
+             switch (eContextData)
+             {
+             case eContextData.UE_EIP: return emu.InstructionPointer.Linear;
+             }
+             throw new NotImplementedException();
         }
 
         public  void DeleteHardwareBreakPoint(int i)
@@ -48,14 +63,19 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public  void SetBPX(rulong addr, byte p, Action SoftwareCallback)
+        public void SetBPX(rulong addr, byte type, Action SoftwareCallback)
         {
+            if (type == Ue.UE_BREAKPOINT)
+            {
+                emu.SetBreakpoint((uint)addr, SoftwareCallback);
+                return;
+            }
             throw new NotImplementedException();
         }
 
         public  void DeleteBPX(rulong addr)
         {
-            throw new NotImplementedException();
+            emu.DeleteBreakpoint((uint)addr);
         }
 
         public  bool SetContextData(eContextData p1, rulong p2)
@@ -70,7 +90,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
 
 
-        public  var GetJumpDestination(object p, rulong addr)
+        public  Var GetJumpDestination(object p, rulong addr)
         {
             throw new NotImplementedException();
         }
@@ -92,17 +112,18 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public  void StepInto(Action StepIntoCallback)
         {
-            throw new NotImplementedException();
+            emu.StepInto(StepIntoCallback);
         }
 
-        public  void StepOver(Action StepOverCallback)
+        public void StepOver(Action StepOverCallback)
         {
-            throw new NotImplementedException();
+            emu.StepOver(StepOverCallback);
         }
 
         internal void DebugLoop()
         {
             throw new NotImplementedException();
         }
+
     }
 }

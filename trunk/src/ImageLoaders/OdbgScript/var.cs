@@ -5,7 +5,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 {
     using System.Linq;
     using rulong = System.UInt64;
-    public partial class var
+    public partial class Var
     {
         public enum etype { EMP, DW, STR, FLT };
 
@@ -17,17 +17,17 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public int size;
         public bool isbuf;
 
-        public var() { type = etype.EMP; }
+        public Var() { type = etype.EMP; }
         //var(const var   rhs);
         //var(const string& rhs); 
         //var(const char* rhs);
-        public var(rulong rhs) { type = etype.DW; dw = (rhs); size = (4); }
-        public var(int rhs) { type = etype.DW; dw = (uint)rhs; size = (4); } // needed for var = 0
-        public var(uint rhs) { type = etype.DW; dw = (rhs); size = (4); }
+        public Var(rulong rhs) { type = etype.DW; dw = (rhs); size = (4); }
+        public Var(int rhs) { type = etype.DW; dw = (uint)rhs; size = (4); } // needed for var = 0
+        public Var(uint rhs) { type = etype.DW; dw = (rhs); size = (4); }
 #if _WIN64
 	var(const ulong&  rhs) : type(DW),  dw(rhs),  size(sizeof(rhs)) {}
 #endif
-        public var(double rhs) { type = (etype.FLT); flt = (rhs); size = (8); }
+        public Var(double rhs) { type = (etype.FLT); flt = (rhs); size = (8); }
 
         //int compare(var& rhs) const; 
 
@@ -55,7 +55,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         //    *this = rhs;
         //}
 
-        public var(string rhs)
+        public Var(string rhs)
         {
             type = etype.STR; isbuf = (false);
 
@@ -69,47 +69,47 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
         }
 
-        public static var operator +(var lhs, var rhs)
+        public static Var operator +(Var lhs, Var rhs)
         {
             switch (rhs.type)
             {
-            case etype.DW: return new var(lhs.dw + rhs.dw); break;
-            case etype.STR: return new var(lhs.str + rhs.str); break;
-            case etype.FLT: return new var(lhs.flt + rhs.flt); break;
+            case etype.DW: return new Var(lhs.dw + rhs.dw); break;
+            case etype.STR: return new Var(lhs.str + rhs.str); break;
+            case etype.FLT: return new Var(lhs.flt + rhs.flt); break;
             }
             return lhs;
         }
 
-        public static var operator +(var lhs, string rhs)
+        public static Var operator +(Var lhs, string rhs)
 {
-	var v = new var(rhs);
+	Var v = new Var(rhs);
 
 	if(lhs.type == etype.STR)
 	{
 		if(!lhs.isbuf) // str + buf/str -> str
 		{
-            return new var(lhs.str + v.to_string());
+            return new Var(lhs.str + v.to_string());
 		}
 		else // buf + buf/str -> buf
 		{
-			return new var("#" + lhs.to_bytes() + v.to_bytes() + '#');
+			return new Var("#" + lhs.to_bytes() + v.to_bytes() + '#');
 		}
 	}
 	else if(lhs.type ==etype.DW)
 	{
 		if(v.isbuf) // rulong + buf -> buf
 		{
-			return new var("#" + Helper.rul2hexstr(Helper.reverse(lhs.dw), sizeof(rulong)*2) + v.to_bytes() + '#');
+			return new Var("#" + Helper.rul2hexstr(Helper.reverse(lhs.dw), sizeof(rulong)*2) + v.to_bytes() + '#');
 		}
 		else // rulong + str -> str
 		{
-			return new var(Helper.toupper(Helper.rul2hexstr(lhs.dw)) + v.str);
+			return new Var(Helper.toupper(Helper.rul2hexstr(lhs.dw)) + v.str);
 		}
 	}
 	return lhs;
 }
 
-        public static var operator +(var lhs, rulong rhs)
+        public static Var operator +(Var lhs, rulong rhs)
 {
 	switch (lhs.type)
 	{
@@ -118,20 +118,20 @@ namespace Decompiler.ImageLoaders.OdbgScript
 	case etype.STR:
 		if(lhs.isbuf) // buf + rulong -> buf
 		{
-			return new var("#"+lhs.to_bytes() + Helper.rul2hexstr(Helper.reverse(rhs), sizeof(rulong)*2) + '#');
+			return new Var("#"+lhs.to_bytes() + Helper.rul2hexstr(Helper.reverse(rhs), sizeof(rulong)*2) + '#');
 		}
 		else // str + rulong -> str
 		{
-            return new var(lhs.str + Helper.toupper(Helper.rul2hexstr(rhs)));
+            return new Var(lhs.str + Helper.toupper(Helper.rul2hexstr(rhs)));
 		}
 	}
 	return lhs;
 }
 
-        public static var operator +(var lhs, double rhs)
+        public static Var operator +(Var lhs, double rhs)
         {
             if (lhs.type == etype.FLT)
-                return new var(lhs.flt + rhs);
+                return new Var(lhs.flt + rhs);
             return lhs;
         }
 
@@ -158,7 +158,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
         */
 
-        public int compare(var rhs)
+        public int compare(Var rhs)
         {
             // less than zero this < rhs
             // zero this == rhs 

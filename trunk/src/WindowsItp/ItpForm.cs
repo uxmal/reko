@@ -18,22 +18,17 @@
  */
 #endregion
 
-using Decompiler.Gui.Windows;
+using Decompiler.Arch.X86;
+using Decompiler.Core.Configuration;
 using Decompiler.Gui;
+using Decompiler.Gui.Windows.Forms;
+using Decompiler.ImageLoaders.MzExe;
+using Decompiler.ImageLoaders.OdbgScript;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using Decompiler.Gui.Windows.Forms;
 using System.ComponentModel.Design;
-using Decompiler.Core.Configuration;
-using Decompiler.Arch.X86;
-using Decompiler.ImageLoaders.MzExe;
-using Decompiler.Core;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Decompiler.WindowsItp
 {
@@ -210,15 +205,22 @@ namespace Decompiler.WindowsItp
             var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, peLdr.ImportReferences);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
-            emu.BreakpointHit += emu_BreakpointHit;
             emu.WriteRegister(Registers.esp, peLdr.PreferredBaseAddress.Linear + 0x0FFC);
-            emu.SetBreakpoint(0x0408FFC);
-            emu.Run();
+            emu.Start();
         }
 
-        void emu_BreakpointHit(object sender, EventArgs e)
+        private void ollyScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            var sc = new ServiceContainer();
+            var fs = new FileStream(@"D:\dev\jkl\dec\halsten\decompiler_paq\upx\demo.exe", FileMode.Open);
+            var size = fs.Length;
+            var abImage = new byte[size];
+            fs.Read(abImage, 0, abImage.Length);
+            var ldr = new OdbgScriptLoader(sc, "foo.exe", abImage);
+            ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
+            var addr = ldr.PreferredBaseAddress;
+            var lr = ldr.Load(addr);
+            var rr = ldr.Relocate(addr);
         }
     }
 }
