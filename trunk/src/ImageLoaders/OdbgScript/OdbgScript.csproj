@@ -77,7 +77,6 @@
     <Compile Include="PROCESS_INFORMATION.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Remote.cs" />
-    <Compile Include="Static.cs" />
     <Compile Include="Ue.cs" />
     <Compile Include="var.cs">
       <SubType>Code</SubType>

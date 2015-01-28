@@ -36,8 +36,8 @@ namespace Decompiler.Environments.C64
     // 
     public class D64Loader : ImageLoader
     {
-#if NILZ
-                        this.rsrcFork = new ResourceFork(image, arch);
+/*
+ Track => offset map
  Track #Sect #SectorsIn D64 Offset   Track #Sect #SectorsIn D64 Offset
   ----- ----- ---------- ----------   ----- ----- ---------- ----------
     1     21       0       $00000      21     19     414       $19E00
@@ -60,7 +60,7 @@ namespace Decompiler.Environments.C64
    18     19     357       $16500      38*    17     717       $2CD00
    19     19     376       $17800      39*    17     734       $2DE00
    20     19     395       $18B00      40*    17     751       $2EF00
-#endif
+*/
         private static int [] sectorCount = new int[] {
             -1,
             21, 21, 21, 21, 21,  21, 21, 21, 21, 21, 
@@ -96,11 +96,37 @@ namespace Decompiler.Environments.C64
             get { return Address.Ptr16(2048); }
         }
 
+        public ImageHeader LoadHeaderH()
+        {
+            var entries = LoadDiskDirectory();
+            var abSvc = Services.GetService<IArchiveBrowserService>();
+            if (abSvc != null)
+            {
+                var selectedFile = abSvc.UserSelectFileFromArchive(entries) as D64FileEntry;
+                if (selectedFile != null)
+                {
+                    return new C64ImageHeader(selectedFile);
+                }
+            }
+            throw new NotImplementedException();
+        }
+
+        public class C64ImageHeader : ImageHeader
+        {
+            private D64FileEntry dirEntry;
+
+            public C64ImageHeader(D64FileEntry dirEntry)
+            {
+                this.dirEntry = dirEntry;
+                this.PreferredBaseAddress = Address.Ptr16(2048);
+            }
+        }
+
         public override LoaderResults Load(Address addrLoad)
         {
             var arch = new Mos6502ProcessorArchitecture();
             LoadedImage image;
-            List<ArchiveDirectoryEntry> entries = LoadDirectory();
+            List<ArchiveDirectoryEntry> entries = LoadDiskDirectory();
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)
             {
@@ -160,7 +186,7 @@ namespace Decompiler.Environments.C64
                 new RelocationDictionary());
         }
 
-        public List<ArchiveDirectoryEntry> LoadDirectory()
+        public List<ArchiveDirectoryEntry> LoadDiskDirectory()
         {
             var entries = new List<ArchiveDirectoryEntry>();
             var rdr = new LeImageReader(RawImage, (uint)SectorOffset(18, 0));

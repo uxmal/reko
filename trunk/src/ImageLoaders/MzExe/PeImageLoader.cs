@@ -24,6 +24,7 @@ using Decompiler.Core.Services;
 using Decompiler.Environments.Win32;
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -146,6 +147,14 @@ namespace Decompiler.ImageLoaders.MzExe
                 s.SizeRawData);
             // s.VirtualSize);
 		}
+
+        private static IEnumerable<Section> ReadSections(LeImageReader rdr, int sections)
+        {
+            for (int i = 0; i < sections; ++i)
+            {
+                yield return ReadSection(rdr);
+            }
+        }
 
 		/// <summary>
 		/// Loads the sections
@@ -459,7 +468,7 @@ namespace Decompiler.ImageLoaders.MzExe
             }
         }
 
-		private Section ReadSection(ImageReader rdr)
+		private static Section ReadSection(ImageReader rdr)
 		{
 			Section sec = new Section();
 			sec.Name = ReadSectionName(rdr);
@@ -475,7 +484,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			return sec;
 		}
 
-		private string ReadSectionName(ImageReader rdr)
+		private static string ReadSectionName(ImageReader rdr)
 		{
 			byte [] bytes = new Byte[8];
 			for (int b = 0; b < bytes.Length; ++b)
@@ -483,7 +492,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				bytes[b] = rdr.ReadByte();
 			}
 
-			ASCIIEncoding asc = new ASCIIEncoding();
+			Encoding asc = Encoding.ASCII;
 			char [] chars = asc.GetChars(bytes);
 			int i;
 			for (i = chars.Length - 1; i >= 0; --i)
@@ -516,5 +525,18 @@ namespace Decompiler.ImageLoaders.MzExe
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
 		}
+
+        internal static uint ReadEntryPoint(byte[] image, uint peHeaderOffset)
+        {
+            short sections = LoadedImage.ReadLeInt16(image, peHeaderOffset + 0x06);
+            uint pEntryPoint= LoadedImage.ReadLeUInt32(image, peHeaderOffset + 0x28);
+            var section = ReadSections(new LeImageReader(image, peHeaderOffset + 0xF8), sections)
+                .Where(s => s.VirtualAddress <= pEntryPoint && pEntryPoint < s.VirtualAddress + s.VirtualSize)
+                .FirstOrDefault();
+            if (section == null)
+                return 0;
+            else
+                return (pEntryPoint - section.VirtualAddress) + section.OffsetRawData;
+        }
     }
 }

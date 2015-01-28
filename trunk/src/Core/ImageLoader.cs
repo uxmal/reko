@@ -38,6 +38,11 @@ namespace Decompiler.Core
             this.ImportReferences = new Dictionary<Address, ImportReference>();
         }
 
+        /// <summary>
+        /// A collection of memory locations and the external library references
+        /// they each refer to.
+        /// </summary>
+
         public virtual Dictionary<Address, ImportReference> ImportReferences { get; private set; }
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.
@@ -45,7 +50,7 @@ namespace Decompiler.Core
         public abstract Address PreferredBaseAddress { get; }
 
         /// <summary>
-        /// Optional argument specified by app.config.
+        /// Optional loader-specific argument specified in app.config.
         /// </summary>
         public string Argument { get; set; }
 
@@ -61,6 +66,12 @@ namespace Decompiler.Core
         /// </summary>
         public string Filename { get; private set; }
 
+
+        /// <summary>
+        /// Loads the header of the executable, so that its contents can be summarized. 
+        /// </summary>
+        /// <returns></returns>
+        public ImageHeader LoadHeader() { throw new NotImplementedException();  }
         /// <summary>
 		/// Loads the image into memory starting at the specified address
 		/// </summary>

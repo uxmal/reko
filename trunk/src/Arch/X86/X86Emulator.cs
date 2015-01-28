@@ -122,6 +122,16 @@ namespace Decompiler.Arch.X86
             Run();
         }
 
+        private StringBuilder DumpRegs()
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < 8; ++i)
+            {
+                sb.AppendFormat(" {0} {1:X8}", arch.GetRegister(i).Name, Registers[i]);
+            }
+            return sb;
+        }
+
         private void Run()
         {
             int counter = 0;
@@ -129,7 +139,7 @@ namespace Decompiler.Arch.X86
             {
                 while (running && dasm.MoveNext())
                 {
-                    //Debug.Print("emu: {0} {1}", dasm.Current.Address, dasm.Current);
+                    //Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
                     Action bpAction;
                     TWord eip = dasm.Current.Address.Linear;
                     if (bpExecute.TryGetValue(eip, out bpAction))

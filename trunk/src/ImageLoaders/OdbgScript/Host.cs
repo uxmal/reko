@@ -190,7 +190,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual void TE_Log(string p)
+        public virtual void TE_Log(string message)
         {
             throw new NotImplementedException();
         }

@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Environments.C64
                 0, 0,
                 new Dictionary<int, byte[]>());
             var loader = new D64Loader(sc, "CBM.COM", image);
-            var items = loader.LoadDirectory();
+            var items = loader.LoadDiskDirectory();
             Assert.AreEqual(0, items.Count);
         }
 
@@ -169,7 +169,7 @@ namespace Decompiler.UnitTests.Environments.C64
                     }
                 });
             var loader = new D64Loader(sc, "CBM.COM", image);
-            var items = loader.LoadDirectory();
+            var items = loader.LoadDiskDirectory();
 
             Assert.AreEqual(1, items.Count);
             var file = (ArchivedFile) items[0];

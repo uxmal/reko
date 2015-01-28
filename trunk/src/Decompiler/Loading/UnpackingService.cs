@@ -77,7 +77,7 @@ namespace Decompiler.Loading
             return ldr;
         }
 
-        public ImageLoader FindUnpackerBySignature(string filename, byte[] image, int entryPointOffset)
+        public ImageLoader FindUnpackerBySignature(string filename, byte[] image, uint entryPointOffset)
         {
             var signature = Signatures.Where(s => Matches(s, image, entryPointOffset)).FirstOrDefault();
             if (signature == null)
@@ -86,26 +86,30 @@ namespace Decompiler.Loading
             var le = loaders.Cast<LoaderElement>().Where(l => l.Label == signature.Name).FirstOrDefault();  //$REVIEW: all of themn?
             if (le == null)
                 return null;
-            return Loader.CreateImageLoader<ImageLoader>(Services, le.TypeName, filename, image);
+            var loader = Loader.CreateImageLoader<ImageLoader>(Services, le.TypeName, filename, image);
+            if (loader == null)
+                return null;
+            loader.Argument = le.Argument;
+            return loader;
         }
 
         //$PERF: of course we should compile pattern files into a trie for super performance.
         //$REVIEW: move to ImageSignature class?
         // See https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml for implementation
         // ideas.
-        public bool Matches(ImageSignature sig, byte[] image, int entryPointOffset)
+        public bool Matches(ImageSignature sig, byte[] image, uint entryPointOffset)
         {
             try
             {
-                if (entryPointOffset >= image.Length)
+                if (entryPointOffset >= image.Length || string.IsNullOrEmpty(sig.EntryPointPattern))
                     return false;
-                int iImage = entryPointOffset;
+                int iImage =  (int)entryPointOffset;
                 int iPattern = 0;
                 while (iPattern < sig.EntryPointPattern.Length - 1 && iImage < image.Length)
                 {
                     var msn = sig.EntryPointPattern[iPattern];
                     var lsn = sig.EntryPointPattern[iPattern + 1];
-                    if (msn != '?' || lsn != '?')
+                    if (msn != '?' && lsn != '?')
                     {
                         var pat = Loader.HexDigit(msn) << 4 | Loader.HexDigit(lsn);
                         var img = image[iImage];
