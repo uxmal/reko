@@ -35,7 +35,7 @@ namespace Decompiler.Core.Configuration
         string Extension { get; }
 
         string Label { get; set; }
-        string CmdLine { get; set; }
+        string Argument { get; set; }
     }
 
     public class LoaderElementImpl : ConfigurationElement, LoaderElement
@@ -100,7 +100,7 @@ namespace Decompiler.Core.Configuration
         /// A format string that can be used to pass parameters to a loader implemented as an executable.
         /// </summary>
         [ConfigurationProperty("Argument", IsRequired = false)]
-        public string CmdLine
+        public string Argument
         {
             get { return (string) this["Argument"]; }
             set { this["Argument"] = value; }

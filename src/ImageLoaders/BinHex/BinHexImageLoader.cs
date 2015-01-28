@@ -89,7 +89,7 @@ namespace Decompiler.ImageLoaders.BinHex
 
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0x10000000); }
+            get { return new Address(0x00100000); }
         }
 
         public override RelocationResults Relocate(Address addrLoad)

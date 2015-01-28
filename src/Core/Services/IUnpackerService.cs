@@ -37,6 +37,6 @@ namespace Decompiler.Core.Services
         /// <param name="entryPointOffset">The offset from the beginning of the image</param>
         /// <returns>An image loader that can unpack the image, or null if no
         /// unpacker could be found.</returns>
-        ImageLoader FindUnpackerBySignature(string filename, byte[] image, int entryPointOffset);
+        ImageLoader FindUnpackerBySignature(string filename, byte[] image, uint entryPointOffset);
     }
 }

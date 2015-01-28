@@ -212,7 +212,8 @@ namespace Decompiler.WindowsItp
         private void ollyScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sc = new ServiceContainer();
-            var fs = new FileStream(@"D:\dev\jkl\dec\halsten\decompiler_paq\upx\demo.exe", FileMode.Open);
+            var fs = new FileStream(@"D:\dev\jkl\dec\halsten\decompiler_paq\upx\w32HelloWorld.exe", FileMode.Open);
+            //var fs = new FileStream(@"D:\dev\jkl\dec\halsten\decompiler_paq\upx\demo.exe", FileMode.Open);
             var size = fs.Length;
             var abImage = new byte[size];
             fs.Read(abImage, 0, abImage.Length);

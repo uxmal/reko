@@ -74,17 +74,6 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private ImageLoader CreateRealModeLoader(string filename, byte[] image)
         {
-            // The image has been identified as a real-mode MS-DOS program.
-            // It may have been packed, however. We ask the unpacker service whether
-            // it can determine if the image is packed, and if so provide us with an
-            // image loader that knows how to do unpacking.
-            
-            var loaderSvc = services.RequireService<IUnpackerService>();
-            var entryPointOffset = ((e_cparHeader + e_cs) << 4) + e_ip;
-            var unpacker = loaderSvc.FindUnpackerBySignature(filename, image, entryPointOffset);
-            if (unpacker != null)
-                return unpacker;
-
             // Image can't be determined to be packed, so use the default MS-DOS image loader.
 
             //$TODO: verify that these can go away.
@@ -145,8 +134,20 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private ImageLoader CreateDeferredLoader()
         {
+            // The image has been identified as a real-mode MS-DOS program.
+            // It may have been packed, however. We ask the unpacker service whether
+            // it can determine if the image is packed, and if so provide us with an
+            // image loader that knows how to do unpacking.
+
+            var loaderSvc = services.RequireService<IUnpackerService>();
+      
+
             if (IsPortableExecutable)
             {
+                var entryPointOffset= PeImageLoader.ReadEntryPoint(RawImage, e_lfanew);
+                var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, entryPointOffset);
+                if (unpacker != null)
+                    return unpacker;
                 return new PeImageLoader(services, Filename,  base.RawImage, e_lfanew);
             }
             else if (IsNewExecutable)
@@ -156,6 +157,10 @@ namespace Decompiler.ImageLoaders.MzExe
             }
             else
             {
+                var entryPointOffset = ((e_cparHeader + e_cs) << 4) + e_ip;
+                var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, (uint) entryPointOffset);
+                if (unpacker != null)
+                    return unpacker;
                 return CreateRealModeLoader(Filename, RawImage);
             }
         }
