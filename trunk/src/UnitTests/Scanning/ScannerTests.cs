@@ -576,5 +576,17 @@ fn00001200_exit:
 ";
             AssertProgram(sExp, program);
         }
+
+        [Test]
+        public void Scanner_ResolveInterceptedCall()
+        {
+            var scanner = CreateScanner(0x1000, 0x2000);
+            var addrEmulated = Address.Ptr32(0x5000);
+            var addrThunk = Address.Ptr32(0x1800);
+            program.Image.WriteLeUInt32(addrThunk, addrEmulated.Linear);
+            program.InterceptedCalls.Add(addrEmulated, new ExternalProcedure("Foo", null));
+            var ep = scanner.GetInterceptedCall(addrThunk);
+            Assert.AreEqual("Foo", ep.Name);
+        }
     }
 }

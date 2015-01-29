@@ -27,7 +27,6 @@ using System.Text;
 
 namespace Decompiler.Arch.X86
 {
-
     using TWord = System.UInt32;
 
     /// <summary>

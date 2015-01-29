@@ -35,15 +35,8 @@ namespace Decompiler.Core
             this.Services = services;
             this.Filename = filename;
             this.RawImage = imgRaw;
-            this.ImportReferences = new Dictionary<Address, ImportReference>();
         }
 
-        /// <summary>
-        /// A collection of memory locations and the external library references
-        /// they each refer to.
-        /// </summary>
-
-        public virtual Dictionary<Address, ImportReference> ImportReferences { get; private set; }
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.
         /// </summary>

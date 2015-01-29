@@ -82,6 +82,11 @@ namespace Decompiler.Gui.Windows.Forms
             AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message));
         }
 
+        public void Warn(string message)
+        {
+            AddDiagnostic(new NullCodeLocation(""), new WarningDiagnostic(message));
+        }
+
         public void ClearDiagnostics()
         {
             listView.Items.Clear();

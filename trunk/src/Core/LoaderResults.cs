@@ -31,10 +31,17 @@ namespace Decompiler.Core
     /// </summary>
     public class LoaderResults
     {
-        public readonly LoadedImage Image; 
-        public readonly ImageMap ImageMap;
-        public readonly IProcessorArchitecture Architecture;
-        public readonly Platform Platform;
+        public LoadedImage Image; 
+        public ImageMap ImageMap;
+        public IProcessorArchitecture Architecture;
+        public Platform Platform;
+
+        /// <summary>
+        /// A collection of memory locations and the external library references
+        /// they each refer to.
+        /// </summary>
+        public Dictionary<Address, ImportReference> ImportReferences;
+        public Dictionary<Address, ExternalProcedure> InterceptedCalls;
 
         public LoaderResults(
             LoadedImage image, 
@@ -46,6 +53,8 @@ namespace Decompiler.Core
             this.ImageMap = map;
             this.Architecture = arch;
             this.Platform = platform;
+            this.ImportReferences = new Dictionary<Address, ImportReference>();
+            this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>();
         }
     }
 }

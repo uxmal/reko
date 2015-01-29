@@ -52,7 +52,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private uint sizeExportTable;
 		private uint rvaImportTable;
         private uint rvaDelayImportDescriptor;
-
+        private Dictionary<Address, ImportReference> importReferences;
 		private const short MACHINE_i386 = (short) 0x014C;
         private const short MACHINE_x86_64 = unchecked((short)0x8664);
 		private const short ImageFileRelocationsStripped = 0x0001;
@@ -69,6 +69,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new BadImageFormatException("Not a valid PE header.");
 			}
             importThunks = new Dictionary<uint, PseudoProcedure>();
+            importReferences = new Dictionary<Address, ImportReference>();
 			short expectedMagic = ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr, expectedMagic);
 		}
@@ -138,7 +139,10 @@ namespace Decompiler.ImageLoaders.MzExe
 				LoadSections(addrLoad, sectionOffset, sections);
 			}
 			imgLoaded.BaseAddress = addrLoad;
-			return new LoaderResults(imgLoaded, imageMap, arch, platform);
+            return new LoaderResults(imgLoaded, imageMap, arch, platform)
+            {
+                ImportReferences = this.importReferences,
+            };
 		}
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
@@ -436,13 +440,13 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             if (!ImportedFunctionNameSpecified(rvaEntry))
             {
-                ImportReferences.Add(addrThunk, new OrdinalImportReference(
+                importReferences.Add(addrThunk, new OrdinalImportReference(
                     addrThunk, dllName, (int) rvaEntry & 0x7FFFFFF));
             }
             else
             {
                 string fnName = ReadUtf8String(rvaEntry + 2, 0);
-                ImportReferences.Add(addrThunk, new NamedImportReference(
+                importReferences.Add(addrThunk, new NamedImportReference(
                     addrThunk, dllName, fnName));
             }
         }

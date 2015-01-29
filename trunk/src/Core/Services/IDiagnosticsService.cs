@@ -29,6 +29,8 @@ namespace Decompiler.Core.Services
     {
         void AddDiagnostic(ICodeLocation location, Diagnostic diagnostic);
         void Error(string message);
+        void Warn(string message);
         void ClearDiagnostics();
+
     }
 }

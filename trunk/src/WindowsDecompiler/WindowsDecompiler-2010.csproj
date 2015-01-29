@@ -135,7 +135,9 @@
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
@@ -171,7 +173,6 @@
     <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Odbg scripts to $(TargetDir)" />
     <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-
   </Target>
   <PropertyGroup>
     <PreBuildEvent>
