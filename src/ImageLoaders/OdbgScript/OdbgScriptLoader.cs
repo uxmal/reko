@@ -67,9 +67,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
             this.ImageMap = lr.ImageMap;
             this.Architecture = (IntelArchitecture)lr.Architecture;
 
+            X86Emulator.Win32Emulator win32 = new X86Emulator.Win32Emulator(lr.Image, pe.ImportReferences);
             // Initialize the emulator instruction pointer.
             X86State state = (X86State)lr.Architecture.CreateProcessorState();
-            X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, pe.ImportReferences);    //$Create emulator?
+            X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, win32);
             Debugger = new Debugger(emu);
             ollylang = new OllyLang(new Host(this), Debugger);
 
@@ -84,12 +85,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
             emu.Start();
 
             //$TODO: somehow collect the results of the script.
-            throw new NotImplementedException();
+            return lr;
         }
 
         public override RelocationResults Relocate(Address addrLoad)
         {
-            throw new NotImplementedException();
+            return new RelocationResults (new List<EntryPoint>(), new RelocationDictionary());
         }
 
         public virtual PeImageLoader CreatePeImageLoader()

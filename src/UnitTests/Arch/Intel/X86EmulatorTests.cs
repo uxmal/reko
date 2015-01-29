@@ -55,7 +55,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             coder(asm);
             var lr = asm.GetImage();
             this.image = lr.Image;
-            emu = new X86Emulator(arch, lr.Image, importReferences);
+            var win32 = new X86Emulator.Win32Emulator(image, importReferences);
+            emu = new X86Emulator(arch, lr.Image, win32);
             emu.InstructionPointer = lr.Image.BaseAddress;
             emu.WriteRegister(Registers.esp, lr.Image.BaseAddress.Linear + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };

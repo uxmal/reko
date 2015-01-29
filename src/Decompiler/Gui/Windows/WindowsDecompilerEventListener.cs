@@ -39,7 +39,7 @@ namespace Decompiler.Gui.Windows
         private WorkerDialog dlg;
         private Action task;
         private IServiceProvider sp;
-        private IDecompilerUIService uiSvc;
+        private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticSvc;
         private Exception lastException;
 
@@ -49,7 +49,7 @@ namespace Decompiler.Gui.Windows
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
             this.sp = sp;
-            uiSvc = sp.GetService<IDecompilerUIService>();
+            uiSvc = sp.GetService<IDecompilerShellUiService>();
             diagnosticSvc = sp.GetService<IDiagnosticsService>();
         }
 

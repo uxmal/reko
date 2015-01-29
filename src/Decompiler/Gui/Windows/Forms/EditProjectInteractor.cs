@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,7 +37,7 @@ namespace Decompiler.Gui.Windows.Forms
         /// </summary>
         /// <param name="project"></param>
         public bool EditProjectProperties(
-            IDecompilerUIService uiSvc,
+            IDecompilerShellUiService uiSvc,
             Project_v1 project,
             Action<Project_v1> updater)
         {

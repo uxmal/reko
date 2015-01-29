@@ -264,16 +264,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
 #endif
         }
 
-        //bool GetFloat(const string& op, double& value);
-        //bool GetString(const string& op, string& value, size_t size = 0);
-        //bool GetStringLiteral(const string& op, string& value);
-        //bool GetBytestring(const string& op, string& value, size_t size = 0);
-        //bool GetBool(const string& op, bool& value);
-
-        //bool GetAnyValue(const string& op, string& value, bool hex8forExec = false);
-
-        //bool SetRulong(const string& op, const rulong& value, size_t size = sizeof(rulong));
-
         bool SetNum<T>(string op, T value, int size = -1)
         {
             throw new NotImplementedException();
@@ -281,26 +271,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             //    size = Marshal.SizeOf(value);
             //return SetRulong(op, (rulong)value, size);
         }
-
-        //bool SetFloat(const string& op, const double& value);
-        //bool SetString(const string& op, const string& value, size_t size = 0);
-        ////bool SetBytestring(const string& op, string& value, size_t size = 0);
-        //bool SetBool(const string& op, const bool& value);
-
-        //const register_t* find_register(const string& name);
-        //const constant_t* find_constant(const string& name);
-
-        //bool is_register(const string& s);
-        //bool is_floatreg(const string& s);
-        //bool is_flag(const string& s);
-        //bool is_variable(const string& s);
-        //bool is_constant(const string& s);
-        //bool is_valid_variable_name(const string& s);
-        //bool is_writable(const string&s);
-
-        //string ResolveVarsForExec(const string& in, bool hex8forExec);
-
-        //string FormatAsmDwords(const string& asmLine);
 
         // Save / Restore Breakpoints
         /*
@@ -778,27 +748,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             LibraryBreakpointCallbacks[UE_ON_LIB_UNLOAD] = LBPC_UNLOAD;
             LibraryBreakpointCallbacks[UE_ON_LIB_ALL] = LBPC_ALL;
 #endif
-            /*
-            variables["$RESULT"] = 0;
-
-            script_running = false;
-
-            script_pos_next = 0;
-            EOB_row = EOE_row = -1;
-            zf = cf = 0;
-            log_commands = false;
-            search_buffer = null;
-
-            back_to_debugloop = false;
-            require_addonaction = false;
-
-            saved_bp = 0;
-            alloc_bp = 0;
-            //softbp_t = null;
-
-            //for(int i = 0; i < 4; i++)
-            //	hwbp_t[i].addr = 0;
-            */
         }
 
         public void Dispose()
@@ -977,19 +926,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                     if (!in_asm && lcline == "exec")
                                         in_asm = true;
 
-                                    int pos = scriptline.IndexOfAny(Helper.whitespaces.ToCharArray());
-                                    if (pos >= 0)
-                                    {
-                                        cur.command = Helper.tolower(scriptline.Substring(0, pos));
-                                        cur.args = scriptline.Substring(pos + 1).
-                                            Split(',')
-                                            .Select(s => s.Trim())
-                                            .ToArray();
-                                    }
-                                    else
-                                    {
-                                        cur.command = Helper.tolower(scriptline);
-                                    }
+                                    ParseArgumentsIntoLine(scriptline, cur);
 
                                     lines.Add(cur);
                                 }
@@ -997,6 +934,22 @@ namespace Decompiler.ImageLoaders.OdbgScript
                             nextline = true;
                         }
                     }
+                }
+            }
+
+            public static void ParseArgumentsIntoLine(string scriptline, Line cur)
+            {
+                int pos = scriptline.IndexOfAny(Helper.whitespaces.ToCharArray());
+                if (pos >= 0)
+                {
+                    cur.command = Helper.tolower(scriptline.Substring(0, pos));
+                    cur.args = Helper.split(',', scriptline.Substring(pos + 1))
+                        .Select(s => s.Trim())
+                        .ToArray();
+                }
+                else
+                {
+                    cur.command = Helper.tolower(scriptline);
                 }
             }
 

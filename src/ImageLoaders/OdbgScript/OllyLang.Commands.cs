@@ -898,21 +898,17 @@ string filename;
 
 private bool DoDPE(string [] args)
 {
-    throw new NotImplementedException();
-
-#if NEVER
 string filename;
 rulong ep;
 
 	if(args.Length == 2 && GetString(args[0],  out filename) && GetRulong(args[1],  out ep))
 	{
-        if(!Helper.isfullpath(filename))
-			filename = TE_GetTargetDirectory() + filename;	
+        //if(!Helper.isfullpath(filename))
+        //    filename = Path.Combine(Host.TE_GetTargetDirectory(), filename);	
 
-		return Dumpler.DumpProcess(TE_GetProcessHandle(), (void*)Debugger.GetDebuggedFileBaseAddress(), filename, ep);
+		return Dumper.DumpProcess(this.Host.Image, filename, ep);
 	}
 	return false;
-#endif
 }
 
 private bool DoENDE(string [] args)
@@ -3221,7 +3217,6 @@ rulong maxsize = 0;
 private bool DoMSG(string [] args)
 {
 string msg;
-throw new NotImplementedException("huh? IDCANCEL?");
 	if(args.Length == 1 && GetAnyValue(args[0],  out msg))
 	{
 		int input;
@@ -3731,6 +3726,7 @@ private bool DoRET(string [] args)
 			{
 				Reset();
 			}
+            Debugger.StopDebug();
 			return true;
 		}
 		else if(args.Length == 1)

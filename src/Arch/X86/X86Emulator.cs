@@ -19,15 +19,15 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Text;
 
 namespace Decompiler.Arch.X86
 {
-    using Decompiler.Core.Machine;
-    using System.Diagnostics;
+
     using TWord = System.UInt32;
 
     /// <summary>
@@ -45,9 +45,8 @@ namespace Decompiler.Arch.X86
 
         private IntelArchitecture arch;
         private LoadedImage img;
-        private Dictionary<Address, ImportReference> importReferences;
         private Win32Emulator envEmulator;
-        IEnumerator<IntelInstruction> dasm;
+        private IEnumerator<IntelInstruction> dasm;
         private bool running;
         private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
 
@@ -55,26 +54,23 @@ namespace Decompiler.Arch.X86
         public readonly bool[] Valid;
         public TWord Flags;
         private Address ip;
-        private Dictionary<TWord, ImportReference> intereptedCalls;
-        private TWord uPseudoFn;
         private Action stepAction;
         private bool stepInto;
         private TWord stepOverAddress;
 
-        public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage, Dictionary<Address, ImportReference> importReferences)
+        public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage,  Win32Emulator envEmulator)
         {
             this.arch = arch;
             this.img = loadedImage;
-            this.importReferences = importReferences;
             this.Registers = new ulong[40];
             this.Valid = new bool[40];
-            this.envEmulator = new Win32Emulator();
-            this.uPseudoFn = 0xDEAD0000u;
-            this.intereptedCalls = new Dictionary<uint, ImportReference>();
-            InterceptCallsToImports();
+            this.envEmulator = envEmulator;
         }
 
-        public Core.Address InstructionPointer
+        /// <summary>
+        /// The current instruction pointer of the emulator.
+        /// </summary>
+        public Address InstructionPointer
         {
             get { return ip; }
             set
@@ -83,21 +79,6 @@ namespace Decompiler.Arch.X86
                 var rdr = arch.CreateImageReader(img, value);
                 dasm = arch.CreateDisassembler(rdr).GetEnumerator();
             }
-        }
-
-        private void InterceptCallsToImports()
-        {
-            foreach (var imp in importReferences)
-            {
-                uint pseudoPfn = AddInterceptedCall(imp.Value);
-                img.WriteLeUInt32(imp.Key, pseudoPfn);
-            }
-        }
-
-        private TWord AddInterceptedCall(ImportReference importReference)
-        {
-            intereptedCalls[++this.uPseudoFn] = importReference;
-            return uPseudoFn;
         }
 
         public void StepOver(Action callback)
@@ -148,6 +129,8 @@ namespace Decompiler.Arch.X86
                         stepOverAddress = 0;
                         stepInto = false;
                         bpAction();
+                        if (!running)
+                            break;
                     }
                     else if (stepInto)
                     {
@@ -155,6 +138,8 @@ namespace Decompiler.Arch.X86
                         var s = stepAction;
                         stepAction = null;
                         s();
+                        if (!running)
+                            break;
                     }
                     else if (stepOverAddress == eip)
                     {
@@ -162,6 +147,8 @@ namespace Decompiler.Arch.X86
                         var s = stepAction;
                         stepAction = null;
                         s();
+                        if (!running)
+                            break;
                     }
                     Execute(dasm.Current);
                 }
@@ -318,26 +305,14 @@ namespace Decompiler.Arch.X86
             Push(InstructionPointer.Linear + (uint)dasm.Current.Length);   // Push return value on stack
       
             TWord l = Read(op);
-            ImportReference impProc;
-            if (this.intereptedCalls.TryGetValue(l, out impProc))
-            {
-                // Called an imported procedure. //$REVIEW: this should go into an "EnvironmentEmulator" 
-                // and a Win32Emulator would take of understanding what "loadLibraryA" does, for instance.
-                envEmulator.CallImportedProcedure(this, impProc);
+            if (envEmulator.InterceptCall(this, l))
                 return;
-            }
-
-            InstructionPointer = new Address(l);
+             InstructionPointer = new Address(l);
         }
 
         private void Jump(MachineOperand op)
         {
             TWord l = Read(op);
-            ImportReference impProc;
-            if (this.intereptedCalls.TryGetValue(l, out impProc))
-            {
-                throw new NotImplementedException();
-            }
             InstructionPointer = new Address(l);
         }
 
@@ -592,12 +567,19 @@ namespace Decompiler.Arch.X86
         public class Win32Emulator : IImportResolver
         {
             private List<string> modules; 
-
-            Dictionary<string, Dictionary<string, Action<X86Emulator>>> wellKnownFunctions;
+            private Dictionary<string, Dictionary<string, Action<X86Emulator>>> wellKnownFunctions;
             private ExternalProcedure epDummy;
-
-            public Win32Emulator()
+            private TWord uPseudoFn;
+            private Dictionary<TWord, ImportReference> interceptedCalls;
+            private LoadedImage img;
+            
+            public Win32Emulator(LoadedImage img, Dictionary<Address, ImportReference> importReferences)
             {
+                this.img = img;
+                this.uPseudoFn = 0xDEAD0000u;
+                this.interceptedCalls = new Dictionary<uint, ImportReference>();
+                InterceptCallsToImports(importReferences);
+
                 modules = new List<string>
                 {
                     "kernel32.dll",
@@ -623,6 +605,14 @@ namespace Decompiler.Arch.X86
                 epDummy = new ExternalProcedure(">Dummy<", null);
             }
 
+            private void InterceptCallsToImports(Dictionary<Address, ImportReference> importReferences)
+            {
+                foreach (var imp in importReferences)
+                {
+                    uint pseudoPfn = AddInterceptedCall(imp.Value);
+                    img.WriteLeUInt32(imp.Key, pseudoPfn);
+                }
+            }
 
             void LoadLibraryA(X86Emulator emulator)
             {
@@ -659,13 +649,13 @@ namespace Decompiler.Arch.X86
                     Action<X86Emulator> fn;
                     if (!module.TryGetValue(importName, out fn))
                         throw new NotImplementedException();
-                    uint uIntercept = emulator.AddInterceptedCall(new NamedImportReference(null, moduleName, importName));
+                    uint uIntercept = AddInterceptedCall(new NamedImportReference(null, moduleName, importName));
                     emulator.WriteRegister(X86.Registers.eax, uIntercept);
                     emulator.WriteRegister(X86.Registers.esp, esp + 12);
-
                 }
                 else
                 {
+                    //$TODO: import by ordinal.
                     throw new NotImplementedException();
                 }
             }
@@ -720,6 +710,23 @@ namespace Decompiler.Arch.X86
             ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, Platform platform)
             {
                 throw new NotImplementedException();
+            }
+
+            private TWord AddInterceptedCall(ImportReference importReference)
+            {
+                interceptedCalls[++this.uPseudoFn] = importReference;
+                return uPseudoFn;
+            }
+
+            internal bool InterceptCall(X86Emulator emu, TWord l)
+            {
+                ImportReference impProc;
+                if (!this.interceptedCalls.TryGetValue(l, out impProc))
+                    return false;
+                // Called an imported procedure. //$REVIEW: this should go into an "EnvironmentEmulator" 
+                // and a Win32Emulator would take of understanding what "loadLibraryA" does, for instance.
+                CallImportedProcedure(emu, impProc);
+                return true;
             }
         }
     }

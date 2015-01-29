@@ -1,5 +1,6 @@
 ﻿using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -62,9 +63,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual void MsgError(string p)
+        public virtual void MsgError(string message)
         {
-            throw new NotImplementedException();
+            loader.Services.RequireService<IDiagnosticsService>().Error(message);
         }
 
         public virtual bool TE_GetMemoryInfo(ulong addr, out MEMORY_BASIC_INFORMATION MemInfo)
@@ -182,7 +183,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public virtual bool DialogMSG(string msg, out int input)
         {
-            throw new NotImplementedException();
+            loader.Services.RequireService<IDecompilerUIService>().ShowMessage(msg);
+            input = 0;
+            return true;
         }
 
         public virtual void TE_Log(string logstr, object p)

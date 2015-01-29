@@ -36,6 +36,22 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             engine = new OllyLang(new Host(null), new Debugger(null));
         }
+
+        [Test]
+        public void Ose_LineArgs()
+        {
+            var line = new OllyLang.OllyScript.Line();
+            OllyLang.OllyScript.ParseArgumentsIntoLine( " hello,world", line);
+            Assert.AreEqual(2, line.args.Length);
+        }
+
+        [Test]
+        public void Ose_LineArgString()
+        {
+            var line = new OllyLang.OllyScript.Line();
+            OllyLang.OllyScript.ParseArgumentsIntoLine(" \"hello,world\"", line);
+            Assert.AreEqual(1, line.args.Length);
+        }
     }
 }
 
