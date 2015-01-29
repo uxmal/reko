@@ -27,7 +27,8 @@ using System.Text;
 
 namespace Decompiler.Environments.Win32
 {
-    using TWord = System.UInt32;        // May need this for Win64 support.
+    using Decompiler.Core.Serialization;        // May need this for Win64 support.
+    using TWord = System.UInt32;
 
     /// <summary>
     /// Emulates the Win32 operating environment. In particular, intercepts calls to GetProcAddress
@@ -38,10 +39,12 @@ namespace Decompiler.Environments.Win32
         private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
         private LoadedImage img;
+        private Platform platform;
 
-        public Win32Emulator(LoadedImage img, Dictionary<Address, ImportReference> importReferences)
+        public Win32Emulator(LoadedImage img, Platform platform, Dictionary<Address, ImportReference> importReferences)
         {
             this.img = img;
+            this.platform = platform;
             this.uPseudoFn = 0xDEAD0000u;   // unlikely to be a real pointer to a function
             this.InterceptedCalls = new Dictionary<uint, ExternalProcedure>();
 
@@ -55,7 +58,7 @@ namespace Decompiler.Environments.Win32
             var kernel32 = EnsureModule("kernel32.dll");
             EnsureProc(kernel32, "LoadLibraryA", LoadLibraryA);
             EnsureProc(kernel32, "GetProcAddress", GetProcAddress);
-            EnsureProc(kernel32, "ExitProcess", ExitProcess);
+            EnsureProc(kernel32, "ExitProcess", ExitProcess, new ProcedureCharacteristics { Terminates = true });
             EnsureProc(kernel32, "VirtualProtect", VirtualProtect);
         }
 
@@ -71,12 +74,20 @@ namespace Decompiler.Environments.Win32
             return module;
         }
 
-        public SimulatedProc EnsureProc(Module module, string procName, Action<IProcessorEmulator> emulator)
+        public SimulatedProc EnsureProc(
+            Module module, 
+            string procName,
+            Action<IProcessorEmulator> emulator,
+            ProcedureCharacteristics chars = null)
         {
             SimulatedProc proc;
             if (!module.Procedures.TryGetValue(procName, out proc))
             {
+                var signature = platform.LookupProcedureByName(module.Name, procName);
                 proc = new SimulatedProc(procName, emulator);
+                proc.Signature = signature;
+                if (chars != null)
+                    proc.Characteristics = chars;
                 proc.uFakedAddress = ++this.uPseudoFn;
                 InterceptedCalls[proc.uFakedAddress] = proc;
                 module.Procedures.Add(procName, proc);

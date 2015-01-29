@@ -183,7 +183,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public virtual bool DialogMSG(string msg, out int input)
         {
-            loader.Services.RequireService<IDecompilerUIService>().ShowMessage(msg);
+            loader.Services.RequireService<IDiagnosticsService>().Warn(msg);
             input = 0;
             return true;
         }

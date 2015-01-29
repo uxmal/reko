@@ -553,20 +553,37 @@ namespace Decompiler.Scanning
                 }
                 addrTarget = Address.FromConstant(wAddr);
             }
-            return GetImportedProcedure(addrTarget, addr);
+            ExternalProcedure ep = GetImportedProcedure(addrTarget, addr);
+            if (ep != null)
+                return ep;
+            return GetInterceptedCall(addrTarget);
         }
 
         public ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
             ImportReference impref;
-            if (!importReferences.TryGetValue(addrImportThunk, out impref))
-                return null;
-            var extProc = impref.ResolveImportedProcedure(
-                new ImportResolver(project), program.Platform,
-                new AddressContext(program, addrInstruction, this.eventListener));
-            return extProc;
+            if (importReferences.TryGetValue(addrImportThunk, out impref))
+            {
+                var extProc = impref.ResolveImportedProcedure(
+                    new ImportResolver(project), program.Platform,
+                    new AddressContext(program, addrInstruction, this.eventListener));
+                return extProc;
+            }
+            return null;
         }
         
+        public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+        {
+            var rdr= program.Architecture.CreateImageReader(image, addrImportThunk);
+            uint uDest;
+            if (!rdr.TryReadUInt32(out uDest))
+                return null;
+            var addrDest = Address.Ptr32(uDest);
+            ExternalProcedure ep;
+            program.InterceptedCalls.TryGetValue(addrDest, out ep);
+            return ep;
+        }
+
         /// <summary>
         /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
         /// now truncated, with a single out edge to the new block. The second block receives the out edges of the first block.

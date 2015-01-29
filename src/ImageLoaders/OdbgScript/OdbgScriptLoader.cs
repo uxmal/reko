@@ -68,8 +68,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             this.ImageMap = lr.ImageMap;
             this.Architecture = (IntelArchitecture)lr.Architecture;
 
-            Win32Emulator win32 = new Win32Emulator(lr.Image, pe.ImportReferences);
-            // Initialize the emulator instruction pointer.
+            Win32Emulator win32 = new Win32Emulator(lr.Image, lr.Platform, lr.ImportReferences);
             X86State state = (X86State)lr.Architecture.CreateProcessorState();
             X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, win32);
             Debugger = new Debugger(emu);
@@ -85,7 +84,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             emu.Start();
 
-            //$TODO: somehow collect the results of the script.
+            //$TODO: somehow collect the entry point from the script.
+            lr.InterceptedCalls = win32.InterceptedCalls
+                .Select(ic => new KeyValuePair<Address, ExternalProcedure>(
+                    new Address(ic.Key), ic.Value))
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
             return lr;
         }
 

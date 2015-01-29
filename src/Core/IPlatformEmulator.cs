@@ -40,7 +40,8 @@ namespace Decompiler.Core
         /// </summary>
         /// <param name="emulator">Emulator requesting the call</param>
         /// <param name="calledAddress">The address called</param>
-        /// <returns>True if the platform emulator intercepted the call and simulatored</returns>
+        /// <returns>True if the platform emulator intercepted the call and simulated it.
+        /// False otherwise.</returns>
         bool InterceptCall(IProcessorEmulator emulator, TWord calledAddress);
     }
 }

@@ -42,12 +42,10 @@ namespace Decompiler.Core
 	{
 		private SortedList<Address,Procedure> procedures;
         private SortedList<Address, ImageMapVectorTable> vectors;
-        private Dictionary<uint, PseudoProcedure> trampolines;
 		private Identifier globals;
         private StructureType globalFields;
 		private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Identifier, LinearInductionVariable> ivs;
-		private TypeFactory typefactory;
 
 		public Program()
 		{
@@ -56,10 +54,10 @@ namespace Decompiler.Core
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
 			this.CallGraph = new CallGraph();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
-			this.trampolines = new Dictionary<uint, PseudoProcedure>();	// linear address -> string
+            this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
             this.ivs = new Dictionary<Identifier, LinearInductionVariable>();
-			this.typefactory = new TypeFactory();
+			this.TypeFactory = new TypeFactory();
 			this.TypeStore = new TypeStore();
             this.UserProcedures = new SortedList<Address, Serialization.Procedure_v1>();
             this.UserCalls = new SortedList<Address, Serialization.SerializedCall_v1>();
@@ -140,7 +138,13 @@ namespace Decompiler.Core
 
         public string Filename { get; set; }
 
+        /// <summary>
+        /// A collection of memory locations and the external library references
+        /// they each refer to.
+        /// </summary>
 		public Dictionary<Address, ImportReference> ImportReferences { get; private set; }
+
+        public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
 
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables
         {
@@ -150,7 +154,7 @@ namespace Decompiler.Core
 		public Platform Platform { get; set; }
 
 		/// <summary>
-		/// Provides access to the program's procedures, indexed by address.
+		/// The program's decompiled procedures, indexed by address.
 		/// </summary>
 		public SortedList<Address, Procedure> Procedures
 		{
@@ -158,22 +162,14 @@ namespace Decompiler.Core
 		}
 
 		/// <summary>
-		/// Provides access to the program's pseudo procedures, indexed by name.
+		/// The program's pseudo procedures, indexed by name.
 		/// </summary>
 		public Dictionary<string,PseudoProcedure> PseudoProcedures
 		{
 			get { return pseudoProcs; }
 		}
 
-        public Dictionary<uint, PseudoProcedure> Trampolines
-		{
-			get { return trampolines; }
-		}
-
-		public TypeFactory TypeFactory
-		{
-			get { return typefactory; }
-		}
+		public TypeFactory TypeFactory { get; private set; }
 		
 		public TypeStore TypeStore { get; private set; }
 

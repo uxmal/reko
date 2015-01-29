@@ -95,7 +95,8 @@ namespace Decompiler.Loading
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
-            CopyImportReferences(imgLoader.ImportReferences, program);
+            CopyImportReferences(result.ImportReferences, program);
+            CopyInterceptedCalls(result.InterceptedCalls, program);
             return program;
         }
 
@@ -230,6 +231,14 @@ namespace Decompiler.Loading
             foreach (var item in importReference)
             {
                 prog.ImportReferences.Add(item.Key, item.Value);
+            }
+        }
+
+        protected void CopyInterceptedCalls(Dictionary<Address, ExternalProcedure> interceptedCalls, Program prog)
+        {
+            foreach (var item in interceptedCalls)
+            {
+                prog.InterceptedCalls.Add(item.Key, item.Value);
             }
         }
     }

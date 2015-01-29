@@ -100,14 +100,6 @@ namespace Decompiler.ImageLoaders.MzExe
             return ldrDeferred;
         }
 
-        public override Dictionary<Address, ImportReference> ImportReferences
-        {
-            get
-            {
-                return GetDeferredLoader().ImportReferences;
-            }
-        }
-
 		public bool IsNewExecutable
 		{
 			get { return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew+1] == 'E'; }

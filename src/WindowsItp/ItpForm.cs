@@ -203,7 +203,7 @@ namespace Decompiler.WindowsItp
             var addr = peLdr.PreferredBaseAddress;
             var lr = peLdr.Load(addr);
             var rr = peLdr.Relocate(addr);
-            var win32 = new Win32Emulator(lr.Image, peLdr.ImportReferences);
+            var win32 = new Win32Emulator(lr.Image, lr.Platform, lr.ImportReferences);
             var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };

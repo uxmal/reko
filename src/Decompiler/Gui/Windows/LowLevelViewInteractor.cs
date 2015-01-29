@@ -246,6 +246,7 @@ namespace Decompiler.Gui.Windows
             {
                 var address = addrRange.Begin;
                 MarkAndScanProcedure(address);
+                services.RequireService<IProjectBrowserService>().Reload();
             }
             catch (Exception ex)
             {

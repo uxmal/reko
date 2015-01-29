@@ -70,9 +70,9 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             var ldr = peldr.Load(addrLoad);
             var rel=peldr.Relocate(addrLoad);
 
-            Assert.AreEqual(2, peldr.ImportReferences.Count);
-            Assert.AreEqual("user32.dll!GetDesktopWindow", peldr.ImportReferences[new Address(0x0010103C)].ToString());
-            Assert.AreEqual("user32.dll!GetFocus", peldr.ImportReferences[new Address(0x00101040)].ToString());
+            Assert.AreEqual(2, ldr.ImportReferences.Count);
+            Assert.AreEqual("user32.dll!GetDesktopWindow", ldr.ImportReferences[new Address(0x0010103C)].ToString());
+            Assert.AreEqual("user32.dll!GetFocus", ldr.ImportReferences[new Address(0x00101040)].ToString());
         }
 
         private void Given_Section(string section)
