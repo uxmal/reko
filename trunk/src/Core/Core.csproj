@@ -534,6 +534,7 @@
     </Compile>
     <Compile Include="Serialization\ProcedureSerializer.cs" />
     <Compile Include="Services\IArchiveBrowserService.cs" />
+    <Compile Include="Services\IDecompilerUIService.cs" />
     <Compile Include="Services\IDiagnosticsService.cs" />
     <Compile Include="Services\IFileSystemService.cs" />
     <Compile Include="Services\ITypeLibraryLoaderService.cs" />

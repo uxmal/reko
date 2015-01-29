@@ -18,17 +18,23 @@
  */
 #endregion
 
-using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Core.Services
+namespace Decompiler.Gui
 {
-    public interface IDiagnosticsService
+    public interface IDecompilerShellUiService : Decompiler.Core.Services.IDecompilerUIService, ICommandTarget
     {
-        void AddDiagnostic(ICodeLocation location, Diagnostic diagnostic);
-        void Error(string message);
-        void ClearDiagnostics();
+        ContextMenu GetContextMenu(int menuID);
+
+        IWindowFrame ActiveFrame { get; }
+
+        IWindowFrame FindWindow(string windowType);
+        IWindowFrame FindDocumentWindow(string documentType, object docItem);
+        IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
+        IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane);
+        DialogResult ShowModalDialog(IDialog dlg);
     }
 }

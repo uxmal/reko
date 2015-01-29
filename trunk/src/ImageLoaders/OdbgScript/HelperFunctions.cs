@@ -333,7 +333,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return "";
         }
 
-        public static bool split(List<string> vec, string str, char delim)
+        public static IEnumerable<string> split(char delim, string str)
         {
             List<int> pos = new List<int>();
             bool inQuotes = false;
@@ -352,14 +352,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
             for (int i = 0; i < pos.Count; i++)
             {
                 end = pos[i];
-                vec.Add(trim(str.Substring(start, end - start)));
+                yield return str.Substring(start, end - start);
                 start = end + 1;
             }
 
             if (start < str.Length)
-                vec.Add(trim(str.Substring(start)));
-
-            return true;
+                yield return str.Substring(start);
         }
 
         public static bool IsQuotedString(string s, char cstart, char cend = '\0')

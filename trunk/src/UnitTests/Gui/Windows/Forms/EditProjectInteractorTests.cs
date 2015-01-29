@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using Decompiler.UnitTests.Mocks;
@@ -52,7 +53,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void EditProjectAndCancel()
         {
-            FakeUiService uiSvc = new FakeUiService();
+            FakeShellUiService uiSvc = new FakeShellUiService();
             uiSvc.SimulateUserCancel = true;
             var project = CreateTestProject();
             var epi = new EditProjectInteractor();
@@ -72,7 +73,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void EditProjectAndSave()
         {
-            FakeUiService uiSvc = new FakeUiService();
+            var uiSvc = new FakeShellUiService();
             var epi = new EditProjectInteractor();
             var p = CreateTestProject();
 

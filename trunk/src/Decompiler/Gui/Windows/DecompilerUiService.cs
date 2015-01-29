@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Services;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using System;
@@ -116,6 +117,13 @@ namespace Decompiler.Gui.Windows
                 sb);
         }
         #endregion
-    }
 
+
+        public void ShowMessage(string msg)
+        {
+            form.Invoke(new Action<string>(delegate(string s)
+                { MessageBox.Show(form, s, "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Information); }),
+                msg);
+        }
+    }
 }

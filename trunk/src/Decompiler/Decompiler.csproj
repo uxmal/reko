@@ -256,7 +256,7 @@
     <Compile Include="Gui\ICommandTarget.cs" />
     <Compile Include="Gui\IConsoleService.cs" />
     <Compile Include="Gui\IDecompilerService.cs" />
-    <Compile Include="Gui\IDecompilerUIService.cs" />
+    <Compile Include="Gui\IDecompilerShellUiService.cs" />
     <Compile Include="Gui\IDialog.cs" />
     <Compile Include="Gui\IDisassemblyViewService.cs" />
     <Compile Include="Gui\Forms\IMainForm.cs" />

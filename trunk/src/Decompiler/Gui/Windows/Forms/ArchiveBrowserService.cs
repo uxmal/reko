@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Archives;
 using Decompiler.Core.Services;
 using System;
@@ -38,7 +39,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
-            IDecompilerUIService uiSvc = (IDecompilerUIService)sp.GetService(typeof(IDecompilerUIService));
+            var uiSvc = sp.GetService<IDecompilerShellUiService>();
             if (uiSvc == null)
                 return null;
             using (var dlg = new ArchiveBrowserDialog())

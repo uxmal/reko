@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Services;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeUiService: IDecompilerUIService
+    public class FakeUiService : IDecompilerUIService
     {
         private bool simulateUserCancel;
         private string lastFileName;
@@ -99,6 +100,12 @@ namespace Decompiler.UnitTests.Mocks
         public Form ProbeLastShownDialog
         {
             get { return lastDialogShown; }
+        }
+
+
+        public void ShowMessage(string msg)
+        {
+            throw new NotImplementedException();
         }
     }
 

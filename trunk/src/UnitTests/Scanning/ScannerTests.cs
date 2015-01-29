@@ -515,7 +515,65 @@ fn00001100_exit:
                 new Address(0x1000),
                 "fn1000",
                 arch.CreateProcessorState());
-            var sExp = "";
+            var sExp = @"// fn1000
+// Return size: 4
+void fn1000()
+fn1000_entry:
+l00001000:
+	r1 = 0x00000003
+	r63 = r63 - 0x00000004
+	Mem0[r63:word32] = r1
+	call fn00001200 (retsize: 4;)
+	r63 = r63 + 0x00000008
+	r1 = 0x00000003
+	r63 = r63 - 0x00000004
+	Mem0[r63:word32] = r1
+	call fn00001100 (retsize: 4;)
+	r63 = r63 + 0x00000008
+	return
+fn1000_exit:
+
+// fn00001100
+// Return size: 0
+void fn00001100()
+fn00001100_entry:
+l00001100:
+	r1 = Mem0[r63 + 0x00000004:word32]
+	branch r1 == 0x00000000 l00001120
+	goto l00001108
+l00001100:
+l00001108:
+	r1 = Mem0[r63 + 0x00000004:word32]
+	r1 = r1 - 0x00000001
+	Mem0[r63 + 0x00000004:word32] = r1
+l00001114_thunk_fn00001200:
+	call fn00001200 (retsize: 0;)
+	return
+l00001120:
+	r1 = 0x00000000
+	return
+fn00001100_exit:
+
+// fn00001200
+// Return size: 0
+void fn00001200()
+fn00001200_entry:
+l00001200:
+	r1 = Mem0[r63 + 0x00000004:word32]
+	branch r1 == 0x00000000 l00001220
+l00001208:
+	r1 = Mem0[r63 + 0x00000004:word32]
+	r1 = r1 - 0x00000001
+	Mem0[r63 + 0x00000004:word32] = r1
+l00001214_thunk_fn00001100:
+	call fn00001100 (retsize: 0;)
+	return
+l00001220:
+	r1 = 0x00000001
+	return
+fn00001200_exit:
+
+";
             AssertProgram(sExp, program);
         }
     }

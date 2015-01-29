@@ -125,5 +125,9 @@ using rulong = System.UInt64;
             throw new NotImplementedException();
         }
 
+        internal void StopDebug()
+        {
+            emu.Stop();
+        }
     }
 }
