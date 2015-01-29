@@ -29,11 +29,13 @@ namespace Decompiler.Environments.Win32
 {
     using TWord = System.UInt32;        // May need this for Win64 support.
 
+    /// <summary>
+    /// Emulates the Win32 operating environment. In particular, intercepts calls to GetProcAddress
+    /// so that the procedures used by the decompiled program can be gleaned. 
+    /// </summary>
     public class Win32Emulator : IPlatformEmulator, IImportResolver
     {
-        private List<string> modules;
-        private Dictionary<string, Dictionary<string, Action<IProcessorEmulator>>> wellKnownFunctions;
-        private ExternalProcedure epDummy;
+        private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
         private LoadedImage img;
 
@@ -41,44 +43,67 @@ namespace Decompiler.Environments.Win32
         {
             this.img = img;
             this.uPseudoFn = 0xDEAD0000u;   // unlikely to be a real pointer to a function
-            this.InterceptedCalls = new Dictionary<uint, ImportReference>();
+            this.InterceptedCalls = new Dictionary<uint, ExternalProcedure>();
+
+            modules = new Dictionary<string, Module>(StringComparer.InvariantCultureIgnoreCase);
+            AddWellKnownProcedures();
             InterceptCallsToImports(importReferences);
-
-            modules = new List<string>
-            {
-                "kernel32.dll",
-                "user32.dll"
-            };
-
-            wellKnownFunctions = new Dictionary<string, Dictionary<string, Action<IProcessorEmulator>>>(StringComparer.InvariantCultureIgnoreCase)
-            {
-                { "kernel32.dll", new Dictionary<string, Action<IProcessorEmulator>>
-                    {
-                        { "LoadLibraryA", LoadLibraryA },
-                        { "GetProcAddress", GetProcAddress },
-                        { "ExitProcess", ExitProcess },
-                        { "VirtualProtect", VirtualProtect }
-                    }
-                    },
-                    { "user32.dll", new Dictionary<string, Action<IProcessorEmulator>>
-                    {
-                        { "MessageBoxA", NYI }
-                    }
-                    }
-            };
-            epDummy = new ExternalProcedure(">Dummy<", null);
         }
 
-        public Dictionary<TWord, ImportReference> InterceptedCalls { get; private set; }
+        private void AddWellKnownProcedures()
+        {
+            var kernel32 = EnsureModule("kernel32.dll");
+            EnsureProc(kernel32, "LoadLibraryA", LoadLibraryA);
+            EnsureProc(kernel32, "GetProcAddress", GetProcAddress);
+            EnsureProc(kernel32, "ExitProcess", ExitProcess);
+            EnsureProc(kernel32, "VirtualProtect", VirtualProtect);
+        }
 
+        private Module EnsureModule(string moduleName)
+        {
+            Module module;
+            if (!modules.TryGetValue(moduleName, out module))
+            {
+                module = new Module(moduleName);
+                modules.Add(module.Name, module);
+                module.Handle = (TWord)modules.Count * 16u;
+            }
+            return module;
+        }
+
+        public SimulatedProc EnsureProc(Module module, string procName, Action<IProcessorEmulator> emulator)
+        {
+            SimulatedProc proc;
+            if (!module.Procedures.TryGetValue(procName, out proc))
+            {
+                proc = new SimulatedProc(procName, emulator);
+                proc.uFakedAddress = ++this.uPseudoFn;
+                InterceptedCalls[proc.uFakedAddress] = proc;
+                module.Procedures.Add(procName, proc);
+            }
+            return proc;
+        }
+
+        public Dictionary<TWord, ExternalProcedure> InterceptedCalls { get; private set; }
 
         private void InterceptCallsToImports(Dictionary<Address, ImportReference> importReferences)
         {
             foreach (var imp in importReferences)
             {
-                uint pseudoPfn = AddInterceptedCall(imp.Value);
+                uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null, null)).uFakedAddress;
                 img.WriteLeUInt32(imp.Key, pseudoPfn);
             }
+        }
+
+        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, Platform platform)
+        {
+            Module module = EnsureModule(moduleName);
+            return EnsureProc(module, importName, NYI);
+        }
+
+        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, Platform platform)
+        {
+            throw new NotImplementedException();
         }
 
         void LoadLibraryA(IProcessorEmulator emulator)
@@ -88,11 +113,8 @@ namespace Decompiler.Environments.Win32
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
             uint pstrLibName = img.ReadLeUInt32(esp + 4u - img.BaseAddress.Linear);
             string szLibName = ReadMbString(img, pstrLibName);
-            uint hModule = (uint)modules.IndexOf(szLibName.ToLower());
-            if ((int)hModule < 0)
-                throw new NotImplementedException(string.Format("Unknown library {0}.", szLibName));
-            hModule += 10;
-            emulator.WriteRegister(Registers.eax, hModule);
+            Module module = EnsureModule(szLibName);
+            emulator.WriteRegister(Registers.eax, module.Handle);
 
             // Clean up the stack.
             emulator.WriteRegister(Registers.esp, esp + 8);
@@ -109,15 +131,9 @@ namespace Decompiler.Environments.Win32
             if ((pstrFnName & 0xFFFF0000) != 0)
             {
                 string importName = ReadMbString(img, pstrFnName);
-                hmodule -= 10;
-                var moduleName = modules[(int)hmodule];
-                Dictionary<string, Action<IProcessorEmulator>> module;
-                wellKnownFunctions.TryGetValue(moduleName, out module);
-                Action<IProcessorEmulator> fn;
-                if (!module.TryGetValue(importName, out fn))
-                    throw new NotImplementedException();
-                uint uIntercept = AddInterceptedCall(new NamedImportReference(null, moduleName, importName));
-                emulator.WriteRegister(Registers.eax, uIntercept);
+                var module = modules.Values.First(m => m.Handle == hmodule);
+                SimulatedProc fn = EnsureProc(module, importName, NYI);
+                emulator.WriteRegister(Registers.eax, fn.uFakedAddress);
                 emulator.WriteRegister(Registers.esp, esp + 12);
             }
             else
@@ -154,44 +170,12 @@ namespace Decompiler.Environments.Win32
             return Encoding.ASCII.GetString(img.Bytes, iStart, i - iStart);
         }
 
-        internal void CallImportedProcedure(IProcessorEmulator emu, ImportReference impProc)
-        {
-            var proc = impProc.ResolveImportedProcedure(this, null, null);
-            var simProc = proc as SimulatedProc;
-            if (simProc == null)
-                throw new NotImplementedException();
-            simProc.Emulator(emu);
-        }
-
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, Platform platform)
-        {
-            Dictionary<string, Action<IProcessorEmulator>> module;
-            if (!this.wellKnownFunctions.TryGetValue(moduleName, out module))
-                return epDummy;
-            Action<IProcessorEmulator> fn;
-            if (!module.TryGetValue(importName, out fn))
-                return epDummy;
-            return new SimulatedProc(importName, fn);
-        }
-
-        ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, Platform platform)
-        {
-            throw new NotImplementedException();
-        }
-
-        private TWord AddInterceptedCall(ImportReference importReference)
-        {
-            InterceptedCalls[++this.uPseudoFn] = importReference;
-            return uPseudoFn;
-        }
-
         public bool InterceptCall(IProcessorEmulator emu, TWord l)
         {
-            ImportReference impProc;
-            if (!this.InterceptedCalls.TryGetValue(l, out impProc))
+            ExternalProcedure epProc;
+            if (!this.InterceptedCalls.TryGetValue(l, out epProc))
                 return false;
-            // Called an intercepted procedure. 
-            CallImportedProcedure(emu, impProc);
+            ((SimulatedProc)epProc).Emulator(emu);
             return true;
         }
 
@@ -199,7 +183,21 @@ namespace Decompiler.Environments.Win32
         {
             public SimulatedProc(string name, Action<IProcessorEmulator> emulator) : base(name, null) { Emulator = emulator; }
 
+            public TWord uFakedAddress;
             public Action<IProcessorEmulator> Emulator;
+        }
+
+        public class Module
+        {
+            public string Name;
+            public TWord Handle;
+            public Dictionary<string, SimulatedProc> Procedures;
+
+            public Module(string p)
+            {
+                this.Name = p;
+                Procedures = new Dictionary<string, SimulatedProc>();
+            }
         }
     }
 }
