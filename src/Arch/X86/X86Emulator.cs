@@ -34,7 +34,7 @@ namespace Decompiler.Arch.X86
     /// Simple emulator of X86 instructions. No attempt is made to be high-performance
     /// as long as correctness is maintained.
     /// </summary>
-    public class X86Emulator
+    public class X86Emulator : IProcessorEmulator
     {
         public event EventHandler BeforeStart;
         public event EventHandler ExceptionRaised;
@@ -45,7 +45,7 @@ namespace Decompiler.Arch.X86
 
         private IntelArchitecture arch;
         private LoadedImage img;
-        private Win32Emulator envEmulator;
+        private IPlatformEmulator envEmulator;
         private IEnumerator<IntelInstruction> dasm;
         private bool running;
         private Dictionary<uint, Action> bpExecute = new Dictionary<uint, Action>();
@@ -58,7 +58,7 @@ namespace Decompiler.Arch.X86
         private bool stepInto;
         private TWord stepOverAddress;
 
-        public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage,  Win32Emulator envEmulator)
+        public X86Emulator(IntelArchitecture arch, LoadedImage loadedImage, IPlatformEmulator envEmulator)
         {
             this.arch = arch;
             this.img = loadedImage;
@@ -457,7 +457,7 @@ namespace Decompiler.Arch.X86
             return ea;
         }
 
-        private TWord ReadRegister(RegisterStorage r)
+        public TWord ReadRegister(RegisterStorage r)
         {
             return (TWord) Registers[r.Number];
         }
@@ -557,177 +557,6 @@ namespace Decompiler.Arch.X86
             bpExecute.Remove(address);
         }
 
-        public class SimulatedProc : ExternalProcedure
-        {
-            public SimulatedProc(string name, Action<X86Emulator> emulator) : base(name, null) { Emulator = emulator; }
-
-            public Action<X86Emulator> Emulator;
-        }
-
-        public class Win32Emulator : IImportResolver
-        {
-            private List<string> modules; 
-            private Dictionary<string, Dictionary<string, Action<X86Emulator>>> wellKnownFunctions;
-            private ExternalProcedure epDummy;
-            private TWord uPseudoFn;
-            private Dictionary<TWord, ImportReference> interceptedCalls;
-            private LoadedImage img;
-            
-            public Win32Emulator(LoadedImage img, Dictionary<Address, ImportReference> importReferences)
-            {
-                this.img = img;
-                this.uPseudoFn = 0xDEAD0000u;
-                this.interceptedCalls = new Dictionary<uint, ImportReference>();
-                InterceptCallsToImports(importReferences);
-
-                modules = new List<string>
-                {
-                    "kernel32.dll",
-                    "user32.dll"
-                };
-          
-                wellKnownFunctions = new Dictionary<string, Dictionary<string, Action<X86Emulator>>>(StringComparer.InvariantCultureIgnoreCase)
-                {
-                    { "kernel32.dll", new Dictionary<string, Action<X86Emulator>>
-                        {
-                            { "LoadLibraryA", LoadLibraryA },
-                            { "GetProcAddress", GetProcAddress },
-                            { "ExitProcess", ExitProcess },
-                            { "VirtualProtect", VirtualProtect }
-                        }
-                     },
-                     { "user32.dll", new Dictionary<string, Action<X86Emulator>>
-                     {
-                         { "MessageBoxA", MessageBoxA }
-                     }
-                     }
-                };
-                epDummy = new ExternalProcedure(">Dummy<", null);
-            }
-
-            private void InterceptCallsToImports(Dictionary<Address, ImportReference> importReferences)
-            {
-                foreach (var imp in importReferences)
-                {
-                    uint pseudoPfn = AddInterceptedCall(imp.Value);
-                    img.WriteLeUInt32(imp.Key, pseudoPfn);
-                }
-            }
-
-            void LoadLibraryA(X86Emulator emulator)
-            {
-                // M[Esp] is return address.
-                // M[Esp + 4] is pointer to DLL name.
-                uint esp = (uint)emulator.Registers[X86.Registers.esp.Number];
-                uint pstrLibName = emulator.img.ReadLeUInt32(esp + 4u - emulator.img.BaseAddress.Linear);
-                string szLibName = ReadMbString(emulator.img, pstrLibName);
-                uint hModule = (uint) modules.IndexOf(szLibName.ToLower());
-                if ((int)hModule < 0)
-                    throw new NotImplementedException(string.Format("Unknown library {0}.", szLibName));
-                hModule += 10;
-                emulator.WriteRegister(X86.Registers.eax, hModule);
-
-                // Clean up the stack.
-                emulator.WriteRegister(X86.Registers.esp, esp + 8);
-            }
-
-            void GetProcAddress(X86Emulator emulator)
-            {
-                // M[esp] is return address
-                // M[esp + 4] is hmodule
-                // M[esp + 4] is pointer to function name
-                uint esp = (uint)emulator.Registers[X86.Registers.esp.Number];
-                uint hmodule = emulator.img.ReadLeUInt32(esp + 4u - emulator.img.BaseAddress.Linear);
-                uint pstrFnName = emulator.img.ReadLeUInt32(esp + 8u - emulator.img.BaseAddress.Linear);
-                if ((pstrFnName & 0xFFFF0000) != 0)
-                {
-                    string importName = ReadMbString(emulator.img, pstrFnName);
-                    hmodule -= 10;
-                    var moduleName = modules[(int)hmodule];
-                    Dictionary<string, Action<X86Emulator>> module;
-                    wellKnownFunctions.TryGetValue(moduleName, out module);
-                    Action<X86Emulator> fn;
-                    if (!module.TryGetValue(importName, out fn))
-                        throw new NotImplementedException();
-                    uint uIntercept = AddInterceptedCall(new NamedImportReference(null, moduleName, importName));
-                    emulator.WriteRegister(X86.Registers.eax, uIntercept);
-                    emulator.WriteRegister(X86.Registers.esp, esp + 12);
-                }
-                else
-                {
-                    //$TODO: import by ordinal.
-                    throw new NotImplementedException();
-                }
-            }
-
-            void ExitProcess(X86Emulator emulator)
-            {
-                emulator.Stop();
-            }
-
-            void VirtualProtect(X86Emulator emulator)
-            {
-                uint esp = (uint)emulator.Registers[X86.Registers.esp.Number];
-                emulator.WriteRegister(X86.Registers.eax, 1u);
-                emulator.WriteRegister(X86.Registers.esp, esp + 20);
-            }
-
-            void MessageBoxA(X86Emulator emulator)
-            {
-                throw new NotImplementedException();
-            }
-
-            private string ReadMbString(LoadedImage img, TWord pstrLibName)
-            {
-                int iStart  = (int)(pstrLibName - img.BaseAddress.Linear);
-                int i = iStart;
-                for (i = iStart; img.Bytes[i] != 0; ++i)
-                {
-                }
-                return Encoding.ASCII.GetString(img.Bytes, iStart, i - iStart);
-            }
-
-            internal void CallImportedProcedure(X86Emulator emu, ImportReference impProc)
-            {
-                var proc = impProc.ResolveImportedProcedure(this, null, null);
-                var simProc = proc as SimulatedProc;
-                if (simProc == null)
-                    throw new NotImplementedException();
-                simProc.Emulator(emu);
-            }
-
-            ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, string importName, Platform platform)
-            {
-                Dictionary<string, Action<X86Emulator>> module;
-                if (!this.wellKnownFunctions.TryGetValue(moduleName, out module))
-                    return epDummy;
-                Action<X86Emulator> fn;
-                if (!module.TryGetValue(importName, out fn))
-                    return epDummy;
-                return new SimulatedProc(importName, fn);
-            }
-
-            ExternalProcedure IImportResolver.ResolveProcedure(string moduleName, int ordinal, Platform platform)
-            {
-                throw new NotImplementedException();
-            }
-
-            private TWord AddInterceptedCall(ImportReference importReference)
-            {
-                interceptedCalls[++this.uPseudoFn] = importReference;
-                return uPseudoFn;
-            }
-
-            internal bool InterceptCall(X86Emulator emu, TWord l)
-            {
-                ImportReference impProc;
-                if (!this.interceptedCalls.TryGetValue(l, out impProc))
-                    return false;
-                // Called an imported procedure. //$REVIEW: this should go into an "EnvironmentEmulator" 
-                // and a Win32Emulator would take of understanding what "loadLibraryA" does, for instance.
-                CallImportedProcedure(emu, impProc);
-                return true;
-            }
-        }
+   
     }
 }

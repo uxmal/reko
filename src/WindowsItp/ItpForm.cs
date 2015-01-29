@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core.Configuration;
+using Decompiler.Environments.Win32;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using Decompiler.ImageLoaders.MzExe;
@@ -202,7 +203,7 @@ namespace Decompiler.WindowsItp
             var addr = peLdr.PreferredBaseAddress;
             var lr = peLdr.Load(addr);
             var rr = peLdr.Relocate(addr);
-            var win32 = new X86Emulator.Win32Emulator(lr.Image, peLdr.ImportReferences);
+            var win32 = new Win32Emulator(lr.Image, peLdr.ImportReferences);
             var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };

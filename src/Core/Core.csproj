@@ -207,6 +207,8 @@
     <Compile Include="ImportReference.cs" />
     <Compile Include="ImportResolver.cs" />
     <Compile Include="AddressContext.cs" />
+    <Compile Include="IPlatformEmulator.cs" />
+    <Compile Include="IProcessorEmulator.cs" />
     <Compile Include="Lib\ObservableRangeCollection.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="MetadataLoader.cs" />

@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 namespace Decompiler.ImageLoaders.OdbgScript
 {
     using Decompiler.Arch.X86;
+    using Decompiler.Environments.Win32;
     using Decompiler.ImageLoaders.MzExe;
     using System.IO;
     using rulong = System.UInt64;
@@ -67,7 +68,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             this.ImageMap = lr.ImageMap;
             this.Architecture = (IntelArchitecture)lr.Architecture;
 
-            X86Emulator.Win32Emulator win32 = new X86Emulator.Win32Emulator(lr.Image, pe.ImportReferences);
+            Win32Emulator win32 = new Win32Emulator(lr.Image, pe.ImportReferences);
             // Initialize the emulator instruction pointer.
             X86State state = (X86State)lr.Architecture.CreateProcessorState();
             X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, win32);

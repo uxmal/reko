@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// This class is used to write bytes to arrays of bytes. It knows all about endian conventions.
+    /// </summary>
     public abstract class ImageWriter
     {
         public ImageWriter() : this(new byte[16])
