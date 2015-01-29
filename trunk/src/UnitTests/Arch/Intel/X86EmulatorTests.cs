@@ -21,6 +21,7 @@
 using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
+using Decompiler.Environments.Win32;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             coder(asm);
             var lr = asm.GetImage();
             this.image = lr.Image;
-            var win32 = new X86Emulator.Win32Emulator(image, importReferences);
+            var win32 = new Win32Emulator(image, importReferences);
             emu = new X86Emulator(arch, lr.Image, win32);
             emu.InstructionPointer = lr.Image.BaseAddress;
             emu.WriteRegister(Registers.esp, lr.Image.BaseAddress.Linear + 0x0FFC);
