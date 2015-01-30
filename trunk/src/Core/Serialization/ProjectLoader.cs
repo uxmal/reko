@@ -141,11 +141,13 @@ namespace Decompiler.Core.Serialization
 
         public MetadataFile VisitMetadataFile(MetadataFile_v2 sMetadata)
         {
+            var typeLib = loader.LoadMetadata(sMetadata.Filename);
+            
             return new MetadataFile
             {
                 Filename = sMetadata.Filename,
-                ModuleName = sMetadata.ModuleName,
-                TypeLibrary = loader.LoadMetadata(sMetadata.Filename)
+                ModuleName = typeLib.ModuleName,
+                TypeLibrary = typeLib
             };
         }
 

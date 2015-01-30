@@ -29,6 +29,7 @@ using System.Text;
 namespace Decompiler.Environments.Win32
 {
     /// <summary>
+    /// Reads Microsoft module definition (.def) files.
     /// http://msdn.microsoft.com/en-us/library/28d6s79h.aspx
     /// </summary>
     public class ModuleDefinitionLoader : MetadataLoader

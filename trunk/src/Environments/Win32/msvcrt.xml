@@ -207,4 +207,51 @@
       </arg>
     </signature>
   </procedure>
+  <procedure name="__p__fmode">
+    <signature>
+      <return>
+        <ptr><prim domain="SignedInt" size="4" /></ptr>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="__p__commode">
+    <signature>
+      <return>
+        <ptr>
+        <ptr><prim domain="SignedInt" size="4" /></ptr>
+          <reg>eax</reg>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="__getmainargs">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+        <reg>eax</reg>
+      </return>
+      <arg>
+        <ptr><prim domain="SignedInt" size="4" /></ptr>
+        <stack />
+      </arg>
+      <arg>
+        <ptr><ptr><ptr><prim domain="Character" size="1" /></ptr></ptr></ptr>
+        <stack />
+      </arg>
+      <arg>
+        <ptr><ptr><ptr><prim domain="Character" size="1" /></ptr></ptr></ptr>
+        <stack />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+        <stack />
+      </arg>
+      <arg>
+        <ptr><void /></ptr>
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+
 </library>
