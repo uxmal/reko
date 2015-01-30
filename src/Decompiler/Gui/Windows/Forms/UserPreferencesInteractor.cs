@@ -40,6 +40,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
             this.sc = new ServiceContainer();
             this.localSettings = new UiPreferencesService(null, null);
+            sc.AddService(typeof(IUiPreferencesService), localSettings);
 
             var row = Enumerable.Range(0, 0x100).Select(b => (byte)b).ToArray();
             var image = new LoadedImage(
@@ -63,8 +64,10 @@ namespace Decompiler.Gui.Windows.Forms
             dlg.MemoryControl.ProgramImage = program.Image;
             dlg.MemoryControl.ImageMap = program.ImageMap;
             dlg.MemoryControl.Architecture = program.Architecture;
+            dlg.MemoryControl.Font = localSettings.DisassemblerFont ?? new System.Drawing.Font("Lucida Console", 9.0f);
             dlg.DisassemblyControl.Model = null;/**/
-            dlg.CodeControl.Model = null; /*;*/        }
+            dlg.CodeControl.Model = null; /*;*/ 
+        }
 
         void ImagebarBgButton_Click(object sender, EventArgs e)
         {
@@ -98,7 +101,11 @@ namespace Decompiler.Gui.Windows.Forms
 
         void WindowFontButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            dlg.FontPicker.Font = dlg.MemoryControl.Font;
+            if (dlg.FontPicker.ShowDialog(dlg) == DialogResult.OK)
+            {
+                dlg.MemoryControl.Font = dlg.FontPicker.Font;
+            }
         }
 
         void WindowTree_AfterSelect(object sender, TreeViewEventArgs e)

@@ -25,6 +25,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             InitializeComponent();
             scrollTimer.Tick += scrollTimer_Tick;
+            xLastMouseUp = CxScroll;
         }
 
         public int Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(offset); OnGranularityChanged(); } }
@@ -176,6 +177,14 @@ namespace Decompiler.Gui.Windows.Controls
             offset = Math.Max(0, offset);
         }
 
+        private void Zoom(float factor)
+        {
+            var oldGranularity = Granularity;
+            var newGranularity = (int)Math.Ceiling(Granularity * factor);
+            offset = offset + (oldGranularity - newGranularity) * (xLastMouseUp - CxScroll);
+            Granularity = newGranularity;
+        }
+
         private void StartScrolling(ScrollButton button)
         {
             this.scrollTimer.Interval = 10; // msec
@@ -244,10 +253,12 @@ namespace Decompiler.Gui.Windows.Controls
             switch (e.KeyData)
             {
             case Keys.Add:
-                Granularity = (int) Math.Ceiling(Granularity *  ZoomInFactor); e.Handled = true;
+                Zoom(ZoomInFactor);
+                e.Handled = true;
                 break;
             case Keys.Subtract:
-                Granularity = (int)Math.Ceiling(Granularity * ZoomOutFactor); e.Handled = true;
+                Zoom(ZoomOutFactor);
+                e.Handled = true;
                 break;
             }
             base.OnKeyDown(e);
@@ -258,10 +269,12 @@ namespace Decompiler.Gui.Windows.Controls
             switch (e.KeyChar)
             {
             case '+':
-                Granularity = (int)Math.Ceiling(Granularity * ZoomInFactor); e.Handled = true;
+                Zoom(ZoomInFactor);
+                e.Handled = true;
                 break;
             case '-':
-                Granularity = (int)Math.Ceiling(Granularity * ZoomOutFactor); e.Handled = true;
+                Zoom(ZoomOutFactor);
+                e.Handled = true;
                 break;
             }
         }

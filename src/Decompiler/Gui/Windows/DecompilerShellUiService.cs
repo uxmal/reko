@@ -70,8 +70,10 @@ namespace Decompiler.Gui.Windows
 
         public IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane)
         {
-            Form mdiForm = new Form();
-            mdiForm.Text = windowTitle;
+            Form mdiForm = new Form {
+                Text = windowTitle,
+                Size = new System.Drawing.Size(800, 600)
+            };
             WindowFrame frame = new WindowFrame(this, windowType, mdiForm, pane);
             framesByName.Add(windowType, frame);
             framesByForm.Add(mdiForm, frame);

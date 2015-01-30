@@ -134,7 +134,9 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
