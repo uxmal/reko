@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,26 +14,20 @@ namespace Decompiler.Gui.Windows.Controls
 {
     public partial class ImageMapView : Control
     {
-        private const float ZoomOutFactor = 1.5F;
-        private const float ZoomInFactor = 2.0F / 3.0F;
+        private const float ZoomOutFactor = 1.25F;
+        private const float ZoomInFactor = 4.0F / 5.0F;
         private const int CySelection = 3;
         private const int CxScroll = 16;
         private const int CyScroll = 16;
+        private const int ScrollStep = 8;
 
         public ImageMapView()
         {
             InitializeComponent();
+            scrollTimer.Tick += scrollTimer_Tick;
         }
 
-        public int Granularity { 
-            get { return granularity; }
-            set
-            {
-                granularity = value;
-                BoundGranularity();
-                OnGranularityChanged();
-            }
-        }
+        public int Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(offset); OnGranularityChanged(); } }
         public event EventHandler GranularityChanged;
         private int granularity;
 
@@ -46,13 +41,20 @@ namespace Decompiler.Gui.Windows.Controls
         public event EventHandler ImageMapChanged;
         public ImageMap imageMap;
 
-        public int Offset { get { return offset; } set { offset = value; OnOffsetChanged(); } }
+        [Browsable(false)]
+        public Address SelectedAddress { get { return selectedAddress; } set { selectedAddress = value; SelectedAddressChanged.Fire(this); } }
+        public event EventHandler SelectedAddressChanged;
+        private Address selectedAddress;
+
+        public int Offset { get { return offset; } set { BoundOffset(value); OnOffsetChanged(); } }
         public event EventHandler OffsetChanged;
         private int offset;
 
-
         private Brush brMemory;
         private Brush brBack;
+
+        private ScrollButton scrollButton;      // If we're scrolling the scrollbuttons.
+        private int xLastMouseUp;
 
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -81,11 +83,22 @@ namespace Decompiler.Gui.Windows.Controls
 
         private void RenderScrollControls(Graphics g, Rectangle rcBody)
         {
+            var baseState = image != null && image.Bytes.Length > granularity * Width 
+                ? ButtonState.Flat
+                : ButtonState.Flat | ButtonState.Inactive;
             ControlPaint.DrawScrollButton(g,
-                0, (Height - CyScroll) / 2, CxScroll, CyScroll, ScrollButton.Left, ButtonState.Normal | ButtonState.Flat); 
+                0, (Height - CyScroll) / 2, 
+                CxScroll, 
+                CyScroll, 
+                ScrollButton.Left,
+                (scrollButton == ScrollButton.Left ? ButtonState.Pushed : ButtonState.Normal) | baseState); 
             ControlPaint.DrawScrollButton(g,
-              Width - CxScroll, (Height - CyScroll) / 2, CxScroll, CyScroll, ScrollButton.Right, ButtonState.Normal | ButtonState.Flat);
-                 
+                Width - CxScroll,
+                (Height - CyScroll) / 2, 
+                CxScroll, 
+                CyScroll,
+                ScrollButton.Right, 
+                (scrollButton == ScrollButton.Left ? ButtonState.Pushed : ButtonState.Normal) | baseState);
         }
 
         private void RenderRightcontrol(Graphics g, Rectangle rcBody)
@@ -115,16 +128,16 @@ namespace Decompiler.Gui.Windows.Controls
                 rcPaint.Width = rcBody.Right - rcPaint.X;
                 g.FillRectangle(brNew, rcPaint);
             }
-            g.DrawRectangle(Pens.Red, rcBody);
+            //g.DrawRectangle(Pens.Red, rcBody);
         }
 
         private Brush GetColorForOffset(int cbOffset)
         {
             ImageMapItem item;
-
-            if (imageMap == null ||
-                image == null ||
-                !imageMap.TryFindItem(image.BaseAddress + cbOffset, out item))
+            if (imageMap == null ||image == null)
+                return brBack;
+            var address = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint) cbOffset);
+            if (!imageMap.TryFindItem(address, out item))
                 return brBack;
             if (item.DataType is UnknownType)
                 return brBack;
@@ -140,10 +153,9 @@ namespace Decompiler.Gui.Windows.Controls
             return rc;
         }
 
-
-        private void BoundGranularity()
+        private void BoundGranularity(int value)
         {
-            granularity = Math.Max(1, granularity);
+            granularity = Math.Max(1, value);
             if (image != null)
             {
                 granularity = Math.Min(
@@ -151,29 +163,112 @@ namespace Decompiler.Gui.Windows.Controls
                     (int)Math.Ceiling((double)image.Bytes.Length / (double)Width));
             }
         }
-        protected override void OnMouseClick(MouseEventArgs e)
+
+        private void BoundOffset(int value)
+        {
+            offset = value;
+            if (image != null)
+            {
+                offset = Math.Min(
+                    offset,
+                    image.Bytes.Length - Width * granularity);
+            }
+            offset = Math.Max(0, offset);
+        }
+
+        private void StartScrolling(ScrollButton button)
+        {
+            this.scrollTimer.Interval = 10; // msec
+            this.scrollTimer.Start();
+            this.scrollButton = button;
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
         {
             Focus();
+            if (!Capture)
+                Capture = true;
+            if (0 <= e.X && e.X < CxScroll)
+            {
+                Offset -= ScrollStep * Granularity;
+                StartScrolling(ScrollButton.Left);
+            }
+            else if (Width - CxScroll <= e.X && e.X < Width)
+            {
+                Offset += ScrollStep *Granularity;
+                StartScrolling(ScrollButton.Right);
+            }
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
             base.OnMouseClick(e);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            scrollTimer.Stop();
+            if (Capture)
+                Capture = false;
+            xLastMouseUp = e.X;
+            SelectedAddress = MapClientPositionToAddress(e.X);
+            base.OnMouseUp(e);
+        }
+
+        private Address MapClientPositionToAddress(int x)
+        {
+            if (image == null || imageMap == null)
+                return null;
+            return  imageMap.MapLinearAddressToAddress( image.BaseAddress.Linear + (uint)(x * granularity + offset));
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            Debug.Print("KeyDown: {0}", e.KeyData);
             switch (e.KeyData)
             {
             case Keys.Add:
-                Granularity = (int) Math.Ceiling(Granularity *  ZoomInFactor);
+                Granularity = (int) Math.Ceiling(Granularity *  ZoomInFactor); e.Handled = true;
                 break;
             case Keys.Subtract:
-                Granularity = (int) Math.Ceiling(Granularity * ZoomOutFactor);
+                Granularity = (int)Math.Ceiling(Granularity * ZoomOutFactor); e.Handled = true;
                 break;
             }
             base.OnKeyDown(e);
         }
 
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            switch (e.KeyChar)
+            {
+            case '+':
+                Granularity = (int)Math.Ceiling(Granularity * ZoomInFactor); e.Handled = true;
+                break;
+            case '-':
+                Granularity = (int)Math.Ceiling(Granularity * ZoomOutFactor); e.Handled = true;
+                break;
+            }
+        }
+
         protected override void OnSizeChanged(EventArgs e)
         {
-            BoundGranularity();
+            BoundGranularity(granularity);
             Invalidate();
             base.OnSizeChanged(e);
         }
@@ -212,6 +307,15 @@ namespace Decompiler.Gui.Windows.Controls
         {
             Invalidate();
             OffsetChanged.Fire(this);
+        }
+
+        void scrollTimer_Tick(object sender, EventArgs e)
+        {
+            switch (scrollButton)
+            { 
+            case ScrollButton.Left: Offset -=  ScrollStep * Granularity; break;
+            case ScrollButton.Right: Offset += ScrollStep * Granularity; break;
+            }
         }
     }
 }
