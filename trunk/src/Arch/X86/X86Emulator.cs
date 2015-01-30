@@ -80,18 +80,23 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        /// <summary>
+        /// Requests the emulator to place itself in step-over mode. This means
+        /// it should execute the next instruction then call the provided 
+        /// <paramref name="callback" />. If the instruction
+        /// is a CALL or a REP[NZ] the call will be taken and the REP will be 
+        /// carried out before resuming.
+        /// </summary>
         public void StepOver(Action callback)
         {
             stepOverAddress = (TWord)(dasm.Current.Address.Linear + dasm.Current.Length);
             stepAction = callback;
-            Run();
         }
 
         public void StepInto(Action callback)
         {
             stepInto = true;
             stepAction = callback;
-            Run();
         }
 
         public void Start()

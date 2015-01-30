@@ -89,9 +89,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
         }
 
-        public virtual bool TE_ReadMemory(ulong addr, ulong memlen, byte[] membuf)
+        public virtual bool TryReadBytes(ulong addr, ulong memlen, byte[] membuf)
         {
-            throw new NotImplementedException();
+            return Image.TryReadBytes((uint)(addr - Image.BaseAddress.Linear), (int)memlen, membuf);
         }
 
         public virtual object TE_GetProcessHandle()
@@ -224,16 +224,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual bool TE_ReadMemory(ulong src, int p, ulong value)
+        public virtual void SetOriginalEntryPoint(ulong ep)
         {
-            throw new NotImplementedException();
+            loader.OriginalEntryPoint = Address.Ptr32((uint)ep);
         }
-
-        public virtual bool TE_ReadMemory(ulong src, out ulong value)
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

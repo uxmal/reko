@@ -229,6 +229,39 @@ namespace Decompiler.Core
             return u;
         }
 
+        public static bool TryReadLeInt32(byte [] abImage, uint off, out int value)
+        {
+            if (off <= abImage.Length - 4)
+            {
+                value = abImage[off] |
+                   ((int)abImage[off + 1] << 8) |
+                   ((int)abImage[off + 2] << 16) |
+                   ((int)abImage[off + 3] << 24);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
+
+        public static bool TryReadLeUInt32(byte[] abImage, uint off, out uint value)
+        {
+            if (off <= abImage.Length - 4)
+            {
+                value = abImage[off] |
+                   ((uint)abImage[off + 1] << 8) |
+                   ((uint)abImage[off + 2] << 16) |
+                   ((uint)abImage[off + 3] << 24);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
         public static int ReadLeInt32(byte[] abImage, uint off)
         {
             int u = abImage[off] |
@@ -272,6 +305,8 @@ namespace Decompiler.Core
         {
             return (uint)ReadBeInt32(abImage, off);
         }
+
+        public bool TryReadLeUInt32(Address address, out uint dw) { return TryReadLeUInt32(abImage, ToOffset(address), out dw); }
 
         public static uint ReadLeUInt32(byte[] img, uint off)
         {
@@ -377,6 +412,5 @@ namespace Decompiler.Core
         public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
         public void WriteLeUInt32(Address addr, uint dw) { WriteLeUInt32(ToOffset(addr), dw); }
 
- 
     }
 }

@@ -1125,6 +1125,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 script_pos_next = script_pos + 1;
 
                 // Log line of code if  enabled
+                Debug.Print(line.line);
                 if (script.log)
                 {
                     string logstr = "-. " + line.line;
@@ -1556,7 +1557,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             rulong dw;
             value = null;
 
-            if (is_variable(op))
+            if (IsVariable(op))
             {
                 Var  v = variables[op];
                 if (v.type == Var.etype.STR)
@@ -1619,7 +1620,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         bool GetString(string op, out string value, int size = 0)
         {
             value = "";
-            if (is_variable(op))
+            if (IsVariable(op))
             {
                 if (variables[op].type == Var.etype.STR)
                 {
@@ -1676,7 +1677,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                             buffer = new byte[size];
 
-                        if (Host.TE_ReadMemory(src, (uint)size, buffer))
+                        if (Host.TryReadBytes(src, (uint)size, buffer))
                         {
                             value = '#' + Helper.bytes2hexstr(buffer, size) + '#';
                             return true;
@@ -1712,7 +1713,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     else
                     {
                         byte[] buffer = new byte[STRING_READSIZE];
-                        if (Host.TE_ReadMemory(src, (rulong)buffer.Length, buffer))
+                        if (Host.Image.TryReadBytes((uint)(src - Host.Image.BaseAddress.Linear), buffer.Length, buffer))
                         {
                             buffer[buffer.Length - 1] = 0;
                             value = Encoding.UTF8.GetString(buffer);
@@ -1732,7 +1733,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         /*
         bool GetStringLiteral(string  op, string &value)
         {
-            if(is_variable(op))
+            if(IsVariable(op))
             {
                 const var& v = variables[op];
                 if(v.type == var::STR && !v.isbuf)
@@ -1756,7 +1757,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool GetBytestring(string  op, string &value, int size)
         {
-            if(is_variable(op))
+            if(IsVariable(op))
             {
                 const var& v = variables[op];
                 if(v.type == var::STR && v.isbuf)
@@ -1859,7 +1860,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 return true;
             }
-            else if (is_variable(op))
+            else if (IsVariable(op))
             {
                 if (variables[op].type == Var.etype.DW)
                 {
@@ -1890,7 +1891,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 if (GetRulong(tmp, out src))
                 {
                     Debug.Assert(src != 0);
-                    return Host.TE_ReadMemory(src, out value);
+                    uint dw;
+                    bool ret = Host.Image.TryReadLeUInt32(Address.Ptr32((uint)src), out dw);
+                    value = dw;
+                    return ret;
                 }
             }
             else
@@ -1933,7 +1937,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 throw new NotImplementedException();
 #endif
             }
-            else if (is_variable(op))
+            else if (IsVariable(op))
             {
                 if (variables[op].type == Var.etype.FLT)
                 {
@@ -2026,7 +2030,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool SetFloat(string op, double value)
         {
-            if (is_variable(op))
+            if (IsVariable(op))
             {
                 variables[op] = new Var(value);
                 return true;
@@ -2066,7 +2070,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool SetString(string op, string value, int size = 0)
         {
-            if (is_variable(op))
+            if (IsVariable(op))
             {
                 variables[op] = new Var(value);
                 if (size!=0 && size < variables[op].size)
@@ -2131,7 +2135,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return e_flags.Any(x => StringComparer.InvariantCultureIgnoreCase.Compare(x, s) == 0);
         }
 
-        bool is_variable(string s)
+        bool IsVariable(string s)
         {
             return (variables.ContainsKey(s));
         }
@@ -2148,7 +2152,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool is_writable(string s)
         {
-            return (is_variable(s) || Helper.is_memory(s) || is_register(s) || is_flag(s) || is_floatreg(s));
+            return (IsVariable(s) || Helper.is_memory(s) || is_register(s) || is_flag(s) || is_floatreg(s));
         }
 
         string ResolveVarsForExec(string @in, bool hex8forExec)
