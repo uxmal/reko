@@ -44,7 +44,7 @@
             this.lowLeveImages = new System.Windows.Forms.ImageList(this.components);
             this.memCtrl = new Decompiler.Gui.Windows.Controls.MemoryControl();
             this.dasmCtrl = new Decompiler.Gui.Windows.Controls.DisassemblyControl();
-            this.imageMapControl1 = new Decompiler.Gui.Windows.Controls.ImageMapControl();
+            this.imageMapControl1 = new Decompiler.Gui.Windows.Controls.ImageMapView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -202,7 +202,6 @@
             this.imageMapControl1.ImageMap = null;
             this.imageMapControl1.Location = new System.Drawing.Point(0, 0);
             this.imageMapControl1.Name = "imageMapControl1";
-            this.imageMapControl1.SelectedSegment = null;
             this.imageMapControl1.Size = new System.Drawing.Size(858, 23);
             this.imageMapControl1.TabIndex = 4;
             this.imageMapControl1.Text = "imageMapControl1";
@@ -242,6 +241,6 @@
         private System.Windows.Forms.ToolStripTextBox txtAddress;
         private System.Windows.Forms.ImageList lowLeveImages;
         private System.Windows.Forms.ToolStripButton btnGo;
-        private ImageMapControl imageMapControl1;
+        private ImageMapView imageMapControl1;
     }
 }

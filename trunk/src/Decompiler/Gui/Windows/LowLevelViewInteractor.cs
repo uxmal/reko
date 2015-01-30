@@ -62,7 +62,9 @@ namespace Decompiler.Gui.Windows
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
                     control.DisassemblyView.Model = new DisassemblyTextModel(value);
+                    control.ImageMapView.Image = value.Image;
                     control.ImageMapView.ImageMap = value.ImageMap;
+                    control.ImageMapView.Granularity = value.Image.Bytes.Length;
                 }
             }
         }
@@ -83,6 +85,8 @@ namespace Decompiler.Gui.Windows
             this.control = new LowLevelView();
             this.Control.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F);
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
+
+            this.Control.ImageMapView.SelectedAddressChanged += ImageMapView_SelectedAddressChanged;
 
             this.Control.MemoryView.SelectionChanged += MemoryView_SelectionChanged;
             this.Control.MemoryView.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
@@ -424,12 +428,25 @@ namespace Decompiler.Gui.Windows
             return sb.ToString();
         }
 
+        void ImageMapView_SelectedAddressChanged(object sender, EventArgs e)
+        {
+            if (ignoreAddressChange)
+                return;
+            var addr = Control.ImageMapView.SelectedAddress; 
+            this.ignoreAddressChange = true;
+            this.Control.MemoryView.SelectedAddress = addr;
+            this.Control.MemoryView.TopAddress = addr;
+            this.Control.DisassemblyView.SelectedObject = addr;
+            this.control.DisassemblyView.TopAddress = addr;
+            this.SelectionChanged.Fire(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
+            this.ignoreAddressChange = false;
+        }
+
         private void MemoryView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ignoreAddressChange)
                 return;
             this.ignoreAddressChange = true;
-            Debug.Print("Setting disassembly view to {0}", e.AddressRange.Begin);
             this.Control.DisassemblyView.SelectedObject = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
             this.SelectionChanged.Fire(this, e);
