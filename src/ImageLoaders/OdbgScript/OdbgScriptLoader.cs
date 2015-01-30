@@ -57,6 +57,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public ImageMap ImageMap { get; set; }
         public IntelArchitecture Architecture { get; set; }
 
+        /// <summary>
+        /// Original entry point to the executable, before it was packed.
+        /// </summary>
+        public Address OriginalEntryPoint { get; set; }
+
         public override LoaderResults Load(Address addrLoad)
         {
             // First load the file as a PE Executable. This gives us a (writeable) image and 
@@ -84,7 +89,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             emu.Start();
 
-            //$TODO: somehow collect the entry point from the script.
             lr.InterceptedCalls = win32.InterceptedCalls
                 .Select(ic => new KeyValuePair<Address, ExternalProcedure>(
                     new Address(ic.Key), ic.Value))
@@ -94,7 +98,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public override RelocationResults Relocate(Address addrLoad)
         {
-            return new RelocationResults (new List<EntryPoint>(), new RelocationDictionary());
+            var eps = new List<EntryPoint>();
+            if (OriginalEntryPoint != null)
+                eps.Add(new EntryPoint(OriginalEntryPoint, Architecture.CreateProcessorState()));
+            return new RelocationResults(eps, new RelocationDictionary());
         }
 
         public virtual PeImageLoader CreatePeImageLoader()
@@ -234,5 +241,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
             return false;
         }
+
     }
 }

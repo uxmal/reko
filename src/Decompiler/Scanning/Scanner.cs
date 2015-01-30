@@ -572,6 +572,13 @@ namespace Decompiler.Scanning
             return null;
         }
         
+        /// <summary>
+        /// This method is used to detect if a trampoline (call [foo] where foo: jmp bar)
+        /// is jumping into the body of a procedure that was loaded with GetProcAddress or 
+        /// the like.
+        /// </summary>
+        /// <param name="addrImportThunk"></param>
+        /// <returns></returns>
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
             var rdr= program.Architecture.CreateImageReader(image, addrImportThunk);
