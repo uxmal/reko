@@ -62,6 +62,7 @@ namespace Decompiler.Gui.Windows
                     control.MemoryView.ImageMap = value.ImageMap;
                     control.MemoryView.Architecture = value.Architecture;
                     control.DisassemblyView.Model = new DisassemblyTextModel(value);
+                    control.ImageMapView.ImageMap = value.ImageMap;
                 }
             }
         }

@@ -28,6 +28,7 @@ using System.Text;
 namespace Decompiler.Environments.Win32
 {
     using Decompiler.Core.Serialization;        // May need this for Win64 support.
+    using System.Diagnostics;
     using TWord = System.UInt32;
 
     /// <summary>
@@ -162,6 +163,12 @@ namespace Decompiler.Environments.Win32
         void VirtualProtect(IProcessorEmulator emulator)
         {
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
+            uint arg1 = img.ReadLeUInt32(esp + 4u - img.BaseAddress.Linear);
+            uint arg2 = img.ReadLeUInt32(esp + 8u - img.BaseAddress.Linear);
+            uint arg3 = img.ReadLeUInt32(esp + 12u - img.BaseAddress.Linear);
+            uint arg4 = img.ReadLeUInt32(esp + 16u - img.BaseAddress.Linear);
+            Debug.Print("VirtualProtect({0:X8},{1:X8},{2:X8},{3:X8}", arg1, arg2, arg3, arg4);
+
             emulator.WriteRegister(Registers.eax, 1u);
             emulator.WriteRegister(Registers.esp, esp + 20);
         }

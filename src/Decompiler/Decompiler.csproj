@@ -276,6 +276,12 @@
       <DependentUpon>CodeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Controls\DisassemblyTextModel.cs" />
+    <Compile Include="Gui\Windows\Controls\ImageMapView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageMapView.Designer.cs">
+      <DependentUpon>ImageMapView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Windows\Controls\MenuStatusSetter.cs" />
     <Compile Include="Gui\Windows\Controls\TextBuffer.cs" />
     <Compile Include="Gui\Windows\Controls\TextViewModel.cs" />
