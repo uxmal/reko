@@ -65,7 +65,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public override LoaderResults Load(Address addrLoad)
         {
             // First load the file as a PE Executable. This gives us a (writeable) image and 
-            // the OEP.
+            // the packed entry point.
             PeImageLoader pe = CreatePeImageLoader();
             LoaderResults lr = pe.Load(pe.PreferredBaseAddress);
             RelocationResults rr = pe.Relocate(pe.PreferredBaseAddress);
@@ -80,7 +80,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             ollylang = new OllyLang(new Host(this), Debugger);
 
             emu.InstructionPointer = rr.EntryPoints[0].Address;
-            emu.Registers[Registers.esp.Number] = Image.BaseAddress.Linear + 0x1000 - 4u;
+            emu.WriteRegister(Registers.esp, Image.BaseAddress.Linear + 0x1000 - 4u);
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 

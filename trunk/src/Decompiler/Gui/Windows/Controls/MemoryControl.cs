@@ -361,7 +361,6 @@ namespace Decompiler.Gui.Windows.Controls
 			base.OnSizeChanged(e);
 			UpdateScroll();
 		}
-		
 
 		[Browsable(false)]
 		public LoadedImage ProgramImage
@@ -539,6 +538,8 @@ namespace Decompiler.Gui.Windows.Controls
                 defaultTheme = new BrushTheme { Background = SystemBrushes.Window, Foreground = SystemBrushes.ControlText };
                 selectTheme = new BrushTheme { Background = SystemBrushes.Highlight, Foreground = SystemBrushes.HighlightText };
 
+                if (ctrl.arch == null || ctrl.imageMap == null)
+                    return null;
                 // Enumerate all segments visible on screen.
 
                 uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
