@@ -439,6 +439,7 @@ namespace Decompiler.Gui.Windows
             this.Control.DisassemblyView.SelectedObject = addr;
             this.control.DisassemblyView.TopAddress = addr;
             this.SelectionChanged.Fire(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
+            UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
             this.ignoreAddressChange = false;
         }
 

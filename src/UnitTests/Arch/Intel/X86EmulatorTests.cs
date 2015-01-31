@@ -23,6 +23,7 @@ using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Environments.Win32;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +34,17 @@ namespace Decompiler.UnitTests.Arch.Intel
     [TestFixture]
     class X86EmulatorTests
     {
+        private MockRepository mr;
         private IntelArchitecture arch;
         private X86Emulator emu;
         private LoadedImage image;
         private Dictionary<Address, ImportReference> importReferences;
+        private Platform platform;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             importReferences = new Dictionary<Address, ImportReference>();
         }
@@ -56,11 +60,22 @@ namespace Decompiler.UnitTests.Arch.Intel
             coder(asm);
             var lr = asm.GetImage();
             this.image = lr.Image;
-            var win32 = new Win32Emulator(image, new Win32Platform(null, arch), importReferences);
+
+            Given_Platform();
+
+            var win32 = new Win32Emulator(image, platform, importReferences);
+            
             emu = new X86Emulator(arch, lr.Image, win32);
             emu.InstructionPointer = lr.Image.BaseAddress;
             emu.WriteRegister(Registers.esp, lr.Image.BaseAddress.Linear + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };
+        }
+
+        private void Given_Platform()
+        {
+            platform = mr.PartialMock<Platform>(null, arch);
+            platform.Stub(p => p.LookupProcedureByName("", "")).IgnoreArguments().Return(null);
+            platform.Replay();
         }
 
         [Test]
