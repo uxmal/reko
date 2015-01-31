@@ -260,6 +260,8 @@ namespace Decompiler.UnitTests.Core.Serialization
                 }
             };
             var loader = mr.Stub<ILoader>();
+            var typelib = new TypeLibrary();
+            loader.Stub(l => l.LoadMetadata("")).IgnoreArguments().Return(typelib);
             mr.ReplayAll();
 
             var ploader = new ProjectLoader(loader);

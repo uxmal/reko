@@ -244,7 +244,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             if (image == null || imageMap == null)
                 return null;
-            return  imageMap.MapLinearAddressToAddress( image.BaseAddress.Linear + (uint)(x * granularity + offset));
+            return  imageMap.MapLinearAddressToAddress( image.BaseAddress.Linear + (uint)((x - CxScroll) * granularity + offset));
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
