@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Loading
           
             var le = mr.Stub<LoaderElement>();
             le.Label = "LoaderKey";
-            le.TypeName = "Decompiler.UnitTests.Loading.TestImageLoader,Decompiler.UnitTests";
+            le.TypeName = typeof(TestImageLoader).AssemblyQualifiedName;
             cfgSvc.Stub(c => c.GetImageLoaders()).Return(new List<LoaderElement> { le });
             sc.AddService(typeof(IDecompilerConfigurationService), cfgSvc);
             mr.ReplayAll();
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Loading
             get { throw new NotImplementedException(); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             throw new NotImplementedException();
         }

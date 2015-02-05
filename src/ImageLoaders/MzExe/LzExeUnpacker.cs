@@ -186,11 +186,10 @@ namespace Decompiler.ImageLoaders.MzExe
 			return imageMap;
 		}
 
-
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
 		{
 			Unpack(RawImage, addrLoad);
-            return new LoaderResults(imgLoaded, imageMap, arch, platform);
+            return new Program(imgLoaded, imageMap, arch, platform);
 		}
 
 		public override Address PreferredBaseAddress

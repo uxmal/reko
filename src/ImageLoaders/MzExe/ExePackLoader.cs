@@ -92,7 +92,7 @@ namespace Decompiler.ImageLoaders.MzExe
             return (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
         }
 
-        public override LoaderResults Load(Address addr)
+        public override Program Load(Address addr)
         {
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
@@ -133,7 +133,7 @@ namespace Decompiler.ImageLoaders.MzExe
                 }
             } while ((op & 1) == 0);
             imageMap = imgU.CreateImageMap();
-            return new LoaderResults(imgU, imageMap, new X86ArchitectureReal(), platform);
+            return new Program(imgU, imageMap, new X86ArchitectureReal(), platform);
         }
 
         public override Address PreferredBaseAddress

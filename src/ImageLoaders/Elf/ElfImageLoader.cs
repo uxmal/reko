@@ -93,7 +93,7 @@ namespace Decompiler.ImageLoaders.Elf
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public override Address PreferredBaseAddress { get { return addrPreferred; } }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             LoadElfIdentification();
             LoadHeader();
@@ -116,7 +116,7 @@ namespace Decompiler.ImageLoaders.Elf
             this.fileVersion = rdr.ReadByte();
         }
 
-        private LoaderResults LoadImageBytes(Address addrPreferred, Address addrMax)
+        private Program LoadImageBytes(Address addrPreferred, Address addrMax)
         {
             var bytes = new byte[addrMax - addrPreferred];
             var v_base = addrPreferred.Linear;
@@ -133,7 +133,7 @@ namespace Decompiler.ImageLoaders.Elf
                     continue;
                 imageMap.AddSegment(new Address(segment.sh_addr), GetStringTableEntry(segment.sh_name), AccessMode.Read);
             }
-            return new LoaderResults(
+            return new Program(
                 this.image,
                 this.imageMap,
                 this.arch,

@@ -37,6 +37,8 @@ namespace Decompiler.Core
             this.RawImage = imgRaw;
         }
 
+        public IServiceProvider Services { get; private set; }
+
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.
         /// </summary>
@@ -52,25 +54,23 @@ namespace Decompiler.Core
         /// </summary>
         public byte[] RawImage { get; private set; }
 
-        public IServiceProvider Services { get; private set; }
-
         /// <summary>
         /// The name of the file the image was loaded from.
         /// </summary>
         public string Filename { get; private set; }
 
-
         /// <summary>
         /// Loads the header of the executable, so that its contents can be summarized. 
         /// </summary>
         /// <returns></returns>
-        public ImageHeader LoadHeader() { throw new NotImplementedException();  }
+        public ImageHeader LoadHeader(string argument) { throw new NotImplementedException();  }
+
         /// <summary>
 		/// Loads the image into memory starting at the specified address
 		/// </summary>
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
-        public abstract LoaderResults Load(Address addrLoad);
+        public abstract Program Load(Address addrLoad);
 
         /// <summary>
         /// Performs fix-ups of the loaded image, adding findings to the supplied collections.

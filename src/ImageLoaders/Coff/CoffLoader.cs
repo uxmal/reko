@@ -42,7 +42,7 @@ namespace Decompiler.ImageLoaders.Coff
             get { throw new NotImplementedException(); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             throw new NotImplementedException();
         }

@@ -91,13 +91,13 @@ namespace Decompiler.Assemblers.x86
             get { return importReferences; }
         }
 
-        public LoaderResults GetImage()
+        public Program GetImage()
         {
             var stm = new MemoryStream();
             LoadSegments(stm);
             var image = new LoadedImage(addrBase, stm.ToArray());
             RelocateSegmentReferences(image);
-            return new LoaderResults(image, image.CreateImageMap(), arch, platform);
+            return new Program(image, image.CreateImageMap(), arch, platform);
         }
 
         private void LoadSegments(MemoryStream stm)

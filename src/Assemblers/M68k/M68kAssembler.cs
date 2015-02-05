@@ -76,10 +76,10 @@ namespace Decompiler.Assemblers.M68k
         public RegisterOperand a6 { get { return new RegisterOperand(Registers.a6); } }
         public RegisterOperand a7 { get { return new RegisterOperand(Registers.a7); } }
 
-        public LoaderResults GetImage()
+        public Program GetImage()
         {
             var image = new LoadedImage(BaseAddress, Emitter.GetBytes());
-            return new LoaderResults(
+            return new Program(
                 image,
                 image.CreateImageMap(),
                 arch, 

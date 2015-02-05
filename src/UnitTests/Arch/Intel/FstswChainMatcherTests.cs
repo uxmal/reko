@@ -121,7 +121,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private FstswChainMatcher GetMatcher()
         {
-            LoaderResults lr = asm.GetImage();
+            Program lr = asm.GetImage();
             X86Disassembler dasm = new X86Disassembler(
                 lr.Image.CreateLeReader(0),
                 PrimitiveType.Word32,

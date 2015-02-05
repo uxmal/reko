@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Loading
 	{
         private MockRepository mr;
         private IServiceContainer sc;
-        FakeDecompilerEventListener eventListener;
+        private FakeDecompilerEventListener eventListener;
         private IDecompilerConfigurationService dcSvc;
         private List<SignatureFileElement> signatureFiles;
 
@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Loading
                 get { throw new NotImplementedException(); }
             }
 
-            public override LoaderResults Load(Address addrLoad)
+            public override Program Load(Address addrLoad)
             {
                 throw new NotImplementedException();
             }

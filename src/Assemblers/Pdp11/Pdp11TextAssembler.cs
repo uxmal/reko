@@ -42,7 +42,7 @@ namespace Decompiler.Assemblers.Pdp11
             this.emitter = emitter;
         }
 
-        public LoaderResults Assemble(Address addrBase, TextReader reader)
+        public Program Assemble(Address addrBase, TextReader reader)
         {
             arch = new Pdp11Architecture();
             Assembler = new Pdp11Assembler(arch, addrBase, emitter);
@@ -61,7 +61,7 @@ namespace Decompiler.Assemblers.Pdp11
         }
 
  
-        public LoaderResults AssembleFragment(Address baseAddress, string fragment)
+        public Program AssembleFragment(Address baseAddress, string fragment)
         {
             return Assemble(baseAddress, new StringReader(fragment));
         }

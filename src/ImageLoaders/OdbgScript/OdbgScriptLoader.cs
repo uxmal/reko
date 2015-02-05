@@ -37,8 +37,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
     /// ImageLoader that uses OdbgScript to assist in the unpacking of 
     /// compressed or obfuscated binaries.
     /// </summary>
-    /// <remarks>Uses the optional Argument property from the app.config file to specify the
-    /// script file to use.</remarks>
+    /// <remarks>Uses the optional Argument property from the app.config
+    /// file to specify the script file to use.</remarks>
     public class OdbgScriptLoader : ImageLoader
     {
         private Debugger Debugger;
@@ -62,20 +62,20 @@ namespace Decompiler.ImageLoaders.OdbgScript
         /// </summary>
         public Address OriginalEntryPoint { get; set; }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             // First load the file as a PE Executable. This gives us a (writeable) image and 
             // the packed entry point.
             PeImageLoader pe = CreatePeImageLoader();
-            LoaderResults lr = pe.Load(pe.PreferredBaseAddress);
+            Program program = pe.Load(pe.PreferredBaseAddress);
             RelocationResults rr = pe.Relocate(pe.PreferredBaseAddress);
-            this.Image = lr.Image;
-            this.ImageMap = lr.ImageMap;
-            this.Architecture = (IntelArchitecture)lr.Architecture;
+            this.Image = program.Image;
+            this.ImageMap = program.ImageMap;
+            this.Architecture = (IntelArchitecture)program.Architecture;
 
-            Win32Emulator win32 = new Win32Emulator(lr.Image, lr.Platform, lr.ImportReferences);
-            X86State state = (X86State)lr.Architecture.CreateProcessorState();
-            X86Emulator emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, win32);
+            Win32Emulator win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
+            X86State state = (X86State)program.Architecture.CreateProcessorState();
+            X86Emulator emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
             Debugger = new Debugger(emu);
             ollylang = new OllyLang(new Host(this), Debugger);
 
@@ -89,11 +89,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             emu.Start();
 
-            lr.InterceptedCalls = win32.InterceptedCalls
-                .Select(ic => new KeyValuePair<Address, ExternalProcedure>(
-                    new Address(ic.Key), ic.Value))
-                .ToDictionary(kv => kv.Key, kv => kv.Value);
-            return lr;
+            foreach (var ic in win32.InterceptedCalls)
+            {
+                program.InterceptedCalls.Add(new Address(ic.Key), ic.Value);
+            }
+            return program;
         }
 
         public override RelocationResults Relocate(Address addrLoad)

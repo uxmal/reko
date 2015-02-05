@@ -132,17 +132,17 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
 		{
 			if (sections > 0)
 			{
 				LoadSections(addrLoad, sectionOffset, sections);
 			}
 			imgLoaded.BaseAddress = addrLoad;
-            return new LoaderResults(imgLoaded, imageMap, arch, platform)
-            {
-                ImportReferences = this.importReferences,
-            };
+            var ldr = new Program(imgLoaded, imageMap, arch, platform);
+            foreach (var de in importReferences)
+                ldr.ImportReferences.Add(de.Key, de.Value);
+            return ldr;
 		}
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)

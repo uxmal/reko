@@ -13,7 +13,7 @@ namespace Decompiler.UnitTests
     {
         private Address addrStart;
         private MemoryStream memStm;
-        private LoaderResults results;
+        private Program results;
 
         public DchexLoader(string filename, IServiceProvider services, byte[] imgRaw) :
             base(services, filename, imgRaw)
@@ -29,7 +29,7 @@ namespace Decompiler.UnitTests
             get { throw new NotImplementedException(); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             return results;
         }
@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests
                 ProcessLine(line);
             }
             var img = new LoadedImage(addrStart, memStm.ToArray());
-            results = new LoaderResults(
+            results = new Program(
                 img,
                 img.CreateImageMap(),
                 arch,

@@ -38,10 +38,10 @@ namespace Decompiler.Loading
             this.imageBytes = image;
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             var image = new LoadedImage(addrLoad, imageBytes);
-            return new LoaderResults(
+            return new Program(
                 image,
                 image.CreateImageMap(),
                 null,

@@ -18,7 +18,7 @@ namespace Decompiler.UnitTests.Arch.Intel
     {
         private X86ArchitectureFlat32 arch;
         private IntelAssembler asm;
-        private LoaderResults asmResult;
+        private Program asmResult;
         private Address loadAddress = new Address(0x0010000);
         private FakeRewriterHost host;
 

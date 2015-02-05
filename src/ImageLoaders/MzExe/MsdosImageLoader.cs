@@ -49,7 +49,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			get { return new Address(0x0800, 0); }
 		}
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             int iImageStart = (exe.e_cparHeader * 0x10);
             int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
@@ -58,7 +58,7 @@ namespace Decompiler.ImageLoaders.MzExe
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new LoadedImage(addrLoad, bytes);
             imgLoadedMap = imgLoaded.CreateImageMap();
-            return new LoaderResults(imgLoaded, imgLoadedMap, arch, platform);
+            return new Program(imgLoaded, imgLoadedMap, arch, platform);
         }
 
 		public override RelocationResults Relocate(Address addrLoad)

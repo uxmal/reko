@@ -53,7 +53,7 @@ namespace Decompiler.ImageLoaders.Hunk
             get { return new Address(0x1000); }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             arch = new M68kArchitecture();
             var imgReader = new BeImageReader(RawImage, 0);
@@ -63,7 +63,7 @@ namespace Decompiler.ImageLoaders.Hunk
             this.firstCodeHunk = parse.FindFirstCodeHunk();
             var image = new LoadedImage(addrLoad, RelocateBytes(addrLoad));
 
-            return new LoaderResults(
+            return new Program(
                 image,
                 image.CreateImageMap(),
                 arch,
