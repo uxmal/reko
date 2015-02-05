@@ -54,7 +54,6 @@ namespace Decompiler.UnitTests.Structure
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program, 
-                project, 
                 new Dictionary<Address, ProcedureSignature>(), 
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());

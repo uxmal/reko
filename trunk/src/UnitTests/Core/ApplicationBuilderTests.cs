@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
         public void AppBld_BuildApplication()
 		{
-			Assert.IsTrue(sig.FormalArguments[3].Storage is OutArgumentStorage);
+			Assert.IsTrue(sig.Parameters[3].Storage is OutArgumentStorage);
             ab = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig, false);
             var instr = ab.CreateInstruction();
 			Assert.AreEqual("eax = foo(Mem0[esp + 4:word32], Mem0[esp + 8:word16], Mem0[esp + 12:byte], out edx)", instr.ToString());

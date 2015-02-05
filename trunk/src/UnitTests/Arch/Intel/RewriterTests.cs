@@ -71,14 +71,14 @@ namespace Decompiler.UnitTests.Arch.Intel
             prog.Image = lr.Image;
             prog.ImageMap = lr.ImageMap;
 			DoRewriteCore();
-			return scanner.Procedures.Values[0];
+			return prog.Procedures.Values[0];
 		}
 
         private void DoRewriteCore()
         {
             Project project = LoadProject();
             project.Programs.Add(prog);
-            scanner = new Scanner(prog, project, new Dictionary<Address, ProcedureSignature>(),
+            scanner = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());

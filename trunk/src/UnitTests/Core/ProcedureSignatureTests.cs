@@ -66,13 +66,13 @@ namespace Decompiler.UnitTests.Core
 		{
 			Identifier arg = new Identifier(Registers.eax.Name, 0, Registers.eax.DataType, Registers.eax);
 			ProcedureSignature sig = new ProcedureSignature(null, new Identifier[] { arg });
-			Assert.IsTrue(sig.ArgumentsValid);
+			Assert.IsTrue(sig.ParametersValid);
 
 			sig = new ProcedureSignature(arg, null);
-			Assert.IsTrue(sig.ArgumentsValid);
+			Assert.IsTrue(sig.ParametersValid);
 
 			sig = new ProcedureSignature();
-			Assert.IsFalse(sig.ArgumentsValid);
+			Assert.IsFalse(sig.ParametersValid);
 		}
 	}
 }

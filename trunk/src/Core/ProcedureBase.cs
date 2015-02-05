@@ -56,6 +56,5 @@ namespace Decompiler.Core
             Signature.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new TextFormatter(sw));
             return sw.ToString();
         }
-
 	}
 }

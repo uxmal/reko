@@ -63,7 +63,6 @@ namespace Decompiler.UnitTests.Typing
 #endif
                 store.BuildEquivalenceClassDataTypes(factory);
                 store.Dump();
-                //cpf.FollowConstantPointers(program);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(store);

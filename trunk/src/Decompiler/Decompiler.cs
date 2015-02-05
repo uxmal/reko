@@ -43,7 +43,7 @@ namespace Decompiler
         bool Load(string fileName);
         TypeLibrary LoadMetadata(string fileName);
         void LoadRawImage(string fileName, IProcessorArchitecture arch, Platform platform, Address addrBase);
-        void ScanProgram();
+        void ScanPrograms();
         ProcedureBase ScanProcedure(Program program, Address procAddress);
         void AnalyzeDataFlow();
         void ReconstructTypes();
@@ -91,7 +91,7 @@ namespace Decompiler
             try
             {
                 Load(filename);
-                ScanProgram();
+                ScanPrograms();
                 AnalyzeDataFlow();
                 ReconstructTypes();
                 StructureProgram();
@@ -338,11 +338,11 @@ namespace Decompiler
 		}
 
 		/// <summary>
-		/// Generates the control flow graph and finds executable code.
+		/// Generates the control flow graph and finds executable code in each program.
 		/// </summary>
 		/// <param name="prog">the program whose flow graph we seek</param>
 		/// <param name="cfg">configuration information</param>
-		public void ScanProgram()
+		public void ScanPrograms()
 		{
 			if (Project.Programs.Count == 0)
 				throw new InvalidOperationException("Programs must be loaded first.");
@@ -372,7 +372,9 @@ namespace Decompiler
             }
 		}
 
-        public IDictionary<Address, ProcedureSignature> LoadCallSignatures(Program program, ICollection<SerializedCall_v1> serializedCalls)
+        public IDictionary<Address, ProcedureSignature> LoadCallSignatures
+            (Program program, 
+            ICollection<SerializedCall_v1> serializedCalls)
         {
             return
                 (from sc in serializedCalls
@@ -386,10 +388,8 @@ namespace Decompiler
 
         private IScanner CreateScanner(Program program, DecompilerEventListener eventListener)
         {
-            //$TODO: what about multiple files?
             return new Scanner(
                 program, 
-                project,
                 LoadCallSignatures(program, program.UserCalls.Values),
                 new ImportResolver(project),
                 eventListener);

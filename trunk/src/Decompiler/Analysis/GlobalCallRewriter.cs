@@ -20,32 +20,20 @@
 
 using System;
 using System.Collections.Generic;
-using Application = Decompiler.Core.Expressions.Application;
-using Assignment = Decompiler.Core.Code.Assignment;
 using BitSet = Decompiler.Core.Lib.BitSet;
-using Block = Decompiler.Core.Block;
-using CallInstruction = Decompiler.Core.Code.CallInstruction;
 using CallRewriter = Decompiler.Core.CallRewriter;
-using CallSite = Decompiler.Core.Code.CallSite;
-using Debug = System.Diagnostics.Debug;
-using Expression = Decompiler.Core.Expressions.Expression;
 using FpuStackStorage = Decompiler.Core.FpuStackStorage;
 using Frame = Decompiler.Core.Frame;
 using Identifier = Decompiler.Core.Expressions.Identifier;
-using Instruction = Decompiler.Core.Code.Instruction;
-using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
-using Operator = Decompiler.Core.Operators.Operator;
 using OutArgumentStorage = Decompiler.Core.OutArgumentStorage;
 using PrimtiveType = Decompiler.Core.Types.PrimitiveType;
 using Procedure = Decompiler.Core.Procedure;
-using ProcedureSignature = Decompiler.Core.ProcedureSignature;
 using Program = Decompiler.Core.Program;
 using RegisterStorage = Decompiler.Core.RegisterStorage;
 using ReturnInstruction = Decompiler.Core.Code.ReturnInstruction;
 using SignatureBuilder = Decompiler.Core.SignatureBuilder;
 using StackArgumentStorage= Decompiler.Core.StackArgumentStorage;
 using Statement = Decompiler.Core.Statement;
-using UnaryExpr = Decompiler.Core.Expressions.UnaryExpression;
 using UseInstruction = Decompiler.Core.Code.UseInstruction;
 
 namespace Decompiler.Analysis
@@ -88,7 +76,7 @@ namespace Decompiler.Analysis
 
 		public void AddUseInstructionsForOutArguments(Procedure proc)
 		{
-			foreach (Identifier id in proc.Signature.FormalArguments)
+			foreach (Identifier id in proc.Signature.Parameters)
 			{
 				var os = id.Storage as OutArgumentStorage;
 				if (os == null)
@@ -161,7 +149,7 @@ namespace Decompiler.Analysis
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
 		{
-			if (proc.Signature != null && proc.Signature.ArgumentsValid)
+			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
 			SignatureBuilder sb = new SignatureBuilder(proc, prog.Architecture);

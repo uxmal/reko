@@ -86,7 +86,7 @@ namespace Decompiler.Scanning
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
             bool continueBackwalking = BackwalkInstructions(Index, block);
-            if (Index == null)
+            if (Index == null || Index == RegisterStorage.None)
                 return null;	// unable to find guard.
 
             if (continueBackwalking)

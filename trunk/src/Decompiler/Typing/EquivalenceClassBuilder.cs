@@ -80,7 +80,7 @@ namespace Decompiler.Typing
 
 			if (sig != null)
 			{
-				if (sig.FormalArguments.Length != appl.Arguments.Length)
+				if (sig.Parameters.Length != appl.Arguments.Length)
 					throw new InvalidOperationException("Parameter count must match.");
 			}
 
@@ -89,8 +89,8 @@ namespace Decompiler.Typing
 				appl.Arguments[i].Accept(this);
 				if (sig != null)
 				{
-					EnsureTypeVariable(sig.FormalArguments[i]);
-					store.MergeClasses(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
+					EnsureTypeVariable(sig.Parameters[i]);
+					store.MergeClasses(appl.Arguments[i].TypeVariable, sig.Parameters[i].TypeVariable);
 				}
 			}
 			EnsureTypeVariable(appl);
@@ -278,9 +278,9 @@ namespace Decompiler.Typing
                         new Identifier("signature of " + proc.Name, 0, VoidType.Instance, null),
 						null);
 				}
-				if (proc.Signature.FormalArguments != null)
+				if (proc.Signature.Parameters != null)
 				{
-					foreach (Identifier id in proc.Signature.FormalArguments)
+					foreach (Identifier id in proc.Signature.Parameters)
 					{
 						id.Accept(this);
 					}

@@ -101,9 +101,9 @@ namespace Decompiler.Typing
         {
             if (sig.ReturnValue != null)
                 sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;
-            if (sig.FormalArguments != null)
+            if (sig.Parameters != null)
             {
-                foreach (Identifier formalArg in sig.FormalArguments)
+                foreach (Identifier formalArg in sig.Parameters)
                 {
                     formalArg.DataType = formalArg.TypeVariable.DataType;
                 }

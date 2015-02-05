@@ -66,7 +66,6 @@ namespace Decompiler.UnitTests.Scanning
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
-                project,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());
@@ -76,13 +75,13 @@ namespace Decompiler.UnitTests.Scanning
 
         private void DumpProgram(Scanner scanner)
         {
-            var dasm = arch.CreateDisassembler(scanner.Image.CreateLeReader(0));
+            var dasm = arch.CreateDisassembler(program.Image.CreateLeReader(0));
             foreach (var instr in dasm)
             {
                 Console.Out.WriteLine("{0} {1}", instr.Address, instr);
             }
             
-            foreach (Procedure proc in scanner.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
                 proc.Write(true, Console.Out);
                 Console.Out.WriteLine();

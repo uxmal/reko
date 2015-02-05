@@ -41,7 +41,6 @@ namespace Decompiler.Core
     ///   If more registers are returned, they all become out registers and the function
     ///    is declared void, unless flags are returned.
     /// </remarks>
-    //$TODO: make this a StorageVisitor and move teh Storage.BindFormaArgumentToFrame method here
     public class ApplicationBuilder : StorageVisitor<Expression>
 	{
         private IProcessorArchitecture arch;
@@ -68,7 +67,7 @@ namespace Decompiler.Core
             ProcedureSignature sigCallee,
             bool ensureVariables)
         {
-			if (sigCallee == null || !sigCallee.ArgumentsValid)
+			if (sigCallee == null || !sigCallee.ParametersValid)
 				throw new InvalidOperationException("No signature available; application cannot be constructed.");
 
             this.arch = arch;
@@ -79,12 +78,12 @@ namespace Decompiler.Core
             this.ensureVariables = ensureVariables;
         }
 
-        private List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
+        public virtual List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
         {
             var actuals = new List<Expression>();
-            for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
+            for (int i = 0; i < sigCallee.Parameters.Length; ++i)
             {
-                var formalArg = sigCallee.FormalArguments[i];
+                var formalArg = sigCallee.Parameters[i];
                 var actualArg = formalArg.Storage.Accept(this);
                 if (formalArg.Storage is OutArgumentStorage)
                 {

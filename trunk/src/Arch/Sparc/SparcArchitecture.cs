@@ -164,6 +164,11 @@ namespace Decompiler.Arch.Sparc
             get { throw new NotImplementedException(); }
         }
 
+        public uint GetAddressOffset(Address addr)
+        {
+            return addr.Linear;
+        }
+
         #endregion
     }
 }

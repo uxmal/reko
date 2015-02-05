@@ -223,6 +223,25 @@ namespace Decompiler.Gui.Windows
             {
                 return false;
             }
+
+            public int SortedColumn
+            {
+                get { return -1; }
+            }
+
+            public bool IsColumnSortable(int iColumn)
+            {
+                return false;
+            }
+
+            public SortDirection GetSortDirection(int iColumn)
+            {
+                return SortDirection.None;
+            }
+
+            public void SortByColumn(int iColumn, SortDirection dir)
+            {
+            }
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

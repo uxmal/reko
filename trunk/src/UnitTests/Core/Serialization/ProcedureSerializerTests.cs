@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 
             var ps = new ProcedureSerializer(arch, "stdcall");
             var sig = ps.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("ecx", sig.FormalArguments[0].ToString());
+            Assert.AreEqual("ecx", sig.Parameters[0].ToString());
         }
 
         [Test]

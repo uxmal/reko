@@ -75,6 +75,7 @@ namespace Decompiler.Gui.Design
                 {
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ActionEditSignature:
+                case CmdIds.ViewFindWhatPointsHere:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
                 }
@@ -93,9 +94,29 @@ namespace Decompiler.Gui.Design
                     return true;
                 case CmdIds.ActionEditSignature:
                     return true;
+                case CmdIds.ViewFindWhatPointsHere:
+                    ViewWhatPointsHere();
+                    return true;
                 }
             }
             return false;
+        }
+
+        private void ViewWhatPointsHere()
+        {
+            var resultSvc = Services.GetService<ISearchResultService>();
+            if (resultSvc == null)
+                return;
+            var arch = program.Architecture;
+            var image = program.Image;
+            var rdr = program.Architecture.CreateImageReader(program.Image, 0);
+            var addrControl = arch.CreatePointerScanner(
+                rdr,
+                new HashSet<uint> { 
+                    this.Address.Linear,
+                    arch.GetAddressOffset(Address), },
+                PointerScannerFlags.All);
+            resultSvc.ShowSearchResults(new AddressSearchResult(Services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
         }
 
         public override int GetHashCode()

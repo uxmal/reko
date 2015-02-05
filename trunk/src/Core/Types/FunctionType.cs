@@ -54,8 +54,8 @@ namespace Decompiler.Core.Types
             this.ReturnType = sig.ReturnValue != null
                 ? sig.ReturnValue.DataType
                 : VoidType.Instance;
-            this.ArgumentTypes = sig.FormalArguments.Select(a => a.DataType).ToArray();
-            this.ArgumentNames = sig.FormalArguments.Select(a => a.Name).ToArray();
+            this.ArgumentTypes = sig.Parameters.Select(a => a.DataType).ToArray();
+            this.ArgumentNames = sig.Parameters.Select(a => a.Name).ToArray();
         }
 
         public override T Accept<T>(IDataTypeVisitor<T> v)

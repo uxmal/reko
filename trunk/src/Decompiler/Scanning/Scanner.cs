@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Decompiler;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
@@ -32,28 +31,27 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-
 namespace Decompiler.Scanning
 {
+    /// <summary>
+    /// A class implementing IScanner is responsible for tracing the execution
+    /// flow of a binary image. It uses a Rewriter to convert the machine-
+    /// specific instructions into lower-level register-transfer (RTL) 
+    /// instructions. By simulating the execution of branch and call
+    /// instructions, the IScanner can reconstruct the basic blocks and 
+    /// procedures that constituted the original source program. Any 
+    /// discoveries made are added to the Program instance.
+    /// </summary>
     public interface IScanner
     {
         void ScanImage();
+        ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
-        //$REVIEW: the following fields look an awful lot like a Program to me?
-        CallGraph CallGraph { get; }
-        LoadedImage Image { get; }
-        ImageMap ImageMap { get; } 
-        IProcessorArchitecture Architecture { get; }
-        Platform Platform { get; }
-        IDictionary<Address, VectorUse> VectorUses { get; }
-
-        Block AddBlock(Address addr, Procedure proc, string blockName);
         void AddDiagnostic(Address addr, Diagnostic d);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
@@ -89,7 +87,6 @@ namespace Decompiler.Scanning
     public class Scanner : IScanner, IRewriterHost
     {
         private Program program;
-        private Project project;
         private PriorityQueue<WorkItem> queue;
         private LoadedImage image;
         private ImageMap imageMap;
@@ -112,13 +109,11 @@ namespace Decompiler.Scanning
 
         public Scanner(
             Program program, 
-            Project project,
             IDictionary<Address, ProcedureSignature> callSigs,
             IImportResolver importResolver,
             DecompilerEventListener eventListener)
         {
             this.program = program;
-            this.project = project;
             this.image = program.Image;
             this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
@@ -126,25 +121,14 @@ namespace Decompiler.Scanning
             this.eventListener = eventListener;
             if (imageMap == null)
                 throw new InvalidOperationException("Program must have an image map.");
-            this.Procedures = program.Procedures;
             this.queue = new PriorityQueue<WorkItem>();
             this.blocks = new Map<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.pseudoProcs = program.PseudoProcedures;
             this.vectors = program.Vectors;
-            this.VectorUses = new Dictionary<Address, VectorUse>();
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }
-
-        public IProcessorArchitecture Architecture { get { return program.Architecture; } }
-        public CallGraph CallGraph { get { return program.CallGraph; } }
-        public LoadedImage Image { get { return image; } }
-        public ImageMap ImageMap { get { return imageMap; } } //$REVIEW: don't expose this?
-        public Platform Platform { get { return program.Platform; } }
-        public PriorityQueue<WorkItem> Queue { get { return queue; } }
-        public SortedList<Address, Procedure> Procedures { get; private set; }
-        public IDictionary<Address, VectorUse> VectorUses { get; private set; }
 
         private class BlockRange
         {
@@ -235,13 +219,14 @@ namespace Decompiler.Scanning
         {
             return new BlockWorkitem(
                 this,
+                program,
                 stateOnEntry,
                 addrStart);
         }
 
         public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
         {
-            return Architecture.CreateRewriter(
+            return program.Architecture.CreateRewriter(
                     CreateReader(addrStart),
                     state,
                     frame,
@@ -252,16 +237,17 @@ namespace Decompiler.Scanning
         {
             return new PromoteBlockWorkItem
             {
+                Scanner = this,
+                Program = program,
                 Address = addrStart,
                 Block = block,
                 ProcNew = procNew,
-                Scanner = this,
             };
         }
 
         public void EnqueueEntryPoint(EntryPoint ep)
         {
-            queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, ep));
+            queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, program, ep));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
@@ -409,7 +395,7 @@ namespace Decompiler.Scanning
                 return;
 
             table = new ImageMapVectorTable(addrTable, calltable);
-            var wi = new VectorWorkItem(this, table, proc);
+            var wi = new VectorWorkItem(this, program, table, proc);
             wi.State = state.Clone();
             wi.Stride = elemSize;
             wi.SegBase = segBase;
@@ -461,12 +447,11 @@ namespace Decompiler.Scanning
         private Procedure EnsureProcedure(Address addr, string procedureName)
         {
             Procedure proc;
-            if (!Procedures.TryGetValue(addr, out proc))
-            {
-                proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
-                Procedures.Add(addr, proc);
-                CallGraph.AddProcedure(proc);
-            }
+            if (program.Procedures.TryGetValue(addr, out proc))
+                return proc;
+            proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
+            program.Procedures.Add(addr, proc);
+            program.CallGraph.AddProcedure(proc);
             return proc;
         }
 
@@ -483,7 +468,7 @@ namespace Decompiler.Scanning
             {
                 proc.Characteristics = sp.Characteristics;
             }
-            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, addr, sp.Name));
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
         }
 
         public Block FindContainingBlock(Address address)
@@ -526,10 +511,11 @@ namespace Decompiler.Scanning
         /// <returns>Null if there was no trampoline.</returns>
         public ProcedureBase GetTrampoline(Address addr)
         {
-            var rdr = Architecture.CreateRewriter(
-                Architecture.CreateImageReader(program.Image, addr),
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(),
+            var arch = program.Architecture;
+            var rdr = arch.CreateRewriter(
+                arch.CreateImageReader(program.Image, addr),
+                arch.CreateProcessorState(),
+                arch.CreateFrame(),
                 this);
             var rtlc = rdr.FirstOrDefault();
             if (rtlc == null)
@@ -565,7 +551,8 @@ namespace Decompiler.Scanning
             if (importReferences.TryGetValue(addrImportThunk, out impref))
             {
                 var extProc = impref.ResolveImportedProcedure(
-                    new ImportResolver(project), program.Platform,
+                    importResolver,
+                    program.Platform,
                     new AddressContext(program, addrInstruction, this.eventListener));
                 return extProc;
             }
@@ -655,15 +642,10 @@ namespace Decompiler.Scanning
             }
         }
 
+        //$REVIEW: can't the callers call Program.EnsurePse
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
-            PseudoProcedure p;
-            if (!pseudoProcs.TryGetValue(name, out p))
-            {
-                p = new PseudoProcedure(name, returnType, arity);
-                pseudoProcs[name] = p;
-            }
-            return p;
+            return program.EnsurePseudoProcedure(name, returnType, arity);
         }
 
         /// <summary>

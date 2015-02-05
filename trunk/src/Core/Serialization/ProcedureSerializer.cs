@@ -103,14 +103,14 @@ namespace Decompiler.Core.Serialization
         public SerializedSignature Serialize(ProcedureSignature sig)
         {
             SerializedSignature ssig = new SerializedSignature();
-            if (!sig.ArgumentsValid)
+            if (!sig.ParametersValid)
                 return ssig;
             ArgumentSerializer argSer = new ArgumentSerializer(this, arch, null, null);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
-            ssig.Arguments = new Argument_v1[sig.FormalArguments.Length];
-            for (int i = 0; i < sig.FormalArguments.Length; ++i)
+            ssig.Arguments = new Argument_v1[sig.Parameters.Length];
+            for (int i = 0; i < sig.Parameters.Length; ++i)
             {
-                Identifier formal = sig.FormalArguments[i];
+                Identifier formal = sig.Parameters[i];
                 ssig.Arguments[i] = argSer.Serialize(formal);
             }
             ssig.StackDelta = sig.StackDelta;

@@ -70,9 +70,9 @@ namespace Decompiler.UnitTests.Environments.AmigaOS
             var svc = platform.FindService(rtls.Last(), state);
 
             Assert.AreEqual("Allocate", svc.Name);
-            Assert.AreEqual(2, svc.Signature.FormalArguments.Length);
-            Assert.AreEqual("a1", svc.Signature.FormalArguments[0].Storage.ToString());
-            Assert.AreEqual("d0", svc.Signature.FormalArguments[1].Storage.ToString());
+            Assert.AreEqual(2, svc.Signature.Parameters.Length);
+            Assert.AreEqual("a1", svc.Signature.Parameters[0].Storage.ToString());
+            Assert.AreEqual("d0", svc.Signature.Parameters[1].Storage.ToString());
             mr.VerifyAll();
         }
 

@@ -81,10 +81,6 @@ namespace Decompiler.ImageLoaders.MzExe
             {
                 return new LzExeUnpacker(services, this, filename, image);
             }
-            else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
-            {
-                return new PkLiteUnpacker(services, this, filename, image);
-            }
             else if (ExePackLoader.IsCorrectUnpacker(this, image))
             {
                 return new ExePackLoader(services, this, filename, image);
@@ -132,8 +128,6 @@ namespace Decompiler.ImageLoaders.MzExe
             // image loader that knows how to do unpacking.
 
             var loaderSvc = services.RequireService<IUnpackerService>();
-      
-
             if (IsPortableExecutable)
             {
                 var entryPointOffset= PeImageLoader.ReadEntryPoint(RawImage, e_lfanew);
@@ -149,7 +143,7 @@ namespace Decompiler.ImageLoaders.MzExe
             }
             else
             {
-                var entryPointOffset = ((e_cparHeader + e_cs) << 4) + e_ip;
+                var entryPointOffset = (((e_cparHeader + e_cs) << 4) + e_ip) & 0xFFFFF;
                 var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, (uint) entryPointOffset);
                 if (unpacker != null)
                     return unpacker;

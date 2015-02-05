@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
             ProcedureSignature ps = ser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
-			Assert.IsTrue(ps.ArgumentsValid);
+			Assert.IsTrue(ps.ParametersValid);
 		}
 	}
 }

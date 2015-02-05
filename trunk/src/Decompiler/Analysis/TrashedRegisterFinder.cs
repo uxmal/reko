@@ -174,7 +174,7 @@ namespace Decompiler.Analysis
                 try
                 {
                     Instruction instr = stm.Instruction.Accept(propagator);
-#if DEBUG
+#if _DEBUG
                     string sInstr = stm.Instruction.ToString();
                     string sInstrNew = instr.ToString();
                     if (sInstr != sInstrNew)

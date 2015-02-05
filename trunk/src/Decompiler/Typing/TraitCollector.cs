@@ -83,14 +83,14 @@ namespace Decompiler.Typing
                 return;
 
             ProcedureSignature sig = pc.Procedure.Signature;
-            if (appl.Arguments.Length != sig.FormalArguments.Length)
+            if (appl.Arguments.Length != sig.Parameters.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-                    pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
+                    pc.Procedure.Name, appl.Arguments.Length, sig.Parameters.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                handler.EqualTrait(appl.Arguments[i], sig.FormalArguments[i]);
-                sig.FormalArguments[i].Accept(this);
+                handler.EqualTrait(appl.Arguments[i], sig.Parameters[i]);
+                sig.Parameters[i].Accept(this);
             }
             if (sig.ReturnValue != null)
                 handler.EqualTrait(appl, sig.ReturnValue);
@@ -564,12 +564,12 @@ namespace Decompiler.Typing
 		{
 			ProcedureSignature sig = pc.Procedure.Signature;
 			DataType [] argTypes = null;
-			if (sig != null && sig.FormalArguments != null)
+			if (sig != null && sig.Parameters != null)
 			{
-				argTypes = new DataType[sig.FormalArguments.Length];
+				argTypes = new DataType[sig.Parameters.Length];
 				for (int i = 0; i < argTypes.Length; ++i)
 				{
-					argTypes[i] = sig.FormalArguments[i].TypeVariable;
+					argTypes[i] = sig.Parameters[i].TypeVariable;
 				}
 			} 
 			else

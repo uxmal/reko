@@ -448,7 +448,7 @@ namespace Decompiler.UnitTests.Typing
                 Identifier arg1 = m.Local32("arg1");
                 Identifier ret = m.Register(1);
                 m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
-                m.Procedure.Signature.FormalArguments[0] = arg1;
+                m.Procedure.Signature.Parameters[0] = arg1;
                 m.Assign(ret, m.IAdd(arg1, 1));
                 m.Return(ret);
             });

@@ -63,7 +63,7 @@ namespace Decompiler.Core
 			var procCallee = callee.Procedure;
 			var sigCallee = GetProcedureSignature(procCallee);
 			var fn = new ProcedureConstant(arch.PointerType, procCallee);
-            if (sigCallee == null || !sigCallee.ArgumentsValid)
+            if (sigCallee == null || !sigCallee.ParametersValid)
                 return false;
 
             var ab = new ApplicationBuilder(arch, proc.Frame, call.CallSite, fn, sigCallee, true);

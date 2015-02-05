@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Scanning
                  new IntelTextAssembler(),
                 addr);
             var project = new Project { Programs = { program } };
-			var scan = new Scanner(program, project, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), null);
+			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), null);
 			foreach (EntryPoint ep in program.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);

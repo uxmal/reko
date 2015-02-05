@@ -72,9 +72,9 @@ namespace Decompiler.Typing
             {
                 desc.MeetDataType(sig.ReturnValue, sig.ReturnValue.DataType);
             }
-            if (sig.FormalArguments != null)
+            if (sig.Parameters != null)
             {
-                foreach (var p in sig.FormalArguments)
+                foreach (var p in sig.Parameters)
                 {
                     desc.MeetDataType(p, p.DataType);
                 }

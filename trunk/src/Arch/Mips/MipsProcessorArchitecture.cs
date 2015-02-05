@@ -139,5 +139,10 @@ namespace Decompiler.Arch.Mips
         {
             get { throw new NotImplementedException(); }
         }
+
+        public uint GetAddressOffset(Address addr)
+        {
+            return addr.Linear;
+        }
     }
 }

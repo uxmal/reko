@@ -155,7 +155,6 @@ namespace Decompiler.UnitTests.Arch.Intel
             var project = new Project { Programs = { program } };
             Scanner scan = new Scanner(
                 program,
-                project,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());

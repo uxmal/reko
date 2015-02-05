@@ -145,6 +145,11 @@ namespace Decompiler.Arch.Mos6502
         {
             get { return (uint) FlagM.CF; }
         }
+
+        public uint GetAddressOffset(Address addr)
+        {
+            return addr.Linear;
+        }
     }
 
     public static class Registers

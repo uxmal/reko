@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             var svc = lib.ServicesByName["_Foo@4"];
             Assert.AreEqual("_Foo@4", svc.Name);
             Assert.AreEqual("FOO.DLL", lib.ModuleName);
-            Assert.IsFalse(svc.Signature.ArgumentsValid, "We don't know the arguments");
+            Assert.IsFalse(svc.Signature.ParametersValid, "We don't know the arguments");
             Assert.AreEqual(8, svc.Signature.StackDelta, "StackDelta includes the return address, which stdapi calls pop.");
         }
 

@@ -40,23 +40,21 @@ namespace Decompiler.Core
     [Designer("Decompiler.Gui.Design.ProgramDesigner,Decompiler")]
     public class Program
 	{
-		private SortedList<Address,Procedure> procedures;
         private SortedList<Address, ImageMapVectorTable> vectors;
 		private Identifier globals;
         private StructureType globalFields;
 		private Dictionary<string, PseudoProcedure> pseudoProcs;
-        private Dictionary<Identifier, LinearInductionVariable> ivs;
 
 		public Program()
 		{
             this.EntryPoints = new List<EntryPoint>();
-			this.procedures = new SortedList<Address,Procedure>();
+			this.Procedures = new SortedList<Address,Procedure>();
             this.vectors = new SortedList<Address, ImageMapVectorTable>();
 			this.CallGraph = new CallGraph();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
-            this.ivs = new Dictionary<Identifier, LinearInductionVariable>();
+            this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
 			this.TypeFactory = new TypeFactory();
 			this.TypeStore = new TypeStore();
             this.UserProcedures = new SortedList<Address, Serialization.Procedure_v1>();
@@ -131,6 +129,8 @@ namespace Decompiler.Core
 
         public ImageMap ImageMap { get; set; }
 
+		public Platform Platform { get; set; }
+
         /// <summary>
         /// The list of known entry points to the program.
         /// </summary>
@@ -146,20 +146,13 @@ namespace Decompiler.Core
 
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
 
-        public Dictionary<Identifier, LinearInductionVariable> InductionVariables
-        {
-            get { return ivs; }
-        }
-
-		public Platform Platform { get; set; }
+        //$REVIEW: shouldnt these belong in Procedure?
+        public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
 		/// <summary>
 		/// The program's decompiled procedures, indexed by address.
 		/// </summary>
-		public SortedList<Address, Procedure> Procedures
-		{
-			get { return procedures; }
-		}
+		public SortedList<Address, Procedure> Procedures { get; private set; }
 
 		/// <summary>
 		/// The program's pseudo procedures, indexed by name.
