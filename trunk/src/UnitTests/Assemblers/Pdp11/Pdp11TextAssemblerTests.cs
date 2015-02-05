@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Assemblers.Pdp11
         private MockRepository mr;
         private Pdp11TextAssembler asm;
         private IEmitter emitter;
-        private LoaderResults ldr;
+        private Program ldr;
 
         [SetUp]
         public void Setup()

@@ -41,7 +41,7 @@ namespace Decompiler.ImageLoaders.BinHex
         {
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
@@ -65,13 +65,13 @@ namespace Decompiler.ImageLoaders.BinHex
                         this.rsrcFork = new ResourceFork(image, arch);
                         this.image = new LoadedImage(addrLoad, image);
                         this.imageMap = new ImageMap(addrLoad, image.Length);
-                        return new LoaderResults(this.image, this.imageMap, arch, platform);
+                        return new Program(this.image, this.imageMap, arch, platform);
                     }
                 }
             }
 
             var li = new LoadedImage(addrLoad, dataFork);
-            return new LoaderResults(li, li.CreateImageMap(), arch, platform);
+            return new Program(li, li.CreateImageMap(), arch, platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)

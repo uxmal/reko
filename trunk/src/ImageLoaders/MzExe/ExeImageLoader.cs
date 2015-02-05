@@ -115,7 +115,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// Loads a Microsoft .EXE file. There are several widely varying sub-formats,
 		/// so we need to discover what flavour it is before we can proceed.
 		/// </summary>
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
 		{
 			return GetDeferredLoader().Load(addrLoad);
 		}

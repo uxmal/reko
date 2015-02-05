@@ -231,7 +231,7 @@ foo		endp
 		[Test]
 		public void AsCarryInstructions()
 		{
-            LoaderResults lr;
+            Program lr;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/carryinsts.asm")))
             {
 			    lr = asm.Assemble(new Address(0xBAC, 0), rdr);
@@ -362,7 +362,7 @@ foo		endp
 
 		private void RunTest(string sourceFile, string outputFile)
 		{
-            LoaderResults lr;
+            Program lr;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 lr = asm.Assemble(new Address(0x0C00, 0), rdr);

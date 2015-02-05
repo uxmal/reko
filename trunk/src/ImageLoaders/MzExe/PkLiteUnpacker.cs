@@ -74,7 +74,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			return LoadedImage.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
 		{
 			uint dst = PspSize;
 
@@ -206,7 +206,7 @@ l01C8:
 			l01C8:
 			imgU = new LoadedImage(addrLoad, abU);
             imageMap = imgU.CreateImageMap();
-			return new LoaderResults(imgU, imageMap, arch, platform);
+			return new Program(imgU, imageMap, arch, platform);
 		}
 
 		public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)

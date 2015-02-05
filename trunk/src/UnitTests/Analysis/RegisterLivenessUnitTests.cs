@@ -221,13 +221,12 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure callee = new Procedure("callee", null);
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
+				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
-					new Identifier("ebx", -1, PrimitiveType.Word32, Registers.ebx),
-					new Identifier("ecx", -1, PrimitiveType.Word32, Registers.ecx),
-					new Identifier("edi", -1, PrimitiveType.Word32, new OutArgumentStorage(
-						new Identifier("edi", -1, PrimitiveType.Word32, Registers.edi)))
-								 });
+					f.EnsureRegister(Registers.ebx),
+					f.EnsureRegister(Registers.ecx),
+					f.EnsureOutArgument(f.EnsureRegister(Registers.edi), PrimitiveType.Pointer32)
+				});
 			
 			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.esi.Number] = true;
@@ -243,7 +242,7 @@ namespace Decompiler.UnitTests.Analysis
 			Procedure callee = new Procedure("callee", null);
 			BitSet trash = prog.Architecture.CreateRegisterBitset();
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
+				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
                     new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 					new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte))

@@ -52,7 +52,7 @@ namespace Decompiler.Assemblers.M68k
 
         #region Assembler Members
 
-        public LoaderResults Assemble(Address baseAddress, TextReader rdr)
+        public Program Assemble(Address baseAddress, TextReader rdr)
         {
             this.addrBase = baseAddress;
             this.lexer = new Lexer(rdr);
@@ -545,7 +545,7 @@ namespace Decompiler.Assemblers.M68k
             throw new AssemblerException(sb.ToString());
         }
 
-        public LoaderResults AssembleFragment(Address baseAddress, string fragment)
+        public Program AssembleFragment(Address baseAddress, string fragment)
         {
             var rdr = new StringReader(fragment);
             return Assemble(baseAddress, rdr);

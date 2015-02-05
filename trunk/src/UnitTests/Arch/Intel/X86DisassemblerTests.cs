@@ -220,7 +220,7 @@ movzx	ax,byte ptr [bp+04]
             using (FileUnitTester fut = new FileUnitTester("Intel/DisFpuInstructions.txt"))
             {
                 IntelTextAssembler asm = new IntelTextAssembler();
-                LoaderResults lr;
+                Program lr;
                 using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
                 {
                     lr = asm.Assemble(new Address(0xC32, 0), rdr);

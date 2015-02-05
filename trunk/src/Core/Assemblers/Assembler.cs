@@ -27,8 +27,8 @@ namespace Decompiler.Core.Assemblers
 {
 	public interface Assembler
 	{
-        LoaderResults Assemble(Address baseAddress, TextReader reader);
-        LoaderResults AssembleFragment(Address baseAddress, string fragment);
+        Program Assemble(Address baseAddress, TextReader reader);
+        Program AssembleFragment(Address baseAddress, string fragment);
 		Address StartAddress { get; }
         ICollection<EntryPoint> EntryPoints { get; }
         Dictionary<Address, ImportReference> ImportReferences { get; }

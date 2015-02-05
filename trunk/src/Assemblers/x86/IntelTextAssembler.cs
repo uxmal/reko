@@ -49,7 +49,7 @@ namespace Decompiler.Assemblers.x86
             this.entryPoints = new List<EntryPoint>();
         }
 
-        public LoaderResults Assemble(Address addr, TextReader rdr)
+        public Program Assemble(Address addr, TextReader rdr)
         {
             addrBase = addr;
             lexer = new Lexer(rdr);
@@ -71,7 +71,7 @@ namespace Decompiler.Assemblers.x86
             return asm.GetImage();
         }
 
-		public LoaderResults AssembleFragment(Address addr, string fragment)
+		public Program AssembleFragment(Address addr, string fragment)
 		{
 			return Assemble(addr, new StringReader(fragment));
 		}

@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Scanning
         private MockRepository repository;
         private ProcessorState state;
         private BlockWorkitem wi;
-        private LoaderResults lr;
+        private Program lr;
         private string nl = Environment.NewLine;
 
         [SetUp]

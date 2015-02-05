@@ -47,10 +47,10 @@ namespace Decompiler.Assemblers.Pdp11
 
         public Address BaseAddress { get; private set; }
 
-        public LoaderResults GetImage()
+        public Program GetImage()
         {
             var image = new LoadedImage(BaseAddress, emitter.GetBytes());
-            return new LoaderResults(
+            return new Program(
                 image,
                 image.CreateImageMap(),
                 arch,

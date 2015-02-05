@@ -21,18 +21,12 @@
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
-using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
-using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Decompiler.UnitTests.Analysis
 {

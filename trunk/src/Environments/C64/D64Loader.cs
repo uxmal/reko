@@ -84,7 +84,7 @@ namespace Decompiler.Environments.C64
             0x19E00,0x1B100,0x1C400,0x1D700,0x1EA00,  0x1FC00,0x20E00,0x22000,0x23200,0x24400,
             0x25600,0x26700,0x27800,0x28900,0x29A00,  0x2AB00,0x2BC00,0x2CD00,0x2DE00,0x2EF00,
         };
-        private LoaderResults lr;
+        private Program lr;
 
         public D64Loader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
@@ -122,7 +122,7 @@ namespace Decompiler.Environments.C64
             }
         }
 
-        public override LoaderResults Load(Address addrLoad)
+        public override Program Load(Address addrLoad)
         {
             var arch = new Mos6502ProcessorArchitecture();
             LoadedImage image;
@@ -134,7 +134,7 @@ namespace Decompiler.Environments.C64
                 if (selectedFile != null)
                 {
                     image = LoadImage(addrLoad, selectedFile);
-                    this.lr = new LoaderResults(
+                    this.lr = new Program(
                         image, 
                         image.CreateImageMap(),
                         arch, 
@@ -143,7 +143,7 @@ namespace Decompiler.Environments.C64
                 }
             }
             image = new LoadedImage(new Address(0), RawImage);
-            return new LoaderResults(
+            return new Program(
                 image,
                 image.CreateImageMap(),
                 arch,
