@@ -34,26 +34,16 @@ namespace Decompiler.Scanning
     /// </summary>
     public class VectorBuilder : IBackWalkHost
     {
-        private IProcessorArchitecture arch;
         private IScanner scanner;
-        private LoadedImage image;
-        private ImageMap imageMap;
+        private Program program;
         private int cbTable;
         private Backwalker bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
-        public VectorBuilder(IScanner scanner, DirectedGraphImpl<object> jumpGraph)
+        public VectorBuilder(IScanner scanner, Program program, DirectedGraphImpl<object> jumpGraph)
         {
-            this.arch = scanner.Architecture;
-            this.image = scanner.Image;
-            this.imageMap = scanner.ImageMap;
-            this.jumpGraph = jumpGraph;
-        }
-
-        public VectorBuilder(IProcessorArchitecture arch, IScanner scanner, DirectedGraphImpl<object> jumpGraph)
-        {
-            this.arch = arch;
             this.scanner = scanner;
+            this.program = program;
             this.jumpGraph = jumpGraph;
         }
 
@@ -95,7 +85,7 @@ namespace Decompiler.Scanning
         private int[] BuildMapping(BackwalkDereference deref, int limit)
         {
             int[] map = new int[limit];
-            var rdr = arch.CreateImageReader(scanner.Image, new Address((uint)deref.TableOffset));
+            var rdr = program.Architecture.CreateImageReader(program.Image, new Address((uint)deref.TableOffset));
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();
@@ -114,8 +104,8 @@ namespace Decompiler.Scanning
                 {
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
-                    var entryAddr = (uint) (addrTable-scanner.Image.BaseAddress) + (uint)(permutation[i] * cbEntry);
-                    vector.Add(new Address(scanner.Image.ReadLeUInt32(entryAddr)));      //$BUG: will fail on 64-bit arch.
+                    var entryAddr = (uint) (addrTable-program.Image.BaseAddress) + (uint)(permutation[i] * cbEntry);
+                    vector.Add(new Address(program.Image.ReadLeUInt32(entryAddr)));      //$BUG: will fail on 64-bit arch.
                 }
             }
             else
@@ -124,7 +114,7 @@ namespace Decompiler.Scanning
                 int cItems = limit / (int)stride;
                 for (int i = 0; i < cItems; ++i)
                 {
-                    vector.Add(arch.ReadCodeAddress(stride, rdr, state));
+                    vector.Add(program.Architecture.ReadCodeAddress(stride, rdr, state));
                 }
                 cbTable = limit;
             }
@@ -149,7 +139,7 @@ namespace Decompiler.Scanning
                 if (block != null)
                     return null;
                 ImageMapItem item;
-                if (!imageMap.TryFindItem(addrPred, out item))
+                if (!program.ImageMap.TryFindItem(addrPred, out item))
                     return null;
                 block = item as ImageMapBlock;
             }
@@ -162,7 +152,7 @@ namespace Decompiler.Scanning
         public Address GetBlockStartAddress(Address addr)
         {
             ImageMapItem item;
-            if (!imageMap.TryFindItem(addr, out item))
+            if (!program.ImageMap.TryFindItem(addr, out item))
                 return null;
             ImageMapBlock block = item as ImageMapBlock;
             if (block == null)

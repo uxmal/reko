@@ -1,5 +1,6 @@
 // Before ///////
 // IndirectCallFragment
+// Return size: 0
 void IndirectCallFragment()
 IndirectCallFragment_entry:
 	// succ:  l1
@@ -11,6 +12,7 @@ IndirectCallFragment_exit:
 
 // After ///////
 // IndirectCallFragment
+// Return size: 0
 void IndirectCallFragment()
 IndirectCallFragment_entry:
 	// succ:  l1

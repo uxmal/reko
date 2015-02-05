@@ -70,7 +70,7 @@ namespace Decompiler.Analysis
                 Def(bin);
                 return;
             }
-            throw new NotImplementedException(string.Format("Can't handle {0}", e));
+            throw new NotImplementedException(string.Format("Can't handle {0}.", e));
         }
 
 

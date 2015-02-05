@@ -91,7 +91,6 @@ namespace Decompiler.UnitTests.Scanning
             var project =     new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
-                project,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 listener);
@@ -110,7 +109,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Rts();
             });
             var sw = new StringWriter();
-            scanner.Procedures.Values[0].Write(true, sw);
+            program.Procedures.Values[0].Write(true, sw);
 
             string sExp =
 @"// fn00100000
@@ -165,7 +164,7 @@ fn00100000_exit:
                 , 0x66 , 0xFA
                 , 0x4E , 0x75);
             var sw = new StringWriter();
-            scanner.Procedures.Values[0].Write(true, sw);
+            program.Procedures.Values[0].Write(true, sw);
             Console.WriteLine(sw);
             string sExp = @"// fn00001020
 // Return size: 4

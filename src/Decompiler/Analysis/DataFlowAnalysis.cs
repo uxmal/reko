@@ -70,50 +70,57 @@ namespace Decompiler.Analysis
                 eventListener.ShowProgress("Building complex expressions.", i, program.Procedures.Values.Count);
                 ++i;
 
-                var larw = new LongAddRewriter(proc, program.Architecture);
-                larw.Transform();
+                try
+                {
+                    var larw = new LongAddRewriter(proc, program.Architecture);
+                    larw.Transform();
 
-				Aliases alias = new Aliases(proc, program.Architecture, flow);
-				alias.Transform();
-                var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                var sst = new SsaTransform(proc, doms);
-				var ssa = sst.SsaState;
+                    Aliases alias = new Aliases(proc, program.Architecture, flow);
+                    alias.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
-				cce.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+                    var sst = new SsaTransform(proc, doms);
+                    var ssa = sst.SsaState;
 
-				var vp = new ValuePropagator(ssa.Identifiers, proc);
-				vp.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
+                    cce.Transform();
+                    DeadCode.Eliminate(proc, ssa);
 
-				// Build expressions. A definition with a single use can be subsumed
-				// into the using expression. 
+                    var vp = new ValuePropagator(ssa.Identifiers, proc);
+                    vp.Transform();
+                    DeadCode.Eliminate(proc, ssa);
 
-				var coa = new Coalescer(proc, ssa);
-				coa.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    // Build expressions. A definition with a single use can be subsumed
+                    // into the using expression. 
 
-				var liv = new LinearInductionVariableFinder(
-					proc, 
-					ssa.Identifiers, 
-					new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
-				liv.Find();
+                    var coa = new Coalescer(proc, ssa);
+                    coa.Transform();
+                    DeadCode.Eliminate(proc, ssa);
 
-				foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
-				{
-					var str = new StrengthReduction(ssa, de.Key, de.Value);
-					str.ClassifyUses();
-					str.ModifyUses();
-				}
-				var opt = new OutParameterTransformer(proc, ssa.Identifiers);
-				opt.Transform();
-				DeadCode.Eliminate(proc, ssa);
+                    var liv = new LinearInductionVariableFinder(
+                        proc,
+                        ssa.Identifiers,
+                        new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
+                    liv.Find();
 
-                // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
-				web.Transform();
-				ssa.ConvertBack(false);
+                    foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
+                    {
+                        var str = new StrengthReduction(ssa, de.Key, de.Value);
+                        str.ClassifyUses();
+                        str.ModifyUses();
+                    }
+                    var opt = new OutParameterTransformer(proc, ssa.Identifiers);
+                    opt.Transform();
+                    DeadCode.Eliminate(proc, ssa);
+
+                    // Definitions with multiple uses and variables joined by PHI functions become webs.
+                    var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                    web.Transform();
+                    ssa.ConvertBack(false);
+                } catch (Exception ex)
+                {
+                    eventListener.AddDiagnostic(new NullCodeLocation(proc.Name), new ErrorDiagnostic("An error occurred during data flow analysis.", ex));
+                }
 			} 
 		}
 
@@ -179,5 +186,28 @@ namespace Decompiler.Analysis
             eventListener.ShowStatus("Rewriting calls.");
 			GlobalCallRewriter.Rewrite(program, flow);
 		}
+
+        public void UntangleProcedures2()
+        {
+            eventListener.ShowStatus("Eliminating intra-block dead registers.");
+            IntraBlockDeadRegisters.Apply(program);
+
+            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
+            foreach (var procedure in program.Procedures.Values)
+            {
+                sscf.Find(procedure);
+            }
+        }
+
+        private void UntangleProcedureScc(IList<Procedure> procs)
+        {
+            if (procs.Count == 1)
+            {
+            }
+            else
+            {
+
+            }
+        }
 	}
 }

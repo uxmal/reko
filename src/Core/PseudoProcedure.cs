@@ -44,8 +44,9 @@ namespace Decompiler.Core
         public const string Rol = "__rol";      // binary: Rotate left
         public const string RorC = "__rcr";     // ternary: rotate right, passing in the contents of a processor flag (not necessarily the Carry flag)
         public const string RolC = "__rcl";     // ternary: rotate left, passing in the contents of a processor flag
+
         /// <summary>
-        /// Use this for pseudoprocedures that model operators that may have parameters of varying sizes.
+        /// Use this constructor for pseudoprocedures that model operators that may have parameters of varying sizes.
         /// </summary>
         /// <remarks>
         /// E.g. the rotate pseudoprocedures.</remarks>
@@ -66,8 +67,8 @@ namespace Decompiler.Core
 		public int Arity
 		{
 			get 
-            { return sig != null && sig.FormalArguments != null
-                ? sig.FormalArguments.Length 
+            { return sig != null && sig.Parameters != null
+                ? sig.Parameters.Length 
                 : arity; 
             }
 		}

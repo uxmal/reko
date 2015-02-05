@@ -29,20 +29,22 @@ namespace Decompiler.Scanning
     public class ProcedureWorkItem : WorkItem
     {
         private IScanner scanner;
+        private Program program;
         private Address addr;
         private string name;
         private Procedure procDest;
 
-        public ProcedureWorkItem(IScanner scanner, Address addr, string name)
+        public ProcedureWorkItem(IScanner scanner, Program program, Address addr, string name)
         {
             this.scanner = scanner;
+            this.program = program;
             this.addr = addr;
             this.name = name;
         }
 
         public override void Process()
         {
-            scanner.ScanProcedure(addr, name, scanner.Architecture.CreateProcessorState());
+            scanner.ScanProcedure(addr, name, program.Architecture.CreateProcessorState());
         }
     }
 }

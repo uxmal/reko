@@ -150,6 +150,11 @@ namespace Decompiler.Arch.Z80
         {
             get { throw new NotImplementedException(); }
         }
+
+        public uint GetAddressOffset(Address addr)
+        {
+            return addr.Linear;
+        }
     }
 
     public abstract class Z80Register : RegisterStorage

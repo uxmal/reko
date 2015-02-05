@@ -252,6 +252,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			slGrpBrowserProc.Add(0, slViewGoToAddress);
 			slGrpBrowserProc.Add(0, slActionEditSignature);
+			slGrpBrowserProc.Add(0, slViewFindWhatPointsHere);
 			slGrpAddressSearch.Add(0, slViewFindWhatPointsHere);
 			slGrpAddressSearch.Add(0, slActionMarkProcedure);
     

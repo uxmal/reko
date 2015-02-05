@@ -90,14 +90,14 @@ namespace Decompiler.Typing
                 return;
 
             var sig = pc.Procedure.Signature;
-            if (appl.Arguments.Length != sig.FormalArguments.Length)
+            if (appl.Arguments.Length != sig.Parameters.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-                    pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
+                    pc.Procedure.Name, appl.Arguments.Length, sig.Parameters.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                MeetDataType(appl.Arguments[i], sig.FormalArguments[i].DataType);
-                sig.FormalArguments[i].Accept(this, sig.FormalArguments[i].TypeVariable);
+                MeetDataType(appl.Arguments[i], sig.Parameters[i].DataType);
+                sig.Parameters[i].Accept(this, sig.Parameters[i].TypeVariable);
             }
         }
 

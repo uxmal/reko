@@ -39,6 +39,7 @@ namespace Decompiler.Scanning
         public Block Block;
         public Procedure ProcNew;
         public IScanner Scanner;
+        public Program Program;
 
         public override void Process()
         {
@@ -105,9 +106,9 @@ namespace Decompiler.Scanning
                 else
                 {
                     inb.Statements.Add(0, new CallInstruction(
-                                    new ProcedureConstant(Scanner.Architecture.PointerType, ProcNew),
+                                    new ProcedureConstant(Program.Architecture.PointerType, ProcNew),
                                     new CallSite(ProcNew.Signature.ReturnAddressOnStack, 0)));
-                    Scanner.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
+                    Program.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
                     inb.Statements.Add(0, new ReturnInstruction());
                     inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);
                 }

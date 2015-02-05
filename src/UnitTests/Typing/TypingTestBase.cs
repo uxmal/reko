@@ -18,9 +18,7 @@
  */
 #endregion
 
-using Decompiler;
 using Decompiler.Analysis;
-using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
@@ -29,11 +27,10 @@ using Decompiler.Core.Types;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
 
 namespace Decompiler.UnitTests.Typing
 {
@@ -53,11 +50,10 @@ namespace Decompiler.UnitTests.Typing
                 FileUnitTester.MapTestPath(relativePath),
                 new IntelTextAssembler(),
                 addrBase);
-            var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
+            var project = new Project { Programs = { program } };
 			var scan = new Scanner(
                 program,
-                project, 
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());
@@ -78,7 +74,7 @@ namespace Decompiler.UnitTests.Typing
             var program = new Program(img.Image, img.Image.CreateImageMap(), img.Architecture, img.Platform);
             var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
-            var scan = new Scanner(program, project, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), new FakeDecompilerEventListener());
+            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), new FakeDecompilerEventListener());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 

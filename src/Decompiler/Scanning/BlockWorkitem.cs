@@ -45,6 +45,7 @@ namespace Decompiler.Scanning
     public class BlockWorkitem : WorkItem, RtlInstructionVisitor<bool>
     {
         private IScanner scanner;
+        private Program program;
         private IProcessorArchitecture arch;
         private Address addrStart;
         private Block blockCur;
@@ -59,11 +60,13 @@ namespace Decompiler.Scanning
 
         public BlockWorkitem(
             IScanner scanner,
+            Program program,
             ProcessorState state,
             Address addr)
         {
             this.scanner = scanner;
-            this.arch = scanner.Architecture;   // cached since it's used heavily.
+            this.program = program;
+            this.arch = program.Architecture;   // cached since it's used heavily.
             this.state = state;
             this.eval = new ExpressionSimplifier(state);
             this.addrStart = addr;
@@ -321,7 +324,7 @@ namespace Decompiler.Scanning
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature; 
-                if (sig != null && sig.ArgumentsValid)
+                if (sig != null && sig.ParametersValid)
                 {
                     Emit(BuildApplication(pcCallee, sig, site));
                 }
@@ -332,7 +335,7 @@ namespace Decompiler.Scanning
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
-                    scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
+                    program.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
                 return OnAfterCall(sig, callee.Characteristics);
             }
@@ -344,7 +347,7 @@ namespace Decompiler.Scanning
                 if (ppp != null)
                 {
                     sig = ppp.Signature;
-                    if (sig != null && sig.ArgumentsValid)
+                    if (sig != null && sig.ParametersValid)
                     {
                         Emit(BuildApplication(procCallee, sig, site));
                     }
@@ -358,7 +361,7 @@ namespace Decompiler.Scanning
                 if (ep != null)
                 {
                     sig = ep.Signature;
-                    if (sig != null && sig.ArgumentsValid)
+                    if (sig != null && sig.ParametersValid)
                     {
                         Emit(BuildApplication(procCallee, sig, site));
                     }
@@ -383,7 +386,7 @@ namespace Decompiler.Scanning
                 if (ppp != null)
                 {
                     var e = CreateProcedureConstant(ppp);
-                    if (ppp.Signature != null && ppp.Signature.ArgumentsValid)
+                    if (ppp.Signature != null && ppp.Signature.ParametersValid)
                     {
                         Emit(BuildApplication(e, ppp.Signature, site));
                     }
@@ -400,7 +403,7 @@ namespace Decompiler.Scanning
                 return OnAfterCall(imp.Signature, imp.Characteristics);
             }
 
-            var syscall = scanner.Platform.FindService(call, state);
+            var syscall = program.Platform.FindService(call, state);
             if (syscall != null)
             {
                 return !EmitSystemServiceCall(syscall);
@@ -513,9 +516,9 @@ namespace Decompiler.Scanning
             if (impProc.Signature == null)
                 throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
             var ab = CreateApplicationBuilder(new ProcedureConstant(arch.PointerType, impProc), impProc.Signature, site);
-            if (impProc.Signature.FormalArguments.Length != 1)
-                throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.FormalArguments.Length));
-            var target = ab.Bind(impProc.Signature.FormalArguments[0]);
+            if (impProc.Signature.Parameters.Length != 1)
+                throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.Parameters.Length));
+            var target = ab.Bind(impProc.Signature.Parameters[0]);
             var id = target as Identifier;
             if (id == null)
                 throw new ApplicationException(string.Format("The parameter of {0} wasn't a register.", impProc.Name));
@@ -535,6 +538,8 @@ namespace Decompiler.Scanning
 
         private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
+            if (addrSwitch.ToString() == "0043E567")
+                addrSwitch.ToString();//$DEBUG
             var bw = new Backwalker(new BackwalkerHost(scanner), xfer, eval);
             if (!bw.CanBackwalk())
             {
@@ -547,7 +552,7 @@ namespace Decompiler.Scanning
                 return;     //$REVIEW: warn?
             var idIndex = blockCur.Procedure.Frame.EnsureRegister(bw.Index);
 
-            VectorBuilder builder = new VectorBuilder(arch, scanner, new DirectedGraphImpl<object>());
+            VectorBuilder builder = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
             List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
             if (vector.Count == 0)
             {
@@ -572,10 +577,12 @@ namespace Decompiler.Scanning
                     Debug.Assert(dest != null, "The block at address " + addr + "should have been enqueued.");
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
+                if (idIndex.Name == "None")
+                    throw new NotImplementedException();
                 Emit(new SwitchInstruction(idIndex, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
-            scanner.ImageMap.AddItem(bw.VectorAddress,
+            program.ImageMap.AddItem(bw.VectorAddress,
                 new ImageMapVectorTable(xfer is RtlCall, vector.ToArray(), builder.TableByteSize));
         }
 
@@ -590,7 +597,7 @@ namespace Decompiler.Scanning
                     var pcallee = pbase as Procedure;
                     if (pcallee != null)
                     {
-                        scanner.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
+                        program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
                     }
                 }
                 else
@@ -713,9 +720,9 @@ namespace Decompiler.Scanning
         private void AffectProcessorState(ProcedureSignature sig)
         {
             TrashVariable(sig.ReturnValue);
-            for (int i = 0; i < sig.FormalArguments.Length; ++i)
+            for (int i = 0; i < sig.Parameters.Length; ++i)
             {
-                var os = sig.FormalArguments[i].Storage as OutArgumentStorage;
+                var os = sig.Parameters[i].Storage as OutArgumentStorage;
                 if (os != null)
                 {
                     TrashVariable(os.OriginalIdentifier);
@@ -757,7 +764,7 @@ namespace Decompiler.Scanning
             var vector = fn.Arguments[0] as Constant;
             if (vector == null)
                 return null;
-            return scanner.Platform.FindService(vector.ToInt32(), state);
+            return program.Platform.FindService(vector.ToInt32(), state);
         }
 
         private class BackwalkerHost : IBackWalkHost

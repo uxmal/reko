@@ -38,7 +38,17 @@ namespace Decompiler.Gui.Windows.Controls
         public LoadedImage image;
 
         [Browsable(false)]
-        public ImageMap ImageMap { get { return imageMap; } set { imageMap = value; OnImageMapChanged(); } }
+        public ImageMap ImageMap {
+            get { return imageMap; } 
+            set { 
+                if (imageMap != null)
+                    imageMap.MapChanged -= imageMap_MapChanged;
+                imageMap = value; 
+                if (imageMap != null)
+                    imageMap.MapChanged += imageMap_MapChanged;
+                OnImageMapChanged(); 
+            } 
+        }
         public event EventHandler ImageMapChanged;
         public ImageMap imageMap;
 
@@ -329,6 +339,11 @@ namespace Decompiler.Gui.Windows.Controls
             case ScrollButton.Left: Offset -=  ScrollStep * Granularity; break;
             case ScrollButton.Right: Offset += ScrollStep * Granularity; break;
             }
+        }
+
+        void imageMap_MapChanged(object sender, EventArgs e)
+        {
+            Invalidate();
         }
     }
 }

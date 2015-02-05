@@ -40,22 +40,19 @@ namespace Decompiler.UnitTests.Scanning
     [TestFixture]
     public class ScannerTests
     {
+        private MockRepository mr;
         IProcessorArchitecture arch;
         FakeArchitecture fakeArch;
         Program program;
         TestScanner scan;
         Identifier reg1;
-        private MockRepository mr;
+        private IImportResolver importResolver;
+        IDictionary<Address, ProcedureSignature> callSigs;
 
         public class TestScanner : Scanner
         {
-            public TestScanner(Program prog)
-                : this(prog, new Project { Programs = { prog } })
-            {
-
-            }
-            public TestScanner(Program prog, Project project)
-                : base(prog, project, null, null, new FakeDecompilerEventListener())
+            public TestScanner(Program prog, IDictionary<Address, ProcedureSignature> callSigs, IImportResolver importResolver)
+                : base(prog, callSigs, importResolver, new FakeDecompilerEventListener())
             {
             }
 
@@ -73,6 +70,8 @@ namespace Decompiler.UnitTests.Scanning
         {
             mr = new MockRepository();
             fakeArch = new FakeArchitecture();
+            importResolver = mr.StrictMock<IImportResolver>();
+            callSigs = new Dictionary<Address, ProcedureSignature>();
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
             reg1 = new Identifier(r1.Name, r1.Number, PrimitiveType.Word32, r1);
@@ -101,7 +100,7 @@ namespace Decompiler.UnitTests.Scanning
                 lr.ImageMap,
                 lr.Architecture,
                 new FakePlatform(null, arch));
-            scan = new TestScanner(program);
+            scan = CreateScanner(program);
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
         }
@@ -134,7 +133,6 @@ namespace Decompiler.UnitTests.Scanning
             
             var sc = new Scanner(
                 program,
-                project,
                 null,
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());
@@ -144,9 +142,9 @@ namespace Decompiler.UnitTests.Scanning
                     arch.CreateProcessorState()));
             sc.ScanImage();
 
-            Assert.AreEqual(1, sc.Procedures.Count);
-            Assert.AreEqual(0x12314, sc.Procedures.Keys[0].Offset);
-            Assert.IsTrue(sc.CallGraph.EntryPoints.Contains(sc.Procedures.Values[0]));
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(0x12314, program.Procedures.Keys[0].Offset);
+            Assert.IsTrue(program.CallGraph.EntryPoints.Contains(program.Procedures.Values[0]));
         }
 
         private void Given_Program(Address address)
@@ -183,7 +181,19 @@ namespace Decompiler.UnitTests.Scanning
                 image.CreateImageMap(),
                 arch,
                 new FakePlatform(null, arch));
-            return new TestScanner(program);
+            return new TestScanner(
+                program,
+                callSigs,
+                importResolver);
+        }
+
+        private TestScanner CreateScanner(Program prog)
+        {
+            this.program = prog;
+            return new TestScanner(
+                prog, 
+                callSigs, 
+                importResolver);
         }
 
         private TestScanner CreateScanner(Program prog, uint startAddress, int imageSize)
@@ -193,17 +203,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Platform = new FakePlatform(null, arch);
             prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
             prog.ImageMap = prog.Image.CreateImageMap();
-            return new TestScanner(prog);
-        }
-
-        private TestScanner CreateScanner(Program prog, Project project, uint startAddress, int imageSize)
-        {
-            this.program = prog;
-            prog.Architecture = arch;
-            prog.Platform = new FakePlatform(null, arch);
-            prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
-            prog.ImageMap = prog.Image.CreateImageMap();
-            return new TestScanner(prog, project);
+            return new TestScanner(prog, callSigs, importResolver);
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Architecture = lr.Architecture;
             prog.Platform = new FakePlatform(null, arch);
             var proj = new Project { Programs = { prog } };
-            var scan = new Scanner(prog, proj, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), new FakeDecompilerEventListener());
+            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
@@ -317,7 +317,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Ret();
             });
             scan.ScanImage();
-            Assert.AreEqual(1, scan.Procedures.Count);
+            Assert.AreEqual(1, program.Procedures.Count);
             var sExp = @"// fn0C00_0000
 // Return size: 2
 void fn0C00_0000()
@@ -340,7 +340,7 @@ l0C00_000B:
 fn0C00_0000_exit:
 ";
             var sw = new StringWriter();
-            scan.Procedures.Values[0].Write(false, sw);
+            program.Procedures.Values[0].Write(false, sw);
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -362,41 +362,21 @@ fn0C00_0000_exit:
             Given_Trace(new RtlTrace(0x2000) {
                     m => m.SideEffect(m.Word32(0x1234))
             });
-            var project = new Project
-            {
-                Programs = { program },
-                MetadataFiles = {
-                    new MetadataFile {
-                         ModuleName = "module",
-                        TypeLibrary = new TypeLibrary
-                        {
-                             ServicesByName = 
-                             {
-                                 { 
-                                     "grox",
-                                     new SystemService
-                                     {
-                                          Name = "grox",
-                                          Signature = CreateSignature("ax", "bx")
-                                     }
-                                 }
-                             }
-                        }
-                    }
-                }
-            };
-            var scan = CreateScanner(program, project, 0x1000, 0x2000);
+            var groxSig = CreateSignature("ax", "bx");
+            var grox = new ExternalProcedure("grox", groxSig);
+
+            importResolver.Stub(i => i.ResolveProcedure(
+                Arg<string>.Is.Equal("module"),
+                Arg<string>.Is.Equal("grox"),
+                Arg<Platform>.Is.NotNull)).Return(grox);
+            mr.ReplayAll();
+
+            var scan = CreateScanner(program, 0x1000, 0x2000);
             var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
-            Assert.AreEqual("bx", proc.Signature.FormalArguments[0].Name);
+            Assert.AreEqual("bx", proc.Signature.Parameters[0].Name);
         }
-
-        private void EnqueueEntryPoint(uint address)
-        {
-            scan.EnqueueEntryPoint(new EntryPoint(new Address(address), arch.CreateProcessorState()));
-        }
-
 
         [Test]
         public void Scanner_IsLinearReturning_EmptyBlock()

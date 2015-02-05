@@ -143,6 +143,7 @@
 
   <placement item="ViewGoToAddress" container="GrpBrowserProc"/>
   <placement item="ActionEditSignature" container="GrpBrowserProc"/>
+  <placement item="ViewFindWhatPointsHere" container="GrpBrowserProc" />
 
   <placement item="ViewFindWhatPointsHere" container="GrpAddressSearch" />
   <placement item="ActionMarkProcedure" container="GrpAddressSearch"/>

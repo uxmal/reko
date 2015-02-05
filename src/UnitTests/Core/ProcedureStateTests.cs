@@ -184,6 +184,8 @@ namespace Decompiler.UnitTests.Core
                 get { throw new NotImplementedException(); }
             }
 
+            public uint GetAddressOffset(Address addr) { return addr.Linear; }
+
             #endregion
         }
 

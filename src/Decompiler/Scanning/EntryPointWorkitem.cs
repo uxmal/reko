@@ -28,21 +28,23 @@ namespace Decompiler.Scanning
     public class EntryPointWorkitem : WorkItem
     {
         private IScanner scanner;
+        private Program program;
         private EntryPoint ep;
 
-        public EntryPointWorkitem(IScanner scanner, EntryPoint ep)
+        public EntryPointWorkitem(IScanner scanner, Program program, EntryPoint ep)
         {
             this.scanner = scanner;
+            this.program = program;
             this.ep = ep;
         }
 
         public override void Process()
         {
-            var pb = scanner.ScanProcedure(ep.Address, ep.Name, scanner.Architecture.CreateProcessorState());
+            var pb = scanner.ScanProcedure(ep.Address, ep.Name, program.Architecture.CreateProcessorState());
             var proc = pb as Procedure;
             if (proc != null)
             {
-                scanner.CallGraph.AddEntryPoint(proc);
+                program.CallGraph.AddEntryPoint(proc);
             }
         }
     }

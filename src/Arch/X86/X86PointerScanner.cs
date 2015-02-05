@@ -102,4 +102,97 @@ namespace Decompiler.Arch.X86
             }
         }
     }
+
+    public class X86RealModePointerScanner : PointerScanner
+    {
+        public X86RealModePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+            : base(rdr, knownLinAddresses, flags)
+        {
+        }
+
+        public override int PointerAlignment { get { return 1; } }
+
+        public override uint ReadOpcode(ImageReader rdr)
+        {
+            return rdr.PeekByte(0);
+        }
+
+        public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
+        {
+            if (opcode == 0xE8 // CALL NEAR
+                &&
+                rdr.IsValidOffset(rdr.Offset + 2u))
+            {
+                int callOffset = rdr.PeekLeInt16(1);
+                target = (uint)(callOffset + rdr.Address.Linear + 3);
+                return true;
+            }
+            if (opcode == 0x9A // CALL FAR
+                 &&
+                rdr.IsValidOffset(rdr.Offset + 5u))
+            {
+                ushort callOff = rdr.PeekLeUInt16(1);
+                ushort callSeg = rdr.PeekLeUInt16(3);
+                target = ((uint)callSeg << 4) + callOff;
+                return true;
+            }
+            target = 0;
+            return false;
+        }
+
+        public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
+        {
+            if (opcode == 0xE9 // JMP NEAR
+                &&
+                rdr.IsValidOffset(rdr.Offset + 3u))
+            {
+                int callOffset = rdr.PeekLeInt16(1);
+                target = (uint)(callOffset + rdr.Address.Linear + 3);
+                return true;
+            }
+            if (0x70 <= opcode && opcode <= 0x7F &&       // short branch.
+                rdr.IsValidOffset(rdr.Offset + 1u))
+            {
+                sbyte callOffset = rdr.PeekSByte(1);
+                target = (uint)(rdr.Address.Linear + callOffset + 2);
+                return true;
+            }
+            if (opcode == 0x0F && rdr.IsValidOffset(rdr.Offset + 4u))
+            {
+                opcode = rdr.PeekByte(1);
+                int callOffset = rdr.PeekLeInt16(2);
+                uint linAddr = rdr.Address.Linear;
+                if (0x80 <= opcode && opcode <= 0x8F)   // long branch
+                {
+                    target = (uint)(callOffset + linAddr + 4);
+                    return true;
+                }
+            }
+            if (opcode == 0xEA // JMP FAR
+                &&
+                rdr.IsValidOffset(rdr.Offset + 5u))
+            {
+                ushort jmpOffset = rdr.PeekLeUInt16(1);
+                ushort jmpSeg = rdr.PeekLeUInt16(3);
+                target = ((uint)jmpSeg << 4) + jmpOffset;
+                return true;
+            }
+            target = 0;
+            return false;
+        }
+
+        public override bool PeekPointer(ImageReader rdr, out uint target)
+        {
+            if (!rdr.IsValidOffset(rdr.Offset + 2 - 1))
+            {
+                target = 0;
+                return false;
+            }
+            else
+            {
+                target = rdr.PeekLeUInt16(0);
+                return true;
+            }
+        }
+    }
 }

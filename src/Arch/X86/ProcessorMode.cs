@@ -84,6 +84,8 @@ namespace Decompiler.Arch.X86
                 return new Address(seg, off);
             }
         }
+
+        public virtual uint GetAddressOffset(Address addr) { return addr.Linear; }
     }
 
     internal class RealMode : ProcessorMode
@@ -95,27 +97,7 @@ namespace Decompiler.Arch.X86
 
         public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
-            while (rdr.IsValid)
-            {
-                uint linAddrCall = rdr.Address.Linear;
-                var opcode = rdr.ReadByte();
-                if (opcode == 0xE8 && rdr.IsValidOffset(rdr.Offset + 2u))         // CALL NEAR
-                {
-                    int callOffset = rdr.ReadLeInt16();
-                    uint target = (uint) (callOffset + rdr.Address.Linear);
-                    rdr.Seek(-2);
-                    if (knownLinAddresses.Contains(target))
-                        yield return linAddrCall;
-                }
-                else if (opcode == 0x9A && rdr.IsValidOffset(rdr.Offset + 4u))     // CALL FAR
-                {
-                    uint off = rdr.ReadLeUInt16();
-                    uint seg = rdr.ReadLeUInt16();
-                    rdr.Seek(-4);
-                    if (knownLinAddresses.Contains((seg << 4) + off))
-                        yield return linAddrCall;
-                }
-            }
+            return new X86RealModePointerScanner(rdr, knownLinAddresses, flags);
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
@@ -126,6 +108,11 @@ namespace Decompiler.Arch.X86
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
+        }
+
+        public override uint GetAddressOffset(Address addr)
+        {
+            return addr.Offset;
         }
     }
 

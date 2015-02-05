@@ -37,11 +37,17 @@ namespace Decompiler.Gui
         ISearchResultView View { get; set; }
         int Count { get; }
         int ContextMenuID { get; }      // Context menu to use.
+        int SortedColumn { get; }
 
         void CreateColumns();
         SearchResultItem GetItem(int i);
         void NavigateTo(int i);
+        bool IsColumnSortable(int iColumn);
+        SortDirection GetSortDirection(int iColumn);
+        void SortByColumn(int iColumn, SortDirection dir);
     }
+
+    public enum SortDirection { None, Up, Down } 
 
     public class SearchResultItem
     {
@@ -56,6 +62,5 @@ namespace Decompiler.Gui
         IEnumerable<int> SelectedIndices { get; }
 
         void AddColumn(string columnTitle, int width);
-
     }
 }

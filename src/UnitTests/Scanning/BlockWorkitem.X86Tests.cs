@@ -154,14 +154,19 @@ namespace Decompiler.UnitTests.Scanning
                 }
               });
             var rw = arch.CreateRewriter(lr.Image.CreateLeReader(addr), this.state, proc.Frame, host);
+            var prog = new Program
+            {
+                Architecture = arch,
+                Image = lr.Image,
+                ImageMap = lr.ImageMap,
+                Platform = platform,
+            };
             using (repository.Record())
             {
-                scanner.Stub(x => x.Platform).Return(platform);
-                scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(rw);
             }
-            wi = new BlockWorkitem(scanner, state, addr);
+            wi = new BlockWorkitem(scanner, prog, state, addr);
         }
 
 
@@ -288,8 +293,8 @@ namespace Decompiler.UnitTests.Scanning
                 m.Jmp(m.MemW(Registers.cs, Registers.bx, "table"));
                 m.Label("table");
 
-                var image = new LoadedImage(new Address(0xc00, 0), new byte[100]);
-                var imageMap = image.CreateImageMap();
+                //prog.image = new LoadedImage(new Address(0x0C00, 0), new byte[100]);
+                //var imageMap = image.CreateImageMap();
                 scanner.Expect(x => x.EnqueueVectorTable(
                     Arg<Address>.Is.Anything,
                     Arg<Address>.Is.Anything,
@@ -321,9 +326,6 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1236))).Return(block1236);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1238))).Return(block1238);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x123A))).Return(block123A);
-                scanner.Stub(x => x.Image).Return(image);
-                scanner.Stub(x => x.ImageMap).Return(imageMap);
-                
             });
 
             wi.ProcessInternal();

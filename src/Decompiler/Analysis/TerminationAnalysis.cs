@@ -114,53 +114,10 @@ namespace Decompiler.Analysis
 
         public void Analyze(Program program)
         {
-            var gr = new ProgramGraph(program);
+            var gr = new ProcedureGraph(program);
             foreach (var proc in new DfsIterator<Procedure>(gr).PostOrder())
             {
                 Analyze(proc);
-            }
-        }
-
-        private class ProgramGraph : DirectedGraph<Procedure>
-        {
-            private CallGraph cg;
-            private ICollection<Procedure> procs;
-
-            public ProgramGraph(Program prog)
-            {
-                this.cg = prog.CallGraph;
-                this.procs = prog.Procedures.Values;
-            }
-
-            public ICollection<Procedure> Predecessors(Procedure node)
-            {
-                throw new NotSupportedException();
-            }
-
-            public ICollection<Procedure> Successors(Procedure node)
-            {
-                var succs = new List<Procedure>(cg.Callees(node));
-                return succs;
-            }
-
-            public ICollection<Procedure> Nodes
-            {
-                get { return procs; } 
-            }
-
-            public void AddEdge(Procedure nodeFrom, Procedure nodeTo)
-            {
-                throw new NotSupportedException();
-            }
-
-            public void RemoveEdge(Procedure nodeFrom, Procedure nodeTo)
-            {
-                throw new NotSupportedException();
-            }
-
-            public bool ContainsEdge(Procedure nodeFrom, Procedure nodeTo)
-            {
-                throw new NotSupportedException();
             }
         }
     }

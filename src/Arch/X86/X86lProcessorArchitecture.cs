@@ -230,6 +230,11 @@ namespace Decompiler.Arch.X86
         public RegisterStorage StackRegister { get { return mode.StackRegister; } }
         
         public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
+
+        public uint GetAddressOffset(Address addr)
+        {
+            return mode.GetAddressOffset(addr);
+        }
     }
 
     public class X86ArchitectureReal : IntelArchitecture

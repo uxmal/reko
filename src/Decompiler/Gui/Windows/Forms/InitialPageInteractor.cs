@@ -123,7 +123,7 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 Decompiler.LoadRawImage(file, arch, platform, addrBase);
                 svc.SetCaption("Scanning source program.");
-                Decompiler.ScanProgram();
+                Decompiler.ScanPrograms();
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);

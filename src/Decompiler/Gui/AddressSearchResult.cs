@@ -50,9 +50,23 @@ namespace Decompiler.Gui
             get { return addresses.Count; }
         }
 
+
+
         public int ContextMenuID
         {
             get { return MenuIds.CtxAddressSearch; }
+        }
+
+        public int SortedColumn { get { return -1; } }
+
+        public bool IsColumnSortable(int iColumn)
+        {
+            return false;
+        }
+
+        public SortDirection GetSortDirection(int iColumn)
+        {
+            return SortDirection.None;
         }
 
         public void CreateColumns()
@@ -80,10 +94,10 @@ namespace Decompiler.Gui
                 return new SearchResultItem
                 {
                     Items = new string[] { 
-                    "",
-                    addr.ToString(),
-                    ""
-                },
+                        "",
+                        addr.ToString(),
+                        ""
+                    },
                     ImageIndex = 0,
                     BackgroundColor = -1,
                 };
@@ -126,6 +140,10 @@ namespace Decompiler.Gui
             if (item.DataType is CodeType)  //$TODO: colors should come from settings.
                 return System.Drawing.Color.Pink.ToArgb();
             throw new NotImplementedException();
+        }
+
+        public void SortByColumn(int iColumn, SortDirection dir)
+        {
         }
 
         public void NavigateTo(int i)

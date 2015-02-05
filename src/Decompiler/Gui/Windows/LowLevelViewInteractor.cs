@@ -381,7 +381,9 @@ namespace Decompiler.Gui.Windows
             var rdr = program.Architecture.CreateImageReader(program.Image, 0);
             var addrControl = arch.CreatePointerScanner(
                 rdr,
-                new HashSet<uint> { addrRange.Begin.Linear },
+                new HashSet<uint> { 
+                    addrRange.Begin.Linear,
+                    arch.GetAddressOffset(addrRange.Begin), },
                 PointerScannerFlags.All);
             resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
             return true;

@@ -165,7 +165,6 @@ namespace Decompiler.UnitTests.Analysis
                 : new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 prog,
-                project,
                 new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());

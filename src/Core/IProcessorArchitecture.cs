@@ -110,5 +110,13 @@ namespace Decompiler.Core
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
         RegisterStorage StackRegister { get; }              // Stack pointer used by this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
+
+        /// <summary>
+        /// Given an address, returns the offset part. For most architectures, this will just return the linear part,
+        /// but for the segmented addresses of x86 (thanks again, Intel), we only return the offset.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        uint GetAddressOffset(Address address);
     }
 }

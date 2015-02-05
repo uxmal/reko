@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.Load("test.exe");
             program = decSvc.Decompiler.Project.Programs.First();
-            decSvc.Decompiler.ScanProgram();
+            decSvc.Decompiler.ScanPrograms();
             sc.AddService(typeof(IDecompilerService), decSvc);
 
             sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
