@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void X86Dis_Sequence()
         {
             IntelTextAssembler asm = new IntelTextAssembler();
-            var lr = asm.AssembleFragment(
+            var program = asm.AssembleFragment(
                 new Address(0xB96, 0),
                 @"	mov	ax,0
 	cwd
@@ -105,7 +105,7 @@ foo:
 	jnz		foo
 ");
 
-            CreateDisassembler16(lr.Image);
+            CreateDisassembler16(program.Image);
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(5))
             {
@@ -127,14 +127,14 @@ foo:
         public void SegmentOverrides()
         {
             IntelTextAssembler asm = new IntelTextAssembler();
-            var lr = asm.AssembleFragment(
+            var program = asm.AssembleFragment(
                 new Address(0xB96, 0),
                 "foo	proc\r\n" +
                 "		mov	bx,[bp+4]\r\n" +
                 "		mov	ax,[bx+4]\r\n" +
                 "		mov cx,cs:[si+4]\r\n");
 
-            CreateDisassembler16(lr.Image);
+            CreateDisassembler16(program.Image);
             IntelInstruction[] instrs = dasm.Take(3).ToArray();
             Assert.AreEqual(Registers.ss, ((MemoryOperand)instrs[0].op2).DefaultSegment);
             Assert.AreEqual(Registers.ds, ((MemoryOperand)instrs[1].op2).DefaultSegment);
@@ -155,7 +155,6 @@ foo:
 
             LoadedImage img = lr.Image;
             CreateDisassembler16(img.CreateLeReader(img.BaseAddress));
-            IntelInstruction[] instrs = new IntelInstruction[4];
             StringBuilder sb = new StringBuilder();
             foreach (var instr in dasm.Take(4))
             {
@@ -167,14 +166,13 @@ foo:
                 "ror\t[bx+02],cl\r\n" +
                 "rcr\tword ptr [bp+04],04\r\n" +
                 "rcl\tax,01\r\n", s);
-
         }
 
         [Test]
         public void Extensions()
         {
             IntelTextAssembler asm = new IntelTextAssembler();
-            var lr = asm.AssembleFragment(
+            var program = asm.AssembleFragment(
                 new Address(0xA14, 0),
 @"		.i86
 foo		proc
@@ -183,7 +181,7 @@ foo		proc
 		movsx	ebx,bx
 		movzx	ax,byte ptr [bp+04]
 ");
-            CreateDisassembler16(lr.Image);
+            CreateDisassembler16(program.Image);
             StringBuilder sb = new StringBuilder();
             foreach (var ii in dasm.Take(4))
             {
@@ -202,11 +200,11 @@ movzx	ax,byte ptr [bp+04]
         public void DisEdiTimes2()
         {
             IntelTextAssembler asm = new IntelTextAssembler();
-            var lr = asm.AssembleFragment(new Address(0x0B00, 0),
+            var program = asm.AssembleFragment(new Address(0x0B00, 0),
                 @"	.i386
 	mov ebx,[edi*2]
 ");
-            CreateDisassembler32(lr.Image);
+            CreateDisassembler32(program.Image);
             var instr = dasm.First();
             MemoryOperand mem = (MemoryOperand)instr.op2;
             Assert.AreEqual(2, mem.Scale);

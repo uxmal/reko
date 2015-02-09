@@ -46,5 +46,8 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
+        public void Error(Decompiler.Core.ICodeLocation location, Exception ex, string message)
+        {
+        }
     }
 }

@@ -90,7 +90,7 @@ unstructuredexit
             Assert.IsTrue(sa.ProcedureStructure.Nodes[1].Loop is TestlessLoop);
         }
 
-        private void RunTest(ProcGenerator gen, string sExp)
+        private void RunTest(Action<ProcedureBuilder> gen, string sExp)
         {
             ProcedureBuilder mock = new ProcedureBuilder();
             gen(mock);

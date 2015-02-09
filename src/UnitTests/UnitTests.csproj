@@ -77,6 +77,7 @@
     <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />
     <Compile Include="Analysis\CriticalInstructionTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
+    <Compile Include="Analysis\DataFlowAnalysisTests2.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
     <Compile Include="Analysis\DeclarationInserterTests.cs" />
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
@@ -385,7 +386,6 @@
     <Compile Include="Mocks\ProcedureBuilder.cs" />
     <Compile Include="Mocks\ProcedureMockTest.cs" />
     <Compile Include="Mocks\ProgramBuilder.cs" />
-    <Compile Include="Mocks\ProcGenerator.cs" />
     <Compile Include="Mocks\Reg00011Mock.cs" />
     <Compile Include="Mocks\SegmentedDoubleReference.cs" />
     <Compile Include="Mocks\TreeFindMock.cs" />

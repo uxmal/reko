@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,5 +39,7 @@ namespace Decompiler.Gui
         void FinishBackgroundWork();
 
         void ShowError(string p, Exception ex);
+
+        void Error(ICodeLocation location, Exception ex, string message);
     }
 }

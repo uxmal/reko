@@ -27,7 +27,7 @@ using System.Collections.Generic;
 namespace Decompiler.ImageLoaders.MzExe
 {
 	/// <summary>
-	/// Loads MS-DOS program images.
+	/// Loads MS-DOS binary executables.
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{

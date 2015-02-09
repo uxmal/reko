@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests.Structure
             }
         }
 
-        private ProcedureStructure CompileTest(ProcGenerator g)
+        private ProcedureStructure CompileTest(Action<ProcedureBuilder> g)
         {
             ProcedureBuilder m = new ProcedureBuilder();
             g(m);

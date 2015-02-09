@@ -53,6 +53,7 @@ namespace Decompiler.Scanning
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
         void AddDiagnostic(Address addr, Diagnostic d);
+        void Error(Address addr, string message);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);
@@ -196,6 +197,11 @@ namespace Decompiler.Scanning
         public void AddDiagnostic(Address addr, Diagnostic d)
         {
             eventListener.AddDiagnostic(eventListener.CreateAddressNavigator(program, addr), d);
+        }
+
+        public void Error(Address addr, string message)
+        {
+            eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
         }
 
         public ImageReader CreateReader(Address addr)

@@ -27,6 +27,10 @@ using System.Text;
 
 namespace Decompiler.Core
 {
+
+    /// <summary>
+    /// Implementors assume responsibility for loading project files or binariesassembling
+    /// </summary>
     public interface ILoader
     {
         byte[] LoadImageBytes(string fileName, int offset);

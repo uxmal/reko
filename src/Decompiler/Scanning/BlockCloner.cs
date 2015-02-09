@@ -30,6 +30,9 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
+    /// <summary>
+    /// Copies a basic block.
+    /// </summary>
     public class BlockCloner :
         InstructionVisitor<Instruction>,
         ExpressionVisitor<Expression>,
@@ -238,7 +241,9 @@ namespace Decompiler.Scanning
 
         public Expression VisitMkSequence(MkSequence seq)
         {
-            throw new NotImplementedException();
+            var h = seq.Head.Accept(this);
+            var t = seq.Tail.Accept(this);
+            return new MkSequence(seq.DataType, h, t);
         }
 
         public Expression VisitPhiFunction(PhiFunction phi)

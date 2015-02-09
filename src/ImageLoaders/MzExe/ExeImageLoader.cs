@@ -72,23 +72,6 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new FormatException("Image is not an MS-DOS executable image.");
 		}
 
-        private ImageLoader CreateRealModeLoader(string filename, byte[] image)
-        {
-            // Image can't be determined to be packed, so use the default MS-DOS image loader.
-
-            //$TODO: verify that these can go away.
-            if (LzExeUnpacker.IsCorrectUnpacker(this, image))
-            {
-                return new LzExeUnpacker(services, this, filename, image);
-            }
-            else if (ExePackLoader.IsCorrectUnpacker(this, image))
-            {
-                return new ExePackLoader(services, this, filename, image);
-            }
-             
-            return new MsdosImageLoader(services, filename, this);
-        }
-
         private ImageLoader GetDeferredLoader()
         {
             if (ldrDeferred == null)
@@ -122,15 +105,14 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private ImageLoader CreateDeferredLoader()
         {
-            // The image has been identified as a real-mode MS-DOS program.
-            // It may have been packed, however. We ask the unpacker service whether
+            // The image may have been packed. We ask the unpacker service whether
             // it can determine if the image is packed, and if so provide us with an
             // image loader that knows how to do unpacking.
 
             var loaderSvc = services.RequireService<IUnpackerService>();
             if (IsPortableExecutable)
             {
-                var entryPointOffset= PeImageLoader.ReadEntryPoint(RawImage, e_lfanew);
+                var entryPointOffset = PeImageLoader.ReadEntryPoint(RawImage, e_lfanew);
                 var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, entryPointOffset);
                 if (unpacker != null)
                     return unpacker;
@@ -147,7 +129,7 @@ namespace Decompiler.ImageLoaders.MzExe
                 var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, (uint) entryPointOffset);
                 if (unpacker != null)
                     return unpacker;
-                return CreateRealModeLoader(Filename, RawImage);
+                return new MsdosImageLoader(services, Filename, this);
             }
         }
 

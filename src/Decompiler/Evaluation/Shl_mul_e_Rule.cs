@@ -58,7 +58,6 @@ namespace Decompiler.Evaluation
 
 			e = b.Left;
 			return true;
-
 		}
 
 		public Expression Transform()

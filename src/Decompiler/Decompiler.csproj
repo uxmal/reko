@@ -408,7 +408,6 @@
     <Compile Include="Gui\Windows\Forms\WorkerDialog.Designer.cs">
       <DependentUpon>WorkerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Windows\IToolWindow.cs" />
     <Compile Include="Gui\IWindowFrame.cs" />
     <Compile Include="Gui\Windows\LowLevelViewInteractor.cs" />
     <Compile Include="Gui\Windows\LowLevelViewServiceImpl.cs" />
@@ -484,7 +483,6 @@
       <DependentUpon>ProcedureDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\RicheditFormatter.cs" />
     <Compile Include="Gui\Windows\ListViewItemWrapper.cs" />
     <Compile Include="Gui\MruList.cs" />
     <Compile Include="Loading\Loader.cs" />

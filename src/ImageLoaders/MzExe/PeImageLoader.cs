@@ -139,10 +139,9 @@ namespace Decompiler.ImageLoaders.MzExe
 				LoadSections(addrLoad, sectionOffset, sections);
 			}
 			imgLoaded.BaseAddress = addrLoad;
-            var ldr = new Program(imgLoaded, imageMap, arch, platform);
-            foreach (var de in importReferences)
-                ldr.ImportReferences.Add(de.Key, de.Value);
-            return ldr;
+            var program = new Program(imgLoaded, imageMap, arch, platform);
+            this.importReferences = program.ImportReferences;
+            return program;
 		}
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
@@ -378,7 +377,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 			return Encoding.UTF8.GetString(bytes.ToArray());
 		}
-
 
         /// <summary>
         /// Loads the import directory entry for one particular DLL.

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Decompiler.ImageLoaders.OdbgScript
 {
     using Decompiler.Arch.X86;
-using rulong = System.UInt64;
+    using rulong = System.UInt64;
 
     public class Debugger
     {
@@ -25,40 +25,39 @@ using rulong = System.UInt64;
         {
         }
 
-	    public PROCESS_INFORMATION InitDebugEx(string szFileName, string szCommandLine, string szCurrentFolder, Action EntryCallBack)
+        public PROCESS_INFORMATION InitDebugEx(string szFileName, string szCommandLine, string szCurrentFolder, Action EntryCallBack)
         {
             return null;
         }
 
-
         public static void SetHardwareBreakPoint(rulong addr, object o, eHWBPType type, byte size, Action callback)
         {
         }
-        public  rulong GetContextData(eContextData eContextData)
+        public rulong GetContextData(eContextData eContextData)
         {
-             switch (eContextData)
-             {
-             case eContextData.UE_EIP: return emu.InstructionPointer.Linear;
-             }
-             throw new NotImplementedException();
+            switch (eContextData)
+            {
+            case eContextData.UE_EIP: return emu.InstructionPointer.Linear;
+            }
+            throw new NotImplementedException();
         }
 
-        public  void DeleteHardwareBreakPoint(int i)
+        public void DeleteHardwareBreakPoint(int i)
         {
             throw new NotImplementedException();
         }
 
-        public  void RemoveMemoryBPX(rulong membpaddr, rulong membpsize)
+        public void RemoveMemoryBPX(rulong membpaddr, rulong membpsize)
         {
             throw new NotImplementedException();
         }
 
-        public  void RemoveAllBreakPoints(byte ue)
+        public void RemoveAllBreakPoints(byte ue)
         {
             throw new NotImplementedException();
         }
 
-        public  void DisableBPX(rulong addr)
+        public void DisableBPX(rulong addr)
         {
             throw new NotImplementedException();
         }
@@ -73,44 +72,42 @@ using rulong = System.UInt64;
             throw new NotImplementedException();
         }
 
-        public  void DeleteBPX(rulong addr)
+        public void DeleteBPX(rulong addr)
         {
             emu.DeleteBreakpoint((uint)addr);
         }
 
-        public  bool SetContextData(eContextData p1, rulong p2)
+        public bool SetContextData(eContextData p1, rulong p2)
         {
             throw new NotImplementedException();
         }
 
-        public  bool SetMemoryBPXEx(rulong addr, rulong size, byte p1, bool p2, Action MemoryCallback)
+        public bool SetMemoryBPXEx(rulong addr, rulong size, byte p1, bool p2, Action MemoryCallback)
         {
             throw new NotImplementedException();
         }
 
-
-
-        public  Var GetJumpDestination(object p, rulong addr)
+        public Var GetJumpDestination(object p, rulong addr)
         {
             throw new NotImplementedException();
         }
 
-        public  rulong GetDebuggedFileBaseAddress()
+        public rulong GetDebuggedFileBaseAddress()
         {
             throw new NotImplementedException();
         }
 
-        public  bool SetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
+        public bool SetContextFPUDataEx(object p, FLOATING_SAVE_AREA fltctx)
         {
             throw new NotImplementedException();
         }
 
-        public  bool GetContextFPUDataEx(object p,  FLOATING_SAVE_AREA fltctx)
+        public bool GetContextFPUDataEx(object p, FLOATING_SAVE_AREA fltctx)
         {
             throw new NotImplementedException();
         }
 
-        public  void StepInto(Action StepIntoCallback)
+        public void StepInto(Action StepIntoCallback)
         {
             emu.StepInto(StepIntoCallback);
         }

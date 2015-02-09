@@ -230,6 +230,7 @@
     <Compile Include="PrintfApplicationBuilder.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="MetadataFile.cs" />
+    <Compile Include="Provenance.cs" />
     <Compile Include="RelocationResults.cs" />
     <Compile Include="Rtl\RtlAssignment.cs" />
     <Compile Include="Rtl\RtlBranch.cs" />

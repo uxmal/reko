@@ -27,6 +27,7 @@ using Decompiler.Core.Types;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -103,7 +104,7 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog, outputFile);
         }
 
-        protected void RunTest(ProcGenerator pg, string outputFile)
+        protected void RunTest(Action<ProcedureBuilder> pg, string outputFile)
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);

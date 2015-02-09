@@ -141,12 +141,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var asm = new IntelTextAssembler();
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                var lr = asm.Assemble(new Address(0x10000000), rdr);
-                program = new Program(
-                    lr.Image,
-                    lr.ImageMap,
-                    arch,
-                    win32);
+                program = asm.Assemble(new Address(0x10000000), rdr);
+                program.Platform = win32;
             }
             foreach (var item in asm.ImportReferences)
             {

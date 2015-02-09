@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -58,7 +59,7 @@ namespace Decompiler.Gui.Windows.Forms
             catch (Exception ex)
             {
                 //$REVIEW: need a new exception type which when thrown contains the activity we were doing.
-                workerDialogSvc.ShowError("An error occurred while reconstructing types.", ex);
+                workerDialogSvc.Error(new NullCodeLocation(""), ex, "An error occurred while reconstructing types.");
             }
         }
 

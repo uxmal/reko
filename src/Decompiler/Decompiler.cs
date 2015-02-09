@@ -99,9 +99,10 @@ namespace Decompiler
             }
             catch (Exception ex)
             {
-                eventListener.AddDiagnostic(
+                eventListener.Error(
                     new NullCodeLocation(filename),
-                    new ErrorDiagnostic(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace)));
+                    ex,
+                    "An internal error occurred while decompiling.");
             }
             finally
             {
@@ -264,9 +265,7 @@ namespace Decompiler
                     }
                     catch (Exception ex)
                     {
-                        eventListener.AddDiagnostic(
-                            new NullCodeLocation(""),
-                            new ErrorDiagnostic("Error when reconstructing types.", ex));
+                        eventListener.Error(new NullCodeLocation(""), ex, "Error when reconstructing types.");
                     }
                 } 
                 finally
@@ -418,9 +417,10 @@ namespace Decompiler
                     }
                     catch (Exception e)
                     {
-                        eventListener.AddDiagnostic(
+                        eventListener.Error(
                             eventListener.CreateProcedureNavigator(proc),
-                            new ErrorDiagnostic("An error occurred while rewriting procedure to high-level language.", e));
+                            e,
+                            "An error occurred while rewriting procedure to high-level language.");
                     }
                 }
                 WriteDecompilerProducts();

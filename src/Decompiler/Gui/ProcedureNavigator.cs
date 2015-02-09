@@ -54,5 +54,10 @@ namespace Decompiler.Gui
                 codeSvc.DisplayProcedure(Procedure);
         }
         #endregion
+
+        public override string ToString()
+        {
+            return Procedure.Name;
+        }
     }
 }

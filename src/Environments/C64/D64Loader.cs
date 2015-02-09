@@ -30,13 +30,17 @@ using System.Text;
 
 namespace Decompiler.Environments.C64
 {
-    // http://petlibrary.tripod.com/D64.HTM
-    // PRG files have 2 bytes load address and data.
-    // https://hkn.eecs.berkeley.edu/~mcmartin/ophis/manual/x51.html
-    // 
+    /// <summary>
+    /// Loads sub-images from a Commodore C64 disk image.
+    /// </summary>
     public class D64Loader : ImageLoader
     {
-/*
+        // http://petlibrary.tripod.com/D64.HTM
+        // PRG files have 2 bytes load address and data.
+        // https://hkn.eecs.berkeley.edu/~mcmartin/ophis/manual/x51.html
+        //
+        
+        /*
  Track => offset map
  Track #Sect #SectorsIn D64 Offset   Track #Sect #SectorsIn D64 Offset
   ----- ----- ---------- ----------   ----- ----- ---------- ----------
@@ -84,7 +88,7 @@ namespace Decompiler.Environments.C64
             0x19E00,0x1B100,0x1C400,0x1D700,0x1EA00,  0x1FC00,0x20E00,0x22000,0x23200,0x24400,
             0x25600,0x26700,0x27800,0x28900,0x29A00,  0x2AB00,0x2BC00,0x2CD00,0x2DE00,0x2EF00,
         };
-        private Program lr;
+        private Program program;
 
         public D64Loader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
@@ -134,12 +138,12 @@ namespace Decompiler.Environments.C64
                 if (selectedFile != null)
                 {
                     image = LoadImage(addrLoad, selectedFile);
-                    this.lr = new Program(
+                    this.program = new Program(
                         image, 
                         image.CreateImageMap(),
                         arch, 
                         new C64Platform(Services, arch));
-                    return lr;
+                    return program;
                 }
             }
             image = new LoadedImage(new Address(0), RawImage);

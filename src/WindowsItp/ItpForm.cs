@@ -201,10 +201,10 @@ namespace Decompiler.WindowsItp
             var exe = new ExeImageLoader(sc, "foolexe", abImage);
             var peLdr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); // new Address(0x00100000), new List<EntryPoint>());
             var addr = peLdr.PreferredBaseAddress;
-            var lr = peLdr.Load(addr);
+            var program = peLdr.Load(addr);
             var rr = peLdr.Relocate(addr);
-            var win32 = new Win32Emulator(lr.Image, lr.Platform, lr.ImportReferences);
-            var emu = new X86Emulator((IntelArchitecture) lr.Architecture, lr.Image, win32);
+            var win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
+            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
             emu.WriteRegister(Registers.esp, peLdr.PreferredBaseAddress.Linear + 0x0FFC);
@@ -222,7 +222,7 @@ namespace Decompiler.WindowsItp
             var ldr = new OdbgScriptLoader(sc, "foo.exe", abImage);
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
-            var lr = ldr.Load(addr);
+            var program = ldr.Load(addr);
             var rr = ldr.Relocate(addr);
         }
     }

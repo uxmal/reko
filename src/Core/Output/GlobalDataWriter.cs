@@ -67,11 +67,10 @@ namespace Decompiler.Core.Output
                 catch (Exception ex)
                 {
                     var dc = services.RequireService<DecompilerEventListener>();
-                    dc.AddDiagnostic(
+                    dc.Error(
                         dc.CreateAddressNavigator(program, addr),
-                        new ErrorDiagnostic(
-                            string.Format("Failed to write global variable {0}.", name),
-                            ex));
+                        ex,
+                        string.Format("Failed to write global variable {0}.", name));
                 }
                 formatter.Terminate(";");
             }

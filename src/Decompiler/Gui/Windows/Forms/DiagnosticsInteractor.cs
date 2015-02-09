@@ -82,6 +82,11 @@ namespace Decompiler.Gui.Windows.Forms
             AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message));
         }
 
+        public void Error(Exception ex, string message)
+        {
+            AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message, ex));
+        }
+
         public void Warn(string message)
         {
             AddDiagnostic(new NullCodeLocation(""), new WarningDiagnostic(message));

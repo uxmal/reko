@@ -89,7 +89,7 @@ namespace Decompiler.Scanning
             {
                 if (ric == null)
                     throw;
-                scanner.AddDiagnostic(ric.Address, new ErrorDiagnostic(ex.Message));
+                scanner.Error(ric.Address, ex.Message);
             }
         }
 
