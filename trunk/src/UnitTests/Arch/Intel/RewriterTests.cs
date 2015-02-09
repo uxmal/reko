@@ -67,9 +67,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		protected Procedure DoRewrite(string code)
 		{
-            var lr = asm.AssembleFragment(baseAddress, code);
-            prog.Image = lr.Image;
-            prog.ImageMap = lr.ImageMap;
+            prog = asm.AssembleFragment(baseAddress, code);
 			DoRewriteCore();
 			return prog.Procedures.Values[0];
 		}

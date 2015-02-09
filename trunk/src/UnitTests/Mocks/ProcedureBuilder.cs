@@ -275,6 +275,11 @@ namespace Decompiler.UnitTests.Mocks
             return Frame.EnsureRegister(Architecture.GetRegister(name));
         }
 
+        public Identifier Register(RegisterStorage reg)
+        {
+            return Frame.EnsureRegister(reg);
+        }
+
         public override void Return()
         {
             base.Return();

@@ -189,10 +189,10 @@ namespace Decompiler.Analysis
                 catch (Exception ex)
                 {
                     var location = eventListener.CreateBlockNavigator(block);
-                    eventListener.AddDiagnostic(location,
-                        new ErrorDiagnostic(
-                            string.Format("An error occurred while rewriting at linear address {0:X}.", stm.LinearAddress),
-                            ex));
+                    eventListener.Error(
+                        location,
+                        ex,
+                        string.Format("An error occurred while rewriting at linear address {0:X}.", stm.LinearAddress));
                 }
             }
         }

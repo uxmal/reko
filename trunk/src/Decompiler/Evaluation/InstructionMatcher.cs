@@ -136,7 +136,11 @@ namespace Decompiler.Evaluation
 
         public bool VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new NotImplementedException();
+            var swPat = pattern as SwitchInstruction;
+            if (swPat == null)
+                return false;
+            matcher.Pattern = swPat.Expression;
+            return matcher.Match(si.Expression);
         }
 
         public bool VisitUseInstruction(UseInstruction u)

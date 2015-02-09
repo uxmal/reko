@@ -50,12 +50,13 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private LoadedImage imgU;
 
-        public ExePackLoader(IServiceProvider services, ExeImageLoader exe, string filename, byte[] imgRaw)
+        public ExePackLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(Services, arch);
 
+            var exe = new ExeImageLoader(services, filename, imgRaw);
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
             this.hdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) * 0x10U;
             ImageReader rdr = new LeImageReader(RawImage, hdrOffset);

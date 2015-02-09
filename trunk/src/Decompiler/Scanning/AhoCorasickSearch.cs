@@ -120,7 +120,6 @@ namespace Decompiler.Scanning
             nd.AddResult(p);
         }
 
-
         /// <summary>
         /// Keywords to search for (setting this property is slow, because
         /// it requires rebuilding of keyword tree)
@@ -205,7 +204,6 @@ namespace Decompiler.Scanning
             {
                 get { return hash.Values; }
             }
-
 
             public ICollection<TSymbol[]> Results
             {

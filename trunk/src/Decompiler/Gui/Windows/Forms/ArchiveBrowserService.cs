@@ -30,16 +30,16 @@ namespace Decompiler.Gui.Windows.Forms
 {
     public class ArchiveBrowserService : IArchiveBrowserService
     {
-        private IServiceProvider sp;
+        private IServiceProvider services;
 
         public ArchiveBrowserService(IServiceProvider sp)
         {
-            this.sp = sp;
+            this.services = sp;
         }
 
         public ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
-            var uiSvc = sp.GetService<IDecompilerShellUiService>();
+            var uiSvc = services.GetService<IDecompilerShellUiService>();
             if (uiSvc == null)
                 return null;
             using (var dlg = new ArchiveBrowserDialog())
@@ -83,8 +83,6 @@ namespace Decompiler.Gui.Windows.Forms
                 }
             }
 
-
-
             void dlg_Load(object sender, EventArgs e)
             {
                 Populate(dlg.ArchiveEntries, dlg.ArchiveTree.Nodes);
@@ -105,8 +103,6 @@ namespace Decompiler.Gui.Windows.Forms
                     treeNodeCollection.Add(node);
                 }
             }
-
-
         }
     }
 }

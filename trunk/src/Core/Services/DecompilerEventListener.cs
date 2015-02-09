@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Decompiler.Core.Services
@@ -31,6 +32,8 @@ namespace Decompiler.Core.Services
         ICodeLocation CreateProcedureNavigator(Procedure proc);
         ICodeLocation CreateBlockNavigator(Block block);
         void AddDiagnostic(ICodeLocation location, Diagnostic d);
+        void Error(ICodeLocation location, string message);
+        void Error(ICodeLocation location, Exception ex, string message);
 
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
@@ -44,9 +47,14 @@ namespace Decompiler.Core.Services
 
         #region DecompilerEventListener Members
 
-        public void AddErrorDiagnostic(Address address, string format, params object[] args)
+        public void Error(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            Debug.Print("Error: {0}: {1}", location, message);
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message)
+        {
+            Debug.Print("Error: {0}: {1} {2}", location, message, ex.Message);
         }
 
         public void AddWarningDiagnostic(Address address, string format, params object[] args)

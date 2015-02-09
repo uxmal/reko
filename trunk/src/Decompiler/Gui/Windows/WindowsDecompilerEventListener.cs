@@ -146,7 +146,7 @@ namespace Decompiler.Gui.Windows
             }
             catch (Exception ex)
             {
-                AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(ex.Message));
+                Error(new NullCodeLocation(""), ex, "An internal error occurred.");
             }
         }
 
@@ -180,12 +180,21 @@ namespace Decompiler.Gui.Windows
             dlg.Close();
         }
 
-
         #region DecompilerEventListener Members
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             diagnosticSvc.AddDiagnostic(location, d);
+        }
+
+        public void Error(ICodeLocation location, string message)
+        {
+            diagnosticSvc.Error(message);
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message)
+        {
+            diagnosticSvc.Error(ex, message);
         }
 
         void DecompilerEventListener.ShowStatus(string caption)

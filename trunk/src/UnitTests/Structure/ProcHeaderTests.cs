@@ -24,7 +24,7 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual(proc.Nodes[0], proc.Nodes[1].InEdges[0]);
         }
 
-        protected virtual void RunTest(ProcGenerator pg)
+        protected virtual void RunTest(Action<ProcedureBuilder> pg)
         {
             ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);

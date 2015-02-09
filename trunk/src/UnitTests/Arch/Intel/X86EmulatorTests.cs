@@ -58,16 +58,16 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             var asm = new IntelAssembler(arch, new Address(0x00100000), new List<EntryPoint>());
             coder(asm);
-            var lr = asm.GetImage();
-            this.image = lr.Image;
+            var program = asm.GetImage();
+            this.image = program.Image;
 
             Given_Platform();
 
             var win32 = new Win32Emulator(image, platform, importReferences);
             
-            emu = new X86Emulator(arch, lr.Image, win32);
-            emu.InstructionPointer = lr.Image.BaseAddress;
-            emu.WriteRegister(Registers.esp, lr.Image.BaseAddress.Linear + 0x0FFC);
+            emu = new X86Emulator(arch, program.Image, win32);
+            emu.InstructionPointer = program.Image.BaseAddress;
+            emu.WriteRegister(Registers.esp, program.Image.BaseAddress.Linear + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };
         }
 

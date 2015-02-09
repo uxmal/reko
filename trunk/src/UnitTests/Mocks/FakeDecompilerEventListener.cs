@@ -44,13 +44,22 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0} - {1} - {2}", d.GetType().Name, location.Text, d.Message);
             lastDiagnostic = sb.ToString();
             Debug.WriteLine(lastDiagnostic);
+        }
+
+        public void Error(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(message));
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(message, ex));
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)

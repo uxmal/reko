@@ -111,15 +111,15 @@ namespace Decompiler.UnitTests.Analysis
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            Program prog;
+            Program program;
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                var lr = asm.Assemble(new Address(0xC00, 0), rdr);
-                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new MsdosPlatform(null, arch));
+                program = asm.Assemble(new Address(0xC00, 0), rdr);
+                program.Platform = new MsdosPlatform(null, arch);
             }
-            Rewrite(prog, asm, configFile);
-            return prog;
+            Rewrite(program, asm, configFile);
+            return program;
         }
 
         protected Program RewriteFile32(string sourceFile)
@@ -129,32 +129,31 @@ namespace Decompiler.UnitTests.Analysis
 
         private Program RewriteFile32(string relativePath, string configFile)
         {
-            Program prog;
+            Program program;
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                var lr = asm.Assemble(new Address(0x10000000), rdr);
+                program = asm.Assemble(new Address(0x10000000), rdr);
                 if (this.platform == null)
                 {
-                    platform = new Decompiler.Environments.Win32.Win32Platform(null, lr.Architecture);
+                    program.Platform = new Decompiler.Environments.Win32.Win32Platform(null, program.Architecture);
                 }
-                prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, platform);
             }
             foreach (var item in asm.ImportReferences)
             {
-                prog.ImportReferences.Add(item.Key, item.Value);
+                program.ImportReferences.Add(item.Key, item.Value);
             }
-            Rewrite(prog, asm, configFile);
-            return prog;
+            Rewrite(program, asm, configFile);
+            return program;
         }
 
         protected Program RewriteCodeFragment(string s)
         {
             Assembler asm = new IntelTextAssembler();
-            var lr = asm.AssembleFragment(new Address(0xC00, 0), s);
-            var prog = new Program(lr.Image, lr.ImageMap, lr.Architecture, new DefaultPlatform(null, lr.Architecture));
-            Rewrite(prog, asm, null);
-            return prog;
+            var program = asm.AssembleFragment(new Address(0xC00, 0), s);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            Rewrite(program, asm, null);
+            return program;
         }
 
         private static void Rewrite(Program prog, Assembler asm, string configFile)

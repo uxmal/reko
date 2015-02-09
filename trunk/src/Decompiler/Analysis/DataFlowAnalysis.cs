@@ -117,9 +117,10 @@ namespace Decompiler.Analysis
                     var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
                     web.Transform();
                     ssa.ConvertBack(false);
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
-                    eventListener.AddDiagnostic(new NullCodeLocation(proc.Name), new ErrorDiagnostic("An error occurred during data flow analysis.", ex));
+                    eventListener.Error(new NullCodeLocation(proc.Name), ex, "An error occurred during data flow analysis.");
                 }
 			} 
 		}
@@ -203,6 +204,50 @@ namespace Decompiler.Analysis
         {
             if (procs.Count == 1)
             {
+                Debug.Print("SSA rewrite");
+                var proc = procs[0];
+                Aliases alias = new Aliases(proc, program.Architecture, flow);
+                alias.Transform();
+
+                var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+                var sst = new SsaTransform(proc, doms);
+                var ssa = sst.SsaState;
+
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
+                cce.Transform();
+                DeadCode.Eliminate(proc, ssa);
+
+                var vp = new ValuePropagator(ssa.Identifiers, proc);
+                vp.Transform();
+                DeadCode.Eliminate(proc, ssa);
+
+                // Build expressions. A definition with a single use can be subsumed
+                // into the using expression. 
+
+                var coa = new Coalescer(proc, ssa);
+                coa.Transform();
+                DeadCode.Eliminate(proc, ssa);
+
+                var liv = new LinearInductionVariableFinder(
+                    proc,
+                    ssa.Identifiers,
+                    new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
+                liv.Find();
+
+                foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
+                {
+                    var str = new StrengthReduction(ssa, de.Key, de.Value);
+                    str.ClassifyUses();
+                    str.ModifyUses();
+                }
+                var opt = new OutParameterTransformer(proc, ssa.Identifiers);
+                opt.Transform();
+                DeadCode.Eliminate(proc, ssa);
+
+                // Definitions with multiple uses and variables joined by PHI functions become webs.
+                var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                web.Transform();
+                ssa.ConvertBack(false);
             }
             else
             {

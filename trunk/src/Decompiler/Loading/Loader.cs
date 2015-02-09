@@ -59,12 +59,7 @@ namespace Decompiler.Loading
 
         public Program AssembleExecutable(string fileName, byte[] image, Assembler asm, Address addrLoad)
         {
-            var lr = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
-            Program program = new Program(
-                lr.Image,
-                lr.Image.CreateImageMap(),
-                lr.Architecture,
-                lr.Platform);
+            var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = Path.GetFileName(fileName);
             program.EntryPoints.AddRange(asm.EntryPoints);
             program.EntryPoints.Add(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
@@ -80,23 +75,19 @@ namespace Decompiler.Loading
         /// <param name="addrLoad">Address into which to load the file.</param>
         public Program LoadExecutable(string filename, byte[] image, Address addrLoad)
         {
-            ImageLoader imgLoader = FindImageLoader<ImageLoader>(filename, image, () => new NullImageLoader(Services, filename, image));
+            ImageLoader imgLoader = FindImageLoader<ImageLoader>(
+                filename, 
+                image,
+                () => new NullImageLoader(Services, filename, image));
             if (addrLoad == null)
             {
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
             }
 
-            var result = imgLoader.Load(addrLoad);
-            Program program = new Program(
-                result.Image,
-                result.ImageMap,
-                result.Architecture,
-                result.Platform);
+            var program = imgLoader.Load(addrLoad);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
-            CopyImportReferences(result.ImportReferences, program);
-            CopyInterceptedCalls(result.InterceptedCalls, program);
             return program;
         }
 
@@ -150,10 +141,9 @@ namespace Decompiler.Loading
                     return CreateImageLoader<T>(Services, e.TypeName, filename, rawBytes);
                 }
             }
-
-            this.Services.RequireService<DecompilerEventListener>().AddDiagnostic(
+            this.Services.RequireService<DecompilerEventListener>().Error(
                 new NullCodeLocation(""),
-                new ErrorDiagnostic("The format of the file is unknown."));
+                "The format of the file is unknown.");
             return defaultLoader();
         }
 

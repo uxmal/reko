@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -38,7 +39,7 @@ namespace Decompiler.Gui.Windows
 
         public TypeMarker(Control bgControl)
         {
-            System.Diagnostics.Debug.Print(bgControl.GetType().FullName);
+            Debug.Print(bgControl.GetType().FullName);
             text = new TextBox
             {
                 BorderStyle = BorderStyle.FixedSingle,

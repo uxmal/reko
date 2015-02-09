@@ -254,7 +254,6 @@ namespace Decompiler.Core
                 : EnsureStackLocal(byteOffset, type);
         }
 
-
 		/// <summary>
 		/// The offset of a variable from the return address, as seen from a caller.
 		/// </summary>
