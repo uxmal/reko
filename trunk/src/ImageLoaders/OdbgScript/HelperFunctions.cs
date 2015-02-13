@@ -263,7 +263,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return (s.Length!=0 && s.FindFirstNotOf("0123456789abcdefABCDEF") < 0); // '-' ?
         }
 
-        public static bool is_hexwild(string s)
+        public static bool IsHexWild(string s)
         {
             return (s.Length!=0 && s.FindFirstNotOf("?0123456789abcdefABCDEF") < 0); // '-' ?
         }
@@ -284,19 +284,19 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     s.Substring(p + 1).FindFirstNotOf("0123456789") < 0);
         }
 
-        public static bool is_bytestring(string s)
+        public static bool IsHexLiteral(string s)
         {
             int len = s.Length;
-            return (len >= 2 && (len % 2) == 0 && s[0] == '#' && s[len - 1] == '#' && is_hexwild(s.Substring(1, len - 2)));
+            return (len >= 2 && (len % 2) == 0 && s[0] == '#' && s[len - 1] == '#' && IsHexWild(s.Substring(1, len - 2)));
         }
 
-        public static bool is_string(string s)
+        public static bool IsStringLiteral(string s)
         {
             int len = s.Length;
             return (len > 2 && s[0] == '"' && s.IndexOf('"', 1) == len - 1);
         }
 
-        public static bool is_memory(string s)
+        public static bool IsMemoryAccess(string s)
         {
             int len = s.Length;
             return (len > 2 && s[0] == '[' && s[len - 1] == ']');

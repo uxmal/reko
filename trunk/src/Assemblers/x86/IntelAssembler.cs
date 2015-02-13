@@ -39,7 +39,6 @@ namespace Decompiler.Assemblers.x86
     public class IntelAssembler
     {
         private IntelArchitecture arch;
-        private Platform platform;
         private Address addrBase;
         private ModRmBuilder modRm;
         private PrimitiveType defaultWordSize;
@@ -56,7 +55,7 @@ namespace Decompiler.Assemblers.x86
         public IntelAssembler(IntelArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
         {
             this.arch = arch;
-            this.platform = new MsdosPlatform(null, arch);
+            this.Platform = new MsdosPlatform(null, arch);
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;
             this.defaultWordSize = arch.WordWidth;
@@ -81,10 +80,7 @@ namespace Decompiler.Assemblers.x86
             get { return arch; }
         }
 
-        public Platform Platform
-        {
-            get { return platform; }
-        }
+        public Platform Platform { get; set; }
 
         public Dictionary<Address, ImportReference> ImportReferences
         {
@@ -97,7 +93,7 @@ namespace Decompiler.Assemblers.x86
             LoadSegments(stm);
             var image = new LoadedImage(addrBase, stm.ToArray());
             RelocateSegmentReferences(image);
-            return new Program(image, image.CreateImageMap(), arch, platform);
+            return new Program(image, image.CreateImageMap(), arch, Platform);
         }
 
         private void LoadSegments(MemoryStream stm)
@@ -1096,7 +1092,7 @@ namespace Decompiler.Assemblers.x86
         public void i86()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = new MsdosPlatform(null, arch);
+            Platform = new MsdosPlatform(null, arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 

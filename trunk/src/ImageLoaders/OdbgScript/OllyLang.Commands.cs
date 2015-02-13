@@ -1120,78 +1120,77 @@ string filename;
             string finddata;
             rulong maxsize = 0;
 
-            if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out addr))
+            if (args.Length < 2 || args.Length > 3 || GetRulong(args[0], out addr))
+                return false;
+
+            if (args.Length == 3 && !GetRulong(args[2], out maxsize))
+                return false;
+
+            rulong dw;
+            if (GetRulong(args[1], out dw))
             {
-                if (args.Length == 3 && !GetRulong(args[2], out maxsize))
-                    return false;
-
-                rulong dw;
-                if (GetRulong(args[1], out dw))
+                finddata = Helper.rul2hexstr(Helper.reverse(dw));
+                // Remove trailing zeroes, keep even character args.Length
+                int end;
+                for (end = finddata.Length - 1; end != 0; end--)
                 {
-                    finddata = Helper.rul2hexstr(Helper.reverse(dw));
-                    // Remove trailing zeroes, keep even character args.Length
-                    int end;
-                    for (end = finddata.Length - 1; end != 0; end--)
-                    {
-                        if (finddata[end] != '0')
-                            break;
-                    }
-                    end++;
-                    finddata = finddata.PadRight(end + (end % 2), '0');
+                    if (finddata[end] != '0')
+                        break;
                 }
-                else if (GetString(args[1], out finddata))
-                {
-                    var v = new Var(finddata);
-                    finddata = v.to_bytes();
-                    if (!v.isbuf)
-                        finddata = finddata.Replace("3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
-                }
-                else
-                    return false;
+                end++;
+                finddata = finddata.PadRight(end + (end % 2), '0');
+            }
+            else if (GetString(args[1], out finddata))
+            {
+                var v = new Var(finddata);
+                finddata = v.to_bytes();
+                if (!v.isbuf)
+                    finddata = finddata.Replace("3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
+            }
+            else
+                return false;
 
-                if (Helper.is_hexwild(finddata))
-                {
-                    variables["$RESULT"] = new Var(0);
+            if (!Helper.IsHexWild(finddata))
+                return false;
 
-                    // search in current mem block
-                    //$REVIEW: extremely inefficient O(n*m) algorithm, but who cares?
-                    MEMORY_BASIC_INFORMATION MemInfo;
-                    if (Host.TE_GetMemoryInfo(addr, out MemInfo))
+            variables["$RESULT"] = new Var(0);
+
+            // search in current mem block
+            //$REVIEW: extremely inefficient O(n*m) algorithm, but who cares?
+            MEMORY_BASIC_INFORMATION MemInfo;
+            if (Host.TE_GetMemoryInfo(addr, out MemInfo))
+            {
+                int memlen = (int)(MemInfo.BaseAddress + MemInfo.RegionSize - addr);
+                if (maxsize != 0 && (int)maxsize < memlen)
+                    memlen = (int)maxsize;
+
+                byte[] membuf = null;
+                byte[] mask = null;
+                byte[] bytes = null;
+
+                membuf = new byte[memlen];
+                Stream s;
+                if (Host.Image.TryReadBytes(Address.Ptr32((uint)addr), memlen, membuf))
+                {
+                    int bytecount = finddata.Length / 2;
+
+                    mask = new byte[bytecount];
+                    bytes = new byte[bytecount];
+
+                    Helper.hexstr2bytemask(finddata, mask, bytecount);
+                    Helper.hexstr2bytes(finddata, bytes, bytecount);
+
+                    for (int i = 0; (i + bytecount) <= memlen; i++)
                     {
-                        int memlen = (int)(MemInfo.BaseAddress + MemInfo.RegionSize - addr);
-                        if (maxsize != 0 && (int)maxsize < memlen)
-                            memlen = (int)maxsize;
-
-                        byte[] membuf = null;
-                        byte[] mask = null;
-                        byte[] bytes = null;
-
-                        membuf = new byte[memlen];
-                        Stream s;
-                        if (Host.Image.TryReadBytes(Address.Ptr32((uint)addr), memlen, membuf))
+                        if (Helper.memcmp_mask(membuf, i, bytes, mask, bytecount))
                         {
-                            int bytecount = finddata.Length / 2;
-
-                            mask = new byte[bytecount];
-                            bytes = new byte[bytecount];
-
-                            Helper.hexstr2bytemask(finddata, mask, bytecount);
-                            Helper.hexstr2bytes(finddata, bytes, bytecount);
-
-                            for (int i = 0; (i + bytecount) <= memlen; i++)
-                            {
-                                if (Helper.memcmp_mask(membuf, i, bytes, mask, bytecount))
-                                {
-                                    variables["$RESULT"] = new Var(addr + (ulong)i);
-                                    break;
-                                }
-                            }
+                            variables["$RESULT"] = new Var(addr + (ulong)i);
+                            break;
                         }
                     }
-                    return true;
                 }
             }
-            return false;
+            return true;
         }
 
         // TE?
@@ -1522,7 +1521,7 @@ string filename;
                 }
                 else return false;
 
-                if (Helper.is_hexwild(finddata))
+                if (Helper.IsHexWild(finddata))
                 {
                     variables["$RESULT"] = new Var(0);
 
@@ -2961,7 +2960,7 @@ string filename;
                 }
                 else if (GetString(args[0], out str))
                 {
-                    @out = Helper.is_bytestring(str) ? str : Helper.CleanString(str);
+                    @out = Helper.IsHexLiteral(str) ? str : Helper.CleanString(str);
                 }
                 else return false;
 
@@ -3049,7 +3048,7 @@ string filename;
                 {
                     Var v;
 
-                    if (maxsize > sizeof(rulong) && Helper.is_memory(args[1])) // byte string
+                    if (maxsize > sizeof(rulong) && Helper.IsMemoryAccess(args[1])) // byte string
                     {
                         string tmp = Helper.UnquoteString(args[1], '[', ']');
 
@@ -3159,7 +3158,7 @@ string filename;
 #endif
                     }
                 }
-                else if (Helper.is_memory(args[0]))
+                else if (Helper.IsMemoryAccess(args[0]))
                 {
                     string tmp = Helper.UnquoteString(args[0], '[', ']');
 
@@ -3168,7 +3167,7 @@ string filename;
                     {
                         Debug.Assert(target != 0);
 
-                        if (maxsize > sizeof(rulong) && Helper.is_memory(args[1]))
+                        if (maxsize > sizeof(rulong) && Helper.IsMemoryAccess(args[1]))
                         {
                             tmp = Helper.UnquoteString(args[1], '[', ']');
 
@@ -3627,7 +3626,7 @@ string param;
             string v1, v2;
             rulong len = 0;
 
-            if (args.Length >= 3 && args.Length <= 4 && GetRulong(args[0], out addr) && Helper.is_bytestring(args[1]) && Helper.is_bytestring(args[2]))
+            if (args.Length >= 3 && args.Length <= 4 && GetRulong(args[0], out addr) && Helper.IsHexLiteral(args[1]) && Helper.IsHexLiteral(args[2]))
             {
                 if (args.Length == 4 && !GetRulong(args[3], out len))
                     return false;

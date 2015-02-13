@@ -61,7 +61,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             size = rhs.Length;
             str = rhs;
-            if (Helper.is_bytestring(str))
+            if (Helper.IsHexLiteral(str))
             {
                 str = str.ToUpperInvariant();
                 size = (size / 2) - 1; // num of bytes

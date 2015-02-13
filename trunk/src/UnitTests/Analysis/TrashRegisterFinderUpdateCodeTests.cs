@@ -155,6 +155,7 @@ l1:
 main_exit:
 
 // foo
+// Return size: 0
 void foo()
 foo_entry:
 	// succ:  l1

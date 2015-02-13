@@ -37,7 +37,6 @@ namespace Decompiler.Analysis
 	{
 		private Identifier [] varsOrig;
 		private Procedure proc;
-		private DominatorGraph<Block> domGraph;
 
 		private const byte BitDefined = 1;
 		private const byte BitDeadIn = 2;
@@ -51,19 +50,13 @@ namespace Decompiler.Analysis
 		public SsaTransform(Procedure proc, DominatorGraph<Block> gr)
 		{
 			this.proc = proc;
-			this.domGraph = gr;
 			this.varsOrig = new Identifier[proc.Frame.Identifiers.Count];
 			proc.Frame.Identifiers.CopyTo(varsOrig);
 
-			Transform();
+			Transform(gr);
 		}
 
         public SsaState SsaState { get; private set; }
-
-        private int RpoNumber(Block b)
-        {
-            return domGraph.ReversePostOrder[b];
-        }
 
 		/// <summary>
 		/// Creates a phi statement with slots for each predecessor block, then
@@ -84,8 +77,8 @@ namespace Decompiler.Analysis
 
 		private void LocateAllDefinedVariables(Dictionary<Identifier, byte>[] defOrig)
 		{
-			var ldv = new LocateDefinedVariables(proc, this, defOrig);
-			foreach (Block n in domGraph.ReversePostOrder.Keys)
+			var ldv = new LocateDefinedVariables(proc, this.SsaState, defOrig);
+			foreach (Block n in SsaState.DomGraph.ReversePostOrder.Keys)
 			{
 				ldv.LocateDefs(n);
 			}
@@ -95,7 +88,7 @@ namespace Decompiler.Analysis
 		{
             foreach (var block in proc.ControlGraph.Blocks)
             {
-                int iBlock = RpoNumber(block);
+                int iBlock = SsaState.RpoNumber(block);
                 foreach (Identifier id in proc.Frame.Identifiers.Where(id => id.Storage is TemporaryStorage))
                 {
                     byte bits;
@@ -119,22 +112,22 @@ namespace Decompiler.Analysis
 				// Create a worklist W of all the blocks that define a.
 
 				var W = new WorkList<Block>();
-                foreach (Block b in domGraph.ReversePostOrder.Keys) 
+                foreach (Block b in SsaState.DomGraph.ReversePostOrder.Keys) 
 				{
                     byte bits;
-                    AOrig[RpoNumber(b)].TryGetValue(a, out bits);
+                    AOrig[SsaState.RpoNumber(b)].TryGetValue(a, out bits);
 					if ((bits & BitDefined) != 0)
 						W.Add(b);
 				}
                 Block n;
                 while (W.GetWorkItem(out n))
                 {
-                    foreach (Block y in domGraph.DominatorFrontier(n))
+                    foreach (Block y in SsaState.DomGraph.DominatorFrontier(n))
                     {
                         // Only add phi functions if there is no
                         // phi already and variable is not deadIn.
 
-                        var dict = AOrig[RpoNumber(y)];
+                        var dict = AOrig[SsaState.RpoNumber(y)];
                         byte bits;
                         dict.TryGetValue(a, out bits);
                         if ((bits & (BitHasPhi | BitDeadIn)) == 0)
@@ -162,12 +155,13 @@ namespace Decompiler.Analysis
             return a;
         }
 
-		public void Transform()
+		public SsaState Transform(DominatorGraph<Block> domGraph)
 		{
             this.SsaState = new SsaState(proc, domGraph);
 			PlacePhiFunctions();
-			var rn = new VariableRenamer(this, varsOrig, proc);
+			var rn = new VariableRenamer(this.SsaState, this.varsOrig, proc);
 			rn.RenameBlock(proc.EntryBlock);
+            return SsaState;
 		}
 
 		/// <summary>
@@ -183,9 +177,9 @@ namespace Decompiler.Analysis
 			private Block block;
             private Dictionary<Identifier, byte>[] defVars; // variables defined by a statement.
 			private Statement stmCur;
-            private SsaTransform ssa;
+            private SsaState ssa;
 
-			public LocateDefinedVariables(Procedure proc, SsaTransform ssa, Dictionary<Identifier, byte>[] defOrig)
+			public LocateDefinedVariables(Procedure proc, SsaState ssa, Dictionary<Identifier, byte>[] defOrig)
 			{
 				this.proc = proc;
                 this.ssa = ssa;
@@ -284,7 +278,7 @@ namespace Decompiler.Analysis
 
 		public class VariableRenamer : InstructionTransformer
 		{
-			private SsaTransform ssa;
+			private SsaState ssa;
 			private int [] rename;		// most recently used name for var x.
 			private int [] wasonentry;	// the name x had on entry into the block.
 			private Statement stmCur; 
@@ -297,7 +291,7 @@ namespace Decompiler.Analysis
 			/// <param name="ssa">SSA identifiers</param>
 			/// <param name="p">procedure to rename</param>
 			/// <param name="useSignature">if true, uses variables from procedure's signature.</param>
-			public VariableRenamer(SsaTransform ssa, Identifier [] varsOrig, Procedure p)
+			public VariableRenamer(SsaState ssa, Identifier [] varsOrig, Procedure p)
 			{
 				this.ssa = ssa;
 				this.rename = new int[varsOrig.Length];
@@ -309,7 +303,7 @@ namespace Decompiler.Analysis
 				Debug.Assert(entryBlock.Statements.Count == 0);
 				for (int a = 0; a < rename.Length; ++a)
 				{
-					var id = ssa.SsaState.Identifiers.Add(ssa.varsOrig[a], null, null, false);
+					var id = ssa.Identifiers.Add(varsOrig[a], null, null, false);
 					rename[a] = a;
 
 					// Variables that are used before defining are "predefined" by adding a 
@@ -322,11 +316,6 @@ namespace Decompiler.Analysis
 					wasonentry[a] = -1;
 				}
 			}
-
-            private int RpoNumber(Block block)
-            {
-                return ssa.domGraph.ReversePostOrder[block];
-            }
 
 			/// <summary>
 			/// Renames all variables in a block to use their SSA names
@@ -356,9 +345,9 @@ namespace Decompiler.Analysis
 				{
 					for (int j = 0; j < y.Pred.Count; ++j)
 					{
-						if (y.Pred[j] == n && !visited[RpoNumber(y)])
+						if (y.Pred[j] == n && !visited[ssa.RpoNumber(y)])
 						{
-							visited[RpoNumber(y)] = true;
+							visited[ssa.RpoNumber(y)] = true;
 
 							// For each phi function in y...
 
@@ -377,9 +366,9 @@ namespace Decompiler.Analysis
 						}
 					}
 				}
-				foreach (Block c in ssa.domGraph.ReversePostOrder.Keys)
+				foreach (Block c in ssa.DomGraph.ReversePostOrder.Keys)
 				{
-					if (c != proc.EntryBlock && ssa.domGraph.ImmediateDominator(c) == n)
+					if (c != proc.EntryBlock && ssa.DomGraph.ImmediateDominator(c) == n)
 						RenameBlock(c);
 				}
 				wasonentry.CopyTo(rename, 0);
@@ -403,7 +392,7 @@ namespace Decompiler.Analysis
             // A new definition of id requires a new SSA name.
 			private Identifier NewDef(Identifier idOld, Expression exprDef, bool isSideEffect)
 			{
-				var sid = ssa.SsaState.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
+				var sid = ssa.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
 				int iNew = Rename(idOld);
 				rename[idOld.Number] = sid.Identifier.Number;
 				EnsureWasOnEntry(idOld.Number, iNew);
@@ -413,7 +402,7 @@ namespace Decompiler.Analysis
 			private Identifier NewUse(Identifier idOld, Statement stm)
 			{
                 int iNew = Rename(idOld);
-				var sid = ssa.SsaState.Identifiers[iNew];
+				var sid = ssa.Identifiers[iNew];
 				sid.Uses.Add(stm);
 				return sid.Identifier;
 			}

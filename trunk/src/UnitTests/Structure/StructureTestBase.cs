@@ -32,6 +32,7 @@ using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Decompiler.Environments.Msdos;
 
 namespace Decompiler.UnitTests.Structure
 {
@@ -44,12 +45,12 @@ namespace Decompiler.UnitTests.Structure
             return proc.Nodes.Find(node => node.Name == nodeName);
         }
 
-		protected Program RewriteProgram(string sourceFilename, Address addrBase)
+		protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
             var ldr = new Loader(new ServiceContainer());
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new IntelTextAssembler(),
+                new IntelTextAssembler { Platform = new MsdosPlatform(null, new X86ArchitectureReal())},
                 addrBase);
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
