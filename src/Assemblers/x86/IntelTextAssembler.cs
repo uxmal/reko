@@ -58,6 +58,7 @@ namespace Decompiler.Assemblers.x86
 
             var arch = new IntelArchitecture(ProcessorMode.Real);
             asm = new IntelAssembler(arch, addrBase, entryPoints);
+            asm.Platform = Platform;
 
             // Assemblers are strongly line-oriented.
 
@@ -166,7 +167,8 @@ namespace Decompiler.Assemblers.x86
 
         public Platform Platform
         {
-            get { return asm.Platform; }
+            get;
+            set;
         }
 
 		public void ProcessAssume()

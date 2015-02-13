@@ -1591,17 +1591,17 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 value = Helper.toupper(Helper.rul2hexstr(Helper.decstr2rul(op.Substring(0, op.Length - 1))));
                 return true;
             }
-            else if (Helper.is_string(op))
+            else if (Helper.IsStringLiteral(op))
             {
                 value = Helper.UnquoteString(op, '"');
                 return true;
             }
-            else if (Helper.is_bytestring(op))
+            else if (Helper.IsHexLiteral(op))
             {
                 value = op;
                 return true;
             }
-            else if (Helper.is_memory(op))
+            else if (Helper.IsMemoryAccess(op))
             {
                 return GetString(op, out value);
             }
@@ -1644,7 +1644,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     */
                 }
             }
-            else if (Helper.is_string(op))
+            else if (Helper.IsStringLiteral(op))
             {
                 value = Helper.UnquoteString(op, '"');
 
@@ -1652,7 +1652,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     value = value.Remove(size);
                 return true;
             }
-            else if (Helper.is_bytestring(op))
+            else if (Helper.IsHexLiteral(op))
             {
                 if (size!= 0 && (size * 2) < (op.Length - 2))
                     value = op.Substring(0, (size * 2) + 1) + '#';
@@ -1660,7 +1660,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     value = op;
                 return true;
             }
-            else if (Helper.is_memory(op))
+            else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
@@ -1729,97 +1729,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             value = "";
             return false;
         }
-        /*
-        bool GetStringLiteral(string  op, string &value)
-        {
-            if(IsVariable(op))
-            {
-                const var& v = variables[op];
-                if(v.type == var::STR && !v.isbuf)
-                {
-                    value = v.str;
-                    return true;
-                }
-            }
-            else if(is_string(op))
-            {
-                value = Helper.UnquoteString(op, '"');
-                return true; 
-            }
-            else
-            {
-                string parsed;
-                return (ParseString(op, parsed) && GetStringLiteral(parsed, value));
-            }
-            return false;
-        }
-
-        bool GetBytestring(string  op, string &value, int size)
-        {
-            if(IsVariable(op))
-            {
-                const var& v = variables[op];
-                if(v.type == var::STR && v.isbuf)
-                {
-                    if(size && size < v.size)
-                    {
-                        var tmp = v;
-                        tmp.resize(size);
-                        value = tmp.str;
-                    }
-                    else
-                        value = v.str;
-                    return true;
-                }
-            }
-            else if(is_bytestring(op))
-            {
-                if(size && (size*2) < (op.Length-2))
-                    value = op.Substring(0, (size*2)+1) + '#';
-                else
-                    value = op;
-                return true;
-            }
-            else if(Helper.is_memory(op))
-            {
-                string tmp = Helper.UnquoteString(op, '[', ']');
-
-                rulong src;
-                if(GetRulong(tmp, src))
-                {
-                    Debug.Assert(src != 0);
-
-                    if(size)
-                    {
-                        byte* buffer;
-
-                        try
-                        {
-                            buffer = new byte[size];
-                        }
-                        catch(std::bad_alloc)
-                        {
-                            return false;	
-                        }
-
-                        if(Host.TE_ReadMemory(src, size, buffer))
-                        {
-                            value = '#' + bytes2hexstr(buffer, size) + '#';
-                            delete[] buffer;
-                            return true;
-                        }
-                        delete[] buffer;
-                    }
-                }
-            }
-            else
-            {
-                string parsed;
-                return (ParseString(op, parsed) && GetBytestring(parsed, value, size));
-            }
-            return false;
-        }
-        */
 
         bool GetBool(string op, out bool value)
         {
@@ -1944,7 +1853,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     return true;
                 }
             }
-            else if (Helper.is_memory(op))
+            else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
@@ -2051,7 +1960,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx);
                 }
             }
-            else if (Helper.is_memory(op))
+            else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
@@ -2076,7 +1985,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     variables[op].resize(size);
                 return true;
             }
-            else if (Helper.is_memory(op))
+            else if (Helper.IsMemoryAccess(op))
             {
                 string tmp = Helper.UnquoteString(op, '[', ']');
 
@@ -2151,7 +2060,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool is_writable(string s)
         {
-            return (IsVariable(s) || Helper.is_memory(s) || is_register(s) || is_flag(s) || is_floatreg(s));
+            return (IsVariable(s) || Helper.IsMemoryAccess(s) || is_register(s) || is_flag(s) || is_floatreg(s));
         }
 
         string ResolveVarsForExec(string @in, bool hex8forExec)

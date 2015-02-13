@@ -19,10 +19,13 @@
 #endregion
 
 using Decompiler.Analysis;
+using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,6 +35,7 @@ namespace Decompiler.UnitTests.Analysis
     [TestFixture]
     public class DataFlowAnalysisTests2
     {
+        private ProgramBuilder pb;
         private void GivenProgram(ProgramBuilder pb)
         {
         }
@@ -40,6 +44,9 @@ namespace Decompiler.UnitTests.Analysis
         {
             var sw = new StringWriter();
             pb.Program.Procedures.Values.First().Write(false, sw);
+            var sActual = sw.ToString();
+            if (sExp != sActual) 
+                Debug.WriteLine(sActual);
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -96,7 +103,63 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem9[0x00010008:word32] = Mem9[sdfdsfsd] 
+	Mem9[0x00010008:word32] = Mem0[fp + 0x00000004:word32] + Mem0[fp + 0x00000008:word32]
+	return
+	// succ:  test_exit
+test_exit:
+";
+            AssertProgram(sExp, pb);
+        }
+
+        private ProcedureBase GivenFunction(string name, RegisterStorage ret, params object [] args)
+        {
+            var frame = pb.Program.Architecture.CreateFrame();
+            Identifier idRet = null;
+            if (ret != null)
+            {
+                idRet = frame.EnsureRegister(ret);
+            }
+            List<Identifier> parameters = new List<Identifier>();
+            foreach (int offset in args)
+            {
+                parameters.Add(frame.EnsureStackArgument(offset, pb.Program.Architecture.WordWidth));
+            }
+            var proc = new ExternalProcedure(name, new ProcedureSignature(
+                idRet, 
+                parameters.ToArray()));
+            return proc;
+        }
+
+        [Test]
+        public void DfaCallProc()
+        {
+            pb = new ProgramBuilder();
+            pb.Add("test", m =>
+            {
+                var sp = m.Register(m.Architecture.StackRegister);
+
+                var fooProc = GivenFunction("foo", m.Architecture.GetRegister(1), 4, 8);
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, 2);
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, 1);
+                m.Call(fooProc);
+                m.Assign(sp, m.IAdd(sp, 8));
+                m.Return();
+            });
+
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), new FakeDecompilerEventListener());
+            dfa.UntangleProcedures2();
+            var sExp = @"// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	Mem9[0x00010008:word32] = Mem0[fp + 0x00000004:word32] + Mem0[fp + 0x00000008:word32]
+	return
+	// succ:  test_exit
+test_exit:
 ";
             AssertProgram(sExp, pb);
         }

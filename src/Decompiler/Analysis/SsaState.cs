@@ -33,16 +33,16 @@ namespace Decompiler.Analysis
 	public class SsaState
 	{
 		private SsaIdentifierCollection ids;
-        private DominatorGraph<Block> domGraph;
 
 		public SsaState(Procedure proc, DominatorGraph<Block> domGraph)
 		{
 			this.Procedure = proc;
-            this.domGraph = domGraph;
+            this.DomGraph = domGraph;
 			this.ids = new SsaIdentifierCollection();
 		}
 
         public Procedure Procedure { get; private set; }
+        public DominatorGraph<Block> DomGraph { get; private set; }
 
         /// <summary>
         /// Inserts the instr d of the identifier v at statement S.
@@ -53,7 +53,7 @@ namespace Decompiler.Analysis
         public void Insert(Instruction d, Identifier v, Statement S)
         {
             // Insert new phi-functions.
-            foreach (var dfFode in domGraph.DominatorFrontier(S.Block))
+            foreach (var dfFode in DomGraph.DominatorFrontier(S.Block))
             {
                 // If there is no phi-function for v
                 //    create new phi-function for v. (which is an insert, so call self recursively)
@@ -132,6 +132,10 @@ namespace Decompiler.Analysis
 			stm.Block.Statements.Remove(stm);
 		}
 
+        public int RpoNumber(Block b)
+        {
+            return DomGraph.ReversePostOrder[b];
+        }
 
 		/// <summary>
 		/// Dumps all SSA identifiers, showing the original variable,

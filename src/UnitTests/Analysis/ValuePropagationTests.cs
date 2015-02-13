@@ -47,6 +47,31 @@ namespace Decompiler.UnitTests.Analysis
             mr = new MockRepository();
 		}
 
+		protected override void RunTest(Program prog, TextWriter writer)
+		{
+			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			dfa.UntangleProcedures();
+			foreach (Procedure proc in prog.Procedures.Values)
+			{
+				writer.WriteLine("= {0} ========================", proc.Name);
+				var gr = proc.CreateBlockDominatorGraph();
+				Aliases alias = new Aliases(proc, prog.Architecture);
+				alias.Transform();
+				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaState ssa = sst.SsaState;
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                cce.Transform();
+				ssa.Write(writer);
+				proc.Write(false, writer);
+				writer.WriteLine();
+
+				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+				vp.Transform();
+
+				ssa.Write(writer);
+				proc.Write(false, writer);
+			}
+		}
 		[Test]
 		public void VpChainTest()
 		{
@@ -376,32 +401,6 @@ namespace Decompiler.UnitTests.Analysis
             ssaIds.Add(sid);
             return sid.Identifier;
         }
-
-        protected override void RunTest(Program prog, TextWriter writer)
-		{
-			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
-				writer.WriteLine("= {0} ========================", proc.Name);
-				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
-				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
-                cce.Transform();
-				ssa.Write(writer);
-				proc.Write(false, writer);
-				writer.WriteLine();
-
-				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
-				vp.Transform();
-
-				ssa.Write(writer);
-				proc.Write(false, writer);
-			}
-		}
 
 		private class DpbMock : ProcedureBuilder
 		{

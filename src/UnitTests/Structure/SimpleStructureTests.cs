@@ -154,7 +154,7 @@ namespace Decompiler.UnitTests.Structure
 		{
 			using (FileUnitTester fut = new FileUnitTester(outFilename))
 			{
-				RewriteProgram(sourceFilename, addrBase);
+				RewriteProgramMsdos(sourceFilename, addrBase);
 				foreach (Procedure proc in program.Procedures.Values)
 				{
 					ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);

@@ -130,14 +130,15 @@ namespace Decompiler.UnitTests.Analysis
         private Program RewriteFile32(string relativePath, string configFile)
         {
             Program program;
-            Assembler asm = new IntelTextAssembler();
+            var asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                program = asm.Assemble(new Address(0x10000000), rdr);
                 if (this.platform == null)
                 {
-                    program.Platform = new Decompiler.Environments.Win32.Win32Platform(null, program.Architecture);
+                    this.platform = new Decompiler.Environments.Win32.Win32Platform(null, new X86ArchitectureFlat32());
                 }
+                asm.Platform = this.platform;
+                program = asm.Assemble(new Address(0x10000000), rdr);
             }
             foreach (var item in asm.ImportReferences)
             {

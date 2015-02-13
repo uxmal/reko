@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Structure
 		{
 			using (FileUnitTester fut = new FileUnitTester(outFilename))
 			{
-				RewriteProgram(sourceFilename, new Address(0xC00, 0));
+				RewriteProgramMsdos(sourceFilename, new Address(0xC00, 0));
 				foreach (Procedure proc in program.Procedures.Values)
 				{
 					proc.Write(false, fut.TextWriter);
