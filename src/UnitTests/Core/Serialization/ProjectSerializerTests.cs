@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
             mr.ReplayAll();
 
-            var ps = new ProjectLoader(loader);
+            var ps = new ProjectLoader("", loader);
             var proj = ps.LoadProject(FileUnitTester.MapTestPath("fragments/multiple/termination.xml"));
 
             Assert.AreEqual(1, proj.Programs[0].UserProcedures.Count);
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(loader);
+            var ps = new ProjectLoader("", loader);
             var p = ps.LoadProject(sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 

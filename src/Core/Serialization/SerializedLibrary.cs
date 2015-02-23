@@ -32,6 +32,9 @@ namespace Decompiler.Core.Serialization
         public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
 
+        [XmlAttribute("module")]
+        public string ModuleName;
+
         [XmlAttribute("case")]
         public string Case;
 
@@ -87,7 +90,7 @@ namespace Decompiler.Core.Serialization
             typeof(SerializedArrayType),
             typeof(SerializedEnumType),
             typeof(SerializedStructType),
-            typeof(SerializedStructField),
+            typeof(StructField_v1),
             typeof(UnionType_v1),
             typeof(SerializedUnionAlternative),
             typeof(StringType_v2),

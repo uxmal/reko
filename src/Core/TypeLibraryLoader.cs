@@ -38,7 +38,7 @@ namespace Decompiler.Core
         private Dictionary<string, DataType> types;
         private Dictionary<string, UnionType> unions;
         private Dictionary<string, StructureType> structures;
-        private Dictionary<string, ProcedureSignature> procedures;
+        private Dictionary<string, ProcedureSignature> signaturesByName;
         private string defaultConvention;
         private Dictionary<string, SystemService> servicesByName;
         private Dictionary<int, SystemService> servicesByOrdinal;
@@ -53,24 +53,25 @@ namespace Decompiler.Core
                 { "va_list", arch.FramePointerType } ,  
                 { "size_t", arch.WordWidth },
             };
-            this.procedures = new Dictionary<string, ProcedureSignature>(cmp);
+            this.signaturesByName = new Dictionary<string, ProcedureSignature>(cmp);
             this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
             this.servicesByName = new Dictionary<string, SystemService>(cmp);
             this.servicesByOrdinal = new Dictionary<int, SystemService>();
         }
 
-        public TypeLibrary Load(SerializedLibrary serializedLibrary)
+        public TypeLibrary Load(SerializedLibrary sLib)
         {
-            ReadDefaults(serializedLibrary.Defaults);
-            LoadTypes(serializedLibrary);
-            LoadProcedures(serializedLibrary);
+            moduleName = sLib.ModuleName;
+            ReadDefaults(sLib.Defaults);
+            LoadTypes(sLib);
+            LoadProcedures(sLib);
             return BuildLibrary();
         }
 
         public TypeLibrary BuildLibrary()
         {
-            var lib = new TypeLibrary(types, procedures);
+            var lib = new TypeLibrary(types, signaturesByName);
             lib.ModuleName = moduleName;
             foreach (var de in servicesByName)
             {
@@ -103,7 +104,15 @@ namespace Decompiler.Core
             try
             {
                 var sser = new ProcedureSerializer(arch, this, this.defaultConvention);
-                procedures[sp.Name] = sser.Deserialize(sp.Signature, arch.CreateFrame());    //$BUGBUG: catch dupes?   
+                var signature = sser.Deserialize(sp.Signature, arch.CreateFrame());
+                signaturesByName[sp.Name] =  signature;   //$BUGBUG: catch dupes?   
+                if (sp.Ordinal != Procedure_v1.NoOrdinal)
+                {
+                    servicesByOrdinal[sp.Ordinal] = new SystemService { 
+                        Name = sp.Name,
+                        Signature = signature,
+                    };
+                }
             }
             catch (Exception ex)
             {

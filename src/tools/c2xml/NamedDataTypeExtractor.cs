@@ -457,7 +457,7 @@ namespace Decompiler.Tools.C2Xml
             return en;
         }
 
-        private IEnumerable<SerializedStructField> ExpandStructFields(IEnumerable<StructDecl> decls)
+        private IEnumerable<StructField_v1> ExpandStructFields(IEnumerable<StructDecl> decls)
         {
             int offset = 0;
             foreach (var decl in decls)
@@ -468,7 +468,7 @@ namespace Decompiler.Tools.C2Xml
                     var nt = ntde.GetNameAndType(declarator);
                     var rawSize = nt.DataType.Accept(converter.Sizer);
                     offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))
-                    yield return new SerializedStructField
+                    yield return new StructField_v1
                     {
                         Offset = offset,
                         Name = nt.Name,

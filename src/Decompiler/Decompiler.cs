@@ -188,7 +188,7 @@ namespace Decompiler
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            Project = ProjectLoader.LoadProject(image, loader);
+            Project = ProjectLoader.LoadProject(fileName, image, loader);
             bool isProject;
             if (Project != null)
             {
@@ -234,11 +234,7 @@ namespace Decompiler
         protected Project CreateDefaultProject(string fileName, Program program)
         {
             program.Filename = fileName;
-            program.DisassemblyFilename = Path.ChangeExtension(fileName, ".asm");
-            program.IntermediateFilename = Path.ChangeExtension(fileName, ".dis");
-            program.OutputFilename = Path.ChangeExtension(fileName, ".c");
-            program.TypesFilename = Path.ChangeExtension(fileName, ".h");
-            program.GlobalsFilename = Path.ChangeExtension(fileName, ".globals.c");
+            program.EnsureFilenames(fileName);
 
             var project = new Project
             {
@@ -246,6 +242,8 @@ namespace Decompiler
             };
             return project;
         }
+
+
 
 		/// <summary>
 		/// Extracts type information from the typeless rewritten programs.

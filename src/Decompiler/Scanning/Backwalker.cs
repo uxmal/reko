@@ -352,7 +352,10 @@ namespace Decompiler.Scanning
             {
                 Stride = 1;
                 DetermineVector(mem, bin.Right);
-                return RegisterOf(idLeft);
+                if (host.IsValidAddress(VectorAddress))
+                    return RegisterOf(idLeft);
+                else
+                    return null;
             }
             var binLeft = bin.Left as BinaryExpression;
             if (IsScaledIndex(binLeft))

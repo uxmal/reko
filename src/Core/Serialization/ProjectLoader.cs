@@ -31,10 +31,12 @@ namespace Decompiler.Core.Serialization
 {
     public class ProjectLoader 
     {
+        private string filename;
         private ILoader loader;
 
-        public ProjectLoader(ILoader loader)
+        public ProjectLoader(string filename, ILoader loader)
         {
+            this.filename = filename;
             this.loader = loader;
         }
 
@@ -44,14 +46,14 @@ namespace Decompiler.Core.Serialization
         /// <param name="image"></param>
         /// <param name="loader"></param>
         /// <returns></returns>
-        public static Project LoadProject(byte[] image, ILoader loader)
+        public static Project LoadProject(string fileName, byte[] image, ILoader loader)
         {
             if (!IsXmlFile(image))
                 return null;
             try
             {
                 Stream stm = new MemoryStream(image);
-                return new ProjectLoader(loader).LoadProject(stm);
+                return new ProjectLoader(fileName, loader).LoadProject(stm);
             }
             catch (XmlException)
             {
@@ -136,6 +138,12 @@ namespace Decompiler.Core.Serialization
                         }))
                         .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
+            program.DisassemblyFilename = sInput.DisassemblyFilename;
+            program.IntermediateFilename = sInput.IntermediateFilename;
+            program.OutputFilename = sInput.OutputFilename;
+            program.TypesFilename = sInput.TypesFilename;
+            program.GlobalsFilename = sInput.GlobalsFilename;
+            program.EnsureFilenames(sInput.Filename);
             return program;
         }
 

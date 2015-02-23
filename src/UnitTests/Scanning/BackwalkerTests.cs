@@ -67,7 +67,13 @@ namespace Decompiler.UnitTests.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
             }
 
+            public bool IsValidAddress(Address addr)
+            {
+                return true;
+            }
+
             #endregion
+
         }
 
         [SetUp]

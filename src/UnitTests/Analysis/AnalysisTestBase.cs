@@ -162,7 +162,7 @@ namespace Decompiler.UnitTests.Analysis
             var loader = new Loader(new ServiceContainer());
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
-                : new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
+                : new ProjectLoader("", new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 prog,
                 new Dictionary<Address, ProcedureSignature>(),
@@ -248,31 +248,38 @@ namespace Decompiler.UnitTests.Analysis
             platform.Stub(p => p.LookupProcedureByName(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal("GlobalHandle")))
-                .Return(new ProcedureSignature(
-                    new Identifier("eax", 0, tHglobal, Decompiler.Arch.X86.Registers.eax),
-                    new Identifier("pv", 1, tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
-                {
-                    StackDelta = 4,
-                });
+                .Return(
+                    new ExternalProcedure(
+                        "GlobalHandle",
+                        new ProcedureSignature(
+                            new Identifier("eax", 0, tHglobal, Decompiler.Arch.X86.Registers.eax),
+                            new Identifier("pv", 1, tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                        {
+                            StackDelta = 4,
+                        }));
             platform.Stub(p => p.LookupProcedureByName(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal("GlobalUnlock")))
-                .Return(new ProcedureSignature(
-                    new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
-                    new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
-                {
-                    StackDelta = 4,
-                });
+                .Return(new ExternalProcedure(
+                    "GlobalUnlock",
+                    new ProcedureSignature(
+                        new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
+                        new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                    {
+                        StackDelta = 4,
+                    }));
 
             platform.Stub(p => p.LookupProcedureByName(
              Arg<string>.Is.Anything,
              Arg<string>.Is.Equal("GlobalFree")))
-             .Return(new ProcedureSignature(
-                 new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
-                 new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
-             {
-                 StackDelta = 4,
-             });
+             .Return(new ExternalProcedure(
+                 "GlobalFree",
+                 new ProcedureSignature(
+                     new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
+                     new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                 {
+                     StackDelta = 4,
+                 }));
             Given_Platform(platform);
         }
 	}

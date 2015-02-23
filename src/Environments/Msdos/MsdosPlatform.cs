@@ -45,7 +45,7 @@ namespace Decompiler.Environments.Msdos
 			return null;
 		}
 
-        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }

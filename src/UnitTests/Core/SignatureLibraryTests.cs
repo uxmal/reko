@@ -49,8 +49,7 @@ namespace Decompiler.UnitTests.Core
                     }
                 }
             };
-            var lib = new TypeLibrary();
-            lib.Load(new IntelArchitecture(ProcessorMode.Protected32), slib);
+            var lib = TypeLibrary.Load(new IntelArchitecture(ProcessorMode.Protected32), slib);
             Assert.AreEqual(PrimitiveType.Int32, lib.LookupType("int"));
         }
 	}

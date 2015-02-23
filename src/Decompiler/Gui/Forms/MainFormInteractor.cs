@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
+using Decompiler.Core.Types;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using System;
@@ -409,10 +410,13 @@ namespace Decompiler.Gui.Forms
             {
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
+                    Func<int, Program, bool> filter = GetScannedFilter(dlg);
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
+
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
                         .SelectMany(program => 
                               re.GetMatches(program.Image.Bytes, 0)
+                              .Where(o => filter(o, program))
                                 .Select(offset => new AddressSearchHit 
                                 {
                                     Program = program,
@@ -423,6 +427,39 @@ namespace Decompiler.Gui.Forms
                         hits));
                 }
             }
+        }
+
+        private Func<int, Program, bool> GetScannedFilter(ISearchDialog dlg)
+        {
+            if (dlg.ScannedMemory.Checked)
+            {
+                if (dlg.UnscannedMemory.Checked)
+                    return (o, map) => true;
+                else
+                    return (o, program) =>
+                    {
+                        var addr = program.ImageMap.MapLinearAddressToAddress(
+                            program.Image.BaseAddress.Linear + (uint)o);
+                        ImageMapItem item;
+                        return program.ImageMap.TryFindItem(addr, out item)
+                            && item.DataType != null &&
+                            !(item.DataType is UnknownType);
+                    };
+            }
+            else if (dlg.UnscannedMemory.Checked)
+            {
+                return (o, program) =>
+                    {
+                        var addr = program.ImageMap.MapLinearAddressToAddress(
+                               program.Image.BaseAddress.Linear + (uint)o);
+                        ImageMapItem item;
+                        return program.ImageMap.TryFindItem(addr, out item)
+                            && item.DataType == null ||
+                            item.DataType is UnknownType;
+                    };
+            }
+            else
+                throw new NotSupportedException();
         }
 
         public void FindProcedures(ISearchResultService svc)
@@ -470,7 +507,7 @@ namespace Decompiler.Gui.Forms
             {
                 //$REFACTOR: rule of Demeter, push this into a Save() method.
                 var sp =  new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
-                new ProjectLoader(loader).Save(sp, sw);
+                new ProjectLoader(ProjectFileName, loader).Save(sp, sw);
             }
             return true;
         }

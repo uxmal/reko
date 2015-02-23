@@ -204,6 +204,15 @@ namespace Decompiler.Core
         /// </summary>
         public string GlobalsFilename { get; set; }
 
+        public void EnsureFilenames(string fileName)
+        {
+            this.DisassemblyFilename = DisassemblyFilename ?? Path.ChangeExtension(fileName, ".asm");
+            this.IntermediateFilename = IntermediateFilename ?? Path.ChangeExtension(fileName, ".dis");
+            this.OutputFilename = OutputFilename ?? Path.ChangeExtension(fileName, ".c");
+            this.TypesFilename = TypesFilename ?? Path.ChangeExtension(fileName, ".h");
+            this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
+        }
+
         // Mutators /////////////////////////////////////////////////////////////////
 
         /// <summary>

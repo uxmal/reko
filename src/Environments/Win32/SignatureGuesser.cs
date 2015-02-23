@@ -58,7 +58,7 @@ namespace Decompiler.Environments.Win32
             else if (fnName[0] == '?')
             {
                 var pmnp = new MsMangledNameParser(fnName);
-                SerializedStructField field = null;
+                StructField_v1 field = null;
                 try
                 {
                     field = pmnp.Parse();

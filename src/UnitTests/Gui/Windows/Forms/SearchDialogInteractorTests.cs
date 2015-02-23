@@ -65,6 +65,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_UiSettings("SearchDialog/Encoding", 0, 1);
             Given_UiSettings("SearchDialog/Scope", 0, 0);
             Given_UiSettings("SearchDialog/Regexp", 0, 1);
+            Given_UiSettings("SearchDialog/Scanned", 1, 0);
+            Given_UiSettings("SearchDialog/Unscanned", 1, 0);
             mr.ReplayAll();
 
             When_CreateDialog();
@@ -76,6 +78,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsTrue(dlg.RegexCheckbox.Checked);
             Assert.IsFalse(dlg.StartAddress.Enabled);
             Assert.IsFalse(dlg.EndAddress.Enabled);
+            Assert.IsFalse(dlg.ScannedMemory.Checked);
+            Assert.IsFalse(dlg.UnscannedMemory.Checked);
             mr.VerifyAll();
         }
 

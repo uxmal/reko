@@ -292,6 +292,8 @@ namespace Decompiler.UnitTests.Scanning
                 m.Add(m.bx, m.bx);
                 m.Jmp(m.MemW(Registers.cs, Registers.bx, "table"));
                 m.Label("table");
+                m.Dw(0x1234);
+                m.Dw(0x0C00);
 
                 //prog.image = new LoadedImage(new Address(0x0C00, 0), new byte[100]);
                 //var imageMap = image.CreateImageMap();

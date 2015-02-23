@@ -56,11 +56,11 @@ namespace Decompiler.Environments.Win32
         public string ClassName;
         public string Scope;
 
-        public SerializedStructField Parse()
+        public StructField_v1 Parse()
         {
             Expect('?');
             string basicName = ParseBasicName();
-            SerializedStructField typeCode;
+            StructField_v1 typeCode;
             var compoundArgs =     new List<Argument_v1>();
             if (PeekAndDiscard('@'))
             {
@@ -220,7 +220,7 @@ namespace Decompiler.Environments.Win32
             return qualifiers.ToArray();
         }
 
-        public SerializedStructField ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
+        public StructField_v1 ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
         {
             this.compoundArgs = new List<Argument_v1>();
             this.Scope = string.Join("::", qualification);
@@ -230,7 +230,7 @@ namespace Decompiler.Environments.Win32
             case '0':
             case '1':
             case '2':
-                return new SerializedStructField
+                return new StructField_v1
                 {
                     Type = ParseDataTypeCode(compoundArgs),
                     Name = basicName
@@ -261,19 +261,19 @@ namespace Decompiler.Environments.Win32
             default: throw new NotImplementedException();
                
             }
-            return new SerializedStructField
+            return new StructField_v1
             {
                 Type = sig,
                 Name = basicName,
             };
         }
 
-        public SerializedStructField ParseUnqualifiedTypeCode(string basicName)
+        public StructField_v1 ParseUnqualifiedTypeCode(string basicName)
         {
             this.compoundArgs = new List<Argument_v1>();
             if (PeekAndDiscard('Y'))
             {
-                return new SerializedStructField
+                return new StructField_v1
                 {
                     Name = basicName,
                     Type = (SerializedSignature) ParseFunctionTypeCode(),
@@ -282,7 +282,7 @@ namespace Decompiler.Environments.Win32
             else
             {
                 Expect('3');
-                return new SerializedStructField
+                return new StructField_v1
                 {
                     Name = basicName,
                     Type = ParseDataTypeCode(new List<Argument_v1>())

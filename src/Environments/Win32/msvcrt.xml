@@ -146,6 +146,16 @@
 	  </arg>
 	</signature>
   </procedure>
+  <procedure name="printf">
+    <signature>
+    <return><prim domain="SignedInt" size="4"/><reg>eax</reg></return>
+    <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+      <stack size="4"/>
+    </arg>
+    <!-- TODO: what about varargs? -->
+    </signature>
+  </procedure>
   <procedure name="sprintf">
 	<signature>
 	  <return>

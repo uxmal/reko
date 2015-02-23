@@ -469,7 +469,7 @@ fn00001100_exit:
             var scan = CreateScanner(0x1000, 0x2000);
             var platform = mr.Stub<Platform>(null, program.Architecture);
             platform.Stub(p => p.LookupProcedureByName("foo.dll", "bar")).Return(
-                new ProcedureSignature());
+                new ExternalProcedure("bar", new ProcedureSignature()));
             program.Platform = platform;
             Given_Trace(new RtlTrace(0x1000)
             {

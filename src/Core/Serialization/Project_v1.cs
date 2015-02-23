@@ -114,11 +114,20 @@ namespace Decompiler.Core.Serialization
 
     public abstract class SerializedProcedureBase_v1 
     {
+        public const int NoOrdinal = -1;
+
         /// <summary>
         /// The name of a procedure.
         /// </summary>
         [XmlAttribute("name")]
         public string Name;
+
+        /// <summary>
+        /// Ordinal of a procedure -- if it makes sense
+        /// </summary>
+        [XmlAttribute("ordinal")]
+        [DefaultValue(NoOrdinal)]
+        public int Ordinal = NoOrdinal;
 
         /// <summary>
         /// Procedure signature. If non-null, the user has specified a signature. If null, the

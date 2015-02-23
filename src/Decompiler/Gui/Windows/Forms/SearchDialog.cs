@@ -44,7 +44,8 @@ namespace Decompiler.Gui.Windows.Forms
             SearchButton = new ButtonWrapper(btnSearch);
             StartAddress = new TextBoxWrapper(txtStartAddress);
             EndAddress = new TextBoxWrapper(txtEndAddress);
-
+            ScannedMemory = new CheckBoxWrapper(chkScanned);
+            UnscannedMemory = new CheckBoxWrapper(chkUnscanned);
             new SearchDialogInteractor().Attach(this);
         }
 
@@ -58,6 +59,8 @@ namespace Decompiler.Gui.Windows.Forms
         public ITextBox StartAddress { get; private set; }
         public ITextBox EndAddress { get; private set; }
         public IButton SearchButton { get; private set; }
+        public ICheckBox ScannedMemory { get; private set; }
+        public ICheckBox UnscannedMemory { get; private set;}
 
         public StringSearch<byte> ImageSearcher { get; set; }
     }

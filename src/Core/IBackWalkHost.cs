@@ -33,5 +33,7 @@ namespace Decompiler.Core
 		Address GetBlockStartAddress(Address addr);
 
         Block GetSinglePredecessor(Block block);
+
+        bool IsValidAddress(Address addr);
     }
 }

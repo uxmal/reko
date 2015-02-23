@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private void Given_Platform()
         {
             platform = mr.PartialMock<Platform>(null, arch);
-            platform.Stub(p => p.LookupProcedureByName("", "")).IgnoreArguments().Return(null);
+            platform.Stub(p => p.LookupProcedureByName("", "")).IgnoreArguments().Return(new ExternalProcedure("", null));
             platform.Replay();
         }
 

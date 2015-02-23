@@ -792,7 +792,6 @@ namespace Decompiler.Analysis
 			public override void UpdateSummary(ProcedureFlow item)
 			{
 				item.MayUse = item.Summary.Clone();
-                if (item.MayUse[0x1F]) item.ToString(); //$DEBUG
 			}
 		}
 
@@ -811,7 +810,6 @@ namespace Decompiler.Analysis
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
 				flow.MayUse = new BitSet(flow.Summary);
-                if (flow.MayUse[0x1F]) flow.ToString(); //$DEBUG
 				flow.Summary.SetAll(false);
 				flow.grfMayUse = flow.grfSummary;
 				flow.grfSummary = 0;

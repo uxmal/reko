@@ -33,10 +33,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SlibWriteOneProcedure()
 		{
-			SerializedLibrary slib = new SerializedLibrary();
-
+			var slib = new SerializedLibrary();
 			slib.Procedures.Add(MkMalloc());
-
 			Verify(slib, "Core/SlibWriteOneProcedure.txt");
 		}
 
@@ -65,7 +63,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(18, lib.Procedures.Count);
+			Assert.AreEqual(19, lib.Procedures.Count);
 		}
 
 		[Test]
@@ -85,20 +83,28 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
 
         }
+
 		private Procedure_v1 MkMalloc()
 		{
-			Procedure_v1 proc = new Procedure_v1();
-			proc.Name = "malloc";
-			proc.Signature = new SerializedSignature();
-			proc.Signature.Convention = "cdecl";
-			proc.Signature.ReturnValue = new Argument_v1();
-			proc.Signature.ReturnValue.Kind = new Register_v1("eax");
+			Procedure_v1 proc = new Procedure_v1
+			{
+				Name = "malloc",
+				Signature = new SerializedSignature
+				{
+					Convention = "cdecl",
+					ReturnValue = new Argument_v1
+					{
+						Kind = new Register_v1("eax"),
+					},
 
-			proc.Signature.Arguments = new Argument_v1[1];
-			proc.Signature.Arguments[0] = new Argument_v1();
-			proc.Signature.Arguments[0].Name = "cb";
-			proc.Signature.Arguments[0].Kind = new StackVariable_v1();
-
+					Arguments = new Argument_v1[] {
+						new Argument_v1 {
+							Name = "cb",
+							Kind = new StackVariable_v1(),
+						}
+					}
+				}
+			};
 			return proc;
 		}
 

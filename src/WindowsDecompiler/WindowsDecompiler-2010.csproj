@@ -137,7 +137,8 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml">
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />

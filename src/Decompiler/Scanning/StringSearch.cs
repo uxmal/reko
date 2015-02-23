@@ -26,13 +26,17 @@ namespace Decompiler.Scanning
 {
     public abstract class StringSearch<TChar>
     {
-        public StringSearch(TChar[] pattern)
+        public StringSearch(TChar[] pattern, bool scannedMemory, bool unscannedMemory)
         {
             this.Pattern = pattern;
+            this.ScannedMemory = scannedMemory;
+            this.UnscannedMemory = unscannedMemory;
         }
 
         public abstract IEnumerator<int> GetMatchPositions(TChar[] stringToSearch);
 
         public TChar[] Pattern { get; private set; }
+        public bool ScannedMemory { get; private set; }
+        public bool UnscannedMemory { get; private set; }
     }
 }

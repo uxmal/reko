@@ -38,7 +38,9 @@ namespace Decompiler.Core
         {
         }
 
-        public TypeLibrary(IDictionary<string,DataType> types, IDictionary<string, ProcedureSignature> procedures)
+        public TypeLibrary(
+            IDictionary<string,DataType> types,
+            IDictionary<string, ProcedureSignature> procedures)
         {
             this.Types = types;
             this.Signatures = procedures;
@@ -67,7 +69,7 @@ namespace Decompiler.Core
 			}
 		}
 
-		public void Load(IProcessorArchitecture arch, string fileName)
+		public static TypeLibrary Load(IProcessorArchitecture arch, string fileName)
 		{
 			string prefix = Environment.GetEnvironmentVariable("DECOMPILERROOTDIR") ?? ".";
 			// TODO: extract runtime files ( like "realmodeintservices.xml") to their own directory ?
@@ -80,15 +82,14 @@ namespace Decompiler.Core
 			{
 				slib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-            Load(arch, slib);
+            return Load(arch, slib);
 		}
 
-        public void Load(IProcessorArchitecture arch, SerializedLibrary slib)
+        public static TypeLibrary Load(IProcessorArchitecture arch, SerializedLibrary slib)
         {
             var tlldr = new TypeLibraryLoader(arch, true);
             var tlib = tlldr.Load(slib);
-            Signatures = tlib.Signatures;
-            Types = tlib.Types;
+            return tlib;
         }
 
 		public ProcedureSignature Lookup(string procedureName)
