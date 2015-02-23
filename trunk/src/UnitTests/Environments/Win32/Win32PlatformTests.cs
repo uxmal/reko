@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Environments.Win32
         private ServiceContainer sc;
         private Win32Platform win32;
         private IntelArchitecture arch;
-        private ProcedureSignature sig;
+        private ExternalProcedure extProc;
         private OperatingEnvironment opEnv;
         private IDecompilerConfigurationService dcSvc;
 
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Environments.Win32
 
         private void When_Lookup_Procedure(string moduleName, string procName)
         {
-            this.sig = this.win32.LookupProcedureByName(moduleName, procName);
+            this.extProc = this.win32.LookupProcedureByName(moduleName, procName);
         }
 
         private void Given_Win32_TypeLibraries(string name)

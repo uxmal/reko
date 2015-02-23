@@ -73,20 +73,45 @@ namespace Decompiler.Environments.Win32
             };
         }
 
-        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        {
+            EnsureTypeLibraries();
+            return TypeLibs.Select(t => t.Lookup(procName))
+                .Where(sig => sig != null)
+                .Select(s => new ExternalProcedure(procName, s))
+                .FirstOrDefault();
+        }
+
+        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            EnsureTypeLibraries();
+            return TypeLibs
+                .Where(t => string.Compare(t.ModuleName, moduleName, true) == 0)
+                .Select(t =>
+                {
+                    SystemService svc;
+                    if (t.ServicesByVector.TryGetValue(ordinal, out svc))
+                    {
+                        return new ExternalProcedure(svc.Name, svc.Signature);
+                    }
+                    else
+                        return null;
+                })
+                .Where(p => p != null)
+                .FirstOrDefault();
+        }
+
+        private void EnsureTypeLibraries()
         {
             if (TypeLibs == null)
             {
                 var envCfg = Services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.TypeLibs = ((System.Collections.IEnumerable) envCfg.TypeLibraries)
+                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
                     .Where(tl => tl != null).ToArray();
             }
-            return TypeLibs.Select(t => t.Lookup(procName))
-                .Where(sig => sig != null)
-                .FirstOrDefault();
         }
 
 		public override SystemService FindService(int vector, ProcessorState state)

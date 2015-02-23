@@ -70,7 +70,9 @@ namespace Decompiler.Core
 
         public abstract string DefaultCallingConvention { get; }
 
-        public abstract ProcedureSignature LookupProcedureByName(string moduleName, string procName);
+        [Obsolete("", true)]
+        public virtual ProcedureSignature LookupProcedureByNameOld(string moduleName, string procName) { return null; }
+        public abstract ExternalProcedure LookupProcedureByName(string moduleName, string procName);
 
         /// <summary>
         /// Guess signature from the name of the procedure.
@@ -82,7 +84,7 @@ namespace Decompiler.Core
             return null;
         }
 
-        public virtual ProcedureSignature LookupProcedureByOrdinal(string moduleName, int ordinal)
+        public virtual ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             return null;
         }
@@ -107,7 +109,7 @@ namespace Decompiler.Core
             get { return ""; }
         }
 
-        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             return null;
         }

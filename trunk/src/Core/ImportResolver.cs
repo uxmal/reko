@@ -57,15 +57,12 @@ namespace Decompiler.Core
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
-            var sig = platform.LookupProcedureByName(moduleName, importName);
-            if (sig == null)
-                return null;
-            return new ExternalProcedure(importName, sig);
+            return platform.LookupProcedureByName(moduleName, importName);
         }
 
         public ExternalProcedure ResolveProcedure(string moduleName, int ordinal, Platform platform)
         {
-            foreach (var module in project.MetadataFiles.Where(m => 
+            foreach (var module in project.MetadataFiles.Where(m =>
                 string.Compare(m.ModuleName, moduleName, true) == 0 && //$BUGBUG: platform-dependent string comparison.
                 m.TypeLibrary != null))
             {
@@ -75,10 +72,7 @@ namespace Decompiler.Core
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                 }
             }
-            var sig = platform.LookupProcedureByOrdinal(moduleName, ordinal);
-            if (sig == null)
-                return null;
-            return new ExternalProcedure("Ordinal_" + ordinal, sig);
+            return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
     }
 }

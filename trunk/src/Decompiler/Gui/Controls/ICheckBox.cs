@@ -27,6 +27,8 @@ namespace Decompiler.Gui.Controls
 {
     public interface ICheckBox
     {
+        event EventHandler CheckedChanged;
+    
         bool Checked { get; set; }
     }
 }

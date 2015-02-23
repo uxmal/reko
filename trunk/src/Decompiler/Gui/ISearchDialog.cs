@@ -30,6 +30,7 @@ namespace Decompiler.Gui
     public interface ISearchDialog : IDialog
     {
         event EventHandler Load;
+        event EventHandler Closed;
 
         IServiceProvider Services { get; }
         string InitialPattern { get; set; }
@@ -41,6 +42,8 @@ namespace Decompiler.Gui
         ITextBox StartAddress { get; }
         ITextBox EndAddress { get; }
         IButton SearchButton { get; }
+        ICheckBox ScannedMemory { get; }
+        ICheckBox UnscannedMemory { get; }
 
         StringSearch<byte> ImageSearcher { get; set; }
     }

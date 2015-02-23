@@ -46,9 +46,9 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
             SerializedStructType str = new SerializedStructType
             {
-                Fields = new SerializedStructField[] {
-                    new SerializedStructField(0, null, new PrimitiveType_v1(Domain.UnsignedInt, 4)),
-			        new SerializedStructField(4, null, new PrimitiveType_v1(Domain.Real, 8)),
+                Fields = new StructField_v1[] {
+                    new StructField_v1(0, null, new PrimitiveType_v1(Domain.UnsignedInt, 4)),
+			        new StructField_v1(4, null, new PrimitiveType_v1(Domain.Real, 8)),
                 }
             };
 			Assert.AreEqual("struct((0, ?, prim(UnsignedInt,4))(4, ?, prim(Real,8)))", str.ToString());
@@ -60,10 +60,10 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedStructType str = new SerializedStructType
             {
 			    ByteSize = 32,
-			    Fields = new SerializedStructField []
+			    Fields = new StructField_v1 []
                 {
-                    new SerializedStructField(0, null, new PrimitiveType_v1(Domain.SignedInt, 4)),
-			        new SerializedStructField(4, null, new PrimitiveType_v1(Domain.Real, 8)),
+                    new StructField_v1(0, null, new PrimitiveType_v1(Domain.SignedInt, 4)),
+			        new StructField_v1(4, null, new PrimitiveType_v1(Domain.Real, 8)),
                 }
             };
 			StringWriter writer = new StringWriter();

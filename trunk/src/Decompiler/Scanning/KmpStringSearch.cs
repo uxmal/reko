@@ -33,7 +33,8 @@ namespace Decompiler.Scanning
         private int[] failureTable;
         private C[] keyword;
 
-        public KmpStringSearch(C [] W) : base(W)
+        public KmpStringSearch(C[] W, bool scannedMemory, bool unscannedMemory)
+            : base(W,  scannedMemory,  unscannedMemory)
         {
             this.keyword = W;
             failureTable = BuildFailureTable(W);

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library 
+  xmlns="http://schemata.jklnet.org/Decompiler"
+  module="oleaut32.dll">
+  <default>
+  <signature convention="stdapi">
+  </signature>
+  </default>
+  <procedure name="SysFreeString" ordinal="6">
+    <signature>
+      <arg name= "bstrString">
+        <ptr size="4"><prim domain="Character" size="2"/>"</ptr>
+        <stack size="4"/>
+      </arg>
+    </signature>
+  </procedure>
+</library>

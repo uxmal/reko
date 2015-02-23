@@ -204,21 +204,38 @@ namespace Decompiler.Analysis
         {
             if (procs.Count == 1)
             {
-                Debug.Print("SSA rewrite");
                 var proc = procs[0];
                 Aliases alias = new Aliases(proc, program.Architecture, flow);
                 alias.Transform();
-
+                
+                // Transform the procedure to SSA state. When encountering 'call' instructions,
+                // they can be to functions already visited. If so, they have a "ProcedureFlow" 
+                // associated with them. If they have not been visited, or are computed destinations
+                // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
+                // which case the the SSA treats teh call as a "hell node".
                 var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
                 var sst = new SsaTransform(proc, doms);
                 var ssa = sst.SsaState;
 
+                // Propagate condition codes and registers. At the end, the hope is that 
+                // all statements like (x86) mem[esp_42+4] will have been converted to
+                // mem[fp - 30]. We also hope that procedure constants kept in registers
+                // are propagated to the corresponding call sites.
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
                 cce.Transform();
-                DeadCode.Eliminate(proc, ssa);
-
                 var vp = new ValuePropagator(ssa.Identifiers, proc);
                 vp.Transform();
+
+                // Now compute SSA for the stack-based variables as well. That is:
+                // mem[fp - 30] becomes wLoc30, while 
+                // mem[fp + 30] becomes wArg30.
+                // This allows us to compute the dataflow of this procedure.
+                sst.StackVariables = true;
+                sst.Transform(doms);
+                
+                // At this point, the computation of _actual_ ProcedureFlow should be possible.
+                var tid = new TrashedRegisterFinder(program, new [] { proc }, flow, this.eventListener);
+                tid.Compute();
                 DeadCode.Eliminate(proc, ssa);
 
                 // Build expressions. A definition with a single use can be subsumed

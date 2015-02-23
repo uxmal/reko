@@ -199,7 +199,6 @@
             treeNode3,
             treeNode5,
             treeNode8});
-            this.treeView1.ShowLines = false;
             this.treeView1.ShowPlusMinus = false;
             this.treeView1.Size = new System.Drawing.Size(164, 172);
             this.treeView1.TabIndex = 5;

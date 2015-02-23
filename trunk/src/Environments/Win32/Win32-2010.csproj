@@ -80,6 +80,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="msvcrt.xml" />
+    <Content Include="Oleaut32.xml" />
     <Content Include="shell32.xml" />
     <Content Include="user32.xml" />
     <Content Include="windows.xml">

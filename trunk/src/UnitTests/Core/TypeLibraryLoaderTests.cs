@@ -157,9 +157,9 @@ namespace Decompiler.UnitTests.Core
                 {
                     new SerializedStructType {
                         Name = "tagFoo",
-                        Fields = new SerializedStructField [] 
+                        Fields = new StructField_v1 [] 
                         {
-                            new SerializedStructField { Name="Bob", Offset=3, Type=new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=4 } }
+                            new StructField_v1 { Name="Bob", Offset=3, Type=new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=4 } }
                         }
                     },
                 },
@@ -189,6 +189,31 @@ namespace Decompiler.UnitTests.Core
             Assert.AreEqual(
                 "void foo(Stack (struct \"tagFoo\") bar)",
                 lib.Lookup("foo").ToString("foo"));
+        }
+        [Test]
+        public void Tlldr_bothordinalandname()
+        {  
+            Given_ArchitectureStub();
+            repository.ReplayAll();
+            var tlLDr = new TypeLibraryLoader(arch, true);
+            var slib = new SerializedLibrary {
+                Procedures = {
+                    new Procedure_v1 {
+                        Name="foo",
+                        Ordinal=2,
+                        Signature = new SerializedSignature {
+                            ReturnValue = new Argument_v1 {
+                                Type = new VoidType_v1()
+                            }
+                        }
+                    }
+                }
+            };
+            var lib = tlLDr.Load(slib);
+
+            repository.VerifyAll();
+            Assert.AreEqual(1, lib.ServicesByVector.Count);
+            Assert.IsNotNull(lib.ServicesByVector[2]);
         }
     }
 }

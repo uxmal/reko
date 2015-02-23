@@ -33,6 +33,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Analysis
 {
     [TestFixture]
+    [Ignore]
     public class DataFlowAnalysisTests2
     {
         private ProgramBuilder pb;

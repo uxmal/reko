@@ -64,8 +64,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
                 .Do(new Func<IProcessorArchitecture, string, TypeLibrary>((a, n) =>
                 {
-                    var lib = new TypeLibrary();
-                    lib.Load(a, Path.ChangeExtension(n, ".xml"));
+                    var lib = TypeLibrary.Load(a, Path.ChangeExtension(n, ".xml"));
                     return lib;
                 }));
             services.Replay();

@@ -37,12 +37,14 @@ namespace Decompiler.Scanning
         private TreeNode root;
         private TSymbol[][] keywords;
 
-        public AhoCorasickSearch(TSymbol[][] keywords) : base(null)
+        public AhoCorasickSearch(TSymbol[][] keywords, bool scannedMemory, bool unscannedMemory) 
+            : base(null, scannedMemory, unscannedMemory)
         {
             Keywords = keywords;
         }
 
-        public AhoCorasickSearch() : base(null)
+        public AhoCorasickSearch()
+            : base(null, true, true)
         { 
         }
 

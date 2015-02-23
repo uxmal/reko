@@ -84,9 +84,9 @@ namespace Decompiler.Environments.Win32
             SimulatedProc proc;
             if (!module.Procedures.TryGetValue(procName, out proc))
             {
-                var signature = platform.LookupProcedureByName(module.Name, procName);
+                var extProc = platform.LookupProcedureByName(module.Name, procName);
                 proc = new SimulatedProc(procName, emulator);
-                proc.Signature = signature;
+                proc.Signature = extProc.Signature;
                 if (chars != null)
                     proc.Characteristics = chars;
                 proc.uFakedAddress = ++this.uPseudoFn;

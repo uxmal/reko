@@ -505,5 +505,7 @@ namespace Decompiler.Analysis
 				return unary;
 			}
 		}
-	}
+
+        public bool StackVariables { get; set; }
+    }
 }

@@ -538,13 +538,11 @@ namespace Decompiler.Scanning
 
         private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
-            if (addrSwitch.ToString() == "0043E567")
-                addrSwitch.ToString();//$DEBUG
-            var bw = new Backwalker(new BackwalkerHost(scanner), xfer, eval);
+            if (addrSwitch.ToString().EndsWith("452254"))
+                addrSwitch.ToString();      //$DEBUG
+            var bw = new Backwalker(new BackwalkerHost(scanner, program.Image), xfer, eval);
             if (!bw.CanBackwalk())
             {
-                scanner.AddDiagnostic(addrSwitch, new WarningDiagnostic(
-                    string.Format("Unable to determine index register used in transfer instruction {0}.", xfer)));
                 return;
             }
             var bwops = bw.BackWalk(blockCur);
@@ -770,10 +768,12 @@ namespace Decompiler.Scanning
         private class BackwalkerHost : IBackWalkHost
         {
             private IScanner scanner;
+            private LoadedImage image;
 
-            public BackwalkerHost(IScanner scanner)
+            public BackwalkerHost(IScanner scanner, LoadedImage image)
             {
                 this.scanner = scanner;
+                this.image = image;
             }
 
             public void AddDiagnostic(Address addr, Diagnostic d)
@@ -794,6 +794,11 @@ namespace Decompiler.Scanning
             public Block GetSinglePredecessor(Block block)
             {
                 return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
+            }
+
+            public bool IsValidAddress(Address addr)
+            {
+                return image.IsValidAddress(addr);
             }
         }
     }

@@ -175,5 +175,10 @@ namespace Decompiler.Scanning
         {
             get { return cbTable; }
         }
+
+        public bool IsValidAddress(Address addr)
+        {
+            return program.Image.IsValidAddress(addr);
+        }
     }
 }

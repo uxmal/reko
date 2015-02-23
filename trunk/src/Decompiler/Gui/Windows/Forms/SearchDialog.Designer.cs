@@ -40,6 +40,8 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.ddlPatterns = new System.Windows.Forms.ComboBox();
+            this.chkScanned = new System.Windows.Forms.CheckBox();
+            this.chkUnscanned = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -133,7 +135,7 @@
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearch.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSearch.Location = new System.Drawing.Point(187, 187);
+            this.btnSearch.Location = new System.Drawing.Point(187, 254);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 7;
@@ -144,7 +146,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(268, 187);
+            this.btnCancel.Location = new System.Drawing.Point(268, 254);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 8;
@@ -159,13 +161,39 @@
             this.ddlPatterns.Size = new System.Drawing.Size(331, 21);
             this.ddlPatterns.TabIndex = 1;
             // 
+            // chkScanned
+            // 
+            this.chkScanned.AutoSize = true;
+            this.chkScanned.Checked = true;
+            this.chkScanned.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkScanned.Location = new System.Drawing.Point(12, 179);
+            this.chkScanned.Name = "chkScanned";
+            this.chkScanned.Size = new System.Drawing.Size(143, 17);
+            this.chkScanned.TabIndex = 9;
+            this.chkScanned.Text = "Search &scanned memory";
+            this.chkScanned.UseVisualStyleBackColor = true;
+            // 
+            // chkUnscanned
+            // 
+            this.chkUnscanned.AutoSize = true;
+            this.chkUnscanned.Checked = true;
+            this.chkUnscanned.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUnscanned.Location = new System.Drawing.Point(12, 203);
+            this.chkUnscanned.Name = "chkUnscanned";
+            this.chkUnscanned.Size = new System.Drawing.Size(155, 17);
+            this.chkUnscanned.TabIndex = 10;
+            this.chkUnscanned.Text = "Search &unscanned memory";
+            this.chkUnscanned.UseVisualStyleBackColor = true;
+            // 
             // SearchDialog
             // 
             this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(356, 221);
+            this.ClientSize = new System.Drawing.Size(356, 288);
+            this.Controls.Add(this.chkUnscanned);
+            this.Controls.Add(this.chkScanned);
             this.Controls.Add(this.ddlPatterns);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSearch);
@@ -179,7 +207,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(372, 260);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(372, 260);
             this.Name = "SearchDialog";
@@ -207,5 +234,7 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ComboBox ddlPatterns;
+        private System.Windows.Forms.CheckBox chkScanned;
+        private System.Windows.Forms.CheckBox chkUnscanned;
     }
 }

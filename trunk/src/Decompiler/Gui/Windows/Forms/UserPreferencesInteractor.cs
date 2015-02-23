@@ -90,13 +90,16 @@ namespace Decompiler.Gui.Windows.Forms
                 var node = dlg.WindowTree.SelectedNode;
                 if (node == null)
                     return;
-
             }
         }
 
         void WindowFgButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            dlg.ColorPicker.Color = dlg.MemoryControl.ForeColor;
+            if (dlg.ColorPicker.ShowDialog(dlg) == DialogResult.OK)
+            {
+                dlg.MemoryControl.ForeColor = dlg.ColorPicker.Color;
+            }
         }
 
         void WindowFontButton_Click(object sender, EventArgs e)

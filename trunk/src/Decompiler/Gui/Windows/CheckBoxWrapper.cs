@@ -37,5 +37,11 @@ namespace Decompiler.Gui.Windows
         }
 
         public bool Checked { get { return chk.Checked; } set { chk.Checked = value; } }
+
+        public event EventHandler CheckedChanged
+        {
+            add { chk.CheckedChanged += value;  }
+            remove { chk.CheckedChanged -= value; }
+        }
     }
 }

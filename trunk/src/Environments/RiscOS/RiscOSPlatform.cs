@@ -59,7 +59,7 @@ namespace Decompiler.Environments.RiscOS
             throw new NotSupportedException(string.Format("Unknown RiscOS vector &{0:X}.", vector)); 
         }
 
-        public override ProcedureSignature LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }
