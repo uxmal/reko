@@ -180,9 +180,5 @@ namespace Decompiler.Core
         }
         #endregion
 
-        public ProcedureSignature Clone()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
