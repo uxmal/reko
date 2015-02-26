@@ -79,9 +79,9 @@ namespace Decompiler.Core.Types
 
         public virtual DataType VisitMemberPointer(MemberPointer memptr)
 		{
-			memptr.Pointee = memptr.Pointee.Accept(this);
-			memptr.BasePointer = memptr.BasePointer.Accept(this);
-			return memptr;
+			var pointee = memptr.Pointee.Accept(this);
+			var basePointer = memptr.BasePointer.Accept(this);
+            return new MemberPointer(basePointer, pointee, memptr.Size);
 		}
 
         public virtual DataType VisitPointer(Pointer ptr)

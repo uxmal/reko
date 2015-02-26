@@ -538,8 +538,6 @@ namespace Decompiler.Scanning
 
         private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
-            if (addrSwitch.ToString().EndsWith("452254"))
-                addrSwitch.ToString();      //$DEBUG
             var bw = new Backwalker(new BackwalkerHost(scanner, program.Image), xfer, eval);
             if (!bw.CanBackwalk())
             {

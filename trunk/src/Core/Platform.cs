@@ -46,6 +46,16 @@ namespace Decompiler.Core
 
         public IServiceProvider Services { get; private set; }
         public IProcessorArchitecture Architecture { get; private set; }
+        /// <summary>
+        /// The default encoding for byte-encoded text.
+        /// </summary>
+        /// <remarks>
+        /// We use ASCII as the lowest common denominator here, but some arcane platforms (e.g.
+        /// ZX-81) don't use ASCII.
+        /// </remarks>
+        public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
+
+        public abstract string DefaultCallingConvention { get; }
 
 		public abstract SystemService FindService(int vector, ProcessorState state);
 
@@ -59,19 +69,6 @@ namespace Decompiler.Core
             throw new NotSupportedException();
         }
 
-        /// <summary>
-        /// The default encoding for byte-encoded text.
-        /// </summary>
-        /// <remarks>
-        /// We use ASCII as the lowest common denominator here, but some arcane platforms (e.g.
-        /// ZX-81) don't use ASCII.
-        /// </remarks>
-        public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
-
-        public abstract string DefaultCallingConvention { get; }
-
-        [Obsolete("", true)]
-        public virtual ProcedureSignature LookupProcedureByNameOld(string moduleName, string procName) { return null; }
         public abstract ExternalProcedure LookupProcedureByName(string moduleName, string procName);
 
         /// <summary>
