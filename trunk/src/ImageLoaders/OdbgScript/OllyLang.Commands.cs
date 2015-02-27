@@ -1120,7 +1120,7 @@ string filename;
             string finddata;
             rulong maxsize = 0;
 
-            if (args.Length < 2 || args.Length > 3 || GetRulong(args[0], out addr))
+            if (args.Length < 2 || args.Length > 3 || !GetRulong(args[0], out addr))
                 return false;
 
             if (args.Length == 3 && !GetRulong(args[2], out maxsize))

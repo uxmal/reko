@@ -66,6 +66,7 @@ namespace Decompiler.Arch.X86
         cmps,
         cmpsb,
         cmpxchg,
+        cpuid,
         cvttsd2si,
         cwd,
         daa,
@@ -256,6 +257,7 @@ namespace Decompiler.Arch.X86
         wait,
         xadd,
         xchg,
+        xgetbv,
         xlat,
         xor,
     }

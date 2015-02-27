@@ -119,6 +119,30 @@ namespace Decompiler.Arch.X86
                     orw.AddrOf(SrcOp(instrCur.op1))));
         }
 
+        private void RewriteCpuid()
+        {
+            emitter.SideEffect(
+                PseudoProc("__cpuid", VoidType.Instance,
+                    orw.AluRegister(Registers.eax),
+                    orw.AluRegister(Registers.ecx),
+                    orw.AddrOf(orw.AluRegister(Registers.eax)),
+                    orw.AddrOf(orw.AluRegister(Registers.ebx)),
+                    orw.AddrOf(orw.AluRegister(Registers.ecx)),
+                    orw.AddrOf(orw.AluRegister(Registers.edx))));
+        }
+
+        private void RewriteXgetbv()
+        {
+            Identifier edx_eax = frame.EnsureSequence(
+                orw.AluRegister(Registers.edx),
+                orw.AluRegister(Registers.eax),
+                PrimitiveType.Word64);
+            emitter.Assign(edx_eax,
+                PseudoProc("__xgetbv", 
+                edx_eax.DataType,
+                orw.AluRegister(Registers.ecx)));
+        }
+
         public void RewriteBinOp(BinaryOperator opr)
         {
             EmitBinOp(opr, instrCur.op1, instrCur.dataWidth, SrcOp(instrCur.op1), SrcOp(instrCur.op2), CopyFlags.ForceBreak|CopyFlags.EmitCc);

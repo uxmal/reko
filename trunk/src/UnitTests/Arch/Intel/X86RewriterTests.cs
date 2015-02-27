@@ -1163,5 +1163,23 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "0|10000000(4): 1 instructions",
                 "1|L--|C = __bts(Mem0[esp:word32], eax, out Mem0[esp:word32])");
         }
+
+        [Test]
+        public void X86rw_cpuid()
+        {
+            Run32bitTest(0x0F, 0xA2);
+            AssertCode(
+                "0|10000000(2): 1 instructions",
+                "1|L--|__cpuid(eax, ecx, &eax, &ebx, &ecx, &edx)");
+        }
+
+        [Test]
+        public void X86rw_xgetbv()
+        {
+            Run32bitTest(0x0F, 0x01, 0xD0);
+            AssertCode(
+                "0|10000000(3): 1 instructions",
+                "1|L--|edx_eax = __xgetbv(ecx)");
+        }
     }
 }

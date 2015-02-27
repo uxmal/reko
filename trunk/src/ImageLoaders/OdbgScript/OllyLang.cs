@@ -794,8 +794,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 labels.Clear();
             }
 
-
-
             void parse_insert(List<string> toInsert, string currentdir)
             {
                 uint curline = 1;

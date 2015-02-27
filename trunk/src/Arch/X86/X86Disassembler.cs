@@ -395,6 +395,32 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        // Uses the 2 high bits of the ModRM word for further discrimination
+		public class Group7OpRec : OpRec
+        {
+            private OpRec memInstr;
+            private OpRec[] regInstrs;
+
+            public Group7OpRec(
+                OpRec memInstr,
+                params OpRec[] regInstrs)
+            {
+                this.memInstr = memInstr;
+                this.regInstrs = regInstrs;
+            }
+
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                byte modRm;
+                if (!disasm.TryEnsureModRM(out modRm))
+                    return null;
+                if ((modRm & 0xC0) == 0xC0)
+                    return regInstrs[modRm & 0x07].Decode(disasm, op, opFormat);
+                else
+                    return memInstr.Decode(disasm, op, opFormat);
+            }
+        }
+        
         public class FpuOpRec : OpRec
         {
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)

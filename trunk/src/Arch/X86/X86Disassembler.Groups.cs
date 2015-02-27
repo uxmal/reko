@@ -29,7 +29,7 @@ namespace Decompiler.Arch.X86
     {
         private static OpRec [] CreateGroupOprecs()
         {
-            return new SingleByteOpRec[] 
+            return new OpRec[] 
 			{
 				// group 1
 				new SingleByteOpRec(Opcode.add),
@@ -94,7 +94,9 @@ namespace Decompiler.Arch.X86
 				// group 7
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new Group7OpRec(
+                    new SingleByteOpRec(Opcode.illegal),
+                    new SingleByteOpRec(Opcode.xgetbv)),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),

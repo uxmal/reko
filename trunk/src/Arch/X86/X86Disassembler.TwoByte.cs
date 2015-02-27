@@ -33,7 +33,7 @@ namespace Decompiler.Arch.X86
 			{
 				// 00
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new GroupOpRec(7, ""),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -224,7 +224,7 @@ namespace Decompiler.Arch.X86
 				// A0
 				new SingleByteOpRec(Opcode.push, "s4"),
 				new SingleByteOpRec(Opcode.pop, "s4"),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.cpuid, ""),
 				new SingleByteOpRec(Opcode.bt, "Ev,Gv"),
 				new SingleByteOpRec(Opcode.shld, "Ev,Gv,Ib"),
 				new SingleByteOpRec(Opcode.shld, "Ev,Gv,c"),
