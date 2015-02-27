@@ -507,5 +507,19 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble32(0x0F, 0xAB, 0x04, 0x24, 0xEB);
             Assert.AreEqual("bts\t[esp],eax", instr.ToString());
         }
+
+        [Test]
+        public void Dis_x86_cpuid()
+        {
+            var instr = Disassemble32(0x0F, 0xA2);
+            Assert.AreEqual("cpuid\t", instr.ToString());
+        }
+
+        [Test]
+        public void Dis_x86_xgetbv()
+        {
+            var instr = Disassemble32(0x0F, 0x01, 0xD0);
+            Assert.AreEqual("xgetbv\t", instr.ToString());
+        }
     }
 }

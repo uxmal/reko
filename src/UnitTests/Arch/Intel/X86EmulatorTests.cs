@@ -444,6 +444,20 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void X86Emu_regression_1()
+        {
+            Given_Code(m =>
+            {
+                m.Mov(m.esi, 8);
+                m.Mov(m.ebx, -1);
+                m.Sub(m.esi, -4);
+                m.Adc(m.ebx, m.ebx);
+            });
+            emu.Start();
+            Assert.AreEqual(1, emu.Flags & 1);
+        }
+
+        [Test]
         public void X86Emu_call()
         {
             Given_Code(m =>

@@ -124,7 +124,7 @@ namespace Decompiler.Arch.X86
             {
                 while (running && dasm.MoveNext())
                 {
-                    //Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
+ //                   Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
                     Action bpAction;
                     TWord eip = dasm.Current.Address.Linear;
                     if (bpExecute.TryGetValue(eip, out bpAction))
@@ -214,16 +214,18 @@ namespace Decompiler.Arch.X86
             }
         }
 
-
         private void Adc(MachineOperand dst, MachineOperand src)
         {
             TWord l = Read(dst);
             TWord r = Read(src);
             TWord sum = l + r + (Flags & 1);
             Write(dst, sum);
+            var newCy =
+                ((l & r) | ((l | r) & (~(sum)))) >> 31;
+
             uint ov = ((~(l ^ r) & (l ^ sum)) & 0x80000000u) >> 20;
             Flags =
-                (r > sum ? 1u : 0u) |       // Carry
+                (newCy) |       // Carry
                 (sum == 0 ? 1u << 6 : 0u) | // Zero
                 (ov)                        // Overflow
                 ;

@@ -1,5 +1,6 @@
 // Before ///////
 // StaggeredArraysFragment
+// Return size: 0
 void StaggeredArraysFragment()
 StaggeredArraysFragment_entry:
 	// succ:  l1
@@ -10,6 +11,7 @@ StaggeredArraysFragment_exit:
 
 // After ///////
 // StaggeredArraysFragment
+// Return size: 0
 void StaggeredArraysFragment()
 StaggeredArraysFragment_entry:
 	// succ:  l1
