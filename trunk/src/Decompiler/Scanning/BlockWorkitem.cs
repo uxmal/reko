@@ -76,7 +76,8 @@ namespace Decompiler.Scanning
         /// <summary>
         /// Processes the statements of a basic block by using the architecture-specific
         /// Rewriter to obtain a stream of low-level RTL instructions. RTL assignments are 
-        /// simply added to the instruction list of the basic block. Jumps and returns result in the 
+        /// simply added to the instruction list of the basic block. Jumps, returns, and 
+        /// calls to procedures that terminate the thread of executationresult in the 
         /// termination of processing.
         /// </summary>
         public override void Process()
@@ -131,7 +132,8 @@ namespace Decompiler.Scanning
         /// into another, previously existing basic block.
         /// </summary>
         /// <param name="addr"></param>
-        /// <returns>The block we fell into or null if we remained in the same block.</returns>
+        /// <returns>The block we fell into or null if we remained in the 
+        /// same block.</returns>
         private Block FallenThroughNextBlock(Address addr)
         {
             var cont = scanner.FindContainingBlock(addr);
@@ -557,8 +559,17 @@ namespace Decompiler.Scanning
                 if (!rdr.IsValid)
                     return;
                 // Can't determine the size of the table, but surely it has one entry?
-                vector.Add(arch.ReadCodeAddress(bw.Stride, rdr, state));
-                scanner.AddDiagnostic(addrSwitch, new WarningDiagnostic("Can't determine size of the table, probing only one entry."));
+                var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
+                if (this.program.Image.IsValidAddress(addrEntry))
+                {
+                    vector.Add(addrEntry);
+                    scanner.Warn(addrSwitch, "Can't determine size of jump vector; probing only one entry.");
+                }
+                else
+                {
+                    // Nope, not even that.
+                    scanner.Warn(addrSwitch, "No valid entries could be found in jump vector.");
+                }
             }
 
             ScanVectorTargets(xfer, vector);
@@ -598,6 +609,8 @@ namespace Decompiler.Scanning
                 }
                 else
                 {
+                    if (!program.Image.IsValidAddress(addr))
+                        break;
                     BlockFromAddress(ric.Address, addr, blockCur.Procedure, state);
                 }
             }
@@ -709,7 +722,11 @@ namespace Decompiler.Scanning
             var offset = mem.EffectiveAddress as Constant;
             if (offset == null)
                 return null;
-            return scanner.GetImportedProcedure(new Address(offset.ToUInt32()), ric.Address);
+            var addrTarget = new Address(offset.ToUInt32()); 
+            var impEp = scanner.GetImportedProcedure(addrTarget, ric.Address);
+            //if (impEp != null)
+                return impEp;
+            //return scanner.GetInterceptedCall(addrTarget);
         }
 
         //$TODO: merge the followng two procedures?
@@ -772,11 +789,6 @@ namespace Decompiler.Scanning
             {
                 this.scanner = scanner;
                 this.image = image;
-            }
-
-            public void AddDiagnostic(Address addr, Diagnostic d)
-            {
-                scanner.AddDiagnostic(addr, d);
             }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)

@@ -93,6 +93,15 @@ namespace Decompiler.Scanning
             return map;
         }
 
+        /// <summary>
+        /// Builds a list of addresses that will be used as a jump or call vector.
+        /// </summary>
+        /// <param name="addrTable">The address at which the table starts.</param>
+        /// <param name="limit">The number of bytes that comprise the table</param>
+        /// <param name="permutation">If not null, a permutation of the items in the table</param>
+        /// <param name="stride">The size of the individual addresses in the table.</param>
+        /// <param name="state">Current processor state.</param>
+        /// <returns></returns>
         private List<Address> BuildTable(Address addrTable, int limit, int[] permutation, int stride, ProcessorState state)
         {
             List<Address> vector = new List<Address>();
@@ -112,18 +121,21 @@ namespace Decompiler.Scanning
             {
                 ImageReader rdr = scanner.CreateReader(addrTable);
                 int cItems = limit / (int)stride;
+                var image = program.Image;
+                var arch = program.Architecture;
                 for (int i = 0; i < cItems; ++i)
                 {
-                    vector.Add(program.Architecture.ReadCodeAddress(stride, rdr, state));
+                    var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
+                    if (!image.IsValidAddress(entryAddr))
+                    {
+                        scanner.Warn(addrTable, "The call or jump table has invalid addresses; stopping.");
+                        break;
+                    }
+                    vector.Add(entryAddr);
                 }
                 cbTable = limit;
             }
             return vector;
-
-        }
-
-        public void AddDiagnostic(Address addr, Diagnostic diagnostic)
-        {
         }
 
         public Block GetSinglePredecessor(Block block)

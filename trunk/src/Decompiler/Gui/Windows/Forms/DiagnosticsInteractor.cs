@@ -87,11 +87,25 @@ namespace Decompiler.Gui.Windows.Forms
             AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message, ex));
         }
 
+        public void Error(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(message));
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(message, ex));
+        }
+
         public void Warn(string message)
         {
             AddDiagnostic(new NullCodeLocation(""), new WarningDiagnostic(message));
         }
 
+        public void Warn(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new WarningDiagnostic(message));
+        }
         public void ClearDiagnostics()
         {
             listView.Items.Clear();

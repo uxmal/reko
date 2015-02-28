@@ -52,6 +52,11 @@ namespace Decompiler.UnitTests.Mocks
             Debug.WriteLine(lastDiagnostic);
         }
 
+        public void Warn(ICodeLocation location, string message)
+        {
+            AddDiagnostic(location, new WarningDiagnostic(message));
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new ErrorDiagnostic(message));
