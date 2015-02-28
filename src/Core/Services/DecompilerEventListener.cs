@@ -32,6 +32,7 @@ namespace Decompiler.Core.Services
         ICodeLocation CreateProcedureNavigator(Procedure proc);
         ICodeLocation CreateBlockNavigator(Block block);
         void AddDiagnostic(ICodeLocation location, Diagnostic d);
+        void Warn(ICodeLocation location, string message);
         void Error(ICodeLocation location, string message);
         void Error(ICodeLocation location, Exception ex, string message);
 
@@ -47,6 +48,11 @@ namespace Decompiler.Core.Services
 
         #region DecompilerEventListener Members
 
+        public void Warn(ICodeLocation location, string message)
+        {
+            Debug.Print("Warning: {0}: {1}", location, message);
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             Debug.Print("Error: {0}: {1}", location, message);
@@ -55,11 +61,6 @@ namespace Decompiler.Core.Services
         public void Error(ICodeLocation location, Exception ex, string message)
         {
             Debug.Print("Error: {0}: {1} {2}", location, message, ex.Message);
-        }
-
-        public void AddWarningDiagnostic(Address address, string format, params object[] args)
-        {
-            throw new NotImplementedException();
         }
 
         public void AddDiagnostic(Diagnostic d)

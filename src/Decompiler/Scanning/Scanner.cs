@@ -53,6 +53,7 @@ namespace Decompiler.Scanning
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
         void AddDiagnostic(Address addr, Diagnostic d);
+        void Warn(Address addr, string message);
         void Error(Address addr, string message);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
@@ -197,6 +198,11 @@ namespace Decompiler.Scanning
         public void AddDiagnostic(Address addr, Diagnostic d)
         {
             eventListener.AddDiagnostic(eventListener.CreateAddressNavigator(program, addr), d);
+        }
+
+        public void Warn(Address addr, string message)
+        {
+            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message);
         }
 
         public void Error(Address addr, string message)
@@ -562,7 +568,7 @@ namespace Decompiler.Scanning
                     new AddressContext(program, addrInstruction, this.eventListener));
                 return extProc;
             }
-            return null;
+            return GetInterceptedCall(addrImportThunk);
         }
         
         /// <summary>
@@ -574,6 +580,8 @@ namespace Decompiler.Scanning
         /// <returns></returns>
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
+            if (!image.IsValidAddress(addrImportThunk))
+                return null;
             var rdr= program.Architecture.CreateImageReader(image, addrImportThunk);
             uint uDest;
             if (!rdr.TryReadUInt32(out uDest))

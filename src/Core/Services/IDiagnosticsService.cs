@@ -30,7 +30,10 @@ namespace Decompiler.Core.Services
         void AddDiagnostic(ICodeLocation location, Diagnostic diagnostic);
         void Error(string message);
         void Error(Exception ex, string message);
+        void Error(ICodeLocation location, string message);
+        void Error(ICodeLocation location, Exception ex, string message);
         void Warn(string message);
+        void Warn(ICodeLocation location, string message);
         void ClearDiagnostics();
     }
 }

@@ -237,8 +237,8 @@ namespace Decompiler.Typing
 				++iteration;
                 if (iteration > 50)
                 {
-                    eventListener.AddDiagnostic(new NullCodeLocation(""),
-                        new WarningDiagnostic(string.Format("Type transformer has looped {0} times, quitting prematurely.", iteration)));
+                    eventListener.Warn(new NullCodeLocation(""),
+                        string.Format("Type transformer has looped {0} times, quitting prematurely.", iteration));
                     return;
                 }
 				Changed = false;

@@ -187,14 +187,19 @@ namespace Decompiler.Gui.Windows
             diagnosticSvc.AddDiagnostic(location, d);
         }
 
+        public void Warn(ICodeLocation location, string message)
+        {
+            diagnosticSvc.Warn(location, message);
+        }
+
         public void Error(ICodeLocation location, string message)
         {
-            diagnosticSvc.Error(message);
+            diagnosticSvc.Error(location, message);
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)
         {
-            diagnosticSvc.Error(ex, message);
+            diagnosticSvc.Error(location, ex, message);
         }
 
         void DecompilerEventListener.ShowStatus(string caption)

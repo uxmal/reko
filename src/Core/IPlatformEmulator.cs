@@ -34,9 +34,9 @@ namespace Decompiler.Core
         /// <summary>
         /// Processor emulators call this method to give the platform emulator 
         /// a shot at intercepting the call to simulate an OS service. If the call
-        /// is intercepted, the platform emulator is responsible for updating any 
-        /// register state that may have been modified by appropriate calls to 
-        /// IProcessorEmulator.WriteRegister.
+        /// is intercepted, the platform emulator is responsible for emulating the
+        /// call, including updating any register state that may have been modified
+        /// by appropriate calls to IProcessorEmulator.WriteRegister.
         /// </summary>
         /// <param name="emulator">Emulator requesting the call</param>
         /// <param name="calledAddress">The address called</param>

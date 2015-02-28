@@ -439,9 +439,10 @@ namespace Decompiler.Arch.X86
             if (m != null)
             {
                 TWord ea = GetEffectiveAddress(m);
+                byte b;
                 switch (op.Width.Size)
                 {
-                case 1: return img.ReadByte(new Address(ea));
+                case 1: if (!img.TryReadByte(new Address(ea), out b)) throw new IndexOutOfRangeException(); else  return b;
                 case 4: return img.ReadLeUInt32(new Address(ea));
                 }
                 throw new NotImplementedException();

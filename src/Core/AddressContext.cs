@@ -41,9 +41,9 @@ namespace Decompiler.Core
 
         public void Warn(string format, params object [] args)
         {
-            decompilerEventListener.AddDiagnostic(
+            decompilerEventListener.Warn(
                decompilerEventListener.CreateAddressNavigator(program, addr),
-               new WarningDiagnostic(string.Format(format, args)));
+               string.Format(format, args));
         }
     }
 }
