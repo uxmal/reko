@@ -205,10 +205,6 @@ namespace Decompiler.Gui.Windows
             {
                 if (cmdId.Guid == CmdSets.GuidDecompiler)
                 {
-                    switch (cmdId.ID)
-                    {
-
-                    }
                 }
             }
             return false;

@@ -42,6 +42,17 @@ namespace Decompiler.Gui.Windows.Forms
             this.localSettings = new UiPreferencesService(null, null);
             sc.AddService(typeof(IUiPreferencesService), localSettings);
 
+            GenerateSimulatedProgram();
+            dlg.MemoryControl.ProgramImage = program.Image;
+            dlg.MemoryControl.ImageMap = program.ImageMap;
+            dlg.MemoryControl.Architecture = program.Architecture;
+            dlg.MemoryControl.Font = localSettings.DisassemblerFont ?? new System.Drawing.Font("Lucida Console", 9.0f);
+            dlg.DisassemblyControl.Model = null;/**/
+            dlg.CodeControl.Model = null; /*;*/ 
+        }
+
+        private void GenerateSimulatedProgram()
+        {
             var row = Enumerable.Range(0, 0x100).Select(b => (byte)b).ToArray();
             var image = new LoadedImage(
                     new Address(0x0010000),
@@ -61,12 +72,6 @@ namespace Decompiler.Gui.Windows.Forms
                 Architecture = arch,
             };
 
-            dlg.MemoryControl.ProgramImage = program.Image;
-            dlg.MemoryControl.ImageMap = program.ImageMap;
-            dlg.MemoryControl.Architecture = program.Architecture;
-            dlg.MemoryControl.Font = localSettings.DisassemblerFont ?? new System.Drawing.Font("Lucida Console", 9.0f);
-            dlg.DisassemblyControl.Model = null;/**/
-            dlg.CodeControl.Model = null; /*;*/ 
         }
 
         void ImagebarBgButton_Click(object sender, EventArgs e)

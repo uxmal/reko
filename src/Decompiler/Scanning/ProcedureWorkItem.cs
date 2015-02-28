@@ -32,7 +32,6 @@ namespace Decompiler.Scanning
         private Program program;
         private Address addr;
         private string name;
-        private Procedure procDest;
 
         public ProcedureWorkItem(IScanner scanner, Program program, Address addr, string name)
         {

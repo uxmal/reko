@@ -1774,12 +1774,10 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitByte(b);
         }
 
-
         internal void Dstring(string str)
         {
             emitter.EmitString(str, textEncoding);
         }
-
 
         public void Dw(int w)
         {
@@ -1806,6 +1804,12 @@ namespace Decompiler.Assemblers.x86
             {
                 DefineWord(PrimitiveType.Word32, n);
             }
+        }
+
+        public void Repeat(int count, Action<IntelAssembler> action)
+        {
+            for (int i = 0; i < count; ++i)
+                action(this);
         }
 
         internal void Leave()
