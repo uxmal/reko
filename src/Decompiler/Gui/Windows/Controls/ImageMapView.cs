@@ -147,7 +147,10 @@ namespace Decompiler.Gui.Windows.Controls
             ImageMapItem item;
             if (imageMap == null ||image == null)
                 return brBack;
-            var address = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint) cbOffset);
+            var lin = image.BaseAddress.Linear + (uint) cbOffset;
+            if (!image.IsValidLinearAddress(lin))
+                return brBack;
+            var address = imageMap.MapLinearAddressToAddress(lin);
             if (!imageMap.TryFindItem(address, out item))
                 return brBack;
             if (item.DataType is UnknownType)
