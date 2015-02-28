@@ -1,0 +1,69 @@
+// fn0C00_0000
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// cx:cx
+// si:si
+// ds:ds
+// ax:ax
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	cx = 0x0014
+	call fn0C00_0008 (retsize: 2;)
+	Mem0[ds:si:word16] = ax
+	// succ:  l0C00_0006_thunk_fn0C00_0008
+l0C00_0006_thunk_fn0C00_0008:
+	call fn0C00_0008 (retsize: 2;)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// fn0C00_0008
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// si:si
+// ss:ss
+// di:di
+// cx:cx
+// SCZO:Flags
+// Z:Flags
+// ds:ds
+// ax:ax
+// return address size: 2
+void fn0C00_0008()
+fn0C00_0008_entry:
+	// succ:  l0C00_0008
+l0C00_0008:
+	sp = sp - 0x0002
+	Mem0[ss:sp:word16] = si
+	sp = sp - 0x0002
+	Mem0[ss:sp:word16] = di
+	si = 0x0000
+	// succ:  l0C00_000D
+l0C00_000D:
+	SCZO = cond(cx - 0x0000)
+	branch Test(EQ,Z) l0C00_001A
+	// succ:  l0C00_0012 l0C00_001A
+l0C00_0012:
+	si = si + Mem0[ds:di:word16]
+	SCZO = cond(si)
+	di = di + 0x0002
+	SCZO = cond(di)
+	goto l0C00_000D
+	// succ:  l0C00_000D
+l0C00_001A:
+	ax = si
+	di = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	si = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	return
+	// succ:  fn0C00_0008_exit
+fn0C00_0008_exit:
+

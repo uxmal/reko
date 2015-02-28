@@ -1,0 +1,15 @@
+Mem0:Global memory
+fp:fp
+unused:Local -0004
+r63:r63
+unused_4: orig: unused
+// foo
+// Return size: 0
+void foo()
+foo_entry:
+	// succ:  l1
+l1:
+	foo(0x00000001)
+	return
+	// succ:  foo_exit
+foo_exit:

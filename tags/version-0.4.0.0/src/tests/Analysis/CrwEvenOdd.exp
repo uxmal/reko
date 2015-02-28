@@ -1,0 +1,105 @@
+void fn0C00_0000(Register selector ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax al ah
+// Preserved: sp
+// fn0C00_0000
+// Return size: 0
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ax:ax
+// ds:ds
+// al:al
+// return address size: 2
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	ax = 0x0003
+	al = fn0C00_0015(ax)
+	Mem0[ds:0x0300:byte] = al
+	ax = 0x0003
+	al = fn0C00_0020(ax)
+	Mem0[ds:0x0301:byte] = al
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+Register byte fn0C00_0015(Register word16 ax)
+// MayUse:  ax
+// LiveOut: al
+// Trashed: SCZO ax al ah
+// Preserved: sp
+// fn0C00_0015
+// Return size: 0
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ax:ax
+// SZO:Flags
+// C:Flags
+// Z:Flags
+// al:al
+// return address size: 2
+byte fn0C00_0015(word16 ax)
+fn0C00_0015_entry:
+	// succ:  l0C00_0015
+l0C00_0015:
+	ax = ax | ax
+	SZO = cond(ax)
+	C = false
+	branch Test(EQ,Z) l0C00_001D
+	// succ:  l0C00_0019 l0C00_001D
+l0C00_0019:
+	ax = ax - 0x0001
+	SZO = cond(ax)
+	// succ:  l0C00_0019_thunk_fn0C00_0020
+l0C00_0019_thunk_fn0C00_0020:
+	al = fn0C00_0020(ax)
+	return al
+	// succ:  fn0C00_0015_exit
+l0C00_001D:
+	al = 0x01
+	return al
+	// succ:  fn0C00_0015_exit
+fn0C00_0015_exit:
+Register byte fn0C00_0020(Register word16 ax)
+// MayUse:  ax
+// LiveOut: al
+// Trashed: SCZO ax al ah
+// Preserved: sp
+// fn0C00_0020
+// Return size: 0
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ax:ax
+// SZO:Flags
+// C:Flags
+// Z:Flags
+// al:al
+// return address size: 2
+byte fn0C00_0020(word16 ax)
+fn0C00_0020_entry:
+	// succ:  l0C00_0020
+l0C00_0020:
+	ax = ax | ax
+	SZO = cond(ax)
+	C = false
+	branch Test(EQ,Z) l0C00_0028
+	// succ:  l0C00_0024 l0C00_0028
+l0C00_0024:
+	ax = ax - 0x0001
+	SZO = cond(ax)
+	// succ:  l0C00_0024_thunk_fn0C00_0015
+l0C00_0024_thunk_fn0C00_0015:
+	al = fn0C00_0015(ax)
+	return al
+	// succ:  fn0C00_0020_exit
+l0C00_0028:
+	al = 0x00
+	SZO = cond(0x00)
+	C = false
+	return al
+	// succ:  fn0C00_0020_exit
+fn0C00_0020_exit:

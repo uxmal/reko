@@ -1,0 +1,91 @@
+// fn10000000
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// SCZO:Flags
+// ax:ax
+// return address size: 4
+void fn10000000()
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
+	eax = Mem0[0x10003420:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call fn10000017 (retsize: 4;)
+	esp = esp + 0x00000004
+	SCZO = cond(esp)
+	Mem0[0x10003428:word16] = ax
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+
+// fn10000017
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// ebp:ebp
+// ecx:ecx
+// SCZO:Flags
+// Z:Flags
+// ax:ax
+// SZO:Flags
+// C:Flags
+// eax:eax
+// edx:edx
+// SO:Flags
+// cx:cx
+// return address size: 4
+void fn10000017()
+fn10000017_entry:
+	// succ:  l10000017
+l10000017:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ecx
+	Mem0[ebp - 0x00000004:word16] = 0x0000
+	SCZO = cond(Mem0[ebp + 0x00000008:word32] - 0x00000000)
+	branch Test(NE,Z) l1000002F
+	// succ:  l10000027 l1000002F
+l10000027:
+	ax = ax ^ ax
+	SZO = cond(ax)
+	C = false
+	goto l1000005E
+	// succ:  l1000005E
+l1000002F:
+	eax = (int32) Mem0[ebp - 0x00000004:word16]
+	ecx = Mem0[ebp + 0x00000008:word32]
+	edx = (int32) Mem0[ecx + eax:byte]
+	SZO = cond(edx & edx)
+	C = false
+	branch Test(EQ,Z) l1000005A
+	// succ:  l1000003E l1000005A
+l1000003E:
+	eax = (int32) Mem0[ebp - 0x00000004:word16]
+	SCZO = cond(eax - 0x00007FFF)
+	branch Test(GE,SO) l1000005A
+	// succ:  l10000049 l1000005A
+l10000049:
+	cx = Mem0[ebp - 0x00000004:word16]
+	cx = cx + 0x0001
+	SCZO = cond(cx)
+	Mem0[ebp - 0x00000004:word16] = cx
+	goto l1000002F
+	// succ:  l1000002F
+l1000005A:
+	ax = Mem0[ebp - 0x00000004:word16]
+	// succ:  l1000005E
+l1000005E:
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn10000017_exit
+fn10000017_exit:
+

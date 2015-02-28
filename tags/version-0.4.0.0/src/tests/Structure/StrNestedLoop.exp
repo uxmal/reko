@@ -1,0 +1,47 @@
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
+fn0C00_0000_entry:
+	word16 dx_13 = 0x0004
+	goto l0C00_0003
+	// succ:  l0C00_0003
+l0C00_0000:
+l0C00_0003:
+	word16 cx_22 = 0x0004
+	// succ:  l0C00_0006
+l0C00_0006:
+	Mem30[ds:di:word32] = Mem0[ds:si:word32] + Mem0[ds:bx:word32]
+	si = si + 0x0004
+	bx = bx + 0x0004
+	di = di + 0x0004
+	cx_22 = cx_22 - 0x0001
+	branch cx_22 != 0x0000 l0C00_0006
+	// succ:  l0C00_001A l0C00_0006
+l0C00_001A:
+	dx_13 = dx_13 - 0x0001
+	branch dx_13 != 0x0000 l0C00_0003
+	// succ:  l0C00_001D l0C00_0003
+l0C00_001D:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
+{
+	word16 dx_13 = 0x0004;
+	do
+	{
+		word16 cx_22 = 0x0004;
+		do
+		{
+			Mem30[ds:di:word32] = Mem0[ds:si:word32] + Mem0[ds:bx:word32];
+			si = si + 0x0004;
+			bx = bx + 0x0004;
+			di = di + 0x0004;
+			cx_22 = cx_22 - 0x0001;
+		} while (cx_22 != 0x0000);
+		dx_13 = dx_13 - 0x0001;
+	} while (dx_13 != 0x0000);
+	return;
+}
+===========================

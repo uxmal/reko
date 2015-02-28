@@ -1,0 +1,44 @@
+// fn0C00_0000
+// Return size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	bx = 0x0000
+	SZO = cond(0x0000)
+	C = false
+	ax = wArg04
+	ax = ax | ax
+	SZO = cond(ax)
+	C = false
+	branch Test(LE,SZO) l0C00_0015
+	// succ:  l0C00_000C l0C00_0015
+l0C00_000C:
+	cx = ax
+	// succ:  l0C00_000E
+l0C00_000E:
+	bx = bx + cx
+	SCZO = cond(bx)
+	cx = cx - 0x0001
+	branch cx != 0x0000 l0C00_000E
+	// succ:  l0C00_0012 l0C00_000E
+l0C00_0012:
+	goto l0C00_0019
+	// succ:  l0C00_0019
+l0C00_0015:
+	ax = -ax
+	SCZO = cond(ax)
+	C = ax == 0x0000
+	bx = ax
+	// succ:  l0C00_0019
+l0C00_0019:
+	Mem0[ds:0x0300:word16] = bx
+	bp = wLoc02
+	sp = fp
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

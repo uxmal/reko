@@ -1,0 +1,11 @@
+{
+    char pad0000[4];
+    I2 w0004;
+    char pad0006[2];
+    I2 w0008;
+    char pad000A[2];
+    I4 dw000C;
+    R4 r000C;
+    char pad0010[4];
+}
+

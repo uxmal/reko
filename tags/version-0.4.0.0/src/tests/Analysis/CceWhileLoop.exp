@@ -1,0 +1,103 @@
+Mem0:Global memory
+fp:fp
+sp:sp
+bp:bp
+ss:ss
+bx:bx
+SZO:Flags
+C:Flags
+ax:ax
+cx:cx
+SCZO:Flags
+ds:ds
+    def:  def ds
+    uses: Mem27[ds:0x0300:word16] = bx_26
+wLoc02:Local -0002
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: ax_36 = -wArg04
+          cx_30 = wArg04
+          branch wArg04 <= 0x0000 l0C00_0015
+sp_14: orig: sp
+wLoc02_15: orig: wLoc02
+bp_16: orig: bp
+bx_17: orig: bx
+    def:  bx_17 = 0x0000
+    uses: bx_32 = PHI(bx_17, bx_33)
+ax_18: orig: ax
+ax_19: orig: ax
+SZO_20: orig: SZO
+C_21: orig: C
+SCZO_22: orig: SCZO
+cx_23: orig: cx
+ax_24: orig: ax
+C_25: orig: C
+bx_26: orig: bx
+    def:  bx_26 = PHI(bx_33, bx_39)
+    uses: Mem27[ds:0x0300:word16] = bx_26
+Mem27: orig: Mem0
+    def:  Mem27[ds:0x0300:word16] = bx_26
+bp_28: orig: bp
+sp_29: orig: sp
+cx_30: orig: cx
+    def:  cx_30 = wArg04
+    uses: cx_31 = PHI(cx_30, cx_35)
+cx_31: orig: cx
+    def:  cx_31 = PHI(cx_30, cx_35)
+    uses: bx_33 = bx_32 + cx_31
+          cx_35 = cx_31 - 0x0001
+bx_32: orig: bx
+    def:  bx_32 = PHI(bx_17, bx_33)
+    uses: bx_33 = bx_32 + cx_31
+bx_33: orig: bx
+    def:  bx_33 = bx_32 + cx_31
+    uses: bx_32 = PHI(bx_17, bx_33)
+          bx_26 = PHI(bx_33, bx_39)
+SCZO_34: orig: SCZO
+cx_35: orig: cx
+    def:  cx_35 = cx_31 - 0x0001
+    uses: branch cx_35 != 0x0000 l0C00_000E
+          cx_31 = PHI(cx_30, cx_35)
+ax_36: orig: ax
+    def:  ax_36 = -wArg04
+    uses: bx_39 = ax_36
+SCZO_37: orig: SCZO
+C_38: orig: C
+bx_39: orig: bx
+    def:  bx_39 = ax_36
+    uses: bx_26 = PHI(bx_33, bx_39)
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds, word16 wArg04)
+fn0C00_0000_entry:
+	def ds
+	def wArg04
+	// succ:  l0C00_0000
+l0C00_0000:
+	bx_17 = 0x0000
+	branch wArg04 <= 0x0000 l0C00_0015
+	// succ:  l0C00_000C l0C00_0015
+l0C00_000C:
+	cx_30 = wArg04
+	// succ:  l0C00_000E
+l0C00_000E:
+	cx_31 = PHI(cx_30, cx_35)
+	bx_32 = PHI(bx_17, bx_33)
+	bx_33 = bx_32 + cx_31
+	cx_35 = cx_31 - 0x0001
+	branch cx_35 != 0x0000 l0C00_000E
+	// succ:  l0C00_0012 l0C00_000E
+l0C00_0012:
+	goto l0C00_0019
+	// succ:  l0C00_0019
+l0C00_0015:
+	ax_36 = -wArg04
+	bx_39 = ax_36
+	// succ:  l0C00_0019
+l0C00_0019:
+	bx_26 = PHI(bx_33, bx_39)
+	Mem27[ds:0x0300:word16] = bx_26
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

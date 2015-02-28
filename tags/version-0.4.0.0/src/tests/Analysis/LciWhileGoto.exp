@@ -1,0 +1,42 @@
+// fn0C00_0000
+// Return size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	def Mem0
+	def si
+	def ds
+	def di
+	// succ:  l0C00_0000
+l0C00_0000:
+	si_14 = si
+	goto l0C00_001A
+	// succ:  l0C00_001A
+l0C00_0005:
+	Mem33[ds:di:word16] = ax_15
+	branch ax_15 != 0x0000 l0C00_0011
+	// succ:  l0C00_000B l0C00_0011
+l0C00_000B:
+	ax_39 = 0xFFFF
+	goto l0C00_0024
+	// succ:  l0C00_0024
+l0C00_0011:
+	branch ax_15 != 0x000D l0C00_001A
+	// succ:  l0C00_0016 l0C00_001A
+l0C00_0016:
+	Mem45[ds:0x0302:word16] = Mem33[ds:0x0302:word16] + 0x0001
+	// succ:  l0C00_001A
+l0C00_001A:
+	si_14 = PHI(si_14, si_16, si_16)
+	ax_15 = Mem0[ds:si_14:word16]
+	si_16 = si_14 + 0x0002
+	branch ax_15 != 0x0020 l0C00_0005
+	// succ:  l0C00_0020 l0C00_0005
+l0C00_0020:
+	ax_28 = si_16 - si
+	// succ:  l0C00_0024
+l0C00_0024:
+	ax_25 = PHI(ax_28, ax_39)
+	Mem26[ds:0x0300:word16] = ax_25
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:

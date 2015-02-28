@@ -1,0 +1,47 @@
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	Mem15[ds:0x0064:word16] = fn0C00_000F(0x0064)
+	return
+	// succ:  fn0C00_0000_exit
+l0C00_0000:
+fn0C00_0000_exit:
+
+void fn0C00_0000(selector ds)
+{
+	Mem15[ds:0x0064:word16] = fn0C00_000F(0x0064);
+	return;
+}
+===========================
+// fn0C00_000F
+// Return size: 0
+word16 fn0C00_000F(word16 wArg02)
+fn0C00_000F_entry:
+	// succ:  l0C00_000F
+l0C00_000F:
+	word16 ax_26
+	branch wArg02 == 0x0001 l0C00_0026
+	// succ:  l0C00_0018 l0C00_0026
+l0C00_0018:
+	ax_26 = (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001)) (alias)
+	goto l0C00_0029
+	// succ:  l0C00_0029
+l0C00_0026:
+	ax_26 = 0x0001
+	// succ:  l0C00_0029
+l0C00_0029:
+	return ax_26
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:
+
+word16 fn0C00_000F(word16 wArg02)
+{
+	word16 ax_26;
+	if (wArg02 != 0x0001)
+		ax_26 = (word16) (wArg02 *s fn0C00_000F(wArg02 - 0x0001));
+	else
+		ax_26 = 0x0001;
+	return ax_26;
+}
+===========================

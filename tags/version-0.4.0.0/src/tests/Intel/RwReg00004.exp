@@ -1,0 +1,169 @@
+// fn10000000
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// eax:eax
+// ebx:ebx
+// ebp:ebp
+// ecx:ecx
+// edx:edx
+// SCZO:Flags
+// SZO:Flags
+// C:Flags
+// Z:Flags
+// rLoc1:FPU stack
+// esi:esi
+// edi:edi
+// rLoc2:FPU stack
+// FPUF:Flags
+// rLoc3:FPU stack
+// SO:Flags
+// return address size: 4
+void fn10000000()
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
+	eax = Mem0[esp + 0x00000004:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	ebx = Mem0[esp + 0x00000010:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ecx = (int32) Mem0[eax + 0x00000006:word16]
+	edx = (int32) Mem0[eax + 0x00000002:word16]
+	ebp = Mem0[esp + 0x00000010:word32]
+	ecx = ecx - edx
+	SCZO = cond(ecx)
+	edx = Mem0[esp + 0x00000018:word32]
+	Mem0[ebx:word32] = ecx
+	ecx = (int32) Mem0[eax + 0x00000004:word16]
+	eax = (int32) Mem0[eax:word16]
+	ecx = ecx - eax
+	SCZO = cond(ecx)
+	SZO = cond(ebp & ebp)
+	C = false
+	Mem0[esp + 0x00000014:word32] = ecx
+	Mem0[edx:word32] = ecx
+	branch Test(EQ,Z) l10000107
+	// succ:  l10000035 l10000107
+l10000035:
+	rLoc1 = (real64) Mem0[ebx:int32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = esi
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edi
+	esi = esi ^ esi
+	SZO = cond(esi)
+	C = false
+	edi = 0x000186A0
+	Mem0[esp + 0x00000014:real32] = rLoc1
+	rLoc1 = (real64) Mem0[esp + 0x0000001C:int32]
+	// succ:  l10000048
+l10000048:
+	rLoc2 = Mem0[esp + 0x00000014:real32]
+	rLoc2 = rLoc2 * Mem0[0x0099188A:real64]
+	esi = esi + 0x00000001
+	SZO = cond(esi)
+	Mem0[esp + 0x00000014:real32] = rLoc2
+	call fn1000010A (retsize: 4; FPU: 2;)
+	ecx = eax
+	Mem0[esp + 0x0000001C:word32] = ecx
+	rLoc2 = (real64) Mem0[esp + 0x0000001C:int32]
+	FPUF = cond(rLoc2 - Mem0[esp + 0x00000014:real32])
+	SCZO = FPUF
+	branch Test(EQ,FPUF) l1000007F
+	// succ:  l10000072 l1000007F
+l10000072:
+	ecx = ecx + 0x00000001
+	SZO = cond(ecx)
+	Mem0[esp + 0x00000014:word32] = ecx
+	rLoc2 = (real64) Mem0[esp + 0x00000014:int32]
+	Mem0[esp + 0x00000014:real32] = rLoc2
+	// succ:  l1000007F
+l1000007F:
+	rLoc1 = rLoc1 * Mem0[0x10033290:real64]
+	rLoc2 = rLoc2
+	call fn1000010A (retsize: 4; FPU: 2;)
+	ecx = eax
+	Mem0[esp + 0x0000001C:word32] = ecx
+	rLoc2 = (real64) Mem0[esp + 0x0000001C:int32]
+	rLoc3 = rLoc2
+	FPUF = cond(rLoc3 - rLoc2)
+	SCZO = FPUF
+	branch Test(EQ,FPUF) l100000AD
+	// succ:  l100000A2 l100000AD
+l100000A2:
+	ecx = ecx + 0x00000001
+	SZO = cond(ecx)
+	rLoc1 = rLoc1
+	Mem0[esp + 0x0000001C:word32] = ecx
+	rLoc1 = (real64) Mem0[esp + 0x0000001C:int32]
+	// succ:  l100000AD
+l100000AD:
+	rLoc2 = Mem0[esp + 0x00000014:real32]
+	FPUF = cond(rLoc2 - Mem0[0x10033298:real64])
+	SCZO = FPUF
+	branch Test(NE,FPUF) l100000D7
+	// succ:  l100000BF l100000D7
+l100000BF:
+	FPUF = cond(rLoc1 - Mem0[0x10033298:real64])
+	SCZO = FPUF
+	branch Test(NE,FPUF) l100000D7
+	// succ:  l100000CD l100000D7
+l100000CD:
+	SCZO = cond(edi - 0x000186A0)
+	branch Test(NE,Z) l100000D7
+	// succ:  l100000D5 l100000D7
+l100000D5:
+	edi = esi
+	// succ:  l100000D7
+l100000D7:
+	SCZO = cond(esi - ebp)
+	branch Test(LT,SO) l10000048
+	// succ:  l100000DF l10000048
+l100000DF:
+	rLoc2 = Mem0[esp + 0x00000014:real32]
+	call fn1000010A (retsize: 4; FPU: 2;)
+	Mem0[ebx:word32] = eax
+	call fn1000010A (retsize: 4; FPU: 1;)
+	ecx = Mem0[esp + 0x00000020:word32]
+	SCZO = cond(ebp - edi)
+	edi = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	esi = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	Mem0[ecx:word32] = eax
+	branch Test(LE,SZO) l10000107
+	// succ:  l100000FB l10000107
+l100000FB:
+	Mem0[ebx:word32] = 0x00000000
+	Mem0[ecx:word32] = 0x00000000
+	// succ:  l10000107
+l10000107:
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+
+// fn1000010A
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// rArg0:FPU stack
+// eax:eax
+// return address size: 4
+void fn1000010A()
+fn1000010A_entry:
+	// succ:  l1000010A
+l1000010A:
+	Mem0[esp - 0x00000004:int32] = (int32) rArg0
+	eax = Mem0[esp - 0x00000004:word32]
+	return
+	// succ:  fn1000010A_exit
+fn1000010A_exit:
+

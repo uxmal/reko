@@ -1,0 +1,68 @@
+// fn0C00_0000
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ecx:ecx
+// SZO:Flags
+// C:Flags
+// ds:ds
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	call fn0C00_000F (retsize: 2;)
+	call fn0C00_0010 (retsize: 2;)
+	ecx = ecx ^ ecx
+	SZO = cond(ecx)
+	C = false
+	Mem0[ds:0x0310:word32] = ecx
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// fn0C00_000F
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// return address size: 2
+void fn0C00_000F()
+fn0C00_000F_entry:
+	// succ:  l0C00_000F
+l0C00_000F:
+	return
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:
+
+// fn0C00_0010
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ch:ch
+// SZO:Flags
+// C:Flags
+// cl:cl
+// ds:ds
+// cx:cx
+// return address size: 2
+void fn0C00_0010()
+fn0C00_0010_entry:
+	// succ:  l0C00_0010
+l0C00_0010:
+	ch = ch ^ ch
+	SZO = cond(ch)
+	C = false
+	cl = Mem0[ds:0x0300:byte]
+	branch cx == 0x0000 l0C00_001E
+	// succ:  l0C00_0018 l0C00_001E
+l0C00_0018:
+	Mem0[ds:0x0302:word16] = 0x0000
+	// succ:  l0C00_001E
+l0C00_001E:
+	return
+	// succ:  fn0C00_0010_exit
+fn0C00_0010_exit:
+

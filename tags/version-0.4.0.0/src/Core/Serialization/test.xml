@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<foo xmlns="http://www.ijkl.ws/Decompiler/Serialization.xsd">
+  <signature>
+	<return>
+	  <reg>ax</reg>
+	</return>
+	<arg type="int">
+	  <stack size="3">
+	</arg>
+  </signature>
+</foo>

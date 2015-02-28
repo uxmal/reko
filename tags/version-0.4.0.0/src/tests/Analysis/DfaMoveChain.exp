@@ -1,0 +1,17 @@
+// void fn0C00_0000(Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  ds
+// LiveOut:
+// Trashed: ax cx bx al cl bl ah ch bh
+// Preserved: sp
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	Mem10[ds:0x0300:word16] = 0x0004
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

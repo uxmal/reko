@@ -1,0 +1,104 @@
+= fn0C00_0000 ========================
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+sp:sp
+    def:  def sp
+ax:ax
+    def:  def ax
+SZO:Flags
+    def:  def SZO
+C:Flags
+    def:  def C
+ds:ds
+    def:  def ds
+    uses: Mem10[ds:0x0300:word16] = 0x0000
+          Mem11[ds:0x0302:word16] = 0x0000
+          Mem12[ds:0x0304:word16] = 0x0000
+ax_7: orig: ax
+    def:  ax_7 = 0x0000
+SZO_8: orig: SZO
+    def:  SZO_8 = cond(0x0000)
+C_9: orig: C
+    def:  C_9 = false
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0300:word16] = 0x0000
+Mem11: orig: Mem0
+    def:  Mem11[ds:0x0302:word16] = 0x0000
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0304:word16] = 0x0000
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def Mem0
+	def fp
+	def sp
+	def ax
+	def SZO
+	def C
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	ax_7 = 0x0000
+	SZO_8 = cond(0x0000)
+	C_9 = false
+	Mem10[ds:0x0300:word16] = 0x0000
+	Mem11[ds:0x0302:word16] = 0x0000
+	Mem12[ds:0x0304:word16] = 0x0000
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+sp:sp
+    def:  def sp
+ax:ax
+    def:  def ax
+SZO:Flags
+    def:  def SZO
+C:Flags
+    def:  def C
+ds:ds
+    def:  def ds
+    uses: Mem10[ds:0x0300:word16] = 0x0000
+          Mem11[ds:0x0302:word16] = 0x0000
+          Mem12[ds:0x0304:word16] = 0x0000
+ax_7: orig: ax
+    def:  ax_7 = 0x0000
+SZO_8: orig: SZO
+    def:  SZO_8 = cond(0x0000)
+C_9: orig: C
+    def:  C_9 = false
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0300:word16] = 0x0000
+Mem11: orig: Mem0
+    def:  Mem11[ds:0x0302:word16] = 0x0000
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0304:word16] = 0x0000
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def Mem0
+	def fp
+	def sp
+	def ax
+	def SZO
+	def C
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	ax_7 = 0x0000
+	SZO_8 = cond(0x0000)
+	C_9 = false
+	Mem10[ds:0x0300:word16] = 0x0000
+	Mem11[ds:0x0302:word16] = 0x0000
+	Mem12[ds:0x0304:word16] = 0x0000
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:

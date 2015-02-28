@@ -1,0 +1,89 @@
+Mem0:Global memory
+fp:fp
+sp:sp
+ds:ds
+    def:  def ds
+    uses: Mem8[ds:0x0300:word16] = 0x002B
+          fn0C00_0015(ax_10, bx_9, ds)
+bx:bx
+ax:ax
+bx_6: orig: bx
+    def:  fn0C00_000E(out bx_6)
+ax_7: orig: ax
+Mem8: orig: Mem0
+    def:  Mem8[ds:0x0300:word16] = 0x002B
+bx_9: orig: bx
+    def:  ax_10 = fn0C00_000E(out bx_9)
+    uses: fn0C00_0015(ax_10, bx_9, ds)
+ax_10: orig: ax
+    def:  ax_10 = fn0C00_000E(out bx_9)
+    uses: fn0C00_0015(ax_10, bx_9, ds)
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	fn0C00_000E(out bx_6)
+	Mem8[ds:0x0300:word16] = 0x002B
+	ax_10 = fn0C00_000E(out bx_9)
+	fn0C00_0015(ax_10, bx_9, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory
+fp:fp
+sp:sp
+ax:ax
+bx:bx
+bxOut:Out:bx
+ax_6: orig: ax
+bx_7: orig: bx
+    def:  bx_7 = 0x002B
+    uses: use bx_7 (=> bxOut)
+// fn0C00_000E
+// Return size: 0
+word16 fn0C00_000E(ptr16 bxOut)
+fn0C00_000E_entry:
+	// succ:  l0C00_000E
+l0C00_000E:
+	bx_7 = 0x002B
+	return 0x002A
+	// succ:  fn0C00_000E_exit
+fn0C00_000E_exit:
+	use bx_7 (=> bxOut)
+
+Mem0:Global memory
+fp:fp
+sp:sp
+ds:ds
+    def:  def ds
+    uses: Mem6[ds:0x0400:word16] = ax
+          Mem7[ds:0x0402:word16] = bx
+ax:ax
+    def:  def ax
+    uses: Mem6[ds:0x0400:word16] = ax
+bx:bx
+    def:  def bx
+    uses: Mem7[ds:0x0402:word16] = bx
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x0400:word16] = ax
+Mem7: orig: Mem0
+    def:  Mem7[ds:0x0402:word16] = bx
+// fn0C00_0015
+// Return size: 0
+void fn0C00_0015(word16 ax, word16 bx, selector ds)
+fn0C00_0015_entry:
+	def ds
+	def ax
+	def bx
+	// succ:  l0C00_0015
+l0C00_0015:
+	Mem6[ds:0x0400:word16] = ax
+	Mem7[ds:0x0402:word16] = bx
+	return
+	// succ:  fn0C00_0015_exit
+fn0C00_0015_exit:
+

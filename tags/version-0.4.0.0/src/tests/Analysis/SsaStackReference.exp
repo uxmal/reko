@@ -1,0 +1,25 @@
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: ax_4 = wArg04
+ax:ax
+    def:  def ax
+ax_4: orig: ax
+    def:  ax_4 = wArg04
+// SsaStackReference
+// Return size: 0
+void SsaStackReference()
+SsaStackReference_entry:
+	def Mem0
+	def fp
+	def wArg04
+	def ax
+	// succ:  l1
+l1:
+	ax_4 = wArg04
+	return
+	// succ:  SsaStackReference_exit
+SsaStackReference_exit:

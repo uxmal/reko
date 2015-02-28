@@ -1,0 +1,102 @@
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	Mem13[ds:0x9A2E:word16] = 0x0000
+	Mem15[ds:0x9A26:word16] = 0x0100
+	word16 si_20 = 0x0000
+	// succ:  l0C00_0015
+l0C00_0015:
+	Mem22[0x5CE1:si_20 + 0x0000:word16] = 0xFFFF
+	word16 v9_25 = Mem22[ds:0x9A26:word16] - 0x0001
+	Mem26[ds:0x9A26:word16] = v9_25
+	si_20 = si_20 + 0x0026
+	branch v9_25 != 0x0000 l0C00_0015
+	// succ:  l0C00_0023 l0C00_0015
+l0C00_0023:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+globals_t (in globals : (ptr (struct "Globals")))
+	trait_primitive((ptr (struct "Globals")))
+	trait_mem(T_12, 5CE10)
+T_2 (in 0x0000 : word16)
+	trait_primitive(word16)
+T_3 (in ds : selector)
+	trait_primitive(selector)
+	trait_mem(T_5, 9A2E)
+	trait_primitive(selector)
+	trait_mem(T_8, 9A26)
+	trait_primitive(selector)
+	trait_mem(T_18, 9A26)
+	trait_primitive(selector)
+	trait_mem(T_21, 9A26)
+T_4 (in 0x9A2E : word16)
+	trait_primitive(word16)
+	trait_mem(T_3:T_5, 0)
+T_5 (in Mem13[ds:0x9A2E:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_2)
+T_6 (in 0x0100 : word16)
+	trait_primitive(word16)
+T_7 (in 0x9A26 : word16)
+	trait_primitive(word16)
+	trait_mem(T_3:T_8, 0)
+T_8 (in Mem15[ds:0x9A26:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_6)
+T_9 (in si_20 : word16)
+	trait_primitive(word16)
+	trait_equal(T_10)
+	trait_primitive(word16)
+	trait_memsize(38)
+	trait_mem(T_12:T_15, 0)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_equal(T_23)
+T_10 (in 0x0000 : word16)
+	trait_primitive(word16)
+T_11 (in 0xFFFF : word16)
+	trait_primitive(word16)
+T_12 (in 0x5CE1 : selector)
+	trait_primitive(selector)
+	trait_mem_array(0, 38, 0, T_15)
+T_13 (in 0x0000 : word16)
+	trait_primitive(word16)
+T_14 (in si_20 + 0x0000 : word16)
+	trait_primitive(word16)
+T_15 (in Mem22[0x5CE1:si_20 + 0x0000:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_11)
+T_16 (in v9_25 : word16)
+	trait_primitive(word16)
+	trait_equal(T_20)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_equal(T_24)
+T_17 (in 0x9A26 : word16)
+	trait_primitive(word16)
+	trait_mem(T_3:T_18, 0)
+	trait_primitive(word16)
+	trait_mem(T_3:T_21, 0)
+T_18 (in Mem22[ds:0x9A26:word16] : word16)
+	trait_primitive(word16)
+T_19 (in 0x0001 : word16)
+	trait_primitive(word16)
+T_20 (in Mem22[ds:0x9A26:word16] - 0x0001 : word16)
+	trait_primitive(word16)
+T_21 (in Mem26[ds:0x9A26:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_16)
+T_22 (in 0x0026 : word16)
+	trait_primitive(word16)
+T_23 (in si_20 + 0x0026 : word16)
+	trait_primitive(word16)
+T_24 (in 0x0000 : word16)
+	trait_primitive(word16)
+T_25 (in v9_25 != 0x0000 : bool)
+	trait_primitive(bool)

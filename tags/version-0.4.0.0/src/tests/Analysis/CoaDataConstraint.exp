@@ -1,0 +1,98 @@
+Mem0:Global memory
+    def:  def Mem0
+    uses: ax_8 = Mem0[ds:si + 0x0200:word16]
+fp:fp
+sp:sp
+ax:ax
+si:si
+    def:  def si
+    uses: ax_8 = Mem0[ds:si + 0x0200:word16]
+          Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+          Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+ds:ds
+    def:  def ds
+    uses: ax_8 = Mem0[ds:si + 0x0200:word16]
+          Mem9[ds:0x0200:word16] = 0x0000
+          Mem10[ds:0x0300:word16] = ax_8
+          Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+          Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+          Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+          Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+          Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+          ax_17 = Mem15[ds:0x0200:word16]
+          fn0C00_002A(ds)
+          Mem18[ds:0x0200:word16] = ax_17
+v6:v6
+SCZO:Flags
+ax_8: orig: ax
+    def:  ax_8 = Mem0[ds:si + 0x0200:word16]
+    uses: Mem10[ds:0x0300:word16] = ax_8
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0200:word16] = 0x0000
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0300:word16] = ax_8
+    uses: Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+ax_11: orig: ax
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+    uses: Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+          Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+ax_13: orig: ax
+v6_14: orig: v6
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+    uses: ax_17 = Mem15[ds:0x0200:word16]
+SCZO_16: orig: SCZO
+ax_17: orig: ax
+    def:  ax_17 = Mem15[ds:0x0200:word16]
+    uses: Mem18[ds:0x0200:word16] = ax_17
+Mem18: orig: Mem0
+    def:  Mem18[ds:0x0200:word16] = ax_17
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word16 si, selector ds)
+fn0C00_0000_entry:
+	def Mem0
+	def si
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	ax_8 = Mem0[ds:si + 0x0200:word16]
+	Mem9[ds:0x0200:word16] = 0x0000
+	Mem10[ds:0x0300:word16] = ax_8
+	Mem12[ds:0x0202:word16] = Mem10[ds:si + 0x0202:word16]
+	Mem15[ds:0x0204:word16] = Mem12[ds:0x0204:word16] + Mem12[ds:si + 0x0204:word16]
+	ax_17 = Mem15[ds:0x0200:word16]
+	fn0C00_002A(ds)
+	Mem18[ds:0x0200:word16] = ax_17
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory
+fp:fp
+sp:sp
+ax:ax
+ss:ss
+ds:ds
+    def:  def ds
+    uses: Mem9[ds:0x0200:word16] = 0xFFFF
+wLoc02:Local -0002
+sp_7: orig: sp
+wLoc02_8: orig: wLoc02
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0200:word16] = 0xFFFF
+ax_10: orig: ax
+sp_11: orig: sp
+// fn0C00_002A
+// Return size: 0
+void fn0C00_002A(selector ds)
+fn0C00_002A_entry:
+	def ds
+	// succ:  l0C00_002A
+l0C00_002A:
+	Mem9[ds:0x0200:word16] = 0xFFFF
+	return
+	// succ:  fn0C00_002A_exit
+fn0C00_002A_exit:
+

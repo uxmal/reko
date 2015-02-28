@@ -1,0 +1,82 @@
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+    uses: bp_10 = fp
+          sp_17 = fp
+sp:sp
+    def:  def sp
+bp:bp
+    def:  def bp
+ax:ax
+    def:  def ax
+ss:ss
+    def:  def ss
+SZO:Flags
+    def:  def SZO
+C:Flags
+    def:  def C
+Z:Flags
+    def:  def Z
+wArg06:Stack +0006
+    def:  def wArg06
+    uses: ax_11 = wArg06
+bp_10: orig: bp
+    def:  bp_10 = fp
+ax_11: orig: ax
+    def:  ax_11 = wArg06
+    uses: ax_12 = ax_11 | ax_11
+          ax_12 = ax_11 | ax_11
+ax_12: orig: ax
+    def:  ax_12 = ax_11 | ax_11
+    uses: SZO_13 = cond(ax_12)
+          ax_16 = PHI(ax_12, ax_18)
+SZO_13: orig: SZO
+    def:  SZO_13 = cond(ax_12)
+    uses: Z_14 = SZO_13 (alias)
+Z_14: orig: Z
+    def:  Z_14 = SZO_13 (alias)
+    uses: branch Test(NE,Z_14) l0C00_000C
+C_15: orig: C
+    def:  C_15 = false
+ax_16: orig: ax
+    def:  ax_16 = PHI(ax_12, ax_18)
+sp_17: orig: sp
+    def:  sp_17 = fp
+ax_18: orig: ax
+    def:  ax_18 = 0xFFFF
+    uses: ax_16 = PHI(ax_12, ax_18)
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word16 wArg06)
+fn0C00_0000_entry:
+	def Mem0
+	def fp
+	def sp
+	def bp
+	def ax
+	def ss
+	def SZO
+	def C
+	def Z
+	def wArg06
+	// succ:  l0C00_0000
+l0C00_0000:
+	bp_10 = fp
+	ax_11 = wArg06
+	ax_12 = ax_11 | ax_11
+	SZO_13 = cond(ax_12)
+	Z_14 = SZO_13 (alias)
+	C_15 = false
+	branch Test(NE,Z_14) l0C00_000C
+	// succ:  l0C00_0009 l0C00_000C
+l0C00_0009:
+	ax_18 = 0xFFFF
+	// succ:  l0C00_000C
+l0C00_000C:
+	ax_16 = PHI(ax_12, ax_18)
+	sp_17 = fp
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

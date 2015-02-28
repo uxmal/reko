@@ -1,0 +1,142 @@
+= main ========================
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+r0:r0
+    def:  def r0
+    uses: r0_6 = PHI(r0, r0_8)
+Z:Flags
+    def:  def Z
+r63:r63
+    def:  def r63
+r1:r1
+    def:  def r1
+r0_6: orig: r0
+    def:  r0_6 = PHI(r0, r0_8)
+    uses: Mem7[r0_6:word32] = 0x00000000
+          r0_8 = r0_6 - 0x00000004
+Mem7: orig: Mem0
+    def:  Mem7[r0_6:word32] = 0x00000000
+r0_8: orig: r0
+    def:  r0_8 = r0_6 - 0x00000004
+    uses: Z_9 = cond(r0_8)
+          r0_6 = PHI(r0, r0_8)
+          branch r0_8 != 0x00000000 l0000
+Z_9: orig: Z
+    def:  Z_9 = cond(r0_8)
+r0_10: orig: r0
+    def:  r0_10 = 0x0000002A
+    uses: r0_11 = PHI(r0_10, r0_13)
+r0_11: orig: r0
+    def:  r0_11 = PHI(r0_10, r0_13)
+    uses: Mem12[r0_11:word32] = 0x0000000C
+          r0_13 = r0_11 - 0x00000004
+Mem12: orig: Mem0
+    def:  Mem12[r0_11:word32] = 0x0000000C
+r0_13: orig: r0
+    def:  r0_13 = r0_11 - 0x00000004
+    uses: branch r0_13 == 0x00000000 l0002
+          r0_11 = PHI(r0_10, r0_13)
+// main
+// Return size: 0
+void main(word32 r1)
+main_entry:
+	def Mem0
+	def fp
+	def r0
+	def Z
+	def r63
+	def r1
+	// succ:  l0000
+l0000:
+	r0_6 = PHI(r0, r0_8)
+	Mem7[r0_6:word32] = 0x00000000
+	r0_8 = r0_6 - 0x00000004
+	Z_9 = cond(r0_8)
+	branch r0_8 != 0x00000000 l0000
+	// succ:  l0001 l0000
+l0001:
+	r0_10 = 0x0000002A
+	// succ:  l0002
+l0002:
+	r0_11 = PHI(r0_10, r0_13)
+	Mem12[r0_11:word32] = 0x0000000C
+	r0_13 = r0_11 - 0x00000004
+	branch r0_13 == 0x00000000 l0002
+	// succ:  l1 l0002
+l1:
+	return
+	// succ:  main_exit
+main_exit:
+
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+r0:r0
+    def:  def r0
+    uses: r0_6 = PHI(r0, r0_8)
+Z:Flags
+    def:  def Z
+r63:r63
+    def:  def r63
+r1:r1
+    def:  def r1
+r0_6: orig: r0
+    def:  r0_6 = PHI(r0, r0_8)
+    uses: Mem7[r0_6:word32] = 0x00000000
+          r0_8 = r0_6 - 0x00000004
+Mem7: orig: Mem0
+    def:  Mem7[r0_6:word32] = 0x00000000
+r0_8: orig: r0
+    def:  r0_8 = r0_6 - 0x00000004
+    uses: Z_9 = cond(r0_8)
+          r0_6 = PHI(r0, r0_8)
+          branch r0_8 != 0x00000000 l0000
+Z_9: orig: Z
+    def:  Z_9 = cond(r0_8)
+r0_10: orig: r0
+    def:  r0_10 = 0x0000002A
+    uses: r0_11 = PHI(r0_10, r0_13)
+r0_11: orig: r0
+    def:  r0_11 = PHI(r0_10, r0_13)
+    uses: Mem12[r0_11:word32] = 0x0000000C
+          r0_13 = r0_11 - 0x00000004
+Mem12: orig: Mem0
+    def:  Mem12[r0_11:word32] = 0x0000000C
+r0_13: orig: r0
+    def:  r0_13 = r0_11 - 0x00000004
+    uses: branch r0_13 == 0x00000000 l0002
+          r0_11 = PHI(r0_10, r0_13)
+// main
+// Return size: 0
+void main(word32 r1)
+main_entry:
+	def Mem0
+	def fp
+	def r0
+	def Z
+	def r63
+	def r1
+	// succ:  l0000
+l0000:
+	r0_6 = PHI(r0, r0_8)
+	Mem7[r0_6:word32] = 0x00000000
+	r0_8 = r0_6 - 0x00000004
+	Z_9 = cond(r0_8)
+	branch r0_8 != 0x00000000 l0000
+	// succ:  l0001 l0000
+l0001:
+	r0_10 = 0x0000002A
+	// succ:  l0002
+l0002:
+	r0_11 = PHI(r0_10, r0_13)
+	Mem12[r0_11:word32] = 0x0000000C
+	r0_13 = r0_11 - 0x00000004
+	branch r0_13 == 0x00000000 l0002
+	// succ:  l1 l0002
+l1:
+	return
+	// succ:  main_exit
+main_exit:

@@ -1,0 +1,76 @@
+Mem0:Global memory (aliases:)
+fp:fp (aliases:)
+sp:sp (aliases:)
+// fn0C00_0000
+// Return size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	call fn0C00_0004 (retsize: 2; depth: 2)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+Mem0:Global memory (aliases:)
+fp:fp (aliases:)
+sp:sp (aliases:)
+ax:ax (aliases: al ah)
+es:es (aliases:)
+bx:bx (aliases: bh bl)
+al:al (aliases: ax)
+bh:bh (aliases: bx)
+SZO:Flags (aliases: SCZO S)
+ah:ah (aliases: ax)
+bl:bl (aliases: bx)
+C:Flags (aliases: SCZO)
+SCZO:Flags (aliases: SZO C S)
+S:Flags (aliases: SZO SCZO)
+// fn0C00_0004
+// Return size: 2
+void fn0C00_0004()
+fn0C00_0004_entry:
+	// succ:  l0C00_0004
+l0C00_0004:
+	ax = 0x4DE1
+	es = 0x4DE1
+	bx = 0x0FFF
+	bh = SLICE(bx, byte, 8) (alias)
+	bl = (byte) bx (alias)
+	// succ:  l0C00_000C
+l0C00_000C:
+	al = bh
+	al = al + 0x01
+	SZO = cond(al)
+	ah = bl
+	ah = ah & 0x0F
+	SZO = cond(ah)
+	C = false
+	ax = ah *u al
+	SCZO = cond(ax)
+	ax = ax << 0x0004
+	ah = SLICE(ax, byte, 8) (alias)
+	SCZO = cond(ax)
+	al = bl
+	al = al & 0xF0
+	SZO = cond(al)
+	C = false
+	ah = ah & 0x0F
+	SZO = cond(ah)
+	C = false
+	al = al | ah
+	SZO = cond(al)
+	C = false
+	Mem0[0x4DE1:bx:byte] = al
+	bx = bx - 0x0001
+	bh = SLICE(bx, byte, 8) (alias)
+	bl = (byte) bx (alias)
+	SZO = cond(bx)
+	S = SZO (alias)
+	branch Test(NS,S) l0C00_000C
+	// succ:  l0C00_0029 l0C00_000C
+l0C00_0029:
+	return
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:
+

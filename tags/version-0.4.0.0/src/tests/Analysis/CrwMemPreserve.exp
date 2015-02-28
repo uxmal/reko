@@ -1,0 +1,91 @@
+void main(Register selector ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax bx al bl ah bh
+// Preserved: sp
+// main
+// Return size: 0
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ax:ax
+// ds:ds
+// return address size: 2
+void main(selector ds)
+main_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	ax = Mem0[ds:0x0300:word16]
+	memfoo()
+	Mem0[ds:0x0302:word16] = ax
+	ax = Mem0[ds:0x0300:word16]
+	ax = membar(ax, ds)
+	Mem0[ds:0x0304:word16] = ax
+	return
+	// succ:  main_exit
+main_exit:
+void memfoo()
+// MayUse:  ax cx bx ds
+// LiveOut:
+// Trashed: SCZO ax cx bx al cl bl ah ch bh
+// Preserved: sp
+// memfoo
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ds:ds
+// ax:ax
+// bx:bx
+// cx:cx
+// cl:cl
+// SCZO:Flags
+// return address size: 2
+void memfoo()
+memfoo_entry:
+	// succ:  l0C00_0017
+l0C00_0017:
+	Mem0[ds:0x0400:word16] = ax
+	Mem0[ds:0x0402:word16] = bx
+	Mem0[ds:0x0404:word16] = cx
+	bx = Mem0[ds:0x0100:word16]
+	cl = Mem0[ds:bx + 0x0042:byte]
+	ax = Mem0[ds:bx + 0x0040:word16]
+	ax = ax << cl
+	SCZO = cond(ax)
+	Mem0[ds:0x0102:word16] = ax
+	ax = Mem0[ds:0x0400:word16]
+	bx = Mem0[ds:0x0402:word16]
+	cx = Mem0[ds:0x0404:word16]
+	return
+	// succ:  memfoo_exit
+memfoo_exit:
+Register word16 membar(Register word16 ax, Register selector ds)
+// MayUse:  ax ds
+// LiveOut: ax
+// Trashed: SCZO ax bx al bl ah bh
+// Preserved: sp
+// membar
+// Return size: 0
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// ds:ds
+// ax:ax
+// bx:bx
+// SCZO:Flags
+// return address size: 2
+word16 membar(word16 ax, selector ds)
+membar_entry:
+	// succ:  l0C00_0040
+l0C00_0040:
+	Mem0[ds:0x0500:word16] = ax
+	bx = Mem0[ds:0x1000:word16]
+	ax = Mem0[ds:bx:word16]
+	ax = ax + Mem0[ds:bx + 0x0002:word16]
+	SCZO = cond(ax)
+	Mem0[ds:bx + 0x0004:word16] = ax
+	ax = Mem0[ds:0x0500:word16]
+	return ax
+	// succ:  membar_exit
+membar_exit:

@@ -1,0 +1,25 @@
+// ArrayLoopMock
+// Return size: 0
+void ArrayLoopMock()
+ArrayLoopMock_entry:
+	goto l1
+	// succ:  l1
+done:
+	return
+	// succ:  ArrayLoopMock_exit
+l1:
+	ptr_3 = 0x04000000
+	goto looptest
+	// succ:  looptest
+l2:
+	Mem5[ptr_4:word32] = 0x00000000
+	ptr_6 = ptr_4 + 0x00000004
+	// succ:  looptest
+looptest:
+	ptr_4 = PHI(ptr_3, ptr_6)
+	branch ptr_4 >=u 0x04001000 done
+	goto l2
+	// succ:  l2 done
+ArrayLoopMock_exit:
+
+(0x04000000 0x00000004 0x04001000)
