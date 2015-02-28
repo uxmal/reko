@@ -115,7 +115,9 @@
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml" />
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
-
+        
+        <!-- Unpacker scripts -->
+        <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" />
       </Component>
     </ComponentGroup>
 

@@ -75,7 +75,8 @@
   <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
   <cmd id="EditCopy" cmdSet="Decompiler" container="EditCopy">_Copy</cmd>
   <cmd id="EditRename" cmdSet="Decompiler" container="GrpEdit">_Rename</cmd>
-  
+  <cmd id="EditSelectAll" cmdSet="Decompiler" container="GrpEdit">Select _all</cmd>
+
   <cmd id="ViewMemory" cmdSet="Decompiler" container="GrpLowLevel">_Memory</cmd>
   <cmd id="ViewDisassembly" cmdSet="Decompiler" container="GrpLowLevel">_Disassembly</cmd>
   <cmd id="OpenLink" cmdSet="Decompiler" container="OpenLink">_Open</cmd>
@@ -154,6 +155,7 @@
   <keybinding id="ActionNextSearchHit" cmdSet="Decompiler" editor="" key1="F8" />
   <keybinding id="ActionPrevSearchHit" cmdSet="Decompiler" editor="" key1="F8" alt1="Shift" />
   <keybinding id="EditCopy" cmdSet="Decompiler" editor="" key1="C" alt1="Control" />
+  <keybinding id="EditSelectAll" cmdSet="Decompiler" editor="" key1="A" alt1="Control" />
 
 </menu-definitions>
  

@@ -142,6 +142,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slEditRename = new CommandMenuItem("_Rename", new Guid(CmdSets.Decompiler), CmdIds.EditRename);
             slEditRename.IsDynamic = false;
             slGrpEdit.Add(0, slEditRename);
+            CommandMenuItem slEditSelectAll = new CommandMenuItem("Select _all", new Guid(CmdSets.Decompiler), CmdIds.EditSelectAll);
+            slEditSelectAll.IsDynamic = false;
+            slGrpEdit.Add(0, slEditSelectAll);
             CommandMenuItem slViewMemory = new CommandMenuItem("_Memory", new Guid(CmdSets.Decompiler), CmdIds.ViewMemory);
             slViewMemory.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewMemory);
@@ -283,6 +286,13 @@ namespace Decompiler.Gui.Windows.Forms
           new Guid(CmdSets.Decompiler), 
           CmdIds.EditCopy, 
           Keys.C
+          , Keys.Control);
+      
+        AddBinding(
+           "", 
+          new Guid(CmdSets.Decompiler), 
+          CmdIds.EditSelectAll, 
+          Keys.A
           , Keys.Control);
       
 			this.MainMenu = new System.Windows.Forms.MainMenu();

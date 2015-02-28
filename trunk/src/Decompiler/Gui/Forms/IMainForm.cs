@@ -40,6 +40,7 @@ namespace Decompiler.Gui.Forms
         ICollection<IWindowFrame> DocumentWindows { get; }
         ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }
+        TabPage DiagnosticsPage { get; }
         ListView DiagnosticsList { get; }
         ITreeView ProjectBrowser { get; }
         OpenFileDialog OpenFileDialog { get; }

@@ -71,7 +71,6 @@ namespace Decompiler.Gui.Windows.Forms
                 ImageMap = imageMap,
                 Architecture = arch,
             };
-
         }
 
         void ImagebarBgButton_Click(object sender, EventArgs e)

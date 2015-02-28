@@ -64,6 +64,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IUiPreferencesService uiPrefs;
         private ITabControlHostService tcHostSvc;
         private IDecompilerService dcSvc;
+        private ISearchResultService srSvc;
         private IDecompiler decompiler;
 
 		[SetUp]
@@ -509,13 +510,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
             disasmSvc = mr.StrictMock<IDisassemblyViewService>();
-            diagnosticSvc = mr.StrictMock<IDiagnosticsService>();
             typeLibSvc = mr.StrictMock<ITypeLibraryLoaderService>();
             brSvc = mr.StrictMock<IProjectBrowserService>();
             uiPrefs = mr.StrictMock<IUiPreferencesService>();
             fsSvc = mr.StrictMock<IFileSystemService>();
             tcHostSvc = mr.StrictMock<ITabControlHostService>();
             dcSvc = mr.StrictMock<IDecompilerService>();
+            srSvc = MockRepository.GenerateMock<ISearchResultService, IWindowPane>();
+            diagnosticSvc = MockRepository.GenerateMock<IDiagnosticsService, IWindowPane>();
             memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
@@ -534,14 +536,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateShellUiService(Arg<IMainForm>.Is.NotNull,Arg<DecompilerMenus>.Is.NotNull)).Return(uiSvc);
             svcFactory.Stub(s => s.CreateTabControlHost(Arg<TabControl>.Is.NotNull)).Return(tcHostSvc);
             svcFactory.Stub(s => s.CreateLoader()).Return(loader);
+            svcFactory.Stub(s => s.CreateSearchResultService(Arg<ListView>.Is.NotNull)).Return(srSvc);
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
 
             form = mr.StrictMock<IMainForm>();
             var listView = new ListView();
             var imagelist = new ImageList();
-            var tabPage = new TabPage();
-            var tabControl = new TabControl { TabPages = { tabPage } };
+            var tabResults = new TabPage();
+            var tabDiagnostics = new TabPage();
+            var tabControl = new TabControl { TabPages = { tabResults, tabDiagnostics } };
             var toolStrip = new ToolStrip { };
             var statusStrip = new StatusStrip { Items = { new ToolStripLabel() } };
             var projectBrowser = mr.Stub<ITreeView>();
@@ -551,7 +555,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.AddToolbar(null)).IgnoreArguments();
             form.Stub(f => f.Dispose());
             form.Stub(f => f.TabControl).Return(tabControl);
-            form.Stub(f => f.FindResultsPage).Return(tabPage);
+            form.Stub(f => f.FindResultsPage).Return(tabResults);
+            form.Stub(f => f.DiagnosticsPage).Return(tabDiagnostics);
             form.Stub(f => f.FindResultsList).Return(listView);
             form.Stub(f => f.ToolBar).Return(toolStrip);
             form.Stub(f => f.ProjectBrowser).Return(projectBrowser);

@@ -47,6 +47,7 @@ namespace Decompiler.Gui
         ILoadedPageInteractor CreateLoadedPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
+        ISearchResultService CreateSearchResultService(ListView listView);
         IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
         ITabControlHostService CreateTabControlHost(TabControl tabControl);
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
@@ -128,6 +129,11 @@ namespace Decompiler.Gui
         public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
         {
             return new ProjectBrowserService(services, treeView);
+        }
+
+        public ISearchResultService CreateSearchResultService(ListView listView)
+        {
+            return new SearchResultServiceImpl(services, listView);
         }
 
         public ITabControlHostService CreateTabControlHost(TabControl tabControl)
