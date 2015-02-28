@@ -24,7 +24,7 @@
     Id="*"
     Name="Decompiler"
     Language="1033"
-    Version="0.3.1.0"
+    Version="0.4.0.0"
     Manufacturer="jklSoft"
     UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E">
 
@@ -81,7 +81,8 @@
         <File Source="$(var.Elf.TargetPath)" />
         <File Source="$(var.Hunk.TargetPath)" />
         <File Source="$(var.MachO-2010.TargetPath)" />
-        <File Source="$(var.MzExe-2010.TargetPath)" />
+        <File Source="$(var.MzExe.TargetPath)" />
+        <File Source="$(var.OdbgScript.TargetPath)" />
         
         <!-- Architectures -->
         <File Source="$(var.Arm.TargetPath)" />
@@ -105,7 +106,16 @@
         <File Source="$(var.Win32-2010.TargetPath)" />
         <File Source="$(var.Win32-2010.ProjectDir)windows.xml" />
         <File Source="$(var.Win32-2010.ProjectDir)commctrl.xml" />
+        <File Source="$(var.Win32-2010.ProjectDir)oleaut32.xml" />
         <File Source="$(var.ZX81.TargetPath)" />
+        
+        <!-- Unpacker signatures -->
+        <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
+        <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml" />
+        <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml" />
+        <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
+        <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
+
       </Component>
     </ComponentGroup>
 

@@ -294,6 +294,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Label("table");
                 m.Dw(0x1234);
                 m.Dw(0x0C00);
+                m.Repeat(30, mm => mm.Dw(0xC3));
 
                 //prog.image = new LoadedImage(new Address(0x0C00, 0), new byte[100]);
                 //var imageMap = image.CreateImageMap();
@@ -310,24 +311,24 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Is.Anything));
                 scanner.Expect(x => x.CreateReader(
                     Arg<Address>.Is.Anything)).Return(new LeImageReader(new byte[] {
-                        0x34, 0x12,
-                        0x36, 0x12,
-                        0x38, 0x12,
-                        0x3A, 0x12,
+                        0x34, 0x00,
+                        0x36, 0x00,
+                        0x38, 0x00,
+                        0x3A, 0x00,
                         0xCC, 0xCC},
                         0));
                 ExpectJumpTarget(0x0C00, 0x0000, "l0C00_0000");
-                var block1234 = ExpectJumpTarget(0x0C00, 0x1234, "foo1");
-                var block1236 = ExpectJumpTarget(0x0C00, 0x1236, "foo2");
-                var block1238 = ExpectJumpTarget(0x0C00, 0x1238, "foo3");
-                var block123A = ExpectJumpTarget(0x0C00, 0x123A, "foo4");
+                var block1234 = ExpectJumpTarget(0x0C00, 0x0034, "foo1");
+                var block1236 = ExpectJumpTarget(0x0C00, 0x0036, "foo2");
+                var block1238 = ExpectJumpTarget(0x0C00, 0x0038, "foo3");
+                var block123A = ExpectJumpTarget(0x0C00, 0x003A, "foo4");
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0000))).Return(block);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0003))).Return(block);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0005))).Return(block);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1234))).Return(block1234);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1236))).Return(block1236);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1238))).Return(block1238);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x123A))).Return(block123A);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0034))).Return(block1234);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0036))).Return(block1236);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0038))).Return(block1238);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x003A))).Return(block123A);
             });
 
             wi.ProcessInternal();
