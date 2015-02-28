@@ -216,6 +216,7 @@ namespace Decompiler.Arch.X86
         pxor,
         rcl,
         rcr,
+        rdtsc,
         rep,
         repne,
         ret,

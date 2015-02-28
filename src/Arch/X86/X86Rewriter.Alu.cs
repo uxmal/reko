@@ -143,6 +143,17 @@ namespace Decompiler.Arch.X86
                 orw.AluRegister(Registers.ecx)));
         }
 
+        private void RewriteRdtsc()
+        {
+            Identifier edx_eax = frame.EnsureSequence(
+                orw.AluRegister(Registers.edx),
+                orw.AluRegister(Registers.eax),
+                PrimitiveType.Word64);
+            emitter.Assign(edx_eax,
+                PseudoProc("__rdtsc",
+                edx_eax.DataType));
+        }
+
         public void RewriteBinOp(BinaryOperator opr)
         {
             EmitBinOp(opr, instrCur.op1, instrCur.dataWidth, SrcOp(instrCur.op1), SrcOp(instrCur.op2), CopyFlags.ForceBreak|CopyFlags.EmitCc);
