@@ -30,88 +30,88 @@ using System.IO;
 
 namespace Decompiler.UnitTests.Structure
 {
-	[TestFixture]
-	public class SimpleStructureTests : StructureTestBase
-	{
-		[Test]
-		public void StrIf()
-		{
-			RunTest("Fragments/if.asm", "Structure/StrIf.txt");
-		}
+    [TestFixture]
+    public class SimpleStructureTests : StructureTestBase
+    {
+        [Test]
+        public void StrIf()
+        {
+            RunTest("Fragments/if.asm", "Structure/StrIf.txt");
+        }
 
-		[Test]
-		public void StrFactorialReg()
-		{
-			RunTest("Fragments/factorial_reg.asm", "Structure/StrFactorialReg.txt");
-		}
+        [Test]
+        public void StrFactorialReg()
+        {
+            RunTest("Fragments/factorial_reg.asm", "Structure/StrFactorialReg.txt");
+        }
 
-		[Test]
-		public void StrFactorial()
-		{
-			RunTest("Fragments/factorial.asm", "Structure/StrFactorial.txt");
-		}
+        [Test]
+        public void StrFactorial()
+        {
+            RunTest("Fragments/factorial.asm", "Structure/StrFactorial.txt");
+        }
 
-		[Test]
-		public void StrWhileBreak()
-		{
-			RunTest("Fragments/while_break.asm", "Structure/StrWhileBreak.txt");
-		}
+        [Test]
+        public void StrWhileBreak()
+        {
+            RunTest("Fragments/while_break.asm", "Structure/StrWhileBreak.txt");
+        }
 
-		[Test]
-		public void StrWhileRepeat()
-		{
-			RunTest("Fragments/while_repeat.asm", "Structure/StrWhileRepeat.txt");
-		}
+        [Test]
+        public void StrWhileRepeat()
+        {
+            RunTest("Fragments/while_repeat.asm", "Structure/StrWhileRepeat.txt");
+        }
 
-		[Test]
-		public void StrForkInLoop()
-		{
-			RunTest("Fragments/forkedloop.asm", "Structure/StrForkInLoop.txt");
-		}
+        [Test]
+        public void StrForkInLoop()
+        {
+            RunTest("Fragments/forkedloop.asm", "Structure/StrForkInLoop.txt");
+        }
 
-		[Test]
-		public void StrNestedIf()
-		{
-			RunTest("Fragments/nested_ifs.asm", "Structure/StrNestedIf.txt");
-		}
+        [Test]
+        public void StrNestedIf()
+        {
+            RunTest("Fragments/nested_ifs.asm", "Structure/StrNestedIf.txt");
+        }
 
-		[Test]
-		public void StrNestedLoops()
-		{
-			RunTest("Fragments/matrix_addition.asm", "Structure/StrNestedLoop.txt");
-		}
+        [Test]
+        public void StrNestedLoops()
+        {
+            RunTest("Fragments/matrix_addition.asm", "Structure/StrNestedLoop.txt");
+        }
 
-		[Test]
-		public void StrReg00006()
-		{
-			RunTest("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", new Address(0x100048B0));
-		}
+        [Test]
+        public void StrReg00006()
+        {
+            RunTest("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", new Address(0x100048B0));
+        }
 
 
-		[Test]
-		[Ignore("Not quite ready yet")]
-		public void StrNonreducible()
-		{
-			RunTest("Fragments/nonreducible.asm", "Structure/StrNonreducible.txt");
-		}
+        [Test]
+        [Ignore("Not quite ready yet")]
+        public void StrNonreducible()
+        {
+            RunTest("Fragments/nonreducible.asm", "Structure/StrNonreducible.txt");
+        }
 
-		[Test]
-		public void StrWhileGoto()
-		{
-			RunTest("Fragments/while_goto.asm", "Structure/StrWhileGoto.txt");
-		}
+        [Test]
+        public void StrWhileGoto()
+        {
+            RunTest("Fragments/while_goto.asm", "Structure/StrWhileGoto.txt");
+        }
 
-		[Test]
-		public void StrIfElseIf()
-		{
-			RunTest(new MockIfElseIf(), "Structure/StrIfElseIf.txt");
-		}
+        [Test]
+        public void StrIfElseIf()
+        {
+            RunTest(new MockIfElseIf(), "Structure/StrIfElseIf.txt");
+        }
 
-		[Test]
-		public void StrReg00011()
-		{
-			RunTest(new Reg00011Mock(), "Structure/StrReg00011.txt");
-		}
+        [Test]
+        public void StrReg00011()
+        {
+            RunTest(new Reg00011Mock(), "Structure/StrReg00011.txt");
+        }
 
         [Test]
         public void StrReg00013()
@@ -126,50 +126,94 @@ namespace Decompiler.UnitTests.Structure
         }
 
         private void RunTest(string sourceFilename, string outFilename)
-		{
-			RunTest(sourceFilename, outFilename, new Address(0xC00, 0));
-		}
-		
-		private void RunTest(ProcedureBuilder mock, string outFilename)
-		{
-			Procedure proc = mock.Procedure;
-			using (FileUnitTester fut = new FileUnitTester(outFilename))
-			{
-				ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(proc);
-				cfgc.Transform();
-				proc.Write(false, fut.TextWriter);
-				fut.TextWriter.WriteLine();
+        {
+            RunTest(sourceFilename, outFilename, new Address(0xC00, 0));
+        }
 
-				StructureAnalysis sa = new StructureAnalysis(proc);
+        private void RunTest(ProcedureBuilder mock, string outFilename)
+        {
+            Procedure proc = mock.Procedure;
+            using (FileUnitTester fut = new FileUnitTester(outFilename))
+            {
+                ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(proc);
+                cfgc.Transform();
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+
+                StructureAnalysis sa = new StructureAnalysis(proc);
                 sa.Structure();
-				CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
-				fmt.Write(proc);
-				fut.TextWriter.WriteLine("===========================");
+                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                fmt.Write(proc);
+                fut.TextWriter.WriteLine("===========================");
 
-				fut.AssertFilesEqual();
-			}
-		}
+                fut.AssertFilesEqual();
+            }
+        }
 
-		private void RunTest(string sourceFilename, string outFilename, Address addrBase)
-		{
-			using (FileUnitTester fut = new FileUnitTester(outFilename))
-			{
-				RewriteProgramMsdos(sourceFilename, addrBase);
-				foreach (Procedure proc in program.Procedures.Values)
-				{
-					ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
-					cfgc.Transform();
-					proc.Write(false, fut.TextWriter);
-					fut.TextWriter.WriteLine();
+        private void RunTest(string sourceFilename, string outFilename, Address addrBase)
+        {
+            using (FileUnitTester fut = new FileUnitTester(outFilename))
+            {
+                RewriteProgramMsdos(sourceFilename, addrBase);
+                foreach (Procedure proc in program.Procedures.Values)
+                {
+                    var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
+                    cfgc.Transform();
+                    proc.Write(false, fut.TextWriter);
+                    fut.TextWriter.WriteLine();
 
-                    StructureAnalysis sa = new StructureAnalysis(proc);
+                    var sa = new StructureAnalysis(proc);
                     sa.Structure();
-					CodeFormatter fmt = new CodeFormatter(new TextFormatter( fut.TextWriter));
-					fmt.Write(proc);
-					fut.TextWriter.WriteLine("===========================");
-				}
-				fut.AssertFilesEqual();
-			}
-		}
-	}
+                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                    fmt.Write(proc);
+                    fut.TextWriter.WriteLine("===========================");
+                }
+                fut.AssertFilesEqual();
+            }
+        }
+
+        private void RunTest(string expected, Program program)
+        {
+            var sw = new StringWriter();
+            foreach (var proc in program.Procedures.Values)
+            {
+                var cfgc = new ControlFlowGraphCleaner(proc);
+                cfgc.Transform();
+                var sa = new StructureAnalysis(proc);
+                sa.Structure();
+                var fmt = new CodeFormatter(new TextFormatter(sw));
+                fmt.Write(proc);
+                sw.WriteLine("===");
+            }
+            Console.WriteLine(sw);
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [Test]
+        public void FragmentTest()
+        {
+            RewriteX86Fragment(@"
+.i386
+push ebp
+mov ebp,esp
+cmp dword ptr [ebp+8],0
+jz done
+
+mov dword ptr [0x123234],0x6423
+
+done:
+pop ebp
+ret
+", new Address(0x00400000));
+            RunTest(@"void fn00400000(word32 dwArg04)
+{
+	if (dwArg04 != 0x00000000)
+		Mem15[0x00123234:word32] = 0x00006423;
+	return;
+}
+===
+", program);
+
+        }
+    }
 }
