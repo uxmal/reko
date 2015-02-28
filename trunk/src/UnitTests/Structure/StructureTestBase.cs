@@ -52,23 +52,36 @@ namespace Decompiler.UnitTests.Structure
                 FileUnitTester.MapTestPath(sourceFilename),
                 new IntelTextAssembler { Platform = new MsdosPlatform(null, new X86ArchitectureReal())},
                 addrBase);
+            return RewriteProgram();
+		}
+
+        protected Program RewriteX86Fragment(string asmFragment, Address addrBase)
+        {
+            var asm = new IntelTextAssembler();
+            program = asm.AssembleFragment(addrBase, asmFragment);
+            program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+            return RewriteProgram();
+        }
+
+        private Program RewriteProgram()
+        {
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
-                program, 
-                new Dictionary<Address, ProcedureSignature>(), 
+                program,
+                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project),
                 new FakeDecompilerEventListener());
-			foreach (EntryPoint ep in program.EntryPoints)
-			{
-				scan.EnqueueEntryPoint(ep);
-			}
-			scan.ScanImage();
+            foreach (EntryPoint ep in program.EntryPoints)
+            {
+                scan.EnqueueEntryPoint(ep);
+            }
+            scan.ScanImage();
 
             DecompilerEventListener eventListener = new FakeDecompilerEventListener();
-			DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
-			da.AnalyzeProgram();
+            DataFlowAnalysis da = new DataFlowAnalysis(program, eventListener);
+            da.AnalyzeProgram();
 
             return program;
-		}
+        }
 	}
 }
