@@ -127,7 +127,6 @@ namespace Decompiler.Gui.Forms
             return form;
         }
 
-
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
         {
             config = svcFactory.CreateDecompilerConfiguration();
@@ -178,9 +177,10 @@ namespace Decompiler.Gui.Forms
             this.searchResultsTabControl = svcFactory.CreateTabControlHost(form.TabControl);
             sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 
-            srSvc = new SearchResultServiceImpl(sc, form.FindResultsList);
+            srSvc = svcFactory.CreateSearchResultService(form.FindResultsList);
             sc.AddService<ISearchResultService>(srSvc);
             searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
+            searchResultsTabControl.Attach((IWindowPane) diagnosticsSvc, form.DiagnosticsPage);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)

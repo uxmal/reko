@@ -26,6 +26,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 
@@ -37,7 +38,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private ListView lv;
         private TestDiagnosticsInteractor interactor;
         private IDiagnosticsService svc;
-        private MockRepository repository;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
@@ -47,7 +48,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor = new TestDiagnosticsInteractor();
             interactor.Attach(lv);
             svc = interactor;
-            repository = new MockRepository();
+            mr = new MockRepository();
         }
 
         [TearDown]
@@ -75,16 +76,47 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void NavigateOnDoubleClick()
         {
-            var location = repository.DynamicMock<ICodeLocation>();
+            var location = mr.DynamicMock<ICodeLocation>();
             location.Expect(x => x.NavigateTo());
-            repository.ReplayAll();
+            mr.ReplayAll();
 
             svc.AddDiagnostic(location, new Diagnostic("Hello"));
             interactor.FocusedListItem = lv.Items[0];
             interactor.UserDoubleClicked();
 
-            repository.VerifyAll();
+            mr.VerifyAll();
         }
+
+        [Test(Description = "If no items selected, the Copy menu item should be visible but disabled")]
+        public void Di_NoItemsSelected_DisableCopy()
+        {
+            mr.ReplayAll();
+
+            var cmd = new CommandID(CmdSets.GuidDecompiler, CmdIds.EditCopy);
+            var status = new CommandStatus();
+            var txt = new CommandText();
+            Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));
+
+            Assert.AreEqual(MenuStatus.Visible, status.Status);
+            mr.VerifyAll();
+        }
+
+        [Test(Description = "If >0 items selected, the Copy menu item should be visible and enabled")]
+        public void Di_ItemsSelected_EnableCopy()
+        {
+            mr.ReplayAll();
+
+            svc.Error("Nilz");
+            lv.SelectedIndices.Add(0);
+
+            var cmd = new CommandID(CmdSets.GuidDecompiler, CmdIds.EditCopy);
+            var status = new CommandStatus();
+            var txt = new CommandText();
+            Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));
+
+            Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
+            mr.VerifyAll();
+        }        
 
         private class TestDiagnosticsInteractor : DiagnosticsInteractor
         {

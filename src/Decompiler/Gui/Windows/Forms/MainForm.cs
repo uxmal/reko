@@ -81,6 +81,11 @@ namespace Decompiler.Gui.Windows.Forms
             get {return tabFindResults; }
         }
 
+        public TabPage DiagnosticsPage
+        {
+            get { return tabDiagnostics; }
+        }
+
         public TabPage ConsolePage
         {
             get { return tabConsole; }
