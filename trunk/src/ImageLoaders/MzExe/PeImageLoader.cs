@@ -354,6 +354,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 				uint page = rdr.ReadLeUInt32();
 				int cbBlock = rdr.ReadLeInt32();
+                if (page == 0 || cbBlock == 0)
+                    break;
 				uint offBlockEnd = (uint)(rdr.Offset + cbBlock - 8);
 				while (rdr.Offset < offBlockEnd)
 				{

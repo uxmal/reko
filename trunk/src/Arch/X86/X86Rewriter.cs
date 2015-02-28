@@ -238,6 +238,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.rcr: RewriteRotation(PseudoProcedure.RorC, true, false); break;
                 case Opcode.rol: RewriteRotation(PseudoProcedure.Rol, false, true); break;
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror, false, false); break;
+                case Opcode.rdtsc: RewriteRdtsc(); break;
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;

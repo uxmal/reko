@@ -40,11 +40,17 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            var pb = scanner.ScanProcedure(ep.Address, ep.Name, program.Architecture.CreateProcessorState());
-            var proc = pb as Procedure;
-            if (proc != null)
+            try
             {
-                program.CallGraph.AddEntryPoint(proc);
+                var pb = scanner.ScanProcedure(ep.Address, ep.Name, program.Architecture.CreateProcessorState());
+                var proc = pb as Procedure;
+                if (proc != null)
+                {
+                    program.CallGraph.AddEntryPoint(proc);
+                }
+            } catch (AddressCorrelatedException aex)
+            {
+                scanner.Error(aex.Address, aex.Message);
             }
         }
     }
