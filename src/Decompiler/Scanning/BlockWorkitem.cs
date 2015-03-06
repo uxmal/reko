@@ -96,7 +96,7 @@ namespace Decompiler.Scanning
 
         public void ProcessInternal()
         {
-            state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
+            state.ErrorListener = (message) => { scanner.Warn(ric.Address, message); };
             blockCur = scanner.FindContainingBlock(addrStart);
             if (BlockHasBeenScanned(blockCur))
                 return;

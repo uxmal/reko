@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Environments.C64
             get { throw new NotImplementedException(); }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             var addr = new Address(10);
             var image = new LoadedImage(addr, new byte[1]);
@@ -57,20 +57,7 @@ namespace Decompiler.UnitTests.Environments.C64
                 arch.CreateImageReader(image, addr),
                 arch.CreateProcessorState(),
                 frame,
-                new RewriterHost());
-        }
-
-        private class RewriterHost : IRewriterHost
-        {
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
-            {
-                return new PseudoProcedure(name, returnType, arity);
-            }
-
-            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
-            {
-                throw new NotImplementedException();
-            }
+                host);
         }
 
         private class BasicProcessor

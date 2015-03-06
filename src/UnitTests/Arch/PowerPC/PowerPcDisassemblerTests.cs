@@ -285,14 +285,14 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PPCDis_cmpli()
         {
             var instr = DisassembleBits("001010 00010 00001 1111111111111000");
-            Assert.AreEqual("cmpli\tr1,02,FFF8", instr.ToString());
+            Assert.AreEqual("cmpli\tcr0,r1,FFF8", instr.ToString());
         }
 
         [Test]
         public void PPCDis_cmpi()
         {
             var instr = DisassembleBits("001011 00010 00001 1111111111111000");
-            Assert.AreEqual("cmpi\tr1,02,-0008", instr.ToString());
+            Assert.AreEqual("cmpwi\tcr0,r1,-0008", instr.ToString());
         }
 
         [Test]
@@ -576,6 +576,31 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             var instr = DisassembleWord(0x7c9a2215);
             Assert.AreEqual("add.\tr4,r26,r4", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_cmpwi()
+        {
+            AssertCode(0x2f830005, "cmpwi\tcr7,r3,+0005");
+        }
+
+        [Test]
+        public void PPCDis_bcXX()
+        {
+            AssertCode(0x40bc011c, "bge\tcr7,$0010011C");
+            AssertCode(0x40bd011c, "ble\tcr7,$0010011C");
+            AssertCode(0x40be011c, "bne\tcr7,$0010011C");
+            AssertCode(0x40bf011c, "bns\tcr7,$0010011C");
+            AssertCode(0x41bc011c, "blt\tcr7,$0010011C");
+            AssertCode(0x41bd011c, "bgt\tcr7,$0010011C");
+            AssertCode(0x41be011c, "beq\tcr7,$0010011C");
+            AssertCode(0x41bf011c, "bso\tcr7,$0010011C");
+        }
+
+        [Test]
+        public void PPCDis_nor()
+        {
+            AssertCode(0x7c6318f8, "nor\tr3,r3,r3");
         }
     }
 }

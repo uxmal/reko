@@ -38,21 +38,23 @@ namespace Decompiler.Arch.PowerPC
         private RtlEmitter emitter;
         private PowerPcArchitecture arch;
         private IEnumerator<PowerPcInstruction> dasm;
+        private IRewriterHost host;
         private PowerPcInstruction instr;
 
-        public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, Frame frame)
+        public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
-            this.dasm = instrs.GetEnumerator();
             this.frame = frame;
+            this.host = host;
+            this.dasm = instrs.GetEnumerator();
         }
 
-        public PowerPcRewriter(PowerPcArchitecture arch, ImageReader rdr, Frame frame)
+        public PowerPcRewriter(PowerPcArchitecture arch, ImageReader rdr, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             //this.state = ppcState;
             this.frame = frame;
-            //this.host = host;
+            this.host = host;
             this.dasm = arch.CreateDisassembler(rdr).GetEnumerator();
         }
 
@@ -73,18 +75,40 @@ namespace Decompiler.Arch.PowerPC
                 {
                 default: throw new AddressCorrelatedException(
                     instr.Address,
-                    "PowerPC opcode {0} is not supported yet.",
-                    instr.Opcode);
+                    "PowerPC instruction '{0}' is not supported yet.",
+                    instr);
                 case Opcode.addi: RewriteAddi(); break;
                 case Opcode.addis: RewriteAddis(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.b: RewriteB(); break;
-                case Opcode.bl: RewriteBl(); break;
+                case Opcode.bc: RewriteBc(false); break;
                 case Opcode.bcctr: RewriteBcctr(false); break;
                 case Opcode.bctrl: RewriteBcctr(true); break;
+                case Opcode.beq: RewriteBranch(false, ConditionCode.EQ); break;
+                case Opcode.beql: RewriteBranch(true, ConditionCode.EQ); break;
+                case Opcode.bge: RewriteBranch(false, ConditionCode.GE); break;
+                case Opcode.bgel: RewriteBranch(true, ConditionCode.GE); break;
+                case Opcode.bl: RewriteBl(); break;
+                case Opcode.blr: RewriteBlr(); break;
+                case Opcode.blt: RewriteBranch(false, ConditionCode.LT); break;
+                case Opcode.bltl: RewriteBranch(true, ConditionCode.LT); break;
+                case Opcode.bne: RewriteBranch(false, ConditionCode.NE); break;
+                case Opcode.bnel: RewriteBranch(true, ConditionCode.NE); break;
+                case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.cmpli: RewriteCmpli(); break;
+                case Opcode.cmplw: RewriteCmplw(); break;
+                case Opcode.cmpwi: RewriteCmpwi(); break;
+                case Opcode.crxor: RewriteCrxor(); break;
+                case Opcode.divwu: RewriteDivwu(); break;
+                case Opcode.fdiv: RewriteFdiv(); break;
                 case Opcode.fmr: RewriteFmr(); break;
+                case Opcode.fcmpu: RewriteFcmpu(); break;
                 case Opcode.fmul: RewriteFmul(); break;
                 case Opcode.fsub: RewriteFsub(); break;
+                case Opcode.lbz: RewriteLbz(); break;
+                case Opcode.lfd: RewriteLfd(); break;
+                case Opcode.lfs: RewriteLfs(); break;
+                case Opcode.lhz: RewriteLhz(); break;
                 case Opcode.lwz: RewriteLwz(); break;
                 case Opcode.lwzx: RewriteLwzx(); break;
 
@@ -94,17 +118,16 @@ namespace Decompiler.Arch.PowerPC
                     emitter.Assign(dst, src);
                     break;
                 case Opcode.mflr: RewriteMflr(); break;
+                case Opcode.mtcrf: RewriteMtcrf(); break;
                 case Opcode.mtctr: RewriteMtctr(); break;
                 case Opcode.mtlr: RewriteMtlr(); break;
+                case Opcode.mulli: RewriteMullw(); break;
+                case Opcode.mullw: RewriteMullw(); break;
                 case Opcode.neg: RewriteNeg(); break;
-                case Opcode.or: RewriteOr(); break;
-                case Opcode.oris:
-                    emitter.Assign(
-                        RewriteOperand(dasm.Current.op1),
-                        emitter.Or(
-                            RewriteOperand(dasm.Current.op2),
-                            Shift16(dasm.Current.op3)));
-                    break;
+                case Opcode.nor: RewriteOr(true); break;
+                case Opcode.or: RewriteOr(false); break;
+                case Opcode.ori: RewriteOr(false); break;
+                case Opcode.oris: RewriteOris(); break;
                 case Opcode.lwzu:
                     op1 = RewriteOperand(dasm.Current.op1);
                     ea = EffectiveAddress(dasm.Current.op2, emitter);
@@ -114,6 +137,7 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.rlwinm: RewriteRlwinm(); break;
                 case Opcode.slw: RewriteSlw(); break;
                 case Opcode.srawi: RewriteSrawi(); break;
+                case Opcode.stb: RewriteStb(); break;
                 case Opcode.stbu:
                     op1 = RewriteOperand(dasm.Current.op1);
                     ea = EffectiveAddress(dasm.Current.op2, emitter);
@@ -128,11 +152,15 @@ namespace Decompiler.Arch.PowerPC
                     emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
                     emitter.Assign(op2, emitter.IAdd(op2, op3));
                     break;
+                case Opcode.stbx: RewriteStbx(); break;
+                case Opcode.stfd: RewriteStfd(); break;
                 case Opcode.stw: RewriteStw(); break;
                 case Opcode.stwu: RewriteStwu(); break;
                 case Opcode.stwux: RewriteStwux(); break;
                 case Opcode.stwx: RewriteStwx(); break;
                 case Opcode.subf: RewriteSubf(); break;
+                case Opcode.xor: RewriteXor(); break;
+                case Opcode.xoris: RewriteXoris(); break;
                 }
                 yield return cluster;
             }
@@ -207,6 +235,25 @@ namespace Decompiler.Arch.PowerPC
                 var offset = mop.Offset;
                 return emitter.IAdd(reg, offset);
             }
+        }
+
+        //$REVIEW: push PseudoProc into the RewriterHost interface"
+        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
+        {
+            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
+            return PseudoProc(ppp, retType, args);
+        }
+
+        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+        {
+            if (args.Length != ppp.Arity)
+                throw new ArgumentOutOfRangeException(
+                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                    ppp.Name,
+                    ppp.Arity,
+                    args.Length));
+
+            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
 
         private Expression UpdatedRegister(Expression effectiveAddress)

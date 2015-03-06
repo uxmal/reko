@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,16 +36,50 @@ namespace Decompiler.Arch.PowerPC
             emitter.Goto(dst);
         }
 
+        private void RewriteBc(bool linkRegister)
+        {
+            throw new NotImplementedException();
+        }
+
         private void RewriteBcctr(bool linkRegister)
         {
-            var bo = ((Constant)RewriteOperand(instr.op1)).ToByte();
-            var ctr = frame.EnsureRegister(Registers.ctr);
+            RewriteBranch(linkRegister, frame.EnsureRegister(Registers.ctr));
+        }
 
+        private void RewriteBl()
+        {
+            var dst = RewriteOperand(instr.op1);
+            emitter.Call(dst, 0);
+        }
+
+        private void RewriteBlr()
+        {
+            emitter.Return(0, 0);
+        }
+
+        private void RewriteBranch(bool linkRegister, ConditionCode cc)
+        {
+            var cr = RewriteOperand(instr.op1);
+            var dst = RewriteOperand(instr.op2);
+            if (linkRegister)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                emitter.Branch(emitter.Test(cc, cr), (Address)dst, RtlClass.ConditionalTransfer);
+            }
+        }
+
+        private void RewriteBranch(bool linkRegister, Expression destination)
+        {
+            var ctr = frame.EnsureRegister(Registers.ctr);
+            var bo = ((Constant)RewriteOperand(instr.op1)).ToByte();
             switch (bo)
             {
-            case 0x00: 
+            case 0x00:
             case 0x01: throw new NotImplementedException("dec ctr");
-            case 0x02: 
+            case 0x02:
             case 0x03: throw new NotImplementedException("dec ctr");
             case 0x04:
             case 0x05:
@@ -75,10 +111,5 @@ namespace Decompiler.Arch.PowerPC
         }
 
 
-        private void RewriteBl()
-        {
-            var dst = RewriteOperand(instr.op1);
-            emitter.Call(dst, 0);
-        }
     }
 }

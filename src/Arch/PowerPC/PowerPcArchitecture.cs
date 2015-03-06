@@ -48,41 +48,44 @@ namespace Decompiler.Arch.PowerPC
             this.wordWidth = wordWidth;
             this.ptrType =  PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
             regs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
-                new RegisterStorage("r0", 0, wordWidth),
-                new RegisterStorage("r1", 1, wordWidth),
-                new RegisterStorage("r2", 2, wordWidth),
-                new RegisterStorage("r3", 3, wordWidth),
-                new RegisterStorage("r4", 4, wordWidth),
-                new RegisterStorage("r5", 5, wordWidth),
-                new RegisterStorage("r6", 6, wordWidth),
-                new RegisterStorage("r7", 7, wordWidth),
-                new RegisterStorage("r8", 8, wordWidth),
-                new RegisterStorage("r9", 9, wordWidth),
+                PowerPC.Registers.r0,
+                PowerPC.Registers.r1,
+                PowerPC.Registers.r2,
+                PowerPC.Registers.r3,
+                PowerPC.Registers.r4,
+                PowerPC.Registers.r5,
+                PowerPC.Registers.r6,
+                PowerPC.Registers.r7,
+                PowerPC.Registers.r8,
+                PowerPC.Registers.r9,
+                PowerPC.Registers.r10, 
+                PowerPC.Registers.r11,
+                PowerPC.Registers.r12, 
+                PowerPC.Registers.r13,
+                PowerPC.Registers.r14,
+                PowerPC.Registers.r15,
+                PowerPC.Registers.r16,
+                PowerPC.Registers.r17,
+                PowerPC.Registers.r18,
+                PowerPC.Registers.r19,
 
-                new RegisterStorage("r10", 10, wordWidth),
-                new RegisterStorage("r11", 11, wordWidth),
-                new RegisterStorage("r12", 12, wordWidth),
-                new RegisterStorage("r13", 13, wordWidth),
-                new RegisterStorage("r14", 14, wordWidth),
-                new RegisterStorage("r15", 15, wordWidth),
-                new RegisterStorage("r16", 16, wordWidth),
-                new RegisterStorage("r17", 17, wordWidth),
-                new RegisterStorage("r18", 18, wordWidth),
-                new RegisterStorage("r19", 19, wordWidth),
+                PowerPC.Registers.r20,
+                PowerPC.Registers.r21,
+                PowerPC.Registers.r22,
+                PowerPC.Registers.r23,
+                PowerPC.Registers.r24,
+                PowerPC.Registers.r25,
+                PowerPC.Registers.r26,
+                PowerPC.Registers.r27,
+                PowerPC.Registers.r28,
+                PowerPC.Registers.r29,
 
-                new RegisterStorage("r20", 20, wordWidth),
-                new RegisterStorage("r21", 21, wordWidth),
-                new RegisterStorage("r22", 22, wordWidth),
-                new RegisterStorage("r23", 23, wordWidth),
-                new RegisterStorage("r24", 24, wordWidth),
-                new RegisterStorage("r25", 25, wordWidth),
-                new RegisterStorage("r26", 26, wordWidth),
-                new RegisterStorage("r27", 27, wordWidth),
-                new RegisterStorage("r28", 28, wordWidth),
-                new RegisterStorage("r29", 29, wordWidth),
+                PowerPC.Registers.r30,
+                PowerPC.Registers.r31,
 
-                new RegisterStorage("r30", 30, wordWidth),
-                new RegisterStorage("r31", 31, wordWidth),
+                PowerPC.Registers.lr,
+                PowerPC.Registers.cr,
+                PowerPC.Registers.ctr,
             });
 
             fpregs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
@@ -195,12 +198,12 @@ namespace Decompiler.Arch.PowerPC
 
         public BitSet CreateRegisterBitset()
         {
-            return new BitSet(0x40);
+            return new BitSet(0x23);
         }
 
         public RegisterStorage GetRegister(int i)
         {
-            throw new NotImplementedException();
+            return regs[i];
         }
 
         public RegisterStorage GetRegister(string name)
@@ -225,14 +228,18 @@ namespace Decompiler.Arch.PowerPC
 
         public BitSet ImplicitArgumentRegisters
         {
-            get { throw new NotImplementedException(); }
+            get {
+                return CreateRegisterBitset();
+            }
         }
 
         public int InstructionBitSize { get { return 32; } }
 
         public string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            //$BUG: this needs to be better conceved. There are 
+            // 32 (!) condition codes in the PowerPC architecture
+            return "crX";
         }
 
         public PrimitiveType FramePointerType
@@ -257,7 +264,7 @@ namespace Decompiler.Arch.PowerPC
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new PowerPcRewriter(this, rdr, frame);
+            return new PowerPcRewriter(this, rdr, frame, host);
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

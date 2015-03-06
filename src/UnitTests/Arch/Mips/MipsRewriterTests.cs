@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Arch.Mips
             dasm = new MipsDisassembler(arch, new BeImageReader(new LoadedImage(new Address(0x00100000), bytes), 0));
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             return new MipsRewriter(arch, dasm, frame);
         }

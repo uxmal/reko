@@ -115,6 +115,11 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, Constant.Create(exp.DataType, 0));
         }
 
+        public Expression FDiv(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FDiv, PrimitiveType.Real64, a, b);
+        }
+
         public FieldAccess Field(DataType dt, Expression e, string name)
         {
             return new FieldAccess(dt, e, name);

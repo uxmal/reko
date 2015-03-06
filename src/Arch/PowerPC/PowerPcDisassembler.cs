@@ -63,9 +63,10 @@ namespace Decompiler.Arch.PowerPC
             return instrCur;
         }
 
-        private PowerPcInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt, bool setsCR0)
+        private PowerPcInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt)
         {
             var ops = new List<MachineOperand>();
+            bool setsCR0 = (wInstr & 1) != 0;
             bool allowSetCR0 = false;
             MachineOperand op = null;
             for (int i = 0; i < opFmt.Length; ++i)
@@ -101,10 +102,10 @@ namespace Decompiler.Arch.PowerPC
                     default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
                     }
                     break;
-                case 'C':   // CR register in certain FPU opcodes.
-                    if (opFmt[++i] != 1)
+                case 'C':   // CR field in certain opcodes.
+                    if (opFmt[++i] != '1')
                         throw new FormatException("Invalid CRx format specification.");
-                    op = this.CRegFromBits((wInstr >> 22) & 0x07);
+                    op = this.CRegFromBits((wInstr >> 23) & 0x07);
                     break;
                 case 'f':
                     switch (opFmt[++i])
@@ -211,7 +212,7 @@ namespace Decompiler.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands(opcode, wInstr, opFmt, (wInstr & 1) != 0);
+                return dasm.DecodeOperands(opcode, wInstr, opFmt);
             }
         }
 
@@ -226,7 +227,7 @@ namespace Decompiler.Arch.PowerPC
         
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return xOpRecs[(wInstr >> 1) & 0x3FF].Decode(dasm, wInstr, (wInstr & 1) == 1);
+                return xOpRecs[(wInstr >> 1) & 0x3FF].Decode(dasm, wInstr);
             }
         }
 
@@ -245,7 +246,7 @@ namespace Decompiler.Arch.PowerPC
                 XOpRecAux opRec;
                 if (xOpRecs.TryGetValue(xOp, out opRec))
                 {
-                    return opRec.Decode(dasm, wInstr, (wInstr & 1) == 1);
+                    return opRec.Decode(dasm, wInstr);
                 }
                 else
                 {
@@ -277,7 +278,7 @@ namespace Decompiler.Arch.PowerPC
             }
         }
 
-        private class XOpRecAux
+        private class XOpRecAux : OpRec
         {
             protected Opcode opcode;
             protected string opFmt;
@@ -293,9 +294,9 @@ namespace Decompiler.Arch.PowerPC
                 this.opFmt = opFmt;
             }
 
-            public virtual PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands(opcode, wInstr, opFmt, setsCr0);
+                return dasm.DecodeOperands(opcode, wInstr, opFmt);
             }
         }
 
@@ -309,9 +310,9 @@ namespace Decompiler.Arch.PowerPC
                 this.opLink = opLink;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands(setsCr0 ? opLink : opcode, wInstr, opFmt, false);
+                return dasm.DecodeOperands((wInstr&1)!=0 ? opLink : opcode, wInstr, opFmt);
             }
         }
 
@@ -328,7 +329,7 @@ namespace Decompiler.Arch.PowerPC
 
             public virtual PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
             {
-                return dasm.DecodeOperands(opcode, wInstr, opFmt, setsCr0);
+                return dasm.DecodeOperands(opcode, wInstr, opFmt);
             }
         }
 
@@ -352,16 +353,38 @@ namespace Decompiler.Arch.PowerPC
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                var opcode = (wInstr & 1) == 1 ? Opcode.bcl : Opcode.bc;
+                bool link = (wInstr & 1) != 0;
                 var uOffset = wInstr & 0x0000FFFC;
                 if ((uOffset & 0x8000) != 0)
                     uOffset |= 0xFFFF0000;
+                var crBit = (wInstr >> 16) & 0x1F;
+                var crf = crBit >> 2;
+                Opcode opcode;
+                var condCode = ((wInstr >> 22) & 4) | (crBit & 0x3);
                 var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.rdr.Address.Linear - 4;
+                var dst = new AddressOperand(new Address(unchecked(baseAddr + uOffset)));
+                switch (condCode)
+                {
+                default:
+                    return new PowerPcInstruction(link ? Opcode.bcl : Opcode.bc)
+                    {
+                        op1 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
+                        op2 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
+                        op3 = dst
+                    };
+                case 0: opcode = link ? Opcode.bgel : Opcode.bge; break;
+                case 1: opcode = link ? Opcode.blel : Opcode.ble; break;
+                case 2: opcode = link ? Opcode.bnel : Opcode.bne; break;
+                case 3: opcode = link ? Opcode.bnsl : Opcode.bns; break;
+                case 4: opcode = link ? Opcode.bltl : Opcode.blt; break;
+                case 5: opcode = link ? Opcode.bgtl : Opcode.bgt; break;
+                case 6: opcode = link ? Opcode.beql : Opcode.beq; break;
+                case 7: opcode = link ? Opcode.bsol : Opcode.bso; break;
+                }
                 return new PowerPcInstruction(opcode)
                 {
-                    op1 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
-                    op2 = new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
-                    op3 = new AddressOperand(new Address(unchecked(baseAddr + uOffset)))
+                    op1 = dasm.CRegFromBits(crf),
+                    op2 = dst
                 };
             }
         }
@@ -375,7 +398,7 @@ namespace Decompiler.Arch.PowerPC
                 this.to = to;
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var reg = dasm.RegFromBits(wInstr >> 21);
                 var spr = (wInstr >> 11) & 0x3FF;
@@ -399,9 +422,9 @@ namespace Decompiler.Arch.PowerPC
             {
             }
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                var opcode = setsCr0 ? Opcode.blrl : Opcode.blr;
+                var opcode = (wInstr&1)!=0 ? Opcode.blrl : Opcode.blr;
                 var bo = (wInstr >> 21) & 0x1F;
                 if ((bo & 0x14) == 0x14)
                     return new PowerPcInstruction(Opcode.blr);
@@ -419,7 +442,7 @@ namespace Decompiler.Arch.PowerPC
             public CmpOpRec(Opcode op, string format)  :base(op, format)
             {}
 
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var l = ((wInstr >> 21) & 1) != 0;
                 var op = Opcode.illegal;
@@ -427,9 +450,11 @@ namespace Decompiler.Arch.PowerPC
                 {
                 default: throw new NotImplementedException();
                 case Opcode.cmp: op = l ? Opcode.cmpl : Opcode.cmp; break;
+                case Opcode.cmpi: op = l ? Opcode.cmpi : Opcode.cmpwi; break;
                 case Opcode.cmpl: op = l ? Opcode.cmpl : Opcode.cmplw; break;
+                case Opcode.cmpli: op = l ? Opcode.cmpli : Opcode.cmpli; break;
                 }
-                return dasm.DecodeOperands(op, wInstr, opFmt, setsCr0);
+                return dasm.DecodeOperands(op, wInstr, opFmt);
             }
         }
 
@@ -449,28 +474,31 @@ namespace Decompiler.Arch.PowerPC
 
             var x1FOpRecs = new Dictionary<uint, XOpRecAux>()
             {
-                { 0, new CmpOpRec(Opcode.cmp, "X,r2,r3") },
+                { 0, new CmpOpRec(Opcode.cmp, "C1,r2,r3") },
                 { 4, new XOpRecAux(Opcode.tw, "I1,r2,r3") },
                 { 10, new XOpRecAux(Opcode.addc, "r1,r2,r3")},
                 { 0x013, new XOpRecAux(Opcode.mfcr, "r1") },
                 { 0x017, new XOpRecAux(Opcode.lwzx, "r1,r2,r3") },
                 { 0x018, new XOpRecAux(Opcode.slw, "r2,r1,r3") },
                 { 0x01A, new XOpRecAux(Opcode.cntlzw, "r2,r1") },
-                { 0x020, new CmpOpRec(Opcode.cmpl, "X,r2,r3") },
+                { 0x020, new CmpOpRec(Opcode.cmpl, "C1,r2,r3") },
                 { 266, new XOpRecAux(Opcode.add, ".r1,r2,r3")},
                 { 20, new XOpRecAux(Opcode.lwarx, "r1,r2,r3") },
                 { 40, new XOpRecAux(Opcode.subf, "r1,r2,r3")},
                 { 87, new XOpRecAux(Opcode.lbzx, "r1,r2,r3") },
                 { 0x68, new XOpRecAux(Opcode.neg, "r1,r2") },
-
+                { 124, new XOpRecAux(Opcode.nor, ".r2,r1,r3")},
                 { 0x090, new XOpRecAux(Opcode.mtcrf, "M,r1")},
                 { 0x097, new XOpRecAux(Opcode.stwx, "r1,r2,r3") },
                 { 0x0B7, new XOpRecAux(Opcode.stwux, "r1,r2,r3") },
+                { 215, new XOpRecAux(Opcode.stbx, "r1,r2,r3") },
+                { 235, new XOpRecAux(Opcode.mullw, ".r1,r2,r3") },
                 { 0x0CA, new XOpRecAux(Opcode.addze, ".r1,r2") },
                 { 247, new XOpRecAux(Opcode.stbux, "r1,r2,r3") },
                 { 279, new XOpRecAux(Opcode.lhzx, "r1,r2,r3") },
                 { 316, new XOpRecAux(Opcode.xor, ".r2,r1,r3") },
                 { 444, new XOpRecAux(Opcode.or, ".r2,r1,r3") },
+                { 459, new XOpRecAux(Opcode.divwu, ".r1,r2,r3") },
                 { 467, new SprOpRec(true) },
                 { 0x153, new SprOpRec(false) },
                 { 824, new XOpRecAux(Opcode.srawi, "r2,r1,I3") }
@@ -489,8 +517,8 @@ namespace Decompiler.Arch.PowerPC
 
                 new DOpRec(Opcode.subfic, "r1,r2,S"),
                 new InvalidOpRec(),
-                new DOpRec(Opcode.cmpli, "r2,I1,U"),
-                new DOpRec(Opcode.cmpi, "r2,I1,S"),
+                new CmpOpRec(Opcode.cmpli, "C1,r2,U"),
+                new CmpOpRec(Opcode.cmpi, "C1,r2,S"),
                 new DOpRec(Opcode.addic, "r1,r2,S"),
                 new DOpRec(Opcode.addic, ":r1,r2,S"),
                 new DOpRec(Opcode.addi, "r1,r2,S"),
@@ -562,11 +590,12 @@ namespace Decompiler.Arch.PowerPC
                 new InvalidOpRec(),
                 new XOpRec( new Dictionary<uint, XOpRecAux>()
                 {
-                    { 0, new XOpRecAux(Opcode.fcmpu, "X,f2,f3") },
-                    { 15, new XOpRecAux(Opcode.fctiwz, "f1,f3") },
-                    { 20, new XOpRecAux(Opcode.fsub, "f1,f2,f3") },
-                    { 21, new XOpRecAux(Opcode.fadd, "f1,f2,f3") },
-                    { 25, new XOpRecAux(Opcode.fmul, "f1,f2,f4") },
+                    { 0, new XOpRecAux(Opcode.fcmpu, "C1,f2,f3") },
+                    { 18, new XOpRecAux(Opcode.fdiv, ".f1,f2,f3") },
+                    { 15, new XOpRecAux(Opcode.fctiwz, ".f1,f3") },
+                    { 20, new XOpRecAux(Opcode.fsub, ".f1,f2,f3") },
+                    { 21, new XOpRecAux(Opcode.fadd, ".f1,f2,f3") },
+                    { 25, new XOpRecAux(Opcode.fmul, ".f1,f2,f4") },
                     { 0x48, new XOpRecAux(Opcode.fmr, "f1,f3") },
                 })
             };

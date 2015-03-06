@@ -42,9 +42,9 @@ namespace Decompiler.UnitTests.Arch.Mos6502
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new Rewriter(arch, image.CreateLeReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType), null);
+            return new Rewriter(arch, image.CreateLeReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType), host);
         }
 
         public override Address LoadAddress

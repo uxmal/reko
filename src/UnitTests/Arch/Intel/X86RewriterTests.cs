@@ -63,13 +63,13 @@ namespace Decompiler.UnitTests.Arch.Intel
             get { return baseAddr; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             return arch.CreateRewriter(
                 new LeImageReader(image, 0),
                 arch.CreateProcessorState(),
                 frame,
-                host);
+                this.host);
         }
 
         [SetUp]
