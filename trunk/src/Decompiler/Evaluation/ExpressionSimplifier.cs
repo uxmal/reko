@@ -122,7 +122,10 @@ namespace Decompiler.Evaluation
 
         public virtual Expression VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            return new ArrayAccess(
+                acc.DataType,
+                acc.Array.Accept(this),
+                acc.Index.Accept(this));
         }
 
         public virtual Expression VisitBinaryExpression(BinaryExpression binExp)

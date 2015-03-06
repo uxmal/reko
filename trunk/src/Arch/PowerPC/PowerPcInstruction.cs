@@ -34,6 +34,7 @@ namespace Decompiler.Arch.PowerPC
         public MachineOperand op2;
         public MachineOperand op3;
         public MachineOperand op4;
+        public MachineOperand op5;
         public bool setsCR0;
 
         public PowerPcInstruction(Opcode opcode)
@@ -60,7 +61,11 @@ namespace Decompiler.Arch.PowerPC
                     return 1;
                 if (op3 == null)
                     return 2;
-                return 3;
+                if (op4 == null)
+                    return 3;
+                if (op5 == null)
+                    return 4;
+                return 5;
             }
         }
 	
@@ -71,9 +76,10 @@ namespace Decompiler.Arch.PowerPC
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(opcode.ToString());
-            if (setsCR0)
-                writer.Write('.');
+            var op = string.Format("{0}{1}", 
+                opcode,
+                setsCR0 ? "." : "");
+            writer.WriteOpcode(op);
             if (op1 != null)
             {
                 writer.Tab();
@@ -90,6 +96,11 @@ namespace Decompiler.Arch.PowerPC
                         {
                             writer.Write(",");
                             op4.Write(true, writer);
+                            if (op5 != null)
+                            {
+                                writer.Write(",");
+                                op5.Write(true, writer);
+                            }
                         }
                     }
                 }

@@ -158,6 +158,7 @@
     <Compile Include="DchexLoader.cs" />
     <Compile Include="Environments\AmigaOS\AmigaOSPlatformTests.cs" />
     <Compile Include="Environments\AmigaOS\FuncsFileParserTests.cs" />
+    <Compile Include="Environments\C64\C64BasicRewriterTests.cs" />
     <Compile Include="Environments\C64\D64LoaderTests.cs" />
     <Compile Include="Environments\Win32\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />

@@ -543,7 +543,7 @@ namespace Decompiler.Gui.Windows.Controls
                 // Enumerate all segments visible on screen.
 
                 uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
-                if (ctrl.addrTopVisible.Linear >= laEnd)
+                if (ctrl.addrTopVisible.Linear >= laEnd || !ctrl.image.IsValidAddress(ctrl.addrTopVisible))
                     return null;
                 ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;

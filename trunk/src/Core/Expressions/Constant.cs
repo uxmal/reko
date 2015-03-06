@@ -357,6 +357,11 @@ namespace Decompiler.Core.Expressions
             return new ConstantInt32(PrimitiveType.Int32, i);
         }
 
+        public static Constant Int64(long l)
+        {
+            return new ConstantInt64(PrimitiveType.Int64, l);
+        }
+
         public static Constant Real32(float f)
         {
             return new ConstantReal32(PrimitiveType.Real32, f);
@@ -402,8 +407,15 @@ namespace Decompiler.Core.Expressions
             return Constant.Create(dataType, 0);
         }
 
+        public static Constant String(string str, StringType strType)
+        {
+            return new StringConstant(strType, str);
+        }
+
+
 		public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
         public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
+
     }
 
     internal class ConstantBool : Constant

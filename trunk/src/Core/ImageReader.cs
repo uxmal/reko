@@ -198,6 +198,14 @@ namespace Decompiler.Core
             return u;
         }
 
+        public bool TryReadLeUInt16(out ushort us)
+        {
+            if (!LoadedImage.TryReadLeUInt16(bytes, off, out us))
+                return false;
+            off += 2;
+            return true;
+        }
+
         public ushort ReadBeUInt16()
         {
             ushort u = LoadedImage.ReadBeUInt16(bytes, off);

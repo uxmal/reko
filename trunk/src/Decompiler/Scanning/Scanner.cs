@@ -361,6 +361,14 @@ namespace Decompiler.Scanning
             return clonedBlock;
         }
 
+        /// <summary>
+        /// Creates a small basic block, consisting solely of a 'call' followed by a 'return'
+        /// instruction. 
+        /// </summary>
+        /// <param name="addrFrom"></param>
+        /// <param name="procOld"></param>
+        /// <param name="procNew"></param>
+        /// <returns></returns>
         public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
         {
             var blockName = string.Format(
@@ -530,7 +538,7 @@ namespace Decompiler.Scanning
                 arch.CreateFrame(),
                 this);
             var rtlc = rdr.FirstOrDefault();
-            if (rtlc == null)
+            if (rtlc == null || rtlc.Instructions.Count == 0)
                 return null;
             var jump = rtlc.Instructions[0] as RtlGoto;
             if (jump == null)

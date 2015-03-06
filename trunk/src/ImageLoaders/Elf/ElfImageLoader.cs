@@ -21,6 +21,7 @@
 using Decompiler.Arch.M68k;
 using Decompiler.Arch.Sparc;
 using Decompiler.Arch.X86;
+using Decompiler.Arch.PowerPC;
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
@@ -47,15 +48,70 @@ namespace Decompiler.ImageLoaders.Elf
         private const byte BIG_ENDIAN = 2;
         private const int HEADER_OFFSET = 0x0010;
 
-        private const ushort EM_NONE = 0; // No machine
-        private const ushort EM_M32 = 1; //AT&T WE 32100
-        private const ushort EM_SPARC = 2; //SPARC
-        private const ushort EM_386 = 3; //Intel 80386
-        private const ushort EM_68K = 4; //Motorola 68000
-        private const ushort EM_88K = 5; //Motorola 88000
-        private const ushort EM_860 = 7; //Intel 80860
-        private const ushort EM_MIPS = 8; //MIPS RS3000 Big-Endian E
-        private const ushort EM_MIPSRS4BE = 10; // MIPS RS4000 Big-Endian E
+        private const ushort EM_NONE = 0;           // No machine 
+        private const ushort EM_M32 = 1;            // AT&T WE 32100 
+        private const ushort EM_SPARC = 2;          // SPARC 
+        private const ushort EM_386 = 3;            // Intel 80386 
+        private const ushort EM_68K = 4;            // Motorola 68000 
+        private const ushort EM_88K = 5;            // Motorola 88000 
+        //private const ushort RESERVED 6 Reserved for future use 
+        private const ushort EM_860 = 7;            // Intel 80860 
+        private const ushort EM_MIPS = 8;           // MIPS I Architecture 
+        private const ushort EM_S370 = 9;           // IBM System/370 Processor 
+        private const ushort EM_MIPS_RS3_LE = 10;   // MIPS RS3000 Little-endian 
+        //private const ushort RESERVED 11-14 Reserved for future use 
+        private const ushort EM_PARISC = 15;        // Hewlett-Packard PA-RISC 
+        //private const ushort RESERVED 16 Reserved for future use 
+        private const ushort EM_VPP500 = 17;        // Fujitsu VPP500 
+        private const ushort EM_SPARC32PLUS = 18;   // Enhanced instruction set SPARC 
+        private const ushort EM_960 = 19;           // Intel 80960 
+        private const ushort EM_PPC = 20;           // PowerPC 
+        private const ushort EM_PPC64 = 21;         // 64-bit PowerPC 
+        //private const ushort RESERVED 22-35 Reserved for future use 
+        private const ushort EM_V800 = 36;          // NEC V800 
+        private const ushort EM_FR20 = 37;          // Fujitsu FR20 
+        private const ushort EM_RH32 = 38;          // TRW RH-32 
+        private const ushort EM_RCE = 39;           // Motorola RCE 
+        private const ushort EM_ARM = 40;           // Advanced RISC Machines ARM 
+        private const ushort EM_ALPHA = 41;         // Digital Alpha 
+        private const ushort EM_SH = 42;            // Hitachi SH 
+        private const ushort EM_SPARCV9 = 43;       // SPARC Version 9 
+        private const ushort EM_TRICORE = 44;       // Siemens Tricore embedded processor 
+        private const ushort EM_ARC = 45;           // Argonaut RISC Core, Argonaut Technologies Inc. 
+        private const ushort EM_H8_300 = 46;        // Hitachi H8/300 
+        private const ushort EM_H8_300H = 47;       // Hitachi H8/300H 
+        private const ushort EM_H8S = 48;           // Hitachi H8S 
+        private const ushort EM_H8_500 = 49;        // Hitachi H8/500 
+        private const ushort EM_IA_64 = 50;         // Intel IA-64 processor architecture 
+        private const ushort EM_MIPS_X = 51;        // Stanford MIPS-X 
+        private const ushort EM_COLDFIRE = 52;      // Motorola ColdFire 
+        private const ushort EM_68HC12 = 53;        // Motorola M68HC12 
+        private const ushort EM_MMA = 54;           // Fujitsu MMA Multimedia Accelerator 
+        private const ushort EM_PCP = 55;           // Siemens PCP 
+        private const ushort EM_NCPU = 56;          // Sony nCPU embedded RISC processor 
+        private const ushort EM_NDR1 = 57;          // Denso NDR1 microprocessor 
+        private const ushort EM_STARCORE = 58;      // Motorola Star*Core processor 
+        private const ushort EM_ME16 = 59;          // Toyota ME16 processor 
+        private const ushort EM_ST100 = 60;         // STMicroelectronics ST100 processor 
+        private const ushort EM_TINYJ = 61;         // Advanced Logic Corp. TinyJ embedded processor family 
+        //private const ushort Reserved 62-65 Reserved for future use 
+        private const ushort EM_FX66 = 66;          // Siemens FX66 microcontroller 
+        private const ushort EM_ST9PLUS = 67;       // STMicroelectronics ST9+ 8/16 bit microcontroller 
+        private const ushort EM_ST7 = 68;           // STMicroelectronics ST7 8-bit microcontroller 
+        private const ushort EM_68HC16 = 69;        // Motorola MC68HC16 Microcontroller 
+        private const ushort EM_68HC11 = 70;        // Motorola MC68HC11 Microcontroller 
+        private const ushort EM_68HC08 = 71;        // Motorola MC68HC08 Microcontroller 
+        private const ushort EM_68HC05 = 72;        // Motorola MC68HC05 Microcontroller 
+        private const ushort EM_SVX = 73;           // Silicon Graphics SVx 
+        private const ushort EM_ST19 = 74;          // STMicroelectronics ST19 8-bit microcontroller 
+        private const ushort EM_VAX = 75;           // Digital VAX  
+        private const ushort EM_CRIS = 76;          // Axis Communications 32-bit embedded processor 
+        private const ushort EM_JAVELIN = 77;       // Infineon Technologies 32-bit embedded processor 
+        private const ushort EM_FIREPATH = 78;      // Element 14 64-bit DSP Processor 
+        private const ushort EM_ZSP = 79;           // LSI Logic 16-bit DSP Processor 
+        private const ushort EM_MMIX = 80;          // Donald Knuth's educational 64-bit processor 
+        private const ushort EM_HUANY = 81;         // Harvard University machine-independent object files 
+        private const ushort EM_PRISM = 82;         // SiTera Prism 
 
         private const uint SHF_WRITE =  0x1;
         private const uint SHF_ALLOC  =  0x2;
@@ -192,13 +248,10 @@ namespace Decompiler.ImageLoaders.Elf
             case EM_SPARC: return new SparcArchitecture(PrimitiveType.Word32);
             case EM_386: return new IntelArchitecture(ProcessorMode.Protected32);
             case EM_68K: return new M68kArchitecture();
-            case EM_M32: //AT&T WE 32100
-            case EM_88K: //Motorola 88000
-            case EM_860: //Intel 80860
-            case EM_MIPS: //MIPS RS3000 Big-Endian
-            case EM_MIPSRS4BE: // MIPS RS4000 Big-Endian
+            case EM_PPC: return new PowerPcArchitecture(PrimitiveType.Word32);
+            case EM_PPC64: 
             default:
-                throw new NotSupportedException(string.Format("Processor format {0}is not supported.", machineType));
+                throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
         }
 
@@ -285,6 +338,10 @@ namespace Decompiler.ImageLoaders.Elf
             if (arch is IntelArchitecture)
             {
                 RelocateI386();
+            }
+            else if (arch is PowerPcArchitecture)
+            {
+                //$TODO
             }
             else
             {

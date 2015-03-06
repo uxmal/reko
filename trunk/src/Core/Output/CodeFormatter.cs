@@ -209,10 +209,11 @@ namespace Decompiler.Core.Output
             if (!c.IsValid)
             {
                 writer.Write("<invalid>");
+                return;
             }
-            else
+            PrimitiveType t = c.DataType as PrimitiveType;
+            if (t != null)
             {
-                PrimitiveType t = (PrimitiveType)c.DataType;
                 if (t.Domain == Domain.Boolean)
                 {
                     writer.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
@@ -222,6 +223,12 @@ namespace Decompiler.Core.Output
                     object v = c.GetValue();
                     writer.Write(FormatString(t, v), v);
                 }
+                return;
+            }
+            StringConstant s = c as StringConstant;
+            if (s != null)
+            {
+                writer.Write("{0}{1}{0}", '"', s.GetValue());
             }
         }
 

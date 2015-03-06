@@ -36,18 +36,5 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             IProcessorArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
         }
-
-        [Test]
-        public void PPCArch_InvalidWordSize()
-        {
-            try
-            {
-                new PowerPcArchitecture(PrimitiveType.Word16);
-                Assert.Fail("There is no 16-bit powerPC architecture.");
-            }
-            catch (ArgumentException)
-            {
-            }
-        }
     }
 }
