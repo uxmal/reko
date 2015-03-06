@@ -49,9 +49,9 @@ namespace Decompiler.UnitTests.Arch.M68k
             get { return addrBase; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return arch.CreateRewriter(image.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), new RewriterHost());
+            return arch.CreateRewriter(image.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
         }
 
         private void Rewrite(params ushort[] opcodes)
@@ -70,19 +70,6 @@ namespace Decompiler.UnitTests.Arch.M68k
             var asm = new M68kAssembler(arch, addrBase, new List<EntryPoint>());
             build(asm);
             image = asm.GetImage().Image;
-        }
-
-        private class RewriterHost : IRewriterHost
-        {
-            public PseudoProcedure EnsurePseudoProcedure(string name, Decompiler.Core.Types.DataType returnType, int arity)
-            {
-                return new PseudoProcedure(name, returnType, arity);
-            }
-
-            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
-            {
-                throw new NotImplementedException();
-            }
         }
 
         [Test]

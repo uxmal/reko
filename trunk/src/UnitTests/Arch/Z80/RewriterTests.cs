@@ -21,13 +21,8 @@
 using Decompiler.Arch.Z80;
 using Decompiler.Core;
 using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
 using NUnit.Framework;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Decompiler.UnitTests.Arch.Z80
 {
@@ -37,8 +32,6 @@ namespace Decompiler.UnitTests.Arch.Z80
         private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture();
         private Address baseAddr = new Address(0x0100);
         private Z80ProcessorState state;
-        private IRewriterHost host;
-        private MockRepository repository;
         private LoadedImage image;
 
         public override IProcessorArchitecture Architecture
@@ -46,7 +39,7 @@ namespace Decompiler.UnitTests.Arch.Z80
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             return new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
@@ -60,13 +53,10 @@ namespace Decompiler.UnitTests.Arch.Z80
         public void Setup()
         {
             state = (Z80ProcessorState) arch.CreateProcessorState();
-            repository = new MockRepository();
-            host = repository.StrictMock<IRewriterHost>();
         }
 
         private void BuildTest(params byte[] bytes)
         {
-            repository.ReplayAll();
             image = new LoadedImage(baseAddr, bytes);
         }
 

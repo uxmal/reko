@@ -48,9 +48,9 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             ppcInstrs = b.Instructions;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
-            return new PowerPcRewriter(arch, ppcInstrs, frame);
+            return new PowerPcRewriter(arch, ppcInstrs, frame, host);
         }
 
         protected override LoadedImage RewriteCode(uint[] words)
@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             AssertCode(
                 "0|01000000(4): 2 instructions",
                 "1|L--|r4 = r1 + r3",
-                "2|L--|SCZO = cond(r4)");
+                "2|L--|cr0 = cond(r4)");
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             RunTest((m) =>
             {
-                m.Lwzu(m.r2, 4, m.r1); 
+                m.Lwzu(m.r2, 4, m.r1);
             });
             AssertCode(
                 "0|01000000(4): 2 instructions",
@@ -175,7 +175,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 "1|L--|r12 = cr");
         }
 
-        private void AssertCode(uint instr, params string [] sExp)
+        private void AssertCode(uint instr, params string[] sExp)
         {
             Rewrite(instr);
             AssertCode(sExp);
@@ -266,7 +266,9 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_cmpl()
         {
-            AssertCode(0x7f904840, "cmplw\tcr7,r16,r9");
+            AssertCode(0x7f904840, //"cmplw\tcr7,r16,r9");
+                "0|00100000(4): 1 instructions",
+                "1|L--|cr7 = cond(r16 - r9)");
         }
 
         [Test]
@@ -294,7 +296,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_li()
         {
-            AssertCode(0x38000000, 
+            AssertCode(0x38000000,
                 "0|00100000(4): 1 instructions",
                 "1|L--|r0 = 0");
         }
@@ -338,12 +340,17 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_fcmpu()
         {
-            AssertCode(0xff810000, "fcmpu\tcr7,f1,f0");
+            AssertCode(0xff810000, // , "fcmpu\tcr7,f1,f0");
+                "0|00100000(4): 1 instructions",
+                "1|L--|cr7 = cond(f1 - f0)");
         }
+
         [Test]
         public void PPCRw_mtcrf()
         {
-            AssertCode(0x7d808120, "mtcrf\t08,r12");
+            AssertCode(0x7d808120, //"mtcrf\t08,r12");
+                "0|00100000(4): 1 instructions",
+                "1|L--|__mtcrf(0x00000008, r12)");
         }
 
         [Test]
@@ -365,11 +372,10 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_bl()
         {
-            AssertCode(0x48000045, 
+            AssertCode(0x48000045,
                 "0|00100000(4): 1 instructions",
                 "1|T--|call 00100044 (0)");
         }
-
 
         [Test]
         public void PPCRw_addis_r0()
@@ -382,9 +388,163 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_addis()
         {
-            AssertCode(0x3C810045, 
+            AssertCode(0x3C810045,
                 "0|00100000(4): 1 instructions",
                 "1|L--|r4 = r1 + 0x00450000");
+        }
+
+        [Test]
+        public void PPCRw_cmpwi()
+        {
+            AssertCode(0x2f830005, // 	cmpwi   cr7,r3,5
+                "0|00100000(4): 1 instructions",
+                "1|L--|cr7 = cond(r3 - 5)");
+        }
+
+        [Test]
+        public void PPCRw_bcXX()
+        {
+            //   AssertCode(0x40bc011c, "bge\tcr7,$0010011C");
+            //    AssertCode(0x40bd011c, "ble\tcr7,$0010011C");
+            AssertCode(0x40be011c, // "bne\tcr7,$0010011C");
+                "0|00100000(4): 1 instructions",
+                "1|T--|if (Test(NE,cr7)) branch 0010011C");
+            //    AssertCode(0x40bf011c, "bns\tcr7,$0010011C");
+            //    AssertCode(0x41bc011c, "blt\tcr7,$0010011C");
+            //    AssertCode(0x41bd011c, "bgt\tcr7,$0010011C");
+            //    AssertCode(0x41be011c, "beq\tcr7,$0010011C");
+            //    AssertCode(0x41bf011c, "bso\tcr7,$0010011C");
+            //}
+        }
+
+        [Test]
+        public void PPCRw_stb()
+        {
+            AssertCode(0x98010018u, // "stb\tr0,1(r1)
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r1 + 24:byte] = r0");
+        }
+
+        [Test]
+        public void PPCRw_blr()
+        {
+            AssertCode(0x4E800020, // blr
+                "0|00100000(4): 1 instructions",
+                "1|T--|return (0,0)");
+        }
+
+        [Test]
+        public void PPCRw_lbz()
+        {
+            AssertCode(0x8809002a,	//lbz     r0,42(r9)
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = Mem0[r9 + 42:byte]");
+        }
+
+        [Test]
+        public void PPCRw_crxor()
+        {
+            AssertCode(0x4cc63182, // crclr   4*cr1+eq	
+                "0|00100000(4): 1 instructions",
+                "1|L--|__crxor(0x00000006, 0x00000006, 0x00000006)");
+        }
+
+        [Test]
+        public void PPCRw_not()
+        {
+            AssertCode(0x7c6318f8, // not     r3,r3	
+                "0|00100000(4): 1 instructions",
+                "1|L--|r3 = ~r3");
+        }
+
+        [Test]
+        public void PPCRw_xor_()
+        {
+            AssertCode(0x7d290279, // xor.    r9,r9,r0	
+                "0|00100000(4): 2 instructions",
+                "1|L--|r9 = r9 ^ r0",
+                "2|L--|cr0 = cond(r9)");
+        }
+
+        [Test]
+        public void PPCRw_ori()
+        {
+            AssertCode(0x60000020, // ori     r0,r0,32	
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r0 | 0x00000020");
+        }
+
+
+        [Test]
+        public void PPCRw_rlwinm_1_31_31()
+        {
+            AssertCode(0x54630ffe, // rlwinm r3,r3,1,31,31
+                "0|00100000(4): 1 instructions",
+                "1|L--|r3 = r3 >>u 0x1F");
+        }
+
+        [Test]
+        public void PPCRw_regression_1()
+        {
+            AssertCode(0xfdad0024, // fdiv    f13,f13,f0
+                "0|00100000(4): 1 instructions",
+                "1|L--|f13 = f13 / f0");
+
+            AssertCode(0x38a0ffff, // li      r5,-1
+                "0|00100000(4): 1 instructions",
+                "1|L--|r5 = -1");
+
+            AssertCode(0x575a1838, // rlwinm  r26,r26,3,0,28 
+                "0|00100000(4): 1 instructions",
+                "1|L--|r26 = r26 << 0x00000003 & 0xFFFFFFF8");
+
+            AssertCode(0x7c03db96, // divwu   r0,r3,r27
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r3 /u r27");
+
+            AssertCode(0x7fe0d9d6, // mullw   r31,r0,r27
+                "0|00100000(4): 1 instructions",
+                "1|L--|r31 = r0 * r27");
+
+            AssertCode(0x6fde8000, // xoris   r30,r30,32768
+                "0|00100000(4): 1 instructions",
+                "1|L--|r30 = r30 ^ 0x80000000");
+
+            AssertCode(0x7f891800, // cmpw    cr7,r9,r3	
+                "0|00100000(4): 1 instructions",
+                "1|L--|cr7 = cond(r9 - r3)");
+
+            AssertCode(0xdbe10038, // stfd    f31,56(r1)	
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r1 + 56:real64] = f31");
+
+            AssertCode(0xc00b821c, // lfs     f0,-32228(r11)	
+                "0|00100000(4): 1 instructions",
+                "1|L--|f0 = (real64) Mem0[r11 + -32228:real32]");
+
+            AssertCode(0xc8098220, // lfd     f0,-32224(r9)	
+                "0|00100000(4): 1 instructions",
+                "1|L--|f0 = Mem0[r9 + -32224:real64]");
+
+            AssertCode(0x1f9c008c, // mulli   r28,r28,140	
+                "0|00100000(4): 1 instructions",
+                "1|L--|r28 = r28 * 140");
+
+            AssertCode(0x7c1ed9ae, // stbx    r0,r30,r27	
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r30 + r27:byte] = r0");
+
+            AssertCode(0xa001001c, // lhz     r0,28(r1)	
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = Mem0[r1 + 28:word16]");
+
+            AssertCode(0x409c0ff0, // bge-   cr7,0x00001004	
+                "0|00100000(4): 1 instructions",
+                "1|T--|if (Test(GE,cr7)) branch 00100FF0");
+
+            AssertCode(0x2b8300ff, // cmplwi  cr7,r3,255	
+                "0|00100000(4): 1 instructions",
+                "1|L--|cr7 = cond(r3 - 0x000000FF)");
         }
     }
 }

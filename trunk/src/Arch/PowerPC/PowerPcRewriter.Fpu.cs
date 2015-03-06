@@ -37,6 +37,23 @@ namespace Decompiler.Arch.PowerPC
             emitter.Assign(cr1, emitter.Cond(e));
         }
 
+        public void RewriteFcmpu()
+        {
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.Cond(emitter.FSub(opL, opR)));
+        }
+
+        public void RewriteFdiv()
+        {
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.FDiv(opL, opR));
+            MaybeEmitCr1(opD);
+        }
+
         public void RewriteFmr()
         {
             var opS = RewriteOperand(instr.op2);

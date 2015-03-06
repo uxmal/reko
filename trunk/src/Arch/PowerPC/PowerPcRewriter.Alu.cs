@@ -72,11 +72,71 @@ namespace Decompiler.Arch.PowerPC
             MaybeEmitCr0(opD);
         }
 
+        private void RewriteCmp()
+        {
+            var cr = RewriteOperand(instr.op1);
+            var r = RewriteOperand(instr.op2);
+            var i = RewriteOperand(instr.op3);
+            emitter.Assign(cr, emitter.Cond(
+                emitter.ISub(r, i)));
+        }
+
+        private void RewriteCmpli()
+        {
+            var cr = RewriteOperand(instr.op1);
+            var r = RewriteOperand(instr.op2);
+            var i = RewriteOperand(instr.op3);
+            emitter.Assign(cr, emitter.Cond(
+                emitter.ISub(r, i)));
+        }
+
+        private void RewriteCmplw()
+        {
+            var cr = RewriteOperand(instr.op1);
+            var r = RewriteOperand(instr.op2);
+            var i = RewriteOperand(instr.op3);
+            emitter.Assign(cr, emitter.Cond(
+                emitter.ISub(r, i)));
+        }
+        
+        private void RewriteCmpwi()
+        {
+            var cr = RewriteOperand(instr.op1);
+            var r = RewriteOperand(instr.op2);
+            var i = RewriteOperand(instr.op3);
+            emitter.Assign(cr, emitter.Cond(
+                emitter.ISub(r, i)));
+        }
+
+        private void RewriteCrxor()
+        {
+            var cr = RewriteOperand(instr.op1);
+            var r = RewriteOperand(instr.op2);
+            var i = RewriteOperand(instr.op3);
+            emitter.SideEffect(PseudoProc("__crxor", VoidType.Instance, cr, r, i));
+        }
+
+        private void RewriteDivwu()
+        {
+            var opL = RewriteOperand(instr.op2, true);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.UDiv(opL, opR));
+            MaybeEmitCr0(opD);
+        }
+
         private void RewriteMflr()
         {
             var dst = RewriteOperand(instr.op1);
             var src = frame.EnsureRegister(Registers.lr);
             emitter.Assign(dst, src);
+        }
+
+        private void RewriteMtcrf()
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            emitter.SideEffect(PseudoProc("__mtcrf", VoidType.Instance, dst, src));
         }
 
         private void RewriteMtctr()
@@ -93,7 +153,17 @@ namespace Decompiler.Arch.PowerPC
             emitter.Assign(dst, src);
         }
 
-        public void RewriteNeg()
+
+        private void RewriteMullw()
+        {
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.IMul(opL, opR));
+            MaybeEmitCr0(opD);
+        }
+
+        private void RewriteNeg()
         {
             var opE = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
@@ -101,20 +171,27 @@ namespace Decompiler.Arch.PowerPC
             MaybeEmitCr0(opD);
         }
 
-        public void RewriteOr()
+        private void RewriteOr(bool negate)
         {
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            if (opL == opR)
-            {
-                emitter.Assign(opD, opL);
-            }
-            else
-            {
-                emitter.Assign(opD, emitter.Or(opL, opR));
-            }
+            var s = (opL == opR)
+                ? opL
+                :  emitter.Or(opL, opR);
+            if (negate)
+                s = emitter.Comp(s);
+            emitter.Assign(opD, s);
             MaybeEmitCr0(opD);
+        }
+
+        private void RewriteOris()
+        {
+            emitter.Assign(
+                RewriteOperand(instr.op1),
+                emitter.Or(
+                    RewriteOperand(instr.op2),
+                    Shift16(dasm.Current.op3)));
         }
 
         void RewriteRlwinm()
@@ -131,7 +208,17 @@ namespace Decompiler.Arch.PowerPC
             {
                 emitter.Assign(rd, emitter.And(rs, Constant.UInt32(mask)));
             }
-            else
+            else if (sh==1 && mb == 31 && me == 31)
+            {
+                emitter.Assign(rd, emitter.Shr(rs, 31));
+            }
+            else if (sh == 3)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shl(rs, sh),
+                    Constant.UInt32(mask)));
+            }
+            else 
                 throw new NotImplementedException();
         }
 
@@ -161,6 +248,26 @@ namespace Decompiler.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             emitter.Assign(opD, emitter.ISub(opR, opL));
             MaybeEmitCr0(opD);
+        }
+
+        private void RewriteXor()
+        {
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            var s = (opL == opR)
+                ? opL
+                : emitter.Xor(opL, opR);
+            emitter.Assign(opD, s);
+            MaybeEmitCr0(opD);
+        }
+
+        public void RewriteXoris()
+        {
+            var opL = RewriteOperand(instr.op2, true);
+            var opR = Shift16(dasm.Current.op3);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.Xor(opL, opR));
         }
     }
 }

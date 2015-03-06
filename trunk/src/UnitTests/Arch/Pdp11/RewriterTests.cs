@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Arch.Pdp11
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             var dasm = new Pdp11Disassembler(arch.CreateImageReader(image, 0), arch);
             return new Pdp11Rewriter(arch, dasm, frame);
