@@ -281,6 +281,17 @@ namespace Decompiler.Core
             return (short)(abImage[offset] + ((short)abImage[offset + 1] << 8));
         }
 
+        public static bool TryReadLeUInt16(byte[] abImage, uint offset, out ushort us)
+        {
+            if (offset + 1 >= abImage.Length)
+            {
+                us = 0;
+                return false;
+            }
+            us = (ushort)(abImage[offset] + ((ushort)abImage[offset + 1] << 8));
+            return true;
+        }
+
         public static Constant ReadLeDouble(byte[] abImage, uint off)
         {
             return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, off));
@@ -335,12 +346,6 @@ namespace Decompiler.Core
                 b = img[off];
                 return true;
             }
-        }
-
-        [Obsolete("", true)]
-        public static byte ReadByte(byte[] img, uint off)
-        {
-            return img[off];
         }
 
         public bool TryReadBytes(uint off, int length, byte[] membuf)

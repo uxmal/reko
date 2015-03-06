@@ -244,6 +244,8 @@ namespace Decompiler.Analysis
             }
             if (id.Storage is FpuStackStorage || id.Storage is StackLocalStorage || id.Storage is SequenceStorage)
                 return false;
+            if (id.Storage is MemoryStorage)
+                return false;
             throw new NotImplementedException(id.Storage.GetType().Name);
         }
 

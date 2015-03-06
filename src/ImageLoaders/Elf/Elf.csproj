@@ -74,6 +74,10 @@
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
+      <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
+      <Name>PowerPC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Sparc\Sparc.csproj">
       <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
       <Name>Sparc</Name>

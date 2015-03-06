@@ -120,6 +120,11 @@ namespace Decompiler.Core.Expressions
             return new FieldAccess(dt, e, name);
         }
 
+        public Expression FMul(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FMul, PrimitiveType.Real64, a, b);
+        }
+
         public Application Fn(Expression e, params Expression[] exps)
         {
             return Fn(e, PrimitiveType.Word32, exps);
@@ -135,6 +140,10 @@ namespace Decompiler.Core.Expressions
             return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
         }
 
+        public Expression FSub(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);
+        }
         public Expression Ge(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Ge, PrimitiveType.Bool, a, b);

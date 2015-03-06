@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCDis_OrDot()
+        public void PPCDis_Or_()
         {
             PowerPcInstruction instr = DisassembleX(31, 2, 1, 3, 444, 1);
             Assert.AreEqual("or.\tr1,r2,r3", instr.ToString());
@@ -320,14 +320,14 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PPCDis_crnor()
         {
             var instr = DisassembleBits("010011 00001 00010 00011 00001000010");
-            Assert.AreEqual("crnor\tcr1,cr2,cr3", instr.ToString());
+            Assert.AreEqual("crnor\t01,02,03", instr.ToString());
         }
 
         [Test]
         public void PPCDis_cror()
         {
             var instr = DisassembleBits("010011 00001 00010 00011 01110000010");
-            Assert.AreEqual("cror\tcr1,cr2,cr3", instr.ToString());
+            Assert.AreEqual("cror\t01,02,03", instr.ToString());
         }
 
         [Test]
@@ -355,7 +355,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PPCDis_cmp()
         {
             var instr = DisassembleBits("011111 01100 00001 00010 0000000000 0");
-            Assert.AreEqual("cmp\t0C,r1,r2", instr.ToString());
+            Assert.AreEqual("cmp\tcr3,r1,r2", instr.ToString());
         }
 
         [Test]
@@ -409,8 +409,173 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCDis_fpu_double_precision_instructions()
+        public void PPCDis_mflr()
         {
+            var instr = DisassembleWord(0x7C0802A6);
+            Assert.AreEqual("mflr\tr0", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_add()
+        {
+            var instr = DisassembleWord(0x7c9a2214);
+            Assert.AreEqual("add\tr4,r26,r4", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_mfcr()
+        {
+            var instr = DisassembleWord(0x7d800026);
+            Assert.AreEqual("mfcr\tr12", instr.ToString());
+        }
+
+        private void AssertCode(uint instr, string sExp)
+        {
+            var i = DisassembleWord(instr);
+            Assert.AreEqual(sExp, i.ToString());
+        }
+
+        [Test]
+        public void PPCDis_rlwinm()
+        {
+            AssertCode(0x5729103a, "rlwinm\tr9,r25,02,00,1D");
+            AssertCode(0x57202036, "rlwinm\tr0,r25,04,00,1B");
+        }
+
+        [Test]
+        public void PPCDis_lwzx()
+        {
+            AssertCode(0x7c9c002e, "lwzx\tr4,r28,r0");
+        }
+
+        [Test]
+        public void PPCDis_stwx()
+        {
+            AssertCode(0x7c95012e, "stwx\tr4,r21,r0");
+        }
+
+        [Test]
+        public void PPCDis_subf()
+        {
+            AssertCode(0x7c154850, "subf\tr0,r21,r9");
+        }
+
+        [Test]
+        public void PPCDis_srawi()
+        {
+            AssertCode(0x7c002670, "srawi\tr0,r0,04");
+        }
+
+        [Test]
+        public void PPCDis_bctr()
+        {
+            AssertCode(0x4e800420, "bcctr\t14,00");
+        }
+
+        [Test]
+        public void PPCDis_stwux()
+        {
+            AssertCode(0x7d21016e, "stwux\tr9,r1,r0");
+        }
+
+        [Test]
+        public void PPCDis_fmr()
+        {
+            AssertCode(0xFFE00890, "fmr\tf31,f1");
+        }
+
+        [Test]
+        public void PPCDis_mtctr()
+        {
+            AssertCode(0x7d0903a6, "mtctr\tr8");
+        }
+
+        [Test]
+        public void PPCDis_cmpl()
+        {
+            AssertCode(0x7f904840, "cmplw\tcr7,r16,r9");
+        }
+
+        [Test]
+        public void PPCDis_neg()
+        {
+            AssertCode(0x7c0000d0, "neg\tr0,r0");
+        }
+
+        [Test]
+        public void PPCDis_cntlzw()
+        {
+            AssertCode(0x7d4a0034, "cntlzw\tr10,r10");
+        }
+
+        [Test]
+        public void PPCDis_fsub()
+        {
+            AssertCode(0xfc21f828, "fsub\tf1,f1,f31");
+        }
+
+        [Test]
+        public void PPCDis_li()
+        {
+            AssertCode(0x38000000, "addi\tr0,r0,+0000");
+        }
+
+        [Test]
+        public void PPCDis_addze()
+        {
+            AssertCode(0x7c000194, "addze\tr0,r0");
+        }
+
+        [Test]
+        public void PPCDis_slw()
+        {
+            AssertCode(0x7d400030, "slw\tr0,r10,r0");
+        }
+
+        [Test]
+        public void PPCDis_fctiwz()
+        {
+            AssertCode(0xfc00081e, "fctiwz\tf0,f1");
+        }
+        [Test]
+        public void PPCDis_fmul()
+        {
+            AssertCode(0xfc010032, "fmul\tf0,f1,f0");
+        }
+        [Test]
+        public void PPCDis_fcmpu()
+        {
+            AssertCode(0xff810000, "fcmpu\tcr7,f1,f0");
+        }
+        [Test]
+        public void PPCDis_mtcrf()
+        {
+            AssertCode(0x7d808120, "mtcrf\t08,r12");
+        }
+
+        [Test]
+        public void PPCDis_bctrl()
+        {
+            AssertCode(0x4e800421, "bctrl\t14,00");
+        }
+
+        [Test]
+        public void PPCDis_rlwimi()
+        {
+            AssertCode(0x5120f042, "rlwimi\tr0,r9,1E,01,01");
+        }
+
+        [Test]
+        public void PPCDis_cror_2()
+        {
+            AssertCode(0x4fddf382, "cror\t1E,1D,1E");
+        }
+
+        [Test]
+        public void PPCDis_add_()
+        {
+            var instr = DisassembleWord(0x7c9a2215);
+            Assert.AreEqual("add.\tr4,r26,r4", instr.ToString());
         }
     }
 }

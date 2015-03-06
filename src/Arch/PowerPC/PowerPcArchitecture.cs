@@ -45,8 +45,6 @@ namespace Decompiler.Arch.PowerPC
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
         public PowerPcArchitecture(PrimitiveType wordWidth)
         {
-            if (wordWidth != PrimitiveType.Word32)
-                throw new ArgumentException("Only 32-bit mode of the architecture is currently supported.");
             this.wordWidth = wordWidth;
             this.ptrType =  PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
             regs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
@@ -137,6 +135,10 @@ namespace Decompiler.Arch.PowerPC
             });
         }
 
+        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
+
+        public RegisterStorage StackRegister { get { return regs[1]; } }
+
         public ReadOnlyCollection<RegisterStorage> Registers
         {
             get { return regs; }
@@ -166,7 +168,7 @@ namespace Decompiler.Arch.PowerPC
 
         public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            yield break;
         }
 
         public Frame CreateFrame()
@@ -188,12 +190,12 @@ namespace Decompiler.Arch.PowerPC
 
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new PowerPcState(this);
         }
 
         public BitSet CreateRegisterBitset()
         {
-            throw new NotImplementedException();
+            return new BitSet(0x40);
         }
 
         public RegisterStorage GetRegister(int i)
@@ -247,11 +249,6 @@ namespace Decompiler.Arch.PowerPC
         {
             get { return this.wordWidth; } 
         }
-
-        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
-        public RegisterStorage StackRegister { get { return regs[1]; } }
-
-
 
         public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {

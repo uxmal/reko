@@ -32,15 +32,17 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcRewriter : IEnumerable<RtlInstructionCluster>
+    public partial class PowerPcRewriter : IEnumerable<RtlInstructionCluster>
     {
         private Frame frame;
         private RtlEmitter emitter;
         private PowerPcArchitecture arch;
         private IEnumerator<PowerPcInstruction> dasm;
+        private PowerPcInstruction instr;
 
-        public PowerPcRewriter(IEnumerable<PowerPcInstruction> instrs, Frame frame)
+        public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, Frame frame)
         {
+            this.arch = arch;
             this.dasm = instrs.GetEnumerator();
             this.frame = frame;
         }
@@ -56,66 +58,84 @@ namespace Decompiler.Arch.PowerPC
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            if (!dasm.MoveNext())
-                yield break;
-            var instr = dasm.Current;
-            var cluster = new RtlInstructionCluster(instr.Address, 4);
-            this.emitter = new RtlEmitter(cluster.Instructions);
-            Expression op1;
-            Expression op2;
-            Expression op3;
-            Expression ea;
-            switch (dasm.Current.Opcode)
+            while (dasm.MoveNext())
             {
-            default: throw new AddressCorrelatedException(
-                instr.Address,
-                "PowerPC opcode {0} is not supported yet.", 
-                instr.Opcode);
-            case Opcode.add:
-                var sum = RewriteOperand(instr.op1);
-                emitter.Assign(
-                    sum,
-                    emitter.IAdd(
-                        RewriteOperand(instr.op2),
-                        RewriteOperand(instr.op3)));
-                if (instr.DefCc() != 0)
-                    emitter.Assign(frame.EnsureFlagGroup(0xF, "SCZO", PrimitiveType.Byte),
-                        emitter.Cond(sum));
-                break;
-            case Opcode.oris:
-                emitter.Assign(
-                    RewriteOperand(dasm.Current.op1),
-                    emitter.Or(
-                        RewriteOperand(dasm.Current.op2),
-                        Shift16(dasm.Current.op3)));
-                break;
-            case Opcode.lwz:
-                op1 = RewriteOperand(dasm.Current.op1);
-                ea = EffectiveAddress_r0(dasm.Current.op2, emitter);
-                emitter.Assign(op1, emitter.LoadDw(ea));
-                break;
-            case Opcode.lwzu:
-                op1 = RewriteOperand(dasm.Current.op1); 
-                ea = EffectiveAddress(dasm.Current.op2, emitter);
-                emitter.Assign(op1, emitter.LoadDw(ea));
-                emitter.Assign(UpdatedRegister(ea), ea);
-                break;
-            case Opcode.stbu:
-                op1 = RewriteOperand(dasm.Current.op1);
-                ea = EffectiveAddress(dasm.Current.op2, emitter);
-                emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
-                emitter.Assign(UpdatedRegister(ea), ea);
-                break;
-            case Opcode.stbux:
-                op1 = RewriteOperand(dasm.Current.op1);
-                op2 = RewriteOperand(dasm.Current.op2);
-                op3 = RewriteOperand(dasm.Current.op3);
-                ea = emitter.IAdd(op2, op3);
-                emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
-                emitter.Assign(op2, emitter.IAdd(op2, op3));
-                break;
+                this.instr = dasm.Current;
+                var cluster = new RtlInstructionCluster(instr.Address, 4);
+                this.emitter = new RtlEmitter(cluster.Instructions);
+                Expression op1;
+                Expression op2;
+                Expression op3;
+                Expression ea;
+                Expression src;
+                Expression dst;
+                switch (dasm.Current.Opcode)
+                {
+                default: throw new AddressCorrelatedException(
+                    instr.Address,
+                    "PowerPC opcode {0} is not supported yet.",
+                    instr.Opcode);
+                case Opcode.addi: RewriteAddi(); break;
+                case Opcode.addis: RewriteAddis(); break;
+                case Opcode.add: RewriteAdd(); break;
+                case Opcode.b: RewriteB(); break;
+                case Opcode.bl: RewriteBl(); break;
+                case Opcode.bcctr: RewriteBcctr(false); break;
+                case Opcode.bctrl: RewriteBcctr(true); break;
+                case Opcode.fmr: RewriteFmr(); break;
+                case Opcode.fmul: RewriteFmul(); break;
+                case Opcode.fsub: RewriteFsub(); break;
+                case Opcode.lwz: RewriteLwz(); break;
+                case Opcode.lwzx: RewriteLwzx(); break;
+
+                case Opcode.mfcr:
+                    dst = RewriteOperand(instr.op1);
+                    src = frame.EnsureRegister(Registers.cr);
+                    emitter.Assign(dst, src);
+                    break;
+                case Opcode.mflr: RewriteMflr(); break;
+                case Opcode.mtctr: RewriteMtctr(); break;
+                case Opcode.mtlr: RewriteMtlr(); break;
+                case Opcode.neg: RewriteNeg(); break;
+                case Opcode.or: RewriteOr(); break;
+                case Opcode.oris:
+                    emitter.Assign(
+                        RewriteOperand(dasm.Current.op1),
+                        emitter.Or(
+                            RewriteOperand(dasm.Current.op2),
+                            Shift16(dasm.Current.op3)));
+                    break;
+                case Opcode.lwzu:
+                    op1 = RewriteOperand(dasm.Current.op1);
+                    ea = EffectiveAddress(dasm.Current.op2, emitter);
+                    emitter.Assign(op1, emitter.LoadDw(ea));
+                    emitter.Assign(UpdatedRegister(ea), ea);
+                    break;
+                case Opcode.rlwinm: RewriteRlwinm(); break;
+                case Opcode.slw: RewriteSlw(); break;
+                case Opcode.srawi: RewriteSrawi(); break;
+                case Opcode.stbu:
+                    op1 = RewriteOperand(dasm.Current.op1);
+                    ea = EffectiveAddress(dasm.Current.op2, emitter);
+                    emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
+                    emitter.Assign(UpdatedRegister(ea), ea);
+                    break;
+                case Opcode.stbux:
+                    op1 = RewriteOperand(dasm.Current.op1);
+                    op2 = RewriteOperand(dasm.Current.op2);
+                    op3 = RewriteOperand(dasm.Current.op3);
+                    ea = emitter.IAdd(op2, op3);
+                    emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
+                    emitter.Assign(op2, emitter.IAdd(op2, op3));
+                    break;
+                case Opcode.stw: RewriteStw(); break;
+                case Opcode.stwu: RewriteStwu(); break;
+                case Opcode.stwux: RewriteStwux(); break;
+                case Opcode.stwx: RewriteStwx(); break;
+                case Opcode.subf: RewriteSubf(); break;
+                }
+                yield return cluster;
             }
-            yield return cluster;
         }
 
         private Expression Shift16(MachineOperand machineOperand)
@@ -124,12 +144,41 @@ namespace Decompiler.Arch.PowerPC
             return Constant.Word32(imm.Value.ToInt32() << 16);
         }
 
-        private Expression RewriteOperand(MachineOperand machineOperand)
+        private Expression RewriteOperand(MachineOperand op, bool maybe0 = false)
         {
-            var rOp = machineOperand as RegisterOperand;
+            var rOp = op as RegisterOperand;
             if (rOp != null)
+            {
+                if (maybe0 && rOp.Register.Number == 0)
+                    return Constant.Zero(rOp.Register.DataType);
                 return frame.EnsureRegister(rOp.Register);
-            throw new NotImplementedException();
+            }
+            var iOp = op as ImmediateOperand;
+            if (iOp != null)
+            {
+                // Sign-extend the bastard.
+                Constant c;
+                PrimitiveType iType = (PrimitiveType)iOp.Value.DataType;
+                if (arch.WordWidth.BitSize == 64)
+                {
+                    return (iType.Domain == Domain.SignedInt)
+                        ? Constant.Int64(iOp.Value.ToInt64())
+                        : Constant.Word64(iOp.Value.ToUInt64());
+                }
+                else
+                {
+                    return (iType.Domain == Domain.SignedInt)
+                        ? Constant.Int32(iOp.Value.ToInt32())
+                        : Constant.Word32(iOp.Value.ToUInt32());
+
+                }
+            }
+            var aOp = op as AddressOperand;
+            if (aOp != null)
+                return aOp.Address;
+            
+            throw new NotImplementedException(
+                string.Format("RewriteOperand:{0} ({1}}}", op, op.GetType()));
         }
 
         IEnumerator IEnumerable.GetEnumerator()

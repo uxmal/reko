@@ -24,6 +24,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Decompiler.Arch.PowerPC
@@ -65,6 +66,7 @@ namespace Decompiler.Arch.PowerPC
         private PowerPcInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt, bool setsCR0)
         {
             var ops = new List<MachineOperand>();
+            bool allowSetCR0 = false;
             MachineOperand op = null;
             for (int i = 0; i < opFmt.Length; ++i)
             {
@@ -73,8 +75,11 @@ namespace Decompiler.Arch.PowerPC
                 default: throw new NotImplementedException(string.Format("Operator format {0}", opFmt[i]));
                 case ',':
                     continue;
-                case '.':
-                    setsCR0 = true;
+                case '.':   // If the instructions LSB is '1', then set the setsCR0
+                    allowSetCR0 = setsCR0;
+                    continue;
+                case ':':    // Force the setsCR0 flag to '1'.
+                    allowSetCR0 = setsCR0 = true;
                     continue;
                 case 'E':
                     switch (opFmt[++i])
@@ -124,15 +129,24 @@ namespace Decompiler.Arch.PowerPC
                 case 'I':
                     switch (opFmt[++i])
                     {
-                    case '1': op = ImmediateOperand.Byte((byte) ((wInstr >> 21) & 0x1F)); break;
+                    case '1': op = ImmediateOperand.Byte((byte)((wInstr >> 21) & 0x1F)); break;
+                    case '2': op = ImmediateOperand.Byte((byte)((wInstr >> 16) & 0x1F)); break;
+                    case '3': op = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1F)); break;
+                    case '4': op = ImmediateOperand.Byte((byte)((wInstr >> 6) & 0x1F)); break;
+                    case '5': op = ImmediateOperand.Byte((byte)((wInstr >> 1) & 0x1F)); break;
                     default: throw new NotImplementedException(string.Format("Bitfield {0}.", opFmt[i]));
                     }
                     break;
+                case 'M':   // Condition register fields.
+                    op = ImmediateOperand.Byte((byte)((wInstr >> 12) & 0xFF)); break;
                 case 'S':
                     op = new ImmediateOperand(Constant.Int16((short) wInstr));
                     break;
                 case 'U':
                     op = new ImmediateOperand(Constant.Word16((ushort)wInstr));
+                    break;
+                case 'X': // Special format used by the CMP[L][I] instructions.
+                    op = CRegFromBits((wInstr >> 23) & 0x7);
                     break;
                 }
                 ops.Add(op);
@@ -145,7 +159,8 @@ namespace Decompiler.Arch.PowerPC
                 op2 = ops.Count > 1 ? ops[1] : null,
                 op3 = ops.Count > 2 ? ops[2] : null,
                 op4 = ops.Count > 3 ? ops[3] : null,
-                setsCR0 = setsCR0
+                op5 = ops.Count > 4 ? ops[4] : null,
+                setsCR0 = setsCR0 & allowSetCR0,
             };
         }
 
@@ -196,7 +211,7 @@ namespace Decompiler.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands(opcode, wInstr, opFmt, false);
+                return dasm.DecodeOperands(opcode, wInstr, opFmt, (wInstr & 1) != 0);
             }
         }
 
@@ -234,6 +249,7 @@ namespace Decompiler.Arch.PowerPC
                 }
                 else
                 {
+                    Debug.Print("Unknown PowerPC X instruction {0:X2}-{1:X3}", wInstr >> 26, xOp);
                     return new PowerPcInstruction(Opcode.illegal);
                 }
             }
@@ -253,7 +269,9 @@ namespace Decompiler.Arch.PowerPC
                 var x = (wInstr >> 1) & 0x1F;
                 FpuOpRecAux opRec;
                 if (fpuOpRecs.TryGetValue(x, out opRec))
+                {
                     return opRec.Decode(dasm, wInstr, (wInstr & 1) == 1);
+                }
                 else
                     return new PowerPcInstruction(Opcode.illegal);
             }
@@ -261,8 +279,8 @@ namespace Decompiler.Arch.PowerPC
 
         private class XOpRecAux
         {
-            private Opcode opcode;
-            private string opFmt;
+            protected Opcode opcode;
+            protected string opFmt;
 
             public XOpRecAux(Opcode opcode)
             {
@@ -278,6 +296,22 @@ namespace Decompiler.Arch.PowerPC
             public virtual PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
             {
                 return dasm.DecodeOperands(opcode, wInstr, opFmt, setsCr0);
+            }
+        }
+
+        private class XlOpRecAux : XOpRecAux
+        {
+            private Opcode opLink;
+
+            public XlOpRecAux(Opcode opcode,Opcode opLink, string opFmt)
+                : base(opcode, opFmt)
+            {
+                this.opLink = opLink;
+            }
+
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            {
+                return dasm.DecodeOperands(setsCr0 ? opLink : opcode, wInstr, opFmt, false);
             }
         }
 
@@ -350,6 +384,7 @@ namespace Decompiler.Arch.PowerPC
                 {
                 default: throw new NotImplementedException(string.Format("Unknown special register {0:X}.", spr));
                 case 0x0100: opcode = to ? Opcode.mtlr : Opcode.mflr; break;
+                case 0x0120: opcode = to ? Opcode.mtctr : Opcode.mfctr; break;
                 }
                 return new PowerPcInstruction(opcode)
                 {
@@ -379,6 +414,25 @@ namespace Decompiler.Arch.PowerPC
             }
         }
 
+        private class CmpOpRec : XOpRecAux
+        {
+            public CmpOpRec(Opcode op, string format)  :base(op, format)
+            {}
+
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr, bool setsCr0)
+            {
+                var l = ((wInstr >> 21) & 1) != 0;
+                var op = Opcode.illegal;
+                switch (this.opcode)
+                {
+                default: throw new NotImplementedException();
+                case Opcode.cmp: op = l ? Opcode.cmpl : Opcode.cmp; break;
+                case Opcode.cmpl: op = l ? Opcode.cmpl : Opcode.cmplw; break;
+                }
+                return dasm.DecodeOperands(op, wInstr, opFmt, setsCr0);
+            }
+        }
+
         static OpRec[] oprecs;
 
         static PowerPcDisassembler()
@@ -386,27 +440,40 @@ namespace Decompiler.Arch.PowerPC
             var x13oprecs = new Dictionary<uint, XOpRecAux>()
             {
                 { 16, new BclrOpRec() }, 
-                { 33, new XOpRecAux(Opcode.crnor, "c1,c2,c3") },
+                { 33, new XOpRecAux(Opcode.crnor, "I1,I2,I3") },
                 { 50, new XOpRecAux(Opcode.rfi, "") },
-                { 449, new XOpRecAux(Opcode.cror, "c1,c2,c3") },
+                { 449, new XOpRecAux(Opcode.cror, "I1,I2,I3") },
+                { 0x0C1, new XOpRecAux(Opcode.crxor, "I1,I2,I3") },
+                { 0x210, new XlOpRecAux(Opcode.bcctr, Opcode.bctrl, "I1,I2")}
             };
 
             var x1FOpRecs = new Dictionary<uint, XOpRecAux>()
             {
-                { 0, new XOpRecAux(Opcode.cmp, "I1,r2,r3") },
+                { 0, new CmpOpRec(Opcode.cmp, "X,r2,r3") },
                 { 4, new XOpRecAux(Opcode.tw, "I1,r2,r3") },
+                { 10, new XOpRecAux(Opcode.addc, "r1,r2,r3")},
+                { 0x013, new XOpRecAux(Opcode.mfcr, "r1") },
+                { 0x017, new XOpRecAux(Opcode.lwzx, "r1,r2,r3") },
+                { 0x018, new XOpRecAux(Opcode.slw, "r2,r1,r3") },
+                { 0x01A, new XOpRecAux(Opcode.cntlzw, "r2,r1") },
+                { 0x020, new CmpOpRec(Opcode.cmpl, "X,r2,r3") },
+                { 266, new XOpRecAux(Opcode.add, ".r1,r2,r3")},
                 { 20, new XOpRecAux(Opcode.lwarx, "r1,r2,r3") },
+                { 40, new XOpRecAux(Opcode.subf, "r1,r2,r3")},
                 { 87, new XOpRecAux(Opcode.lbzx, "r1,r2,r3") },
+                { 0x68, new XOpRecAux(Opcode.neg, "r1,r2") },
+
+                { 0x090, new XOpRecAux(Opcode.mtcrf, "M,r1")},
+                { 0x097, new XOpRecAux(Opcode.stwx, "r1,r2,r3") },
+                { 0x0B7, new XOpRecAux(Opcode.stwux, "r1,r2,r3") },
+                { 0x0CA, new XOpRecAux(Opcode.addze, ".r1,r2") },
                 { 247, new XOpRecAux(Opcode.stbux, "r1,r2,r3") },
                 { 279, new XOpRecAux(Opcode.lhzx, "r1,r2,r3") },
-                { 316, new XOpRecAux(Opcode.xor, "r2,r1,r3") },
-                { 444, new XOpRecAux(Opcode.or, "r2,r1,r3") },
+                { 316, new XOpRecAux(Opcode.xor, ".r2,r1,r3") },
+                { 444, new XOpRecAux(Opcode.or, ".r2,r1,r3") },
                 { 467, new SprOpRec(true) },
-            };
-
-            var x3FOpRecs = new Dictionary<uint, XOpRecAux>()
-            {
-                { 21, new XOpRecAux(Opcode.fadd, "f1,f2,f3") },
+                { 0x153, new SprOpRec(false) },
+                { 824, new XOpRecAux(Opcode.srawi, "r2,r1,I3") }
             };
 
             oprecs = new OpRec[] {
@@ -425,7 +492,7 @@ namespace Decompiler.Arch.PowerPC
                 new DOpRec(Opcode.cmpli, "r2,I1,U"),
                 new DOpRec(Opcode.cmpi, "r2,I1,S"),
                 new DOpRec(Opcode.addic, "r1,r2,S"),
-                new DOpRec(Opcode.addic, ".r1,r2,S"),
+                new DOpRec(Opcode.addic, ":r1,r2,S"),
                 new DOpRec(Opcode.addi, "r1,r2,S"),
                 new DOpRec(Opcode.addis, "r1,r2,S"),
                 // 10
@@ -433,8 +500,8 @@ namespace Decompiler.Arch.PowerPC
                 new DOpRec(Opcode.sc, ""),
                 new IOpRec(),
                 new XOpRec(x13oprecs),
-                new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DOpRec(Opcode.rlwimi, "r2,r1,I3,I4,I5"),
+                new DOpRec(Opcode.rlwinm, "r2,r1,I3,I4,I5"),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
 
@@ -442,8 +509,8 @@ namespace Decompiler.Arch.PowerPC
                 new DOpRec(Opcode.oris, "r2,r1,U"),
                 new DOpRec(Opcode.xori, "r2,r1,U"),
                 new DOpRec(Opcode.xoris, "r2,r1,U"),
-                new DOpRec(Opcode.andi, ".r2,r1,U"),
-                new DOpRec(Opcode.andis, ".r2,r1,U"),
+                new DOpRec(Opcode.andi, ":r2,r1,U"),
+                new DOpRec(Opcode.andis, ":r2,r1,U"),
                 new InvalidOpRec(),
                 new XOpRec(x1FOpRecs),
                 // 20
@@ -479,24 +546,31 @@ namespace Decompiler.Arch.PowerPC
                 new InvalidOpRec(),
                 new FpuOpRec( new Dictionary<uint, FpuOpRecAux>()
                 {
-                    { 18, new FpuOpRecAux(Opcode.fdivs, "f1,f2,f3") },
-                    { 20, new FpuOpRecAux(Opcode.fsubs, "f1,f2,f3") },
-                    { 21, new FpuOpRecAux(Opcode.fadds, "f1,f2,f3") },
-                    { 22, new FpuOpRecAux(Opcode.fsqrts, "f1,f3") },
-                    { 24, new FpuOpRecAux(Opcode.fres, "f1,f3") },
-                    { 25, new FpuOpRecAux(Opcode.fmuls, "f1,f2,f4") },
-                    { 28, new FpuOpRecAux(Opcode.fmsubs, "f1,f2,f3,f4") },
-                    { 29, new FpuOpRecAux(Opcode.fmadds, "f1,f2,f3,f4") },
-                    { 30, new FpuOpRecAux(Opcode.fnmsubs, "f1,f2,f3,f4") },
-                    { 31, new FpuOpRecAux(Opcode.fnmadds, "f1,f2,f3,f4") },
+                    { 18, new FpuOpRecAux(Opcode.fdivs, ".f1,f2,f3") },
+                    { 20, new FpuOpRecAux(Opcode.fsubs, ".f1,f2,f3") },
+                    { 21, new FpuOpRecAux(Opcode.fadds, ".f1,f2,f3") },
+                    { 22, new FpuOpRecAux(Opcode.fsqrts, ".f1,f3") },
+                    { 24, new FpuOpRecAux(Opcode.fres, ".f1,f3") },
+                    { 25, new FpuOpRecAux(Opcode.fmuls, ".f1,f2,f4") },
+                    { 28, new FpuOpRecAux(Opcode.fmsubs, ".f1,f2,f3,f4") },
+                    { 29, new FpuOpRecAux(Opcode.fmadds, ".f1,f2,f3,f4") },
+                    { 30, new FpuOpRecAux(Opcode.fnmsubs, ".f1,f2,f3,f4") },
+                    { 31, new FpuOpRecAux(Opcode.fnmadds, ".f1,f2,f3,f4") },
                 }),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new InvalidOpRec(),
-                new XOpRec(x3FOpRecs)
+                new XOpRec( new Dictionary<uint, XOpRecAux>()
+                {
+                    { 0, new XOpRecAux(Opcode.fcmpu, "X,f2,f3") },
+                    { 15, new XOpRecAux(Opcode.fctiwz, "f1,f3") },
+                    { 20, new XOpRecAux(Opcode.fsub, "f1,f2,f3") },
+                    { 21, new XOpRecAux(Opcode.fadd, "f1,f2,f3") },
+                    { 25, new XOpRecAux(Opcode.fmul, "f1,f2,f4") },
+                    { 0x48, new XOpRecAux(Opcode.fmr, "f1,f3") },
+                })
             };
         }
-
     }
 }
 /*
