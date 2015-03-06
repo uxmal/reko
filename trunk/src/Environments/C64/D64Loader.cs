@@ -128,8 +128,6 @@ namespace Decompiler.Environments.C64
 
         public override Program Load(Address addrLoad)
         {
-            var arch = new Mos6502ProcessorArchitecture();
-            LoadedImage image;
             List<ArchiveDirectoryEntry> entries = LoadDiskDirectory();
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)
@@ -137,16 +135,12 @@ namespace Decompiler.Environments.C64
                 var selectedFile = abSvc.UserSelectFileFromArchive(entries) as D64FileEntry;
                 if (selectedFile != null)
                 {
-                    image = LoadImage(addrLoad, selectedFile);
-                    this.program = new Program(
-                        image, 
-                        image.CreateImageMap(),
-                        arch, 
-                        new C64Platform(Services, arch));
+                    this.program = LoadImage(addrLoad, selectedFile);
                     return program;
                 }
             }
-            image = new LoadedImage(new Address(0), RawImage);
+            var arch = new Mos6502ProcessorArchitecture();
+            var image = new LoadedImage(new Address(0), RawImage);
             return new Program(
                 image,
                 image.CreateImageMap(),
@@ -154,7 +148,7 @@ namespace Decompiler.Environments.C64
                 new DefaultPlatform(Services, arch));
         }
 
-        private LoadedImage LoadImage(Address addrPreferred, D64FileEntry selectedFile)
+        private Program LoadImage(Address addrPreferred, D64FileEntry selectedFile)
         {
             byte[] imageBytes = selectedFile.GetBytes();
             switch (selectedFile.FileType & FileType.FileTypeMask)
@@ -162,13 +156,24 @@ namespace Decompiler.Environments.C64
             case FileType.PRG:
                 return LoadPrg(imageBytes);
             case FileType.SEQ:
-                return new LoadedImage(addrPreferred, imageBytes);
+                var image = new LoadedImage(addrPreferred, imageBytes);
+                var arch = new Mos6502ProcessorArchitecture();
+                return new Program(
+                    image,
+                    image.CreateImageMap(),
+                    arch,
+                    new DefaultPlatform(Services, arch));
             default:
                 throw new NotImplementedException();
             }
         }
 
-        private LoadedImage LoadPrg(byte[] imageBytes)
+        /// <summary>
+        /// Load a Basic PRG.
+        /// </summary>
+        /// <param name="imageBytes"></param>
+        /// <returns></returns>
+        private Program LoadPrg(byte[] imageBytes)
         {
             var stm = new MemoryStream();
             ushort preferredAddress = LoadedImage.ReadLeUInt16(imageBytes, 0);
@@ -178,9 +183,22 @@ namespace Decompiler.Environments.C64
                 stm.WriteByte(0);
             stm.Write(imageBytes, 2, imageBytes.Length - 2);
             var loadedBytes = stm.ToArray();
-            return new LoadedImage(
+            var image = new LoadedImage(
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
+            var rdr = new C64BasicReader(image, 0x0801);
+            var prog = rdr.ToSortedList(line => (ushort)line.Address.Linear, line => line);
+            var arch = new C64Basic(prog);
+            image = new LoadedImage(
+                new Address(prog.Keys[0]),
+                new byte[0xFFFF]);
+            var program = new Program(
+                image,
+                image.CreateImageMap(),
+                arch,
+                new C64Platform(Services, null));
+            program.EntryPoints.Add(new EntryPoint(image.BaseAddress, arch.CreateProcessorState()));
+            return program;
         }
 
         public override RelocationResults Relocate(Address addrLoad)
