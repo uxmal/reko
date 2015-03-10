@@ -40,7 +40,7 @@ namespace Decompiler.Core.Output
 		private readonly object Declared = 1;
 		private readonly object Defined = 2;
 
-		private enum Mode { Writing, Scanning }
+		public enum Mode { Writing, Scanning }
 
 		public TypeFormatter(Formatter writer, bool typeReference)
 		{

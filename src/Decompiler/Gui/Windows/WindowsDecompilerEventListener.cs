@@ -161,7 +161,6 @@ namespace Decompiler.Gui.Windows
             dlg.Detail.Text = status;
         }
 
-
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled)

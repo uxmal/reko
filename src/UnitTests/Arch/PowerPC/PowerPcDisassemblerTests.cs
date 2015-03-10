@@ -131,7 +131,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PPCDis_bcxx()
         {
             var instr = DisassembleWord(0x4000FFF0);
-            Assert.AreEqual("bc\t00,00,$000FFFF0", instr.ToString());
+            Assert.AreEqual("bge\tcr0,$000FFFF0", instr.ToString());
         }
 
         [Test]
@@ -403,7 +403,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             RunTest("fres.\tf1,f3", "111011 00001 00010 00011 00000 11000 1");
             RunTest("fmuls.\tf1,f2,f4", "111011 00001 00010 00000 00100 11001 1");
             RunTest("fmsubs.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11100 1");
-            RunTest("fmadds.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11101 1");
+            RunTest("fmadds.\tf1,f2,f4,f3", "111011 00001 00010 00011 00100 11101 1");
             RunTest("fnmsubs.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11110 1");
             RunTest("fnmadds.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11111 1");
         }
@@ -601,6 +601,38 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PPCDis_nor()
         {
             AssertCode(0x7c6318f8, "nor\tr3,r3,r3");
+        }
+
+        [Test]
+        public void PPCDis_regression3()
+        {
+            AssertCode(0xfc000050, "fneg\tf0,f0");
+            AssertCode(0xfc0062fa, "fmadd\tf0,f0,f11,f12");
+            AssertCode(0x4cc63242, "creqv\t06,06,06");
+            //AssertCode(0x4e080000, "mcrf\tcr4,cr2");
+            AssertCode(0x7c684430, "srw\tr8,r3,r8");
+            AssertCode(0x7cd9a810, "subfc\tr6,r25,r21");
+            AssertCode(0x7c7ef038, "and\tr30,r3,r30");
+            AssertCode(0x7ce03896, "mulhw\tr7,r0,r7");
+            AssertCode(0x7d5be016, "mulhwu\tr10,r27,r28");
+            AssertCode(0x7d3d03d6, "divw\tr9,r29,r0");
+            AssertCode(0x7fda0016, "mulhwu\tr30,r26,r0");
+            AssertCode(0x7c1ee8ee, "lbzux\tr0,r30,r29");
+            AssertCode(0x7c0bd039, "and.\tr11,r0,r26");
+            AssertCode(0x7fde0190, "subfze\tr30,r30");
+            AssertCode(0x7c03fbd6, "divw\tr0,r3,r31");
+            AssertCode(0x7c040096, "mulhw\tr0,r4,r0");
+            AssertCode(0x7c000774, "extsb\tr0,r0");
+            AssertCode(0x7c00252c, "stwbrx\tr0,r0,r4");
+            AssertCode(0x7d080190, "subfze\tr8,r8");
+            AssertCode(0x7d4a5110, "subfe\tr10,r10,r10");
+            AssertCode(0x7c000775, "extsb.\tr0,r0");
+            AssertCode(0x7c631910, "subfe\tr3,r3,r3");
+            AssertCode(0x7c880039, "and.\tr8,r4,r0");
+            AssertCode(0x7d605896, "mulhw\tr11,r0,r11");
+            AssertCode(0x7e310038, "and\tr17,r17,r0");
+            AssertCode(0x7e601c2c, "lwbrx\tr19,r0,r3");
+            AssertCode(0xfdad02f2, "fmul\tf13,f13,f11");
         }
     }
 }

@@ -35,6 +35,7 @@ namespace Decompiler.Gui.Windows.Controls
     /// </summary>
     public partial class TextView : Control
     {
+        // ModelChanged is fired whenever the Model property is set.
         public event EventHandler ModelChanged;
         public event EventHandler<EditorNavigationArgs> Navigate;
 
@@ -111,7 +112,8 @@ namespace Decompiler.Gui.Windows.Controls
         /// Computes the size of a text span.
         /// </summary>
         /// <remarks>
-        /// The span is first asked to measure itself, then the currenty style is allowed to override the size.
+        /// The span is first asked to measure itself, then the current style is 
+        /// allowed to override the size.
         /// </remarks>
         /// <param name="span"></param>
         /// <param name="text"></param>
@@ -162,11 +164,6 @@ namespace Decompiler.Gui.Windows.Controls
                 if (bgBrush != null) bgBrush.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            base.OnPaintBackground(pevent);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
