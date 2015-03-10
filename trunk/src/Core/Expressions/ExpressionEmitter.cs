@@ -115,6 +115,11 @@ namespace Decompiler.Core.Expressions
             return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, Constant.Create(exp.DataType, 0));
         }
 
+        public Expression FAdd(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FAdd, PrimitiveType.Real64, a, b);
+        }
+
         public Expression FDiv(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FDiv, PrimitiveType.Real64, a, b);
@@ -149,6 +154,7 @@ namespace Decompiler.Core.Expressions
         {
             return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);
         }
+
         public Expression Ge(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Ge, PrimitiveType.Bool, a, b);
@@ -264,6 +270,12 @@ namespace Decompiler.Core.Expressions
                 Operator.IMod,
                 b.DataType,
                 a, b);
+        }
+
+        public BinaryExpression SDiv(Expression a, Expression b)
+        {
+            return new BinaryExpression(
+                Operator.SDiv, b.DataType, a, b);
         }
 
         public MkSequence Seq(Expression head, Expression tail)

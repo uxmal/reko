@@ -129,6 +129,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             Add(new PowerPcInstruction(Opcode.add, rT, rA, rB, true));
         }
 
+        internal void Lbzu(RegisterOperand rD, short offset, RegisterOperand rA)
+        {
+            Add(new PowerPcInstruction(Opcode.lbzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+        }
+
         public void Lwzu(RegisterOperand rD, short offset, RegisterOperand rA)
         {
             Add(new PowerPcInstruction(Opcode.lwzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
@@ -153,5 +158,6 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             return new MemoryOperand(baseReg.Register.DataType, baseReg.Register, Constant.Int16(offset));
         }
+
     }
 }

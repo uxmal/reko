@@ -78,8 +78,13 @@ namespace Decompiler.Arch.PowerPC
                     "PowerPC instruction '{0}' is not supported yet.",
                     instr);
                 case Opcode.addi: RewriteAddi(); break;
+                case Opcode.addic: RewriteAddic(); break;
                 case Opcode.addis: RewriteAddis(); break;
                 case Opcode.add: RewriteAdd(); break;
+                case Opcode.addze: RewriteAddze(); break;
+                case Opcode.and: RewriteAnd(false); break;
+                case Opcode.andi: RewriteAnd(false); break;
+                case Opcode.andis: RewriteAndis(); break;
                 case Opcode.b: RewriteB(); break;
                 case Opcode.bc: RewriteBc(false); break;
                 case Opcode.bcctr: RewriteBcctr(false); break;
@@ -88,8 +93,12 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.beql: RewriteBranch(true, ConditionCode.EQ); break;
                 case Opcode.bge: RewriteBranch(false, ConditionCode.GE); break;
                 case Opcode.bgel: RewriteBranch(true, ConditionCode.GE); break;
+                case Opcode.bgt: RewriteBranch(false, ConditionCode.GT); break;
+                case Opcode.bgtl: RewriteBranch(true, ConditionCode.GT); break;
                 case Opcode.bl: RewriteBl(); break;
                 case Opcode.blr: RewriteBlr(); break;
+                case Opcode.ble: RewriteBranch(false, ConditionCode.LE); break;
+                case Opcode.blel: RewriteBranch(true, ConditionCode.LE); break;
                 case Opcode.blt: RewriteBranch(false, ConditionCode.LT); break;
                 case Opcode.bltl: RewriteBranch(true, ConditionCode.LT); break;
                 case Opcode.bne: RewriteBranch(false, ConditionCode.NE); break;
@@ -98,19 +107,30 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.cmpli: RewriteCmpli(); break;
                 case Opcode.cmplw: RewriteCmplw(); break;
                 case Opcode.cmpwi: RewriteCmpwi(); break;
+                case Opcode.cntlzw: RewriteCntlzw(); break;
+                case Opcode.creqv: RewriteCreqv(); break;
                 case Opcode.crxor: RewriteCrxor(); break;
+                case Opcode.divw: RewriteDivw(); break;
                 case Opcode.divwu: RewriteDivwu(); break;
+                case Opcode.extsb: RewriteExtsb(); break;
+                case Opcode.fctiwz: RewriteFctiwz(); break;
                 case Opcode.fdiv: RewriteFdiv(); break;
                 case Opcode.fmr: RewriteFmr(); break;
                 case Opcode.fcmpu: RewriteFcmpu(); break;
+                case Opcode.fadd: RewriteFadd(); break;
+                case Opcode.fmadd: RewriteFmadd(); break;
                 case Opcode.fmul: RewriteFmul(); break;
+                case Opcode.fneg: RewriteFneg(); break;
                 case Opcode.fsub: RewriteFsub(); break;
                 case Opcode.lbz: RewriteLbz(); break;
+                case Opcode.lbzx: RewriteLzx(PrimitiveType.Byte); break;
+                case Opcode.lbzu: RewriteLzu(PrimitiveType.Byte); break;
+                case Opcode.lbzux: RewriteLzux(PrimitiveType.Byte); break;
                 case Opcode.lfd: RewriteLfd(); break;
                 case Opcode.lfs: RewriteLfs(); break;
                 case Opcode.lhz: RewriteLhz(); break;
                 case Opcode.lwz: RewriteLwz(); break;
-                case Opcode.lwzx: RewriteLwzx(); break;
+                case Opcode.lwzx: RewriteLzx(PrimitiveType.Word32); break;
 
                 case Opcode.mfcr:
                     dst = RewriteOperand(instr.op1);
@@ -121,6 +141,8 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.mtcrf: RewriteMtcrf(); break;
                 case Opcode.mtctr: RewriteMtctr(); break;
                 case Opcode.mtlr: RewriteMtlr(); break;
+                case Opcode.mulhw: RewriteMulhw(); break;
+                case Opcode.mulhwu: RewriteMulhwu(); break;
                 case Opcode.mulli: RewriteMullw(); break;
                 case Opcode.mullw: RewriteMullw(); break;
                 case Opcode.neg: RewriteNeg(); break;
@@ -128,16 +150,13 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.or: RewriteOr(false); break;
                 case Opcode.ori: RewriteOr(false); break;
                 case Opcode.oris: RewriteOris(); break;
-                case Opcode.lwzu:
-                    op1 = RewriteOperand(dasm.Current.op1);
-                    ea = EffectiveAddress(dasm.Current.op2, emitter);
-                    emitter.Assign(op1, emitter.LoadDw(ea));
-                    emitter.Assign(UpdatedRegister(ea), ea);
-                    break;
+                case Opcode.lwzu: RewriteLzu(PrimitiveType.Word32); break;
                 case Opcode.rlwinm: RewriteRlwinm(); break;
+                case Opcode.rlwimi: RewriteRlwimi(); break;
                 case Opcode.slw: RewriteSlw(); break;
                 case Opcode.srawi: RewriteSrawi(); break;
-                case Opcode.stb: RewriteStb(); break;
+                case Opcode.srw: RewriteSrw(); break;
+                case Opcode.stb: RewriteSt(PrimitiveType.Byte); break;
                 case Opcode.stbu:
                     op1 = RewriteOperand(dasm.Current.op1);
                     ea = EffectiveAddress(dasm.Current.op2, emitter);
@@ -154,12 +173,18 @@ namespace Decompiler.Arch.PowerPC
                     break;
                 case Opcode.stbx: RewriteStbx(); break;
                 case Opcode.stfd: RewriteStfd(); break;
-                case Opcode.stw: RewriteStw(); break;
+                case Opcode.sth: RewriteSt(PrimitiveType.Word16); break;
+                case Opcode.stw: RewriteSt(PrimitiveType.Word32); break;
                 case Opcode.stwu: RewriteStwu(); break;
                 case Opcode.stwux: RewriteStwux(); break;
                 case Opcode.stwx: RewriteStwx(); break;
                 case Opcode.subf: RewriteSubf(); break;
+                case Opcode.subfc: RewriteSubfc(); break;
+                case Opcode.subfe: RewriteSubfe(); break;
+                case Opcode.subfic: RewriteSubfic(); break;
+                case Opcode.subfze: RewriteSubfze(); break;
                 case Opcode.xor: RewriteXor(); break;
+                case Opcode.xori: RewriteXor(); break;
                 case Opcode.xoris: RewriteXoris(); break;
                 }
                 yield return cluster;

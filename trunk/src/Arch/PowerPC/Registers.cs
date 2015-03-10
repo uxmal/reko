@@ -65,5 +65,6 @@ namespace Decompiler.Arch.PowerPC
         public static readonly RegisterStorage lr = new RegisterStorage("lr", 0x32, PrimitiveType.Word32);
         public static readonly RegisterStorage cr = new RegisterStorage("cr", 0x33, PrimitiveType.Word32);
         public static readonly RegisterStorage ctr = new RegisterStorage("ctr", 0x34, PrimitiveType.Word32);
+        public static readonly RegisterStorage xer = new RegisterStorage("xer", 0x35, PrimitiveType.Word32);
     }
 }

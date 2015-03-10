@@ -282,7 +282,9 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_cntlzw()
         {
-            AssertCode(0x7d4a0034, "cntlzw\tr10,r10");
+            AssertCode(0x7d4a0034, //"cntlzw\tr10,r10");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r10 = __cntlzw(r10)");
         }
 
         [Test]
@@ -304,7 +306,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_addze()
         {
-            AssertCode(0x7c000194, "addze\tr0,r0");
+            AssertCode(0x7c000195,// "addze\tr0,r0");
+                "0|00100000(4): 3 instructions",
+                "1|L--|r0 = r0 + xer",
+                "2|L--|cr0 = cond(r0)",
+                "3|L--|xer = cond(r0)");
         }
 
         [Test]
@@ -318,8 +324,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_fctiwz()
         {
-            AssertCode(0xfc00081e, "fctiwz\tf0,f1");
+            AssertCode(0xfc00081E, //"fctiwz\tf0,f1");
+                "0|00100000(4): 1 instructions",
+                "1|L--|f0 = (int32) f1");
         }
+
         [Test]
         public void PPCRw_fmul()
         {
@@ -364,9 +373,9 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCRw_rlwimi()
         {
-            AssertCode(0x5120f042,
+            AssertCode(0x5120f042, // "rlwimi\tr0,r9,1E,01,01");
                 "0|00100000(4): 1 instructions",
-                "rlwimi\tr0,r9,1E,01,01");
+                "1|L--|r0 = __rlwimi(r9, 0x0000001E, 0x00000001, 0x00000001)");
         }
 
         [Test]
@@ -545,6 +554,158 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             AssertCode(0x2b8300ff, // cmplwi  cr7,r3,255	
                 "0|00100000(4): 1 instructions",
                 "1|L--|cr7 = cond(r3 - 0x000000FF)");
+        }
+
+        [Test]
+        public void PPCRw_lbzu()
+        {
+            AssertCode(0x8D010004, // lbzu
+                "0|00100000(4): 2 instructions",
+                "1|L--|r8 = Mem0[r1 + 4:byte]",
+                "2|L--|r1 = r1 + 4"
+                );
+        }
+
+        [Test]
+        public void PPCRw_sth()
+        {
+            AssertCode(0xB0920004u, // sth
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r18 + 4:word16] = r4"
+                );
+        }
+
+        [Test]
+        public void PPCrw_subfic()
+        {
+            AssertCode(0x20320100, // subfic
+                "0|00100000(4): 1 instructions",
+                "1|L--|r1 = 256 - r18");
+        }
+
+        [Test]
+        public void PPCrw_andis()
+        {
+            AssertCode(0x74320100, // andis
+                "0|00100000(4): 2 instructions",
+                "1|L--|r18 = r1 & 0x01000000",
+                "2|L--|cr0 = cond(r18)");
+        }
+
+        [Test]
+        public void PPCrw_fneg_()
+        {
+            AssertCode(0xfc200051, // "fneg\tf1,f0");
+                "0|00100000(4): 2 instructions",
+                "1|L--|f1 = -f0",
+                "2|L--|cr1 = cond(f1)");
+        }
+
+        [Test]
+        public void PPCrw_fmadd()
+        {
+            AssertCode(0xfc0062fa, // "fmadd\tf0,f0,f11,f12");
+                "0|00100000(4): 1 instructions",
+                "1|L--|f0 = f12 + f0 * f11");
+        }
+
+        [Test]
+        public void PPCrw_creqv()
+        {
+            AssertCode(0x4cc63242, // "creqv\t06,06,06");
+                "0|00100000(4): 1 instructions",
+                "1|L--|__creqv(0x00000006, 0x00000006, 0x00000006)");
+        }
+        //AssertCode(0x4e080000, "mcrf\tcr4,cr2");
+
+        [Test]
+        public void PPCrw_srw()
+        {
+            AssertCode(0x7c684430, // "srw\tr8,r3,r8");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r8 = r3 >>u r8");
+        }
+
+        [Test]
+        public void PPCrw_subfc()
+        {
+            AssertCode(0x7cd9a810, //"subfc\tr6,r25,r21");
+                "0|00100000(4): 2 instructions",
+                "1|L--|r6 = r21 - r25",
+                "2|L--|xer = cond(r6)");
+        }
+
+        [Test]
+        public void PPCrw_and()
+        {
+            AssertCode(0x7c7ef039, //"and.\tr30,r3,r30");
+                "0|00100000(4): 2 instructions",
+                "1|L--|r30 = r3 & r30",
+                "2|L--|cr0 = cond(r30)");
+        }
+
+        [Test]
+        public void PPCrw_mulhw_()
+        {
+            AssertCode(0x7ce03897, //"mulhw.\tr7,r0,r7");
+                "0|00100000(4): 2 instructions",
+                "1|L--|r7 = r0 * r7 >> 0x20",
+                "2|L--|cr0 = cond(r7)");
+        }
+
+        [Test]
+        public void PPCrw_divw()
+        {
+            AssertCode(0x7d3d03d6, //"divw\tr9,r29,r0");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r9 = r29 / r0");
+        }
+
+        [Test]
+        public void PPCrw_lbzux()
+        {
+            AssertCode(0x7c1ee8ee, // "lbzux\tr0,r30,r29");
+                    "0|00100000(4): 2 instructions",
+                    "1|L--|r0 = Mem0[r30 + r29:byte]",
+                    "2|L--|r30 = r30 + r29");
+        }
+
+        [Test]
+        public void PPCrw_subfze()
+        {
+            AssertCode(0x7fde0190, // "subfze\tr30,r30");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r30 = 0x00000000 - r30 + xer");
+        }
+
+
+        [Test]
+        public void PPCrw_subfe()
+        {
+            AssertCode(0x7c631910, // "subfe\tr3,r3,r3");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r3 = r3 - r3 + xer");
+        }
+
+        [Test]
+        public void PPCrw_extsb()
+        {
+            AssertCode(0x7c000775, //"extsb.\tr0,r0");
+                "0|00100000(4): 3 instructions",
+                "1|L--|v3 = (int8) r0",
+                "2|L--|r0 = (int32) v3",
+                "3|L--|cr0 = cond(r0)");
+        }
+
+        //AssertCode(0x7c00252c, "stwbrx\tr0,r0,r4");
+        //AssertCode(0x7e601c2c, "lwbrx\tr19,r0,r3");
+
+        [Test]
+        public void PPCrw_fmul()
+        {
+            AssertCode(0xfdad02f2, //"fmul\tf13,f13,f11");
+                "0|00100000(4): 1 instructions",
+                "1|L--|f13 = f13 * f11");
         }
     }
 }

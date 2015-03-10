@@ -36,6 +36,14 @@ namespace Decompiler.Arch.PowerPC
             emitter.Assign(op1, emitter.LoadB(ea));
         }
 
+        private void RewriteLbzu()
+        {
+            var op1 = RewriteOperand(instr.op1);
+            var ea = EffectiveAddress_r0(dasm.Current.op2, emitter);
+            emitter.Assign(op1, emitter.LoadB(ea));
+            emitter.Assign(((BinaryExpression)ea).Left, EffectiveAddress(instr.op2, emitter));
+        }
+
         private void RewriteLfd()
         {
             var op1 = RewriteOperand(instr.op1);
@@ -65,7 +73,15 @@ namespace Decompiler.Arch.PowerPC
             emitter.Assign(op1, emitter.LoadDw(ea));
         }
 
-        private void RewriteLwzx()
+        private void RewriteLzu(PrimitiveType dataType)
+        {
+            var op1 = RewriteOperand(dasm.Current.op1);
+            var  ea = EffectiveAddress(dasm.Current.op2, emitter);
+            emitter.Assign(op1, emitter.Load(dataType, ea));
+            emitter.Assign(UpdatedRegister(ea), ea);
+        }
+        
+        private void RewriteLzx(PrimitiveType dataType)
         {
             var op1 = RewriteOperand(instr.op1);
             var a = RewriteOperand(instr.op2, true);
@@ -73,14 +89,24 @@ namespace Decompiler.Arch.PowerPC
             var ea = (a.IsZero)
                 ? b
                 : emitter.IAdd(a, b);
-            emitter.Assign(op1, emitter.LoadDw(ea));
+            emitter.Assign(op1, emitter.Load(dataType, ea));
         }
 
-        private void RewriteStb()
+        private void RewriteLzux(PrimitiveType dataType)
+        {
+            var op1 = RewriteOperand(instr.op1);
+            var a = RewriteOperand(instr.op2);
+            var b = RewriteOperand(instr.op3);
+            var ea = emitter.IAdd(a, b);
+            emitter.Assign(op1, emitter.Load(dataType, ea));
+            emitter.Assign(a, emitter.IAdd(a, b));
+        }
+
+        private void RewriteSt(PrimitiveType dataType)
         {
             var s = RewriteOperand(instr.op1);
             var ea = EffectiveAddress_r0(instr.op2, emitter);
-            emitter.Assign(emitter.LoadB(ea), s);
+            emitter.Assign(emitter.Load(dataType, ea), s);
         }
 
         private void RewriteStbx()
@@ -99,13 +125,6 @@ namespace Decompiler.Arch.PowerPC
             var s = RewriteOperand(instr.op1);
             var ea = EffectiveAddress_r0(instr.op2, emitter);
             emitter.Assign(emitter.Load(PrimitiveType.Real64, ea), s);
-        }
-
-        private void RewriteStw()
-        {
-            var s = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress_r0(instr.op2, emitter);
-            emitter.Assign(emitter.LoadDw(ea), s);
         }
 
         private void RewriteStwx()

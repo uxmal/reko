@@ -37,12 +37,28 @@ namespace Decompiler.Arch.PowerPC
             emitter.Assign(cr1, emitter.Cond(e));
         }
 
+        public void RewriteFadd()
+        {
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.FAdd(opL, opR));
+            MaybeEmitCr1(opD);
+        }
+
         public void RewriteFcmpu()
         {
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             emitter.Assign(opD, emitter.Cond(emitter.FSub(opL, opR)));
+        }
+
+        private void RewriteFctiwz()
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            emitter.Assign(dst, emitter.Cast(PrimitiveType.Int32, src));
         }
 
         public void RewriteFdiv()
@@ -62,12 +78,30 @@ namespace Decompiler.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
+        public void RewriteFmadd()
+        {
+            var opS = RewriteOperand(instr.op4);
+            var opL = RewriteOperand(instr.op2);
+            var opR = RewriteOperand(instr.op3);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.FAdd(opS, emitter.FMul(opL, opR)));
+            MaybeEmitCr1(opD);
+        }
+
         public void RewriteFmul()
         {
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             emitter.Assign(opD, emitter.FMul(opL, opR));
+            MaybeEmitCr1(opD);
+        }
+
+        public void RewriteFneg()
+        {
+            var opS = RewriteOperand(instr.op2);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.Neg(opS));
             MaybeEmitCr1(opD);
         }
 
