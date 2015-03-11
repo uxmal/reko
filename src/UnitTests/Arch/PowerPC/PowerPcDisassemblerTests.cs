@@ -634,5 +634,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             AssertCode(0x7e601c2c, "lwbrx\tr19,r0,r3");
             AssertCode(0xfdad02f2, "fmul\tf13,f13,f11");
         }
+
+        [Test]
+        public void PPCDis_sraw()
+        {
+            AssertCode(0x7c052e30, "sraw\tr5,r0,r5");
+        }
     }
 }

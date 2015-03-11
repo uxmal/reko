@@ -234,7 +234,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             AssertCode(0x9521016e, // "stwu\tr9,r1,r0");
                 "0|00100000(4): 2 instructions",
-                "1|L--|r9 = Mem0[r1 + 366:word32]",
+                "1|L--|Mem0[r1 + 366:word32] = r9",
                 "2|L--|r1 = r1 + 366");
         }
 
@@ -505,7 +505,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
             AssertCode(0x575a1838, // rlwinm  r26,r26,3,0,28 
                 "0|00100000(4): 1 instructions",
-                "1|L--|r26 = r26 << 0x00000003 & 0xFFFFFFF8");
+                "1|L--|r26 = r26 << 0x00000003");
 
             AssertCode(0x7c03db96, // divwu   r0,r3,r27
                 "0|00100000(4): 1 instructions",
@@ -541,7 +541,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
             AssertCode(0x7c1ed9ae, // stbx    r0,r30,r27	
                 "0|00100000(4): 1 instructions",
-                "1|L--|Mem0[r30 + r27:byte] = r0");
+                "1|L--|Mem0[r30 + r27:byte] = (byte) r0");
 
             AssertCode(0xa001001c, // lhz     r0,28(r1)	
                 "0|00100000(4): 1 instructions",
@@ -706,6 +706,54 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             AssertCode(0xfdad02f2, //"fmul\tf13,f13,f11");
                 "0|00100000(4): 1 instructions",
                 "1|L--|f13 = f13 * f11");
+        }
+
+        [Test]
+        public void PPCrw_regression_2()
+        {
+            AssertCode(0x4e080000, // mcrf cr4,cr2
+                "0|00100000(4): 1 instructions",
+                "1|L--|cr4 = cr2");
+
+            AssertCode(0x4e0c0000, // mcrf cr4,cr3
+                "0|00100000(4): 1 instructions",
+                "1|L--|cr4 = cr3");
+
+            AssertCode(0x7ca35914, // adde r5,r3,r11
+                "0|00100000(4): 2 instructions",
+                "1|L--|r5 = r3 + r11 + xer",
+                "2|L--|xer = cond(r5)");
+
+            AssertCode(0x7e601c2c, // lwbrx r19,0,r3
+                 "0|00100000(4): 1 instructions",
+                 "1|L--|r19 = __reverse_bytes_32(Mem0[r3:word32])");
+            AssertCode(0x7c00252c, // stwbrx r0,0,r4
+                 "0|00100000(4): 1 instructions",
+                 "1|L--|Mem0[r4:word32] = __reverse_bytes_32(r0)");
+        }
+
+        [Test]
+        public void PPCrw_sthx()
+        {
+            AssertCode(0x7c1b1b2e, //	sthx    r0,r27,r3
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r27 + r3:word16] = (word16) r0");
+        }
+
+        [Test]
+        public void PPCrw_nand()
+        {
+            AssertCode(0x7d6043b8, //	nand    r0,r11,r8	
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = ~(r11 & r8)");
+        }
+
+        [Test]
+        public void PPCrw_orc()
+        {
+            AssertCode(0x7d105b38, // orc     r16,r8,r11
+                "0|00100000(4): 1 instructions",
+                "1|L--|r16 = r8 | ~r11");
         }
     }
 }

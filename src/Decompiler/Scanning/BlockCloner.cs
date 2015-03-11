@@ -137,7 +137,7 @@ namespace Decompiler.Scanning
 
         public Instruction VisitSideEffect(SideEffect side)
         {
-            throw new NotImplementedException();
+            return new SideEffect(side.Expression.Accept(this));
         }
 
         public Instruction VisitStore(Store store)
@@ -186,7 +186,7 @@ namespace Decompiler.Scanning
 
         public Expression VisitCast(Cast cast)
         {
-            throw new NotImplementedException();
+            return new Cast(cast.DataType, cast.Expression.Accept(this));
         }
 
         public Expression VisitConditionOf(ConditionOf cof)
