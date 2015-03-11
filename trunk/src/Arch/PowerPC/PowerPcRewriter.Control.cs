@@ -63,7 +63,7 @@ namespace Decompiler.Arch.PowerPC
             var dst = RewriteOperand(instr.op2);
             if (linkRegister)
             {
-                throw new NotImplementedException();
+                emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
             }
             else
             {

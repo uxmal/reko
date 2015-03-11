@@ -65,10 +65,6 @@ namespace Decompiler.Arch.PowerPC
                 this.instr = dasm.Current;
                 var cluster = new RtlInstructionCluster(instr.Address, 4);
                 this.emitter = new RtlEmitter(cluster.Instructions);
-                Expression op1;
-                Expression op2;
-                Expression op3;
-                Expression ea;
                 Expression src;
                 Expression dst;
                 switch (dasm.Current.Opcode)
@@ -78,9 +74,11 @@ namespace Decompiler.Arch.PowerPC
                     "PowerPC instruction '{0}' is not supported yet.",
                     instr);
                 case Opcode.addi: RewriteAddi(); break;
+                case Opcode.addc: RewriteAddc(); break;
                 case Opcode.addic: RewriteAddic(); break;
                 case Opcode.addis: RewriteAddis(); break;
                 case Opcode.add: RewriteAdd(); break;
+                case Opcode.adde: RewriteAdde(); break;
                 case Opcode.addze: RewriteAddze(); break;
                 case Opcode.and: RewriteAnd(false); break;
                 case Opcode.andi: RewriteAnd(false); break;
@@ -103,12 +101,17 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.bltl: RewriteBranch(true, ConditionCode.LT); break;
                 case Opcode.bne: RewriteBranch(false, ConditionCode.NE); break;
                 case Opcode.bnel: RewriteBranch(true, ConditionCode.NE); break;
+                case Opcode.bns: RewriteBranch(false, ConditionCode.NO); break;
+                case Opcode.bnsl: RewriteBranch(true, ConditionCode.NO); break;
+                case Opcode.bso: RewriteBranch(false, ConditionCode.OV); break;
+                case Opcode.bsol: RewriteBranch(true, ConditionCode.OV); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmpli: RewriteCmpli(); break;
                 case Opcode.cmplw: RewriteCmplw(); break;
                 case Opcode.cmpwi: RewriteCmpwi(); break;
                 case Opcode.cntlzw: RewriteCntlzw(); break;
                 case Opcode.creqv: RewriteCreqv(); break;
+                case Opcode.cror: RewriteCror(); break;
                 case Opcode.crxor: RewriteCrxor(); break;
                 case Opcode.divw: RewriteDivw(); break;
                 case Opcode.divwu: RewriteDivwu(); break;
@@ -122,16 +125,20 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.fmul: RewriteFmul(); break;
                 case Opcode.fneg: RewriteFneg(); break;
                 case Opcode.fsub: RewriteFsub(); break;
-                case Opcode.lbz: RewriteLbz(); break;
+                case Opcode.lbz: RewriteLz(PrimitiveType.Byte); break;
                 case Opcode.lbzx: RewriteLzx(PrimitiveType.Byte); break;
                 case Opcode.lbzu: RewriteLzu(PrimitiveType.Byte); break;
                 case Opcode.lbzux: RewriteLzux(PrimitiveType.Byte); break;
                 case Opcode.lfd: RewriteLfd(); break;
                 case Opcode.lfs: RewriteLfs(); break;
-                case Opcode.lhz: RewriteLhz(); break;
-                case Opcode.lwz: RewriteLwz(); break;
+                case Opcode.lha: RewriteLha(); break;
+                case Opcode.lhz: RewriteLz(PrimitiveType.Word16); break;
+                case Opcode.lhzx: RewriteLzx(PrimitiveType.Word16); break;
+                case Opcode.lwbrx: RewriteLwbrx(); break;
+                case Opcode.lwz: RewriteLz(PrimitiveType.Word32); break;
+                case Opcode.lwzu: RewriteLzu(PrimitiveType.Word32); break;
                 case Opcode.lwzx: RewriteLzx(PrimitiveType.Word32); break;
-
+                case Opcode.mcrf: RewriteMcrf(); break;
                 case Opcode.mfcr:
                     dst = RewriteOperand(instr.op1);
                     src = frame.EnsureRegister(Registers.cr);
@@ -146,38 +153,31 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.mulli: RewriteMullw(); break;
                 case Opcode.mullw: RewriteMullw(); break;
                 case Opcode.neg: RewriteNeg(); break;
+                case Opcode.nand: RewriteAnd(true); break;
                 case Opcode.nor: RewriteOr(true); break;
                 case Opcode.or: RewriteOr(false); break;
+                case Opcode.orc: RewriteOrc(false); break;
                 case Opcode.ori: RewriteOr(false); break;
                 case Opcode.oris: RewriteOris(); break;
-                case Opcode.lwzu: RewriteLzu(PrimitiveType.Word32); break;
                 case Opcode.rlwinm: RewriteRlwinm(); break;
                 case Opcode.rlwimi: RewriteRlwimi(); break;
                 case Opcode.slw: RewriteSlw(); break;
-                case Opcode.srawi: RewriteSrawi(); break;
+                case Opcode.sraw: RewriteSraw(); break;
+                case Opcode.srawi: RewriteSraw(); break;
                 case Opcode.srw: RewriteSrw(); break;
                 case Opcode.stb: RewriteSt(PrimitiveType.Byte); break;
-                case Opcode.stbu:
-                    op1 = RewriteOperand(dasm.Current.op1);
-                    ea = EffectiveAddress(dasm.Current.op2, emitter);
-                    emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
-                    emitter.Assign(UpdatedRegister(ea), ea);
-                    break;
-                case Opcode.stbux:
-                    op1 = RewriteOperand(dasm.Current.op1);
-                    op2 = RewriteOperand(dasm.Current.op2);
-                    op3 = RewriteOperand(dasm.Current.op3);
-                    ea = emitter.IAdd(op2, op3);
-                    emitter.Assign(emitter.LoadB(ea), emitter.Cast(PrimitiveType.Byte, op1));
-                    emitter.Assign(op2, emitter.IAdd(op2, op3));
-                    break;
-                case Opcode.stbx: RewriteStbx(); break;
+                case Opcode.stbu: RewriteStu(PrimitiveType.Byte); break;
+                case Opcode.stbux: RewriteStux(PrimitiveType.Byte); break;
+                case Opcode.stbx: RewriteStx(PrimitiveType.Byte); break;
                 case Opcode.stfd: RewriteStfd(); break;
                 case Opcode.sth: RewriteSt(PrimitiveType.Word16); break;
+                case Opcode.sthu: RewriteStu(PrimitiveType.Word16); break;
+                case Opcode.sthx: RewriteStx(PrimitiveType.Word16); break;
                 case Opcode.stw: RewriteSt(PrimitiveType.Word32); break;
-                case Opcode.stwu: RewriteStwu(); break;
-                case Opcode.stwux: RewriteStwux(); break;
-                case Opcode.stwx: RewriteStwx(); break;
+                case Opcode.stwbrx: RewriteStwbrx(); break;
+                case Opcode.stwu: RewriteStu(PrimitiveType.Word32); break;
+                case Opcode.stwux: RewriteStux(PrimitiveType.Word32); break;
+                case Opcode.stwx: RewriteStx(PrimitiveType.Word32); break;
                 case Opcode.subf: RewriteSubf(); break;
                 case Opcode.subfc: RewriteSubfc(); break;
                 case Opcode.subfe: RewriteSubfe(); break;
@@ -210,7 +210,6 @@ namespace Decompiler.Arch.PowerPC
             if (iOp != null)
             {
                 // Sign-extend the bastard.
-                Constant c;
                 PrimitiveType iType = (PrimitiveType)iOp.Value.DataType;
                 if (arch.WordWidth.BitSize == 64)
                 {

@@ -101,10 +101,14 @@ namespace Decompiler.Core
             var bin = ea as BinaryExpression;
             if (bin != null && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub) && IsStackRegister(bin.Left))
             {
-                offset = ((Constant) bin.Right).ToInt32();
-                if (bin.Operator == Operator.ISub)
-                    offset = -offset;
-                return true;
+                var cOffset = bin.Right as Constant;
+                if (cOffset != null)
+                {
+                    offset = ((Constant)bin.Right).ToInt32();
+                    if (bin.Operator == Operator.ISub)
+                        offset = -offset;
+                    return true;
+                }
             }
             offset = 0;
             return false;

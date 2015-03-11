@@ -99,13 +99,17 @@ namespace Decompiler.Arch.PowerPC
                     case '2': op = this.CRegFromBits(wInstr >> 16); break;
                     case '3': op = this.CRegFromBits(wInstr >> 11); break;
                     case '4': op = this.CRegFromBits(wInstr >> 6); break;
-                    default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
+                    default: throw new NotImplementedException(string.Format("c field {0}.", opFmt[i]));
                     }
                     break;
                 case 'C':   // CR field in certain opcodes.
-                    if (opFmt[++i] != '1')
+                    switch (opFmt[++i])
+                    {
+                    case '1': op = this.CRegFromBits((wInstr >> 23) & 0x07); break;
+                    case '2': op = this.CRegFromBits((wInstr >> 18) & 0x07); break;
+                    default: throw new NotImplementedException(string.Format("C field {0}.", opFmt[i]));
                         throw new FormatException("Invalid CRx format specification.");
-                    op = this.CRegFromBits((wInstr >> 23) & 0x07);
+                    }
                     break;
                 case 'f':
                     switch (opFmt[++i])
@@ -471,7 +475,7 @@ namespace Decompiler.Arch.PowerPC
                 new IOpRec(),
                 new XOpRec(new Dictionary<uint, OpRec>()
                 {
-                    { 0, new DOpRec(Opcode.mcrf, "c1,c2")},
+                    { 0, new DOpRec(Opcode.mcrf, "C1,C2")},
                     { 16, new BclrOpRec() }, 
                     { 33, new DOpRec(Opcode.crnor, "I1,I2,I3") },
                     { 50, new DOpRec(Opcode.rfi, "") },
@@ -513,6 +517,7 @@ namespace Decompiler.Arch.PowerPC
                     { 0x077, new DOpRec(Opcode.lbzux, "r1,r2,r3")},
                     { 124, new DOpRec(Opcode.nor, ".r2,r1,r3")},
                     { 0x088, new DOpRec(Opcode.subfe, "r1,r2,r3")},
+                    { 0x08A, new DOpRec(Opcode.adde, ".r1,r2,r3")},
                     { 0x090, new DOpRec(Opcode.mtcrf, "M,r1")},
                     { 0x097, new DOpRec(Opcode.stwx, "r1,r2,r3") },
                     { 0x0B7, new DOpRec(Opcode.stwux, "r1,r2,r3") },
@@ -524,15 +529,20 @@ namespace Decompiler.Arch.PowerPC
                     { 0x10A, new DOpRec(Opcode.add, ".r1,r2,r3")},
                     { 279, new DOpRec(Opcode.lhzx, "r1,r2,r3") },
                     { 316, new DOpRec(Opcode.xor, ".r2,r1,r3") },
+                    { 0x19C, new DOpRec(Opcode.orc, ".r2,r1,r3") },
                     { 444, new DOpRec(Opcode.or, ".r2,r1,r3") },
                     { 459, new DOpRec(Opcode.divwu, ".r1,r2,r3") },
                     { 467, new SprOpRec(true) },
+                    { 0x1DC, new DOpRec(Opcode.nand, ".r2,r1,r3") },
+
                     { 0x153, new SprOpRec(false) },
+                    { 0x197, new DOpRec(Opcode.sthx, "r1,r2,r3") },
                     { 0x1EB, new DOpRec(Opcode.divw, ".r1,r2,r3")},
                     { 0x216, new DOpRec(Opcode.lwbrx, "r1,r2,r3") },
                     { 0x218, new DOpRec(Opcode.srw, ".r2,r1,r3") },
                     { 0x21B, new DOpRec(Opcode.srd, ".r2,r1,r3") },
                     { 0x296, new DOpRec(Opcode.stwbrx, ".r2,r1,r3") },
+                    { 0x318, new DOpRec(Opcode.sraw, ".r2,r1,r2")},
                     { 824, new DOpRec(Opcode.srawi, "r2,r1,I3") },
                     { 0x3BA, new DOpRec(Opcode.extsb, ".r1,r2")}
                 }),
