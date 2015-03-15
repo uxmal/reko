@@ -383,6 +383,12 @@ namespace Decompiler.ImageLoaders.MzExe
         /// <summary>
         /// Loads the import directory entry for one particular DLL.
         /// </summary>
+        /// <remarks>
+        /// The goal of this method is to discover the imported DLL's and the names
+        /// of all imported methods. This is made difficult by the way different
+        /// compilers and linkers build the import directory entries. Sometimes,
+        /// the RVA to the Import lookup table (ILT) is null, so we have to use
+        /// a last resort and walk the Import Address table (IAT).</remarks>
         /// <param name="rdr"></param>
         /// <param name="addrLoad"></param>
         /// <returns>True if there were entries in the import descriptor, otherwise 
@@ -390,24 +396,24 @@ namespace Decompiler.ImageLoaders.MzExe
 		public bool ReadImportDescriptor(ImageReader rdr, Address addrLoad)
 		{
 			var rvaILT = rdr.ReadLeUInt32();		// Import lookup table
-			rdr.ReadLeUInt32();		                    // datestamp
-			rdr.ReadLeUInt32();		                    // forwarder chain
+			rdr.ReadLeUInt32();		                    // Ignore datestamp...
+			rdr.ReadLeUInt32();		                    // ...and forwarder chain
 			var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
             var rvaIAT = rdr.ReadLeUInt32();		    // Import address table 
             if (rvaILT == 0 && dllName == null)
                 return false;
 
-			ImageReader rdrEntries = imgLoaded.CreateLeReader(rvaILT);
-			ImageReader rdrIAT  = imgLoaded.CreateLeReader(rvaIAT);
+			ImageReader rdrILT = imgLoaded.CreateLeReader(rvaILT != 0
+                ? rvaILT
+                : rvaIAT);
 			for (;;)
 			{
-				Address addrThunk = imgLoaded.BaseAddress + rdrIAT.Offset;
-				uint rvaEntry = rdrEntries.ReadLeUInt32();
-				uint rvaThunk = rdrIAT.ReadLeUInt32();
-				if (rvaThunk == 0)
+				Address addrThunk = rdrILT.Address;;
+				uint rvaEntry = rdrILT.ReadLeUInt32();
+				if (rvaEntry == 0)
 					break;
 
-                ResolveImportedFunction(dllName, rvaThunk, addrThunk);
+                ResolveImportedFunction(dllName, rvaEntry, addrThunk);
 			}
 			return true;
 		}

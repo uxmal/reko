@@ -250,7 +250,7 @@ l01C8:
 
 					imgU.WriteLeUInt16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
-					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 				} while (--relocs != 0);
 			}
 

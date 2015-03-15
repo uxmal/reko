@@ -353,7 +353,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                     "tag=\"Program\">" +
                     "<node " + 
                         "text=\"Image base\" " +
-                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
+                        "tip=\"Image base" + cr + "12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
                         "tag=\"ImageMapSegment\" />" +
                 "</node>" +
                 "</root>");
@@ -377,7 +377,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
                 "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe&#xD;&#xA;12340000\" tag=\"Program\">" +
-                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;12340000&#xD;&#xA;&#xD;&#xA;\" tag=\"ImageMapSegment\" />" +
+                    "<node text=\"Image base\" tip=\"Image base&#xD;&#xA;12340000&#xD;&#xA;Size: 1000&#xD;&#xA;rw-\" tag=\"ImageMapSegment\" />" +
                  "</node>" +
                  "</root>");
             mr.VerifyAll();
@@ -421,7 +421,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                     "tag=\"Program\">" +
                     "<node " +
                         "text=\"Image base\" " +
-                        "tip=\"Image base" + cr + "12340000" + cr + "" + cr + "\" " +
+                        "tip=\"Image base" + cr + "12340000" + cr + "Size: 1000" + cr + "rw-" + "\" " +
                         "tag=\"ImageMapSegment\">" +
                         "<node " +
                             "text=\"MyFoo\" " +

@@ -229,6 +229,24 @@ namespace Decompiler.Core
             return u;
         }
 
+        public static bool TryReadBeInt32(byte[] abImage, uint off, out int value)
+        {
+            if (off <= abImage.Length - 4)
+            {
+                value =
+                    ((int)abImage[off] << 24) |
+                    ((int)abImage[off + 1] << 16) |
+                    ((int)abImage[off + 2] << 8) |
+                    abImage[off + 3];
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
+
         public static bool TryReadLeInt32(byte [] abImage, uint off, out int value)
         {
             if (off <= abImage.Length - 4)
@@ -254,6 +272,24 @@ namespace Decompiler.Core
                    ((uint)abImage[off + 1] << 8) |
                    ((uint)abImage[off + 2] << 16) |
                    ((uint)abImage[off + 3] << 24);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
+
+        public static bool TryReadBeUInt32(byte[] abImage, uint off, out uint value)
+        {
+            if (off <= abImage.Length - 4)
+            {
+                value =
+                    ((uint)abImage[off] << 24) |
+                    ((uint)abImage[off + 1] << 16) |
+                    ((uint)abImage[off + 2] << 8) |
+                    abImage[off + 3];
                 return true;
             }
             else

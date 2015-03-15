@@ -27,7 +27,6 @@ namespace Decompiler.Gui.Windows
 {
     public class LowLevelViewServiceImpl : ViewService, ILowLevelViewService
     {
-        public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         private LowLevelViewInteractor mvi;
 
@@ -84,7 +83,6 @@ namespace Decompiler.Gui.Windows
 
         void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectionChanged.Fire(this, e);
         }
     }
 }

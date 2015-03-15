@@ -41,6 +41,7 @@ namespace Decompiler.Gui.Windows.Forms
 	public readonly System.Windows.Forms.ContextMenu CtxBrowser;
 	public readonly System.Windows.Forms.ContextMenu CtxProcedure;
 	public readonly System.Windows.Forms.ContextMenu CtxAddressSearch;
+	public readonly System.Windows.Forms.ContextMenu CtxCodeView;
 	public readonly System.Windows.Forms.ToolStrip MainToolbar;
 
     
@@ -58,6 +59,7 @@ namespace Decompiler.Gui.Windows.Forms
 			SortedList slCtxBrowser = CreatePriorityList();
 			SortedList slCtxProcedure = CreatePriorityList();
 			SortedList slCtxAddressSearch = CreatePriorityList();
+			SortedList slCtxCodeView = CreatePriorityList();
 			SortedList slMainToolbar = CreatePriorityList();
 			
 			// Create groups
@@ -92,6 +94,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slCtxDisassembler.Add(0, slGrpDisassemblerNav);
 			SortedList slGrpDisassemblerEdit = CreatePriorityList();
 			slCtxDisassembler.Add(0, slGrpDisassemblerEdit);
+			SortedList slGrpCodeView = CreatePriorityList();
+			slCtxCodeView.Add(0, slGrpCodeView);
 			SortedList slGrpBrowser = CreatePriorityList();
 			slCtxBrowser.Add(0, slGrpBrowser);
 			SortedList slGrpBrowserProc = CreatePriorityList();
@@ -138,6 +142,9 @@ namespace Decompiler.Gui.Windows.Forms
             slGrpEdit.Add(0, slEditFind);
             CommandMenuItem slEditCopy = new CommandMenuItem("_Copy", new Guid(CmdSets.Decompiler), CmdIds.EditCopy);
             slEditCopy.IsDynamic = false;
+            
+            CommandMenuItem slEditCopyAll = new CommandMenuItem("_Copy All", new Guid(CmdSets.Decompiler), CmdIds.EditCopyAll);
+            slEditCopyAll.IsDynamic = false;
             
             CommandMenuItem slEditRename = new CommandMenuItem("_Rename", new Guid(CmdSets.Decompiler), CmdIds.EditRename);
             slEditRename.IsDynamic = false;
@@ -242,6 +249,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpToolbarActions.Add(0, slActionFinishDecompilation);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slEditCopy);
+			slGrpCodeView .Add(0, slEditCopyAll);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slActionMarkType);
@@ -285,6 +293,13 @@ namespace Decompiler.Gui.Windows.Forms
            "", 
           new Guid(CmdSets.Decompiler), 
           CmdIds.EditCopy, 
+          Keys.C
+          , Keys.Control);
+      
+        AddBinding(
+           "Decompiler.Gui.Windows.CodeViewerPane", 
+          new Guid(CmdSets.Decompiler), 
+          CmdIds.EditCopyAll, 
           Keys.C
           , Keys.Control);
       
@@ -335,6 +350,11 @@ namespace Decompiler.Gui.Windows.Forms
   
         this.CtxAddressSearch.Popup += subMenu_Popup;
       
+			this.CtxCodeView = new System.Windows.Forms.ContextMenu();
+			BuildMenu(slCtxCodeView, CtxCodeView.MenuItems);
+  
+        this.CtxCodeView.Popup += subMenu_Popup;
+      
 			this.MainToolbar = new System.Windows.Forms.ToolStrip();
 			BuildMenu(slMainToolbar, MainToolbar.Items);
   
@@ -360,6 +380,7 @@ namespace Decompiler.Gui.Windows.Forms
 				case MenuIds.CtxBrowser: return this.CtxBrowser;
 				case MenuIds.CtxProcedure: return this.CtxProcedure;
 				case MenuIds.CtxAddressSearch: return this.CtxAddressSearch;
+				case MenuIds.CtxCodeView: return this.CtxCodeView;
 			}
 			throw new ArgumentException(string.Format("There is no context menu with id {0}.", menuId));
 		}

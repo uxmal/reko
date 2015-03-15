@@ -71,7 +71,7 @@ namespace Decompiler.Core.Configuration
 
         public IProcessorArchitecture GetArchitecture(string archLabel)
         {
-            var elem = GetEnvironments().OfType<ArchitectureElement>()
+            var elem = GetArchitectures().OfType<ArchitectureElement>()
                 .Where(e => e.Name == archLabel).SingleOrDefault();
             if (elem == null)
                 return null;

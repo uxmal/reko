@@ -26,6 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Rhino.Mocks;
+using Decompiler.Core.Configuration;
 
 namespace Decompiler.UnitTests.ImageLoaders.Elf
 {
@@ -338,63 +340,87 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         #endregion
         };
 
+        private MockRepository mr;
+        private IProcessorArchitecture arch;
+        private IServiceProvider services;
+        private IDecompilerConfigurationService dcSvc;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.mr = new MockRepository();
+            this.arch = mr.Stub<IProcessorArchitecture>();
+            this.services = mr.Stub<IServiceProvider>();
+            this.dcSvc = mr.Stub<IDecompilerConfigurationService>();
+            services.Stub(s => s.GetService(typeof(IDecompilerConfigurationService))).Return(dcSvc);
+            dcSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
+        }
+
         // 336 - 37
         [Test]
-        public void Load()
+        public void EIL_Load()
         {
-            var el = new ElfImageLoader(null, "foo", rawImg);
+            mr.ReplayAll();
+
+            var el = new ElfImageLoader(services, "foo", rawImg);
             var lr = el.Load(new Address(0));
-            Assert.IsInstanceOf<IntelArchitecture>(lr.Architecture);
+            Assert.AreSame(arch, lr.Architecture);
         }
 
         [Test]
-        public void LoadStringTable()
+        public void EIL_LoadStringTable()
         {
-            var el = new ElfImageLoader(null, "foo", rawImg);
+            mr.ReplayAll();
+
+            var el = new ElfImageLoader(services, "foo", rawImg);
             el.Load(new Address(0));
-            Assert.AreEqual(".symtab", el.GetStringTableEntry(1));
+            Assert.AreEqual(".symtab", el.GetSectionName(1));
         }
 
         [Test]
-        public void LoadSections()
+        public void EIL_LoadSections()
         {
-            var el = new ElfImageLoader(null, "foo", rawImg);
+            mr.ReplayAll();
+
+            var el = new ElfImageLoader(services, "foo", rawImg);
             el.Load(new Address(0));
 
-            Assert.AreEqual("", el.GetStringTableEntry(el.SectionHeaders[0].sh_name));
-            Assert.AreEqual(".interp", el.GetStringTableEntry(el.SectionHeaders[1].sh_name));
-            Assert.AreEqual(".note.ABI-tag", el.GetStringTableEntry(el.SectionHeaders[2].sh_name));
-            Assert.AreEqual(".hash", el.GetStringTableEntry(el.SectionHeaders[3].sh_name));
-            Assert.AreEqual(".dynsym", el.GetStringTableEntry(el.SectionHeaders[4].sh_name));
-            Assert.AreEqual(".dynstr", el.GetStringTableEntry(el.SectionHeaders[5].sh_name));
-            Assert.AreEqual(".gnu.version", el.GetStringTableEntry(el.SectionHeaders[6].sh_name));
-            Assert.AreEqual(".gnu.version_r", el.GetStringTableEntry(el.SectionHeaders[7].sh_name));
-            Assert.AreEqual(".rel.dyn", el.GetStringTableEntry(el.SectionHeaders[8].sh_name));
-            Assert.AreEqual(".rel.plt", el.GetStringTableEntry(el.SectionHeaders[9].sh_name));
-            Assert.AreEqual(".init", el.GetStringTableEntry(el.SectionHeaders[10].sh_name));
-            Assert.AreEqual(".plt", el.GetStringTableEntry(el.SectionHeaders[11].sh_name));
-            Assert.AreEqual(".text", el.GetStringTableEntry(el.SectionHeaders[12].sh_name));
-            Assert.AreEqual(".fini", el.GetStringTableEntry(el.SectionHeaders[13].sh_name));
-            Assert.AreEqual(".rodata", el.GetStringTableEntry(el.SectionHeaders[14].sh_name));
-            Assert.AreEqual(".eh_frame", el.GetStringTableEntry(el.SectionHeaders[15].sh_name));
-            Assert.AreEqual(".ctors", el.GetStringTableEntry(el.SectionHeaders[16].sh_name));
-            Assert.AreEqual(".dtors", el.GetStringTableEntry(el.SectionHeaders[17].sh_name));
-            Assert.AreEqual(".jcr", el.GetStringTableEntry(el.SectionHeaders[18].sh_name));
-            Assert.AreEqual(".dynamic", el.GetStringTableEntry(el.SectionHeaders[19].sh_name));
-            Assert.AreEqual(".got", el.GetStringTableEntry(el.SectionHeaders[20].sh_name));
-            Assert.AreEqual(".got.plt", el.GetStringTableEntry(el.SectionHeaders[21].sh_name));
-            Assert.AreEqual(".data", el.GetStringTableEntry(el.SectionHeaders[22].sh_name));
-            Assert.AreEqual(".bss", el.GetStringTableEntry(el.SectionHeaders[23].sh_name));
-            Assert.AreEqual(".comment", el.GetStringTableEntry(el.SectionHeaders[24].sh_name));
-            Assert.AreEqual(".shstrtab", el.GetStringTableEntry(el.SectionHeaders[25].sh_name));
-            Assert.AreEqual(".symtab", el.GetStringTableEntry(el.SectionHeaders[26].sh_name));
-            Assert.AreEqual(".strtab", el.GetStringTableEntry(el.SectionHeaders[27].sh_name));
+            Assert.AreEqual("", el.GetSectionName(el.SectionHeaders[0].sh_name));
+            Assert.AreEqual(".interp", el.GetSectionName(el.SectionHeaders[1].sh_name));
+            Assert.AreEqual(".note.ABI-tag", el.GetSectionName(el.SectionHeaders[2].sh_name));
+            Assert.AreEqual(".hash", el.GetSectionName(el.SectionHeaders[3].sh_name));
+            Assert.AreEqual(".dynsym", el.GetSectionName(el.SectionHeaders[4].sh_name));
+            Assert.AreEqual(".dynstr", el.GetSectionName(el.SectionHeaders[5].sh_name));
+            Assert.AreEqual(".gnu.version", el.GetSectionName(el.SectionHeaders[6].sh_name));
+            Assert.AreEqual(".gnu.version_r", el.GetSectionName(el.SectionHeaders[7].sh_name));
+            Assert.AreEqual(".rel.dyn", el.GetSectionName(el.SectionHeaders[8].sh_name));
+            Assert.AreEqual(".rel.plt", el.GetSectionName(el.SectionHeaders[9].sh_name));
+            Assert.AreEqual(".init", el.GetSectionName(el.SectionHeaders[10].sh_name));
+            Assert.AreEqual(".plt", el.GetSectionName(el.SectionHeaders[11].sh_name));
+            Assert.AreEqual(".text", el.GetSectionName(el.SectionHeaders[12].sh_name));
+            Assert.AreEqual(".fini", el.GetSectionName(el.SectionHeaders[13].sh_name));
+            Assert.AreEqual(".rodata", el.GetSectionName(el.SectionHeaders[14].sh_name));
+            Assert.AreEqual(".eh_frame", el.GetSectionName(el.SectionHeaders[15].sh_name));
+            Assert.AreEqual(".ctors", el.GetSectionName(el.SectionHeaders[16].sh_name));
+            Assert.AreEqual(".dtors", el.GetSectionName(el.SectionHeaders[17].sh_name));
+            Assert.AreEqual(".jcr", el.GetSectionName(el.SectionHeaders[18].sh_name));
+            Assert.AreEqual(".dynamic", el.GetSectionName(el.SectionHeaders[19].sh_name));
+            Assert.AreEqual(".got", el.GetSectionName(el.SectionHeaders[20].sh_name));
+            Assert.AreEqual(".got.plt", el.GetSectionName(el.SectionHeaders[21].sh_name));
+            Assert.AreEqual(".data", el.GetSectionName(el.SectionHeaders[22].sh_name));
+            Assert.AreEqual(".bss", el.GetSectionName(el.SectionHeaders[23].sh_name));
+            Assert.AreEqual(".comment", el.GetSectionName(el.SectionHeaders[24].sh_name));
+            Assert.AreEqual(".shstrtab", el.GetSectionName(el.SectionHeaders[25].sh_name));
+            Assert.AreEqual(".symtab", el.GetSectionName(el.SectionHeaders[26].sh_name));
+            Assert.AreEqual(".strtab", el.GetSectionName(el.SectionHeaders[27].sh_name));
         }
 
         [Test]
-        public void LoadProgramHeaders()
+        public void EIL_LoadProgramHeaders()
         {
-            var el = new ElfImageLoader(null, "foo", rawImg);
+            mr.ReplayAll();
+
+            var el = new ElfImageLoader(services, "foo", rawImg);
             el.Load(new Address(0));
             el.Dump(Console.Out);
         }

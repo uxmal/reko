@@ -305,6 +305,16 @@ namespace Decompiler.Core
                 Debug.Print("Key: {0}, Value: size: {1}, Type: {2}", item.Key, item.Value.Size, item.Value.DataType);
             }
         }
+
+        [Conditional("DEBUG")]
+        public void DumpSections()
+        {
+            foreach (var item in Segments)
+            {
+                Debug.Print("Key: {0}, Value: name:{1,-18} size: {2:X8}, Access: {3}", item.Key, item.Value.Name,  item.Value.Size, item.Value.Access);
+
+            }
+        }
     }
 
 	/// <summary>

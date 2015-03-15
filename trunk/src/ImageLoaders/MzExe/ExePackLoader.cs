@@ -157,7 +157,7 @@ namespace Decompiler.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+                        imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
                     } while (--cx != 0);
                 }
                 if (dx == 0xF000)
@@ -166,7 +166,7 @@ namespace Decompiler.ImageLoaders.MzExe
             }
 
             this.cs += segCode;
-            imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWrite);
+            imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute);
             this.ss += segCode;
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector));

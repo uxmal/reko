@@ -34,15 +34,33 @@ namespace Decompiler.Gui.Design
         {
             this.segment = (ImageMapSegment) obj;
             base.TreeNode.Text = segment.Name;
-            base.TreeNode.ImageName = "Header.ico";
+            base.TreeNode.ImageName = GetImageName(segment.Access);
             base.TreeNode.ToolTipText = string.Format(
-                "{0}{1}{2}{1}{3}",
+                "{0}{1}{2}{1}Size: {3:X}{1}{4}{5}{6}",
                 segment.Name,
                 Environment.NewLine,
                 segment.Address,
-                Environment.NewLine,
-                segment.Access);
+                segment.Size,
+                (segment.Access & AccessMode.Read)!= 0 ? 'r' : '-',
+                (segment.Access & AccessMode.Write)!= 0 ? 'w' : '-',
+                (segment.Access & AccessMode.Execute)!= 0 ? 'x' : '-'
+                );
             PopulateChildren();
+        }
+
+        public string GetImageName(AccessMode access)
+        {
+            switch (access)
+            {
+            case AccessMode.ReadWriteExecute:
+                return "WxSection.ico";
+            case AccessMode.ReadExecute:
+                return "RxSection.ico";
+            case AccessMode.ReadWrite:
+                return "RwSection.ico";
+            default:
+                return "RoSection.ico";
+            }
         }
 
         private void PopulateChildren()
@@ -73,9 +91,16 @@ namespace Decompiler.Gui.Design
 
         public override void DoDefaultAction()
         {
-            var memSvc = Services.RequireService<ILowLevelViewService>();
-            var decSvc = Services.RequireService<IDecompilerService>();
-            memSvc.ShowMemoryAtAddress(GetProgram(), segment.Address);
+            if (segment.Renderer != null)
+            {
+                var segSvc = Services.RequireService<ImageSegmentService>();
+                segSvc.DisplayImageSegment(segment, GetProgram());
+            }
+            else
+            {
+                var memSvc = Services.RequireService<ILowLevelViewService>();
+                memSvc.ShowMemoryAtAddress(GetProgram(), segment.Address);
+            }
         }
     }
 }

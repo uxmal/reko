@@ -77,14 +77,14 @@ namespace Decompiler.ImageLoaders.MzExe
 				imgLoaded.WriteLeUInt16(offset, seg);
 				relocations.AddSegmentReference(offset, seg);
 
-				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 				--i;
 			}
 		
 			// Found the start address.
 
 			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
-			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWrite);
+			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWriteExecute);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
                 relocations);

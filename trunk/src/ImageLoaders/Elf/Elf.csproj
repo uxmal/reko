@@ -58,6 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicSectionRenderer.cs" />
+    <Compile Include="Elf32_Dyn.cs" />
     <Compile Include="Elf32_EHdr.cs" />
     <Compile Include="Elf32_PHdr.cs" />
     <Compile Include="Elf32_Rel.cs" />
@@ -66,26 +68,11 @@
     <Compile Include="ElfImageLoader.cs" />
     <Compile Include="ProgramHeaderType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelaSegmentRenderer.cs" />
     <Compile Include="SectionHeaderType.cs" />
     <Compile Include="SectionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
-      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
-      <Name>M68k</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
-      <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
-      <Name>PowerPC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Arch\Sparc\Sparc.csproj">
-      <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
-      <Name>Sparc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
-      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>

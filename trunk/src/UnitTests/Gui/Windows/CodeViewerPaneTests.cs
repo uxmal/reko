@@ -45,6 +45,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDecompilerService decompilerSvc;
         private IDecompiler decompiler;
         private IUiPreferencesService uiPreferencesSvc;
+        private IDecompilerShellUiService uiSvc;
         private Font font;
 
         [SetUp]
@@ -55,11 +56,13 @@ namespace Decompiler.UnitTests.Gui.Windows
             decompilerSvc = mr.Stub<IDecompilerService>();
             decompiler = mr.Stub<IDecompiler>();
             uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
+            uiSvc = mr.Stub<IDecompilerShellUiService>();
             font = new Font("Arial", 10);
             var sc = new ServiceContainer();
             decompilerSvc.Decompiler = decompiler;
             sc.AddService<IDecompilerService>(decompilerSvc);
             sc.AddService<IUiPreferencesService>(uiPreferencesSvc);
+            sc.AddService<IDecompilerShellUiService>(uiSvc);
             codeViewer.SetSite(sc);
         }
 

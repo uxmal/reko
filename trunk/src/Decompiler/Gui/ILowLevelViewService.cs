@@ -39,8 +39,6 @@ namespace Decompiler.Gui
 
     public interface ILowLevelViewService
     {
-        event EventHandler<SelectionChangedEventArgs> SelectionChanged;
-
         void ShowWindow();
         void ViewImage(Program program);
         void ShowMemoryAtAddress(Program program, Address addr);

@@ -84,7 +84,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             Model.MoveTo(topAddress, 0);
             RecomputeLayout();
-            base.ShowFraction();
+            base.UpdateScrollbar();
             Invalidate();
         }
 

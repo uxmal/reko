@@ -112,9 +112,19 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+        private int guard;
         public CodeFormatter VisitEquivalenceClass(EquivalenceClass eq)
         {
-            return eq.DataType.Accept(this);
+            if (guard > 100)
+            { codeFormatter.InnerFormatter.WriteComment("Recursion too deep"); return codeFormatter; }
+            else
+            {
+                //$TODO: this should go away once we figure out why type inference loops.
+                ++guard;
+                var cf = eq.DataType.Accept(this);
+                --guard;
+                return cf;
+            }
         }
 
         public CodeFormatter VisitFunctionType(FunctionType ft)
