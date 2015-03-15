@@ -29,6 +29,10 @@ using System.Text;
 
 namespace Decompiler.Gui.Windows
 {
+    /// <summary>
+    /// Implements a formatter that renders text into
+    /// a TextViewModel that can be used with a TextView.
+    /// </summary>
     public class TextSpanFormatter : Formatter
     {
         private List<List<TextSpan>> textLines;

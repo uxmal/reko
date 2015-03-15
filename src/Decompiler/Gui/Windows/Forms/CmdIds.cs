@@ -49,7 +49,8 @@ namespace Decompiler.Gui
 		public const int CtxBrowser = 10;
 		public const int CtxProcedure = 11;
 		public const int CtxAddressSearch = 12;
-		public const int MainToolbar = 13;
+		public const int CtxCodeView = 13;
+		public const int MainToolbar = 14;
 	}
 	
 	public class GroupIds
@@ -69,13 +70,14 @@ namespace Decompiler.Gui
 		public const int GrpMemoryControl = 13 + 1000;
 		public const int GrpDisassemblerNav = 14 + 1000;
 		public const int GrpDisassemblerEdit = 15 + 1000;
-		public const int GrpBrowser = 16 + 1000;
-		public const int GrpBrowserProc = 17 + 1000;
-		public const int GrpBrowserSegm = 18 + 1000;
-		public const int GrpToolbarFileOps = 19 + 1000;
-		public const int GrpToolbarActions = 20 + 1000;
-		public const int GrpProcedure = 21 + 1000;
-		public const int GrpAddressSearch = 22 + 1000;
+		public const int GrpCodeView = 16 + 1000;
+		public const int GrpBrowser = 17 + 1000;
+		public const int GrpBrowserProc = 18 + 1000;
+		public const int GrpBrowserSegm = 19 + 1000;
+		public const int GrpToolbarFileOps = 20 + 1000;
+		public const int GrpToolbarActions = 21 + 1000;
+		public const int GrpProcedure = 22 + 1000;
+		public const int GrpAddressSearch = 23 + 1000;
 	}
 	
 	public class CmdIds
@@ -89,32 +91,33 @@ namespace Decompiler.Gui
 		public const int FileExit = 7 + 2000;
 		public const int EditFind = 8 + 2000;
 		public const int EditCopy = 9 + 2000;
-		public const int EditRename = 10 + 2000;
-		public const int EditSelectAll = 11 + 2000;
-		public const int ViewMemory = 12 + 2000;
-		public const int ViewDisassembly = 13 + 2000;
-		public const int OpenLink = 14 + 2000;
-		public const int OpenLinkInNewWindow = 15 + 2000;
-		public const int ViewGoToAddress = 16 + 2000;
-		public const int ViewFindAllProcedures = 17 + 2000;
-		public const int ViewShowAllFragments = 18 + 2000;
-		public const int ViewShowUnscanned = 19 + 2000;
-		public const int ViewFindPattern = 20 + 2000;
-		public const int ViewFindFragments = 21 + 2000;
-		public const int ViewFindWhatPointsHere = 22 + 2000;
-		public const int ActionNextSearchHit = 23 + 2000;
-		public const int ActionPrevSearchHit = 24 + 2000;
-		public const int ActionNextPhase = 25 + 2000;
-		public const int ActionFinishDecompilation = 26 + 2000;
-		public const int ActionMarkProcedure = 27 + 2000;
-		public const int ActionEditSignature = 28 + 2000;
-		public const int ActionMarkType = 29 + 2000;
-		public const int WindowsCascade = 30 + 2000;
-		public const int WindowsTileVertical = 31 + 2000;
-		public const int WindowsTileHorizontal = 32 + 2000;
-		public const int WindowsCloseAll = 33 + 2000;
-		public const int HelpAbout = 34 + 2000;
-		public const int ShowProcedureCallHierarchy = 35 + 2000;
+		public const int EditCopyAll = 10 + 2000;
+		public const int EditRename = 11 + 2000;
+		public const int EditSelectAll = 12 + 2000;
+		public const int ViewMemory = 13 + 2000;
+		public const int ViewDisassembly = 14 + 2000;
+		public const int OpenLink = 15 + 2000;
+		public const int OpenLinkInNewWindow = 16 + 2000;
+		public const int ViewGoToAddress = 17 + 2000;
+		public const int ViewFindAllProcedures = 18 + 2000;
+		public const int ViewShowAllFragments = 19 + 2000;
+		public const int ViewShowUnscanned = 20 + 2000;
+		public const int ViewFindPattern = 21 + 2000;
+		public const int ViewFindFragments = 22 + 2000;
+		public const int ViewFindWhatPointsHere = 23 + 2000;
+		public const int ActionNextSearchHit = 24 + 2000;
+		public const int ActionPrevSearchHit = 25 + 2000;
+		public const int ActionNextPhase = 26 + 2000;
+		public const int ActionFinishDecompilation = 27 + 2000;
+		public const int ActionMarkProcedure = 28 + 2000;
+		public const int ActionEditSignature = 29 + 2000;
+		public const int ActionMarkType = 30 + 2000;
+		public const int WindowsCascade = 31 + 2000;
+		public const int WindowsTileVertical = 32 + 2000;
+		public const int WindowsTileHorizontal = 33 + 2000;
+		public const int WindowsCloseAll = 34 + 2000;
+		public const int HelpAbout = 35 + 2000;
+		public const int ShowProcedureCallHierarchy = 36 + 2000;
 		public const int FileMru = 2200;
 	}
 }

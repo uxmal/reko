@@ -279,4 +279,11 @@ namespace Decompiler.Arch.PowerPC
 
         #endregion
     }
+
+    public class PowerPcArchitecture32 : PowerPcArchitecture
+    {
+        public PowerPcArchitecture32()
+            : base(PrimitiveType.Word32)
+        { }
+    }
 }

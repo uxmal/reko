@@ -162,12 +162,10 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 var e = new KeyEventArgs(keyData);
                 eh(this, e);
-                return e.Handled;
+                if (e.Handled)
+                    return true;
             }
-            else
-            {
-                return false;
-            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         #endregion

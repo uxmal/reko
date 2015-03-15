@@ -24,6 +24,7 @@ using Decompiler.Gui.Windows.Controls;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -34,10 +35,11 @@ namespace Decompiler.Gui.Windows
     /// <summary>
     /// Pane that displays decompiled code.
     /// </summary>
-    public class CodeViewerPane : IWindowPane
+    public class CodeViewerPane : IWindowPane, ICommandTarget
     {
         private CodeView codeView; 
         private IServiceProvider services;
+        private Procedure proc;
 
         public TextView TextView { get { return codeView.TextView; } }
 
@@ -51,6 +53,8 @@ namespace Decompiler.Gui.Windows
             this.codeView.Dock = DockStyle.Fill;
             this.TextView.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F);
             this.TextView.BackColor = SystemColors.Window;
+
+            this.TextView.ContextMenu = services.RequireService<IDecompilerShellUiService>().GetContextMenu(MenuIds.CtxCodeView);
 
             this.TextView.Styles.Add("kw", new EditorStyle
             {
@@ -83,6 +87,7 @@ namespace Decompiler.Gui.Windows
         {
             if (codeView!=null)
                 ((Control)codeView).Dispose();
+            codeView = null;
         }
 
         #endregion
@@ -92,6 +97,7 @@ namespace Decompiler.Gui.Windows
             if (codeView == null || proc == null)
                 return;
 
+            this.proc = proc;
             var tsf = new TextSpanFormatter();
             var fmt = new CodeFormatter(tsf);
             fmt.InnerFormatter.UseTabs = false;
@@ -105,6 +111,49 @@ namespace Decompiler.Gui.Windows
             if (procDst == null)
                 return;
             DisplayProcedure(procDst);
+        }
+
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:   //$TODO: once the TextViewer supports selections, these two 
+                                        // verbs will need to differ.
+                case CmdIds.EditCopyAll:
+                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Execute(CommandID cmdId)
+        {
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:
+                case CmdIds.EditCopyAll:
+                    CopyAll();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void CopyAll()
+        {
+            if (this.proc == null)
+                return;
+            var sw = new StringWriter();
+            var writer = new TextFormatter(sw);
+            var fmt = new CodeFormatter(writer);
+            fmt.Write(proc);
+            sw.Flush();
+            Clipboard.SetText(sw.ToString());
         }
     }
 }

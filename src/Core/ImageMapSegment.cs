@@ -46,6 +46,9 @@ namespace Decompiler.Core
 		}
 
 		public AccessMode Access { get; private set; }
+
+        public ImageMapSegmentRenderer Renderer { get; set; }
+
 		public string Name { get;set; }
 
 		public override string ToString()
@@ -61,6 +64,8 @@ namespace Decompiler.Core
 		Write = 2,
 		Execute = 1,
 
-		ReadWrite = Read|Write,
+        ReadExecute = Read | Execute,
+        ReadWrite = Read | Write,
+        ReadWriteExecute = Read|Write|Execute,
 	}
 }

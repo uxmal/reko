@@ -19,6 +19,7 @@
   <menu type="ContextMenu" id="CtxBrowser" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxProcedure" cmdSet="Decompiler"/>
   <menu type="ContextMenu" id="CtxAddressSearch" cmdSet="Decompiler"/>
+  <menu type="ContextMenu" id="CtxCodeView" cmdSet="Decompiler"/>
 
   <!-- Toolbars -->
   <menu type="ToolStrip" id="MainToolbar" cmdSet="GuidCmdSet"/>
@@ -48,7 +49,7 @@
 	<group id="GrpMemoryControl" cmdSet="Decompiler" container="CtxMemoryControl"/>
   <group id="GrpDisassemblerNav" cmdSet="Decompiler" container="CtxDisassembler" />
   <group id="GrpDisassemblerEdit" cmdSet="Decompiler" container="CtxDisassembler" />
-
+  <group id="GrpCodeView" cmdSet="Decompiler" container="CtxCodeView" />
   <group id="GrpBrowser" cmdSet="Decompiler" container="CtxBrowser"/>
   <group id="GrpBrowserProc" cmdSet="Decompiler" container="CtxBrowser"/>
   <group id="GrpBrowserSegm" cmdSet="Decompiler" container="CtxBrowser"/>
@@ -74,6 +75,7 @@
 
   <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
   <cmd id="EditCopy" cmdSet="Decompiler" container="EditCopy">_Copy</cmd>
+  <cmd id="EditCopyAll" cmdSet="Decompiler" container="EditCopyAll">_Copy All</cmd>
   <cmd id="EditRename" cmdSet="Decompiler" container="GrpEdit">_Rename</cmd>
   <cmd id="EditSelectAll" cmdSet="Decompiler" container="GrpEdit">Select _all</cmd>
 
@@ -126,8 +128,9 @@
   <placement item="ActionFinishDecompilation" container="GrpToolbarActions"/>
 
   <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
-	
+
   <placement item="EditCopy" container="GrpMemoryControl"/>
+  <placement item="EditCopyAll" container="GrpCodeView "/>
   <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionMarkType" container="GrpMemoryControl"/>
@@ -155,6 +158,8 @@
   <keybinding id="ActionNextSearchHit" cmdSet="Decompiler" editor="" key1="F8" />
   <keybinding id="ActionPrevSearchHit" cmdSet="Decompiler" editor="" key1="F8" alt1="Shift" />
   <keybinding id="EditCopy" cmdSet="Decompiler" editor="" key1="C" alt1="Control" />
+  <keybinding id="EditCopyAll" cmdSet="Decompiler" editor="Decompiler.Gui.Windows.CodeViewerPane" key1="C" alt1="Control" />
+
   <keybinding id="EditSelectAll" cmdSet="Decompiler" editor="" key1="A" alt1="Control" />
 
 </menu-definitions>

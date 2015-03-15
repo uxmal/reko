@@ -181,7 +181,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
 				relocations.AddSegmentReference((uint)rel_off, seg);
-				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
+				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 			}
 			return imageMap;
 		}

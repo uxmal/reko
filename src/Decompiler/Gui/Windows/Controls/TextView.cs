@@ -389,6 +389,7 @@ namespace Decompiler.Gui.Windows.Controls
         public Dictionary<string, EditorStyle> Styles { get { return styles; } }
         private Dictionary<string, EditorStyle> styles;
         private SortedList<float, LayoutLine> visibleLines;
+        private bool ignoreScroll;
 
         void model_ModelChanged(object sender, EventArgs e)
         {
@@ -397,6 +398,8 @@ namespace Decompiler.Gui.Windows.Controls
 
         void vScroll_ValueChanged(object sender, EventArgs e)
         {
+            if (ignoreScroll)
+                return;
             model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
             RecomputeLayout();
             OnScroll();
@@ -417,10 +420,12 @@ namespace Decompiler.Gui.Windows.Controls
             g.Dispose();
         }
 
-        internal void ShowFraction()
+        internal void UpdateScrollbar()
         {
             var frac = model.GetPositionAsFraction();
+            this.ignoreScroll = true;
             vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
+            this.ignoreScroll = false;
         }
     }
 

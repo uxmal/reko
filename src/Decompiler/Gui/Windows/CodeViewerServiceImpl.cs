@@ -28,7 +28,7 @@ namespace Decompiler.Gui.Windows
     /// <summary>
     /// Service supporting the display and navigation of intermediate code.
     /// </summary>
-    public class CodeViewerServiceImpl  : ViewService, ICodeViewerService
+    public class CodeViewerServiceImpl : ViewService, ICodeViewerService
     {
         private CodeViewerPane pane;
 

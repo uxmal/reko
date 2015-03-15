@@ -147,6 +147,8 @@ namespace Decompiler.Gui.Forms
 
             var codeViewSvc = new CodeViewerServiceImpl(sc);
             sc.AddService(typeof(ICodeViewerService), codeViewSvc);
+            var segmentViewSvc = new ImageSegmentServiceImpl(sc);
+            sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 
             var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
@@ -571,20 +573,21 @@ namespace Decompiler.Gui.Forms
 
         #region ICommandTarget members
 
+        private ICommandTarget GetSubCommandTarget()
+        {
+            if (form.TabControl.ContainsFocus)
+                return searchResultsTabControl;
+            if (form.ProjectBrowser.Focused)
+                return projectBrowserSvc;
+            return subWindowCommandTarget;
+        }
+
         public bool QueryStatus(CommandID cmdId, CommandStatus cmdStatus, CommandText cmdText)
         {
-            if (searchResultsTabControl.QueryStatus(cmdId, cmdStatus, cmdText))
+            var ct = GetSubCommandTarget();
+            if (ct != null && ct.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
-            if (MainForm.ProjectBrowser.Focused)
-            {
-                if (this.projectBrowserSvc.QueryStatus(cmdId, cmdStatus, cmdText))
-                    return true;
-            }
-            else
-            {
-                if (subWindowCommandTarget.QueryStatus(cmdId, cmdStatus, cmdText))
-                    return true;
-            }
+            
             if (currentPhase != null && currentPhase.QueryStatus(cmdId, cmdStatus, cmdText))
                 return true;
             if (cmdId.Guid == CmdSets.GuidDecompiler)
@@ -647,18 +650,9 @@ namespace Decompiler.Gui.Forms
         /// <returns></returns>
         public bool Execute(CommandID cmdId)
         {
-            if (searchResultsTabControl.Execute(cmdId))
+            var ct = GetSubCommandTarget();
+            if (ct != null && ct.Execute(cmdId))
                 return true;
-            if (MainForm.ProjectBrowser.Focused)
-            {
-                if (this.projectBrowserSvc.Execute(cmdId))
-                    return true;
-            }
-            else
-            {
-                if (subWindowCommandTarget.Execute(cmdId))
-                    return true;
-            }
           
             if (currentPhase != null && currentPhase.Execute(cmdId))
                 return true;

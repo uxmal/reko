@@ -87,11 +87,14 @@
             this.imlBrowser.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlBrowser.ImageStream")));
             this.imlBrowser.TransparentColor = System.Drawing.Color.Transparent;
             this.imlBrowser.Images.SetKeyName(0, "Binary.ico");
-            this.imlBrowser.Images.SetKeyName(1, "Header.ico");
-            this.imlBrowser.Images.SetKeyName(2, "Userproc.ico");
-            this.imlBrowser.Images.SetKeyName(3, "Data.ico");
-            this.imlBrowser.Images.SetKeyName(4, "Procedure.ico");
-            this.imlBrowser.Images.SetKeyName(5, "typelib.ico");
+            this.imlBrowser.Images.SetKeyName(1, "Userproc.ico");
+            this.imlBrowser.Images.SetKeyName(2, "Data.ico");
+            this.imlBrowser.Images.SetKeyName(3, "Procedure.ico");
+            this.imlBrowser.Images.SetKeyName(4, "typelib.ico");
+            this.imlBrowser.Images.SetKeyName(5, "RoSection.ico");
+            this.imlBrowser.Images.SetKeyName(6, "RwSection.ico");
+            this.imlBrowser.Images.SetKeyName(7, "RxSection.ico");
+            this.imlBrowser.Images.SetKeyName(8, "WxSection.ico");
             // 
             // tabControl1
             // 
@@ -110,7 +113,7 @@
             this.tabDiagnostics.Controls.Add(this.listDiagnostics);
             this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
             this.tabDiagnostics.Name = "tabDiagnostics";
-            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
             this.tabDiagnostics.Size = new System.Drawing.Size(773, 154);
             this.tabDiagnostics.TabIndex = 1;
             this.tabDiagnostics.Text = "Diagostics";
@@ -157,7 +160,7 @@
             this.tabFindResults.Controls.Add(this.listFindResults);
             this.tabFindResults.Location = new System.Drawing.Point(4, 22);
             this.tabFindResults.Name = "tabFindResults";
-            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
             this.tabFindResults.Size = new System.Drawing.Size(773, 154);
             this.tabFindResults.TabIndex = 0;
             this.tabFindResults.Text = "Find results";

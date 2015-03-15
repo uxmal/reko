@@ -262,11 +262,13 @@
     <Compile Include="Gui\IDisassemblyViewService.cs" />
     <Compile Include="Gui\Forms\IMainForm.cs" />
     <Compile Include="Gui\ILowLevelViewService.cs" />
+    <Compile Include="Gui\ImageSegmentService.cs" />
     <Compile Include="Gui\IMenuAdapter.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
     <Compile Include="Gui\IProjectBrowserService.cs" />
     <Compile Include="Gui\ITabControlHostService.cs" />
     <Compile Include="Gui\IUiPreferencesService.cs" />
+    <Compile Include="Gui\IViewerService.cs" />
     <Compile Include="Gui\ProjectBrowserService.cs" />
     <Compile Include="Gui\SearchService.cs" />
     <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
@@ -282,6 +284,12 @@
     </Compile>
     <Compile Include="Gui\Windows\Controls\ImageMapView.Designer.cs">
       <DependentUpon>ImageMapView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageSegmentView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageSegmentView.Designer.cs">
+      <DependentUpon>ImageSegmentView.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Controls\MenuStatusSetter.cs" />
     <Compile Include="Gui\Windows\Controls\TextBuffer.cs" />
@@ -306,6 +314,8 @@
       <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\UserPreferencesInteractor.cs" />
+    <Compile Include="Gui\Windows\ImageSegmentPane.cs" />
+    <Compile Include="Gui\Windows\ImageSegmentServiceImpl.cs" />
     <Compile Include="Gui\Windows\IRegistryService.cs" />
     <Compile Include="Gui\ISearchDialog.cs" />
     <Compile Include="Gui\ISearchResult.cs" />
@@ -627,6 +637,9 @@
     <EmbeddedResource Include="Gui\Windows\Controls\ImageMapView.resx">
       <DependentUpon>ImageMapView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\ImageSegmentView.resx">
+      <DependentUpon>ImageSegmentView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Controls\TextView.resx">
       <DependentUpon>TextView.cs</DependentUpon>
     </EmbeddedResource>
@@ -693,6 +706,9 @@
     </Content>
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
+    <Content Include="Images\RwSection.ico" />
+    <Content Include="Images\RxSection.ico" />
+    <Content Include="Images\WxSection.ico" />
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml" />
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml">

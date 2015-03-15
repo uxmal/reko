@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -38,7 +39,7 @@ namespace Decompiler.ImageLoaders.Elf
 
         public static Elf32_PHdr Load(Core.ImageReader rdr)
         {
-            return new Elf32_PHdr
+            var hdr = new Elf32_PHdr
             {
                 p_type = (ProgramHeaderType)rdr.ReadUInt32(),
                 p_offset = rdr.ReadUInt32(),
@@ -49,6 +50,7 @@ namespace Decompiler.ImageLoaders.Elf
                 p_flags = rdr.ReadUInt32(),
                 p_align = rdr.ReadUInt32(),
             };
+            return hdr;
         }
     }
 }

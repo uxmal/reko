@@ -361,7 +361,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_UiSvc_IgnoresCommands();
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);       //$REVIEW: this shouldn't be necessary -- only if user explicitly asks for it.
             memSvc.Expect(x => x.ShowWindow());
-            memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
             memSvc.Expect(m => m.ViewImage(Arg<Program>.Is.NotNull));
             Given_DecompilerInstance();
             mr.ReplayAll();
@@ -518,7 +517,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             dcSvc = mr.StrictMock<IDecompilerService>();
             srSvc = MockRepository.GenerateMock<ISearchResultService, IWindowPane>();
             diagnosticSvc = MockRepository.GenerateMock<IDiagnosticsService, IWindowPane>();
-            memSvc.Stub(m => m.SelectionChanged += null).IgnoreArguments();
 
             svcFactory.Stub(s => s.CreateArchiveBrowserService()).Return(archSvc);
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
