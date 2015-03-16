@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		public void DataOverrides()
 		{
 			var lr = asm.AssembleFragment(
-				new Address(0xC00, 0),
+				Address.SegPtr(0xC00, 0),
 				@".86
 		mov	eax,32
 		mov si,0x2234

@@ -228,7 +228,7 @@ l01C8:
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(0x800, 0); }
+			get { return Address.SegPtr(0x800, 0); }
 		}
 
 		public override RelocationResults Relocate(Address addrLoad)
@@ -250,7 +250,7 @@ l01C8:
 
 					imgU.WriteLeUInt16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
-					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
+					imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 				} while (--relocs != 0);
 			}
 
@@ -273,7 +273,7 @@ l01C8:
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
             return new RelocationResults(
-                new List<EntryPoint> {new EntryPoint(new Address(pklCs, pklIp), state) },
+                new List<EntryPoint> {new EntryPoint(Address.SegPtr(pklCs, pklIp), state) },
                 relocations);
 		}
 

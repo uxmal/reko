@@ -115,7 +115,7 @@ namespace Decompiler.UnitTests.Analysis
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                program = asm.Assemble(new Address(0xC00, 0), rdr);
+                program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
                 program.Platform = new MsdosPlatform(null, arch);
             }
             Rewrite(program, asm, configFile);
@@ -151,7 +151,7 @@ namespace Decompiler.UnitTests.Analysis
         protected Program RewriteCodeFragment(string s)
         {
             Assembler asm = new IntelTextAssembler();
-            var program = asm.AssembleFragment(new Address(0xC00, 0), s);
+            var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             Rewrite(program, asm, null);
             return program;

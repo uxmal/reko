@@ -396,7 +396,7 @@ namespace Decompiler.Scanning
                 var selector = segmem.BasePointer.Accept(eval) as Constant;
                 if (selector != null)
                 {
-                    VectorAddress = new Address(selector.ToUInt16(), vector.ToUInt16());
+                    VectorAddress = Address.SegPtr(selector.ToUInt16(), vector.ToUInt16());
                 }
             }
             else

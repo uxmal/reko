@@ -40,9 +40,9 @@ namespace Decompiler.UnitTests.Typing
 	/// </summary>
 	public abstract class TypingTestBase
 	{
-		protected Program RewriteFile16(string relativePath) { return RewriteFile(relativePath, new Address(0xC00, 0)); }
+		protected Program RewriteFile16(string relativePath) { return RewriteFile(relativePath, Address.SegPtr(0xC00, 0)); }
 
-		protected Program RewriteFile32(string relativePath) { return RewriteFile(relativePath, new Address(0x00100000)); }
+		protected Program RewriteFile32(string relativePath) { return RewriteFile(relativePath, Address.Ptr32(0x00100000)); }
 
 		protected Program RewriteFile(string relativePath, Address addrBase)
 		{

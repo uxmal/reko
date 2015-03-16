@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Scanning
 		[Test]
 		public void EarRewriteFrameAccess()
 		{
-			RunTest("Fragments/escapedframe1.asm",  new Address(0xB00, 0), "Scanning/EarRewriteFrameAccess.txt");
+			RunTest("Fragments/escapedframe1.asm",  Address.SegPtr(0xB00, 0), "Scanning/EarRewriteFrameAccess.txt");
 		}
 
 		[Test]

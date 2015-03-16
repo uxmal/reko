@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void LoopFinder_Reg00013()
         {
-            Program prog = RewriteProgramMsdos("Fragments/regressions/r00013.asm", new Address(0x800, 0));
+            Program prog = RewriteProgramMsdos("Fragments/regressions/r00013.asm", Address.SegPtr(0x800, 0));
             ProcedureStructureBuilder psb = new ProcedureStructureBuilder(prog.Procedures.Values[0]);
             proc = psb.Build();
             psb.AnalyzeGraph();

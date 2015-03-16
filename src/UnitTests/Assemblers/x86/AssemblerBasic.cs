@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		public void AsFragment()
 		{
 			var program = asm.AssembleFragment(
-				new Address(0xC00, 0),
+				Address.SegPtr(0xC00, 0),
 @"		.i86
 hello	proc
 		mov	ax,0x30
@@ -130,7 +130,7 @@ hello	endp
 		public void AssembleLoopFragment()
 		{
 			var program = asm.AssembleFragment(
-				new Address(0xC00, 0),
+				Address.SegPtr(0xC00, 0),
 
 				@"		.i86
 hello	proc
@@ -152,7 +152,7 @@ hello	endp
 		public void Extensions()
 		{
 			var program = asm.AssembleFragment(
-				new Address(0xC00, 0),
+				Address.SegPtr(0xC00, 0),
 				@"		.i86
 hello	proc
 		mov cl,0x3
@@ -175,7 +175,7 @@ hello   endp
 		public void Rotations()
 		{
 			var program = asm.AssembleFragment(
-				new Address(0xC00, 0),
+				Address.SegPtr(0xC00, 0),
 				@"	.i86
 foo		proc
 		rol	ax,cl
@@ -192,7 +192,7 @@ foo		endp
 		public void Shifts()
 		{
 			var program = asm.AssembleFragment(
-				new Address(0x0C00, 0),
+				Address.SegPtr(0x0C00, 0),
 				@"	.i86
 foo		proc
 		shl eax,cl
@@ -209,7 +209,7 @@ foo		endp
 		public void StringInstruction()
 		{
 			var program = asm.AssembleFragment(
-				new Address(0xC00, 0),
+				Address.SegPtr(0xC00, 0),
 				@"	.i86
 foo		proc
 		mov	si,0x1234
@@ -229,7 +229,7 @@ foo		endp
             Program program;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/carryinsts.asm")))
             {
-			    program = asm.Assemble(new Address(0xBAC, 0), rdr);
+			    program = asm.Assemble(Address.SegPtr(0xBAC, 0), rdr);
             }
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
@@ -242,7 +242,7 @@ foo		endp
         [Test]
         public void MovMemoryToSegmentRegister()
         {
-            var program = asm.AssembleFragment(new Address(0x0C00, 0),
+            var program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0),
                 "    mov es,[0x4080]\r\n");
             Assert.IsTrue(Compare(program.Image.Bytes, new byte[] { 0x8E, 0x06, 0x80, 0x40 }));
         }
@@ -250,21 +250,21 @@ foo		endp
         [Test]
         public void XchgMem()
         {
-            var program = asm.AssembleFragment(new Address(0x0C00, 0), "xchg word ptr [0x1234],bx\r\n");
+            var program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), "xchg word ptr [0x1234],bx\r\n");
             Assert.IsTrue(Compare(program.Image.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
         }
 
         [Test]
         public void Fcompp()
         {
-            var program = asm.AssembleFragment(new Address(0x0C00, 0x0100), "fcompp\r\n");
+            var program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0x0100), "fcompp\r\n");
             Assert.AreEqual(new byte[] { 0xDE, 0xD9 }, program.Image.Bytes);
         }
 
         [Test]
         public void Jpo()
         {
-            var program = asm.AssembleFragment(new Address(0xC00, 0x0100),
+            var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0x0100),
                 "jpo label\r\n" +
                 "label: xor ax,ax\r\n");
             Assert.AreEqual(new byte[] { 0x7B, 0x00, 0x33, 0xC0 }, program.Image.Bytes); 
@@ -339,7 +339,7 @@ foo		endp
         [Test]
         public void AsConstantStore()
         {
-            Address addr = new Address(0x0C00, 0);
+            Address addr = Address.SegPtr(0x0C00, 0);
             var program = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
             var dasm = new X86Disassembler(
                 program.Image.CreateLeReader(addr),
@@ -360,7 +360,7 @@ foo		endp
             Program program;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                program = asm.Assemble(new Address(0x0C00, 0), rdr);
+                program = asm.Assemble(Address.SegPtr(0x0C00, 0), rdr);
             }
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void HSC_x86_16bitNearCall()
         {
-            var image = new LoadedImage(new Address(0xC00, 0), new byte[] {
+            var image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[] {
                 0xC3, 0x90, 0xE8, 0xFB, 0xFF, 0xC3, 
             });
             var prog = new Program
@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Scanning
             var hsc = new HeuristicScanner(prog);
 
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x0C00, 0)}).ToList();
+                Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
             Assert.AreEqual(0xC002, linAddrs[0]);
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void HSC_x86_16bitFarCall()
         {
-            var image = new LoadedImage(new Address(0xC00, 0), new byte[] {
+            var image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[] {
                 0xC3, 0x90, 0x9A, 0x00, 0x00, 0x00, 0x0C, 0xC3 
             });
             var prog = new Program
@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Scanning
             var hsc = new HeuristicScanner(prog);
 
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x0C00, 0)}).ToList();
+                Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
             Assert.AreEqual(0xC002, linAddrs[0]);

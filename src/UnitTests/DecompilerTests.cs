@@ -90,10 +90,10 @@ namespace Decompiler.UnitTests
 			        Kind = new Register_v1("bx"),
                 }
             };
-            al.Add(new SerializedCall_v1(new Address(0x0C32, 0x3200), sig));
+            al.Add(new SerializedCall_v1(Address.SegPtr(0x0C32, 0x3200), sig));
             var sigs = decompiler.LoadCallSignatures(program, al);
 
-            ProcedureSignature ps = sigs[new Address(0x0C32, 0x3200)];
+            ProcedureSignature ps = sigs[Address.SegPtr(0x0C32, 0x3200)];
             Assert.IsNotNull(ps, "Expected a call signature for address");
         }
     }

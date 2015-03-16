@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Core
 				0x27, 0x10, 0x10, 0x10, 0x10, 0x10, 0x80, 0x3F,
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x49, 0x40,
 			};
-			var img = new LoadedImage(new Address(0xC00, 0), bytes);
+			var img = new LoadedImage(Address.SegPtr(0xC00, 0), bytes);
 			Assert.AreEqual(-0x7F01FFFF, img.ReadLeInt32(0));
 			Assert.AreEqual(0.5, img.ReadLeDouble(0x04).ToDouble(), 0.00001);
             Assert.AreEqual(1.0, img.ReadLeDouble(0x0C).ToDouble(), 0.00001);
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Core
 		public void UShortFixup()
 		{
 			var bytes = new byte[] { 0x01, 0x02, 0x03 };
-			var img = new LoadedImage(new Address(0x0C00, 0), bytes);
+			var img = new LoadedImage(Address.SegPtr(0x0C00, 0), bytes);
 			ushort newSeg = img.FixupLeUInt16(1, 0x4444);
 			Assert.AreEqual(0x4746, newSeg);
 		}

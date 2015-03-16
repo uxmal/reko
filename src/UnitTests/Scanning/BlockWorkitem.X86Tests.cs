@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest16(Action<IntelAssembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            BuildTest(arch, new Address(0x0C00, 0x000), new MsdosPlatform(null, arch), m);
+            BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(null, arch), m);
         }
 
         private class RewriterHost : IRewriterHost, IImportResolver
@@ -262,7 +262,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_RewriteIndirectCall()
         {
-            var addr = new Address(0xC00, 0x0000);
+            var addr = Address.SegPtr(0xC00, 0x0000);
             BuildTest16(delegate(IntelAssembler m)
             {
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(

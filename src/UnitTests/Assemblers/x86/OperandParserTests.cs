@@ -107,12 +107,12 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
 		private OperandParser Create16BitParser(string data)
 		{
-			return new OperandParser(new Lexer(new StringReader(data)), symtab, new Address(0x0C00, 0x0000), PrimitiveType.Word16, PrimitiveType.Word16);
+			return new OperandParser(new Lexer(new StringReader(data)), symtab, Address.SegPtr(0x0C00, 0x0000), PrimitiveType.Word16, PrimitiveType.Word16);
 		}
 
 		private OperandParser Create32BitParser(string data)
 		{
-			return new OperandParser(new Lexer(new StringReader(data)), symtab, new Address(0x0C00, 0x0000), PrimitiveType.Word32, PrimitiveType.Word32);
+            return new OperandParser(new Lexer(new StringReader(data)), symtab, Address.SegPtr(0x0C00, 0x0000), PrimitiveType.Word32, PrimitiveType.Word32);
 		}
 	}
 }

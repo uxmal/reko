@@ -187,7 +187,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
-                    Image = new LoadedImage(new Address(0x0C00,0x0000), bytes)
+                    Image = new LoadedImage(Address.SegPtr(0x0C00,0x0000), bytes)
                 });
         }
 
@@ -496,7 +496,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new LoadedImage(new Address(0xC00, 0), new byte[300]);
+            prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[300]);
             return prog; 
         }
 
