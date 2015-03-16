@@ -38,6 +38,7 @@ namespace Decompiler.Gui.Windows
         public event DragEventHandler DragEnter;
         public event DragEventHandler DragOver;
         public event DragEventHandler DragDrop;
+        public event MouseEventHandler MouseWheel;
         public event EventHandler DragLeave;
 
         private TreeView treeView;
@@ -51,6 +52,7 @@ namespace Decompiler.Gui.Windows
             this.treeView.DragLeave += treeView_DragLeave;
             this.treeView.DragOver += treeView_DragOver;
             this.treeView.DragDrop += treeView_DragDrop;
+            this.treeView.MouseWheel += treeView_MouseWheel;
         }
 
         public ContextMenu ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = value; } }
@@ -101,6 +103,13 @@ namespace Decompiler.Gui.Windows
         void treeView_DragEnter(object sender, DragEventArgs e)
         {
             var eh = DragEnter;
+            if (eh != null)
+                eh(this, e);
+        }
+
+        void treeView_MouseWheel(object sender, MouseEventArgs e)
+        {
+            var eh = MouseWheel;
             if (eh != null)
                 eh(this, e);
         }
