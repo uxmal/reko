@@ -54,6 +54,7 @@ namespace Decompiler.Gui
             this.tree.DragOver += tree_DragOver;
             this.tree.DragDrop += tree_DragDrop;
             this.tree.DragLeave += tree_DragLeave;
+            this.tree.MouseWheel += tree_MouseWheel;
         }
 
         public IServiceProvider Services { get; private set; }
@@ -241,6 +242,15 @@ namespace Decompiler.Gui
                 var filename = (string) e.Data.GetData(DataFormats.FileDrop);
                 eh(this, new FileDropEventArgs(filename));
             }
+        }
+
+        private void tree_MouseWheel(object sender, MouseEventArgs e)
+        {
+
+            //model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
+            //RecomputeLayout();
+            //OnScroll();
+            //tree,Invalidate();
         }
     }
 }

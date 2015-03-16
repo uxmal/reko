@@ -111,6 +111,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             public event DragEventHandler DragOver;
             public event DragEventHandler DragDrop;
             public event EventHandler DragLeave;
+            public event MouseEventHandler MouseWheel;
 
             public FakeTreeView()
             {
@@ -155,6 +156,11 @@ namespace Decompiler.UnitTests.Gui.Windows
             public void PerformDragLeave(EventArgs e)
             {
                 DragLeave(this, e);
+            }
+
+            public void PerformMouseWheel(MouseEventArgs e)
+            {
+                MouseWheel(this, e);
             }
         }
 
