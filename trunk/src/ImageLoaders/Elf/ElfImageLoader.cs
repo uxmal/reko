@@ -38,7 +38,6 @@ namespace Decompiler.ImageLoaders.Elf
     /// <summary>
     /// Loader for (32-bit) ELF images.
     /// </summary>
-    //$TODO: load arch dynamically
     //$TODO: load sections so they can be displayed.
     public class ElfImageLoader : ImageLoader
     {
@@ -234,6 +233,8 @@ namespace Decompiler.ImageLoaders.Elf
         {
             switch (shdr.sh_type)
             {
+            case SectionHeaderType.SHT_DYNAMIC:
+                return new DynamicSectionRenderer(this, shdr);
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer(this, shdr);
             default: return null;
@@ -569,7 +570,7 @@ namespace Decompiler.ImageLoaders.Elf
                 .FirstOrDefault();
         }
 
-        private Elf32_SHdr GetSectionInfoByAddr(ADDRESS r_offset)
+        internal Elf32_SHdr GetSectionInfoByAddr(ADDRESS r_offset)
         {
             return
                 (from sh in this.SectionHeaders
@@ -578,7 +579,7 @@ namespace Decompiler.ImageLoaders.Elf
                 .FirstOrDefault();
         }
 
-        private string ReadAsciiString(byte [] bytes, uint fileOffset)
+        internal string ReadAsciiString(byte [] bytes, uint fileOffset)
         {
             int u = (int)fileOffset;
             while (bytes[u] != 0)
@@ -593,6 +594,17 @@ namespace Decompiler.ImageLoaders.Elf
         private void AddSymbol(ADDRESS uNative, string pName)
         {
             //m_SymTab[uNative] = pName;
+        }
+
+
+        public string GetSymbol(int iSymbolSection, int symbolNo)
+        {
+            var symSection = SectionHeaders[iSymbolSection];
+            var strSection = SectionHeaders[(int)symSection.sh_link];
+            uint offset = symSection.sh_offset + (uint)symbolNo * symSection.sh_entsize;
+            var rdr = CreateReader(offset);
+            rdr.TryReadUInt32(out offset);
+            return GetStrPtr((int)symSection.sh_link, offset);
         }
 
         const int DT_NULL = 0;

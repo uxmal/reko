@@ -30,7 +30,7 @@ namespace Decompiler.ImageLoaders.Elf
 {
     public class RelaSegmentRenderer : ImageMapSegmentRenderer
     {
-        private  ElfImageLoader loader;
+        private ElfImageLoader loader;
         private  Elf32_SHdr shdr;
 
         public RelaSegmentRenderer(ElfImageLoader loader,  Elf32_SHdr shdr)
@@ -42,7 +42,7 @@ namespace Decompiler.ImageLoaders.Elf
         public override void Render(ImageMapSegment segment, Program program, Formatter formatter)
         {
             var entries = shdr.sh_size / shdr.sh_entsize;
-            var symtab = shdr.sh_link;
+            var symtab = (int)shdr.sh_link;
             var rdr = loader.CreateReader(shdr.sh_offset);
             for (int i = 0; i < entries; ++i)
             {
@@ -57,7 +57,7 @@ namespace Decompiler.ImageLoaders.Elf
                     return;
 
                 uint sym = info >> 8;
-                string symStr = loader.GetStrPtr((int)symtab, sym);
+                string symStr = loader.GetSymbol(symtab, (int)sym);
                 formatter.Write("{0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info&0xFF, sym, addend, symStr);
                 formatter.WriteLine();
             }

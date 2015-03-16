@@ -351,6 +351,13 @@ namespace Decompiler.Arch.PowerPC
                 var condCode = ((wInstr >> 22) & 4) | (crBit & 0x3);
                 var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.rdr.Address.Linear - 4;
                 var dst = new AddressOperand(new Address(unchecked(baseAddr + uOffset)));
+                if (((wInstr >> 22) & 0x0A) == 0x0A)
+                {
+                    return new PowerPcInstruction(link ? Opcode.bl : Opcode.b)
+                   {
+                       op1 = dst
+                   };
+                }
                 switch (condCode)
                 {
                 default:
