@@ -49,7 +49,16 @@ namespace Decompiler.Arch.PowerPC
         private void RewriteBl()
         {
             var dst = RewriteOperand(instr.op1);
-            emitter.Call(dst, 0);
+            var addrDst = dst as Address;
+            if (addrDst != null && instr.Address.Linear + 4 == addrDst.Linear)
+            {
+                // PowerPC idiom to get the current instruction pointer in the lr register
+                emitter.Assign(frame.EnsureRegister(Registers.lr), addrDst);
+            }
+            else
+            {
+                emitter.Call(dst, 0);
+            }
         }
 
         private void RewriteBlr()

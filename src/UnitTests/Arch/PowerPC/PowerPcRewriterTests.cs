@@ -755,5 +755,13 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 "0|00100000(4): 1 instructions",
                 "1|L--|r16 = r8 | ~r11");
         }
+
+        [Test]
+        public void PPCrw_bclr_getPC()
+        {
+            AssertCode(0x429f0005, // bcl-     20,cr7,xxxx
+                "0|00100000(4): 1 instructions",
+                "1|L--|lr = 00100004");
+        }
     }
 }

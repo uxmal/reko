@@ -18,19 +18,20 @@
  */
 #endregion
 
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.ImageLoaders.Elf
+namespace Decompiler.Gui
 {
-    public class Elf32_Dyn
+    /// <summary>
+    /// The viewer service provides callers with a way to display
+    /// loaded and decompiled products.
+    /// </summary>
+    public interface IViewerService
     {
-        public int d_tag; /* how to interpret value */
-        private int val;
-        public int d_val { get { return val; } set { val = value; } }
-        public uint d_ptr { get { return (uint) val; } set { val = (int)value; } }
-        public int d_off { get { return val; } set { val = value; } }
+        void DisplayProcedure(Procedure proc);
     }
 }
