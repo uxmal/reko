@@ -33,4 +33,13 @@ namespace Decompiler.ImageLoaders.Elf
         public uint d_ptr { get { return (uint) val; } set { val = (int)value; } }
         public int d_off { get { return val; } set { val = value; } }
     }
+
+    public class Elf64_Dyn
+    {
+        public long d_tag; /* how to interpret value */
+        private long val;
+        public long d_val { get { return val; } set { val = value; } }
+        public ulong d_ptr { get { return (ulong)val; } set { val = (long)value; } }
+        public long d_off { get { return val; } set { val = value; } }
+    }
 }

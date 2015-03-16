@@ -210,7 +210,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			rdr.ReadLeUInt32();		// #of symbols.
 			optionalHeaderSize = rdr.ReadLeInt16();
 			short fileFlags = rdr.ReadLeInt16();
-			sectionOffset = (uint) (rdr.Offset + optionalHeaderSize);
+			sectionOffset = (uint) ((int)rdr.Offset + optionalHeaderSize);
             return expectedMagic;
 		}
 
@@ -356,7 +356,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				int cbBlock = rdr.ReadLeInt32();
                 if (page == 0 || cbBlock == 0)
                     break;
-				uint offBlockEnd = (uint)(rdr.Offset + cbBlock - 8);
+				uint offBlockEnd = (uint)((int)rdr.Offset + cbBlock - 8);
 				while (rdr.Offset < offBlockEnd)
 				{
 					ApplyRelocation(baseOfImage, page, rdr, relocations);

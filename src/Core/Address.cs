@@ -53,7 +53,9 @@ namespace Decompiler.Core
 
         public static Address Ptr64(ulong addr)
         {
-            throw new NotImplementedException("We need separate classes for addresses.");
+            if (addr >= (1ul << 32))
+                throw new NotImplementedException("We need separate classes for addresses.");
+            return new Address(PrimitiveType.Pointer64, (uint) addr);
         }
 
         public static Address FromConstant(Constant value)
@@ -118,6 +120,7 @@ namespace Decompiler.Core
                 {
                 case 2: strFmt = "{0}{2:X4}{3}"; break;
                 case 4: strFmt = "{0}{2:X8}{3}"; break;
+                case 8: strFmt = "{0}{2:X16}{3}"; break;
                 default: throw new NotSupportedException(string.Format("Address size of {0} bytes not supported.", DataType.Size));
                 }
             }
@@ -137,6 +140,7 @@ namespace Decompiler.Core
                 {
                     case 2: strFmt = "{1:X4}"; break;
                     case 4: strFmt = "{1:X8}"; break;
+                    case 8: strFmt = "{1:X16}"; break;
                     default: throw new NotSupportedException(string.Format("Address size of {0} bytes not supported.", DataType.Size));
                 }
             }
@@ -167,7 +171,7 @@ namespace Decompiler.Core
 			return a.Linear >= b.Linear;
 		}
 
-		public static Address operator + (Address a, uint off)
+		public static Address operator + (Address a, ulong off)
 		{
 			return a + (int) off;
 		}

@@ -38,7 +38,7 @@ namespace Decompiler.Core
 		private Map<Address,ImageMapItem> items;
         private Map<Address,ImageMapSegment> segments;
 
-		public ImageMap(Address addrBase, int imageSize)
+		public ImageMap(Address addrBase, long imageSize)
 		{
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");

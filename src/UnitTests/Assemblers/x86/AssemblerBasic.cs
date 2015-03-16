@@ -87,9 +87,9 @@ namespace Decompiler.UnitTests.Assemblers.x86
 				Dumper dumper = new Dumper(asm.Architecture);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
-				dumper.DumpData(program.Image, program.Image.BaseAddress, program.Image.Bytes.Length, fut.TextWriter);
+				dumper.DumpData(program.Image, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-				dumper.DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length, fut.TextWriter);
+				dumper.DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + (uint)program.Image.Length, fut.TextWriter);
 				if (program.ImportReferences.Count > 0)
 				{
 					foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -234,7 +234,7 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				Dumper dump = new Dumper(arch);
-				dump.DumpData(program.Image, program.Image.BaseAddress, program.Image.Bytes.Length, fut.TextWriter);
+				dump.DumpData(program.Image, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}

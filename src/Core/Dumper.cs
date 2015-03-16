@@ -45,7 +45,7 @@ namespace Decompiler.Core
 		{
 			if (map == null)
 			{
-				DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length, stm);
+				DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + (uint)program.Image.Length, stm);
 			}
 			else
 			{
@@ -99,10 +99,10 @@ namespace Decompiler.Core
 
         public void DumpData(LoadedImage image, AddressRange range, TextWriter stm)
         {
-            DumpData(image, range.Begin, (uint) (range.End - range.Begin), stm);
+            DumpData(image, range.Begin, (long) (range.End - range.Begin), stm);
         }
 
-		public void DumpData(LoadedImage image, Address address, uint cbBytes, TextWriter stm)
+		public void DumpData(LoadedImage image, Address address, long cbBytes, TextWriter stm)
 		{
 			uint cSkip = address.Linear & 0x0F;
 			ImageReader rdr = arch.CreateImageReader(image, address);

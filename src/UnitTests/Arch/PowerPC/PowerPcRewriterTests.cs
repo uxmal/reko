@@ -763,5 +763,22 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 "0|00100000(4): 1 instructions",
                 "1|L--|lr = 00100004");
         }
+
+        [Test]
+        public void PPCrw_std()
+        {
+            AssertCode(0xf8410028, // "std\tr2,40(r1)");
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r1 + 40:word64] = r2");
+        }
+
+        [Test]
+        public void PPCrw_stdu()
+        {
+            AssertCode(0xf8410029, //	stdu    r2,40(r1))"
+                "0|00100000(4): 2 instructions",
+                "1|L--|Mem0[r1 + 40:word64] = (word64) r2",
+                "2|L--|r1 = r1 + 40");
+        }
     }
 }

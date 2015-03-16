@@ -640,5 +640,14 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7c052e30, "sraw\tr5,r0,r5");
         }
+
+        [Test]
+        public void PPCDis_64bit()
+        {
+            AssertCode(0xf8410028, "std\tr2,40(r1)");
+            AssertCode(0xebe10078, "ld\tr31,120(r1)");
+            AssertCode(0x7fa307b4, "extsw\tr3,r29");
+            AssertCode(0x79040020, "rldicl\tr4,r8,00,01");
+        }
     }
 }

@@ -56,4 +56,35 @@ namespace Decompiler.ImageLoaders.Elf
             };
         }
     }
+
+    public class Elf64_SHdr
+    {
+        public uint sh_name;
+        public SectionHeaderType sh_type;
+        public ulong sh_flags;
+        public ulong sh_addr;        // Address
+        public ulong sh_offset;
+        public ulong sh_size;
+        public uint sh_link;
+        public uint sh_info;
+        public ulong sh_addralign;
+        public ulong sh_entsize;
+
+        public static Elf64_SHdr Load(ImageReader rdr)
+        {
+            return new Elf64_SHdr
+            {
+                sh_name = rdr.ReadUInt32(),
+                sh_type = (SectionHeaderType)rdr.ReadUInt32(),
+                sh_flags = rdr.ReadUInt64(),
+                sh_addr = rdr.ReadUInt64(),        // Address
+                sh_offset = rdr.ReadUInt64(),
+                sh_size = rdr.ReadUInt64(),
+                sh_link = rdr.ReadUInt32(),
+                sh_info = rdr.ReadUInt32(),
+                sh_addralign = rdr.ReadUInt64(),
+                sh_entsize = rdr.ReadUInt64(),
+            };
+        }
+    }
 }
