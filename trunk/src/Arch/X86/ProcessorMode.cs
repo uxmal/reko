@@ -75,13 +75,13 @@ namespace Decompiler.Arch.X86
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
-                return new Address(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
+                return Address.SegPtr(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
             }
             else
             {
                 ushort off = rdr.ReadLeUInt16();
                 ushort seg = rdr.ReadLeUInt16();
-                return new Address(seg, off);
+                return Address.SegPtr(seg, off);
             }
         }
 

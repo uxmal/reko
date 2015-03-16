@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Core
 	[TestFixture]
 	public class ImageMapTests
 	{
-		private Address addrBase = new Address(0x8000, 0);
+		private Address addrBase = Address.SegPtr(0x8000, 0);
 		private byte [] img = new Byte [] { 0x00, 0x00, 0x00, 0x00 };
 
 		public ImageMapTests()
@@ -43,9 +43,9 @@ namespace Decompiler.UnitTests.Core
 		{
 			ImageMap im = new ImageMap(addrBase, img.Length);
 
-			im.AddSegment(new Address(0x8000, 2), "",  AccessMode.ReadWrite);
-			im.AddSegment(new Address(0x8000, 3), "", AccessMode.ReadWrite);
-			im.AddSegment(new Address(0x8000, 0), "", AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite);
+			im.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite);
 
 			// Verify
 
@@ -68,8 +68,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ImageMapOverlaps()
 		{
-			ImageMap im = new ImageMap(new Address(0x8000, 0), 40);
-			im.AddSegment(new Address(0x8000, 10), "", AccessMode.ReadWrite);
+			ImageMap im = new ImageMap(Address.SegPtr(0x8000, 0), 40);
+			im.AddSegment(Address.SegPtr(0x8000, 10), "", AccessMode.ReadWrite);
 		}
 
 		private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
@@ -87,8 +87,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void AddNamedSegment()
 		{
-			ImageMap map = new ImageMap(new Address(0x0B00, 0), 40000);
-			map.AddSegment(new Address(0xC00, 0), "0C00", AccessMode.ReadWrite);
+			ImageMap map = new ImageMap(Address.SegPtr(0x0B00, 0), 40000);
+			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite);
 			IEnumerator<KeyValuePair<Address,ImageMapSegment>> e = map.Segments.GetEnumerator();
 			GetNextMapSegment(e);
 			ImageMapSegment s = GetNextMapSegment(e);

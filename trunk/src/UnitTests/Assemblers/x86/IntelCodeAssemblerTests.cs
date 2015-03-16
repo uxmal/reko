@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
         public new void Setup()
         {
             base.Setup();
-            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), new Address(0x100, 0x0100), new List<EntryPoint>());
+            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), Address.SegPtr(0x100, 0x0100), new List<EntryPoint>());
         }
 
         [Test]

@@ -106,7 +106,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			// Seed the scanner with the start location.
 
             List<EntryPoint> entryPoints = new List<EntryPoint>() {
-			    new EntryPoint(new Address((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
+			    new EntryPoint(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
             };
             var relocations = new RelocationDictionary();
 			if (isLz91)
@@ -181,7 +181,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
 				relocations.AddSegmentReference((uint)rel_off, seg);
-				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
+				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute);
 			}
 			return imageMap;
 		}
@@ -194,7 +194,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(0x0800, 0); }
+			get { return Address.SegPtr(0x0800, 0); }
 		}
 
 		public LoadedImage Unpack(byte [] abC, Address addrLoad)

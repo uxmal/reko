@@ -96,13 +96,13 @@ namespace Decompiler.UnitTests.Core.Serialization
                 {
                     new Program
                     {
-                        Image = new LoadedImage(new Address(0x1000, 0), new byte[100]),
+                        Image = new LoadedImage(Address.SegPtr(0x1000, 0), new byte[100]),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
                         UserProcedures = new SortedList<Address,Procedure_v1> 
                         {
                             { 
-                                new Address(0x1000, 0x10), 
+                                Address.SegPtr(0x1000, 0x10), 
                                 new Procedure_v1
                                 {
                                     Name = "foo",
@@ -128,9 +128,10 @@ namespace Decompiler.UnitTests.Core.Serialization
                         },
                         UserGlobalData =
                         {
-                            { new Address(0x2000, 0) ,
+                            { 
+                              Address.SegPtr(0x2000, 0) ,
                               new GlobalDataItem_v2 {
-                                   Address = new Address(0x2000, 0).ToString(),
+                                   Address = Address.SegPtr(0x2000, 0).ToString(),
                                    DataType = new StringType_v2 { 
                                        Termination=StringType_v2.ZeroTermination, 
                                        CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }

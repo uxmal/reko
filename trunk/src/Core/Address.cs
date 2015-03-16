@@ -36,7 +36,7 @@ namespace Decompiler.Core
 			this.Offset = off;
 		}
 
-        public Address(PrimitiveType size, uint bitPattern) : base(size)
+        public Address(DataType size, uint bitPattern) : base(size)
         {
             this.Offset = bitPattern;
         }
@@ -58,6 +58,11 @@ namespace Decompiler.Core
             return new Address(PrimitiveType.Pointer64, (uint) addr);
         }
 
+        public static Address SegPtr(ushort seg, uint off)
+        {
+            return new Address(seg, off);
+        }
+        
         public static Address FromConstant(Constant value)
         {
             switch (value.DataType.BitSize)
@@ -68,7 +73,7 @@ namespace Decompiler.Core
             }
         }
 
-		public Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
+		private Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = seg;
 			this.Offset = off;
@@ -273,5 +278,7 @@ namespace Decompiler.Core
                 return obj.Linear.GetHashCode();
             }
         }
+
+     
     }
 }

@@ -49,8 +49,8 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             arch16 = new IntelArchitecture(ProcessorMode.Real);
             arch32 = new IntelArchitecture(ProcessorMode.Protected32);
-            baseAddr16 = new Address(0x0C00, 0x0000);
-            baseAddr32 = new Address(0x10000000);
+            baseAddr16 = Address.SegPtr(0x0C00, 0x0000);
+            baseAddr32 = Address.Ptr32(0x10000000);
         }
 
         public override IProcessorArchitecture Architecture
@@ -454,7 +454,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             Run16bitTest(delegate(IntelAssembler m)
             {
-                m.JmpF(new Address(0xF000, 0xFFF0));
+                m.JmpF(Address.SegPtr(0xF000, 0xFFF0));
             });
             AssertCode(
                 "0|0C00:0000(5): 1 instructions",

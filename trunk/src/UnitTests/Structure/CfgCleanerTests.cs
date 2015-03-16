@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Structure
 		{
 			using (FileUnitTester fut = new FileUnitTester(testFile))
 			{
-				this.RewriteProgramMsdos(sourceFile, new Address(0xC00, 0));
+				this.RewriteProgramMsdos(sourceFile, Address.SegPtr(0xC00, 0));
 				program.Procedures.Values[0].Write(false, fut.TextWriter);
                 fut.TextWriter.WriteLine();
 				var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);

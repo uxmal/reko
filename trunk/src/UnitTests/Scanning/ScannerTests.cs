@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildX86RealTest(Action<IntelAssembler> test)
         {
-            var addr = new Address(0x0C00, 0);
+            var addr = Address.SegPtr(0x0C00, 0);
             var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             test(m);
             var lr = m.GetImage();
@@ -265,7 +265,7 @@ namespace Decompiler.UnitTests.Scanning
         public void Scanner_CallGraphTree()
         {
             Program prog = new Program();
-            var addr = new Address(0xC00, 0);
+            var addr = Address.SegPtr(0xC00, 0);
             var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             m.i86();
 

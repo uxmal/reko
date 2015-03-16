@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private IntelInstruction Disassemble16(params byte[] bytes)
         {
-            LoadedImage img = new LoadedImage(new Address(0xC00, 0), bytes);
+            LoadedImage img = new LoadedImage(Address.SegPtr(0xC00, 0), bytes);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
             return dasm.First();
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private IntelInstruction Disassemble32(params byte[] bytes)
         {
-            var img = new LoadedImage(new Address(0x10000), bytes);
+            var img = new LoadedImage(Address.Ptr32(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.First();
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private IntelInstruction Disassemble64(params byte[] bytes)
         {
-            var img = new LoadedImage(new Address(0x10000), bytes);
+            var img = new LoadedImage(Address.Ptr64(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
             return dasm.First();
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             IntelTextAssembler asm = new IntelTextAssembler();
             var program = asm.AssembleFragment(
-                new Address(0xB96, 0),
+                Address.SegPtr(0xB96, 0),
                 @"	mov	ax,0
 	cwd
 foo:
@@ -128,7 +128,7 @@ foo:
         {
             IntelTextAssembler asm = new IntelTextAssembler();
             var program = asm.AssembleFragment(
-                new Address(0xB96, 0),
+                Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
                 "		mov	bx,[bp+4]\r\n" +
                 "		mov	ax,[bx+4]\r\n" +
@@ -146,7 +146,7 @@ foo:
         {
             IntelTextAssembler asm = new IntelTextAssembler();
             var lr = asm.AssembleFragment(
-                new Address(0xB96, 0),
+                Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
                 "rol	ax,cl\r\n" +
                 "ror	word ptr [bx+2],cl\r\n" +
@@ -173,7 +173,7 @@ foo:
         {
             IntelTextAssembler asm = new IntelTextAssembler();
             var program = asm.AssembleFragment(
-                new Address(0xA14, 0),
+                Address.SegPtr(0xA14, 0),
 @"		.i86
 foo		proc
 		movsx	ecx,word ptr [bp+8]
@@ -200,7 +200,7 @@ movzx	ax,byte ptr [bp+04]
         public void DisEdiTimes2()
         {
             IntelTextAssembler asm = new IntelTextAssembler();
-            var program = asm.AssembleFragment(new Address(0x0B00, 0),
+            var program = asm.AssembleFragment(Address.SegPtr(0x0B00, 0),
                 @"	.i386
 	mov ebx,[edi*2]
 ");
@@ -221,7 +221,7 @@ movzx	ax,byte ptr [bp+04]
                 Program lr;
                 using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
                 {
-                    lr = asm.Assemble(new Address(0xC32, 0), rdr);
+                    lr = asm.Assemble(Address.SegPtr(0xC32, 0), rdr);
                 }
                 CreateDisassembler16(lr.Image);
                 foreach (IntelInstruction instr in dasm)
@@ -274,7 +274,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_RelocatedOperand()
         {
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
-            LoadedImage img = new LoadedImage(new Address(0x00100000), image);
+            LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001u - img.BaseAddress.Linear, 0x12345678);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
@@ -287,7 +287,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86Dis_RelocatedSegment()
         {
             byte[] image = new byte[] { 0x2E, 0xC7, 0x06, 0x01, 0x00, 0x00, 0x08 }; // mov cs:[0001],0800
-            LoadedImage img = new LoadedImage(new Address(0x900, 0), image);
+            LoadedImage img = new LoadedImage(Address.SegPtr(0x900, 0), image);
             img.Relocations.AddSegmentReference(5, 0x0800);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             CreateDisassembler16(rdr);

@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Structure
 
         private void RunTest(string sourceFilename, string outFilename)
         {
-            RunTest(sourceFilename, outFilename, new Address(0xC00, 0));
+            RunTest(sourceFilename, outFilename, Address.SegPtr(0xC00, 0));
         }
 
         private void RunTest(ProcedureBuilder mock, string outFilename)

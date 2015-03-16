@@ -31,31 +31,31 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		[Test]
 		public void AsAlloca()
 		{
-			RunTest("Fragments/multiple/alloca.asm", "Intel/AsAlloca.txt", new Address(0x0B00, 0x100)); 
+			RunTest("Fragments/multiple/alloca.asm", "Intel/AsAlloca.txt", Address.SegPtr(0x0B00, 0x100)); 
 		}
 
 		[Test]
 		public void AsImports()
 		{
-			RunTest("Fragments/import32/mallocfree.asm", "Intel/AsImports.txt", new Address(0x10000000)); 
+			RunTest("Fragments/import32/mallocfree.asm", "Intel/AsImports.txt", Address.Ptr32(0x10000000)); 
 		}
 
 		[Test]
 		public void AsLoopMalloc()
 		{
-			RunTest("Fragments/import32/loopmalloc.asm", "Intel/AsLoopMalloc.txt", new Address(0x10000000)); 
+			RunTest("Fragments/import32/loopmalloc.asm", "Intel/AsLoopMalloc.txt", Address.Ptr32(0x10000000)); 
 		}
 
 		[Test]
 		public void AsDuff()
 		{
-			RunTest("Fragments/duffs_device.asm", "Intel/AsDuff.txt", new Address(0x0C00, 0x0100)); 
+			RunTest("Fragments/duffs_device.asm", "Intel/AsDuff.txt", Address.SegPtr(0x0C00, 0x0100)); 
 		}
 
 		[Test]
 		public void AsMscOutput()
 		{
-			RunTest("Fragments/msc_output.asm", "Intel/AsMscOutput.txt", new Address(0x10000100)); 
+			RunTest("Fragments/msc_output.asm", "Intel/AsMscOutput.txt", Address.Ptr32(0x10000100)); 
 		}
 	}
 }

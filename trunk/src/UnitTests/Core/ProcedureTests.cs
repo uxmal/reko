@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CreateProcedure()
 		{
-			Procedure proc = Procedure.Create(new Address(0xBAFE, 0x0123), null);
+			Procedure proc = Procedure.Create(Address.SegPtr(0xBAFE, 0x0123), null);
 			Assert.IsTrue(proc.EntryBlock != null);
 			Assert.IsTrue(proc.ExitBlock != null);
 		}
@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ProcToString()
 		{
-			Procedure proc1 = Procedure.Create(new Address(0x0F00, 0x0BA9), null);
+			Procedure proc1 = Procedure.Create(Address.SegPtr(0x0F00, 0x0BA9), null);
 			Assert.AreEqual("fn0F00_0BA9", proc1.Name);
 			Assert.AreEqual("void fn0F00_0BA9()", proc1.ToString());
 			Procedure proc2 = Procedure.Create(new Address(0x0F000BA9), null);

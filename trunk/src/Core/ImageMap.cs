@@ -35,6 +35,7 @@ namespace Decompiler.Core
 	{
         public event EventHandler MapChanged;
 
+        private Address addrBase;
 		private Map<Address,ImageMapItem> items;
         private Map<Address,ImageMapSegment> segments;
 
@@ -42,6 +43,7 @@ namespace Decompiler.Core
 		{
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
+            this.addrBase = addrBase;
             items = new Map<Address, ImageMapItem>(new ItemComparer());
             segments = new Map<Address, ImageMapSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, (uint) imageSize);
@@ -266,10 +268,10 @@ namespace Decompiler.Core
                 {
                     if (seg.Address.Selector != 0)
                     {
-                        return new Address(seg.Address.Selector, (uint)(linearAddress - seg.Address.Linear));
+                        return Address.SegPtr(seg.Address.Selector, (uint)(linearAddress - seg.Address.Linear));
                     }
                     else
-                        return new Address((uint)linearAddress);
+                        return new Address(addrBase.DataType, (uint)linearAddress);
                 }
 			}			
 			throw new ArgumentOutOfRangeException(

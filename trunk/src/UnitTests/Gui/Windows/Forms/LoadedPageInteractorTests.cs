@@ -59,11 +59,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Image = new LoadedImage(new Address(0xC00, 0), new byte[10000]);
+            prog.Image = new LoadedImage(Address.SegPtr(0xC00, 0), new byte[10000]);
             prog.ImageMap = prog.Image.CreateImageMap();
 
-            prog.ImageMap.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
-            prog.ImageMap.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
+            prog.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite);
+            prog.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite);
             mapSegment1 = prog.ImageMap.Segments.Values[0];
             mapSegment2 = prog.ImageMap.Segments.Values[1];
 
@@ -112,8 +112,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             // Instead write expectations for the two added items.
 
-            AddProcedure(new Address(0xC20, 0x0000), "Test1");
-            AddProcedure(new Address(0xC20, 0x0002), "Test2");
+            AddProcedure(Address.SegPtr(0xC20, 0x0000), "Test1");
+            AddProcedure(Address.SegPtr(0xC20, 0x0002), "Test2");
             interactor.EnterPage();
             //Assert.AreEqual(3, form.BrowserList.Items.Count);
             //Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
@@ -131,7 +131,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             var disSvc = AddService<IDisassemblyViewService>();
             Assert.AreEqual(0, decSvc.Decompiler.Project.Programs[0].UserProcedures.Count);
-            var addr = new Address(0x0C20, 0);
+            var addr = Address.SegPtr(0x0C20, 0);
             memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
             memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
             mr.ReplayAll();
@@ -173,7 +173,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var decSvc = AddService<IDecompilerService>();
             var decompiler = mr.Stub<IDecompiler>();
             var prog = new Program();
-            prog.Image = new LoadedImage(new Address(0x3000), new byte[10]);
+            prog.Image = new LoadedImage(Address.Ptr32(0x3000), new byte[10]);
             prog.ImageMap = prog.Image.CreateImageMap();
             var project = new Project { Programs = { prog } };
             decompiler.Stub(x => x.Project).Return(project);

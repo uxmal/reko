@@ -243,7 +243,7 @@ namespace Decompiler.Arch.X86
                     return new Address(imm.Value.ToUInt32());
                 }
                 else
-                    return new Address(instrCur.Address.Selector, imm.Value.ToUInt32());
+                    return Address.SegPtr(instrCur.Address.Selector, imm.Value.ToUInt32());
             }
             return null;
         }

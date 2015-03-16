@@ -73,9 +73,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             switch (rhs.type)
             {
-            case etype.DW: return new Var(lhs.dw + rhs.dw); break;
-            case etype.STR: return new Var(lhs.str + rhs.str); break;
-            case etype.FLT: return new Var(lhs.flt + rhs.flt); break;
+            case etype.DW: return new Var(lhs.dw + rhs.dw);   
+            case etype.STR: return new Var(lhs.str + rhs.str);
+            case etype.FLT: return new Var(lhs.flt + rhs.flt);
             }
             return lhs;
         }

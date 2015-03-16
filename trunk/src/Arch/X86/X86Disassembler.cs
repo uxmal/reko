@@ -544,7 +544,7 @@ namespace Decompiler.Arch.X86
                     ++i;
                     ushort off = rdr.ReadLeUInt16();
                     ushort seg = rdr.ReadLeUInt16();
-                    pOperand = addrOp = new X86AddressOperand(new Address(seg, off));
+                    pOperand = addrOp = new X86AddressOperand(Address.SegPtr(seg, off));
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);

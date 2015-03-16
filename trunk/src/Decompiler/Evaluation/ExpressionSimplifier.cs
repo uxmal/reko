@@ -375,7 +375,7 @@ namespace Decompiler.Evaluation
                 if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
                 {
                     t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
-                    return new Address(c1.ToUInt16(), c2.ToUInt16());
+                    return Address.SegPtr(c1.ToUInt16(), c2.ToUInt16());
                 }
                 else
                 {
