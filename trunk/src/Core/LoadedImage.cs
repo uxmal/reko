@@ -42,6 +42,7 @@ namespace Decompiler.Core
 
         public Address BaseAddress { get; set; }        // Address of start of image.
         public byte[] Bytes { get { return abImage; } }
+        public long Length { get { return abImage.Length; } }
         public RelocationDictionary Relocations { get; private set; }
 
         public static bool CompareArrays(byte[] src, int iSrc, byte[] dst, int cb)
@@ -60,7 +61,7 @@ namespace Decompiler.Core
 
         public override string ToString()
         {
-            return string.Format("Image {0}{1} - length {2}{3}", "{", BaseAddress, Bytes.Length, "}");
+            return string.Format("Image {0}{1} - length {2}{3}", "{", BaseAddress, this.Length, "}");
         }
 
         public BeImageReader CreateBeReader(Address addr)
@@ -85,7 +86,7 @@ namespace Decompiler.Core
 
         public ImageMap CreateImageMap()
         {
-            return new ImageMap(BaseAddress, Bytes.Length);
+            return new ImageMap(BaseAddress, this.Length);
         }
 
 		/// <summary>
@@ -147,9 +148,9 @@ namespace Decompiler.Core
 		/// <param name="imageOffset">Offset from image start, in bytes.</param>
 		/// <param name="type">Size of the word being requested.</param>
 		/// <returns>Typed constant from the image.</returns>
-		public Constant ReadLe(uint imageOffset, PrimitiveType type)
+		public Constant ReadLe(ulong imageOffset, PrimitiveType type)
 		{
-			Constant c = Relocations[imageOffset];
+			Constant c = Relocations[(uint)imageOffset];
 			if (c != null && c.DataType.Size == type.Size)
 				return c;
             if (type.Domain == Domain.Real)
@@ -171,9 +172,9 @@ namespace Decompiler.Core
 			throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
 		}
 
-        public Constant ReadBe(uint imageOffset, PrimitiveType type)
+        public Constant ReadBe(ulong imageOffset, PrimitiveType type)
         {
-            Constant c = Relocations[imageOffset];
+            Constant c = Relocations[(uint)imageOffset];
             if (c != null && c.DataType.Size == type.Size)
                 return c;
             if (type.Domain == Domain.Real)
@@ -194,7 +195,29 @@ namespace Decompiler.Core
             throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
         }
 
-        public static long ReadBeInt64(byte[] image, uint off)
+        public static bool TryReadBeInt64(byte[] image, ulong off, out long value)
+        {
+            if (off + 8 <= (ulong)image.Length)
+            {
+                value =
+                    ((long)image[off] << 56) |
+                    ((long)image[off + 1] << 48) |
+                    ((long)image[off + 2] << 40) |
+                    ((long)image[off + 3] << 32) |
+                    ((long)image[off + 4] << 24) |
+                    ((long)image[off + 5] << 16) |
+                    ((long)image[off + 6] << 8) |
+                    ((long)image[off + 7]);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
+
+        public static long ReadBeInt64(byte[] image, ulong off)
         {
             return ((long)image[off] << 56) |
                    ((long)image[off + 1] << 48) |
@@ -206,7 +229,29 @@ namespace Decompiler.Core
                    ((long)image[off + 7]);
         }
 
-        public static long ReadLeInt64(byte[] image, uint off)
+        public static bool TryReadLeInt64(byte[] image, ulong off, out long value)
+        {
+            if (off + 8 <= (ulong)image.Length)
+            {
+                value =
+                    (long)image[off] |
+                    ((long)image[off + 1] << 8) |
+                    ((long)image[off + 2] << 16) |
+                    ((long)image[off + 3] << 24) |
+                    ((long)image[off + 4] << 32) |
+                    ((long)image[off + 5] << 40) |
+                    ((long)image[off + 6] << 48) |
+                    ((long)image[off + 7] << 56);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
+        }
+
+        public static long ReadLeInt64(byte[] image, ulong off)
         {
             return 
                 (long) image[off] |
@@ -219,7 +264,7 @@ namespace Decompiler.Core
                 ((long)image[off+7] << 56);
         }
 
-        public static int ReadBeInt32(byte[] abImage, uint off)
+        public static int ReadBeInt32(byte[] abImage, ulong off)
         {
             int u =
                 ((int)abImage[off] << 24) |
@@ -229,9 +274,9 @@ namespace Decompiler.Core
             return u;
         }
 
-        public static bool TryReadBeInt32(byte[] abImage, uint off, out int value)
+        public static bool TryReadBeInt32(byte[] abImage, ulong off, out int value)
         {
-            if (off <= abImage.Length - 4)
+            if (off <= (ulong)abImage.Length - 4)
             {
                 value =
                     ((int)abImage[off] << 24) |
@@ -298,7 +343,7 @@ namespace Decompiler.Core
                 return false;
             }
         }
-        public static int ReadLeInt32(byte[] abImage, uint off)
+        public static int ReadLeInt32(byte[] abImage, ulong off)
         {
             int u = abImage[off] |
                 ((int)abImage[off + 1] << 8) |
@@ -307,12 +352,12 @@ namespace Decompiler.Core
             return u;
         }
 
-        public static short ReadBeInt16(byte[] img, uint offset)
+        public static short ReadBeInt16(byte[] img, ulong offset)
         {
             return (short)(img[offset] << 8 | img[offset + 1]);
         }
 
-        public static short ReadLeInt16(byte[] abImage, uint offset)
+        public static short ReadLeInt16(byte[] abImage, ulong offset)
         {
             return (short)(abImage[offset] + ((short)abImage[offset + 1] << 8));
         }
@@ -338,34 +383,34 @@ namespace Decompiler.Core
             return Constant.FloatFromBitpattern(ReadLeInt32(abImage, off));
         }
 
-        public static ulong ReadBeUInt64(byte[] abImage, uint off)
+        public static ulong ReadBeUInt64(byte[] abImage, ulong off)
         {
             return (ulong)ReadBeInt64(abImage, off);
         }
 
-        public static ulong ReadLeUInt64(byte[] img, uint off)
+        public static ulong ReadLeUInt64(byte[] img, ulong off)
         {
             return (ulong)ReadLeInt64(img, off);
         }
 
-        public static uint ReadBeUInt32(byte[] abImage, uint off)
+        public static uint ReadBeUInt32(byte[] abImage, ulong off)
         {
             return (uint)ReadBeInt32(abImage, off);
         }
 
         public bool TryReadLeUInt32(Address address, out uint dw) { return TryReadLeUInt32(abImage, ToOffset(address), out dw); }
 
-        public static uint ReadLeUInt32(byte[] img, uint off)
+        public static uint ReadLeUInt32(byte[] img, ulong off)
         {
             return (uint)ReadLeInt32(img, off);
         }
 
-        public static ushort ReadBeUInt16(byte[] abImage, uint off)
+        public static ushort ReadBeUInt16(byte[] abImage, ulong off)
         {
             return (ushort) ReadBeInt16(abImage, off);
         }
 
-        public static ushort ReadLeUInt16(byte[] img, uint off)
+        public static ushort ReadLeUInt16(byte[] img, ulong off)
         {
             return (ushort)ReadLeInt16(img, off);
         }
@@ -386,7 +431,7 @@ namespace Decompiler.Core
 
         public bool TryReadBytes(uint off, int length, byte[] membuf)
         {
-            if (off + length <= Bytes.Length)
+            if (off + length <= this.Length)
             {
                 int s = (int)off;
                 int d = 0;

@@ -286,4 +286,11 @@ namespace Decompiler.Arch.PowerPC
             : base(PrimitiveType.Word32)
         { }
     }
+
+    public class PowerPcArchitecture64 : PowerPcArchitecture
+    {
+        public PowerPcArchitecture64()
+            : base(PrimitiveType.Word64)
+        { }
+    }
 }

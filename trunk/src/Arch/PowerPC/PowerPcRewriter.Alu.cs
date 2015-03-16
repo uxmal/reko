@@ -152,6 +152,15 @@ namespace Decompiler.Arch.PowerPC
                 emitter.ISub(r, i)));
         }
 
+        private void RewriteCmpi()
+        {
+            var cr = RewriteOperand(instr.op1);
+            var r = RewriteOperand(instr.op2);
+            var i = RewriteOperand(instr.op3);
+            emitter.Assign(cr, emitter.Cond(
+                emitter.ISub(r, i)));
+        }
+
         private void RewriteCmpli()
         {
             var cr = RewriteOperand(instr.op1);

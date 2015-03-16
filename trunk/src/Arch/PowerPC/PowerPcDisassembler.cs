@@ -220,6 +220,44 @@ namespace Decompiler.Arch.PowerPC
             }
         }
 
+        private class DSOpRec : OpRec
+        {
+            public readonly Opcode opcode0;
+            public readonly Opcode opcode1;
+            public readonly string opFmt;
+
+            public DSOpRec(Opcode opcode0, Opcode opcode1, string opFmt)
+            {
+                this.opcode0 = opcode0;
+                this.opcode1 = opcode1;
+                this.opFmt = opFmt;
+            }
+
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            {
+                Opcode opcode = ((wInstr & 1) == 0) ? opcode0 : opcode1;
+                wInstr &= ~3u;
+                return dasm.DecodeOperands(opcode, wInstr, opFmt);
+            }
+        }
+
+        private class MDOpRec : OpRec
+        {
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            {
+                Opcode opcode = ((wInstr & (1<<4)) == 0) ? Opcode.rldicl : Opcode.rldicr;
+                wInstr &= ~3u;
+                return new PowerPcInstruction(opcode)
+                {
+                    op1 = dasm.RegFromBits(wInstr >> 16),
+                    op2 = dasm.RegFromBits(wInstr >> 21),
+                    op3 = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1F | (wInstr << 4) & 0x20)),
+                    op4 = ImmediateOperand.Byte((byte)((wInstr >> 5) & 0x3F)),
+                };
+            }
+                
+        }
+
         private class AOpRec : OpRec
         {
             private Dictionary<uint, DOpRec> xOpRecs;
@@ -502,7 +540,7 @@ namespace Decompiler.Arch.PowerPC
                 new DOpRec(Opcode.xoris, "r2,r1,U"),
                 new DOpRec(Opcode.andi, ":r2,r1,U"),
                 new DOpRec(Opcode.andis, ":r2,r1,U"),
-                new InvalidOpRec(),
+                new MDOpRec(),
                 new XOpRec(new Dictionary<uint, OpRec>()
                 {
                     { 0, new CmpOpRec(Opcode.cmp, "C1,r2,r3") },
@@ -551,7 +589,9 @@ namespace Decompiler.Arch.PowerPC
                     { 0x296, new DOpRec(Opcode.stwbrx, ".r2,r1,r3") },
                     { 0x318, new DOpRec(Opcode.sraw, ".r2,r1,r2")},
                     { 824, new DOpRec(Opcode.srawi, "r2,r1,I3") },
-                    { 0x3BA, new DOpRec(Opcode.extsb, ".r1,r2")}
+                    { 0x39A, new DOpRec(Opcode.extsh, ".r2,r1")},
+                    { 0x3BA, new DOpRec(Opcode.extsb, ".r2,r1")},
+                    { 0x3DA, new DOpRec(Opcode.extsw, ".r2,r1")}
                 }),
                 // 20
                 new DOpRec(Opcode.lwz, "r1,E2"),
@@ -583,7 +623,7 @@ namespace Decompiler.Arch.PowerPC
 
                 new InvalidOpRec(),
                 new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DSOpRec(Opcode.ld, Opcode.ldu, "r1,E2"),
                 new FpuOpRec(1, 0x1F, new Dictionary<uint, OpRec>()
                 {
                     { 18, new FpuOpRecAux(Opcode.fdivs, ".f1,f2,f3") },
@@ -597,9 +637,10 @@ namespace Decompiler.Arch.PowerPC
                     { 30, new FpuOpRecAux(Opcode.fnmsubs, ".f1,f2,f3,f4") },
                     { 31, new FpuOpRecAux(Opcode.fnmadds, ".f1,f2,f3,f4") },
                 }),
+
                 new InvalidOpRec(),
                 new InvalidOpRec(),
-                new InvalidOpRec(),
+                new DSOpRec(Opcode.std, Opcode.stdu, "r1,E2"),
                 new FpuOpRec(1, 0x1F, new Dictionary<uint, OpRec>()
                 {
                     { 0x00, new FpuOpRec(6, 0x1F, new Dictionary<uint, OpRec>

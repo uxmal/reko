@@ -88,7 +88,7 @@ namespace Decompiler.Gui.Windows.Controls
             addr = addr + offset;
             if (addr < image.BaseAddress)
                 addr = image.BaseAddress;
-            var addrEnd = program.ImageMap.MapLinearAddressToAddress((uint)(image.BaseAddress.Linear + image.Bytes.Length - 1));
+            var addrEnd = program.ImageMap.MapLinearAddressToAddress((uint)(image.BaseAddress.Linear + image.Length - 1));
             if (addr > addrEnd)
                 addr = addrEnd;
             this.position = addr;
@@ -97,7 +97,7 @@ namespace Decompiler.Gui.Windows.Controls
         public Tuple<int, int> GetPositionAsFraction()
         {
             var image = program.Image;
-            return Tuple.Create(position - image.BaseAddress, image.Bytes.Length);
+            return Tuple.Create(position - image.BaseAddress, (int)image.Length);
         }
 
         public void SetPositionAsFraction(int numerator, int denominator)
@@ -107,7 +107,7 @@ namespace Decompiler.Gui.Windows.Controls
             if (numerator < 0 || numerator > denominator)
                 throw new ArgumentException("numerator");
             var image = program.Image;
-            long offset = Math.BigMul(numerator, image.Bytes.Length) / denominator;
+            long offset = Math.BigMul(numerator, (int)image.Length) / denominator;
             if (offset < 0)
                 offset = 0;
             else if (offset > image.Bytes.Length)

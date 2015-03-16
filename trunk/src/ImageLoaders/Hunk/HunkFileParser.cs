@@ -124,7 +124,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 Action<Hunk> hunk = h =>
                 {
                     h.HunkType = hunkType;
-                    h.FileOffset = hunkFileOffset;
+                    h.FileOffset = (uint)hunkFileOffset;
                     hunk_file.hunks.Add(h);
                     h.memf = this.SetMemoryFlags(hunkFlags, 30);
                     
@@ -226,7 +226,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 default:
                     throw new BadImageFormatException(string.Format("Unsupported hunk {0}.", (int) hunkType));
                 }
-                last_file_offset = hunkFileOffset;
+                last_file_offset = (uint)hunkFileOffset;
             }
             return hunk_file;
         }
@@ -376,7 +376,7 @@ namespace Decompiler.ImageLoaders.Hunk
             hunk.alloc_size = size & ~Hunk.HUNKF_ALL;
             var flags = size & Hunk.HUNKF_ALL;
             hunk.memf = this.SetMemoryFlags(flags, 30);
-            hunk.data_file_offset = f.Offset;
+            hunk.data_file_offset = (uint)f.Offset;
             hunk.Data = f.ReadBytes(hunk.alloc_size);
             Debug.WriteLineIf(trace.TraceVerbose, string.Format("  alloc_size:  {0:X8}", hunk.alloc_size));
             Debug.WriteLineIf(trace.TraceVerbose, string.Format("  file_offset: {0:X8}", hunk.data_file_offset));
@@ -600,7 +600,7 @@ namespace Decompiler.ImageLoaders.Hunk
             var hunk = new LibraryHunk();
             h(hunk);
             var lib_size = this.read_long();
-            hunk.lib_file_offset = f.Offset;
+            hunk.lib_file_offset = (uint)f.Offset;
             return lib_size * 4;
         }
 

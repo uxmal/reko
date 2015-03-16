@@ -106,6 +106,7 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.bso: RewriteBranch(false, ConditionCode.OV); break;
                 case Opcode.bsol: RewriteBranch(true, ConditionCode.OV); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.cmpi: RewriteCmpi(); break;
                 case Opcode.cmpli: RewriteCmpli(); break;
                 case Opcode.cmplw: RewriteCmplw(); break;
                 case Opcode.cmpwi: RewriteCmpwi(); break;
@@ -129,6 +130,7 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.lbzx: RewriteLzx(PrimitiveType.Byte); break;
                 case Opcode.lbzu: RewriteLzu(PrimitiveType.Byte); break;
                 case Opcode.lbzux: RewriteLzux(PrimitiveType.Byte); break;
+                case Opcode.ld: RewriteLz(PrimitiveType.Word64); break;
                 case Opcode.lfd: RewriteLfd(); break;
                 case Opcode.lfs: RewriteLfs(); break;
                 case Opcode.lha: RewriteLha(); break;
@@ -169,6 +171,8 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.stbu: RewriteStu(PrimitiveType.Byte); break;
                 case Opcode.stbux: RewriteStux(PrimitiveType.Byte); break;
                 case Opcode.stbx: RewriteStx(PrimitiveType.Byte); break;
+                case Opcode.std: RewriteSt(PrimitiveType.Word64); break;
+                case Opcode.stdu: RewriteStu(PrimitiveType.Word64); break;
                 case Opcode.stfd: RewriteStfd(); break;
                 case Opcode.sth: RewriteSt(PrimitiveType.Word16); break;
                 case Opcode.sthu: RewriteStu(PrimitiveType.Word16); break;

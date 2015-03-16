@@ -44,6 +44,8 @@ namespace Decompiler.ImageLoaders.Elf
         private const int ELF_MAGIC = 0x7F454C46;         // "\x7FELF"
         private const byte LITTLE_ENDIAN = 1;
         private const byte BIG_ENDIAN = 2;
+        private const byte ELFCLASS32 = 1;              // 32-bit object file
+        private const byte ELFCLASS64 = 2;              // 64-bit object file
         private const int HEADER_OFFSET = 0x0010;
 
         private const ushort EM_NONE = 0;           // No machine 
@@ -129,24 +131,27 @@ namespace Decompiler.ImageLoaders.Elf
         const int STB_GLOBAL = 1;
         const int STB_WEAK = 2;
 
-        private byte fileClass;
+        private byte fileClass;             // 0x2 = 
         private byte endianness;
         private byte fileVersion;
         private IProcessorArchitecture arch;
         private Address addrPreferred;
         private LoadedImage image;
         private ImageMap imageMap;
-        private ADDRESS m_uPltMin;
-        private ADDRESS m_uPltMax;
+        private ulong m_uPltMin;
+        private ulong m_uPltMax;
 
         public ElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)
         {
         }
 
-        public Elf32_EHdr Header { get; set; }
+        public Elf32_EHdr Header32 { get; set; }
+        public Elf64_EHdr Header64 { get; set; }
         public List<Elf32_SHdr> SectionHeaders { get; private set; }
+        public List<Elf64_SHdr> SectionHeaders64 { get; private set; }
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
+        public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
         public override Address PreferredBaseAddress { get { return addrPreferred; } }
 
         public override Program Load(Address addrLoad)
@@ -158,7 +163,7 @@ namespace Decompiler.ImageLoaders.Elf
             LoadSectionHeaders();
 
             GetPltLimits();
-            LoadSymbols();
+            //LoadSymbols();
             addrPreferred = ComputeBaseAddress();
             var addrMax = ComputeMaxAddress();
             Dump();
@@ -175,14 +180,27 @@ namespace Decompiler.ImageLoaders.Elf
                     AddSyms(sec);
             }
         }
+
         // Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
         private void GetPltLimits()
         {
-            var pPlt = GetSectionInfoByName(".plt");
-            if (pPlt != null)
+            if (fileClass == ELFCLASS64)
             {
-                m_uPltMin = pPlt.sh_addr;
-                m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
+                var pPlt = GetSectionInfoByName64(".plt");
+                if (pPlt != null)
+                {
+                    m_uPltMin = pPlt.sh_addr;
+                    m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
+                }
+            }
+            else
+            {
+                var pPlt = GetSectionInfoByName32(".plt");
+                if (pPlt != null)
+                {
+                    m_uPltMin = pPlt.sh_addr;
+                    m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
+                }
             }
         }
 
@@ -201,33 +219,65 @@ namespace Decompiler.ImageLoaders.Elf
         {
             var bytes = new byte[addrMax - addrPreferred];
             var v_base = addrPreferred.Linear;
-            foreach (var ph in ProgramHeaders)
+            if (fileClass == ELFCLASS64)
             {
-                if (ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    Array.Copy(RawImage, ph.p_offset, bytes, ph.p_vaddr - v_base, ph.p_filesz);
-            }
-            this.image = new LoadedImage(addrPreferred, bytes);
-            this.imageMap = image.CreateImageMap();
+                foreach (var ph in ProgramHeaders64)
+                {
+                    if (ph.p_vaddr > 0 && ph.p_filesz > 0)
+                        Array.Copy(RawImage, (long)ph.p_offset, bytes, (long) (ph.p_vaddr - v_base), (long)ph.p_filesz);
+                }
+                this.image = new LoadedImage(addrPreferred, bytes);
+                this.imageMap = image.CreateImageMap();
 
-            foreach (var segment in SectionHeaders)
-            {
-                if (segment.sh_name == 0 || segment.sh_addr == 0)
-                    continue;
-                AccessMode mode = AccessMode.Read;
-                if ((segment.sh_flags & SHF_WRITE) != 0)
-                    mode |= AccessMode.Write;
-                if ((segment.sh_flags & SHF_EXECINSTR) != 0)
-                    mode |= AccessMode.Execute;
-                var seg = imageMap.AddSegment(new Address(segment.sh_addr), GetSectionName(segment.sh_name), mode);
-                seg.Renderer = CreateRenderer(segment);
+                foreach (var segment in SectionHeaders64)
+                {
+                    if (segment.sh_name == 0 || segment.sh_addr == 0)
+                        continue;
+                    AccessMode mode = AccessMode.Read;
+                    if ((segment.sh_flags & SHF_WRITE) != 0)
+                        mode |= AccessMode.Write;
+                    if ((segment.sh_flags & SHF_EXECINSTR) != 0)
+                        mode |= AccessMode.Execute;
+                    var seg = imageMap.AddSegment(Address.Ptr64(segment.sh_addr), GetSectionName(segment.sh_name), mode);
+                    seg.Renderer = CreateRenderer64(segment);
+                }
             }
-            imageMap.DumpSections();
+            else
+            {
+                foreach (var ph in ProgramHeaders)
+                {
+                    if (ph.p_vaddr > 0 && ph.p_filesz > 0)
+                        Array.Copy(RawImage, ph.p_offset, bytes, ph.p_vaddr - v_base, ph.p_filesz);
+                }
+                this.image = new LoadedImage(addrPreferred, bytes);
+                this.imageMap = image.CreateImageMap();
+
+                foreach (var segment in SectionHeaders)
+                {
+                    if (segment.sh_name == 0 || segment.sh_addr == 0)
+                        continue;
+                    AccessMode mode = AccessMode.Read;
+                    if ((segment.sh_flags & SHF_WRITE) != 0)
+                        mode |= AccessMode.Write;
+                    if ((segment.sh_flags & SHF_EXECINSTR) != 0)
+                        mode |= AccessMode.Execute;
+                    var seg = imageMap.AddSegment(new Address(segment.sh_addr), GetSectionName(segment.sh_name), mode);
+                    seg.Renderer = CreateRenderer(segment);
+                }
+                imageMap.DumpSections();
+            }
             return new Program(
                 this.image,
                 this.imageMap,
                 this.arch,
                 new DefaultPlatform(Services, arch));
         }
+
+        private ImageMapSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
+        {
+            return null;        //$NYI
+        }
+
 
         private ImageMapSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
         {
@@ -243,46 +293,99 @@ namespace Decompiler.ImageLoaders.Elf
 
         public void LoadProgramHeaderTable()
         {
-            this.ProgramHeaders = new List<Elf32_PHdr>();
-            var rdr = CreateReader(Header.e_phoff);
-            for (int i = 0; i < Header.e_phnum; ++i)
+            if (fileClass == ELFCLASS64)
             {
-                ProgramHeaders.Add(Elf32_PHdr.Load(rdr));
+                this.ProgramHeaders64 = new List<Elf64_PHdr>();
+                var rdr = CreateReader(Header64.e_phoff);
+                for (int i = 0; i < Header64.e_phnum; ++i)
+                {
+                    ProgramHeaders64.Add(Elf64_PHdr.Load(rdr));
+                }
+            }
+            else
+            {
+                this.ProgramHeaders = new List<Elf32_PHdr>();
+                var rdr = CreateReader(Header32.e_phoff);
+                for (int i = 0; i < Header32.e_phnum; ++i)
+                {
+                    ProgramHeaders.Add(Elf32_PHdr.Load(rdr));
+                }
             }
         }
 
         public void LoadSectionHeaders()
         {
-            this.SectionHeaders = new List<Elf32_SHdr>();
-            var rdr = CreateReader(Header.e_shoff);
-            for (int i = 0; i < Header.e_shnum; ++i)
+            if (fileClass == ELFCLASS64)
             {
-                SectionHeaders.Add(Elf32_SHdr.Load(rdr));
+                this.SectionHeaders64 = new List<Elf64_SHdr>();
+                var rdr = CreateReader(Header64.e_shoff);
+                for (int i = 0; i < Header64.e_shnum; ++i)
+                {
+                    SectionHeaders64.Add(Elf64_SHdr.Load(rdr));
+                }
+            }
+            else
+            {
+                this.SectionHeaders = new List<Elf32_SHdr>();
+                var rdr = CreateReader(Header32.e_shoff);
+                for (int i = 0; i < Header32.e_shnum; ++i)
+                {
+                    SectionHeaders.Add(Elf32_SHdr.Load(rdr));
+                }
             }
         }
 
         public void LoadHeader()
         {
             var rdr = CreateReader(HEADER_OFFSET);
-            this.Header = Elf32_EHdr.Load(rdr);
-            arch = CreateArchitecture(Header.e_machine);
+            if (fileClass == ELFCLASS64)
+            {
+                this.Header64 = Elf64_EHdr.Load(rdr);
+                arch = CreateArchitecture(Header64.e_machine);
+            }
+            else
+            {
+                this.Header32 = Elf32_EHdr.Load(rdr);
+                arch = CreateArchitecture(Header32.e_machine);
+            }
         }
 
         public Address ComputeBaseAddress()
         {
-            return new Address(
-                ProgramHeaders
-                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                .Min(ph => ph.p_vaddr));
+            if (fileClass == ELFCLASS64)
+            {
+                return Address.Ptr64(
+                    ProgramHeaders64
+                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                    .Min(ph => ph.p_vaddr));
+            }
+            else
+            {
+                return Address.Ptr32(
+                    ProgramHeaders
+                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                    .Min(ph => ph.p_vaddr));
+            }
         }
 
         private Address ComputeMaxAddress()
         {
-            return new Address(
-                ProgramHeaders
-                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                .Select(ph => ph.p_vaddr + ph.p_pmemsz)
-                .Max());
+            if (fileClass == ELFCLASS64)
+            {
+                return Address.Ptr64(
+                    ProgramHeaders64
+                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                    .Select(ph => ph.p_vaddr + ph.p_pmemsz)
+                    .Max());
+            }
+            else
+            {
+                return Address.Ptr32(
+                    ProgramHeaders
+                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                    .Select(ph => ph.p_vaddr + ph.p_pmemsz)
+                    .Max());
+            }
         }
 
         private IProcessorArchitecture CreateArchitecture(ushort machineType)
@@ -296,11 +399,21 @@ namespace Decompiler.ImageLoaders.Elf
             case EM_386: arch = "x86-protected-32"; break;
             case EM_68K: arch = "m68k"; break;
             case EM_PPC: arch = "ppc32"; break;
-            case EM_PPC64:
+            case EM_PPC64: arch = "ppc64"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
             return cfgSvc.GetArchitecture(arch);
+        }
+
+        public ImageReader CreateReader(ulong fileOffset)
+        {
+            switch (endianness)
+            {
+            case LITTLE_ENDIAN: return new LeImageReader(RawImage, fileOffset);
+            case BIG_ENDIAN: return new BeImageReader(RawImage, fileOffset);
+            default: throw new BadImageFormatException("Endianness is incorrectly specified.");
+            }
         }
 
         public ImageReader CreateReader(uint fileOffset)
@@ -325,7 +438,16 @@ namespace Decompiler.ImageLoaders.Elf
 
         public string GetSectionName(uint idxString)
         {
-            var offset = (int)(SectionHeaders[Header.e_shstrndx].sh_offset + idxString);
+            int offset;
+            if (fileClass == ELFCLASS64)
+            {
+                offset = (int)(SectionHeaders64[Header64.e_shstrndx].sh_offset + idxString);
+            }
+            else
+            {
+                offset = (int)(SectionHeaders[Header32.e_shstrndx].sh_offset + idxString);
+            }
+
             var i = offset;
             for (; i < RawImage.Length && RawImage[i] != 0; ++i)
                 ;
@@ -341,7 +463,8 @@ namespace Decompiler.ImageLoaders.Elf
 
         public void Dump(TextWriter writer)
         {
-            writer.WriteLine("Entry: {0:X}", Header.e_entry);
+#if NOT
+            writer.WriteLine("Entry: {0:X}", Header32.e_entry);
             writer.WriteLine("Sections:");
             foreach (var sh in SectionHeaders)
             {
@@ -385,6 +508,7 @@ namespace Decompiler.ImageLoaders.Elf
             {
                 DumpRela(sh);
             }
+#endif
         }
 
         private void DumpRela(Elf32_SHdr sh)
@@ -424,18 +548,33 @@ namespace Decompiler.ImageLoaders.Elf
                 throw new InvalidOperationException(); // No file loaded
             List<EntryPoint> entryPoints = new List<EntryPoint>();
             RelocationDictionary relocations = new RelocationDictionary();
-            entryPoints.Add(new EntryPoint(new Address(Header.e_entry), arch.CreateProcessorState()));
-            if (Header.e_machine == EM_386)
+            if (fileClass == ELFCLASS64)
+                entryPoints.Add(new EntryPoint(Address.Ptr64(Header64.e_entry), arch.CreateProcessorState()));
+            else
+                entryPoints.Add(new EntryPoint(Address.Ptr32(Header32.e_entry), arch.CreateProcessorState()));
+            if (fileClass == ELFCLASS64)
             {
-                RelocateI386();
-            }
-            else if (Header.e_machine == EM_PPC)
-            {
-                //$TODO
+                if (Header64.e_machine == EM_PPC64)
+                {
+                    //$TODO
+                }
+                else
+                    throw new NotImplementedException(string.Format("Relocations for architecture {0} not implemented.", Header64.e_machine));
             }
             else
             {
-                throw new NotImplementedException();
+                if (Header32.e_machine == EM_386)
+                {
+                    RelocateI386();
+                }
+                else if (Header32.e_machine == EM_PPC)
+                {
+                    //$TODO
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
             return new RelocationResults(entryPoints, relocations);
         }
@@ -460,7 +599,7 @@ namespace Decompiler.ImageLoaders.Elf
                     // and shared objects!
                     ADDRESS destNatOrigin = 0;
                     ADDRESS destHostOrigin = 0;
-                    if (Header.e_type == ET_REL)
+                    if (Header32.e_type == ET_REL)
                     {
                         int destSection = (int)SectionHeaders[i].sh_info;
                         destNatOrigin = SectionHeaders[destSection].sh_addr;
@@ -480,7 +619,7 @@ namespace Decompiler.ImageLoaders.Elf
                         byte relType = (byte)info;
                         uint symTabIndex = info >> 8;
                         uint pRelWord; // Pointer to the word to be relocated
-                        if (Header.e_type == ET_REL)
+                        if (Header32.e_type == ET_REL)
                         {
                             pRelWord = destHostOrigin + r_offset;
                         }
@@ -502,7 +641,7 @@ namespace Decompiler.ImageLoaders.Elf
                         case 1: // R_386_32: S + A
                             // Read the symTabIndex'th symbol.
                             S = sym.st_value;
-                            if (Header.e_type == ET_REL)
+                            if (Header32.e_type == ET_REL)
                             {
                                 nsec = sym.st_shndx;
                                 if (nsec >= 0 && nsec < SectionHeaders.Count)
@@ -538,7 +677,7 @@ namespace Decompiler.ImageLoaders.Elf
                                     AddSymbol(S, pName);
                                     //}
                                 }
-                                else if (Header.e_type == ET_REL)
+                                else if (Header32.e_type == ET_REL)
                                 {
                                     nsec = sym.st_shndx;
                                     if (nsec >= 0 && nsec < SectionHeaders.Count)
@@ -560,12 +699,31 @@ namespace Decompiler.ImageLoaders.Elf
             }
         }
 
-        private Elf32_SHdr GetSectionInfoByName(string sectionName)
+        private Elf64_SHdr GetSectionInfoByName64(string sectionName)
+        {
+            return
+                (from sh in this.SectionHeaders64
+                 let name = GetSectionName(sh.sh_name)
+                 where name == sectionName
+                 select sh)
+                .FirstOrDefault();
+        }
+
+        private Elf32_SHdr GetSectionInfoByName32(string sectionName)
         {
             return
                 (from sh in this.SectionHeaders
                  let name = GetSectionName(sh.sh_name)
                  where name == sectionName
+                 select sh)
+                .FirstOrDefault();
+        }
+
+        internal Elf64_SHdr GetSectionInfoByAddr64(ulong r_offset)
+        {
+            return
+                (from sh in this.SectionHeaders64
+                 where sh.sh_addr <= r_offset && r_offset < sh.sh_addr + sh.sh_size
                  select sh)
                 .FirstOrDefault();
         }
@@ -579,7 +737,7 @@ namespace Decompiler.ImageLoaders.Elf
                 .FirstOrDefault();
         }
 
-        internal string ReadAsciiString(byte [] bytes, uint fileOffset)
+        internal string ReadAsciiString(byte [] bytes, ulong fileOffset)
         {
             int u = (int)fileOffset;
             while (bytes[u] != 0)
@@ -610,7 +768,25 @@ namespace Decompiler.ImageLoaders.Elf
         const int DT_NULL = 0;
         const int DT_NEEDED = 1;
         const int DT_STRTAB = 5;
-        
+
+        public IEnumerable<Elf64_Dyn> GetDynEntries64(ulong offset)
+        {
+            var rdr = CreateReader(offset);
+            for (; ; )
+            {
+                var dyn = new Elf64_Dyn();
+                if (!rdr.TryReadInt64(out dyn.d_tag))
+                    break;
+                if (dyn.d_tag == DT_NULL)
+                    break;
+                long val;
+                if (!rdr.TryReadInt64(out val))
+                    break;
+                dyn.d_val = val;
+                yield return dyn;
+            }
+        }
+
         public IEnumerable<Elf32_Dyn> GetDynEntries(uint offset)
         {
             var rdr = CreateReader(offset);
@@ -636,19 +812,37 @@ namespace Decompiler.ImageLoaders.Elf
         public List<string> GetDependencyList()
         {
             var result = new List<string>();
-            var dynsect = GetSectionInfoByName(".dynamic");
-            if (dynsect == null)
-                return result; // no dynamic section = statically linked 
-
-            var dynStrtab = GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
-            if (dynStrtab == null)
-                return result;
-            var section = GetSectionInfoByAddr(dynStrtab.d_ptr);
-            foreach (var dynEntry in GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
+            if (fileClass == ELFCLASS64)
             {
-                result.Add(ReadAsciiString(RawImage, section.sh_offset + dynEntry.d_ptr));
+                var dynsect = GetSectionInfoByName64(".dynamic");
+                if (dynsect == null)
+                    return result; // no dynamic section = statically linked 
+
+                var dynStrtab = GetDynEntries64(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+                if (dynStrtab == null)
+                    return result;
+                var section = GetSectionInfoByAddr64(dynStrtab.d_ptr);
+                foreach (var dynEntry in GetDynEntries64(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
+                {
+                    result.Add(ReadAsciiString(RawImage, section.sh_offset + dynEntry.d_ptr));
+                }
             }
-            return result;;
+            else
+            {
+                var dynsect = GetSectionInfoByName32(".dynamic");
+                if (dynsect == null)
+                    return result; // no dynamic section = statically linked 
+
+                var dynStrtab = GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+                if (dynStrtab == null)
+                    return result;
+                var section = GetSectionInfoByAddr(dynStrtab.d_ptr);
+                foreach (var dynEntry in GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
+                {
+                    result.Add(ReadAsciiString(RawImage, section.sh_offset + dynEntry.d_ptr));
+                }
+            }
+            return result;
             /*
             var section = GetSectionInfoByAddr(dynStrtab);
             stringtab = NativeToHostAddress(stringtab);
@@ -725,20 +919,20 @@ namespace Decompiler.ImageLoaders.Elf
         // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
         private void AddSyms(Elf32_SHdr pSect)
         {
-            int e_type = this.Header.e_type;
+            int e_type = this.Header32.e_type;
             // Calc number of symbols
             uint nSyms = pSect.sh_size / pSect.sh_entsize;
             uint offSym = pSect.sh_offset;
             //m_pSym = (Elf32_Sym*)pSect.uHostAddr; // Pointer to symbols
             uint strIdx = pSect.sh_link; // sh_link points to the string table
 
-            var siPlt = GetSectionInfoByName(".plt");
+            var siPlt = GetSectionInfoByName32(".plt");
             ADDRESS addrPlt = siPlt!=null ? siPlt.sh_addr : 0;
-            var siRelPlt = GetSectionInfoByName(".rel.plt");
+            var siRelPlt = GetSectionInfoByName32(".rel.plt");
             uint sizeRelPlt = 8; // Size of each entry in the .rel.plt table
             if (siRelPlt == null)
             {
-                siRelPlt = GetSectionInfoByName(".rela.plt");
+                siRelPlt = GetSectionInfoByName32(".rela.plt");
                 sizeRelPlt = 12; // Size of each entry in the .rela.plt table is 12 bytes
             }
             ADDRESS addrRelPlt = 0;
@@ -1979,8 +2173,6 @@ namespace Decompiler.ImageLoaders.Elf
         // Internal elf info
 
 
-        const byte ELFCLASS32 = 1;              // 32-bit object file
-        const byte ELFCLASS64 = 2;              // 64-bit object file
 
 
         enum MachineType

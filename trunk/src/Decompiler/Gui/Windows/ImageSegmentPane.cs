@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -31,15 +32,36 @@ namespace Decompiler.Gui.Windows
     public class ImageSegmentPane : IWindowPane
     {
         private ImageSegmentView segmentView;
+        private IServiceProvider services;
+        private Program program;
 
         public Control CreateControl()
         {
             this.segmentView = new ImageSegmentView();
+
+            this.segmentView.TextView.Styles.Add("link", new EditorStyle
+            {
+                Foreground = new SolidBrush(Color.FromArgb(0x00, 0x80, 0x80)),
+                Cursor = Cursors.Hand,
+            });
+
+            this.segmentView.TextView.Navigate += TextView_Navigate;
             return this.segmentView;
+        }
+
+        void TextView_Navigate(object sender, EditorNavigationArgs e)
+        {
+            var addr = e.Destination as Address;
+            if (addr !=null)
+            {
+                var svc = services.RequireService<ILowLevelViewService>();
+                svc.ShowMemoryAtAddress(program, addr);
+            }
         }
 
         public void SetSite(IServiceProvider sp)
         {
+            this.services = sp;
         }
 
         public void Close()
@@ -52,7 +74,7 @@ namespace Decompiler.Gui.Windows
                 segment == null ||
                 segment.Renderer == null)
                 return;
-
+            this.program = program;
             var tsf = new TextSpanFormatter();
             segment.Renderer.Render(
                 segment, 
