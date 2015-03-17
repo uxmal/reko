@@ -393,30 +393,35 @@ namespace Decompiler.ImageLoaders.MzExe
         /// <param name="addrLoad"></param>
         /// <returns>True if there were entries in the import descriptor, otherwise 
         /// false.</returns>
-		public bool ReadImportDescriptor(ImageReader rdr, Address addrLoad)
-		{
-			var rvaILT = rdr.ReadLeUInt32();		// Import lookup table
-			rdr.ReadLeUInt32();		                    // Ignore datestamp...
-			rdr.ReadLeUInt32();		                    // ...and forwarder chain
-			var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
+        public bool ReadImportDescriptor(ImageReader rdr, Address addrLoad)
+        {
+            var rvaILT = rdr.ReadLeUInt32();		// Import lookup table
+            rdr.ReadLeUInt32();		                    // Ignore datestamp...
+            rdr.ReadLeUInt32();		                    // ...and forwarder chain
+            var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
             var rvaIAT = rdr.ReadLeUInt32();		    // Import address table 
             if (rvaILT == 0 && dllName == null)
                 return false;
 
-			ImageReader rdrILT = imgLoaded.CreateLeReader(rvaILT != 0
+            var rvaEntries = rvaILT != 0
                 ? rvaILT
-                : rvaIAT);
-			for (;;)
-			{
-				Address addrThunk = rdrILT.Address;;
-				uint rvaEntry = rdrILT.ReadLeUInt32();
-				if (rvaEntry == 0)
-					break;
+                : rvaIAT;
+            if (rvaEntries == 0)
+                return false;
+
+            ImageReader rdrILT = imgLoaded.CreateLeReader(rvaEntries);
+            for (; ; )
+            {
+                Address addrThunk = rdrILT.Address; ;
+                uint rvaEntry = rdrILT.ReadLeUInt32();
+                if (rvaEntry == 0)
+                    break;
 
                 ResolveImportedFunction(dllName, rvaEntry, addrThunk);
-			}
-			return true;
-		}
+            }
+
+            return true;
+        }
 
         private bool ReadDeferredLoadDescriptors(ImageReader rdr, Address addrLoad)
         {
