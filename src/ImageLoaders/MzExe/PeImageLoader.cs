@@ -175,8 +175,9 @@ namespace Decompiler.ImageLoaders.MzExe
 			{
 				section = ReadSection(rdr);
 				sectionMap[section.Name] = section;
-				if (!section.IsDiscardable && section.VirtualAddress > sectionMax.VirtualAddress)
+				if (section.VirtualAddress > sectionMax.VirtualAddress)
 					sectionMax = section;
+                Debug.Print("  Section: {0,10} {1:X8} {2:X8} {3:X8} {4:X8}", section.Name, section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize);
 			}
 
 			imgLoaded = new LoadedImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
