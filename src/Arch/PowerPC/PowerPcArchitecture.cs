@@ -27,6 +27,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Arch.PowerPC
@@ -39,6 +40,11 @@ namespace Decompiler.Arch.PowerPC
         private ReadOnlyCollection<RegisterStorage> fpregs;
         private ReadOnlyCollection<RegisterStorage> cregs;
 
+        public RegisterStorage lr { get; private set; }
+        public RegisterStorage cr { get; private set; }
+        public RegisterStorage ctr { get; private set; }
+        public RegisterStorage xer { get; private set; }
+
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
         /// </summary>
@@ -46,100 +52,34 @@ namespace Decompiler.Arch.PowerPC
         public PowerPcArchitecture(PrimitiveType wordWidth)
         {
             this.wordWidth = wordWidth;
-            this.ptrType =  PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
-            regs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
-                PowerPC.Registers.r0,
-                PowerPC.Registers.r1,
-                PowerPC.Registers.r2,
-                PowerPC.Registers.r3,
-                PowerPC.Registers.r4,
-                PowerPC.Registers.r5,
-                PowerPC.Registers.r6,
-                PowerPC.Registers.r7,
-                PowerPC.Registers.r8,
-                PowerPC.Registers.r9,
-                PowerPC.Registers.r10, 
-                PowerPC.Registers.r11,
-                PowerPC.Registers.r12, 
-                PowerPC.Registers.r13,
-                PowerPC.Registers.r14,
-                PowerPC.Registers.r15,
-                PowerPC.Registers.r16,
-                PowerPC.Registers.r17,
-                PowerPC.Registers.r18,
-                PowerPC.Registers.r19,
+            this.ptrType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
 
-                PowerPC.Registers.r20,
-                PowerPC.Registers.r21,
-                PowerPC.Registers.r22,
-                PowerPC.Registers.r23,
-                PowerPC.Registers.r24,
-                PowerPC.Registers.r25,
-                PowerPC.Registers.r26,
-                PowerPC.Registers.r27,
-                PowerPC.Registers.r28,
-                PowerPC.Registers.r29,
+            this.lr = new RegisterStorage("lr", 0x48,   wordWidth);
+            this.cr = new RegisterStorage("cr", 0x49,   wordWidth);
+            this.ctr = new RegisterStorage("ctr", 0x4A, wordWidth);
+            this.xer = new RegisterStorage("xer", 0x4B, wordWidth);
 
-                PowerPC.Registers.r30,
-                PowerPC.Registers.r31,
+            regs = new ReadOnlyCollection<RegisterStorage>(
+                Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("r" + n, n, wordWidth))
+                .Concat(Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("f" + n, n + 0x20, PrimitiveType.Word64)))
+                .Concat(Enumerable.Range(0, 8)
+                    .Select(n => new RegisterStorage("cr" + n, n + 0x40, PrimitiveType.Byte)))
+                .Concat(new[] { lr, cr, ctr, xer })
+                .ToList());
 
-                PowerPC.Registers.lr,
-                PowerPC.Registers.cr,
-                PowerPC.Registers.ctr,
-            });
+            fpregs = new ReadOnlyCollection<RegisterStorage>(
+                regs.Skip(0x20).Take(0x20).ToList());
 
-            fpregs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
-                new RegisterStorage("f0", 0, PrimitiveType.Real64),
-                new RegisterStorage("f1", 1, PrimitiveType.Real64),
-                new RegisterStorage("f2", 2, PrimitiveType.Real64),
-                new RegisterStorage("f3", 3, PrimitiveType.Real64),
-                new RegisterStorage("f4", 4, PrimitiveType.Real64),
-                new RegisterStorage("f5", 5, PrimitiveType.Real64),
-                new RegisterStorage("f6", 6, PrimitiveType.Real64),
-                new RegisterStorage("f7", 7, PrimitiveType.Real64),
-                new RegisterStorage("f8", 8, PrimitiveType.Real64),
-                new RegisterStorage("f9", 9, PrimitiveType.Real64),
-
-                new RegisterStorage("f10", 10, PrimitiveType.Real64),
-                new RegisterStorage("f11", 11, PrimitiveType.Real64),
-                new RegisterStorage("f12", 12, PrimitiveType.Real64),
-                new RegisterStorage("f13", 13, PrimitiveType.Real64),
-                new RegisterStorage("f14", 14, PrimitiveType.Real64),
-                new RegisterStorage("f15", 15, PrimitiveType.Real64),
-                new RegisterStorage("f16", 16, PrimitiveType.Real64),
-                new RegisterStorage("f17", 17, PrimitiveType.Real64),
-                new RegisterStorage("f18", 18, PrimitiveType.Real64),
-                new RegisterStorage("f19", 19, PrimitiveType.Real64),
-
-                new RegisterStorage("f20", 20, PrimitiveType.Real64),
-                new RegisterStorage("f21", 21, PrimitiveType.Real64),
-                new RegisterStorage("f22", 22, PrimitiveType.Real64),
-                new RegisterStorage("f23", 23, PrimitiveType.Real64),
-                new RegisterStorage("f24", 24, PrimitiveType.Real64),
-                new RegisterStorage("f25", 25, PrimitiveType.Real64),
-                new RegisterStorage("f26", 26, PrimitiveType.Real64),
-                new RegisterStorage("f27", 27, PrimitiveType.Real64),
-                new RegisterStorage("f28", 28, PrimitiveType.Real64),
-                new RegisterStorage("f29", 29, PrimitiveType.Real64),
-
-                new RegisterStorage("f30", 30, PrimitiveType.Real64),
-                new RegisterStorage("f31", 31, PrimitiveType.Real64),
-            });
-
-            cregs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
-                new RegisterStorage("cr0", 0, PrimitiveType.Byte),
-                new RegisterStorage("cr1", 1, PrimitiveType.Byte),
-                new RegisterStorage("cr2", 2, PrimitiveType.Byte),
-                new RegisterStorage("cr3", 3, PrimitiveType.Byte),
-                new RegisterStorage("cr4", 4, PrimitiveType.Byte),
-                new RegisterStorage("cr5", 5, PrimitiveType.Byte),
-                new RegisterStorage("cr6", 6, PrimitiveType.Byte),
-                new RegisterStorage("cr7", 7, PrimitiveType.Byte),
-            });
+            cregs = new ReadOnlyCollection<RegisterStorage>(
+                regs.Skip(0x40).Take(0x8).ToList());
         }
 
         public uint CarryFlagMask { get { throw new NotImplementedException(); } }
 
+        //$REVIEW: using R1 as the stack register is a _convention_. It 
+        // should be platform-specific at the very least.
         public RegisterStorage StackRegister { get { return regs[1]; } }
 
         public ReadOnlyCollection<RegisterStorage> Registers
@@ -171,7 +111,7 @@ namespace Decompiler.Arch.PowerPC
 
         public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
         {
-            yield break;
+            return new PowerPcPointerScanner(rdr, knownLinAddresses, flags);
         }
 
         public Frame CreateFrame()
@@ -198,7 +138,7 @@ namespace Decompiler.Arch.PowerPC
 
         public BitSet CreateRegisterBitset()
         {
-            return new BitSet(0x23);
+            return new BitSet(0x50);
         }
 
         public RegisterStorage GetRegister(int i)

@@ -53,7 +53,7 @@ namespace Decompiler.Arch.PowerPC
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
-            var xer = frame.EnsureRegister(Registers.xer);
+            var xer = frame.EnsureRegister(arch.xer);
             emitter.Assign(xer, emitter.Cond(opD));
         }
 
@@ -62,7 +62,7 @@ namespace Decompiler.Arch.PowerPC
             var opL = RewriteOperand(instr.op2, true);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            var xer = frame.EnsureRegister(Registers.xer);
+            var xer = frame.EnsureRegister(arch.xer);
             emitter.Assign(opD,
                 emitter.IAdd(
                     emitter.IAdd(opL, opR),
@@ -85,7 +85,7 @@ namespace Decompiler.Arch.PowerPC
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
-            var xer = frame.EnsureRegister(Registers.xer);
+            var xer = frame.EnsureRegister(arch.xer);
             emitter.Assign(xer, emitter.Cond(opD));
         }
 
@@ -100,7 +100,7 @@ namespace Decompiler.Arch.PowerPC
         private void RewriteAddze()
         {
             var opL = RewriteOperand(instr.op2);
-            var opR = frame.EnsureRegister(Registers.xer);
+            var opR = frame.EnsureRegister(arch.xer);
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
             emitter.Assign(opR, emitter.Cond(opD));
@@ -261,7 +261,7 @@ namespace Decompiler.Arch.PowerPC
         private void RewriteMflr()
         {
             var dst = RewriteOperand(instr.op1);
-            var src = frame.EnsureRegister(Registers.lr);
+            var src = frame.EnsureRegister(arch.lr);
             emitter.Assign(dst, src);
         }
 
@@ -275,14 +275,14 @@ namespace Decompiler.Arch.PowerPC
         private void RewriteMtctr()
         {
             var src = RewriteOperand(instr.op1);
-            var dst = frame.EnsureRegister(Registers.ctr);
+            var dst = frame.EnsureRegister(arch.ctr);
             emitter.Assign(dst, src);
         }
 
         private void RewriteMtlr()
         {
             var src= RewriteOperand(instr.op1);
-            var dst = frame.EnsureRegister(Registers.lr);
+            var dst = frame.EnsureRegister(arch.lr);
             emitter.Assign(dst, src);
         }
 
@@ -481,7 +481,7 @@ namespace Decompiler.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             emitter.Assign(opD, emitter.ISub(opR, opL));
             MaybeEmitCr0(opD);
-            var xer = frame.EnsureRegister(Registers.xer);
+            var xer = frame.EnsureRegister(arch.xer);
             emitter.Assign(xer, emitter.Cond(opD));
         }
 
@@ -490,7 +490,7 @@ namespace Decompiler.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            var xer = frame.EnsureRegister(Registers.xer);
+            var xer = frame.EnsureRegister(arch.xer);
             emitter.Assign(opD, emitter.IAdd(emitter.ISub(opR, opL), xer));
             MaybeEmitCr0(opD);
         }
@@ -508,7 +508,7 @@ namespace Decompiler.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
-            var xer = frame.EnsureRegister(Registers.xer);
+            var xer = frame.EnsureRegister(arch.xer);
             emitter.Assign(
                 opD, 
                 emitter.IAdd(

@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Decompiler.Core.Types
 {
@@ -168,9 +169,20 @@ namespace Decompiler.Core.Types
 			return false;
 		}
 
+        private int recDepth;
+
 		public DataType Unify(DataType a, DataType b)
 		{
-			return UnifyInternal(a, b);
+            if (++recDepth > 100)
+            {
+               //$BUG: should emit warning in the error log.
+                --recDepth;
+                Debug.Print("Exceeded stack depth, giving up");
+                return factory.CreateUnionType(null, null, new[] { a, b });
+            }
+            var u = UnifyInternal(a, b);
+            --recDepth;
+            return u;
 		}
 
 		private DataType UnifyInternal(DataType a, DataType b)

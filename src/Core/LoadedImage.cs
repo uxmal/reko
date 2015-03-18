@@ -343,6 +343,7 @@ namespace Decompiler.Core
                 return false;
             }
         }
+
         public static int ReadLeInt32(byte[] abImage, ulong off)
         {
             int u = abImage[off] |
@@ -350,6 +351,20 @@ namespace Decompiler.Core
                 ((int)abImage[off + 2] << 16) |
                 ((int)abImage[off + 3] << 24);
             return u;
+        }
+
+        public static bool TryReadBeUInt16(byte[] img, ulong offset, out ushort value)
+        {
+            if (offset <= (ulong) img.Length - 2)
+            {
+                value = (ushort)(img[offset] << 8 | img[offset + 1]);
+                return true;
+            }
+            else
+            {
+                value = 0;
+                return false;
+            }
         }
 
         public static short ReadBeInt16(byte[] img, ulong offset)

@@ -118,7 +118,7 @@ namespace Decompiler.Evaluation
 
         public Instruction VisitStore(Store store)
         {
-            var valSrc = store.Src.Accept(eval);
+            var valSrc = store.Src.Accept(sub).Accept(eval);
             var segmem = store.Dst as SegmentedAccess;
             if (segmem != null)
             {

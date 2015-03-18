@@ -37,9 +37,12 @@ namespace Decompiler.Arch.X86
 
         public override int PointerAlignment { get { return 1; } }
 
-        public override uint ReadOpcode(ImageReader rdr)
+        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
         {
-            return rdr.PeekByte(0);
+            byte bOpcode;
+            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            opcode = bOpcode;
+            return ret;
         }
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
@@ -112,9 +115,12 @@ namespace Decompiler.Arch.X86
 
         public override int PointerAlignment { get { return 1; } }
 
-        public override uint ReadOpcode(ImageReader rdr)
+        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
         {
-            return rdr.PeekByte(0);
+            byte bOpcode;
+            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            opcode = bOpcode;
+            return ret;
         }
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)

@@ -133,6 +133,7 @@
     <Compile Include="Arch\Pdp11\DisassemblerTests.cs" />
     <Compile Include="Arch\Pdp11\RewriterTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcPointerScannerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\RewriterTestBase.cs" />
     <Compile Include="Arch\Sparc\RtlTranslator.cs" />

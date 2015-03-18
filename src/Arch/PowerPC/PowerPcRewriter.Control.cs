@@ -43,7 +43,7 @@ namespace Decompiler.Arch.PowerPC
 
         private void RewriteBcctr(bool linkRegister)
         {
-            RewriteBranch(linkRegister, frame.EnsureRegister(Registers.ctr));
+            RewriteBranch(linkRegister, frame.EnsureRegister(arch.ctr));
         }
 
         private void RewriteBl()
@@ -53,7 +53,7 @@ namespace Decompiler.Arch.PowerPC
             if (addrDst != null && instr.Address.Linear + 4 == addrDst.Linear)
             {
                 // PowerPC idiom to get the current instruction pointer in the lr register
-                emitter.Assign(frame.EnsureRegister(Registers.lr), addrDst);
+                emitter.Assign(frame.EnsureRegister(arch.lr), addrDst);
             }
             else
             {
@@ -82,7 +82,7 @@ namespace Decompiler.Arch.PowerPC
 
         private void RewriteBranch(bool linkRegister, Expression destination)
         {
-            var ctr = frame.EnsureRegister(Registers.ctr);
+            var ctr = frame.EnsureRegister(arch.ctr);
             var bo = ((Constant)RewriteOperand(instr.op1)).ToByte();
             switch (bo)
             {
