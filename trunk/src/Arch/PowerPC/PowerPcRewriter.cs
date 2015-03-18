@@ -143,7 +143,7 @@ namespace Decompiler.Arch.PowerPC
                 case Opcode.mcrf: RewriteMcrf(); break;
                 case Opcode.mfcr:
                     dst = RewriteOperand(instr.op1);
-                    src = frame.EnsureRegister(Registers.cr);
+                    src = frame.EnsureRegister(arch.cr);
                     emitter.Assign(dst, src);
                     break;
                 case Opcode.mflr: RewriteMflr(); break;

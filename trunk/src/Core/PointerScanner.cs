@@ -29,6 +29,10 @@ namespace Decompiler.Core
     /// <summary>
     /// PointerScanners are used by the user to guess at pointers based on byte patterns.
     /// </summary>
+    /// <remarks>
+    /// Each architecture should create its own class derived from this class and implement
+    /// the abstract method.s
+    /// </remarks>
     public abstract class PointerScanner : IEnumerable<uint>
     {
         private ImageReader rdr;
@@ -91,29 +95,32 @@ namespace Decompiler.Core
         {
             linAddrInstr = rdr.Address.Linear;
             uint target;
-            var opcode = ReadOpcode(rdr);
-            if ((flags & PointerScannerFlags.Calls) != 0)
+            uint opcode;
+            if (TryPeekOpcode(rdr, out opcode))
             {
-                if (MatchCall(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                if ((flags & PointerScannerFlags.Calls) != 0)
                 {
-                    rdr.Seek(PointerAlignment);
-                    return true;
+                    if (MatchCall(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                    {
+                        rdr.Seek(PointerAlignment);
+                        return true;
+                    }
                 }
-            }
-            if ((flags & PointerScannerFlags.Jumps) != 0)
-            {
-                if (MatchJump(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                if ((flags & PointerScannerFlags.Jumps) != 0)
                 {
-                    rdr.Seek(PointerAlignment);
-                    return true;
+                    if (MatchJump(rdr, opcode, out target) && knownLinAddresses.Contains(target))
+                    {
+                        rdr.Seek(PointerAlignment);
+                        return true;
+                    }
                 }
-            }
-            if ((flags & PointerScannerFlags.Pointers) != 0)
-            {
-                if (PeekPointer(rdr, out target) && knownLinAddresses.Contains(target))
+                if ((flags & PointerScannerFlags.Pointers) != 0)
                 {
-                    rdr.Seek(PointerAlignment);
-                    return true;
+                    if (PeekPointer(rdr, out target) && knownLinAddresses.Contains(target))
+                    {
+                        rdr.Seek(PointerAlignment);
+                        return true;
+                    }
                 }
             }
             rdr.Seek(PointerAlignment);
@@ -122,7 +129,15 @@ namespace Decompiler.Core
 
         public abstract int PointerAlignment { get; }
 
-        public abstract uint ReadOpcode(ImageReader rdr);
+        /// <summary>
+        /// The implementations of this abstract method should read a chunk of bytes
+        /// equal to the size of an opcode in the relevant architecture.
+        /// </summary>
+        /// <remarks>Most architectures have opcode whose size <= 32 bits, which should
+        /// fit comfortably in a System.UInt32.</remarks>
+        /// <param name="rdr"></param>
+        /// <returns>The opcode at the current position of the reader.</returns>
+        public abstract bool TryPeekOpcode(ImageReader rdr, out uint opcode);
 
         public abstract bool PeekPointer(ImageReader rdr, out uint target);
 

@@ -267,6 +267,8 @@ namespace Decompiler.Evaluation
         public virtual Expression VisitCast(Cast cast)
         {
             var exp = cast.Expression.Accept(this);
+            if (exp == Constant.Invalid)
+                return exp;
 
             Constant c = exp as Constant;
             if (c != null)

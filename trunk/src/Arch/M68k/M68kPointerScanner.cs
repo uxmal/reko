@@ -35,9 +35,19 @@ namespace Decompiler.Arch.M68k
 
         public override int PointerAlignment { get { return 2; } }
 
-        public override uint ReadOpcode(ImageReader rdr)
+        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
         {
-            return rdr.PeekBeUInt16(0);
+            ushort wOpcode;
+            if (rdr.TryPeekBeUInt16(0, out wOpcode))
+            {
+                opcode = wOpcode;
+                return true;
+            }
+            else
+            {
+                opcode = 0;
+                return false;
+            }
         }
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)

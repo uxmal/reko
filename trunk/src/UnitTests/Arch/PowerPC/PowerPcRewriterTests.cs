@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
         private void RunTest(Action<InstructionBuilder> m)
         {
-            b = new InstructionBuilder(new Address(0x01000000));
+            b = new InstructionBuilder(arch, new Address(0x01000000));
             m(b);
             ppcInstrs = b.Instructions;
         }

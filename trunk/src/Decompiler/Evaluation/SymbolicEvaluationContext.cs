@@ -99,6 +99,14 @@ namespace Decompiler.Evaluation
             var local = id.Storage as StackLocalStorage;
             if (local != null)
                 return GetStackValue(local.StackOffset, local.DataType);
+
+            //$REVIEW: this is cheating a little; some flags could
+            // actually have been set to 0 or 1. The problem is we
+            // are doing "poor man's value propagation", and should
+            // really be doing this after SSA transformation has been
+            // done on the code.
+            if (id.Storage is FlagGroupStorage)
+                return Constant.Invalid;
             return id;
         }
 

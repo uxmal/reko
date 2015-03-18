@@ -95,7 +95,7 @@ namespace Decompiler.Structure
             WriteNode(this.EntryNode, new HashSet<StructureNode>(), writer);
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("VERBOSE_DEBUG")]
         private void WriteNode(StructureNode node, HashSet<StructureNode> visited, TextWriter writer)
         {
             if (visited.Contains(node))

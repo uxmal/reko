@@ -221,6 +221,10 @@ namespace Decompiler.Core
         public short PeekLeInt16(uint offset) { return (short)LoadedImage.ReadLeUInt16(bytes, offset + (uint) off); }
         public short PeekBeInt16(uint offset) { return (short)LoadedImage.ReadBeUInt16(bytes, offset + (uint) off); }
 
+        public bool TryPeekByte(uint offset, out byte value) { return LoadedImage.TryReadByte(bytes, offset + (uint)off, out value); }
+        public bool TryPeekBeUInt16(uint offset, out ushort value) { return LoadedImage.TryReadBeUInt16(bytes, offset + (uint)off, out value); }
+        public bool TryPeekBeUInt32(uint offset, out uint value) { return LoadedImage.TryReadBeUInt32(bytes, offset + (uint)off, out value); }
+        
         public uint ReadLeUInt32()
         {
             uint u = LoadedImage.ReadLeUInt32(bytes, (uint)off);

@@ -287,7 +287,10 @@ namespace Decompiler.Scanning
 
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            return new UnaryExpression(
+                unary.Operator,
+                unary.DataType,
+                unary.Expression.Accept(this));
         }
 
         public Identifier VisitFlagGroupStorage(FlagGroupStorage grf)
