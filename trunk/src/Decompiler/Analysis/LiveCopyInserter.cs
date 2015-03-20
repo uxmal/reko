@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using System;
+using System.Linq;
 
 namespace Decompiler.Analysis
 {
@@ -91,9 +92,8 @@ namespace Decompiler.Analysis
 
 		public void Transform()
 		{
-			for (int i = 0; i < ssaIds.Count; ++i)
+			foreach (var sid in ssaIds.ToArray())
 			{
-				SsaIdentifier sid = ssaIds[i];
 				if (sid.DefStatement == null || sid.Uses.Count == 0)
 					continue;
 				PhiAssignment ass = sid.DefStatement.Instruction as PhiAssignment;

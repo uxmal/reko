@@ -29,6 +29,7 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -76,10 +77,11 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds.Add(sid_a2);
 			ssaIds.Add(sid_a3);
 
-            List<SsaIdentifier> list = new List<SsaIdentifier>();
-			list.Add(ssaIds[0]);
-			list.Add(ssaIds[1]);
-			list.Add(ssaIds[2]);
+            List<SsaIdentifier> list = new List<SsaIdentifier> {
+                sid_a1,
+                sid_a2,
+                sid_a3
+            };
 			return list;
 		}
 
@@ -119,8 +121,8 @@ namespace Decompiler.UnitTests.Analysis
 			Prepare(new ByteArrayLoopMock().Procedure);
 			var liv = new LinearInductionVariableFinder(proc, ssaIds, null);
 			var a = new List<SsaIdentifier>();
-			a.Add(ssaIds[5]);
-			a.Add(ssaIds[7]);
+			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_5").Single());
+			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_7").Single());
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
             Assert.AreEqual("branch i_5 < 0x0000000A body", liv.Context.TestStatement.ToString());
@@ -151,7 +153,7 @@ namespace Decompiler.UnitTests.Analysis
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
 			Assert.IsNull(liv.Context.PhiIdentifier);
 			Assert.IsNull(liv.Context.PhiStatement);
-
+            Assert.Fail(); /*
 			liv.Context.PhiStatement = ssaIds[5].DefStatement;
 			liv.Context.PhiIdentifier = (Identifier) ((PhiAssignment) liv.Context.PhiStatement.Instruction).Dst;
 			liv.Context.TestStatement = proc.ControlGraph.Blocks[2].Statements[1];
@@ -160,7 +162,7 @@ namespace Decompiler.UnitTests.Analysis
 			liv.Context.DeltaValue = Constant.Word32(1);
 			liv.Context.TestValue = Constant.Word32(10);
 			LinearInductionVariable iv = liv.CreateInductionVariable();
-			Assert.AreEqual("X", iv.ToString());
+			Assert.AreEqual("X", iv.ToString()); */
 		}
 
 		[Test]
@@ -327,6 +329,7 @@ namespace Decompiler.UnitTests.Analysis
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);
+            proc.Dump(true, false); //$DEBUG
 		}
 
         private void Prepare(Action<ProcedureBuilder> m)

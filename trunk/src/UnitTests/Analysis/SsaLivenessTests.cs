@@ -51,19 +51,16 @@ namespace Decompiler.UnitTests.Analysis
 				fut.TextWriter.WriteLine("=======================");
                 fut.AssertFilesEqual();
 			}
-			Identifier i =   ssa.Identifiers[2].Identifier; 
-			Identifier i_4 = ssa.Identifiers[4].Identifier;
-			Identifier i_6 = ssa.Identifiers[6].Identifier;
-			Assert.AreEqual("i", i.Name);
-			Assert.AreEqual("i_4", i_4.Name);
-			Assert.AreEqual("i_6", i_6.Name);
-			Assert.IsFalse(sla.IsLiveOut(i, ssa.Identifiers[4].DefStatement));
+            SsaIdentifier i = ssa.Identifiers.Where(s => s.Identifier.Name == "i").Single();
+            SsaIdentifier i_4 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_4").Single();
+            SsaIdentifier i_6 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_6").Single();
+			Assert.IsFalse(sla.IsLiveOut(i.Identifier, i_4.DefStatement));
             var block1 = proc.ControlGraph.Blocks.Where(b => b.Name =="loop").Single();
 			Assert.AreEqual("branch Mem0[i_6:byte] != 0 loop", block1.Statements[2].Instruction.ToString());
-			Assert.IsTrue(sla.IsLiveOut(i_4, block1.Statements[2]), "i_4 should be live at the end of block 1");
-			Assert.IsTrue(sla.IsLiveOut(i_6, block1.Statements[2]),"i_6 should be live at the end of block 1");
+			Assert.IsTrue(sla.IsLiveOut(i_4.Identifier, block1.Statements[2]), "i_4 should be live at the end of block 1");
+			Assert.IsTrue(sla.IsLiveOut(i_6.Identifier, block1.Statements[2]),"i_6 should be live at the end of block 1");
 			Assert.AreEqual("i_4 = PHI(i, i_6)", block1.Statements[0].Instruction.ToString());
-			Assert.IsFalse(sla.IsLiveOut(i_6, block1.Statements[0]), "i_6 is dead after the phi function");
+			Assert.IsFalse(sla.IsLiveOut(i_6.Identifier, block1.Statements[0]), "i_6 is dead after the phi function");
 		}
 
 		[Test]
@@ -84,13 +81,13 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("Mem6[0x10000000:word32] = a + b", block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("Mem7[0x10000004:word32] = a", block.Statements[1].Instruction.ToString());
 
-			Identifier a = ssa.Identifiers[2].Identifier;
-			Identifier c_5 = ssa.Identifiers[5].Identifier;
-			Assert.AreEqual("a", a.Name);
-			Assert.IsFalse(sla.IsLiveOut(a, block.Statements[1]), "a should be dead after its last use");
-			Assert.IsTrue(sla.IsLiveOut(a, block.Statements[0]), "a should be live after the first use");
-			Assert.IsFalse(sla.IsDefinedAtStatement(ssa.Identifiers[c_5], block.Statements[0]));
-			Assert.IsFalse(sla.IsDefinedAtStatement(ssa.Identifiers[4], block.Statements[0]));
+			SsaIdentifier a = ssa.Identifiers.Where(s=>s.Identifier.Name=="a").Single();
+            SsaIdentifier c = ssa.Identifiers.Where(s => s.Identifier.Name == "c").Single();
+            SsaIdentifier c_5 = ssa.Identifiers.Where(s => s.Identifier.Name == "c_5").Single();
+			Assert.IsFalse(sla.IsLiveOut(a.Identifier, block.Statements[1]), "a should be dead after its last use");
+			Assert.IsTrue(sla.IsLiveOut(a.Identifier, block.Statements[0]), "a should be live after the first use");
+			Assert.IsFalse(sla.IsDefinedAtStatement(c_5, block.Statements[0]));
+			Assert.IsFalse(sla.IsDefinedAtStatement(c, block.Statements[0]));
 		}
 
 		[Test]
