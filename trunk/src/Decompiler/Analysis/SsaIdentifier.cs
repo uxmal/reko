@@ -59,7 +59,7 @@ namespace Decompiler.Analysis
 
 		public bool IsOriginal
 		{
-			get { return Identifier.Number == OriginalIdentifier.Number; }
+			get { return Identifier == OriginalIdentifier; }
 		}
 
         public bool IsSideEffect { get; private set; }

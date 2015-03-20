@@ -54,11 +54,10 @@ namespace Decompiler.UnitTests.Analysis
             var proc = pb.Procedure;
             var dg = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
             var ssax = new SsaTransform(proc, dg);
-            var ssa = ssax.Transform();
 
             proc.Dump(true, false);
             Debug.Print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            var vp = new ValuePropagator(ssa.Identifiers, proc);
+            var vp = new ValuePropagator(ssax.SsaState.Identifiers, proc);
             vp.Transform();
 
             ssax.StackVariables = true;

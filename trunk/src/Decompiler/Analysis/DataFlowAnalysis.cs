@@ -231,7 +231,7 @@ namespace Decompiler.Analysis
                 // mem[fp + 30] becomes wArg30.
                 // This allows us to compute the dataflow of this procedure.
                 sst.StackVariables = true;
-                sst.Transform(doms);
+                sst.Transform();
                 
                 // At this point, the computation of _actual_ ProcedureFlow should be possible.
                 var tid = new TrashedRegisterFinder(program, new [] { proc }, flow, this.eventListener);

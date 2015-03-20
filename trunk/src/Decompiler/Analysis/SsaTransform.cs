@@ -58,6 +58,7 @@ namespace Decompiler.Analysis
 		}
 
         public SsaState SsaState { get; private set; }
+        public bool StackVariables { get; set; }
 
 		/// <summary>
 		/// Creates a phi statement with slots for each predecessor block, then
@@ -76,16 +77,16 @@ namespace Decompiler.Analysis
 			return stm.Instruction;
 		}
 
-		private void LocateAllDefinedVariables(Dictionary<Identifier, byte>[] defOrig)
+		private void LocateAllDefinedVariables(Dictionary<Expression, byte>[] defOrig)
 		{
-			var ldv = new LocateDefinedVariables(proc, this.SsaState, defOrig);
+			var ldv = new LocateDefinedVariables(proc, this.SsaState, this.StackVariables, defOrig);
 			foreach (Block n in SsaState.DomGraph.ReversePostOrder.Keys)
 			{
 				ldv.LocateDefs(n);
 			}
 		}
 
-		private void MarkTemporariesDeadIn(Dictionary<Identifier, byte>[] def)
+		private void MarkTemporariesDeadIn(Dictionary<Expression, byte>[] def)
 		{
             foreach (var block in proc.ControlGraph.Blocks)
             {
@@ -146,20 +147,26 @@ namespace Decompiler.Analysis
 			}
 		}
 
-        private Dictionary<Identifier, byte>[] CreateA()
+        private Dictionary<Expression, byte>[] CreateA()
         {
-            var a = new Dictionary<Identifier, byte>[proc.ControlGraph.Blocks.Count];
+            var a = new Dictionary<Expression, byte>[proc.ControlGraph.Blocks.Count];
             for (int i = 0; i < a.Length; ++i)
             {
-                a[i] = new Dictionary<Identifier, byte>();
+                a[i] = new Dictionary<Expression, byte>();
             }
             return a;
         }
 
-        [Obsolete()]
-		public SsaState Transform(DominatorGraph<Block> domGraph)
+        private static bool IsFrameAccess(Procedure proc, Expression e)
         {
-            return Transform();
+            if (e == proc.Frame.FramePointer)
+            return true;
+            var bin = e as BinaryExpression;
+            if (bin == null)
+                return false;
+            if (bin.Left != proc.Frame.FramePointer)
+                return false;
+            return bin.Right is Constant;
         }
 
         public SsaState Transform()
@@ -181,31 +188,33 @@ namespace Decompiler.Analysis
 		{
 			private Procedure proc;
 			private Block block;
-            private Dictionary<Identifier, byte>[] defVars; // variables defined by a statement.
+            private bool frameVariables;
+            private Dictionary<Expression, byte>[] defVars; // variables defined by a statement.
 			private Statement stmCur;
             private SsaState ssa;
 
-			public LocateDefinedVariables(Procedure proc, SsaState ssa, Dictionary<Identifier, byte>[] defOrig)
+			public LocateDefinedVariables(Procedure proc, SsaState ssa, bool frameVariables, Dictionary<Expression, byte>[] defOrig)
 			{
 				this.proc = proc;
                 this.ssa = ssa;
+                this.frameVariables = frameVariables;
                 this.defVars = defOrig;
 			}
 
-			private void MarkDefined(Identifier id)
+			private void MarkDefined(Expression eDef)
 			{
-				Debug.Assert(id.Number >= 0);
                 SsaIdentifier sid;
-                if (ssa.Identifiers.TryGetValue(id, out sid))
+                var idDef = eDef as Identifier;
+                if (idDef != null && ssa.Identifiers.TryGetValue(idDef, out sid))
                 {
                     // If we've seen this identifier before, use its
                     // original name.
-                    id = sid.OriginalIdentifier;
+                    eDef = sid.OriginalIdentifier;
                 }
                 var dict = defVars[ssa.RpoNumber(block)];
                 byte bits;
-                dict.TryGetValue(id, out bits);
-				dict[id] = (byte) (bits | (BitDefined | BitDeadIn));
+                dict.TryGetValue(eDef, out bits);
+				dict[eDef] = (byte) (bits | (BitDefined | BitDeadIn));
 			}
 
 			public void LocateDefs(Block b)
@@ -233,6 +242,11 @@ namespace Decompiler.Analysis
                 defVars[iBlock].TryGetValue(access.MemoryId, out grf);
 				grf = (byte)((grf & ~BitDeadIn) | BitDefined);
 				defVars[iBlock][access.MemoryId] = grf;
+
+                if (this.frameVariables && IsFrameAccess(proc, access.EffectiveAddress))
+                {
+                    MarkDefined(access.EffectiveAddress);
+                }
 
 				store.Dst.Accept(this);
 				store.Src.Accept(this);
@@ -532,7 +546,5 @@ namespace Decompiler.Analysis
 				return unary;
 			}
 		}
-
-        public bool StackVariables { get; set; }
     }
 }
