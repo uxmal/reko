@@ -144,8 +144,6 @@ namespace Decompiler.Core.Expressions
                     return GetHashCodeImpl(((Dereference) obj).Expression) * 129;
                 });
 
-
-
             Add(
                 typeof(Identifier),
                 delegate(Expression x, Expression y)
