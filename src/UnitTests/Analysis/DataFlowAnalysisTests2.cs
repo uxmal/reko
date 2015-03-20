@@ -33,7 +33,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Analysis
 {
     [TestFixture]
-    [Ignore]
+    [Ignore("Do the subanalyses first")]
     public class DataFlowAnalysisTests2
     {
         private ProgramBuilder pb;

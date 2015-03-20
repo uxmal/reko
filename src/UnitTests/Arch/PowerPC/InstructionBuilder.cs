@@ -160,6 +160,5 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             return new MemoryOperand(baseReg.Register.DataType, baseReg.Register, Constant.Int16(offset));
         }
-
     }
 }

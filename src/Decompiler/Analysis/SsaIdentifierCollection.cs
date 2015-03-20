@@ -52,9 +52,25 @@ namespace Decompiler.Analysis
 			set { base[id.Number] = value; }
 		}
 
+        //$TODO: this is much better implemented as a hash table.
+        public bool TryGetValue(Identifier id, out SsaIdentifier sid)
+        {
+            if (id.Number >= Count)
+            {
+                sid = null;
+                return false;
+            }
+            else
+            {
+                sid = base[id.Number];
+                return true;
+            }
+        }
+
 		public string FormatSsaName(string prefix, int v)
 		{
 			return string.Format("{0}_{1}", prefix, v);
 		}
-	}
+
+    }
 }

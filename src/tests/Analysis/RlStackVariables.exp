@@ -42,7 +42,7 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp bp:bp Sequence es:bx:<invalid> ax:<invalid> bx:<invalid> es:<invalid> -8(fp):bx -6(fp):es -4(fp):ax -2(fp):bp
+// SymbolicIn: sp:fp bp:bp Sequence es:bx:<invalid> ax:<invalid> bx:<invalid> es:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 

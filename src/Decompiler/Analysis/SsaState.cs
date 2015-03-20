@@ -98,7 +98,7 @@ namespace Decompiler.Analysis
 			Procedure.ExitBlock.Statements.Clear();
 		}
 
-#if DEBUG
+        [Conditional("DEBUG")]
 		public void DebugDump(bool trace)
 		{
 			if (trace)
@@ -109,11 +109,6 @@ namespace Decompiler.Analysis
 				Debug.WriteLineIf(trace, sb.ToString());
 			}
 		}
-#else
-		public void DebugDump(bool trace)
-		{
-		}
-#endif
 
 		/// <summary>
 		/// Deletes a statement by removing all the ids it references 
@@ -138,7 +133,7 @@ namespace Decompiler.Analysis
         }
 
 		/// <summary>
-		/// Dumps all SSA identifiers, showing the original variable,
+		/// Writes all SSA identifiers, showing the original variable,
 		/// the defining statement, and the using statements.
 		/// </summary>
 		/// <param name="writer"></param>
