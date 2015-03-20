@@ -292,8 +292,8 @@ namespace Decompiler.Analysis
 		public class VariableRenamer : InstructionTransformer
 		{
 			private SsaState ssa;
-			private int [] rename;		// most recently used name for var x.
-			private int [] wasonentry;	// the name x had on entry into the block.
+			private Dictionary<Expression, Identifier> rename;		// most recently used name for var x.
+            private Dictionary<Expression, Identifier> wasonentry;	// the name x had on entry into the block.
 			private Statement stmCur; 
 			private Procedure proc;
 
@@ -307,17 +307,21 @@ namespace Decompiler.Analysis
 			public VariableRenamer(SsaState ssa, Identifier [] varsOrig, Procedure p)
 			{
 				this.ssa = ssa;
-				this.rename = new int[varsOrig.Length];
-				this.wasonentry = new int[varsOrig.Length];
+				this.rename = new Dictionary<Expression, Identifier>(varsOrig.Length, new ExpressionValueComparer());
+                this.wasonentry = new Dictionary<Expression, Identifier>(varsOrig.Length, new ExpressionValueComparer());
 				this.stmCur = null;
 				this.proc = p;
 
 				Block entryBlock = p.EntryBlock;
-                bool addDefs = (entryBlock.Statements.Count == 0);
-				for (int a = 0; a < rename.Length; ++a)
+                var existingDefs = entryBlock.Statements
+                    .Select(s => s.Instruction as DefInstruction)
+                    .Where(d => d != null)
+                    .Select(d => d.Expression)
+                    .ToHashSet();
+				for (int a = 0; a < varsOrig.Length; ++a)
 				{
-                    rename[a] = a;
-                    if (!addDefs)
+                    rename[varsOrig[a]] = varsOrig[a];
+                    if (existingDefs.Contains(varsOrig[a]))
                         continue;
                     var id = ssa.Identifiers.Add(varsOrig[a], null, null, false);
 
@@ -328,7 +332,7 @@ namespace Decompiler.Analysis
 
 					id.DefStatement = new Statement(0, new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);
 					entryBlock.Statements.Add(id.DefStatement);
-					wasonentry[a] = -1;
+					wasonentry[varsOrig[a]] = null;
 				}
 			}
 
@@ -338,8 +342,7 @@ namespace Decompiler.Analysis
 			/// <param name="n">Block to rename</param>
 			public void RenameBlock(Block n)
 			{
-				int [] wasonentry = new int [rename.Length];
-				rename.CopyTo(wasonentry, 0);
+				var wasonentry = new Dictionary<Expression, Identifier>(rename,  new ExpressionValueComparer());
 
 				// Rename variables in all blocks except the starting block which
 				// only contains dummy 'def' variables.
@@ -386,40 +389,35 @@ namespace Decompiler.Analysis
 					if (c != proc.EntryBlock && ssa.DomGraph.ImmediateDominator(c) == n)
 						RenameBlock(c);
 				}
-				wasonentry.CopyTo(rename, 0);
+				rename = wasonentry;
 			}
 
 			// Record the id that v was mapped to on entry to this block;
 
-			private void EnsureWasOnEntry(int v, int id)
+			private void EnsureWasOnEntry(Expression v, Identifier id)
 			{
-				int cOld = wasonentry.Length;
-				if (v >= cOld)
-				{
-					throw new ApplicationException("Array really big!");
-				}
-				else if (wasonentry[v] == -1)
+				if (wasonentry[v] == null)
 				{
 					wasonentry[v] = id;
 				}	
 			}
 
             // A new definition of id requires a new SSA name.
-			private Identifier NewDef(Identifier idOld, Expression exprDef, bool isSideEffect)
+			private Identifier NewDef(Identifier eOld, Expression exprDef, bool isSideEffect)
 			{
                 SsaIdentifier sidOld;
-                if (ssa.Identifiers.TryGetValue(idOld, out sidOld))
+                if (ssa.Identifiers.TryGetValue(eOld, out sidOld))
                 {
                     if (sidOld.OriginalIdentifier != sidOld.Identifier)
                     {
-                        rename[sidOld.OriginalIdentifier.Number] = sidOld.Identifier.Number;
+                        rename[sidOld.OriginalIdentifier] = sidOld.Identifier;
                         return sidOld.Identifier;
                     }
                 }
-				var sid = ssa.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
-				int iNew = Rename(idOld);
-				rename[idOld.Number] = sid.Identifier.Number;
-				EnsureWasOnEntry(idOld.Number, iNew);
+				var sid = ssa.Identifiers.Add(eOld, stmCur, exprDef, isSideEffect);
+				var iNew = Rename(eOld);
+				rename[eOld] = sid.Identifier;
+				EnsureWasOnEntry(eOld, iNew);
 				return sid.Identifier;
 			}
 
@@ -430,15 +428,15 @@ namespace Decompiler.Analysis
                 {
                     idOld = sidOld.OriginalIdentifier;
                 }
-                int iNew = Rename(idOld);
+                var iNew = Rename(idOld);
 				var sid = ssa.Identifiers[iNew];
 				sid.Uses.Add(stm);
 				return sid.Identifier;
 			}
 
-            private int Rename(Identifier idOld)
+            private Identifier Rename(Identifier idOld)
             {
-                return rename[idOld.Number];
+                return rename[idOld];
             }
 
 			public override Instruction TransformAssignment(Assignment ass)
