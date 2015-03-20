@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Core.Lib;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -39,11 +40,11 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new DiamondMock().Procedure);
 			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
 			Web web = new Web();
-			SsaIdentifier r_4 = ssaIds[4];
-			SsaIdentifier r_5 = ssaIds[5];
-			SsaIdentifier r_6 = ssaIds[6];
+			SsaIdentifier r_4 = ssaIds.Where(s => s.Identifier.Name == "r_4").Single();
+            SsaIdentifier f_5 = ssaIds.Where(s => s.Identifier.Name == "f_5").Single();
+            SsaIdentifier r_6 = ssaIds.Where(s => s.Identifier.Name == "r_6").Single();
 			web.Add(r_4);
-			web.Add(r_5);
+			web.Add(f_5);
 			web.Add(r_6);
 			deci.InsertDeclaration(web);
 			Assert.AreEqual("word32 r_4", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
@@ -56,6 +57,7 @@ namespace Decompiler.UnitTests.Analysis
 			SsaTransform sst = new SsaTransform(proc, doms);
 			
 			this.ssaIds = sst.SsaState.Identifiers;
+            sst.SsaState.DebugDump(true);//$DEBUG
 		}
 	}
 }

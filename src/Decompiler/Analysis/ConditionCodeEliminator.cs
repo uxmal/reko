@@ -64,9 +64,9 @@ namespace Decompiler.Analysis
 
         public void Transform()
         {
-            for (int i = 0; i < ssaIds.Count; ++i)
+            foreach (var s in ssaIds)
             {
-                sidGrf = ssaIds[i];
+                sidGrf = s;
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
 

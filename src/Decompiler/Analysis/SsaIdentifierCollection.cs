@@ -21,15 +21,17 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
-	public class SsaIdentifierCollection : List<SsaIdentifier>
+	public class SsaIdentifierCollection : IEnumerable<SsaIdentifier>
 	{
+        private List<SsaIdentifier> sids = new List<SsaIdentifier>();
 		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
-			int i = Count;
+			int i = sids.Count;
 			Identifier idNew;
 			if (stmDef != null)
 			{
@@ -42,27 +44,48 @@ namespace Decompiler.Analysis
 				idNew = idOld;
 			}
 			var sid = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
-			Add(sid);
+			sids.Add(sid);
 			return sid;
 		}
 
 		public SsaIdentifier this[Identifier id]
 		{
-			get { return base[id.Number]; }
-			set { base[id.Number] = value; }
+			get { return sids[id.Number]; }
+			set { sids[id.Number] = value; }
 		}
 
+        [Obsolete("used only in unit test")]
+        public void Add(SsaIdentifier sid)
+        {
+            sids.Add(sid);
+        }
+
+        [Obsolete("Find all uses and make sure they are not depending on numbers")]
+        public int Count
+        {
+            get { return sids.Count; }
+        }
+
+        public IEnumerator<SsaIdentifier> GetEnumerator()
+        {
+            return sids.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
         //$TODO: this is much better implemented as a hash table.
         public bool TryGetValue(Identifier id, out SsaIdentifier sid)
         {
-            if (id.Number >= Count)
+            if (id.Number >= sids.Count)
             {
                 sid = null;
                 return false;
             }
             else
             {
-                sid = base[id.Number];
+                sid = sids[id.Number];
                 return true;
             }
         }
@@ -71,6 +94,7 @@ namespace Decompiler.Analysis
 		{
 			return string.Format("{0}_{1}", prefix, v);
 		}
+
 
     }
 }

@@ -58,7 +58,6 @@ namespace Decompiler.Analysis
             this.webs = new List<Web>();
         }
 
-
 		private void BuildWebOf()
 		{
 			this.webOf = new Web[ssaIds.Count];

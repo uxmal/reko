@@ -150,18 +150,18 @@ namespace Decompiler.Analysis
 
 		public void ReplaceDefinitions(Statement stmOld, Statement stmNew)
 		{
-			for (int i = 0; i < Identifiers.Count; ++i)
+			foreach (var sid in Identifiers)
 			{
-				if (Identifiers[i].DefStatement == stmOld)
-					Identifiers[i].DefStatement = stmNew;
+				if (sid.DefStatement == stmOld)
+					sid.DefStatement = stmNew;
 			}
 		}
 
 		public void RemoveUses(Statement stm)
 		{
-			for (int i = 0; i < Identifiers.Count; ++i)
+			foreach (var sid in Identifiers)
 			{
-				List<Statement> uses = Identifiers[i].Uses;
+				List<Statement> uses = sid.Uses;
 				int jTo = 0;
 				for (int j = 0; j < uses.Count; ++j)
 				{

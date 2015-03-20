@@ -97,9 +97,9 @@ namespace Decompiler.Analysis
 		public void AssignInitialValueNumbers()
 		{
 			nodes = new Node[ssaIds.Count];
-			for (int i = 0; i < nodes.Length; ++i)
+            int i = 0;
+			foreach (var id in ssaIds)
 			{
-				SsaIdentifier id = ssaIds[i];
 				Node n = new Node(id);
 				if (id.IsOriginal)
 				{
@@ -110,6 +110,7 @@ namespace Decompiler.Analysis
 					n.vn = AnyValueNumber.Instance;
 				}
 				nodes[i] = n;
+                ++i;
 			}
 		}
 
@@ -370,8 +371,8 @@ namespace Decompiler.Analysis
 			writer.WriteLine("Identifiers:");
 			for (int i = 0; i != nodes.Length; ++i)
 			{
-				SsaIdentifier info = ssaIds[i];
-				writer.WriteLine("\t{0}: <{1}>", info.Identifier, nodes[i].vn);
+                throw new NotImplementedException("Use hashtable for ssaIds //				SsaIdentifier info = ssaIds[i];");
+				//writer.WriteLine("\t{0}: <{1}>", info.Identifier, nodes[i].vn);
 			}
 		}
 
