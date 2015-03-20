@@ -52,8 +52,9 @@ namespace Decompiler.Analysis
 			this.proc = proc;
 			this.varsOrig = new Identifier[proc.Frame.Identifiers.Count];
 			proc.Frame.Identifiers.CopyTo(varsOrig);
+            this.SsaState = new SsaState(proc, gr);
 
-			Transform(gr);
+			Transform();
 		}
 
         public SsaState SsaState { get; private set; }
@@ -155,9 +156,14 @@ namespace Decompiler.Analysis
             return a;
         }
 
+        [Obsolete()]
 		public SsaState Transform(DominatorGraph<Block> domGraph)
+        {
+            return Transform();
+        }
+
+        public SsaState Transform()
 		{
-            this.SsaState = new SsaState(proc, domGraph);
 			PlacePhiFunctions();
 			var rn = new VariableRenamer(this.SsaState, this.varsOrig, proc);
 			rn.RenameBlock(proc.EntryBlock);
@@ -189,6 +195,13 @@ namespace Decompiler.Analysis
 			private void MarkDefined(Identifier id)
 			{
 				Debug.Assert(id.Number >= 0);
+                SsaIdentifier sid;
+                if (ssa.Identifiers.TryGetValue(id, out sid))
+                {
+                    // If we've seen this identifier before, use its
+                    // original name.
+                    id = sid.OriginalIdentifier;
+                }
                 var dict = defVars[ssa.RpoNumber(block)];
                 byte bits;
                 dict.TryGetValue(id, out bits);
@@ -300,11 +313,13 @@ namespace Decompiler.Analysis
 				this.proc = p;
 
 				Block entryBlock = p.EntryBlock;
-				Debug.Assert(entryBlock.Statements.Count == 0);
+                bool addDefs = (entryBlock.Statements.Count == 0);
 				for (int a = 0; a < rename.Length; ++a)
 				{
-					var id = ssa.Identifiers.Add(varsOrig[a], null, null, false);
-					rename[a] = a;
+                    rename[a] = a;
+                    if (!addDefs)
+                        continue;
+                    var id = ssa.Identifiers.Add(varsOrig[a], null, null, false);
 
 					// Variables that are used before defining are "predefined" by adding a 
                     // DefInstruction in the entry block for the procedure. Any such variables 
@@ -392,6 +407,15 @@ namespace Decompiler.Analysis
             // A new definition of id requires a new SSA name.
 			private Identifier NewDef(Identifier idOld, Expression exprDef, bool isSideEffect)
 			{
+                SsaIdentifier sidOld;
+                if (ssa.Identifiers.TryGetValue(idOld, out sidOld))
+                {
+                    if (sidOld.OriginalIdentifier != sidOld.Identifier)
+                    {
+                        rename[sidOld.OriginalIdentifier.Number] = sidOld.Identifier.Number;
+                        return sidOld.Identifier;
+                    }
+                }
 				var sid = ssa.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
 				int iNew = Rename(idOld);
 				rename[idOld.Number] = sid.Identifier.Number;
@@ -401,6 +425,11 @@ namespace Decompiler.Analysis
 
 			private Identifier NewUse(Identifier idOld, Statement stm)
 			{
+                SsaIdentifier sidOld;
+                if (ssa.Identifiers.TryGetValue(idOld, out sidOld))
+                {
+                    idOld = sidOld.OriginalIdentifier;
+                }
                 int iNew = Rename(idOld);
 				var sid = ssa.Identifiers[iNew];
 				sid.Uses.Add(stm);

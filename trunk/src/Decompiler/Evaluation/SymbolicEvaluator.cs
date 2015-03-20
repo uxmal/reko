@@ -89,7 +89,7 @@ namespace Decompiler.Evaluation
 
         public Instruction VisitDefInstruction(DefInstruction def)
         {
-            throw new NotSupportedException("Def instructions shouldn't have been generated yet.");
+            return def;
         }
 
         public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
