@@ -41,8 +41,8 @@ namespace Decompiler.UnitTests.Typing
 			TypeFactory factory = new TypeFactory();
 			TypeStore store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			Identifier id1 = new Identifier("id2", 1, PrimitiveType.Word32, null);
-			Identifier id2 = new Identifier("id2", 2, PrimitiveType.Word32, null);
+			Identifier id1 = new Identifier("id2", PrimitiveType.Word32, null);
+			Identifier id2 = new Identifier("id2", PrimitiveType.Word32, null);
 			Assignment ass = new Assignment(id1, id2);
 			ass.Accept(eqb);
 
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void ArrayAccess()
 		{
-            ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", 1, PrimitiveType.Pointer32, null), new Identifier("i", 1, PrimitiveType.Int32, null));
+            ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", PrimitiveType.Pointer32, null), new Identifier("i", PrimitiveType.Int32, null));
 			e.Accept(eqb);
 			Assert.AreEqual("T_3", e.TypeVariable.ToString());
 			Assert.AreEqual("T_1", e.Array.TypeVariable.ToString());
@@ -66,8 +66,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void SegmentedAccess()
 		{
-			Identifier ds = new Identifier("ds", 1, PrimitiveType.SegmentSelector, null);
-			Identifier bx = new Identifier("bx", 2, PrimitiveType.Word16, null);
+			Identifier ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
+			Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
 			SegmentedAccess mps = new SegmentedAccess(MemoryIdentifier.GlobalMemory, ds, bx, PrimitiveType.Word32);
 			mps.Accept(eqb);
 			Assert.AreEqual("T_3", mps.TypeVariable.Name);

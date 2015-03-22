@@ -18,6 +18,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = 0x0D00
 	ds = Mem0[ss:sp:selector]
@@ -52,6 +53,7 @@ void fn0C00_001F()
 fn0C00_001F_entry:
 	// succ:  l0C00_001F
 l0C00_001F:
+	sp = fp
 	ah = 0x4C
 	msdos_terminate(al)
 	// succ:  fn0C00_001F_exit
@@ -74,6 +76,7 @@ void fn0C00_0023()
 fn0C00_0023_entry:
 	// succ:  l0C00_0023
 l0C00_0023:
+	sp = fp
 	ah = 0x3F
 	C = msdos_read_file(bx, cx, ds_dx, out ax)
 	branch Test(UGE,C) l0C00_002C

@@ -47,10 +47,10 @@ namespace Decompiler.UnitTests.Core
 			arch = new IntelArchitecture(ProcessorMode.Protected32);
             frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
-			arg04 = new Identifier("arg04", -1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));
-			arg08 = new Identifier("arg08", -1, PrimitiveType.Word16, new StackArgumentStorage(8, PrimitiveType.Word16));
-			arg0C = new Identifier("arg0C", -1, PrimitiveType.Byte, new StackArgumentStorage(0x0C, PrimitiveType.Byte));
-			regOut = new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
+			arg04 = new Identifier("arg04",   PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));
+			arg08 = new Identifier("arg08",   PrimitiveType.Word16, new StackArgumentStorage(8, PrimitiveType.Word16));
+			arg0C = new Identifier("arg0C",   PrimitiveType.Byte, new StackArgumentStorage(0x0C, PrimitiveType.Byte));
+			regOut = new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
             sig = new ProcedureSignature(ret,
                 new Identifier[] { arg04, arg08, arg0C, regOut })
                 {
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
         public void AppBld_BindReturnValue()
 		{
-            ab  = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig, false);
+            ab  = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), sig, false);
 			var r = ab.Bind(ret);
 			Assert.AreEqual("eax", r.ToString());
 		}
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
         public void AppBld_BindOutParameter()
 		{
-            ab = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig, false);
+            ab = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), sig, false);
             var o = ab.Bind(regOut);
 			Assert.AreEqual("edx", o.ToString());
 		}
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Core
         public void AppBld_BuildApplication()
 		{
 			Assert.IsTrue(sig.Parameters[3].Storage is OutArgumentStorage);
-            ab = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig, false);
+            ab = new ApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), sig, false);
             var instr = ab.CreateInstruction();
 			Assert.AreEqual("eax = foo(Mem0[esp + 4:word32], Mem0[esp + 8:word16], Mem0[esp + 12:byte], out edx)", instr.ToString());
 		}

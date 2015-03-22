@@ -203,42 +203,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Boom\AssignSet.cs" />
-    <Compile Include="Boom\BasicBlock.cs" />
-    <Compile Include="Boom\BinaryFileFactory.cs" />
-    <Compile Include="Boom\Boomerang.cs" />
-    <Compile Include="Boom\Cfg.cs" />
-    <Compile Include="Boom\ConnectionGraph.cs" />
-    <Compile Include="Boom\DataFlow.cs" />
-    <Compile Include="Boom\DataType.cs" />
-    <Compile Include="Boom\DefCollector.cs" />
-    <Compile Include="Boom\Exp.cs" />
-    <Compile Include="Boom\ExpSsaXformer.cs" />
-    <Compile Include="Boom\FrontEnd.cs" />
-    <Compile Include="Boom\Function.cs" />
-    <Compile Include="Boom\HLLCode.cs" />
-    <Compile Include="Boom\IBinaryImage.cs" />
-    <Compile Include="Boom\IBinarySection.cs" />
-    <Compile Include="Boom\IBinarySymbol.cs" />
-    <Compile Include="Boom\LibProc.cs" />
-    <Compile Include="Boom\LoaderInterface.cs" />
-    <Compile Include="Boom\LocationSet.cs" />
-    <Compile Include="Boom\Module.cs" />
-    <Compile Include="Boom\NJMCDecoder.cs" />
-    <Compile Include="Boom\Oper.cs" />
-    <Compile Include="Boom\Proc.cs" />
-    <Compile Include="Boom\Prog.cs" />
-    <Compile Include="Boom\Register.cs" />
-    <Compile Include="Boom\RTL.cs" />
-    <Compile Include="Boom\RTLInstDict.cs" />
-    <Compile Include="Boom\Signature.cs" />
-    <Compile Include="Boom\Statement.cs" />
-    <Compile Include="Boom\StatementList.cs" />
-    <Compile Include="Boom\SymbolMap.cs" />
-    <Compile Include="Boom\SymTab.cs" />
-    <Compile Include="Boom\TargetQueue.cs" />
-    <Compile Include="Boom\UseCollector.cs" />
-    <Compile Include="Boom\visitor.cs" />
     <Compile Include="Decompiler.cs">
       <SubType>Code</SubType>
     </Compile>

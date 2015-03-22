@@ -72,28 +72,28 @@ namespace Decompiler.UnitTests.Analysis
 		{
             var m = new ProcedureBuilder();
             var block = m.Label("block");
-			var foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-			var pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
+			var foo = new Identifier("foo", PrimitiveType.Word32, null);
+			var pfoo = new Identifier("pfoo", PrimitiveType.Pointer32, null);
             m.Assign(foo, 3);
 			var sid = new SsaIdentifier(foo, foo, m.Block.Statements.Last, null, false);
 
-            var ssaIds = new SsaIdentifierCollection { sid };
+            var ssaIds = new SsaIdentifierCollection { { foo, sid } };
 
 			var opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 
-			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000003", m.Block.Statements[0].ToString());
+			Assert.AreEqual("*pfoo = 0x00000003", m.Block.Statements[0].ToString());
 		}
 
 		[Test]
 		public void OutpReplacePhi()
 		{
             var m = new ProcedureBuilder();
-			var foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-			var foo1 = new Identifier("foo1", 0, PrimitiveType.Word32, null);
-			var foo2 = new Identifier("foo2", 1, PrimitiveType.Word32, null);
-			var foo3 = new Identifier("foo3", 2, PrimitiveType.Word32, null);
-			var pfoo = new Identifier("pfoo", 4, PrimitiveType.Pointer32, null);
+			var foo = new Identifier("foo", PrimitiveType.Word32, null);
+			var foo1 = new Identifier("foo1", PrimitiveType.Word32, null);
+			var foo2 = new Identifier("foo2", PrimitiveType.Word32, null);
+			var foo3 = new Identifier("foo3", PrimitiveType.Word32, null);
+			var pfoo = new Identifier("pfoo", PrimitiveType.Pointer32, null);
 
             Block block1 = m.Label("block1");
              m.Assign(foo1, Constant.Word32(1));
@@ -105,15 +105,15 @@ namespace Decompiler.UnitTests.Analysis
             Statement stmFoo3 = m.Phi(foo3, foo1, foo2);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
-			ssaIds.Add(new SsaIdentifier(foo1, foo, stmFoo1, null, false));
-			ssaIds.Add(new SsaIdentifier(foo2, foo, stmFoo2, null, false));
-			ssaIds.Add(new SsaIdentifier(foo3, foo, stmFoo3, null, false));
+			ssaIds.Add(foo1, new SsaIdentifier(foo1, foo, stmFoo1, null, false));
+			ssaIds.Add(foo2, new SsaIdentifier(foo2, foo, stmFoo2, null, false));
+			ssaIds.Add(foo3, new SsaIdentifier(foo3, foo, stmFoo3, null, false));
 
 			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo3, pfoo);
 
-			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000001", stmFoo1.Instruction.ToString());
-			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000002", stmFoo2.Instruction.ToString());
+			Assert.AreEqual("*pfoo = 0x00000001", stmFoo1.Instruction.ToString());
+			Assert.AreEqual("*pfoo = 0x00000002", stmFoo2.Instruction.ToString());
 			Assert.AreEqual("foo3 = PHI(foo1, foo2)", stmFoo3.Instruction.ToString());
 
 		}
@@ -132,9 +132,9 @@ namespace Decompiler.UnitTests.Analysis
 		public void OutpReplaceManyUses()
 		{
             ProcedureBuilder m = new ProcedureBuilder();
-			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-			Identifier bar = new Identifier("bar", 1, PrimitiveType.Word32, null);
-			Identifier pfoo = new Identifier("pfoo", 2, PrimitiveType.Pointer32, null);
+			Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
+			Identifier bar = new Identifier("bar", PrimitiveType.Word32, null);
+			Identifier pfoo = new Identifier("pfoo", PrimitiveType.Pointer32, null);
 
             Block block = m.Label("block");
             m.Assign(foo, 1);
@@ -147,14 +147,14 @@ namespace Decompiler.UnitTests.Analysis
             SsaIdentifier ssaBar = new SsaIdentifier(bar, bar, stmBar, ((Assignment) stmBar.Instruction).Src, false);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
-			ssaIds.Add(ssaFoo);
-			ssaIds.Add(ssaBar);
+			ssaIds.Add(foo, ssaFoo);
+			ssaIds.Add(bar, ssaBar);
 
 			OutParameterTransformer opt = new OutParameterTransformer(m.Procedure, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 			Assert.AreEqual(3, block.Statements.Count);
 			Assert.AreEqual("foo = 0x00000001", block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("Mem0[pfoo:word32] = foo", block.Statements[1].Instruction.ToString());
+			Assert.AreEqual("*pfoo = foo", block.Statements[1].Instruction.ToString());
 			Assert.AreEqual("bar = foo", block.Statements[2].Instruction.ToString());
 		}
 

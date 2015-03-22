@@ -143,7 +143,7 @@ namespace Decompiler.Analysis
 
 		private void Def(Identifier id)
 		{
-			varLive.Def(Procedure.Frame.Identifiers[id.Number]);
+			varLive.Def(id);
 		}
 
 		private void DumpBlock(Block block)
@@ -391,7 +391,7 @@ namespace Decompiler.Analysis
 
 		private void Use(Identifier id)
 		{
-			varLive.Use(Procedure.Frame.Identifiers[id.Number], bitUseOffset, cbitsUse);
+			varLive.Use(id, bitUseOffset, cbitsUse);
 		}
  
 		public IdentifierLiveness IdentifierLiveness

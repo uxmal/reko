@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	ax = Mem0[ds:si + 0x0200:word16]
 	Mem0[ds:0x0200:word16] = 0x0000
 	Mem0[ds:0x0300:word16] = ax
@@ -50,6 +51,7 @@ fn0C00_002A_entry:
 
 // SymbolicIn: sp:fp
 l0C00_002A:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = ax
 	Mem0[ds:0x0200:word16] = 0xFFFF

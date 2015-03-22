@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	cx = 0x0014
 	call fn0C00_0008 (retsize: 2; depth: 2)
 	Mem0[ds:si:word16] = ax
@@ -47,6 +48,7 @@ fn0C00_0008_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0008:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = si
 	sp = fp - 0x0004

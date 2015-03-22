@@ -44,7 +44,7 @@ namespace Decompiler.Analysis
         private Dictionary<Expression, Expression> valid;
 		private Stack<Node> stack;
 		private int iDFS;
-		private Node [] nodes;
+		private Dictionary<Identifier,Node> nodes;
 
 		private static Constant zero;
 		private static TraceSwitch trace = new TraceSwitch("ValueNumbering", "Follows the flow of value numbering");
@@ -53,7 +53,7 @@ namespace Decompiler.Analysis
 		{
 			public static AnyValueNumber Instance = new AnyValueNumber();
 
-			private AnyValueNumber() : base("any", -1, null, null)
+			private AnyValueNumber() : base("any", null, null)
 			{
 			}
 		}
@@ -75,9 +75,9 @@ namespace Decompiler.Analysis
 			// Walk the SCC's of the node graph using Tarjan's algorithm.
 
 			iDFS = 0;
-			for (int i = 0; i < nodes.Length; ++i)
+			foreach (var id in nodes.Keys)
 			{
-				DFS(i);
+				DFS(id);
 			}
 		}
 
@@ -96,8 +96,7 @@ namespace Decompiler.Analysis
 
 		public void AssignInitialValueNumbers()
 		{
-			nodes = new Node[ssaIds.Count];
-            int i = 0;
+            nodes = new Dictionary<Identifier, Node>();
 			foreach (var id in ssaIds)
 			{
 				Node n = new Node(id);
@@ -109,8 +108,7 @@ namespace Decompiler.Analysis
 				{
 					n.vn = AnyValueNumber.Instance;
 				}
-				nodes[i] = n;
-                ++i;
+				nodes[id.Identifier] = n;
 			}
 		}
 
@@ -248,7 +246,7 @@ namespace Decompiler.Analysis
 		// Analyze a node in the SSA graph. The node represents an operation
 		// and any out nodes are any operands used by that operation.
 
-		private Node DFS(int id)
+		private Node DFS(Identifier id)
 		{
 			Node n = nodes[id];
 			if (!n.Visited)
@@ -291,12 +289,12 @@ namespace Decompiler.Analysis
 
 		public Expression GetDefiningExpression(Identifier id)
 		{
-			return nodes[id.Number].definingExpr;
+			return nodes[id].definingExpr;
 		}
 
 		public Expression GetValueNumber(Identifier id)
 		{
-			return nodes[id.Number].vn;
+			return nodes[id].vn;
 		}
 
 		/// <summary>
@@ -369,11 +367,12 @@ namespace Decompiler.Analysis
 				writer.WriteLine("\t{0}", s);
 			}
 			writer.WriteLine("Identifiers:");
-			for (int i = 0; i != nodes.Length; ++i)
-			{
-                throw new NotImplementedException("Use hashtable for ssaIds //				SsaIdentifier info = ssaIds[i];");
-				//writer.WriteLine("\t{0}: <{1}>", info.Identifier, nodes[i].vn);
-			}
+            throw new NotImplementedException("Fix this once we decided to use ValueNumbering again.");
+            //for (int i = 0; i != nodes.Count; ++i)
+            //{
+            //    throw new NotImplementedException("Use hashtable for ssaIds //				SsaIdentifier info = ssaIds[i];");
+            //    //writer.WriteLine("\t{0}: <{1}>", info.Identifier, nodes[i].vn);
+            //}
 		}
 
 		private static Constant Zero
@@ -427,7 +426,7 @@ namespace Decompiler.Analysis
 		{
 			private SsaIdentifierCollection ssaIds;
 			private ValueNumbering vn;
-			private Node [] nodes;
+			private Dictionary<Identifier,Node> nodes;
 			private Node node;
 			
 			public NodeVisitor(ValueNumbering vn)
@@ -466,10 +465,10 @@ namespace Decompiler.Analysis
 
 			public override void VisitIdentifier(Identifier id)
 			{
-				Node o = nodes[id.Number];
+				Node o = nodes[id];
 				if (!o.Visited)
 				{
-					o = vn.DFS(id.Number);
+					o = vn.DFS(id);
 					if (o.low < node.low)
 						node.low = o.low;
 				}
@@ -543,6 +542,5 @@ namespace Decompiler.Analysis
                 //    identifier = null;
 			}
 		}
-
 	}
 }

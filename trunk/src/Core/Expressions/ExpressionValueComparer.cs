@@ -148,11 +148,11 @@ namespace Decompiler.Core.Expressions
                 typeof(Identifier),
                 delegate(Expression x, Expression y)
                 {
-                    return ((Identifier) x).Number == ((Identifier) y).Number;
+                    return ((Identifier) x).Name == ((Identifier) y).Name;
                 },
                 delegate(Expression x)
                 {
-                    return ((Identifier) x).Number.GetHashCode();
+                    return ((Identifier) x).Name.GetHashCode();
                 });
 
             Add(typeof(MemoryAccess),
@@ -172,11 +172,11 @@ namespace Decompiler.Core.Expressions
             Add(typeof(MemoryIdentifier),
                 delegate(Expression ea, Expression eb)
                 {
-                    return ((MemoryIdentifier)ea).Number == ((Identifier)eb).Number;
+                    return ((MemoryIdentifier)ea).Name == ((Identifier)eb).Name;
                 },
                 delegate(Expression x)
                 {
-                    return ((Identifier)x).Number.GetHashCode();
+                    return ((Identifier)x).Name.GetHashCode();
                 });
             Add(typeof(MkSequence),
                 delegate(Expression ea, Expression eb)

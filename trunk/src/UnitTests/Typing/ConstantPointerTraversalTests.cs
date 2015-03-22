@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Typing
             {
             };
             globals_t = new TypeVariable("globals_t", 1) { DataType = globalStruct };
-            globals = new Identifier("globals", -1, PrimitiveType.Pointer32, null);
+            globals = new Identifier("globals", PrimitiveType.Pointer32, null);
 
             eqLink = new EquivalenceClass(new TypeVariable(2));
             StructureType str = new StructureType

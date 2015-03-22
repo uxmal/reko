@@ -24,6 +24,7 @@ word32 fn10000000(word32 dwArg04)
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
+	esp = fp
 	esp = fp - 0x00000004
 	dwLoc04 = esi
 	esi = dwArg04

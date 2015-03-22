@@ -54,8 +54,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfMulAdd()
 		{
-			Identifier id1 = new Identifier("v1", 1, PrimitiveType.Word16, null);
-			Identifier id2 = new Identifier("v2", 2, PrimitiveType.Word16, null);
+			Identifier id1 = new Identifier("v1", PrimitiveType.Word16, null);
+			Identifier id2 = new Identifier("v2", PrimitiveType.Word16, null);
 
 			Expression e = new BinaryExpression(
 				Operator.IMul, PrimitiveType.Word16, new BinaryExpression(
@@ -68,8 +68,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfAddMul()
 		{
-			Identifier id1 = new Identifier("v1", 1, PrimitiveType.Word16, null);
-			Identifier id2 = new Identifier("v2", 2, PrimitiveType.Word16, null);
+			Identifier id1 = new Identifier("v1", PrimitiveType.Word16, null);
+			Identifier id2 = new Identifier("v2", PrimitiveType.Word16, null);
 
 			Expression e = new BinaryExpression(
 				Operator.IAdd, PrimitiveType.Word16, new BinaryExpression(
@@ -82,7 +82,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfFieldAccessDeref()
 		{
-			Identifier id1 = new Identifier("v1", 1, PrimitiveType.Word32, null);
+			Identifier id1 = new Identifier("v1", PrimitiveType.Word32, null);
             Expression e = new FieldAccess(PrimitiveType.Pointer32, new Dereference(PrimitiveType.Word32, id1), "foo");
 			e.Accept(cf);
 
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfDerefFieldAccess()
 		{
-			Identifier id1 = new Identifier("v1", 1, PrimitiveType.Word32, null);
+			Identifier id1 = new Identifier("v1", PrimitiveType.Word32, null);
 			Expression e = new Dereference(PrimitiveType.Pointer32, new FieldAccess(PrimitiveType.Word32, id1, "foo"));
 			e.Accept(cf);
 
@@ -124,8 +124,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfMemberPointerSelector()
 		{
-			Identifier ds = new Identifier("ds", 1, PrimitiveType.SegmentSelector, null);
-			Identifier bx = new Identifier("bx", 1, PrimitiveType.Word16, null);
+			Identifier ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
+			Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
 			Expression e = new MemberPointerSelector(PrimitiveType.Byte, ds, bx);
 			e.Accept(cf);
 			Assert.AreEqual("ds.*bx", sw.ToString());
@@ -151,7 +151,7 @@ namespace Decompiler.UnitTests.Core
 
         private Identifier Id(string id)
         {
-            return new Identifier(id, -1, PrimitiveType.Word32, new TemporaryStorage(id, -1, PrimitiveType.Word32));
+            return new Identifier(id, PrimitiveType.Word32, new TemporaryStorage(id, -1, PrimitiveType.Word32));
         }
 
         [Test]
@@ -192,9 +192,9 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void CfSegmentedAccess()
         {
-            var es = new Identifier("es", 1, PrimitiveType.SegmentSelector, TemporaryStorage.None);
-            var ds = new Identifier("ds", 1, PrimitiveType.SegmentSelector, TemporaryStorage.None);
-            var bx = new Identifier("bx", 1, PrimitiveType.SegmentSelector, TemporaryStorage.None);
+            var es = new Identifier("es", PrimitiveType.SegmentSelector, TemporaryStorage.None);
+            var ds = new Identifier("ds", PrimitiveType.SegmentSelector, TemporaryStorage.None);
+            var bx = new Identifier("bx", PrimitiveType.SegmentSelector, TemporaryStorage.None);
             var e =  new MemberPointerSelector(
                 PrimitiveType.Word16,
                 m.Deref(es),
@@ -209,9 +209,9 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void CfAssocSub()
         {
-            var a = new Identifier("a", 1, PrimitiveType.Int32, TemporaryStorage.None);
-            var b = new Identifier("b", 1, PrimitiveType.Int32, TemporaryStorage.None);
-            var c = new Identifier("c", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var a = new Identifier("a", PrimitiveType.Int32, TemporaryStorage.None);
+            var b = new Identifier("b", PrimitiveType.Int32, TemporaryStorage.None);
+            var c = new Identifier("c", PrimitiveType.Int32, TemporaryStorage.None);
             var e = m.ISub(a, m.ISub(b, c));
             e.Accept(cf);
             Assert.AreEqual("a - (b - c)", sw.ToString());
@@ -220,9 +220,9 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void CfMpsAccess()
         {
-            var a = new Identifier("a", 1, PrimitiveType.Int32, TemporaryStorage.None);
-            var b = new Identifier("b", 1, PrimitiveType.Int32, TemporaryStorage.None);
-            var c = new Identifier("c", 1, PrimitiveType.Int32, TemporaryStorage.None);
+            var a = new Identifier("a", PrimitiveType.Int32, TemporaryStorage.None);
+            var b = new Identifier("b", PrimitiveType.Int32, TemporaryStorage.None);
+            var c = new Identifier("c", PrimitiveType.Int32, TemporaryStorage.None);
             var e = m.Array(
                 PrimitiveType.Byte,
                 m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), "a0004"),

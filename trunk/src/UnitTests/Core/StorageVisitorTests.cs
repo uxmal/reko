@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Core
 		public void VisitRegister()
 		{
 			var reg = new RegisterStorage("r0", 0, PrimitiveType.Word16);
-			var r = new Identifier(reg.Name, 0, reg.DataType, reg);
+			var r = new Identifier(reg.Name, reg.DataType, reg);
 			var type = r.Storage.Accept(this);
 			Assert.AreEqual("reg", type);
 		}
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitFlagGroup()
 		{
-			var f = new Identifier("grf", 0, PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO", PrimitiveType.Byte));
+			var f = new Identifier("grf", PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO", PrimitiveType.Byte));
 			var type = f.Storage.Accept(this);
 			Assert.AreEqual("grf", type);
 		}
@@ -52,9 +52,9 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitSequenceVariable()
 		{
-			var ax = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, Registers.ax);
-			var dx = new Identifier(Registers.dx.Name, 1, Registers.dx.DataType, Registers.dx);
-			var seq = new Identifier("dx_ax", 2, PrimitiveType.Word32, new SequenceStorage(dx, ax));
+			var ax = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
+			var dx = new Identifier(Registers.dx.Name, Registers.dx.DataType, Registers.dx);
+			var seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(dx, ax));
 			var type = seq.Storage.Accept(this);
 			Assert.AreEqual("seq", type);
 		}
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitFpuStackVariable()
 		{
-			Identifier f = new Identifier("st(0)", 0, PrimitiveType.Real80, new FpuStackStorage(0, PrimitiveType.Real80));
+			Identifier f = new Identifier("st(0)", PrimitiveType.Real80, new FpuStackStorage(0, PrimitiveType.Real80));
 			var type = f.Storage.Accept(this);
 			Assert.AreEqual("fpu", type);
 		}

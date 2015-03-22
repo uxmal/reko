@@ -40,14 +40,14 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new DiamondMock().Procedure);
 			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
 			Web web = new Web();
-			SsaIdentifier r_4 = ssaIds.Where(s => s.Identifier.Name == "r_4").Single();
-            SsaIdentifier f_5 = ssaIds.Where(s => s.Identifier.Name == "f_5").Single();
-            SsaIdentifier r_6 = ssaIds.Where(s => s.Identifier.Name == "r_6").Single();
+			SsaIdentifier r_1 = ssaIds.Where(s => s.Identifier.Name == "r_1").Single();
+            SsaIdentifier r_3 = ssaIds.Where(s => s.Identifier.Name == "r_3").Single();
+            SsaIdentifier r_4 = ssaIds.Where(s => s.Identifier.Name == "r_4").Single();
+			web.Add(r_1);
+			web.Add(r_3);
 			web.Add(r_4);
-			web.Add(f_5);
-			web.Add(r_6);
 			deci.InsertDeclaration(web);
-			Assert.AreEqual("word32 r_4", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
+			Assert.AreEqual("word32 r_1", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
 		}
 
 		private void Build(Procedure proc)

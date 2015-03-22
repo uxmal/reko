@@ -24,6 +24,7 @@ using NUnit.Framework;
 using Decompiler.UnitTests.Mocks;
 using System;
 using System.IO;
+using Decompiler.Core.Expressions;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -61,7 +62,8 @@ namespace Decompiler.UnitTests.Analysis
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)
 				{
-					if (!(sid.OriginalIdentifier.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
+                    var id = sid.OriginalIdentifier as Identifier;
+					if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
 						continue;
 					writer.Write("{0}: ", sid.DefStatement.Instruction);
 					grfd.FindDefiningExpression(sid);

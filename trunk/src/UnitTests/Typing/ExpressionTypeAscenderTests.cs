@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Typing
 
         private static Identifier Id(string name, DataType dt)
         {
-            return new Identifier(name, 1, dt, TemporaryStorage.None);
+            return new Identifier(name, dt, TemporaryStorage.None);
         }
 
         private void Verify(string outputFileName)
@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Typing
 
         private void RunTest(Expression e)
         {
-            var globals = new Identifier("globals", 0, PrimitiveType.Pointer32, TemporaryStorage.None);
+            var globals = new Identifier("globals", PrimitiveType.Pointer32, TemporaryStorage.None);
             store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store);
             e.Accept(eq);

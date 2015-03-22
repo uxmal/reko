@@ -11,6 +11,7 @@ void fn10000000()
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
+	esp = fp
 	eax = Mem0[0x10003420:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = eax
@@ -43,6 +44,7 @@ void fn10000017()
 fn10000017_entry:
 	// succ:  l10000017
 l10000017:
+	esp = fp
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebp
 	ebp = esp

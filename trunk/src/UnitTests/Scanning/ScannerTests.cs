@@ -74,16 +74,16 @@ namespace Decompiler.UnitTests.Scanning
             callSigs = new Dictionary<Address, ProcedureSignature>();
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
-            reg1 = new Identifier(r1.Name, r1.Number, PrimitiveType.Word32, r1);
+            reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
         }
 
         private ProcedureSignature CreateSignature(string ret, params string[] args)
         {
-            var retReg = new Identifier(ret, 0, PrimitiveType.Word32, new RegisterStorage(ret, 0, PrimitiveType.Word32));
+            var retReg = new Identifier(ret, PrimitiveType.Word32, new RegisterStorage(ret, 0, PrimitiveType.Word32));
             var argIds = new List<Identifier>();
             foreach (var arg in args)
             {
-                argIds.Add(new Identifier(arg, argIds.Count + 1, PrimitiveType.Word32,
+                argIds.Add(new Identifier(arg, PrimitiveType.Word32,
                     new RegisterStorage(ret, argIds.Count + 1, PrimitiveType.Word32)));
             }
             return new ProcedureSignature(retReg, argIds.ToArray());
@@ -324,6 +324,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = 0x0000
 	// succ:  l0C00_0003
 l0C00_0003:
@@ -440,6 +441,7 @@ fn0C00_0000_exit:
 void fn00001000()
 fn00001000_entry:
 l00001000:
+	r63 = fp
 	r1 = 0x00000000
 l00001004:
 	Mem0[0x00001800:word32] = r1
@@ -455,6 +457,7 @@ l00001004_in_fn00001100:
 	Mem0[0x00001800:word32] = r1
 	return
 l00001100:
+	r63 = fp
 	r1 = 0x00000001
 	goto l00001004_in_fn00001100
 fn00001100_exit:
@@ -500,6 +503,7 @@ fn00001100_exit:
 void fn1000()
 fn1000_entry:
 l00001000:
+	r63 = fp
 	r1 = 0x00000003
 	r63 = r63 - 0x00000004
 	Mem0[r63:word32] = r1
@@ -518,6 +522,7 @@ fn1000_exit:
 void fn00001100()
 fn00001100_entry:
 l00001100:
+	r63 = fp
 	r1 = Mem0[r63 + 0x00000004:word32]
 	branch r1 == 0x00000000 l00001120
 	goto l00001108
@@ -539,6 +544,7 @@ fn00001100_exit:
 void fn00001200()
 fn00001200_entry:
 l00001200:
+	r63 = fp
 	r1 = Mem0[r63 + 0x00000004:word32]
 	branch r1 == 0x00000000 l00001220
 l00001208:

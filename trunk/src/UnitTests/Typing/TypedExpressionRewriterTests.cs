@@ -129,7 +129,7 @@ namespace Decompiler.UnitTests.Typing
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
             SetupPreStages(prog);
-            Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
+            Identifier id = new Identifier("v0", PrimitiveType.Word32, null);
             Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
             prog.Globals.Accept(eqb);
@@ -180,7 +180,7 @@ namespace Decompiler.UnitTests.Typing
             SetupPreStages(prog);
             Constant r = Constant.Real32(3.0F);
             Constant i = Constant.Int32(1);
-            Identifier x = new Identifier("x", 0, PrimitiveType.Word32, null);
+            Identifier x = new Identifier("x", PrimitiveType.Word32, null);
             Assignment ass = new Assignment(x, r);
             TypeVariable tvR = r.TypeVariable = factory.CreateTypeVariable();
             TypeVariable tvI = i.TypeVariable = factory.CreateTypeVariable();

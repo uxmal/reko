@@ -57,9 +57,9 @@ namespace Decompiler.UnitTests.Scanning
             proc = new Procedure("testProc", new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             trace = new RtlTrace(0x00100000);
-            r0 = new Identifier("r0", 0, PrimitiveType.Word32, new RegisterStorage("r0", 0, PrimitiveType.Word32));
-            r1 = new Identifier("r1", 0, PrimitiveType.Word32, new RegisterStorage("r1", 0, PrimitiveType.Word32));
-            r2 = new Identifier("r2", 0, PrimitiveType.Word32, new RegisterStorage("r2", 0, PrimitiveType.Word32));
+            r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, PrimitiveType.Word32));
+            r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 0, PrimitiveType.Word32));
+            r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(3, "SCZ", PrimitiveType.Byte);
 
             scanner = mr.StrictMock<IScanner>();

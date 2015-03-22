@@ -16,6 +16,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = 0x0003
 	al = fn0C00_0015(ax)
 	Mem0[ds:0x0300:byte] = al
@@ -45,6 +46,7 @@ byte fn0C00_0015(word16 ax)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
+	sp = fp
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false
@@ -83,6 +85,7 @@ byte fn0C00_0020(word16 ax)
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
+	sp = fp
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false

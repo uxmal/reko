@@ -19,6 +19,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = Mem0[ds:0x0200:word16]
 	dx = Mem0[ds:0x0202:word16]
 	cx = Mem0[ds:0x0204:word16]

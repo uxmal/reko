@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	cx = 0x007B
 	ax = 0x0020
 	bx = 0x3212
@@ -43,6 +44,7 @@ maybeterminate_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0015:
+	sp = fp
 	SCZO = cond(ax - Mem0[ds:bx:word16])
 	branch Test(ULT,C) l0C00_0023
 // DataOut: ax bx ds

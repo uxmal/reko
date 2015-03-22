@@ -182,14 +182,14 @@ namespace Decompiler.Analysis
 			{
 				Coalesced = false;
 
-				bool[] visited = new bool[ssa.Identifiers.Count];
+				var visited = new HashSet<Identifier>();
 				for (int i = 0; i < block.Statements.Count; ++i)
 				{
 					Statement stmDef = block.Statements[i];
 					Assignment ass = stmDef.Instruction as Assignment;
-					if (ass != null && !visited[ass.Dst.Number])
+					if (ass != null && !visited.Contains(ass.Dst))
 					{
-						visited[ass.Dst.Number] = true;
+						visited.Add(ass.Dst);
 						SsaIdentifier sidDef = ssa.Identifiers[ass.Dst];
 						if (TryMoveAssignment(stmDef, sidDef, ass.Src, block, i))
 						{

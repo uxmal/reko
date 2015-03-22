@@ -10,6 +10,7 @@ void fn10000008()
 fn10000008_entry:
 	// succ:  l10000008
 l10000008:
+	esp = fp
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = 0x00000008
 	eax = malloc(Mem0[esp:size_t])

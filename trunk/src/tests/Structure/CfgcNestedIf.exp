@@ -25,8 +25,8 @@ l0C00_0019:
 	ax = 0xFFF4
 	// succ:  l0C00_001C
 l0C00_001C:
-	Mem17[ds:0x0300:word16] = ax
-	Mem18[ds:0x0302:byte] = cl_13
+	Mem10[ds:0x0300:word16] = ax
+	Mem12[ds:0x0302:byte] = cl_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -59,8 +59,8 @@ l0C00_0019:
 	ax = 0xFFF4
 	// succ:  l0C00_001C
 l0C00_001C:
-	Mem17[ds:0x0300:word16] = ax
-	Mem18[ds:0x0302:byte] = cl_13
+	Mem10[ds:0x0300:word16] = ax
+	Mem12[ds:0x0302:byte] = cl_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

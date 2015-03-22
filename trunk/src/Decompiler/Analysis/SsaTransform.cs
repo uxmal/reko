@@ -23,10 +23,9 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
-using System;
+using Decompiler.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
 
 namespace Decompiler.Analysis
 {
@@ -41,6 +40,7 @@ namespace Decompiler.Analysis
 		private const byte BitDefined = 1;
 		private const byte BitDeadIn = 2;
 		private const byte BitHasPhi = 4;
+        private Dictionary<Expression, byte>[] AOrig;
 
 		/// <summary>
 		/// Constructs an SsaTransform, and in the process generates the SsaState for the procedure <paramref>proc</paramref>.
@@ -53,6 +53,7 @@ namespace Decompiler.Analysis
 			this.varsOrig = new Identifier[proc.Frame.Identifiers.Count];
 			proc.Frame.Identifiers.CopyTo(varsOrig);
             this.SsaState = new SsaState(proc, gr);
+            this.AOrig = CreateA();
 
 			Transform();
 		}
@@ -77,13 +78,14 @@ namespace Decompiler.Analysis
 			return stm.Instruction;
 		}
 
-		private void LocateAllDefinedVariables(Dictionary<Expression, byte>[] defOrig)
+		private IEnumerable<Identifier> LocateAllDefinedVariables(Dictionary<Expression, byte>[] defOrig)
 		{
 			var ldv = new LocateDefinedVariables(proc, this.SsaState, this.StackVariables, defOrig);
 			foreach (Block n in SsaState.DomGraph.ReversePostOrder.Keys)
 			{
 				ldv.LocateDefs(n);
 			}
+            return ldv.Definitions;
 		}
 
 		private void MarkTemporariesDeadIn(Dictionary<Expression, byte>[] def)
@@ -103,13 +105,12 @@ namespace Decompiler.Analysis
 
 		private void PlacePhiFunctions()
 		{
-            var AOrig = CreateA();
-			LocateAllDefinedVariables(AOrig);
+			var defVars = LocateAllDefinedVariables(AOrig);
 			MarkTemporariesDeadIn(AOrig);
 
 			// For each defined variable in block n, collect the places where it is defined
 
-			foreach (var a in varsOrig)
+			foreach (var a in defVars)
 			{
 				// Create a worklist W of all the blocks that define a.
 
@@ -157,6 +158,19 @@ namespace Decompiler.Analysis
             return a;
         }
 
+
+        private static Identifier EnsureStackVariable(Procedure proc, Expression effectiveAddress, DataType dt)
+        {
+            if (effectiveAddress == proc.Frame.FramePointer)
+                return proc.Frame.EnsureStackVariable(0, dt);
+            var bin = (BinaryExpression)effectiveAddress;
+            var offset = ((Constant)bin.Right).ToInt32();
+            if (bin.Operator == Operator.ISub)
+                offset = -offset;
+            var idFrame = proc.Frame.EnsureStackVariable(offset, dt);
+            return idFrame;
+        }
+
         private static bool IsFrameAccess(Procedure proc, Expression e)
         {
             if (e == proc.Frame.FramePointer)
@@ -172,7 +186,7 @@ namespace Decompiler.Analysis
         public SsaState Transform()
 		{
 			PlacePhiFunctions();
-			var rn = new VariableRenamer(this.SsaState, this.varsOrig, proc);
+			var rn = new VariableRenamer(this.SsaState, this.StackVariables, proc);
 			rn.RenameBlock(proc.EntryBlock);
             return SsaState;
 		}
@@ -192,6 +206,8 @@ namespace Decompiler.Analysis
             private Dictionary<Expression, byte>[] defVars; // variables defined by a statement.
 			private Statement stmCur;
             private SsaState ssa;
+            private List<Identifier> definitions;
+            private HashSet<Identifier> inDefinitions;
 
 			public LocateDefinedVariables(Procedure proc, SsaState ssa, bool frameVariables, Dictionary<Expression, byte>[] defOrig)
 			{
@@ -199,9 +215,13 @@ namespace Decompiler.Analysis
                 this.ssa = ssa;
                 this.frameVariables = frameVariables;
                 this.defVars = defOrig;
+                this.definitions = new List<Identifier>();
+                this.inDefinitions = new HashSet<Identifier>();
 			}
 
-			private void MarkDefined(Expression eDef)
+            public IEnumerable<Identifier> Definitions { get { return definitions; } }
+
+			private void MarkDefined(Identifier eDef)
 			{
                 SsaIdentifier sid;
                 var idDef = eDef as Identifier;
@@ -215,6 +235,11 @@ namespace Decompiler.Analysis
                 byte bits;
                 dict.TryGetValue(eDef, out bits);
 				dict[eDef] = (byte) (bits | (BitDefined | BitDeadIn));
+                if (!inDefinitions.Contains(eDef))
+                {
+                    inDefinitions.Add(eDef);
+                    definitions.Add(eDef);
+                }
 			}
 
 			public void LocateDefs(Block b)
@@ -245,10 +270,13 @@ namespace Decompiler.Analysis
 
                 if (this.frameVariables && IsFrameAccess(proc, access.EffectiveAddress))
                 {
-                    MarkDefined(access.EffectiveAddress);
+                    var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
+                    MarkDefined(idFrame);
                 }
-
-				store.Dst.Accept(this);
+                else
+                {
+                    store.Dst.Accept(this);
+                }
 				store.Src.Accept(this);
 			}
 
@@ -301,15 +329,16 @@ namespace Decompiler.Analysis
                 else
                     outArg.Expression.Accept(this);
             }
-		}
+        }
 
 		public class VariableRenamer : InstructionTransformer
 		{
 			private SsaState ssa;
-			private Dictionary<Expression, Identifier> rename;		// most recently used name for var x.
-            private Dictionary<Expression, Identifier> wasonentry;	// the name x had on entry into the block.
+            private bool renameFrameAccess;
+			private Dictionary<Identifier, Identifier> rename;		// most recently used name for var x.
 			private Statement stmCur; 
 			private Procedure proc;
+            private HashSet<Expression> existingDefs;
 
 			/// <summary>
 			/// Walks the dominator tree, renaming the different definitions of variables
@@ -318,37 +347,44 @@ namespace Decompiler.Analysis
 			/// <param name="ssa">SSA identifiers</param>
 			/// <param name="p">procedure to rename</param>
 			/// <param name="useSignature">if true, uses variables from procedure's signature.</param>
-			public VariableRenamer(SsaState ssa, Identifier [] varsOrig, Procedure p)
+			public VariableRenamer(SsaState ssa, bool renameFrameAcceses, Procedure p)
 			{
 				this.ssa = ssa;
-				this.rename = new Dictionary<Expression, Identifier>(varsOrig.Length, new ExpressionValueComparer());
-                this.wasonentry = new Dictionary<Expression, Identifier>(varsOrig.Length, new ExpressionValueComparer());
+                this.renameFrameAccess = renameFrameAcceses;
+				this.rename = new Dictionary<Identifier, Identifier>();
 				this.stmCur = null;
 				this.proc = p;
-
-				Block entryBlock = p.EntryBlock;
-                var existingDefs = entryBlock.Statements
+                this.existingDefs = p.EntryBlock.Statements
                     .Select(s => s.Instruction as DefInstruction)
                     .Where(d => d != null)
                     .Select(d => d.Expression)
                     .ToHashSet();
-				for (int a = 0; a < varsOrig.Length; ++a)
-				{
-                    rename[varsOrig[a]] = varsOrig[a];
-                    if (existingDefs.Contains(varsOrig[a]))
-                        continue;
-                    var id = ssa.Identifiers.Add(varsOrig[a], null, null, false);
-
-					// Variables that are used before defining are "predefined" by adding a 
-                    // DefInstruction in the entry block for the procedure. Any such variables 
-                    // that are found to be live correspond to the input parameters of the 
-                    // procedure.
-
-					id.DefStatement = new Statement(0, new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);
-					entryBlock.Statements.Add(id.DefStatement);
-					wasonentry[varsOrig[a]] = null;
-				}
 			}
+
+            /// <summary>
+            /// Variables that are used before defining are "predefined" by adding a 
+            /// DefInstruction in the entry block for the procedure. Any such variables 
+            /// that are found to be live correspond to the input parameters of the 
+            /// procedure.
+            /// </summary>
+            /// <param name="id"></param>
+            private SsaIdentifier UsedBeforeDefined(Identifier id)
+            {
+                Block entryBlock = proc.EntryBlock;
+                rename[id] = id;
+                if (!existingDefs.Contains(id))
+                {
+                    var sid = this.ssa.Identifiers.Add(id, null, null, false);
+                    sid.DefStatement = new Statement(0, new DefInstruction(id), entryBlock);
+                    entryBlock.Statements.Add(sid.DefStatement);
+                    existingDefs.Add(id);
+                    return sid;
+                }
+                else
+                {
+                    return ssa.Identifiers[id];
+                }
+            }
 
 			/// <summary>
 			/// Renames all variables in a block to use their SSA names
@@ -356,7 +392,7 @@ namespace Decompiler.Analysis
 			/// <param name="n">Block to rename</param>
 			public void RenameBlock(Block n)
 			{
-				var wasonentry = new Dictionary<Expression, Identifier>(rename,  new ExpressionValueComparer());
+				var wasonentry = new Dictionary<Identifier, Identifier>(rename);
 
 				// Rename variables in all blocks except the starting block which
 				// only contains dummy 'def' variables.
@@ -366,7 +402,7 @@ namespace Decompiler.Analysis
 					foreach (Statement stm in n.Statements)
 					{
 						stmCur = stm;
-						stmCur.Instruction.Accept(this);
+						stmCur.Instruction = stmCur.Instruction.Accept(this);
 					}
 				}
 
@@ -383,17 +419,14 @@ namespace Decompiler.Analysis
 
 							// For each phi function in y...
 
-							foreach (Statement stm in y.Statements)
+							foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))
 							{
 								stmCur = stm;
-								PhiAssignment phi = stmCur.Instruction as PhiAssignment;
-								if (phi != null)
-								{
-									PhiFunction p = (PhiFunction) phi.Src;
-									// replace 'n's slot with the renamed name of the variable.
-									p.Arguments[j] = 
-										NewUse((Identifier) p.Arguments[j], stm);
-								}
+								PhiAssignment phi = (PhiAssignment) stmCur.Instruction;
+								PhiFunction p = phi.Src;
+								// replace 'n's slot with the renamed name of the variable.
+								p.Arguments[j] = 
+									NewUse((Identifier)p.Arguments[j], stm);
 							}
 						}
 					}
@@ -406,21 +439,19 @@ namespace Decompiler.Analysis
 				rename = wasonentry;
 			}
 
-			// Record the id that v was mapped to on entry to this block;
-
-			private void EnsureWasOnEntry(Expression v, Identifier id)
-			{
-				if (wasonentry[v] == null)
-				{
-					wasonentry[v] = id;
-				}	
-			}
-
-            // A new definition of id requires a new SSA name.
-			private Identifier NewDef(Identifier eOld, Expression exprDef, bool isSideEffect)
+            /// <summary>
+            /// Called when a new definition of a location is encountered.
+            /// A new definition of id requires a new SSA name.
+            /// </summary>
+            /// <param name="idOld">The expression we wish to replace with an SSA name.</param>
+            /// <param name="exprDef">The defining expression of idOld</param>
+            /// <param name="isSideEffect">False if this is a traditional assignment, true if it is an
+            /// out parameter of a function call.</param>
+            /// <returns>The identifier of the new SSA identifier</returns>
+			private Identifier NewDef(Identifier idOld, Expression exprDef, bool isSideEffect)
 			{
                 SsaIdentifier sidOld;
-                if (ssa.Identifiers.TryGetValue(eOld, out sidOld))
+                if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out sidOld))
                 {
                     if (sidOld.OriginalIdentifier != sidOld.Identifier)
                     {
@@ -428,35 +459,39 @@ namespace Decompiler.Analysis
                         return sidOld.Identifier;
                     }
                 }
-				var sid = ssa.Identifiers.Add(eOld, stmCur, exprDef, isSideEffect);
-				var iNew = Rename(eOld);
-				rename[eOld] = sid.Identifier;
-				EnsureWasOnEntry(eOld, iNew);
+				var sid = ssa.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
+				rename[idOld] = sid.Identifier;
 				return sid.Identifier;
 			}
 
 			private Identifier NewUse(Identifier idOld, Statement stm)
 			{
-                SsaIdentifier sidOld;
-                if (ssa.Identifiers.TryGetValue(idOld, out sidOld))
+                SsaIdentifier sid;
+                if (ssa.Identifiers.TryGetValue(idOld, out sid))
                 {
-                    idOld = sidOld.OriginalIdentifier;
+                    idOld = sid.OriginalIdentifier;
                 }
-                var iNew = Rename(idOld);
-				var sid = ssa.Identifiers[iNew];
+                Identifier idNew;
+                if (!this.rename.TryGetValue(idOld, out idNew))
+                {
+                    // A use before a definition! This identifier
+                    // must be live-in to the procedure.
+                    sid = UsedBeforeDefined(idOld);
+                }
+                else
+                {
+                    // Seen it before, use the most recent
+                    // renamed version of the identifier.
+                    sid = ssa.Identifiers[idNew];
+                }
 				sid.Uses.Add(stm);
 				return sid.Identifier;
 			}
 
-            private Identifier Rename(Identifier idOld)
-            {
-                return rename[idOld];
-            }
-
 			public override Instruction TransformAssignment(Assignment ass)
 			{
 				ass.Src = ass.Src.Accept(this);
-				Identifier id = (Identifier) ass.Dst;
+				Identifier id = ass.Dst;
 				ass.Dst = NewDef(id, ass.Src, false);
 				return ass;
 			}
@@ -464,8 +499,10 @@ namespace Decompiler.Analysis
 			public override Instruction TransformPhiAssignment(PhiAssignment phi)
 			{
 				// Only rename the defined variable in phi-functions.
+                // The arguments of the phi-function will be renamed 
+                // elsewhere.
 
-				Identifier id = (Identifier) phi.Dst;
+				Identifier id = phi.Dst;
                 phi.Dst = NewDef(id, phi.Src, false);
 				return phi;
 			}
@@ -520,6 +557,28 @@ namespace Decompiler.Analysis
 				return NewUse(id, stmCur);
 			}
 
+            public override Expression VisitMemoryAccess(MemoryAccess access)
+            {
+                if (this.renameFrameAccess && IsFrameAccess(proc, access.EffectiveAddress))
+                {
+                    var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
+                    var idNew = NewUse(idFrame, stmCur);
+                    return idNew;
+                }
+                return base.VisitMemoryAccess(access);
+            }
+
+            public override Expression VisitSegmentedAccess(SegmentedAccess access)
+            {
+                if (this.renameFrameAccess && IsFrameAccess(proc, access.EffectiveAddress))
+                {
+                    var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
+                    var idNew = NewUse(idFrame, stmCur);
+                    return idNew;
+                }
+                return base.VisitSegmentedAccess(access);
+            }
+
 			public override Instruction TransformStore(Store store)
 			{
 				store.Src = store.Src.Accept(this);
@@ -527,6 +586,12 @@ namespace Decompiler.Analysis
 				var acc = store.Dst as MemoryAccess;
 				if (acc != null)
 				{
+                    if (this.renameFrameAccess && IsFrameAccess(proc, acc.EffectiveAddress))
+                    {
+                        var idFrame = EnsureStackVariable(proc, acc.EffectiveAddress, acc.DataType);
+                        var idDst = NewDef(idFrame, store.Src, false);
+                        return new Assignment(idDst, store.Src);
+                    }
 					acc.MemoryId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);
 					SegmentedAccess sa = acc as SegmentedAccess;
 					if (sa != null)
@@ -545,6 +610,12 @@ namespace Decompiler.Analysis
 				unary.Expression = unary.Expression.Accept(this);
 				return unary;
 			}
+
+            public override Instruction TransformUseInstruction(UseInstruction u)
+            {
+                u.OutArgument = UsedBeforeDefined(u.OutArgument).Identifier;
+                return base.TransformUseInstruction(u);
+            }
 		}
     }
 }

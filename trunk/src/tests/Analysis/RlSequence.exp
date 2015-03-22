@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	si = 0x1234
 	call fn0C00_000B (retsize: 2; depth: 2)
 	Mem0[ds:0x4321:word16] = ax
@@ -41,6 +42,7 @@ fn0C00_000B_entry:
 
 // SymbolicIn: sp:fp
 l0C00_000B:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = si
 	call fn0C00_0026 (retsize: 2; depth: 4)
@@ -77,6 +79,7 @@ fn0C00_0026_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0026:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = si
 	Mem0[ds:si:word16] = 0x0001
@@ -109,6 +112,7 @@ fn0C00_0035_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0035:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = di
 	v7 = Mem0[ds:si + 0x0002:word16] + 0x0001

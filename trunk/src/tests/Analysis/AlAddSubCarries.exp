@@ -6,20 +6,21 @@ ds:ds (aliases:)
 dx:dx (aliases: dx_ax)
 cx:cx (aliases: es_cx cl bx_cx)
 bx:bx (aliases: bx_cx)
-SCZO:Flags (aliases: C SZO)
+SCZO:Flags (aliases: SZO C)
 C:Flags (aliases: SCZO)
 es:es (aliases: es_cx)
 es_cx:Sequence es:cx (aliases: cx es cl)
 SZO:Flags (aliases: SCZO)
 cl:cl (aliases: cx es_cx bx_cx)
 dx_ax:Sequence dx:ax (aliases: ax dx)
-bx_cx:Sequence bx:cx (aliases: cx bx cl)
+bx_cx:Sequence bx:cx (aliases: bx cx cl)
 // fn0C00_0000
 // Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = Mem0[ds:0x0200:word16]
 	dx = Mem0[ds:0x0202:word16]
 	cx = Mem0[ds:0x0204:word16]

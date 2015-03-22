@@ -18,6 +18,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = 0x0320
 	sp = fp - 0x0004
@@ -54,6 +55,7 @@ void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
 fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002
@@ -93,6 +95,7 @@ void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
+	sp = fp
 	rLoc1 = 0
 	Mem0[ds:0x0400:real64] = rLoc1
 	rLoc1 = 1

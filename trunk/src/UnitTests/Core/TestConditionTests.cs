@@ -30,7 +30,7 @@ namespace Decompiler.UnitTests.Core
     [TestFixture]
     public class TestConditionTests
     {
-        private Identifier id = new Identifier("id", 0, PrimitiveType.Word32, 
+        private Identifier id = new Identifier("id", PrimitiveType.Word32, 
             new TemporaryStorage("id", 0, PrimitiveType.Word32));
 
         private string InvertTest(ConditionCode cc)

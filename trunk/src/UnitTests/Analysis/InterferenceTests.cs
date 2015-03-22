@@ -33,8 +33,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void InterfSymmetry()
 		{
-			var id1 = new Identifier("id1", 0, PrimitiveType.Word32, null);
-			var id2 = new Identifier("id2", 1, PrimitiveType.Word32, null);
+			var id1 = new Identifier("id1", PrimitiveType.Word32, null);
+			var id2 = new Identifier("id2", PrimitiveType.Word32, null);
 
 			var intf1 = new Interference(id1, id2);
 			var intf2 = new Interference(id1, id2);

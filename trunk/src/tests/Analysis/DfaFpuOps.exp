@@ -29,11 +29,11 @@ void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
 fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
-	real64 rLoc1_16 = Mem0[ds:wArg02:real64]
-	real64 rLoc2_18 = Mem0[ds:wArg02 + 0x0008:real64]
-	real64 rLoc2_21 = Mem0[ds:wArg02 + 0x0010:real64]
-	Mem25[ds:wArg04:real64] = rLoc1_16 * rLoc1_16 + rLoc2_18 * rLoc2_18 + rLoc2_21 * rLoc2_21
-	Mem27[ds:wArg04 + 0x0028:real64] = (real64) Mem25[ds:wArg04 + 0x0020:int16]
+	real64 rLoc1_10 = Mem0[ds:wArg02:real64]
+	real64 rLoc2_12 = Mem0[ds:wArg02 + 0x0008:real64]
+	real64 rLoc2_15 = Mem0[ds:wArg02 + 0x0010:real64]
+	Mem20[ds:wArg04:real64] = rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 + rLoc2_15 * rLoc2_15
+	Mem22[ds:wArg04 + 0x0028:real64] = (real64) Mem20[ds:wArg04 + 0x0020:int16]
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
@@ -50,8 +50,8 @@ void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
-	Mem6[ds:0x0400:real64] = 0
-	Mem8[ds:0x0408:int32] = (int32) 1
+	Mem3[ds:0x0400:real64] = 0
+	Mem6[ds:0x0408:int32] = (int32) 1
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:

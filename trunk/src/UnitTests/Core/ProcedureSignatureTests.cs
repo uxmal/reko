@@ -37,8 +37,8 @@ namespace Decompiler.UnitTests.Core
 			{
 				IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 				uint f = (uint)(FlagM.CF|FlagM.ZF);
-				Identifier argF = new Identifier(arch.GrfToString(f), 0, PrimitiveType.Bool, new FlagGroupStorage(f, "CZ", PrimitiveType.Byte));
-				Identifier argR = new Identifier(Registers.ax.Name, 1, Registers.ax.DataType, Registers.ax);
+				Identifier argF = new Identifier(arch.GrfToString(f), PrimitiveType.Bool, new FlagGroupStorage(f, "CZ", PrimitiveType.Byte));
+				Identifier argR = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
 				
 				argF.Write(true, fut.TextWriter);
 				fut.TextWriter.WriteLine();
@@ -52,19 +52,19 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void PsigArgument()
 		{
-			Identifier arg = new Identifier(Registers.eax.Name, 0, Registers.eax.DataType, Registers.eax);
+			Identifier arg = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
 			Assert.AreEqual("eax", arg.Name);
 			Assert.AreEqual(PrimitiveType.Word32, arg.DataType);
 			Assert.AreEqual("eax", arg.Name);
 			Assert.AreEqual(PrimitiveType.Word32, arg.DataType);
 
-			Identifier arg2 = new Identifier(Registers.eax.Name, 0, Registers.eax.DataType, Registers.eax);
+			Identifier arg2 = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
 		}
 
 		[Test]
 		public void PsigValidArguments()
 		{
-			Identifier arg = new Identifier(Registers.eax.Name, 0, Registers.eax.DataType, Registers.eax);
+			Identifier arg = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
 			ProcedureSignature sig = new ProcedureSignature(null, new Identifier[] { arg });
 			Assert.IsTrue(sig.ParametersValid);
 

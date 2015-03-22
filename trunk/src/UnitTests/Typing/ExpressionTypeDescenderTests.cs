@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Typing
         }
         private static Identifier Id(string name, DataType dt)
         {
-            return new Identifier(name, 1, dt, TemporaryStorage.None);
+            return new Identifier(name, dt, TemporaryStorage.None);
         }
 
         private void Verify(string outputFileName)

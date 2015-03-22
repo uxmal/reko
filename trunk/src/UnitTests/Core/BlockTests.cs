@@ -38,11 +38,11 @@ namespace Decompiler.UnitTests.Core
 				Block bl = new Block(null, "block0");
 				bl.Statements.Add(0,
 					new Assignment(
-					new Identifier("id3", 3, PrimitiveType.Word16, null),
-					new Identifier("id4", 4, PrimitiveType.Word16, null)));
+					new Identifier("id3", PrimitiveType.Word16, null),
+					new Identifier("id4", PrimitiveType.Word16, null)));
 				bl.Statements.Add(4,
 					new Assignment(
-					new Identifier("id4", 4, PrimitiveType.Word16, null),
+					new Identifier("id4", PrimitiveType.Word16, null),
 					Constant.Word16(3)));
 
 				bl.Write(fut.TextWriter);

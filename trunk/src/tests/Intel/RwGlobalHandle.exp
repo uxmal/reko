@@ -11,6 +11,7 @@ void fn10000000()
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
+	esp = fp
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = esi
 	esi = Mem0[esp + 0x00000008:word32]

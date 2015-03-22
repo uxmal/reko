@@ -13,6 +13,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	cx = 0x0064
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = cx
@@ -41,6 +42,7 @@ void fn0C00_000F()
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
+	sp = fp
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = sp

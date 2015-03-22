@@ -65,7 +65,7 @@ namespace Decompiler.Core.Serialization
 
 		public Identifier CreateId(string name, DataType type, Storage storage)
 		{
-			return new Identifier(name, identifierNumber++, type, storage);
+			return new Identifier(name, type, storage);
 		}
 
 		public ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)

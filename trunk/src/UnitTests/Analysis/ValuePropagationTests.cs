@@ -377,18 +377,18 @@ namespace Decompiler.UnitTests.Analysis
 		private Identifier Reg32(string name)
 		{
 			var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
-			Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, mr);
+			Identifier id = new Identifier(mr.Name, mr.DataType, mr);
 			SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-			ssaIds.Add(sid);
+			ssaIds.Add(id, sid);
 			return sid.Identifier;
 		}
 
         private Identifier Reg16(string name)
         {
             var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word16);
-            Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, mr);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
             SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(sid);
+            ssaIds.Add(id, sid);
             return sid.Identifier;
         }
 
@@ -396,9 +396,9 @@ namespace Decompiler.UnitTests.Analysis
         private Identifier Reg8(string name)
         {
             var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Byte);
-            Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, mr);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
             SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(sid);
+            ssaIds.Add(id, sid);
             return sid.Identifier;
         }
 

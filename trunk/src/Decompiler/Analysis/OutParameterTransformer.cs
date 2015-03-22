@@ -105,9 +105,9 @@ namespace Decompiler.Analysis
 			return a;
 		}
 
-		public MemoryAccess Dereference(Identifier idOut, DataType dt)
+		public Dereference Dereference(Identifier idOut, DataType dt)
 		{
-			return new MemoryAccess(MemoryIdentifier.GlobalMemory, idOut, dt);
+			return new Dereference(dt, idOut);
 		}
 
 		public override Instruction TransformDefInstruction(DefInstruction def)

@@ -42,9 +42,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TvrReplaceInMem()
 		{
-			var id1 = new Identifier("pptr", 1, PrimitiveType.Word32, null);
-			var id2 = new Identifier("ptr", 2, PrimitiveType.Word32, null);
-			var id3 = new Identifier("v", 3, PrimitiveType.Word32, null);
+			var id1 = new Identifier("pptr", PrimitiveType.Word32, null);
+			var id2 = new Identifier("ptr", PrimitiveType.Word32, null);
+			var id3 = new Identifier("v", PrimitiveType.Word32, null);
 			var ass1 = new Assignment(id2, MemLoad(id1, 0, PrimitiveType.Word32));
 			var ass2 = new Assignment(id3, MemLoad(id2, 0, PrimitiveType.Word32));
 			eqb.VisitAssignment(ass1);

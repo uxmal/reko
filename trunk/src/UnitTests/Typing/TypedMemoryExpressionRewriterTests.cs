@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PointerToSingleItem()
 		{
-			var ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
+			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			var tv = store.EnsureExpressionTypeVariable(factory, ptr);
 			tv.OriginalDataType = new Pointer(point, 4);
 			var eq = new EquivalenceClass(tv);
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PointerToSecondItemOfPoint()
 		{
-			Identifier ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
+			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			store.EnsureExpressionTypeVariable(factory, ptr);
 			EquivalenceClass eqPtr = new EquivalenceClass(ptr.TypeVariable);
 			eqPtr.DataType = point;

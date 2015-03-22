@@ -53,7 +53,7 @@ namespace Decompiler.Environments.RiscOS
                         Terminates = true,
                     },
                     Signature = new ProcedureSignature(null,
-                        new Identifier("r0", 0, PrimitiveType.Pointer32, A32Registers.r0))
+                        new Identifier("r0", PrimitiveType.Pointer32, A32Registers.r0))
                 };
             }
             throw new NotSupportedException(string.Format("Unknown RiscOS vector &{0:X}.", vector)); 

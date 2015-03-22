@@ -55,8 +55,8 @@ namespace Decompiler.UnitTests.Scanning
 
         private void Test()
         {
-            reg = new Identifier("reg", 1, PrimitiveType.Word32, new RegisterStorage("reg", 1, PrimitiveType.Word32));
-            SCZO = new Identifier("SCZO", 2, PrimitiveType.Byte, new FlagGroupStorage(0xF, "SCZO", PrimitiveType.Byte));
+            reg = new Identifier("reg", PrimitiveType.Word32, new RegisterStorage("reg", 1, PrimitiveType.Word32));
+            SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(0xF, "SCZO", PrimitiveType.Byte));
             var traces = new RtlTraceBuilder
             {
                 { 

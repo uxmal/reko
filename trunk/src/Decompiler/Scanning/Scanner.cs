@@ -455,12 +455,15 @@ namespace Decompiler.Scanning
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
             st.OnProcedureEntered();
-            st.SetValue(proc.Frame.EnsureRegister(program.Architecture.StackRegister), proc.Frame.FramePointer);
+            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
+            st.SetValue(sp, proc.Frame.FramePointer);
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
             queue = oldQueue;
 
+            // Add <stackpointer> := fp explicitly to the starting block.
+            proc.EntryBlock.Succ[0].Statements.Insert(0, addr.Linear, new Assignment(sp, proc.Frame.FramePointer));
             return proc;
         }
 

@@ -14,6 +14,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	rLoc1 = Mem0[ds:0x0300:real32]
 	rLoc2 = Mem0[ds:0x0304:real32]
 	sp = sp - 0x0002
@@ -48,6 +49,7 @@ void fn0C00_0024()
 fn0C00_0024_entry:
 	// succ:  l0C00_0024
 l0C00_0024:
+	sp = fp
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = sp
@@ -75,6 +77,7 @@ void fn0C00_0031()
 fn0C00_0031_entry:
 	// succ:  l0C00_0031
 l0C00_0031:
+	sp = fp
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = sp

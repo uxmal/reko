@@ -246,7 +246,7 @@ namespace Decompiler.Environments.C64
                 }
             }
             sb.AppendFormat("_{0}", suffix);
-            id = new Identifier(sb.ToString(), -1, dt, new MemoryStorage());
+            id = new Identifier(sb.ToString(), dt, new MemoryStorage());
             return true;
         }
 

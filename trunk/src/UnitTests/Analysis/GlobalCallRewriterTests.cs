@@ -99,16 +99,15 @@ namespace Decompiler.UnitTests.Analysis
 		{
             Procedure proc = new Procedure("foo", program.Architecture.CreateFrame());
 			proc.Signature = new ProcedureSignature(
-				new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
+				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
-					new Identifier("ecx", 1, PrimitiveType.Word32, Registers.ecx),
-					new Identifier("edxOut", 2, PrimitiveType.Word32, 
+					new Identifier("ecx", PrimitiveType.Word32, Registers.ecx),
+					new Identifier("edxOut", PrimitiveType.Word32, 
 									  new OutArgumentStorage(proc.Frame.EnsureRegister(Registers.edx)))});
 			gcr.EnsureSignature(proc, null);
 			gcr.AddUseInstructionsForOutArguments(proc);
 			Assert.AreEqual(1, proc.ExitBlock.Statements.Count);
 			Assert.AreEqual("use edx (=> edxOut)", proc.ExitBlock.Statements[0].Instruction.ToString());
-
 		}
 
 		[Test]

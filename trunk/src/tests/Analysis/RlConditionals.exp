@@ -14,6 +14,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	ax = Mem0[ds:0x0100:word16]
 	SCZO = cond(Mem0[ds:0x0102:word16] - ax)
 	branch Test(EQ,Z) l0C00_000F
@@ -165,6 +166,7 @@ fn0C00_0069_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0069:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002

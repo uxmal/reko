@@ -38,8 +38,8 @@ namespace Decompiler.UnitTests.Typing
 			TypeStore store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
 
-			Identifier pptr = new Identifier("pptr", 0, PrimitiveType.Word32, null);
-			Identifier ptr = new Identifier("ptr", 0, PrimitiveType.Word32, null);
+			Identifier pptr = new Identifier("pptr", PrimitiveType.Word32, null);
+			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 		}
 
 		private MemoryAccess MemLoad(Identifier id, int offset, PrimitiveType size)

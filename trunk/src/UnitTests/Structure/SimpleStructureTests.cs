@@ -190,7 +190,7 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void FragmentTest()
+        public void StrFragmentTest()
         {
             RewriteX86Fragment(@"
 .i386
@@ -208,7 +208,7 @@ ret
             RunTest(@"void fn00400000(word32 dwArg04)
 {
 	if (dwArg04 != 0x00000000)
-		Mem15[0x00123234:word32] = 0x00006423;
+		Mem11[0x00123234:word32] = 0x00006423;
 	return;
 }
 ===

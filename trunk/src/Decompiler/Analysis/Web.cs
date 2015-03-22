@@ -54,7 +54,7 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				if (sid.Identifier.Number < this.Identifier.Number)
+				if (string.Compare(sid.Identifier.Name, this.Identifier.Name) < 0)
 				{
 					this.Identifier = sid.Identifier;
 				}
