@@ -31,15 +31,13 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class Identifier : Expression
 	{
-		public Identifier(string name, int number, DataType type, Storage stg) : base(type)
+		public Identifier(string name, DataType type, Storage stg) : base(type)
 		{
 			this.Name = name;
-			this.Number = number;
 			this.Storage = stg;
 		}
 
         public string Name { get; private set; }
-        public int Number { get; private set; }
         public Storage Storage { get; private set; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -107,7 +105,7 @@ namespace Decompiler.Core.Expressions
 	{
 		private static MemoryIdentifier g;
 
-		public MemoryIdentifier(int i, DataType dt) : base("Mem" + i, i, dt, new MemoryStorage())
+		public MemoryIdentifier(int i, DataType dt) : base("Mem" + i, dt, new MemoryStorage())
 		{
 		}
 

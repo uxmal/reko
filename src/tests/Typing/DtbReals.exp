@@ -16,11 +16,11 @@ void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
 fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
-	real64 rLoc1_16 = Mem0[ds:wArg02 + 0x0000:real64]
-	real64 rLoc2_18 = Mem0[ds:wArg02 + 0x0008:real64]
-	real64 rLoc2_21 = Mem0[ds:wArg02 + 0x0010:real64]
-	Mem25[ds:wArg04 + 0x0000:real64] = rLoc1_16 * rLoc1_16 + rLoc2_18 * rLoc2_18 + rLoc2_21 * rLoc2_21
-	Mem27[ds:wArg04 + 0x0028:real64] = (real64) Mem25[ds:wArg04 + 0x0020:int16]
+	real64 rLoc1_10 = Mem0[ds:wArg02 + 0x0000:real64]
+	real64 rLoc2_12 = Mem0[ds:wArg02 + 0x0008:real64]
+	real64 rLoc2_15 = Mem0[ds:wArg02 + 0x0010:real64]
+	Mem20[ds:wArg04 + 0x0000:real64] = rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 + rLoc2_15 * rLoc2_15
+	Mem22[ds:wArg04 + 0x0028:real64] = (real64) Mem20[ds:wArg04 + 0x0020:int16]
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
@@ -31,8 +31,8 @@ void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
-	Mem6[ds:0x0400:real64] = 0
-	Mem8[ds:0x0408:int32] = (int32) 1
+	Mem3[ds:0x0400:real64] = 0
+	Mem6[ds:0x0408:int32] = (int32) 1
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
@@ -61,7 +61,7 @@ Eq_11: (ptr (fn T_14 (T_7)))
 Eq_14: void
 	T_14 (in fn0C00_0037(ds) : void)
 Eq_15: real64
-	T_15 (in rLoc1_16 : real64)
+	T_15 (in rLoc1_10 : real64)
 	T_19 (in Mem0[ds:wArg02 + 0x0000:real64] : real64)
 Eq_16: (memptr T_4 (struct (0 T_19 t0000) (8 T_23 t0008) (10 T_27 t0010)))
 	T_16 (in wArg02 : word16)
@@ -70,30 +70,30 @@ Eq_17: word16
 Eq_18: word16
 	T_18 (in wArg02 + 0x0000 : word16)
 Eq_20: real64
-	T_20 (in rLoc2_18 : real64)
+	T_20 (in rLoc2_12 : real64)
 	T_23 (in Mem0[ds:wArg02 + 0x0008:real64] : real64)
 Eq_21: word16
 	T_21 (in 0x0008 : word16)
 Eq_22: word16
 	T_22 (in wArg02 + 0x0008 : word16)
 Eq_24: real64
-	T_24 (in rLoc2_21 : real64)
+	T_24 (in rLoc2_15 : real64)
 	T_27 (in Mem0[ds:wArg02 + 0x0010:real64] : real64)
 Eq_25: word16
 	T_25 (in 0x0010 : word16)
 Eq_26: word16
 	T_26 (in wArg02 + 0x0010 : word16)
 Eq_28: real64
-	T_28 (in rLoc1_16 * rLoc1_16 : real64)
+	T_28 (in rLoc1_10 * rLoc1_10 : real64)
 Eq_29: real64
-	T_29 (in rLoc2_18 * rLoc2_18 : real64)
+	T_29 (in rLoc2_12 * rLoc2_12 : real64)
 Eq_30: real64
-	T_30 (in rLoc1_16 * rLoc1_16 + rLoc2_18 * rLoc2_18 : real64)
+	T_30 (in rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 : real64)
 Eq_31: real64
-	T_31 (in rLoc2_21 * rLoc2_21 : real64)
+	T_31 (in rLoc2_15 * rLoc2_15 : real64)
 Eq_32: real64
-	T_32 (in rLoc1_16 * rLoc1_16 + rLoc2_18 * rLoc2_18 + rLoc2_21 * rLoc2_21 : real64)
-	T_36 (in Mem25[ds:wArg04 + 0x0000:real64] : real64)
+	T_32 (in rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 + rLoc2_15 * rLoc2_15 : real64)
+	T_36 (in Mem20[ds:wArg04 + 0x0000:real64] : real64)
 Eq_33: (memptr T_4 (struct (0 T_36 t0000) (20 T_39 t0020) (28 T_43 t0028)))
 	T_33 (in wArg04 : word16)
 Eq_34: word16
@@ -105,24 +105,24 @@ Eq_37: word16
 Eq_38: word16
 	T_38 (in wArg04 + 0x0020 : word16)
 Eq_39: int16
-	T_39 (in Mem25[ds:wArg04 + 0x0020:int16] : int16)
+	T_39 (in Mem20[ds:wArg04 + 0x0020:int16] : int16)
 Eq_40: real64
-	T_40 (in (real64) Mem25[ds:wArg04 + 0x0020:int16] : real64)
-	T_43 (in Mem27[ds:wArg04 + 0x0028:real64] : real64)
+	T_40 (in (real64) Mem20[ds:wArg04 + 0x0020:int16] : real64)
+	T_43 (in Mem22[ds:wArg04 + 0x0028:real64] : real64)
 Eq_41: word16
 	T_41 (in 0x0028 : word16)
 Eq_42: word16
 	T_42 (in wArg04 + 0x0028 : word16)
 Eq_44: real64
 	T_44 (in 0 : real64)
-	T_46 (in Mem6[ds:0x0400:real64] : real64)
+	T_46 (in Mem3[ds:0x0400:real64] : real64)
 Eq_45: (memptr T_13 (struct (0 T_46 t0000)))
 	T_45 (in 0x0400 : word16)
 Eq_47: real64
 	T_47 (in 1 : real64)
 Eq_48: int32
 	T_48 (in (int32) 1 : int32)
-	T_50 (in Mem8[ds:0x0408:int32] : int32)
+	T_50 (in Mem6[ds:0x0408:int32] : int32)
 Eq_49: (memptr T_13 (struct (0 T_50 t0000)))
 	T_49 (in 0x0408 : word16)
 // Type Variables ////////////
@@ -182,7 +182,7 @@ T_14: (in fn0C00_0037(ds) : void)
   Class: Eq_14
   DataType: void
   OrigDataType: void
-T_15: (in rLoc1_16 : real64)
+T_15: (in rLoc1_10 : real64)
   Class: Eq_15
   DataType: real64
   OrigDataType: real64
@@ -202,7 +202,7 @@ T_19: (in Mem0[ds:wArg02 + 0x0000:real64] : real64)
   Class: Eq_15
   DataType: real64
   OrigDataType: real64
-T_20: (in rLoc2_18 : real64)
+T_20: (in rLoc2_12 : real64)
   Class: Eq_20
   DataType: real64
   OrigDataType: real64
@@ -218,7 +218,7 @@ T_23: (in Mem0[ds:wArg02 + 0x0008:real64] : real64)
   Class: Eq_20
   DataType: real64
   OrigDataType: real64
-T_24: (in rLoc2_21 : real64)
+T_24: (in rLoc2_15 : real64)
   Class: Eq_24
   DataType: real64
   OrigDataType: real64
@@ -234,23 +234,23 @@ T_27: (in Mem0[ds:wArg02 + 0x0010:real64] : real64)
   Class: Eq_24
   DataType: real64
   OrigDataType: real64
-T_28: (in rLoc1_16 * rLoc1_16 : real64)
+T_28: (in rLoc1_10 * rLoc1_10 : real64)
   Class: Eq_28
   DataType: real64
   OrigDataType: real64
-T_29: (in rLoc2_18 * rLoc2_18 : real64)
+T_29: (in rLoc2_12 * rLoc2_12 : real64)
   Class: Eq_29
   DataType: real64
   OrigDataType: real64
-T_30: (in rLoc1_16 * rLoc1_16 + rLoc2_18 * rLoc2_18 : real64)
+T_30: (in rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 : real64)
   Class: Eq_30
   DataType: real64
   OrigDataType: real64
-T_31: (in rLoc2_21 * rLoc2_21 : real64)
+T_31: (in rLoc2_15 * rLoc2_15 : real64)
   Class: Eq_31
   DataType: real64
   OrigDataType: real64
-T_32: (in rLoc1_16 * rLoc1_16 + rLoc2_18 * rLoc2_18 + rLoc2_21 * rLoc2_21 : real64)
+T_32: (in rLoc1_10 * rLoc1_10 + rLoc2_12 * rLoc2_12 + rLoc2_15 * rLoc2_15 : real64)
   Class: Eq_32
   DataType: real64
   OrigDataType: real64
@@ -266,7 +266,7 @@ T_35: (in wArg04 + 0x0000 : word16)
   Class: Eq_35
   DataType: word16
   OrigDataType: word16
-T_36: (in Mem25[ds:wArg04 + 0x0000:real64] : real64)
+T_36: (in Mem20[ds:wArg04 + 0x0000:real64] : real64)
   Class: Eq_32
   DataType: real64
   OrigDataType: real64
@@ -278,11 +278,11 @@ T_38: (in wArg04 + 0x0020 : word16)
   Class: Eq_38
   DataType: word16
   OrigDataType: word16
-T_39: (in Mem25[ds:wArg04 + 0x0020:int16] : int16)
+T_39: (in Mem20[ds:wArg04 + 0x0020:int16] : int16)
   Class: Eq_39
   DataType: int16
   OrigDataType: int16
-T_40: (in (real64) Mem25[ds:wArg04 + 0x0020:int16] : real64)
+T_40: (in (real64) Mem20[ds:wArg04 + 0x0020:int16] : real64)
   Class: Eq_40
   DataType: real64
   OrigDataType: real64
@@ -294,7 +294,7 @@ T_42: (in wArg04 + 0x0028 : word16)
   Class: Eq_42
   DataType: word16
   OrigDataType: word16
-T_43: (in Mem27[ds:wArg04 + 0x0028:real64] : real64)
+T_43: (in Mem22[ds:wArg04 + 0x0028:real64] : real64)
   Class: Eq_40
   DataType: real64
   OrigDataType: real64
@@ -306,7 +306,7 @@ T_45: (in 0x0400 : word16)
   Class: Eq_45
   DataType: (memptr T_13 (struct (0 T_46 t0000)))
   OrigDataType: (memptr T_13 (struct (0 T_46 t0000)))
-T_46: (in Mem6[ds:0x0400:real64] : real64)
+T_46: (in Mem3[ds:0x0400:real64] : real64)
   Class: Eq_44
   DataType: real64
   OrigDataType: real64
@@ -322,7 +322,7 @@ T_49: (in 0x0408 : word16)
   Class: Eq_49
   DataType: (memptr T_13 (struct (0 T_50 t0000)))
   OrigDataType: (memptr T_13 (struct (0 T_50 t0000)))
-T_50: (in Mem8[ds:0x0408:int32] : int32)
+T_50: (in Mem6[ds:0x0408:int32] : int32)
   Class: Eq_48
   DataType: int32
   OrigDataType: int32

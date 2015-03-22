@@ -1,48 +1,44 @@
-Mem0:Global memory
 fp:fp
-sp:sp
-ds:ds
-    def:  def ds
-    uses: Mem10[ds:0x7960:word32] = edx
-          Mem11[ds:0x7964:byte] = cl
-          Mem17[ds:si + 0x00C8:word32] = -edx
+sp_1: orig: sp
 edx:edx
     def:  def edx
-    uses: Mem10[ds:0x7960:word32] = edx
-          Mem17[ds:si + 0x00C8:word32] = -edx
+    uses: Mem3[ds:0x7960:word32] = edx
+          Mem12[ds:si + 0x00C8:word32] = -edx
+Mem3: orig: Mem0
+    def:  Mem3[ds:0x7960:word32] = edx
+ds:ds
+    def:  def ds
+    uses: Mem3[ds:0x7960:word32] = edx
+          Mem6[ds:0x7964:byte] = cl
+          Mem12[ds:si + 0x00C8:word32] = -edx
 cl:cl
     def:  def cl
-    uses: Mem11[ds:0x7964:byte] = cl
-eax:eax
-SCZO:Flags
-C:Flags
+    uses: Mem6[ds:0x7964:byte] = cl
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x7964:byte] = cl
+eax_7: orig: eax
+eax_8: orig: eax
+SCZO_9: orig: SCZO
+C_10: orig: C
+SCZO_11: orig: SCZO
+Mem12: orig: Mem0
+    def:  Mem12[ds:si + 0x00C8:word32] = -edx
 si:si
     def:  def si
-    uses: Mem17[ds:si + 0x00C8:word32] = -edx
-Mem10: orig: Mem0
-    def:  Mem10[ds:0x7960:word32] = edx
-Mem11: orig: Mem0
-    def:  Mem11[ds:0x7964:byte] = cl
-eax_12: orig: eax
-eax_13: orig: eax
-SCZO_14: orig: SCZO
-C_15: orig: C
-SCZO_16: orig: SCZO
-Mem17: orig: Mem0
-    def:  Mem17[ds:si + 0x00C8:word32] = -edx
+    uses: Mem12[ds:si + 0x00C8:word32] = -edx
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word32 edx, word16 si, byte cl, selector ds)
 fn0C00_0000_entry:
-	def ds
 	def edx
+	def ds
 	def cl
 	def si
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem10[ds:0x7960:word32] = edx
-	Mem11[ds:0x7964:byte] = cl
-	Mem17[ds:si + 0x00C8:word32] = -edx
+	Mem3[ds:0x7960:word32] = edx
+	Mem6[ds:0x7964:byte] = cl
+	Mem12[ds:si + 0x00C8:word32] = -edx
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -18,6 +18,7 @@ void fn0C00_0000(word16 di, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	fn0C00_000F(di, ds)
 	sp = fp - 0x0002
 	wLoc02 = di
@@ -49,6 +50,7 @@ void fn0C00_000F(word16 di, selector ds)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
+	sp = fp
 	Mem0[ds:di:word16] = 0x0000
 	return
 	// succ:  fn0C00_000F_exit
@@ -72,6 +74,7 @@ word16 fn0C00_0014(word16 ax)
 fn0C00_0014_entry:
 	// succ:  l0C00_0014
 l0C00_0014:
+	sp = fp
 	di = 0x0000
 	C = false
 	ax = ax - 0x0001

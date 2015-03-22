@@ -413,7 +413,7 @@ namespace Decompiler.Core.Expressions
 
         private class WildId : Identifier
         {
-            public WildId(string label) : base(label, 0, VoidType.Instance, null)
+            public WildId(string label) : base(label, VoidType.Instance, null)
             {
                 this.Label = label;
             }

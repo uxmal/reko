@@ -13,6 +13,7 @@ fn0C00_0000_entry:
 
 // SymbolicIn: sp:fp
 l0C00_0000:
+	sp = fp
 	call fn0C00_0004 (retsize: 2; depth: 2)
 	return
 // DataOut:
@@ -38,6 +39,7 @@ fn0C00_0004_entry:
 
 // SymbolicIn: sp:fp al:<invalid> ah:0x40 bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
 l0C00_0004:
+	sp = fp
 	al = Mem0[ds:si:byte]
 	al = al >>u 0x01
 	SCZO = cond(al)

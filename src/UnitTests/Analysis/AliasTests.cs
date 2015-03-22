@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier ax = proc.Frame.EnsureRegister(Registers.ax);
-            Assignment ass = alias.CreateAliasInstruction(eax.Number, ax.Number);
+            Assignment ass = alias.CreateAliasInstruction(eax, ax);
             Assert.AreEqual("ax = (word16) eax (alias)", ass.ToString());
         }
 
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier ah = proc.Frame.EnsureRegister(Registers.ah);
-            Assignment ass = alias.CreateAliasInstruction(eax.Number, ah.Number);
+            Assignment ass = alias.CreateAliasInstruction(eax, ah);
             Assert.AreEqual("ah = SLICE(eax, byte, 8) (alias)", ass.ToString());
         }
 
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
             Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
-            Assignment ass = alias.CreateAliasInstruction(edx_eax.Number, eax.Number);
+            Assignment ass = alias.CreateAliasInstruction(edx_eax, eax);
             Assert.AreEqual("eax = (word32) edx_eax (alias)", ass.ToString());
         }
 
@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
             Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
             Identifier dh = proc.Frame.EnsureRegister(Registers.dh);
-            Assignment ass = alias.CreateAliasInstruction(edx_eax.Number, dh.Number);
+            Assignment ass = alias.CreateAliasInstruction(edx_eax, dh);
             Assert.AreEqual("dh = SLICE(edx_eax, byte, 40) (alias)", ass.ToString());
         }
 
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
             Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
-            Assignment ass = alias.CreateAliasInstruction(eax.Number, edx_eax.Number);
+            Assignment ass = alias.CreateAliasInstruction(eax, edx_eax);
             Assert.AreEqual("edx_eax = SEQ(edx, eax) (alias)", ass.ToString());
 
         }
@@ -146,7 +146,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier argOff = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word16);
             Identifier argSeg = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
             Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);
-            Assignment ass = alias.CreateAliasInstruction(argOff.Number, argPtr.Number);
+            Assignment ass = alias.CreateAliasInstruction(argOff, argPtr);
             Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0, 16) (alias)", ass.ToString());
         }
     }

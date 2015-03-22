@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Core
 
             sce = new FakeProcessorState(arch);
 
-            idSp = new Identifier(sp.Name, 1, sp.DataType, sp);
+            idSp = new Identifier(sp.Name, sp.DataType, sp);
             m = new ExpressionEmitter();
         }
 

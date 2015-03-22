@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Evaluation
 
         private static Identifier Id(string name)
         {
-            return new Identifier(name, 1, PrimitiveType.Word32, null);
+            return new Identifier(name, PrimitiveType.Word32, null);
         }
 
         [Test]

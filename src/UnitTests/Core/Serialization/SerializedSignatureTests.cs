@@ -114,10 +114,10 @@ namespace Decompiler.UnitTests.Core.Serialization
 
 		public static ProcedureSignature MkSigAxBxCl()
 		{
-			Identifier ret = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, Registers.ax);
+			Identifier ret = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
 			Identifier [] args = new Identifier[2];
-			args[0] = new Identifier(Registers.bx.Name, 1, Registers.bx.DataType, Registers.bx);
-			args[1] = new Identifier(Registers.cl.Name, 2, Registers.cl.DataType, Registers.cl);
+			args[0] = new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx);
+			args[1] = new Identifier(Registers.cl.Name, Registers.cl.DataType, Registers.cl);
 			return new ProcedureSignature(ret, args);
 		}
 

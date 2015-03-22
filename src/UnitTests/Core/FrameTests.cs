@@ -128,8 +128,8 @@ namespace Decompiler.UnitTests.Core
 
 			ProcedureSignature sig = new ProcedureSignature(
 				null, new Identifier[] {
-					new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-					new Identifier("arg1", 1, PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
+					new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
+					new Identifier("arg1", PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
 
 			var cs = new CallSite(f.ReturnAddressSize + 2 * 4, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
@@ -155,7 +155,7 @@ namespace Decompiler.UnitTests.Core
 			ProcedureSignature sig = new ProcedureSignature(
 				ax,
 			    cx,
-			    new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
+			    new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
 			
 			var cs = new CallSite(stack, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));

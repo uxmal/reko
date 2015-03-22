@@ -1,8 +1,4 @@
-Mem0:Global memory
-fp:fp
-unused:Local -0004
-r63:r63
-unused_4: orig: unused
+unused_0: orig: unused
 // foo
 // Return size: 0
 void foo()

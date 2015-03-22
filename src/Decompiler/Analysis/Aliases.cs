@@ -26,6 +26,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Decompiler.Analysis
 {
@@ -40,8 +41,8 @@ namespace Decompiler.Analysis
 		private ProgramDataFlow pdf;
 		private Block block;
 		private int iStm;
-		private bool [] deadIn;
-		private List<int> [] aliases;
+		private HashSet<Identifier> deadIn;
+		private Dictionary<Identifier, List<Identifier>> aliases;
 		private IProcessorArchitecture arch;
 
 		public Aliases(Procedure proc, IProcessorArchitecture arch) : this(proc, arch, null)
@@ -59,23 +60,21 @@ namespace Decompiler.Analysis
 
 		private void BuildAliases()
 		{
-			aliases = new List<int>[proc.Frame.Identifiers.Count];
-			for (int i = 0; i < aliases.Length; ++i)
+            aliases = new Dictionary<Identifier, List<Identifier>>();
+			foreach (var i in proc.Frame.Identifiers)
 			{
-				aliases[i] = new List<int>();
+				aliases[i] = new List<Identifier>();
 			}
 
-			for (int i = 0; i < aliases.Length; ++i)
+			foreach (var v in proc.Frame.Identifiers)
 			{
-				Identifier v = proc.Frame.Identifiers[i];
-				for (int j = 0; j < aliases.Length; ++j)
+				foreach (var var in proc.Frame.Identifiers)
 				{
-					Identifier var = proc.Frame.Identifiers[j];
-					if (IsAlias(arch, var, v) && i < j)
+					if (IsAlias(arch, var, v) && string.Compare(v.Name, var.Name) < 0)
 					{
 						// The bits interfere with each other.
-						aliases[i].Add(j);
-						aliases[j].Add(i);
+						aliases[v].Add(var);
+						aliases[var].Add(v);
 					}
 				}
 			}
@@ -83,17 +82,16 @@ namespace Decompiler.Analysis
 
 		/// We've encountered a variable that is defined. We must generate an
 		// alias statement for all aliased variables.
-		private void Def(int v)
+		private void Def(Identifier idar)
 		{
-			deadIn[v] = true;
-			Identifier idar = proc.Frame.Identifiers[v];
+			deadIn.Add(idar);
 			int iAt = iStm;
-			foreach (int i in aliases[v])
+			foreach (Identifier i in aliases[idar])
 			{
-				if (!deadIn[i])
+				if (!deadIn.Contains(i))
 				{
-					block.Statements.Insert(++iAt, 0, CreateAliasInstruction(v, i));
-					deadIn[i] = true;
+					block.Statements.Insert(++iAt, 0, CreateAliasInstruction(idar, i));
+					deadIn.Add(i);
 				}
 			}
 		}
@@ -106,9 +104,9 @@ namespace Decompiler.Analysis
 				text.Write(":");
 				id.Storage.Write(text);
 				text.Write(" (aliases:", id);
-				foreach (int a in aliases[id.Number])
+				foreach (var a in aliases[id])
 				{
-					text.Write(" {0}", proc.Frame.Identifiers[a].Name);
+					text.Write(" {0}", a.Name);
 				}
 				text.WriteLine(")");
 			}
@@ -149,7 +147,7 @@ namespace Decompiler.Analysis
 			{
 				// If no global analysis available, be pessimistic and assume
 				// all variables are live-out of every block.
-				deadIn = new bool[aliases.Length];
+				deadIn = new HashSet<Identifier>();
 			}
 		}
 
@@ -176,13 +174,13 @@ namespace Decompiler.Analysis
 
 		public override void VisitAssignment(Assignment ass)
 		{
-			Def(ass.Dst.Number);
+			Def(ass.Dst);
 			ass.Src.Accept(this);
 		}
 
 		public override void VisitIdentifier(Identifier id)
 		{
-			deadIn[id.Number] = false;		// used, so can't be dead.
+			deadIn.Remove(id);		// used, so can't be dead.
 		}
 
 		public override void VisitMemoryAccess(MemoryAccess access)
@@ -203,10 +201,8 @@ namespace Decompiler.Analysis
 		// thus:
 		//	mov cl,xx
 		//  mov cx,DPB(cx,cl,0,8)
-		public Assignment CreateAliasInstruction(int v, int vAlias)
+		public Assignment CreateAliasInstruction(Identifier varFrom, Identifier varTo) // Identifier v, Identifier vAlias)
 		{
-			Identifier varFrom = proc.Frame.Identifiers[v];
-			Identifier varTo = proc.Frame.Identifiers[vAlias];
 			if (!IsAlias(arch, varFrom, varTo))
 				throw new ApplicationException(string.Format("Unexpected alias pair {0} and {1}", varTo.Name, varFrom.Name));
 
@@ -284,7 +280,7 @@ namespace Decompiler.Analysis
         private Identifier idCur;
         private BitSet liveRegs;
         private uint liveGrf;
-        private bool[] liveVars;
+        private HashSet<Identifier> liveVars;
 
         public AliasDeadVariableMarker(BitSet regs, uint grfLive)
         {
@@ -292,31 +288,30 @@ namespace Decompiler.Analysis
             this.liveGrf = grfLive;
         }
 
-        public bool[] Compute(IProcessorArchitecture arch, Frame frame)
+        public HashSet<Identifier> Compute(IProcessorArchitecture arch, Frame frame)
         {
-            this.liveVars = new bool[frame.Identifiers.Count];
+            this.liveVars = new HashSet<Identifier>();
 
             foreach (Identifier id in frame.Identifiers)
             {
                 idCur = id;
                 id.Storage.Accept(this);
             }
-            for (int i = 0; i < liveVars.Length; ++i)
+            foreach (Identifier v in liveVars.ToArray())
             {
-                if (liveVars[i])
+                foreach (Identifier w in frame.Identifiers)
                 {
-                    Identifier v = frame.Identifiers[i];
-                    foreach (Identifier w in frame.Identifiers)
-                    {
-                        if (Aliases.IsAlias(arch, v, w))
-                            liveVars[w.Number] = true;
-                    }
+                    if (Aliases.IsAlias(arch, v, w))
+                        liveVars.Add(w);
                 }
             }
-            bool[] deadVariables = new bool[liveVars.Length];
-            for (int i = 0; i < liveVars.Length; ++i)
+            var deadVariables = new HashSet<Identifier>();
+            foreach (var i in frame.Identifiers)
             {
-                deadVariables[i] = !liveVars[i];
+                if (!liveVars.Contains(i))
+                    deadVariables.Add(i);
+                else
+                    deadVariables.Remove(i);
             }
             return deadVariables;
         }
@@ -330,7 +325,10 @@ namespace Decompiler.Analysis
 
         public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            liveVars[idCur.Number] = (grf.FlagGroupBits & liveGrf) != 0;
+            if ((grf.FlagGroupBits & liveGrf) != 0)
+                liveVars.Add(idCur);
+            else
+                liveVars.Remove(idCur);
             return null;
         }
 
@@ -356,7 +354,10 @@ namespace Decompiler.Analysis
 
         public Storage VisitRegisterStorage(RegisterStorage reg)
         {
-            liveVars[idCur.Number] = liveRegs[reg.Number];
+            if (liveRegs[reg.Number])
+                liveVars.Add(idCur);
+            else 
+                liveVars.Remove(idCur);
             return null;
         }
 

@@ -2,24 +2,22 @@
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	def Mem0
 	def fp
-	def sp
-	def si
 	def ds
-	def ax
+	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	si_6 = Mem0[ds:0x0200:word16]
-	ax_8 = fn0C00_0025(si_6, ds, out si_7)
-	Mem9[ds:0x0310:word16] = ax_8
-	ax_11 = fn0C00_0027(si_7, ds, out si_10)
-	Mem12[ds:0x0320:word16] = ax_11
-	ax_14 = fn0C00_002F(si_10, ds, out si_13)
-	Mem15[ds:0x0330:word16] = ax_14
-	ax_17 = fn0C00_0036(si_13, ds, out si_16)
-	Mem18[ds:0x0340:word16] = ax_17
-	Mem19[ds:0x0400:word16] = si_16
+	sp_1 = fp
+	si_4 = Mem0[ds:0x0200:word16]
+	ax_6 = fn0C00_0025(si_4, ds, out si_5)
+	Mem7[ds:0x0310:word16] = ax_6
+	ax_9 = fn0C00_0027(si_5, ds, out si_8)
+	Mem10[ds:0x0320:word16] = ax_9
+	ax_12 = fn0C00_002F(si_8, ds, out si_11)
+	Mem13[ds:0x0330:word16] = ax_12
+	ax_15 = fn0C00_0036(si_11, ds, out si_14)
+	Mem16[ds:0x0340:word16] = ax_15
+	Mem17[ds:0x0400:word16] = si_14
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -28,20 +26,20 @@ fn0C00_0000_exit:
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	def Mem0
 	def ds
+	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	si_6 = Mem0[ds:0x0200:word16]
-	ax_8 = fn0C00_0025(si_6, ds, out si_7)
-	Mem9[ds:0x0310:word16] = ax_8
-	ax_11 = fn0C00_0027(si_7, ds, out si_10)
-	Mem12[ds:0x0320:word16] = ax_11
-	ax_14 = fn0C00_002F(si_10, ds, out si_13)
-	Mem15[ds:0x0330:word16] = ax_14
-	ax_17 = fn0C00_0036(si_13, ds, out si_16)
-	Mem18[ds:0x0340:word16] = ax_17
-	Mem19[ds:0x0400:word16] = si_16
+	si_4 = Mem0[ds:0x0200:word16]
+	ax_6 = fn0C00_0025(si_4, ds, out si_5)
+	Mem7[ds:0x0310:word16] = ax_6
+	ax_9 = fn0C00_0027(si_5, ds, out si_8)
+	Mem10[ds:0x0320:word16] = ax_9
+	ax_12 = fn0C00_002F(si_8, ds, out si_11)
+	Mem13[ds:0x0330:word16] = ax_12
+	ax_15 = fn0C00_0036(si_11, ds, out si_14)
+	Mem16[ds:0x0340:word16] = ax_15
+	Mem17[ds:0x0400:word16] = si_14
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -50,35 +48,34 @@ fn0C00_0000_exit:
 // Return size: 0
 word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
 fn0C00_0025_entry:
-	def Mem0
 	def fp
-	def sp
-	def ax
 	def ds
 	def si
+	def Mem0
 	def siOut
 	// succ:  l0C00_0025
 l0C00_0025:
-	ax_7 = Mem0[ds:si:word16]
-	si_8 = si + 0x0002
-	return ax_7
+	sp_1 = fp
+	ax_5 = Mem0[ds:si:word16]
+	si_6 = si + 0x0002
+	return ax_5
 	// succ:  fn0C00_0025_exit
 fn0C00_0025_exit:
-	use si_8 (=> siOut)
+	use si_6 (=> siOut)
 
 // fn0C00_0025
 // Return size: 0
 word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
 fn0C00_0025_entry:
-	def Mem0
 	def ds
 	def si
+	def Mem0
 	def siOut
 	// succ:  l0C00_0025
 l0C00_0025:
-	ax_7 = Mem0[ds:si:word16]
-	Mem0[siOut:word16] = si + 0x0002
-	return ax_7
+	ax_5 = Mem0[ds:si:word16]
+	*siOut = si + 0x0002
+	return ax_5
 	// succ:  fn0C00_0025_exit
 fn0C00_0025_exit:
 ====================
@@ -86,61 +83,57 @@ fn0C00_0025_exit:
 // Return size: 0
 word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
 fn0C00_0027_entry:
-	def Mem0
 	def fp
-	def sp
-	def ax
-	def SZO
-	def C
 	def si
-	def Z
-	def ds
 	def siOut
+	def ds
+	def Mem0
 	// succ:  l0C00_0027
 l0C00_0027:
-	ax_10 = 0x0000
-	si_11 = si | si
-	SZO_12 = cond(si_11)
-	Z_13 = SZO_12 (alias)
-	C_14 = false
-	branch Test(EQ,Z_13) l0C00_002E
+	sp_1 = fp
+	ax_2 = 0x0000
+	si_4 = si | si
+	SZO_5 = cond(si_4)
+	Z_6 = SZO_5 (alias)
+	C_7 = false
+	branch Test(EQ,Z_6) l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:
-	ax_17 = Mem0[ds:si_11:word16]
-	si_18 = si_11 + 0x0002
+	ax_13 = Mem0[ds:si_4:word16]
+	si_14 = si_4 + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:
-	si_15 = PHI(si_11, si_18)
-	ax_16 = PHI(ax_10, ax_17)
-	return ax_16
+	ax_8 = PHI(ax_2, ax_13)
+	si_9 = PHI(si_4, si_14)
+	return ax_8
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:
-	use si_15 (=> siOut)
+	use si_9 (=> siOut)
 
 // fn0C00_0027
 // Return size: 0
 word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
 fn0C00_0027_entry:
-	def Mem0
 	def si
-	def ds
 	def siOut
+	def ds
+	def Mem0
 	// succ:  l0C00_0027
 l0C00_0027:
-	ax_10 = 0x0000
-	si_11 = si | si
-	Mem0[siOut:word16] = si_11
-	SZO_12 = cond(si_11)
-	Z_13 = SZO_12 (alias)
-	branch Test(EQ,Z_13) l0C00_002E
+	ax_2 = 0x0000
+	si_4 = si | si
+	*siOut = si_4
+	SZO_5 = cond(si_4)
+	Z_6 = SZO_5 (alias)
+	branch Test(EQ,Z_6) l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:
-	ax_17 = Mem0[ds:si_11:word16]
-	Mem0[siOut:word16] = si_11 + 0x0002
+	ax_13 = Mem0[ds:si_4:word16]
+	*siOut = si_4 + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:
-	ax_16 = PHI(ax_10, ax_17)
-	return ax_16
+	ax_8 = PHI(ax_2, ax_13)
+	return ax_8
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:
 ====================
@@ -148,38 +141,37 @@ fn0C00_0027_exit:
 // Return size: 0
 word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
 fn0C00_002F_entry:
-	def Mem0
 	def fp
-	def sp
-	def ax
 	def ds
 	def si
+	def Mem0
 	def siOut
 	// succ:  l0C00_002F
 l0C00_002F:
-	ax_7 = Mem0[ds:si:word16]
-	si_8 = si + 0x0002
-	Mem9[ds:si_8 + 0x0002:word16] = 0x0000
-	return ax_7
+	sp_1 = fp
+	ax_5 = Mem0[ds:si:word16]
+	si_6 = si + 0x0002
+	Mem7[ds:si_6 + 0x0002:word16] = 0x0000
+	return ax_5
 	// succ:  fn0C00_002F_exit
 fn0C00_002F_exit:
-	use si_8 (=> siOut)
+	use si_6 (=> siOut)
 
 // fn0C00_002F
 // Return size: 0
 word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
 fn0C00_002F_entry:
-	def Mem0
 	def ds
 	def si
+	def Mem0
 	def siOut
 	// succ:  l0C00_002F
 l0C00_002F:
-	ax_7 = Mem0[ds:si:word16]
-	si_8 = si + 0x0002
-	Mem0[siOut:word16] = si_8
-	Mem9[ds:si_8 + 0x0002:word16] = 0x0000
-	return ax_7
+	ax_5 = Mem0[ds:si:word16]
+	si_6 = si + 0x0002
+	*siOut = si_6
+	Mem7[ds:si_6 + 0x0002:word16] = 0x0000
+	return ax_5
 	// succ:  fn0C00_002F_exit
 fn0C00_002F_exit:
 ====================
@@ -187,22 +179,21 @@ fn0C00_002F_exit:
 // Return size: 0
 word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
 fn0C00_0036_entry:
-	def Mem0
 	def fp
-	def sp
-	def ax
 	def ds
 	def si
+	def Mem0
 	def siOut
 	// succ:  l0C00_0036
 l0C00_0036:
-	ax_7 = Mem0[ds:si:word16]
-	si_8 = si + 0x0002
-	ax_10 = fn0C00_0025(si_8, ds, out si_9)
-	return ax_10
+	sp_1 = fp
+	ax_5 = Mem0[ds:si:word16]
+	si_6 = si + 0x0002
+	ax_8 = fn0C00_0025(si_6, ds, out si_7)
+	return ax_8
 	// succ:  fn0C00_0036_exit
 fn0C00_0036_exit:
-	use si_9 (=> siOut)
+	use si_7 (=> siOut)
 
 // fn0C00_0036
 // Return size: 0
@@ -212,9 +203,9 @@ fn0C00_0036_entry:
 	def si
 	// succ:  l0C00_0036
 l0C00_0036:
-	si_8 = si + 0x0002
-	ax_10 = fn0C00_0025(si_8, ds, out si_9)
-	return ax_10
+	si_6 = si + 0x0002
+	ax_8 = fn0C00_0025(si_6, ds, out si_7)
+	return ax_8
 	// succ:  fn0C00_0036_exit
 fn0C00_0036_exit:
 ====================

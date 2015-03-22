@@ -140,8 +140,8 @@ namespace Decompiler.UnitTests.Scanning
                 {
                     "GetDC", 
                     new ProcedureSignature(
-                        new Identifier("",  3, new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, PrimitiveType.Word32)),
-                        new Identifier("arg", 0, 
+                        new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, PrimitiveType.Word32)),
+                        new Identifier("arg", 
                             new TypeReference(
                                 "HWND",
                                 new Pointer(VoidType.Instance, 4)),
@@ -172,7 +172,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private Identifier Reg(IntelRegister r)
         {
-            return new Identifier(r.Name, 0, r.DataType, r);
+            return new Identifier(r.Name, r.DataType, r);
         }
 
         [Test]

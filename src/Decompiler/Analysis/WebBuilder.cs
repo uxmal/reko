@@ -44,7 +44,7 @@ namespace Decompiler.Analysis
 		private SsaLivenessAnalysis sla;
 		private BlockDominatorGraph doms;
 		private Dictionary<Identifier,LinearInductionVariable>ivs;
-		private Web [] webOf;
+		private Dictionary<Identifier, Web> webOf;
 		private List<Web> webs;
 		private Statement stmCur;
 
@@ -60,12 +60,12 @@ namespace Decompiler.Analysis
 
 		private void BuildWebOf()
 		{
-			this.webOf = new Web[ssaIds.Count];
+            this.webOf = new Dictionary<Identifier, Web>();
 			foreach (SsaIdentifier sid in ssaIds)
 			{
 				Web w = new Web();
 				w.Add(sid);
-				webOf[sid.Identifier.Number] = w;
+				webOf[sid.Identifier] = w;
 				webs.Add(w);
 			}
 		}
@@ -122,7 +122,7 @@ namespace Decompiler.Analysis
 			foreach (SsaIdentifier sid in a.Members)
 			{
 				c.Add(sid);
-				webOf[sid.Identifier.Number] = c;
+				webOf[sid.Identifier] = c;
 				foreach (Statement u in a.Uses)
 					if (!c.Uses.Contains(u))
 						c.Uses.Add(u);
@@ -130,7 +130,7 @@ namespace Decompiler.Analysis
 			foreach (SsaIdentifier sid in b.Members)
 			{
 				c.Add(sid);
-				webOf[sid.Identifier.Number] = c;
+				webOf[sid.Identifier] = c;
 				foreach (Statement u in b.Uses)
 					if (!c.Uses.Contains(u))
 						c.Uses.Add(u);
@@ -149,10 +149,9 @@ namespace Decompiler.Analysis
 				Identifier id = (Identifier) phi.Arguments[i];
 				Block pred = stmCur.Block.Pred[i];
 				if (id != idDst)
-					Merge(webOf[idDst.Number], webOf[id.Number]);
+					Merge(webOf[idDst], webOf[id]);
 			}
 		}
-
 
 		public void VisitStatement(Statement stm)
 		{
@@ -164,7 +163,7 @@ namespace Decompiler.Analysis
 
 		public Web WebOf(Identifier id)
 		{
-			return webOf[id.Number];
+			return webOf[id];
 		}
 
 		public void Write(TextWriter writer)
@@ -186,7 +185,7 @@ namespace Decompiler.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-				return bld.webOf[id.Number].Identifier;
+				return bld.webOf[id].Identifier;
 			}
 
 			public override Instruction TransformAssignment(Assignment a)

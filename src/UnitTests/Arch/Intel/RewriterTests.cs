@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 	public class RewriterTests : RewriterTestBase
 	{
 		[Test]
-		public void SimpleTest()
+		public void RwSimpleTest()
 		{
 			DoRewrite(
 				@"	.i86
@@ -143,9 +143,9 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.AreEqual(3, proc.ControlGraph.Blocks.Count);		// Entry, code, Exit
 
             Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];
-			Assert.AreEqual(5, block.Statements.Count);
+			Assert.AreEqual(6, block.Statements.Count);
 			Assignment instr1 = (Assignment) block.Statements[0].Instruction;
-			Assert.IsTrue(block.Statements[1].Instruction is Assignment);
+			Assert.AreEqual("ax = 0x0000", block.Statements[1].Instruction.ToString());
 
 			Assert.AreSame(new List<Block>(proc.ControlGraph.Successors(block))[0], proc.ExitBlock);
 		}

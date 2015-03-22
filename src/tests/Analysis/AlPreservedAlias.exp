@@ -9,6 +9,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = Mem0[ds:0x0100:word16]
 	call fn0C00_000C (retsize: 2; depth: 2)
 	Mem0[ds:0x0102:word16] = ax
@@ -30,6 +31,7 @@ void fn0C00_000C()
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = ax
 	al = Mem0[ds:0x0104:byte]

@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Analysis
         private Identifier Reg32(string name)
         {
             var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
-            var id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, mr);
+            var id = new Identifier(name, PrimitiveType.Word32, mr);
             return ssaIds.Add(id, null, null, false).Identifier;
         }
 
@@ -68,7 +68,6 @@ namespace Decompiler.UnitTests.Analysis
         {
             Identifier id = new Identifier(
                 name,
-                ssaIds.Count,
                 PrimitiveType.Word32,
                 new FlagGroupStorage(1U, "C", PrimitiveType.Byte));
             return ssaIds.Add(id, null, null, false).Identifier;
@@ -357,7 +356,7 @@ done:
 		public void SignedIntComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
-			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
+			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Word16, new Identifier("a", PrimitiveType.Word16, null), new Identifier("b", PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
@@ -367,7 +366,7 @@ done:
 		public void RealComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
-			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
+			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Real64, new Identifier("a", PrimitiveType.Real64, null), new Identifier("b", PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("RltOperator", b.Operator.GetType().Name);

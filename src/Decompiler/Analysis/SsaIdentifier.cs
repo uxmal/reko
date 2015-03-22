@@ -28,14 +28,14 @@ namespace Decompiler.Analysis
 {
 	public class SsaIdentifier
 	{
-		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
+		public SsaIdentifier(Identifier id, Identifier eOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
 			if (id == null)
 				throw new ArgumentNullException("id");
-			if (idOrig == null)
-				throw new ArgumentNullException("idOrig");
+			if (eOrig == null)
+				throw new ArgumentNullException("eOrig");
 			this.Identifier = id;
-			this.OriginalIdentifier = idOrig;
+			this.OriginalIdentifier = eOrig;
 			this.DefStatement = stmDef;
             this.DefExpression = exprDef;
             this.IsSideEffect = isSideEffect;
@@ -70,7 +70,7 @@ namespace Decompiler.Analysis
         public LinearInductionVariable InductionVariable { get; set; }
 
         /// <summary>
-        /// The original name of the identifier.
+        /// The original expression that was rewritten to this identifier.
         /// </summary>
         public Identifier OriginalIdentifier { get; private set; }
 

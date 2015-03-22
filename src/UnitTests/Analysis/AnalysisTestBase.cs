@@ -252,8 +252,8 @@ namespace Decompiler.UnitTests.Analysis
                     new ExternalProcedure(
                         "GlobalHandle",
                         new ProcedureSignature(
-                            new Identifier("eax", 0, tHglobal, Decompiler.Arch.X86.Registers.eax),
-                            new Identifier("pv", 1, tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                            new Identifier("eax", tHglobal, Decompiler.Arch.X86.Registers.eax),
+                            new Identifier("pv",  tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
                         {
                             StackDelta = 4,
                         }));
@@ -263,8 +263,8 @@ namespace Decompiler.UnitTests.Analysis
                 .Return(new ExternalProcedure(
                     "GlobalUnlock",
                     new ProcedureSignature(
-                        new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
-                        new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                        new Identifier("eax",  tBool, Decompiler.Arch.X86.Registers.eax),
+                        new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
                     {
                         StackDelta = 4,
                     }));
@@ -275,8 +275,8 @@ namespace Decompiler.UnitTests.Analysis
              .Return(new ExternalProcedure(
                  "GlobalFree",
                  new ProcedureSignature(
-                     new Identifier("eax", 0, tBool, Decompiler.Arch.X86.Registers.eax),
-                     new Identifier("hMem", 1, tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                     new Identifier("eax",  tBool, Decompiler.Arch.X86.Registers.eax),
+                     new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
                  {
                      StackDelta = 4,
                  }));

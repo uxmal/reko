@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private Identifier CreateId(RegisterStorage reg)
         {
-            return new Identifier(reg.Name, reg.Number, reg.DataType, reg);
+            return new Identifier(reg.Name, reg.DataType, reg);
         }
 
         [Test]

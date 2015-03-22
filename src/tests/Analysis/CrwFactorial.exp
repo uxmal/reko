@@ -19,6 +19,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	cx = 0x0064
 	sp = fp - 0x0002
 	wLoc02 = 0x0064
@@ -56,6 +57,7 @@ word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002

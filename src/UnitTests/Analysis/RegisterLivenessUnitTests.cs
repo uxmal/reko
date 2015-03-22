@@ -244,8 +244,8 @@ namespace Decompiler.UnitTests.Analysis
 			callee.Signature = new ProcedureSignature(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
-                    new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-					new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte))
+                    new Identifier("arg04", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
+					new Identifier("arg08", PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte))
                 });
 
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
@@ -290,12 +290,12 @@ namespace Decompiler.UnitTests.Analysis
 		public void Rl_PredefinedSignature()
 		{
 			Procedure callee = new Procedure("callee", null);
-			Identifier edx = new Identifier("edx", -1, PrimitiveType.Word32, Registers.edx);
+			Identifier edx = new Identifier("edx", PrimitiveType.Word32, Registers.edx);
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
-				new Identifier[] { new Identifier("ecx", -1, PrimitiveType.Word32, Registers.ecx),
-								   new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-								   new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(edx))});
+				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
+				new Identifier[] { new Identifier("ecx",    PrimitiveType.Word32, Registers.ecx),
+								   new Identifier("arg04",  PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
+								   new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(edx))});
 
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
 			BlockFlow bf = CreateBlockFlow(callee.ExitBlock, null);
@@ -341,7 +341,7 @@ namespace Decompiler.UnitTests.Analysis
 			terminator.Signature = new ProcedureSignature(
 				null,
 				new Identifier[] {
-					new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax) });
+					new Identifier("eax", PrimitiveType.Word32, Registers.eax) });
             terminator.Characteristics = new ProcedureCharacteristics
             {
                 Terminates = true

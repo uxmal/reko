@@ -293,7 +293,7 @@ namespace Decompiler.UnitTests.Scanning
 		public void BwInc()
 		{
             var state = arch.CreateProcessorState();
-            var di = new Identifier("di", 0, Registers.di.DataType, Registers.di);
+            var di = new Identifier("di", Registers.di.DataType, Registers.di);
 			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType), RtlClass.Transfer),
                 new ExpressionSimplifier(state));
 			var instrs = new StatementList(new Block(null, "foo"));

@@ -121,6 +121,7 @@ namespace Decompiler.Analysis
                 ctx.TestStatement.Block.ThenBlock ==
                 ctx.PhiStatement.Block;
         }
+
         /// <summary>
         /// Operator is a relation-equals operator.
         /// </summary>
@@ -184,21 +185,17 @@ namespace Decompiler.Analysis
 		{
 			if (phi.Arguments.Length != 2)
 				return null;
-			Identifier id0 = (Identifier)phi.Arguments[0];
-			Identifier id1 = (Identifier)phi.Arguments[1];
-			if (id0.Number > id1.Number)
-			{
-                id0 = id1;
-			}
-			SsaIdentifier sid = ssaIds[id0];
-			if (sid.DefStatement == null)
-				return null;
-
+            var sid0 = ssaIds[(Identifier)phi.Arguments[0]];
+            var sid1 = ssaIds[(Identifier)phi.Arguments[1]];
+            if (sid0.DefStatement == null || sid1.DefStatement == null)
+                return null;
+            var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
+                ? sid1 : sid0;
 			Assignment ass = sid.DefStatement.Instruction as Assignment;
 			if (ass == null)
 				return null;
 
-			if (ass.Dst != id0)
+			if (ass.Dst != sid.Identifier)
 				return null;
 
             ctx.InitialStatement = sid.DefStatement;

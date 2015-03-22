@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			store = new TypeStore();
 			factory = new TypeFactory();
-			globals = new Identifier("globals", 0, PrimitiveType.Pointer32, null);
+			globals = new Identifier("globals", PrimitiveType.Pointer32, null);
 			store.EnsureExpressionTypeVariable(factory, globals);
 
 			StructureType s = new StructureType(null, 0);

@@ -40,8 +40,8 @@ namespace Decompiler.UnitTests.Analysis
 		public void IgAddEdge()
 		{
 			var ig = new InterferenceGraph();
-			var id1 = new Identifier("id1", 1, PrimitiveType.Word32, null);
-			var id2 = new Identifier("id2", 2, PrimitiveType.Word32, null);
+			var id1 = new Identifier("id1", PrimitiveType.Word32, null);
+			var id2 = new Identifier("id2", PrimitiveType.Word32, null);
 			ig.Add(id1, id2);
 			Assert.IsTrue(ig.Interfere(id1, id2), "id1 inteferes with id2", null);
 			Assert.IsTrue(ig.Interfere(id2, id1), "id2 inteferes with id1", null);

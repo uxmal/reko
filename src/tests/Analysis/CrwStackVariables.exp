@@ -29,6 +29,7 @@ void fn0C00_0000(selector ds, segptr32 ptrArg04)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002
@@ -80,6 +81,7 @@ word16 fn0C00_0020(segptr32 ptrArg02)
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002
@@ -117,6 +119,7 @@ word16 fn0C00_002E(segptr32 ptrArg02, word16 wArg06)
 fn0C00_002E_entry:
 	// succ:  l0C00_002E
 l0C00_002E:
+	sp = fp
 	sp = fp - 0x0002
 	wLoc02 = bp
 	bp = fp - 0x0002

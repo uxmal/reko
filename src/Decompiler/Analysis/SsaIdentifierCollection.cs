@@ -28,7 +28,9 @@ namespace Decompiler.Analysis
 {
 	public class SsaIdentifierCollection : IEnumerable<SsaIdentifier>
 	{
-        private List<SsaIdentifier> sids = new List<SsaIdentifier>();
+        private Dictionary<Expression, SsaIdentifier> sids =
+            new Dictionary<Expression, SsaIdentifier>(new ExpressionValueComparer());
+
 		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
 			int i = sids.Count;
@@ -37,27 +39,27 @@ namespace Decompiler.Analysis
 			{
 				idNew = idOld is MemoryIdentifier
 					? new MemoryIdentifier(i, idOld.DataType)
-					: new Identifier(FormatSsaName(idOld.Name, i), i, idOld.DataType, idOld.Storage);
+					: new Identifier(FormatSsaName(idOld, i), idOld.DataType, StorageOf(idOld));
 			}
 			else
 			{
-				idNew = idOld;
+				idNew = (Identifier)idOld;
 			}
 			var sid = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
-			sids.Add(sid);
+			sids.Add(idNew, sid);
 			return sid;
 		}
 
 		public SsaIdentifier this[Identifier id]
 		{
-			get { return sids[id.Number]; }
-			set { sids[id.Number] = value; }
+			get { return sids[id]; }
+			set { sids[id] = value; }
 		}
 
         [Obsolete("used only in unit test")]
-        public void Add(SsaIdentifier sid)
+        public void Add(Identifier id, SsaIdentifier sid)
         {
-            sids.Add(sid);
+            sids.Add(id, sid);
         }
 
         [Obsolete("Find all uses and make sure they are not depending on numbers")]
@@ -68,7 +70,7 @@ namespace Decompiler.Analysis
 
         public IEnumerator<SsaIdentifier> GetEnumerator()
         {
-            return sids.GetEnumerator();
+            return sids.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -78,23 +80,44 @@ namespace Decompiler.Analysis
         //$TODO: this is much better implemented as a hash table.
         public bool TryGetValue(Identifier id, out SsaIdentifier sid)
         {
-            if (id.Number >= sids.Count)
-            {
-                sid = null;
-                return false;
-            }
-            else
-            {
-                sid = sids[id.Number];
-                return true;
-            }
+            return sids.TryGetValue(id, out sid);
         }
 
-		public string FormatSsaName(string prefix, int v)
+		public string FormatSsaName(Expression e, int v)
 		{
-			return string.Format("{0}_{1}", prefix, v);
+            string prefix = null;
+            var id = e as Identifier;
+            if (id != null)
+            {
+                prefix = id.Name;
+            }
+            var bin = e as BinaryExpression;
+            if (bin != null)
+            {
+                int offset = ((Constant)bin.Right).ToInt32();
+                if (offset < 0)
+                    prefix = "loc";
+                else
+                    prefix = "arg";
+
+            }
+            if (prefix == null)
+                throw new NotImplementedException(e.ToString());
+            return string.Format("{0}_{1}", prefix, v);
 		}
 
+        private Storage StorageOf(Expression e)
+        {
+            var id = e as Identifier;
+            if (id != null)
+                return id.Storage;
+            var bin = (BinaryExpression) e;
+            int offset = ((Constant)bin.Right).ToInt32();
+            if (offset < 0)
+                return new StackLocalStorage(offset, e.DataType);
+            else 
+                return new StackArgumentStorage(offset, e.DataType);
+        }
 
     }
 }

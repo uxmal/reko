@@ -33,10 +33,10 @@ namespace Decompiler.UnitTests.Typing
 	{
 		protected override void BuildBody()
 		{
-			var ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
-			var i = new Identifier("i", 2, PrimitiveType.Int32, null);
-			var r = new Identifier("r", 3, PrimitiveType.Real32, null);
-			var x = new Identifier("x", 4, PrimitiveType.Word32, null);
+			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
+			var i = new Identifier("i", PrimitiveType.Int32, null);
+			var r = new Identifier("r", PrimitiveType.Real32, null);
+			var x = new Identifier("x", PrimitiveType.Word32, null);
 
 			Assign(x, i);
 			Assign(x, r);

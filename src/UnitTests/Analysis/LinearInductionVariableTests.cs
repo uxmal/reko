@@ -55,9 +55,9 @@ namespace Decompiler.UnitTests.Analysis
 			Block b1 = proc.AddBlock("b1");
 			Block b2 = proc.AddBlock("b2");
 
-			Identifier a1 = new Identifier("a1", 0, PrimitiveType.Word32, null);
-			Identifier a2 = new Identifier("a2", 1, PrimitiveType.Word32, null);
-			Identifier a3 = new Identifier("a3", 2, PrimitiveType.Word32, null);
+			Identifier a1 = new Identifier("a1", PrimitiveType.Word32, null);
+			Identifier a2 = new Identifier("a2", PrimitiveType.Word32, null);
+			Identifier a3 = new Identifier("a3", PrimitiveType.Word32, null);
 			PhiFunction phi = new PhiFunction(a1.DataType, new Expression [] { a1, a3 });
 
 			Statement stm_a1 = new Statement(0, new Assignment(a1, Constant.Word32(0)), null);
@@ -73,9 +73,9 @@ namespace Decompiler.UnitTests.Analysis
             SsaIdentifier sid_a3 = new SsaIdentifier(a3, a3, stm_a3, ((Assignment) stm_a3.Instruction).Src, false);
 			sid_a1.Uses.Add(stm_a2);
 			ssaIds = new SsaIdentifierCollection();
-			ssaIds.Add(sid_a1);
-			ssaIds.Add(sid_a2);
-			ssaIds.Add(sid_a3);
+			ssaIds.Add(a1, sid_a1);
+			ssaIds.Add(a2, sid_a2);
+			ssaIds.Add(a3, sid_a3);
 
             List<SsaIdentifier> list = new List<SsaIdentifier> {
                 sid_a1,
@@ -121,11 +121,11 @@ namespace Decompiler.UnitTests.Analysis
 			Prepare(new ByteArrayLoopMock().Procedure);
 			var liv = new LinearInductionVariableFinder(proc, ssaIds, null);
 			var a = new List<SsaIdentifier>();
-			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_5").Single());
-			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_7").Single());
+			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_1").Single());
+			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_4").Single());
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
-            Assert.AreEqual("branch i_5 < 0x0000000A body", liv.Context.TestStatement.ToString());
+            Assert.AreEqual("branch i_1 < 0x0000000A body", liv.Context.TestStatement.ToString());
 		}
 
 		[Test]
@@ -176,13 +176,15 @@ namespace Decompiler.UnitTests.Analysis
 		public void Liv_CreateBareMinimum()
 		{
 			ssaIds = new SsaIdentifierCollection();
-            Identifier id0 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
-            Identifier id1 = new Identifier("bar", 2, PrimitiveType.Word32, new TemporaryStorage("bar", 1, PrimitiveType.Word32));
-			ssaIds.Add(new SsaIdentifier(id0, id0, null, null, false));
-			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
+            Identifier id0 = new Identifier("foo", PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
+            Identifier id1 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", 1, PrimitiveType.Word32));
+            Identifier phi = new Identifier("i_3", PrimitiveType.Word32, null);
+			ssaIds.Add(id0, new SsaIdentifier(id0, id0, null, null, false));
+			ssaIds.Add(id1, new SsaIdentifier(id1, id1, null, null, false));
+            ssaIds.Add(phi, new SsaIdentifier(phi, phi, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 			liv.Context.PhiStatement = new Statement(0, null, null);
-			liv.Context.PhiIdentifier = new Identifier("i_3", 1, PrimitiveType.Word32, null);
+            liv.Context.PhiIdentifier = phi;
 			liv.Context.DeltaValue = Constant.Word32(1);
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(? 0x00000001 ?)", iv.ToString());
@@ -195,10 +197,10 @@ namespace Decompiler.UnitTests.Analysis
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 			liv.Context.InitialValue = Constant.Word32(0);
 			liv.Context.PhiStatement = new Statement(0, null, null);
-			liv.Context.PhiIdentifier = new Identifier("foo_0", 0, PrimitiveType.Word32, null);
-            ssaIds.Add(new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
+			liv.Context.PhiIdentifier = new Identifier("foo_0", PrimitiveType.Word32, null);
+            ssaIds.Add(liv.Context.PhiIdentifier, new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
-			liv.Context.DeltaStatement = new Statement(0, new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
+			liv.Context.DeltaStatement = new Statement(0, new Assignment(new Identifier("foo_1", PrimitiveType.Word32, null), 
 				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
 			ssaIds[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
@@ -211,8 +213,8 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			ssaIds = new SsaIdentifierCollection();
-			SsaId(new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage("id0", 0, PrimitiveType.Word32)), null, null, false);
-			SsaId(new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage("id1", 1, PrimitiveType.Word32)), null, null, false);
+			SsaId(new Identifier("id0", PrimitiveType.Word32, new TemporaryStorage("id0", 0, PrimitiveType.Word32)), null, null, false);
+			SsaId(new Identifier("id1", PrimitiveType.Word32, new TemporaryStorage("id1", 1, PrimitiveType.Word32)), null, null, false);
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 
 			liv.Context.InitialValue = Constant.Word32(0);
@@ -221,7 +223,6 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual(3, ssaIds.Count);
 
 			Identifier id3 = m.Local32("id_3");
-			Assert.AreEqual(3, id3.Number);
 			Identifier id4 = m.Local32("id_4");
 			liv.Context.PhiStatement = m.Phi(id3, id2, id4);
 			liv.Context.PhiIdentifier = id3;
@@ -358,7 +359,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void SsaId(Identifier id, Statement stm, Expression expr, bool isSideEffect)
 		{
-			ssaIds.Add(new SsaIdentifier(id, id, stm, expr, isSideEffect));
+			ssaIds.Add(id, new SsaIdentifier(id, id, stm, expr, isSideEffect));
 		}
 	}
 }

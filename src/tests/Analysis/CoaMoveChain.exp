@@ -1,19 +1,15 @@
-Mem0:Global memory
 fp:fp
-sp:sp
-ax:ax
-bx:bx
-cx:cx
+sp_1: orig: sp
+ax_2: orig: ax
+bx_3: orig: bx
+cx_4: orig: cx
+Mem5: orig: Mem0
+    def:  Mem5[ds:0x0300:word16] = 0x0004
 ds:ds
     def:  def ds
-    uses: Mem10[ds:0x0300:word16] = 0x0004
-ax_7: orig: ax
-bx_8: orig: bx
-cx_9: orig: cx
-Mem10: orig: Mem0
-    def:  Mem10[ds:0x0300:word16] = 0x0004
-bx_11: orig: bx
-ax_12: orig: ax
+    uses: Mem5[ds:0x0300:word16] = 0x0004
+bx_7: orig: bx
+ax_8: orig: ax
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -21,7 +17,7 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem10[ds:0x0300:word16] = 0x0004
+	Mem5[ds:0x0300:word16] = 0x0004
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

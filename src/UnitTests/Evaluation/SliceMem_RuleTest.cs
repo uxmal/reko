@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Evaluation
 		{
 			var s = new Slice(PrimitiveType.Byte,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory, 
-				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
+				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();
@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Evaluation
 		{
 			var s = new Slice(PrimitiveType.Word16,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory,
-				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
+				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();

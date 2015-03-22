@@ -130,8 +130,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbEqClass()
         {
-            Identifier id1 = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier id2 = new Identifier("bar", 1, PrimitiveType.Real32, null);
+            Identifier id1 = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
             store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
@@ -148,8 +148,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbEqClassType()
         {
-            Identifier id1 = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier id2 = new Identifier("bar", 1, PrimitiveType.Real32, null);
+            Identifier id1 = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
             store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
@@ -208,10 +208,10 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbMems()
         {
-            Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
-            Identifier baz = new Identifier("baz", 2, PrimitiveType.Word32, null);
-            Identifier fred = new Identifier("fred", 3, PrimitiveType.Word32, null);
+            Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier bar = new Identifier("bar", PrimitiveType.Word16, null);
+            Identifier baz = new Identifier("baz", PrimitiveType.Word32, null);
+            Identifier fred = new Identifier("fred", PrimitiveType.Word32, null);
             Assignment ass1 = new Assignment(bar, MemLoad(foo, 4, PrimitiveType.Word16));
             Assignment ass2 = new Assignment(baz, MemLoad(foo, 6, PrimitiveType.Word32));
             Assignment ass3 = new Assignment(fred, MemLoad(baz, 0, PrimitiveType.Word32));
@@ -230,8 +230,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbRepeatedLoads()
         {
-            Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Word32, null);
-            Identifier x = new Identifier("x", 1, PrimitiveType.Word32, null);
+            Identifier pfoo = new Identifier("pfoo", PrimitiveType.Word32, null);
+            Identifier x = new Identifier("x", PrimitiveType.Word32, null);
             Assignment ass1 = new Assignment(x, MemLoad(pfoo, 4, PrimitiveType.Word32));
             Assignment ass2 = new Assignment(x, MemLoad(pfoo, 4, PrimitiveType.Word32));
             ass1.Accept(eqb);
@@ -247,9 +247,9 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbSameMemFetch()
         {
-            Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-            Identifier bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
-            Identifier baz = new Identifier("baz", 1, PrimitiveType.Word16, null);
+            Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
+            Identifier bar = new Identifier("bar", PrimitiveType.Word16, null);
+            Identifier baz = new Identifier("baz", PrimitiveType.Word16, null);
             Assignment ass1 = new Assignment(bar, MemLoad(foo, 4, PrimitiveType.Word16));
             Assignment ass2 = new Assignment(baz, MemLoad(foo, 4, PrimitiveType.Word16));
             ass1.Accept(eqb);
@@ -268,9 +268,9 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbInductionVariables()
         {
-            Identifier i = new Identifier("i", 0, PrimitiveType.Word32, null);
+            Identifier i = new Identifier("i", PrimitiveType.Word32, null);
             MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
-            Identifier i2 = new Identifier("i2", 1, PrimitiveType.Word32, null);
+            Identifier i2 = new Identifier("i2", PrimitiveType.Word32, null);
             MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
 
             LinearInductionVariable iv = new LinearInductionVariable(
@@ -325,8 +325,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbUnion()
         {
-            Identifier id1 = new Identifier("foo", 0, PrimitiveType.Int32, null);		// note signed: can't be unified with real
-            Identifier id2 = new Identifier("bar", 1, PrimitiveType.Real32, null);
+            Identifier id1 = new Identifier("foo", PrimitiveType.Int32, null);		// note signed: can't be unified with real
+            Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
             store.MergeClasses(id1.TypeVariable, id2.TypeVariable);

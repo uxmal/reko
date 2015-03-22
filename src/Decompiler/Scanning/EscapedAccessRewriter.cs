@@ -51,7 +51,7 @@ namespace Decompiler.Scanning
 		private Expression EffectiveAddress(Identifier id)
 		{
 			Identifier fp = proc.Frame.FramePointer;
-			StackLocalStorage local = proc.Frame.Identifiers[id.Number].Storage as StackLocalStorage;
+			StackLocalStorage local = id.Storage as StackLocalStorage;
 
 			int offset = local.StackOffset + proc.Frame.FrameOffset;
 			BinaryOperator op;

@@ -15,6 +15,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	ax = ax ^ ax
 	SZO = cond(ax)
 	C = false

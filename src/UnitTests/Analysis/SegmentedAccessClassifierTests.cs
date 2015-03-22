@@ -38,8 +38,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void Associate()
 		{
-			var foo = new Identifier("foo", 0, PrimitiveType.SegmentSelector, null);
-			var bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
+			var foo = new Identifier("foo", PrimitiveType.SegmentSelector, null);
+			var bar = new Identifier("bar", PrimitiveType.Word16, null);
 			var mpc = new SegmentedAccessClassifier(null, null);
 			mpc.Associate(foo, bar);
 			Assert.IsNotNull(mpc.AssociatedIdentifier(foo), "Bar should be associated");
@@ -50,9 +50,9 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void Disassociate()
 		{
-			Identifier foo = new Identifier("foo", 0, PrimitiveType.SegmentSelector, null);
-			Identifier bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
-			Identifier baz = new Identifier("baz", 2, PrimitiveType.Word16, null);
+			Identifier foo = new Identifier("foo", PrimitiveType.SegmentSelector, null);
+			Identifier bar = new Identifier("bar", PrimitiveType.Word16, null);
+			Identifier baz = new Identifier("baz", PrimitiveType.Word16, null);
 			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null, null);
 			mpc.Associate(foo, bar);
 			mpc.Associate(foo, baz);
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AssociateConsts()
 		{
-			Identifier ptr = new Identifier("ptr", 0, PrimitiveType.SegmentSelector, null);
+			Identifier ptr = new Identifier("ptr", PrimitiveType.SegmentSelector, null);
 			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null, null);
 			mpc.Associate(ptr, Constant.Word32(3));
 			mpc.Associate(ptr, Constant.Word32(4));
@@ -72,8 +72,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DisassociateConsts()
 		{
-			Identifier ptr = new Identifier("ptr", 0, PrimitiveType.SegmentSelector, null);
-			Identifier mp =  new Identifier("mp", 1, PrimitiveType.SegmentSelector, null);
+			Identifier ptr = new Identifier("ptr", PrimitiveType.SegmentSelector, null);
+			Identifier mp =  new Identifier("mp",  PrimitiveType.SegmentSelector, null);
 			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null, null);
 			mpc.Associate(ptr, Constant.Word32(3));
 			mpc.Associate(ptr, mp);

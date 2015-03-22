@@ -126,12 +126,12 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void Def(Identifier id)
 		{
-			vl.Def(frame.Identifiers[id.Number]);
+			vl.Def(id);
 		}
 
 		private void Use(Identifier id, int bitOffset, int bitSize)
 		{
-			vl.Use(frame.Identifiers[id.Number], bitOffset, bitSize);
+			vl.Use(id, bitOffset, bitSize);
 		}
 
 		private string Dump()

@@ -87,7 +87,7 @@ namespace Decompiler.Core
 
 		public void AddStackArgument(int stackOffset, Identifier id)
 		{
-			args.Add(new Identifier(id.Name, id.Number, id.DataType, new StackArgumentStorage(stackOffset, id.DataType)));
+			args.Add(new Identifier(id.Name, id.DataType, new StackArgumentStorage(stackOffset, id.DataType)));
 		}
 
 		public ProcedureSignature BuildSignature()

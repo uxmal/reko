@@ -18,6 +18,7 @@ void fn0C00_0000(word16 ax, word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	SCZO = cond(ax - bx)
 	branch Test(EQ,Z) l0C00_000A
 	// succ:  l0C00_0004 l0C00_000A

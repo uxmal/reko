@@ -9,6 +9,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	bx = 0x1234
 	call fn0C00_000C (retsize: 2;)
 	bx = 0x5678
@@ -35,6 +36,7 @@ void fn0C00_000C()
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
+	sp = fp
 	SCZO = cond(Mem0[ds:bx:word16] - 0x007B)
 	branch Test(LE,SZO) l0C00_0014
 	// succ:  l0C00_0011 l0C00_0014
@@ -73,6 +75,7 @@ l0C00_0014_in_fn0C00_0018:
 	return
 	// succ:  fn0C00_0018_exit
 l0C00_0018:
+	sp = fp
 	bx = bx + 0x0004
 	SCZO = cond(bx)
 	goto l0C00_0014_in_fn0C00_0018

@@ -136,8 +136,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoArrayExpression()
 		{
-			var b = new Identifier("base", 0, PrimitiveType.Word32, null);
-			var i = new Identifier("idx", 1, PrimitiveType.Word32, null);
+			var b = new Identifier("base", PrimitiveType.Word32, null);
+			var i = new Identifier("idx", PrimitiveType.Word32, null);
 			var s = Constant.Word32(4);
 
 			ProcedureBuilder m = new ProcedureBuilder();
@@ -157,9 +157,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoInductionVariable()
 		{
-			Identifier i = new Identifier("i", 0, PrimitiveType.Word32, null);
+			Identifier i = new Identifier("i", PrimitiveType.Word32, null);
 			MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
-			Identifier i2 = new Identifier("i2", 1, PrimitiveType.Word32, null);
+			Identifier i2 = new Identifier("i2", PrimitiveType.Word32, null);
 			MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
 
 			LinearInductionVariable iv = new LinearInductionVariable(

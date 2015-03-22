@@ -122,6 +122,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp = fp
 	branch cx == 0x0000 l0C00_0002
 	// succ:  l0C00_0000_1 l0C00_0002
 l0C00_0000_1:

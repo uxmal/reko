@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void InstrDeclaration()
 		{
-			var foo = new Identifier("foo", 0, PrimitiveType.Word16, null);
+			var foo = new Identifier("foo", PrimitiveType.Word16, null);
 			var declFoo = new Declaration(foo, null);
 			Assert.AreEqual("word16 foo", declFoo.ToString());
 		}	

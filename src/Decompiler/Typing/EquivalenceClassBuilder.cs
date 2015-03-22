@@ -275,7 +275,7 @@ namespace Decompiler.Typing
 				{
 					proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
 						factory,
-                        new Identifier("signature of " + proc.Name, 0, VoidType.Instance, null),
+                        new Identifier("signature of " + proc.Name, VoidType.Instance, null),
 						null);
 				}
 				if (proc.Signature.Parameters != null)
