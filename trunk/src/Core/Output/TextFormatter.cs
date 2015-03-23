@@ -28,6 +28,12 @@ using System.Text;
 
 namespace Decompiler.Core.Output
 {
+    /// <summary>
+    /// Foratter that writes to a TextWriter.
+    /// </summary>
+    /// <remarks>
+    /// Useful when writing decompiler output to a text file.
+    /// </remarks>
     public class TextFormatter : Formatter
     {
         public TextFormatter(TextWriter writer)

@@ -23,6 +23,9 @@ using System.IO;
 
 namespace Decompiler.Core.Output
 {
+    /// <summary>
+    /// A TextWriter that maintains a notion of indentation.
+    /// </summary>
 	public class IndentingTextWriter
 	{
 		private TextWriter writer;

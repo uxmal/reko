@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Analysis
 {
     /// <summary>
     /// These tests are making sure that we can re-run SsaTransform
-    /// on a procedure that already has been transformed once
+    /// on a procedure that already has been transformed once.
     /// </summary>
     [TestFixture]
     public class SsaTestsRedo
@@ -70,7 +70,8 @@ namespace Decompiler.UnitTests.Analysis
             var vp = new ValuePropagator(ssa.SsaState.Identifiers, proc);
             vp.Transform();
 
-            ssa.StackVariables = true;
+            ssa.RenameFrameAccesses = true;
+            ssa.AddUseInstructions = true;
             ssa.Transform();
 
             var writer = new StringWriter();
@@ -84,7 +85,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void SsarSimple()
         {
-            var sExp = 
+            var sExp =
                 @"// ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -97,6 +98,8 @@ l1:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
+	use r1_2
+	use r2
 ";
             RunTest(sExp, m =>
             {
@@ -131,6 +134,13 @@ l1:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
+	use dwLoc04_12
+	use dwLoc08_13
+	use fp
+	use Mem11
+	use r1_10
+	use r2_9
+	use r63_5
 ";
             RunTest(sExp, m =>
             {
@@ -185,6 +195,13 @@ l2:
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
+	use bp_8
+	use CZS_6
+	use dwLoc04_12
+	use fp
+	use r1_7
+	use r63_9
+	use wArg04
 ";
             RunTest(sExp, m =>
             {
@@ -251,6 +268,13 @@ l2:
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
+	use bp_8
+	use CZS_6
+	use dwLoc04_14
+	use fp
+	use r1_7
+	use r63_9
+	use wArg04_16
 ";
             RunTest(sExp, m =>
             {

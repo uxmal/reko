@@ -59,7 +59,8 @@ namespace Decompiler.Analysis
 		}
 
         public SsaState SsaState { get; private set; }
-        public bool StackVariables { get; set; }
+        public bool RenameFrameAccesses { get; set; }
+        public bool AddUseInstructions { get; set; }
 
 		/// <summary>
 		/// Creates a phi statement with slots for each predecessor block, then
@@ -80,7 +81,7 @@ namespace Decompiler.Analysis
 
 		private IEnumerable<Identifier> LocateAllDefinedVariables(Dictionary<Expression, byte>[] defOrig)
 		{
-			var ldv = new LocateDefinedVariables(proc, this.SsaState, this.StackVariables, defOrig);
+			var ldv = new LocateDefinedVariables(this, defOrig);
 			foreach (Block n in SsaState.DomGraph.ReversePostOrder.Keys)
 			{
 				ldv.LocateDefs(n);
@@ -186,7 +187,7 @@ namespace Decompiler.Analysis
         public SsaState Transform()
 		{
 			PlacePhiFunctions();
-			var rn = new VariableRenamer(this.SsaState, this.StackVariables, proc);
+			var rn = new VariableRenamer(this);
 			rn.RenameBlock(proc.EntryBlock);
             return SsaState;
 		}
@@ -209,11 +210,11 @@ namespace Decompiler.Analysis
             private List<Identifier> definitions;
             private HashSet<Identifier> inDefinitions;
 
-			public LocateDefinedVariables(Procedure proc, SsaState ssa, bool frameVariables, Dictionary<Expression, byte>[] defOrig)
+			public LocateDefinedVariables(SsaTransform ssaXform, Dictionary<Expression, byte>[] defOrig)
 			{
-				this.proc = proc;
-                this.ssa = ssa;
-                this.frameVariables = frameVariables;
+				this.proc = ssaXform.proc;
+                this.ssa = ssaXform.SsaState;
+                this.frameVariables = ssaXform.RenameFrameAccesses;
                 this.defVars = defOrig;
                 this.definitions = new List<Identifier>();
                 this.inDefinitions = new HashSet<Identifier>();
@@ -335,6 +336,7 @@ namespace Decompiler.Analysis
 		{
 			private SsaState ssa;
             private bool renameFrameAccess;
+            private bool addUseInstructions;
 			private Dictionary<Identifier, Identifier> rename;		// most recently used name for var x.
 			private Statement stmCur; 
 			private Procedure proc;
@@ -346,15 +348,15 @@ namespace Decompiler.Analysis
 			/// </summary>
 			/// <param name="ssa">SSA identifiers</param>
 			/// <param name="p">procedure to rename</param>
-			/// <param name="useSignature">if true, uses variables from procedure's signature.</param>
-			public VariableRenamer(SsaState ssa, bool renameFrameAcceses, Procedure p)
+			public VariableRenamer(SsaTransform ssaXform)
 			{
-				this.ssa = ssa;
-                this.renameFrameAccess = renameFrameAcceses;
+				this.ssa = ssaXform.SsaState;
+                this.renameFrameAccess = ssaXform.RenameFrameAccesses;
+                this.addUseInstructions = ssaXform.AddUseInstructions;
+                this.proc = ssaXform.proc;
 				this.rename = new Dictionary<Identifier, Identifier>();
 				this.stmCur = null;
-				this.proc = p;
-                this.existingDefs = p.EntryBlock.Statements
+                this.existingDefs = proc.EntryBlock.Statements
                     .Select(s => s.Instruction as DefInstruction)
                     .Where(d => d != null)
                     .Select(d => d.Expression)
@@ -404,6 +406,8 @@ namespace Decompiler.Analysis
 						stmCur = stm;
 						stmCur.Instruction = stmCur.Instruction.Accept(this);
 					}
+                    if (n == n.Procedure.ExitBlock && this.addUseInstructions)
+                        AddUseInstructions(n);
 				}
 
 				// Rename arguments to phi functions in successor blocks.
@@ -438,6 +442,28 @@ namespace Decompiler.Analysis
 				}
 				rename = wasonentry;
 			}
+
+            /// <summary>
+            /// Adds a UseInstruction for each SsaIdentifier.
+            /// </summary>
+            /// <remarks>
+            /// Doing this will allow us to detect what definitions reach the end of the function.
+            /// //$TODO: what about functions that don't terminate, or have branches that don't terminate? In such cases,
+            /// the identifiers should be removed.</remarks>
+            /// <param name="block"></param>
+            private void AddUseInstructions(Block block)
+            {
+                var existing = block.Statements
+                    .Select(s => s.Instruction as UseInstruction)
+                    .Where(u => u != null)
+                    .Select(u => u.Expression)
+                    .ToHashSet();
+                block.Statements.Clear();
+                block.Statements.AddRange(rename.Values
+                    .Where(id => !existing.Contains(id))
+                    .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
+                    .Select(id => new Statement(0, new UseInstruction(id), block)));
+            }
 
             /// <summary>
             /// Called when a new definition of a location is encountered.
@@ -613,7 +639,8 @@ namespace Decompiler.Analysis
 
             public override Instruction TransformUseInstruction(UseInstruction u)
             {
-                u.OutArgument = UsedBeforeDefined(u.OutArgument).Identifier;
+                if (u.OutArgument != null)
+                    u.OutArgument = UsedBeforeDefined(u.OutArgument).Identifier;
                 return base.TransformUseInstruction(u);
             }
 		}
