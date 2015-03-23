@@ -230,7 +230,7 @@ namespace Decompiler.Analysis
                 // mem[fp - 30] becomes wLoc30, while 
                 // mem[fp + 30] becomes wArg30.
                 // This allows us to compute the dataflow of this procedure.
-                sst.StackVariables = true;
+                sst.RenameFrameAccesses = true;
                 sst.Transform();
                 
                 // At this point, the computation of _actual_ ProcedureFlow should be possible.

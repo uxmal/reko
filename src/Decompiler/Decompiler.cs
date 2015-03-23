@@ -243,8 +243,6 @@ namespace Decompiler
             return project;
         }
 
-
-
 		/// <summary>
 		/// Extracts type information from the typeless rewritten programs.
 		/// </summary>

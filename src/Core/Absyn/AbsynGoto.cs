@@ -40,5 +40,7 @@ namespace Decompiler.Core.Absyn
 		{
 			get { return label; }
 		}
+
+        public override bool IsControlFlow { get { return true; }}
 	}
 }

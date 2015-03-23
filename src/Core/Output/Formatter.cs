@@ -86,13 +86,9 @@ namespace Decompiler.Core.Output
         /// <param name="ch"></param>
         public abstract Formatter Write(char ch);
 
-        public void Write(object o)
-        {
-            if (o != null)
-                Write(o.ToString());
-        }
-
         public abstract void Write(string format, params object[] arguments);
+
+        public abstract void WriteLine(string format, params object[] arguments);
 
         public abstract void WriteComment(string comment);
 
@@ -106,14 +102,18 @@ namespace Decompiler.Core.Output
 
         public abstract void WriteLine(string s);
 
+        public void Write(object o)
+        {
+            if (o != null)
+                Write(o.ToString());
+        }
+
         public void WriteLine(object o)
         {
             if (o != null)
                 Write(o);
             WriteLine();
         }
-
-        public abstract void WriteLine(string format, params object[] arguments);
 
 		public void WriteSpaces(int n)
 		{

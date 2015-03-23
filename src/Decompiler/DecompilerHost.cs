@@ -53,10 +53,6 @@ namespace Decompiler
             get { throw new NotImplementedException(); }
         }
 
-		#endregion
-
-        #region DecompilerHost Members
-
         public void WriteDisassembly(Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
