@@ -69,7 +69,7 @@ namespace Decompiler.Analysis
         {
             if (sid.DefStatement.Instruction is DefInstruction)
             {
-                flow.Preserved.Add(sid.OriginalIdentifier);
+                flow.Preserved.Add(sid.OriginalIdentifier.Storage);
                 return;
             }
             Assignment ass;
@@ -80,17 +80,17 @@ namespace Decompiler.Analysis
                    (sid.OriginalIdentifier.Storage == arch.StackRegister &&
                     ass.Src == proc.Frame.FramePointer))
                 {
-                    flow.Preserved.Add(sid.OriginalIdentifier);
+                    flow.Preserved.Add(sid.OriginalIdentifier.Storage);
                     return;
                 }
                 Constant c;
                 if (ass.Src.As<Constant>(out c))
                 {
-                    flow.Constants.Add(sid.OriginalIdentifier, c);
+                    flow.Constants.Add(sid.OriginalIdentifier.Storage, c);
                     // Fall through to Trashed below --v
                 }
             }
-            flow.Trashed.Add(sid.OriginalIdentifier);
+            flow.Trashed.Add(sid.OriginalIdentifier.Storage);
         }
     }
 }

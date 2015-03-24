@@ -309,11 +309,11 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaSubroutine()
         {
-            Identifier r1_ = null;
+            Storage r1_ = null;
             // Simulate the creation of a subroutine.
             var procSub = this.pb.Add("Adder", m =>
             {
-                r1_ = m.Register(1);
+                r1_ = m.Register(1).Storage;
             });
 
             var procSubFlow = new ProcedureFlow2 { Trashed = { r1_ } };

@@ -105,12 +105,12 @@ namespace Decompiler.Core
             return id;
         }
 
-        public Identifier EnsureIdentifier(Identifier idForeign)
+        public Identifier EnsureIdentifier(Storage stgForeign)
         {
-            var reg = idForeign.Storage as RegisterStorage;
+            var reg = stgForeign as RegisterStorage;
             if (reg != null)
                 return EnsureRegister(reg);
-            var grf = idForeign.Storage as FlagGroupStorage;
+            var grf = stgForeign as FlagGroupStorage;
             if (grf != null)
                 return EnsureFlagGroup(grf);
             throw new NotImplementedException();

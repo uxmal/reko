@@ -39,6 +39,7 @@ namespace Decompiler.UnitTests.Analysis
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
 		private BlockDominatorGraph doms;
+        private BlockDominatorGraph dom;
 
 		/// <summary>
 		/// Builds a strongly connected component corresponding to:
@@ -51,11 +52,24 @@ namespace Decompiler.UnitTests.Analysis
 		/// </summary>
 		private List<SsaIdentifier> BuildScc()
 		{
+            var m = new ProcedureBuilder("test");
+			Identifier a = new Identifier("a", PrimitiveType.Word32, null);
+            m.Label("b1");
+            m.Assign(a, Constant.Word32(0));
+            m.Label("b2");
+            m.Assign(a, m.IAdd(a, 4));
+            m.BranchIf(m.Ne(a, 10), "b2");
+            m.Label("b3");
+            m.Return();
+            this.dom = m.Procedure.CreateBlockDominatorGraph();
+            var ssa = new SsaTransform(new ProgramDataFlow(), m.Procedure, dom);
+
+            /*
+            
             proc = new Procedure("test", new Frame(PrimitiveType.Word32));
 			Block b1 = proc.AddBlock("b1");
 			Block b2 = proc.AddBlock("b2");
 
-			Identifier a1 = new Identifier("a1", PrimitiveType.Word32, null);
 			Identifier a2 = new Identifier("a2", PrimitiveType.Word32, null);
 			Identifier a3 = new Identifier("a3", PrimitiveType.Word32, null);
 			PhiFunction phi = new PhiFunction(a1.DataType, new Expression [] { a1, a3 });
@@ -65,6 +79,7 @@ namespace Decompiler.UnitTests.Analysis
 			Statement stm_ex = new Statement(0, new Branch(new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a2, Constant.Word32(10)), b2), null);
 			Statement stm_a3 = new Statement(0, new Assignment(a3, new BinaryExpression(Operator.IAdd, a3.DataType, a2, Constant.Word32(4))), null);
 			b1.Statements.Add(stm_a1);
+
 			b2.Statements.Add(stm_a2);
 			b2.Statements.Add(stm_a3);
 
@@ -76,11 +91,12 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds.Add(a1, sid_a1);
 			ssaIds.Add(a2, sid_a2);
 			ssaIds.Add(a3, sid_a3);
-
+            */
+            ssaIds = ssa.SsaState.Identifiers;
             List<SsaIdentifier> list = new List<SsaIdentifier> {
-                sid_a1,
-                sid_a2,
-                sid_a3
+                ssaIds.Where(i => i.Identifier.Name == "a_0").Single(),
+                ssaIds.Where(i => i.Identifier.Name == "a_1").Single(),
+                ssaIds.Where(i => i.Identifier.Name == "a_2").Single(),
             };
 			return list;
 		}
@@ -89,7 +105,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void Liv_FindPhi()
 		{
 			List<SsaIdentifier> a = BuildScc();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, dom);
 			PhiFunction p = liv.FindPhiFunction(a);
 			Assert.IsNotNull(p, "Didn't find phi function!");
 		}
@@ -98,21 +114,21 @@ namespace Decompiler.UnitTests.Analysis
 		public void Liv_FindLinearIncrement()
 		{
             List<SsaIdentifier> a = BuildScc();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, dom);
 			Constant c = liv.FindLinearIncrement(a);
 			Assert.AreEqual(4, c.ToInt32());
-            Assert.AreEqual("a3 = a2 + 0x00000004", liv.Context.DeltaStatement.ToString());
+            Assert.AreEqual("a_2 = a_1 + 0x00000004", liv.Context.DeltaStatement.ToString());
 		}
 
 		[Test]
 		public void Liv_FindInitialValue()
 		{
 			List<SsaIdentifier> a = BuildScc();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, dom);
 			PhiFunction phi = liv.FindPhiFunction(a);
 			Constant c = liv.FindInitialValue(phi);
             Assert.AreEqual(0, c.ToInt32());
-            Assert.AreEqual("a1 = 0x00000000", liv.Context.InitialStatement.ToString());
+            Assert.AreEqual("a_0 = 0x00000000", liv.Context.InitialStatement.ToString());
 		}
 
 		[Test]
