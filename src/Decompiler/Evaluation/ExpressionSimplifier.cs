@@ -406,6 +406,8 @@ namespace Decompiler.Evaluation
 
         public virtual Expression VisitPhiFunction(PhiFunction pc)
         {
+            return pc;
+            /*
             var oldChanged = Changed;
             var args = pc.Arguments
                 .Select(a => a.Accept(this))
@@ -420,7 +422,7 @@ namespace Decompiler.Evaluation
             else
             {
                 return pc;
-            }
+            }*/
         }
 
         public virtual Expression VisitPointerAddition(PointerAddition pa)

@@ -121,6 +121,7 @@ namespace Decompiler.UnitTests.Mocks
 					throw new ApplicationException("Unresolved procedure name: " + pcu.Name);
 				pcu.Update(proc);
 			}
+            unresolvedProcedures.Clear();
 		}
 	}
 

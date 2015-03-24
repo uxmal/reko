@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
@@ -30,13 +31,13 @@ namespace Decompiler.Analysis
     {
         public ProcedureFlow2()
         {
-            this.Preserved = new HashSet<Identifier>();
-            this.Trashed = new HashSet<Identifier>();
-            this.Constants = new Dictionary<Identifier, Constant>();
+            this.Preserved = new HashSet<Storage>();
+            this.Trashed = new HashSet<Storage>();
+            this.Constants = new Dictionary<Storage, Constant>();
         }
 
-        public HashSet<Identifier> Preserved { get; private set; }
-        public HashSet<Identifier> Trashed { get; private set; }
-        public Dictionary<Identifier, Constant> Constants { get; private set; }
+        public HashSet<Storage> Preserved { get; private set; }
+        public HashSet<Storage> Trashed { get; private set; }
+        public Dictionary<Storage, Constant> Constants { get; private set; }
     }
 }

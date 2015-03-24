@@ -384,6 +384,7 @@ main_exit:
             p.Add(new LiveLoopMock().Procedure);
 
             var sExp = @"// LiveLoopMock
+// Return size: 0
 void LiveLoopMock()
 LiveLoopMock_entry:
 	goto loop

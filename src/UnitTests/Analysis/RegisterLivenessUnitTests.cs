@@ -237,6 +237,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
+        [Ignore("Won't be needed when class obsoleted")]
 		public void Rl_CallToProcedureWithStackArgs()
 		{
 			Procedure callee = new Procedure("callee", null);

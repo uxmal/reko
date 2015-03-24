@@ -301,13 +301,13 @@ namespace Decompiler.Analysis
 			/// <returns></returns>
 			public override void VisitCallInstruction(CallInstruction ci)
 			{
-                Procedure proc = GetUserProcedure(ci);
+                Procedure callee = GetUserProcedure(ci);
                 ProcedureFlow2 flow;
-                if (proc != null && programFlow.ProcedureFlows2.TryGetValue(proc, out flow))
+                if (callee != null && programFlow.ProcedureFlows2.TryGetValue(callee, out flow))
                 {
                     foreach (var def in flow.Trashed)
                     {
-                        var idDef = proc.Frame.EnsureIdentifier(def);
+                        var idDef = callee.Frame.EnsureIdentifier(def);
                         MarkDefined(idDef);
                     }
                     return;
@@ -503,7 +503,7 @@ namespace Decompiler.Analysis
                 var ab = new ApplicationBuilder(null, proc.Frame, null, null, null, true);
                 foreach (var idDef in flow.Trashed)
                 {
-                    var idLocal = ab.Bind((Identifier)idDef);
+                    var idLocal = proc.Frame.EnsureIdentifier(idDef);
                     if (!existing.Contains(idLocal))
                     { 
                         ci.Definitions.Add(new DefInstruction(idLocal));
