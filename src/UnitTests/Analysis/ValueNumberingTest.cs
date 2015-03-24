@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(proc, gr);
+                SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut.TextWriter);
@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut.TextWriter);
@@ -119,7 +119,7 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 
@@ -156,7 +156,7 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
@@ -189,7 +189,7 @@ looptest:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
@@ -219,12 +219,13 @@ looptest:
 
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
+            var progFlow = new ProgramDataFlow();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(progFlow, proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, writer);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);

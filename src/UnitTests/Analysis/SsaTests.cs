@@ -157,10 +157,11 @@ namespace Decompiler.UnitTests.Analysis
 
             RunUnitTest(m, "Analysis/SsaCallIndirect.txt");
         }
+
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var proc = m.Procedure;
-            var sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
             ssa = sst.SsaState;
             using (var fut = new FileUnitTester(outfile))
             {
@@ -196,7 +197,7 @@ namespace Decompiler.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(flow, proc, gr);
 				ssa = sst.SsaState;
 				ssa.Write(writer);
 				proc.Write(false, true, writer);

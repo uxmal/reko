@@ -34,6 +34,7 @@ namespace Decompiler.Analysis
 	/// </summary>
 	public class SsaTransform
 	{
+        private ProgramDataFlow programFlow;
 		private Identifier [] varsOrig;
 		private Procedure proc;
 
@@ -47,8 +48,9 @@ namespace Decompiler.Analysis
 		/// </summary>
 		/// <param name="proc"></param>
 		/// <param name="gr"></param>
-		public SsaTransform(Procedure proc, DominatorGraph<Block> gr)
+		public SsaTransform(ProgramDataFlow programFlow, Procedure proc, DominatorGraph<Block> gr)
 		{
+            this.programFlow = programFlow;
 			this.proc = proc;
 			this.varsOrig = new Identifier[proc.Frame.Identifiers.Count];
 			proc.Frame.Identifiers.CopyTo(varsOrig);
@@ -159,7 +161,6 @@ namespace Decompiler.Analysis
             return a;
         }
 
-
         private static Identifier EnsureStackVariable(Procedure proc, Expression effectiveAddress, DataType dt)
         {
             if (effectiveAddress == proc.Frame.FramePointer)
@@ -201,7 +202,8 @@ namespace Decompiler.Analysis
 		/// </summary>
 		private class LocateDefinedVariables : InstructionVisitorBase
 		{
-			private Procedure proc;
+            private ProgramDataFlow programFlow;
+            private Procedure proc;
 			private Block block;
             private bool frameVariables;
             private Dictionary<Expression, byte>[] defVars; // variables defined by a statement.
@@ -212,6 +214,7 @@ namespace Decompiler.Analysis
 
 			public LocateDefinedVariables(SsaTransform ssaXform, Dictionary<Expression, byte>[] defOrig)
 			{
+                this.programFlow = ssaXform.programFlow;
 				this.proc = ssaXform.proc;
                 this.ssa = ssaXform.SsaState;
                 this.frameVariables = ssaXform.RenameFrameAccesses;
@@ -298,6 +301,18 @@ namespace Decompiler.Analysis
 			/// <returns></returns>
 			public override void VisitCallInstruction(CallInstruction ci)
 			{
+                Procedure proc = GetUserProcedure(ci);
+                ProcedureFlow2 flow;
+                if (proc != null && programFlow.ProcedureFlows2.TryGetValue(proc, out flow))
+                {
+                    foreach (var def in flow.Trashed)
+                    {
+                        var idDef = proc.Frame.EnsureIdentifier(def);
+                        MarkDefined(idDef);
+                    }
+                    return;
+                }
+
 				// Hell node implementation - define all register variables.
 				foreach (Identifier id in proc.Frame.Identifiers)
 				{
@@ -307,6 +322,14 @@ namespace Decompiler.Analysis
 					}
 				}
 			}
+
+            private Procedure GetUserProcedure(CallInstruction ci)
+            {
+                var pc = ci.Callee as ProcedureConstant;
+                if (pc == null)
+                    return null;
+                return pc.Procedure as Procedure;
+            }
 
 			/// <summary>
 			/// Any uses of the identifier <paramref>id</paramref> 
@@ -334,7 +357,8 @@ namespace Decompiler.Analysis
 
 		public class VariableRenamer : InstructionTransformer
 		{
-			private SsaState ssa;
+            private ProgramDataFlow programFlow;
+            private SsaState ssa;
             private bool renameFrameAccess;
             private bool addUseInstructions;
 			private Dictionary<Identifier, Identifier> rename;		// most recently used name for var x.
@@ -350,6 +374,7 @@ namespace Decompiler.Analysis
 			/// <param name="p">procedure to rename</param>
 			public VariableRenamer(SsaTransform ssaXform)
 			{
+                this.programFlow = ssaXform.programFlow;
 				this.ssa = ssaXform.SsaState;
                 this.renameFrameAccess = ssaXform.RenameFrameAccesses;
                 this.addUseInstructions = ssaXform.AddUseInstructions;
@@ -458,11 +483,37 @@ namespace Decompiler.Analysis
                     .Where(u => u != null)
                     .Select(u => u.Expression)
                     .ToHashSet();
-                block.Statements.Clear();
                 block.Statements.AddRange(rename.Values
                     .Where(id => !existing.Contains(id))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
                     .Select(id => new Statement(0, new UseInstruction(id), block)));
+            }
+
+            private void AddUseInstructions(CallInstruction ci)
+            {
+                var existing = ci.Uses.Select(u => u.Expression).ToHashSet();
+                ci.Uses.UnionWith(rename.Values
+                    .Where(id => !existing.Contains(id))
+                    .Select(id => new UseInstruction(id)));
+            }
+
+            private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
+            {
+                var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier).ToHashSet();
+                var ab = new ApplicationBuilder(null, proc.Frame, null, null, null, true);
+                foreach (var idDef in flow.Trashed)
+                {
+                    var idLocal = ab.Bind((Identifier)idDef);
+                    if (!existing.Contains(idLocal))
+                    { 
+                        ci.Definitions.Add(new DefInstruction(idLocal));
+                    }
+                }
+                foreach (var def in ci.Definitions)
+                {
+                    var idNew = NewDef((Identifier) def.Expression, null, false);
+                    def.Expression = idNew;
+                }
             }
 
             /// <summary>
@@ -536,6 +587,19 @@ namespace Decompiler.Analysis
 			public override Instruction TransformCallInstruction(CallInstruction ci)
 			{
                 ci.Callee = ci.Callee.Accept(this);
+                ProcedureConstant pc;
+                if (ci.Callee.As(out pc))
+                {
+                    var procCallee = pc.Procedure as Procedure;
+                    ProcedureFlow2 procFlow;
+                    if (procCallee != null && programFlow.ProcedureFlows2.TryGetValue(procCallee, out procFlow))
+                    {
+                        AddUseInstructions(ci);
+                        AddDefInstructions(ci, procFlow);
+                    }
+                    return ci;
+                }
+
 				// Hell node implementation - use all register variables.
 
 				foreach (Identifier id in proc.Frame.Identifiers)

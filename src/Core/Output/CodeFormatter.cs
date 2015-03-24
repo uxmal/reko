@@ -25,6 +25,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -424,6 +425,24 @@ namespace Decompiler.Core.Output
             ci.Callee.Accept(this);
             writer.Write(" ({0})", ci.CallSite);
 			writer.Terminate();
+            if (ci.Uses.Count > 0)
+            {
+                writer.Indentation += writer.TabSize;
+                writer.Indent();
+                writer.Write("uses: ");
+                writer.Write(string.Join(",", ci.Uses.OrderBy(u => ((Identifier)(u.Expression)).Name).Select(u => u.Expression)));
+                writer.Terminate();
+                writer.Indentation -= writer.TabSize;
+            }
+            if (ci.Definitions.Count > 0)
+            {
+                writer.Indentation += writer.TabSize;
+                writer.Indent();
+                writer.Write("defs: ");
+                writer.Write(string.Join(",", ci.Definitions.OrderBy(d => ((Identifier)d.Expression).Name).Select(d => d.Expression)));
+                writer.Terminate();
+                writer.Indentation -= writer.TabSize;
+            }
 		}
 
 		public void VisitDeclaration(Declaration decl)

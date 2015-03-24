@@ -326,5 +326,14 @@ namespace Decompiler.UnitTests.Mocks
             return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word32));
         }
 
+        public Identifier Reg16(string name)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Word16));
+        }
+
+        public Identifier Reg8(string name)
+        {
+            return Frame.EnsureRegister(new RegisterStorage(name, 1, PrimitiveType.Byte));
+        }
     }
 }

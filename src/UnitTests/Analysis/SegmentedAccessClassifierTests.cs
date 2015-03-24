@@ -126,7 +126,7 @@ namespace Decompiler.UnitTests.Analysis
 		private void Prepare(ProcedureBuilder mock)
 		{
 			proc = mock.Procedure;
-			SsaTransform tr = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+			SsaTransform tr = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
 			ssaIds = tr.SsaState.Identifiers;
 		}
 

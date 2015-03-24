@@ -42,6 +42,19 @@ namespace Decompiler.Core.Code
 
 		public abstract bool IsControlFlow { get; }
 
+        /// <summary>
+        /// Utility function to simplify code that first checks the type of an instruction
+        /// and then casts to it.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ass"></param>
+        /// <returns></returns>
+        public bool As<T>(out T value) where T : Instruction
+        {
+            value = this as T;
+            return value != null;
+        }
+
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();
@@ -52,6 +65,7 @@ namespace Decompiler.Core.Code
 			Accept(fmt);
 			return sw.ToString();
 		}
+
     }
 
     /// <summary>

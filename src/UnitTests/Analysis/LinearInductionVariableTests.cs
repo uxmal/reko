@@ -317,11 +317,11 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			this.proc = proc;
             doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, doms);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, doms);
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
+			var cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
 			cce.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

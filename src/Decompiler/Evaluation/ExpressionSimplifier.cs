@@ -25,6 +25,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Decompiler.Evaluation 
 {
@@ -75,7 +76,8 @@ namespace Decompiler.Evaluation
             this.binopWithSelf = new BinOpWithSelf_Rule();
         }
 
-        public bool Changed { get; set; }
+        public bool Changed { get { return changed; } set { changed = value; } }
+        private bool changed;
 
         private bool IsAddOrSub(Operator op)
         {
@@ -404,7 +406,21 @@ namespace Decompiler.Evaluation
 
         public virtual Expression VisitPhiFunction(PhiFunction pc)
         {
-            return pc;
+            var oldChanged = Changed;
+            var args = pc.Arguments
+                .Select(a => a.Accept(this))
+                .ToArray();
+            Changed = oldChanged;
+            Expression e = args[0];
+            if (args.All(a => new ExpressionValueComparer().Equals(a, e)))
+            {
+                Changed = true;
+                return e;
+            }
+            else
+            {
+                return pc;
+            }
         }
 
         public virtual Expression VisitPointerAddition(PointerAddition pa)

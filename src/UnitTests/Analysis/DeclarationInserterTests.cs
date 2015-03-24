@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, doms);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, doms);
 			
 			this.ssaIds = sst.SsaState.Identifiers;
             sst.SsaState.DebugDump(true);//$DEBUG
