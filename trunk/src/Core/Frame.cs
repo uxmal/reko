@@ -105,6 +105,17 @@ namespace Decompiler.Core
             return id;
         }
 
+        public Identifier EnsureIdentifier(Identifier idForeign)
+        {
+            var reg = idForeign.Storage as RegisterStorage;
+            if (reg != null)
+                return EnsureRegister(reg);
+            var grf = idForeign.Storage as FlagGroupStorage;
+            if (grf != null)
+                return EnsureFlagGroup(grf);
+            throw new NotImplementedException();
+        }
+
 		/// <summary>
 		/// Creates a temporary variable whose storage and name is guaranteed not to collide with any other variable.
 		/// </summary>
@@ -139,6 +150,19 @@ namespace Decompiler.Core
 			}
 			return id;
 		}
+
+        public Identifier EnsureFlagGroup(FlagGroupStorage grf)
+        {
+            if (grf.FlagGroupBits == 0)
+                return null;
+            var id = FindFlagGroup(grf.FlagGroupBits);
+            if (id == null)
+            {
+                id = new Identifier(grf.Name, grf.DataType, new FlagGroupStorage(grf.FlagGroupBits, grf.Name, grf.DataType));
+                identifiers.Add(id);
+            }
+            return id;
+        }
 
 		public Identifier EnsureFpuStackVariable(int depth, DataType type)
 		{

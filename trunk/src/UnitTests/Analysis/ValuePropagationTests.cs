@@ -47,6 +47,34 @@ namespace Decompiler.UnitTests.Analysis
             mr = new MockRepository();
 		}
 
+        private Identifier Reg32(string name)
+        {
+            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(id, sid);
+            return sid.Identifier;
+        }
+
+        private Identifier Reg16(string name)
+        {
+            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word16);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(id, sid);
+            return sid.Identifier;
+        }
+
+
+        private Identifier Reg8(string name)
+        {
+            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Byte);
+            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(id, sid);
+            return sid.Identifier;
+        }
+
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
@@ -57,7 +85,7 @@ namespace Decompiler.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr);
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, gr);
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
                 cce.Transform();
@@ -160,7 +188,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -313,7 +341,6 @@ namespace Decompiler.UnitTests.Analysis
 				Constant.Create(t, 2));
 			Expression e = vp.VisitBinaryExpression(b);
 			Assert.AreEqual("id *s 20", e.ToString());
-
 		}
 
 		[Test]
@@ -363,7 +390,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void MkSequenceToAddress()
+        public void VpMkSequenceToAddress()
         {
             Constant seg = Constant.Create(PrimitiveType.SegmentSelector, 0x4711);
             Constant off = Constant.Word16(0x4111);
@@ -374,32 +401,22 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("4711:4111", e.ToString());
         }
 
-		private Identifier Reg32(string name)
-		{
-			var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
-			Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-			SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-			ssaIds.Add(id, sid);
-			return sid.Identifier;
-		}
-
-        private Identifier Reg16(string name)
+        [Test]
+        public void VpPhiWithConstants()
         {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word16);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(id, sid);
-            return sid.Identifier;
-        }
-
-
-        private Identifier Reg8(string name)
-        {
-            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Byte);
-            Identifier id = new Identifier(mr.Name, mr.DataType, mr);
-            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
-            ssaIds.Add(id, sid);
-            return sid.Identifier;
+            Constant c1 = Constant.Word16(0x4711);
+            Constant c2 = Constant.Word16(0x4711);
+            Identifier r1 = Reg16("r1");
+            Identifier r2 = Reg16("r2");
+            Identifier r3 = Reg16("r3");
+            var stm1 = new Statement(1, new Assignment(r1, c1), null);
+            var stm2 = new Statement(2, new Assignment(r2, c2), null);
+            ssaIds[r1].DefStatement = stm1;
+            ssaIds[r2].DefStatement = stm2;
+            var vp = new ValuePropagator(ssaIds, null);
+            Instruction instr = new PhiAssignment(r3, new PhiFunction(r1.DataType, r1, r2));
+            instr = instr.Accept(vp);
+            Assert.AreEqual("r3 = 0x4711", instr.ToString());
         }
 
 		private class DpbMock : ProcedureBuilder

@@ -32,11 +32,13 @@ namespace Decompiler.Analysis
 	{
 		private Dictionary<Procedure,ProcedureFlow> procFlow;
         private Dictionary<Block, BlockFlow> blockFlow;
+        private Dictionary<Procedure, ProcedureFlow2> procFlow2;
 
 		public ProgramDataFlow()
 		{
 			procFlow = new Dictionary<Procedure,ProcedureFlow>();
             blockFlow = new Dictionary<Block,BlockFlow>();
+            procFlow2 = new Dictionary<Procedure, ProcedureFlow2>();
 		}
 
 		public ProgramDataFlow(Program prog) : this()
@@ -77,5 +79,7 @@ namespace Decompiler.Analysis
         {
             get { return procFlow.Values; }
         }
+
+        public Dictionary<Procedure, ProcedureFlow2> ProcedureFlows2 { get { return procFlow2; } }
 	}
 }

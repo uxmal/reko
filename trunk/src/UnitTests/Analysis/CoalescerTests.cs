@@ -119,7 +119,7 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
 				SsaState ssa = sst.SsaState;
 				
                 ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);

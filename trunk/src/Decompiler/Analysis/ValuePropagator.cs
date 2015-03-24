@@ -52,7 +52,6 @@ namespace Decompiler.Analysis
             this.proc = proc;
             this.evalCtx = new SsaEvaluationContext(ssaIds);
             this.eval = new ExpressionSimplifier(evalCtx);
-            trace.Level = TraceLevel.Verbose;
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -116,7 +115,12 @@ namespace Decompiler.Analysis
 
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
-            return phi;
+            var src = phi.Src.Accept(eval);
+            PhiFunction f = src as PhiFunction;
+            if (f != null)
+                return new PhiAssignment(phi.Dst, f);
+            else
+                return new Assignment(phi.Dst, src);
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)

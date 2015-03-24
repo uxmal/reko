@@ -56,7 +56,7 @@ namespace Decompiler.Core
         /// <param name="arch">The processor architecture to use.</param>
         /// <param name="frame">The Frame of the calling procedure.</param>
         /// <param name="site">The call site of the calling instruction.</param>
-        /// <param name="callee">The pointer to the procedure being called.</param>
+        /// <param name="callee">The procedure being called.</param>
         /// <param name="sigCallee">The signature of the procedure being called.</param>
         /// <param name="ensureVariables">If true, creates variables in the <paramref name="frame"/> if needed.</param>
         public ApplicationBuilder(
@@ -67,9 +67,6 @@ namespace Decompiler.Core
             ProcedureSignature sigCallee,
             bool ensureVariables)
         {
-			if (sigCallee == null || !sigCallee.ParametersValid)
-				throw new InvalidOperationException("No signature available; application cannot be constructed.");
-
             this.arch = arch;
             this.site = site;
             this.frame = frame;
@@ -80,6 +77,9 @@ namespace Decompiler.Core
 
         public virtual List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
         {
+            if (sigCallee == null || !sigCallee.ParametersValid)
+                throw new InvalidOperationException("No signature available; application cannot be constructed.");
+            this.sigCallee = sigCallee;
             var actuals = new List<Expression>();
             for (int i = 0; i < sigCallee.Parameters.Length; ++i)
             {
@@ -137,7 +137,7 @@ namespace Decompiler.Core
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return frame.EnsureFlagGroup(grf.FlagGroupBits, grf.Name, PrimitiveType.Byte);		//$REVIEW: PrimitiveType.Byte is hard-wired here.
+            return frame.EnsureFlagGroup(grf.FlagGroupBits, grf.Name, grf.DataType);
         }
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)

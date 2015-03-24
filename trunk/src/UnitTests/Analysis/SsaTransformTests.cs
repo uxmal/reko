@@ -39,25 +39,27 @@ namespace Decompiler.UnitTests.Analysis
     /// on a procedure that already has been transformed once.
     /// </summary>
     [TestFixture]
-    public class SsaTestsRedo
+    public class SsaTransformTests
     {
         private ProgramBuilder pb;
+        private ProgramDataFlow programFlow;
 
         [SetUp]
         public void Setup()
         {
             this.pb = new ProgramBuilder();
+            this.programFlow = new ProgramDataFlow();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
-            var pb = new ProcedureBuilder();
+            var pb = new ProcedureBuilder(this.pb.Program.Architecture);
             builder(pb);
             var proc = pb.Procedure;
             var dg = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
 
             // Perform the initial transformation
-            var ssa = new SsaTransform(proc, dg);
+            var ssa = new SsaTransform(programFlow, proc, dg);
 
             // Propagate values and simplify the results.
             // We hope the the sequence
@@ -300,6 +302,50 @@ ProcedureBuilder_exit:
                 m.Label("done");
                 m.Assign(bp, m.LoadDw(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void SsaSubroutine()
+        {
+            Identifier r1_ = null;
+            // Simulate the creation of a subroutine.
+            var procSub = this.pb.Add("Adder", m =>
+            {
+                r1_ = m.Register(1);
+            });
+
+            var procSubFlow = new ProcedureFlow2 { Trashed = { r1_ } };
+            programFlow.ProcedureFlows2.Add(procSub, procSubFlow);
+
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r1_0 = 0x00000003
+	r2_1 = 0x00000004
+	call Adder (retsize: 4;)
+		uses: r1_0,r2_1
+		defs: r1_2
+	Mem3[0x00012300:word32] = r1_2
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use Mem3
+	use r1_2
+	use r2_1
+";
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Register(1);
+                var r2 = m.Register(2);
+                m.Assign(r1, 3);
+                m.Assign(r2, 4);
+                m.Call(procSub);
+                m.Store(m.Word32(0x012300), r1);
                 m.Return();
             });
         }

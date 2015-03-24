@@ -79,7 +79,7 @@ namespace Decompiler.Analysis
                     alias.Transform();
 
                     var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                    var sst = new SsaTransform(proc, doms);
+                    var sst = new SsaTransform(flow, proc, doms);
                     var ssa = sst.SsaState;
 
                     var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
@@ -213,8 +213,8 @@ namespace Decompiler.Analysis
                 // associated with them. If they have not been visited, or are computed destinations
                 // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats teh call as a "hell node".
-                var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                var sst = new SsaTransform(proc, doms);
+                var doms = proc.CreateBlockDominatorGraph();
+                var sst = new SsaTransform(flow, proc, doms);
                 var ssa = sst.SsaState;
 
                 // Propagate condition codes and registers. At the end, the hope is that 
@@ -231,10 +231,14 @@ namespace Decompiler.Analysis
                 // mem[fp + 30] becomes wArg30.
                 // This allows us to compute the dataflow of this procedure.
                 sst.RenameFrameAccesses = true;
+                sst.AddUseInstructions = true;
                 sst.Transform();
-                
+
+                // Propagate those newly discovered identifiers.
+                vp.Transform();
+
                 // At this point, the computation of _actual_ ProcedureFlow should be possible.
-                var tid = new TrashedRegisterFinder(program, new [] { proc }, flow, this.eventListener);
+                var tid = new TrashedRegisterFinder(program, procs, flow, this.eventListener);
                 tid.Compute();
                 DeadCode.Eliminate(proc, ssa);
 
@@ -251,7 +255,7 @@ namespace Decompiler.Analysis
                     new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
                 liv.Find();
 
-                foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
+                foreach (var de in liv.Contexts)
                 {
                     var str = new StrengthReduction(ssa, de.Key, de.Value);
                     str.ClassifyUses();

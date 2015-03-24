@@ -61,6 +61,12 @@ namespace Decompiler.Core.Expressions
         public abstract T Accept<T,C>(ExpressionVisitor<T, C> visitor, C context);
         public abstract Expression CloneExpression();
         
+        public bool As<T>(out T value) where T : Expression
+        {
+            value = this as T;
+            return value != null;
+        }
+
         /// <summary>
         /// Applies logical (not-bitwise) negation to the expression.
         /// </summary>

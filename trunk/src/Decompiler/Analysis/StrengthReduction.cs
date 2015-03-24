@@ -87,19 +87,16 @@ namespace Decompiler.Analysis
         {
             if (ctx.TestStatement == null)
                 return;
-            Branch branch = ctx.TestStatement.Instruction as Branch;
-            if (branch == null)
-                return;
-            BinaryExpression exp = branch.Condition as BinaryExpression;
-            if (exp == null)
-                return;
-            Constant c = exp.Right as Constant;
-            if (c != null)
+            Branch branch;
+            BinaryExpression exp ;
+            Constant c ;
+            if (ctx.TestStatement.Instruction.As(out branch) &&
+                branch.Condition.As(out exp) &&
+                exp.Right.As(out c))
             {
                 exp.Right = Operator.ISub.ApplyConstants(c, use.Increment);
             }
         }
-
 
         private bool ModifyInitialAssigment(IncrementedUse use)
         {

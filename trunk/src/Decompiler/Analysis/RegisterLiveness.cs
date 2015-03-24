@@ -213,7 +213,6 @@ namespace Decompiler.Analysis
 			varLive.BitSet = new BitSet(item.DataOut);
 			varLive.Grf = item.grfOut;
             varLive.LiveStorages = new Dictionary<Storage,int>(item.StackVarsOut);
-            if (item.Block.Name.EndsWith("004076F6")) item.ToString();
 			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.BitSet)));
 			Procedure = item.Block.Procedure;		// Used by statements because we need to look up registers using identifiers and the procedure frame.
 			StatementList stms = item.Block.Statements;
