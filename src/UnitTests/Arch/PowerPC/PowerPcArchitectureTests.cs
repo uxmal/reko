@@ -22,6 +22,7 @@ using Decompiler.Arch.PowerPC;
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,10 +32,39 @@ namespace Decompiler.UnitTests.Arch.PowerPC
     [TestFixture]  
     public class PowerPcArchitectureTests
     {
+        private MockRepository mr;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+        }
+
         [Test]
         public void PPCArch_Create()
         {
             IProcessorArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
+        }
+
+        [Test]
+        public void PPCArch_GetTrampoline()
+        {
+            var arch = new PowerPcArchitecture(PrimitiveType.Word32);
+            var m = new InstructionBuilder(arch, Address.Ptr32(0x10030000));
+            m.Lis(m.r11, 0x1006);
+            m.Lwz(m.r11, 0x1234, m.r11);
+            m.Mtctr(m.r11);
+            m.Bctr();
+            var host = mr.Stub<IRewriterHost>();
+            host.Stub(h => h.GetImportedProcedure(
+                Arg<Address>.Matches(a => a.Linear == 0x10061234),
+                Arg<Address>.Is.Anything)).Return(new ExternalProcedure("foo", null));
+            mr.ReplayAll();
+
+            ProcedureBase proc = arch.GetTrampolineDestination(m.Instructions, host);
+
+            Assert.IsNotNull(proc);
+            Assert.AreEqual("foo", proc.Name);
         }
     }
 }

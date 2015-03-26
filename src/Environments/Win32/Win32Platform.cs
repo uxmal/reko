@@ -37,7 +37,7 @@ namespace Decompiler.Environments.Win32
         private SystemService int29svc;
         private TypeLibrary[] TypeLibs;
 
-        //$TODÖ: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
+        //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)

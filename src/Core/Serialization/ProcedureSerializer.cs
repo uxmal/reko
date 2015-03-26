@@ -30,82 +30,40 @@ namespace Decompiler.Core.Serialization
 	/// <summary>
 	/// Helper class that serializes and deserializes procedures with their signatures.
 	/// </summary>
-	public class ProcedureSerializer
+	public abstract class ProcedureSerializer
 	{
-		private IProcessorArchitecture arch;
-        private string defaultConvention;
-		private int identifierNumber;
-
-        public ProcedureSerializer(IProcessorArchitecture arch, string defaultConvention)
-            : this(arch, new TypeLibraryLoader(arch, true), defaultConvention)
-        { }
-
-		public ProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader,  string defaultConvention)
+		public ProcedureSerializer(
+            IProcessorArchitecture arch, 
+            ISerializedTypeVisitor<DataType> typeLoader, 
+            string defaultConvention)
 		{
-			this.arch = arch;
+			this.Architecture = arch;
             this.TypeLoader = typeLoader;
-			this.defaultConvention = defaultConvention;
-			this.identifierNumber = 0;
+			this.DefaultConvention = defaultConvention;
 		}
+
+        public IProcessorArchitecture Architecture { get; private set; }
+        public ISerializedTypeVisitor<DataType> TypeLoader { get; private set; }
+        public string DefaultConvention { get; set; }
 
         public int FpuStackOffset { get; set; }
         public int StackOffset { get; set; }
-        public ISerializedTypeVisitor<DataType> TypeLoader { get; private set; }
-
-		public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
-		{
-			string d = ssig.Convention;
-			if (d == null || d.Length == 0)
-				d = defaultConvention;
-			if (d == "stdapi" || d == "__stdcall")  //$BUGBUG: platform-dependent!
-				sig.StackDelta = StackOffset;
-
-			sig.FpuStackDelta = FpuStackOffset;
-		}
 
 		public Identifier CreateId(string name, DataType type, Storage storage)
 		{
 			return new Identifier(name, type, storage);
 		}
 
-		public ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
-		{
-			var argser = new ArgumentSerializer(this, arch, frame, ss.Convention);
-			Identifier ret = null;
-            int fpuDelta = FpuStackOffset;
+        public abstract ProcedureSignature Deserialize(SerializedSignature ss, Frame frame);
 
-            FpuStackOffset = 0;
-			if (ss.ReturnValue != null)
-			{
-				ret = argser.DeserializeReturnValue(ss.ReturnValue);
-                fpuDelta += FpuStackOffset;
-			}
-
-            FpuStackOffset = 0;
-			var args = new List<Identifier>();
-			if (ss.Arguments != null)
-			{
-                for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
-                {
-                    var sArg = ss.Arguments[iArg];
-                    var arg = argser.Deserialize(sArg, iArg);
-					args.Add(arg);
-				}
-                fpuDelta -= FpuStackOffset;
-			}
-            FpuStackOffset = fpuDelta;
-
-            var sig = new ProcedureSignature(ret, args.ToArray());
-			ApplyConvention(ss, sig);
-			return sig;
-		}
+        public abstract Storage GetReturnRegister(Argument_v1 sArg, int bitSize);
 
         public SerializedSignature Serialize(ProcedureSignature sig)
         {
             SerializedSignature ssig = new SerializedSignature();
             if (!sig.ParametersValid)
                 return ssig;
-            ArgumentSerializer argSer = new ArgumentSerializer(this, arch, null, null);
+            ArgumentSerializer argSer = new ArgumentSerializer(this, Architecture, null, null);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
             ssig.Arguments = new Argument_v1[sig.Parameters.Length];
             for (int i = 0; i < sig.Parameters.Length; ++i)

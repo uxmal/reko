@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void Setup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
-			sigser = new ProcedureSerializer(arch, "stdapi");
+			sigser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(arch, true), "stdapi");
             argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame(), null);
 		}
 
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             var arg = new Identifier("SZ", PrimitiveType.Byte, new FlagGroupStorage(3, "SZ", PrimitiveType.Byte));
             Argument_v1 sarg = argser.Serialize(arg);
             Assert.AreEqual("SZ", sarg.Name);
-            SerializedFlag sflag = (SerializedFlag) sarg.Kind;
+            FlagGroup_v1 sflag = (FlagGroup_v1) sarg.Kind;
             Assert.AreEqual("SZ", sflag.Name);
         }
 
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Argument_v1 arg = new Argument_v1();
 			arg.Name = "eax"; 
 			arg.Kind = reg;
-			Identifier id = argser.Deserialize(arg, 0);
+            Identifier id = argser.Deserialize(arg);
 			Assert.AreEqual("eax", id.Name);
 			Assert.AreEqual(32, id.DataType.BitSize);
 		}

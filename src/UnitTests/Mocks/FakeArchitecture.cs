@@ -29,6 +29,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using Decompiler.Core.Serialization;
 
 namespace Decompiler.UnitTests.Mocks
 {
@@ -112,6 +113,17 @@ namespace Decompiler.UnitTests.Mocks
         public ImageReader CreateImageReader(LoadedImage image, uint offset)
         {
             return new LeImageReader(image, offset);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Func<ImageReader, IRewriterHost, ProcedureBase> Test_GetTrampolineDestination = (a, b) => null;
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            return Test_GetTrampolineDestination(rdr, host);
         }
 
         public FlagGroupStorage GetFlagGroup(uint grf)

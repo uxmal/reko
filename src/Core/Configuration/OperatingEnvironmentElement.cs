@@ -54,7 +54,7 @@ namespace Decompiler.Core.Configuration
             set { this["Description"] = value; }
         }
 
-        [ConfigurationProperty("Type", IsRequired = true)]
+        [ConfigurationProperty("Type", IsRequired = false)]
         public string TypeName
         {
             get { return (string) this["Type"]; }

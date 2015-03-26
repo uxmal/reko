@@ -231,6 +231,12 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		#endregion
 
-	}
+
+
+        public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }

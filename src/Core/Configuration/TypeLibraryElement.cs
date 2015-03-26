@@ -29,15 +29,24 @@ namespace Decompiler.Core.Configuration
     public interface ITypeLibraryElement
     {
         string Name { get; }
+
+        string Architecture { get; set; }
     }
 
     public class TypeLibraryElement : ConfigurationElement, ITypeLibraryElement
     {
-        [ConfigurationProperty("Name", IsRequired = true)]
+        [ConfigurationProperty("name", IsRequired = true)]
         public string Name
         {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
+            get { return (string) this["name"]; }
+            set { this["name"] = value; }
+        }
+
+        [ConfigurationProperty("arch", IsRequired=false)]
+        public string Architecture
+        {
+            get { return (string) this["arch"]; }
+            set { this["arch"] = value; }
         }
     }
 }

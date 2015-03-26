@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,18 @@ namespace Decompiler.Environments.C64
         {
             throw new NotImplementedException();
         }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotSupportedException();  //$Makes no sense in C64 Basic!
+        }
+
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            //$NYI
+            return null;
+        }
+
 
         public RegisterStorage GetRegister(int i)
         {

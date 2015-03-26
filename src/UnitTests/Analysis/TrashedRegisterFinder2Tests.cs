@@ -123,6 +123,7 @@ namespace Decompiler.UnitTests.Analysis
             var sExp =
 @"Preserved: 
 Trashed: r1
+Constants: r1:0x0000002A
 ";
             RunTest(sExp, m =>
             {

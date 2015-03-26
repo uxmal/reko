@@ -29,6 +29,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Decompiler.Core.Serialization;
 
 namespace Decompiler.UnitTests.Core
 {
@@ -114,6 +115,17 @@ namespace Decompiler.UnitTests.Core
             {
                 return new LeImageReader(image, offset);
             }
+
+            public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+            {
+                return null;
+            }
+
 
             public RegisterStorage GetRegister(int i)
             {

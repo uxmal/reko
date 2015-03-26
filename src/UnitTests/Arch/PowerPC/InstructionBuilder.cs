@@ -116,6 +116,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             Instructions.Add(instr);
         }
 
+        public void Bctr()
+        {
+            Add(new PowerPcInstruction(Opcode.bcctr, new ImmediateOperand(Constant.Byte(0x20)), null, null, false));
+        }
+
         public void Oris(RegisterOperand rA, RegisterOperand rS, ushort val)
         {
             Add(new PowerPcInstruction(Opcode.oris, rA, rS, new ImmediateOperand(Constant.Word16(val)), false));
@@ -136,6 +141,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             Add(new PowerPcInstruction(Opcode.lbzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
         }
 
+        public void Lis(RegisterOperand r, ushort uimm)
+        {
+            Add(new PowerPcInstruction(Opcode.oris, r, r, new ImmediateOperand(Constant.Word16(uimm)), false));
+        }
+
         public void Lwzu(RegisterOperand rD, short offset, RegisterOperand rA)
         {
             Add(new PowerPcInstruction(Opcode.lwzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
@@ -144,6 +154,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void Lwz(RegisterOperand rD, short offset, RegisterOperand rA)
         {
             Add(new PowerPcInstruction(Opcode.lwz, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+        }
+
+        public void Mtctr(RegisterOperand r)
+        {
+            Add(new PowerPcInstruction(Opcode.mtctr, r, null, null, false));
         }
 
         public void Stbux(RegisterOperand rS, RegisterOperand rA, RegisterOperand rB)

@@ -35,6 +35,12 @@ namespace Decompiler.UnitTests.Core.Serialization
 	public class SerializedSequenceTests
 	{
 		private IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+        private X86ProcedureSerializer ser;
+
+        private void Given_X86ProcedureSerializer()
+        {
+            this.ser = new X86ProcedureSerializer(arch, new TypeLibraryLoader(arch, true), "stdapi");
+        }
 
 		[Test]
 		public void SseqCreate()
@@ -69,7 +75,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature ssig = new SerializedSignature();
 			ssig.Arguments = new Argument_v1[] { sa };
 
-			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
+            Given_X86ProcedureSerializer();
 			ProcedureSignature ps = ser.Deserialize(ssig, f);
 			Assert.AreEqual("void foo(Sequence word32 dx_ax)", ps.ToString("foo"));
 		}
@@ -78,7 +84,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void VoidFunctionSignature()
 		{
 			SerializedSignature sig = new SerializedSignature();
-			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
+            Given_X86ProcedureSerializer();
             ProcedureSignature ps = ser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
 			Assert.IsTrue(ps.ParametersValid);

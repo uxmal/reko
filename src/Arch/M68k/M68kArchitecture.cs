@@ -28,6 +28,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Decompiler.Core.Serialization;
 
 namespace Decompiler.Arch.M68k
 {
@@ -79,6 +80,17 @@ namespace Decompiler.Arch.M68k
         public ImageReader CreateImageReader(LoadedImage image, uint offset)
         {
             return new BeImageReader(image, offset);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            return new M68kProcedureSerializer(this, typeLoader, defaultCc);
+        }
+
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            //$NYI
+            return null;
         }
 
 

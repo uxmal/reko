@@ -111,7 +111,7 @@ namespace Decompiler.Core
 
 		public override SerializedKind Serialize()
 		{
-			return new SerializedFlag(Name);
+			return new FlagGroup_v1(Name);
 		}
 
 		public override void Write(TextWriter writer)

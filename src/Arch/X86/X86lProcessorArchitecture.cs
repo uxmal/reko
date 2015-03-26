@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
@@ -133,6 +134,11 @@ namespace Decompiler.Arch.X86
             return mode.CreateInstructionScanner(rdr, knownLinAddresses, flags);
         }
 
+        public virtual ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            return new X86ProcedureSerializer(this, typeLoader, defaultCc);
+        }
+
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return mode.CreateStackAccess(frame, offset, dataType);
@@ -141,6 +147,37 @@ namespace Decompiler.Arch.X86
         public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return mode.ReadCodeAddress(byteSize, rdr, state);
+        }
+
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            var rw = CreateRewriter(rdr, CreateProcessorState(), CreateFrame(), host);
+            var rtlc = rw.FirstOrDefault();
+            if (rtlc == null || rtlc.Instructions.Count == 0)
+                return null;
+            var jump = rtlc.Instructions[0] as RtlGoto;
+            if (jump == null)
+                return null;
+            var pc = jump.Target as ProcedureConstant;
+            if (pc != null)
+                return pc.Procedure;
+            var access = jump.Target as MemoryAccess;
+            if (access == null)
+                return null;
+            var addrTarget = access.EffectiveAddress as Address;
+            if (addrTarget == null)
+            {
+                var wAddr = access.EffectiveAddress as Constant;
+                if (wAddr == null)
+                {
+                    return null;
+                }
+                addrTarget = Address.FromConstant(wAddr);
+            }
+            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
+            if (proc != null)
+                return proc;
+            return host.GetInterceptedCall(addrTarget);
         }
 
 		public FlagGroupStorage GetFlagGroup(uint grf)

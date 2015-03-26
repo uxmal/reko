@@ -74,6 +74,7 @@ namespace Decompiler.Gui.Forms
                     dcCfg.GetEnvironments()
                     .OfType<OperatingEnvironment>()
                     .OrderBy(p => p.Description)
+                    .Where(p => !string.IsNullOrEmpty(p.TypeName))
                     .Select(p => new ListOption { Text = p.Description, Value = p.TypeName }));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }

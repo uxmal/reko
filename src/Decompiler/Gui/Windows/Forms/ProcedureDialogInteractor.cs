@@ -86,7 +86,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void ApplyChangesToProcedure(Procedure procedure)
         {
-            var ser = new ProcedureSerializer(arch, "stdapi");          //$Where does convetion come from? Platform?
+            var ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");          //BUG:Where does convetion come from? Platform?
             var sp = new SignatureParser(arch);
             sp.Parse(dlg.Signature.Text);
             Debug.Assert(sp.IsValid);

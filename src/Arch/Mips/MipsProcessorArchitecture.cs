@@ -23,6 +23,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -76,6 +77,17 @@ namespace Decompiler.Arch.Mips
         public ImageReader CreateImageReader(LoadedImage image, uint offset)
         {
             return new BeImageReader(image, offset);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            //$NYI
+            return null;
         }
 
 

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Decompiler.Core.Serialization;
 
 namespace Decompiler.Arch.Mos6502
 {
@@ -73,6 +74,18 @@ namespace Decompiler.Arch.Mos6502
         {
             return new LeImageReader(image, offset);
         }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            //$NYI
+            return null;
+        }
+
 
         public RegisterStorage GetRegister(int i)
         {

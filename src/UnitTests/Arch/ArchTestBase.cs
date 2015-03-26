@@ -52,6 +52,12 @@ namespace Decompiler.UnitTests.Arch
             {
                 throw new NotImplementedException();
             }
+
+
+            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         protected virtual IRewriterHost CreateRewriterHost()

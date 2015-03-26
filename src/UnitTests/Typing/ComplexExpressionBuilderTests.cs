@@ -78,18 +78,49 @@ namespace Decompiler.UnitTests.Typing
             ptrWord = new Pointer(PrimitiveType.Word32, 4);
 		}
 
+        private Pointer Ptr32(DataType dataType)
+        {
+            return new Pointer(dataType, 4);
+        }
+
+        private Pointer Ptr16(DataType dataType)
+        {
+            return new Pointer(dataType, 2);
+        }
+
+        private MemberPointer MemPtr(DataType baseType, DataType fieldType)
+        {
+            return new MemberPointer(
+                new Pointer(baseType, 2),
+                fieldType, 2);
+        }
+
+        private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
+        {
+            TypeVariable tv = store.EnsureExpressionTypeVariable(factory, e);
+            tv.DataType = dt;
+            tv.OriginalDataType = dtOrig;
+            e.TypeVariable = tv;
+            if (dt.IsComplex)
+            {
+                tv.Class = new EquivalenceClass(tv);
+                tv.Class.DataType = dt;
+            }
+            return tv;
+        }
+
 		[Test]
         public void CEB_BuildPrimitive()
 		{
-			Identifier id = new Identifier("id", PrimitiveType.Word32, null);
-            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, PrimitiveType.Word32, PrimitiveType.Word32, null, id, null, 0);
+			var id = new Identifier("id", PrimitiveType.Word32, null);
+            var ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, PrimitiveType.Word32, PrimitiveType.Word32, null, id, null, 0);
 			Assert.AreEqual("id", ceb.BuildComplex().ToString());
 		}
 
 		[Test]
         public void CEB_BuildPointer()
 		{
-			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
+			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			store.EnsureExpressionTypeVariable(factory, ptr);
 			var ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
 			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex().ToString());
@@ -98,7 +129,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
         public void CEB_BuildPointerFetch()
 		{
-			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
+			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             var ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), null, ptr, null, 0);
             ceb.Dereferenced = true;
 			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex().ToString());
@@ -107,7 +138,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
         public void CEB_BuildUnionFetch()
 		{
-			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
+			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 ptrWord,
 				ptrUnion,
@@ -182,50 +213,18 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
-        public void BuildMemberAccessFetch()
+        public void CEB_BuildMemberAccessFetch()
         {
-            Identifier ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
-            Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
-            SegmentedAccess sa = new SegmentedAccess(null, ds, bx, PrimitiveType.Word16);
-            TypeVariable tvDs = CreateTv(ds, Ptr16(Segment()), ds.DataType); 
-            TypeVariable tvBx = CreateTv(bx, MemPtr(Segment(), PrimitiveType.Word16), MemPtr(new TypeVariable(43), PrimitiveType.Word16));
-            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+            var ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
+            var bx = new Identifier("bx", PrimitiveType.Word16, null);
+            var sa = new SegmentedAccess(null, ds, bx, PrimitiveType.Word16);
+            var tvDs = CreateTv(ds, Ptr16(Segment()), ds.DataType); 
+            var tvBx = CreateTv(bx, MemPtr(Segment(), PrimitiveType.Word16), MemPtr(new TypeVariable(43), PrimitiveType.Word16));
+            var ceb = new ComplexExpressionBuilder(
                 new Pointer(PrimitiveType.Word16, 2),
                 tvBx.Class.DataType, tvBx.OriginalDataType, ds, bx, null, 0);
             ceb.Dereferenced = true;
             Assert.AreEqual("ds->*bx", ceb.BuildComplex().ToString());
         }
-
-        private Pointer Ptr32(DataType dataType)
-        {
-            return new Pointer(dataType, 4);
-        }
-
-        private Pointer Ptr16(DataType dataType)
-        {
-            return new Pointer(dataType, 2);
-        }
-
-        private MemberPointer MemPtr(DataType baseType, DataType fieldType)
-        {
-            return new MemberPointer(
-                new Pointer(baseType, 2),
-                fieldType, 2);
-        }
-
-        private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
-        {
-            TypeVariable tv = store.EnsureExpressionTypeVariable(factory, e);
-            tv.DataType = dt;
-            tv.OriginalDataType = dtOrig;
-            e.TypeVariable = tv;
-            if (dt.IsComplex)
-            {
-                tv.Class = new EquivalenceClass(tv);
-                tv.Class.DataType = dt;
-            }
-            return tv;
-        }
-
 	}
 }

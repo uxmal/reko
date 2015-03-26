@@ -49,7 +49,7 @@ namespace Decompiler.Core.Serialization
         [XmlElement("stack", typeof(StackVariable_v1))]
         [XmlElement("fpustack", typeof(FpuStackVariable_v1))]
         [XmlElement("seq", typeof(SerializedSequence))]
-        [XmlElement("flag", typeof(SerializedFlag))]
+        [XmlElement("flag", typeof(FlagGroup_v1))]
         [ReadOnly(true)]
         public SerializedKind Kind { get; set; }
 

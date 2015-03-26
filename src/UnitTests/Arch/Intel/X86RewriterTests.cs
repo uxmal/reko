@@ -148,6 +148,12 @@ namespace Decompiler.UnitTests.Arch.Intel
                 else
                     return null;
             }
+
+
+            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void Run16bitTest(Action<IntelAssembler> fn)

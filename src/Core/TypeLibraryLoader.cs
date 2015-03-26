@@ -103,7 +103,7 @@ namespace Decompiler.Core
         {
             try
             {
-                var sser = new ProcedureSerializer(arch, this, this.defaultConvention);
+                var sser = arch.CreateProcedureSerializer(this, this.defaultConvention);
                 var signature = sser.Deserialize(sp.Signature, arch.CreateFrame());
                 signaturesByName[sp.Name] =  signature;   //$BUGBUG: catch dupes?   
                 if (sp.Ordinal != Procedure_v1.NoOrdinal)

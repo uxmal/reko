@@ -27,6 +27,7 @@ namespace Decompiler.Core
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
         ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
+        ExternalProcedure GetInterceptedCall(Address addrImportThunk);
     }
 }
 
