@@ -484,7 +484,9 @@ namespace Decompiler.Scanning
             var proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
-                var sser = new ProcedureSerializer(program.Architecture, program.Platform.DefaultCallingConvention);
+                var sser = program.Architecture.CreateProcedureSerializer(
+                    new TypeLibraryLoader(program.Architecture, true),
+                    program.Platform.DefaultCallingConvention);
                 proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
             }
             if (sp.Characteristics != null)
@@ -526,9 +528,11 @@ namespace Decompiler.Scanning
         /// procedure.
         /// </summary>
         /// <remarks>
-        /// A trampoline is a procedure whose only statement is an indirect
+        /// A trampoline is a procedure whose only contents is an indirect
         /// JUMP to a location that contains the address of an imported
-        /// function.
+        /// function. Because these trampolines may take on different
+        /// appearances depending on the processor architecture, we have to 
+        /// call out to the architecture to assist in matching them.
         /// </remarks>
         /// <param name="addr"></param>
         /// <returns>Null if there was no trampoline.</returns>
@@ -540,32 +544,11 @@ namespace Decompiler.Scanning
                 arch.CreateProcessorState(),
                 arch.CreateFrame(),
                 this);
-            var rtlc = rdr.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
-                return null;
-            var jump = rtlc.Instructions[0] as RtlGoto;
-            if (jump == null)
-                return null;
-            var pc = jump.Target as ProcedureConstant;
-            if (pc != null)
-                return pc.Procedure;
-            var access = jump.Target as MemoryAccess;
-            if (access == null)
-                return null;
-            var addrTarget = access.EffectiveAddress as Address;
-            if (addrTarget == null)
-            {
-                var wAddr = access.EffectiveAddress as Constant;
-                if (wAddr == null)
-                {
-                    return null;
-                }
-                addrTarget = Address.FromConstant(wAddr);
-            }
-            ExternalProcedure ep = GetImportedProcedure(addrTarget, addr);
-            if (ep != null)
-                return ep;
-            return GetInterceptedCall(addrTarget);
+
+            var target = arch.GetTrampolineDestination(
+                arch.CreateImageReader(program.Image, addr),
+                this);
+            return target;
         }
 
         public ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction)

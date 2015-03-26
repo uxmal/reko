@@ -27,6 +27,10 @@ using System.Xml;
 
 namespace Decompiler.Tools.C2Xml
 {
+    /// <summary>
+    /// This program is used to convert ANSI C header files into the 
+    /// XML format that the Decompiler uses.
+    /// </summary>
     class Program
     {
         static int Main(string[] args)

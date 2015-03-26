@@ -90,8 +90,7 @@ namespace Decompiler.Environments.AmigaOS
         private Dictionary<int, SystemService> LoadFuncs()
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = new ProcedureSerializer(
-                Architecture,
+            var sser = Architecture.CreateProcedureSerializer(
                 new TypeLibraryLoader(Architecture,true),
                 DefaultCallingConvention);
 

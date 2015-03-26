@@ -21,6 +21,7 @@
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,14 @@ namespace Decompiler.Core
         /// <returns>An imagereader of the appropriate endianness</returns>
         ImageReader CreateImageReader(LoadedImage img, uint off);
 
+        /// <summary>
+        /// Creates a procedure serializer that understands the calling conventions used on this
+        /// processor.
+        /// </summary>
+        /// <param name="typeLoader">Used to resolve data types</param>
+        /// <param name="defaultConvention">Default calling convetion, if none specified.</param>
+        ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
+
 		RegisterStorage GetRegister(int i);			// Returns register corresponding to number i.
 		RegisterStorage GetRegister(string name);	// Returns register whose name is 'name'
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
@@ -90,6 +99,15 @@ namespace Decompiler.Core
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
+
+        /// <summary>
+        /// If the instructions located at the address the image reader is reading are a 
+        /// trampoline, returns the procedure where the destination is located, otherwise
+        /// returns null.
+        /// </summary>
+        /// <param name="imageReader"></param>
+        /// <returns></returns>
+        ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
 
 		/// <summary>
 		/// A bitset that represents those registers that are never used as arguments to a procedure. 

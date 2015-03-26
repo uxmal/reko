@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using Rhino.Mocks;
 using Decompiler.Core.Configuration;
+using Decompiler.Core.Services;
 
 namespace Decompiler.UnitTests.ImageLoaders.Elf
 {
@@ -344,6 +345,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         private IProcessorArchitecture arch;
         private IServiceProvider services;
         private IDecompilerConfigurationService dcSvc;
+        private ITypeLibraryLoaderService tlSvc;
 
         [SetUp]
         public void Setup()
@@ -352,8 +354,11 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.services = mr.Stub<IServiceProvider>();
             this.dcSvc = mr.Stub<IDecompilerConfigurationService>();
+            this.tlSvc = mr.Stub<ITypeLibraryLoaderService>(); 
             services.Stub(s => s.GetService(typeof(IDecompilerConfigurationService))).Return(dcSvc);
+            services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             dcSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
+            dcSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement());
         }
 
         // 336 - 37

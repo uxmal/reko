@@ -81,7 +81,7 @@ namespace Decompiler.Gui.Windows.Forms
         { 
             //$TODO: need "current program"
             IProcessorArchitecture arch = null; // Decompiler.Program.Architecture;
-            var ser = new ProcedureSerializer(arch, "stdapi");
+            var ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");
             var proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
             var i = new ProcedureDialogInteractor(arch, proc);
             using (ProcedureDialog dlg = i.CreateDialog())
@@ -92,7 +92,7 @@ namespace Decompiler.Gui.Windows.Forms
                     var program =  Decompiler.Project.Programs[0]; 
                     program.UserProcedures[SelectedProcedureEntry.Key] =
                         i.SerializedProcedure;
-                    ser = new ProcedureSerializer(arch, "stdapi");
+                    ser = arch.CreateProcedureSerializer(new TypeLibraryLoader(arch, true), "stdapi");
                     SelectedProcedureEntry.Value.Signature =
                         ser.Deserialize(i.SerializedProcedure.Signature, SelectedProcedureEntry.Value.Frame);
 

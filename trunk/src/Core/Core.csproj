@@ -494,7 +494,7 @@
     <Compile Include="Serialization\SerializedCall_v1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedFlag.cs">
+    <Compile Include="Serialization\FlagGroup_v1.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\FpuStackVariable_v1.cs" />

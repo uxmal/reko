@@ -143,6 +143,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)ImageLoaders\Elf\libc.so-ppc32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />

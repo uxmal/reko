@@ -367,14 +367,16 @@ namespace Decompiler
             }
 		}
 
-        public IDictionary<Address, ProcedureSignature> LoadCallSignatures
-            (Program program, 
+        public IDictionary<Address, ProcedureSignature> LoadCallSignatures(
+            Program program, 
             ICollection<SerializedCall_v1> serializedCalls)
         {
             return
                 (from sc in serializedCalls
                  where sc != null && sc.Signature != null
-                 let sser = new ProcedureSerializer(program.Architecture, "stdapi")
+                     //$BUG: should be program.platform  that creates proc. serializer
+                 let sser = program.Architecture.CreateProcedureSerializer(
+                    new TypeLibraryLoader(program.Architecture, true), "stdapi")
                  select new KeyValuePair<Address, ProcedureSignature>(
                      Address.Parse(sc.InstructionAddress, 16),
                      sser.Deserialize(sc.Signature, program.Architecture.CreateFrame())

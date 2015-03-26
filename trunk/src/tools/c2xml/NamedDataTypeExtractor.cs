@@ -158,12 +158,8 @@ namespace Decompiler.Tools.C2Xml
                 Argument_v1 ret = null;
                 if (nt.DataType != null)
                 {
-                    var kind = !(nt.DataType is VoidType_v1)
-                        ? new Register_v1 { Name = "eax" }       //$REVIEW platform-specific.
-                        : null;
                     ret = new Argument_v1
                     {
-                        Kind = kind,
                         Type = nt.DataType,
                     };
                 }
@@ -202,7 +198,6 @@ namespace Decompiler.Tools.C2Xml
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
                 return new Argument_v1
                 {
-                    Kind = new StackVariable_v1(),
                     Name = nt.Name,
                     Type = nt.DataType,
                 };

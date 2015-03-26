@@ -470,6 +470,8 @@ fn00001100_exit:
         public void Scanner_Trampoline()
         {
             var scan = CreateScanner(0x1000, 0x2000);
+            ((FakeArchitecture)arch).Test_GetTrampolineDestination = 
+                (a, b) => new ExternalProcedure("bar", new ProcedureSignature());
             var platform = mr.Stub<Platform>(null, program.Architecture);
             platform.Stub(p => p.LookupProcedureByName("foo.dll", "bar")).Return(
                 new ExternalProcedure("bar", new ProcedureSignature()));

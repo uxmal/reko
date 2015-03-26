@@ -34,8 +34,8 @@ namespace Decompiler.Typing
     /// Complex expressions are assumed to take the form of a + b, where a is of complex type
     /// (such as pointer, structure, array etc) and b is "simple", such as an constant of integer type
     /// or an expression of integer type. Expressions where both a and b are complex make no sense:
-    /// what do you get if you add two pointers? Also, expressions where both a and b are simple should never reach this
-    /// class, as such expressions are by definition simple also.
+    /// what do you get if you add two pointers? Also, expressions where both a and b are simple 
+    /// should never reach this class, as such expressions are by definition simple also.
     /// </remarks>
 	public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
 	{

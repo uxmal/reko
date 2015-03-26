@@ -26,16 +26,16 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	public class SerializedFlag : SerializedKind
+	public class FlagGroup_v1 : SerializedKind
 	{
 		[XmlText]
 		public string Name;
 
-		public SerializedFlag()
+		public FlagGroup_v1()
 		{
 		}
 
-		public SerializedFlag(string name)
+		public FlagGroup_v1(string name)
 		{
 			this.Name = name;
 		}

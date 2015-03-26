@@ -187,6 +187,17 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             AssertCode(0x57200036, // "rlwinm\tr0,r25,04,00,1B");
                 "0|00100000(4): 1 instructions",
                 "1|L--|r0 = r25 & 0xFFFFFFF0");
+            AssertCode(0x5720EEFA, //,rlwinm	r9,r31,1D,1B,1D not handled yet.
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r31 >> 3 & 0x00001C");
+            //Error,10028B50,rlwinm	r8,r8,04,18,1B not handled yet.
+//Error,1002641C,rlwinm	r4,r4,04,18,1B not handled yet.
+//Error,10026364,rlwinm	r4,r4,04,18,1B not handled yet.
+//Error,1003078C,rlwinm	r8,r8,04,1A,1B not handled yet.
+//Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
+            AssertCode(0x5720421E, //  rlwinm	r0,r25,08,08,0F not handled yet.
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r25 << 0x08 & 0x00FF00000");
         }
 
         [Test]

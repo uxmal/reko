@@ -23,6 +23,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -131,6 +132,54 @@ namespace Decompiler.Arch.PowerPC
             return new BeImageReader(image, offset);
         }
 
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            var dasm = new PowerPcDisassembler(this, rdr, WordWidth);
+            return GetTrampolineDestination(dasm, host);
+        }
+
+        public ProcedureBase GetTrampolineDestination(IEnumerable<PowerPcInstruction> rdr, IRewriterHost host)
+        {
+            var e = rdr.GetEnumerator();
+
+            if (!e.MoveNext() || (e.Current.Opcode != Opcode.addis && e.Current.Opcode != Opcode.oris))
+                return null;
+            var addrInstr = e.Current.Address;
+            var reg = ((RegisterOperand)e.Current.op1).Register;
+            var uAddr = ((ImmediateOperand)e.Current.op3).Value.ToUInt32() << 16;
+
+            if (!e.MoveNext() || e.Current.Opcode != Opcode.lwz)
+                return null;
+            var mem = e.Current.op2 as MemoryOperand;
+            if (mem == null)
+                return null;
+            if (mem.BaseRegister != reg)
+                return null;
+            uAddr = (uint)((int)uAddr + mem.Offset.ToInt32());
+            reg = ((RegisterOperand)e.Current.op1).Register;
+
+            if (!e.MoveNext() || e.Current.Opcode != Opcode.mtctr)
+                return null;
+            if (((RegisterOperand)e.Current.op1).Register != reg)
+                return null;
+
+            if (!e.MoveNext() || e.Current.Opcode != Opcode.bcctr)
+                return null;
+
+            // We saw a thunk! now try to resolve it.
+
+            var addr = Address.Ptr32(uAddr);
+            var ep = host.GetImportedProcedure(addr, addrInstr);
+            if (ep != null)
+                return ep;
+            return host.GetInterceptedCall(addr);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            return new PowerPcProcedureSerializer(this, typeLoader, defaultCc);
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new PowerPcState(this);
@@ -148,7 +197,7 @@ namespace Decompiler.Arch.PowerPC
 
         public RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return this.regs.Where(r => r.Name == name).SingleOrDefault();
         }
 
         public bool TryGetRegister(string name, out RegisterStorage reg)

@@ -120,7 +120,7 @@ namespace Decompiler.Analysis
             foreach (var proc in procedures)
             {
                 SetInitialValueOfStackPointer(proc);
-                foreach (var block in proc.ControlGraph.Blocks)
+                foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PreOrder())
                 {
                     RewriteBlock(block);
                 }
@@ -154,7 +154,16 @@ namespace Decompiler.Analysis
         {
             visited.Add(block);
             StartProcessingBlock(block);
-            block.Statements.ForEach(stm => stm.Instruction.Accept(this));
+            try
+            {
+                block.Statements.ForEach(stm => stm.Instruction.Accept(this));
+            } catch (Exception ex)
+            {
+                eventListener.Error(
+                    eventListener.CreateBlockNavigator(block),
+                    ex,
+                    "Error while analyzing trashed registers.");
+            }
             if (block == block.Procedure.ExitBlock)
             {
                 PropagateToProcedureSummary(block.Procedure);
@@ -168,6 +177,8 @@ namespace Decompiler.Analysis
         public void RewriteBlock(Block block)
         {
             StartProcessingBlock(block);
+            if (block.Procedure.Name.EndsWith("2BE4")) //$DEBUG
+                block.ToString();
             var propagator = new ExpressionPropagator(prog.Architecture, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)
             {

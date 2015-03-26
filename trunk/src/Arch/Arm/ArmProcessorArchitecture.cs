@@ -27,6 +27,7 @@ using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Decompiler.Core.Serialization;
 
 namespace Decompiler.Arch.Arm
 {
@@ -89,6 +90,17 @@ namespace Decompiler.Arch.Arm
         public ImageReader CreateImageReader(LoadedImage image, uint offset)
         {
             return new LeImageReader(image, offset);
+        }
+
+        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            //$NYI
+            return null;
         }
 
         public RegisterStorage GetRegister(int i)

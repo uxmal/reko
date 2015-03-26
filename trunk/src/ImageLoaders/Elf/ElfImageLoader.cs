@@ -34,11 +34,12 @@ namespace Decompiler.ImageLoaders.Elf
     using StrIntMap = Dictionary<string, int>;
     using RelocMap = Dictionary<UInt32, string>;
     using Decompiler.Core.Configuration;
+using System.Collections;
+    using Decompiler.Core.Services;
 
     /// <summary>
     /// Loader for (32-bit) ELF images.
     /// </summary>
-    //$TODO: load sections so they can be displayed.
     public class ElfImageLoader : ImageLoader
     {
         private const int ELF_MAGIC = 0x7F454C46;         // "\x7FELF"
@@ -134,10 +135,12 @@ namespace Decompiler.ImageLoaders.Elf
         private byte fileClass;             // 0x2 = 
         private byte endianness;
         private byte fileVersion;
+        private byte osAbi;
         private IProcessorArchitecture arch;
         private Address addrPreferred;
         private LoadedImage image;
         private ImageMap imageMap;
+        private Dictionary<Address, ImportReference> importReferences;
         private ulong m_uPltMin;
         private ulong m_uPltMax;
 
@@ -213,6 +216,7 @@ namespace Decompiler.ImageLoaders.Elf
             this.fileClass = rdr.ReadByte();
             this.endianness = rdr.ReadByte();
             this.fileVersion = rdr.ReadByte();
+            this.osAbi = rdr.ReadByte();
         }
 
         private Program LoadImageBytes(Address addrPreferred, Address addrMax)
@@ -266,11 +270,43 @@ namespace Decompiler.ImageLoaders.Elf
                 }
                 imageMap.DumpSections();
             }
-            return new Program(
+            var program = new Program(
                 this.image,
                 this.imageMap,
                 this.arch,
-                new DefaultPlatform(Services, arch));
+                CreatePlatform());
+            importReferences = program.ImportReferences;
+            return program;
+        }
+
+        public Platform CreatePlatform()
+        {
+            switch (osAbi)
+            {
+            case 0x00: // Unspecified ABI
+                var platform = new DefaultPlatform(Services, arch);
+                platform.TypeLibraries.AddRange(LoadTypeLibraries());
+                return platform;
+            default:
+                throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
+            }
+        }
+
+        public IEnumerable<TypeLibrary> LoadTypeLibraries()
+        {
+            var dcSvc = Services.GetService<IDecompilerConfigurationService>();
+            if (dcSvc == null)
+                return new TypeLibrary[0];
+            var env = dcSvc.GetEnvironment("elf-neutral");
+            if (env == null)
+                return new TypeLibrary[0];
+            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+            return ((IEnumerable)env.TypeLibraries)
+                    .OfType<ITypeLibraryElement>()
+                    .Where(tl => tl.Architecture == "ppc32")
+                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
+                    .Where(tl => tl != null);
+
         }
 
         private ImageMapSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
@@ -569,7 +605,7 @@ namespace Decompiler.ImageLoaders.Elf
                 }
                 else if (Header32.e_machine == EM_PPC)
                 {
-                    //$TODO
+                    RelocatePpc32();
                 }
                 else
                 {
@@ -699,7 +735,53 @@ namespace Decompiler.ImageLoaders.Elf
             }
         }
 
-        private Elf64_SHdr GetSectionInfoByName64(string sectionName)
+        /// <remarks>
+        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
+        /// should contain the same number of entries, even if the individual entry 
+        /// sizes are distinct. The entries in .real.plt refer to symbols while the
+        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
+        /// of pointers in the .plt table is a "trampoline", and should be replaced
+        /// in the decompiled code with just a call to the symbol obtained from the
+        /// .real.plt section.
+        /// </remarks>
+        public void RelocatePpc32()
+        {
+            var rela_plt = GetSectionInfoByName32(".rela.plt");
+            var plt = GetSectionInfoByName32(".plt");
+            var relaRdr = CreateReader(rela_plt.sh_offset);
+            var pltRdr = CreateReader(plt.sh_offset);
+            for (int i =0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
+            {
+                // Read the .rela.plt entry
+                uint offset;
+                if (!relaRdr.TryReadUInt32(out offset))
+                    return;
+                uint info;
+                if (!relaRdr.TryReadUInt32(out info))
+                    return;
+                int addend;
+                if (!relaRdr.TryReadInt32(out addend))
+                    return;
+
+                // Read the .plt entry. We don't care about its contents,
+                // only its address. Anyone accessing that address is
+                // trying to access the symbol.
+
+                uint thunkAddress;
+                if (!pltRdr.TryReadUInt32(out thunkAddress))
+                    break;
+
+                uint sym = info >> 8;
+                string symStr = GetSymbol((int)rela_plt.sh_link, (int)sym);
+
+                var addr = Address.Ptr32(plt.sh_addr + (uint)i * 4);
+                importReferences.Add(
+                    addr,
+                    new NamedImportReference(addr, null, symStr));
+            }
+        }
+
+        public Elf64_SHdr GetSectionInfoByName64(string sectionName)
         {
             return
                 (from sh in this.SectionHeaders64

@@ -424,6 +424,13 @@ namespace Decompiler.Arch.PowerPC
                     emitter.Shr(rs, Constant.Byte((byte)n)),
                     Constant.Word32(mask)));
             }
+            else if (mb < me && me < 32-sh)
+            {
+                mask = (1u << (32-mb)) - (1u << (31-me));
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shl(rs, Constant.Byte((byte)sh)),
+                    Constant.Word32(mask)));
+            }
             else
                 throw new AddressCorrelatedException(dasm.Current.Address, "{0} not handled yet.", dasm.Current);
 

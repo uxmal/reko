@@ -122,6 +122,12 @@ namespace Decompiler.UnitTests.Scanning
             {
                 throw new NotImplementedException();
             }
+
+
+            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)

@@ -20,6 +20,8 @@
 
 using Decompiler.Core.Rtl;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Core
@@ -94,7 +96,10 @@ namespace Decompiler.Core
     {
         public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
         {
+            this.TypeLibraries = new List<TypeLibrary>();
         }
+
+        public List<TypeLibrary> TypeLibraries { get; private set; }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
@@ -108,7 +113,12 @@ namespace Decompiler.Core
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            return null;
+            //$IDentical to Win32, move into base class?
+            return TypeLibraries
+                .Select(t => t.Lookup(procName))
+                .Where(sig => sig != null)
+                .Select(sig => new ExternalProcedure(procName, sig))
+                .FirstOrDefault();
         }
     }
 }
