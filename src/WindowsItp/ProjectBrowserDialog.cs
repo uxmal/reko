@@ -20,12 +20,11 @@ namespace Decompiler.WindowsItp
         {
             InitializeComponent();
             pbs = new ProjectBrowserService(null, new TreeViewWrapper(treeView));
-
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            var image = new LoadedImage(new Address(0x12312300),new byte[0x1000]);
+            var image = new LoadedImage(Address.Ptr32(0x12312300),new byte[0x1000]);
             var imageMap = image.CreateImageMap();
             var arch = new Decompiler.Arch.X86.X86ArchitectureFlat32();
             var program = new Core.Program(image, imageMap, arch, new DefaultPlatform(null, arch));

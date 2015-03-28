@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Arch.Z80
     {
         private MachineInstruction RunTest(params byte [] bytes)
         {
-            var image = new LoadedImage(new Address(0x0100), bytes);
+            var image = new LoadedImage(Address.Ptr16(0x0100), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Z80Disassembler(rdr);
             return dasm.First();

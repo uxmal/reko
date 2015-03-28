@@ -133,7 +133,7 @@ namespace Decompiler.Gui.Windows
             var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
             if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
                 txtAddr = txtAddr.Substring(2);
-            if (!Address.TryParse(txtAddr, 16, out addr))
+            if (!program.Architecture.TryParseAddress(txtAddr, out addr))
                 return;
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
         }
@@ -376,10 +376,11 @@ namespace Decompiler.Gui.Windows
             var image = program.Image;
             var rdr = program.Architecture.CreateImageReader(program.Image, 0);
             var addrControl = arch.CreatePointerScanner(
+                program.ImageMap,
                 rdr,
-                new HashSet<uint> { 
-                    addrRange.Begin.Linear,
-                    arch.GetAddressOffset(addrRange.Begin), },
+                new [] { 
+                    addrRange.Begin
+                },
                 PointerScannerFlags.All);
             resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
             return true;
@@ -404,7 +405,7 @@ namespace Decompiler.Gui.Windows
                         .Select(offset => new AddressSearchHit
                         {
                             Program = program,
-                            LinearAddress = (uint)(program.Image.BaseAddress.Linear + offset)
+                            Address = program.Image.BaseAddress + offset
                         });
                     srSvc.ShowSearchResults(new AddressSearchResult(this.services, hits));
                 }

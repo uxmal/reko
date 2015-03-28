@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             this.arch = new M68kArchitecture();
             this.rw = new Rewriter(this.arch, null, new M68kState(arch), new Frame(arch.FramePointerType), null);
-            this.addrInstr = new Address(0x0012340C);
+            this.addrInstr = Address.Ptr32(0x0012340C);
         }
 
         [Test]

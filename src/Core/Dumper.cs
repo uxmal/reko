@@ -104,7 +104,7 @@ namespace Decompiler.Core
 
 		public void DumpData(LoadedImage image, Address address, long cbBytes, TextWriter stm)
 		{
-			uint cSkip = address.Linear & 0x0F;
+			ulong cSkip = address.Linear & 0x0F;
 			ImageReader rdr = arch.CreateImageReader(image, address);
 			while (cbBytes > 0)
 			{
@@ -114,7 +114,7 @@ namespace Decompiler.Core
 					stm.Write("{0} ", rdr.Address);
 					for (int i = 0; i < 16; ++i)
 					{
-						if (cbBytes > 0 && cSkip <= 0)
+						if (cbBytes > 0 && cSkip == 0)
 						{
 							byte b = rdr.ReadByte();
 							stm.Write("{0:X2} ", b);

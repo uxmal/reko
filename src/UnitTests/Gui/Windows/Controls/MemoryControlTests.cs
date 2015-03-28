@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
         [Test]
         public void SetSelectedAddressShouldResetAnchor()
         {
-            memctl.SelectedAddress = new Address(0x010);
+            memctl.SelectedAddress = Address.Ptr32(0x010);
             AddressRange ar = memctl.GetAddressRange();
             Assert.AreEqual(0x010, ar.Begin.Linear);
             Assert.AreEqual(0x010, ar.End.Linear);

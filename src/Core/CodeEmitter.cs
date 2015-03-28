@@ -76,9 +76,9 @@ namespace Decompiler.Core
             return gi;
         }
 
-        public GotoInstruction Goto(uint linearAddress)
+        public virtual GotoInstruction Goto(uint linearAddress)
         {
-            var gi = new GotoInstruction(new Address(linearAddress));
+            var gi = new GotoInstruction(Address.Ptr32(linearAddress));
             Emit(gi);
             return gi;
         }

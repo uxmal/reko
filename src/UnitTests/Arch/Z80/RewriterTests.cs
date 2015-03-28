@@ -30,7 +30,7 @@ namespace Decompiler.UnitTests.Arch.Z80
     class RewriterTests : RewriterTestBase
     {
         private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture();
-        private Address baseAddr = new Address(0x0100);
+        private Address baseAddr = Address.Ptr16(0x0100);
         private Z80ProcessorState state;
         private LoadedImage image;
 

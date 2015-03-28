@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
         {
             sc = new ServiceContainer();
             mr = new MockRepository();
-            addrLoad = new Address(0x00100000);
+            addrLoad = Address.Ptr32(0x00100000);
         }
 
         [Test]
@@ -71,8 +71,8 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             var rel=peldr.Relocate(addrLoad);
 
             Assert.AreEqual(2, program.ImportReferences.Count);
-            Assert.AreEqual("user32.dll!GetDesktopWindow", program.ImportReferences[new Address(0x0010103C)].ToString());
-            Assert.AreEqual("user32.dll!GetFocus", program.ImportReferences[new Address(0x00101040)].ToString());
+            Assert.AreEqual("user32.dll!GetDesktopWindow", program.ImportReferences[Address.Ptr32(0x0010103C)].ToString());
+            Assert.AreEqual("user32.dll!GetFocus", program.ImportReferences[Address.Ptr32(0x00101040)].ToString());
         }
 
         private void Given_Section(string section)

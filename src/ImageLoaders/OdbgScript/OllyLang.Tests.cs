@@ -23,12 +23,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
             engine.Run();
 
             Assert.IsTrue(engine.variables.ContainsKey("foo"));
-
         }
 
         private void Given_Script(string script)
         {
-            engine.script.clear();
+            engine.script.Clear();
             engine.script.load_buff(script, ".");
         }
 
@@ -40,16 +39,16 @@ namespace Decompiler.ImageLoaders.OdbgScript
         [Test]
         public void Ose_LineArgs()
         {
-            var line = new OllyLang.OllyScript.Line();
-            OllyLang.OllyScript.ParseArgumentsIntoLine( " hello,world", line);
+            var line = new OllyScript.Line();
+            OllyScript.ParseArgumentsIntoLine( " hello,world", line);
             Assert.AreEqual(2, line.args.Length);
         }
 
         [Test]
         public void Ose_LineArgString()
         {
-            var line = new OllyLang.OllyScript.Line();
-            OllyLang.OllyScript.ParseArgumentsIntoLine(" \"hello,world\"", line);
+            var line = new OllyScript.Line();
+            OllyScript.ParseArgumentsIntoLine(" \"hello,world\"", line);
             Assert.AreEqual(1, line.args.Length);
         }
     }

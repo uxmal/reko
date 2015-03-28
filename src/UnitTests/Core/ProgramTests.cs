@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Core
 
         private void Given_Image(params byte[] bytes)
         {
-            addrBase = new Address(0x00010000);
+            addrBase = Address.Ptr32(0x00010000);
             prog.Image = new LoadedImage(addrBase, bytes);
             arch.Stub(a => a.CreateImageReader(prog.Image, addrBase)).Return(new LeImageReader(prog.Image, 0));
         }

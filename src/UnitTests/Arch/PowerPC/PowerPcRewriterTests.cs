@@ -39,11 +39,11 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-        public override Address LoadAddress { get { return new Address(0x00100000); } }
+        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
         private void RunTest(Action<InstructionBuilder> m)
         {
-            b = new InstructionBuilder(arch, new Address(0x01000000));
+            b = new InstructionBuilder(arch, Address.Ptr32(0x01000000));
             m(b);
             ppcInstrs = b.Instructions;
         }

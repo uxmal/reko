@@ -260,18 +260,15 @@ namespace Decompiler.Core
         /// </summary>
         /// <param name="linearAddress"></param>
         /// <returns></returns>
-		public Address MapLinearAddressToAddress(uint linearAddress)
+		public Address MapLinearAddressToAddress(ulong linearAddress)
 		{
-			foreach (ImageMapSegment seg in segments.Values)
+            //$REVIEW: slow; use binary search at least?
+            foreach (ImageMapSegment seg in segments.Values)
 			{
                 if (seg.IsInRange(linearAddress))
                 {
-                    if (seg.Address.Selector != 0)
-                    {
-                        return Address.SegPtr(seg.Address.Selector, (uint)(linearAddress - seg.Address.Linear));
-                    }
-                    else
-                        return new Address(addrBase.DataType, (uint)linearAddress);
+                    long offset = (long)linearAddress- (long)seg.Address.ToLinear();
+                    return seg.Address + offset;
                 }
 			}			
 			throw new ArgumentOutOfRangeException(
@@ -340,12 +337,12 @@ namespace Decompiler.Core
 
 		public bool IsInRange(Address addr)
 		{
-			return IsInRange(addr.Linear);
+			return IsInRange(addr.ToLinear());
 		}
 
-		public bool IsInRange(uint linearAddress)
+		public bool IsInRange(ulong linearAddress)
 		{
-			uint linItem = this.Address.Linear;
+            ulong linItem = this.Address.ToLinear();
 			return (linItem <= linearAddress && linearAddress < linItem + Size);
 		}
 

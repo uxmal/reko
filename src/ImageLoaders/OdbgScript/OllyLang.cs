@@ -236,10 +236,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
         byte[] search_buffer;
 
         // Pseudo-flags to emulate CMP
-        bool zf, cf;
+        bool zf;
+        bool cf;
 
         // Cursor for REF / (NEXT)REF function
-        int adrREF, curREF;
+        int adrREF;
+        int curREF;
 
         void SetCMPFlags(int diff)
         {
@@ -756,262 +758,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             freeMemBlocks();
         }
 
-        /// <summary>
-        /// Represents loaded Odbg script state
-        /// </summary>
-        public class OllyScript
-        {
-            public class Line
-            {
-                public uint linenum;
-                public string line;
-                public bool is_command;
-                public string command;
-                public Func<string[], bool> commandptr;
-                public string[] args = new string[0];
-            }
-
-            public bool log;
-            public string path;
-            public List<Line> lines;
-            public Dictionary<string, uint> labels;
-
-            private Host Host;
-
-            public OllyScript(Host host) {
-                this.Host = host; 
-                IsLoaded = false; 
-                log = false;
-                lines = new List<Line>();
-                labels = new Dictionary<string, uint>();
-            }
-
-            public bool IsLoaded { get; private set; }
-            public void clear() { 
-                IsLoaded = false; 
-                path = ""; 
-                lines.Clear(); 
-                labels.Clear();
-            }
-
-            void parse_insert(List<string> toInsert, string currentdir)
-            {
-                uint curline = 1;
-                bool in_comment = false, in_asm = false;
-
-                IsLoaded = true;
-
-                for (int i = 0; i < toInsert.Count; i++, curline++)
-                {
-                    string scriptline = Helper.trim(toInsert[i]);
-                    bool nextline = false;
-                    int curpos = 0; // for skipping string literals
-
-                    while (!nextline)
-                    {
-                        // Handle comments and string literals
-                        int linecmt = -1, spancmt = -1, strdel = -1;
-
-                        if (curpos < scriptline.Length)
-                            if (in_comment)
-                            {
-                                spancmt = 0;
-                            }
-                            else
-                            {
-                                int min = -1, tmp;
-
-                                tmp = scriptline.IndexOf("//", curpos);
-                                if (tmp < min)
-                                    min = linecmt = tmp;
-                                tmp = scriptline.IndexOf(';', curpos);
-                                if (tmp < min)
-                                    min = linecmt = tmp;
-                                tmp = scriptline.IndexOf("/*", curpos);
-                                if (tmp < min)
-                                    min = spancmt = tmp;
-                                tmp = scriptline.IndexOf('\"', curpos);
-                                if (tmp < min)
-                                    min = strdel = tmp;
-
-                                curpos = min;
-
-                                if (linecmt != min)
-                                    linecmt = -1;
-                                if (spancmt != min)
-                                    spancmt = -1;
-                                if (strdel != min)
-                                    strdel = -1;
-                            }
-
-                        if (strdel >= 0)
-                        {
-                            curpos = scriptline.IndexOf('\"', strdel + 1); // find end of string
-                            if (curpos >= 0)
-                                curpos++;
-                        }
-                        else if (linecmt >= 0)
-                        {
-                            scriptline = scriptline.Remove(linecmt);
-                        }
-                        else if (spancmt >= 0)
-                        {
-                            int start = in_comment ? spancmt : spancmt + 2;
-                            int end = scriptline.IndexOf("*/", start);
-                            in_comment = (end < 0);
-                            if (in_comment)
-                                scriptline = scriptline.Remove(spancmt);
-                            else
-                                scriptline = scriptline.Remove(spancmt) + scriptline.Substring(end - spancmt + 2);
-                        }
-                        else
-                        {
-                            scriptline = Helper.trim(scriptline);
-                            int len = scriptline.Length;
-
-                            if (len != 0)
-                            {
-                                string lcline = Helper.tolower(scriptline);
-
-                                // Check for label
-                                if (!in_asm && len > 1 && scriptline[len - 1] == ':')
-                                {
-                                    scriptline = scriptline.Remove(len - 1);
-                                    labels[Helper.trim(scriptline)] = (uint)(lines.Count);
-                                }
-                                // Check for #inc and include file if it exists
-                                else if (0 == lcline.IndexOf("#inc"))
-                                {
-                                    if (len > 5 && Char.IsWhiteSpace(lcline[4]))
-                                    {
-                                        string args = Helper.trim(scriptline.Substring(5));
-                                        if (args.Length > 2 && args[0] == '\"' && args.EndsWith("\""))
-                                        {
-                                            string dir;
-                                            string philename = Helper.pathfixup(args.Substring(1, args.Length - 2), false);
-                                            if (!Helper.isfullpath(philename))
-                                            {
-                                                philename = currentdir + philename;
-                                                dir = currentdir;
-                                            }
-                                            else
-                                                dir = Helper.folderfrompath(philename);
-
-                                            parse_insert(Helper.getlines_file(philename), dir);
-                                        }
-                                        else Host.MsgError("Bad #inc directive!");
-                                    }
-                                    else this.Host.MsgError("Bad #inc directive!");
-                                }
-                                // Logging
-                                else if (!in_asm && lcline == "#log")
-                                {
-                                    log = true;
-                                }
-                                // Add line
-                                else
-                                {
-                                    Line cur = new Line();
-
-                                    if (in_asm && lcline == "ende")
-                                        in_asm = false;
-
-                                    cur.line = scriptline;
-                                    cur.linenum = curline;
-                                    cur.is_command = !in_asm;
-
-                                    if (!in_asm && lcline == "exec")
-                                        in_asm = true;
-
-                                    ParseArgumentsIntoLine(scriptline, cur);
-
-                                    lines.Add(cur);
-                                }
-                            }
-                            nextline = true;
-                        }
-                    }
-                }
-            }
-
-            public static void ParseArgumentsIntoLine(string scriptline, Line cur)
-            {
-                int pos = scriptline.IndexOfAny(Helper.whitespaces.ToCharArray());
-                if (pos >= 0)
-                {
-                    cur.command = Helper.tolower(scriptline.Substring(0, pos));
-                    cur.args = Helper.split(',', scriptline.Substring(pos + 1))
-                        .Select(s => s.Trim())
-                        .ToArray();
-                }
-                else
-                {
-                    cur.command = Helper.tolower(scriptline);
-                }
-            }
-
-            public int next_command(int from)
-            {
-                while (from < lines.Count && !lines[from].is_command)
-                {
-                    from++;
-                }
-                return from;
-            }
-
-            public bool load_file(string file, string dir = null)
-            {
-                clear();
-
-                string cdir = Environment.CurrentDirectory;
-                string curdir = Helper.pathfixup(cdir, true);
-                string sdir;
-
-                path = Helper.pathfixup(file, false);
-                if (!Helper.isfullpath(path))
-                {
-                    path = curdir + path;
-                }
-                if (string.IsNullOrEmpty(dir))
-                    sdir = Helper.folderfrompath(path);
-                else
-                    sdir = dir;
-
-                List<string> unparsedScript = Helper.getlines_file(path);
-                parse_insert(unparsedScript, sdir);
-
-                //TSErrorExit = false;
-                return true;
-            }
-
-            public bool load_buff(string buff, string dir = null)
-            {
-                clear();
-
-                string curdir = Helper.pathfixup(Environment.CurrentDirectory, true);
-                string sdir;
-
-                path = "";
-                if (dir == null)
-                {
-                    sdir = curdir;
-                }
-                else
-                    sdir = dir;
-
-                List<string> unparsedScript = Helper.getlines_buff(new StringReader(buff));
-                parse_insert(unparsedScript, sdir);
-
-                //$LATER TSErrorExit = false;
-                return true;
-            }
-
-            public bool is_label(string s)
-            {
-                return (labels.ContainsKey(s));
-            }
-        }
-
         public void InitGlobalVariables()
         {
             // Global variables
@@ -1122,7 +868,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 script_pos_next = script_pos + 1;
 
                 // Log line of code if  enabled
-                Debug.Print(line.line);
                 if (script.log)
                 {
                     string logstr = "-. " + line.line;
@@ -1183,7 +928,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                         variables["$RESULT"] = new Var((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
                         restore_registers = true;
-                    require_addonaction = false;
                     tMemBlocks.RemoveAt(i);
                 }
                 else i++;
@@ -1220,7 +964,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 debuggee_running = false;
             }
-
             StepChecked();
         }
 
@@ -1277,18 +1020,14 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         int GetRulongOperatorPos(string ops)
         {
-            string operators = "+-*/&|^<>";
+            var operators = "+-*/&|^<>".ToCharArray();
             int b = 0, e = 0, p;
-
-            // []]
-            // [[]
-            // [[]]
 
             //Search for operator(s) outside [pointers]
             while ((b = ops.IndexOf('[', b)) >= 0)
             {
                 //Check Before
-                p = ops.IndexOfAny(operators.ToCharArray());
+                p = ops.IndexOfAny(operators);
                 if (e >= 0 && p < b)
                 {
                     return p;
@@ -1297,7 +1036,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 if (e >= 0)
                 {
                     //Check between
-                    if ((p = ops.IndexOfAny(operators.ToCharArray(), e + 1)) >= 0 && p < ops.IndexOf('[', e + 1))
+                    if ((p = ops.IndexOfAny(operators, e + 1)) >= 0 && p < ops.IndexOf('[', e + 1))
                     {
                         return p;
                     }
@@ -1306,8 +1045,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 b++;
             }
 
-            //Check after
-            return ops.IndexOfAny(operators.ToCharArray(), e);
+            // look for operators after
+            return ops.IndexOfAny(operators, e);
         }
 
         int GetFloatOperatorPos(string ops)
@@ -1408,7 +1147,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 while (start < arg.Length);
 
-                if (!val.isbuf)
+                if (!val.IsBuf)
                     result = '\"' + val.str + '\"';
                 else
                     result = val.str;
@@ -1557,17 +1296,17 @@ namespace Decompiler.ImageLoaders.OdbgScript
             if (IsVariable(op))
             {
                 Var  v = variables[op];
-                if (v.type == Var.etype.STR)
+                if (v.IsString())
                 {
                     value = v.str;
                     return true;
                 }
-                else if (v.type == Var.etype.DW)
+                else if (v.IsInteger())
                 {
                     if (hex8forExec) //For Assemble Command (EXEC/ENDE) ie. "0DEADBEEF"
-                        value = '0' + Helper.toupper(Helper.rul2hexstr(v.dw));
+                        value = '0' + Helper.rul2hexstr(v.dw).ToUpperInvariant();
                     else
-                        value = Helper.toupper(Helper.rul2hexstr(v.dw));
+                        value = Helper.rul2hexstr(v.dw).ToUpperInvariant();
                     return true;
                 }
             }
@@ -1586,7 +1325,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
             else if (Helper.is_dec(op))
             {
-                value = Helper.toupper(Helper.rul2hexstr(Helper.decstr2rul(op.Substring(0, op.Length - 1))));
+                value = Helper.rul2hexstr(Helper.decstr2rul(op.Substring(0, op.Length - 1))).ToUpperInvariant();
                 return true;
             }
             else if (Helper.IsStringLiteral(op))
@@ -1619,7 +1358,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             value = "";
             if (IsVariable(op))
             {
-                if (variables[op].type == Var.etype.STR)
+                if (variables[op].IsString())
                 {
                     if (size != 0 && size < variables[op].size)
                     {
@@ -1632,20 +1371,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
                         value = variables[op].str;
                     }
                     return true;
-                    /*
-                    // It's a string var, return value
-                    if(size && size < v.size)
-                        value = v.to_string().Substring(0, size);
-                    else
-                        value = v.str;
-                    return true;
-                    */
                 }
             }
             else if (Helper.IsStringLiteral(op))
             {
                 value = Helper.UnquoteString(op, '"');
-
                 if (size!=0 && size < value.Length)
                     value = value.Remove(size);
                 return true;
@@ -1679,33 +1409,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                             value = '#' + Helper.bytes2hexstr(buffer, size) + '#';
                             return true;
                         }
-
-                        /*
-                        char* buffer;
-
-                        try
-                        {
-                            buffer = new char[size+1];
-                        }
-                        catch(std::bad_alloc)
-                        {
-                            return false;	
-                        }
-
-                        if(Host.TE_ReadMemory(src, size, buffer))
-                        {
-                            buffer[size] = '\0';
-                            value = buffer;
-                            if(value.Length != size)
-                            {
-                                var v = value;
-                                value = '#' + v.to_bytes() + '#';
-                            }
-                            delete[] buffer;
-                            return true;
-                        }
-                        delete[] buffer;
-                        */
                     }
                     else
                     {
@@ -1731,7 +1434,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         bool GetBool(string op, out bool value)
         {
             rulong temp;
-
             if (GetRulong(op, out temp))
             {
                 value = temp != 0;
@@ -1768,7 +1470,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
             else if (IsVariable(op))
             {
-                if (variables[op].type == Var.etype.DW)
+                if (variables[op].IsInteger())
                 {
                     value = variables[op].dw;
                     return true;
@@ -2004,8 +1706,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         register_t find_register(string name)
         {
-            string lower = Helper.tolower(name);
-
+            string lower = name.ToLowerInvariant();
             for (int i = 0; i < registers.Length; i++)
             {
                 if (registers[i].name == lower)
@@ -2016,8 +1717,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         constant_t find_constant(string name)
         {
-            string lower = Helper.tolower(name);
-
+            string lower = name.ToLowerInvariant();
             for (int i = 0; i < constants.Length; i++)
             {
                 if (constants[i].name == lower)

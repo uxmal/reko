@@ -37,14 +37,14 @@ namespace Decompiler.UnitTests.Arch.Mips
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-        public override Address LoadAddress { get { return new Address(0x00100000); } }
+        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
         private void RunTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte) (u >> 24), (byte) (u >> 16), (byte) (u >> 8), (byte) u })
                 .ToArray();
-            dasm = new MipsDisassembler(arch, new BeImageReader(new LoadedImage(new Address(0x00100000), bytes), 0));
+            dasm = new MipsDisassembler(arch, new BeImageReader(new LoadedImage(Address.Ptr32(0x00100000), bytes), 0));
         }
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)

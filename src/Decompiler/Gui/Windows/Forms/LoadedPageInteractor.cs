@@ -104,7 +104,7 @@ namespace Decompiler.Gui.Windows.Forms
             var hits = Decompiler.Project.Programs
                 .SelectMany(p => p.ImageMap.Items
                         .Where(i => i.Value.DataType is UnknownType)
-                        .Select(i => new AddressSearchHit { Program = p, LinearAddress = i.Key.Linear }));
+                        .Select(i => new AddressSearchHit { Program = p, Address = i.Key}));
             srSvc.ShowSearchResults(
                 new AddressSearchResult(
                     Services,

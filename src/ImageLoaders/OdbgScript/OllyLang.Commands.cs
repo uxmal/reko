@@ -612,7 +612,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 switch (v.type)
                 {
                 case Var.etype.STR: // empty buf + str . buf
-                    if (!v.isbuf)
+                    if (!v.IsBuf)
                         v = new Var("##") + v.str;
                     break;
                 case Var.etype.DW: // empty buf + dw . buf
@@ -1075,9 +1075,7 @@ string filename;
 
                     regBlockToFree(block);
 
-                    require_addonaction = true;
                     resumeDebuggee = true;
-
                     return true;
                 }
             }
@@ -1144,7 +1142,7 @@ string filename;
             {
                 var v = new Var(finddata);
                 finddata = v.to_bytes();
-                if (!v.isbuf)
+                if (!v.IsBuf)
                     finddata = finddata.Replace("3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
             }
             else
@@ -1516,7 +1514,7 @@ string filename;
                 {
                     Var v = new Var(finddata);
                     finddata = v.to_bytes();
-                    if (!v.isbuf)
+                    if (!v.IsBuf)
                         Helper.ReplaceString(ref finddata, "3f", "??"); // 0x3F = '?' . wildcard like "mov ?ax, ?bx"
                 }
                 else return false;
@@ -1695,13 +1693,10 @@ string filename;
 
         private bool DoGCI(string[] args)
         {
-            string param;
             rulong addr;
-
             if (args.Length == 2 && GetRulong(args[0], out addr))
             {
-                param = Helper.toupper(args[1]);
-
+                var param = args[1].ToUpperInvariant();
                 if (param == "COMMAND")
                 {
                     int size = 0;
@@ -1889,7 +1884,7 @@ rulong addr;
                 ulong args.Length = 0;
                 bool cache = false, cached = false;
 
-                t_module * mod = Findmodule(addr);
+                t_module mod = Findmodule(addr);
                 if(!mod)
                 {
                     return true;
@@ -2149,11 +2144,11 @@ string str;
                     return false;
 
                 errorstr = "Unsupported command!";
-                return false;
 
                 variables["$RESULT"] = new Var(0);
 
                 str = (args[1]).ToUpperInvariant();
+                return false;
 
                 /*
                 rulong i, args.Length=0;
@@ -2383,57 +2378,54 @@ string str;
 
         private bool DoGPI(string[] args)
         {
-            string str;
-            if (args.Length == 1)
-            {
-                str = Helper.toupper(args[0]);
+            if (args.Length != 1)
+                return false;
+            var str = args[0].ToUpperInvariant();
 
-                if (str == "HPROCESS") // Handle of debugged process 
-                {
-                    variables["$RESULT"] = new Var((rulong)Host.TE_GetProcessHandle());
-                }
-                else if (str == "PROCESSID") // Process ID of debugged process 
-                {
-                    variables["$RESULT"] = new Var(Host.TE_GetProcessId());
-                }
-                else if (str == "HMAINTHREAD") // Handle of main thread of debugged process 
-                {
-                    variables["$RESULT"] = new Var((rulong)Host.TE_GetMainThreadHandle());
-                }
-                else if (str == "MAINTHREADID") // Thread ID of main thread of debugged process 
-                {
-                    variables["$RESULT"] = new Var(Host.TE_GetMainThreadId());
-                }
-                else if (str == "MAINBASE") // Base of main module in the debugged process (NOT DLL . loader base)
-                {
-                    variables["$RESULT"] = new Var(Debugger.GetDebuggedFileBaseAddress());
-                }
-                else if (str == "PROCESSNAME") // File name of the debugged process/dll (no extension)
-                {
-                    string name = Path.GetFileNameWithoutExtension(Host.TE_GetTargetPath());
-                    variables["$RESULT"] = new Var(name);
-                }
-                else if (str == "EXEFILENAME") // Full path of the debugged file/dll
-                {
-                    variables["$RESULT"] = new Var(Host.TE_GetTargetPath());
-                }
-                else if (str == "CURRENTDIR") // Current directory for debugged process (with trailing '\')
-                {
-                    variables["$RESULT"] = new Var(Host.TE_GetTargetDirectory());
-                }
-                else if (str == "SYSTEMDIR") // Windows system directory (with trailing '\')
-                {
-                    string SysDir = Environment.GetFolderPath(Environment.SpecialFolder.SystemX86);
-                    variables["$RESULT"] = new Var(Helper.pathfixup(SysDir, true));
-                }
-                else
-                {
-                    errorstr = "Bad operand";
-                    return false;
-                }
-                return true;
+            if (str == "HPROCESS") // Handle of debugged process 
+            {
+                variables["$RESULT"] = new Var((rulong)Host.TE_GetProcessHandle());
             }
-            return false;
+            else if (str == "PROCESSID") // Process ID of debugged process 
+            {
+                variables["$RESULT"] = new Var(Host.TE_GetProcessId());
+            }
+            else if (str == "HMAINTHREAD") // Handle of main thread of debugged process 
+            {
+                variables["$RESULT"] = new Var((rulong)Host.TE_GetMainThreadHandle());
+            }
+            else if (str == "MAINTHREADID") // Thread ID of main thread of debugged process 
+            {
+                variables["$RESULT"] = new Var(Host.TE_GetMainThreadId());
+            }
+            else if (str == "MAINBASE") // Base of main module in the debugged process (NOT DLL . loader base)
+            {
+                variables["$RESULT"] = new Var(Debugger.GetDebuggedFileBaseAddress());
+            }
+            else if (str == "PROCESSNAME") // File name of the debugged process/dll (no extension)
+            {
+                string name = Path.GetFileNameWithoutExtension(Host.TE_GetTargetPath());
+                variables["$RESULT"] = new Var(name);
+            }
+            else if (str == "EXEFILENAME") // Full path of the debugged file/dll
+            {
+                variables["$RESULT"] = new Var(Host.TE_GetTargetPath());
+            }
+            else if (str == "CURRENTDIR") // Current directory for debugged process (with trailing '\')
+            {
+                variables["$RESULT"] = new Var(Host.TE_GetTargetDirectory());
+            }
+            else if (str == "SYSTEMDIR") // Windows system directory (with trailing '\')
+            {
+                string SysDir = Environment.GetFolderPath(Environment.SpecialFolder.SystemX86);
+                variables["$RESULT"] = new Var(Helper.pathfixup(SysDir, true));
+            }
+            else
+            {
+                errorstr = "Bad operand";
+                return false;
+            }
+            return true;
         }
 
         //in dev... i try to find API parameters number and types
@@ -3022,6 +3014,11 @@ string filename;
             return false;
         }
 
+        /// <summary>
+        /// Implements MOV [dst],[src](,[maxsize])
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool DoMOV(string[] args)
         {
             rulong maxsize = 0;
@@ -3034,7 +3031,6 @@ string filename;
                 rulong dw;
                 string str;
                 double flt;
-                bool bl;
 
                 if (!is_writable(args[0]) && !DoVAR(args[0]))
                 {
@@ -3047,24 +3043,16 @@ string filename;
                 if (IsVariable(args[0]))
                 {
                     Var v;
-
                     if (maxsize > sizeof(rulong) && Helper.IsMemoryAccess(args[1])) // byte string
                     {
                         string tmp = Helper.UnquoteString(args[1], '[', ']');
-
                         rulong src;
                         if (GetRulong(tmp, out src))
                         {
                             Debug.Assert(src != 0);
-
-                            byte[] bytes;
-
-                            bytes = new byte[maxsize];
-
+                            byte[] bytes = new byte[maxsize];
                             if (!Host.TryReadBytes(src, maxsize, bytes))
-                            {
                                 return false;
-                            }
                             v = new Var("#" + Helper.bytes2hexstr(bytes, (int)maxsize) + '#');
                         }
                         else
@@ -4020,7 +4008,7 @@ rulong dw1, dw2;
                     v = new Var("##") + v.dw;
                     goto case Var.etype.STR;
                 case Var.etype.STR:
-                    if (v.isbuf)
+                    if (v.IsBuf)
                         v = new Var(v.to_string());
                     return true;
                 }

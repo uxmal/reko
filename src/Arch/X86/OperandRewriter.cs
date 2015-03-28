@@ -210,7 +210,7 @@ namespace Decompiler.Arch.X86
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                return host.GetImportedProcedure(new Address( mem.Offset.ToUInt32()), addrInstruction);
+                return host.GetImportedProcedure(Address.Ptr32( mem.Offset.ToUInt32()), addrInstruction);
             }
             return null;
         }

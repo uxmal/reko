@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Scanning
 		[Test]
 		public void EarAutoArray32()
 		{
-			RunTest("Fragments/autoarray32.asm", new Address(0x04000000), "Scanning/EarAutoArray32.txt");
+			RunTest("Fragments/autoarray32.asm", Address.Ptr32(0x04000000), "Scanning/EarAutoArray32.txt");
 		}
 
 		[Test]

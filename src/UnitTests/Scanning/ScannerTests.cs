@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Scanning
             {
                 m => { m.Return(4, 0); }
             });
-            Given_Program(new Address(0x12314));
+            Given_Program(Address.Ptr32(0x12314));
             var project = new Project { Programs = { program } };
             
             var sc = new Scanner(
@@ -138,7 +138,7 @@ namespace Decompiler.UnitTests.Scanning
                 new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(
                 new EntryPoint(
-                    new Address(0x12314),
+                    Address.Ptr32(0x12314),
                     arch.CreateProcessorState()));
             sc.ScanImage();
 
@@ -169,13 +169,13 @@ namespace Decompiler.UnitTests.Scanning
         public void AddBlock()
         {
             var sc = CreateScanner(0x0100, 10);
-            var block = sc.AddBlock(new Address(0x102), new Procedure("bob", null), "l0102");
-            Assert.IsNotNull(sc.FindExactBlock(new Address(0x0102)));
+            var block = sc.AddBlock(Address.Ptr32(0x102), new Procedure("bob", null), "l0102");
+            Assert.IsNotNull(sc.FindExactBlock(Address.Ptr32(0x0102)));
         }
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            var image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
+            var image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
             program = new Program(
                 image,
                 image.CreateImageMap(),
@@ -201,7 +201,7 @@ namespace Decompiler.UnitTests.Scanning
             this.program = prog;
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
-            prog.Image = new LoadedImage(new Address(startAddress), new byte[imageSize]);
+            prog.Image = new LoadedImage(Address.Ptr32(startAddress), new byte[imageSize]);
             prog.ImageMap = prog.Image.CreateImageMap();
             return new TestScanner(prog, callSigs, importResolver);
         }
@@ -211,13 +211,13 @@ namespace Decompiler.UnitTests.Scanning
         {
             scan = CreateScanner(0x100, 0x100);
             var proc = new Procedure("foo", arch.CreateFrame());
-            Enqueue(new Address(0x101), proc);
-            Enqueue(new Address(0x106), proc);
-            Enqueue(new Address(0x104), proc);
+            Enqueue(Address.Ptr32(0x101), proc);
+            Enqueue(Address.Ptr32(0x106), proc);
+            Enqueue(Address.Ptr32(0x104), proc);
 
-            Assert.AreEqual("l00000101", scan.FindContainingBlock(new Address(0x103)).Name);
-            Assert.AreEqual("l00000104", scan.FindContainingBlock(new Address(0x105)).Name);
-            Assert.AreEqual("l00000106", scan.FindContainingBlock(new Address(0x106)).Name);
+            Assert.AreEqual("l00000101", scan.FindContainingBlock(Address.Ptr32(0x103)).Name);
+            Assert.AreEqual("l00000104", scan.FindContainingBlock(Address.Ptr32(0x105)).Name);
+            Assert.AreEqual("l00000106", scan.FindContainingBlock(Address.Ptr32(0x106)).Name);
         }
 
         private void Enqueue(Address addr, Procedure proc)
@@ -355,9 +355,9 @@ fn0C00_0000_exit:
         {
             program = new Program();
             program.ImportReferences.Add(
-                new Address(0x2000),
+                Address.Ptr32(0x2000),
                 new NamedImportReference(
-                    new Address(0x2000),
+                    Address.Ptr32(0x2000),
                     "module",
                     "grox"));
             Given_Trace(new RtlTrace(0x2000) {
@@ -373,7 +373,7 @@ fn0C00_0000_exit:
             mr.ReplayAll();
 
             var scan = CreateScanner(program, 0x1000, 0x2000);
-            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
+            var proc = scan.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
             Assert.AreEqual("bx", proc.Signature.Parameters[0].Name);
@@ -428,11 +428,11 @@ fn0C00_0000_exit:
             Given_Trace(new RtlTrace(0x1100)
             {
                 m => { m.Assign(reg1, m.Word32(1)); },
-                m => { m.Goto(new Address(0x1004)); },
+                m => { m.Goto(Address.Ptr32(0x1004)); },
             });
 
-            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
-            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1000), arch.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1100), arch.CreateProcessorState()));
             scan.ScanImage();
 
             var sExp =
@@ -481,9 +481,9 @@ fn00001100_exit:
                 m => { m.Goto(m.LoadDw(m.Word32(0x2000))); }
             });
             program.ImportReferences.Add(
-                new Address(0x2000),
-                new NamedImportReference(new Address(0x2000), "foo.dll", "bar"));
-            var proc = scan.ScanProcedure(new Address(0x1000), "fn1000", arch.CreateProcessorState());
+                Address.Ptr32(0x2000),
+                new NamedImportReference(Address.Ptr32(0x2000), "foo.dll", "bar"));
+            var proc = scan.ScanProcedure(Address.Ptr32(0x1000), "fn1000", arch.CreateProcessorState());
 
             Assert.AreEqual("bar", proc.Name);
         }
@@ -497,7 +497,7 @@ fn00001100_exit:
             fakeArch.Test_AddTraces(RtlEvenOdd.Create(fakeArch));
 
             var proc = scan.ScanProcedure(
-                new Address(0x1000),
+                Address.Ptr32(0x1000),
                 "fn1000",
                 arch.CreateProcessorState());
             var sExp = @"// fn1000

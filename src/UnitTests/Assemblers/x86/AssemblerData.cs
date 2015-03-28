@@ -135,7 +135,7 @@ foo		endp
 		[Test]
 		public void AsAutoArray32()
 		{
-			RunTest("Fragments/autoarray32.asm", "Intel/AsAutoArray32.txt", new Address(0x04000000));
+			RunTest("Fragments/autoarray32.asm", "Intel/AsAutoArray32.txt", Address.Ptr32(0x04000000));
 		}
 
 		[Test]
@@ -153,19 +153,19 @@ foo		endp
 		[Test]
 		public void AsFrame32()
 		{
-			RunTest("Fragments/multiple/frame32.asm", "Intel/AsFrame32.txt", new Address(0x10000000));
+			RunTest("Fragments/multiple/frame32.asm", "Intel/AsFrame32.txt", Address.Ptr32(0x10000000));
 		}
 
 		[Test]
 		public void AsSwitch32()
 		{
-			RunTest("Fragments/switch32.asm", "Intel/AsSwitch32.txt", new Address(0x10000000));
+			RunTest("Fragments/switch32.asm", "Intel/AsSwitch32.txt", Address.Ptr32(0x10000000));
 		}
 
 		[Test]
 		public void AsMem32()
 		{
-			RunTest("Fragments/mem32operations.asm", "Intel/AsMem32.txt", new Address(0x20000000));
+			RunTest("Fragments/mem32operations.asm", "Intel/AsMem32.txt", Address.Ptr32(0x20000000));
 		}
 
 		[Test]
@@ -207,7 +207,7 @@ foo		endp
 		[Test]
 		public void AsReg00004()
 		{
-			RunTest("Fragments/regressions/r00004.asm", "Intel/AsReg00004.txt", new Address(0x10000000));
+			RunTest("Fragments/regressions/r00004.asm", "Intel/AsReg00004.txt", Address.Ptr32(0x10000000));
 		}
 
 		[Test]
@@ -219,7 +219,7 @@ foo		endp
 		[Test]
 		public void AsReg00006()
 		{
-			RunTest("Fragments/regressions/r00006.asm", "Intel/AsReg00006.txt", new Address(0x100048B0));
+			RunTest("Fragments/regressions/r00006.asm", "Intel/AsReg00006.txt", Address.Ptr32(0x100048B0));
 		}
 
 		[Test]

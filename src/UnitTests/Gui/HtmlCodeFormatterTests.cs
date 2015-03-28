@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Gui
         {
             var proc = new Procedure("proc", new Frame(PrimitiveType.Word32));
             var pc = new ProcedureConstant(PrimitiveType.Word32, proc);
-            map.Add(new Address(0x42), proc);
+            map.Add(Address.Ptr32(0x42), proc);
 
             pc.Accept(hcf);
 

@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Mips
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-        public override Address LoadAddress { get { return new Address(0x00100000); } }
+        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
         protected override ImageWriter CreateImageWriter(byte[] bytes)
         {

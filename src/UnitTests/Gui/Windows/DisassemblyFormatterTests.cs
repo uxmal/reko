@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Gui
         {
             var list = new List<TextSpan>();
             var df = new DisassemblyFormatter(program, list);
-            df.WriteAddress("foo", new Address(0x1234));
+            df.WriteAddress("foo", Address.Ptr32(0x1234));
             df.NewLine();
 
             Assert.AreEqual("foo", list[0].GetText());
@@ -68,9 +68,9 @@ namespace Decompiler.UnitTests.Gui
         public void Df_FormatAddress_ScannedProcedure()
         {
             var list = new List<TextSpan>();
-            program.Procedures.Add(new Address(0x1234), new Procedure("fn_renamed", new Frame(PrimitiveType.Word32)));
+            program.Procedures.Add(Address.Ptr32(0x1234), new Procedure("fn_renamed", new Frame(PrimitiveType.Word32)));
             var df = new DisassemblyFormatter(program, list);
-            df.WriteAddress("foo", new Address(0x1234));
+            df.WriteAddress("foo", Address.Ptr32(0x1234));
             df.NewLine();
 
             Assert.AreEqual("fn_renamed", list[0].GetText());

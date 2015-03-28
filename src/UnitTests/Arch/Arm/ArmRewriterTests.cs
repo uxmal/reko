@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Arm
     {
         private ArmProcessorArchitecture arch = new ArmProcessorArchitecture();
         private LoadedImage image;
-        private Address baseAddress = new Address(0x00100000);
+        private Address baseAddress = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture
         {
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
-            image = new LoadedImage(new Address(0x00100000), bytes);
+            image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
         }
 
         private void BuildTest(params uint[] words)
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             var bytes = words
                 .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
-            image = new LoadedImage(new Address(0x00100000), bytes);
+            image = new LoadedImage(Address.Ptr32(0x00100000), bytes);
         }
 
         [Test]

@@ -43,19 +43,19 @@ namespace Decompiler.Core
 
         public static Address Ptr16(ushort addr)
         {
-            return new Address(PrimitiveType.Ptr16, addr);
+            return new Address16(addr);
         }
 
         public static Address Ptr32(uint uAddr)
         {
-            return new Address(PrimitiveType.Pointer32, uAddr);
+            return new Address32(uAddr);
         }
 
         public static Address Ptr64(ulong addr)
         {
             if (addr >= (1ul << 32))
                 throw new NotImplementedException("We need separate classes for addresses.");
-            return new Address(PrimitiveType.Pointer64, (uint) addr);
+            return new Address64(addr);
         }
 
         public static Address SegPtr(ushort seg, uint off)
@@ -73,7 +73,7 @@ namespace Decompiler.Core
             }
         }
 
-		private Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
+		protected Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = seg;
 			this.Offset = off;
@@ -111,10 +111,16 @@ namespace Decompiler.Core
 			return Linear.GetHashCode();
 		}
 
+        [Obsolete]
 		public uint Linear
 		{
 			get { return (((uint) Selector << 4) + Offset); }
 		}
+
+        public virtual ulong ToLinear()
+        {
+            return ((ulong) Selector << 4) + Offset;
+        }
 
 		public string GenerateName(string prefix, string suffix)
 		{
@@ -176,16 +182,21 @@ namespace Decompiler.Core
 			return a.Linear >= b.Linear;
 		}
 
-		public static Address operator + (Address a, ulong off)
+        public static Address operator + (Address a, ulong off)
 		{
-			return a + (int) off;
+			return a.Add((long) off);
 		}
 
-		public static Address operator + (Address a, int off)
+		public static Address operator + (Address a, long off)
 		{
-            ushort sel = a.Selector;
-			uint newOff = (uint) (a.Offset + off);
-			if (a.Selector != 0 && newOff > 0xFFFF)
+            return a.Add(off);
+        }
+
+        public virtual Address Add(long offset)
+        {
+            ushort sel = this.Selector;
+			uint newOff = (uint) (this.Offset + offset);
+			if (this.Selector != 0 && newOff > 0xFFFF)
 			{
 				sel += 0x1000;
 				newOff &= 0xFFFF;
@@ -195,7 +206,7 @@ namespace Decompiler.Core
 
 		public static Address operator - (Address a, int delta)
 		{
-			return a + (-delta);
+			return a.Add(-delta);
 		}
 
 		public static int operator - (Address a, Address b)
@@ -214,57 +225,51 @@ namespace Decompiler.Core
 		/// <param name="s">The string representation of the Address</param>
 		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
 		/// <returns></returns>
-		public static Address Parse(string s, int radix)
-		{
-			if (s == null)
-				return null;
-			int c = s.IndexOf(':');
-			if (c > 0)
-			{
-				return new Address(
-					Convert.ToUInt16(s.Substring(0, c), radix),
-					Convert.ToUInt32(s.Substring(c+1), radix));
-			}
-			else
-			{
-				return new Address(Convert.ToUInt32(s, radix));
-			}
-		}
 
-        public static bool TryParse(string s, int radix, out Address result)
+        public static bool TryParse16(string s, out Address result)
         {
             if (s != null)
             {
                 try
                 {
-                    var a = s.Split(':');
-                    if (a.Length == 2)
-                    {
-                        var seg = Convert.ToUInt16(a[0], radix);
-                        var off = Convert.ToUInt32(a[1], radix);
-                        result = new Address(seg, off);
-                    }
-                    else
-                    {
-                        result = new Address(Convert.ToUInt32(a[0], radix));
-                    }
+                    result = Ptr16(Convert.ToUInt16(s, 16));
                     return true;
                 }
-                catch
-                {
-                }
+                catch { }
             }
             result = null;
             return false;
         }
-            
 
-        /// <summary>
-        /// Converts a hexadecimal string representation of an address to an Address.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static Address Parse(string s) { return Parse(s, 16); }
+        public static bool TryParse32(string s, out Address result)
+        {
+            if (s != null)
+            {
+                try
+                {
+                    result = Ptr32(Convert.ToUInt32(s, 16));
+                    return true;
+                }
+                catch { }
+            }
+            result = null;
+            return false;
+        }
+
+        public static bool TryParse64(string s, out Address result)
+        {
+            if (s != null)
+            {
+                try
+                {
+                    result = Ptr64(Convert.ToUInt64(s, 16));
+                    return true;
+                }
+                catch { }
+            }
+            result = null;
+            return false;
+        }
 
         public class Comparer : IEqualityComparer<Address>
         {
@@ -278,7 +283,76 @@ namespace Decompiler.Core
                 return obj.Linear.GetHashCode();
             }
         }
+    }
 
-     
+    public class Address16 : Address
+    {
+        private ushort uValue;
+
+        public Address16(ushort addr)
+            : base(PrimitiveType.Ptr16, addr)
+        {
+            this.uValue = addr;
+        }
+
+        public override ulong ToLinear()
+        {
+            return uValue;
+        }
+    }
+
+    public class Address32 : Address
+    {
+        private uint uValue;
+
+        public Address32(uint addr)
+            : base(PrimitiveType.Pointer32, addr)
+        {
+            this.uValue = addr;
+        }
+
+        public override ulong ToLinear()
+        {
+            return uValue;
+        }
+    }
+
+    public class SegAddress32 : Address
+    {
+        private ushort uSegment;
+        private ushort uOffset;
+
+        public SegAddress32(ushort segment, ushort offset)
+            : base(segment, offset)
+        {
+            this.uSegment = segment;
+            this.uOffset = offset;
+        }
+
+        public override ulong ToLinear()
+        {
+            return (((ulong)uSegment) << 4) + uOffset;
+        }
+    }
+
+    public class Address64 : Address
+    {
+        private readonly ulong uValue;
+
+        public Address64(ulong addr)
+            : base(PrimitiveType.Pointer64, (uint)addr)
+        {
+            this.uValue = addr;
+        }
+
+        public override ulong ToLinear()
+        {
+            return uValue;
+        }
+
+        public override Address Add(long offset)
+        {
+            return new Address64(uValue + (ulong) offset);
+        }
     }
 }

@@ -26,8 +26,10 @@ using Decompiler.Core.Rtl;
 using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Decompiler.Core.Serialization;
+using System.Globalization;
 
 namespace Decompiler.Arch.Arm
 {
@@ -59,23 +61,25 @@ namespace Decompiler.Arch.Arm
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
+            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
             if (flags != PointerScannerFlags.Calls)
                 throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
             while (rdr.IsValid)
             {
-                uint linAddrCall = rdr.Address.Linear;
+                uint linAddrCall = (uint) rdr.Address.ToLinear();
                 var opcode = rdr.ReadLeUInt32();
                 if ((opcode & 0x0F000000) == 0x0B000000)         // BL
                 {
-                    int offset = ((int) opcode << 8) >> 6;
-                    uint target = (uint) (linAddrCall + 8 + offset);
+                    int offset = ((int)opcode << 8) >> 6;
+                    uint target = (uint)(linAddrCall + 8 + offset);
                     if (knownLinAddresses.Contains(target))
-                        yield return linAddrCall;
+                        yield return Address.Ptr32(linAddrCall);
                 }
             }
         }
+
 
         public Frame CreateFrame()
         {
@@ -175,9 +179,9 @@ namespace Decompiler.Arch.Arm
             get { throw new NotImplementedException(); }
         }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Linear;
+            return Address.TryParse32(txtAddress, out addr);
         }
         #endregion
     }

@@ -284,6 +284,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     s.Substring(p + 1).FindFirstNotOf("0123456789") < 0);
         }
 
+
+        // A hex literal matches:
+        // #(..)*#
+        // where . is a hex wild character.
         public static bool IsHexLiteral(string s)
         {
             int len = s.Length;
@@ -303,11 +307,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
 
         // String manipulation
-
-        public static string tolower(string @in)
-        {
-            return @in.ToLowerInvariant();
-        }
 
         public static string toupper(string @in)
         {
@@ -423,7 +422,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return Path.IsPathRooted(path);
         }
 
-
         public static string pathfixup(string path, bool isfolder)
         {
             string @out = path;
@@ -458,18 +456,18 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return @out;
         }
 
-        public static List<string> getlines_file(string file)
+        public static List<string> ReadLinesFromFile(string file)
         {
             List<string> script;
 
             using(StreamReader hFile = new StreamReader(file, Encoding.UTF8))
             {
-                script = getlines_buff(hFile);
+                script = ReadLines(hFile);
             }
             return script;
         }
 
-        public static List<string> getlines_buff(TextReader content)
+        public static List<string> ReadLines(TextReader content)
         {
             List<string> script = new List<string>();
             string line = content.ReadLine();

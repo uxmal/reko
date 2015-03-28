@@ -50,27 +50,27 @@ namespace Decompiler.UnitTests.Assemblers.Pdp11
         [Test]
         public void Pdp11Tasm_Comment()
         {
-            var ldr = asm.AssembleFragment(new Address(0x0100), "; nothing");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), "; nothing");
         }
 
         [Test]
         public void Pdp11Tasm_Equate()
         {
-            var ldr = asm.AssembleFragment(new Address(0x0100), " a = r");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), " a = r");
             Assert.AreEqual("r", asm.Assembler.Equates["a"]);
         }
 
         [Test]
         public void Pdp11Tasm_Decimal()
         {
-            var ldr = asm.AssembleFragment(new Address(0x0100), " a = 42.");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), " a = 42.");
             Assert.AreEqual(42, asm.Assembler.Equates["a"]);
         }
 
         [Test]
         public void Pdp11Tasm_Sum()
         {
-            var ldr = asm.AssembleFragment(new Address(0x0100), @"
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), @"
 a = 42.; decimal
 b = 10 ; octal
 c = a + b");
@@ -80,13 +80,13 @@ c = a + b");
         [Test]
         public void Pdp11Tasm_PageDirective()
         {
-            var ldr = asm.AssembleFragment(new Address(0x0100), ".page");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), ".page");
         }
 
         [Test]
         public void Pdp11Tasm_LabelledWord()
         {
-            var ldr = asm.AssembleFragment(new Address(0x0100), "label1: .word 14");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), "label1: .word 14");
             Assert.AreEqual(2, ldr.Image.Bytes.Length);
             Assert.AreEqual(12, ldr.Image.ReadLeInt16(0));
         }
@@ -94,21 +94,21 @@ c = a + b");
         [Test]
         public void Pdp11Tasm_Dot()
         {
-            var ldr = asm.AssembleFragment(new Address(0x100), "label1: .word .");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x100), "label1: .word .");
             Assert.AreEqual(0x100, ldr.Image.ReadLeUInt16(0));
         }
 
         [Test]
         public void Pdp11Tasm_ReserveIdiom()
         {
-            var ldr = asm.AssembleFragment(new Address(0x100), ".=.+10");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x100), ".=.+10");
             Assert.AreEqual(8, ldr.Image.Bytes.Length);
         }
 
         [Test]
         public void Pdp11Tasm_Reset()
         {
-            var ldr = asm.AssembleFragment(new Address(0x100), " rEsEt");
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x100), " rEsEt");
             Assert.AreEqual(0x0005, ldr.Image.ReadLeUInt16(0));
         }
 
@@ -125,7 +125,7 @@ c = a + b");
         [Test]
         public void Pdp11Tasm_MovSp()
         {
-            var ldr = asm.AssembleFragment(new Address(0x100), @"
+            var ldr = asm.AssembleFragment(Address.Ptr16(0x100), @"
 sav: .word
     mov sp,sav");
             AssertWords(ldr.Image.Bytes, 0x0000, 0x119F, 0x0100);
@@ -144,7 +144,7 @@ sav:    .word 777";
 
         private void Assemble(string assemblerFragment)
         {
-            ldr = asm.AssembleFragment(new Address(0x100), assemblerFragment);
+            ldr = asm.AssembleFragment(Address.Ptr16(0x100), assemblerFragment);
         }
 
         [Test]

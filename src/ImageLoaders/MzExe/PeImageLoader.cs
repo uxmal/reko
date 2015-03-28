@@ -194,7 +194,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(this.preferredBaseOfImage); }
+			get { return Address.Ptr32(this.preferredBaseOfImage); }
 		}
 
 		public short ReadCoffHeader(ImageReader rdr)

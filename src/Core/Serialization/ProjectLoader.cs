@@ -114,29 +114,37 @@ namespace Decompiler.Core.Serialization
 
         public Program VisitInputFile(DecompilerInput_v2 sInput)
         {
+            //Address.TryParse(sInput.Address, 16));
+
             var bytes = loader.LoadImageBytes(sInput.Filename, 0);
-            var program = loader.LoadExecutable(sInput.Filename, bytes, Address.Parse(sInput.Address, 16));
+            var program = loader.LoadExecutable(sInput.Filename, bytes, null);
             program.Filename = sInput.Filename;
             if (sInput.UserProcedures != null)
             {
                 program.UserProcedures = sInput.UserProcedures
-                        .Select(sup => new KeyValuePair<Address, Procedure_v1>(
-                            Address.Parse(sup.Address, 16),
-                            sup))
+                        .Select(sup =>{
+                            Address addr;
+                            program.Architecture.TryParseAddress(sup.Address, out addr);
+                            return new KeyValuePair<Address, Procedure_v1>(addr, sup);
+                        })
                         .Where(kv => kv.Key != null)
                         .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
             if (sInput.UserGlobalData != null)
             {
                 program.UserGlobalData = sInput.UserGlobalData
-                    .Select(sud => new KeyValuePair<Address, GlobalDataItem_v2>(
-                        Address.Parse(sud.Address, 16),
-                        new GlobalDataItem_v2
-                        {
-                            Address = sud.Address,
-                            DataType = sud.DataType,
-                        }))
-                        .ToSortedList(kv => kv.Key, kv => kv.Value);
+                    .Select(sud => {
+                            Address addr;
+                            program.Architecture.TryParseAddress(sud.Address, out addr);
+                            return new KeyValuePair<Address, GlobalDataItem_v2>(
+                                addr,
+                                new GlobalDataItem_v2
+                                {
+                                    Address = sud.Address,
+                                    DataType = sud.DataType,
+                                });
+                    })
+                   .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
             program.DisassemblyFilename = sInput.DisassemblyFilename;
             program.IntermediateFilename = sInput.IntermediateFilename;
@@ -165,7 +173,8 @@ namespace Decompiler.Core.Serialization
             if (sp.Input != null && !string.IsNullOrEmpty(sp.Input.Filename))
             {
                 var bytes = loader.LoadImageBytes(sp.Input.Filename, 0);
-                program = loader.LoadExecutable(sp.Input.Filename, bytes, Address.Parse(sp.Input.Address, 16));
+                // Address.Parse(sp.Input.Address, 16));
+                program = loader.LoadExecutable(sp.Input.Filename, bytes, null);
                 program.Filename = sp.Input.Filename;
             }
             else
@@ -182,19 +191,20 @@ namespace Decompiler.Core.Serialization
                 program.GlobalsFilename = sp.Output.GlobalsFilename;
             }
             program.UserProcedures = sp.UserProcedures
-                    .Select(sup => new KeyValuePair<Address, Procedure_v1>(
-                        Address.Parse(sup.Address, 16),
-                        sup))
+                    .Select(sup => {
+                        Address addr;
+                        program.Architecture.TryParseAddress(sup.Address, out addr);
+                        return new KeyValuePair<Address, Procedure_v1>(addr, sup);
+                    })
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
 
             foreach (var uc in sp.UserCalls)
             {
-                var addr = Address.Parse(uc.InstructionAddress, 16);
-                if (addr != null)
+                Address addr;
+                if (!program.Architecture.TryParseAddress(uc.InstructionAddress, out addr))
                     program.UserCalls.Add(addr, uc);
             }
-
             return new Project
             {
                 Programs = { program }

@@ -29,6 +29,10 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Contains the bytes that are present in memory when a program is loaded.
 	/// </summary>
+    /// <remarks>
+    /// Currently, the loadedimage is a range of contiguous bytes, but it really
+    /// should be a sparse list of bytes for 64-bit address spaces.
+    /// </remarks>
 	public class LoadedImage
 	{
 		private byte [] abImage;

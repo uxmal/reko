@@ -81,7 +81,7 @@ namespace Decompiler.Arch.X86
 		{
 			if (mode == ProcessorMode.Protected32)
 			{
-				return new Address(offset);
+				return Address.Ptr32(offset);
 			}
 			else
 			{
@@ -129,9 +129,9 @@ namespace Decompiler.Arch.X86
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public virtual IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public virtual IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
         {
-            return mode.CreateInstructionScanner(rdr, knownLinAddresses, flags);
+            return mode.CreateInstructionScanner(map, rdr, knownLinAddresses, flags);
         }
 
         public virtual ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
@@ -268,9 +268,9 @@ namespace Decompiler.Arch.X86
         
         public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return mode.GetAddressOffset(addr);
+            return mode.TryParseAddress(txtAddress, out addr);
         }
     }
 

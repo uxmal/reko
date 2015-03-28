@@ -57,9 +57,9 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             navControl.Stub(n => n.BackButton).Return(btnBack);
             navControl.Stub(n => n.ForwardButton).Return(btnForward);
-            addr42 = new Address(42);
-            addr43 = new Address(43);
-            addr44 = new Address(44);
+            addr42 = Address.Ptr32(42);
+            addr43 = Address.Ptr32(43);
+            addr44 = Address.Ptr32(44);
         }
 
         [Test]

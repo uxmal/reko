@@ -49,13 +49,14 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 			try
 			{
-				Address = Address.Parse(dlg.MemoryAddress.Text, 16);
+                Address addr;
+				Address.TryParse32(dlg.MemoryAddress.Text, out addr);
+                Address = addr;
 			} 
 			catch 
 			{
 				MessageBox.Show(dlg, "The address is in an invalid format. Please use only hexadecimal digits.", dlg.Text);
 			}
 		}
-
     }
 }

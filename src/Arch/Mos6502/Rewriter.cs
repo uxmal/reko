@@ -157,7 +157,7 @@ namespace Decompiler.Arch.Mos6502
             var f = FlagGroupStorage(flags);
             emitter.Branch(
                 emitter.Test(cc, f),
-                new Address(instrCur.Operand.Offset.ToUInt16()),
+                Address.Ptr16(instrCur.Operand.Offset.ToUInt16()),
                 RtlClass.ConditionalTransfer);
         }
 

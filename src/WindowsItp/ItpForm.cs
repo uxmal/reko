@@ -199,7 +199,7 @@ namespace Decompiler.WindowsItp
             var abImage = new byte[size];
             fs.Read(abImage, 0, (int) size);
             var exe = new ExeImageLoader(sc, "foolexe", abImage);
-            var peLdr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); // new Address(0x00100000), new List<EntryPoint>());
+            var peLdr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); 
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.Load(addr);
             var rr = peLdr.Relocate(addr);

@@ -51,15 +51,7 @@ namespace Decompiler.Gui.Forms
 
         private void EnableControls()
         {
-            Address addr;
-            if (!Address.TryParse(dlg.AddressTextBox.Text, 16, out addr))
-            {
-                dlg.OkButton.Enabled = false;
-            }
-            else
-            {
-                dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0;
-            }
+            dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0;
         }
 
         private void PopulatePlatforms(IDecompilerConfigurationService dcCfg)

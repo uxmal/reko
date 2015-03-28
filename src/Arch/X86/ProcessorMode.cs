@@ -25,6 +25,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Decompiler.Arch.X86
 {
@@ -58,7 +59,7 @@ namespace Decompiler.Arch.X86
             get { return Registers.sp; }
         }
 
-        public abstract IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
+        public abstract IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
         public abstract X86Disassembler CreateDisassembler(ImageReader rdr);
         
@@ -85,7 +86,7 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        public virtual uint GetAddressOffset(Address addr) { return addr.Linear; }
+        public abstract bool TryParseAddress(string txtAddress, out Address addr);
     }
 
     internal class RealMode : ProcessorMode
@@ -95,9 +96,10 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            return new X86RealModePointerScanner(rdr, knownLinAddresses, flags);
+            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
@@ -110,10 +112,26 @@ namespace Decompiler.Arch.X86
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
 
-        public override uint GetAddressOffset(Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Offset;
-        }
+            if (txtAddress == null)
+            {
+                int c = txtAddress.IndexOf(':');
+                if (c > 0)
+                {
+                    try
+                    {
+                        addr = Address.SegPtr(
+                            Convert.ToUInt16(txtAddress.Substring(0, c), 16),
+                            Convert.ToUInt32(txtAddress.Substring(c + 1), 16));
+                        return true;
+                    }
+                    catch { }
+                }
+            }
+            addr = null;
+            return false;
+		}        
     }
 
     internal class SegmentedMode : ProcessorMode
@@ -123,19 +141,24 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
             return new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
 
+        public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
+        }
+
+        public override bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -153,12 +176,17 @@ namespace Decompiler.Arch.X86
 
         public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
-            return new Address(offset);
+            return Address.Ptr32(offset);
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(
+            ImageMap map,
+            ImageReader rdr,
+            IEnumerable<Address> knownAddresses,
+            PointerScannerFlags flags)
         {
-            return new X86PointerScanner(rdr, knownLinAddresses, flags);
+            var knownLinaddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            return new X86PointerScanner32(rdr, knownLinaddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
@@ -174,7 +202,12 @@ namespace Decompiler.Arch.X86
 
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
-            return new Address(rdr.ReadLeUInt32());
+            return Address.Ptr32(rdr.ReadLeUInt32());
+        }
+
+        public override bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse32(txtAddress, out addr);
         }
     }
 
@@ -192,12 +225,13 @@ namespace Decompiler.Arch.X86
 
         public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
-            return new Address(offset);
+            return Address.Ptr64(offset);
         }
 
-        public override IEnumerable<uint> CreateInstructionScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            var knownLinAddresses = knownAddresses.Select(a => (ulong)a.ToLinear()).ToHashSet();
+            return new X86PointerScanner64(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
@@ -214,6 +248,11 @@ namespace Decompiler.Arch.X86
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return Address.Ptr64(rdr.ReadLeUInt64());
+        }
+
+        public override bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse64(txtAddress, out addr);
         }
     }
 }

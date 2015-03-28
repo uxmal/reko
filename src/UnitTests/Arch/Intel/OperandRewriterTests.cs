@@ -53,8 +53,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void Setup()
 		{
             prog = new Program();
-            prog.Image = new LoadedImage(new Address(0x10000), new byte[4]);
-            var procAddress = new Address(0x10000000);
+            prog.Image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
+            var procAddress = Address.Ptr32(0x10000000);
             proc = Procedure.Create(procAddress, arch.CreateFrame());
 			state = (X86State) arch.CreateProcessorState();
 			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));

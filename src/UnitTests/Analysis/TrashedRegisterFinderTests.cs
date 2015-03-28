@@ -402,7 +402,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Return();
 
             Procedure proc = m.Procedure;
-            prog.Procedures.Add(new Address(0x10000), proc);
+            prog.Procedures.Add(Address.Ptr32(0x10000), proc);
             prog.CallGraph.AddProcedure(proc);
             flow = new ProgramDataFlow(prog);
 

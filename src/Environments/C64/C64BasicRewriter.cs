@@ -503,7 +503,7 @@ namespace Decompiler.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
-            emitter.Call(new Address((uint)lineNumber), 2);
+            emitter.Call(Address.Ptr16((ushort)lineNumber), 2);
         }
 
         private void RewriteGoto()
@@ -512,7 +512,7 @@ namespace Decompiler.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
-            emitter.Goto(new Address((uint)lineNumber));
+            emitter.Goto(Address.Ptr16((ushort)lineNumber));
         }
 
         private void RewriteIf()
@@ -530,7 +530,7 @@ namespace Decompiler.Environments.C64
                 {
                     if (!GetInteger(out lineNumber))
                         SyntaxError();
-                    emitter.Branch(expr, new Address((uint)lineNumber), RtlClass.ConditionalTransfer);
+                    emitter.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
                     return;
                 }
                 var cl = cluster;
@@ -548,7 +548,7 @@ namespace Decompiler.Environments.C64
                 int lineNumber;
                 if (!GetInteger(out lineNumber))
                     SyntaxError();
-                emitter.Branch(expr, new Address((uint)lineNumber), RtlClass.ConditionalTransfer);
+                emitter.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
                 return;
             }
             throw new NotImplementedException();

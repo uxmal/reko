@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_Program()
         {
-            var addrBase = new Address(0x10000);
+            var addrBase = Address.Ptr32(0x10000);
             var image = new LoadedImage(addrBase, new byte[100]);
             var map = image.CreateImageMap();
             var arch = mr.Stub<IProcessorArchitecture>();
@@ -117,7 +117,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var sc = new ServiceContainer();
             var ctrl = new LowLevelView();
             var interactor = mr.DynamicMock<LowLevelViewInteractor>();
-            interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
+            interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(Address.Ptr32(0x4711));
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
             AddStubService<IUiPreferencesService>(sc);
             Given_Program();
@@ -130,12 +130,12 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
-            var image = new LoadedImage(new Address(0x1000), new byte[300]);
+            var image = new LoadedImage(Address.Ptr32(0x1000), new byte[300]);
             mr.ReplayAll();
 
             interactor.SetSite(sc);
             interactor.CreateControl();
-            service.ShowMemoryAtAddress(program, new Address(0x4711));
+            service.ShowMemoryAtAddress(program, Address.Ptr32(0x4711));
 
             mr.VerifyAll();
         }

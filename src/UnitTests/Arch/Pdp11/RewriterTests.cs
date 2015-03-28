@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Pdp11
     {
         private Pdp11Architecture arch = new Pdp11Architecture();
         private LoadedImage image;
-        private Address addrBase = new Address(0x0200);
+        private Address addrBase = Address.Ptr16(0x0200);
 
         public override IProcessorArchitecture Architecture
         {

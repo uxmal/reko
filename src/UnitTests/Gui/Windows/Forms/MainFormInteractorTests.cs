@@ -208,7 +208,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 Name = "MyProc", 
             };
             var program = dcSvc.Decompiler.Project.Programs[0];
-            program.UserProcedures.Add(new Address(0x12345), p);
+            program.UserProcedures.Add(Address.Ptr32(0x12345), p);
 
             interactor.Save();
             string s =
@@ -339,7 +339,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 Programs = { new Program 
                 { 
                     Filename="foo.exe" ,
-                    Image = new LoadedImage(new Address(0x00010000), new byte[100]) 
+                    Image = new LoadedImage(Address.Ptr32(0x00010000), new byte[100]) 
                 }
                 }
             };

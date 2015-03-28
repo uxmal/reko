@@ -8,7 +8,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 {
     class Importer
     {
-        internal static string  GetAPIName(ulong addr)
+        internal static string GetAPIName(ulong addr)
         {
             throw new NotImplementedException();
         }

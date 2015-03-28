@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Scanning
                             m.Assign(reg, m.Word32(1));
                         },
                         (m) => {
-                            m.Goto(new Address(0x1004));
+                            m.Goto(Address.Ptr32(0x1004));
                         }
                     }
                 },

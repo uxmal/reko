@@ -65,7 +65,7 @@ namespace Decompiler.Arch.Sparc
             return new SparcRewriter(this, rdr, (SparcProcessorState) state, frame, host);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -177,10 +177,11 @@ namespace Decompiler.Arch.Sparc
             get { throw new NotImplementedException(); }
         }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Linear;
+            return Address.TryParse32(txtAddress, out addr);
         }
+
 
         #endregion
     }

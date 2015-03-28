@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Arch.M68k
 
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)
         {
-            Address addr = new Address(address);
+            Address addr = Address.Ptr32(address);
             LoadedImage img = new LoadedImage(addr, bytes);
             return M68kDisassembler.Create68020(img.CreateBeReader(addr)).GetEnumerator();
         }
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Arch.M68k
 
         public override Address LoadAddress
         {
-            get { return new Address(0x10000000); }
+            get { return Address.Ptr32(0x10000000); }
         }
 
 

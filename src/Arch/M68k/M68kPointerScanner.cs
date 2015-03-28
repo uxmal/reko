@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    public class M68kPointerScanner : PointerScanner
+    public class M68kPointerScanner : PointerScanner<uint>
     {
         public M68kPointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
@@ -34,6 +34,11 @@ namespace Decompiler.Arch.M68k
         }
 
         public override int PointerAlignment { get { return 2; } }
+
+        public override uint GetLinearAddress(Address address)
+        {
+            return (uint)address.ToLinear();
+        }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
         {

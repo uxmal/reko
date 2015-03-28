@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void StrReg00006()
         {
-            RunTest("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", new Address(0x100048B0));
+            RunTest("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
         }
 
 
@@ -204,7 +204,7 @@ mov dword ptr [0x123234],0x6423
 done:
 pop ebp
 ret
-", new Address(0x00400000));
+", Address.Ptr32(0x00400000));
             RunTest(@"void fn00400000(word32 dwArg04)
 {
 	if (dwArg04 != 0x00000000)

@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-        public override Address LoadAddress { get { return new Address(0x00100000); } }
+        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
         private PowerPcInstruction DisassembleX(uint op, uint rs, uint ra, uint rb, uint xo, uint rc)
         {
@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 (rb << 11) |
                 (xo << 1) |
                 rc;
-            LoadedImage img = new LoadedImage(new Address(0x00100000), new byte[4]);
+            LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), new byte[4]);
             img.WriteBeUInt32(0, w);
             return Disassemble(img);
         }

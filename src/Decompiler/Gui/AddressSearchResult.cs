@@ -86,7 +86,7 @@ namespace Decompiler.Gui
         {
             var hit = addresses[i];
             var program = hit.Program;
-            var addr = program.ImageMap.MapLinearAddressToAddress(addresses[i].LinearAddress);
+            var addr = addresses[i].Address;
             ImageMapItem item;
             var type = program.ImageMap.TryFindItem(addr, out item);
             if (program.Architecture == null)
@@ -150,7 +150,7 @@ namespace Decompiler.Gui
         {
             var memSvc = services.RequireService<ILowLevelViewService>();
             var hit = addresses[i];
-            memSvc.ShowMemoryAtAddress(hit.Program, hit.Program.ImageMap.MapLinearAddressToAddress(hit.LinearAddress));
+            memSvc.ShowMemoryAtAddress(hit.Program, hit.Address);
         }
 
         public bool QueryStatus(CommandID cmdID, CommandStatus status, CommandText txt)
@@ -207,21 +207,21 @@ namespace Decompiler.Gui
     public class AddressSearchHit
     {
         public Program Program;
-        public uint LinearAddress;
+        public Address Address;
 
         public AddressSearchHit()
         {
         }
 
-        public AddressSearchHit(Program program, uint linearAddress)
+        public AddressSearchHit(Program program, Address addr)
         {
             this.Program = program;
-            this.LinearAddress = linearAddress;
+            this.Address = addr;
         }
 
         public Address GetAddress()
         {
-            return Program.ImageMap.MapLinearAddressToAddress(LinearAddress);
+            return Address;
         }
     }
 }

@@ -49,6 +49,9 @@ using System.Collections;
         private const byte ELFCLASS64 = 2;              // 64-bit object file
         private const int HEADER_OFFSET = 0x0010;
 
+        private const int ELFOSABI_NONE = 0x00;         // No specific ABI specified.
+        private const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
+
         private const ushort EM_NONE = 0;           // No machine 
         private const ushort EM_M32 = 1;            // AT&T WE 32100 
         private const ushort EM_SPARC = 2;          // SPARC 
@@ -221,6 +224,7 @@ using System.Collections;
 
         private Program LoadImageBytes(Address addrPreferred, Address addrMax)
         {
+            //$TODO: 64-bit version.
             var bytes = new byte[addrMax - addrPreferred];
             var v_base = addrPreferred.Linear;
             if (fileClass == ELFCLASS64)
@@ -265,7 +269,7 @@ using System.Collections;
                         mode |= AccessMode.Write;
                     if ((segment.sh_flags & SHF_EXECINSTR) != 0)
                         mode |= AccessMode.Execute;
-                    var seg = imageMap.AddSegment(new Address(segment.sh_addr), GetSectionName(segment.sh_name), mode);
+                    var seg = imageMap.AddSegment(Address.Ptr32(segment.sh_addr), GetSectionName(segment.sh_name), mode);
                     seg.Renderer = CreateRenderer(segment);
                 }
                 imageMap.DumpSections();
@@ -281,10 +285,19 @@ using System.Collections;
 
         public Platform CreatePlatform()
         {
+            DefaultPlatform platform;
             switch (osAbi)
             {
-            case 0x00: // Unspecified ABI
-                var platform = new DefaultPlatform(Services, arch);
+            case ELFOSABI_NONE: // Unspecified ABI
+                platform = new DefaultPlatform(Services, arch);
+                platform.TypeLibraries.AddRange(LoadTypeLibraries());
+                return platform;
+            case ELFOSABI_CELL_LV2: // PS/3
+                //$TODO: I know nothing about that platform, so use
+                // defaults. If you think you know better, and you think
+                // the platform differs by a significant amount, 
+                // implement a PS/3 platform and use it here.
+                platform = new DefaultPlatform(Services, arch);
                 platform.TypeLibraries.AddRange(LoadTypeLibraries());
                 return platform;
             default:
@@ -1176,7 +1189,7 @@ using System.Collections;
             m_SymTab = new Dictionary<ADDRESS, string>();
         }
 
-        public override Address PreferredBaseAddress { get { return new Address(0x00100000); } }
+        public override Address PreferredBaseAddress { get { return Address.Ptr(0x00100000); } }
         public override IProcessorArchitecture Architecture { get { return arch; } }
         public override Platform Platform { get { return platform; } }
         
@@ -1315,7 +1328,7 @@ using System.Collections;
             // Number of elf sections
             bool bGotCode = false; // True when have seen a code sect
 
-            Address arbitaryLoadAddr = new Address(addrLoad.Linear);
+            Address arbitaryLoadAddr = Address.Ptr32(addrLoad.Linear);
             var rdr = CreateImageReader(pHeader.e_shoff);
             for (i = 0; i < m_iNumSections; i++)
             {

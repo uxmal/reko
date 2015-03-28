@@ -50,7 +50,7 @@ namespace Decompiler.ImageLoaders.Hunk
         // seem to like this value.
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0x1000); }
+            get { return Address.Ptr32(0x1000); }
         }
 
         public override Program Load(Address addrLoad)

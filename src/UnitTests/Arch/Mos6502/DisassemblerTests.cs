@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
     {
         private MachineInstruction RunTest(params byte[] bytes)
         {
-            var image = new LoadedImage(new Address(0x200), bytes);
+            var image = new LoadedImage(Address.Ptr32(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = new Disassembler(rdr);
             return dasm.First();

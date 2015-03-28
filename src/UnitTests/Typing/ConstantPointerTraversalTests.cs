@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Typing
 
         private ImageWriter Memory(uint address)
         {
-            image = new LoadedImage(new Address(address), new byte[1024]);
+            image = new LoadedImage(Address.Ptr32(address), new byte[1024]);
             var mem = new LeImageWriter(image.Bytes);
             return mem;
         }
