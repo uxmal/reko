@@ -39,9 +39,9 @@ namespace Decompiler.UnitTests.Core
         [Category("Regressions")]
         public void Addr_Ge()
         {
-            Assert.IsTrue(new Address(4001) >= new Address(4000));
-            Assert.IsTrue(new Address(4000) >= new Address(4000));
-            Assert.IsFalse(new Address(3999) >= new Address(4000));
+            Assert.IsTrue(Address.Ptr32(4001) >= Address.Ptr32(4000));
+            Assert.IsTrue(Address.Ptr32(4000) >= Address.Ptr32(4000));
+            Assert.IsFalse(Address.Ptr32(3999) >= Address.Ptr32(4000));
         }
     }
 }

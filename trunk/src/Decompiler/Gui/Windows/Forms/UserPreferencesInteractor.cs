@@ -55,13 +55,13 @@ namespace Decompiler.Gui.Windows.Forms
         {
             var row = Enumerable.Range(0, 0x100).Select(b => (byte)b).ToArray();
             var image = new LoadedImage(
-                    new Address(0x0010000),
+                    Address.Ptr32(0x0010000),
                     Enumerable.Repeat(
                         row,
                         40).SelectMany(r => r).ToArray());
             var imageMap = image.CreateImageMap();
-            var addrCode = new Address(0x0010008);
-            var addrData = new Address(0x001001A);
+            var addrCode = Address.Ptr32(0x0010008);
+            var addrData = Address.Ptr32(0x001001A);
             imageMap.AddItemWithSize(addrCode, new ImageMapBlock { Address = addrCode, Size = 0x0E });
             imageMap.AddItemWithSize(addrData, new ImageMapItem { Address = addrData, DataType = PrimitiveType.Byte, Size = 0x0E });
             var arch = dlg.Services.RequireService<IDecompilerConfigurationService>().GetArchitecture("x86-protected-32");

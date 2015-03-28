@@ -287,7 +287,10 @@ namespace Decompiler.Gui.Forms
                     })
                     .Invoke(new object[] { sc, arch });
 
-                var addrBase = Address.Parse(dlg.AddressTextBox.Text, 16);
+                Address addrBase;
+                var sAddr = dlg.AddressTextBox.Text.Trim();
+                if (!arch.TryParseAddress(sAddr, out addrBase))
+                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
                 OpenBinary(dlg.FileName.Text, (f) =>
                     pageInitial.OpenBinaryAs(
                         f,
@@ -422,7 +425,7 @@ namespace Decompiler.Gui.Forms
                                 .Select(offset => new AddressSearchHit 
                                 {
                                     Program = program,
-                                    LinearAddress = (uint)(program.Image.BaseAddress.Linear + offset)
+                                    Address = program.Image.BaseAddress + offset
                                 }));
                     srSvc.ShowSearchResults(new AddressSearchResult(
                         this.sc,

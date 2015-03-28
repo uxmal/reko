@@ -138,7 +138,7 @@ namespace Decompiler.UnitTests.Analysis
                     this.platform = new Decompiler.Environments.Win32.Win32Platform(null, new X86ArchitectureFlat32());
                 }
                 asm.Platform = this.platform;
-                program = asm.Assemble(new Address(0x10000000), rdr);
+                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
             }
             foreach (var item in asm.ImportReferences)
             {

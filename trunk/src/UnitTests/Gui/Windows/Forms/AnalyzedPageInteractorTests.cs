@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             form.Stub(f => f.Show());
 
-            var loadAddress =  new Address(0x100000);
+            var loadAddress =  Address.Ptr32(0x100000);
             var bytes = new byte[4711];
             Program prog = new Program();
             prog.Image = new LoadedImage(loadAddress, bytes);
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             form.Show();
-            program.Procedures.Add(new Address(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
+            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure("foo", program.Architecture.CreateFrame()));
             interactor.EnterPage();
 
             mr.VerifyAll();
@@ -140,8 +140,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                     new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
 
-            program.Procedures.Add(new Address(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
-            program.Procedures.Add(new Address(0x12346), p);
+            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
+            program.Procedures.Add(Address.Ptr32(0x12346), p);
             interactor.EnterPage();
 
             //form.BrowserList.Items[1].Selected = true;

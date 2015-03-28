@@ -110,9 +110,9 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
         {
-            return new PowerPcPointerScanner(rdr, knownLinAddresses, flags);
+            throw new NotImplementedException();
         }
 
         public Frame CreateFrame()
@@ -138,6 +138,24 @@ namespace Decompiler.Arch.PowerPC
             return GetTrampolineDestination(dasm, host);
         }
 
+        /// <summary>
+        /// Detects the presence of a PowerPC trampoline and returns the imported function 
+        /// that is actually being requested.
+        /// </summary>
+        /// <remarks>
+        /// A PowerPC trampoline looks like this:
+        ///     addis  rX,r0,XXXX
+        ///     lwz    rY,YYYY(rX)
+        ///     mtctr  rY
+        ///     bctr   rY
+        /// When loading the ELF binary, we discovered the memory locations
+        /// that will contain pointers to imported functions. If the address
+        /// XXXXYYYY matches one of those memory locations, we have found a
+        /// trampoline.
+        /// </remarks>
+        /// <param name="rdr"></param>
+        /// <param name="host"></param>
+        /// <returns></returns>
         public ProcedureBase GetTrampolineDestination(IEnumerable<PowerPcInstruction> rdr, IRewriterHost host)
         {
             var e = rdr.GetEnumerator();
@@ -261,9 +279,9 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Linear;
+            return Address.TryParse32(txtAddress, out addr);
         }
 
         #endregion

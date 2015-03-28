@@ -140,7 +140,7 @@ namespace Decompiler.Environments.C64
                 }
             }
             var arch = new Mos6502ProcessorArchitecture();
-            var image = new LoadedImage(new Address(0), RawImage);
+            var image = new LoadedImage(Address.Ptr16(0), RawImage);
             return new Program(
                 image,
                 image.CreateImageMap(),
@@ -187,10 +187,10 @@ namespace Decompiler.Environments.C64
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
-            var prog = rdr.ToSortedList(line => (ushort)line.Address.Linear, line => line);
+            var prog = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
             var arch = new C64Basic(prog);
             image = new LoadedImage(
-                new Address(prog.Keys[0]),
+                Address.Ptr16(prog.Keys[0]),
                 new byte[0xFFFF]);
             var program = new Program(
                 image,

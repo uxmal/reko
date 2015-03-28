@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
     class SparcRewriterTests : RewriterTestBase 
     {
         private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
-        private Address baseAddr = new Address(0x00100000);
+        private Address baseAddr = Address.Ptr32(0x00100000);
         private SparcProcessorState state;
         private IRewriterHost host;
         private IEnumerable<RtlInstructionCluster> e;

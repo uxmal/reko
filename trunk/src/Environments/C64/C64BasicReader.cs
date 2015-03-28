@@ -45,7 +45,7 @@ namespace Decompiler.Environments.C64
             var instr = new C64BasicInstruction { NextAddress = lineOffset };
             for (;;)
             {
-                instr = ReadLine(new Address(instr.NextAddress));
+                instr = ReadLine(Address.Ptr16(instr.NextAddress));
                 if (instr == null)
                     break;
                 instr.Write(Console.Out);
@@ -75,7 +75,7 @@ namespace Decompiler.Environments.C64
             }
             return new C64BasicInstruction
             {
-                Address = new Address(line),
+                Address = Address.Ptr16(line),
                 NextAddress = next,
                 Line = mem.ToArray()
             };

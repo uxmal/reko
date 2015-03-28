@@ -19,16 +19,17 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Decompiler.Core.Serialization;
 
 namespace Decompiler.Arch.M68k
 {
@@ -62,9 +63,10 @@ namespace Decompiler.Arch.M68k
             return new BitSet((int) Registers.Max);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            return new M68kPointerScanner(rdr, knownLinAddresses, flags);
+            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
         }
 
         public Frame CreateFrame()
@@ -190,9 +192,9 @@ namespace Decompiler.Arch.M68k
 
         public RegisterStorage StackRegister { get { return Registers.a7; } }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Linear;
+            return Address.TryParse32(txtAddress, out addr);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Decompiler.Arch.Z80
             return new Z80Rewriter(this, rdr, state, frame, host);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -164,9 +164,9 @@ namespace Decompiler.Arch.Z80
             get { throw new NotImplementedException(); }
         }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Linear;
+            return Address.TryParse16(txtAddress, out addr);
         }
     }
 

@@ -98,7 +98,7 @@ namespace Decompiler.Arch.Pdp11
             return new BitSet(16);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -198,10 +198,11 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Linear;
+            return Address.TryParse16(txtAddress, out addr);
         }
+
         #endregion
     }
 }

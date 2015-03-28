@@ -56,13 +56,11 @@ namespace Decompiler.Analysis
 			set { sids[id] = value; }
 		}
 
-        [Obsolete("used only in unit test")]
         public void Add(Identifier id, SsaIdentifier sid)
         {
             sids.Add(id, sid);
         }
 
-        [Obsolete("Find all uses and make sure they are not depending on numbers")]
         public int Count
         {
             get { return sids.Count; }

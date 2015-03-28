@@ -72,7 +72,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             ImageMap map = loader.ImageMap;
             ImageMapSegment segment;
-            if (map.TryFindSegment(new Address((uint)addr), out segment))
+            if (map.TryFindSegment(Address.Ptr32((uint)addr), out segment))
             {
                 MemInfo = new MEMORY_BASIC_INFORMATION
                 {

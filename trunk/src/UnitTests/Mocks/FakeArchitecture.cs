@@ -88,14 +88,14 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            var linAddr = rdr.Address.Linear;
+            var linAddr = rdr.Address.ToLinear();
             RtlTrace trace;
             if (!rewriters.Traces.TryGetValue(rdr.Address, out trace))
                 NUnit.Framework.Assert.Fail(string.Format("Unexpected request for a rewriter at address {0}", rdr.Address));
             return trace;
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddrs, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -224,7 +224,10 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public uint GetAddressOffset(Address addr) { return addr.Linear; }
+        public bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse32(txtAddress, out addr);
+        }
 
         #endregion
     }

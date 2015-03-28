@@ -19,7 +19,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private X86ArchitectureFlat32 arch;
         private IntelAssembler asm;
         private Program asmResult;
-        private Address loadAddress = new Address(0x0010000);
+        private Address loadAddress = Address.Ptr32(0x0010000);
 
         [SetUp]
         public void Setup()

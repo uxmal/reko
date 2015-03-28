@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest32(Action<IntelAssembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            BuildTest(new Address(0x00100000), new FakePlatform(null, null), asmProg);
+            BuildTest(Address.Ptr32(0x00100000), new FakePlatform(null, null), asmProg);
         }
 
         private void BuildTest(Address addrBase, Platform platform , Action<IntelAssembler> asmProg)

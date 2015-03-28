@@ -430,7 +430,7 @@ namespace Decompiler.Scanning
         /// <summary>
         /// Performs a scan of the blocks that constitute a procedure named <paramref name="procedureName"/>
         /// </summary>
-        /// <param name="addr"></param>
+        /// <param name="addr">Address of the code from which we will start scanning.</param>
         /// <param name="procedureName"></param>
         /// <param name="state"></param>
         /// <returns></returns>
@@ -480,7 +480,9 @@ namespace Decompiler.Scanning
 
         public void EnqueueUserProcedure(Procedure_v1 sp)
         {
-            var addr = Address.Parse(sp.Address, 16);
+            Address addr;
+            if (!program.Architecture.TryParseAddress(sp.Address, out addr))
+                return;
             var proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {

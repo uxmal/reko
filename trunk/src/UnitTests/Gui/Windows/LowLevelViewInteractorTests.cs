@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
             sp.AddService(typeof(IUiPreferencesService), uiPrefsSvc);
-            addrBase = new Address(0x1000);
+            addrBase = Address.Ptr32(0x1000);
         }
 
         [TearDown]
@@ -119,7 +119,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             Given_Interactor();
             mr.ReplayAll();
 
-            interactor.Control.MemoryView.SelectedAddress = new Address(0x12321);
+            interactor.Control.MemoryView.SelectedAddress = Address.Ptr32(0x12321);
 
             Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.TopAddress.Linear);
             mr.VerifyAll();
@@ -164,7 +164,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_Program(byte[] bytes)
         {
-            var addr = new Address(0x1000);
+            var addr = Address.Ptr32(0x1000);
             var image = new LoadedImage(addr, bytes);
             this.imageMap = image.CreateImageMap();
             this.program = new Program(image, imageMap, arch, new DefaultPlatform(null, arch));

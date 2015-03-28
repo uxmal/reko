@@ -5,6 +5,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 {
     using System.Linq;
     using rulong = System.UInt64;
+
     public partial class Var
     {
         public enum etype { EMP, DW, STR, FLT };
@@ -15,7 +16,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public etype type;
         public int size;
-        public bool isbuf;
+        public bool IsBuf;
 
         public Var() { type = etype.EMP; }
         //var(const var   rhs);
@@ -29,6 +30,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
 #endif
         public Var(double rhs) { type = (etype.FLT); flt = (rhs); size = (8); }
 
+        public bool IsString() { return type == etype.STR; }
+        public bool IsInteger() { return type == etype.DW; }
         //int compare(var& rhs) const; 
 
         //string to_bytes() const;
@@ -57,7 +60,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public Var(string rhs)
         {
-            type = etype.STR; isbuf = (false);
+            type = etype.STR; IsBuf = (false);
 
             size = rhs.Length;
             str = rhs;
@@ -65,7 +68,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
                 str = str.ToUpperInvariant();
                 size = (size / 2) - 1; // num of bytes
-                isbuf = true;
+                IsBuf = true;
             }
         }
 
@@ -86,7 +89,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
 	if(lhs.type == etype.STR)
 	{
-		if(!lhs.isbuf) // str + buf/str -> str
+		if(!lhs.IsBuf) // str + buf/str -> str
 		{
             return new Var(lhs.str + v.to_string());
 		}
@@ -97,7 +100,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 	}
 	else if(lhs.type ==etype.DW)
 	{
-		if(v.isbuf) // rulong + buf -> buf
+		if(v.IsBuf) // rulong + buf -> buf
 		{
 			return new Var("#" + Helper.rul2hexstr(Helper.reverse(lhs.dw), sizeof(rulong)*2) + v.to_bytes() + '#');
 		}
@@ -116,7 +119,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 	case etype.DW:  lhs.dw  += rhs; break;
 	case etype.FLT: lhs.flt += rhs; break;
 	case etype.STR:
-		if(lhs.isbuf) // buf + rulong -> buf
+		if(lhs.IsBuf) // buf + rulong -> buf
 		{
 			return new Var("#"+lhs.to_bytes() + Helper.rul2hexstr(Helper.reverse(rhs), sizeof(rulong)*2) + '#');
 		}
@@ -182,7 +185,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 break;
 
             case etype.STR:
-                if (isbuf == rhs.isbuf)
+                if (IsBuf == rhs.IsBuf)
                     return str.CompareTo(rhs.str);
                 else
                     return to_bytes().CompareTo(rhs.to_bytes());
@@ -195,7 +198,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 	if(type != etype.STR)
 		return "";
 
-    if (isbuf) // #001122# to "001122"
+    if (IsBuf) // #001122# to "001122"
         return str.Substring(1, str.Length - 2);
     else      // "001122" to "303031313232"
         throw new NotImplementedException("return toupper(bytes2hexstr((const byte*)str.data(), size));");
@@ -206,7 +209,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 	if(type != etype.STR)
 		return "";
 
-	if(isbuf) // #303132# to "012"
+	if(IsBuf) // #303132# to "012"
 	{
 		byte[] bytes = new byte[size];
 		throw new NotImplementedException("Helper.hexstr2bytes(to_bytes(), (byte)bytes, size);");
@@ -227,7 +230,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             case etype.STR:
                 if (newsize < size)
                 {
-                    if (isbuf)
+                    if (IsBuf)
                         str = '#' + to_bytes().Substring(0, newsize * 2) + '#';
                     else
                         str.Remove(newsize);
@@ -245,7 +248,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 dw = Helper.reverse(dw);
                 break;
             case etype.STR:
-                if (isbuf)
+                if (IsBuf)
                 {
                     throw new NotImplementedException();
 #if LATER

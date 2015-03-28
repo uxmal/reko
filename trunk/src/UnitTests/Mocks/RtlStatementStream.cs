@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Emit(RtlInstruction instr)
         {
-            stms.Add(new RtlInstructionCluster(new Address(linAddress), 4, instr));
+            stms.Add(new RtlInstructionCluster(Address.Ptr32(linAddress), 4, instr));
             linAddress += 4;
             return instr;
         }
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Goto(uint target)
         {
-            var g = new RtlGoto(new Address(target), RtlClass.Transfer);
+            var g = new RtlGoto(Address.Ptr32(target), RtlClass.Transfer);
             return Emit(g);
         }
 

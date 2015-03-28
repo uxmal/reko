@@ -54,7 +54,6 @@
     <Compile Include="HelperFunctions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Hider.cs" />
     <Compile Include="Host.cs" />
     <Compile Include="Importer.cs" />
     <Compile Include="Librarian.cs" />
@@ -68,12 +67,10 @@
     <Compile Include="OllyLang.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OllyLang.h.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="OllyLang.Tests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OllyScript.cs" />
     <Compile Include="PROCESS_INFORMATION.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Remote.cs" />

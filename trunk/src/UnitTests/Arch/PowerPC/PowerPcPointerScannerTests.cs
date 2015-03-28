@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PpcPs_FindInboundCalls()
         {
             var rdr = CreateImageReader(
-                new Address(0x00100000),
+                Address.Ptr32(0x00100000),
                 0x00, 0x00, 0x00, 0x00,  0x48, 0x00, 0x00, 0x05,
                 0x4E, 0x80, 0x00, 0x20
                 );

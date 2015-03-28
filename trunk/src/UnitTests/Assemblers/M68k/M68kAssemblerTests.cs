@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Assemblers.M68k
         public void Setup()
         {
             arch = new M68kArchitecture();
-            asm = new M68kAssembler(arch, new Address(0x00010000), new List<EntryPoint>());
+            asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<EntryPoint>());
         }
 
         private void BuildTest(Action<M68kAssembler> builder)

@@ -119,7 +119,7 @@ namespace Decompiler.Typing
             prog.Procedures.Clear();
             for (uint i = 0; i < procs.Length; ++i)
             {
-                prog.Procedures[new Address(i)] = procs[i];
+                prog.Procedures[Address.Ptr32(i)] = procs[i];
                 if (dumpProcedures)
                 {
                     procs[i].Dump(true, false);

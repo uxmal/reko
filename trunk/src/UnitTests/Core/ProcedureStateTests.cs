@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+            public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
             {
                 throw new NotImplementedException();
             }
@@ -196,7 +196,10 @@ namespace Decompiler.UnitTests.Core
                 get { throw new NotImplementedException(); }
             }
 
-            public uint GetAddressOffset(Address addr) { return addr.Linear; }
+            public bool TryParseAddress(string txtAddress, out Address addr)
+            {
+                return Address.TryParse32(txtAddress, out addr);
+            }
 
             #endregion
         }

@@ -59,7 +59,7 @@ namespace Decompiler.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -152,9 +152,10 @@ namespace Decompiler.Arch.Mips
             get { throw new NotImplementedException(); }
         }
 
-        public uint GetAddressOffset(Address addr)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            return addr.Linear;
+            return Address.TryParse16(txtAddress, out addr);
         }
+
     }
 }

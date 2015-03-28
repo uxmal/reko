@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Arch.M68k
     public class RewriterTests : RewriterTestBase
     {
         private M68kArchitecture arch = new M68kArchitecture();
-        private Address addrBase = new Address(0x00010000);
+        private Address addrBase = Address.Ptr32(0x00010000);
         private LoadedImage image;
 
         public override IProcessorArchitecture Architecture

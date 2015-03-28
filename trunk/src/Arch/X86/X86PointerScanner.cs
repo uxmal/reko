@@ -29,13 +29,18 @@ namespace Decompiler.Arch.X86
     /// <summary>
     /// Scans an image looking for uses of pointer values.
     /// </summary>
-    public class X86PointerScanner : PointerScanner
+    public class X86PointerScanner32 : PointerScanner<uint>
     {
-        public X86PointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags) : base(rdr, knownLinAddresses, flags)
+        public X86PointerScanner32(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags) : base(rdr, knownLinAddresses, flags)
         {
         }
 
         public override int PointerAlignment { get { return 1; } }
+
+        public override uint GetLinearAddress(Address address)
+        {
+            return (uint) address.ToLinear();
+        }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
         {
@@ -52,7 +57,7 @@ namespace Decompiler.Arch.X86
                 rdr.IsValidOffset(rdr.Offset + 4u))
             {
                 int callOffset = rdr.PeekLeInt32(1);
-                target = (uint) (callOffset + rdr.Address.Linear + 5);
+                target = (uint) (callOffset + (uint)rdr.Address.ToLinear() + 5);
                 return true;
             }
             target = 0;
@@ -106,7 +111,90 @@ namespace Decompiler.Arch.X86
         }
     }
 
-    public class X86RealModePointerScanner : PointerScanner
+    public class X86PointerScanner64 : PointerScanner<ulong>
+    {
+        public X86PointerScanner64(ImageReader rdr, HashSet<ulong> knownLinAddresses, PointerScannerFlags flags)
+            : base(rdr, knownLinAddresses, flags)
+        {
+        }
+
+        public override int PointerAlignment { get { return 1; } }
+
+        public override ulong GetLinearAddress(Address address)
+        {
+            return address.ToLinear();
+        }
+
+        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        {
+            byte bOpcode;
+            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            opcode = bOpcode;
+            return ret;
+        }
+
+        public override bool MatchCall(ImageReader rdr, uint opcode, out ulong target)
+        {
+            if (opcode == 0xE8 // CALL NEAR
+                &&
+                rdr.IsValidOffset(rdr.Offset + 4u))
+            {
+                int callOffset = rdr.PeekLeInt32(1);
+                target = ((ulong)(long)callOffset + rdr.Address.ToLinear() + 5);
+                return true;
+            }
+            target = 0;
+            return false;
+        }
+
+        public override bool MatchJump(ImageReader rdr, uint opcode, out ulong target)
+        {
+            if (opcode == 0xE9 // JMP NEAR
+                &&
+                rdr.IsValidOffset(rdr.Offset + 5u))
+            {
+                int callOffset = rdr.PeekLeInt32(1);
+                target = ((ulong)(long)callOffset + rdr.Address.ToLinear() + 5);
+                return true;
+            }
+            if (0x70 <= opcode && opcode <= 0x7F &&       // short branch.
+                rdr.IsValidOffset(rdr.Offset + 1u))
+            {
+                sbyte callOffset = rdr.PeekSByte(1);
+                target = (rdr.Address.ToLinear() + (ulong)(long)callOffset + 2);
+                return true;
+            }
+            if (opcode == 0x0F && rdr.IsValidOffset(rdr.Offset + 5u))
+            {
+                opcode = rdr.PeekByte(1);
+                int callOffset = rdr.PeekLeInt32(2);
+                uint linAddr = rdr.Address.Linear;
+                if (0x80 <= opcode && opcode <= 0x8F)   // long branch
+                {
+                    target = (ulong)(callOffset + linAddr + 6);
+                    return true;
+                }
+            }
+            target = 0;
+            return false;
+        }
+
+        public override bool PeekPointer(ImageReader rdr, out ulong target)
+        {
+            if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
+            {
+                target = 0;
+                return false;
+            }
+            else
+            {
+                target = rdr.PeekLeUInt32(0);
+                return true;
+            }
+        }
+    }
+
+    public class X86RealModePointerScanner : PointerScanner<uint>
     {
         public X86RealModePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
@@ -114,6 +202,11 @@ namespace Decompiler.Arch.X86
         }
 
         public override int PointerAlignment { get { return 1; } }
+
+        public override uint GetLinearAddress(Address address)
+        {
+            return (uint)address.ToLinear();
+        }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
         {

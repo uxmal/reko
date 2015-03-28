@@ -372,15 +372,24 @@ namespace Decompiler
             ICollection<SerializedCall_v1> serializedCalls)
         {
             return
-                (from sc in serializedCalls
-                 where sc != null && sc.Signature != null
-                     //$BUG: should be program.platform  that creates proc. serializer
-                 let sser = program.Architecture.CreateProcedureSerializer(
-                    new TypeLibraryLoader(program.Architecture, true), "stdapi")
-                 select new KeyValuePair<Address, ProcedureSignature>(
-                     Address.Parse(sc.InstructionAddress, 16),
-                     sser.Deserialize(sc.Signature, program.Architecture.CreateFrame())
-                 )).ToDictionary(item => item.Key, item => item.Value);
+                serializedCalls
+                .Where(sc => sc != null && sc.Signature != null)
+                .Select(sc =>
+                {
+                    //$BUG: should be program.platform  that creates proc. serializer
+                    var sser = program.Architecture.CreateProcedureSerializer(
+                        new TypeLibraryLoader(program.Architecture, true), null);
+                    Address addr;
+                    if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
+                    {
+                        return new KeyValuePair<Address, ProcedureSignature>(
+                            addr,
+                            sser.Deserialize(sc.Signature, program.Architecture.CreateFrame()));
+                    }
+                    else
+                        return new KeyValuePair<Address, ProcedureSignature>(null, null);
+                })
+                .ToDictionary(item => item.Key, item => item.Value);
         }
 
         private IScanner CreateScanner(Program program, DecompilerEventListener eventListener)

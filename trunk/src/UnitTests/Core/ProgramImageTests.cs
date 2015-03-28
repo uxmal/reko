@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ReadLeUShort()
 		{
-			LoadedImage img = new LoadedImage(new Address(0x10000), new byte[] {
+			LoadedImage img = new LoadedImage(Address.Ptr32(0x10000), new byte[] {
 				0x78, 0x56, 0x34, 0x12 });
 			Constant c = img.ReadLe(2, PrimitiveType.Word16);
 			Assert.AreSame(PrimitiveType.Word16, c.DataType);
@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ReadLeUInt32()
 		{
-			LoadedImage img = new LoadedImage(new Address(0x10000), new byte[] {
+			LoadedImage img = new LoadedImage(Address.Ptr32(0x10000), new byte[] {
 				0x78, 0x56, 0x34, 0x12 });
 			Constant c = img.ReadLe(0, PrimitiveType.Word32);
 			Assert.AreSame(PrimitiveType.Word32, c.DataType);
@@ -82,14 +82,11 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ReadLeNegativeInt()
 		{
-			LoadedImage img = new LoadedImage(new Address(0x10000), new byte[] {
+			LoadedImage img = new LoadedImage(Address.Ptr32(0x10000), new byte[] {
 				0xFE, 0xFF, 0xFF, 0xFF });
 			Constant c = img.ReadLe(0, PrimitiveType.Int32);
 			Assert.AreSame(PrimitiveType.Int32, c.DataType);
 			Assert.AreEqual("-2", c.ToString());
 		}
-
-
 	}
-
 }

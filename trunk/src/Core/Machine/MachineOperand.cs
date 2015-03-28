@@ -166,27 +166,24 @@ namespace Decompiler.Core.Machine
             Address = a;
         }
 
-        public static AddressOperand Ptr16(uint a)
+        public static AddressOperand Ptr16(ushort a)
         {
-            return new AddressOperand(new Address(a), PrimitiveType.Ptr16);
+            return new AddressOperand(Address.Ptr16(a), PrimitiveType.Ptr16);
         }
 
         public static AddressOperand Ptr32(uint a)
         {
-            return new AddressOperand(new Address(a), PrimitiveType.Pointer32);
+            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Pointer32);
         }
 
-        public static AddressOperand Ptr64(uint a)
+        public static AddressOperand Ptr64(ulong a)
         {
-            return new AddressOperand(new Address(a), PrimitiveType.Pointer64);
+            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
         }
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            if (base.Width.Size == 2)
-                writer.WriteAddress(string.Format("{0:X4}", Address.Linear), Address);
-            else
-                writer.WriteAddress(Address.ToString(), Address);
+            writer.WriteAddress(Address.ToString(), Address);
         }
     }
 

@@ -111,12 +111,13 @@ namespace Decompiler.Gui.Design
             var image = program.Image;
             var rdr = program.Architecture.CreateImageReader(program.Image, 0);
             var addrControl = arch.CreatePointerScanner(
+                program.ImageMap,
                 rdr,
-                new HashSet<uint> { 
-                    this.Address.Linear,
-                    arch.GetAddressOffset(Address), },
+                new Address[]  { 
+                    this.Address,
+                },
                 PointerScannerFlags.All);
-            resultSvc.ShowSearchResults(new AddressSearchResult(Services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
+            resultSvc.ShowSearchResults(new AddressSearchResult(Services, addrControl.Select(a => new AddressSearchHit(program, a))));
         }
 
         public override int GetHashCode()

@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private void Given_Code(Action<IntelAssembler> coder)
         {
-            var asm = new IntelAssembler(arch, new Address(0x00100000), new List<EntryPoint>());
+            var asm = new IntelAssembler(arch, Address.Ptr32(0x00100000), new List<EntryPoint>());
             coder(asm);
             var program = asm.GetImage();
             this.image = program.Image;

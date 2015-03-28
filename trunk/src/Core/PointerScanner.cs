@@ -33,38 +33,39 @@ namespace Decompiler.Core
     /// Each architecture should create its own class derived from this class and implement
     /// the abstract method.s
     /// </remarks>
-    public abstract class PointerScanner : IEnumerable<uint>
+
+    public abstract class PointerScanner<T> : IEnumerable<T>
     {
         private ImageReader rdr;
-        private HashSet<uint> knownLinAddresses;
+        private HashSet<T> knownLinAddresses;
         private PointerScannerFlags flags;
 
-        public PointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public PointerScanner(ImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
         {
             this.rdr = rdr;
             this.knownLinAddresses = knownLinAddresses;
             this.flags = flags;
         }
 
-        public IEnumerator<uint> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new Enumerator(this, this.rdr.Clone());
         }
 
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
-        private class Enumerator : IEnumerator<uint>
+        private class Enumerator : IEnumerator<T>
         {
-            private PointerScanner scanner;
+            private PointerScanner<T> scanner;
             private ImageReader r;
 
-            public Enumerator(PointerScanner scanner, ImageReader rdr)
+            public Enumerator(PointerScanner<T> scanner, ImageReader rdr)
             {
                 this.scanner = scanner;
                 this.r = rdr;
             }
 
-            public uint Current { get; set; }
+            public T Current { get; set; }
 
             object System.Collections.IEnumerator.Current { get { return Current; } }
 
@@ -73,7 +74,7 @@ namespace Decompiler.Core
                 while (r.IsValid)
                 {
                     var rdr = this.r;
-                    uint linAddrInstr;
+                    T linAddrInstr;
                     if (scanner.ProbeForPointer(rdr, out linAddrInstr))
                     {
                         Current = linAddrInstr;
@@ -91,10 +92,10 @@ namespace Decompiler.Core
             public void Dispose() { }
         }
 
-        public virtual bool ProbeForPointer(ImageReader rdr, out uint linAddrInstr)
+        public virtual bool ProbeForPointer(ImageReader rdr, out T linAddrInstr)
         {
-            linAddrInstr = rdr.Address.Linear;
-            uint target;
+            linAddrInstr = GetLinearAddress(rdr.Address);
+            T target;
             uint opcode;
             if (TryPeekOpcode(rdr, out opcode))
             {
@@ -127,6 +128,8 @@ namespace Decompiler.Core
             return false;
         }
 
+        public abstract T GetLinearAddress(Address address);
+
         public abstract int PointerAlignment { get; }
 
         /// <summary>
@@ -139,10 +142,10 @@ namespace Decompiler.Core
         /// <returns>The opcode at the current position of the reader.</returns>
         public abstract bool TryPeekOpcode(ImageReader rdr, out uint opcode);
 
-        public abstract bool PeekPointer(ImageReader rdr, out uint target);
+        public abstract bool PeekPointer(ImageReader rdr, out T target);
 
-        public abstract bool MatchCall(ImageReader rdr, uint opcode, out uint target);
+        public abstract bool MatchCall(ImageReader rdr, uint opcode, out T target);
 
-        public abstract bool MatchJump(ImageReader rdr, uint opcode, out uint target);
+        public abstract bool MatchJump(ImageReader rdr, uint opcode, out T target);
     }
 }

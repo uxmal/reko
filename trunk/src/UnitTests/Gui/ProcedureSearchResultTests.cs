@@ -52,8 +52,8 @@ namespace Decompiler.UnitTests.Gui
         {
             var psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
 
-            procs.Add(new ProcedureSearchHit(program,  new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program,  Address.Ptr32(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
 
             var view = mr.StrictMock<ISearchResultView>();
             view.Expect(s => view.AddColumn(
@@ -78,8 +78,8 @@ namespace Decompiler.UnitTests.Gui
         public void GetItemData()
         {
             ISearchResult psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
-            procs.Add(new ProcedureSearchHit(program, new Address(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, new Address(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
 
             Assert.AreEqual(-1, psr.GetItem(0).ImageIndex);
             string [] str = psr.GetItem(0).Items;
@@ -108,13 +108,13 @@ namespace Decompiler.UnitTests.Gui
             cvs.Stub(c => c.DisplayProcedure(null)).IgnoreArguments();
             mvs.Expect(s => s.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
-                Arg<Address>.Is.Equal(new Address(0x4234))));
+                Arg<Address>.Is.Equal(Address.Ptr32(0x4234))));
             decSvc.Stub(d => d.Decompiler).Return(dec);
             dec.Stub(d => d.Project).Return(new Project { Programs = { new Program() } });
             mr.ReplayAll();
 
             ISearchResult psr = new ProcedureSearchResult(sc, procs);
-            procs.Add(new ProcedureSearchHit(program, new Address(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32))));
             psr.NavigateTo(0);
             mr.VerifyAll();
         }

@@ -68,7 +68,7 @@ namespace Decompiler.Environments.C64
             return new C64BasicRewriter(this, rdr.Address, prog, host);
         }
 
-        public IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -175,10 +175,11 @@ namespace Decompiler.Environments.C64
             get { throw new NotImplementedException(); }
         }
 
-        public uint GetAddressOffset(Address address)
+        public bool TryParseAddress(string txtAddress, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddress, out addr);
         }
+
 
         public class C64BasicState : ProcessorState
         {

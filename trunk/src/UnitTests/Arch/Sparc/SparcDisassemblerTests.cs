@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
     {
         private static SparcInstruction DisassembleWord(byte[] a)
         {
-            LoadedImage img = new LoadedImage(new Address(0x00100000), a);
+            LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), a);
             return Disassemble(img);
         }
 
@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Arch.Sparc
         {
             var bytes = new byte[4];
             new BeImageWriter(bytes).WriteBeUInt32(0, instr);
-            var img = new LoadedImage(new Address(0x00100000), bytes);
+            var img = new LoadedImage(Address.Ptr32(0x00100000), bytes);
             return Disassemble(img);
         }
 

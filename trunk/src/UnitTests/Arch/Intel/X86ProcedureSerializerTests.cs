@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void SerializeProcedure()
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame());
-            Address addr = new Address(0x12345);
+            Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer("stdapi");
             Procedure_v1 sproc =  ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                     })
             };
             
-            Address addr = new Address(0x567A0C);
+            Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer("stdapi");
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);

@@ -48,29 +48,30 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void HSC_x86_FindCallOpcode()
         {
-            var image = new LoadedImage(new Address(0x001000), new byte[] {
+            var image = new LoadedImage(Address.Ptr32(0x001000), new byte[] {
                 0xE8, 0x03, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
                 0xC3
             });
             var prog = new Program
             {
                 Image = image,
+                ImageMap = image.CreateImageMap(),
                 Architecture = new IntelArchitecture(ProcessorMode.Protected32),
             };
             var hsc = new HeuristicScanner(prog);
 
             var addr = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x1008)
+                Address.Ptr32(0x1008)
             }).ToList();
 
             Assert.AreEqual(1, addr.Count);
-            Assert.AreEqual(0x001000, addr[0]);
+            Assert.AreEqual(0x001000, (uint)addr[0].ToLinear());
         }
 
         [Test]
         public void HSC_x86_FindCallsToProcedure()
         {
-            var image = new LoadedImage(new Address(0x001000), new byte[] {
+            var image = new LoadedImage(Address.Ptr32(0x001000), new byte[] {
                 0xE8, 0x0B, 0x00, 0x00,  0x00, 0xE8, 0x07, 0x00,
                 0x00, 0x00, 0xC3, 0x00,  0x00, 0x00, 0x00, 0x00,
                 0xC3, 0xC3                                      // 1010, 1011
@@ -78,17 +79,18 @@ namespace Decompiler.UnitTests.Scanning
             var prog = new Program
             {
                 Image = image,
+                ImageMap = image.CreateImageMap(),
                 Architecture = new IntelArchitecture(ProcessorMode.Protected32),
             };
             var hsc = new HeuristicScanner(prog);
 
             var linAddrs = hsc.FindCallOpcodes(new Address[]{
-                new Address(0x1010),
-                new Address(0x1011)}).ToList();
+                Address.Ptr32(0x1010),
+                Address.Ptr32(0x1011)}).ToList();
 
             Assert.AreEqual(2, linAddrs.Count);
-            Assert.IsTrue(linAddrs.Contains(0x1000));
-            Assert.IsTrue(linAddrs.Contains(0x1005));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1000)));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1005)));
         }
 
         [Test]
@@ -100,6 +102,7 @@ namespace Decompiler.UnitTests.Scanning
             var prog = new Program
             {
                 Image = image,
+                ImageMap = image.CreateImageMap(),
                 Architecture = new IntelArchitecture(ProcessorMode.Real),
             };
             var hsc = new HeuristicScanner(prog);
@@ -108,7 +111,7 @@ namespace Decompiler.UnitTests.Scanning
                 Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
-            Assert.AreEqual(0xC002, linAddrs[0]);
+            Assert.AreEqual("0C00:0002", linAddrs[0].ToString());
         }
 
         [Test]
@@ -120,6 +123,7 @@ namespace Decompiler.UnitTests.Scanning
             var prog = new Program
             {
                 Image = image,
+                ImageMap = image.CreateImageMap(),
                 Architecture = new IntelArchitecture(ProcessorMode.Real),
             };
             var hsc = new HeuristicScanner(prog);
@@ -128,13 +132,13 @@ namespace Decompiler.UnitTests.Scanning
                 Address.SegPtr(0x0C00, 0)}).ToList();
 
             Assert.AreEqual(1, linAddrs.Count);
-            Assert.AreEqual(0xC002, linAddrs[0]);
+            Assert.AreEqual("0C00:0002", linAddrs[0].ToString());
         }
 
         [Test]
         public void HSC_ARM32_Calls()
         {
-            var image = CreateImage(new Address(0x1000),
+            var image = CreateImage(Address.Ptr32(0x1000),
                 0xE1A0F00E,     // mov r15,r14 (return)
                 0xEBFFFFFD,
                 0xEBFFFFFC);
@@ -145,12 +149,12 @@ namespace Decompiler.UnitTests.Scanning
             };
             var hsc = new HeuristicScanner(prog);
             var linAddrs = hsc.FindCallOpcodes(new Address[] {
-                new Address(0x1000),
+                Address.Ptr32(0x1000),
             }).ToList();
 
             Assert.AreEqual(2, linAddrs.Count);
-            Assert.IsTrue(linAddrs.Contains(0x1004));
-            Assert.IsTrue(linAddrs.Contains(0x1008));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1004)));
+            Assert.IsTrue(linAddrs.Contains(Address.Ptr32(0x1008)));
         }
     }
 }

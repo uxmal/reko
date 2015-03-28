@@ -367,10 +367,10 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = wInstr & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
-                var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.rdr.Address.Linear - 4;
+                var baseAddr = (wInstr & 2) != 0 ? new Address(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 return new PowerPcInstruction(opcode)
                 {
-                    op1 = new AddressOperand(new Address(unchecked(baseAddr + uOffset))),
+                    op1 = new AddressOperand(baseAddr + uOffset),
                 };
             }
         }
@@ -387,8 +387,8 @@ namespace Decompiler.Arch.PowerPC
                 var crf = crBit >> 2;
                 Opcode opcode;
                 var condCode = ((wInstr >> 22) & 4) | (crBit & 0x3);
-                var baseAddr = (wInstr & 2) != 0 ? 0U : dasm.rdr.Address.Linear - 4;
-                var dst = new AddressOperand(new Address(unchecked(baseAddr + uOffset)));
+                var baseAddr = (wInstr & 2) != 0 ? new Address(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
+                var dst = new AddressOperand(baseAddr + uOffset);
                 if (((wInstr >> 22) & 0x0A) == 0x0A)
                 {
                     return new PowerPcInstruction(link ? Opcode.bl : Opcode.b)

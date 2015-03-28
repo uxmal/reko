@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Gui
             var sc = new ServiceContainer();
             sc.AddService<ILowLevelViewService>(memSvc);
             sc.AddService<IDecompilerService>(decSvc);
-            var nav = new AddressNavigator(program, new Address(0x1234), sc);
+            var nav = new AddressNavigator(program, Address.Ptr32(0x1234), sc);
             nav.NavigateTo();
 
             mr.VerifyAll();

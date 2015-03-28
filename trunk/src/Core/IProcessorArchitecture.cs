@@ -64,7 +64,18 @@ namespace Decompiler.Core
         /// </summary>
         IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
 
-        IEnumerable<uint> CreatePointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
+        /// <summary>
+        /// Given a set of addresses, returns a set of address where something
+        /// is referring to one of those addresses. The referent may be a
+        /// machine instruction calling or jumping to the address, or a 
+        /// reference to the address stored in memory.
+        /// reference
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <param name="knownAddresses"></param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
+        IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
         Frame CreateFrame();
 
@@ -130,11 +141,11 @@ namespace Decompiler.Core
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
 
         /// <summary>
-        /// Given an address, returns the offset part. For most architectures, this will just return the linear part,
-        /// but for the segmented addresses of x86 (thanks again, Intel), we only return the offset.
+        /// Parses an address according to the preferred base of the architecture.
         /// </summary>
-        /// <param name="address"></param>
+        /// <param name="txtAddr"></param>
+        /// <param name="addr"></param>
         /// <returns></returns>
-        uint GetAddressOffset(Address address);
+        bool TryParseAddress(string txtAddr, out Address addr);
     }
 }

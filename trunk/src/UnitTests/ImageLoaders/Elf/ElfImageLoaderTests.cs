@@ -368,7 +368,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             var el = new ElfImageLoader(services, "foo", rawImg);
-            var lr = el.Load(new Address(0));
+            var lr = el.Load(Address.Ptr32(0));
             Assert.AreSame(arch, lr.Architecture);
         }
 
@@ -378,7 +378,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             var el = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(new Address(0));
+            el.Load(Address.Ptr32(0));
             Assert.AreEqual(".symtab", el.GetSectionName(1));
         }
 
@@ -388,7 +388,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             var el = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(new Address(0));
+            el.Load(Address.Ptr32(0));
 
             Assert.AreEqual("", el.GetSectionName(el.SectionHeaders[0].sh_name));
             Assert.AreEqual(".interp", el.GetSectionName(el.SectionHeaders[1].sh_name));
@@ -426,7 +426,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             var el = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(new Address(0));
+            el.Load(Address.Ptr32(0));
             el.Dump(Console.Out);
         }
     }

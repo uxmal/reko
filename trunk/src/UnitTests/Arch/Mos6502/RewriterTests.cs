@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
     {
         private Mos6502ProcessorArchitecture arch = new Mos6502ProcessorArchitecture();
         private LoadedImage image;
-        private Address addrBase = new Address(0x0200);
+        private Address addrBase = Address.Ptr16(0x0200);
 
         public override IProcessorArchitecture Architecture
         {

@@ -33,7 +33,7 @@ namespace Decompiler.Arch.M68k
         }
 
         public M68kAddressOperand(uint addr)
-            : this(new Address(addr))
+            : this(Address.Ptr32(addr))
         { 
         }
 

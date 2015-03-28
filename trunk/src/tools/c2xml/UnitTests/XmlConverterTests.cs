@@ -129,13 +129,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature convention=""__cdecl"">
       <return>
         <type>size_t</type>
-        <reg>eax</reg>
       </return>
       <arg>
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -208,13 +206,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""pfoo"">
         <ptr>
           <type>FOO</type>
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -423,17 +419,14 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature convention=""__stdcall"">
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""bar"">
         <prim domain=""SignedInt"" size=""4"" />
-        <stack />
       </arg>
       <arg name=""foo"">
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -526,11 +519,9 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""bar"">
         <type>HANDLE</type>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -555,17 +546,14 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <type>SHORT</type>
-        <reg>eax</reg>
       </return>
       <arg name=""inp"">
         <type>SHORT</type>
-        <stack />
       </arg>
       <arg name=""outp"">
         <ptr>
           <type>SHORT</type>
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -612,11 +600,9 @@ namespace Decompiler.Tools.C2Xml.UnitTests
         <fn>
           <return>
             <prim domain=""SignedInt"" size=""4"" />
-            <reg>eax</reg>
           </return>
           <arg name=""RunOnce"">
             <prim domain=""SignedInt"" size=""4"" />
-            <stack />
           </arg>
         </fn>
       </ptr>
@@ -629,7 +615,6 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       </return>
       <arg name=""q"">
         <type>PRTL_RUN_ONCE_INIT_FN</type>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -648,13 +633,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""arr"">
         <ptr>
           <prim domain=""Character"" size=""1"" />
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -692,7 +675,6 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""matrix"">
         <ptr>
@@ -700,7 +682,6 @@ namespace Decompiler.Tools.C2Xml.UnitTests
             <prim domain=""Character"" size=""1"" />
           </arr>
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>
@@ -728,13 +709,11 @@ namespace Decompiler.Tools.C2Xml.UnitTests
     <signature>
       <return>
         <prim domain=""SignedInt"" size=""4"" />
-        <reg>eax</reg>
       </return>
       <arg name=""pfoo"">
         <ptr>
           <struct name=""foo"" />
         </ptr>
-        <stack />
       </arg>
     </signature>
   </procedure>

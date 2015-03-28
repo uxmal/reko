@@ -26,11 +26,16 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcPointerScanner : PointerScanner
+    public class PowerPcPointerScanner : PointerScanner<uint>
     {
         public PowerPcPointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
+        }
+
+        public override uint GetLinearAddress(Address address)
+        {
+            return (uint)address.ToLinear();
         }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
@@ -50,7 +55,7 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = opcode & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
-                target = unchecked(rdr.Address.Linear + uOffset);
+                target = unchecked((uint)rdr.Address.ToLinear() + uOffset);
                 return true;
             }
             target = 0;
@@ -64,7 +69,7 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = opcode & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
-                target = unchecked(rdr.Address.Linear + uOffset);
+                target = unchecked((uint)rdr.Address.ToLinear() + uOffset);
                 return true;
             }
             target = 0;

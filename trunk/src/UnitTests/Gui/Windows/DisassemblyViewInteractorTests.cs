@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void DviGotoAddress()
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
-            dlg.Stub(x => dlg.Address).Return(new Address(0x41104110));
+            dlg.Stub(x => dlg.Address).Return(Address.Ptr32(0x41104110));
             dlgFactory.Stub(x => x.CreateAddressPromptDialog()).Return(dlg);
             uiSvc.Expect(x => uiSvc.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))

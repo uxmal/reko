@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
         private LoadedImage Given_Image(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
-            program.Image = new LoadedImage(new Address(0x1000000), bytes);
+            program.Image = new LoadedImage(Address.Ptr32(0x1000000), bytes);
             program.ImageMap = new ImageMap(program.Image.BaseAddress, program.Image.Length);
             return program.Image;
         }

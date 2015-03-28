@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
 
-            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, proc.ExitBlock), "Expected return to add an edge to the Exit block");
@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Scanning
             trace.Add(m =>
             {
                 m.Assign(r0, m.Word32(3));
-                m.Goto(new Address(0x4000));
+                m.Goto(Address.Ptr32(0x4000));
             });
 
             Block next = block.Procedure.AddBlock("next");
@@ -147,7 +147,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
 
-            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.AreEqual("r0 = 0x00000003", block.Statements[0].ToString());
@@ -161,7 +161,7 @@ namespace Decompiler.UnitTests.Scanning
         public void Bwi_HandleBranch()
         {
             trace.Add(m =>
-                m.Branch(r1, new Address(0x4000), RtlClass.ConditionalTransfer)); 
+                m.Branch(r1, Address.Ptr32(0x4000), RtlClass.ConditionalTransfer)); 
             trace.Add(m => 
                 m.Assign(r1, r2));
             var blockElse = new Block(proc, "else");
@@ -190,7 +190,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
-            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
             Assert.AreEqual(1, block.Statements.Count, "Expected a branch statement in the block");
             Assert.AreNotSame(s1, s2);
@@ -203,7 +203,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Bwi_CallInstructionShouldAddNodeToCallgraph()
         {
-            trace.Add(m => { m.Call(new Address(0x1200), 4); });
+            trace.Add(m => { m.Call(Address.Ptr32(0x1200), 4); });
             trace.Add(m => { m.Assign(m.Word32(0x4000), m.Word32(0)); });
             trace.Add(m => { m.Return(4, 0); });
 
@@ -230,7 +230,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Is.NotNull));
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
-            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
             var callees = new List<Procedure>(prog.CallGraph.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
@@ -260,10 +260,10 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
                     
             }
-            trace.Add(m => m.Call(new Address(0x2000), 4));
+            trace.Add(m => m.Call(Address.Ptr32(0x2000), 4));
             var state = new FakeProcessorState(prog.Architecture);
             state.SetRegister(Registers.eax, Constant.Word32(0x0400));
-            var wi = CreateWorkItem(new Address(0x1000), state);
+            var wi = CreateWorkItem(Address.Ptr32(0x1000), state);
             wi.ProcessInternal();
             mr.VerifyAll();
             Assert.AreEqual(1, block.Statements.Count);
@@ -282,19 +282,19 @@ namespace Decompiler.UnitTests.Scanning
                 IsAlloca = true
             });
 
-            trace.Add(m => m.Call(new Address(0x2000), 4));
+            trace.Add(m => m.Call(Address.Ptr32(0x2000), 4));
 
             using (mr.Record())
             {
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<Address>.Is.Equal(new Address(0x2000u)),
+                    Arg<Address>.Is.Equal(Address.Ptr32(0x2000u)),
                     Arg<Address>.Is.NotNull)).Return(alloca);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
                     
             }
-            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
             mr.VerifyAll();
             Assert.AreEqual(1, block.Statements.Count);
@@ -304,8 +304,8 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Bwi_CallTerminatingProcedure_StopScanning()
         {
-            proc = Procedure.Create("proc", new Address(0x002000), new Frame(PrimitiveType.Pointer32));
-            var terminator = Procedure.Create("terminator", new Address(0x0001000), new Frame(PrimitiveType.Pointer32));
+            proc = Procedure.Create("proc", Address.Ptr32(0x002000), new Frame(PrimitiveType.Pointer32));
+            var terminator = Procedure.Create("terminator", Address.Ptr32(0x0001000), new Frame(PrimitiveType.Pointer32));
             terminator.Characteristics = new ProcedureCharacteristics {
                 Terminates = true,
              };
@@ -324,10 +324,10 @@ namespace Decompiler.UnitTests.Scanning
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
-            trace.Add(m => m.Call(new Address(0x0001000), 4));
+            trace.Add(m => m.Call(Address.Ptr32(0x0001000), 4));
             trace.Add(m => m.SideEffect(new ProcedureConstant(VoidType.Instance, new PseudoProcedure("shouldnt_decompile_this", VoidType.Instance, 0)))); 
 
-            var wi = CreateWorkItem(new Address(0x2000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x2000), new FakeProcessorState(arch));
             wi.ProcessInternal();
 
             Assert.AreEqual(1, block.Statements.Count, "Should only have rewritten the Call to 'terminator'");
@@ -361,7 +361,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
             trace.Add(m => m.If(new TestCondition(ConditionCode.GE, grf), new RtlAssignment(r2, r1)));
-            var wi = CreateWorkItem(new Address(0x00100000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x00100000), new FakeProcessorState(arch));
             wi.ProcessInternal();
 
             var sw = new StringWriter();
@@ -396,8 +396,8 @@ testProc_exit:
             var block2 = new Block(proc, "l00100008");
             var block3 = new Block(proc, "l00100004");
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
-            scanner.Expect(s => s.FindContainingBlock(new Address(0x00001000))).IgnoreArguments().Return(block).Repeat.Times(2);
-            scanner.Expect(s => s.FindContainingBlock(new Address(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
+            scanner.Expect(s => s.FindContainingBlock(Address.Ptr32(0x00001000))).IgnoreArguments().Return(block).Repeat.Times(2);
+            scanner.Expect(s => s.FindContainingBlock(Address.Ptr32(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
             scanner.Expect(s => s.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
             scanner.Expect(s => s.EnqueueJumpTarget(
                 Arg<Address>.Is.NotNull,
@@ -406,15 +406,15 @@ testProc_exit:
                 Arg<ProcessorState>.Is.NotNull))
                 .Return(block3);
             scanner.Expect(s => s.ScanProcedure(
-                Arg<Address>.Is.Equal(new Address(0x2000)),
+                Arg<Address>.Is.Equal(Address.Ptr32(0x2000)),
                 Arg<string>.Is.Null,
                 Arg<ProcessorState>.Is.NotNull)).Return(proc2);
             scanner.Expect(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
-            trace.Add(m => m.Call(new Address(0x2000), 0));
+            trace.Add(m => m.Call(Address.Ptr32(0x2000), 0));
             trace.Add(m => m.Return(0, 0));
-            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.ProcessInternal();
 
             mr.VerifyAll();
@@ -446,14 +446,14 @@ testProc_exit:
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
             prog.Platform = platform;
-            scanner.Stub(f => f.FindContainingBlock(new Address(0x100000))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(new Address(0x100004))).Return(block);
-            scanner.Stub(f => f.GetCallSignatureAtAddress(new Address(0x100000))).Return(null);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
+            scanner.Stub(f => f.GetCallSignatureAtAddress(Address.Ptr32(0x100000))).Return(null);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
             trace.Add(m => m.Call(m.LoadDw(m.IAdd(reg0, -32)), 4));
-            var wi = CreateWorkItem(new Address(0x100000), arch.CreateProcessorState());
+            var wi = CreateWorkItem(Address.Ptr32(0x100000), arch.CreateProcessorState());
             wi.ProcessInternal();
 
             Assert.AreEqual("SysSvc(r1)", block.Statements[0].ToString());

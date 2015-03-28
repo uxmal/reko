@@ -377,13 +377,13 @@ namespace Decompiler.Arch.Arm
                 case '&':   // Offset for b and bl instructions.
                     offset = ((int)instr << 8) >> 6;
                     dstAddr = (uint)(addr + 8 + offset);
-                    ops[iOp] = new AddressOperand(new Address(dstAddr));
+                    ops[iOp] = new AddressOperand(Address.Ptr32(dstAddr));
                     break;
                 case 'x':   // Offset for blx instructions
                     offset = ((int) instr << 8) >> 6;
                     offset |= (int)((instr >> 23) & 2);
                     dstAddr = (uint) (addr + 8 + offset);
-                    ops[iOp] = new AddressOperand(new Address(dstAddr));
+                    ops[iOp] = new AddressOperand(Address.Ptr32(dstAddr));
                     break;
                 case '/':   // Format for ldr, str
                     ops[iOp] = DecodeIndirectOperand(width, instr);
@@ -1424,7 +1424,7 @@ namespace Decompiler.Arch.Arm
                             if ((instr & Wbit) == 0)
                             {
                                 // no writeback, either. Use friendly form. 
-                                operands.Add(new AddressOperand(new Address(result.target)));
+                                operands.Add(new AddressOperand(Address.Ptr32(result.target)));
                                 break;
                             }
                         }
@@ -1527,7 +1527,7 @@ namespace Decompiler.Arch.Arm
         private void RenderAddress(List<MachineOperand> operands, StringBuilder op)
         {
             uint target = (addr + 8 + ((instr << 8) >> 6)) & 0x03FFFFFCu;
-            operands.Add(new AddressOperand(new Address(target)));
+            operands.Add(new AddressOperand(Address.Ptr32(target)));
             result.addrstart = op.Length;
             hex8(op, target);
             result.target_type = eTargetType.target_Code;

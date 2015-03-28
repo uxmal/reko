@@ -144,7 +144,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void CfNullPointer()
         {
-            var e = new Address(0);
+            var e = Address.Ptr32(0);
             e.Accept(cf);
             Assert.AreEqual("null", sw.ToString());
         }

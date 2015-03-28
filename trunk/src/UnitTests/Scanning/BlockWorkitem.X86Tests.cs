@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest32(Action<IntelAssembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
-            BuildTest(arch, new Address(0x10000), new FakePlatform(null, arch), m);
+            BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(null, arch), m);
         }
 
         private void BuildTest16(Action<IntelAssembler> m)
@@ -302,7 +302,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Dw(0x0C00);
                 m.Repeat(30, mm => mm.Dw(0xC3));
 
-                //prog.image = new LoadedImage(new Address(0x0C00, 0), new byte[100]);
+                //prog.image = new LoadedImage(Address.Ptr32(0x0C00, 0), new byte[100]);
                 //var imageMap = image.CreateImageMap();
                 scanner.Expect(x => x.EnqueueVectorTable(
                     Arg<Address>.Is.Anything,

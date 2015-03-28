@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Mocks
         public void Add(Procedure proc)
         {
             ++procCount;
-            Program.Procedures[new Address(procCount * 0x1000u)] = proc;
+            Program.Procedures[Address.Ptr32(procCount * 0x1000u)] = proc;
             Program.CallGraph.AddProcedure(proc);
             nameToProcedure[proc.Name] = proc;
         }
@@ -106,8 +106,8 @@ namespace Decompiler.UnitTests.Mocks
             Program.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
-            Program.ImageMap = new ImageMap(new Address(0x1000), Program.Procedures.Count * 0x1000);
-            var seg = Program.ImageMap.AddSegment(new Address(0x1000), ".text", AccessMode.Execute);
+            Program.ImageMap = new ImageMap(Address.Ptr32(0x1000), Program.Procedures.Count * 0x1000);
+            var seg = Program.ImageMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute);
             seg.Size = (uint)(Program.Procedures.Count * 0x1000);
 			return Program;
 		}

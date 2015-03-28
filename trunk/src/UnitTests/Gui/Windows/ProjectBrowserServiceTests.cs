@@ -328,9 +328,9 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private void Given_ProgramWithOneSegment()
         {
-            var image = new LoadedImage(new Address(0x12340000), new byte[0x1000]);
+            var image = new LoadedImage(Address.Ptr32(0x12340000), new byte[0x1000]);
             var imageMap = image.CreateImageMap();
-            imageMap.AddSegment(new Address(0x12340000), ".text", AccessMode.Execute);
+            imageMap.AddSegment(Address.Ptr32(0x12340000), ".text", AccessMode.Execute);
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = new DefaultPlatform(sc, arch);
             this.program = new Program(image, imageMap, arch, platform);
@@ -378,7 +378,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             project.Programs.Add(new Program
             {
                 Filename = "bar.exe",
-                Image = new LoadedImage(new Address(0x1231300), new byte[128])
+                Image = new LoadedImage(Address.Ptr32(0x1231300), new byte[128])
             });
 
             Expect("<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -400,7 +400,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private void Given_UserProcedure(uint addr, string name)
         {
             program.UserProcedures.Add(
-                new Address(addr), new Decompiler.Core.Serialization.Procedure_v1
+                Address.Ptr32(addr), new Decompiler.Core.Serialization.Procedure_v1
                 {
                     Address = addr.ToString(),
                     Name = name

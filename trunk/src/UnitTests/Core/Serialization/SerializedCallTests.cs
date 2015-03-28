@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-			SerializedCall_v1 sc = new SerializedCall_v1(new Address(0x01004000), sig);
+			SerializedCall_v1 sc = new SerializedCall_v1(Address.Ptr32(0x01004000), sig);
 			Assert.AreEqual("01004000", sc.InstructionAddress);
 			Assert.AreEqual("bx", ((Register_v1) sc.Signature.Arguments[0].Kind).Name);
 		}

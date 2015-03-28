@@ -42,13 +42,13 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void Setup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
-            var image = new LoadedImage(new Address(0x10000), new byte[4]);
+            var image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
 			var prog = new Program(
                 image,
                 image.CreateImageMap(),
                 arch,
                 null);
-			var procAddress = new Address(0x10000000);
+			var procAddress = Address.Ptr32(0x10000000);
             proc = Procedure.Create(procAddress, arch.CreateFrame());
 			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
             state = (X86State)arch.CreateProcessorState();

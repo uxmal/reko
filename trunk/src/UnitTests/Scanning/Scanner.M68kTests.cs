@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest32(Action<M68kAssembler> asmProg)
         {
             arch = new M68kArchitecture();
-            BuildTest(new Address(0x00100000), new DefaultPlatform(null, arch), asmProg);
+            BuildTest(Address.Ptr32(0x00100000), new DefaultPlatform(null, arch), asmProg);
         }
 
         private void BuildTest32(Address addrBase, params byte[] bytes)
@@ -155,7 +155,7 @@ fn00100000_exit:
         public void ScanM68k_Zerofill()
         {
             BuildTest32(
-                new Address(0x01020),
+                Address.Ptr32(0x01020),
                 0x41, 0xF9 , 0x00 , 0x00 , 0x3E , 0x94
                 , 0x20 , 0x3C , 0x00 , 0x00 , 0x00 , 0x30
                 , 0x56 , 0x80 

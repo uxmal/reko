@@ -47,15 +47,12 @@ namespace Decompiler.Scanning
         /// that are known to be procedures.</param>
         /// <returns>A sequence of linear addresses where those call 
         /// instructions are.</returns>
-        public IEnumerable<uint> FindCallOpcodes(IEnumerable<Address> knownProcedureAddresses)
+        public IEnumerable<Address> FindCallOpcodes(IEnumerable<Address> knownProcedureAddresses)
         {
-            var procEntryLinearAddresses = 
-                knownProcedureAddresses
-                .Select(addr => addr.Linear)
-                .ToHashSet();
             return prog.Architecture.CreatePointerScanner(
+                prog.ImageMap,
                 prog.Architecture.CreateImageReader(prog.Image, 0),
-                procEntryLinearAddresses,
+                knownProcedureAddresses,
                 PointerScannerFlags.Calls);
         }
     }

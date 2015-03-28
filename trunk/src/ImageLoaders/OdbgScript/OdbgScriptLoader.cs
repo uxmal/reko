@@ -50,7 +50,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public override Address PreferredBaseAddress
         {
-            get { return new Address(0x00400000); }
+            get { return Address.Ptr32(0x00400000); }
         }
 
         public LoadedImage Image { get; private set; }
@@ -91,7 +91,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             foreach (var ic in win32.InterceptedCalls)
             {
-                program.InterceptedCalls.Add(new Address(ic.Key), ic.Value);
+                program.InterceptedCalls.Add(Address.Ptr32(ic.Key), ic.Value);
             }
             return program;
         }
@@ -111,7 +111,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return pe;
         }
 
-        public virtual void LoadScript(string scriptFilename, OllyLang.OllyScript script)
+        public virtual void LoadScript(string scriptFilename, OllyScript script)
         {
             script.load_file(scriptFilename, null);
         }

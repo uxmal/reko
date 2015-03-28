@@ -313,13 +313,13 @@ namespace Decompiler.Arch.X86
             TWord l = Read(op);
             if (envEmulator.InterceptCall(this, l))
                 return;
-             InstructionPointer = new Address(l);
+             InstructionPointer = Address.Ptr32(l);
         }
 
         private void Jump(MachineOperand op)
         {
             TWord l = Read(op);
-            InstructionPointer = new Address(l);
+            InstructionPointer = Address.Ptr32(l);
         }
 
         private void Cmp(MachineOperand dst, MachineOperand src)
@@ -442,8 +442,8 @@ namespace Decompiler.Arch.X86
                 byte b;
                 switch (op.Width.Size)
                 {
-                case 1: if (!img.TryReadByte(new Address(ea), out b)) throw new IndexOutOfRangeException(); else  return b;
-                case 4: return img.ReadLeUInt32(new Address(ea));
+                case 1: if (!img.TryReadByte(Address.Ptr32(ea), out b)) throw new IndexOutOfRangeException(); else  return b;
+                case 4: return img.ReadLeUInt32(Address.Ptr32(ea));
                 }
                 throw new NotImplementedException();
             }
@@ -483,8 +483,8 @@ namespace Decompiler.Arch.X86
                 var ea = GetEffectiveAddress(m);
                 switch (op.Width.Size)
                 {
-                case 1: img.WriteByte(new Address(ea), (byte)w); return;
-                case 4: img.WriteLeUInt32(new Address(ea), (UInt32)w); return;
+                case 1: img.WriteByte(Address.Ptr32(ea), (byte)w); return;
+                case 4: img.WriteLeUInt32(Address.Ptr32(ea), (UInt32)w); return;
                 }
                 throw new NotImplementedException();
             }

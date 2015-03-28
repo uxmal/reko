@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlTrace(uint addr)
         {
-            this.addr = new Address(addr);
+            this.addr = Address.Ptr32(addr);
             this.StartAddress = this.addr;
             this.clusters = new List<RtlInstructionCluster>();
         }

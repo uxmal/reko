@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Arch.Arm
     public class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
         private IProcessorArchitecture arch = new AArch64();
-        private Address baseAddress = new Address(0x00100000);
+        private Address baseAddress = Address.Ptr64(0x00100000);
 
         public override IProcessorArchitecture Architecture
         {

@@ -116,6 +116,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "makesigs", "tools\makesigs\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdbgScript", "ImageLoaders\OdbgScript\OdbgScript.csproj", "{2882376F-663A-4FC8-842C-B0300A6829E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeLib", "ImageLoaders\TypeLib\TypeLib.csproj", "{A4DEF935-217C-4107-998C-C7845893CFA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -689,6 +691,20 @@ Global
 		{2882376F-663A-4FC8-842C-B0300A6829E8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2882376F-663A-4FC8-842C-B0300A6829E8}.Release|Win32.ActiveCfg = Release|Any CPU
 		{2882376F-663A-4FC8-842C-B0300A6829E8}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|.NET.ActiveCfg = Release|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -730,6 +746,7 @@ Global
 		{1976B356-7C5E-411A-A409-D3EB349E44FA} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{8D0F740F-A1DD-4BCF-9471-DD40BB74B25A} = {AD6CD1E3-2C31-4E78-9432-4BAC77BC63D5}
 		{2882376F-663A-4FC8-842C-B0300A6829E8} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
+		{A4DEF935-217C-4107-998C-C7845893CFA0} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = WindowsDecompiler\WindowsDecompiler-2010.csproj
