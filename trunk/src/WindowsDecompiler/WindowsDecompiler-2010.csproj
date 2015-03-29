@@ -146,6 +146,7 @@
     <DecompilerMetadata Include="$(SolutionDir)ImageLoaders\Elf\libc.so-ppc32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">

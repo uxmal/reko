@@ -90,7 +90,6 @@ namespace Decompiler.Core.Machine
 		{
 			return c.ToUInt64().ToString(FormatString(c.DataType));
 		}
-
 	}
 
     /// <summary>

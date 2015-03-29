@@ -37,12 +37,29 @@ namespace Decompiler.Arch.M68k
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Write(code.ToString());
+            if (code == Opcode.illegal && op1 != null && writer.Platform != null)
+            {
+                var imm = op1 as M68kImmediateOperand;
+                // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
+                // We may have to generalize the Platform API to allow specifying 
+                // the opcode of the invoking instruction, to disambiguate from 
+                // "legitimate" TRAP calls.
+                var svc = writer.Platform.FindService((int)imm.Constant.ToUInt32(), null);
+                if (svc != null)
+                {
+                    writer.Write(svc.Name);
+                    return;
+                }
+            }
             if (dataWidth != null)
             {
-                writer.Write(DataSizeSuffix(dataWidth));
+                writer.WriteOpcode(string.Format("{0}{1}", code, DataSizeSuffix(dataWidth)));
             }
-            writer.Write('\t');
+            else
+            {
+                writer.WriteOpcode(code.ToString());
+            }
+            writer.Tab();
             if (op1 != null)
             {
                 op1.Write(false, writer);

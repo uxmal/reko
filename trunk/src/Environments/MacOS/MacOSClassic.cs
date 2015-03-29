@@ -19,8 +19,12 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
+using Decompiler.Core.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Environments.MacOS
@@ -28,16 +32,22 @@ namespace Decompiler.Environments.MacOS
     public class MacOSClassic : Platform
     {
         private MacOsRomanEncoding encoding;
+        private TypeLibrary[] TypeLibs;
 
         public MacOSClassic(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
             encoding = new MacOsRomanEncoding();
+            LoadMacOsServices();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            if (TypeLibs.Length == 0)
+                return null;
+            SystemService svc;
+            this.TypeLibs[0].ServicesByVector.TryGetValue(vector, out svc);
+            return svc;
         }
 
         public override string DefaultCallingConvention
@@ -53,6 +63,21 @@ namespace Decompiler.Environments.MacOS
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            return base.LookupProcedureByOrdinal(moduleName, ordinal);
+        }
+
+        public void LoadMacOsServices()
+        {
+            var envCfg = Services.RequireService<IDecompilerConfigurationService>().GetEnvironment("macOs");
+            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+            this.TypeLibs = ((IEnumerable)envCfg.TypeLibraries)
+                .OfType<ITypeLibraryElement>()
+                .Select(tl => tlSvc.LoadLibrary(Architecture, tl.Name))
+                .Where(tl => tl != null).ToArray();
         }
     }
 }

@@ -95,6 +95,11 @@ namespace Decompiler.Core
                     {
                         LoadProcedure(sp);
                     }
+                    SerializedService svc = o as SerializedService;
+                    if (svc != null)
+                    {
+                        LoadService(svc);
+                    }
                 }
             }
         }
@@ -120,6 +125,12 @@ namespace Decompiler.Core
                     string.Format("An error occurred when loading the signature of procedure {0}.", sp.Name),
                     ex);
             }
+        }
+
+        public void LoadService(SerializedService ssvc)
+        {
+            var svc = ssvc.Build(arch);
+            servicesByOrdinal[svc.SyscallInfo.Vector] = svc;
         }
 
         private void LoadTypes(SerializedLibrary serializedLibrary)

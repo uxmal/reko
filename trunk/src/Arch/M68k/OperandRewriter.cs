@@ -135,7 +135,7 @@ namespace Decompiler.Arch.M68k
             {
                 Expression r = frame.EnsureRegister(reg.Register);
                 Expression tmp = r;
-                if (reg.Width.BitSize > dataWidth.BitSize)
+                if (dataWidth != null && reg.Width.BitSize > dataWidth.BitSize)
                 {
                     Expression rSub = m.Cast(dataWidth, r);
                     var srcExp = opGen(src, rSub);
