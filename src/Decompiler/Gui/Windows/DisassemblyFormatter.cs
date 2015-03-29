@@ -40,7 +40,10 @@ namespace Decompiler.Gui.Windows
         {
             this.program = program;
             this.line = line;
+            this.Platform = program.Platform;
         }
+
+        public Platform Platform { get; private set; }
 
         public void WriteOpcode(string opcode)
         {

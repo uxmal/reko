@@ -100,6 +100,7 @@
         <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" />
         <File Source="$(var.C64.TargetPath)" />
         <File Source="$(var.MacOS-2010.TargetPath)" />
+        <File Source="$(var.MacOS-2010.ProjectDir)macos_classic.xml" />
         <File Source="$(var.Msdos-2010.TargetPath)" />
         <File Source="$(var.Msdos-2010.ProjectDir)realmodeintservices.xml" />
         <File Source="$(var.RiscOS.TargetPath)" />

@@ -842,12 +842,14 @@ namespace Decompiler.Arch.M68k
 
         private static M68kInstruction d68000_1010(M68kDisassembler dasm)
         {
-            throw new NotSupportedException(string.Format("dc.w    $%04x; opcode 1010", dasm.instruction));
+            Debug.Print("dc.w    ${0:X4}; opcode 1010", dasm.instruction);
+            return new M68kInstruction { code = Opcode.illegal, op1 = new M68kImmediateOperand(Constant.Word16( dasm.instruction)) };
         }
 
         private static M68kInstruction d68000_1111(M68kDisassembler dasm)
         {
-            throw new NotSupportedException(string.Format("dc.w    $%04x; opcode 1111", dasm.instruction));
+            Debug.Print("dc.w    ${0:X4}; opcode 1111", dasm.instruction);
+            return new M68kInstruction { code = Opcode.illegal };
         }
 
         private static M68kInstruction d68000_bcc_8(M68kDisassembler dasm)

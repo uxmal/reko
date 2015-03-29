@@ -50,5 +50,13 @@ namespace Decompiler.Core.Machine
             this.Render(renderer);
             return renderer.ToString();
         }
+
+        public string ToString(Platform platform)
+        {
+            var renderer = new StringRenderer(platform);
+            this.Render(renderer);
+            return renderer.ToString();
+
+        }
     }
 }
