@@ -18,6 +18,9 @@
  */
 #endregion
 
+
+// http://hitmen.c02.at/files/yapspd/psp_doc/chap26.html - PSP ELF
+
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
@@ -34,11 +37,11 @@ namespace Decompiler.ImageLoaders.Elf
     using StrIntMap = Dictionary<string, int>;
     using RelocMap = Dictionary<UInt32, string>;
     using Decompiler.Core.Configuration;
-using System.Collections;
+    using System.Collections;
     using Decompiler.Core.Services;
 
     /// <summary>
-    /// Loader for (32-bit) ELF images.
+    /// Loader for ELF images.
     /// </summary>
     public class ElfImageLoader : ImageLoader
     {

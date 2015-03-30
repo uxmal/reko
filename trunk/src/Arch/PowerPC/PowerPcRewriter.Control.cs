@@ -66,17 +66,32 @@ namespace Decompiler.Arch.PowerPC
             emitter.Return(0, 0);
         }
 
-        private void RewriteBranch(bool linkRegister, ConditionCode cc)
+        private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
             var cr = RewriteOperand(instr.op1);
-            var dst = RewriteOperand(instr.op2);
-            if (linkRegister)
+            if (toLinkRegister)
             {
-                emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                var dst = frame.EnsureRegister(arch.lr);
+                if (updateLinkregister)
+                {
+                    emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                }
+                else
+                {
+                    emitter.If(emitter.Test(cc, cr), new RtlReturn(0, 0, RtlClass.Transfer));
+                }
             }
             else
             {
-                emitter.Branch(emitter.Test(cc, cr), (Address)dst, RtlClass.ConditionalTransfer);
+                var dst = RewriteOperand(instr.op2);
+                if (updateLinkregister)
+                {
+                    emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                }
+                else
+                {
+                    emitter.Branch(emitter.Test(cc, cr), (Address)dst, RtlClass.ConditionalTransfer);
+                }
             }
         }
 
@@ -119,6 +134,9 @@ namespace Decompiler.Arch.PowerPC
             }
         }
 
-
+        private void RewriteSc()
+        {
+            emitter.SideEffect(PseudoProc("__syscall", arch.WordWidth));
+        }
     }
 }

@@ -191,10 +191,10 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 "0|00100000(4): 1 instructions",
                 "1|L--|r0 = r31 >> 3 & 0x00001C");
             //Error,10028B50,rlwinm	r8,r8,04,18,1B not handled yet.
-//Error,1002641C,rlwinm	r4,r4,04,18,1B not handled yet.
-//Error,10026364,rlwinm	r4,r4,04,18,1B not handled yet.
-//Error,1003078C,rlwinm	r8,r8,04,1A,1B not handled yet.
-//Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
+            //Error,1002641C,rlwinm	r4,r4,04,18,1B not handled yet.
+            //Error,10026364,rlwinm	r4,r4,04,18,1B not handled yet.
+            //Error,1003078C,rlwinm	r8,r8,04,1A,1B not handled yet.
+            //Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
             AssertCode(0x5720421E, //  rlwinm	r0,r25,08,08,0F not handled yet.
                 "0|00100000(4): 1 instructions",
                 "1|L--|r0 = r25 << 0x08 & 0x00FF00000");
@@ -790,6 +790,163 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 "0|00100000(4): 2 instructions",
                 "1|L--|Mem0[r1 + 40:word64] = (word64) r2",
                 "2|L--|r1 = r1 + 40");
+        }
+
+        [Test]
+        public void PPCrw_rldicl()
+        {
+            AssertCode(0x790407c0,    // clrldi  r4,r8,31
+                "0|00100000(4): 1 instructions",
+                "1|L--|r4 = r8 & 0x00000001FFFFFFFF");
+            AssertCode(0x79040020,    // clrldi  r4,r8,63
+                "0|00100000(4): 1 instructions",
+                "1|L--|r4 = r8 & 0x00000000FFFFFFFF");
+        }
+
+        [Test]
+        public void PPCrw_fcfid()
+        {
+            AssertCode(0xff00069c,  // fcfid   f24,f0
+                "0|00100000(4): 1 instructions",
+                "1|L--|f24 = (real64) f0");
+        }
+
+        [Test]
+        public void PPCrw_stfs()
+        {
+            AssertCode(0xd0010208, //stfs    f0,520(r1)
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r1 + 520:real32] = f0");
+        }
+
+        [Test]
+        public void PPCrw_frsp()
+        {
+            AssertCode(0xfd600018, //"frsp\tf11,f0");
+                                "0|00100000(4): 1 instructions",
+                 "1|L--|f11 = (real32) f0");
+        }
+
+        [Test]
+        public void PPCrw_fmadds()
+        {
+            AssertCode(0xec1f07ba, //"fmadds\tf0,f31,f30,f0");
+                "0|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 + f31 * f30");
+        }
+
+        [Test]
+        public void PPCrw_fdivs()
+        {
+            AssertCode(0xec216824, //"fdivs\tf1,f1,f13");
+                "0|00100000(4): 1 instructions",
+                "1|L--|f1 = f1 / f13");
+        }
+
+        [Test]
+        public void PPCrw_lvx()
+        {
+            AssertCode(0x7c4048ce, //"lvx\tv2,r0,r9");
+                "0|00100000(4): 1 instructions",
+                "1|L--|v2 = Mem0[r9:word128]");
+        }
+
+        [Test]
+        public void PPCrw_beqlr()
+        {
+            AssertCode(0x4d9e0020, // beqlr\tcr7");
+                "0|00100000(4): 1 instructions",
+                "1|T--|if (Test(EQ,cr7)) return (0,0)");
+        }
+
+        [Test]
+        public void PPCrw_vspltw()
+        {
+            AssertCode(0x10601a8c, // vspltw\tv3,v3,00");
+                "0|00100000(4): 1 instructions",
+                "1|L--|v3 = __vspltw(v3, 0x00000000)");
+        }
+
+        [Test]
+        public void PPCrw_vxor()
+        {
+            AssertCode(0x100004c4, ///vxor\tv0,v0,v0");
+                "0|00100000(4): 1 instructions",
+                "1|L--|v0 = 0x0000000000000000");
+            AssertCode(0x100404c4, ///vxor\tv0,v0,v0");
+                "0|00100000(4): 1 instructions",
+                "1|L--|v0 = v4 ^ v0");
+        }
+
+        [Test]
+        public void PPCrw_rlwnm()
+        {
+            AssertCode(0x5c00c03e, //"rlwnm\tr0,r0,r24,00,1F");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = __rol(r0, r24)");
+        }
+
+        [Test]
+        public void PPCrw_blelr()
+        {
+            AssertCode(0x4c9d0020, //"blelr\tcr7");
+                "0|00100000(4): 1 instructions",
+                "1|T--|if (Test(LE,cr7)) return (0,0)");
+        }
+
+        [Test]
+        public void PPCrw_dcbt()
+        {
+            AssertCode(0x7c00222c, //"dcbt\tr0,r4,E0");
+                "0|00100000(4): 0 instructions");
+        }
+
+        [Test]
+        public void PPCrw_sync()
+        {
+            AssertCode(0x7c0004ac, // sync");
+                "0|00100000(4): 1 instructions",
+                "1|L--|__sync()");
+        }
+
+        [Test]
+        public void PPCrw_andc()
+        {
+            AssertCode(0x7c00f078, //andc\tr0,r0,r30");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r0 & ~r30");
+        }
+
+        [Test]
+        public void PPCrw_sld()
+        {
+            AssertCode(0x7c005836, //sld\tr0,r0,r11");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r0 << r11");
+        }
+
+        [Test]
+        public void PPCrw_sradi()
+        {
+            AssertCode(0x7c0bfe76, //sradi\tr11,r0,3F");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r11 = r0 >> 0x0000003F");
+        }
+
+        [Test]
+        public void PPCrw_mulldt()
+        {
+            AssertCode(0x7c0a31d2, //mulld\tr0,r10,r6");
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = r10 * r6");
+        }
+
+        [Test]
+        public void PPCrw_stdx()
+        {
+            AssertCode(0x7c07492a, //stdx\tr0,r7,r9");
+                "0|00100000(4): 1 instructions",
+                "1|L--|Mem0[r7 + r9:word64] = (word64) r0");
         }
     }
 }

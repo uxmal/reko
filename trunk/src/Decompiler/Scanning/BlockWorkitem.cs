@@ -771,7 +771,7 @@ namespace Decompiler.Scanning
             var ppp = pc.Procedure as PseudoProcedure;
             if (ppp == null)
                 return null;
-            if (ppp.Name != "__syscall")
+            if (ppp.Name != "__syscall" || fn.Arguments.Length == 0)
                 return null;
 
             var vector = fn.Arguments[0] as Constant;
