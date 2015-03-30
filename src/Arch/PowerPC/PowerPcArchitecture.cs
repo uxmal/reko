@@ -39,6 +39,7 @@ namespace Decompiler.Arch.PowerPC
         private PrimitiveType ptrType;
         private ReadOnlyCollection<RegisterStorage> regs;
         private ReadOnlyCollection<RegisterStorage> fpregs;
+        private ReadOnlyCollection<RegisterStorage> vregs;
         private ReadOnlyCollection<RegisterStorage> cregs;
 
         public RegisterStorage lr { get; private set; }
@@ -55,26 +56,32 @@ namespace Decompiler.Arch.PowerPC
             this.wordWidth = wordWidth;
             this.ptrType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
 
-            this.lr = new RegisterStorage("lr", 0x48,   wordWidth);
-            this.cr = new RegisterStorage("cr", 0x49,   wordWidth);
-            this.ctr = new RegisterStorage("ctr", 0x4A, wordWidth);
-            this.xer = new RegisterStorage("xer", 0x4B, wordWidth);
+            this.lr = new RegisterStorage("lr", 0x68,   wordWidth);
+            this.cr = new RegisterStorage("cr", 0x69,   wordWidth);
+            this.ctr = new RegisterStorage("ctr", 0x6A, wordWidth);
+            this.xer = new RegisterStorage("xer", 0x6B, wordWidth);
 
             regs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 0x20)
                     .Select(n => new RegisterStorage("r" + n, n, wordWidth))
                 .Concat(Enumerable.Range(0, 0x20)
                     .Select(n => new RegisterStorage("f" + n, n + 0x20, PrimitiveType.Word64)))
+                .Concat(Enumerable.Range(0, 0x20)
+                    .Select(n => new RegisterStorage("v" + n, n + 0x40, PrimitiveType.Word128)))
                 .Concat(Enumerable.Range(0, 8)
-                    .Select(n => new RegisterStorage("cr" + n, n + 0x40, PrimitiveType.Byte)))
+                    .Select(n => new RegisterStorage("cr" + n, n + 0x60, PrimitiveType.Byte)))
                 .Concat(new[] { lr, cr, ctr, xer })
                 .ToList());
 
             fpregs = new ReadOnlyCollection<RegisterStorage>(
                 regs.Skip(0x20).Take(0x20).ToList());
 
+            vregs = new ReadOnlyCollection<RegisterStorage>(
+                regs.Skip(0x40).Take(0x20).ToList());
+
             cregs = new ReadOnlyCollection<RegisterStorage>(
-                regs.Skip(0x40).Take(0x8).ToList());
+                regs.Skip(0x60).Take(0x8).ToList());
+
         }
 
         public uint CarryFlagMask { get { throw new NotImplementedException(); } }
@@ -93,6 +100,10 @@ namespace Decompiler.Arch.PowerPC
             get { return fpregs; }
         }
 
+        public ReadOnlyCollection<RegisterStorage> VecRegisters
+        {
+            get { return vregs; }
+        }
         public ReadOnlyCollection<RegisterStorage> CrRegisters
         {
             get { return cregs; }

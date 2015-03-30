@@ -282,10 +282,10 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCDis_cmpli()
+        public void PPCDis_cmplwi()
         {
             var instr = DisassembleBits("001010 00010 00001 1111111111111000");
-            Assert.AreEqual("cmpli\tcr0,r1,FFF8", instr.ToString());
+            Assert.AreEqual("cmplwi\tcr0,r1,FFF8", instr.ToString());
         }
 
         [Test]
@@ -647,7 +647,40 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             AssertCode(0xf8410028, "std\tr2,40(r1)");
             AssertCode(0xebe10078, "ld\tr31,120(r1)");
             AssertCode(0x7fa307b4, "extsw\tr3,r29");
-            AssertCode(0x79040020, "rldicl\tr4,r8,00,01");
+        }
+
+        [Test]
+        public void PPCDis_rldicl()
+        {
+            AssertCode(0x790407c0, "rldicl\tr4,r8,00,1F");
+            AssertCode(0x790407E0, "rldicl\tr4,r8,00,3F");
+        }
+
+        [Test]
+        public void PPCDis_More64()
+        {
+            AssertCode(0xfd600018, "frsp\tf11,f0");
+            AssertCode(0xec1f07ba, "fmadds\tf0,f31,f30,f0");
+            AssertCode(0xec216824, "fdivs\tf1,f1,f13");
+            AssertCode(0x7c4048ce, "lvx\tv2,r0,r9");
+            AssertCode(0x4d9e0020, "beqlr\tcr7");
+            AssertCode(0x10601a8c, "vspltw\tv3,v3,00");
+            AssertCode(0x100004c4, "vxor\tv0,v0,v0");
+            AssertCode(0x5c00c03e, "rlwnm\tr0,r0,r24,00,1F");
+            AssertCode(0x4c9d0020, "blelr\tcr7");
+            AssertCode(0x7c00222c, "dcbt\tr0,r4,E0");
+            AssertCode(0x7c0004ac, "sync");
+            AssertCode(0x7c00f078, "andc\tr0,r0,r30");
+            AssertCode(0x7c005836, "sld\tr0,r0,r11");
+            AssertCode(0x7c0bfe76, "sradi\tr11,r0,3F");
+            AssertCode(0x7c0a31d2, "mulld\tr0,r10,r6");
+            AssertCode(0x7c07492a, "stdx\tr0,r7,r9");
+        }
+
+        [Test]
+        public void PPCDis_lvlx()
+        {
+            AssertCode(0x7c6b040e, "lvlx\tr3,r11,r0");
         }
     }
 }

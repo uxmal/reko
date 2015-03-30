@@ -37,8 +37,8 @@ namespace Decompiler.Arch.PowerPC
         public PowerPcState(PowerPcArchitecture arch)
         {
             this.arch = arch;
-            this.regs = new ulong[0x50];
-            this.valid = new bool[0x50];
+            this.regs = new ulong[0x80];
+            this.valid = new bool[0x80];
         }
 
         public PowerPcState(PowerPcState other)

@@ -29,6 +29,13 @@ namespace Decompiler.Arch.PowerPC
 {
     public partial class PowerPcRewriter
     {
+        private void RewriteDcbt()
+        {
+            // This is just a hint to the cache; makes no sense to have it in
+            // high-level language. Consider adding option to have cache
+            // hint instructions decompiled into intrinsics
+        }
+
         private void RewriteLfd()
         {
             var op1 = RewriteOperand(instr.op1);
@@ -111,13 +118,6 @@ namespace Decompiler.Arch.PowerPC
             emitter.Assign(emitter.Load(dataType, ea), s);
         }
 
-        private void RewriteStfd()
-        {
-            var s = RewriteOperand(instr.op1);
-            var ea = EffectiveAddress_r0(instr.op2, emitter);
-            emitter.Assign(emitter.Load(PrimitiveType.Real64, ea), s);
-        }
-
         private void RewriteStu(PrimitiveType dataType)
         {
             var s = RewriteOperand(instr.op1);
@@ -168,6 +168,11 @@ namespace Decompiler.Arch.PowerPC
                 ? b
                 : emitter.IAdd(a, b);
             emitter.Assign(emitter.Load(dataType, ea), MaybeNarrow(dataType, s));
+        }
+
+        private void RewriteSync()
+        {
+            emitter.SideEffect(PseudoProc("__sync", VoidType.Instance));
         }
     }
 }

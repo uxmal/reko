@@ -46,6 +46,13 @@ namespace Decompiler.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
+        public void RewriteFcfid()
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            emitter.Assign(dst, emitter.Cast(PrimitiveType.Real64, src));
+        }
+
         public void RewriteFcmpu()
         {
             var opL = RewriteOperand(instr.op2);
@@ -102,6 +109,14 @@ namespace Decompiler.Arch.PowerPC
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
             emitter.Assign(opD, emitter.Neg(opS));
+            MaybeEmitCr1(opD);
+        }
+
+        public void RewriteFrsp()
+        {
+            var opS = RewriteOperand(instr.op2);
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, emitter.Cast(PrimitiveType.Real32, opS));
             MaybeEmitCr1(opD);
         }
 
