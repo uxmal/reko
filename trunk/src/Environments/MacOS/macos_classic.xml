@@ -612,7 +612,14 @@
   <service name="_GetIndResource"><syscallinfo><vector>A99D</vector></syscallinfo></service>
   <service name="_CountTypes"><syscallinfo><vector>A99E</vector></syscallinfo></service>
   <service name="_GetIndType"><syscallinfo><vector>A99F</vector></syscallinfo></service>
-  <service name="_GetResource"><syscallinfo><vector>A9A0</vector></syscallinfo></service>
+  <service name="_GetResource">
+    <syscallinfo><vector>A9A0</vector></syscallinfo>
+    <signature>
+      <return><reg>d0</reg></return>
+      <arg name="resType"><prim domain="SignedInt" size="4" /><stack /></arg>
+      <arg name="resId"><prim domain="SignedInt" size="2" /><stack /></arg>
+    </signature>
+  </service>
   <service name="_GetNamedResource"><syscallinfo><vector>A9A1</vector></syscallinfo></service>
   <service name="_LoadResource"><syscallinfo><vector>A9A2</vector></syscallinfo></service>
   <service name="_ReleaseResource"><syscallinfo><vector>A9A3</vector></syscallinfo></service>

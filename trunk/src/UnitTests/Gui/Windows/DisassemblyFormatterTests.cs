@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Gui
             df.NewLine();
 
             Assert.AreEqual("foo", list[0].GetText());
-            Assert.IsAssignableFrom<Address>(list[0].Tag);
+            Assert.IsInstanceOf<Address>(list[0].Tag);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Gui
             df.NewLine();
 
             Assert.AreEqual("fn_renamed", list[0].GetText());
-            Assert.IsAssignableFrom<Address>(list[0].Tag);
+            Assert.IsInstanceOf<Address>(list[0].Tag);
         }
     }
 }

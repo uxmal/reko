@@ -53,14 +53,14 @@ namespace Decompiler.UnitTests.Arch.Arm
         public void Arm64_b_label()
         {
             var instr = DisassembleBits("00010111 11111111 11111111 00000000");
-            Assert.AreEqual("b\t$000FFC04", instr.ToString());
+            Assert.AreEqual("b\t$00000000000FFC04", instr.ToString());
         }
 
         [Test]
         public void Arm64_bl_label()
         {
             var instr = DisassembleBits("10010111 11111111 11111111 00000000");
-            Assert.AreEqual("bl\t$000FFC04", instr.ToString());
+            Assert.AreEqual("bl\t$00000000000FFC04", instr.ToString());
         }
 
         [Test]

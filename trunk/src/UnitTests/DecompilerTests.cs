@@ -74,8 +74,7 @@ namespace Decompiler.UnitTests
         public void Dec_LoadCallSignatures()
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            Program program = new Program();
-            program.Architecture = arch;
+            Program program = new Program { Architecture = arch };
             decompiler.Project = new Project
             {
                 Programs = { program }

@@ -156,6 +156,14 @@ namespace Decompiler.UnitTests.Gui.Windows
                 .Do(new Func<LoadedImage, Address, ImageReader>((i, a) => new LeImageReader(i, a)));
             arch.Stub(a => a.CreateDisassembler(
                 Arg<ImageReader>.Is.NotNull)).Return(dasm);
+            Address dummy;
+            arch.Stub(a => a.TryParseAddress(null, out dummy)).IgnoreArguments().WhenCalled(m =>
+                {
+                    Address addr;
+                    bool ret = Address.TryParse32((string)m.Arguments[0], out addr);
+                    m.Arguments[1] = addr;
+                    m.ReturnValue = ret;
+                }).Return(false);
             dasm.Stub(d => d.GetEnumerator()).Return(e);
             arch.Replay();
             dasm.Replay();

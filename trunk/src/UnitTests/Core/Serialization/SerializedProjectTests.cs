@@ -38,6 +38,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 	public class SerializedProjectTests
 	{
         private MockRepository mr;
+        private ILoader loader;
+        private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
@@ -168,25 +170,16 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Assert.IsNull(proc.Signature.ReturnValue);
 		}
 
-		[Test]
-		public void SudReadAlloca()
-		{
-            var loader = mr.Stub<ILoader>();
-			Project proj;
-            using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"), FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                proj = new ProjectLoader("", loader).LoadProject(stm);
-            }
-            var program = proj.Programs[0];
-			var proc = (Procedure_v1) program.UserProcedures.Values[0];
-			Assert.AreEqual("alloca", proc.Name);
-			Assert.IsTrue(proc.Characteristics.IsAlloca);
-		}
-
         [Test]
         public void Sud_LoadProject_Inputs_v2()
         {
-            var loader = mr.Stub<ILoader>();
+            Given_Loader();
+            Given_Architecture();
+            Expect_Arch_ParseAddress("1000:0400", Address.SegPtr(0x1000, 0x0400));
+            Given_ExecutableProgram("foo.exe", Address.SegPtr(0x1000, 0x0000));
+            Given_BinaryFile("foo.bin", Address.SegPtr(0x1000, 0x0000));
+
+
             var sProject = new Project_v2
             {
                 Inputs = {
@@ -210,6 +203,8 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
+            mr.ReplayAll();
+
             var ps = new ProjectLoader("", loader);
             var project = ps.LoadProject(sProject);
             Assert.AreEqual(2, project.Programs.Count);
@@ -218,6 +213,58 @@ namespace Decompiler.UnitTests.Core.Serialization
             Assert.AreEqual("1000:0400", input0.UserGlobalData.Values[0].Address);
             var str_t = (StringType_v2)input0.UserGlobalData.Values[0].DataType;
             Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
+            mr.VerifyAll();
+        }
+
+        private void Given_BinaryFile(string exeName, Address address)
+        {
+            var bytes = new byte[0x10];
+            var program = new Program
+            {
+                Architecture = arch,
+                Image = new LoadedImage(address, bytes)
+            };
+            loader.Stub(l => l.LoadImageBytes(
+                Arg<string>.Is.Equal(exeName),
+                Arg<int>.Is.Anything)).Return(bytes);
+            loader.Stub(l => l.LoadExecutable(
+                Arg<string>.Is.Equal(exeName),
+                Arg<byte[]>.Is.NotNull,
+                Arg<Address>.Is.Null)).Return(program);
+        }
+
+        private void Given_ExecutableProgram(string exeName, Address address)
+        {
+            var bytes = new byte[0x1000];
+            var program = new Program
+            {
+                Architecture = arch,
+                Image = new LoadedImage(address, bytes)
+            };
+            loader.Stub(l => l.LoadImageBytes(
+                Arg<string>.Is.Equal(exeName),
+                Arg<int>.Is.Anything)).Return(bytes);
+            loader.Stub(l => l.LoadExecutable(
+                Arg<string>.Is.Equal(exeName),
+                Arg<byte[]>.Is.NotNull,
+                Arg<Address>.Is.Null)).Return(program);
+        }
+
+        private void Expect_Arch_ParseAddress(string sExp, Address result)
+        {
+            arch.Stub(a => a.TryParseAddress(
+                Arg<string>.Is.Equal("1000:0400"),
+                out Arg<Address>.Out(Address.SegPtr(0x1000, 0x0400)).Dummy)).Return(true);
+        }
+
+        private void Given_Architecture()
+        {
+            this.arch = mr.StrictMock<IProcessorArchitecture>();
+        }
+
+        private void Given_Loader()
+        {
+            this.loader = mr.Stub<ILoader>();
         }
 
         [Test]

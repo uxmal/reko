@@ -29,6 +29,8 @@ namespace Decompiler.Gui
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
         ISearchDialog CreateSearchDialog();
+
+        IAssembleFileDialog CreateAssembleFileDialog();
     }
 }
 

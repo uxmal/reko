@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Assemblers;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Configuration;
@@ -35,6 +36,7 @@ namespace Decompiler.Gui.Windows.Forms
     {
         bool OpenBinary(string file, DecompilerHost host);
         bool OpenBinaryAs(string file, IProcessorArchitecture arch, Platform platform, Address addrBase, DecompilerHost host);
+        bool Assemble(string file, Assembler asm, DecompilerHost host);
     }
 
     /// <summary>
@@ -134,5 +136,27 @@ namespace Decompiler.Gui.Windows.Forms
             }
             return false;   // We never open projects this way.
         }
+
+        public bool Assemble(string file, Assembler asm, DecompilerHost host)
+        {
+            var ldr = Services.RequireService<ILoader>();
+            this.Decompiler = CreateDecompiler(ldr, host);
+            var svc = Services.RequireService<IWorkerDialogService>();
+            svc.StartBackgroundWork("Loading program", delegate()
+            {
+                Decompiler.Assemble(file, asm);
+            });
+            if (Decompiler.Project == null)
+                return false;
+            var browserSvc = Services.RequireService<IProjectBrowserService>();
+            browserSvc.Load(Decompiler.Project);
+            if (Decompiler.Project.Programs.Count > 0)
+            {
+                var memSvc = Services.RequireService<ILowLevelViewService>();
+                memSvc.ViewImage(Decompiler.Project.Programs.First());
+            }
+            return false;
+        }
+
     }
 }

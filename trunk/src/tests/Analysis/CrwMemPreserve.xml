@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
-<project xmlns="http://schemata.jklnet.org/Decompiler">
+<project xmlns="http://schemata.jklnet.org/Decompiler/v2">
+  <asm>
+    <filename>Fragments/multiple/mempreserve.asm</filename>
+    <assembler>@@@</assembler>
+  </asm>
   <procedure name="main">
     <address>0C00:0000</address>
   </procedure>

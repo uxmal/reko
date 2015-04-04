@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
@@ -208,6 +209,11 @@ namespace Decompiler.Gui.Forms
             OpenBinary(file, (f) => pageInitial.OpenBinary(f, this));
         }
 
+        /// <summary>
+        /// Master function for opening a new project.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="openAction"></param>
         public void OpenBinary(string file, Func<string,bool> openAction)
         {
             try
@@ -257,6 +263,29 @@ namespace Decompiler.Gui.Forms
                 ModuleName = Path.GetFileName(fileName),
                 TypeLibrary = typelib
             });
+        }
+
+        public bool AssembleFile()
+        {
+            IAssembleFileDialog dlg = null;
+            try
+            {
+                dlg = dlgFactory.CreateAssembleFileDialog();
+                dlg.Services = sc;
+                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                    return true;
+                mru.Use(dlg.FileName.Text);
+
+                var typeName = dlg.SelectedArchitectureTypeName;
+                var t = Type.GetType(typeName, true);
+                var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm, this));
+            }
+            catch (Exception e)
+            {
+                uiSvc.ShowError(e, "An error occurred while assembling {0}.", dlg.FileName.Text);
+            }
+            return true;
         }
 
         public bool OpenBinaryAs()
@@ -312,7 +341,6 @@ namespace Decompiler.Gui.Forms
         {
             if (decompilerSvc.Decompiler != null && decompilerSvc.Decompiler.Project != null)
             {
-                //$TODO: should prompt "Save changes to project?");
                 if (uiSvc.Prompt("Do you want to save any changes made to the decompiler project?"))
                 {
                     if (!Save())
@@ -603,6 +631,7 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.FileOpen:
                 case CmdIds.FileExit:
                 case CmdIds.FileOpenAs:
+                case CmdIds.FileAssemble:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
                 case CmdIds.WindowsTileHorizontal:
@@ -668,6 +697,7 @@ namespace Decompiler.Gui.Forms
                 {
                 case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
                 case CmdIds.FileOpenAs: return OpenBinaryAs();
+                case CmdIds.FileAssemble: return AssembleFile();
                 case CmdIds.FileSave: Save(); return true;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); return true;
                 case CmdIds.FileCloseProject: CloseProject(); return true;

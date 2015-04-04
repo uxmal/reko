@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Decompiler.Gui
 {
+    /// <summary>
+    /// Base class for designers that wrap a "tree node".
+    /// </summary>
     public class TreeNodeDesigner : ICommandTarget
     {
         public IServiceProvider Services { get; set; }

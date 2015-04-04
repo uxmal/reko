@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Configuration;
 using System;
 using System.Collections;
@@ -40,7 +41,17 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public ICollection GetAssemblers()
+        {
+            throw new NotImplementedException();
+        }
+
         public IProcessorArchitecture GetArchitecture(string sArch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Assembler GetAssembler(string sAsm)
         {
             throw new NotImplementedException();
         }

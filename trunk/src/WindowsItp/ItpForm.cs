@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Arch.X86;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Configuration;
 using Decompiler.Environments.Win32;
 using Decompiler.Gui;
@@ -26,6 +27,7 @@ using Decompiler.Gui.Windows.Forms;
 using Decompiler.ImageLoaders.MzExe;
 using Decompiler.ImageLoaders.OdbgScript;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
@@ -154,7 +156,7 @@ namespace Decompiler.WindowsItp
 
         private class FakeConfigurationService : IDecompilerConfigurationService
         {
-            public System.Collections.ICollection GetImageLoaders()
+            public ICollection GetImageLoaders()
             {
                 throw new NotImplementedException();
             }
@@ -184,8 +186,17 @@ namespace Decompiler.WindowsItp
                 throw new NotImplementedException();
             }
 
-
             public System.Collections.ICollection GetSignatureFiles()
+            {
+                throw new NotImplementedException();
+            }
+
+            public ICollection GetAssemblers()
+            {
+                throw new NotImplementedException();
+            }
+
+            public Assembler GetAssembler(string assemblerName)
             {
                 throw new NotImplementedException();
             }

@@ -162,7 +162,7 @@ namespace Decompiler.UnitTests.Analysis
             var loader = new Loader(new ServiceContainer());
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
-                : new ProjectLoader("", new Loader(new ServiceContainer())).LoadProject(FileUnitTester.MapTestPath(configFile));
+                : new ProjectLoader("", loader).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 prog,
                 new Dictionary<Address, ProcedureSignature>(),

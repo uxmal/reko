@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Assemblers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,9 +37,11 @@ namespace Decompiler.Core.Configuration
          ICollection GetArchitectures();
          ICollection GetEnvironments();
          ICollection GetSignatureFiles();
+         ICollection GetAssemblers();
 
          OperatingEnvironment GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
+         Assembler GetAssembler(string assemblerName);
 
          DefaultPreferences GetDefaultPreferences ();
     }
@@ -69,6 +72,14 @@ namespace Decompiler.Core.Configuration
             return handler.Architectures;
         }
 
+        public virtual ICollection GetAssemblers()
+        {
+            var handler = (AssemblerSectionHandler)ConfigurationManager.GetSection("Decompiler/Assemblers");
+            if (handler == null)
+                return new AssemblerElement[0];
+            return handler.Environments;
+        }
+
         public IProcessorArchitecture GetArchitecture(string archLabel)
         {
             var elem = GetArchitectures().OfType<ArchitectureElement>()
@@ -80,6 +91,17 @@ namespace Decompiler.Core.Configuration
             return (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
 
+        public virtual Assembler GetAssembler(string asmLabel)
+        {
+            var elem = GetAssemblers().OfType<AssemblerElement>()
+                .Where(e => e.Name == asmLabel).SingleOrDefault();
+            if (elem == null)
+                return null;
+            Type t = Type.GetType(elem.TypeName, true);
+            return (Assembler)t.GetConstructor(Type.EmptyTypes).Invoke(null);
+        }
+
+   
         public virtual ICollection GetEnvironments()
         {
             var handler = (OperatingEnvironmentSectionHandler) ConfigurationManager.GetSection("Decompiler/Environments");

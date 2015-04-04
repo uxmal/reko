@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Arch.Mos6502
             BuildTest(0xF0, 0x64);
             AssertCode(
                 "0|00000200(2): 1 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 00000266");
+                "1|T--|if (Test(EQ,Z)) branch 0266");
         }
 
         [Test]

@@ -46,7 +46,7 @@ namespace Decompiler.Environments.MacOS
             if (TypeLibs.Length == 0)
                 return null;
             SystemService svc;
-            this.TypeLibs[0].ServicesByVector.TryGetValue(vector, out svc);
+            this.TypeLibs[0].ServicesByVector.TryGetValue(vector&0xFFFF , out svc);
             return svc;
         }
 

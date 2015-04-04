@@ -38,6 +38,14 @@ namespace Decompiler.Gui.Windows
 			return new AddressPromptDialog();
 		}
 
+        public IAssembleFileDialog CreateAssembleFileDialog()
+        {
+            return new AssembleFileDialog
+            {
+                Services = services
+            };
+        }
+
         public IMainForm CreateMainForm()
         {
             return new MainForm();
@@ -58,6 +66,8 @@ namespace Decompiler.Gui.Windows
 				Services = services,
             };
         }
+
+
     }
 }
 

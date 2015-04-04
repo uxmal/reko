@@ -249,6 +249,7 @@
     <Compile Include="Gui\Design\MetadataFileDesigner.cs" />
     <Compile Include="Gui\FileDropEventArgs.cs" />
     <Compile Include="Gui\FindResult.cs" />
+    <Compile Include="Gui\Forms\IAssembleFileDialog .cs" />
     <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
     <Compile Include="Gui\Forms\IPatternSearchDialog.cs" />
     <Compile Include="Gui\Forms\OpenAsInteractor.cs" />
@@ -309,6 +310,13 @@
       <DependentUpon>LowLevelView.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\DisassemblyFormatter.cs" />
+    <Compile Include="Gui\Windows\Forms\AssembleFileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AssembleFileDialog.Designer.cs">
+      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AssembleFileInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -662,6 +670,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\ArchiveBrowserDialog.resx">
       <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\AssembleFileDialog.resx">
+      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EnvironmentSelectorDialog.resx">
       <SubType>Designer</SubType>

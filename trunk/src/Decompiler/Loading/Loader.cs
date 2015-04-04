@@ -51,6 +51,15 @@ namespace Decompiler.Loading
 
         public IServiceProvider Services { get; private set; }
 
+        public Program AssembleExecutable(string filename, string assemblerName, Address addrLoad)
+        {
+            var bytes = LoadImageBytes(filename, 0);
+            var asm = cfgSvc.GetAssembler(assemblerName);
+            if (asm == null)
+                throw new ApplicationException(string.Format("Unknown assembler name '{0}'.", assemblerName));
+            return AssembleExecutable(filename, bytes, asm, addrLoad);
+        }
+
         public Program AssembleExecutable(string fileName, Assembler asm, Address addrLoad)
         {
             var bytes = LoadImageBytes(fileName, 0);

@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Structure
         {
             try
             {
-                AbsynCodeGenerator acg = new AbsynCodeGenerator();
+                var acg = new AbsynCodeGenerator();
                 acg.GenerateCode(curProc, proc.Body);
                 GenCode(proc, sb);
                 Assert.AreEqual(sExp, sb.ToString());
