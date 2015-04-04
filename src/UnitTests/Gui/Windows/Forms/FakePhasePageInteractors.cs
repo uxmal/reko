@@ -114,6 +114,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             throw new NotImplementedException();
         }
+
+
+        public bool Assemble(string file, Decompiler.Core.Assemblers.Assembler asm, DecompilerHost host)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class FakeLoadedPageInteractor : FakePhasePageInteractor, ILoadedPageInteractor

@@ -552,7 +552,7 @@ namespace Decompiler.Typing
 			{
 				phi.Arguments[i].Accept(this);
 			}
-            throw new NotImplementedException();
+            return handler.DataTypeTrait(phi, phi.DataType);
         }
 
 		public DataType VisitPointerAddition(PointerAddition pa)

@@ -143,7 +143,6 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
 		}
 
-
 		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());

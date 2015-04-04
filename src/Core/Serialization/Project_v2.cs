@@ -48,6 +48,7 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("input", typeof(DecompilerInput_v2))]
         [XmlElement("metadata",typeof(MetadataFile_v2))]
+        [XmlElement("asm", typeof(AssemblerFile_v2))]
         public List<ProjectFile_v2> Inputs;
 
         [XmlElement("output")]
@@ -74,7 +75,8 @@ namespace Decompiler.Core.Serialization
     public interface IProjectFileVisitor_v2<T>
     {
         T VisitInputFile(DecompilerInput_v2 input);
-        T VisitMetadataFile(MetadataFile_v2 input);
+        T VisitMetadataFile(MetadataFile_v2 metadata);
+        T VisitAssemblerFile(AssemblerFile_v2 asm);
     }
 
     public class DecompilerInput_v2 : ProjectFile_v2
@@ -129,6 +131,17 @@ namespace Decompiler.Core.Serialization
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
             return visitor.VisitMetadataFile(this);
+        }
+    }
+
+    public class AssemblerFile_v2 : ProjectFile_v2
+    {
+        [XmlElement("assembler")]
+        public string Assembler;
+
+        public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
+        {
+            return visitor.VisitAssemblerFile(this);
         }
     }
 }

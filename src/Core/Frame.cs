@@ -113,6 +113,13 @@ namespace Decompiler.Core
             var grf = stgForeign as FlagGroupStorage;
             if (grf != null)
                 return EnsureFlagGroup(grf);
+            var seq = stgForeign as SequenceStorage;
+            if (seq != null)
+                return EnsureSequence(
+                    seq.Head, 
+                    seq.Tail, 
+                    PrimitiveType.CreateWord(
+                        seq.Head.DataType.Size + seq.Tail.DataType.Size));
             throw new NotImplementedException();
         }
 

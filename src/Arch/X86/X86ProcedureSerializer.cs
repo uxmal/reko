@@ -107,11 +107,20 @@ namespace Decompiler.Arch.X86
 
         public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
-            if (bitSize == 2 * Architecture.WordWidth.Size)
+            switch (bitSize)
             {
-                throw new NotImplementedException();
+            case 32: if (Architecture.WordWidth.BitSize == 16)
+                    return new SequenceStorage(
+                        new Identifier("dx", PrimitiveType.Word16, Architecture.GetRegister("dx")),
+                        new Identifier("ax", PrimitiveType.Word16, Architecture.GetRegister("ax")));
+                break;
+            case 64: if (Architecture.WordWidth.BitSize == 32)
+                    return new SequenceStorage(
+                        new Identifier("edx", PrimitiveType.Word16, Architecture.GetRegister("edx")),
+                        new Identifier("eax", PrimitiveType.Word16, Architecture.GetRegister("eax")));
+                break;
             }
-            return Architecture.GetRegister("eax").GetSubregister(0, bitSize);
+            return Architecture.GetRegister("rax").GetSubregister(0, bitSize);
         }
     }
 }

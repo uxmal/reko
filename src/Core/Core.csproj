@@ -156,6 +156,9 @@
     <Compile Include="Configuration\ArchitectureReferenceElement.cs" />
     <Compile Include="Configuration\ArchitectureReferenceElementCollection.cs" />
     <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
+    <Compile Include="Configuration\AssemblerElement.cs" />
+    <Compile Include="Configuration\AssemblerElementCollection.cs" />
+    <Compile Include="Configuration\AssemblerSectionHandler.cs" />
     <Compile Include="Configuration\DecompilerConfiguration.cs" />
     <Compile Include="Configuration\DefaultPreferences.cs" />
     <Compile Include="Configuration\LoaderElement.cs" />

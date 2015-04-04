@@ -93,7 +93,7 @@ namespace Decompiler.Core.Serialization
         public Project LoadProject(Stream stm)
         {
             var rdr = new XmlTextReader(stm);
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v2));
+            XmlSerializer ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
             if (ser.CanDeserialize(rdr))
                 return LoadProject((Project_v2) ser.Deserialize(rdr));
             ser = SerializedLibrary.CreateSerializer_v1(typeof(Project_v1));
@@ -106,6 +106,7 @@ namespace Decompiler.Core.Serialization
         {
             var typelibs = sp.Inputs.OfType<MetadataFile_v2>().Select(m => VisitMetadataFile(m));
             var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(s));
+            var asm = sp.Inputs.OfType<AssemblerFile_v2>().Select(s => VisitAssemblerFile(s));
             var project = new Project();
             project.Programs.AddRange(programs);
             project.MetadataFiles.AddRange(typelibs);
@@ -165,6 +166,11 @@ namespace Decompiler.Core.Serialization
                 ModuleName = typeLib.ModuleName,
                 TypeLibrary = typeLib
             };
+        }
+
+        public Program VisitAssemblerFile(AssemblerFile_v2 sAsmFile)
+        {
+            return loader.AssembleExecutable(sAsmFile.Filename, sAsmFile.Assembler, null);
         }
 
         public Project LoadProject(Project_v1 sp)

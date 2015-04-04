@@ -114,7 +114,7 @@ namespace Decompiler.Arch.X86
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            if (txtAddress == null)
+            if (txtAddress != null)
             {
                 int c = txtAddress.IndexOf(':');
                 if (c > 0)

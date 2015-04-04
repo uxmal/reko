@@ -454,7 +454,7 @@ namespace Decompiler.UnitTests.Arch.M68k
             Rewrite(0x4E90);    // jsr (a0)
             AssertCode(
                 "0|00010000(2): 1 instructions",
-                "1|T--|call Mem0[a0:word32] (4)");
+                "1|T--|call a0 (4)");
         }
 
         [Test]
@@ -935,6 +935,15 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "1|L--|v3 = __ror(Mem0[a4:word32], 0x01)",
                 "2|L--|Mem0[a4:word32] = v3",
                 "3|L--|CZN = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_jsr_pc()
+        {
+            Rewrite(0x4EBA, 0x0030);
+            AssertCode(
+                "0|00010000(4): 1 instructions",
+                "1|T--|call 00010032 (4)");
         }
     }
 }

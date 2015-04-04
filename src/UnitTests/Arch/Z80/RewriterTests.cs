@@ -133,7 +133,7 @@ namespace Decompiler.UnitTests.Arch.Z80
             AssertCode(
                 "0|00000100(2): 2 instructions",
                 "1|L--|b = b - 0x01",
-                "2|T--|if (b != 0x00) branch 00000100");
+                "2|T--|if (b != 0x00) branch 0100");
         }
 
         [Test]
@@ -212,7 +212,7 @@ namespace Decompiler.UnitTests.Arch.Z80
             BuildTest(0x18, 0x03);
             AssertCode(
                 "0|00000100(2): 1 instructions",
-                "1|T--|goto 00000105");
+                "1|T--|goto 0105");
         }
 
         [Test]

@@ -494,7 +494,7 @@ namespace Decompiler.Scanning
         {
             var ep = svc.CreateExternalProcedure(arch);
             var fn = new ProcedureConstant(arch.PointerType, ep);
-            var site = state.OnBeforeCall(stackReg, svc.Signature.ReturnAddressOnStack);
+            var site = state.OnBeforeCall(stackReg, svc.Signature!=null? svc.Signature.ReturnAddressOnStack:0);
             Emit(BuildApplication(fn, ep.Signature, site));
             if (svc.Characteristics.Terminates)
             {
@@ -732,6 +732,8 @@ namespace Decompiler.Scanning
         //$TODO: merge the followng two procedures?
         private void AffectProcessorState(ProcedureSignature sig)
         {
+            if (sig == null)
+                return;
             TrashVariable(sig.ReturnValue);
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {
@@ -777,7 +779,12 @@ namespace Decompiler.Scanning
             var vector = fn.Arguments[0] as Constant;
             if (vector == null)
                 return null;
-            return program.Platform.FindService(vector.ToInt32(), state);
+            var svc = program.Platform.FindService(vector.ToInt32(), state);
+            if (svc.Signature == null)
+            {
+                scanner.Error(ric.Address, string.Format("System service '{0}' didn't specify a signature.", svc.Name));
+            }
+            return svc;
         }
 
         private class BackwalkerHost : IBackWalkHost
