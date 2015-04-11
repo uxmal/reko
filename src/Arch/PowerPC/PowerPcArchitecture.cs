@@ -46,6 +46,7 @@ namespace Decompiler.Arch.PowerPC
         public RegisterStorage cr { get; private set; }
         public RegisterStorage ctr { get; private set; }
         public RegisterStorage xer { get; private set; }
+        public RegisterStorage fpscr { get; private set; }
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
@@ -60,6 +61,7 @@ namespace Decompiler.Arch.PowerPC
             this.cr = new RegisterStorage("cr", 0x69,   wordWidth);
             this.ctr = new RegisterStorage("ctr", 0x6A, wordWidth);
             this.xer = new RegisterStorage("xer", 0x6B, wordWidth);
+            this.fpscr = new RegisterStorage("fpscr", 0x6C, wordWidth);
 
             regs = new ReadOnlyCollection<RegisterStorage>(
                 Enumerable.Range(0, 0x20)
@@ -216,7 +218,7 @@ namespace Decompiler.Arch.PowerPC
 
         public BitSet CreateRegisterBitset()
         {
-            return new BitSet(0x50);
+            return new BitSet(0x80);
         }
 
         public RegisterStorage GetRegister(int i)

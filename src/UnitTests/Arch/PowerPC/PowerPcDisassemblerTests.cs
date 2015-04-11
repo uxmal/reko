@@ -131,7 +131,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PPCDis_bcxx()
         {
             var instr = DisassembleWord(0x4000FFF0);
-            Assert.AreEqual("bge\tcr0,$000FFFF0", instr.ToString());
+            Assert.AreEqual("bdnzf\tlt,$000FFFF0", instr.ToString());
         }
 
         [Test]
@@ -402,7 +402,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             RunTest("fsqrts.\tf1,f3", "111011 00001 00010 00011 00000 10110 1");
             RunTest("fres.\tf1,f3", "111011 00001 00010 00011 00000 11000 1");
             RunTest("fmuls.\tf1,f2,f4", "111011 00001 00010 00000 00100 11001 1");
-            RunTest("fmsubs.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11100 1");
+            RunTest("fmsubs.\tf1,f2,f4,f3", "111011 00001 00010 00011 00100 11100 1");
             RunTest("fmadds.\tf1,f2,f4,f3", "111011 00001 00010 00011 00100 11101 1");
             RunTest("fnmsubs.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11110 1");
             RunTest("fnmadds.\tf1,f2,f3,f4", "111011 00001 00010 00011 00100 11111 1");
@@ -654,6 +654,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         {
             AssertCode(0x790407c0, "rldicl\tr4,r8,00,1F");
             AssertCode(0x790407E0, "rldicl\tr4,r8,00,3F");
+            AssertCode(0x7863e102, "rldicl\tr3,r3,3C,04");
         }
 
         [Test]
@@ -668,7 +669,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             AssertCode(0x100004c4, "vxor\tv0,v0,v0");
             AssertCode(0x5c00c03e, "rlwnm\tr0,r0,r24,00,1F");
             AssertCode(0x4c9d0020, "blelr\tcr7");
-            AssertCode(0x7c00222c, "dcbt\tr0,r4,E0");
+            AssertCode(0x7c00222c, "dcbt\tr0,r4,00");
             AssertCode(0x7c0004ac, "sync");
             AssertCode(0x7c00f078, "andc\tr0,r0,r30");
             AssertCode(0x7c005836, "sld\tr0,r0,r11");
@@ -681,6 +682,113 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         public void PPCDis_lvlx()
         {
             AssertCode(0x7c6b040e, "lvlx\tr3,r11,r0");
+        }
+
+        [Test]
+        public void PPCDis_bcctr()
+        {
+            AssertCode(0x4000fef8, "bdnzf\tlt,$000FFEF8");
+            AssertCode(0x4040fef8, "bdzf\tlt,$000FFEF8");
+            AssertCode(0x4080fef8, "bge\t$000FFEF8");
+            AssertCode(0x4100fef8, "bdnzt\tlt,$000FFEF8");
+            AssertCode(0x4180fef8, "blt\t$000FFEF8");
+
+            AssertCode(0x4200fef8, "bdnz\t$000FFEF8");
+            AssertCode(0x4220fef9, "bdnzl\t$000FFEF8");
+            AssertCode(0x4240fef8, "bdz\t$000FFEF8");
+            AssertCode(0x4260fef9, "bdzl\t$000FFEF8");
+            //AssertCode(0x4280fef8, "bc+    20,lt,0xffffffffffffff24	 ");
+            AssertCode(0x4300fef8, "bdnz\t$000FFEF8");
+        }
+
+        [Test]
+        public void PPCDis_mftb()
+        {
+            AssertCode(0x7eac42e6, "mftb\tr21,0188");
+        }
+
+        [Test]
+        public void PPCDis_stvx()
+        {
+            AssertCode(0x7c2019ce, "stvx\tv1,r0,r3");
+        }
+
+        [Test]
+        public void PPCDis_stfiwx()
+        {
+            AssertCode(0x7c004fae, "stfiwx\tf0,r0,r9");
+        }
+
+        [Test]
+        public void PPCDis_cntlzd()
+        {
+            AssertCode(0x7d600074, "cntlzd\tr0,r11");
+        }
+
+        [Test]
+        public void PPCDis_vectorops()
+        {
+            AssertCode(0x10c6600a, "vaddfp\tv6,v6,v12");
+            AssertCode(0x10000ac6, "vcmpgtfp\tv0,v0,v1");
+            AssertCode(0x118108c6, "vcmpeqfp\tv12,v1,v1");
+            AssertCode(0x10ed436e, "vmaddfp\tv7,v13,v13,v8");
+            AssertCode(0x10a9426e, "vmaddfp\tv5,v9,v9,v8");
+            AssertCode(0x10200a8c, "vspltw\tv1,v1,00");
+            AssertCode(0x1160094a, "vrsqrtefp\tv11,v1");
+            AssertCode(0x102b406e, "vmaddfp\tv1,v11,v1,v8");
+            AssertCode(0x102bf06f, "vnmsubfp\tv1,v11,v1,v30");
+            AssertCode(0x1020014a, "vrsqrtefp\tv1,v0");
+            AssertCode(0x116b0b2a, "vsel\tv11,v11,v1,v12");
+            AssertCode(0x1000012c, "vsldoi\tv0,v0,v0,04");
+            AssertCode(0x101f038c, "vspltisw\tv0,-01");
+            AssertCode(0x1000028c, "vspltw\tv0,v0,00");
+            AssertCode(0x114948ab, "vperm\tv10,v9,v9,v2");
+            AssertCode(0x112c484a, "vsubfp\tv9,v12,v9");
+            AssertCode(0x118000c6, "vcmpeqfp\tv12,v0,v0");
+            AssertCode(0x11ad498c, "vmrglw\tv13,v13,v9");
+            AssertCode(0x118c088c, "vmrghw\tv12,v12,v1");
+            AssertCode(0x125264c4, "vxor\tv18,v18,v12");
+        }
+
+        [Test]
+        public void PPCDis_regression4()
+        {
+            //AssertCode(0x10000ac6, "vcmpgtfp\tv0,v0,v1");
+            AssertCode(0xec0c5038, "fmsubs\tf0,f12,f0,f10");
+            AssertCode(0x7c20480c, "lvsl\tv1,r0,r9");
+            AssertCode(0x1000fcc6, "vcmpeqfp.\tv0,v0,v31");
+            AssertCode(0x10c63184, "vslw\tv6,v6,v6");
+            AssertCode(0x10e73984, "vslw\tv7,v7,v7");
+            AssertCode(0x7c01008e, "lvewx\tv0,r1,r0");
+
+            AssertCode(0x11a0010a, "vrefp\tv13,v0");
+            AssertCode(0x10006e86, "vcmpgtuw.\tv0,v0,v13");
+            AssertCode(0x7c00418e, "stvewx\tv0,r0,r8");
+            AssertCode(0x118063ca, "vctsxs\tv12,v12,00");
+            AssertCode(0x1020634a, "vcfsx\tv1,v12,00");
+            AssertCode(0x118c0404, "vand\tv12,v12,v0");
+            AssertCode(0x116c5080, "vadduwm\tv11,v12,v10");
+            AssertCode(0x110c5404, "vand\tv8,v12,v10");
+            AssertCode(0x1021ac44, "vandc\tv1,v1,v21");
+            AssertCode(0x11083086, "vcmpequw\tv8,v8,v6");
+        }
+
+        [Test]
+        public void PPCDis_lfsx()
+        {
+            AssertCode(0x7c01042e, "lfsx\tf0,r1,r0");
+        }
+        
+        [Test]
+        public void PPCDis_mffs()
+        {
+            AssertCode(0xfc00048e, "mffs\tf0");
+        }
+
+        [Test]
+        public void PPCDis_mtfsf()
+        {
+            AssertCode(0xfdfe058e, "mtfsf\tFF,f0");
         }
     }
 }

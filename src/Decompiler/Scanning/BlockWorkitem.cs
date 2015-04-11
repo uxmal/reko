@@ -86,6 +86,10 @@ namespace Decompiler.Scanning
             {
                 ProcessInternal();
             }
+            catch (AddressCorrelatedException aex)
+            {
+                scanner.Error(aex.Address, aex.Message);
+            }
             catch (Exception ex)
             {
                 if (ric == null)

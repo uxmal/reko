@@ -372,17 +372,23 @@ namespace Decompiler.Gui.Windows
             if (resultSvc == null)
                 return true;
 
-            var arch = program.Architecture;
-            var image = program.Image;
-            var rdr = program.Architecture.CreateImageReader(program.Image, 0);
-            var addrControl = arch.CreatePointerScanner(
-                program.ImageMap,
-                rdr,
-                new [] { 
+            try
+            {
+                var arch = program.Architecture;
+                var image = program.Image;
+                var rdr = program.Architecture.CreateImageReader(program.Image, 0);
+                var addrControl = arch.CreatePointerScanner(
+                    program.ImageMap,
+                    rdr,
+                    new[] { 
                     addrRange.Begin
                 },
-                PointerScannerFlags.All);
-            resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
+                    PointerScannerFlags.All);
+                resultSvc.ShowSearchResults(new AddressSearchResult(services, addrControl.Select(lin => new AddressSearchHit(program, lin))));
+            } catch (Exception ex)
+            {
+                services.RequireService<IDecompilerShellUiService>().ShowError(ex, "An error occurred when searching for pointers.");
+            }
             return true;
         }
 

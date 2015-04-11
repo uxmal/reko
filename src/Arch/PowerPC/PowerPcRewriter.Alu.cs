@@ -215,11 +215,15 @@ namespace Decompiler.Arch.PowerPC
                 emitter.ISub(r, i)));
         }
 
-        private void RewriteCntlzw()
+        private void RewriteCntlz(string name, DataType dt)
         {
             var dst = RewriteOperand(instr.op1);
             var src = RewriteOperand(instr.op2);
-            emitter.Assign(dst, PseudoProc("__cntlzw", PrimitiveType.UInt32, src));
+            if (dt.Size < arch.WordWidth.Size)
+            {
+                src = emitter.Cast(dt, src);
+            }
+            emitter.Assign(dst, PseudoProc(name, PrimitiveType.UInt32, src));
         }
 
         private void RewriteCreqv()
@@ -282,6 +286,27 @@ namespace Decompiler.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.op1);
             var src = RewriteOperand(instr.op2);
+            emitter.Assign(dst, src);
+        }
+
+        private void RewriteMfcr()
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = frame.EnsureRegister(arch.cr);
+            emitter.Assign(dst, src);
+        }
+
+        private void RewriteMfctr()
+        {
+            var src = frame.EnsureRegister(arch.ctr);
+            var dst = RewriteOperand(instr.op1);
+            emitter.Assign(dst, src);
+        }
+
+        private void RewriteMftb()
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = PseudoProc("__mftb", dst.DataType);
             emitter.Assign(dst, src);
         }
 
@@ -411,8 +436,105 @@ namespace Decompiler.Arch.PowerPC
             {
                 emitter.Assign(rd, emitter.And(rs, Constant.Word64(maskBegin)));
             }
+            else if (sh + mb == 64)
+            {
+                emitter.Assign(rd, emitter.Shr(rs, (byte)mb));
+            }
+            else if (sh == 0x3F && mb == 0x3F)
+            {
+                emitter.Assign(rd, emitter.Shr(rs, (byte)mb));
+            }
+            else if (sh < mb)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shl(rs, (byte)sh),
+                    maskBegin));
+            }
+            else if (sh == 0x39 && mb == 0x38)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x31 && mb == 0x3F)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x10 && mb == 0x2F)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x08 && mb == 0x37)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x18 && mb == 0x27)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x20 && mb == 0x1F)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x02 && mb == 0x1E)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x38 && mb == 0x3F)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x37 && mb == 0x3F)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x21 && mb == 0x3F)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x08 && mb == 0x30)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x3D && mb == 0x23)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (sh == 0x3E && mb == 0x22)
+            {
+                emitter.Assign(rd, emitter.And(
+                    emitter.Shr(rs, (byte)(64 - sh)),
+                    maskBegin));
+            }
+            else if (mb == 0x00)
+            {
+                emitter.Assign(rd, PseudoProc(PseudoProcedure.Rol, rd.DataType, rs, Constant.Byte((byte)sh)));
+            }
             else
                 throw new NotImplementedException();
+            MaybeEmitCr0(rd);
         }
 
         void RewriteRlwinm()
@@ -441,14 +563,17 @@ namespace Decompiler.Arch.PowerPC
             if (sh == 0)
             {
                 emitter.Assign(rd, emitter.And(rs, Constant.UInt32(mask)));
+                return;
             }
             else if (mb == 32 - sh && me == 31)
             {
                 emitter.Assign(rd, emitter.Shr(rs, (byte)(32-sh)));
+                return;
             }
             else if (mb == 0 && me == 31-sh)
             {
                 emitter.Assign(rd, emitter.Shl(rs, sh));
+                return;
             }
             else if (mb == 0 && me == 31)
             {
@@ -456,6 +581,7 @@ namespace Decompiler.Arch.PowerPC
                     emitter.Assign(rd, PseudoProc(PseudoProcedure.Rol, PrimitiveType.Word32, rs, Constant.Byte(sh)));
                 else
                     emitter.Assign(rd, PseudoProc(PseudoProcedure.Ror, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
+                return;
             }
             else if (me == 31)
             {
@@ -465,13 +591,29 @@ namespace Decompiler.Arch.PowerPC
                 emitter.Assign(rd, emitter.And(
                     emitter.Shr(rs, Constant.Byte((byte)n)),
                     Constant.Word32(mask)));
+                return;
             }
-            else if (mb < me && me < 32-sh)
+            else if (mb <= me)
             {
-                mask = (1u << (32-mb)) - (1u << (31-me));
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shl(rs, Constant.Byte((byte)sh)),
-                    Constant.Word32(mask)));
+                if (me < 32 - sh)
+                {
+                    // [                           llll]
+                    // [                        mmm....]
+                    emitter.Assign(rd, emitter.And(
+                        emitter.Shl(rs, Constant.Byte((byte)sh)),
+                        Constant.Word32(mask)));
+                    return;
+                }
+                else if (mb >= 32 - sh)
+                {
+                    // [                        ll]
+                    // [                        m.]
+
+                    emitter.Assign(rd, emitter.And(
+                        emitter.Shr(rs, Constant.Byte((byte)(32-sh))),
+                        Constant.Word32(mask)));
+                    return;
+                }
             }
             else
                 throw new AddressCorrelatedException(dasm.Current.Address, "{0} not handled yet.", dasm.Current);

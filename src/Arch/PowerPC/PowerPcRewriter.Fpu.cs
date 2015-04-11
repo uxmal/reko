@@ -95,6 +95,16 @@ namespace Decompiler.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
+        public void RewriteFmsub()
+        {
+            var opc = RewriteOperand(instr.op4);
+            var opb = RewriteOperand(instr.op3);
+            var opa = RewriteOperand(instr.op2);
+            var opt = RewriteOperand(instr.op1);
+            emitter.Assign(opt, emitter.FSub(emitter.FMul(opa, opb), opc));
+            MaybeEmitCr1(opt);
+        }
+
         public void RewriteFmul()
         {
             var opL = RewriteOperand(instr.op2);
@@ -126,7 +136,27 @@ namespace Decompiler.Arch.PowerPC
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             emitter.Assign(opD, emitter.FSub(opL, opR));
+            
             MaybeEmitCr1(opD);
+        }
+
+        public void RewriteMffs()
+        {
+            var opD = RewriteOperand(instr.op1);
+            emitter.Assign(opD, frame.EnsureRegister(arch.fpscr));
+            MaybeEmitCr1(opD);
+        }
+
+        public void RewriteMtfsf()
+        {
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            emitter.SideEffect(
+                PseudoProc("__mtfsf",
+                    VoidType.Instance,
+                    op2,
+                    op1));
+            MaybeEmitCr1(op1);
         }
     }
 }
