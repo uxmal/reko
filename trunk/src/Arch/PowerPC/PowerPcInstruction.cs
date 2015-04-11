@@ -130,4 +130,29 @@ namespace Decompiler.Arch.PowerPC
             writer.WriteAddress("$" + Address.ToString(), Address);
         }
     }
+
+    public class ConditionOperand : MachineOperand
+    {
+        public uint condition;
+
+        public ConditionOperand(uint condition) : base(PrimitiveType.Byte)
+        {
+            this.condition = condition;
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            if (condition > 3)
+                writer.Write("cr{0}+", condition >> 2);
+            var s = "";
+            switch (condition & 3)
+            {
+            case 0: s = "lt"; break;
+            case 1: s = "gt"; break;
+            case 2: s = "eq"; break;
+            case 3: s = "so"; break;
+            }
+            writer.Write(s);
+        }
+    }
 }

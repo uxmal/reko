@@ -18,7 +18,10 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Operators;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -57,6 +60,56 @@ namespace Decompiler.Arch.PowerPC
             var ea = EffectiveAddress_r0(dasm.Current.op2, emitter);
             emitter.Assign(op1, emitter.Cast(PrimitiveType.Int32,
                 emitter.Load(PrimitiveType.Int16, ea)));
+        }
+
+        private void RewriteLvewx()
+        {
+            var vrt = RewriteOperand(instr.op1);
+            var ra = RewriteOperand(instr.op2, true);
+            var rb = RewriteOperand(instr.op3);
+            if (!ra.IsZero)
+            {
+                rb = emitter.IAdd(ra, rb);
+            }
+            emitter.Assign(
+                vrt,
+                PseudoProc(
+                    "__lvewx",
+                    PrimitiveType.Word128,
+                    rb));
+        }
+
+        private void RewriteStvewx()
+        {
+            var vrs = RewriteOperand(instr.op1);
+            var ra = RewriteOperand(instr.op2, true);
+            var rb = RewriteOperand(instr.op3);
+            if (!ra.IsZero)
+            {
+                rb = emitter.IAdd(ra, rb);
+            }
+            emitter.SideEffect(
+                PseudoProc(
+                    "__stvewx",
+                    PrimitiveType.Word128,
+                    vrs,
+                    rb));
+        }
+        private void RewriteLvsl()
+        {
+            var vrt = RewriteOperand(instr.op1);
+            var ra = RewriteOperand(instr.op2, true);
+            var rb = RewriteOperand(instr.op3);
+            if (!ra.IsZero)
+            {
+                rb = emitter.IAdd(ra, rb);
+            }
+            emitter.Assign(
+                vrt,
+                PseudoProc(
+                    "__lvsl",
+                    PrimitiveType.Word128,
+                    rb));
         }
 
         private void RewriteLwbrx()
@@ -173,6 +226,40 @@ namespace Decompiler.Arch.PowerPC
         private void RewriteSync()
         {
             emitter.SideEffect(PseudoProc("__sync", VoidType.Instance));
+        }
+
+        private void RewriteTw()
+        {
+            var c = (Constant) RewriteOperand(instr.op1);
+            var ra = RewriteOperand(instr.op2);
+            var rb = RewriteOperand(instr.op3);
+            Operator op = null;
+            switch (c.ToInt32())
+            {
+            case 0x01: op = Operator.Ugt; break;
+            case 0x02: op = Operator.Ult; break;
+            case 0x04: op = Operator.Eq; break;
+            case 0x05: op = Operator.Uge; break;
+            case 0x06: op = Operator.Ule; break;
+            case 0x08: op = Operator.Gt; break;
+            case 0x0C: op = Operator.Ge; break;
+            case 0x10: op = Operator.Lt; break;
+            case 0x14: op = Operator.Le; break;
+            case 0x18: op = Operator.Ne; break;
+            default: throw new AddressCorrelatedException(
+                instr.Address,
+                string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
+            }
+            emitter.If(
+                new BinaryExpression(
+                    op,
+                    PrimitiveType.Bool,
+                    ra, rb),
+                new RtlSideEffect(
+                    PseudoProc(
+                        "__trap",
+                        VoidType.Instance)));
+
         }
     }
 }

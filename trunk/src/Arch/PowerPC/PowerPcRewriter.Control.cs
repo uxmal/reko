@@ -20,7 +20,10 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +71,16 @@ namespace Decompiler.Arch.PowerPC
 
         private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
-            var cr = RewriteOperand(instr.op1);
+            var ccrOp = instr.op1 as RegisterOperand;
+            Expression cr;
+            if (ccrOp != null)
+            {
+                cr = RewriteOperand(instr.op1);
+            }
+            else 
+            {
+                cr = frame.EnsureRegister(arch.CrRegisters[0]);
+            }
             if (toLinkRegister)
             {
                 var dst = frame.EnsureRegister(arch.lr);
@@ -83,7 +95,7 @@ namespace Decompiler.Arch.PowerPC
             }
             else
             {
-                var dst = RewriteOperand(instr.op2);
+                var dst = RewriteOperand(ccrOp != null ? instr.op2 : instr.op1);
                 if (updateLinkregister)
                 {
                     emitter.If(emitter.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
@@ -92,6 +104,66 @@ namespace Decompiler.Arch.PowerPC
                 {
                     emitter.Branch(emitter.Test(cc, cr), (Address)dst, RtlClass.ConditionalTransfer);
                 }
+            }
+        }
+
+        private ConditionCode CcFromOperand(ConditionOperand ccOp)
+        {
+            switch (ccOp.condition & 3)
+            {
+            case 0: return ConditionCode.LT;
+            case 1: return ConditionCode.GT;
+            case 2: return ConditionCode.EQ;
+            case 3: return ConditionCode.OV;
+            default: throw new NotImplementedException();
+            }
+        }
+
+        private RegisterStorage CrFromOperand(ConditionOperand ccOp)
+        {
+            return arch.CrRegisters[(int)ccOp.condition >> 2];
+        }
+        
+        private void RewriteCtrBranch(bool updateLinkRegister, bool toLinkRegister, Operator decOp, bool ifSet)
+        {
+            var ctr = frame.EnsureRegister(arch.ctr);
+            var ccOp = instr.op1 as ConditionOperand;
+            Expression dest;
+
+            Expression cond = new BinaryExpression(
+                decOp, 
+                PrimitiveType.Bool,
+                ctr,
+                Constant.Zero(ctr.DataType));
+
+            if (ccOp != null)
+            {
+                Expression test = emitter.Test(
+                    CcFromOperand(ccOp),
+                    frame.EnsureRegister(CrFromOperand(ccOp)));
+                if (!ifSet)
+                    test = test.Invert();
+                cond = emitter.Cand(cond, test);
+                dest = RewriteOperand(instr.op2);
+            }
+            else
+            {
+                dest = RewriteOperand(instr.op1);
+            }
+            
+            emitter.Assign(ctr, emitter.ISub(ctr, 1));
+            if (updateLinkRegister)
+            {
+                emitter.If(
+                    cond,
+                    new RtlCall(dest, 0, RtlClass.ConditionalTransfer));
+            }
+            else
+            {
+                emitter.Branch(
+                    cond,
+                    (Address)dest,
+                    RtlClass.ConditionalTransfer);
             }
         }
 

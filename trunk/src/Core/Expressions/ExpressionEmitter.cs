@@ -55,7 +55,7 @@ namespace Decompiler.Core.Expressions
             return new UnaryExpression(UnaryOperator.AddrOf, PrimitiveType.Pointer32, e);
         }
 
-        public BinaryExpression And(Expression left, int right)
+        public BinaryExpression And(Expression left, ulong right)
         {
             return And(left, Constant.Create(left.DataType, right));
         }

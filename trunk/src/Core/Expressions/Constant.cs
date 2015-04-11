@@ -196,7 +196,7 @@ namespace Decompiler.Core.Expressions
 				PrimitiveType p = DataType as PrimitiveType;
 				if (p == null || p.Domain == Domain.Real)
 					return false; 
-				return Convert.ToInt64(GetValue()) == 0;
+				return ToInt64() == 0;
 			}
 		}
 
