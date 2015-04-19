@@ -43,7 +43,7 @@ namespace Decompiler.Arch.X86
             this.PointerType = pointerType;
         }
 
-        public virtual Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
+        public virtual Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return state.AddressFromSegOffset(seg, offset);
         }
@@ -69,6 +69,8 @@ namespace Decompiler.Arch.X86
             var ss = frame.EnsureRegister(Registers.ss);
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
+
+        public abstract Address MakeAddressFromConstant(Constant c);
 
         public abstract Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state);
 
@@ -98,13 +100,18 @@ namespace Decompiler.Arch.X86
 
         public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
             return new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
@@ -151,6 +158,11 @@ namespace Decompiler.Arch.X86
             throw new NotImplementedException();
         }
 
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
+        }
+
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
@@ -174,7 +186,12 @@ namespace Decompiler.Arch.X86
             get { return Registers.esp; }
         }
 
-        public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
+        }
+
+        public override Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return Address.Ptr32(offset);
         }
@@ -185,7 +202,7 @@ namespace Decompiler.Arch.X86
             IEnumerable<Address> knownAddresses,
             PointerScannerFlags flags)
         {
-            var knownLinaddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            var knownLinaddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new X86PointerScanner32(rdr, knownLinaddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
@@ -223,7 +240,12 @@ namespace Decompiler.Arch.X86
             get { return Registers.rsp; }
         }
 
-        public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr64(c.ToUInt64());
+        }
+
+        public override Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return Address.Ptr64(offset);
         }

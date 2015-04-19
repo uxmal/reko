@@ -68,6 +68,11 @@ namespace Decompiler.UnitTests.Scanning
                 return true;
             }
 
+            public Address MakeAddressFromConstant(Constant c)
+            {
+                return Address.Ptr32(c.ToUInt32());
+            }
+
             #endregion
 
         }
@@ -124,7 +129,7 @@ namespace Decompiler.UnitTests.Scanning
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x7))));
             Assert.AreSame(Registers.eax, bw.Index);
-            Assert.AreEqual(0x10000, bw.VectorAddress.Linear);
+            Assert.AreEqual(0x10000ul, bw.VectorAddress.ToLinear());
             Assert.AreEqual("cmp 8", bw.Operations[0].ToString());
         }
 

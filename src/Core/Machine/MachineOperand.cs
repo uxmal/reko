@@ -109,7 +109,7 @@ namespace Decompiler.Core.Machine
             var s = FormatValue(value);
             var pt = value.DataType as PrimitiveType;
             if (pt != null && pt.Domain == Domain.Pointer)
-                writer.WriteAddress(s, Address.FromConstant(value));
+                writer.WriteAddress(s, Address.FromConstant(value));    //$TODO: add WriteAddress(string, Constant) to MachineINstructionWriter
             else if (value.DataType is Pointer)
                 writer.WriteAddress(s, Address.FromConstant(value));
             else 

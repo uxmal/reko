@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Typing
         {
             mr = new MockRepository();
             arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<LoadedImage, uint, ImageReader>((i, o) => i.CreateLeReader(o)));
+            arch.Stub(a => a.CreateImageReader(null, 0u)).IgnoreArguments().Do(new Func<LoadedImage, ulong, ImageReader>((i, o) => i.CreateLeReader(o)));
             arch.Replay();
             globalStruct = new StructureType
             {

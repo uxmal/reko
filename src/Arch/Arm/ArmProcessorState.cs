@@ -76,7 +76,7 @@ namespace Decompiler.Arch.Arm
 
         public override void SetInstructionPointer(Address addr)
         {
-            regData[A32Registers.pc.Number] = addr.Linear;
+            regData[A32Registers.pc.Number] = addr.ToUInt32();
             isValid |= 1u << A32Registers.pc.Number;
         }
 

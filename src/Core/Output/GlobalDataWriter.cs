@@ -53,7 +53,7 @@ namespace Decompiler.Core.Output
             foreach (var field in globals.Fields)
             {
                 var name = string.Format("g_{0:X}", field.Name);
-                var addr = new Address((uint) field.Offset);
+                var addr = Address.Ptr32((uint) field.Offset);  //$BUG: this is completely wrong; offsets should be as wide as the platform permits.
                 try
                 {
                     tw.WriteDeclaration(field.DataType, name);

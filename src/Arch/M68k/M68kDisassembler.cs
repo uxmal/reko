@@ -79,7 +79,7 @@ namespace Decompiler.Arch.M68k
                 return null;
             }
             instr.Address = addr;
-            instr.Length = rdr.Address - addr;
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -1346,7 +1346,7 @@ namespace Decompiler.Arch.M68k
         private static M68kInstruction d68020_cpbcc_16(M68kDisassembler dasm)
         {
             uint extension;
-            uint new_pc = dasm.rdr.Address.Linear;
+            uint new_pc =  dasm.rdr.Address.ToUInt32();
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
             new_pc = ((uint)(new_pc + make_int_16(dasm.read_imm_16())));
@@ -1357,7 +1357,7 @@ namespace Decompiler.Arch.M68k
         private static M68kInstruction d68020_cpbcc_32(M68kDisassembler dasm)
         {
             uint extension;
-            uint new_pc = dasm.rdr.Address.Linear;
+            uint new_pc = dasm.rdr.Address.ToUInt32();
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
             new_pc += dasm.read_imm_32();
@@ -1369,7 +1369,7 @@ namespace Decompiler.Arch.M68k
         {
             uint extension1;
             uint extension2;
-            uint new_pc = dasm.rdr.Address.Linear;
+            uint new_pc = dasm.rdr.Address.ToUInt32();
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension1 = dasm.read_imm_16();
             extension2 = dasm.read_imm_16();
@@ -2803,21 +2803,21 @@ namespace Decompiler.Arch.M68k
 
         private static M68kInstruction d68851_pbcc16(M68kDisassembler dasm)
         {
-            uint temp_pc = dasm.rdr.Address.Linear;
+            uint temp_pc = dasm.rdr.Address.ToUInt32();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[dasm.instruction & 0xf], temp_pc + make_int_16(dasm.read_imm_16()));
             throw new NotImplementedException();
         }
 
         private static M68kInstruction d68851_pbcc32(M68kDisassembler dasm)
         {
-            uint temp_pc = dasm.rdr.Address.Linear;
+            uint temp_pc = dasm.rdr.Address.ToUInt32();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[dasm.instruction & 0xf], temp_pc + make_int_32(dasm. read_imm_32()));
             throw new NotImplementedException();
         }
 
         private static M68kInstruction d68851_pdbcc(M68kDisassembler dasm)
         {
-            uint temp_pc = dasm.rdr.Address.Linear;
+            uint temp_pc = dasm.rdr.Address.ToUInt32();
             ushort modes = dasm.read_imm_16();
             dasm.g_dasm_str = string.Format("pb{0} %x", g_mmucond[modes & 0xf], temp_pc + make_int_16(dasm.read_imm_16()));
             throw new NotImplementedException();

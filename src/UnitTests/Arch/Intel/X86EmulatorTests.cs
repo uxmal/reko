@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             
             emu = new X86Emulator(arch, program.Image, win32);
             emu.InstructionPointer = program.Image.BaseAddress;
-            emu.WriteRegister(Registers.esp, program.Image.BaseAddress.Linear + 0x0FFC);
+            emu.WriteRegister(Registers.esp, (uint)program.Image.BaseAddress.ToLinear() + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };
         }
 
@@ -283,7 +283,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
                 m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
             });
-            emu.WriteRegister(Registers.esp, image.BaseAddress.Linear + 0x24u);
+            emu.WriteRegister(Registers.esp, (uint)image.BaseAddress.ToLinear() + 0x24u);
 
             emu.Start();
 

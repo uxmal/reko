@@ -28,8 +28,8 @@ namespace Decompiler.Analysis
 {
 	public class SsaIdentifierCollection : IEnumerable<SsaIdentifier>
 	{
-        private Dictionary<Expression, SsaIdentifier> sids =
-            new Dictionary<Expression, SsaIdentifier>(new ExpressionValueComparer());
+        private Dictionary<Identifier, SsaIdentifier> sids =
+            new Dictionary<Identifier, SsaIdentifier>();
 
 		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
@@ -75,7 +75,7 @@ namespace Decompiler.Analysis
         {
             return GetEnumerator();
         }
-        //$TODO: this is much better implemented as a hash table.
+        
         public bool TryGetValue(Identifier id, out SsaIdentifier sid)
         {
             return sids.TryGetValue(id, out sid);
@@ -116,6 +116,5 @@ namespace Decompiler.Analysis
             else 
                 return new StackArgumentStorage(offset, e.DataType);
         }
-
     }
 }

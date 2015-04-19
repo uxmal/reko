@@ -955,7 +955,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 else
                 {
-                    rulong ip = Debugger.InstructionPointer.Linear;
+                    rulong ip = Debugger.InstructionPointer.ToLinear();
                     uint it;
                     if (bpjumps.TryGetValue(ip, out it))
                     {
@@ -1413,7 +1413,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     else
                     {
                         byte[] buffer = new byte[STRING_READSIZE];
-                        if (Host.Image.TryReadBytes((uint)(src - Host.Image.BaseAddress.Linear), buffer.Length, buffer))
+                        if (Host.Image.TryReadBytes((uint)(src - Host.Image.BaseAddress.ToLinear()), buffer.Length, buffer))
                         {
                             buffer[buffer.Length - 1] = 0;
                             value = Encoding.UTF8.GetString(buffer);

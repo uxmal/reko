@@ -12,6 +12,8 @@
  */
 
 using System;
+using word = System.UInt16;
+
 partial class makedsig
 {
 /* Private data structures */
@@ -51,46 +53,21 @@ hashParams(int _NumEntry, int _EntryLen, int _SetSize, char _SetMin,
     NumVert  = _NumVert;
 
     /* Allocate the variable sized tables etc */
-    if ((T1base = (word *)malloc(EntryLen * SetSize * sizeof(word))) == 0)
-    {
-        goto BadAlloc;
-    }
-    if ((T2base = (word *)malloc(EntryLen * SetSize * sizeof(word))) == 0)
-    {
-        goto BadAlloc;
-    }
-
-    if ((graphNode = (int *)malloc((NumEntry*2 + 1) * sizeof(int))) == 0)
-    {
-        goto BadAlloc;
-    }
-    if ((graphNext = (int *)malloc((NumEntry*2 + 1) * sizeof(int))) == 0)
-    {
-        goto BadAlloc;
-    }
-    if ((graphFirst = (int *)malloc((NumVert + 1) * sizeof(int))) == 0)
-    {
-        goto BadAlloc;
-    }
-
-    if ((g = (short *)malloc((NumVert+1) * sizeof(short))) == 0)
-    {
-        goto BadAlloc;
-    }
-    if ((visited = (bool *)malloc((NumVert+1) * sizeof(bool))) == 0)
-    {
-        goto BadAlloc;
-    }
-    if ((deleted = (bool *)malloc((NumEntry+1) * sizeof(bool))) == 0)
-    {
-        goto BadAlloc;
-    }
+    try {
+        T1base = new word[EntryLen * SetSize];
+    T2base = new word [EntryLen * SetSize];     
+    graphNode = new int [(NumEntry*2 + 1)];
+    graphNext = new int[(NumEntry*2 + 1)];
+    graphFirst = new int[(NumVert + 1)];  
+    g =       new short [(NumVert+1)];     
+    visited = new bool [(NumVert+1)];      
+    deleted = new bool [(NumEntry+1)];     
     return;
-
-BadAlloc:
-    printf("Could not allocate memory\n");
+    } catch {
+        Console.WriteLine("Could not allocate memory.");
     hashCleanup();
-    exit(1);
+    throw;
+    }
 }
 
 void
@@ -107,12 +84,17 @@ hashCleanup()
     //if (deleted) free(deleted);
 }
 
-void map()
+    void map()
+{
+    map(new Random());
+}
+
+void map(Random rand)
 {
     int i, j, c;
     ushort f1, f2;
     bool cycle;
-    byte *keys;
+    byte []keys;
 
     c = 0;
 
@@ -124,14 +106,14 @@ void map()
         /* Randomly generate T1 and T2 */
         for (i=0; i < SetSize*EntryLen; i++)
         {
-            T1base[i] = rand() % NumVert;
-            T2base[i] = rand() % NumVert;
+            T1base[i] = (word)rand.Next(NumVert);
+            T2base[i] = (word)rand.Next(NumVert);
         }
 
         for (i=0; i < NumEntry; i++)
         {
             f1 = 0; f2 = 0;
-            getKey(i, &keys);
+            getKey(i, out keys);
             for (j=0; j < EntryLen; j++)
             {
                 T1 = T1base + j * SetSize;
@@ -159,7 +141,7 @@ void map()
             break;
         }
     }
-    while (/* there is a cycle */ 1);
+    while (/* there is a cycle */ true);
 
 }
 
@@ -209,24 +191,24 @@ bool DFS(int parentE, int v)
         cycles. parent and v are origin 1. Note parent is an EDGE,
         not a vertex */
 
-    visited[v] = TRUE;
+    visited[v] = true;
 
     /* For each e incident with v .. */
     for (e = graphFirst[v]; e != 0; e = graphNext[NumEntry+e])
     {
-        byte *key1;
+        byte []key1;
         
-		if (deleted[abs(e)])
+		if (deleted[Math.Abs(e)])
         {
             /* A deleted key. Just ignore it */
             continue;
         }
-        getKey(abs(e)-1, &key1);
+        getKey(Math.Abs(e)-1, out key1);
         w = graphNode[NumEntry+e];
         if (visited[w])
         {
             /* Did we just come through this edge? If so, ignore it. */
-            if (abs(e) != abs(parentE))
+            if (Math.Abs(e) != Math.Abs(parentE))
             {
                 /* There is a cycle in the graph. There is some subtle code here
                     to work around the distinct possibility that there may be
@@ -287,25 +269,24 @@ bool DFS(int parentE, int v)
             if (DFS(e, w))
             {
                 /* Cycle found deeper down. Exit */
-                return TRUE;
+                return true;
             }
         }
     }
-    return FALSE;
+    return false;
 }
 
-static bool
-isCycle(void)
+static bool isCycle()
 {
     int v, e;
 
     for (v=1; v <= NumVert; v++)
     {
-        visited[v] = FALSE;
+        visited[v] = false;
     }
     for (e=1; e <= NumEntry; e++)
     {
-        deleted[e] = FALSE;
+        deleted[e] = false;
     }
     for (v=1; v <= NumVert; v++)
     {
@@ -313,11 +294,11 @@ isCycle(void)
         {
             if (DFS(-32767, v))
             {
-                return TRUE;
+                return true;
             }
         }
     }
-    return FALSE;
+    return false;
 }
 
 void
@@ -325,15 +306,15 @@ traverse(int u)
 {
     int w, e;
 
-    visited[u] = TRUE;
+    visited[u] = true;
     /* Find w, the neighbours of u, by searching the edges e associated with u */
     e = graphFirst[1+u];
-    while (e)
+    while (e!=0)
     {
         w = graphNode[NumEntry+e]-1;
         if (!visited[w])
         {
-            g[w] = (abs(e)-1 - g[u]) % NumEntry;
+            g[w] = (Math.Abs(e)-1 - g[u]) % NumEntry;
             if (g[w] < 0) g[w] += NumEntry;     /* Keep these positive */
             traverse(w);
         }
@@ -343,7 +324,7 @@ traverse(int u)
 }
 
 void
-assign(void)
+assign()
 {
     int v;
 
@@ -351,7 +332,7 @@ assign(void)
     for (v=0; v < NumVert; v++)
     {
         g[v] = 0;                           /* g is sparse; leave the gaps 0 */
-        visited[v] = FALSE;
+        visited[v] = false;
     }
 
     for (v=0; v < NumVert; v++)
@@ -365,7 +346,7 @@ assign(void)
 }
 
 int
-hash(byte *str)
+hash(byte []str)
 {
     word u, v;
     int  j;
@@ -376,7 +357,7 @@ hash(byte *str)
         T1 = T1base + j * SetSize;
         u += T1[str[j] - SetMin];
     }
-    u %= NumVert;
+    u %= (ushort) NumVert;
 
     v = 0;
     for (j=0; j < EntryLen; j++)
@@ -389,25 +370,25 @@ hash(byte *str)
     return (g[u] + g[v]) % NumEntry;
 }
 
-word *
+word []
 readT1()
 {
     return T1base;
 }
 
-word *
-readT2(void)
+word []
+readT2()
 {
     return T2base;
 }
 
-word *
-readG(void)
+word []
+readG()
 {
     return (word *)g;
 }
 
-#if 0
+#if NEVER
 void dispRecord(int i);
 
 void

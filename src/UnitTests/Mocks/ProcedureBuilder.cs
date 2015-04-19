@@ -124,23 +124,23 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-        public Statement Call(string procedureName)
+        public Statement Call(string procedureName, int retSizeOnStack)
         {
-            var ci = new CallInstruction(Constant.Invalid, new CallSite(4, 0));  //$REVIEW: hard-wired 4-byte pointer.
+            var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0)); 
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
             return Emit(ci);
         }
 
-        public Statement Call(ProcedureBase callee)
+        public Statement Call(ProcedureBase callee, int retSizeOnStack)
         {
             ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
-            CallInstruction ci = new CallInstruction(c, new CallSite(4, 0));     //$REVIEW: hard-wired 4-byte pointer.
+            CallInstruction ci = new CallInstruction(c, new CallSite(retSizeOnStack, 0));  
             return Emit(ci);
         }
 
-        public Statement Call(Expression e)
+        public Statement Call(Expression e, int retSizeOnstack)
         {
-            CallInstruction ci = new CallInstruction(e, new CallSite(4, 0));     //$REVIEW: hard-wired 4-byte pointer.
+            CallInstruction ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
             return Emit(ci);
         }
 

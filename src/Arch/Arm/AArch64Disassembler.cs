@@ -46,7 +46,7 @@ namespace Decompiler.Arch.Arm
             uint opcode = rdr.ReadLeUInt32();
             instr = oprecs[(opcode >> 25) & 0xF].Decode(this, opcode);
             instr.Address = addr;
-            instr.Length = rdr.Address - addr;
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -499,7 +499,7 @@ namespace Decompiler.Arch.Arm
             uint opcode = rdr.ReadLeUInt32();
             instr = oprecs[(opcode >> 24) & 0xFF].Decode(this, opcode);
             instr.Address = addr;
-            instr.Length = rdr.Address - addr;
+            instr.Length = (int)(rdr.Address - addr);   //$REFACTOR: this happens in all disassemblers, common code oppo?
             return instr;
         }
 

@@ -143,6 +143,7 @@ namespace Decompiler.ImageLoaders.Elf
         private byte fileVersion;
         private byte osAbi;
         private IProcessorArchitecture arch;
+        private Platform platform;
         private Address addrPreferred;
         private LoadedImage image;
         private ImageMap imageMap;
@@ -167,6 +168,7 @@ namespace Decompiler.ImageLoaders.Elf
         {
             LoadElfIdentification();
             LoadHeader();
+            this.platform = CreatePlatform(osAbi);
             LoadProgramHeaderTable();
 
             LoadSectionHeaders();
@@ -227,19 +229,18 @@ namespace Decompiler.ImageLoaders.Elf
 
         private Program LoadImageBytes(Address addrPreferred, Address addrMax)
         {
-            //$TODO: 64-bit version.
             var bytes = new byte[addrMax - addrPreferred];
-            var v_base = addrPreferred.Linear;
+            var v_base = addrPreferred.ToLinear();
+            this.image = new LoadedImage(addrPreferred, bytes);
+            this.imageMap = image.CreateImageMap();
+
             if (fileClass == ELFCLASS64)
             {
                 foreach (var ph in ProgramHeaders64)
                 {
                     if (ph.p_vaddr > 0 && ph.p_filesz > 0)
-                        Array.Copy(RawImage, (long)ph.p_offset, bytes, (long) (ph.p_vaddr - v_base), (long)ph.p_filesz);
+                        Array.Copy(RawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
                 }
-                this.image = new LoadedImage(addrPreferred, bytes);
-                this.imageMap = image.CreateImageMap();
-
                 foreach (var segment in SectionHeaders64)
                 {
                     if (segment.sh_name == 0 || segment.sh_addr == 0)
@@ -249,7 +250,10 @@ namespace Decompiler.ImageLoaders.Elf
                         mode |= AccessMode.Write;
                     if ((segment.sh_flags & SHF_EXECINSTR) != 0)
                         mode |= AccessMode.Execute;
-                    var seg = imageMap.AddSegment(Address.Ptr64(segment.sh_addr), GetSectionName(segment.sh_name), mode);
+                    var seg = imageMap.AddSegment(
+                        platform.MakeAddressFromLinear(segment.sh_addr), 
+                        GetSectionName(segment.sh_name),
+                        mode);
                     seg.Renderer = CreateRenderer64(segment);
                 }
             }
@@ -258,11 +262,8 @@ namespace Decompiler.ImageLoaders.Elf
                 foreach (var ph in ProgramHeaders)
                 {
                     if (ph.p_vaddr > 0 && ph.p_filesz > 0)
-                        Array.Copy(RawImage, ph.p_offset, bytes, ph.p_vaddr - v_base, ph.p_filesz);
+                        Array.Copy(RawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
                 }
-                this.image = new LoadedImage(addrPreferred, bytes);
-                this.imageMap = image.CreateImageMap();
-
                 foreach (var segment in SectionHeaders)
                 {
                     if (segment.sh_name == 0 || segment.sh_addr == 0)
@@ -281,27 +282,28 @@ namespace Decompiler.ImageLoaders.Elf
                 this.image,
                 this.imageMap,
                 this.arch,
-                CreatePlatform());
+                this.platform);
             importReferences = program.ImportReferences;
             return program;
         }
 
-        public Platform CreatePlatform()
+        public Platform CreatePlatform(byte osAbi)
         {
-            DefaultPlatform platform;
+            DefaultPlatform defaultPlatform;
+            var dcSvc = Services.RequireService<IDecompilerConfigurationService>();
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
-                platform = new DefaultPlatform(Services, arch);
-                platform.TypeLibraries.AddRange(LoadTypeLibraries());
-                return platform;
+                defaultPlatform = new DefaultPlatform(Services, arch);
+                defaultPlatform.TypeLibraries.AddRange(LoadTypeLibraries());
+                return defaultPlatform;
             case ELFOSABI_CELL_LV2: // PS/3
                 //$TODO: I know nothing about that platform, so use
                 // defaults. If you think you know better, and you think
                 // the platform differs by a significant amount, 
                 // implement a PS/3 platform and use it here.
-                platform = new DefaultPlatform(Services, arch);
-                platform.TypeLibraries.AddRange(LoadTypeLibraries());
+                var env = dcSvc.GetEnvironment("elf-cell-lv2");
+                var platform = env.Load(Services, arch);
                 return platform;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
@@ -322,7 +324,6 @@ namespace Decompiler.ImageLoaders.Elf
                     .Where(tl => tl.Architecture == "ppc32")
                     .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
                     .Where(tl => tl != null);
-
         }
 
         private ImageMapSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
@@ -406,10 +407,10 @@ namespace Decompiler.ImageLoaders.Elf
         {
             if (fileClass == ELFCLASS64)
             {
-                return Address.Ptr64(
-                    ProgramHeaders64
+                ulong uBaseAddr = ProgramHeaders64
                     .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    .Min(ph => ph.p_vaddr));
+                    .Min(ph => ph.p_vaddr);
+                return platform.MakeAddressFromLinear(uBaseAddr);
             }
             else
             {
@@ -424,11 +425,12 @@ namespace Decompiler.ImageLoaders.Elf
         {
             if (fileClass == ELFCLASS64)
             {
-                return Address.Ptr64(
+                ulong uMaxAddress = 
                     ProgramHeaders64
                     .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
                     .Select(ph => ph.p_vaddr + ph.p_pmemsz)
-                    .Max());
+                    .Max();
+                return platform.MakeAddressFromLinear(uMaxAddress);
             }
             else
             {
@@ -600,10 +602,12 @@ namespace Decompiler.ImageLoaders.Elf
                 throw new InvalidOperationException(); // No file loaded
             List<EntryPoint> entryPoints = new List<EntryPoint>();
             RelocationDictionary relocations = new RelocationDictionary();
-            if (fileClass == ELFCLASS64)
-                entryPoints.Add(new EntryPoint(Address.Ptr64(Header64.e_entry), arch.CreateProcessorState()));
-            else
-                entryPoints.Add(new EntryPoint(Address.Ptr32(Header32.e_entry), arch.CreateProcessorState()));
+            var addrEntry = GetEntryPointAddress();
+            if (addrEntry != null)
+            {
+                var ep = new EntryPoint(addrEntry, arch.CreateProcessorState());
+                entryPoints.Add(ep);
+            }
             if (fileClass == ELFCLASS64)
             {
                 if (Header64.e_machine == EM_PPC64)
@@ -629,6 +633,34 @@ namespace Decompiler.ImageLoaders.Elf
                 }
             }
             return new RelocationResults(entryPoints, relocations);
+        }
+
+        private Address GetEntryPointAddress()
+        {
+            Address addr = null;
+            if (fileClass == ELFCLASS64)
+            {
+                //$REVIEW: should really have a subclassed "Ps3ElfLoader"
+                if (osAbi == ELFOSABI_CELL_LV2)
+                {
+                    // The Header64.e_entry field actually points to a 
+                    // "function descriptor" consisiting of two 32-bit 
+                    // pointers.
+                    var rdr = CreateReader(Header64.e_entry-image.BaseAddress.ToLinear());
+                    uint uAddr;
+                    if (rdr.TryReadUInt32(out uAddr))
+                        addr = Address.Ptr32(uAddr);
+                }
+                else
+                {
+                    addr = Address.Ptr64(Header64.e_entry);
+                }
+            }
+            else
+            {
+                addr = Address.Ptr32(Header32.e_entry);
+            }
+            return addr;
         }
 
         private void RelocateI386()

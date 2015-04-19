@@ -74,7 +74,7 @@ namespace Decompiler.Arch.Mips
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
@@ -119,6 +119,11 @@ namespace Decompiler.Arch.Mips
         public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

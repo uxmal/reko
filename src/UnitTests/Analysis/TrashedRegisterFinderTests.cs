@@ -263,7 +263,7 @@ namespace Decompiler.UnitTests.Analysis
         public void TrfCallInstruction()
         {
             var callee = new Procedure("Callee", prog.Architecture.CreateFrame());
-            var stm = m.Call(callee);
+            var stm = m.Call(callee, 4);
             var pf = new ProcedureFlow(callee, prog.Architecture);
             pf.TrashedRegisters[Registers.ebx.Number] = true;
             flow[callee] = pf;
@@ -433,7 +433,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             var eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
             m.Assign(eax, m.Word32(0x40));
-            m.Call(exit);
+            m.Call(exit, 4);
 
             flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
             flow[exit] = new ProcedureFlow(exit, prog.Architecture);
@@ -451,7 +451,7 @@ namespace Decompiler.UnitTests.Analysis
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var tmp = m.Local32("tmp");
                 m.Assign(tmp, eax);
-                m.Call("TrashEaxEbx");
+                m.Call("TrashEaxEbx", 4);
                 m.Assign(eax, tmp);     // eax is preserved!
                 m.Return();
             });

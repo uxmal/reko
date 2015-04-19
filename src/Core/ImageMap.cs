@@ -68,7 +68,7 @@ namespace Decompiler.Core
             }
             else
             {
-                int delta = addr - item.Address;
+                long delta = addr - item.Address;
                 Debug.Assert(delta >= 0, "TryFindItem is supposed to find a block whose address is <= the supplied address");
                 if (delta > 0)
                 {
@@ -110,7 +110,7 @@ namespace Decompiler.Core
             {
                 throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));
             }
-            int delta = addr - item.Address;
+            long delta = addr - item.Address;
             Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
             if (delta > 0)
             {
@@ -123,7 +123,7 @@ namespace Decompiler.Core
                 };
 
                 item.Size = (uint) delta;
-                item.DataType = ChopAfter(item.DataType, delta);      // Shrink the existing mofo.
+                item.DataType = ChopAfter(item.DataType, (int)delta);      // Shrink the existing mofo.
 
                 items.Add(addr, itemNew);
                 items.Add(itemAfter.Address, itemAfter);
@@ -165,7 +165,7 @@ namespace Decompiler.Core
             ImageMapItem item;
             if (!TryFindItem(addr, out item))
                 return;
-            int delta = addr - item.Address;
+            long delta = addr - item.Address;
             if (delta == 0)
                 return;
             
@@ -188,7 +188,7 @@ namespace Decompiler.Core
                 MapChanged.Fire(this);
                 return segNew;
 			}
-			int delta = addr - seg.Address;
+			long delta = addr - seg.Address;
 			Debug.Assert(delta >= 0);
 			if (delta > 0)
 			{
@@ -276,6 +276,8 @@ namespace Decompiler.Core
                 linearAddress));
 		}
 
+        public ImageMapSegmentRenderer Renderer { get; set; }
+
 		public Map<Address, ImageMapItem> Items
 		{
 			get { return items; }
@@ -292,7 +294,7 @@ namespace Decompiler.Core
 		{
 			public virtual int Compare(Address a, Address b)
 			{
-                return a - b;
+                return a.ToLinear().CompareTo(b.ToLinear());
 			}
 		}
 

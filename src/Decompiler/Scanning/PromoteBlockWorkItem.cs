@@ -123,7 +123,7 @@ namespace Decompiler.Scanning
         {
             return inboundBlock.Address != null
                 ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : new Address(0);
+                : Address.Ptr32(0); //$BUGBUG: use platform to create null pointer.
         }
 
         public void FixOutboundEdges(Block block)

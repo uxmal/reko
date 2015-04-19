@@ -128,14 +128,14 @@ namespace Decompiler.Assemblers.Pdp11
             case AddressMode.RegDef:
                 break;
             case AddressMode.Immediate:
-                emitter.EmitLeUInt16((int) BaseAddress.Linear + op.Offset);
+                emitter.EmitLeUInt16((int) BaseAddress.ToLinear() + op.Offset);
                 if (op.Symbol != null)
                 {
                     ReferToSymbol(op.Symbol, emitter.Length - 2, PrimitiveType.Word16);
                 }
                 break;
             case AddressMode.Absolute:
-                emitter.EmitLeUInt16((int) BaseAddress.Linear);
+                emitter.EmitLeUInt16((int) BaseAddress.ToLinear());
                 if (op.Symbol != null)
                 {
                     ReferToSymbol(op.Symbol, emitter.Length - 2, PrimitiveType.Word16);

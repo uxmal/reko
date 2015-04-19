@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Fragments
             var ds = Local(PrimitiveType.SegmentSelector, "ds");
             var bx = Local16("bx");
             Assign(bx, SegMemW(ds, Word16(0x2040)));
-            Call(Seq(Constant.Create(PrimitiveType.SegmentSelector, 0x2700), bx));
+            Call(Seq(Constant.Create(PrimitiveType.SegmentSelector, 0x2700), bx), 4);
             Return();
         }
     }

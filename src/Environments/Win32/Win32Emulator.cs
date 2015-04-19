@@ -123,7 +123,7 @@ namespace Decompiler.Environments.Win32
             // M[Esp] is return address.
             // M[Esp + 4] is pointer to DLL name.
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
-            uint pstrLibName = img.ReadLeUInt32(esp + 4u - img.BaseAddress.Linear);
+            uint pstrLibName = img.ReadLeUInt32(esp + 4u - img.BaseAddress.ToUInt32());
             string szLibName = ReadMbString(img, pstrLibName);
             Module module = EnsureModule(szLibName);
             emulator.WriteRegister(Registers.eax, module.Handle);
@@ -138,8 +138,8 @@ namespace Decompiler.Environments.Win32
             // M[esp + 4] is hmodule
             // M[esp + 4] is pointer to function name
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
-            uint hmodule = img.ReadLeUInt32(esp + 4u - img.BaseAddress.Linear);
-            uint pstrFnName = img.ReadLeUInt32(esp + 8u - img.BaseAddress.Linear);
+            uint hmodule = img.ReadLeUInt32(esp + 4u - img.BaseAddress.ToUInt32());
+            uint pstrFnName = img.ReadLeUInt32(esp + 8u - img.BaseAddress.ToUInt32());
             if ((pstrFnName & 0xFFFF0000) != 0)
             {
                 string importName = ReadMbString(img, pstrFnName);
@@ -163,10 +163,10 @@ namespace Decompiler.Environments.Win32
         void VirtualProtect(IProcessorEmulator emulator)
         {
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
-            uint arg1 = img.ReadLeUInt32(esp + 4u - img.BaseAddress.Linear);
-            uint arg2 = img.ReadLeUInt32(esp + 8u - img.BaseAddress.Linear);
-            uint arg3 = img.ReadLeUInt32(esp + 12u - img.BaseAddress.Linear);
-            uint arg4 = img.ReadLeUInt32(esp + 16u - img.BaseAddress.Linear);
+            uint arg1 = img.ReadLeUInt32(esp + 4u -  img.BaseAddress.ToUInt32());
+            uint arg2 = img.ReadLeUInt32(esp + 8u -  img.BaseAddress.ToUInt32());
+            uint arg3 = img.ReadLeUInt32(esp + 12u - img.BaseAddress.ToUInt32());
+            uint arg4 = img.ReadLeUInt32(esp + 16u - img.BaseAddress.ToUInt32());
             Debug.Print("VirtualProtect({0:X8},{1:X8},{2:X8},{3:X8})", arg1, arg2, arg3, arg4);
 
             emulator.WriteRegister(Registers.eax, 1u);
@@ -180,7 +180,7 @@ namespace Decompiler.Environments.Win32
 
         private string ReadMbString(LoadedImage img, TWord pstrLibName)
         {
-            int iStart = (int)(pstrLibName - img.BaseAddress.Linear);
+            int iStart = (int)(pstrLibName - img.BaseAddress.ToLinear());
             int i = iStart;
             for (i = iStart; img.Bytes[i] != 0; ++i)
             {

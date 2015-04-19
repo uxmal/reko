@@ -129,7 +129,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
             if (range.Begin == null || range.End == null)
                 return;
-            if (range.Begin.Linear == range.End.Linear)       //$REFACTOR: make bytespan a method of addressrange.
+            if (range.Begin.ToLinear() == range.End.ToLinear())       //$REFACTOR: make bytespan a method of addressrange.
             {
                 sbSvc.SetText(string.Format("[{0}]", range.Begin));
             }

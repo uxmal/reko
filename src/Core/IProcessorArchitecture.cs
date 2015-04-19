@@ -93,7 +93,7 @@ namespace Decompiler.Core
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
         /// <returns>An imagereader of the appropriate endianness</returns>
-        ImageReader CreateImageReader(LoadedImage img, uint off);
+        ImageReader CreateImageReader(LoadedImage img, ulong off);
 
         /// <summary>
         /// Creates a procedure serializer that understands the calling conventions used on this
@@ -147,5 +147,7 @@ namespace Decompiler.Core
         /// <param name="addr"></param>
         /// <returns></returns>
         bool TryParseAddress(string txtAddr, out Address addr);
+
+        Address MakeAddressFromConstant(Constant c);
     }
 }

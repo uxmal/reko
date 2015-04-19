@@ -122,7 +122,5 @@ namespace Decompiler.Core.Configuration
                 handler = new UiPreferencesSectionHandler();
             return handler.GetPreferences();
         }
-
-
     }
 }

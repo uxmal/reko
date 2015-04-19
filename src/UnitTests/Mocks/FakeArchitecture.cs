@@ -110,7 +110,7 @@ namespace Decompiler.UnitTests.Mocks
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -218,6 +218,11 @@ namespace Decompiler.UnitTests.Mocks
 
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
         public RegisterStorage StackRegister { get { return GetRegister(FakeArchitecture.iStackRegister); } }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
+        }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {

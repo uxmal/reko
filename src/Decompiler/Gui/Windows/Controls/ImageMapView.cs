@@ -147,7 +147,7 @@ namespace Decompiler.Gui.Windows.Controls
             ImageMapItem item;
             if (imageMap == null ||image == null)
                 return brBack;
-            var lin = image.BaseAddress.Linear + (uint) cbOffset;
+            var lin = (image.BaseAddress + cbOffset).ToLinear();
             if (!image.IsValidLinearAddress(lin))
                 return brBack;
             var address = imageMap.MapLinearAddressToAddress(lin);
@@ -257,7 +257,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             if (image == null || imageMap == null)
                 return null;
-            return  imageMap.MapLinearAddressToAddress( image.BaseAddress.Linear + (uint)((x - CxScroll) * granularity + offset));
+            return  imageMap.MapLinearAddressToAddress( image.BaseAddress.ToLinear() + (ulong)((x - CxScroll) * granularity + offset));
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

@@ -145,16 +145,16 @@ namespace Decompiler.Core.Output
 
         public void VisitAddress(Address addr)
         {
-            if (addr.Selector == 0)
+            if (addr.IsNull)
             {
-                if (addr.Offset == 0)
-                    WriteNull();
-                else 
-                    writer.Write("0x{0:X8}", addr.Offset);
+                WriteNull();
             }
             else
             {
-                writer.Write(addr.ToString());
+                var s = addr.ToString();
+                if (!s.Contains(':'))
+                    s = string.Format("0x{0}", s);
+                writer.Write(s);
             }
         }
 

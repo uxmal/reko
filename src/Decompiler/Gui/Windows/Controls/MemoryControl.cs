@@ -151,7 +151,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             if (addr == null || TopAddress == null)
                 return Point.Empty;
-            int cbOffset = addr - TopAddress;
+            int cbOffset = (int)(addr - TopAddress);
             int yRow = cbOffset / (int)cbRow;
             if (yTopRow <= yRow && yRow < yTopRow + cyPage)
             {
@@ -165,7 +165,7 @@ namespace Decompiler.Gui.Windows.Controls
 		{
 			if (addr == null || TopAddress == null)
 				return false;
-			int cbOffset = addr - TopAddress;
+			int cbOffset = (int)(addr - TopAddress);
 			int yRow = cbOffset / (int)cbRow;
 			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
 		}
@@ -174,7 +174,7 @@ namespace Decompiler.Gui.Windows.Controls
 		{
             if (SelectedAddress == null)
                 return;
-            uint linAddr = (uint)(SelectedAddress.Linear + offset);
+            ulong linAddr = (ulong)((long)SelectedAddress.ToLinear() + offset);
             if (!image.IsValidLinearAddress(linAddr))
                 return;
             Address addr = imageMap.MapLinearAddressToAddress(linAddr);
@@ -323,9 +323,9 @@ namespace Decompiler.Gui.Windows.Controls
         {
             if (addr == null || addrAnchor == null || addrSelected == null)
                 return false;
-            var linAddr = addr.Linear;
-            var linAnch = addrAnchor.Linear;
-            var linSel = addrSelected.Linear;
+            var linAddr = addr.ToLinear();
+            var linAnch = addrAnchor.ToLinear();
+            var linSel = addrSelected.ToLinear();
             if (linAnch <= linSel)
             {
                 return linAnch <= linAddr && linAddr <= linSel;
@@ -404,7 +404,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		private Address RoundToNearestRow(Address addr)
 		{
-			uint rows = addr.Linear / cbRow;
+			ulong rows = addr.ToLinear() / cbRow;
 			return imageMap.MapLinearAddressToAddress(rows * cbRow);
 		}
 
@@ -430,7 +430,7 @@ namespace Decompiler.Gui.Windows.Controls
 			{
                 addrTopVisible = value;
                 if (value != null)
-                    addrTopVisible -= (int)(value.Linear % cbRow);
+                    addrTopVisible -= (int)(value.ToLinear() % cbRow);
 				UpdateScroll();
 				Invalidate();
 			}
@@ -471,7 +471,7 @@ namespace Decompiler.Gui.Windows.Controls
 			cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
 			vscroller.LargeChange = cyPage;
             vscroller.Maximum = cRows;
-            int newValue = (int)((addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow);
+            int newValue = (int)((addrTopVisible.ToLinear() - image.BaseAddress.ToLinear()) / cbRow);
             vscroller.Value = Math.Max(Math.Min(newValue, vscroller.Maximum), vscroller.Minimum); 
 		}
 
@@ -495,15 +495,8 @@ namespace Decompiler.Gui.Windows.Controls
 		{
 			if (e.Type == ScrollEventType.ThumbTrack)
 				return;
-            Address newTopAddress;
-			if (image.BaseAddress.Selector != 0)
-			{
-				newTopAddress = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint)e.NewValue * cbRow);
-			}
-			else
-			{
-				newTopAddress = image.BaseAddress + (uint)e.NewValue * cbRow;
-			}
+            Address newTopAddress = imageMap.MapLinearAddressToAddress(
+                image.BaseAddress.ToLinear() + (uint)e.NewValue * cbRow);
             if (image.IsValidAddress(newTopAddress))
             {
                 TopAddress = newTopAddress;
@@ -542,23 +535,23 @@ namespace Decompiler.Gui.Windows.Controls
                     return null;
                 // Enumerate all segments visible on screen.
 
-                uint laEnd = ctrl.ProgramImage.BaseAddress.Linear + (uint) ctrl.image.Bytes.Length;
-                if (ctrl.addrTopVisible.Linear >= laEnd || !ctrl.image.IsValidAddress(ctrl.addrTopVisible))
+                ulong laEnd = ctrl.ProgramImage.BaseAddress.ToLinear() + (uint) ctrl.image.Bytes.Length;
+                if (ctrl.addrTopVisible.ToLinear() >= laEnd || !ctrl.image.IsValidAddress(ctrl.addrTopVisible))
                     return null;
                 ImageReader rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, ctrl.addrTopVisible);
                 Rectangle rc = ctrl.ClientRectangle;
                 Size cell = ctrl.CellSize;
                 rc.Height = cell.Height;
 
-                uint laSegEnd = 0;
-                while (rc.Top < ctrl.Height && rdr.Address.Linear < laEnd)
+                ulong laSegEnd = 0;
+                while (rc.Top < ctrl.Height && rdr.Address.ToLinear() < laEnd)
                 {
                     ImageMapSegment seg;
                     if (!ctrl.ImageMap.TryFindSegment(ctrl.addrTopVisible, out seg))
                         return null;
-                    if (rdr.Address.Linear >= laSegEnd)
+                    if (rdr.Address.ToLinear() >= laSegEnd)
                     {
-                        laSegEnd = seg.Address.Linear + seg.Size;
+                        laSegEnd = seg.Address.ToLinear() + seg.Size;
                         rdr = ctrl.arch.CreateImageReader(ctrl.ProgramImage, seg.Address + (rdr.Address - seg.Address));
                     }
                     Address addr = PaintLine(g, rc, rdr, ptAddr, render);
@@ -601,20 +594,20 @@ namespace Decompiler.Gui.Windows.Controls
                 rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
 
                 uint rowBytesLeft = ctrl.cbRow;
-                uint linearSelected = ctrl.addrSelected != null ? ctrl.addrSelected.Linear : ~0U;
-                uint linearAnchor = ctrl.addrAnchor != null ? ctrl.addrAnchor.Linear : ~0U;
-                uint linearBeginSelection = Math.Min(linearSelected, linearAnchor);
-                uint linearEndSelection = Math.Max(linearSelected, linearAnchor);
+                ulong linearSelected = ctrl.addrSelected != null ? ctrl.addrSelected.ToLinear() : ~0UL;
+                ulong linearAnchor = ctrl.addrAnchor != null ? ctrl.addrAnchor.ToLinear() : ~0UL;
+                ulong linearBeginSelection = Math.Min(linearSelected, linearAnchor);
+                ulong linearEndSelection = Math.Max(linearSelected, linearAnchor);
 
                 do
                 {
                     Address addr = rdr.Address;
-                    uint linear = addr.Linear;
+                    ulong linear = addr.ToLinear();
 
                     ImageMapItem item;
                     if (!ctrl.ImageMap.TryFindItem(addr, out item))
                         break;
-                    uint cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
+                    ulong cbIn = (linear - item.Address.ToLinear());			// # of bytes 'inside' the block we are.
                     uint cbToDraw = 16; // item.Size - cbIn;
 
                     // See if the chunk goes off the edge of the line. If so, clip it.
@@ -627,8 +620,8 @@ namespace Decompiler.Gui.Windows.Controls
                     {
                         Address addrByte = rdr.Address;
                         ctrl.ImageMap.TryFindItem(addrByte, out item);
-                        bool isSelected = linearBeginSelection <= addrByte.Linear && addrByte.Linear <= linearEndSelection;
-                        bool isCursor = addrByte.Linear == linearSelected;
+                        bool isSelected = linearBeginSelection <= addrByte.ToLinear() && addrByte.ToLinear() <= linearEndSelection;
+                        bool isCursor = addrByte.ToLinear() == linearSelected;
                         if (rdr.IsValid)
                         {
                             byte b = rdr.ReadByte();
@@ -654,7 +647,7 @@ namespace Decompiler.Gui.Windows.Controls
 
                         var theme = GetBrushTheme(item, isSelected);
                         g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
-                        if (!isSelected && theme.StartMarker != null && addrByte.Linear == item.Address.Linear)
+                        if (!isSelected && theme.StartMarker != null && addrByte.ToLinear() == item.Address.ToLinear())
                         {
                             var pts = new Point[] 
                             {

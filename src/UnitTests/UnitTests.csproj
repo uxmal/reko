@@ -547,21 +547,21 @@
       <Project>{fdfe3507-e8ce-4930-b9b5-8fb647cfc6dc}</Project>
       <Name>C64</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\MacOS\MacOS-2010.csproj">
+    <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
-      <Name>MacOS-2010</Name>
+      <Name>MacOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Msdos\Msdos-2010.csproj">
+    <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
-      <Name>Msdos-2010</Name>
+      <Name>Msdos</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Win32\Win32-2010.csproj">
+    <ProjectReference Include="..\Environments\Win32\Win32.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
-      <Name>Win32-2010</Name>
+      <Name>Win32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex-2010.csproj">
+    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj">
       <Project>{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}</Project>
-      <Name>BinHex-2010</Name>
+      <Name>BinHex</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\Elf\Elf.csproj">
       <Project>{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}</Project>

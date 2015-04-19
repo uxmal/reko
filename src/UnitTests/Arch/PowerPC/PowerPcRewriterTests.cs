@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
     public class PowerPcRewriterTests : RewriterTestBase
     {
         private InstructionBuilder b;
-        private PowerPcArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
+        private PowerPcArchitecture arch = new PowerPcArchitecture32();
         private IEnumerable<PowerPcInstruction> ppcInstrs;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }

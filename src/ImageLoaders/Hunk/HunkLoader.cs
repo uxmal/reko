@@ -635,7 +635,7 @@ print arg_mem
             // Get sizes of all segments
             var sizes = rel.GetSegmentSizes();
             // Determine begin addrs for all segments
-            uint base_addr = addrLoad.Linear;
+            uint base_addr = addrLoad.ToUInt32();
             var addrs = rel.GetSegmentRelocationAddresses(base_addr);
             //  Relocate and return data of segments
             var datas = rel.Relocate(addrs);

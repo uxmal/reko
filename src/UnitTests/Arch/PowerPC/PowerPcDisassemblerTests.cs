@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
     [TestFixture]
     public class PowerPcDisassemblerTests : DisassemblerTestBase<PowerPcInstruction>
     {
-        private PowerPcArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
+        private PowerPcArchitecture arch = new PowerPcArchitecture32();
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 

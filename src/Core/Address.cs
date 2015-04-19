@@ -25,20 +25,22 @@ using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
-	public class Address : Expression, IComparable
+	public abstract class Address : Expression, IComparable
 	{
-		public readonly ushort Selector;			// Segment selector.
-		public readonly uint Offset;
-
-		public Address(uint off) : base(PrimitiveType.Pointer32)
-		{
-			this.Selector = 0;
-			this.Offset = off;
-		}
-
-        public Address(DataType size, uint bitPattern) : base(size)
+        protected Address(DataType size)
+            : base(size)
         {
-            this.Offset = bitPattern;
+        }
+
+        public static Address Create(DataType size, ulong bitPattern) 
+        {
+            switch (size.Size)
+            {
+            default: throw new ArgumentException("size");
+            case 2: return Ptr16((ushort)bitPattern);
+            case 4: return Ptr32((uint)bitPattern);
+            case 8: return Ptr64(bitPattern);
+            }
         }
 
         public static Address Ptr16(ushort addr)
@@ -53,16 +55,15 @@ namespace Decompiler.Core
 
         public static Address Ptr64(ulong addr)
         {
-            if (addr >= (1ul << 32))
-                throw new NotImplementedException("We need separate classes for addresses.");
             return new Address64(addr);
         }
 
         public static Address SegPtr(ushort seg, uint off)
         {
-            return new Address(seg, off);
+            return new SegAddress32(seg, (ushort)off);
         }
         
+        [Obsolete("Use Platform.MakeAddressFromConstant")]
         public static Address FromConstant(Constant value)
         {
             switch (value.DataType.BitSize)
@@ -73,13 +74,9 @@ namespace Decompiler.Core
             }
         }
 
-		protected Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
-		{
-			this.Selector = seg;
-			this.Offset = off;
-			if (seg != 0)
-				this.Offset = (ushort) off;
-		}
+        public abstract bool IsNull { get; }
+        public abstract uint Offset { get; }
+        public abstract ushort Selector { get; }			// Segment selector.
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
@@ -96,11 +93,6 @@ namespace Decompiler.Core
             visit.VisitAddress(this);
         }
 
-        public override Expression CloneExpression()
-        {
-            return new Address(this.Selector, this.Offset);
-        }
-
 		public override bool Equals(object obj)
 		{
 			return CompareTo(obj) == 0;
@@ -108,78 +100,29 @@ namespace Decompiler.Core
 
 		public override int GetHashCode()
 		{
-			return Linear.GetHashCode();
+			return ToLinear().GetHashCode();
 		}
 
-        [Obsolete]
-		public uint Linear
-		{
-			get { return (((uint) Selector << 4) + Offset); }
-		}
-
-        public virtual ulong ToLinear()
-        {
-            return ((ulong) Selector << 4) + Offset;
-        }
-
-		public string GenerateName(string prefix, string suffix)
-		{
-            string strFmt;
-            if (Selector == 0)
-            {
-                switch (base.DataType.Size)
-                {
-                case 2: strFmt = "{0}{2:X4}{3}"; break;
-                case 4: strFmt = "{0}{2:X8}{3}"; break;
-                case 8: strFmt = "{0}{2:X16}{3}"; break;
-                default: throw new NotSupportedException(string.Format("Address size of {0} bytes not supported.", DataType.Size));
-                }
-            }
-            else
-            {
-                strFmt = "{0}{1:X4}_{2:X4}{3}"; 
-            }
-			return string.Format(strFmt, prefix, Selector, Offset, suffix);
-		}
-
-		public override string ToString()
-		{
-			string strFmt;
-            if (Selector == 0)
-            {
-                switch (base.DataType.Size)
-                {
-                    case 2: strFmt = "{1:X4}"; break;
-                    case 4: strFmt = "{1:X8}"; break;
-                    case 8: strFmt = "{1:X16}"; break;
-                    default: throw new NotSupportedException(string.Format("Address size of {0} bytes not supported.", DataType.Size));
-                }
-            }
-            else 
-            {
-                strFmt = "{0:X4}:{1:X4}";
-            }
-			return string.Format(strFmt, Selector, Offset);
-		}
+        public abstract string GenerateName(string prefix, string suffix);
 
 		public static bool operator < (Address a, Address b)
 		{
-			return a.Linear < b.Linear;
+			return a.ToLinear() < b.ToLinear();
 		}
 
 		public static bool operator <= (Address a, Address b)
 		{
-			return a.Linear <= b.Linear;
+			return a.ToLinear() <= b.ToLinear();
 		}
 
 		public static bool operator > (Address a, Address b)
 		{
-			return a.Linear > b.Linear;
+			return a.ToLinear() > b.ToLinear();
 		}
 
 		public static bool operator >= (Address a, Address b)
 		{
-			return a.Linear >= b.Linear;
+			return a.ToLinear() >= b.ToLinear();
 		}
 
         public static Address operator + (Address a, ulong off)
@@ -192,32 +135,26 @@ namespace Decompiler.Core
             return a.Add(off);
         }
 
-        public virtual Address Add(long offset)
-        {
-            ushort sel = this.Selector;
-			uint newOff = (uint) (this.Offset + offset);
-			if (this.Selector != 0 && newOff > 0xFFFF)
-			{
-				sel += 0x1000;
-				newOff &= 0xFFFF;
-			}
-			return new Address(sel, newOff);
-		}
+        public abstract Address Add(long offset);
 
 		public static Address operator - (Address a, int delta)
 		{
 			return a.Add(-delta);
 		}
 
-		public static int operator - (Address a, Address b)
+		public static long operator - (Address a, Address b)
 		{
-			return (int) a.Linear - (int) b.Linear;
+			return (long) a.ToLinear() - (long) b.ToLinear();
 		}
 
 		public int CompareTo(object a)
 		{
-			return this - ((Address) a);
+            return this.ToLinear().CompareTo(((Address)a).ToLinear());
 		}
+
+        public abstract ushort ToUInt16();
+        public abstract uint ToUInt32();
+        public abstract ulong ToLinear();
 
 		/// <summary>
 		/// Converts a string representation of an address to an Address.
@@ -275,12 +212,12 @@ namespace Decompiler.Core
         {
             public bool Equals(Address x, Address y)
             {
-                return x.Linear == y.Linear;
+                return x.ToLinear() == y.ToLinear();
             }
 
             public int GetHashCode(Address obj)
             {
-                return obj.Linear.GetHashCode();
+                return obj.ToLinear().GetHashCode();
             }
         }
     }
@@ -290,14 +227,48 @@ namespace Decompiler.Core
         private ushort uValue;
 
         public Address16(ushort addr)
-            : base(PrimitiveType.Ptr16, addr)
+            : base(PrimitiveType.Ptr16)
         {
             this.uValue = addr;
+        }
+
+        public override bool IsNull { get { return uValue == 0; } }
+        public override uint Offset { get { return uValue; } }
+        public override ushort Selector { get { throw new NotSupportedException(); } }
+        
+        public override Address Add(long offset)
+        {
+            return new Address16((ushort)((int)uValue + (int)offset));
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new Address16(uValue);
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            return string.Format("{0}{1:X4}{2}", prefix, uValue, suffix);
+        }
+
+        public override ushort ToUInt16()
+        {
+            return uValue;
+        }
+
+        public override uint ToUInt32()
+        {
+            return uValue;
         }
 
         public override ulong ToLinear()
         {
             return uValue;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0:X4}", uValue);
         }
     }
 
@@ -306,14 +277,49 @@ namespace Decompiler.Core
         private uint uValue;
 
         public Address32(uint addr)
-            : base(PrimitiveType.Pointer32, addr)
+            : base(PrimitiveType.Pointer32)
         {
             this.uValue = addr;
+        }
+
+        public override bool IsNull { get { return uValue == 0; } }
+        public override uint Offset { get { return uValue; } }
+        public override ushort Selector { get { throw new NotSupportedException(); } }
+
+        public override Address Add(long offset)
+        {
+            var uNew = uValue + offset;
+            return new Address32((uint)uNew);
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new Address32(uValue);
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            return string.Format("{0}{1:X8}{2}", prefix, uValue, suffix);
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new InvalidOperationException("Returning UInt16 would lose precision.");
+        }
+
+        public override uint ToUInt32()
+        {
+            return uValue;
         }
 
         public override ulong ToLinear()
         {
             return uValue;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0:X8}", uValue);
         }
     }
 
@@ -323,16 +329,58 @@ namespace Decompiler.Core
         private ushort uOffset;
 
         public SegAddress32(ushort segment, ushort offset)
-            : base(segment, offset)
+            : base(PrimitiveType.SegPtr32)
         {
             this.uSegment = segment;
             this.uOffset = offset;
+        }
+
+        public override bool IsNull { get { return uSegment == 0 && uOffset == 0; } }
+        public override uint Offset { get { return uOffset; } }
+        public override ushort Selector { get { return uSegment; } }
+
+        public override Address Add(long offset)
+        {
+            ushort sel = this.Selector;
+			uint newOff = (uint) (uOffset + offset);
+			if (newOff > 0xFFFF)
+			{
+				sel += 0x1000;
+				newOff &= 0xFFFF;
+			}
+			return new SegAddress32(sel, (ushort) newOff);
+		}
+
+        public override Expression CloneExpression()
+        {
+            return new SegAddress32(uSegment, uOffset);
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSegment, uOffset, suffix);
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new InvalidOperationException("Returning UInt16 would lose precision.");
+        }
+
+        public override uint ToUInt32()
+        {
+            return (((uint)uSegment) << 4) + uOffset;
         }
 
         public override ulong ToLinear()
         {
             return (((ulong)uSegment) << 4) + uOffset;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0:X4}:{1:X4}", uSegment, uOffset);
+        }
+
     }
 
     public class Address64 : Address
@@ -340,9 +388,38 @@ namespace Decompiler.Core
         private readonly ulong uValue;
 
         public Address64(ulong addr)
-            : base(PrimitiveType.Pointer64, (uint)addr)
+            : base(PrimitiveType.Pointer64)
         {
             this.uValue = addr;
+        }
+
+        public override bool IsNull { get { return uValue == 0; } }
+        public override uint Offset { get { throw new NotImplementedException("How to handle offsets that are this large?"); } }
+        public override ushort Selector { get { throw new NotSupportedException(); } }
+
+        public override Address Add(long offset)
+        {
+            return new Address64(uValue + (ulong)offset);
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new Address64(uValue);
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            return string.Format("{0}{1:X16}{2}", prefix, uValue, suffix);
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new InvalidOperationException("Returning UInt16 would lose precision.");
+        }
+
+        public override uint ToUInt32()
+        {
+            throw new InvalidOperationException("Returning UInt32 would lose precision.");
         }
 
         public override ulong ToLinear()
@@ -350,9 +427,9 @@ namespace Decompiler.Core
             return uValue;
         }
 
-        public override Address Add(long offset)
+        public override string ToString()
         {
-            return new Address64(uValue + (ulong) offset);
+            return string.Format("{0:X16}", uValue);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Decompiler.Arch.Pdp11
             var addr = rdr.Address;
             instrCur = Disassemble();
             instrCur.Address = addr;
-            instrCur.Length = rdr.Address - addr;
+            instrCur.Length = (int)(rdr.Address - addr);
             return instrCur;
         }
 

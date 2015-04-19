@@ -104,7 +104,13 @@ namespace Decompiler.Assemblers.x86
                 {
                     stm.WriteByte(0x90);        // 1-byte NOP instruction.
                 }
-                var sel = (ushort)(this.addrBase.Selector + (stm.Position >> 4));
+                
+                var segAddr = this.addrBase as SegAddress32;
+                ushort sel;
+                if (segAddr != null)
+                    sel = (ushort)(this.addrBase.Selector + (stm.Position >> 4));
+                else
+                    sel = 0;
                 seg.Selector = sel;
                 var ab = seg.Emitter.GetBytes();
                 stm.Write(ab, 0, ab.Length);

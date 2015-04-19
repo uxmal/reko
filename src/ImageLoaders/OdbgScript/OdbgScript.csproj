@@ -91,9 +91,9 @@
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Win32\Win32-2010.csproj">
+    <ProjectReference Include="..\..\Environments\Win32\Win32.csproj">
       <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
-      <Name>Win32-2010</Name>
+      <Name>Win32</Name>
     </ProjectReference>
     <ProjectReference Include="..\MzExe\MzExe.csproj">
       <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>

@@ -432,7 +432,7 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = wInstr & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
-                var baseAddr = (wInstr & 2) != 0 ? new Address(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
+                var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 return new PowerPcInstruction(opcode)
                 {
                     op1 = new AddressOperand(baseAddr + uOffset),
@@ -453,7 +453,7 @@ namespace Decompiler.Arch.PowerPC
                 var crf = grfBi >> 2;
 
                 Opcode opcode;
-                var baseAddr = (wInstr & 2) != 0 ? new Address(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
+                var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 var dst = new AddressOperand(baseAddr + uOffset);
                 if ((grfBo & 0x10) != 0)
                 {

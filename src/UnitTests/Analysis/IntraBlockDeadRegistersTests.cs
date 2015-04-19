@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Analysis
             {
                 var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, PrimitiveType.Word32));
                 m.Assign(a, 2);
-                m.Call("foo");
+                m.Call("foo", 4);
                 m.Assign(a, 3);
             });
             Assert.AreEqual("\ta = 0x00000002\r\n\tcall <invalid> (retsize: 4;)\r\n\ta = 0x00000003\r\n", testResult);

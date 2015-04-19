@@ -152,7 +152,7 @@ namespace Decompiler.UnitTests.Analysis
             var r1 = m.Reg32("r1");
             var r2 = m.Reg32("r2");
             m.Assign(r1, m.LoadDw(r2));
-            m.Call(r1);
+            m.Call(r1, 4);
             m.Return();
 
             RunUnitTest(m, "Analysis/SsaCallIndirect.txt");

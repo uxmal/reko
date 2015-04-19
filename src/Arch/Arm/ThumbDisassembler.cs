@@ -54,7 +54,7 @@ namespace Decompiler.Arch.Arm
                 Address = rdr.Address,
             };
             Disassemble();
-            thumb.Length = rdr.Address - thumb.Address;
+            thumb.Length = (int)(rdr.Address - thumb.Address);
             return thumb;
         }
 

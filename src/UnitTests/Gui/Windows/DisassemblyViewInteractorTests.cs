@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress));
 
             repository.VerifyAll();
-            Assert.AreEqual(0x41104110, interactor.StartAddress.Linear);
+            Assert.AreEqual(0x41104110ul, interactor.StartAddress.ToLinear());
         }
 
         [Test]

@@ -111,7 +111,7 @@ namespace Decompiler.UnitTests.Core
                 return new LeImageReader(image, addr);
             }
 
-            public ImageReader CreateImageReader(LoadedImage image, uint offset)
+            public ImageReader CreateImageReader(LoadedImage image, ulong offset)
             {
                 return new LeImageReader(image, offset);
             }
@@ -155,6 +155,11 @@ namespace Decompiler.UnitTests.Core
             public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
             {
                 throw new NotImplementedException();
+            }
+
+            public Address MakeAddressFromConstant(Constant c)
+            {
+                return Address.Ptr32(c.ToUInt32());
             }
 
             public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

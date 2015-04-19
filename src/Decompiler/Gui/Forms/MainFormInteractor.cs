@@ -304,17 +304,13 @@ namespace Decompiler.Gui.Forms
 
                 var typeName = (string) ((ListOption) dlg.Architectures.SelectedValue).Value;
                 Type t = Type.GetType(typeName, true);
-                arch = (IProcessorArchitecture) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+                arch = (IProcessorArchitecture)Activator.CreateInstance(t);
 
                 typeName = (string) ((ListOption) dlg.Platforms.SelectedValue).Value;
                 t = Type.GetType(typeName);
                 if (t == null)
                     throw new TypeLoadException(string.Format("Unable to load type {0}.", typeName));
-                platform = (Platform) t.GetConstructor(new Type[] { 
-                        typeof(IServiceProvider),
-                        typeof(IProcessorArchitecture)
-                    })
-                    .Invoke(new object[] { sc, arch });
+                platform = (Platform) Activator.CreateInstance(t, sc, arch);
 
                 Address addrBase;
                 var sAddr = dlg.AddressTextBox.Text.Trim();
@@ -472,7 +468,8 @@ namespace Decompiler.Gui.Forms
                     return (o, program) =>
                     {
                         var addr = program.ImageMap.MapLinearAddressToAddress(
-                            program.Image.BaseAddress.Linear + (uint)o);
+                            (ulong)
+                             ((long)program.Image.BaseAddress.ToLinear() + o));
                         ImageMapItem item;
                         return program.ImageMap.TryFindItem(addr, out item)
                             && item.DataType != null &&
@@ -484,7 +481,7 @@ namespace Decompiler.Gui.Forms
                 return (o, program) =>
                     {
                         var addr = program.ImageMap.MapLinearAddressToAddress(
-                               program.Image.BaseAddress.Linear + (uint)o);
+                              (uint)((long) program.Image.BaseAddress.ToLinear() + o));
                         ImageMapItem item;
                         return program.ImageMap.TryFindItem(addr, out item)
                             && item.DataType == null ||

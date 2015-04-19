@@ -205,13 +205,13 @@ namespace Decompiler.Arch.Mips
         {
             int off = (short) wInstr;
             off <<= 2;
-            return AddressOperand.Ptr32((uint)(off + rdr.Address.Offset));
+            return AddressOperand.Ptr32((uint)(off + rdr.Address.ToUInt32()));
         }
 
         private AddressOperand LargeBranch(uint wInstr)
         {
             var off = (wInstr & 0x03FFFFFF) << 2;
-            return AddressOperand.Ptr32((uint)((rdr.Address.Offset & 0xF0000000) | off));
+            return AddressOperand.Ptr32((rdr.Address.ToUInt32() & 0xF0000000u) | off);
         }
 
         private IndirectOperand Ea(uint wInstr, char wCode)

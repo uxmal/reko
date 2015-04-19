@@ -474,7 +474,7 @@ namespace Decompiler.Gui.Windows
         {
             ignoreAddressChange = true;
             var value = Control.CurrentAddress;
-            var addrTop = value - ((int)value.Linear & 0x0F);
+            var addrTop = value - ((int)value.ToLinear() & 0x0F);
             control.MemoryView.SelectedAddress = value;
             control.MemoryView.TopAddress = addrTop;
             control.DisassemblyView.TopAddress = value;

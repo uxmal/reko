@@ -138,7 +138,7 @@ namespace Decompiler.Assemblers.M68k
             var addrOp = op as M68kAddressOperand;
             if (addrOp != null)
             {
-                Imm(addrOp.Width.Size, addrOp.Address.Linear);
+                Imm(addrOp.Width.Size, addrOp.Address.ToUInt32());
                 return 0x39;
             }
 
@@ -391,7 +391,7 @@ namespace Decompiler.Assemblers.M68k
 
         public void Jsr(string target)
         {
-            var linBase = BaseAddress.Linear;
+            var linBase = BaseAddress.ToUInt32();
             Imm(4, linBase);
             Emit(0x4EB9);
             ReferToSymbol(Symbols.CreateSymbol(target), Emitter.Position - 4, PrimitiveType.Word32);

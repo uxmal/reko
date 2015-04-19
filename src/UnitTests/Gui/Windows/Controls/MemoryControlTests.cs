@@ -66,10 +66,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
         {
             memctl.SelectedAddress = Address.Ptr32(0x010);
             AddressRange ar = memctl.GetAddressRange();
-            Assert.AreEqual(0x010, ar.Begin.Linear);
-            Assert.AreEqual(0x010, ar.End.Linear);
-
+            Assert.AreEqual(0x010, ar.Begin.ToLinear());
+            Assert.AreEqual(0x010, ar.End.ToLinear());
         }
+
 		private byte [] GenerateTestMemory()
 		{
 			System.IO.MemoryStream stm = new System.IO.MemoryStream();

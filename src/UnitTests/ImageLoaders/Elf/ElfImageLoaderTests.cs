@@ -429,5 +429,20 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             el.Load(Address.Ptr32(0));
             el.Dump(Console.Out);
         }
+
+        [Test]
+        public void EIL_LoadCellLv2()
+        {
+            var opEl = mr.Stub<OperatingEnvironment>();
+            var platform = new DefaultPlatform(services, arch);
+            dcSvc.Stub(d => d.GetEnvironment("elf-cell-lv2")).Return(opEl);
+            opEl.Expect(o => o.Load(null, null)).IgnoreArguments().Return(platform);
+            mr.ReplayAll();
+            
+            var el = new ElfImageLoader(services, "foo", rawImg);
+            el.CreatePlatform(0x66);        // ELFOSABI_CELL_LV2;
+
+            mr.VerifyAll();
+        }
     }
 }

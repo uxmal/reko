@@ -199,7 +199,7 @@ namespace Decompiler.Assemblers.Pdp11
             if (lexer.Peek().Type == TokenType._Dot)
             {
                 lexer.Get();
-                return emitter.Position + (int) Assembler.BaseAddress.Linear;
+                return emitter.Position + (int) Assembler.BaseAddress.ToLinear();
             }
             if (lexer.Peek().Type == TokenType.Number)
             {

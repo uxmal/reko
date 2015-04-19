@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,8 +48,10 @@ namespace Decompiler.Core
             this.Architecture = arch;
         }
 
-        public IServiceProvider Services { get; private set; }
         public IProcessorArchitecture Architecture { get; private set; }
+        public IServiceProvider Services { get; private set; }
+        public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
+
         /// <summary>
         /// The default encoding for byte-encoded text.
         /// </summary>
@@ -71,6 +75,27 @@ namespace Decompiler.Core
             throw new NotSupportedException();
         }
 
+        public virtual Address MakeAddressFromConstant(Constant c)
+        {
+            return Architecture.MakeAddressFromConstant(c);
+        }
+
+        /// <summary>
+        /// Given a linear address, converts it to an Address instance. By default,
+        /// use the architectire pointer size for the address.
+        /// </summary>
+        /// <remarks>
+        /// The method is virtual to allow a platform to override the pointer size. For instance
+        /// although the PowerPC 64 has 64-bit addresses, the Playstation3 implementation 
+        /// has 32-bit addresses.
+        /// </remarks>
+        /// <param name="uAddr"></param>
+        /// <returns></returns>
+        public virtual Address MakeAddressFromLinear(ulong uAddr)
+        {
+            return Address.Create(Architecture.PointerType, uAddr);
+        }
+
         public abstract ExternalProcedure LookupProcedureByName(string moduleName, string procName);
 
         /// <summary>
@@ -87,6 +112,7 @@ namespace Decompiler.Core
         {
             return null;
         }
+
     }
 
     /// <summary>

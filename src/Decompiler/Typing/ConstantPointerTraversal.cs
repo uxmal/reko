@@ -138,7 +138,7 @@ namespace Decompiler.Typing
         public IEnumerable<WorkItem> VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
-            var rdr = arch.CreateImageReader(image, (uint) gOffset - image.BaseAddress.Linear);
+            var rdr = arch.CreateImageReader(image, (ulong) gOffset - image.BaseAddress.ToLinear());
             if (!rdr.IsValid)
                 return null;
             var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.Size));

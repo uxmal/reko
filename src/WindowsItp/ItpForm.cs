@@ -218,7 +218,7 @@ namespace Decompiler.WindowsItp
             var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
-            emu.WriteRegister(Registers.esp, peLdr.PreferredBaseAddress.Linear + 0x0FFC);
+            emu.WriteRegister(Registers.esp, (uint) peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
             emu.Start();
         }
 

@@ -59,7 +59,7 @@ namespace Decompiler.Environments.C64
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            int i = prog.IndexOfKey((ushort)address.Linear);
+            int i = prog.IndexOfKey((ushort)address.ToLinear());
             if (i < 0)
                 yield break;
             for (; i < prog.Count; ++i)

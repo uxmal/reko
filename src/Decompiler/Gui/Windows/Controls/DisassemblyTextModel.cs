@@ -47,25 +47,28 @@ namespace Decompiler.Gui.Windows.Controls
 
         public object StartPosition { get { return program.Image.BaseAddress; } }
         public object CurrentPosition { get { return position; } }
-        public object EndPosition { get { return program.ImageMap.MapLinearAddressToAddress((uint)(program.Image.BaseAddress.Linear + program.Image.Bytes.Length)); } }
+        public object EndPosition { get { return program.ImageMap.MapLinearAddressToAddress((ulong)((long)program.Image.BaseAddress.ToLinear() + program.Image.Bytes.LongLength)); } }
         public int LineCount { get { return GetPositionEstimate(program.Image.Bytes.Length); } }
 
         public TextSpan[][] GetLineSpans(int count)
         {
             var lines = new List<TextSpan[]>();
-            var dasm = program.Architecture.CreateDisassembler(
-                program.Architecture.CreateImageReader(program.Image, position)).GetEnumerator();
-            while (count != 0 && dasm.MoveNext())
+            if (program.Architecture != null)
             {
-                var line = new List<TextSpan>();
-                var addr = dasm.Current.Address;
-                line.Add(new AddressSpan(addr.ToString() + " ", addr, "addr"));
-                line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
-                var dfmt = new DisassemblyFormatter(program, line);
-                dasm.Current.Render(dfmt);
-                dfmt.NewLine();
-                lines.Add(line.ToArray());
-                --count;
+                var dasm = program.Architecture.CreateDisassembler(
+                    program.Architecture.CreateImageReader(program.Image, position)).GetEnumerator();
+                while (count != 0 && dasm.MoveNext())
+                {
+                    var line = new List<TextSpan>();
+                    var addr = dasm.Current.Address;
+                    line.Add(new AddressSpan(addr.ToString() + " ", addr, "addr"));
+                    line.Add(new InertTextSpan(BuildBytes(dasm.Current), "bytes"));
+                    var dfmt = new DisassemblyFormatter(program, line);
+                    dasm.Current.Render(dfmt);
+                    dfmt.NewLine();
+                    lines.Add(line.ToArray());
+                    --count;
+                }
             }
             return lines.ToArray();
         }
@@ -88,7 +91,8 @@ namespace Decompiler.Gui.Windows.Controls
             addr = addr + offset;
             if (addr < image.BaseAddress)
                 addr = image.BaseAddress;
-            var addrEnd = program.ImageMap.MapLinearAddressToAddress((uint)(image.BaseAddress.Linear + image.Length - 1));
+            var addrEnd = program.ImageMap.MapLinearAddressToAddress(
+                image.BaseAddress.ToLinear() + (ulong)image.Length - 1);
             if (addr > addrEnd)
                 addr = addrEnd;
             this.position = addr;
@@ -97,7 +101,7 @@ namespace Decompiler.Gui.Windows.Controls
         public Tuple<int, int> GetPositionAsFraction()
         {
             var image = program.Image;
-            return Tuple.Create(position - image.BaseAddress, (int)image.Length);
+            return Tuple.Create((int)(position - image.BaseAddress), (int)image.Length);
         }
 
         public void SetPositionAsFraction(int numerator, int denominator)
@@ -113,7 +117,7 @@ namespace Decompiler.Gui.Windows.Controls
             else if (offset > image.Bytes.Length)
                 offset = image.Bytes.Length;
 
-            this.position = program.ImageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint) offset);
+            this.position = program.ImageMap.MapLinearAddressToAddress(image.BaseAddress.ToLinear() + (uint) offset);
         }
 
         /// <summary>
@@ -123,7 +127,10 @@ namespace Decompiler.Gui.Windows.Controls
         /// <returns></returns>
         private int GetPositionEstimate(int byteOffset)
         {
-            return 8 * byteOffset / program.Architecture.InstructionBitSize;
+            int bitSize = program.Architecture != null
+                ? program.Architecture.InstructionBitSize
+                : 8;
+            return 8 * byteOffset / bitSize;
         }
 
         public class InertTextSpan : TextSpan

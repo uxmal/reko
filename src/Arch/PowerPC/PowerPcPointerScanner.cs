@@ -35,7 +35,7 @@ namespace Decompiler.Arch.PowerPC
 
         public override uint GetLinearAddress(Address address)
         {
-            return (uint)address.ToLinear();
+            return address.ToUInt32();
         }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
@@ -55,7 +55,7 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = opcode & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
-                target = unchecked((uint)rdr.Address.ToLinear() + uOffset);
+                target = unchecked(rdr.Address.ToUInt32() + uOffset);
                 return true;
             }
             target = 0;
@@ -69,7 +69,7 @@ namespace Decompiler.Arch.PowerPC
                 var uOffset = opcode & 0x03FFFFFC;
                 if ((uOffset & 0x02000000) != 0)
                     uOffset |= 0xFF000000;
-                target = unchecked((uint)rdr.Address.ToLinear() + uOffset);
+                target = unchecked(rdr.Address.ToUInt32() + uOffset);
                 return true;
             }
             target = 0;

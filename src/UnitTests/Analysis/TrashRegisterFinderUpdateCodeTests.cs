@@ -126,7 +126,7 @@ main_exit:
                 m.Assign(ebx, 0x1234);
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
-                m.Call("foo");
+                m.Call("foo", 4);
                 m.Assign(ebx, eax);
                 m.Return();
             });
@@ -177,7 +177,7 @@ foo_exit:
                 var ecx = m.Frame.EnsureRegister(Registers.ecx);
                 var esi = m.Frame.EnsureRegister(Registers.esi);
                 m.Assign(esi, ecx);
-                m.Call("foo");
+                m.Call("foo", 4);
                 m.Assign(esi, m.IAdd(esi, 1));
                 m.Return();
             });

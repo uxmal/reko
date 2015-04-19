@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.SetProcedureReturnAddressBytes(
                     Arg<Procedure>.Is.NotNull,
                     Arg<int>.Is.Equal(4),
-                    Arg<Address>.Matches(a => a.Linear == 0x00100000)));
+                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100000)));
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
 
@@ -255,10 +255,9 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<Address>.Matches(a => a.Linear == 0x2000u),
+                    Arg<Address>.Matches(a => a.ToLinear() == 0x2000u),
                     Arg<Address>.Is.NotNull)).Return(alloca);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
-                    
             }
             trace.Add(m => m.Call(Address.Ptr32(0x2000), 4));
             var state = new FakeProcessorState(prog.Architecture);
@@ -344,9 +343,9 @@ namespace Decompiler.UnitTests.Scanning
                 arch.Stub(a => a.GetRegister(2)).Return((RegisterStorage)r2.Storage);
                 arch.Stub(a => a.StackRegister).Return((RegisterStorage) r1.Storage);
                 scanner.Stub(s => s.FindContainingBlock(
-                    Arg<Address>.Matches(a => a.Linear == 0x00100000))).Return(block);
+                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100000))).Return(block);
                 scanner.Stub(s => s.FindContainingBlock(
-                    Arg<Address>.Matches(a => a.Linear == 0x00100004))).Return(followBlock);
+                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100004))).Return(followBlock);
                 scanner.Stub(s => s.AddDiagnostic(null, null)).IgnoreArguments().WhenCalled(m =>
                 {
                     var d = (Diagnostic) m.Arguments[1];
@@ -354,7 +353,7 @@ namespace Decompiler.UnitTests.Scanning
                 });
                 scanner.Stub(s => s.EnqueueJumpTarget(
                     Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(a => a.Linear == 0x00100004),
+                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100004),
                     Arg<Procedure>.Is.NotNull,
                     Arg<ProcessorState>.Is.Anything)).Return(followBlock);
 
@@ -401,7 +400,7 @@ testProc_exit:
             scanner.Expect(s => s.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
             scanner.Expect(s => s.EnqueueJumpTarget(
                 Arg<Address>.Is.NotNull,
-                Arg<Address>.Matches(a => a.Linear == 0x00100004),
+                Arg<Address>.Matches(a => a.ToLinear() == 0x00100004),
                 Arg<Procedure>.Is.NotNull,
                 Arg<ProcessorState>.Is.NotNull))
                 .Return(block3);

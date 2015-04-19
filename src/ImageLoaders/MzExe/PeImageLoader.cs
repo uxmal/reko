@@ -295,7 +295,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
 			{
-				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.Linear, relocations);
+				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.ToLinear(), relocations);
 			}
             var entryPoints = new List<EntryPoint> { new EntryPoint(addrLoad + rvaStartAddress, arch.CreateProcessorState()) };
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);

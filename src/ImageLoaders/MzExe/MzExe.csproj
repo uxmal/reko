@@ -79,13 +79,13 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Msdos\Msdos-2010.csproj">
+    <ProjectReference Include="..\..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
-      <Name>Msdos-2010</Name>
+      <Name>Msdos</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Win32\Win32-2010.csproj">
+    <ProjectReference Include="..\..\Environments\Win32\Win32.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
-      <Name>Win32-2010</Name>
+      <Name>Win32</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ namespace Decompiler.Arch.M68k
 
         public override uint GetLinearAddress(Address address)
         {
-            return (uint)address.ToLinear();
+            return address.ToUInt32();
         }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
@@ -127,7 +127,7 @@ namespace Decompiler.Arch.M68k
                 rdr.IsValidOffset(rdr.Offset + 4u))
             {
                 callOffset = rdr.PeekBeInt32(2);
-                target = (uint) (callOffset + rdr.Address.Linear + 2);
+                target = (uint) (callOffset + (long)rdr.Address.ToLinear() + 2);
                 return true;
             }
             if (callOffset == 0x00 // bsr.w)
@@ -135,10 +135,10 @@ namespace Decompiler.Arch.M68k
                 rdr.IsValidOffset(rdr.Offset + 2u))
             {
                 callOffset = rdr.PeekBeInt16(2);
-                target = (uint) (callOffset + rdr.Address.Linear + 2);
+                target = (uint) (callOffset + (long)rdr.Address.ToLinear() + 2);
                 return true;
             }
-            target = (uint) (callOffset + rdr.Address.Linear + 2);
+            target = (uint) (callOffset + (long)rdr.Address.ToLinear() + 2);
             return true;
         }
     }

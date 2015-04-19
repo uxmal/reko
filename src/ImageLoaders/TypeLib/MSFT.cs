@@ -18,6 +18,10 @@
 // This file is GPL 2008, by TheirCorp
 // ****************************************
 
+using System;
+
+namespace Decompiler.TypeLib
+{
 
 // ****************************************
 // 	"Study-Mode" Code
@@ -96,19 +100,20 @@ End Sub // Note
 // 	Equates for Translating Flags
 // 		and Codes to Text
 // ****************************************
-$SysKind		= "Win16,Win32,Macintosh"
-$VarFlags		= "ReadOnly,Source,Bindable,RequestEdit,DisplayBind,DefaultBind,Hidden,Restricted,DefaultCollelem,UiDefault,NonBrowsable,Replaceable,ImmediateBind"
-$TKind			= "Enum,Record,Module,Interface,Dispatch,Coclass,Alias,Union,Max"
-$TypeFlags		= "AppObject,CanCreate,Licensed,PredeclId,Hidden,Control,Dual,Nonextensible,Oleautomation,Restricted,Aggregatable,Replaceable,Dispatchable,ReverseBind"
-$ParamFlags		= "In,Out,LCID,RetVal,Opt,HasDefault,HasCustData"
-$CallConv		= "FastCall,CDecl,Pascal,MacPascal,StdCall,FPFastCall,SysCall,MPWCDecl,MPWPascal,Max"
-$InvoKind		= "Func,PropertyGet,PropertyPut,PropertyPutRef"
-$FuncKind		= "Virtual,PureVirtual,NonVirtual,Static,Dispatch"
+public enum SysKind		    { Win16,Win32,Macintosh }
+public enum VarFlags		{ ReadOnly,Source,Bindable,RequestEdit,DisplayBind,DefaultBind,Hidden,Restricted,DefaultCollelem,UiDefault,NonBrowsable,Replaceable,ImmediateBind }
+public enum TKind			{ Enum,Record,Module,Interface,Dispatch,Coclass,Alias,Union,Max }
+public enum TypeFlags		{ AppObject,CanCreate,Licensed,PredeclId,Hidden,Control,Dual,Nonextensible,Oleautomation,Restricted,Aggregatable,Replaceable,Dispatchable,ReverseBind }
+public enum ParamFlags		{ In,Out,LCID,RetVal,Opt,HasDefault,HasCustData }
+public enum CallConv		{ FastCall,CDecl,Pascal,MacPascal,StdCall,FPFastCall,SysCall,MPWCDecl,MPWPascal,Max }
+public enum InvoKind		{ Func,PropertyGet,PropertyPut,PropertyPutRef }
+public enum FuncKind		{ Virtual,PureVirtual,NonVirtual,Static,Dispatch}
 
 
 // ****************************************
 // 	Variable-Type Codes, Masks and Flags
 // ****************************************
+
 %VT_Empty			= 0??
 %VT_Null			= 1??
 %VT_I2				= 2??
@@ -324,45 +329,46 @@ $FuncKind		= "Virtual,PureVirtual,NonVirtual,Static,Dispatch"
 
 
 Union TYPEDESCUNION
-	lptdesc		As Dword Ptr // TYPEDESC Ptr
-	lpadesc		As Dword Ptr // ARRAYDESC Ptr
-	hRefType	As Long // hRefType
+	public Dword lptdesc; Ptr // TYPEDESC Ptr
+	public Dword lpadesc; Ptr // ARRAYDESC Ptr
+	public Long hRefType; // hRefType
 End Union // TYPEDESCUNION
 
 
 Type tagTYPEDESC
-	u	As TYPEDESCUNION
-	vt	As Long // VARTYPE
+	public TYPEDESCUNION u;
+	public Long vt; // VARTYPE
 End Type // TYPEDESC
 
 
 Type tagPARAMDESCEX
-	cBytes				As Dword // ULONG
+	public Dword cBytes; // ULONG
 	// varDefaultValue		As Variant // VARIANTARG
 End Type // tagPARAMDESCEX
 
 
 Type tagPARAMDESC
-	pParamDescEx	As tagPARAMDESCEX // or a Ptr ?
-	fParam			As Word // (USHORT)
+	public tagPARAMDESCEX pParamDescEx; // or a Ptr ?
+	public Word fParam; // (USHORT)
 End Type // tagPARAMDESC
 
 
-Type tagIDLDESC
-	Res		As Dword // Reserved
-	fIDL	As Word // USHORT
-End Type tagIDLDESC
+public class tagIDLDESC
+{
+	public Dword Res; // Reserved
+	public Word fIDL; // USHORT
+} //End Type tagIDLDESC
 
 
 Union ELEMDESCUNION
-	idldesc		As tagIDLDESC	// info for remoting the element
-	ParamDesc	As tagPARAMDESC	// info about the parameter
+	public tagIDLDESC idldesc;	// info for remoting the element
+	public tagPARAMDESC ParamDesc;	// info about the parameter
 End Union
 
 
 Type tagELEMDESC
-	tdesc	As tagTYPEDESC // the type of the element
-	u		As ELEMDESCUNION
+	public tagTYPEDESC tdesc; // the type of the element
+	public ELEMDESCUNION u;
 End Type // tagELEMDESC
 
 
@@ -412,82 +418,84 @@ public class SegDesc
 }
 
 // 	segment directory
-Type MSFT_SegDir
-	pTypInfo			As SegDesc // 1 - TypeInfo table
-	pImpInfo			As SegDesc // 2 - table with info for imported types
-	pImpFiles			As SegDesc // 3 - import libaries
-	pRefer				As SegDesc // 4 - References table
-	pLibs				As SegDesc // 5 - always exists, alway same size (&H80)
-						  			 //   - hash table with offsets to GUID?????
-	pGUID				As SegDesc // 6 - all GUIDs are stored here together with
-						  			 //   - offset in some table????
-	Unk01				As SegDesc // 7 - always created, always same size (&H0200)
-						  			 //   - contains offsets into the name table
-	pNames				As SegDesc // 8 - name table
-	pStrings			As SegDesc // 9 - string table
-	pTypDesc			As SegDesc // A - type description table
-	pArryDesc			As SegDesc // B - array descriptions
-	pCustData			As SegDesc // C - data table, used for custom data and default
-				  					 //   - parameter values
-	pCDGuids			As SegDesc // D - table with offsets for the GUIDs and into
-									 //   - the custom data table
-	Unk02				As SegDesc // E - unknown
-	Unk03				As SegDesc // F - unknown
+public class MSFT_SegDir
+{
+		public SegDesc	pTypInfo	; // 1 - TypeInfo table
+		public SegDesc	pImpInfo	; // 2 - table with info for imported types
+		public SegDesc	pImpFiles	; // 3 - import libaries
+		public SegDesc	pRefer		; // 4 - References table
+		public SegDesc	pLibs		; // 5 - always exists, alway same size (&H80)
+		 							; //   - hash table with offsets to GUID?????
+		public SegDesc	pGUID		; // 6 - all GUIDs are stored here together with
+		 							; //   - offset in some table????
+		public SegDesc	Unk01		; // 7 - always created, always same size (&H0200)
+									; //   - contains offsets into the name table
+		public SegDesc	pNames		; // 8 - name table
+		public SegDesc	pStrings	; // 9 - string table
+		public SegDesc	pTypDesc	; // A - type description table
+		public SegDesc	pArryDesc	; // B - array descriptions
+		public SegDesc	pCustData	; // C - data table, used for custom data and default
+  			    					; //   - parameter values
+		public SegDesc	pCDGuids	; // D - table with offsets for the GUIDs and into
+		    						; //   - the custom data table
+		public SegDesc	Unk02		; // E - unknown
+		public SegDesc	Unk03		; // F - unknown
 } // MSFT_SegDir
 
 
 // type info data
-public class  TypeInfo
-	TypeKind			As Byte	// TKIND_xxx
-	Align				As Byte	// alignment
-	Unk					As Integer	// unknown
-	oFunRec				As Long // 	- points past the file, if no elements
-	Alloc				As Long // 	Recommended (or required?) amount of memory to allocate for...?
-	Reconst				As Long // 	size of reconstituted TypeInfo data
-	Res01				As Long // 10 - always? 3
-	Res02				As Long // 	- always? zero
-	nFuncs				As Integer //  - count of functions
-	nProps				As Integer //  - count of properties
-	Res03				As Long //    - always? zero
-	Res04				As Long // 20 - always? zero
-	Res05				As Long //    - always? zero
-	Res06				As Long //    - always? zero
-	oGUID				As Long //    - position in GUID table
-	fType				As Long // 30 - Typeflags
-	oName				As Long //    - offset in name table
-	Version				As Long //    - element version
-	DocStr				As Long	//    - offset of docstring in string tab
-	HelpStrCnt			As Long // 40
-	HelpCntxt			As Long
-	oCustData			As Long	//    - offset in custom data table
-#If %Def(%WORDS_BIGENDIAN)		// 
-	cVft		As Integer // virtual table size, not including inherits
-	nImplTypes	As Integer // number of implemented interfaces
-#Else
-	nImplTypes	As Integer // number of implemented interfaces
-	cVft	As Integer // virtual table size, not including inherits
+public class  TypeInfo {
+	public Byte	TypeKind	;		// TKIND_xxx
+	public Byte	Align		;		// alignment
+	public short Unk		;		// unknown
+	public Long oFunRec		;		// 	- points past the file, if no elements
+	public Long Alloc		;		// 	Recommended (or required?) amount of memory to allocate for...?
+	public Long Reconst		;		// 	size of reconstituted TypeInfo data
+	public Long Res01		;		// 10 - always? 3
+	public Long Res02		;		// 	- always? zero
+	public short nFuncs		;	     //  - count of functions
+	public short nProps		;		//  - count of properties
+	public Long Res03		;		//    - always? zero
+	public Long Res04		;		// 20 - always? zero
+	public Long Res05		;		//    - always? zero
+	public Long Res06		;		//    - always? zero
+	public Long oGUID		;		//    - position in GUID table
+	public Long fType		;		// 30 - Typeflags
+	public Long oName		;		//    - offset in name table
+	public Long Version		;		//    - element version
+	public Long	DocStr		;		//    - offset of docstring in string tab
+	public Long HelpStrCnt	;		// 40
+	public LongHelpCntxt	;		
+	public Long	oCustData	;		//    - offset in custom data table
+#if WORDS_BIGENDIAN		// 
+	public Integer cVft; // virtual table size, not including inherits
+	public Integer nImplTypes; // number of implemented interfaces
+#else
+	public short nImplTypes;        // number of implemented interfaces
+	public short cVft;              // virtual table size, not including inherits
 #endif
-	Unk03		As Long  // 50 - size in bytes, at least for structures
+	public int Unk03		; // 50 - size in bytes, at least for structures
 
-	Type1		As Long  // 	- position in type description table
+	public Long Type1;  // 	- position in type description table
 						 // 	- or in base interfaces
 						 // 	- if coclass: offset in reftable
 						 // 	- if interface: reference to inherited if
 						 // 	- if module: offset to dllname in name table
-	Type2		As Long  // 	- if &H8000, entry above is valid, else it is zero?
-	Res07		As Long  // 	- always? 0
-	Res08		As Long  // 60 - always? -1
-End Type // TypeInfo
+	public Long Type2;  // 	- if &H8000, entry above is valid, else it is zero?
+	public Long Res07;  // 	- always? 0
+	public Long Res08;  // 60 - always? -1
+} // TypeInfo
 
 
 
 // information on imported types
-Type ImportInfo
-	Count		As Integer // count
-	Flags		As Byte // if <> 0 then oGUID is an offset to GUID, else it// s a TypeInfo index in the specified typelib
-	TypeKind	As Byte	//  TKIND of reference
-	oImpFile	As Long // offset in the Import File table
-	oGuid		As Long // offset in GUID table or TypeInfo index (see bit 16 of Res0)
+public class ImportInfo
+{
+	public Integer Count; // count
+	public Byte Flags; // if <> 0 then oGUID is an offset to GUID, else it// s a TypeInfo index in the specified typelib
+	public Byte TypeKind;	//  TKIND of reference
+	public Long oImpFile; // offset in the Import File table
+	public Long oGuid; // offset in GUID table or TypeInfo index (see bit 16 of Res0)
 } // ImportInfo
 
 
@@ -495,37 +503,39 @@ Type ImportInfo
 // information on imported files
 public class TlbImpLib
 {
-	oGUID	As Long
-	LCID	As Long
-	MajVer	As Word
-	MinVer	As Word
-	cSize	As Word // divide by 4 to get the length of the file name
+	public Long oGUID;
+	public Long LCID;
+	public Word MajVer;
+	public Word MinVer;
+	public Word cSize; // divide by 4 to get the length of the file name
 } // TlbImpLib
 
 
 
 // Structure of the reference data
-Type RefRecord
+public class RefRecord
+{
 	// either offset in TypeInfo table, then it// s a multiple of 4...
 	// or offset in the external reference table with an offset of 1
-	RefType				As Long
-	Flags				As Long // ?
-	oCustData			As Long // custom data
-	oNext				As Long // next offset, -1 if last
+	public Long RefType;
+    public Long Flags;				 // ?
+	public Long oCustData; // custom data
+	public Long oNext; // next offset, -1 if last
 End Type // RefRecord
 
 
 
 // this is how a GUID is stored
-Type GuidEntry
-	oGUID		As String * 16
+public class  GuidEntry
+{
+	public Guid oGUID;
 	//  = -2 for a TypeLib GUID
 	// TypeInfo offset for TypeInfo GUID,
 	// Otherwise, the low two bits:
 	// 	= 01 for an imported TypeInfo
 	// 	= 10 for an imported TypeLib (used by imported TypeInfos)
-	hRefType	As Long
-	NextHash	As Long	// offset to next GUID in the hash bucket
+	public Long hRefType;
+	public Long NextHash;	// offset to next GUID in the hash bucket
 End Type // GuidEntry
 
 
@@ -539,14 +549,14 @@ Type NameIntro
 	// TypeInfo that this name refers to (either
 	// to the TypeInfo itself or to a member of
 	// the TypeInfo
-	hRefType	As Long
+	public Long hRefType;
 
-	NextHash	As Long	// offset to next name in the hash bucket
+	public Long NextHash;	// offset to next name in the hash bucket
 
 	// only lower 8 bits are valid,
 	// lower-middle 8 Bits are unknown (flags?),
 	// upper 16 Bits are hash code
-	cName		As Long
+	public Long cName;
 End Type // NameIntro
 
 
@@ -560,30 +570,30 @@ End Type // NameIntro
 
 
 Type TYPEDESC // a substitute for a tagTYPEDESC to simplify the code
-	v1	As Integer
-	v2	As Integer
-	v3	As Integer
-	v4	As Integer
+	public Integer v1;
+	public Integer v2;
+	public Integer v3;
+	public Integer v4;
 End Type // TYPEDESC
 
 
 
 // type for arrays
 Type SafeArrayBound
-	nElements	As Dword
-	lLBound		As Long
+	public Dword nElements;
+	public Long lLBound;
 End Type // SafeArrayBound
 
 Type ARRAYDESC
-	u			As TYPEDESCUNION
-	nDims		As Word
-	tVar		As Word // VARTYPE
-	Bounds(0)	As SafeArrayBound
+	public TYPEDESCUNION u;
+	public Word nDims;
+	public Word tVar; // VARTYPE
+	public SafeArrayBound Bounds(0);
 End Type // ARRAYDESC
 
 Type CArrayDesc
-	Desc	As ARRAYDESC
-	Bnd		As SafeArrayBound
+	public ARRAYDESC Desc;
+	public SafeArrayBound Bnd;
 End Type
 
 
@@ -598,9 +608,9 @@ End Type
 
 // the custom data/GUID table directory has entries like this
 Type CDGuid
-	oGUID		As Long
-	oData		As Long
-	oNext		As Long // next offset in the table, -1 if it// s the last
+	public Long oGUID;
+	public Long oData;
+	public Long oNext; // next offset in the table, -1 if it// s the last
 End Type // CDGuid
 
 
@@ -623,11 +633,11 @@ public class FuncRecord
 	// that in .DataType.
 	ushort Flags				As Integer
 
-	Res1				As Long // always(?) zero
+	public Long Res1; // always(?) zero
 
 #if WORDS_BIGENDIAN
-	cFuncDesc			As Integer // size of reconstituted FUNCDESC and related structs
-	oVtable				As Integer // offset in vtable
+	public Integer cFuncDesc; // size of reconstituted FUNCDESC and related structs
+	public Integer oVtable; // offset in vtable
 #else
 	public short oVtable;				// offset in vtable
 	public short cFuncDesc			;// size of reconstituted FUNCDESC and related structs
@@ -690,29 +700,29 @@ public class  ParamInfo
 // size of the array.
 public class PropRecord
 {
-	RecSize				As Word // size of PropRecord
-	PropNum				As Word // Property number?
-	DataType	 		As Integer // data type of the variable
-	Flags				As Integer // VarFlags
+	public Word RecSize; // size of PropRecord
+	public Word PropNum; // Property number?
+	public Integer DataType; // data type of the variable
+	public Integer Flags; // VarFlags
 #If %Def(%WORDS_BIGENDIAN)
-	cVarDesc			As Integer // size of reconstituted VARDESC and related structs
-	VarKind	  			As Integer // VarKind
+	public Integer cVarDesc; // size of reconstituted VARDESC and related structs
+	public Integer VarKind; // VarKind
 #Else
-	VarKind				As Integer // VarKind --- %VAR and %VarFlags
-	cVarDesc			As Integer // size of reconstituted VARDESC and related structs
+	public Integer VarKind; // VarKind --- %VAR and %VarFlags
+	public Integer cVarDesc; // size of reconstituted VARDESC and related structs
 #endif
-	OffsValue			As Long // value of the variable or the offset in the data structure
+	public Long OffsValue; // value of the variable or the offset in the data structure
 	// ***** End of required fields *****
 
 	// Optional attribute fields, the number of them is variable
 	// and are determined from the record size (if there// s room
 	// for it, then it// s there...)
-	Unk					As Long
-	HelpCntxt			As Long
-	oHelpStr			As Long
-	Res				 	As Long // unknown (-1)
-	oCustData			As Long // custom data for variable
-	HelpStrCnt			As Long
+	public Long Unk;
+	public Long HelpCntxt;
+	public Long oHelpStr;
+	public Long Res; // unknown (-1)
+	public Long oCustData; // custom data for variable
+	public Long HelpStrCnt;
 }// PropRecord
 
 
@@ -731,7 +741,8 @@ public class PropRecord
 
 public string Locale(int lcid ) {
 
-{ Lcid=0x0401, Code="ARA", Desc="Arabic Saudi Arabia" },{ Lcid=0x0801, Code="ARI", Desc="Arabic Iraq" },
+{ Lcid=0x0401, Code="ARA", Desc="Arabic Saudi Arabia" },
+{ Lcid=0x0801, Code="ARI", Desc="Arabic Iraq" },
 { Lcid=0x0C01, Code="ARE", Desc="Arabic Egypt" },
 { Lcid=0x1001, Code="ARL", Desc="Arabic Libya" },
 { Lcid=0x1401, Code="ARG", Desc="Arabic Algeria" },

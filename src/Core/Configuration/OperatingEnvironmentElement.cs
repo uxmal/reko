@@ -31,6 +31,8 @@ namespace Decompiler.Core.Configuration
         string Description { get; }
         string TypeName { get; }
         TypeLibraryElementCollection TypeLibraries { get; }
+
+        Platform Load(IServiceProvider services, IProcessorArchitecture arch);
     }
 
     public class OperatingEnvironmentElement : ConfigurationElement, OperatingEnvironment
@@ -67,6 +69,15 @@ namespace Decompiler.Core.Configuration
         {
             get { return (TypeLibraryElementCollection) this["TypeLibraries"]; }
             set { this["TypeLibraries"] = value; }
+        }
+
+        public Platform Load(IServiceProvider services, IProcessorArchitecture arch)
+        {
+            var type = Type.GetType(TypeName);
+            if (type == null)
+                throw new TypeLoadException(
+                    string.Format("Unable to load {0} environment.", Description));
+            return (Platform) Activator.CreateInstance(type, services, arch);
         }
 
         public override string ToString()

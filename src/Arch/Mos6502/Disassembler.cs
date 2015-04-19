@@ -128,7 +128,7 @@ namespace Decompiler.Arch.Mos6502
                         Mode = AddressMode.Immediate,
                         Offset = Constant.Create(
                             PrimitiveType.Ptr16,
-                            (rdr.Address.Offset + offset)),
+                            (rdr.Address.ToUInt16() + offset)),
                     };
                     break;
                 default: throw new NotImplementedException(string.Format("Unknown format character {0}.", fmt[i - 1]));
@@ -139,7 +139,7 @@ namespace Decompiler.Arch.Mos6502
                 Code = opRec.Code,
                 Operand = operand,
                 Address = addr,
-                Length = rdr.Address - addr,
+                Length = (int)(rdr.Address - addr),
             };
             return instr;
         }
@@ -354,7 +354,7 @@ new OpRec(Opcode.illegal, ""),
     new OpRec(Opcode.illegal, ""),
  
 new OpRec(Opcode.bcc, "j"),
- 	    new OpRec(Opcode.sta, "Iy"),
+ 	new OpRec(Opcode.sta, "Iy"),
  	new OpRec(Opcode.illegal, ""),
  	new OpRec(Opcode.illegal, ""),
  	new OpRec(Opcode.sty, "zx"),
@@ -406,7 +406,7 @@ new OpRec(Opcode.bcs, "j"),
     new OpRec(Opcode.illegal, ""),
  
         // C0
-        new OpRec(Opcode.cpy, "#"),
+    new OpRec(Opcode.cpy, "#"),
         new OpRec(Opcode.cmp, "Ix"),
         new OpRec(Opcode.illegal, ""),
         new OpRec(Opcode.illegal, ""),

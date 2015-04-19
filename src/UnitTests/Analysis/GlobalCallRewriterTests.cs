@@ -150,7 +150,7 @@ namespace Decompiler.UnitTests.Analysis
 
 				protected override void BuildBody()
 				{
-					base.Call("Leaf");
+					base.Call("Leaf", 4);
 					Store(Int32(0x320123), base.Register(0));
 				}
 			}

@@ -103,11 +103,11 @@ namespace Decompiler.Core.Expressions
                 delegate(Expression ea, Expression eb)
                 {
                     Address a = (Address) ea, b = (Address) eb;
-                    return object.Equals(a.Linear, b.Linear);
+                    return a.Equals(b);
                 },
                 delegate(Expression obj)
                 {
-                    return ((Address) obj).Linear.GetHashCode();
+                    return ((Address) obj).ToLinear().GetHashCode();
                 });
             Add(typeof(Constant),
                 delegate(Expression ea, Expression eb)
