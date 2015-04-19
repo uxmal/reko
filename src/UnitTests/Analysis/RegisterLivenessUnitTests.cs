@@ -51,6 +51,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
 			m = new ProcedureBuilder();
 			proc = m.Procedure;
 			f = proc.Frame;

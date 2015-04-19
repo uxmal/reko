@@ -58,7 +58,7 @@ namespace Decompiler.Typing
 			this.store = store;
 			this.handler = handler;
             this.prog = prog;
-			this.aem = new ArrayExpressionMatcher(prog.Architecture.PointerType);
+			this.aem = new ArrayExpressionMatcher(prog.Platform.PointerType);
 			this.atrco = new AddressTraitCollector(factory, store, handler, prog);
 		}
 
@@ -201,7 +201,7 @@ namespace Decompiler.Typing
                 call.Callee, 
                 new Pointer(
                     new CodeType(), 
-                    prog.Architecture.PointerType.Size));
+                    prog.Platform.PointerType.Size));
             return call.Callee.Accept(this);
         }
 
@@ -468,7 +468,7 @@ namespace Decompiler.Typing
                 handler.MemAccessTrait(
                     null, 
                     prog.Globals,
-                    prog.Architecture.PointerType.Size,
+                    prog.Platform.PointerType.Size,
                     c,
                     c.ToInt32() * 0x10);   //$REVIEW Platform-dependent
             }
@@ -516,7 +516,7 @@ namespace Decompiler.Typing
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);
-			return handler.DataTypeTrait(mps, prog.Architecture.PointerType);
+			return handler.DataTypeTrait(mps, prog.Platform.PointerType);
 		}
 
 		public DataType VisitMemoryAccess(MemoryAccess access)

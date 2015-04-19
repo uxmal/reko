@@ -50,6 +50,7 @@ namespace Decompiler.Core
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
+        public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 
         /// <summary>
@@ -82,12 +83,12 @@ namespace Decompiler.Core
 
         /// <summary>
         /// Given a linear address, converts it to an Address instance. By default,
-        /// use the architectire pointer size for the address.
+        /// use the architecture pointer size for the address.
         /// </summary>
         /// <remarks>
         /// The method is virtual to allow a platform to override the pointer size. For instance
         /// although the PowerPC 64 has 64-bit addresses, the Playstation3 implementation 
-        /// has 32-bit addresses.
+        /// uses 32-bit addresses.
         /// </remarks>
         /// <param name="uAddr"></param>
         /// <returns></returns>
@@ -112,7 +113,6 @@ namespace Decompiler.Core
         {
             return null;
         }
-
     }
 
     /// <summary>

@@ -507,7 +507,7 @@ namespace Decompiler.Analysis
                     prog.Architecture, 
                     Procedure.Frame, 
                     ci.CallSite,
-                    new ProcedureConstant(prog.Architecture.PointerType, procCallee), 
+                    new ProcedureConstant(prog.Platform.PointerType, procCallee), 
                     sig, 
                     false);
 				if (sig.ReturnValue != null)

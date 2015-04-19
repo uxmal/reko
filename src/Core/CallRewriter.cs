@@ -27,9 +27,12 @@ namespace Decompiler.Core
 {
 	public class CallRewriter
 	{
-		public CallRewriter()
+		public CallRewriter(Program program)
 		{
+            this.Program = program;
 		}
+
+        public Program Program { get; private set; }
 
 		public virtual ProcedureSignature GetProcedureSignature(ProcedureBase proc)
 		{
@@ -55,18 +58,18 @@ namespace Decompiler.Core
 		/// <param name="call">The actuall CALL instruction.</param>
 		/// <returns>True if the conversion was possible, false if the procedure didn't have
 		/// a signature yet.</returns>
-		public bool RewriteCall(Procedure proc, IProcessorArchitecture arch, Statement stm, CallInstruction call)
+		public bool RewriteCall(Procedure proc, Statement stm, CallInstruction call)
 		{
             var callee = call.Callee as ProcedureConstant;
             if (callee == null)
                 return false;          //$REVIEW: what happens with indirect calls?
 			var procCallee = callee.Procedure;
 			var sigCallee = GetProcedureSignature(procCallee);
-			var fn = new ProcedureConstant(arch.PointerType, procCallee);
+			var fn = new ProcedureConstant(Program.Platform.PointerType, procCallee);
             if (sigCallee == null || !sigCallee.ParametersValid)
                 return false;
 
-            var ab = new ApplicationBuilder(arch, proc.Frame, call.CallSite, fn, sigCallee, true);
+            var ab = new ApplicationBuilder(Program.Architecture, proc.Frame, call.CallSite, fn, sigCallee, true);
 			stm.Instruction = ab.CreateInstruction();
             return true;
 		}
@@ -90,7 +93,7 @@ namespace Decompiler.Core
                 if (ci != null)
                 {
 
-                    if (!RewriteCall(proc, arch, stm, ci))
+                    if (!RewriteCall(proc, stm, ci))
                         ++unConverted;
                 }
             }

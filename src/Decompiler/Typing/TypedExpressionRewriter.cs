@@ -34,7 +34,7 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
 	{
-        private IProcessorArchitecture arch;
+        private Platform platform;
 		private TypeStore store;
         private Identifier globals;
 		private DataTypeComparer compTypes;
@@ -42,13 +42,13 @@ namespace Decompiler.Typing
         private ExpressionEmitter m;
         private Unifier unifier;
 
-		public TypedExpressionRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
+		public TypedExpressionRewriter(Platform platform, TypeStore store, Identifier globals)
 		{
-            this.arch = arch;
+            this.platform = platform;
 			this.store = store;
             this.globals = globals;
 			this.compTypes = new DataTypeComparer();
-			this.tcr = new TypedConstantRewriter(arch, store, globals);
+			this.tcr = new TypedConstantRewriter(platform, store, globals);
             this.m = new ExpressionEmitter();
             this.unifier = new Unifier();
 		}
@@ -140,7 +140,7 @@ namespace Decompiler.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var tmr = new TypedMemoryExpressionRewriter(arch, store, globals);
+            var tmr = new TypedMemoryExpressionRewriter(platform, store, globals);
             return tmr.RewriteArrayAccess(acc.TypeVariable, acc.Array, acc.Index);
         }
 
@@ -299,13 +299,13 @@ namespace Decompiler.Typing
 
 		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(arch, store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(platform, store, globals);
 			return tmer.Rewrite(access);
 		}
 
 		public override Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
-			var tmer = new TypedMemoryExpressionRewriter(arch, store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(platform, store, globals);
 			return tmer.Rewrite(access);
 		}
 

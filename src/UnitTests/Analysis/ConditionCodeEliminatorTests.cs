@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Analysis
                 var vp = new ValuePropagator(ssa.Identifiers, proc);
                 vp.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
                 DeadCode.Eliminate(proc, ssa);
 
@@ -320,7 +320,8 @@ done:
 			var stmBr = m.BranchIf(m.Test(ConditionCode.EQ, y), "foo");
             ssaIds[y].Uses.Add(stmBr);
 
-			var cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
+            var arch = new FakeArchitecture();
+			var cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null, arch));
 			cce.Transform();
 			Assert.AreEqual("branch r == 0x00000000 foo", stmBr.Instruction.ToString());
 		}
@@ -338,7 +339,7 @@ done:
 			ssaIds[f].DefStatement = stmF;
 			ssaIds[Z].Uses.Add(stmF);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null, new FakeArchitecture()));
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
@@ -355,7 +356,7 @@ done:
         [Test]
 		public void SignedIntComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new DefaultPlatform(null, new FakeArchitecture()));
 			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Word16, new Identifier("a", PrimitiveType.Word16, null), new Identifier("b", PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
@@ -365,7 +366,7 @@ done:
 		[Test]
 		public void RealComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new DefaultPlatform(null, new FakeArchitecture()));
 			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Real64, new Identifier("a", PrimitiveType.Real64, null), new Identifier("b", PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());

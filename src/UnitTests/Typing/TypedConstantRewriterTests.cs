@@ -18,10 +18,12 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
@@ -52,7 +54,7 @@ namespace Decompiler.UnitTests.Typing
 			globals.TypeVariable.DataType = new Pointer(eqGlobals, 4);
 			globals.DataType = globals.TypeVariable.DataType;
 
-			tcr = new TypedConstantRewriter(new Mocks.FakeArchitecture(), store, globals);
+			tcr = new TypedConstantRewriter(new DefaultPlatform(null, new FakeArchitecture()), store, globals);
 		}
 
 		[Test]

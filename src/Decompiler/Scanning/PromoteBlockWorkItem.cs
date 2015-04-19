@@ -106,7 +106,7 @@ namespace Decompiler.Scanning
                 else
                 {
                     inb.Statements.Add(0, new CallInstruction(
-                                    new ProcedureConstant(Program.Architecture.PointerType, ProcNew),
+                                    new ProcedureConstant(Program.Platform.PointerType, ProcNew),
                                     new CallSite(ProcNew.Signature.ReturnAddressOnStack, 0)));
                     Program.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
                     inb.Statements.Add(0, new ReturnInstruction());

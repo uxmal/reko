@@ -41,14 +41,14 @@ namespace Decompiler.Typing
 		private ITypeStore store;
 		private TypeFactory factory;
 		private DataTypeBuilderUnifier unifier;
-        private IProcessorArchitecture arch;
+        private Platform platform;
 
-		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IProcessorArchitecture arch)
+		public DataTypeBuilder(TypeFactory factory, ITypeStore store, Platform platform)
 		{
 			this.store = store;
 			this.factory = factory;
 			this.unifier = new DataTypeBuilderUnifier(factory, store);
-            this.arch = arch;
+            this.platform = platform;
 		}
 
 		public void BuildEquivalenceClassDataTypes()
@@ -175,8 +175,8 @@ namespace Decompiler.Typing
 				throw new ArgumentOutOfRangeException("size must be positive");
 			var s = factory.CreateStructureType(null, size);
 			var ptr = tBase != null
-                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, arch.FramePointerType.Size)
-				: (DataType)factory.CreatePointer(s, arch.PointerType.Size);
+                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, platform.FramePointerType.Size)
+				: (DataType)factory.CreatePointer(s, platform.PointerType.Size);
 			return MergeIntoDataType(tStruct, ptr);
 		}
 

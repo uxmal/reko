@@ -337,7 +337,7 @@ namespace Decompiler.UnitTests.Analysis
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;
 
-			var cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
+			var cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null,new FakeArchitecture()));
 			cce.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

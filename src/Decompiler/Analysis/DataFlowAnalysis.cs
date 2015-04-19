@@ -82,7 +82,7 @@ namespace Decompiler.Analysis
                     var sst = new SsaTransform(flow, proc, doms);
                     var ssa = sst.SsaState;
 
-                    var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
+                    var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
                     cce.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
@@ -221,7 +221,7 @@ namespace Decompiler.Analysis
                 // all statements like (x86) mem[esp_42+4] will have been converted to
                 // mem[fp - 30]. We also hope that procedure constants kept in registers
                 // are propagated to the corresponding call sites.
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Architecture);
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
                 cce.Transform();
                 var vp = new ValuePropagator(ssa.Identifiers, proc);
                 vp.Transform();

@@ -226,7 +226,7 @@ namespace Decompiler.Gui.Windows
                 return;
             var arch = program.Architecture;
             var rdr = arch.CreateImageReader(program.Image, addrRange.Begin);
-            var addrDst = rdr.Read(arch.PointerType);
+            var addrDst = rdr.Read(program.Platform.PointerType);
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
             txt.SelectAll();

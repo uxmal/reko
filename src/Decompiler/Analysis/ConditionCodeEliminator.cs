@@ -52,14 +52,14 @@ namespace Decompiler.Analysis
 		private SsaIdentifier sidGrf;
         private HashSet<SsaIdentifier> aliases;     // aliases of sidGrf
         private Statement useStm;
-        private IProcessorArchitecture arch;
+        private Platform platform;
 
 		private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
 
-		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, IProcessorArchitecture arch)
+		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, Platform arch)
 		{
 			this.ssaIds = ssaIds;
-            this.arch = arch;
+            this.platform = arch;
 		}
 
         public void Transform()
@@ -277,7 +277,7 @@ namespace Decompiler.Analysis
 
 		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
-			Expression e = new Application(new ProcedureConstant(arch.PointerType, new PseudoProcedure("OVERFLOW", PrimitiveType.Bool, 1)),
+			Expression e = new Application(new ProcedureConstant(platform.PointerType, new PseudoProcedure("OVERFLOW", PrimitiveType.Bool, 1)),
 				PrimitiveType.Bool, bin);
 			if (isNegated)
 			{

@@ -54,7 +54,8 @@ namespace Decompiler.UnitTests.Typing
             arch = new FakeArchitecture();
             prog = new Program();
             prog.Architecture = arch;
-            dtb = new DataTypeBuilder(factory, store, arch);
+            prog.Platform = new DefaultPlatform(null, arch);
+            dtb = new DataTypeBuilder(factory, store, prog.Platform);
         }
 
         protected override void RunTest(Program prog, string outputFile)
@@ -286,6 +287,7 @@ namespace Decompiler.UnitTests.Typing
 
             prog.InductionVariables.Add(i, iv);
             prog.InductionVariables.Add(i2, iv2);
+            prog.Platform = new DefaultPlatform(null, arch);
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 
             prog.Globals.Accept(eqb);
@@ -353,8 +355,12 @@ namespace Decompiler.UnitTests.Typing
             Identifier ds = m.Local16("ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
-            Program prog = new Program();
-            prog.Architecture = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            var arch = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            Program prog = new Program
+            {
+                Architecture = arch,
+                Platform = new DefaultPlatform(null, arch),
+            };
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
             e = e.Accept(aen);
             e.Accept(eqb);
@@ -375,8 +381,12 @@ namespace Decompiler.UnitTests.Typing
         public void DtbSegmentedDirectAddress()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            Program prog = new Program();
-            prog.Architecture = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            var arch = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
+            var prog = new Program
+            {
+                Architecture = arch,
+                Platform = new DefaultPlatform(null, arch)
+            };
             store.EnsureExpressionTypeVariable(factory, prog.Globals);
 
             Identifier ds = m.Local16("ds");

@@ -60,7 +60,7 @@ namespace Decompiler.Typing
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
-				prog.Architecture.PointerType.Size);
+				prog.Platform.PointerType.Size);
 		}
 
 		public void FollowDerivedPointers()

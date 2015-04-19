@@ -44,7 +44,9 @@ namespace Decompiler.UnitTests.Typing
             this.m = new ExpressionEmitter();
             this.store = new TypeStore();
             this.factory = new TypeFactory();
-            this.exa = new ExpressionTypeAscender(new FakeArchitecture(), store, factory);
+            var arch = new FakeArchitecture();
+            var platform = new DefaultPlatform(null, arch);
+            this.exa = new ExpressionTypeAscender(platform, store, factory);
         }
 
         private static Identifier Id(string name, DataType dt)

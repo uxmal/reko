@@ -271,9 +271,12 @@ namespace Decompiler.UnitTests.Typing
 
         private static Program CreateProgram()
         {
+            var arch = new FakeArchitecture();
+
             return new Program
             {
-                Architecture = new FakeArchitecture()
+                Architecture = arch,
+                Platform = new DefaultPlatform(null, arch),
             };
         }
 

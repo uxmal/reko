@@ -313,7 +313,7 @@ namespace Decompiler.Scanning
 
         private ProcedureConstant CreateProcedureConstant(ProcedureBase callee)
         {
-            return new ProcedureConstant(arch.PointerType, callee);
+            return new ProcedureConstant(program.Platform.PointerType, callee);
         }
 
         public bool VisitCall(RtlCall call)
@@ -497,7 +497,7 @@ namespace Decompiler.Scanning
         private bool EmitSystemServiceCall(SystemService svc)
         {
             var ep = svc.CreateExternalProcedure(arch);
-            var fn = new ProcedureConstant(arch.PointerType, ep);
+            var fn = new ProcedureConstant(program.Platform.PointerType, ep);
             var site = state.OnBeforeCall(stackReg, svc.Signature!=null? svc.Signature.ReturnAddressOnStack:0);
             Emit(BuildApplication(fn, ep.Signature, site));
             if (svc.Characteristics.Terminates)
@@ -521,7 +521,7 @@ namespace Decompiler.Scanning
         {
             if (impProc.Signature == null)
                 throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
-            var ab = CreateApplicationBuilder(new ProcedureConstant(arch.PointerType, impProc), impProc.Signature, site);
+            var ab = CreateApplicationBuilder(new ProcedureConstant(program.Platform.PointerType, impProc), impProc.Signature, site);
             if (impProc.Signature.Parameters.Length != 1)
                 throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.Parameters.Length));
             var target = ab.Bind(impProc.Signature.Parameters[0]);

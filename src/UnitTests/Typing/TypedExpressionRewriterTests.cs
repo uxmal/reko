@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Typing
                 trans.Transform();
                 ctn.RenameAllTypes(store);
 
-                ter = new TypedExpressionRewriter(program.Architecture, store, program.Globals);
+                ter = new TypedExpressionRewriter(program.Platform, store, program.Globals);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -110,9 +110,9 @@ namespace Decompiler.UnitTests.Typing
         {
             factory = new TypeFactory();
             store = new TypeStore();
-            aen = new ExpressionNormalizer(prog.Architecture.PointerType);
+            aen = new ExpressionNormalizer(prog.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store);
-            dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+            dtb = new DataTypeBuilder(factory, store, prog.Platform);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store, prog);
             ctn = new ComplexTypeNamer();
@@ -128,6 +128,7 @@ namespace Decompiler.UnitTests.Typing
         {
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
             SetupPreStages(prog);
             Identifier id = new Identifier("v0", PrimitiveType.Word32, null);
             Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
@@ -143,7 +144,7 @@ namespace Decompiler.UnitTests.Typing
             trans.Transform();
             ctn.RenameAllTypes(store);
 
-            ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
+            ter = new TypedExpressionRewriter(prog.Platform, store, prog.Globals);
             cmp = cmp.Accept(ter);
             Assert.AreEqual("v0->dw0004", cmp.ToString());
         }
@@ -177,6 +178,7 @@ namespace Decompiler.UnitTests.Typing
         {
             Program prog = new Program();
             prog.Architecture = new FakeArchitecture();
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
             SetupPreStages(prog);
             Constant r = Constant.Real32(3.0F);
             Constant i = Constant.Int32(1);
@@ -194,7 +196,7 @@ namespace Decompiler.UnitTests.Typing
             tvI.DataType = u;
             tvX.DataType = u;
             ctn.RenameAllTypes(store);
-            TypedExpressionRewriter ter = new TypedExpressionRewriter(prog.Architecture, store, prog.Globals);
+            TypedExpressionRewriter ter = new TypedExpressionRewriter(prog.Platform, store, prog.Globals);
             Instruction instr = ter.TransformAssignment(ass);
             Assert.AreEqual("x.u1 = 3F;", instr.ToString());
         }

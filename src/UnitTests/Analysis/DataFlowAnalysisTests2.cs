@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
-        public void DfaSimple()
+        public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m=>
@@ -81,7 +81,7 @@ test_exit:
         }
 
         [Test]
-        public void DfaStackArgs()
+        public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
@@ -132,7 +132,7 @@ test_exit:
         }
 
         [Test]
-        public void DfaCallProc()
+        public void Dfa2_CallProc()
         {
             pb = new ProgramBuilder();
             pb.Add("test", m =>
