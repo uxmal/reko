@@ -52,15 +52,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cil", "Arch\Cil\Cil.csproj"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environments", "Environments", "{E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32-2010", "Environments\Win32\Win32-2010.csproj", "{4A298321-9855-43DE-AA9C-79E4EFA0AE56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32", "Environments\Win32\Win32.csproj", "{4A298321-9855-43DE-AA9C-79E4EFA0AE56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacOS-2010", "Environments\MacOS\MacOS-2010.csproj", "{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacOS", "Environments\MacOS\MacOS.csproj", "{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmigaOS", "Environments\AmigaOS\AmigaOS.csproj", "{0B2DCD75-44FF-4AF6-AA08-AAF4EA30C402}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX81", "Environments\ZX81\ZX81.csproj", "{2B4E0F2E-B458-4BC2-96AC-6A4D9324F974}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msdos-2010", "Environments\Msdos\Msdos-2010.csproj", "{A943CF9B-7FCD-413A-B6D9-A199A69AF217}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msdos", "Environments\Msdos\Msdos.csproj", "{A943CF9B-7FCD-413A-B6D9-A199A69AF217}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C64", "Environments\C64\C64.csproj", "{FDFE3507-E8CE-4930-B9B5-8FB647CFC6DC}"
 EndProject
@@ -72,13 +72,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "tools\xslt\xslt.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Loaders", "Loaders", "{E34BB92E-9C1E-41E8-8333-8BB69831BB63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinHex-2010", "ImageLoaders\BinHex\BinHex-2010.csproj", "{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinHex", "ImageLoaders\BinHex\BinHex.csproj", "{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elf", "ImageLoaders\Elf\Elf.csproj", "{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coff-2010", "ImageLoaders\Coff\Coff-2010.csproj", "{02595A47-2592-441D-B44D-8EA8C19EE5E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coff", "ImageLoaders\Coff\Coff.csproj", "{02595A47-2592-441D-B44D-8EA8C19EE5E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachO-2010", "ImageLoaders\MachO\MachO-2010.csproj", "{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachO", "ImageLoaders\MachO\MachO.csproj", "{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hunk", "ImageLoaders\Hunk\Hunk.csproj", "{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}"
 EndProject
@@ -117,6 +117,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdbgScript", "ImageLoaders\OdbgScript\OdbgScript.csproj", "{2882376F-663A-4FC8-842C-B0300A6829E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeLib", "ImageLoaders\TypeLib\TypeLib.csproj", "{A4DEF935-217C-4107-998C-C7845893CFA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ps3", "Environments\Ps3\Ps3.csproj", "{1A60F017-4E4C-48F8-BB97-47D52186C7FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -705,6 +707,20 @@ Global
 		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|Win32.ActiveCfg = Release|Any CPU
 		{A4DEF935-217C-4107-998C-C7845893CFA0}.Release|x86.ActiveCfg = Release|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Release|.NET.ActiveCfg = Release|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Release|Win32.ActiveCfg = Release|Any CPU
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -747,6 +763,7 @@ Global
 		{8D0F740F-A1DD-4BCF-9471-DD40BB74B25A} = {AD6CD1E3-2C31-4E78-9432-4BAC77BC63D5}
 		{2882376F-663A-4FC8-842C-B0300A6829E8} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 		{A4DEF935-217C-4107-998C-C7845893CFA0} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
+		{1A60F017-4E4C-48F8-BB97-47D52186C7FD} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = WindowsDecompiler\WindowsDecompiler-2010.csproj

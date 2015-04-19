@@ -43,13 +43,13 @@ namespace Decompiler.UnitTests.Arch.PowerPC
         [Test]
         public void PPCArch_Create()
         {
-            IProcessorArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
+            IProcessorArchitecture arch = new PowerPcArchitecture32();
         }
 
         [Test]
         public void PPCArch_GetTrampoline()
         {
-            var arch = new PowerPcArchitecture(PrimitiveType.Word32);
+            var arch = new PowerPcArchitecture32();
             var m = new InstructionBuilder(arch, Address.Ptr32(0x10030000));
             m.Lis(m.r11, 0x1006);
             m.Lwz(m.r11, 0x1234, m.r11);
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             m.Bctr();
             var host = mr.Stub<IRewriterHost>();
             host.Stub(h => h.GetImportedProcedure(
-                Arg<Address>.Matches(a => a.Linear == 0x10061234),
+                Arg<Address>.Matches(a => a.ToLinear() == 0x10061234),
                 Arg<Address>.Is.Anything)).Return(new ExternalProcedure("foo", null));
             mr.ReplayAll();
 

@@ -344,7 +344,7 @@ ProcedureBuilder_exit:
                 var r2 = m.Register(2);
                 m.Assign(r1, 3);
                 m.Assign(r2, 4);
-                m.Call(procSub);
+                m.Call(procSub, 4);
                 m.Store(m.Word32(0x012300), r1);
                 m.Return();
             });

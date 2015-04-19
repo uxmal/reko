@@ -89,7 +89,7 @@ namespace Decompiler.Arch.X86
         /// </summary>
         public void StepOver(Action callback)
         {
-            stepOverAddress = (TWord)(dasm.Current.Address.Linear + dasm.Current.Length);
+            stepOverAddress = (TWord)((uint)dasm.Current.Address.ToLinear() + dasm.Current.Length);
             stepAction = callback;
         }
 
@@ -126,7 +126,7 @@ namespace Decompiler.Arch.X86
                 {
  //                   Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
                     Action bpAction;
-                    TWord eip = dasm.Current.Address.Linear;
+                    TWord eip = (uint)dasm.Current.Address.ToLinear();
                     if (bpExecute.TryGetValue(eip, out bpAction))
                     {
                         ++counter;
@@ -280,7 +280,7 @@ namespace Decompiler.Arch.X86
         {
             byte al = (byte) ReadRegister(X86.Registers.al);
             TWord edi = ReadRegister(X86.Registers.edi);
-            byte mem = (byte)(al - img.Bytes[edi - img.BaseAddress.Linear]);
+            byte mem = (byte)(al - img.Bytes[edi - img.BaseAddress.ToLinear()]);
             WriteRegister(X86.Registers.edi, edi + 1);      //$BUG: Direction flag not respected
             Flags =
                 (mem == 0 ? Zmask : 0u);
@@ -308,7 +308,7 @@ namespace Decompiler.Arch.X86
 
         private void Call(MachineOperand op)
         {
-            Push(InstructionPointer.Linear + (uint)dasm.Current.Length);   // Push return value on stack
+            Push(InstructionPointer.ToLinear() + (uint)dasm.Current.Length);   // Push return value on stack
       
             TWord l = Read(op);
             if (envEmulator.InterceptCall(this, l))
@@ -434,7 +434,7 @@ namespace Decompiler.Arch.X86
                 return i.Value.ToUInt32();
             var a = op as AddressOperand;
             if (a != null)
-                return a.Address.Linear;
+                return a.Address.ToUInt32();
             var m = op as MemoryOperand;
             if (m != null)
             {
@@ -532,7 +532,7 @@ namespace Decompiler.Arch.X86
         public TWord Pop()
         {
             var esp = Registers[X86.Registers.esp.Number];
-            var u = (uint)esp - img.BaseAddress.Linear;
+            var u = (uint)esp - img.BaseAddress.ToUInt32();
             var word = img.ReadLeUInt32(u);
             esp += 4;
             WriteRegister(X86.Registers.esp, (uint)esp);
@@ -542,7 +542,7 @@ namespace Decompiler.Arch.X86
         public void Push(ulong word)
         {
             var esp = Registers[X86.Registers.esp.Number] - 4;
-            var u = (uint)esp - img.BaseAddress.Linear;
+            var u = (uint)esp - img.BaseAddress.ToLinear();
             img.WriteLeUInt32(u, (uint) word);
             WriteRegister(X86.Registers.esp, (uint) esp);
         }
@@ -563,7 +563,5 @@ namespace Decompiler.Arch.X86
         {
             bpExecute.Remove(address);
         }
-
-   
     }
 }

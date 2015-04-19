@@ -36,8 +36,17 @@ namespace Decompiler.Analysis
             this.Constants = new Dictionary<Storage, Constant>();
         }
 
+        /// <summary>
+        /// Locations that are preserved by a procedure.
+        /// </summary>
         public HashSet<Storage> Preserved { get; private set; }
+        /// <summary>
+        /// Locations that are trashed by a procedure.
+        /// </summary>
         public HashSet<Storage> Trashed { get; private set; }
+        /// <summary>
+        /// Locations that have a constant value at the end of a procedure.
+        /// </summary>
         public Dictionary<Storage, Constant> Constants { get; private set; }
     }
 }

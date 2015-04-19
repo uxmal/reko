@@ -274,10 +274,15 @@ namespace Decompiler.Core.Expressions
             return Convert.ToBoolean(GetValue());
         }
 
-        public byte ToByte()
-        {
-            return unchecked((byte)Convert.ToUInt32(GetValue()));
-        }
+        public abstract byte ToByte();
+        public abstract ushort ToUInt16();
+        public abstract uint ToUInt32();
+        public abstract ulong ToUInt64();
+
+        public abstract short ToInt16();
+        public abstract int ToInt32();
+        public abstract long ToInt64();
+
 
 		public double ToDouble()
 		{
@@ -287,44 +292,6 @@ namespace Decompiler.Core.Expressions
 		public float ToFloat()
 		{
 			return Convert.ToSingle(GetValue());
-		}
-
-        public virtual ushort ToUInt16()
-        {
-            return unchecked(Convert.ToUInt16(GetValue()));
-        }
-
-        public virtual short ToInt16()
-        {
-            return unchecked(Convert.ToInt16(GetValue()));
-        }
-
-		public int ToInt32()
-		{
-			int q = (int)Convert.ToInt64(GetValue());
-            int mask = (0 - (q & (1 << (DataType.BitSize - 1)))) << 1;
-            return q | mask;
-		}
-
-		public abstract uint ToUInt32();
-
-		public virtual long ToInt64()
-		{
-            long q;
-            try
-            {
-                 q = Convert.ToInt64(GetValue());
-            }catch
-            {
-                q = unchecked((long)Convert.ToUInt64(GetValue()));
-            }
-            long mask = (0L - (q & (1 << (DataType.BitSize - 1)))) << 1;
-            return q | mask;
-		}
-
-		public virtual ulong ToUInt64()
-		{
-            return Convert.ToUInt64(GetValue());
 		}
 
         public virtual double ToReal64()
@@ -448,6 +415,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return value ? (byte)1 : (byte)0;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return value ? (ushort)1u : (ushort)0u;
+        }
+
         public override uint ToUInt32()
         {
             return value ? 1u : 0u;
@@ -456,6 +433,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return value ? 1u : 0u;
+        }
+
+        public override short ToInt16()
+        {
+            return value ? (short)1 : (short)0;
+        }
+
+        public override int ToInt32()
+        {
+            return value ? 1 : 0;
+        }
+
+        public override long ToInt64()
+        {
+            return value ? 1 : 0;
         }
     }
 
@@ -479,6 +471,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)(short)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)(int)value;
@@ -487,6 +489,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return (ulong)(long)value;
+        }
+
+        public override short ToInt16()
+        {
+            return value;
+        }
+
+        public override int ToInt32()
+        {
+            return value;
+        }
+
+        public override long ToInt64()
+        {
+            return value;
         }
     }
 
@@ -510,6 +527,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
@@ -518,6 +545,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return (ulong)value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (long)value;
         }
     }
 
@@ -541,6 +583,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
@@ -549,6 +601,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return value;
+        }
+
+        public override short ToInt16()
+        {
+            return (sbyte)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (sbyte)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (sbyte)value;
         }
     }
 
@@ -572,6 +639,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
@@ -580,6 +657,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return (uint) value;
+        }
+
+        public override short ToInt16()
+        {
+            return value;
+        }
+
+        public override int ToInt32()
+        {
+            return value;
+        }
+
+        public override long ToInt64()
+        {
+            return value;
         }
     }
 
@@ -603,19 +695,39 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
-        public override short ToInt16()
+        public override byte ToByte()
         {
-            return (short) value;
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return value;
         }
 
         public override ulong ToUInt64()
         {
             return value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (short)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (short)value;
         }
     }
 
@@ -639,6 +751,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
@@ -647,6 +769,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return (uint) value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return value;
+        }
+
+        public override long ToInt64()
+        {
+            return value;
         }
     }
 
@@ -670,6 +807,11 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
         public override ushort ToUInt16()
         {
             return (ushort) value;
@@ -677,10 +819,25 @@ namespace Decompiler.Core.Expressions
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return value;
         }
 
         public override ulong ToUInt64()
+        {
+            return value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
         {
             return value;
         }
@@ -706,6 +863,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
@@ -714,6 +881,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return (ulong) value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
+        {
+            return value;
         }
     }
 
@@ -737,19 +919,39 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
         }
 
-        public override long ToInt64()
-        {
-            return (long)value;
-        }
-
         public override ulong ToUInt64()
         {
             return value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (long) value;
         }
     }
 
@@ -773,6 +975,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
@@ -781,6 +993,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return (ulong)value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (long)value;
         }
     }
 
@@ -804,6 +1031,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
         public override uint ToUInt32()
         {
             return (uint)value;
@@ -812,6 +1049,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (long)value;
         }
     }
 
@@ -852,6 +1104,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return Convert.ToByte(value);
+        }
+
+        public override ushort ToUInt16()
+        {
+            return Convert.ToUInt16(value);
+        }
+
         public override uint ToUInt32()
         {
             return Convert.ToUInt32(value);
@@ -860,6 +1122,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return Convert.ToUInt64(value);
+        }
+
+        public override short ToInt16()
+        {
+            return Convert.ToInt16(value);
+        }
+
+        public override int ToInt32()
+        {
+            return Convert.ToInt32(value);
+        }
+
+        public override long ToInt64()
+        {
+            return Convert.ToInt64(value);
         }
     }
 
@@ -883,6 +1160,16 @@ namespace Decompiler.Core.Expressions
             return value;
         }
 
+        public override byte ToByte()
+        {
+            return Convert.ToByte(value);
+        }
+
+        public override ushort ToUInt16()
+        {
+            return Convert.ToUInt16(value);
+        }
+
         public override uint ToUInt32()
         {
             return Convert.ToUInt32(value);
@@ -891,6 +1178,21 @@ namespace Decompiler.Core.Expressions
         public override ulong ToUInt64()
         {
             return Convert.ToUInt64(value);
+        }
+
+        public override short ToInt16()
+        {
+            return Convert.ToInt16(value);
+        }
+
+        public override int ToInt32()
+        {
+            return Convert.ToInt32(value);
+        }
+
+        public override long ToInt64()
+        {
+            return Convert.ToInt64(value);
         }
     }
 
@@ -916,7 +1218,37 @@ namespace Decompiler.Core.Expressions
             return str;
         }
 
+        public override byte ToByte()
+        {
+            throw new InvalidCastException();
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new InvalidCastException();
+        }
+
         public override uint ToUInt32()
+        {
+            throw new InvalidCastException();
+        }
+
+        public override ulong ToUInt64()
+        {
+            throw new InvalidCastException();
+        }
+
+        public override short ToInt16()
+        {
+            throw new InvalidCastException();
+        }
+
+        public override int ToInt32()
+        {
+            throw new InvalidCastException();
+        }
+
+        public override long ToInt64()
         {
             throw new InvalidCastException();
         }

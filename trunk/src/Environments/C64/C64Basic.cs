@@ -44,7 +44,7 @@ namespace Decompiler.Environments.C64
 
         public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            int i = prog.IndexOfKey((ushort)imageReader.Address.Linear);
+            int i = prog.IndexOfKey(imageReader.Address.ToUInt16());
             if (i < 0)
                 yield break;
             for (; i < prog.Count; ++i)
@@ -83,7 +83,7 @@ namespace Decompiler.Environments.C64
             return new LeImageReader(img, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage img, uint off)
+        public ImageReader CreateImageReader(LoadedImage img, ulong off)
         {
             throw new NotImplementedException();
         }
@@ -133,6 +133,11 @@ namespace Decompiler.Environments.C64
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public Core.Lib.BitSet ImplicitArgumentRegisters

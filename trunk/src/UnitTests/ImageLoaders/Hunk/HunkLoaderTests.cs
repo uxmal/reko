@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
             var ldImg = ldr.Load(Address.Ptr32(0x00010000));
             var rlImg = ldr.Relocate(Address.Ptr32(0x00010000));
             Assert.AreEqual(1, rlImg.EntryPoints.Count);
-            Assert.AreEqual(0x00010000, rlImg.EntryPoints[0].Address.Linear);
+            Assert.AreEqual(0x00010000ul, rlImg.EntryPoints[0].Address.ToLinear());
 
         }
     }

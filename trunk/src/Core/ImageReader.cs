@@ -38,13 +38,13 @@ namespace Decompiler.Core
 
         protected ImageReader(LoadedImage img, Address addr)
         {
-            int o = addr - img.BaseAddress;
+            long o = addr - img.BaseAddress;
             if (o < 0 || o >= img.Length)
                 throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = addr;
-            this.off = offStart = (uint)o;
+            this.off = offStart = (ulong)o;
         }
 
         protected ImageReader(LoadedImage img, ulong off)

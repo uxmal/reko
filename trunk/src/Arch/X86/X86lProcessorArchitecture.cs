@@ -109,7 +109,7 @@ namespace Decompiler.Arch.X86
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -144,6 +144,11 @@ namespace Decompiler.Arch.X86
             return mode.CreateStackAccess(frame, offset, dataType);
         }
 
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return mode.MakeAddressFromConstant(c);
+        }
+
         public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return mode.ReadCodeAddress(byteSize, rdr, state);
@@ -172,7 +177,7 @@ namespace Decompiler.Arch.X86
                 {
                     return null;
                 }
-                addrTarget = Address.FromConstant(wAddr);
+                addrTarget = MakeAddressFromConstant(wAddr);
             }
             ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
             if (proc != null)

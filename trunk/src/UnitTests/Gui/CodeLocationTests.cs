@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Gui
             var dec = mr.DynamicMock<IDecompiler>();
             memSvc.Expect(x => x.ShowMemoryAtAddress(
                 Arg<Program>.Is.NotNull,
-                Arg<Address>.Matches(a => a.Linear == 0x1234)));
+                Arg<Address>.Matches(a => a.ToLinear() == 0x1234)));
             decSvc.Stub(d => d.Decompiler).Return(dec);
             dec.Stub(d => d.Project).Return(project);
             mr.ReplayAll();

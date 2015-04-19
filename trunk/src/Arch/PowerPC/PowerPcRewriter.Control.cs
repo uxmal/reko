@@ -53,7 +53,7 @@ namespace Decompiler.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.op1);
             var addrDst = dst as Address;
-            if (addrDst != null && instr.Address.Linear + 4 == addrDst.Linear)
+            if (addrDst != null && instr.Address.ToLinear() + 4 == addrDst.ToLinear())
             {
                 // PowerPC idiom to get the current instruction pointer in the lr register
                 emitter.Assign(frame.EnsureRegister(arch.lr), addrDst);

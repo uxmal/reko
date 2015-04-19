@@ -60,6 +60,6 @@ namespace Decompiler.Core
             get { return e; }
         }
 
-        private static AddressRange e = new AddressRange(new Address(0), new Address(0));
+        private static AddressRange e = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
     }
 }

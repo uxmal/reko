@@ -39,7 +39,7 @@ namespace Decompiler.Arch.X86
 
         public override uint GetLinearAddress(Address address)
         {
-            return (uint) address.ToLinear();
+            return  address.ToUInt32();
         }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
@@ -71,21 +71,21 @@ namespace Decompiler.Arch.X86
                 rdr.IsValidOffset(rdr.Offset + 5u))
             {
                 int callOffset = rdr.PeekLeInt32(1);
-                target = (uint) (callOffset + rdr.Address.Linear + 5);
+                target = (uint) (callOffset + (int)rdr.Address.ToLinear() + 5);
                 return true;
             }
             if (0x70 <= opcode && opcode <= 0x7F &&       // short branch.
                 rdr.IsValidOffset(rdr.Offset + 1u))
             {
                 sbyte callOffset = rdr.PeekSByte(1);
-                target = (uint) (rdr.Address.Linear + callOffset + 2);
+                target = (uint) ((int)rdr.Address.ToLinear() + callOffset + 2);
                 return true;
             }
             if (opcode == 0x0F && rdr.IsValidOffset(rdr.Offset + 5u))
             {
                 opcode = rdr.PeekByte(1);
                 int callOffset = rdr.PeekLeInt32(2);
-                uint linAddr = rdr.Address.Linear;
+                uint linAddr = (uint)rdr.Address.ToLinear();
                 if (0x80 <= opcode && opcode <= 0x8F)   // long branch
                 {
                     target = (uint) (callOffset + linAddr + 6);
@@ -168,7 +168,7 @@ namespace Decompiler.Arch.X86
             {
                 opcode = rdr.PeekByte(1);
                 int callOffset = rdr.PeekLeInt32(2);
-                uint linAddr = rdr.Address.Linear;
+                uint linAddr = (uint)rdr.Address.ToLinear();
                 if (0x80 <= opcode && opcode <= 0x8F)   // long branch
                 {
                     target = (ulong)(callOffset + linAddr + 6);
@@ -223,7 +223,7 @@ namespace Decompiler.Arch.X86
                 rdr.IsValidOffset(rdr.Offset + 2u))
             {
                 int callOffset = rdr.PeekLeInt16(1);
-                target = (uint)(callOffset + rdr.Address.Linear + 3);
+                target = (uint)(callOffset + (uint)rdr.Address.ToLinear() + 3);
                 return true;
             }
             if (opcode == 0x9A // CALL FAR
@@ -246,21 +246,21 @@ namespace Decompiler.Arch.X86
                 rdr.IsValidOffset(rdr.Offset + 3u))
             {
                 int callOffset = rdr.PeekLeInt16(1);
-                target = (uint)(callOffset + rdr.Address.Linear + 3);
+                target = (uint)(callOffset + (uint)rdr.Address.ToLinear() + 3);
                 return true;
             }
             if (0x70 <= opcode && opcode <= 0x7F &&       // short branch.
                 rdr.IsValidOffset(rdr.Offset + 1u))
             {
                 sbyte callOffset = rdr.PeekSByte(1);
-                target = (uint)(rdr.Address.Linear + callOffset + 2);
+                target = (uint)((uint)rdr.Address.ToLinear() + callOffset + 2);
                 return true;
             }
             if (opcode == 0x0F && rdr.IsValidOffset(rdr.Offset + 4u))
             {
                 opcode = rdr.PeekByte(1);
                 int callOffset = rdr.PeekLeInt16(2);
-                uint linAddr = rdr.Address.Linear;
+                uint linAddr = (uint)rdr.Address.ToLinear();
                 if (0x80 <= opcode && opcode <= 0x8F)   // long branch
                 {
                     target = (uint)(callOffset + linAddr + 4);

@@ -63,12 +63,12 @@ namespace Decompiler.Arch.Arm
 
         public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             if (flags != PointerScannerFlags.Calls)
                 throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
             while (rdr.IsValid)
             {
-                uint linAddrCall = (uint) rdr.Address.ToLinear();
+                uint linAddrCall =  rdr.Address.ToUInt32();
                 var opcode = rdr.ReadLeUInt32();
                 if ((opcode & 0x0F000000) == 0x0B000000)         // BL
                 {
@@ -91,7 +91,7 @@ namespace Decompiler.Arch.Arm
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -115,6 +115,11 @@ namespace Decompiler.Arch.Arm
         public RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public bool TryGetRegister(string name, out RegisterStorage reg)

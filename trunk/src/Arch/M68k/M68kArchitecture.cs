@@ -65,7 +65,7 @@ namespace Decompiler.Arch.M68k
 
         public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => (uint)a.ToLinear()).ToHashSet();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
         }
 
@@ -79,7 +79,7 @@ namespace Decompiler.Arch.M68k
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new BeImageReader(image, offset);
         }
@@ -135,6 +135,11 @@ namespace Decompiler.Arch.M68k
                 Operator.IAdd, FramePointerType,
                 frame.EnsureRegister(StackRegister), Constant.Word32(offset)),
                 dataType);
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

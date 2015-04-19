@@ -80,7 +80,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             ollylang = new OllyLang(new Host(this), Debugger);
 
             emu.InstructionPointer = rr.EntryPoints[0].Address;
-            emu.WriteRegister(Registers.esp, Image.BaseAddress.Linear + 0x1000 - 4u);
+            emu.WriteRegister(Registers.esp, (uint)Image.BaseAddress.ToLinear() + 0x1000 - 4u);
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 

@@ -66,10 +66,10 @@ namespace Decompiler.Gui.Windows.Controls
 			pea.Graphics.Transform = m;
 
 			Rectangle rc = ClientRectangle;
-			uint start = segs[0].Address.Linear;
+			ulong start = segs[0].Address.ToLinear();
 			foreach (ImageMapSegment seg in segs)
 			{
-				rc.Y = (int) (seg.Address.Linear - start);
+				rc.Y = (int) (seg.Address.ToLinear() - start);
 				rc.Height = (int) seg.Size;
 
 				PaintSegment(seg, pea.Graphics, rc);
@@ -101,10 +101,10 @@ namespace Decompiler.Gui.Windows.Controls
 			base.OnMouseDown(me);
 			ImageMapSegment [] mapSegments = ExtractSegments();
 			float scaleFactor = (float) Height / (float) ImageSize(mapSegments);
-			uint start = mapSegments[0].Address.Linear;
+			ulong start = mapSegments[0].Address.ToLinear();
 			foreach (ImageMapSegment seg in mapSegments)
 			{
-				float y = scaleFactor * (seg.Address.Linear - start);
+				float y = scaleFactor * (seg.Address.ToLinear() - start);
 				float dy = scaleFactor * seg.Size;
 				if (y <= me.Y && me.Y < y + dy)
 				{

@@ -59,7 +59,7 @@ namespace Decompiler.Core.Serialization
                     {
                         Address = de.Key.ToString(),
                         DataType = de.Value.DataType,
-                        Name = "g_" + Convert.ToString(de.Key.Linear, 16),
+                        Name = string.Format("g_{0:X}", de.Key.ToLinear())
                     })
                     .ToList(),
                 DisassemblyFilename = program.DisassemblyFilename,

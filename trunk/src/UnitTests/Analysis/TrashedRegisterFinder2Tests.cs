@@ -253,7 +253,7 @@ Constants: cl:0x00
                 var r2 = m.Register(2);
                 m.Assign(r2 ,m.LoadDw(m.IAdd(r1, 4)));
                 m.Assign(r1, m.LoadDw(m.IAdd(r1, 8)));
-                m.Call("Addition");
+                m.Call("Addition", 4);
                 m.Store(m.Word32(0x123000), r1);
                 m.Return();
             });

@@ -275,7 +275,7 @@ movzx	ax,byte ptr [bp+04]
         {
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
             LoadedImage img = new LoadedImage(Address.Ptr32(0x00100000), image);
-            img.Relocations.AddPointerReference(0x00100001u - img.BaseAddress.Linear, 0x12345678);
+            img.Relocations.AddPointerReference(0x00100001ul - img.BaseAddress.ToLinear(), 0x12345678);
             ImageReader rdr = img.CreateLeReader(img.BaseAddress);
             X86Disassembler dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             IntelInstruction instr = dasm.First();

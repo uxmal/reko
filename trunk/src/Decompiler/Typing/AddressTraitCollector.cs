@@ -95,7 +95,7 @@ namespace Decompiler.Typing
 
         public void VisitAddress(Address addr)
         {
-            var offset = (int) addr.Linear;
+            var offset = (int) addr.ToLinear();
             HandleConstantOffset(addr, offset);
         }
 

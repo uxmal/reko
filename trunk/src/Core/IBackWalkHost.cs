@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Expressions;
 using System;
 
 namespace Decompiler.Core
@@ -29,6 +30,7 @@ namespace Decompiler.Core
 	{
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
+        Address MakeAddressFromConstant(Constant c);
 
         Block GetSinglePredecessor(Block block);
 

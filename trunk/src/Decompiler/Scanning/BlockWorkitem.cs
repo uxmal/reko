@@ -544,7 +544,7 @@ namespace Decompiler.Scanning
 
         private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
-            var bw = new Backwalker(new BackwalkerHost(scanner, program.Image), xfer, eval);
+            var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
             if (!bw.CanBackwalk())
             {
                 return;
@@ -622,7 +622,7 @@ namespace Decompiler.Scanning
 
         private void Emit(Instruction instruction)
         {
-            blockCur.Statements.Add(ric.Address.Linear, instruction);
+            blockCur.Statements.Add(ric.Address.ToLinear(), instruction);
         }
 
         private Block FallthroughBlock(Address addrSrc, Procedure proc, Address fallthruAddress)
@@ -718,6 +718,8 @@ namespace Decompiler.Scanning
 
         public ExternalProcedure ImportedProcedureName(Expression callTarget)
         {
+            if (callTarget is SegmentedAccess)
+                throw new NotSupportedException("Imports of segmented adddreses not supported yet.");
             var mem = callTarget as MemoryAccess;
             if (mem == null)
                 return null;
@@ -726,7 +728,7 @@ namespace Decompiler.Scanning
             var offset = mem.EffectiveAddress as Constant;
             if (offset == null)
                 return null;
-            var addrTarget = new Address(offset.ToUInt32()); 
+            var addrTarget = program.Platform.MakeAddressFromConstant(offset);
             var impEp = scanner.GetImportedProcedure(addrTarget, ric.Address);
             //if (impEp != null)
                 return impEp;
@@ -795,11 +797,13 @@ namespace Decompiler.Scanning
         {
             private IScanner scanner;
             private LoadedImage image;
+            private Platform platform;
 
-            public BackwalkerHost(IScanner scanner, LoadedImage image)
+            public BackwalkerHost(BlockWorkitem item)
             {
-                this.scanner = scanner;
-                this.image = image;
+                this.scanner = item.scanner;
+                this.image = item.program.Image;
+                this.platform = item.program.Platform;
             }
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
@@ -820,6 +824,11 @@ namespace Decompiler.Scanning
             public bool IsValidAddress(Address addr)
             {
                 return image.IsValidAddress(addr);
+            }
+
+            public Address MakeAddressFromConstant(Constant c)
+            {
+                return platform.MakeAddressFromConstant(c);
             }
         }
     }

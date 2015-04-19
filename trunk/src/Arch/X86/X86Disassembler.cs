@@ -86,7 +86,7 @@ namespace Decompiler.Arch.X86
             if (instrCur == null)
                 return null;
             instrCur.Address = addr;
-            instrCur.Length = rdr.Address - addr;
+            instrCur.Length = (int)(rdr.Address - addr);
             return instrCur;
         }
 

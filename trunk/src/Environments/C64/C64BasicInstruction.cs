@@ -37,8 +37,7 @@ namespace Decompiler.Environments.C64
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Write(Address.Linear);
-            writer.Write(' ');
+            writer.Write("{0} ", Address.ToLinear());
             bool inString = false;
             for (int i = 0; i < Line.Length; ++i)
             {
@@ -65,8 +64,7 @@ namespace Decompiler.Environments.C64
 
         public void Write(TextWriter writer)
         {
-            writer.Write(Address.Linear);
-            writer.Write(' ');
+            writer.Write("{0} ", Address.ToLinear());
             bool inString = false;
             for (int i = 0; i < Line.Length; ++i)
             {

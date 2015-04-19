@@ -222,7 +222,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void Enqueue(Address addr, Procedure proc)
         {
-            fakeArch.Test_AddTrace(new RtlTrace(addr.Linear)
+            fakeArch.Test_AddTrace(new RtlTrace(addr.ToUInt32())
             {
                 m => {
                     m.Assign(m.LoadDw(m.Word32(0x3000)), m.Word32(42));
@@ -571,7 +571,7 @@ fn00001200_exit:
             var scanner = CreateScanner(0x1000, 0x2000);
             var addrEmulated = Address.Ptr32(0x5000);
             var addrThunk = Address.Ptr32(0x1800);
-            program.Image.WriteLeUInt32(addrThunk, addrEmulated.Linear);
+            program.Image.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
             program.InterceptedCalls.Add(addrEmulated, new ExternalProcedure("Foo", null));
             var ep = scanner.GetInterceptedCall(addrThunk);
             Assert.AreEqual("Foo", ep.Name);

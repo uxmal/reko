@@ -7,6 +7,8 @@
 
 using System;
 using System.IO;
+using word = System.UInt16;
+
 partial class makedsig
 {
 
@@ -43,7 +45,7 @@ HASHENTRY [] keys;			/* Pointer to the array of keys */
 int	 numKeys;				/* Number of useful codeview symbols */
 Stream f, f2;				/* .lib and output files respectively */
 
-byte *leData;				/* Pointer to 64K of alloc'd data. Some .lib files
+byte [] leData;				/* Pointer to 64K of alloc'd data. Some .lib files
 								have the symbols (PUBDEFs) *after* the data
 								(LEDATA), so you need to keep the data here */
 ushort maxLeData;				/* How much data we have in there */
@@ -123,9 +125,9 @@ private Stream StreamReader(string p1,string p2)
 }
 
 /* Called by map(). Return the i+1th key in *pKeys */
-void getKey(int i, out byte *pKeys)
+void getKey(int i, out byte [] pKeys)
 {
-	*pKeys = (byte *)&keys[i].pat;
+    pKeys = keys[i].pat; // (byte *)&keys[i].pat;
 }
 
 /* Display key i */
@@ -233,9 +235,9 @@ allocSym(int count)
 		if ((keys = (HASHENTRY *)realloc(keys, cAllocSym * sizeof(HASHENTRY)))
 			== 0)
 		{
-			printf("Could not realloc keys[] to %d bytes\n",
+			Console.WriteLine("Could not realloc keys[] to %d bytes",
 				cAllocSym * sizeof(HASHENTRY));
-			exit(10);
+			Environment.Exit(10);
 		}
 	}
 }
@@ -266,7 +268,7 @@ readSyms()
 		printf("Could not malloc 64k bytes for LEDATA\n"); 
 		exit(10);
 	}
-#if 0
+#if NO
 	switch(_heapchk())
 	{
 		case _HEAPBADBEGIN:
@@ -284,7 +286,7 @@ readSyms()
 	}
 #endif
 
-	while (!feof(f))
+	while (true)
 	{
 		type = readByte();
 		len = readWord();
@@ -292,7 +294,6 @@ readSyms()
 /*printf("Offset %05lX: type %02X len %d\n", offset-3, type, len);/**/
 		switch (type)
 		{
-
 			case 0x96:				/* LNAMES */
 				while (len > 1)
 				{
@@ -412,9 +413,9 @@ readSyms()
 						}
 						if (keys[i].offset > maxLeData)
 						{
-							printf(
-							"Warning: no LEDATA for symbol #%d %s "
-							"(offset %04X, max %04X)\n",
+							Console.WriteLine(
+							"Warning: no LEDATA for symbol #%d %s "+
+							"(offset {0:X4}, max {1:X4})",
 							i, keys[i].name, off, maxLeData);
 							/* To make things consistant, we set the pattern for
 								this symbol to nulls */
@@ -501,7 +502,7 @@ writeFileShort(word w)
 }
 
 void
-saveFile(void)
+saveFile()
 {
 	int i, len;
 	word *pTable;

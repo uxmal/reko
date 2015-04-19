@@ -35,7 +35,6 @@ namespace Decompiler.Analysis
 	public class SsaTransform
 	{
         private ProgramDataFlow programFlow;
-		private Identifier [] varsOrig;
 		private Procedure proc;
 
 		private const byte BitDefined = 1;
@@ -52,8 +51,6 @@ namespace Decompiler.Analysis
 		{
             this.programFlow = programFlow;
 			this.proc = proc;
-			this.varsOrig = new Identifier[proc.Frame.Identifiers.Count];
-			proc.Frame.Identifiers.CopyTo(varsOrig);
             this.SsaState = new SsaState(proc, gr);
             this.AOrig = CreateA();
 
@@ -310,17 +307,18 @@ namespace Decompiler.Analysis
                         var idDef = callee.Frame.EnsureIdentifier(def);
                         MarkDefined(idDef);
                     }
-                    return;
                 }
-
-				// Hell node implementation - define all register variables.
-				foreach (Identifier id in proc.Frame.Identifiers)
-				{
-					if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage)
-					{
-						MarkDefined(id);
-					}
-				}
+                else
+                {
+                    // Hell node implementation - define all register variables.
+                    foreach (Identifier id in proc.Frame.Identifiers)
+                    {
+                        if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage)
+                        {
+                            MarkDefined(id);
+                        }
+                    }
+                }
 			}
 
             private Procedure GetUserProcedure(CallInstruction ci)

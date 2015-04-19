@@ -141,7 +141,7 @@ namespace Decompiler.Scanning
             /// <param name="block"></param>
             /// <param name="start">Linear start address of the block</param>
             /// <param name="end">Linear address of the byte/word beyond the block's end.</param>
-            public BlockRange(Block block, uint start, uint end)
+            public BlockRange(Block block, ulong start, ulong end)
             {
                 if (block == null)
                     throw new ArgumentNullException("block");
@@ -151,8 +151,8 @@ namespace Decompiler.Scanning
             }
 
             public Block Block { get; private set; }
-            public uint Start { get; set; }
-            public uint End { get; set; }
+            public ulong Start { get; set; }
+            public ulong End { get; set; }
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Decompiler.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            blocks.Add(addr, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint)image.Bytes.Length));
+            blocks.Add(addr, new BlockRange(b, addr.ToLinear(), image.BaseAddress.ToLinear() + (uint)image.Bytes.Length));
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
 
@@ -181,8 +181,8 @@ namespace Decompiler.Scanning
         public void TerminateBlock(Block block, Address addr)
         {
             BlockRange range;
-            if (blocks.TryGetLowerBound(addr, out range) && range.Start < addr.Linear)
-                range.End = addr.Linear;
+            if (blocks.TryGetLowerBound(addr, out range) && range.Start < addr.ToLinear())
+                range.End = addr.ToLinear();
             imageMap.TerminateItem(addr);
         }
 
@@ -463,7 +463,7 @@ namespace Decompiler.Scanning
             queue = oldQueue;
 
             // Add <stackpointer> := fp explicitly to the starting block.
-            proc.EntryBlock.Succ[0].Statements.Insert(0, addr.Linear, new Assignment(sp, proc.Frame.FramePointer));
+            proc.EntryBlock.Succ[0].Statements.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
             return proc;
         }
 
@@ -501,7 +501,7 @@ namespace Decompiler.Scanning
         public Block FindContainingBlock(Address address)
         {
             BlockRange b;
-            if (blocks.TryGetLowerBound(address, out b) && address.Linear < b.End)
+            if (blocks.TryGetLowerBound(address, out b) && address.ToLinear() < b.End)
             {
                 if (b.Block.Succ.Count == 0)
                     return b.Block;
@@ -608,7 +608,7 @@ namespace Decompiler.Scanning
                 graph.RemoveEdge(blockToSplit, succ);
             }
 
-            var linAddr = addr.Linear;
+            var linAddr = addr.ToLinear();
             var stmsToMove = blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr).ToArray();
             if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements.Last.LinearAddress >= linAddr)
             {

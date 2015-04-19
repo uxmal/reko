@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Scanning
         private class RewriterHost : IRewriterHost, IImportResolver
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
-            Dictionary<uint, ProcedureSignature> sigs = new Dictionary<uint, ProcedureSignature>();
+            Dictionary<ulong, ProcedureSignature> sigs = new Dictionary<ulong, ProcedureSignature>();
             Dictionary<Address, ImportReference> importThunks;
             Dictionary<string, ProcedureSignature> signatures;
 
@@ -97,7 +97,7 @@ namespace Decompiler.UnitTests.Scanning
 
             public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, ProcedureSignature signature)
             {
-                sigs.Add(addrCallInstruction.Linear, signature);
+                sigs.Add(addrCallInstruction.ToLinear(), signature);
             }
 
             public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)

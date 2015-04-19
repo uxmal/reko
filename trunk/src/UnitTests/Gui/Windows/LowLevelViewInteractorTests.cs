@@ -121,7 +121,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             interactor.Control.MemoryView.SelectedAddress = Address.Ptr32(0x12321);
 
-            Assert.AreEqual(0x12321, interactor.Control.DisassemblyView.TopAddress.Linear);
+            Assert.AreEqual(0x12321ul, interactor.Control.DisassemblyView.TopAddress.ToLinear());
             mr.VerifyAll();
         }
 
@@ -219,13 +219,13 @@ namespace Decompiler.UnitTests.Gui.Windows
             Assert.IsNull(control.MemoryView.SelectedAddress);
             When_EnterAddressInBar("1000");
             When_GoPushed();
-            Assert.AreEqual(0x01000, control.MemoryView.SelectedAddress.Linear);
+            Assert.AreEqual(0x01000, control.MemoryView.SelectedAddress.ToLinear());
             When_EnterAddressInBar("1004");
             When_GoPushed();
-            Assert.AreEqual(0x01004, control.MemoryView.SelectedAddress.Linear);
+            Assert.AreEqual(0x01004, control.MemoryView.SelectedAddress.ToLinear());
             When_EnterAddressInBar("10010");
             When_GoPushed();
-            Assert.AreEqual(0x01004, control.MemoryView.SelectedAddress.Linear);
+            Assert.AreEqual(0x01004, control.MemoryView.SelectedAddress.ToLinear());
         }
 
         private void When_EnterAddressInBar(string address)

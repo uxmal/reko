@@ -69,7 +69,7 @@ namespace Decompiler.Arch.Arm
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -116,6 +116,11 @@ namespace Decompiler.Arch.Arm
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
         {
             throw new NotImplementedException();
         }

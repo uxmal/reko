@@ -33,12 +33,12 @@ namespace Decompiler.Core
 			this.block = block;
 		}
 
-        public void Add(uint linearAddress, Instruction instr)
+        public void Add(ulong linearAddress, Instruction instr)
         {
             Add(new Statement(linearAddress, instr, block));
         }
 
-        public void Insert(int position, uint linearAddress, Instruction instr)
+        public void Insert(int position, ulong linearAddress, Instruction instr)
         {
             base.Insert(position, new Statement(linearAddress, instr, block));
         }

@@ -37,7 +37,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             switch (eContextData)
             {
-            case eContextData.UE_EIP: return emu.InstructionPointer.Linear;
+            case eContextData.UE_EIP: return emu.InstructionPointer.ToLinear();
             }
             throw new NotImplementedException();
         }

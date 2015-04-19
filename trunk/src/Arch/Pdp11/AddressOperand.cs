@@ -42,9 +42,9 @@ namespace Decompiler.Arch.Pdp11
         {
             string s;
             if (base.Width.Size == 2)
-                s= string.Format("{0:X4}", Address.Linear);
+                s = string.Format("{0:X4}", Address.ToLinear());
             else
-                s= Address.ToString();
+                s = Address.ToString();
             writer.WriteAddress(s, Address);
         }
     }

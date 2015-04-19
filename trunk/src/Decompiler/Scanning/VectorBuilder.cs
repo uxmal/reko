@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -85,7 +86,9 @@ namespace Decompiler.Scanning
         private int[] BuildMapping(BackwalkDereference deref, int limit)
         {
             int[] map = new int[limit];
-            var rdr = program.Architecture.CreateImageReader(program.Image, new Address((uint)deref.TableOffset));
+            var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
+            
+            var rdr = program.Architecture.CreateImageReader(program.Image, addrTableStart);
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();
@@ -114,7 +117,8 @@ namespace Decompiler.Scanning
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
                     var entryAddr = (uint) (addrTable-program.Image.BaseAddress) + (uint)(permutation[i] * cbEntry);
-                    vector.Add(new Address(program.Image.ReadLeUInt32(entryAddr)));      //$BUG: will fail on 64-bit arch.
+                    var addr = Address.Ptr32(program.Image.ReadLeUInt32(entryAddr));                     //$BUG: will fail on 64-bit arch.
+                    vector.Add(addr);    
                 }
             }
             else
@@ -170,6 +174,11 @@ namespace Decompiler.Scanning
             if (block == null)
                 return null;
             return block.Address;
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return program.Platform.MakeAddressFromConstant(c);
         }
 
         public RegisterStorage IndexRegister

@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Analysis
         public void BlockTerminates()
         {
             var m = new ProcedureBuilder();
-            m.Call(exit);
+            m.Call(exit, 4);
             var b = m.CurrentBlock;
             m.Return();
 
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
             {
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.Return();
             });
             var prog = progMock.BuildProgram();
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Analysis
             var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "bye");
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.Label("bye");
                 m.Return();
             });
@@ -128,13 +128,13 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void ProcedureTerminatesIfAllBranchesDo()
         {
-            var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
+            var proc = CompileProcedure("proc", m => 
             {
                 m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "whee");
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.FinishProcedure();
                 m.Label("whee");
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.FinishProcedure();
             });
             var prog = progMock.BuildProgram();
@@ -147,15 +147,15 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void TerminatingSubProcedure()
         {
-            var sub = CompileProcedure("sub", delegate(ProcedureBuilder m)
+            var sub = CompileProcedure("sub", m =>
             {
-                m.Call(exit);
+                m.Call(exit, 4);
                 m.FinishProcedure();
             });
 
-            Procedure caller = CompileProcedure("caller", delegate(ProcedureBuilder m)
+            Procedure caller = CompileProcedure("caller", m =>
             {
-                m.Call(sub);
+                m.Call(sub, 4);
                 m.Return();
             });
 

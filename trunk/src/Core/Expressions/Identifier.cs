@@ -109,6 +109,10 @@ namespace Decompiler.Core.Expressions
 		{
 		}
 
+        public MemoryIdentifier(string name, DataType dt) : base(name, dt, new MemoryStorage())
+        {
+
+        }
 		static MemoryIdentifier()
 		{
 			g = new MemoryIdentifier(0, new UnknownType());

@@ -28,7 +28,7 @@ namespace Decompiler.Core
     /// </summary>
 	public class Statement
 	{
-        public Statement(uint linearAddress, Instruction instr, Block block)
+        public Statement(ulong linearAddress, Instruction instr, Block block)
         {
             this.LinearAddress = linearAddress;
             this.Instruction = instr;
@@ -37,7 +37,7 @@ namespace Decompiler.Core
 
         public Block Block { get; set; }
         public Instruction Instruction { get; set; }
-        public uint LinearAddress { get; private set; }
+        public ulong LinearAddress { get; private set; }
 
 		public override string ToString()
 		{

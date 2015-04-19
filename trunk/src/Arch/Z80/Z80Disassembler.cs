@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Z80
             this.IndexRegister = null;
             instr = opRef.Decode(this, op, "");
             instr.Address = addr;
-            instr.Length = rdr.Address - addr;
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -118,7 +118,7 @@ namespace Decompiler.Arch.Z80
                 case 'J':       // Relative jump
                     var width = OperandSize(fmt[i++]);
                     int ipOffset = rdr.ReadLeSigned(width);
-                    ops[iOp++] = AddressOperand.Ptr16((ushort)(rdr.Address.Offset + ipOffset));
+                    ops[iOp++] = AddressOperand.Ptr16((ushort)(rdr.Address.ToUInt16() + ipOffset));
                     break;
                 case 'x':       // 2-digit Inline hexadecimal byte
                     int val = (Hex(fmt[i++]) << 4);
@@ -135,7 +135,7 @@ namespace Decompiler.Arch.Z80
                 }
             }
             instr.Code = opcode;
-            instr.Length = rdr.Address - instr.Address;
+            instr.Length = (int)(rdr.Address - instr.Address);
             instr.Op1 = ops[0];
             instr.Op2 = ops[1];
             return instr;

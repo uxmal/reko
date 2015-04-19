@@ -76,8 +76,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
                 MemInfo = new MEMORY_BASIC_INFORMATION
                 {
-                    AllocationBase = segment.Address.Linear,
-                    BaseAddress = segment.Address.Linear,
+                    AllocationBase = segment.Address.ToLinear(),
+                    BaseAddress = segment.Address.ToLinear(),
                     RegionSize = segment.Size,
                 };
                 return true;
@@ -91,7 +91,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public virtual bool TryReadBytes(ulong addr, ulong memlen, byte[] membuf)
         {
-            return Image.TryReadBytes((uint)(addr - Image.BaseAddress.Linear), (int)memlen, membuf);
+            return Image.TryReadBytes(addr - Image.BaseAddress.ToLinear(), (int)memlen, membuf);
         }
 
         public virtual object TE_GetProcessHandle()

@@ -62,7 +62,7 @@ namespace Decompiler.Typing
 
         public Expression Rewrite(Address addr, bool dereferenced)
         {
-            this.c = Constant.UInt32(addr.Linear);  //$BUG: won't work for x86.
+            this.c = Constant.UInt32(addr.ToUInt32());  //$BUG: won't work for x86.
             var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
             this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
             this.dereferenced = dereferenced;
@@ -173,7 +173,7 @@ namespace Decompiler.Typing
                 // Null pointer.
                 if (c.IsZero)
                 {
-                    var np = new Address(0);
+                    var np = Address.Ptr32(0);  //$BUG: should be platform-dependent.
                     np.TypeVariable = c.TypeVariable;
                     np.DataType = c.DataType;
                     return np;

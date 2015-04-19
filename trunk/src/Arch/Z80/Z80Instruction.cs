@@ -39,6 +39,7 @@ namespace Decompiler.Arch.Z80
                 writer.WriteOpcode("ex");
                 writer.Tab();
                 writer.Write("af,af'");
+                return;
             }
             writer.WriteOpcode(Code.ToString());
             if (Op1 != null)

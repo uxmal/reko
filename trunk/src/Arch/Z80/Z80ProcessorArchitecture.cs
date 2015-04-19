@@ -69,7 +69,7 @@ namespace Decompiler.Arch.Z80
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -114,6 +114,11 @@ namespace Decompiler.Arch.Z80
         public Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

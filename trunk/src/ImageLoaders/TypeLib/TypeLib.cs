@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TypeLib;
 
-namespace TypeLib
+namespace Decompiler.TypeLib
 {
+        using WORD = System.UInt16;
+        using DWORD = System.UInt32;
+    using HRESULT = System.Int32;
+    using ULONG = System.UInt32;
+    using LANGID = System.UInt16;   //$REVIEW: correct?
+using Microsoft.Win32;
+using System.Diagnostics;
+
     class TypeLib
     {
 /*
@@ -57,17 +66,17 @@ namespace TypeLib
  *
  */
 
-#include "precomp.h"
+//#include "precomp.h"
 
-#include <winternl.h>
-#include <lzexpand.h>
+//#include <winternl.h>
+//#include <lzexpand.h>
 
-#include "typelib.h"
+//#include "typelib.h"
 
-WINE_DEFAULT_DEBUG_CHANNEL(ole);
-WINE_DECLARE_DEBUG_CHANNEL(typelib);
+//WINE_DEFAULT_DEBUG_CHANNEL(ole);
+//WINE_DECLARE_DEBUG_CHANNEL(typelib);
 
-#ifdef __REACTOS__
+#if __REACTOS__
 /* FIXME: Vista+ */
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000)
 static BOOL WINAPI GetFileInformationByHandleEx( HANDLE handle, FILE_INFO_BY_HANDLE_CLASS class,
@@ -128,7 +137,7 @@ static BOOL WINAPI GetFileInformationByHandleEx( HANDLE handle, FILE_INFO_BY_HAN
 }
 #endif
 
-typedef struct
+public class NE_NAMEINFO
 {
     WORD     offset;
     WORD     length;
@@ -136,9 +145,11 @@ typedef struct
     WORD     id;
     WORD     handle;
     WORD     usage;
-} NE_NAMEINFO;
+} 
 
-typedef struct
+        private const  HRESULT TYPE_E_LIBNOTREGISTERED = 0x8000F0F0;    //$BUG: get real value
+
+public class NE_TYPEINFO
 {
     WORD        type_id;   /* Type identifier */
     WORD        count;     /* Number of resources of this type */
@@ -146,11 +157,16 @@ typedef struct
     /*
      * Name info array.
      */
-} NE_TYPEINFO;
+} 
 
-static HRESULT typedescvt_to_variantvt(ITypeInfo *tinfo, const TYPEDESC *tdesc, VARTYPE *vt);
-static HRESULT TLB_AllocAndInitVarDesc(const VARDESC *src, VARDESC **dest_ptr);
-static void TLB_FreeVarDesc(VARDESC*);
+        public interface ITypeInfo {}
+        public class TYPEDESC {}
+        public enum VARTYPE {}
+        public class VARDESC {}
+
+static HRESULT typedescvt_to_variantvt(ITypeInfo tinfo, TYPEDESC tdesc, out VARTYPE vt);
+static HRESULT TLB_AllocAndInitVarDesc(VARDESC src, out VARDESC dest_ptr);
+static void TLB_FreeVarDesc(VARDESC src);
 
 /****************************************************************************
  *              FromLExxx
@@ -158,7 +174,7 @@ static void TLB_FreeVarDesc(VARDESC*);
  * Takes p_iVal (which is in little endian) and returns it
  *   in the host machine's byte order.
  */
-#ifdef WORDS_BIGENDIAN
+#if WORDS_BIGENDIAN
 static WORD FromLEWord(WORD p_iVal)
 {
   return (((p_iVal & 0x00FF) << 8) |
@@ -174,19 +190,19 @@ static DWORD FromLEDWord(DWORD p_iVal)
 	  ((p_iVal & 0xFF000000) >> 24));
 }
 #else
-#define FromLEWord(X)  (X)
-#define FromLEDWord(X) (X)
+        private WORD FromLEWord(WORD X)  { return X; }
+        private DWORD FromLEDWord(DWORD X) { return X; }
 #endif
 
-#define DISPATCH_HREF_OFFSET 0x01000000
-#define DISPATCH_HREF_MASK   0xff000000
+        private const int DISPATCH_HREF_OFFSET= 0x01000000;
+        private const uint DISPATCH_HREF_MASK  = 0xff000000u;
 
 /****************************************************************************
  *              FromLExxx
  *
  * Fix byte order in any structure if necessary
  */
-#ifdef WORDS_BIGENDIAN
+#if WORDS_BIGENDIAN
 static void FromLEWords(void *p_Val, int p_iSize)
 {
   WORD *Val = p_Val;
@@ -214,126 +230,118 @@ static void FromLEDWords(void *p_Val, int p_iSize)
   }
 }
 #else
-#define FromLEWords(X,Y) /*nothing*/
-#define FromLEDWords(X,Y) /*nothing*/
+        private void FromLEWords(object X, int Y) {} /*nothing*/
+        private void  FromLEDWords(object X, int Y) {} /*nothing*/
 #endif
 
 /*
  * Find a typelib key which matches a requested maj.min version.
  */
-static BOOL find_typelib_key( REFGUID guid, WORD *wMaj, WORD *wMin )
+static bool find_typelib_key( Guid guid, ref WORD wMaj, ref WORD wMin )
 {
-    static const WCHAR typelibW[] = {'T','y','p','e','l','i','b','\\',0};
-    WCHAR buffer[60];
-    char key_name[16];
-    DWORD len, i;
-    INT best_maj = -1, best_min = -1;
-    HKEY hkey;
+    //static const WCHAR typelibW[] = {'T','y','p','e','l','i','b','\\',0};
+    //WCHAR buffer[60];
+    //char key_name[16];
+    //DWORD len, i;
+    short best_maj = -1, best_min = -1;
 
-    memcpy( buffer, typelibW, sizeof(typelibW) );
-    StringFromGUID2( guid, buffer + strlenW(buffer), 40 );
+    //memcpy( buffer, typelibW, sizeof(typelibW) );
+    //StringFromGUID2( guid, buffer + strlenW(buffer), 40 );
+    string buffer = string.Format("Typelib\\{0:N}", guid);
 
-    if (RegOpenKeyExW( HKEY_CLASSES_ROOT, buffer, 0, KEY_READ, &hkey ) != ERROR_SUCCESS)
-        return FALSE;
-
-    len = sizeof(key_name);
-    i = 0;
-    while (RegEnumKeyExA(hkey, i++, key_name, &len, NULL, NULL, NULL, NULL) == ERROR_SUCCESS)
+    var hkey = Registry.ClassesRoot.OpenSubKey(buffer);
+    if (hkey == null)
+        return false;
+    int i = 0;
+    var subKeys = hkey.GetSubKeyNames();
+    if (subKeys == null)
+        return false;
+    foreach (var key_name in subKeys)
     {
-        INT v_maj, v_min;
-
-        if (sscanf(key_name, "%x.%x", &v_maj, &v_min) == 2)
+        ++i;
+        short v_maj, v_min;
+        var vs = key_name.Split('.');
+        if (vs.Length == 2 &&
+            Int16.TryParse(vs[0], out v_maj) &&
+            Int16.TryParse(vs[1], out v_min))
         {
-            TRACE("found %s: %x.%x\n", debugstr_w(buffer), v_maj, v_min);
+            Debug.Print("found {0}: {1}.{2}", buffer, v_maj, v_min);
 
-            if (*wMaj == 0xffff && *wMin == 0xffff)
+            if (wMaj == 0xffff && wMin == 0xffff)
             {
                 if (v_maj > best_maj) best_maj = v_maj;
                 if (v_min > best_min) best_min = v_min;
             }
-            else if (*wMaj == v_maj)
+            else if (wMaj == v_maj)
             {
                 best_maj = v_maj;
 
-                if (*wMin == v_min)
+                if (wMin == v_min)
                 {
                     best_min = v_min;
                     break; /* exact match */
                 }
-                if (*wMin != 0xffff && v_min > best_min) best_min = v_min;
+                if (wMin != 0xffff && v_min > best_min) best_min = v_min;
             }
         }
-        len = sizeof(key_name);
     }
-    RegCloseKey( hkey );
+        hkey.Dispose();
 
-    TRACE("found best_maj %d, best_min %d\n", best_maj, best_min);
+        Debug.Print("found best_maj {0}, best_min {1}", best_maj, best_min);
 
-    if (*wMaj == 0xffff && *wMin == 0xffff)
+    if (wMaj == 0xffff && wMin == 0xffff)
     {
         if (best_maj >= 0 && best_min >= 0)
         {
-            *wMaj = best_maj;
-            *wMin = best_min;
-            return TRUE;
+            wMaj = (ushort) best_maj;
+            wMin = (ushort) best_min;
+            return true;
         }
     }
 
-    if (*wMaj == best_maj && best_min >= 0)
+    if (wMaj == best_maj && best_min >= 0)
     {
-        *wMin = best_min;
-        return TRUE;
+        wMin = (ushort) best_min;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 /* get the path of a typelib key, in the form "Typelib\\<guid>\\<maj>.<min>" */
 /* buffer must be at least 60 characters long */
-static WCHAR *get_typelib_key( REFGUID guid, WORD wMaj, WORD wMin, WCHAR *buffer )
+static string get_typelib_key( Guid guid, WORD wMaj, WORD wMin) // , WCHAR *buffer )
 {
-    static const WCHAR TypelibW[] = {'T','y','p','e','l','i','b','\\',0};
-    static const WCHAR VersionFormatW[] = {'\\','%','x','.','%','x',0};
-
-    memcpy( buffer, TypelibW, sizeof(TypelibW) );
-    StringFromGUID2( guid, buffer + strlenW(buffer), 40 );
-    sprintfW( buffer + strlenW(buffer), VersionFormatW, wMaj, wMin );
-    return buffer;
+    return string.Format("Typelib\\{0:N}\\{1:x}\\{2:x}}", guid, wMaj, wMin);
 }
 
 /* get the path of an interface key, in the form "Interface\\<guid>" */
 /* buffer must be at least 50 characters long */
-static WCHAR *get_interface_key( REFGUID guid, WCHAR *buffer )
+static string get_interface_key( Guid guid) //, WCHAR *buffer )
 {
-    static const WCHAR InterfaceW[] = {'I','n','t','e','r','f','a','c','e','\\',0};
-
-    memcpy( buffer, InterfaceW, sizeof(InterfaceW) );
-    StringFromGUID2( guid, buffer + strlenW(buffer), 40 );
-    return buffer;
+    return string.Format("Interface\\{0:N}", guid);
 }
+        public enum LCID {}
+        public enum SYSKIND {SYS_WIN16,SYS_WIN32,SYS_WIN64}
 
 /* get the lcid subkey for a typelib, in the form "<lcid>\\<syskind>" */
 /* buffer must be at least 16 characters long */
-static WCHAR *get_lcid_subkey( LCID lcid, SYSKIND syskind, WCHAR *buffer )
+static string get_lcid_subkey( LCID lcid, SYSKIND syskind) // , WCHAR *buffer )
 {
-    static const WCHAR LcidFormatW[] = {'%','l','x','\\',0};
-    static const WCHAR win16W[] = {'w','i','n','1','6',0};
-    static const WCHAR win32W[] = {'w','i','n','3','2',0};
-    static const WCHAR win64W[] = {'w','i','n','6','4',0};
-
-    sprintfW( buffer, LcidFormatW, lcid );
+    var buffer = new StringBuilder();
+    buffer.AppendFormat("{0:x}\\", (int) lcid);
     switch(syskind)
     {
-    case SYS_WIN16: strcatW( buffer, win16W ); break;
-    case SYS_WIN32: strcatW( buffer, win32W ); break;
-    case SYS_WIN64: strcatW( buffer, win64W ); break;
+    case SYSKIND.SYS_WIN16: buffer.Append("win16"); break;
+    case SYSKIND.SYS_WIN32: buffer.Append("win32"); break;
+    case SYSKIND.SYS_WIN64: buffer.Append("win64"); break;
     default:
-        TRACE("Typelib is for unsupported syskind %i\n", syskind);
-        return NULL;
+        Debug.Print("Typelib is for unsupported syskind {0}", syskind);
+        return null;
     }
-    return buffer;
+    return buffer.ToString();
 }
 
-static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath, ITypeLib2 **ppTypeLib);
+//static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath, ITypeLib2 **ppTypeLib);
 
 struct tlibredirect_data
 {
@@ -350,9 +358,10 @@ struct tlibredirect_data
 };
 
 /* Get the path to a registered type library. Helper for QueryPathOfRegTypeLib. */
-static HRESULT query_typelib_path( REFGUID guid, WORD wMaj, WORD wMin,
-                                   SYSKIND syskind, LCID lcid, BSTR *path, BOOL redir )
+static HRESULT query_typelib_path( Guid guid, WORD wMaj, WORD wMin,
+                                   SYSKIND syskind, LCID lcid, out string path, bool redir )
 {
+#if NYI
     HRESULT hr = TYPE_E_LIBNOTREGISTERED;
     LCID myLCID = lcid;
     HKEY hkey;
@@ -360,7 +369,7 @@ static HRESULT query_typelib_path( REFGUID guid, WORD wMaj, WORD wMin,
     WCHAR Path[MAX_PATH];
     LONG res;
 
-    TRACE_(typelib)("(%s, %x.%x, 0x%x, %p)\n", debugstr_guid(guid), wMaj, wMin, lcid, path);
+    Debug.PrintIf("({0}, {1:x}.{2:x}, 0x{3:x}", guid, wMaj, wMin, lcid, path);
 
     if (redir)
     {
@@ -435,6 +444,8 @@ static HRESULT query_typelib_path( REFGUID guid, WORD wMaj, WORD wMin,
     RegCloseKey( hkey );
     TRACE_(typelib)("-- 0x%08x\n", hr);
     return hr;
+#endif
+    throw new NotImplementedException();
 }
 
 /****************************************************************************
@@ -455,18 +466,19 @@ static HRESULT query_typelib_path( REFGUID guid, WORD wMaj, WORD wMin,
  *  or TYPE_E_REGISTRYACCESS if the type library registration key couldn't be
  *  opened.
  */
-HRESULT WINAPI QueryPathOfRegTypeLib( REFGUID guid, WORD wMaj, WORD wMin, LCID lcid, LPBSTR path )
+HRESULT QueryPathOfRegTypeLib( Guid guid, WORD wMaj, WORD wMin, LCID lcid, out string path )
 {
-    BOOL redir = TRUE;
-#ifdef _WIN64
-    HRESULT hres = query_typelib_path( guid, wMaj, wMin, SYS_WIN64, lcid, path, TRUE );
+    bool redir = true;
+#if _WIN64
+    HRESULT hres = query_typelib_path( guid, wMaj, wMin, SYSKIND.SYS_WIN64, lcid, out path, TRUE );
     if(SUCCEEDED(hres))
         return hres;
     redir = FALSE;
 #endif
-    return query_typelib_path( guid, wMaj, wMin, SYS_WIN32, lcid, path, redir );
+    return query_typelib_path( guid, wMaj, wMin, SYSKIND.SYS_WIN32, lcid, out path, redir );
 }
 
+        public interface ICreateTypeLib {}
 /******************************************************************************
  * CreateTypeLib [OLEAUT32.160]  creates a typelib
  *
@@ -474,11 +486,11 @@ HRESULT WINAPI QueryPathOfRegTypeLib( REFGUID guid, WORD wMaj, WORD wMin, LCID l
  *    Success: S_OK
  *    Failure: Status
  */
-HRESULT WINAPI CreateTypeLib(
-	SYSKIND syskind, LPCOLESTR szFile, ICreateTypeLib** ppctlib
+HRESULT  CreateTypeLib(
+	SYSKIND syskind, string szFile, out ICreateTypeLib ppctlib
 ) {
     FIXME("(%d,%s,%p), stub!\n",syskind,debugstr_w(szFile),ppctlib);
-    return E_FAIL;
+    throw new NotImplementedException();
 }
 
 /******************************************************************************
@@ -497,12 +509,13 @@ HRESULT WINAPI CreateTypeLib(
  * SEE
  *  LoadTypeLibEx, LoadRegTypeLib, CreateTypeLib.
  */
-HRESULT WINAPI LoadTypeLib(const OLECHAR *szFile, ITypeLib * *pptLib)
+HRESULT LoadTypeLib(string szFile, out ITypeLib pptLib)
 {
-    TRACE("(%s,%p)\n",debugstr_w(szFile), pptLib);
-    return LoadTypeLibEx(szFile, REGKIND_DEFAULT, pptLib);
+    Debug.Print("({0})\n",szFile);
+    return LoadTypeLibEx(szFile, REGKIND.REGKIND_DEFAULT, out pptLib);
 }
 
+        public enum REGKIND{REGKIND_DEFAULT,REGKIND_REGISTER,REGKIND_NONE}
 /******************************************************************************
  *		LoadTypeLibEx	[OLEAUT32.183]
  *
@@ -512,42 +525,53 @@ HRESULT WINAPI LoadTypeLib(const OLECHAR *szFile, ITypeLib * *pptLib)
  *    Success: S_OK
  *    Failure: Status
  */
-HRESULT WINAPI LoadTypeLibEx(
-    LPCOLESTR szFile,  /* [in] Name of file to load from */
+HRESULT LoadTypeLibEx(
+    string szFile,  /* [in] Name of file to load from */
     REGKIND  regkind,  /* [in] Specify kind of registration */
-    ITypeLib **pptLib) /* [out] Pointer to pointer to loaded type library */
+    out ITypeLib pptLib) /* [out] Pointer to pointer to loaded type library */
 {
     WCHAR szPath[MAX_PATH+1];
     HRESULT res;
 
-    TRACE("(%s,%d,%p)\n",debugstr_w(szFile), regkind, pptLib);
+    Debug.Print("(%s,%d)",szFile, regkind, pptLib);
 
-    *pptLib = NULL;
+    pptLib = null;
 
-    res = TLB_ReadTypeLib(szFile, szPath, MAX_PATH + 1, (ITypeLib2**)pptLib);
+    ITypeLib2 tl2;
+    res = TLB_ReadTypeLib(szFile, szPath, out tl2);
+    pptLib = tl2;
 
     if (SUCCEEDED(res))
         switch(regkind)
         {
-            case REGKIND_DEFAULT:
+            case REGKIND.REGKIND_DEFAULT:
                 /* don't register typelibs supplied with full path. Experimentation confirms the following */
                 if (((szFile[0] == '\\') && (szFile[1] == '\\')) ||
                     (szFile[0] && (szFile[1] == ':'))) break;
                 /* else fall-through */
-
-            case REGKIND_REGISTER:
-                if (FAILED(res = RegisterTypeLib(*pptLib, szPath, NULL)))
+                goto case REGKIND.REGKIND_REGISTER;
+            case REGKIND.REGKIND_REGISTER:
+                if (FAILED(res = RegisterTypeLib(pptLib, szPath, null)))
                 {
-                    ITypeLib_Release(*pptLib);
-                    *pptLib = 0;
+                    pptLib = null;
                 }
                 break;
-            case REGKIND_NONE:
+            case REGKIND.REGKIND_NONE:
                 break;
         }
 
-    TRACE(" returns %08x\n",res);
+    Debug.Print(" returns {0:X8}",res);
     return res;
+}
+
+private bool FAILED(HRESULT p)
+{
+ 	throw new NotImplementedException();
+}
+
+private bool SUCCEEDED(HRESULT res)
+{
+ 	throw new NotImplementedException();
 }
 
 /******************************************************************************
@@ -567,39 +591,38 @@ HRESULT WINAPI LoadTypeLibEx(
  *  Failure: Any HRESULT code returned from QueryPathOfRegTypeLib or
  *  LoadTypeLib.
  */
-HRESULT WINAPI LoadRegTypeLib(
-	REFGUID rguid,
+HRESULT LoadRegTypeLib(
+	Guid rguid,
 	WORD wVerMajor,
 	WORD wVerMinor,
 	LCID lcid,
-	ITypeLib **ppTLib)
+	out ITypeLib ppTLib)
 {
-    BSTR bstr=NULL;
+    string bstr=null;
     HRESULT res;
 
-    *ppTLib = NULL;
+    ppTLib = null;
 
-    res = QueryPathOfRegTypeLib( rguid, wVerMajor, wVerMinor, lcid, &bstr);
+    res = QueryPathOfRegTypeLib( rguid, wVerMajor, wVerMinor, lcid, out bstr);
 
     if(SUCCEEDED(res))
     {
-        res= LoadTypeLib(bstr, ppTLib);
-        SysFreeString(bstr);
+        res= LoadTypeLib(bstr, out ppTLib);
 
-        if (*ppTLib)
+        if (ppTLib != null)
         {
-            TLIBATTR *attr;
+            TLIBATTR attr;
 
             res = ITypeLib_GetLibAttr(*ppTLib, &attr);
             if (res == S_OK)
             {
-                BOOL mismatch = attr->wMajorVerNum != wVerMajor || attr->wMinorVerNum < wVerMinor;
-                ITypeLib_ReleaseTLibAttr(*ppTLib, attr);
+                BOOL mismatch = attr.wMajorVerNum != wVerMajor || attr.wMinorVerNum < wVerMinor;
+                ITypeLib_ReleaseTLibAttr(ppTLib, attr);
 
                 if (mismatch)
                 {
                     ITypeLib_Release(*ppTLib);
-                    *ppTLib = NULL;
+                    ppTLib = null;
                     res = TYPE_E_LIBNOTREGISTERED;
                 }
             }
@@ -1092,12 +1115,12 @@ HRESULT WINAPI UnRegisterTypeLibForUser(
 
 /*======================= ITypeLib implementation =======================*/
 
-typedef struct tagTLBGuid {
-    GUID guid;
-    INT hreftype;
-    UINT offset;
-    struct list entry;
-} TLBGuid;
+public class TLBGuid {
+    Guid guid;
+    int hreftype;
+    uint offset;
+    list entry;
+}
 
 typedef struct tagTLBCustData
 {
@@ -1107,13 +1130,13 @@ typedef struct tagTLBCustData
 } TLBCustData;
 
 /* data structure for import typelibs */
-typedef struct tagTLBImpLib
+public class TLBImpLib
 {
     int offset;                 /* offset in the file (MSFT)
 				   offset in nametable (SLTG)
 				   just used to identify library while reading
 				   data from file */
-    TLBGuid *guid;                  /* libid */
+    TLBGuid guid;                  /* libid */
     BSTR name;                  /* name */
 
     LCID lcid;                  /* lcid of imported typelib */
@@ -1121,25 +1144,25 @@ typedef struct tagTLBImpLib
     WORD wVersionMajor;         /* major version number */
     WORD wVersionMinor;         /* minor version number */
 
-    struct tagITypeLibImpl *pImpTypeLib; /* pointer to loaded typelib, or
+    ITypeLibImpl pImpTypeLib; /* pointer to loaded typelib, or
 					    NULL if not yet loaded */
-    struct list entry;
-} TLBImpLib;
+     list entry;
+} ;
 
-typedef struct tagTLBString {
-    BSTR str;
+public class TLBString {
+    string str;
     UINT offset;
-    struct list entry;
-} TLBString;
+    list entry;
+}
 
 /* internal ITypeLib data */
-typedef struct tagITypeLibImpl
+public class ITypeLibImpl
 {
     ITypeLib2 ITypeLib2_iface;
     ITypeComp ITypeComp_iface;
     ICreateTypeLib2 ICreateTypeLib2_iface;
-    LONG ref;
-    TLBGuid *guid;
+    int @ref;
+    TLBGuid guid;
     LCID lcid;
     SYSKIND syskind;
     int ptr_size;
@@ -1151,53 +1174,53 @@ typedef struct tagITypeLibImpl
     /* strings can be stored in tlb as multibyte strings BUT they are *always*
      * exported to the application as a UNICODE string.
      */
-    struct list string_list;
-    struct list name_list;
-    struct list guid_list;
+    list string_list;
+    list name_list;
+    list guid_list;
 
-    const TLBString *Name;
-    const TLBString *DocString;
-    const TLBString *HelpFile;
-    const TLBString *HelpStringDll;
+    public TLBString Name;
+    public TLBString DocString;
+    public TLBString HelpFile;
+    public TLBString HelpStringDll;
     DWORD dwHelpContext;
     int TypeInfoCount;          /* nr of typeinfo's in librarry */
-    struct tagITypeInfoImpl **typeinfos;
+    ITypeInfoImpl [] typeinfos;
     struct list custdata_list;
     struct list implib_list;
     int ctTypeDesc;             /* number of items in type desc array */
-    TYPEDESC * pTypeDesc;       /* array of TypeDescriptions found in the
+    TYPEDESC [] pTypeDesc;       /* array of TypeDescriptions found in the
 				   library. Only used while reading MSFT
 				   typelibs */
-    struct list ref_list;       /* list of ref types in this typelib */
+    list ref_list;       /* list of ref types in this typelib */
     HREFTYPE dispatch_href;     /* reference to IDispatch, -1 if unused */
 
 
     /* typelibs are cached, keyed by path and index, so store the linked list info within them */
-    struct list entry;
-    WCHAR *path;
-    INT index;
-} ITypeLibImpl;
+    list entry;
+    string path;
+    int index;
+} 
 
 static const ITypeLib2Vtbl tlbvt;
 static const ITypeCompVtbl tlbtcvt;
 static const ICreateTypeLib2Vtbl CreateTypeLib2Vtbl;
 
-static inline ITypeLibImpl *impl_from_ITypeLib2(ITypeLib2 *iface)
+static ITypeLibImpl *impl_from_ITypeLib2(ITypeLib2 *iface)
 {
     return CONTAINING_RECORD(iface, ITypeLibImpl, ITypeLib2_iface);
 }
 
-static inline ITypeLibImpl *impl_from_ITypeLib(ITypeLib *iface)
+static ITypeLibImpl *impl_from_ITypeLib(ITypeLib *iface)
 {
     return impl_from_ITypeLib2((ITypeLib2*)iface);
 }
 
-static inline ITypeLibImpl *impl_from_ITypeComp( ITypeComp *iface )
+static ITypeLibImpl *impl_from_ITypeComp( ITypeComp *iface )
 {
     return CONTAINING_RECORD(iface, ITypeLibImpl, ITypeComp_iface);
 }
 
-static inline ITypeLibImpl *impl_from_ICreateTypeLib2( ICreateTypeLib2 *iface )
+static ITypeLibImpl *impl_from_ICreateTypeLib2( ICreateTypeLib2 *iface )
 {
     return CONTAINING_RECORD(iface, ITypeLibImpl, ICreateTypeLib2_iface);
 }
@@ -1240,10 +1263,10 @@ typedef struct tagTLBParDesc
 } TLBParDesc;
 
 /* internal Function data */
-typedef struct tagTLBFuncDesc
+struct TLBFuncDesc // tagTLBFuncDesc
 {
     FUNCDESC funcdesc;      /* lots of info on the function and its attributes. */
-    const TLBString *Name;             /* the name of this function */
+    TLBString Name;             /* the name of this function */
     TLBParDesc *pParamDesc; /* array with param names and custom data */
     int helpcontext;
     int HelpStringContext;
@@ -1326,22 +1349,22 @@ typedef struct tagITypeInfoImpl
     struct list custdata_list;
 } ITypeInfoImpl;
 
-static inline ITypeInfoImpl *info_impl_from_ITypeComp( ITypeComp *iface )
+static ITypeInfoImpl *info_impl_from_ITypeComp( ITypeComp *iface )
 {
     return CONTAINING_RECORD(iface, ITypeInfoImpl, ITypeComp_iface);
 }
 
-static inline ITypeInfoImpl *impl_from_ITypeInfo2( ITypeInfo2 *iface )
+static ITypeInfoImpl *impl_from_ITypeInfo2( ITypeInfo2 *iface )
 {
     return CONTAINING_RECORD(iface, ITypeInfoImpl, ITypeInfo2_iface);
 }
 
-static inline ITypeInfoImpl *impl_from_ITypeInfo( ITypeInfo *iface )
+static ITypeInfoImpl *impl_from_ITypeInfo( ITypeInfo *iface )
 {
     return impl_from_ITypeInfo2((ITypeInfo2*)iface);
 }
 
-static inline ITypeInfoImpl *info_impl_from_ICreateTypeInfo2( ICreateTypeInfo2 *iface )
+static ITypeInfoImpl *info_impl_from_ICreateTypeInfo2( ICreateTypeInfo2 *iface )
 {
     return CONTAINING_RECORD(iface, ITypeInfoImpl, ICreateTypeInfo2_iface);
 }
@@ -1364,24 +1387,24 @@ typedef struct tagTLBContext
 } TLBContext;
 
 
-static inline BSTR TLB_get_bstr(const TLBString *str)
+static BSTR TLB_get_bstr(const TLBString *str)
 {
     return str != NULL ? str->str : NULL;
 }
 
-static inline int TLB_str_memcmp(void *left, const TLBString *str, DWORD len)
+static int TLB_str_memcmp(void *left, const TLBString *str, DWORD len)
 {
     if(!str)
         return 1;
     return memcmp(left, str->str, len);
 }
 
-static inline const GUID *TLB_get_guidref(const TLBGuid *guid)
+static const GUID *TLB_get_guidref(const TLBGuid *guid)
 {
     return guid != NULL ? &guid->guid : NULL;
 }
 
-static inline const GUID *TLB_get_guid_null(const TLBGuid *guid)
+static const GUID *TLB_get_guid_null(const TLBGuid *guid)
 {
     return guid != NULL ? &guid->guid : &GUID_NULL;
 }
@@ -1403,7 +1426,7 @@ static int get_ptr_size(SYSKIND syskind)
 /*
  debug
 */
-static void dump_TypeDesc(const TYPEDESC *pTD,char *szVarType) {
+static void dump_TypeDesc( TYPEDESC pTD, string szVarType) {
     if (pTD->vt & VT_RESERVED)
 	szVarType += strlen(strcpy(szVarType, "reserved | "));
     if (pTD->vt & VT_BYREF)
@@ -1452,7 +1475,7 @@ static void dump_TypeDesc(const TYPEDESC *pTD,char *szVarType) {
     }
 }
 
-static void dump_ELEMDESC(const ELEMDESC *edesc) {
+static void dump_ELEMDESC( ELEMDESC edesc) {
   char buf[200];
   USHORT flags = edesc->u.paramdesc.wParamFlags;
   dump_TypeDesc(&edesc->tdesc,buf);
@@ -1468,7 +1491,7 @@ static void dump_ELEMDESC(const ELEMDESC *edesc) {
   if (flags & PARAMFLAG_FHASCUSTDATA) MESSAGE(" PARAMFLAG_FHASCUSTDATA");
   MESSAGE("\n\t\tu.paramdesc.lpex %p\n",edesc->u.paramdesc.pparamdescex);
 }
-static void dump_FUNCDESC(const FUNCDESC *funcdesc) {
+static void dump_FUNCDESC(FUNCDESC funcdesc) {
   int i;
   MESSAGE("memid is %08x\n",funcdesc->memid);
   for (i=0;i<funcdesc->cParams;i++) {
@@ -1507,7 +1530,7 @@ static void dump_FUNCDESC(const FUNCDESC *funcdesc) {
   dump_ELEMDESC(&funcdesc->elemdescFunc);
 }
 
-static const char * const typekind_desc[] =
+static string[]  typekind_desc =
 {
 	"TKIND_ENUM",
 	"TKIND_RECORD",
@@ -1520,7 +1543,7 @@ static const char * const typekind_desc[] =
 	"TKIND_MAX"
 };
 
-static void dump_TLBFuncDescOne(const TLBFuncDesc * pfd)
+static void dump_TLBFuncDescOne( TLBFuncDesc  pfd)
 {
   int i;
   MESSAGE("%s(%u)\n", debugstr_w(TLB_get_bstr(pfd->Name)), pfd->funcdesc.cParams);
@@ -1540,7 +1563,7 @@ static void dump_TLBFuncDescOne(const TLBFuncDesc * pfd)
   else
       MESSAGE("\tentry: %s\n", debugstr_w(TLB_get_bstr(pfd->Entry)));
 }
-static void dump_TLBFuncDesc(const TLBFuncDesc * pfd, UINT n)
+static void dump_TLBFuncDesc(TLBFuncDesc  pfd, UINT n)
 {
 	while (n)
 	{
@@ -1549,7 +1572,7 @@ static void dump_TLBFuncDesc(const TLBFuncDesc * pfd, UINT n)
 	  --n;
 	}
 }
-static void dump_TLBVarDesc(const TLBVarDesc * pvd, UINT n)
+static void dump_TLBVarDesc(TLBVarDesc pvd, UINT n)
 {
 	while (n)
 	{
@@ -1559,7 +1582,7 @@ static void dump_TLBVarDesc(const TLBVarDesc * pvd, UINT n)
 	}
 }
 
-static void dump_TLBImpLib(const TLBImpLib *import)
+static void dump_TLBImpLib(TLBImpLib import)
 {
     TRACE_(typelib)("%s %s\n", debugstr_guid(TLB_get_guidref(import->guid)),
 		    debugstr_w(import->name));
@@ -1567,27 +1590,27 @@ static void dump_TLBImpLib(const TLBImpLib *import)
 		    import->wVersionMinor, import->lcid, import->offset);
 }
 
-static void dump_TLBRefType(const ITypeLibImpl *pTL)
+static void dump_TLBRefType(ITypeLibImpl pTL)
 {
-    TLBRefType *ref;
+    TLBRefType *@ref;
 
     LIST_FOR_EACH_ENTRY(ref, &pTL->ref_list, TLBRefType, entry)
     {
-        TRACE_(typelib)("href:0x%08x\n", ref->reference);
-        if(ref->index == -1)
-	    TRACE_(typelib)("%s\n", debugstr_guid(TLB_get_guidref(ref->guid)));
+        TRACE_(typelib)("href:0x%08x\n", @ref->reference);
+        if(@ref->index == -1)
+	    TRACE_(typelib)("%s\n", debugstr_guid(TLB_get_guidref(@ref->guid)));
         else
-	    TRACE_(typelib)("type no: %d\n", ref->index);
+	    TRACE_(typelib)("type no: %d\n", @ref->index);
 
-        if(ref->pImpTLInfo != TLB_REF_INTERNAL && ref->pImpTLInfo != TLB_REF_NOT_FOUND)
+        if(@ref->pImpTLInfo != TLB_REF_INTERNAL && @ref->pImpTLInfo != TLB_REF_NOT_FOUND)
         {
             TRACE_(typelib)("in lib\n");
-            dump_TLBImpLib(ref->pImpTLInfo);
+            dump_TLBImpLib(@ref->pImpTLInfo);
         }
     }
 }
 
-static void dump_TLBImplType(const TLBImplType * impl, UINT n)
+static void dump_TLBImplType(TLBImplType impl, UINT n)
 {
     if(!impl)
         return;
@@ -1599,7 +1622,7 @@ static void dump_TLBImplType(const TLBImplType * impl, UINT n)
     }
 }
 
-static void dump_DispParms(const DISPPARAMS * pdp)
+static void dump_DispParms(DISPPARAMS  pdp)
 {
     unsigned int index;
 
@@ -1620,7 +1643,7 @@ static void dump_DispParms(const DISPPARAMS * pdp)
     }
 }
 
-static void dump_TypeInfo(const ITypeInfoImpl * pty)
+static void dump_TypeInfo(ITypeInfoImpl  pty)
 {
     TRACE("%p ref=%u\n", pty, pty->ref);
     TRACE("%s %s\n", debugstr_w(TLB_get_bstr(pty->Name)), debugstr_w(TLB_get_bstr(pty->DocString)));
@@ -1636,7 +1659,7 @@ static void dump_TypeInfo(const ITypeInfoImpl * pty)
     dump_TLBImplType(pty->impltypes, pty->cImplTypes);
 }
 
-static void dump_VARDESC(const VARDESC *v)
+static void dump_VARDESC( VARDESC v)
 {
     MESSAGE("memid %d\n",v->memid);
     MESSAGE("lpstrSchema %s\n",debugstr_w(v->lpstrSchema));
@@ -1646,7 +1669,7 @@ static void dump_VARDESC(const VARDESC *v)
     MESSAGE("varkind %d\n",v->varkind);
 }
 
-static TYPEDESC std_typedesc[VT_LPWSTR+1] =
+static TYPEDESC [] std_typedesc = new TYPEDESC[VT_LPWSTR+1] 
 {
     /* VT_LPWSTR is largest type that, may appear in type description */
     {{0}, VT_EMPTY},  {{0}, VT_NULL},        {{0}, VT_I2},      {{0}, VT_I4},
@@ -1659,11 +1682,12 @@ static TYPEDESC std_typedesc[VT_LPWSTR+1] =
     {{0}, VT_CARRAY}, {{0}, VT_USERDEFINED}, {{0}, VT_LPSTR},   {{0}, VT_LPWSTR}
 };
 
-static void TLB_abort(void)
+static void TLB_abort()
 {
     DebugBreak();
 }
 
+#if NEVER
 void* __WINE_ALLOC_SIZE(1) heap_alloc_zero(unsigned size)
 {
     void *ret = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, size);
@@ -1687,10 +1711,11 @@ void heap_free(void *ptr)
 {
     HeapFree(GetProcessHeap(), 0, ptr);
 }
+#endif
 
 /* returns the size required for a deep copy of a typedesc into a
  * flat buffer */
-static SIZE_T TLB_SizeTypeDesc( const TYPEDESC *tdesc, BOOL alloc_initial_space )
+static uint TLB_SizeTypeDesc( TYPEDESC tdesc, bool alloc_initial_space )
 {
     SIZE_T size = 0;
 
@@ -1712,7 +1737,7 @@ static SIZE_T TLB_SizeTypeDesc( const TYPEDESC *tdesc, BOOL alloc_initial_space 
 }
 
 /* deep copy a typedesc into a flat buffer */
-static void *TLB_CopyTypeDesc( TYPEDESC *dest, const TYPEDESC *src, void *buffer )
+static void *TLB_CopyTypeDesc( TYPEDESC dest, TYPEDESC src, byte[]buffer )
 {
     if (!dest)
     {
@@ -1740,7 +1765,7 @@ static void *TLB_CopyTypeDesc( TYPEDESC *dest, const TYPEDESC *src, void *buffer
 }
 
 /* free custom data allocated by MSFT_CustData */
-static inline void TLB_FreeCustData(struct list *custdata_list)
+static void TLB_FreeCustData( list custdata_list)
 {
     TLBCustData *cd, *cdn;
     LIST_FOR_EACH_ENTRY_SAFE(cd, cdn, custdata_list, TLBCustData, entry)
@@ -1751,7 +1776,7 @@ static inline void TLB_FreeCustData(struct list *custdata_list)
     }
 }
 
-static BSTR TLB_MultiByteToBSTR(const char *ptr)
+static BSTR TLB_MultiByteToBSTR(byte[] ptr)
 {
     DWORD len;
     BSTR ret;
@@ -1763,7 +1788,7 @@ static BSTR TLB_MultiByteToBSTR(const char *ptr)
     return ret;
 }
 
-static inline TLBFuncDesc *TLB_get_funcdesc_by_memberid(TLBFuncDesc *funcdescs,
+static  TLBFuncDesc TLB_get_funcdesc_by_memberid(TLBFuncDesc funcdescs,
         UINT n, MEMBERID memid)
 {
     while(n){
@@ -1772,22 +1797,23 @@ static inline TLBFuncDesc *TLB_get_funcdesc_by_memberid(TLBFuncDesc *funcdescs,
         ++funcdescs;
         --n;
     }
-    return NULL;
+    return null;
 }
 
-static inline TLBFuncDesc *TLB_get_funcdesc_by_name(TLBFuncDesc *funcdescs,
-        UINT n, const OLECHAR *name)
+static TLBFuncDesc TLB_get_funcdesc_by_name(TLBFuncDesc [] funcdescs,
+        uint n, string name)
 {
+    uint i = 0;
     while(n){
-        if(!lstrcmpiW(TLB_get_bstr(funcdescs->Name), name))
+        if(!lstrcmpiW(TLB_get_bstr(funcdescs[i].Name), name))
             return funcdescs;
         ++funcdescs;
         --n;
     }
-    return NULL;
+    return null;
 }
 
-static inline TLBVarDesc *TLB_get_vardesc_by_memberid(TLBVarDesc *vardescs,
+static TLBVarDesc TLB_get_vardesc_by_memberid(TLBVarDesc *vardescs,
         UINT n, MEMBERID memid)
 {
     while(n){
@@ -1799,7 +1825,7 @@ static inline TLBVarDesc *TLB_get_vardesc_by_memberid(TLBVarDesc *vardescs,
     return NULL;
 }
 
-static inline TLBVarDesc *TLB_get_vardesc_by_name(TLBVarDesc *vardescs,
+static TLBVarDesc *TLB_get_vardesc_by_name(TLBVarDesc *vardescs,
         UINT n, const OLECHAR *name)
 {
     while(n){
@@ -1811,7 +1837,7 @@ static inline TLBVarDesc *TLB_get_vardesc_by_name(TLBVarDesc *vardescs,
     return NULL;
 }
 
-static inline TLBCustData *TLB_get_custdata_by_guid(struct list *custdata_list, REFGUID guid)
+static TLBCustData *TLB_get_custdata_by_guid(struct list *custdata_list, REFGUID guid)
 {
     TLBCustData *cust_data;
     LIST_FOR_EACH_ENTRY(cust_data, custdata_list, TLBCustData, entry)
@@ -1820,7 +1846,7 @@ static inline TLBCustData *TLB_get_custdata_by_guid(struct list *custdata_list, 
     return NULL;
 }
 
-static inline ITypeInfoImpl *TLB_get_typeinfo_by_name(ITypeInfoImpl **typeinfos,
+static ITypeInfoImpl *TLB_get_typeinfo_by_name(ITypeInfoImpl **typeinfos,
         UINT n, const OLECHAR *name)
 {
     while(n){
@@ -2071,7 +2097,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
         break;
     case VT_VARIANT:
         *size = sizeof(VARIANT);
-#ifdef _WIN64
+#if _WIN64
         if(sys == SYS_WIN32)
             *size -= 8; /* 32-bit VARIANT is 8 bytes smaller than 64-bit VARIANT */
 #endif
@@ -2112,12 +2138,12 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
  *
  *  Functions for reading MSFT typelibs (those created by CreateTypeLib2)
  */
-static inline unsigned int MSFT_Tell(const TLBContext *pcx)
+static unsigned int MSFT_Tell(const TLBContext *pcx)
 {
     return pcx->pos;
 }
 
-static inline void MSFT_Seek(TLBContext *pcx, LONG where)
+static void MSFT_Seek(TLBContext *pcx, LONG where)
 {
     if (where != DO_NOT_SEEK)
     {
@@ -2907,25 +2933,25 @@ static HRESULT MSFT_ReadAllRefs(TLBContext *pcx)
         MSFT_ReadLEDWords(&impinfo, sizeof(impinfo), pcx, DO_NOT_SEEK);
 
         ref = heap_alloc_zero(sizeof(TLBRefType));
-        list_add_tail(&pcx->pLibInfo->ref_list, &ref->entry);
+        list_add_tail(&pcx->pLibInfo->ref_list, &@ref->entry);
 
         LIST_FOR_EACH_ENTRY(pImpLib, &pcx->pLibInfo->implib_list, TLBImpLib, entry)
             if(pImpLib->offset==impinfo.oImpFile)
                 break;
 
         if(&pImpLib->entry != &pcx->pLibInfo->implib_list){
-            ref->reference = offs;
-            ref->pImpTLInfo = pImpLib;
+            @ref->reference = offs;
+            @ref->pImpTLInfo = pImpLib;
             if(impinfo.flags & MSFT_IMPINFO_OFFSET_IS_GUID) {
-                ref->guid = MSFT_ReadGuid(impinfo.oGuid, pcx);
-                TRACE("importing by guid %s\n", debugstr_guid(TLB_get_guidref(ref->guid)));
-                ref->index = TLB_REF_USE_GUID;
+                @ref->guid = MSFT_ReadGuid(impinfo.oGuid, pcx);
+                TRACE("importing by guid %s\n", debugstr_guid(TLB_get_guidref(@ref->guid)));
+                @ref->index = TLB_REF_USE_GUID;
             } else
-                ref->index = impinfo.oGuid;
+                @ref->index = impinfo.oGuid;
         }else{
             ERR("Cannot find a reference\n");
-            ref->reference = -1;
-            ref->pImpTLInfo = TLB_REF_NOT_FOUND;
+            @ref->reference = -1;
+            @ref->pImpTLInfo = TLB_REF_NOT_FOUND;
         }
 
         offs += sizeof(impinfo);
@@ -2960,7 +2986,7 @@ typedef struct TLB_PEFile
     LPVOID typelib_base;
 } TLB_PEFile;
 
-static inline TLB_PEFile *pefile_impl_from_IUnknown(IUnknown *iface)
+static TLB_PEFile *pefile_impl_from_IUnknown(IUnknown *iface)
 {
     return CONTAINING_RECORD(iface, TLB_PEFile, IUnknown_iface);
 }
@@ -3060,7 +3086,7 @@ typedef struct TLB_NEFile
     LPVOID typelib_base;
 } TLB_NEFile;
 
-static inline TLB_NEFile *nefile_impl_from_IUnknown(IUnknown *iface)
+static TLB_NEFile *nefile_impl_from_IUnknown(IUnknown *iface)
 {
     return CONTAINING_RECORD(iface, TLB_NEFile, IUnknown_iface);
 }
@@ -3282,7 +3308,7 @@ typedef struct TLB_Mapping
     LPVOID typelib_base;
 } TLB_Mapping;
 
-static inline TLB_Mapping *mapping_impl_from_IUnknown(IUnknown *iface)
+static TLB_Mapping *mapping_impl_from_IUnknown(IUnknown *iface)
 {
     return CONTAINING_RECORD(iface, TLB_Mapping, IUnknown_iface);
 }
@@ -3372,7 +3398,7 @@ static HRESULT TLB_Mapping_Open(LPCWSTR path, LPVOID *ppBase, DWORD *pdwTLBLengt
  * the memory
  */
 
-#define SLTG_SIGNATURE 0x47544c53 /* "SLTG" */
+private const int  SLTG_SIGNATURE 0x47544c53 /* "SLTG" */
 static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath, ITypeLib2 **ppTypeLib)
 {
     ITypeLibImpl *entry;
@@ -6040,7 +6066,7 @@ static HRESULT ITypeInfoImpl_GetInternalDispatchFuncDesc( ITypeInfo *iface,
                                              ppFuncDesc);
 }
 
-static inline void ITypeInfoImpl_ElemDescAddHrefOffset( LPELEMDESC pElemDesc, UINT hrefoffset)
+static void ITypeInfoImpl_ElemDescAddHrefOffset( LPELEMDESC pElemDesc, UINT hrefoffset)
 {
     TYPEDESC *pTypeDesc = &pElemDesc->tdesc;
     while (TRUE)
@@ -6063,7 +6089,7 @@ static inline void ITypeInfoImpl_ElemDescAddHrefOffset( LPELEMDESC pElemDesc, UI
     }
 }
 
-static inline void ITypeInfoImpl_FuncDescAddHrefOffset( LPFUNCDESC pFuncDesc, UINT hrefoffset)
+static void ITypeInfoImpl_FuncDescAddHrefOffset( LPFUNCDESC pFuncDesc, UINT hrefoffset)
 {
     SHORT i;
     for (i = 0; i < pFuncDesc->cParams; i++)
@@ -6931,7 +6957,7 @@ DispCallFunc(
 #endif
 }
 
-static inline BOOL func_restricted( const FUNCDESC *desc )
+static BOOL func_restricted( const FUNCDESC *desc )
 {
     return (desc->wFuncFlags & FUNCFLAG_FRESTRICTED) && (desc->memid >= 0);
 }
@@ -9030,7 +9056,7 @@ static HRESULT WMSFT_compile_names(ITypeLibImpl *This,
     return S_OK;
 }
 
-static inline int hash_guid(GUID *guid)
+static int hash_guid(GUID *guid)
 {
     int i, hash = 0;
 

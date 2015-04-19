@@ -121,7 +121,7 @@ namespace Decompiler.Arch.Arm
                 Length = 4,
             };
 
-            addr = arm.Address.Linear;
+            addr =  arm.Address.ToUInt32();
             return this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
         }
 
@@ -586,10 +586,10 @@ namespace Decompiler.Arch.Arm
             if (!rdr.IsValid)
                 return null;
             var a = rdr.Address;
-            addr = a.Linear;
+            addr = a.ToUInt32();
             this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
             arm.Address = a;
-            arm.Length = rdr.Address - a;
+            arm.Length = (int)(rdr.Address - a);
             return arm;
         }
 

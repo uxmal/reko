@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.Mos6502;
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,11 @@ namespace Decompiler.Environments.C64
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr16(c.ToUInt16());
         }
     }
 }

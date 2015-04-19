@@ -333,29 +333,6 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.IsTrue(bf.DataOut[Registers.esi.Number], "Unmentioned registers may be live out");
 		}
 
-		[Test]
-        [Ignore("Not sure what this test is actually testing? Rather, test that procedure summaries are marked with the right liveness.")]
-		public void Rl_TerminatingProcedure()
-		{
-			Procedure terminator = new Procedure("terminator", null);
-			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock, terminator.Frame);
-			terminator.Signature = new ProcedureSignature(
-				null,
-				new Identifier[] {
-					new Identifier("eax", PrimitiveType.Word32, Registers.eax) });
-            terminator.Characteristics = new ProcedureCharacteristics
-            {
-                Terminates = true
-            };
-            rl.CurrentState = new RegisterLiveness.ByPassState();
-			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
-			rl.IdentifierLiveness.BitSet[Registers.ebx.Number] = true;
-			rl.MergeBlockInfo(terminator.ExitBlock);
-			Assert.IsFalse(rl.IdentifierLiveness.BitSet[Registers.eax.Number]);
-			Assert.IsFalse(rl.IdentifierLiveness.BitSet[Registers.ebx.Number]);
-
-		}
-
 		private string Dump(IdentifierLiveness vl)
 		{
 			StringWriter sw = new StringWriter();

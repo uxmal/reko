@@ -1,49 +1,50 @@
-'いいいいいいいいいいいいいいいいいいい
-'	"DisTypeLib.bas"
+//いいいいいいいいいいいいいいいいいいい
+//	"DisTypeLib.bas"
 
-'This code is based on code from the ReactOS
-'project at: http://www.reactos.org/en/index.html
-'The primary source file used was:
-'	...reactos\dll\win32\oleaut32\typelib.c
+//This code is based on code from the ReactOS
+//project at: http://www.reactos.org/en/index.html
+//The primary source file used was:
+//	...reactos\dll\win32\oleaut32\typelib.c
 
-'So far, it only disassembles data with the "MSFT"
-'magic value (not the "SLTG" type yet).
+//So far, it only disassembles data with the "MSFT"
+//magic value (not the "SLTG" type yet).
 
-'It is intended to be integrated into bep (Bin
-'Edit Plus) and perhaps other sub-projects
+//It is intended to be integrated into bep (Bin
+//Edit Plus) and perhaps other sub-projects
 
-'This should have a TypeLib "diff" feature
-'to help learn more about its format.
+//This should have a TypeLib "diff" feature
+//to help learn more about its format.
 
-'This file is GPL 2008, by TheirCorp
-'いいいいいいいいいいいいいいいいいいい
+//This file is GPL 2008, by TheirCorp
+//いいいいいいいいいいいいいいいいいいい
 
-#Compile Exe "DisTypeLib.exe"
-#Dim All
+namespace Decompiler.TypeLib
+{
+    public class DisTypeLib
+    {
 
-'いいいいいいいいいいいいいいいいいいい
 
-'%Debug		= 1 'enable/disable debugging code
-%Study		= 1 'enable/disable code to help study the format
-%Priority	= 0 'set minimum priority level for logging and alerts
+//いいいいいいいいいいいいいいいいいいい
 
-#If %Def(%Debug)
-#Tools On
+//%Debug		= 1 'enable/disable debugging code
+const int Study		= 1 'enable/disable code to help study the format
+const int Priority	= 0 'set minimum priority level for logging and alerts
+
+#if DEBUG
 %ProfileOn		= 1
 
-Global dbg		As Long
-Global dbs		As String
+public static Long dbg;		As Long
+public static string  dbs;		As String
 
-Sub zz()
+public void zz()
 
 End Sub 'zz
 
-#Else
-	#Tools Off
+#else
 
-#EndIf
+#endIf
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 
 $Caption = "TheirCorp's Type Library Dumper"
 
@@ -54,14 +55,14 @@ $Caption = "TheirCorp's Type Library Dumper"
 %MsgLbl  = 1104
 
 %LogLines = 8
-'%fo  	  = 10 'output file's number
+//%fo  	  = 10 'output file's number
 Macro fo = 10 'output file's number
 %IsOpen		= 0
 
 Global ghDlg		As Dword
 Global LocalPath	As String   'local path
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 
 Declare Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
 Declare Function ProcessFile(fs As String) As Long
@@ -69,13 +70,13 @@ Declare CallBack Function ShowDlgProc()
 Declare Sub UpdateLog(ps As String)
 Declare Function DisSltg(cs As String) As Dword
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 
 #Include "MSFT.bas"
 #Include "DisTypeLib.inc"
 #Include "GetTypeLibData.bas"
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 
 Declare Function GetResource( _
 	cs As String,       _
@@ -93,7 +94,7 @@ Declare Function tlString(cs As String, SegDir As MSFT_SegDir, ByVal offs As Lon
 Declare Function DisFunction(cs As String, SegDir As MSFT_SegDir, ByVal pBase As Dword, ByVal nFunc As Long, ByVal nProp As Long) As Long
 Declare Function DisTypeLib(cs As String) As Dword
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 
 Sub UpdateLog(ps As String)
 Static ct   As Long
@@ -134,8 +135,8 @@ Static ts   As String
 
 End Sub 'UpdateLog
 
-'いいいいいいいいいいいいいいいいいいい
-'returns %true, if any files were received
+//いいいいいいいいいいいいいいいいいいい
+//returns %true, if any files were received
 Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
 Local ct  As Dword
 Local az  As Asciiz * %MAX_PATH
@@ -196,7 +197,7 @@ Local ls	As String
 
 End Function 'ProcessFile
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 
 CallBack Function ShowDlgProc()
 Local  fs   As String
@@ -239,7 +240,7 @@ Local  fs   As String
 
 End Function
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 
 Function PBMain() As Long
 Local lRslt As Long
@@ -298,5 +299,5 @@ Local lRslt As Long
 
 End Function
 
-'いいいいいいいいいいいいいいいいいいい
+//いいいいいいいいいいいいいいいいいいい
 

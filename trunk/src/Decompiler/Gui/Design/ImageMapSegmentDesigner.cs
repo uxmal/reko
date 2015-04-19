@@ -70,12 +70,12 @@ namespace Decompiler.Gui.Design
                 return;
             var desDictionary =
                 (from proc in program.Procedures.Where(p => segment.IsInRange(p.Key))
-                join up in program.UserProcedures on proc.Key.Linear equals up.Key.Linear into ups
+                join up in program.UserProcedures on proc.Key.ToLinear() equals up.Key.ToLinear() into ups
                 from up in ups.DefaultIfEmpty()
                 select new ProcedureDesigner(program, proc.Value, up.Value, proc.Key)).
                 Union(
                 from up in program.UserProcedures.Where(p => segment.IsInRange(p.Key))
-                join proc in program.Procedures on up.Key.Linear equals proc.Key.Linear into ups
+                join proc in program.Procedures on up.Key.ToLinear() equals proc.Key.ToLinear() into ups
                 from proc in ups.DefaultIfEmpty()
                 select new ProcedureDesigner(program, proc.Value, up.Value, up.Key)
                 );

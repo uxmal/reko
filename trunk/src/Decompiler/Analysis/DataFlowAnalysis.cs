@@ -238,7 +238,7 @@ namespace Decompiler.Analysis
                 vp.Transform();
 
                 // At this point, the computation of _actual_ ProcedureFlow should be possible.
-                var tid = new TrashedRegisterFinder(program, procs, flow, this.eventListener);
+                var tid = new TrashedRegisterFinder2(program.Architecture, flow, proc, ssa.Identifiers, this.eventListener);
                 tid.Compute();
                 DeadCode.Eliminate(proc, ssa);
 
@@ -261,8 +261,9 @@ namespace Decompiler.Analysis
                     str.ClassifyUses();
                     str.ModifyUses();
                 }
-                var opt = new OutParameterTransformer(proc, ssa.Identifiers);
-                opt.Transform();
+                proc.Dump(true, false);
+                //var opt = new OutParameterTransformer(proc, ssa.Identifiers);
+                //opt.Transform();
                 DeadCode.Eliminate(proc, ssa);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.

@@ -225,8 +225,8 @@ namespace Decompiler.Arch.X86
         /// <returns></returns>
         private bool IsRealModeReboot(IntelInstruction instrCur)
         {
-            X86AddressOperand addrOp = instrCur.op1 as X86AddressOperand;
-            bool isRealModeReboot = addrOp != null && addrOp.Address.Linear == 0xFFFF0;
+            var addrOp = instrCur.op1 as X86AddressOperand;
+            bool isRealModeReboot = addrOp != null && addrOp.Address.ToLinear() == 0xFFFF0;
             return isRealModeReboot;
         }
 

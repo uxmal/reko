@@ -33,7 +33,7 @@ namespace Decompiler.ImageLoaders.Elf
         private ElfImageLoader loader;
         private  Elf32_SHdr shdr;
 
-        public RelaSegmentRenderer(ElfImageLoader loader,  Elf32_SHdr shdr)
+        public RelaSegmentRenderer(ElfImageLoader loader, Elf32_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;

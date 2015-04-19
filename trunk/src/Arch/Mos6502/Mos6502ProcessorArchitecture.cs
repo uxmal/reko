@@ -70,7 +70,7 @@ namespace Decompiler.Arch.Mos6502
             return new LeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -115,6 +115,11 @@ namespace Decompiler.Arch.Mos6502
         public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
+        }
+
+        public Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

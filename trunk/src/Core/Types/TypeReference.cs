@@ -26,7 +26,7 @@ using System.Text;
 namespace Decompiler.Core.Types
 {
     /// <summary>
-    /// Refers to another type, perhaps by name
+    /// Refers to another type by name
     /// </summary>
     public class TypeReference : DataType
     {

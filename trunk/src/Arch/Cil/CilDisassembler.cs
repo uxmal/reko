@@ -889,7 +889,7 @@ namespace Decompiler.Arch.Cil
                 break;
             #endregion
             }
-            instr.Length = rdr.Address - addr;
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
     }

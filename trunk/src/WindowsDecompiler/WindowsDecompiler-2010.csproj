@@ -166,9 +166,10 @@
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Decompiler.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Decompiler.ImageLoaders.OdbgScript.*" />
     <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Decompiler.Environments.AmigaOS.*" />
-    <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Decompiler.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Decompiler.Environments.C64.*" />
+    <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Decompiler.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Decompiler.Environments.Msdos.*" />
+    <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Decompiler.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Decompiler.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Decompiler.Environments.Win32.*" />
   </ItemGroup>

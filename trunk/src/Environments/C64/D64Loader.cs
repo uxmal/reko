@@ -141,11 +141,12 @@ namespace Decompiler.Environments.C64
             }
             var arch = new Mos6502ProcessorArchitecture();
             var image = new LoadedImage(Address.Ptr16(0), RawImage);
-            return new Program(
-                image,
-                image.CreateImageMap(),
-                arch,
-                new DefaultPlatform(Services, arch));
+            return new Program {
+                Image = image,
+                ImageMap = image.CreateImageMap(),
+                Architecture = arch,
+                Platform = new DefaultPlatform(Services, arch)
+            };
         }
 
         private Program LoadImage(Address addrPreferred, D64FileEntry selectedFile)

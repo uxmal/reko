@@ -33,7 +33,7 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcArchitecture : IProcessorArchitecture
+    public abstract class PowerPcArchitecture : IProcessorArchitecture
     {
         private PrimitiveType wordWidth;
         private PrimitiveType ptrType;
@@ -139,7 +139,7 @@ namespace Decompiler.Arch.PowerPC
             return new BeImageReader(image, addr);
         }
 
-        public ImageReader CreateImageReader(LoadedImage image, uint offset)
+        public ImageReader CreateImageReader(LoadedImage image, ulong offset)
         {
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, offset);
@@ -157,7 +157,7 @@ namespace Decompiler.Arch.PowerPC
         /// </summary>
         /// <remarks>
         /// A PowerPC trampoline looks like this:
-        ///     addis  rX,r0,XXXX
+        ///     addis  rX,r0,XXXX (or oris rx,r0,XXXX)
         ///     lwz    rY,YYYY(rX)
         ///     mtctr  rY
         ///     bctr   rY
@@ -223,7 +223,10 @@ namespace Decompiler.Arch.PowerPC
 
         public RegisterStorage GetRegister(int i)
         {
-            return regs[i];
+            if (0 <= i && i < regs.Count)
+                return regs[i];
+            else
+                return null;
         }
 
         public RegisterStorage GetRegister(string name)
@@ -287,6 +290,8 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcRewriter(this, rdr, frame, host);
         }
 
+        public abstract Address MakeAddressFromConstant(Constant c);
+
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
@@ -305,6 +310,11 @@ namespace Decompiler.Arch.PowerPC
         public PowerPcArchitecture32()
             : base(PrimitiveType.Word32)
         { }
+
+        public override  Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
+        }
     }
 
     public class PowerPcArchitecture64 : PowerPcArchitecture
@@ -312,5 +322,10 @@ namespace Decompiler.Arch.PowerPC
         public PowerPcArchitecture64()
             : base(PrimitiveType.Word64)
         { }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr64(c.ToUInt64());
+        }
     }
 }

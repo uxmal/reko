@@ -30,7 +30,7 @@ namespace Decompiler.WindowsItp
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32();
-                    Architecture = new Decompiler.Arch.PowerPC.PowerPcArchitecture(Core.Types.PrimitiveType.Word32),
+                    Architecture = new Decompiler.Arch.PowerPC.PowerPcArchitecture32(),
                     Image = image,
                     ImageMap = imageMap
                 });

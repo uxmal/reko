@@ -29,6 +29,10 @@ using System.Text;
 
 namespace Decompiler.Analysis
 {
+    /// <summary>
+    /// This class is used to find registers that are modified or preserved by
+    /// a procedure.
+    /// </summary>
     public class TrashedRegisterFinder2 
     {
         private IProcessorArchitecture arch;
@@ -67,8 +71,10 @@ namespace Decompiler.Analysis
 
         private void CategorizeIdentifier(SsaIdentifier sid)
         {
-            if (sid.DefStatement.Instruction is DefInstruction)
+            if (sid.DefStatement.Instruction is DefInstruction &&
+                sid.DefStatement.Block == proc.EntryBlock)
             {
+                // Reaching definition was a DefInstruction;
                 flow.Preserved.Add(sid.OriginalIdentifier.Storage);
                 return;
             }

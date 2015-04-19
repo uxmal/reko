@@ -32,7 +32,7 @@ namespace Decompiler.Core.Expressions
 
 		public Dereference(DataType ptrType, Expression exp) : base(ptrType)
 		{
-			this.exp = exp;
+            this.exp = exp; if (exp == null) throw new ArgumentNullException();
 		}
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -58,7 +58,7 @@ namespace Decompiler.Core.Expressions
 		public Expression Expression
 		{
 			get { return exp; }
-			set { exp = value; }
+            set { exp = value; if (exp == null) throw new ArgumentNullException(); }
 		}
 
 	}

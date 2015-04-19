@@ -108,7 +108,7 @@ namespace Decompiler.Core.Expressions
             var cP = p as Address;
             if (cP == null)
                 return false;
-            return addr.Linear == cP.Linear;
+            return addr.ToLinear() == cP.ToLinear();
         }
 
         bool ExpressionVisitor<bool>.VisitApplication(Application appl)
@@ -369,12 +369,42 @@ namespace Decompiler.Core.Expressions
                 return new WildConstant(Label);
             }
 
+            public override object GetValue()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override byte ToByte()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override ushort ToUInt16()
+            {
+                throw new InvalidOperationException();
+            }
+
             public override uint ToUInt32()
             {
                 throw new InvalidOperationException();
             }
 
-            public override object GetValue()
+            public override ulong ToUInt64()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override short ToInt16()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override int ToInt32()
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override long ToInt64()
             {
                 throw new InvalidOperationException();
             }

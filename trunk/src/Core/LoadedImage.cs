@@ -73,7 +73,7 @@ namespace Decompiler.Core
             return new BeImageReader(this, addr);
         }
 
-        public BeImageReader CreateBeReader(uint offset)
+        public BeImageReader CreateBeReader(ulong offset)
         {
             return new BeImageReader(this, offset);
         }
@@ -83,7 +83,7 @@ namespace Decompiler.Core
             return new LeImageReader(this, addr);
         }
 
-        public LeImageReader CreateLeReader(uint offset)
+        public LeImageReader CreateLeReader(ulong offset)
         {
             return new LeImageReader(this, offset);
         }
@@ -131,15 +131,15 @@ namespace Decompiler.Core
 		{
 			if (addr == null)
 				return false;
-            return IsValidLinearAddress(addr.Linear);
+            return IsValidLinearAddress(addr.ToLinear());
         }
 
-        public bool IsValidLinearAddress(uint linearAddr)
+        public bool IsValidLinearAddress(ulong linearAddr)
         {
-            if (linearAddr < BaseAddress.Linear)
+            if (linearAddr < BaseAddress.ToLinear())
                 return false;
-            uint offset = (linearAddr - BaseAddress.Linear);
-			return offset < abImage.Length;
+            ulong offset = (linearAddr - BaseAddress.ToLinear());
+			return offset < (ulong) abImage.Length;
         }
 
 		/// <summary>
@@ -195,6 +195,7 @@ namespace Decompiler.Core
             case 1: return Constant.Create(type, abImage[imageOffset]);
             case 2: return Constant.Create(type, ReadBeUInt16(abImage, imageOffset));
             case 4: return Constant.Create(type, ReadBeUInt32(abImage, imageOffset));
+            case 8: return Constant.Create(type, ReadBeUInt64(abImage, imageOffset));
             }
             throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
         }
@@ -313,9 +314,9 @@ namespace Decompiler.Core
             }
         }
 
-        public static bool TryReadLeUInt32(byte[] abImage, uint off, out uint value)
+        public static bool TryReadLeUInt32(byte[] abImage, ulong off, out uint value)
         {
-            if (off <= abImage.Length - 4)
+            if ((long) off <= abImage.Length - 4)
             {
                 value = abImage[off] |
                    ((uint)abImage[off + 1] << 8) |
@@ -392,12 +393,12 @@ namespace Decompiler.Core
             return true;
         }
 
-        public static Constant ReadLeDouble(byte[] abImage, uint off)
+        public static Constant ReadLeDouble(byte[] abImage, ulong off)
         {
             return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, off));
         }
 
-        public static Constant ReadLeFloat(byte[] abImage, uint off)
+        public static Constant ReadLeFloat(byte[] abImage, ulong off)
         {
             return Constant.FloatFromBitpattern(ReadLeInt32(abImage, off));
         }
@@ -434,9 +435,9 @@ namespace Decompiler.Core
             return (ushort)ReadLeInt16(img, off);
         }
 
-        public static bool TryReadByte(byte[] img, uint off, out byte b)
+        public static bool TryReadByte(byte[] img, ulong off, out byte b)
         {
-            if (off >= img.Length)
+            if (off >= (ulong)img.Length)
             {
                 b = 0;
                 return false;
@@ -448,9 +449,11 @@ namespace Decompiler.Core
             }
         }
 
-        public bool TryReadBytes(uint off, int length, byte[] membuf)
+        public bool TryReadBytes(ulong off, int length, byte[] membuf)
         {
-            if (off + length <= this.Length)
+            if (length < 0)
+                throw new ArgumentException("length");
+            if (off + (ulong)length <= (ulong) this.Length)
             {
                 int s = (int)off;
                 int d = 0;
@@ -468,15 +471,15 @@ namespace Decompiler.Core
             }
         }
 
-        public Constant ReadLeDouble(uint off) { return ReadLeDouble(abImage, off); }
-        public Constant ReadLeFloat(uint off) { return ReadLeFloat(abImage, off); }
+        public Constant ReadLeDouble(ulong off) { return ReadLeDouble(abImage, off); }
+        public Constant ReadLeFloat(ulong off) { return ReadLeFloat(abImage, off); }
 		public long ReadLeInt64(uint off) {  return ReadLeInt64(this.abImage, off); }
 		public ulong ReadLeUint64(uint off) { return ReadLeUInt64(this.abImage, off); }
         public int ReadLeInt32(uint off) { return ReadLeInt32(this.abImage, off); }
         public uint ReadLeUInt32(uint off) { return ReadLeUInt32(this.abImage, off); }
         public short ReadLeInt16(uint off) { return ReadLeInt16(this.abImage, off); }
         public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.abImage, off); }
-        public bool TryReadByte(uint off, out byte b) { return TryReadByte(this.abImage, off, out b); }
+        public bool TryReadByte(ulong off, out byte b) { return TryReadByte(this.abImage, off, out b); }
 
         public Constant ReadLeDouble(Address addr) { return ReadLeDouble(abImage, ToOffset(addr)); }
         public Constant ReadLeFloat(Address addr) { return ReadLeFloat(abImage, ToOffset(addr)); }
@@ -489,23 +492,23 @@ namespace Decompiler.Core
         public bool TryReadByte(Address addr, out byte b) { return TryReadByte(this.abImage, ToOffset(addr), out b); }
         public bool TryReadBytes(Address addr, int length, byte[] membuf) { return TryReadBytes(ToOffset(addr), length, membuf); }
 
-        private uint ToOffset(Address addr)
+        private ulong ToOffset(Address addr)
         {
-            return addr.Linear - this.BaseAddress.Linear;
+            return addr.ToLinear() - this.BaseAddress.ToLinear();
         }
 
-        public void WriteByte(uint offset, byte b)
+        public void WriteByte(ulong offset, byte b)
         {
             abImage[offset] = b;
         }
 
-        public void WriteLeUInt16(uint offset, ushort w)
+        public void WriteLeUInt16(ulong offset, ushort w)
 		{
 			abImage[offset] = (byte) (w & 0xFF);
 			abImage[offset+1] = (byte) (w >> 8);
 		}
 
-        public void WriteBeUInt32(uint offset, uint dw)
+        public void WriteBeUInt32(ulong offset, uint dw)
         {
             abImage[offset + 0] = (byte) (dw >> 24);
             abImage[offset + 1] = (byte) (dw >> 16);
@@ -513,7 +516,7 @@ namespace Decompiler.Core
             abImage[offset + 3] = (byte) (dw & 0xFF);
         }
 
-        public void WriteLeUInt32(uint offset, uint dw)
+        public void WriteLeUInt32(ulong offset, uint dw)
         {
             abImage[offset] = (byte) (dw & 0xFF);
             abImage[offset + 1] = (byte) (dw >> 8);

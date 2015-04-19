@@ -401,7 +401,7 @@ namespace Decompiler.Scanning
             }
             else
             {
-                VectorAddress = new Address(vector.ToUInt32());
+                VectorAddress = Address.Ptr32(vector.ToUInt32());   //$BUG: 32-bit only, what about 16- and 64-
             }
         }
 

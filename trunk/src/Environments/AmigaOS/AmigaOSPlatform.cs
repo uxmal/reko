@@ -87,6 +87,11 @@ namespace Decompiler.Environments.AmigaOS
             throw new NotImplementedException();
         }
 
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
+        }
+
         private Dictionary<int, SystemService> LoadFuncs()
         {
             var fsSvc = Services.RequireService<IFileSystemService>();

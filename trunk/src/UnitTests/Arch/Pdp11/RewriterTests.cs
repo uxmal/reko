@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Arch.Pdp11
         {
             BuildTest(0x7811);
             AssertCode(
-                "0|00000200(2): 6 instructions",
+                "0|0200(2): 6 instructions",
                 "1|L--|v3 = Mem0[r1:word16]",
                 "2|L--|r1 = r1 + 0x0002",
                 "3|L--|r0 = r0 ^ v3",

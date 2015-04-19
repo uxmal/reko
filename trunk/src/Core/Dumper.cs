@@ -104,7 +104,7 @@ namespace Decompiler.Core
 
 		public void DumpData(LoadedImage image, Address address, long cbBytes, TextWriter stm)
 		{
-			ulong cSkip = address.Linear & 0x0F;
+			ulong cSkip = address.ToLinear() & 0x0F;
 			ImageReader rdr = arch.CreateImageReader(image, address);
 			while (cbBytes > 0)
 			{

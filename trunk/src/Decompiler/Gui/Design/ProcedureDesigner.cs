@@ -122,12 +122,12 @@ namespace Decompiler.Gui.Design
 
         public override int GetHashCode()
         {
-            return Address.Linear.GetHashCode();
+            return Address.ToLinear().GetHashCode();
         }
 
         public bool Equals(ProcedureDesigner other)
         {
-            return Address.Linear == other.Address.Linear;
+            return Address.ToLinear() == other.Address.ToLinear();
         }
     }
 }
