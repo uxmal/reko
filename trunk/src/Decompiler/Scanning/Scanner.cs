@@ -377,7 +377,7 @@ namespace Decompiler.Scanning
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
-                    new ProcedureConstant(program.Architecture.PointerType, procNew),
+                    new ProcedureConstant(program.Platform.PointerType, procNew),
                     new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
             program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
             callRetThunkBlock.Statements.Add(0, new ReturnInstruction());

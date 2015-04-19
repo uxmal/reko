@@ -169,6 +169,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void Build(Procedure proc, IProcessorArchitecture arch)
 		{
+            var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
 			Aliases alias = new Aliases(proc, arch);
 			alias.Transform();
@@ -177,7 +178,7 @@ namespace Decompiler.UnitTests.Analysis
 			SsaState ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, arch);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, platform);
 			cce.Transform();
 			DeadCode.Eliminate(proc, ssa);
 

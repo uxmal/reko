@@ -42,7 +42,7 @@ namespace Decompiler.Typing
             this.factory = factory;
             this.store = store;
             this.program = program;
-            this.asc = new ExpressionTypeAscender(program.Architecture, store, factory);
+            this.asc = new ExpressionTypeAscender(program.Platform, store, factory);
             this.desc = new ExpressionTypeDescender(program, store, factory);
         }
 
@@ -50,7 +50,7 @@ namespace Decompiler.Typing
         {
             desc.MeetDataType(program.Globals, factory.CreatePointer(
                 factory.CreateStructureType(),
-                program.Architecture.PointerType.Size));
+                program.Platform.PointerType.Size));
             foreach (Procedure p in program.Procedures.Values)
             {
                 proc = p;
@@ -109,7 +109,7 @@ namespace Decompiler.Typing
                           call.Callee,
                           new Pointer(
                               new CodeType(),
-                              program.Architecture.PointerType.Size));
+                              program.Platform.PointerType.Size));
             return call.Callee.Accept(desc, call.Callee.TypeVariable);
         }
 

@@ -121,12 +121,13 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void Build(Procedure proc, IProcessorArchitecture arch)
 		{
+            var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
 			Aliases alias = new Aliases(proc, arch);
 			alias.Transform();
 			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, proc.CreateBlockDominatorGraph());
 			ssa = sst.SsaState;
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, arch);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, platform);
 			cce.Transform();
 			ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
 			vp.Transform();

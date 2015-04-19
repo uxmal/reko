@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Analysis
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, proc.CreateBlockDominatorGraph());
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

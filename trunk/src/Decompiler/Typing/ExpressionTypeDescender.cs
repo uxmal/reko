@@ -40,7 +40,7 @@ namespace Decompiler.Typing
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
 
-        private IProcessorArchitecture arch;
+        private Platform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
@@ -49,7 +49,7 @@ namespace Decompiler.Typing
 
         public ExpressionTypeDescender(Program prog, TypeStore store, TypeFactory factory)
         {
-            this.arch = prog.Architecture;
+            this.platform = prog.Platform;
             this.globals = prog.Globals;
             this.ivs = prog.InductionVariables;
             this.store = store;
@@ -354,7 +354,7 @@ namespace Decompiler.Typing
                     globals, 
                     c.ToInt32() * 0x10,   //$REVIEW Platform-dependent: only valid for x86 real mode.
                     c.TypeVariable,
-                    arch.PointerType.Size);
+                    platform.PointerType.Size);
             }
             return false;
         }
@@ -509,13 +509,13 @@ namespace Decompiler.Typing
                 if (offset != 0)
                 {
                     SetSize(eBase, id, stride);
-                    MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), arch.PointerType.Size);
+                    MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), platform.PointerType.Size);
                 }
             }
             else
             {
                 SetSize(eBase, id, stride);
-                MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), arch.PointerType.Size);
+                MemoryAccessCommon(eBase, id, offset, DataTypeOf(eField), platform.PointerType.Size);
             }
         }
 
@@ -525,8 +525,8 @@ namespace Decompiler.Typing
                 throw new ArgumentOutOfRangeException("size must be positive");
             var s = factory.CreateStructureType(null, size);
             var ptr = eBase != null
-                ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable, s, arch.FramePointerType.Size)
-                : (DataType) factory.CreatePointer(s, arch.PointerType.Size);
+                ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable, s, platform.FramePointerType.Size)
+                : (DataType) factory.CreatePointer(s, platform.PointerType.Size);
             return MeetDataType(tStruct, ptr);
         }
 
@@ -541,7 +541,7 @@ namespace Decompiler.Typing
 
         private Pointer PointerTo(DataType dt)
         {
-            return new Pointer(dt, arch.PointerType.Size);
+            return new Pointer(dt, platform.PointerType.Size);
         }
 
         private MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int size)

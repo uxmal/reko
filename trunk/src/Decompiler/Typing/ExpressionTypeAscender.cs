@@ -35,14 +35,14 @@ namespace Decompiler.Typing
     /// </summary>
     public class ExpressionTypeAscender : ExpressionVisitor<DataType>
     {
-        private IProcessorArchitecture arch;
+        private Platform platform;
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
 
-        public ExpressionTypeAscender(IProcessorArchitecture arch, TypeStore store, TypeFactory factory)
+        public ExpressionTypeAscender(Platform platform, TypeStore store, TypeFactory factory)
         {
-            this.arch = arch;
+            this.platform = platform;
             this.store = store;
             this.factory = factory;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
@@ -263,7 +263,7 @@ namespace Decompiler.Typing
 
         private DataType PointerTo(TypeVariable tv)
         {
-            return new Pointer(tv, arch.PointerType.Size);
+            return new Pointer(tv, platform.PointerType.Size);
         }
 
         private DataType RecordDataType(DataType dt, Expression exp)

@@ -66,6 +66,7 @@ namespace Decompiler.UnitTests.Scanning
             arch = mr.DynamicMock<IProcessorArchitecture>();
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
             prog.Architecture = arch;
+            prog.Platform = new DefaultPlatform(null, arch);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -444,6 +445,7 @@ testProc_exit:
                 Characteristics = new ProcedureCharacteristics()
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             prog.Platform = platform;
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);

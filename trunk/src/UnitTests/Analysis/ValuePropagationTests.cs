@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Analysis
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, gr);
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);

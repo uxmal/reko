@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Typing
             this.store = new TypeStore();
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
-            var prog = new Program { Architecture = arch };
-            this.exa = new ExpressionTypeAscender(arch, store, factory);
+            var prog = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
+            this.exa = new ExpressionTypeAscender(prog.Platform, store, factory);
             this.exd = new ExpressionTypeDescender(prog, store, factory);
             store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
         }

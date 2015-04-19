@@ -177,7 +177,7 @@ namespace Decompiler.Typing
             if (basePointer != null)
                 handler.MemAccessTrait(null, basePointer, basePointerSize, eField, v);
             else
-                handler.MemAccessTrait(null, prog.Globals, prog.Architecture.PointerType.Size, eField, v);
+                handler.MemAccessTrait(null, prog.Globals, prog.Platform.PointerType.Size, eField, v);
             // C is a pointer to tvField: [[c]] = ptr(tvField)
             handler.MemAccessTrait(basePointer, c, c.DataType.Size, eField, 0);
         }
@@ -311,7 +311,7 @@ namespace Decompiler.Typing
 
 		public void VisitProcedureConstant(ProcedureConstant pc)
 		{
-			handler.DataTypeTrait(pc, prog.Architecture.PointerType);
+			handler.DataTypeTrait(pc, prog.Platform.PointerType);
 		}
 
 		public void VisitSlice(Slice slice)

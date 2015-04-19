@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Typing
         private void RunTest(Program prog, string outputFile)
         {
             EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
             eqb.Build(prog);
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
             trco.CollectProgramTraits(prog);

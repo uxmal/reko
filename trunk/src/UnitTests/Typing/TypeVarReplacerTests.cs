@@ -52,6 +52,7 @@ namespace Decompiler.UnitTests.Typing
 
             var prog = new Program();
             prog.Architecture = new FakeArchitecture();
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
             trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
@@ -82,7 +83,8 @@ namespace Decompiler.UnitTests.Typing
 			factory = new TypeFactory();
 			store = new TypeStore();
 			eqb = new EquivalenceClassBuilder(factory, store);
-			dtb = new DataTypeBuilder(factory, store, new FakeArchitecture());
+            var platform = new DefaultPlatform(null, new FakeArchitecture());
+			dtb = new DataTypeBuilder(factory, store, platform);
 		}
 
 		private void Verify(string outputFilename)

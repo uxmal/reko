@@ -31,14 +31,14 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedMemoryExpressionRewriter : ExpressionVisitor<Expression>
 	{
-        private IProcessorArchitecture arch;
+        private Platform arch;
         private TypeStore store;
 		private Identifier globals;
 		private Expression basePointer;
         private DataType dtResult;
         private TypedConstantRewriter tcr;
 
-		public TypedMemoryExpressionRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
+		public TypedMemoryExpressionRewriter(Platform arch, TypeStore store, Identifier globals)
 		{
             this.arch = arch;
             this.tcr = new TypedConstantRewriter(arch, store, globals);

@@ -46,11 +46,13 @@ namespace Decompiler.UnitTests.Typing
 
 		protected Program RewriteFile(string relativePath, Address addrBase)
 		{
-            ILoader ldr = new Loader(new ServiceContainer());
+            var services = new ServiceContainer();
+            ILoader ldr = new Loader(services);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
                 new IntelTextAssembler(),
                 addrBase);
+            program.Platform = new DefaultPlatform(services, program.Architecture);
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());
             var project = new Project { Programs = { program } };
 			var scan = new Scanner(

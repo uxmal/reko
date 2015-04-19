@@ -60,5 +60,6 @@ namespace Decompiler.Environments.Ps3
         {
             return Address.Ptr32((uint)uAddr);
         }
+
     }
 }

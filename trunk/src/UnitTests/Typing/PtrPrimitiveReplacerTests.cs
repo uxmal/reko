@@ -38,7 +38,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PprReplaceInts()
 		{
-            var program = new Program { Architecture = new FakeArchitecture() };
+            var arch = new FakeArchitecture(); 
+            var program = new Program { Architecture = arch, Platform = new DefaultPlatform(null, arch) };
 
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
@@ -114,7 +115,7 @@ namespace Decompiler.UnitTests.Typing
 			store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
 			eqb.Build(prog);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();

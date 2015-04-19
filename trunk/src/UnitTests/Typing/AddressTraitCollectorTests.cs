@@ -156,6 +156,7 @@ namespace Decompiler.UnitTests.Typing
 		{
             prog = new Program();
             prog.Architecture = new FakeArchitecture();
+            prog.Platform = new DefaultPlatform(null, prog.Architecture);
 			factory = prog.TypeFactory;
 			store = prog.TypeStore;
 			handler = new TestTraitHandler(store);

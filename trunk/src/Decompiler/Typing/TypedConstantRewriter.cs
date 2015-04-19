@@ -31,16 +31,16 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
-        private IProcessorArchitecture arch;
+        private Platform platform;
 		private TypeStore store;
 		private Identifier globals;
 		private Constant c;
 		private PrimitiveType pOrig;
 		private bool dereferenced;
 
-		public TypedConstantRewriter(IProcessorArchitecture arch, TypeStore store, Identifier globals)
+		public TypedConstantRewriter(Platform platform, TypeStore store, Identifier globals)
 		{
-            this.arch = arch;
+            this.platform = platform;
 			this.store = store;
 			this.globals = globals;
 		}
@@ -151,7 +151,7 @@ namespace Decompiler.Typing
                 var array = f.DataType as ArrayType;
                 if (array != null)
                 {
-                    ex.DataType = new MemberPointer(p, array.ElementType, arch.PointerType.Size);
+                    ex.DataType = new MemberPointer(p, array.ElementType, platform.PointerType.Size);
                 }
                 else
                 {
@@ -180,7 +180,7 @@ namespace Decompiler.Typing
                 }
                 var dt = ptr.Pointee.ResolveAs<DataType>();
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
-                var ptrGlobals = new Pointer(GlobalVars, arch.PointerType.Size);
+                var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.Size);
                 e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f.Name);
                 if (dereferenced)
                 {
@@ -192,7 +192,7 @@ namespace Decompiler.Typing
                     if (array != null) // C language rules 'promote' arrays to pointers.
                     {
                         //$BUG: no factory?
-                        e.DataType = new Pointer(array.ElementType, arch.PointerType.Size);
+                        e.DataType = new Pointer(array.ElementType, platform.PointerType.Size);
                     }
                     else
                     {

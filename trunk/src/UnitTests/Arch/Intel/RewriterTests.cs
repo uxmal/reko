@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 var lr = asm.Assemble(baseAddress, stm);
                 prog.Image = lr.Image;
                 prog.ImageMap = lr.ImageMap;
-                prog.Platform = lr.Platform;
+                prog.Platform = lr.Platform ?? new DefaultPlatform(null, lr.Architecture);
             }
 			DoRewriteCore();
 		}

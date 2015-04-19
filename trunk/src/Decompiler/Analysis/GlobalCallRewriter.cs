@@ -47,12 +47,10 @@ namespace Decompiler.Analysis
 	/// </remarks>
 	public class GlobalCallRewriter : CallRewriter
 	{
-		private Program prog;
 		private ProgramDataFlow mpprocflow;
 
-		public GlobalCallRewriter(Program prog, ProgramDataFlow mpprocflow)
+		public GlobalCallRewriter(Program prog, ProgramDataFlow mpprocflow) : base(prog)
 		{
-			this.prog = prog;
 			this.mpprocflow = mpprocflow;
 		}
 
@@ -152,14 +150,14 @@ namespace Decompiler.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-			SignatureBuilder sb = new SignatureBuilder(proc, prog.Architecture);
+			SignatureBuilder sb = new SignatureBuilder(proc, Program.Architecture);
 			Frame frame = proc.Frame;
 			if (flow.grfLiveOut != 0)
 			{
 				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);
 			}
 
-			BitSet mayUse = flow.MayUse - prog.Architecture.ImplicitArgumentRegisters;
+			BitSet mayUse = flow.MayUse - Program.Architecture.ImplicitArgumentRegisters;
 			foreach (int r in mayUse)
 			{
 				if (!IsSubRegisterOfRegisters(r, mayUse))
@@ -178,12 +176,12 @@ namespace Decompiler.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-			BitSet liveOut = flow.LiveOut - prog.Architecture.ImplicitArgumentRegisters;
+			BitSet liveOut = flow.LiveOut - Program.Architecture.ImplicitArgumentRegisters;
 			foreach (int r in liveOut)
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
-					sb.AddArgument(frame.EnsureRegister(prog.Architecture.GetRegister(r)), true);
+					sb.AddArgument(frame.EnsureRegister(Program.Architecture.GetRegister(r)), true);
 				}
 			}
 
@@ -245,12 +243,12 @@ namespace Decompiler.Analysis
 		/// <returns></returns>
 		private bool IsSubRegisterOfRegisters(int r, BitSet regs)
 		{
-            var rr = prog.Architecture.GetRegister(r);
+            var rr = Program.Architecture.GetRegister(r);
             if (rr == null)
                 return false;
 			foreach (int r2 in regs)
 			{
-				if (rr.IsSubRegisterOf(prog.Architecture.GetRegister(r2)))
+				if (rr.IsSubRegisterOf(Program.Architecture.GetRegister(r2)))
 					return true;
 			}
 			return false;
