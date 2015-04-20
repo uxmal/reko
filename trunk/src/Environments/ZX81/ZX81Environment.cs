@@ -46,6 +46,11 @@ namespace Decompiler.Environments.ZX81
             get { throw new NotImplementedException(); }
         }
 
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

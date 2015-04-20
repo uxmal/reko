@@ -22,6 +22,7 @@ using Decompiler.Arch.X86;
 using Decompiler.Core;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
 using System;
@@ -72,6 +73,41 @@ namespace Decompiler.Environments.Win32
                 }
             };
         }
+
+        public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
+        {
+            var rw = Architecture.CreateRewriter(
+                rdr,
+                Architecture.CreateProcessorState(),
+                Architecture.CreateFrame(), host);
+            var rtlc = rw.FirstOrDefault();
+            if (rtlc == null || rtlc.Instructions.Count == 0)
+                return null;
+            var jump = rtlc.Instructions[0] as RtlGoto;
+            if (jump == null)
+                return null;
+            var pc = jump.Target as ProcedureConstant;
+            if (pc != null)
+                return pc.Procedure;
+            var access = jump.Target as MemoryAccess;
+            if (access == null)
+                return null;
+            var addrTarget = access.EffectiveAddress as Address;
+            if (addrTarget == null)
+            {
+                var wAddr = access.EffectiveAddress as Constant;
+                if (wAddr == null)
+                {
+                    return null;
+                }
+                addrTarget = MakeAddressFromConstant(wAddr);
+            }
+            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
+            if (proc != null)
+                return proc;
+            return host.GetInterceptedCall(addrTarget);
+        }
+
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {

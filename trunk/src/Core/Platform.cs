@@ -76,6 +76,15 @@ namespace Decompiler.Core
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// If the instructions located at the address the image reader is reading are a 
+        /// trampoline, returns the procedure where the destination is located, otherwise
+        /// returns null.
+        /// </summary>
+        /// <param name="imageReader"></param>
+        /// <returns></returns>
+        public abstract ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+
         public virtual Address MakeAddressFromConstant(Constant c)
         {
             return Architecture.MakeAddressFromConstant(c);
@@ -127,14 +136,20 @@ namespace Decompiler.Core
 
         public List<TypeLibrary> TypeLibraries { get; private set; }
 
+        public override string DefaultCallingConvention
+        {
+            get { return ""; }
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotSupportedException();
         }
 
-        public override string DefaultCallingConvention
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            get { return ""; }
+            // No trampolines are supported.
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

@@ -60,7 +60,6 @@ namespace Decompiler.UnitTests.Analysis
 			rl = new RegisterLiveness(prog, mpprocflow, null);
 			rl.Procedure = proc;
 			rl.IdentifierLiveness.BitSet = prog.Architecture.CreateRegisterBitset();
-
 		}
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)

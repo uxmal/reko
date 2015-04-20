@@ -93,13 +93,6 @@ namespace Decompiler.Environments.C64
             throw new NotSupportedException();  //$Makes no sense in C64 Basic!
         }
 
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            //$NYI
-            return null;
-        }
-
-
         public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

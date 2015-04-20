@@ -45,6 +45,11 @@ namespace Decompiler.Environments.Ps3
             throw new NotImplementedException();
         }
 
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            throw new NotImplementedException();
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

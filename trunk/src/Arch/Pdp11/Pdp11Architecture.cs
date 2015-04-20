@@ -108,13 +108,6 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            //$NYI
-            return null;
-        }
-
-
         public RegisterStorage GetRegister(int i)
         {
             return (0 <= i && i < regs.Length)

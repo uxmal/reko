@@ -33,13 +33,23 @@
   <service name="_GetPtrSize"><syscallinfo><vector>A021</vector></syscallinfo></service>
   <service name="_DisposeHandle"><syscallinfo><vector>A023</vector></syscallinfo></service>
   <service name="_SetHandleSize"><syscallinfo><vector>A024</vector></syscallinfo></service>
-  <service name="_GetHandleSize"><syscallinfo><vector>A025</vector></syscallinfo></service>
+  <service name="_GetHandleSize"><syscallinfo><vector>A025</vector></syscallinfo>
+    <signature>
+      <return><reg>d0</reg></return>
+      <arg name="handle"><reg>a0</reg></arg>
+    </signature>
+  </service>
   <service name="_ReallocHandle"><syscallinfo><vector>A027</vector></syscallinfo></service>
   <service name="_HLock"><syscallinfo><vector>A029</vector></syscallinfo></service>
   <service name="_HUnlock"><syscallinfo><vector>A02A</vector></syscallinfo></service>
   <service name="_EmptyHandle"><syscallinfo><vector>A02B</vector></syscallinfo></service>
   <service name="_InitApplZone"><syscallinfo><vector>A02C</vector></syscallinfo></service>
-  <service name="_SetApplLimit"><syscallinfo><vector>A02D</vector></syscallinfo></service>
+  <service name="_SetApplLimit">
+    <syscallinfo><vector>A02D</vector></syscallinfo>
+    <signature>
+      <arg name="zoneLimit"><ptr><void/></ptr><stack/></arg>
+    </signature>
+  </service>
   <service name="_BlockMove"><syscallinfo><vector>A02E</vector></syscallinfo></service>
   <service name="_PostEvent"><syscallinfo><vector>A02F</vector></syscallinfo></service>
   <service name="_OSEventAvail"><syscallinfo><vector>A030</vector></syscallinfo></service>
@@ -48,7 +58,10 @@
   <service name="_VInstall"><syscallinfo><vector>A033</vector></syscallinfo></service>
   <service name="_VRemove"><syscallinfo><vector>A034</vector></syscallinfo></service>
   <service name="_OffLine"><syscallinfo><vector>A035</vector></syscallinfo></service>
-  <service name="_MoreMasters"><syscallinfo><vector>A036</vector></syscallinfo></service>
+  <service name="_MoreMasters">
+    <syscallinfo><vector>A036</vector></syscallinfo>
+    <signature></signature>
+  </service>
   <service name="_WriteParam"><syscallinfo><vector>A038</vector></syscallinfo></service>
   <service name="_ReadDateTime"><syscallinfo><vector>A039</vector></syscallinfo></service>
   <service name="_SetDateTime"><syscallinfo><vector>A03A</vector></syscallinfo></service>
@@ -306,7 +319,12 @@
   <service name="_LoWord"><syscallinfo><vector>A86B</vector></syscallinfo></service>
   <service name="_FixRound"><syscallinfo><vector>A86C</vector></syscallinfo></service>
   <service name="_InitPort"><syscallinfo><vector>A86D</vector></syscallinfo></service>
-  <service name="_InitGraf"><syscallinfo><vector>A86E</vector></syscallinfo></service>
+  <service name="_InitGraf">
+    <syscallinfo><vector>A86E</vector></syscallinfo>
+    <signature>
+      <arg name="thePort"><ptr><prim domain="Pointer" size="4"/></ptr><stack/></arg>
+    </signature>
+  </service>
   <service name="_OpenPort"><syscallinfo><vector>A86F</vector></syscallinfo></service>
   <service name="_LocalToGlobal"><syscallinfo><vector>A870</vector></syscallinfo></service>
   <service name="_GlobalToLocal"><syscallinfo><vector>A871</vector></syscallinfo></service>
@@ -450,7 +468,10 @@
   <service name="_MapRgn"><syscallinfo><vector>A8FB</vector></syscallinfo></service>
   <service name="_MapPoly"><syscallinfo><vector>A8FC</vector></syscallinfo></service>
   <service name="_PrGlue"><syscallinfo><vector>A8FD</vector></syscallinfo></service>
-  <service name="_InitFonts"><syscallinfo><vector>A8FE</vector></syscallinfo></service>
+  <service name="_InitFonts">
+    <syscallinfo><vector>A8FE</vector></syscallinfo>
+    <signature></signature>
+  </service>
   <service name="_GetFontName"><syscallinfo><vector>A8FF</vector></syscallinfo></service>
   <service name="_GetFNum"><syscallinfo><vector>A900</vector></syscallinfo></service>
   <service name="_FMSwapFont"><syscallinfo><vector>A901</vector></syscallinfo></service>
@@ -470,7 +491,10 @@
   <service name="_DrawNew"><syscallinfo><vector>A90F</vector></syscallinfo></service>
   <service name="_GetWMgrPort"><syscallinfo><vector>A910</vector></syscallinfo></service>
   <service name="_CheckUpDate"><syscallinfo><vector>A911</vector></syscallinfo></service>
-  <service name="_InitWindows"><syscallinfo><vector>A912</vector></syscallinfo></service>
+  <service name="_InitWindows">
+    <syscallinfo><vector>A912</vector></syscallinfo>
+    <signature></signature>
+  </service>
   <service name="_NewWindow"><syscallinfo><vector>A913</vector></syscallinfo></service>
   <service name="_DisposeWindow"><syscallinfo><vector>A914</vector></syscallinfo></service>
   <service name="_ShowWindow"><syscallinfo><vector>A915</vector></syscallinfo></service>
@@ -500,7 +524,10 @@
   <service name="_CloseWindow"><syscallinfo><vector>A92D</vector></syscallinfo></service>
   <service name="_SetWindowPic"><syscallinfo><vector>A92E</vector></syscallinfo></service>
   <service name="_GetWindowPic"><syscallinfo><vector>A92F</vector></syscallinfo></service>
-  <service name="_InitMenus"><syscallinfo><vector>A930</vector></syscallinfo></service>
+  <service name="_InitMenus">
+    <syscallinfo><vector>A930</vector></syscallinfo>
+    <signature></signature>
+  </service>
   <service name="_NewMenu"><syscallinfo><vector>A931</vector></syscallinfo></service>
   <service name="_DisposeMenu"><syscallinfo><vector>A932</vector></syscallinfo></service>
   <service name="_AppendMenu"><syscallinfo><vector>A933</vector></syscallinfo></service>
@@ -575,7 +602,12 @@
   <service name="_UpdtDialog"><syscallinfo><vector>A978</vector></syscallinfo></service>
   <service name="_CouldDialog"><syscallinfo><vector>A979</vector></syscallinfo></service>
   <service name="_FreeDialog"><syscallinfo><vector>A97A</vector></syscallinfo></service>
-  <service name="_InitDialogs"><syscallinfo><vector>A97B</vector></syscallinfo></service>
+  <service name="_InitDialogs">
+    <syscallinfo><vector>A97B</vector></syscallinfo>
+    <signature>
+      <arg name="ignored"><ptr><void /></ptr><stack/></arg>
+    </signature>
+  </service>
   <service name="_GetNewDialog"><syscallinfo><vector>A97C</vector></syscallinfo></service>
   <service name="_NewDialog"><syscallinfo><vector>A97D</vector></syscallinfo></service>
   <service name="_SelectDialogItemText"><syscallinfo><vector>A97E</vector></syscallinfo></service>
@@ -622,8 +654,19 @@
   </service>
   <service name="_GetNamedResource"><syscallinfo><vector>A9A1</vector></syscallinfo></service>
   <service name="_LoadResource"><syscallinfo><vector>A9A2</vector></syscallinfo></service>
-  <service name="_ReleaseResource"><syscallinfo><vector>A9A3</vector></syscallinfo></service>
-  <service name="_HomeResFile"><syscallinfo><vector>A9A4</vector></syscallinfo></service>
+  <service name="_ReleaseResource">
+    <syscallinfo><vector>A9A3</vector></syscallinfo>
+    <signature>
+      <arg name="theResource"><prim domain="UnsignedInt" size="4" /><stack /></arg>
+    </signature>
+  </service>
+  <service name="_HomeResFile">
+    <syscallinfo><vector>A9A4</vector></syscallinfo>
+    <signature>
+      <return><reg>d0</reg></return>
+      <arg name="handle"><prim domain="UnsignedInt" size="4" /><stack /></arg>
+    </signature>
+  </service>
   <service name="_SizeResource"><syscallinfo><vector>A9A5</vector></syscallinfo></service>
   <service name="_GetResAttrs"><syscallinfo><vector>A9A6</vector></syscallinfo></service>
   <service name="_SetResAttrs"><syscallinfo><vector>A9A7</vector></syscallinfo></service>
@@ -663,7 +706,10 @@
   <service name="_SysError"><syscallinfo><vector>A9C9</vector></syscallinfo></service>
   <service name="_PutIcon"><syscallinfo><vector>A9CA</vector></syscallinfo></service>
   <service name="_TEGetText"><syscallinfo><vector>A9CB</vector></syscallinfo></service>
-  <service name="_TEInit"><syscallinfo><vector>A9CC</vector></syscallinfo></service>
+  <service name="_TEInit">
+    <syscallinfo><vector>A9CC</vector></syscallinfo>
+    <signature></signature>
+  </service>
   <service name="_TEDispose"><syscallinfo><vector>A9CD</vector></syscallinfo></service>
   <service name="_TETextBox"><syscallinfo><vector>A9CE</vector></syscallinfo></service>
   <service name="_TESetText"><syscallinfo><vector>A9CF</vector></syscallinfo></service>
@@ -694,7 +740,12 @@
   <service name="_Pack1"><syscallinfo><vector>A9E8</vector></syscallinfo></service>
   <service name="_Pack2"><syscallinfo><vector>A9E9</vector></syscallinfo></service>
   <service name="_Pack3"><syscallinfo><vector>A9EA</vector></syscallinfo></service>
-  <service name="_FP68K"><syscallinfo><vector>A9EB</vector></syscallinfo></service>
+  <service name="_FP68K">
+    <syscallinfo><vector>A9EB</vector></syscallinfo>
+    <signature>
+      <arg name="useFp"><prim domain="SignedInt" size="2"/><stack /></arg>
+    </signature>
+  </service>
   <service name="_Elems68K"><syscallinfo><vector>A9EC</vector></syscallinfo></service>
   <service name="_Pack6"><syscallinfo><vector>A9ED</vector></syscallinfo></service>
   <service name="_DECSTR68K"><syscallinfo><vector>A9EE</vector></syscallinfo></service>
@@ -703,7 +754,9 @@
   <service name="_UnLoadSeg"><syscallinfo><vector>A9F1</vector></syscallinfo></service>
   <service name="_Launch"><syscallinfo><vector>A9F2</vector></syscallinfo></service>
   <service name="_Chain"><syscallinfo><vector>A9F3</vector></syscallinfo></service>
-  <service name="_ExitToShell"><syscallinfo><vector>A9F4</vector></syscallinfo></service>
+  <service name="_ExitToShell"><syscallinfo><vector>A9F4</vector></syscallinfo>
+    <signature></signature>
+  </service>
   <service name="_GetAppParms"><syscallinfo><vector>A9F5</vector></syscallinfo></service>
   <service name="_GetResFileAttrs"><syscallinfo><vector>A9F6</vector></syscallinfo></service>
   <service name="_SetResFileAttrs"><syscallinfo><vector>A9F7</vector></syscallinfo></service>

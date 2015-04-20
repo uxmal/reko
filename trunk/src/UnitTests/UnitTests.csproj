@@ -164,6 +164,7 @@
     <Compile Include="Environments\AmigaOS\FuncsFileParserTests.cs" />
     <Compile Include="Environments\C64\C64BasicRewriterTests.cs" />
     <Compile Include="Environments\C64\D64LoaderTests.cs" />
+    <Compile Include="Environments\Ps3\Ps3PlatformTests.cs" />
     <Compile Include="Environments\Win32\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Win32\Win32PlatformTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />

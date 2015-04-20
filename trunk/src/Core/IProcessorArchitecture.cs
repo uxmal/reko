@@ -111,15 +111,6 @@ namespace Decompiler.Core
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
 
-        /// <summary>
-        /// If the instructions located at the address the image reader is reading are a 
-        /// trampoline, returns the procedure where the destination is located, otherwise
-        /// returns null.
-        /// </summary>
-        /// <param name="imageReader"></param>
-        /// <returns></returns>
-        ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
-
 		/// <summary>
 		/// A bitset that represents those registers that are never used as arguments to a procedure. 
 		/// </summary>

@@ -206,10 +206,10 @@ struct a {
         [Ignore("This test isn't working presently; focus on passing more important tests first then fix")]
         public void TyfoMemberPointerCycle()
         {
-            StructureType seg = new StructureType("seg", 100);
+            var seg = new StructureType("seg", 100);
 
-            StructureType a = new StructureType("a", 0);
-            StructureType b = new StructureType("b", 0);
+            var a = new StructureType("a", 0);
+            var b = new StructureType("b", 0);
 
             a.Fields.Add(0, new MemberPointer(seg, b, 2));
             b.Fields.Add(0, new MemberPointer(seg, a, 2));

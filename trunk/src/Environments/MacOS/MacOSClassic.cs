@@ -60,6 +60,11 @@ namespace Decompiler.Environments.MacOS
             get { return encoding; }
         }
 
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

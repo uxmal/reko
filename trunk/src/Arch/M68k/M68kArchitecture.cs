@@ -89,13 +89,6 @@ namespace Decompiler.Arch.M68k
             return new M68kProcedureSerializer(this, typeLoader, defaultCc);
         }
 
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            //$NYI
-            return null;
-        }
-
-
         public RegisterStorage GetRegister(int i)
         {
             return Registers.GetRegister(i);
