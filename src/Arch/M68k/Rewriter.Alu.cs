@@ -363,8 +363,11 @@ namespace Decompiler.Arch.M68k
                 {
                     return di.Address + mem.Offset.ToInt32();
                 }
-                else
+                else if (mem.Offset == null)
                 {
+                    return frame.EnsureRegister(mem.Base);
+                }
+                else {
                     return emitter.IAdd(
                         frame.EnsureRegister(mem.Base),
                         Constant.Int32(mem.Offset.ToInt32()));

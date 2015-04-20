@@ -45,6 +45,11 @@ namespace Decompiler.Environments.Msdos
 			return null;
 		}
 
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+        
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

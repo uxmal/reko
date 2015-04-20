@@ -42,6 +42,11 @@ namespace Decompiler.UnitTests.Mocks
             get { throw new NotImplementedException(); }
         }
 
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             return null;

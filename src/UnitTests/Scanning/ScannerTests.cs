@@ -470,9 +470,10 @@ fn00001100_exit:
         public void Scanner_Trampoline()
         {
             var scan = CreateScanner(0x1000, 0x2000);
-            ((FakeArchitecture)arch).Test_GetTrampolineDestination = 
-                (a, b) => new ExternalProcedure("bar", new ProcedureSignature());
             var platform = mr.Stub<Platform>(null, program.Architecture);
+            platform.Stub(p => p.GetTrampolineDestination(null, null))
+                .IgnoreArguments()
+                .Return(new ExternalProcedure("bar", new ProcedureSignature()));
             platform.Stub(p => p.LookupProcedureByName("foo.dll", "bar")).Return(
                 new ExternalProcedure("bar", new ProcedureSignature()));
             program.Platform = platform;
@@ -483,6 +484,8 @@ fn00001100_exit:
             program.ImportReferences.Add(
                 Address.Ptr32(0x2000),
                 new NamedImportReference(Address.Ptr32(0x2000), "foo.dll", "bar"));
+            mr.ReplayAll();
+
             var proc = scan.ScanProcedure(Address.Ptr32(0x1000), "fn1000", arch.CreateProcessorState());
 
             Assert.AreEqual("bar", proc.Name);

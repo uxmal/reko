@@ -40,6 +40,11 @@ namespace Decompiler.Environments.RiscOS
         {
         }
 
+        public override string DefaultCallingConvention
+        {
+            get { return ""; }
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             switch (vector)
@@ -59,14 +64,16 @@ namespace Decompiler.Environments.RiscOS
             throw new NotSupportedException(string.Format("Unknown RiscOS vector &{0:X}.", vector)); 
         }
 
+        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        {
+            return null;
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
+
     }
 }

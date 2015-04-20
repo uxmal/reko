@@ -84,13 +84,6 @@ namespace Decompiler.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            //$NYI
-            return null;
-        }
-
-
         public RegisterStorage GetRegister(int i)
         {
             return Registers.generalRegs[i];

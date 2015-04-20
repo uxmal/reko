@@ -541,13 +541,7 @@ namespace Decompiler.Scanning
         public ProcedureBase GetTrampoline(Address addr)
         {
             var arch = program.Architecture;
-            var rdr = arch.CreateRewriter(
-                arch.CreateImageReader(program.Image, addr),
-                arch.CreateProcessorState(),
-                arch.CreateFrame(),
-                this);
-
-            var target = arch.GetTrampolineDestination(
+            var target = program.Platform.GetTrampolineDestination(
                 arch.CreateImageReader(program.Image, addr),
                 this);
             return target;

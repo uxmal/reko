@@ -154,37 +154,6 @@ namespace Decompiler.Arch.X86
             return mode.ReadCodeAddress(byteSize, rdr, state);
         }
 
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            var rw = CreateRewriter(rdr, CreateProcessorState(), CreateFrame(), host);
-            var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
-                return null;
-            var jump = rtlc.Instructions[0] as RtlGoto;
-            if (jump == null)
-                return null;
-            var pc = jump.Target as ProcedureConstant;
-            if (pc != null)
-                return pc.Procedure;
-            var access = jump.Target as MemoryAccess;
-            if (access == null)
-                return null;
-            var addrTarget = access.EffectiveAddress as Address;
-            if (addrTarget == null)
-            {
-                var wAddr = access.EffectiveAddress as Constant;
-                if (wAddr == null)
-                {
-                    return null;
-                }
-                addrTarget = MakeAddressFromConstant(wAddr);
-            }
-            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
-            if (proc != null)
-                return proc;
-            return host.GetInterceptedCall(addrTarget);
-        }
-
 		public FlagGroupStorage GetFlagGroup(uint grf)
 		{
 			foreach (FlagGroupStorage f in flagGroups)

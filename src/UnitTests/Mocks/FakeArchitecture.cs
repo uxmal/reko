@@ -120,12 +120,6 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public Func<ImageReader, IRewriterHost, ProcedureBase> Test_GetTrampolineDestination = (a, b) => null;
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            return Test_GetTrampolineDestination(rdr, host);
-        }
-
         public FlagGroupStorage GetFlagGroup(uint grf)
 		{
 			return null;

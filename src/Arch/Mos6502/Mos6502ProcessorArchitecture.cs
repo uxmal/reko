@@ -80,13 +80,6 @@ namespace Decompiler.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
-        {
-            //$NYI
-            return null;
-        }
-
-
         public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

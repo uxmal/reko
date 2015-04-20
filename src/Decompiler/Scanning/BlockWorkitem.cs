@@ -498,14 +498,22 @@ namespace Decompiler.Scanning
         {
             var ep = svc.CreateExternalProcedure(arch);
             var fn = new ProcedureConstant(program.Platform.PointerType, ep);
-            var site = state.OnBeforeCall(stackReg, svc.Signature!=null? svc.Signature.ReturnAddressOnStack:0);
-            Emit(BuildApplication(fn, ep.Signature, site));
-            if (svc.Characteristics.Terminates)
+            if (svc.Signature != null)
             {
-                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-                return true;
+                var site = state.OnBeforeCall(stackReg, svc.Signature.ReturnAddressOnStack);
+                Emit(BuildApplication(fn, ep.Signature, site));
+                if (svc.Characteristics.Terminates)
+                {
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return true;
+                }
+                AffectProcessorState(svc.Signature);
             }
-            AffectProcessorState(svc.Signature);
+            else
+            {
+                var site = state.OnBeforeCall(stackReg, 0);
+                Emit(new CallInstruction(fn, site));
+            }
             return false;
         }
 
