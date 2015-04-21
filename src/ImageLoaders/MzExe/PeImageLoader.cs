@@ -246,10 +246,10 @@ namespace Decompiler.ImageLoaders.MzExe
 			uint checksum = rdr.ReadLeUInt32();
 			ushort subsystem = rdr.ReadLeUInt16();
 			ushort dllFlags = rdr.ReadLeUInt16();
-			uint stackReserve  = rdr.ReadLeUInt32();
-			uint stackCommit  = rdr.ReadLeUInt32();
-			uint heapReserve  = rdr.ReadLeUInt32();
-			uint heapCommit   = rdr.ReadLeUInt32();
+			uint stackReserve = rdr.ReadLeUInt32();
+			uint stackCommit = rdr.ReadLeUInt32();
+			uint heapReserve = rdr.ReadLeUInt32();
+			uint heapCommit = rdr.ReadLeUInt32();
 			rdr.ReadLeUInt32();			// obsolete
 			uint dictionaryCount = rdr.ReadLeUInt32();
 
@@ -396,7 +396,7 @@ namespace Decompiler.ImageLoaders.MzExe
         /// false.</returns>
         public bool ReadImportDescriptor(ImageReader rdr, Address addrLoad)
         {
-            var rvaILT = rdr.ReadLeUInt32();		// Import lookup table
+            var rvaILT = rdr.ReadLeUInt32();            // Import lookup table
             rdr.ReadLeUInt32();		                    // Ignore datestamp...
             rdr.ReadLeUInt32();		                    // ...and forwarder chain
             var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
@@ -404,23 +404,20 @@ namespace Decompiler.ImageLoaders.MzExe
             if (rvaILT == 0 && dllName == null)
                 return false;
 
-            var rvaEntries = rvaILT != 0
-                ? rvaILT
-                : rvaIAT;
-            if (rvaEntries == 0)
-                return false;
-
-            ImageReader rdrILT = imgLoaded.CreateLeReader(rvaEntries);
+            ImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT);
+            ImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
             for (; ; )
             {
-                Address addrThunk = rdrILT.Address; ;
-                uint rvaEntry = rdrILT.ReadLeUInt32();
-                if (rvaEntry == 0)
+                Address addrThunk = rdrIat.Address;
+                uint iatEntry = rdrIat.ReadLeUInt32();
+                uint iltEntry = rdrIlt.ReadLeUInt32();
+                if (iltEntry == 0)
                     break;
-
-                ResolveImportedFunction(dllName, rvaEntry, addrThunk);
+                 
+                importReferences.Add(
+                    addrThunk,
+                    ResolveImportedFunction(dllName, iltEntry, addrThunk));
             }
-
             return true;
         }
 
@@ -440,7 +437,9 @@ namespace Decompiler.ImageLoaders.MzExe
                 uint rvaThunk = rdrThunks.ReadLeUInt32();
                 if (rvaName == 0)
                     break;
-                ResolveImportedFunction(dllName, rvaName, addrThunk);
+                importReferences.Add(
+                    addrThunk, 
+                    ResolveImportedFunction(dllName, rvaName, addrThunk));
             }
             rdr.ReadLeInt32();
             rdr.ReadLeInt32();
@@ -448,18 +447,18 @@ namespace Decompiler.ImageLoaders.MzExe
             return true;
         }
         
-        private void ResolveImportedFunction(string dllName, uint rvaEntry, Address addrThunk)
+        private ImportReference ResolveImportedFunction(string dllName, uint rvaEntry, Address addrThunk)
         {
             if (!ImportedFunctionNameSpecified(rvaEntry))
             {
-                importReferences.Add(addrThunk, new OrdinalImportReference(
-                    addrThunk, dllName, (int) rvaEntry & 0x7FFFFFF));
+                return new OrdinalImportReference(
+                    addrThunk, dllName, (int) rvaEntry & 0x7FFFFFF);
             }
             else
             {
                 string fnName = ReadUtf8String(rvaEntry + 2, 0);
-                importReferences.Add(addrThunk, new NamedImportReference(
-                    addrThunk, dllName, fnName));
+                return new NamedImportReference(
+                    addrThunk, dllName, fnName);
             }
         }
 

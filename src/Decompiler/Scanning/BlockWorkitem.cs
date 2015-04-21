@@ -550,7 +550,7 @@ namespace Decompiler.Scanning
 
         #endregion
 
-        private void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
+        public void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
             var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
             if (!bw.CanBackwalk())
@@ -584,6 +584,7 @@ namespace Decompiler.Scanning
                 }
             }
 
+            //$TODO: mark the vector
             ScanVectorTargets(xfer, vector);
 
             if (xfer is RtlGoto)
@@ -596,9 +597,12 @@ namespace Decompiler.Scanning
                     Debug.Assert(dest != null, "The block at address " + addr + "should have been enqueued.");
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
+                Expression swExp = idIndex;
                 if (idIndex.Name == "None")
+                    swExp = bw.IndexExpression;
+                if (swExp == null)
                     throw new NotImplementedException();
-                Emit(new SwitchInstruction(idIndex, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
+                Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
             program.ImageMap.AddItem(bw.VectorAddress,

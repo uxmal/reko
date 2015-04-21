@@ -236,10 +236,13 @@ namespace Decompiler.UnitTests.Core.Serialization
         private void Given_ExecutableProgram(string exeName, Address address)
         {
             var bytes = new byte[0x1000];
+            var image = new LoadedImage(address, bytes);
+
             var program = new Program
             {
                 Architecture = arch,
-                Image = new LoadedImage(address, bytes)
+                Image = image,
+                ImageMap = image.CreateImageMap(),
             };
             loader.Stub(l => l.LoadImageBytes(
                 Arg<string>.Is.Equal(exeName),

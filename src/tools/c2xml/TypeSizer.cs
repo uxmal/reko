@@ -64,7 +64,7 @@ namespace Decompiler.Tools.C2Xml
         {
             return 4;       //$BUGBUG: architecture dependent
         }
-        public int VisitArray(SerializedArrayType array)
+        public int VisitArray(ArrayType_v1 array)
         {
             return Align(array.ElementType.Accept(this)) * array.Length;
         }

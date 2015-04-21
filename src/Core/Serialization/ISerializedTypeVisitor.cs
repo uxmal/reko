@@ -31,7 +31,7 @@ namespace Decompiler.Core.Serialization
         T VisitPointer(PointerType_v1 pointer);
         T VisitCode(CodeType_v1 code);
         T VisitMemberPointer(MemberPointer_v1 memptr);
-        T VisitArray(SerializedArrayType array);
+        T VisitArray(ArrayType_v1 array);
         T VisitSignature(SerializedSignature signature);
         T VisitStructure(SerializedStructType structure);
         T VisitTypedef(SerializedTypedef typedef);

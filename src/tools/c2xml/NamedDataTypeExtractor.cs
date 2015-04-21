@@ -93,7 +93,7 @@ namespace Decompiler.Tools.C2Xml
                 nt = new NamedDataType
                 {
                     Name = nt.Name,
-                    DataType = new SerializedArrayType
+                    DataType = new ArrayType_v1
                     {
                         ElementType = nt.DataType,
                         Length = array.Size != null
@@ -217,7 +217,7 @@ namespace Decompiler.Tools.C2Xml
         /// <returns></returns>
         private NamedDataType ConvertArrayToPointer(NamedDataType nt)
         {
-            var at = nt.DataType as SerializedArrayType;
+            var at = nt.DataType as ArrayType_v1;
             if (at != null)
             {
                 return new NamedDataType

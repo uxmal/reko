@@ -18,29 +18,38 @@
  */
 #endregion
 
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-    public class SerializedArrayType : SerializedType
+    public class ArrayType_v1 : SerializedType
     {
         public SerializedType ElementType;
 
         [XmlAttribute("length")]
+        [DefaultValue(0)]
         public int Length;
 
-        public override Types.DataType BuildDataType(Types.TypeFactory factory)
+        public override DataType BuildDataType(TypeFactory factory)
         {
-            throw new NotImplementedException();
+            var et = ElementType.BuildDataType(factory);
+            return new ArrayType(et, Length);
         }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitArray(this);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("arr({0},{1})", ElementType, Length);
         }
     }
 }

@@ -115,8 +115,6 @@ namespace Decompiler.Core.Serialization
 
         public Program VisitInputFile(DecompilerInput_v2 sInput)
         {
-            //Address.TryParse(sInput.Address, 16));
-
             var bytes = loader.LoadImageBytes(sInput.Filename, 0);
             var program = loader.LoadExecutable(sInput.Filename, bytes, null);
             program.Filename = sInput.Filename;
@@ -134,18 +132,33 @@ namespace Decompiler.Core.Serialization
             if (sInput.UserGlobalData != null)
             {
                 program.UserGlobalData = sInput.UserGlobalData
-                    .Select(sud => {
-                            Address addr;
-                            program.Architecture.TryParseAddress(sud.Address, out addr);
-                            return new KeyValuePair<Address, GlobalDataItem_v2>(
-                                addr,
-                                new GlobalDataItem_v2
-                                {
-                                    Address = sud.Address,
-                                    DataType = sud.DataType,
-                                });
+                    .Select(sud =>
+                    {
+                        Address addr;
+                        program.Architecture.TryParseAddress(sud.Address, out addr);
+                        return new KeyValuePair<Address, GlobalDataItem_v2>(
+                            addr,
+                            sud);
                     })
+                    .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
+            }
+            foreach (var kv in program.UserGlobalData)
+            {
+                var dt = kv.Value.DataType.BuildDataType(program.TypeFactory);
+                var item = new ImageMapItem((uint)dt.Size)
+                 {
+                    Address = kv.Key,
+                    DataType = dt,
+                };
+                if (item.Size > 0)
+                {
+                    program.ImageMap.AddItemWithSize(kv.Key, item);
+                }
+                else 
+                {
+                    program.ImageMap.AddItem(kv.Key, item);
+                }
             }
             program.DisassemblyFilename = sInput.DisassemblyFilename;
             program.IntermediateFilename = sInput.IntermediateFilename;

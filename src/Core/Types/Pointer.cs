@@ -24,7 +24,7 @@ using System.IO;
 namespace Decompiler.Core.Types
 {
 	/// <summary>
-	/// Represents a pointer type.
+	/// Represents a pointer type. Pointers point to another type, and have a size.
 	/// </summary>
 	public class Pointer : DataType
 	{

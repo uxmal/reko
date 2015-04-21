@@ -86,8 +86,9 @@ namespace Decompiler.Core.Serialization
                 XmlElements = 
                 {
                     new XmlElementAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
+                    new XmlElementAttribute("code", typeof(CodeType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
-                    new XmlElementAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
+                    new XmlElementAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlElementAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},
                     new XmlElementAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},
@@ -109,7 +110,7 @@ namespace Decompiler.Core.Serialization
                 {
                     new XmlArrayItemAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
-                    new XmlArrayItemAttribute("arr", typeof(SerializedArrayType)) { Namespace = @namespace},
+                    new XmlArrayItemAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},
                     new XmlArrayItemAttribute("struct", typeof(SerializedStructType)) { Namespace = @namespace},

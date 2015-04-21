@@ -37,5 +37,10 @@ namespace Decompiler.Core.Serialization
         {
             return visitor.VisitCode(this);
         }
+
+        public override string ToString()
+        {
+            return "code";
+        }
     }
 }

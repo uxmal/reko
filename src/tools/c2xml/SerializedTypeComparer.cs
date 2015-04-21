@@ -49,7 +49,7 @@ namespace Decompiler.Tools.C2Xml
             var ptr = obj as PointerType_v1;
             if (ptr != null)
                 return hash ^ GetHashCode(ptr.DataType);
-            var arr = obj as SerializedArrayType;
+            var arr = obj as ArrayType_v1;
             if (arr != null)
                 return hash ^ GetHashCode(arr.ElementType);
             var str = obj as SerializedStructType;
@@ -96,9 +96,9 @@ namespace Decompiler.Tools.C2Xml
             return mpX.MemberType.Accept(this);
         }
 
-        public bool VisitArray(SerializedArrayType aX)
+        public bool VisitArray(ArrayType_v1 aX)
         {
-            var aY = ((SerializedArrayType) y);
+            var aY = ((ArrayType_v1) y);
             if (aX.Length != aY.Length)
                 return false;
             y = aY.ElementType;

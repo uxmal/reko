@@ -35,7 +35,6 @@ namespace Decompiler.Core.Serialization
         [XmlText]
         public string TypeName;
 
-
         [XmlElement]
         public string[] Scope;
         

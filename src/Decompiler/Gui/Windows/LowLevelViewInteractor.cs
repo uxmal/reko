@@ -83,7 +83,7 @@ namespace Decompiler.Gui.Windows
             var uiService = services.RequireService<IDecompilerShellUiService>();
             var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
-            this.Control.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F);
+            this.Control.Font = uiPrefsSvc.DisassemblerFont ?? new Font("Lucida Console", 10F); //$TODO: use user preference
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
 
             this.Control.ImageMapView.SelectedAddressChanged += ImageMapView_SelectedAddressChanged;
@@ -355,7 +355,17 @@ namespace Decompiler.Gui.Windows
             var dataType = parser.Parse(userText);
             if (dataType == null)
                 return null;
-
+            var arr = dataType as ArrayType;
+            if (arr != null && arr.ElementType.Size != 0)
+            {
+                var range = control.MemoryView.GetAddressRange();
+                if (range.IsValid)
+                {
+                    long size = (range.End - range.Begin) + 1;
+                    int nElems = (int)(size / arr.ElementType.Size);
+                    arr.Length = nElems;
+                }
+            }
             var item = program.AddUserGlobalItem(address, dataType);
             control.MemoryView.Invalidate();
             return item;

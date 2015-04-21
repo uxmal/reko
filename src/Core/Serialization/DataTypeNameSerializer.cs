@@ -30,9 +30,10 @@ namespace Decompiler.Core.Serialization
     {
         public SerializedType VisitArray(ArrayType at)
         {
-            throw new NotImplementedException();
+            var et = at.ElementType.Accept(this);
+            return new ArrayType_v1 { ElementType = et, Length = at.Length };
         }
-
+         
         public SerializedType VisitCode(CodeType c)
         {
             return new CodeType_v1();
