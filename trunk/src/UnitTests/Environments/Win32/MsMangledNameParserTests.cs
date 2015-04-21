@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Environments.Win32
                 return sb;
             }
 
-            public StringBuilder VisitArray(SerializedArrayType array)
+            public StringBuilder VisitArray(ArrayType_v1 array)
             {
                 throw new NotImplementedException();
             }

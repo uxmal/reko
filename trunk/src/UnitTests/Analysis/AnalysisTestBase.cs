@@ -280,6 +280,13 @@ namespace Decompiler.UnitTests.Analysis
                  {
                      StackDelta = 4,
                  }));
+            platform.Stub(p => p.GetTrampolineDestination(
+                Arg<ImageReader>.Is.NotNull,
+                Arg<IRewriterHost>.Is.NotNull))
+                .Return(null);
+
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+
             Given_Platform(platform);
         }
 	}

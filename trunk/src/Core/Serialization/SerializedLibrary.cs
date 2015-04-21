@@ -87,7 +87,8 @@ namespace Decompiler.Core.Serialization
         {
             typeof(PrimitiveType_v1),
             typeof(PointerType_v1),
-            typeof(SerializedArrayType),
+            typeof(ArrayType_v1),
+            typeof(CodeType_v1),
             typeof(SerializedEnumType),
             typeof(SerializedStructType),
             typeof(StructField_v1),

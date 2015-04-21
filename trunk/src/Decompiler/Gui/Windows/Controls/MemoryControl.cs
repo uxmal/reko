@@ -107,6 +107,14 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
+        public void SetAddressRange(Address addrAnchor, Address addrSelected)
+        {
+            this.addrAnchor = addrAnchor;
+            this.addrSelected = addrSelected;
+            Invalidate();
+            OnSelectionChanged();
+        }
+
 		public uint BytesPerRow
 		{
 			get { return cbRow; }

@@ -61,8 +61,9 @@ namespace Decompiler.Gui.Windows.Controls
         public event EventHandler OffsetChanged;
         private int offset;
 
-        private Brush brMemory;
+        private Brush brCode;
         private Brush brBack;
+        private Brush brData;
 
         private ScrollButton scrollButton;      // If we're scrolling the scrollbuttons.
         private int xLastMouseUp;
@@ -70,7 +71,8 @@ namespace Decompiler.Gui.Windows.Controls
         protected override void OnPaint(PaintEventArgs pe)
         {
             this.brBack = new SolidBrush(BackColor);
-            this.brMemory = new SolidBrush(Color.Pink);
+            this.brCode = new SolidBrush(Color.Pink);
+            this.brData = new SolidBrush(Color.LightBlue);
             try
             {
                 Rectangle rcBody = CalculateLayout();
@@ -80,7 +82,8 @@ namespace Decompiler.Gui.Windows.Controls
             }
             finally
             {
-                brMemory.Dispose();
+                brData.Dispose();
+                brCode.Dispose();
                 brBack.Dispose();
             }
         }
@@ -155,7 +158,10 @@ namespace Decompiler.Gui.Windows.Controls
                 return brBack;
             if (item.DataType is UnknownType)
                 return brBack;
-            return brMemory;
+            if (item is ImageMapBlock)
+                return brCode;
+            else
+                return brData;
         }
 
         private Rectangle CalculateLayout()

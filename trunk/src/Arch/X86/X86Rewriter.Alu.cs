@@ -173,6 +173,17 @@ namespace Decompiler.Arch.X86
 				PseudoProc("__bt", PrimitiveType.Bool, SrcOp(instrCur.op1), SrcOp(instrCur.op2)));
         }
 
+        private void RewriteBtr()
+        {
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF),                    // lhs
+                PseudoProc(
+                        "__btr", PrimitiveType.Bool,      // rhs
+                        SrcOp(instrCur.op1),
+                        SrcOp(instrCur.op2),
+                        emitter.Out(instrCur.op1.Width, SrcOp(instrCur.op1))));
+        }
+
         private void RewriteBts()
         {
             emitter.Assign(

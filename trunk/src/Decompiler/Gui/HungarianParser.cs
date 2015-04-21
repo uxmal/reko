@@ -207,6 +207,8 @@ Some examples:
                     return dt;
                 }
                 return PrimitiveType.Word32;
+            case 'x':
+                return new CodeType();
             }
             return new UnknownType();
         }

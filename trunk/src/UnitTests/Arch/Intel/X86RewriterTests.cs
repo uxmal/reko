@@ -1196,5 +1196,23 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "0|10000000(2): 1 instructions",
                 "1|L--|edx_eax = __rdtsc()");
         }
+
+        [Test]
+        public void X86rw_setc()
+        {
+            Run32bitTest(0x0F, 0x92, 0xC1);
+            AssertCode(
+                "0|10000000(3): 1 instructions",
+                "1|L--|cl = Test(ULT,C)");
+        }
+
+        [Test]
+        public void X86rw_btr()
+        {
+            Run32bitTest(0x0F, 0xBA, 0xF3, 0x00);
+            AssertCode(
+                "0|10000000(4): 1 instructions",
+                "1|L--|C = __btr(ebx, 0x00, out ebx)");
+        }
     }
 }

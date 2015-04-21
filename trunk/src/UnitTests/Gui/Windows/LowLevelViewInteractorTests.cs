@@ -194,6 +194,23 @@ namespace Decompiler.UnitTests.Gui.Windows
             Assert.AreEqual("int32", item.DataType.ToString());
         }
 
+        [Test]
+        public void LLI_MarkAreaWithType_array()
+        {
+            Given_Architecture();
+            Given_Program(new byte[100]);
+            Given_Interactor();
+            mr.ReplayAll();
+
+            control.MemoryView.SetAddressRange(addrBase, addrBase + 12);
+            interactor.SetTypeAtAddressRange(addrBase, "apx");
+
+            ImageMapItem item;
+            Assert.IsTrue(imageMap.TryFindItemExact(addrBase, out item));
+            Assert.AreEqual(addrBase, item.Address);
+            Assert.AreEqual("(arr (ptr code) 3)", item.DataType.ToString());
+        }
+
         private void Given_Image()
         {
             Given_Image(new byte[0x100]);

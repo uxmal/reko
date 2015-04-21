@@ -45,6 +45,8 @@ namespace Decompiler.Scanning
 
 		public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
 		{
+            if (xfer is RtlGoto) //$DEBUG
+                xfer.ToString();
             this.host = host;
             this.eval = eval;
             var target = xfer.Target;
@@ -86,7 +88,7 @@ namespace Decompiler.Scanning
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
             bool continueBackwalking = BackwalkInstructions(Index, block);
-            if (Index == null || Index == RegisterStorage.None)
+            if ((Index == null || Index == RegisterStorage.None) && IndexExpression == null)
                 return null;	// unable to find guard.
 
             if (continueBackwalking)
@@ -326,6 +328,11 @@ namespace Decompiler.Scanning
             }
         }
 		
+        /// <summary>
+        /// Given a memory access, attempts to determine the index register.
+        /// </summary>
+        /// <param name="mem"></param>
+        /// <returns></returns>
         public RegisterStorage DetermineIndexRegister(MemoryAccess mem)
         {
             Stride = 0;
@@ -338,18 +345,24 @@ namespace Decompiler.Scanning
             var bin = mem.EffectiveAddress as BinaryExpression;
             if (bin == null)
                 return null;
+
             var idLeft = bin.Left as Identifier;
             var idRight = bin.Right as Identifier;
             if (idRight != null && idLeft == null)
             {
+                // Rearrange so that the effective address is [id + C]
                 var t = idLeft;
                 idLeft = idRight;
                 idRight = t;
             }
             if (idLeft != null && idRight != null)
+            {
+                // Can't handle [id1 + id2] yet.
                 return null;
+            }
             if (idLeft != null)
             {
+                // We have [id + C]
                 Stride = 1;
                 DetermineVector(mem, bin.Right);
                 if (host.IsValidAddress(VectorAddress))
@@ -360,11 +373,13 @@ namespace Decompiler.Scanning
             var binLeft = bin.Left as BinaryExpression;
             if (IsScaledIndex(binLeft))
             {
+                // We have [(id * C1) + C2]
                 return DetermineVectorWithScaledIndex(mem, bin.Right, binLeft);
             }
             var binRight = bin.Right as BinaryExpression;
             if (IsScaledIndex(binRight))
             {
+                // We may have [C1 + (id * C2)]
                 return DetermineVectorWithScaledIndex(mem, bin.Left, binRight);
             }
             return null;
@@ -401,7 +416,7 @@ namespace Decompiler.Scanning
             }
             else
             {
-                VectorAddress = Address.Ptr32(vector.ToUInt32());   //$BUG: 32-bit only, what about 16- and 64-
+                VectorAddress = host.MakeAddressFromConstant(vector);   //$BUG: 32-bit only, what about 16- and 64-
             }
         }
 

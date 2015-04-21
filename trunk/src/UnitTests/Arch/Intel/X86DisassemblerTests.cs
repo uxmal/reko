@@ -528,5 +528,12 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble32(0x0F, 0x31);
             Assert.AreEqual("rdtsc\t", instr.ToString());
         }
+
+        [Test]
+        public void Dis_x86_foo()
+        {
+            var instr = Disassemble32(0x0F, 0xBA, 0xF3, 0x00);
+            Assert.AreEqual("btr\tebx,00", instr.ToString());
+        }
     }
 }

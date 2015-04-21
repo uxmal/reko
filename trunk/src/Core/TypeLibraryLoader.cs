@@ -185,7 +185,7 @@ namespace Decompiler.Core
             return new MemberPointer(baseType, dt, arch.PointerType.Size);
         }
 
-        public DataType VisitArray(SerializedArrayType array)
+        public DataType VisitArray(ArrayType_v1 array)
         {
             var dt = array.ElementType.Accept(this);
             return new ArrayType(dt, array.Length);

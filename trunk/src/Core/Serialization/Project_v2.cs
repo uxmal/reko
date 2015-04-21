@@ -81,6 +81,11 @@ namespace Decompiler.Core.Serialization
 
     public class DecompilerInput_v2 : ProjectFile_v2
     {
+        public DecompilerInput_v2()
+        {
+            UserGlobalData = new List<GlobalDataItem_v2>(); 
+        }
+
         [XmlElement("address")]
         public string Address;
 

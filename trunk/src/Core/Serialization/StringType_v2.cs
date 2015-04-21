@@ -39,7 +39,17 @@ namespace Decompiler.Core.Serialization
 
         public override DataType BuildDataType(TypeFactory factory)
         {
-            throw new NotImplementedException();
+            var ch = CharType.BuildDataType(factory);
+
+            if (Termination == null)
+                throw new NotImplementedException();
+            switch (Termination[0])
+            {
+            case 'z':
+                return StringType.NullTerminated(ch);
+            default:
+                throw new NotImplementedException();
+            }
         }
 
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)

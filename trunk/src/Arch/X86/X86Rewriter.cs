@@ -92,6 +92,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.bt: RewriteBt(); break;
+                case Opcode.btr: RewriteBtr(); break;
                 case Opcode.bts: RewriteBts(); break;
                 case Opcode.call: RewriteCall(instrCur.op1, instrCur.op1.Width); break;
                 case Opcode.cbw: RewriteCbw(); break;
@@ -248,11 +249,13 @@ namespace Decompiler.Arch.X86
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.ISub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;
+                case Opcode.setc: RewriteSet(ConditionCode.ULT); break;
                 case Opcode.setbe: RewriteSet(ConditionCode.ULE); break;
                 case Opcode.setg: RewriteSet(ConditionCode.GT); break;
                 case Opcode.setge: RewriteSet(ConditionCode.GE); break;
                 case Opcode.setl: RewriteSet(ConditionCode.LT); break;
                 case Opcode.setle: RewriteSet(ConditionCode.LE); break;
+                case Opcode.setnc: RewriteSet(ConditionCode.UGE); break;
                 case Opcode.setnz: RewriteSet(ConditionCode.NE); break;
                 case Opcode.seto: RewriteSet(ConditionCode.OV); break;
                 case Opcode.sets: RewriteSet(ConditionCode.SG); break;

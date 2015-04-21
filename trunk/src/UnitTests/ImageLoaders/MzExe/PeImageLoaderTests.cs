@@ -79,9 +79,9 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
         {
             var bytes = Encoding.UTF8.GetBytes(section);
             writer.WriteBytes(bytes).WriteBytes(0, 8 - (uint)bytes.Length);
-            writer.WriteLeInt32(0x100);
+            writer.WriteLeInt32(0x300);
             writer.WriteLeInt32(0x1000);
-            writer.WriteLeInt32(0x100); // raw data
+            writer.WriteLeInt32(0x200); // raw data
             writer.WriteLeInt32(0x1000);    // rva to raw data
             writer.WriteLeInt32(0);         // relocs
             writer.WriteLeInt32(0);         // line numbers
@@ -185,6 +185,94 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
         private void Given_PeLoader()
         {
             peldr = new PeImageLoader(null, "test.exe", image.Bytes, rvaPeHdr);
+        }
+
+        [Test]
+        public void Pil32_SaneIat()
+        {
+            Given_PeHeader();
+            Given_Section(".text");
+            writer.Position = 0x1000;
+            var rvaId = Given_ImportDescriptor32(
+                Given_Ilt32("malloc", "free", "realloc"),
+                "msvcrt.dll",
+                Given_Ilt32("malloc", "free", "realloc"));
+            Given_PeLoader();
+            var program = peldr.Load(addrLoad);
+
+            var rdrId = new LeImageReader(image.Bytes,(uint) rvaId);
+            var ret = peldr.ReadImportDescriptor(rdrId, addrLoad);
+            Assert.IsTrue(ret);
+            Assert.AreEqual(3, program.ImportReferences.Count); ;
+            Assert.AreEqual("msvcrt.dll!malloc", program.ImportReferences[Address.Ptr32(0x0010102A)].ToString());
+            Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010102E)].ToString());
+            Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00101032)].ToString());
+        }
+
+        private int Given_ImportDescriptor32(
+            int rvaIlt,
+            string dllName,
+            int rvaIat)
+        {
+            var rvaDllName = writer.Position;
+            writer.WriteString(dllName, Encoding.UTF8);
+            writer.WriteByte(0);
+
+            var rvaId = writer.Position;
+            writer.WriteLeInt32(rvaIlt);
+            writer.WriteLeInt32(0);     // (ignored) datestamp
+            writer.WriteLeInt32(0);     // forwarder chain
+            writer.WriteLeInt32(rvaDllName);
+            writer.WriteLeInt32(rvaIat);
+            return rvaId;
+        }
+
+        private int Given_Ilt32(params object [] import)
+        {
+            var rvaTable = writer.Position;
+            writer.WriteBytes(0, (uint)(1 + import.Length) * 4);  // Reserve space for uints and terminating zero.
+            var strWriter = writer.Clone();                 // write strings after
+            writer.Position = rvaTable;                     // rewind to beginning of table.
+            foreach (object imp in import)
+            {
+                var s = imp as string;
+                if (s != null)
+                {
+                    writer.WriteLeInt32(strWriter.Position);
+                    strWriter.WriteLeInt16(0);
+                    strWriter.WriteString(s, Encoding.UTF8);
+                    strWriter.WriteByte(0);
+                }
+                else if (imp is uint)
+                {
+                    writer.WriteLeUInt32((uint)imp);
+                }
+            }
+            writer.WriteLeInt32(0);
+            writer.Position = strWriter.Position;
+            return rvaTable;
+        }
+
+        [Test]
+        public void Pil32_BlankIat()
+        {
+            Given_PeHeader();
+            Given_Section(".text");
+            writer.Position = 0x1000;
+            var rvaId = Given_ImportDescriptor32(
+                Given_Ilt32("malloc", "free", "realloc"),
+                "msvcrt.dll",
+                Given_Ilt32(0u, 0u, 0u));
+            Given_PeLoader();
+            var program = peldr.Load(addrLoad);
+
+            var rdrId = new LeImageReader(image.Bytes, (uint)rvaId);
+            var ret = peldr.ReadImportDescriptor(rdrId, addrLoad);
+            Assert.IsTrue(ret);
+            Assert.AreEqual(3, program.ImportReferences.Count); ;
+            Assert.AreEqual("msvcrt.dll!malloc", program.ImportReferences[Address.Ptr32(0x0010102A)].ToString());
+            Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010102E)].ToString());
+            Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00101032)].ToString());
         }
     }
 }
