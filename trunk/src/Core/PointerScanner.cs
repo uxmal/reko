@@ -27,13 +27,12 @@ using System.Text;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// PointerScanners are used by the user to guess at pointers based on byte patterns.
+    /// PointerScanners are used by the user to guess at pointers based on bit patterns.
     /// </summary>
     /// <remarks>
     /// Each architecture should create its own class derived from this class and implement
     /// the abstract method.s
     /// </remarks>
-
     public abstract class PointerScanner<T> : IEnumerable<T>
     {
         private ImageReader rdr;
@@ -117,7 +116,7 @@ namespace Decompiler.Core
                 }
                 if ((flags & PointerScannerFlags.Pointers) != 0)
                 {
-                    if (PeekPointer(rdr, out target) && knownLinAddresses.Contains(target))
+                    if (TryPeekPointer(rdr, out target) && knownLinAddresses.Contains(target))
                     {
                         rdr.Seek(PointerAlignment);
                         return true;
@@ -142,7 +141,7 @@ namespace Decompiler.Core
         /// <returns>The opcode at the current position of the reader.</returns>
         public abstract bool TryPeekOpcode(ImageReader rdr, out uint opcode);
 
-        public abstract bool PeekPointer(ImageReader rdr, out T target);
+        public abstract bool TryPeekPointer(ImageReader rdr, out T target);
 
         public abstract bool MatchCall(ImageReader rdr, uint opcode, out T target);
 

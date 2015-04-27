@@ -43,6 +43,10 @@
     <Compile Include="Ps3Platform.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
+      <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
+      <Name>PowerPC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>

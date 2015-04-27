@@ -30,13 +30,18 @@ using System.Text;
 namespace Decompiler.Analysis
 {
     /// <summary>
-    /// Finds all provably dead registers within the basic blocks of the program, and removes them. 
+    /// Finds all provably dead registers within the basic blocks of the 
+    /// program, and removes them. 
     /// </summary>
     /// <remarks>
-    /// This is a cheap preprocessing stage that will remove the great majority of unused registers, especially
-    /// condition codes, of disassembled and rewritten code.
+    /// This is a cheap preprocessing stage that will remove the great majority 
+    /// of unused registers, especially condition codes, of disassembled and 
+    /// rewritten code. This avoids the unneccesary generation of SSA variables 
+    /// for dead code.
     /// </remarks>
-    public class IntraBlockDeadRegisters : InstructionVisitor<bool>, StorageVisitor<bool, bool>
+    public class IntraBlockDeadRegisters : 
+        InstructionVisitor<bool>,
+        StorageVisitor<bool, bool>
     {
         private ExpVisitor expVisitor;
         private HashSet<RegisterStorage> deadRegs;

@@ -387,7 +387,7 @@ namespace Decompiler.Gui.Windows
                 var arch = program.Architecture;
                 var image = program.Image;
                 var rdr = program.Architecture.CreateImageReader(program.Image, 0);
-                var addrControl = arch.CreatePointerScanner(
+                var addrControl = program.Platform.CreatePointerScanner(
                     program.ImageMap,
                     rdr,
                     new[] { 

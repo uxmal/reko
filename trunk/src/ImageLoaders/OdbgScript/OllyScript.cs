@@ -15,7 +15,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             public uint linenum;
             public string line;
-            public bool is_command;
+            public bool IsCommand;
             public string command;
             public Func<string[], bool> commandptr;
             public string[] args = new string[0];
@@ -65,6 +65,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     int linecmt = -1, spancmt = -1, strdel = -1;
 
                     if (curpos < scriptline.Length)
+                    {
                         if (in_comment)
                         {
                             spancmt = 0;
@@ -94,6 +95,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                             if (strdel != min)
                                 strdel = -1;
                         }
+                    }
 
                     if (strdel >= 0)
                     {
@@ -140,7 +142,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                     {
                                         string dir;
                                         string philename = Helper.pathfixup(args.Substring(1, args.Length - 2), false);
-                                        if (!Helper.isfullpath(philename))
+                                        if (!Helper.IsFullPath(philename))
                                         {
                                             philename = currentdir + philename;
                                             dir = currentdir;
@@ -169,7 +171,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                                 cur.line = scriptline;
                                 cur.linenum = curline;
-                                cur.is_command = !in_asm;
+                                cur.IsCommand = !in_asm;
 
                                 if (!in_asm && lcline == "exec")
                                     in_asm = true;
@@ -201,9 +203,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
         }
 
-        public int next_command(int from)
+        public int NextCommandIndex(int from)
         {
-            while (from < lines.Count && !lines[from].is_command)
+            while (from < lines.Count && !lines[from].IsCommand)
             {
                 from++;
             }
@@ -219,7 +221,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             string sdir;
 
             path = Helper.pathfixup(file, false);
-            if (!Helper.isfullpath(path))
+            if (!Helper.IsFullPath(path))
             {
                 path = curdir + path;
             }

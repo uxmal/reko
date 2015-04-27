@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
                 0x00, 0x00, 0x00, 0x00,  0x48, 0x00, 0x00, 0x05,
                 0x4E, 0x80, 0x00, 0x20
                 );
-            var items = new PowerPcPointerScanner(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Calls)
+            var items = new PowerPcPointerScanner32(rdr, new HashSet<uint> { 0x00100008u }, PointerScannerFlags.Calls)
                 .ToArray();
 
             Assert.AreEqual(1, items.Length);

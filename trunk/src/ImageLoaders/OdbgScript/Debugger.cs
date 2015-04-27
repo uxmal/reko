@@ -33,6 +33,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public static void SetHardwareBreakPoint(rulong addr, object o, eHWBPType type, byte size, Action callback)
         {
         }
+
         public rulong GetContextData(eContextData eContextData)
         {
             switch (eContextData)

@@ -83,7 +83,7 @@ namespace Decompiler.Arch.M68k
             return false;
         }
 
-        public override bool PeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(ImageReader rdr, out uint target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
             {

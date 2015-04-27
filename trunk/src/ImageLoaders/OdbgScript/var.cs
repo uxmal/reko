@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    using System.Linq;
+    using System.Text;
     using rulong = System.UInt64;
 
     public partial class Var
     {
         public enum etype { EMP, DW, STR, FLT };
 
-        public rulong dw;
+        private rulong dw;
         public string str;
         public double flt;
 
@@ -18,150 +19,178 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public int size;
         public bool IsBuf;
 
-        public Var() { type = etype.EMP; }
-        //var(const var   rhs);
-        //var(const string& rhs); 
-        //var(const char* rhs);
-        public Var(rulong rhs) { type = etype.DW; dw = (rhs); size = (4); }
-        public Var(int rhs) { type = etype.DW; dw = (uint)rhs; size = (4); } // needed for var = 0
-        public Var(uint rhs) { type = etype.DW; dw = (rhs); size = (4); }
-#if _WIN64
-	var(const ulong&  rhs) : type(DW),  dw(rhs),  size(sizeof(rhs)) {}
-#endif
-        public Var(double rhs) { type = (etype.FLT); flt = (rhs); size = (8); }
+        public static Var Create() { return new Var { type = etype.EMP }; }
+        public static Var Create(rulong rhs) { return new Var { type = etype.DW, dw = (rhs), size = 4 }; }
+        public static Var Create(int rhs) { return new Var { type = etype.DW, dw = (uint)rhs, size = (4) }; } // needed for var = 0
+        public static Var Create(uint rhs) { return new Var { type = etype.DW, dw = (rhs), size = (4) }; }
+        public static Var Create(double rhs) { return new Var { type = (etype.FLT), flt = (rhs), size = (8) }; }
+        public static Var Empty() { return new Var { type = etype.EMP }; }
+        
+        protected Var() {}
+
+        public bool IsInteger() { return type == etype.DW; }
+
+        public static Var Create(string rhs)
+        {
+            return new StringVar(rhs);
+        }
 
         public bool IsString() { return type == etype.STR; }
-        public bool IsInteger() { return type == etype.DW; }
-        //int compare(var& rhs) const; 
-
-        //string to_bytes() const;
-        //string to_string() const;
-
-        //var operator+(const var& rhs) { return var(*this).operator+=(rhs); }
-
-        //var& operator+=(const var& rhs);
-        //var& operator+=(const string& rhs);
-        //var& operator+=(const rulong& rhs);
-        //var& operator+=(const double& rhs);
-        //var& operator+=(const int& rhs) { return operator+=((const rulong))rhs; }
-
-        //operator rulong();
-        //operator string();
-        //operator double();
-
-        //void resize(size_t newsize);
-        //void reverse();
-
-
-        //public var( var rhs)
-        //{
-        //    *this = rhs;
-        //}
-
-        public Var(string rhs)
-        {
-            type = etype.STR; IsBuf = (false);
-
-            size = rhs.Length;
-            str = rhs;
-            if (Helper.IsHexLiteral(str))
-            {
-                str = str.ToUpperInvariant();
-                size = (size / 2) - 1; // num of bytes
-                IsBuf = true;
-            }
-        }
 
         public static Var operator +(Var lhs, Var rhs)
         {
             switch (rhs.type)
             {
-            case etype.DW: return new Var(lhs.dw + rhs.dw);   
-            case etype.STR: return new Var(lhs.str + rhs.str);
-            case etype.FLT: return new Var(lhs.flt + rhs.flt);
+            case etype.DW: return Var.Create(lhs.dw + rhs.dw);
+            case etype.STR: return Var.Create(lhs.str + rhs.str);
+            case etype.FLT: return Var.Create(lhs.flt + rhs.flt);
             }
             return lhs;
         }
 
         public static Var operator +(Var lhs, string rhs)
-{
-	Var v = new Var(rhs);
+        {
+            return lhs.Add(rhs);
+        }
 
-	if(lhs.type == etype.STR)
-	{
-		if(!lhs.IsBuf) // str + buf/str -> str
-		{
-            return new Var(lhs.str + v.to_string());
-		}
-		else // buf + buf/str -> buf
-		{
-			return new Var("#" + lhs.to_bytes() + v.to_bytes() + '#');
-		}
-	}
-	else if(lhs.type ==etype.DW)
-	{
-		if(v.IsBuf) // rulong + buf -> buf
-		{
-			return new Var("#" + Helper.rul2hexstr(Helper.reverse(lhs.dw), sizeof(rulong)*2) + v.to_bytes() + '#');
-		}
-		else // rulong + str -> str
-		{
-			return new Var(Helper.toupper(Helper.rul2hexstr(lhs.dw)) + v.str);
-		}
-	}
-	return lhs;
-}
+        protected virtual Var Add(string rhs)
+        {
+            Var v = Var.Create(rhs);
+
+            if (this.type == etype.DW)
+            {
+                if (v.IsBuf) // rulong + buf -> buf
+                {
+                    return Var.Create("#" + Helper.rul2hexstr(Helper.reverse(this.dw), sizeof(rulong) * 2) + v.to_bytes() + '#');
+                }
+                else // rulong + str -> str
+                {
+                    return Var.Create(Helper.toupper(Helper.rul2hexstr(this.dw)) + v.str);
+                }
+            }
+            return this;
+        }
+
+        private class StringVar : Var
+        {
+            public StringVar(string value)
+            {
+                type = etype.STR;
+                IsBuf = false;
+                size = value.Length;
+                str = value;
+                if (Helper.IsHexLiteral(value))
+                {
+                    str = str.ToUpperInvariant();
+                    size = (size / 2) - 1; // num of bytes
+                    IsBuf = true;
+                }
+            }
+
+            protected override Var Add(string rhs)
+            {
+                var v = Create(rhs);
+                if (!this.IsBuf) // str + buf/str -> str
+                {
+                    return Var.Create(this.str + v.to_string());
+                }
+                else // buf + buf/str -> buf
+                {
+                    return Var.Create("#" + this.to_bytes() + v.to_bytes() + '#');
+                }
+            }
+
+            public override Var Add(rulong rhs)
+            {
+                if (this.IsBuf) // buf + rulong -> buf
+                {
+                    return Var.Create("#" + this.to_bytes() + Helper.rul2hexstr(Helper.reverse(rhs), sizeof(rulong) * 2) + '#');
+                }
+                else // str + rulong -> str
+                {
+                    return Var.Create(this.str + Helper.toupper(Helper.rul2hexstr(rhs)));
+                }
+            }
+
+            public override Var reverse()
+            {
+                if (IsBuf)
+                {
+                    char[] revChars = new char[str.Length];
+                    int iMax = str.Length - 1;
+                    revChars[0] = '#';
+                    revChars[iMax] = '#';
+                    for (int i = 1, j = iMax - 1; i < j; i += 2, j -= 2)
+                    {
+                        char c1 = str[i];
+                        char c2 = str[i + 1];
+                        char c3 = str[j - 1];
+                        char c4 = str[j];
+
+                        revChars[i] = c3;
+                        revChars[i + 1] = c4;
+
+                        revChars[j - 1] = c1;
+                        revChars[j] = c2;
+                    }
+                    return Var.Create(new string(revChars));
+                }
+                else
+                    return Var.Create(new string(str.Reverse().ToArray()));
+            }
+
+            public override string to_bytes()
+            {
+                if (IsBuf) // #001122# to "001122"
+                    return str.Substring(1, str.Length - 2);
+                else      // "001122" to "303031313232"
+                    return Helper.bytes2hexstr(
+                        Encoding.ASCII.GetBytes(str),
+                        size)
+                        .ToUpperInvariant();
+            }
+
+            public override string to_string()
+            {
+                if (IsBuf) // #303132# to "012"
+                {
+                    byte[] bytes = new byte[size];
+                    throw new NotImplementedException("Helper.hexstr2bytes(to_bytes(), (byte)bytes, size);");
+                    //string tmp(bytes, size);
+                    //return tmp;
+                }
+                else return str;
+            }
+        }
 
         public static Var operator +(Var lhs, rulong rhs)
-{
-	switch (lhs.type)
-	{
-	case etype.DW:  lhs.dw  += rhs; break;
-	case etype.FLT: lhs.flt += rhs; break;
-	case etype.STR:
-		if(lhs.IsBuf) // buf + rulong -> buf
-		{
-			return new Var("#"+lhs.to_bytes() + Helper.rul2hexstr(Helper.reverse(rhs), sizeof(rulong)*2) + '#');
-		}
-		else // str + rulong -> str
-		{
-            return new Var(lhs.str + Helper.toupper(Helper.rul2hexstr(rhs)));
-		}
-	}
-	return lhs;
-}
+        {
+            return lhs.Add(rhs);
+        }
+
+        public virtual Var Add(rulong rhs)
+        {
+            switch (type)
+            {
+            case etype.DW: return Create(this.dw + rhs);  
+            case etype.FLT: return Create(this.flt + rhs);
+            }
+            return this;
+        }
 
         public static Var operator +(Var lhs, double rhs)
         {
-            if (lhs.type == etype.FLT)
-                return new Var(lhs.flt + rhs);
-            return lhs;
+            return lhs.Add(rhs);
         }
 
-        /*
-        var::operator rulong()
+        public virtual Var Add(double rhs)
         {
-            if(type ==etype.DW)
-                return dw;
-            else return 0;
+            if (this.type == etype.FLT)
+                return Var.Create(this.flt + rhs);
+            return this;
         }
 
-        var::operator string()
-        {
-            if(type == etype.STR)
-                return str;
-            else return string();
-        }
-
-        var::operator double()
-        {
-            if(type == etype.FLT)
-                return flt;
-            else return 0.0;
-        }
-        */
-
-        public int compare(Var rhs)
+        public int Compare(Var rhs)
         {
             // less than zero this < rhs
             // zero this == rhs 
@@ -193,31 +222,15 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return -2;
         }
 
-        public string to_bytes() 
-{
-	if(type != etype.STR)
-		return "";
+        public virtual string to_bytes()
+        {
+            return "";
+        }
 
-    if (IsBuf) // #001122# to "001122"
-        return str.Substring(1, str.Length - 2);
-    else      // "001122" to "303031313232"
-        throw new NotImplementedException("return toupper(bytes2hexstr((const byte*)str.data(), size));");
-}
-
-        public string to_string() 
-{
-	if(type != etype.STR)
-		return "";
-
-	if(IsBuf) // #303132# to "012"
-	{
-		byte[] bytes = new byte[size];
-		throw new NotImplementedException("Helper.hexstr2bytes(to_bytes(), (byte)bytes, size);");
-        //string tmp(bytes, size);
-        //return tmp;
-	}
-	else return str;
-}
+        public virtual string to_string()
+        {
+            return "";
+        }
 
         public void resize(int newsize)
         {
@@ -240,38 +253,22 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
         }
 
-        public void reverse()
+        public virtual Var reverse()
         {
             switch (type)
             {
             case etype.DW:
                 dw = Helper.reverse(dw);
                 break;
-            case etype.STR:
-                if (IsBuf)
-                {
-                    throw new NotImplementedException();
-#if LATER
-			for(size_t i = 0; i < size/2; i++)
-			{
-				size_t offs = (i*2)+1;
-
-				char& c1 = str[offs], & c2 = str[offs+1];
-				char& c3 = str[str.size()-offs-1-1], & c4 = str[str.size()-offs-1];
-
-				char tmp1 = c1;
-				char tmp2 = c2;
-				c1 = c3;
-				c2 = c4;
-				c3 = tmp1;
-				c4 = tmp2;
-			}
-#endif
-                }
-                else
-                    str = new string(str.Reverse().ToArray());
-                break;
             }
+            return this;
+        }
+
+        public ulong ToUInt64()
+        {
+            if (etype.DW == this.type)
+                return dw;
+            throw new NotSupportedException();
         }
     }
 }
