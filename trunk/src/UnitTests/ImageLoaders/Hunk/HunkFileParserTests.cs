@@ -93,5 +93,21 @@ namespace Decompiler.UnitTests.ImageLoaders.Hunk
                 },
                 code.Data);
         }
+
+        [Test]
+        public void Hfp_DebugHunk()
+        {
+            var rdr = hm.MakeImageReader(
+                //0x3F3,
+                2,
+                0x00,
+                1234,
+                0x12345678);
+            var parser = new HunkFileParser(rdr);
+            parser.ParseDebug(q => { });
+
+            var nextWord = rdr.ReadBeInt32();
+            Assert.AreEqual(0x12345678, nextWord);
+        }
     }
 }

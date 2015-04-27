@@ -516,11 +516,16 @@ namespace Decompiler.ImageLoaders.Hunk
             if (num_longs < 0)
                 throw new BadImageFormatException(string.Format("{0} has invalid size.", hunk.HunkType));
             var size = num_longs * 4;
+            if (num_longs < 2)
+            {
+                f.Offset += (ulong)size;
+                return;
+            }
             var offset = (uint) this.read_long();
             hunk.debug_offset = offset;
             var tag = this.ReadTag();
             hunk.debug_type = tag;
-            size -= 8;
+            size -= 8;  //  skip offset and tag.
             if (tag == "LINE")
             {
                 // LINE
@@ -817,6 +822,7 @@ namespace Decompiler.ImageLoaders.Hunk
             if (!f.IsValidOffset(3))
                 throw new BadImageFormatException();
             var s = textEncoding.GetString(f.Bytes, (int) f.Offset, 4);
+            f.Offset += 4;
             return s;
         }
 

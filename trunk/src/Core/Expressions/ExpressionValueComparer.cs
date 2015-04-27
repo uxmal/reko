@@ -100,15 +100,18 @@ namespace Decompiler.Core.Expressions
                     return 0x10101010 * GetHashCodeImpl(((ConditionOf) obj).Expression);
                 });
             Add(typeof(Address),
-                delegate(Expression ea, Expression eb)
-                {
-                    Address a = (Address) ea, b = (Address) eb;
-                    return a.Equals(b);
-                },
-                delegate(Expression obj)
-                {
-                    return ((Address) obj).ToLinear().GetHashCode();
-                });
+                addrComp,
+                addrHash);
+            Add(typeof(Address16),
+                addrComp,
+                addrHash);
+            Add(typeof(Address32),
+                addrComp,
+                addrHash);
+            Add(typeof(Address64),
+                addrComp,
+                addrHash);
+
             Add(typeof(Constant),
                 delegate(Expression ea, Expression eb)
                 {
@@ -154,7 +157,6 @@ namespace Decompiler.Core.Expressions
                 {
                     return ((Identifier) x).Name.GetHashCode();
                 });
-
             Add(typeof(MemoryAccess),
                 delegate(Expression ea, Expression eb)
                 {
@@ -285,6 +287,17 @@ namespace Decompiler.Core.Expressions
                     UnaryExpression u = (UnaryExpression) obj;
                     return GetHashCodeImpl(u.Expression) ^ u.Operator.GetHashCode();
                 });
+        }
+
+        private static bool addrComp(Expression ea, Expression eb)
+        {
+            Address a = (Address)ea, b = (Address)eb;
+            return a.ToLinear() == b.ToLinear();
+        }
+
+        private static int addrHash(Expression obj)
+        {
+            return ((Address)obj).ToLinear().GetHashCode();
         }
 
         private static void Add(Type t, EqualsFn eq, HashFn hash)
