@@ -390,6 +390,11 @@ namespace Decompiler.Core
             Array.Copy(Bytes, (int)Offset, ab, 0, ab.Length);
             return ab;
         }
+
+        public bool TryPeekBeUInt64(int p, out ulong target)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>

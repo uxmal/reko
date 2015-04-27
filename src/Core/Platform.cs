@@ -64,6 +64,11 @@ namespace Decompiler.Core
 
         public abstract string DefaultCallingConvention { get; }
 
+        public IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, Address[] address, PointerScannerFlags pointerScannerFlags)
+        {
+            return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
+        }
+
 		public abstract SystemService FindService(int vector, ProcessorState state);
 
         public virtual SystemService FindService(RtlInstruction rtl, ProcessorState state)

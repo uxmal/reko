@@ -173,7 +173,7 @@ namespace Decompiler.Typing
                 // Null pointer.
                 if (c.IsZero)
                 {
-                    var np = Address.Ptr32(0);  //$BUG: should be platform-dependent.
+                    var np = Address.Create(ptr, 0);
                     np.TypeVariable = c.TypeVariable;
                     np.DataType = c.DataType;
                     return np;

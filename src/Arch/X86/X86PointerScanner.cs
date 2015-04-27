@@ -42,14 +42,6 @@ namespace Decompiler.Arch.X86
             return  address.ToUInt32();
         }
 
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
-        {
-            byte bOpcode;
-            bool ret = rdr.TryPeekByte(0, out bOpcode);
-            opcode = bOpcode;
-            return ret;
-        }
-
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
         {
             if (opcode == 0xE8 // CALL NEAR
@@ -96,7 +88,15 @@ namespace Decompiler.Arch.X86
             return false;
         }
 
-        public override bool PeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        {
+            byte bOpcode;
+            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            opcode = bOpcode;
+            return ret;
+        }
+
+        public override bool TryPeekPointer(ImageReader rdr, out uint target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
             {
@@ -123,14 +123,6 @@ namespace Decompiler.Arch.X86
         public override ulong GetLinearAddress(Address address)
         {
             return address.ToLinear();
-        }
-
-        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
-        {
-            byte bOpcode;
-            bool ret = rdr.TryPeekByte(0, out bOpcode);
-            opcode = bOpcode;
-            return ret;
         }
 
         public override bool MatchCall(ImageReader rdr, uint opcode, out ulong target)
@@ -179,7 +171,15 @@ namespace Decompiler.Arch.X86
             return false;
         }
 
-        public override bool PeekPointer(ImageReader rdr, out ulong target)
+        public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
+        {
+            byte bOpcode;
+            bool ret = rdr.TryPeekByte(0, out bOpcode);
+            opcode = bOpcode;
+            return ret;
+        }
+
+        public override bool TryPeekPointer(ImageReader rdr, out ulong target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 4 - 1))
             {
@@ -280,7 +280,7 @@ namespace Decompiler.Arch.X86
             return false;
         }
 
-        public override bool PeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(ImageReader rdr, out uint target)
         {
             if (!rdr.IsValidOffset(rdr.Offset + 2 - 1))
             {

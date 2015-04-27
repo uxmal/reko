@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Decompiler.ImageLoaders.OdbgScript
 {
     [TestFixture]
-    class OllyLangTests
+    public class OllyLangTests
     {
         private OllyLang engine;
 
@@ -50,6 +50,29 @@ namespace Decompiler.ImageLoaders.OdbgScript
             var line = new OllyScript.Line();
             OllyScript.ParseArgumentsIntoLine(" \"hello,world\"", line);
             Assert.AreEqual(1, line.args.Length);
+        }
+    }
+
+    [TestFixture]
+    public class VarTests
+    {
+        [Test]
+        public void Reverse_Pattern()
+        {
+            var v = Var.Create("#1234#");
+            v = v.reverse();
+            Assert.AreEqual("3412", v.to_bytes());
+            v = Var.Create("#123456#");
+            v = v.reverse();
+            Assert.AreEqual("563412", v.to_bytes());
+        }
+
+        [Test]
+        public void Resize_Pattern()
+        {
+            var v = Var.Create("#1234#");
+            v.resize(1);
+            Assert.AreEqual("12", v.to_bytes());
         }
     }
 }

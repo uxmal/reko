@@ -108,7 +108,6 @@ namespace Decompiler.Environments.Win32
             return host.GetInterceptedCall(addrTarget);
         }
 
-
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             EnsureTypeLibraries();

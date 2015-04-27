@@ -123,11 +123,6 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
         public Frame CreateFrame()
         {
             return new Frame(FramePointerType); 
@@ -144,6 +139,12 @@ namespace Decompiler.Arch.PowerPC
             //$TODO: PowerPC is bi-endian.
             return new BeImageReader(image, offset);
         }
+
+        public abstract IEnumerable<Address> CreatePointerScanner(
+            ImageMap map, 
+            ImageReader rdr,
+            IEnumerable<Address> addrs, 
+            PointerScannerFlags flags);
 
         public ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
         {
@@ -311,6 +312,19 @@ namespace Decompiler.Arch.PowerPC
             : base(PrimitiveType.Word32)
         { }
 
+        public override IEnumerable<Address> CreatePointerScanner(
+            ImageMap map, 
+            ImageReader rdr, 
+            IEnumerable<Address> knownAddresses,
+            PointerScannerFlags flags)
+        {
+            var knownLinAddresses = knownAddresses
+                .Select(a => a.ToUInt32())
+                .ToHashSet();
+            return new PowerPcPointerScanner32(rdr, knownLinAddresses, flags)
+                .Select(u => Address.Ptr32(u));
+        }
+
         public override  Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
@@ -322,6 +336,19 @@ namespace Decompiler.Arch.PowerPC
         public PowerPcArchitecture64()
             : base(PrimitiveType.Word64)
         { }
+
+        public override IEnumerable<Address> CreatePointerScanner(
+            ImageMap map,
+            ImageReader rdr,
+            IEnumerable<Address> knownAddresses,
+            PointerScannerFlags flags)
+        {
+            var knownLinAddresses = knownAddresses
+                .Select(a => a.ToLinear())
+                .ToHashSet();
+            return new PowerPcPointerScanner64(rdr, knownLinAddresses, flags)
+                .Select(u => Address.Ptr64(u));
+        }
 
         public override Address MakeAddressFromConstant(Constant c)
         {

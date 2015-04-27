@@ -412,12 +412,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 str.Append(ch != '\0' ? ch : ' ');
             }
             return str.ToString();
-            ;
         }
 
         // File functions
 
-        public static bool isfullpath(string path)
+        public static bool IsFullPath(string path)
         {
             return Path.IsPathRooted(path);
         }
@@ -458,13 +457,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public static List<string> ReadLinesFromFile(string file)
         {
-            List<string> script;
-
-            using(StreamReader hFile = new StreamReader(file, Encoding.UTF8))
+            using (StreamReader hFile = new StreamReader(file, Encoding.UTF8))
             {
-                script = ReadLines(hFile);
+                return ReadLines(hFile);
             }
-            return script;
         }
 
         public static List<string> ReadLines(TextReader content)

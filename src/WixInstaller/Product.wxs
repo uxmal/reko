@@ -72,8 +72,9 @@
         <!-- Core binaries -->
         <File Source="$(var.Core.TargetPath)" />
         <File Source="$(var.Decompiler.TargetPath)" />
-        <File Source="$(var.WindowsDecompiler-2010.TargetPath)" Id="DecompilerExecutable"/>
-        <File Source="$(var.WindowsDecompiler-2010.TargetPath).config" />
+        <File Source="$(var.WindowsDecompiler-2010.TargetPath)" Id="F_DecompilerExecutable"/>
+        <File Source="$(var.WindowsDecompiler-2010.TargetPath).config" Id="F_WindowsDecompilerConfig" />
+        <File Source="$(var.WindowsDecompiler-2010.ProjectDir)app.config" Name="decompiler.exe.config" />
         
         <!-- Image loaders -->
         <File Source="$(var.BinHex.TargetPath)" />

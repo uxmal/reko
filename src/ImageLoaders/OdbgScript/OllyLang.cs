@@ -296,9 +296,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
         t_reg_backup reg_backup = new t_reg_backup();
 
-        //bool SaveRegisters(bool stackToo);
-        //bool RestoreRegisters(bool stackToo);
-
         //cache for GMEXP
         List<t_export> tExportsCache = new List<t_export>();
         ulong exportsCacheAddr;
@@ -761,7 +758,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public void InitGlobalVariables()
         {
             // Global variables
-            variables["$INPUTFILE"] = new Var(Host.TE_GetTargetPath());
+            variables["$INPUTFILE"] = Var.Create(Host.TE_GetTargetPath());
 
             string name = Host.TE_GetOutputPath();
             if (string.IsNullOrEmpty(name))
@@ -775,7 +772,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     name = name + ext;
                 }
             }
-            variables["$OUTPUTFILE"] = new Var(name);
+            variables["$OUTPUTFILE"] = Var.Create(name);
         }
 
         public void Reset()
@@ -785,16 +782,16 @@ namespace Decompiler.ImageLoaders.OdbgScript
             bpjumps.Clear();
             calls.Clear();
 
-            variables["$OS_VERSION"] = new Var(Helper.rul2decstr(OS_VERSION_HI) + '.' + Helper.rul2decstr(OS_VERSION_LO));
-            variables["$TE_VERSION"] = new Var(Helper.rul2decstr(TE_VERSION_HI) + '.' + Helper.rul2decstr(TE_VERSION_LO));
-            variables["$TS_VERSION"] = new Var(Helper.rul2decstr(TS_VERSION_HI) + '.' + Helper.rul2decstr(TS_VERSION_LO));
+            variables["$OS_VERSION"] = Var.Create(Helper.rul2decstr(OS_VERSION_HI) + '.' + Helper.rul2decstr(OS_VERSION_LO));
+            variables["$TE_VERSION"] = Var.Create(Helper.rul2decstr(TE_VERSION_HI) + '.' + Helper.rul2decstr(TE_VERSION_LO));
+            variables["$TS_VERSION"] = Var.Create(Helper.rul2decstr(TS_VERSION_HI) + '.' + Helper.rul2decstr(TS_VERSION_LO));
             variables["$VERSION"] = variables["$OS_VERSION"];                   
-            variables["$WIN_VERSION"] = new Var(Environment.OSVersion.VersionString);
+            variables["$WIN_VERSION"] = Var.Create(Environment.OSVersion.VersionString);
 
 #if _WIN64
 	variables["$PLATFORM"] = "x86-64";
 #else
-            variables["$PLATFORM"] = new Var("x86-32");
+            variables["$PLATFORM"] = Var.Create("x86-32");
 #endif
 
             EOB_row = EOE_row = -1;
@@ -818,7 +815,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             reg_backup.loaded = false;
 
-            variables["$RESULT"] = new Var( 0);
+            variables["$RESULT"] = Var.Create(0);
 
             callbacks.Clear();
             debuggee_running = false;
@@ -857,7 +854,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 if (tickcount_startup == 0)
                     tickcount_startup = Helper.MyTickCount();
 
-                script_pos = (uint) script.next_command((int)script_pos_next);
+                script_pos = (uint) script.NextCommandIndex((int)script_pos_next);
 
                 // Check if script out of bounds
                 if (script_pos >= script.lines.Count)
@@ -891,7 +888,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 {
                     result = cmd(line.args); // Call command
                 }
-                else errorstr = "Unknown command: " + line.command;
+                else
+                {
+                    errorstr = "Unknown command: " + line.command;
+                }
 
                 if (callbacks.Count != 0 && resumeDebuggee)
                 {
@@ -912,20 +912,22 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return true;
         }
 
-        //Executed after some commands to clean memory or to get something after ollydbg processing
+        /// <summary>
+        /// Executed after some commands to clean memory or to get something 
+        /// after ollydbg processing.
+        /// </summary>
+        /// <returns></returns>
         bool ProcessAddonAction()
         {
             bool restore_registers = false;
-
             rulong ip = Debugger.GetContextData(eContextData.UE_CIP);
-
             for (int i = 0; i < tMemBlocks.Count; )
             {
                 if (tMemBlocks[i].free_at_ip == ip)
                 {
                     Host.TE_FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
                     if (tMemBlocks[i].result_register)
-                        variables["$RESULT"] = new Var((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
+                        variables["$RESULT"] = Var.Create((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
                         restore_registers = true;
                     tMemBlocks.RemoveAt(i);
@@ -1119,7 +1121,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             int start = 0, offs;
             char oper = '+';
-            Var val = new Var("");
+            Var val = Var.Create("");
             string curval;
             result = "";
 
@@ -1134,7 +1136,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                     switch (oper)
                     {
-                    case '+': val += new Var(curval); break;
+                    case '+': val += Var.Create(curval); break;
                     }
 
                     if (offs < 0)
@@ -1304,9 +1306,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 else if (v.IsInteger())
                 {
                     if (hex8forExec) //For Assemble Command (EXEC/ENDE) ie. "0DEADBEEF"
-                        value = '0' + Helper.rul2hexstr(v.dw).ToUpperInvariant();
+                        value = '0' + Helper.rul2hexstr(v.ToUInt64()).ToUpperInvariant();
                     else
-                        value = Helper.rul2hexstr(v.dw).ToUpperInvariant();
+                        value = Helper.rul2hexstr(v.ToUInt64()).ToUpperInvariant();
                     return true;
                 }
             }
@@ -1353,7 +1355,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool GetString(string op, out string value, int size = 0)
+        bool GetString(string op, out string value)
+        {
+            return GetString(op, 0, out value);
+        }
+
+        bool GetString(string op, int size, out string value)
         {
             value = "";
             if (IsVariable(op))
@@ -1425,7 +1432,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             else
             {
                 string parsed = "";
-                return (ParseString(op, out parsed) && GetString(parsed, out value, size));
+                return (ParseString(op, out parsed) && GetString(parsed, size, out value));
             }
             value = "";
             return false;
@@ -1449,8 +1456,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
             if (is_register(op))
             {
                 register_t reg = find_register(op);
-                value = Debugger.GetContextData(reg.id);
-                return true;
+                if (reg != null)
+                {
+                    value = Debugger.GetContextData(reg.id);
+                    return true;
+                }
             }
             else if (is_flag(op))
             {
@@ -1472,7 +1482,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
                 if (variables[op].IsInteger())
                 {
-                    value = variables[op].dw;
+                    value = variables[op].ToUInt64();
                     return true;
                 }
             }
@@ -1526,8 +1536,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
             else if (is_floatreg(op))
             {
                 int index = op[3] - '0';
-                double reg;
 #if LATER
+                double reg;
 #if _WIN64
 			XMM_SAVE_AREA32 fltctx;
 			//reg = (double)fltctx.FloatRegisters[index];
@@ -1640,7 +1650,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             if (IsVariable(op))
             {
-                variables[op] = new Var(value);
+                variables[op] = Var.Create(value);
                 return true;
             }
             else if (is_floatreg(op))
@@ -1672,7 +1682,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     return Host.TE_WriteMemory(target, sizeof(double), value);
                 }
             }
-
             return false;
         }
 
@@ -1680,7 +1689,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             if (IsVariable(op))
             {
-                variables[op] = new Var(value);
+                variables[op] = Var.Create(value);
                 if (size!=0 && size < variables[op].size)
                     variables[op].resize(size);
                 return true;
@@ -1941,7 +1950,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
 
             Debugger.SetContextData(eContextData.UE_EFLAGS, reg_backup.eflags);
-
             return true;
         }
 
@@ -2090,12 +2098,12 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         object Callback_AutoFixIATEx(object fIATPointer)
         {
-            Var ret = new Var();
+            Var ret = Var.Empty();
 
             uint label = script.labels[Label_AutoFixIATEx];
-            variables["$TE_ARG_1"] =  new Var((rulong)fIATPointer);
+            variables["$TE_ARG_1"] = Var.Create((rulong)fIATPointer);
             if (StepCallback(label, true, Var.etype.DW, ref ret))
-                return (object)ret.dw;
+                return (object)ret.ToUInt64();
             else
                 return 0;
         }

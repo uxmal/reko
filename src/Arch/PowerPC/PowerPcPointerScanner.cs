@@ -26,16 +26,11 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcPointerScanner : PointerScanner<uint>
+    public abstract class PowerPcPointerScanner<T> : PointerScanner<T>
     {
-        public PowerPcPointerScanner(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+        public PowerPcPointerScanner(ImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)
         {
-        }
-
-        public override uint GetLinearAddress(Address address)
-        {
-            return address.ToUInt32();
         }
 
         public override bool TryPeekOpcode(ImageReader rdr, out uint opcode)
@@ -43,19 +38,45 @@ namespace Decompiler.Arch.PowerPC
             return rdr.TryPeekBeUInt32(0, out opcode);
         }
 
+        protected bool TryGetDisplacement(uint opcode, uint opcodeExp, out int offset)
+        {
+            if ((opcode & 0xFC000003u) == opcodeExp)
+            {
+                var uOffset = opcode & 0x03FFFFFC;
+                if ((uOffset & 0x02000000) != 0)
+                    uOffset |= 0xFC000000;
+                offset = (int)uOffset;
+                return true;
+            }
+            offset = 0;
+            return false;
+        }
+
+    }
+
+    public class PowerPcPointerScanner32 : PowerPcPointerScanner<uint>
+    {
+        public PowerPcPointerScanner32(ImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
+            : base(rdr, knownLinAddresses, flags)
+        {
+        }
+
         public override int PointerAlignment
         {
             get { return 4; }
         }
 
+        public override uint GetLinearAddress(Address address)
+        {
+            return address.ToUInt32();
+        }
+
         public override bool MatchCall(ImageReader rdr, uint opcode, out uint target)
         {
-            if ((opcode & 0xFC000003u) == 0x48000001u)
+            int offset;
+            if (TryGetDisplacement(opcode, 0x48000001u, out offset))
             {
-                var uOffset = opcode & 0x03FFFFFC;
-                if ((uOffset & 0x02000000) != 0)
-                    uOffset |= 0xFF000000;
-                target = unchecked(rdr.Address.ToUInt32() + uOffset);
+                target = (uint)(rdr.Address.ToUInt32() + offset);
                 return true;
             }
             target = 0;
@@ -64,21 +85,65 @@ namespace Decompiler.Arch.PowerPC
 
         public override bool MatchJump(ImageReader rdr, uint opcode, out uint target)
         {
-            if ((opcode & 0xFC000003u) == 0x48000000u)
+            int offset;
+            if (TryGetDisplacement(opcode, 0x48000000u, out offset))
             {
-                var uOffset = opcode & 0x03FFFFFC;
-                if ((uOffset & 0x02000000) != 0)
-                    uOffset |= 0xFF000000;
-                target = unchecked(rdr.Address.ToUInt32() + uOffset);
+                target = (uint)(rdr.Address.ToUInt32() + offset);
                 return true;
             }
             target = 0;
             return false;
         }
 
-        public override bool PeekPointer(ImageReader rdr, out uint target)
+        public override bool TryPeekPointer(ImageReader rdr, out uint target)
         {
             return rdr.TryPeekBeUInt32(0, out target);
+        }
+    }
+
+    public class PowerPcPointerScanner64 : PowerPcPointerScanner<ulong>
+    {
+        public PowerPcPointerScanner64(ImageReader rdr, HashSet<ulong> knownLinAddresses, PointerScannerFlags flags)
+            : base(rdr, knownLinAddresses, flags)
+        {
+        }
+
+        public override int PointerAlignment
+        {
+            get { return 4; }
+        }
+
+        public override ulong GetLinearAddress(Address address)
+        {
+            return address.ToLinear();
+        }
+
+        public override bool MatchCall(ImageReader rdr, uint opcode, out ulong target)
+        {
+            int offset;
+            if (TryGetDisplacement(opcode, 0x48000001u, out offset))
+            {
+                target = (ulong)((long)rdr.Address.ToLinear() + (long)offset);
+                return true;
+            }
+            target = 0;
+            return false;
+        }
+
+        public override bool MatchJump(ImageReader rdr, uint opcode, out ulong target)
+        {
+            int offset;
+            if (TryGetDisplacement(opcode, 0x48000000u, out offset))
+            {
+                target = (ulong)((long)rdr.Address.ToLinear() + (long)offset);
+                return true;
+            }
+            target = 0;
+            return false;
+        }
+        public override bool TryPeekPointer(ImageReader rdr, out ulong target)
+        {
+            return rdr.TryPeekBeUInt64(0, out target);
         }
     }
 }
