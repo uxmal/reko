@@ -355,7 +355,17 @@ namespace Decompiler.Arch.M68k
                 m.Assign(load, src);
                 return src;
             }
-            throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + opDst.ToString());
+            var mAddr = opDst as M68kAddressOperand;
+            if (mAddr != null)
+            {
+                m.Assign(
+                    m.Load(
+                        dataWidth, 
+                        Constant.Word32(mAddr.Address.ToUInt32())),
+                    src);
+                return src;
+            }
+            throw new NotImplementedException("Unimplemented RewriteMoveDst for operand type " + opDst.GetType().Name);
         }
 
         private Expression Spill(Expression src, Identifier r)

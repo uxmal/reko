@@ -38,6 +38,10 @@ namespace Decompiler.Core
 
         protected ImageReader(LoadedImage img, Address addr)
         {
+            if (img == null)
+                throw new ArgumentNullException("img");
+            if (addr == null)
+                throw new ArgumentNullException("addr");
             long o = addr - img.BaseAddress;
             if (o < 0 || o >= img.Length)
                 throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");

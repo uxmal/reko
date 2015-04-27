@@ -36,7 +36,7 @@ namespace Decompiler.Core.Lib
         {
         }
 
-        public Map(Map<K, V> old) : base(old)
+        public Map(Map<K, V> old) : base(old, old.Comparer)
         {
             this.cmp = old.cmp;
         }

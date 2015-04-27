@@ -550,26 +550,29 @@ namespace Decompiler.Scanning
 
         #endregion
 
-        public void ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
+        public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
             var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
             if (!bw.CanBackwalk())
             {
-                return;
+                return false;
             }
             var bwops = bw.BackWalk(blockCur);
             if (bwops == null || bwops.Count == 0)
-                return;     //$REVIEW: warn?
+                return false;     //$REVIEW: warn?
             var idIndex = blockCur.Procedure.Frame.EnsureRegister(bw.Index);
 
             VectorBuilder builder = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
+            if (bw.VectorAddress == null)
+                return false;
+
             List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
             if (vector.Count == 0)
             {
                 var addrNext = bw.VectorAddress + bw.Stride;
                 var rdr = scanner.CreateReader(bw.VectorAddress);
                 if (!rdr.IsValid)
-                    return;
+                    return false;
                 // Can't determine the size of the table, but surely it has one entry?
                 var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
                 if (this.program.Image.IsValidAddress(addrEntry))
@@ -607,6 +610,7 @@ namespace Decompiler.Scanning
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
             program.ImageMap.AddItem(bw.VectorAddress,
                 new ImageMapVectorTable(xfer is RtlCall, vector.ToArray(), builder.TableByteSize));
+            return true;
         }
 
         private void ScanVectorTargets(RtlTransfer xfer, List<Address> vector)

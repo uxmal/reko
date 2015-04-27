@@ -945,5 +945,18 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "0|00010000(4): 1 instructions",
                 "1|T--|call 00010032 (4)");
         }
+
+        [Test]
+        public void M68krw_clr_addr()
+        {
+            Rewrite(0x42B9, 0x0000, 0x15E8);
+            AssertCode(
+                "0|00010000(6): 5 instructions",
+                "1|L--|Mem0[0x000015E8:word32] = 0x00000000",
+                "2|L--|Z = true",
+                "3|L--|C = false",
+                "4|L--|N = false",
+                "5|L--|V = false");
+        }
     }
 }
