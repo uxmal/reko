@@ -126,7 +126,7 @@ namespace Decompiler
                 dfa.UntangleProcedures();
 
                 dfa.BuildExpressionTrees();
-                host.WriteIntermediateCode(writer => { EmitProgram(program, dfa, writer); });
+                host.WriteIntermediateCode(program, writer => { EmitProgram(program, dfa, writer); });
             }
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
@@ -278,7 +278,7 @@ namespace Decompiler
                 } 
                 finally
                 {
-                    host.WriteTypes(analyzer.WriteTypes);
+                    host.WriteTypes(program, analyzer.WriteTypes);
                 }
             }
         }
@@ -373,8 +373,8 @@ namespace Decompiler
                 }
                 finally
                 {
-                    host.WriteDisassembly(w => DumpAssembler(program, w));
-                    host.WriteIntermediateCode(w => EmitProgram(program, null, w));
+                    host.WriteDisassembly(program, w => DumpAssembler(program, w));
+                    host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
                 }
             }
 		}
@@ -451,9 +451,9 @@ namespace Decompiler
 		{
             foreach (var program in Project.Programs)
             {
-                host.WriteTypes(w => WriteDecompiledTypes(program, w));
-                host.WriteDecompiledCode(w => WriteDecompiledProcedures(program, w));
-                host.WriteGlobals(w => WriteGlobals(program, w));
+                host.WriteTypes(program, w => WriteDecompiledTypes(program, w));
+                host.WriteDecompiledCode(program, w => WriteDecompiledProcedures(program, w));
+                host.WriteGlobals(program, w => WriteGlobals(program, w));
             }
 		}
 

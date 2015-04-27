@@ -767,58 +767,43 @@ namespace Decompiler.Gui.Forms
             return new StreamWriter(fileName, false, new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
-            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
+            using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
             {
-                using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteIntermediateCode(Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
         {
-            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
+            using (TextWriter output = CreateTextWriter(program.IntermediateFilename))
             {
-                using (TextWriter output = CreateTextWriter(program.IntermediateFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteTypes(Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<TextWriter> writer)
         {
-            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
+            using (TextWriter output = CreateTextWriter(program.TypesFilename))
             {
-                using (TextWriter output = CreateTextWriter(program.TypesFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteDecompiledCode(Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
         {
-            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
+            using (TextWriter output = CreateTextWriter(program.OutputFilename))
             {
-                using (TextWriter output = CreateTextWriter(program.OutputFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 
-        public void WriteGlobals(Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<TextWriter> writer)
         {
-            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
+            using (TextWriter output = CreateTextWriter(program.GlobalsFilename))
             {
-                using (TextWriter output = CreateTextWriter(program.GlobalsFilename))
-                {
-                    writer(output);
-                }
+                writer(output);
             }
         }
 

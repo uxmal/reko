@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Configuration;
 using System;
 using System.Collections.Generic;
@@ -45,27 +46,27 @@ namespace Decompiler.UnitTests.Mocks
             get { return config; }
         }
 
-        public void WriteDisassembly(Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
             writer(disassembly);
         }
 
-        public void WriteIntermediateCode(Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
         {
             writer(intermediate);
         }
 
-        public void WriteTypes(Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<TextWriter> writer)
         {
             writer(typesWriter);
         }
 
-        public void WriteDecompiledCode(Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
         {
             writer(decompiled);
         }
-        
-        public void WriteGlobals(Action<TextWriter> writer)
+
+        public void WriteGlobals(Program program, Action<TextWriter> writer)
         {
             writer(globalsWriter);
         }

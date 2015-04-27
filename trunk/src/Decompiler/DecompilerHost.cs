@@ -30,11 +30,11 @@ namespace Decompiler
 	/// </summary>
 	public interface DecompilerHost
 	{
-        void WriteDisassembly(Action<TextWriter> writer);
-        void WriteIntermediateCode(Action<TextWriter> writer);
-        void WriteTypes(Action<TextWriter> writer);
-        void WriteDecompiledCode(Action<TextWriter> writer);
-        void WriteGlobals(Action<TextWriter> writer);
+        void WriteDisassembly(Program program, Action<TextWriter> writer);
+        void WriteIntermediateCode(Program program, Action<TextWriter> writer);
+        void WriteTypes(Program program, Action<TextWriter> writer);
+        void WriteDecompiledCode(Program program, Action<TextWriter> writer);
+        void WriteGlobals(Program program, Action<TextWriter> writer);
 
         IDecompilerConfigurationService Configuration { get; }
 	}
@@ -53,27 +53,27 @@ namespace Decompiler
             get { throw new NotImplementedException(); }
         }
 
-        public void WriteDisassembly(Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteIntermediateCode(Action<TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteTypes(Action<TextWriter> writer)
+        public void WriteTypes(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteDecompiledCode(Action<TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
 
-        public void WriteGlobals(Action<TextWriter> writer)
+        public void WriteGlobals(Program program, Action<TextWriter> writer)
         {
             writer(TextWriter.Null);
         }
