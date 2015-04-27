@@ -72,9 +72,10 @@
         <!-- Core binaries -->
         <File Source="$(var.Core.TargetPath)" />
         <File Source="$(var.Decompiler.TargetPath)" />
-        <File Source="$(var.WindowsDecompiler-2010.TargetPath)" Id="F_DecompilerExecutable"/>
-        <File Source="$(var.WindowsDecompiler-2010.TargetPath).config" Id="F_WindowsDecompilerConfig" />
-        <File Source="$(var.WindowsDecompiler-2010.ProjectDir)app.config" Name="decompiler.exe.config" />
+        <File Source="$(var.WindowsDecompiler.TargetPath)" Id="F_DecompilerExecutable"/>
+        <File Source="$(var.WindowsDecompiler.TargetPath).config" Id="F_WindowsDecompilerConfig" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)app.config" Name="decompile.exe.config" />
+        <File Source="$(var.CmdLine.TargetPath)" />
         
         <!-- Image loaders -->
         <File Source="$(var.BinHex.TargetPath)" />
@@ -133,6 +134,6 @@
     <UIRef Id="WixUI_InstallDir" />
 
     <Property Id="ARPPRODUCTICON" Value="PackageIcon" />
-    <Icon Id="PackageIcon" SourceFile="$(var.WindowsDecompiler-2010.TargetPath)" />
+    <Icon Id="PackageIcon" SourceFile="$(var.WindowsDecompiler.TargetPath)" />
   </Product>
 </Wix>
