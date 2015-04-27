@@ -89,6 +89,8 @@ namespace Decompiler.Arch.X86
             {
                 return argser.Deserialize(arg, arg.Kind);
             }
+            if (convention == null)
+                return argser.Deserialize(arg, new StackVariable_v1());
             switch (convention)
             {
             case "":

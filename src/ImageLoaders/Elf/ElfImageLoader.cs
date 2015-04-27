@@ -772,6 +772,10 @@ namespace Decompiler.ImageLoaders.Elf
                             P = destNatOrigin + r_offset;
                             relocW.WriteUInt32(pRelWord, S + A - P);
                             break;
+                        case 6: // R_386_GLOB_DAT: S
+                            // S = sym.st_value;
+                            // relocW.WriteUInt32(pRelWord, S);
+                            break;
                         case 7:
                         case 8: // R_386_RELATIVE
                             break; // No need to do anything with these, if a shared object
