@@ -349,5 +349,38 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsarLocaldiamond()
+        {
+            var sExp = "@@@";
+            RunTest(sExp, m =>
+            {
+                var sp = m.Register(m.Architecture.StackRegister);
+                var bp = m.Frame.CreateTemporary("bp", sp.DataType);
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                var cr = m.Frame.EnsureFlagGroup(0x3, "CZS", PrimitiveType.Byte);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, bp);
+                m.Assign(bp, sp);
+                m.Store(m.IAdd(bp, -8), m.Word32(0));
+                m.Assign(cr, m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3));
+                m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
+
+                m.Store(m.IAdd(bp, -8), r1);
+                m.Jump("done");
+
+                m.Label("ge3");
+                m.Store(m.IAdd(bp, -8), r1);
+
+                m.Label("done");
+                m.Assign(r1, m.LoadDw(m.IAdd(bp,-8)));
+                m.Assign(bp, m.LoadDw(sp));
+                m.Assign(sp, m.IAdd(sp, 4));
+                m.Return();
+            });
+        }
     }
 }
