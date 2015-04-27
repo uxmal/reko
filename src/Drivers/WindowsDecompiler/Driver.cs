@@ -34,30 +34,16 @@ namespace WindowsDecompiler
 {
 	public class Driver
 	{
-		[STAThread]
-		public static void Main(string [] args)
-		{
+        [STAThread]
+        public static void Main(string[] args)
+        {
             var services = new ServiceContainer();
-            if (args.Length == 0)
-			{
-                services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
-                services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
-                services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
-                services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
-                var interactor = new MainFormInteractor(services);
-                interactor.Run();
-            }
-			else
-			{
-                var host = NullDecompilerHost.Instance;
-                var listener = NullDecompilerEventListener.Instance;
-
-                services.AddService(typeof (DecompilerEventListener), listener);
-                services.AddService(typeof(IDecompilerConfigurationService), new DecompilerConfiguration());
-                var ldr = new Loader(services);
-				var dec = new DecompilerDriver(ldr, host, services);
-				dec.Decompile(args[0]);
-			}
-		}
+            services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
+            services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
+            services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
+            services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
+            var interactor = new MainFormInteractor(services);
+            interactor.Run();
+        }
 	}
 }
