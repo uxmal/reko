@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ps3")]
-[assembly: AssemblyDescription("Support for the Sony PS3 ABI.")]
+[assembly: AssemblyTitle("SysV")]
+[assembly: AssemblyDescription("Implements the System V default ABI for ELF files.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
@@ -20,7 +20,17 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6c445bb7-c854-45ff-96b9-f58e4406c15e")]
+[assembly: Guid("5a414898-68a7-4fce-91b9-f2fdd176c1b6")]
 
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]

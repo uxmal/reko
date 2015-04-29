@@ -146,8 +146,8 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 					
 				// 60
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.punpcklbw, "Pp,Qd"),
+				new SingleByteOpRec(Opcode.punpcklwd, "Pp,Qd"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -161,11 +161,11 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.movd, "Vy,Ey"),
 				new SingleByteOpRec(Opcode.movdqa, "Vx,Wx"),
 
 				// 70
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.pshufd, "Pq,Qq,Ib"), //$BUG check this not being pshufw
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -180,7 +180,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.movd, "Ey,Vy"),
 				new SingleByteOpRec(Opcode.movdqa, "Wx,Vx"),
 
 				// 80

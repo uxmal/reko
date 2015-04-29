@@ -1069,6 +1069,33 @@ MemoryBarrier (
             }
             Assert.AreEqual(185, decls.Count);
         }
+
+        [Test]
+        public void CParser_FunctionPtr_Parameters()
+        {
+            Lex("int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = 
+                "(decl Int ((init-decl (func __libc_start_main (" +
+                    "(Int (func (ptr main) ((Int ) (Char (ptr (ptr ))) (Char (ptr (ptr )))))) " +
+                    "(Int argc) " +
+                    "(Char (ptr (ptr ubp_av))) " +
+                    "(Void (func (ptr init) ((Void )))) " +
+                    "(Void (func (ptr fini) ((Void )))) " +
+                    "(Void (func (ptr rtld_fini) ((Void )))) " +
+                    "(Void (ptr stack_end))" +
+                    ")))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_FunctionPtr_AbstractParameters()
+        {
+            Lex("int main(int, char **, char **);");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Int ((init-decl (func main ((Int ) (Char (ptr (ptr ))) (Char (ptr (ptr ))))))))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
     }
 }
 #endif

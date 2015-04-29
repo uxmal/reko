@@ -360,7 +360,15 @@ namespace Decompiler.Tools.C2Xml
 
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
-            byteSize = converter.NamedTypes[typeDefName.Name].Accept(converter.Sizer);
+            SerializedType type;
+            if (!converter.NamedTypes.TryGetValue(typeDefName.Name, out type))
+            {
+                throw new ApplicationException(
+                    string.Format(
+                        "error: type name {0} not defined.",
+                        typeDefName.Name ?? "(null)"));
+            }
+            byteSize = type.Accept(converter.Sizer);
             return new SerializedTypeReference(typeDefName.Name);
         }
 

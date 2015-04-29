@@ -29,6 +29,7 @@ using System.Text;
 using Rhino.Mocks;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Services;
+using Decompiler.Environments.SysV;
 
 namespace Decompiler.UnitTests.ImageLoaders.Elf
 {
@@ -358,10 +359,12 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             services.Stub(s => s.GetService(typeof(IDecompilerConfigurationService))).Return(dcSvc);
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             dcSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
-            dcSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement());
+            dcSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement
+                {
+                    TypeName = typeof(SysVPlatform).AssemblyQualifiedName
+                });
         }
 
-        // 336 - 37
         [Test]
         public void EIL_Load()
         {

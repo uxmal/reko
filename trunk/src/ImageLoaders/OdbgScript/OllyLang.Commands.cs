@@ -1155,7 +1155,7 @@ string filename;
             variables["$RESULT"] = Var.Create(0);
 
             // search in current mem block
-            //$REVIEW: extremely inefficient O(n*m) algorithm, but who cares?
+            //$REVIEW: extremely inefficient O(n*m) algorithm, do we care?
             MEMORY_BASIC_INFORMATION MemInfo;
             if (Host.TE_GetMemoryInfo(addr, out MemInfo))
             {
@@ -1168,7 +1168,6 @@ string filename;
                 byte[] bytes = null;
 
                 membuf = new byte[memlen];
-                Stream s;
                 if (Host.Image.TryReadBytes(Address.Ptr32((uint)addr), memlen, membuf))
                 {
                     int bytecount = finddata.Length / 2;
@@ -2888,7 +2887,9 @@ string filename;
                 //Writememory((void*)str, (ulong) hMem, str.Length, MM_DELANAL|MM_SILENT);
 
                 if(DoPUSH(bfdlladdr))
+                 */
                 {
+                    /*
                     char bffnloadlib[10] = {0};
                     sprintf(bffnloadlib, "%09X", fnload);
                     string libPtrToLoad = bffnloadlib;
@@ -2912,12 +2913,11 @@ string filename;
 
                     // Free memory block after next ollyloop
                     regBlockToFree(block);
-                    require_addonaction = 1;
-                    back_to_debugloop = 1;
-			
+                 */
+                    require_addonaction = true;
+                    back_to_debugloop = true;
                     return true;
                 }
-                */
 
             }
             return false;
@@ -4160,9 +4160,9 @@ rulong dw1, dw2;
                 }
                 Settracecondition(buffer, 0, 0, 0, 0, 0);
                 Sendshortcut(PM_MAIN, 0, WM_KEYDOWN, 1, 0, VK_F12); 
+                */
                 back_to_debugloop = true;
                 return true;
-                */
             }
             return false;
         }

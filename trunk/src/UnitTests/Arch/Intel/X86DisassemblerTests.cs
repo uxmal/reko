@@ -535,5 +535,21 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble32(0x0F, 0xBA, 0xF3, 0x00);
             Assert.AreEqual("btr\tebx,00", instr.ToString());
         }
+
+        private void AssertCode32(string sExp, params byte [] bytes)
+        {
+            var instr = Disassemble32(bytes);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
+        [Test]
+        public void Dis_x86_more_xmm()
+        {
+            AssertCode32("movd\txmm0,eax", 0x66, 0x0f, 0x6e, 0xc0);
+            AssertCode32("movd\t[ecx],xmm0", 0x66, 0x0f, 0x7e, 0x01);
+            AssertCode32("punpcklbw\txmm0,xmm0", 0x66, 0x0f, 0x60, 0xc0);
+            AssertCode32("punpcklwd\txmm0,xmm0", 0x66, 0x0f, 0x61, 0xc0);
+            AssertCode32("pshufd\txmm0,xmm0,00", 0x66, 0x0f, 0x70, 0xc0, 0x00);
+        }
     }
 }

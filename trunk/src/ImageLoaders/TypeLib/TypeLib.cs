@@ -78,7 +78,7 @@ using System.Diagnostics;
 
 #if __REACTOS__
 /* FIXME: Vista+ */
-#define STATUS_SUCCESS ((NTSTATUS)0x00000000)
+//#define STATUS_SUCCESS ((NTSTATUS)0x00000000)
 static BOOL WINAPI GetFileInformationByHandleEx( HANDLE handle, FILE_INFO_BY_HANDLE_CLASS class,
                                                  LPVOID info, DWORD size )
 {
@@ -636,11 +636,11 @@ HRESULT LoadRegTypeLib(
 
 
 /* some string constants shared between RegisterTypeLib and UnRegisterTypeLib */
-static const WCHAR TypeLibW[] = {'T','y','p','e','L','i','b',0};
-static const WCHAR FLAGSW[] = {'F','L','A','G','S',0};
-static const WCHAR HELPDIRW[] = {'H','E','L','P','D','I','R',0};
-static const WCHAR ProxyStubClsidW[] = {'P','r','o','x','y','S','t','u','b','C','l','s','i','d',0};
-static const WCHAR ProxyStubClsid32W[] = {'P','r','o','x','y','S','t','u','b','C','l','s','i','d','3','2',0};
+static const char [] TypeLibW = {'T','y','p','e','L','i','b', '\0'};
+static const char [] FLAGSW = {'F','L','A','G','S',0};
+static const char [] HELPDIRW = {'H','E','L','P','D','I','R',0};
+static const char [] ProxyStubClsidW = {'P','r','o','x','y','S','t','u','b','C','l','s','i','d',0};
+static const char [] ProxyStubClsid32W = {'P','r','o','x','y','S','t','u','b','C','l','s','i','d','3','2',0};
 
 static void TLB_register_interface(TLIBATTR *libattr, LPOLESTR name, TYPEATTR *tattr, DWORD flag)
 {

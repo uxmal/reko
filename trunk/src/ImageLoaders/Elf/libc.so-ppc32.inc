@@ -10,7 +10,9 @@ struct timespec
 typedef int clockid_t;
 typedef long time_t;
 typedef void * va_list;	
+typedef int mode_t;
 
+int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));
 int scanf(char * format, ...);
 int printf(char * format, ...);
 void free(void * p);

@@ -556,6 +556,10 @@
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
       <Name>Msdos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\SysV\SysV.csproj">
+      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
+      <Name>SysV</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Win32\Win32.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Win32</Name>

@@ -37,5 +37,39 @@ namespace Decompiler.Arch.X86
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             emitter.Assign(SrcOp(instrCur.op1), emitter.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
         }
+
+        private void RewritePshufd()
+        {
+            emitter.Assign(
+                SrcOp(instrCur.op1),
+                PseudoProc(
+                    "__pshufd",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2),
+                    SrcOp(instrCur.op3)));
+        }
+
+        private void RewritePunpcklbw()
+        {
+            emitter.Assign(
+                SrcOp(instrCur.op1),
+                PseudoProc(
+                    "__punpcklbw",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2)));
+        }
+
+        private void RewritePunpcklwd()
+        {
+            emitter.Assign(
+                SrcOp(instrCur.op1),
+                PseudoProc(
+                    "__punpcklwd",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2)));
+        }
     }
 }
