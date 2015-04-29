@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("makesigs")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Library for the creation of signatures based on library files and x86 instruction pattern matching")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("makesigs")]

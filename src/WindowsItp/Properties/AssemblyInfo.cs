@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WindowsItp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Interactive test program.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]

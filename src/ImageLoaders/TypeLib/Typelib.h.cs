@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TypeLib
 {
+    using INT = System.Int32;
+    using INT16 = System.Int16;
+
     class Typelib
     {
 /*
@@ -28,14 +31,12 @@ namespace TypeLib
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
-#ifndef _WINE_TYPELIB_H
-#define _WINE_TYPELIB_H
 
-#define HELPDLLFLAG (0x0100)
-#define DO_NOT_SEEK (-1)
+//#define HELPDLLFLAG (0x0100)
+//#define DO_NOT_SEEK (-1)
 
-#define MSFT_HREFTYPE_INTHISFILE(href) (!((href) & 3))
-#define MSFT_HREFTYPE_INDEX(href) ((href) /sizeof(MSFT_TypeInfoBase))
+//#define MSFT_HREFTYPE_INTHISFILE(href) (!((href) & 3))
+//#define MSFT_HREFTYPE_INDEX(href) ((href) /sizeof(MSFT_TypeInfoBase))
 
 /*-------------------------FILE STRUCTURES-----------------------------------*/
 
@@ -50,16 +51,15 @@ namespace TypeLib
  * These are TypeLibs created with ICreateTypeLib2
  *
  */
-
 /*
  * structure of the typelib type2 header
  * it is at the beginning of a type lib file
  *
  */
 
-#define MSFT_SIGNATURE 0x5446534D /* "MSFT" */
+public const int MSFT_SIGNATURE =0x5446534D; /* "MSFT" */
 
-typedef struct tagMSFT_Header {
+public class MSFT_Header {
 /*0x00*/INT   magic1;       /* 0x5446534D "MSFT" */
         INT   magic2;       /* 0x00010002 version nr? */
         INT   posguid;      /* position of libid in guid table  */
@@ -86,19 +86,19 @@ typedef struct tagMSFT_Header {
         INT   res48;            /* unknown always: 0x80 (name hash size?) */
         INT   dispatchpos;      /* HREFTYPE to IDispatch, or -1 if no IDispatch */
 /*0x50*/INT   nimpinfos;        /* number of impinfos */
-} MSFT_Header;
+}
 
 /* segments in the type lib file have a structure like this: */
-typedef struct tagMSFT_pSeg {
+public class MSFT_pSeg {
         INT   offset;       /* absolute offset in file */
         INT   length;       /* length of segment */
         INT   res08;        /* unknown always -1 */
         INT   res0c;        /* unknown always 0x0f in the header */
                             /* 0x03 in the typeinfo_data */
-} MSFT_pSeg;
+}
 
 /* layout of the main segment directory */
-typedef struct tagMSFT_SegDir {
+public class MSFT_SegDir {
 /*1*/MSFT_pSeg pTypeInfoTab; /* each type info get an entry of 0x64 bytes */
                              /* (25 ints) */
 /*2*/MSFT_pSeg pImpInfo;     /* table with info for imported types */
@@ -120,11 +120,11 @@ typedef struct tagMSFT_SegDir {
                              /* the customer data table */
 /*E*/MSFT_pSeg res0e;        /* unknown */
 /*F*/MSFT_pSeg res0f;        /* unknown  */
-} MSFT_SegDir;
+} 
 
 
 /* base type info data */
-typedef struct tagMSFT_TypeInfoBase {
+public class MSFT_TypeInfoBase {
 /*000*/ INT   typekind;             /*  it is the TKIND_xxx */
                                     /* some byte alignment stuff */
         INT     memoffset;          /* points past the file, if no elements */
@@ -145,7 +145,7 @@ typedef struct tagMSFT_TypeInfoBase {
 /*040*/ INT     helpstringcontext;  /*  */
         INT     helpcontext;    /* */
         INT     oCustData;          /* offset in customer data table */
-#ifdef WORDS_BIGENDIAN
+#if WORDS_BIGENDIAN
         INT16   cbSizeVft;      /* virtual table size, not including inherits */
         INT16   cImplTypes;     /* nr of implemented interfaces */
 #else
@@ -165,26 +165,27 @@ typedef struct tagMSFT_TypeInfoBase {
                                 /* if interface: inheritance level | no of inherited funcs */
         INT     res18;          /* always? 0 */
 /*060*/ INT     res19;          /* always? -1 */
-} MSFT_TypeInfoBase;
+} 
 
 /* layout of an entry with information on imported types */
-typedef struct tagMSFT_ImpInfo {
+public class MSFT_ImpInfo {
     INT     flags;          /* bits 0 - 15:  count */
                             /* bit  16:      if set oGuid is an offset to Guid */
                             /*               if clear oGuid is a typeinfo index in the specified typelib */
                             /* bits 24 - 31: TKIND of reference */
     INT     oImpFile;       /* offset in the Import File table */
     INT     oGuid;          /* offset in Guid table or typeinfo index (see bit 16 of res0) */
-} MSFT_ImpInfo;
+}
 
-#define MSFT_IMPINFO_OFFSET_IS_GUID 0x00010000
+//#define MSFT_IMPINFO_OFFSET_IS_GUID 0x00010000
 
 /* function description data */
-typedef struct {
+public class MSFT_FuncRecord
+{
     INT   Info;         /* record size including some extra stuff */
     INT   DataType;     /* data type of the member, eg return of function */
     INT   Flags;        /* something to do with attribute flags (LOWORD) */
-#ifdef WORDS_BIGENDIAN
+#if WORDS_BIGENDIAN
     INT16 funcdescsize; /* size of reconstituted FUNCDESC and related structs */
     INT16 VtableOffset; /* offset in vtable */
 #else
@@ -199,7 +200,7 @@ typedef struct {
                         /* bit 8 indicates that custom data is present */
                         /* Invocation kind (bits 9-12 ) */
                         /* function kind (eg virtual), bits 13-15  */
-#ifdef WORDS_BIGENDIAN
+#if WORDS_BIGENDIAN
     INT16 nroargs;      /* nr of optional arguments */
     INT16 nrargs;       /* number of arguments (including optional ????) */
 #else
@@ -217,7 +218,7 @@ typedef struct {
     /* these are controlled by a bit set in the FKCCIC field  */
     INT   oCustData;        /* custom data for function */
     INT   oArgCustData[1];  /* custom data per argument */
-} MSFT_FuncRecord;
+} 
 
 /* after this may follow an array with default value pointers if the
  * appropriate bit in the FKCCIC field has been set:
@@ -225,18 +226,20 @@ typedef struct {
  */
 
     /* Parameter info one per argument*/
-typedef struct {
+public class MSFT_ParameterInfo 
+{
         INT   DataType;
         INT   oName;
         INT   Flags;
-    } MSFT_ParameterInfo;
+    } 
 
 /* Variable description data */
-typedef struct {
+public class MSFT_VarRecord  
+{
     INT   Info;         /* record size including some extra stuff */
     INT   DataType;     /* data type of the variable */
     INT   Flags;        /* VarFlags (LOWORD) */
-#ifdef WORDS_BIGENDIAN
+#if WORDS_BIGENDIAN
     INT16 vardescsize;  /* size of reconstituted VARDESC and related structs */
     INT16 VarKind;      /* VarKind */
 #else
@@ -252,7 +255,7 @@ typedef struct {
     INT   res9;         /* unknown (-1) */
     INT   oCustData;        /* custom data for variable */
     INT   HelpStringContext;
-} MSFT_VarRecord;
+} ;
 
 /* Structure of the reference data  */
 typedef struct {

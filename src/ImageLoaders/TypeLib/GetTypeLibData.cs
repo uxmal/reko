@@ -5,7 +5,9 @@
 //This file is GPL 2008, by TheirCorp
 // *************************************
 
-
+using System.IO;
+public class GetTypeLibData
+{
 
 // **************************************
 // this is a re-entrant procedure
@@ -28,17 +30,17 @@ IMAGE_RESOURCE_DATA_ENTRY Ptr pirde;
 IMAGE_RESOURCE_DIRECTORY_ENTRY Ptr irde;
 IMAGE_RESOURCE_DIRECTORY_STRING ids;
 
-Static fResult	As Long
-Static lvl		As Long	  // recursion level
-Static rp		As Dword  // resource pointer
-Static rid		As Dword
-Static typ		As Dword
-Static ns		As String
+Static fResult	As Long  ;
+Static lvl		As Long	 ;// recursion level
+Static rp		As Dword ;// resource pointer
+Static rid		As Dword ;
+Static typ		As Dword ;
+Static ns		As String;
 
-	if (lvl = 0) { rp = StrPtr(cs) // = ird // save pointer to start of resource section
+	if (lvl = 0) { rp = StrPtr(cs); } // = ird // save pointer to start of resource section
 	Incr lvl
 
-	irde = ird + SizeOf(IMAGE_RESOURCE_DIRECTORY)
+	irde = ird + SizeOf(IMAGE_RESOURCE_DIRECTORY);
 
 	//  The named entries are case insensitive strings, sorted in ascending order.
 	//  The entries with 16-bit IDs follow these and are also sorted in ascending order.
@@ -83,99 +85,102 @@ Static ns		As String
 
 		}
 
-		if (fResult = 2) { Exit For
-		irde = irde + SizeOf(IMAGE_RESOURCE_DIRECTORY_ENTRY)
+		if (fResult == 2)
+            break;
+		irde = irde + SizeOf(IMAGE_RESOURCE_DIRECTORY_ENTRY);
 
 	Next n
 
-	Decr lvl
+	-- lvl;
 	if (lvl) {
-		Function = ird
+		Function = ird;
 	} else {
-		Function = fResult
-		fResult = 0
+		Function = fResult;
+		fResult = 0;
 	}
 
-End Function // GetResource
+        } // GetResource
 
 // ***************************************
 //  gets TypeLib data from a PE file// s resource section
 int GetTypeLibData(string cs, string fs)
 {
-//#Register All
-Long  ff;// file handle
-Long n;
-Long fTlb;
-DosHeader DosHdr;
-PEHeader  pPH;
-SectionInfo si;
-OptHeader pOH;
-SectionHeader pSH;
-DataDir  pDD;
+    //#Register All
+    FileStream  ff;// file handle
+    Long n;
+    Long fTlb;
+    DosHeader DosHdr;
+    PEHeader  pPH;
+    SectionInfo si;
+    OptHeader pOH;
+    SectionHeader pSH;
+    DataDir  pDD;
 
 
 	// --------------------------------------
 	// get the Typelib data
-	Try
-
-		ff = FreeFile
-		Open fs For Binary Access Read Lock Shared As #ff
-		Get$ #ff, 2048, cs
+	try
+    {
+		ff = FreeFile();
+        ff = new FileStream(fs, FileMode.Open, FileAccess.Read, FileShare.Read);
+        
+        byte[] cs = new byte[2048];
+        ff.Read(cs, 0, cs.Length);
 
 		// ----------------------------------
 		// get PE signature if present
-		LSet DosHdr = cs
-		if ((Left$(cs, 2) = $PeMZ) And (Mid$(cs, DosHdr.lfanew + 1, 4) = $PePE32)) {
+		LSet DosHdr = cs;
+		if ((Left$(cs, 2) = $PeMZ) &&  (Mid$(cs, DosHdr.lfanew + 1, 4) = $PePE32)) {
 
 			Decr fTlb // disable loading the file below
-			pPH = StrPtr(cs) + DosHdr.lfanew + 4
-			pOH = pPH + SizeOf(PEHeader)
+			pPH = StrPtr(cs) + DosHdr.lfanew + 4;
+			pOH = pPH + SizeOf(PEHeader);
 
 			// "pOH.NumberOfRvaAndSizes" is the number of entries, not the size of the array, as someone once wrote
-			if (%ResourceSection > @pOH.NumberOfRvaAndSizes) { Exit Function
+			if (ResourceSection > @pOH.NumberOfRvaAndSizes) return;
 
-			pDD = pOH + SizeOf(OptHeader) + ((%ResourceSection - 1) * SizeOf(DataDir))
-			si.dRVA = @pDD.RVA
-			si.dSize = @pDD.DirSize
+			pDD = pOH + SizeOf(OptHeader) + ((ResourceSection - 1) * SizeOf(DataDir));
+			si.dRVA = @pDD.RVA      ;
+			si.dSize = @pDD.DirSize ;
 
 
 			// find the section which matches si.dRVA in the section table
-			pSH = pOH + SizeOf(OptHeader) + (@pOH.NumberOfRvaAndSizes * SizeOf(DataDir))
-			For n = 1 To @pPH.NumberOfSections
+			pSH = pOH + SizeOf(OptHeader) + (@pOH.NumberOfRvaAndSizes * SizeOf(DataDir));
+			For (int n = 1; n <= @pPH.NumberOfSections; ++n) {
+				if ((si.dRVA => @pSH.RVA) && (si.dRVA < @pSH.RVA + @pSH.SizeOfRawData)) {
+					si.SectName         = @pSH.SectName;
+					si.VirtSize         = @pSH.VirtSize;             // size of unpadded section
+					si.RVA              = @pSH.RVA;                  // @pSH.RVA is the offset to section when loaded
+					si.RamAdd           = @pOH.ImageBase + @pSH.RVA; // section// s RAM address (for example: &H401000)
+					si.SizeOfRawData    = @pSH.SizeOfRawData;        // size after padding to section alignment
+					si.PtrToRawData     = @pSH.PtrToRawData;         // zero-based file offset to section
+					si.StrPos           = @pSH.PtrToRawData + 1;     // one-based file offset to section
+					si.EndPos           = si.StrPos + si.SizeOfRawData;
+					si.Delta            = si.RVA - si.PtrToRawData;  // value to subtract from RVAs to get file offsets
+					si.Characteristics  = @pSH.Characteristics;
 
-				if ((si.dRVA => @pSH.RVA) And (si.dRVA < @pSH.RVA + @pSH.SizeOfRawData)) {
-					si.SectName         = @pSH.SectName
-					si.VirtSize         = @pSH.VirtSize             // size of unpadded section
-					si.RVA              = @pSH.RVA                  // @pSH.RVA is the offset to section when loaded
-					si.RamAdd           = @pOH.ImageBase + @pSH.RVA // section// s RAM address (for example: &H401000)
-					si.SizeOfRawData    = @pSH.SizeOfRawData        // size after padding to section alignment
-					si.PtrToRawData     = @pSH.PtrToRawData         // zero-based file offset to section
-					si.StrPos           = @pSH.PtrToRawData + 1     // one-based file offset to section
-					si.EndPos           = si.StrPos + si.SizeOfRawData
-					si.Delta            = si.RVA - si.PtrToRawData  // value to subtract from RVAs to get file offsets
-					si.Characteristics  = @pSH.Characteristics
-
-					Exit For
+					break;
 
 				}
 
-				pSH = pSH + SizeOf(SectionHeader) // advance pSH to next section header
+				pSH = pSH + SizeOf(SectionHeader); // advance pSH to next section header
 
-			Next n
+			}
 
 			// get TypeLib resource
-			Seek# ff, si.StrPos
-			Get$ #ff, si.SizeOfRawData, cs
+			ff.Position = si.StrPos;
+			cs = new byte[si.SizeOfRawData];
+            ff.Read(cs, 0, cs.Length);
 			if (GetResource(cs, StrPtr(cs), si.Delta, si.SizeOfRawData, si.PtrToRawData) = 0) {
 				Reset cs
-				UpdateLog "No TypeLib data found in: " & fs
+				UpdateLog( "No TypeLib data found in: " + fs);
 			}
 
 		}
 
 
-		if (Left$(cs, 4) = "MSFT") { // it// s a "tlb" (TypeLib) file
-			Incr fTlb
+		if (Left$(cs, 4) == "MSFT") { // it's a "tlb" (TypeLib) file
+			++fTlb
 			Function = 1
 		} else if  (Left$(cs, 4) = "SLTG") {
 			Incr fTlb
@@ -187,13 +192,13 @@ DataDir  pDD;
 			Get$ #ff, Lof(ff), cs
 		}
 
-		Close# ff
-
-	Catch
-		UpdateLog "Error opening input file: " & fs
-		Exit Function
-	End Try
-
-End Function // GetTypeLibData
+		ff.Close ();
+    } catch
+    {
+		UpdateLog ("Error opening input file: " + fs);
+		return;
+	}
+    
+} // GetTypeLibData
 
 // ***************************************

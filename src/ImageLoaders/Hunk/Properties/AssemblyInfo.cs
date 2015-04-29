@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Loader for AmigaOS Hunk executable file format")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Implements the loading of AmigaOS Hunk executable files.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]

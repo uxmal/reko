@@ -24,7 +24,7 @@
     Id="*"
     Name="Decompiler"
     Language="1033"
-    Version="0.4.1.0"
+    Version="0.4.2.0"
     Manufacturer="jklSoft"
     UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E">
 
@@ -96,6 +96,7 @@
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" />
         <File Source="$(var.Ps3.TargetPath)" />
         <File Source="$(var.RiscOS.TargetPath)" />
+        <File Source="$(var.SysV.TargetPath)" />
         <File Source="$(var.Win32.TargetPath)" />
         <File Source="$(var.Win32.ProjectDir)windows.xml" />
         <File Source="$(var.Win32.ProjectDir)commctrl.xml" />

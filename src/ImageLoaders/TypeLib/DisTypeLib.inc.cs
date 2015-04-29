@@ -1,173 +1,176 @@
-'**************************************
-'	"DisTypeLib.inc"
+//**************************************
+//	"DisTypeLib.inc"
 
 
 
-'This file is GPL 2008, by TheirCorp
-'**************************************
+//This file is GPL 2008, by TheirCorp
+//**************************************
 
+public class DisTypeLib
+{
 
-$PeMZ			= "MZ"
-$PePE32			= "PE" & $Nul & $Nul	 'Chr$(&H50, &H45, &H00, &H00)
+public const string PeMZ			= "MZ";
+public const string PePE32			= "PE\0\0";	 //Chr$(0x50, 0x45, 0x00, 0x00)
 
-%SizeOfShortName				   = 8
-%IMAGE_RESOURCE_NAME_IS_STRING	   = &H080000000???
-%IMAGE_RESOURCE_DATA_IS_DIRECTORY  = &H080000000???
-%ResourceSection				   = 3
-%NumberOfDirectoryEntries		   = 16	'IMAGE_NUMBEROF_DIRECTORY_ENTRIES
-%SizeOfShortName				   = 8
-%SectionHeaderSize				   = 40	 '%IMAGE_SIZEOF_SECTION_HEADER
-%MAXSTRING						   = 120
+public const short SizeOfShortName				   = 8;
+public const short IMAGE_RESOURCE_NAME_IS_STRING	   = 0x080000000;
+public const short IMAGE_RESOURCE_DATA_IS_DIRECTORY     =0x080000000;
+public const short ResourceSection				   = 3;
+public const short NumberOfDirectoryEntries		   = 16;	// IMAGE_NUMBEROF_DIRECTORY_ENTRIES
+public const short SizeOfShortName				   = 8;
+public const short SectionHeaderSize				   = 40;	 // %IMAGE_SIZEOF_SECTION_HEADER
+public const short MAXSTRING						   = 120;
 
-%SUBDIR				   = 16
-%WINAPI				   = 1
-%WM_USER			   = &H400
-%TRUE				   = 1
-%FALSE				   = 0
-%LF_FACESIZE		   = 32
-%MAX_PATH			   = 260 ' max. length of full pathname
-%MAX_EXT			   = 256
-%ANSI_CHARSET		   = 0
-%FF_DONTCARE		   = 0 ' Don't care or don't know.
-%FW_DONTCARE		   = 0
-%FW_NORMAL			   = 400
-%LOGPIXELSY			   = 90 ' Logical pixels/inch in Y
+public const short SUBDIR				   = 16;
+public const short WINAPI				   = 1;
+public const short WM_USER			   = 0x400;
+public const short TRUE				   = 1;
+public const short FALSE				   = 0;
+public const short LF_FACESIZE		   = 32;
+public const short MAX_PATH			   = 260; // max. length of full pathname
+public const short MAX_EXT			   = 256;
+public const short ANSI_CHARSET		   = 0;
+public const short FF_DONTCARE		   = 0; // Don't care or don't know.
+public const short FW_DONTCARE		   = 0;
+public const short FW_NORMAL			   = 400;
+public const short LOGPIXELSY			   = 90; // Logical pixels/inch in Y
 
-%WM_DESTROY			   = &H2
-%WM_SETFONT			   = &H30
-%WM_COMMAND			   = &H111
-%WM_DROPFILES		   = &H233
-%WM_NCACTIVATE		   = &H86
-%WM_INITDIALOG		   = &H110
+public const short WM_DESTROY			   = 0x2       ;
+public const short WM_SETFONT			   = 0x30      ;
+public const short WM_COMMAND			   = 0x111     ;
+public const short WM_DROPFILES		   = 0x233         ;
+public const short WM_NCACTIVATE		   = 0x86      ;
+public const short WM_INITDIALOG		   = 0x110     ;
+                                                       
+public const short WS_CHILD			   = 0x40000000    ;
+public const short WS_TABSTOP			   = 0x00010000;
+public const short WS_MINIMIZEBOX		   = 0x00020000;
+public const short WS_POPUP			   = 0x80000000    ;
+public const short WS_VISIBLE			   = 0x10000000;
+public const short WS_CLIPSIBLINGS	   = 0x04000000    ;
+public const short WS_CAPTION			   = 0x00C00000; ;; WS_BORDER OR WS_DLGFRAME
+public const short WS_BORDER			   = 0x00800000    ;
+public const short WS_DLGFRAME		   = 0x00400000        ;
+public const short WS_SYSMENU			   = 0x00080000    ;
+public const short WS_VSCROLL			   = 0x00200000    ;
+public const short WS_HSCROLL			   = 0x00100000    ;
+                                                           
+public const short WS_EX_LEFT			   = 0x00000000    ;
+public const short WS_EX_LTRREADING	   = 0x00000000        ;
+public const short WS_EX_RIGHTSCROLLBAR  = 0x00000000      ;
+public const short WS_EX_CONTROLPARENT   = 0x00010000      ;
+public const short WS_EX_WINDOWEDGE	   = 0x00000100        ;
+public const short WS_EX_CLIENTEDGE	   = 0x00000200        ;
+public const short WS_EX_ACCEPTFILES	   = 0x00000010    ;
+public const short WS_EX_TOOLWINDOW	   = 0x00000080        ;
 
-%WS_CHILD			   = &H40000000
-%WS_TABSTOP			   = &H00010000
-%WS_MINIMIZEBOX		   = &H00020000
-%WS_POPUP			   = &H80000000
-%WS_VISIBLE			   = &H10000000
-%WS_CLIPSIBLINGS	   = &H04000000
-%WS_CAPTION			   = &H00C00000 ' WS_BORDER OR WS_DLGFRAME
-%WS_BORDER			   = &H00800000
-%WS_DLGFRAME		   = &H00400000
-%WS_SYSMENU			   = &H00080000
-%WS_VSCROLL			   = &H00200000
-%WS_HSCROLL			   = &H00100000
+public const short HWND_DESKTOP			   = 0
 
-%WS_EX_LEFT			   = &H00000000
-%WS_EX_LTRREADING	   = &H00000000
-%WS_EX_RIGHTSCROLLBAR  = &H00000000
-%WS_EX_CONTROLPARENT   = &H00010000
-%WS_EX_WINDOWEDGE	   = &H00000100
-%WS_EX_CLIENTEDGE	   = &H00000200
-%WS_EX_ACCEPTFILES	   = &H00000010
-%WS_EX_TOOLWINDOW	   = &H00000080
+public const short BN_CLICKED				   = 0
+public const short BS_TEXT				   = 0x0&
+public const short BS_PUSHBUTTON			   = 0x0&
+public const short BS_GROUPBOX			   = 0x7&
+public const short BS_CENTER				   = 0x300&
+public const short BS_TOP					   = 0x400&
+public const short BS_VCENTER				   = 0xC00&
+public const short BS_DEFPUSHBUTTON		   = 0x1&
+public const short BS_ICON				   = 0x40&
+public const short BS_BITMAP				   = 0x80&
 
-%HWND_DESKTOP			   = 0
+public const short DM_SETDEFID			   = %WM_USER + 1
 
-%BN_CLICKED				   = 0
-%BS_TEXT				   = &H0&
-%BS_PUSHBUTTON			   = &H0&
-%BS_GROUPBOX			   = &H7&
-%BS_CENTER				   = &H300&
-%BS_TOP					   = &H400&
-%BS_VCENTER				   = &HC00&
-%BS_DEFPUSHBUTTON		   = &H1&
-%BS_ICON				   = &H40&
-%BS_BITMAP				   = &H80&
+public const short DS_3DLOOK				   = 0x0004&
+public const short DS_MODALFRAME			   = 0x0080& ' Can be combined with WS_CAPTION
+public const short DS_NOFAILCREATE		   = 0x0010&
+public const short DS_SETFONT				   = 0x0040& ' User specified font for Dlg controls
+public const short DS_SETFOREGROUND		   = 0x0200& ' not in win3.1
 
-%DM_SETDEFID			   = %WM_USER + 1
+public const short ES_LEFT		 = 0x0&
+public const short ES_MULTILINE	 = 0x4&
+public const short ES_AUTOVSCROLL  = 0x40&
+public const short ES_AUTOHSCROLL  = 0x80&
+public const short ES_WANTRETURN   = 0x1000&
 
-%DS_3DLOOK				   = &H0004&
-%DS_MODALFRAME			   = &H0080& ' Can be combined with WS_CAPTION
-%DS_NOFAILCREATE		   = &H0010&
-%DS_SETFONT				   = &H0040& ' User specified font for Dlg controls
-%DS_SETFOREGROUND		   = &H0200& ' not in win3.1
+public const short EM_SCROLL		 = 0xB5
+public const short SB_LINEDOWN	 = 1
+public const short EM_SCROLLCARET  = 0xB7
+public const short EM_SETSEL		 = 0xB1
 
-%ES_LEFT		 = &H0&
-%ES_MULTILINE	 = &H4&
-%ES_AUTOVSCROLL  = &H40&
-%ES_AUTOHSCROLL  = &H80&
-%ES_WANTRETURN   = &H1000&
+public const short SBS_HORZ					  = 0x0&
+public const short SBS_VERT					  = 0x1&
+public const short SBS_TOPALIGN				  = 0x2&
+public const short SBS_LEFTALIGN				  = 0x2&
+public const short SBS_BOTTOMALIGN			  = 0x4&
+public const short SBS_RIGHTALIGN				  = 0x4&
+public const short SBS_SIZEBOXTOPLEFTALIGN	  = 0x2&
+public const short SBS_SIZEBOXBOTTOMRIGHTALIGN  = 0x4&
+public const short SBS_SIZEBOX				  = 0x8&
+public const short SBS_SIZEGRIP				  = 0x10&
 
-%EM_SCROLL		 = &HB5
-%SB_LINEDOWN	 = 1
-%EM_SCROLLCARET  = &HB7
-%EM_SETSEL		 = &HB1
+public const short SS_CENTER					  = 0x00000001
+public const short SS_RIGHT					  = 0x00000002
 
-%SBS_HORZ					  = &H0&
-%SBS_VERT					  = &H1&
-%SBS_TOPALIGN				  = &H2&
-%SBS_LEFTALIGN				  = &H2&
-%SBS_BOTTOMALIGN			  = &H4&
-%SBS_RIGHTALIGN				  = &H4&
-%SBS_SIZEBOXTOPLEFTALIGN	  = &H2&
-%SBS_SIZEBOXBOTTOMRIGHTALIGN  = &H4&
-%SBS_SIZEBOX				  = &H8&
-%SBS_SIZEGRIP				  = &H10&
+public const short MB_OK						  = 0x00000000&
+public const short MB_OKCANCEL				  = 0x00000001&
+public const short MB_ABORTRETRYIGNORE		  = 0x00000002&
+public const short MB_YESNOCANCEL				  = 0x00000003&
+public const short MB_YESNO					  = 0x00000004&
+public const short MB_RETRYCANCEL				  = 0x00000005&
+public const short MB_CANCELTRYCONTINUE		  = 0x00000006&
 
-%SS_CENTER					  = &H00000001
-%SS_RIGHT					  = &H00000002
-
-%MB_OK						  = &H00000000&
-%MB_OKCANCEL				  = &H00000001&
-%MB_ABORTRETRYIGNORE		  = &H00000002&
-%MB_YESNOCANCEL				  = &H00000003&
-%MB_YESNO					  = &H00000004&
-%MB_RETRYCANCEL				  = &H00000005&
-%MB_CANCELTRYCONTINUE		  = &H00000006&
-
-%IDOK						  = 1
-%IDCANCEL					  = 2
-%IDABORT					  = 3
-%IDRETRY					  = 4
-%IDIGNORE					  = 5
-%IDYES						  = 6
-%IDNO						  = 7
-%IDCLOSE					  = 8
-%IDHELP						  = 9
-%IDTRYAGAIN					  = 10
-%IDCONTINUE					  = 11
-%SW_SHOW					  = 5
+public const short IDOK						  = 1
+public const short IDCANCEL					  = 2
+public const short IDABORT					  = 3
+public const short IDRETRY					  = 4
+public const short IDIGNORE					  = 5
+public const short IDYES						  = 6
+public const short IDNO						  = 7
+public const short IDCLOSE					  = 8
+public const short IDHELP						  = 9
+public const short IDTRYAGAIN					  = 10
+public const short IDCONTINUE					  = 11
+public const short SW_SHOW					  = 5
 
 '-----------------------------------------------------------------
-%LOAD_LIBRARY_AS_DATAFILE  = &H00000002
-%RT_CURSOR				   = 1
-%RT_BITMAP				   = 2
-%RT_ICON				   = 3
-%RT_MENU				   = 4
-%RT_DIALOG				   = 5
-%RT_STRING				   = 6
-%RT_FONTDIR				   = 7
-%RT_FONT				   = 8
-%RT_ACCELERATOR			   = 9
-%RT_RCDATA				   = 10
-%RT_MESSAGETABLE		   = 11
-%RT_GROUP_CURSOR		   = 12
-%RT_GROUP_ICON			   = 14
-%RT_VERSION				   = 16
-%RT_DLGINCLUDE			   = 17
-%RT_PLUGPLAY			   = 19
-%RT_VXD					   = 20
-%RT_ANICURSOR			   = 21
-%RT_ANIICON				   = 22
-%RT_HTML				   = 23
-%RT_MANIFEST			   = 24
+public const short LOAD_LIBRARY_AS_DATAFILE  = 0x00000002
+public const short RT_CURSOR				   = 1
+public const short RT_BITMAP				   = 2
+public const short RT_ICON				   = 3
+public const short RT_MENU				   = 4
+public const short RT_DIALOG				   = 5
+public const short RT_STRING				   = 6
+public const short RT_FONTDIR				   = 7
+public const short RT_FONT				   = 8
+public const short RT_ACCELERATOR			   = 9
+public const short RT_RCDATA				   = 10
+public const short RT_MESSAGETABLE		   = 11
+public const short RT_GROUP_CURSOR		   = 12
+public const short RT_GROUP_ICON			   = 14
+public const short RT_VERSION				   = 16
+public const short RT_DLGINCLUDE			   = 17
+public const short RT_PLUGPLAY			   = 19
+public const short RT_VXD					   = 20
+public const short RT_ANICURSOR			   = 21
+public const short RT_ANIICON				   = 22
+public const short RT_HTML				   = 23
+public const short RT_MANIFEST			   = 24
 
-%READ_CONTROL				 = &H00020000
-%SYNCHRONIZE				 = &H00100000
-%STANDARD_RIGHTS_READ		 = %READ_CONTROL
-%KEY_QUERY_VALUE			 = &H1
-%KEY_ENUMERATE_SUB_KEYS		 = &H8
-%KEY_NOTIFY					 = &H10
-%KEY_READ					 = %STANDARD_RIGHTS_READ Or %KEY_QUERY_VALUE Or %KEY_ENUMERATE_SUB_KEYS Or %KEY_NOTIFY And (Not %SYNCHRONIZE)
-%HKEY_CURRENT_USER			 = &H80000001
-%ERROR_SUCCESS				 = 0&
+public const short READ_CONTROL				 = 0x00020000
+public const short SYNCHRONIZE				 = 0x00100000
+public const short STANDARD_RIGHTS_READ		 = %READ_CONTROL
+public const short KEY_QUERY_VALUE			 = 0x1
+public const short KEY_ENUMERATE_SUB_KEYS		 = 0x8
+public const short KEY_NOTIFY					 = 0x10
+public const short KEY_READ					 = %STANDARD_RIGHTS_READ Or %KEY_QUERY_VALUE Or %KEY_ENUMERATE_SUB_KEYS Or %KEY_NOTIFY And (Not %SYNCHRONIZE)
+public const short HKEY_CURRENT_USER			 = 0x80000001
+public const short ERROR_SUCCESS				 = 0&
 
 
 '**************************************
 
-Type LOGFONT
-	lfHeight As Long
+public class LOGFONT
+
+{	lfHeight As Long
 	lfWidth As Long
 	lfEscapement As Long
 	lfOrientation As Long
@@ -181,7 +184,7 @@ Type LOGFONT
 	lfQuality As Byte
 	lfPitchAndFamily As Byte
 	lfFaceName As Asciiz * %LF_FACESIZE
-End Type
+}
 
 
 
@@ -196,36 +199,41 @@ End Type
 ' the impact of these variable length objects on the alignment of the fixed
 ' size directory entry objects.
 
-Type IMAGE_RESOURCE_DIRECTORY_STRING
+public class IMAGE_RESOURCE_DIRECTORY_STRING
+{
 	Length		As Word
 	NameString  As Byte 'ASCII string
-End Type
+}
 
-Type IMAGE_RESOURCE_DIRECTORY_ENTRY
-	NameID  As Dword	'if bit 31 is set, the name is a string
+public class IMAGE_RESOURCE_DIRECTORY_ENTRY
+
+{	NameID  As Dword	'if bit 31 is set, the name is a string
 	Offset  As Dword	'if bit 31 is set, the data is a directory
-End Type
+}
 
-Type IMAGE_RESOURCE_DIRECTORY
-	Characteristics		As Dword
+public class IMAGE_RESOURCE_DIRECTORY
+
+{	Characteristics		As Dword
 	TimeDateStamp		As Dword
 	MajorVersion		As Word
 	MinorVersion		As Word
 	NumberOfNamedEntries As Word
 	NumberOfIdEntries   As Word
 	'DirectoryEntries(0) As IMAGE_RESOURCE_DIRECTORY_ENTRY
-End Type
+}
 
-Type IMAGE_RESOURCE_DATA_ENTRY
-	OffsetToData	As Dword
+public class IMAGE_RESOURCE_DATA_ENTRY
+
+{	OffsetToData	As Dword
 	Size			As Dword
 	CodePage		As Dword
 	Reserved		As Dword
-End Type
+}
 
 
-Type SectionInfo
-	SectName			As String * %SizeOfShortName
+public class SectionInfo
+
+{	SectName			As String * %SizeOfShortName
 	VirtSize			As Dword
 	dRVA				As Dword	'RVA to specific data within section
 	dSize				As Dword	'size of specific data within section
@@ -237,11 +245,12 @@ Type SectionInfo
 	EndPos				As Dword
 	Delta				As Dword
 	Characteristics		As Dword
-End Type 'SectionHeader
+} 'SectionHeader
 
 
-Type DosHeader Byte			'DOS stub in EXE file
-	Magic		As Word		'Magic number
+public class DosHeader Byte			'DOS stub in EXE file
+
+{	Magic		As Word		'Magic number
 	cBlp		As Word		'Bytes on last page of file
 	cP			As Word		'Pages in file
 	cRlc		As Word		'Relocations
@@ -259,33 +268,36 @@ Type DosHeader Byte			'DOS stub in EXE file
 	OemId		As Word		'OEM identifier (for oeminfo)
 	OemInfo		As Word		'OEM information oemid specific
 	Res10		As Asciz * 20 '10 Reserved words
-	lfaNew		As Long  'always at &H3C and contains the offset of PE signature
+	lfaNew		As Long  'always at 0x3C and contains the offset of PE signature
 
-End Type 'DosHeader
+} 'DosHeader
 
 
-Type PEHeader Byte  'officially "IMAGEFILEHEADER"
-	Machine					As Word  'machine type
+public class PEHeader Byte  'officially "IMAGEFILEHEADER"
+
+{	Machine					As Word  'machine type
 	NumberOfSections		As Word
 	TimeDateStamp			As Dword 'Number of seconds since December 31st, 1969, at 4:00 P.M
 	PointerToSymbolTable	As Dword
 	NumberOfSymbols			As Dword
 	SizeOfOptionalHeader	As Word
 	Characteristics			As Word
-End Type 'PEHeader
+} 'PEHeader
 
 
-Type DataDir			Byte	'IMAGE_DATA_DIRECTORY
-	RVA					As Dword
+public class DataDir			Byte	'IMAGE_DATA_DIRECTORY
+
+{	RVA					As Dword
 	DirSize				As Dword
-End Type 'DataDir
+} 'DataDir
 
 
 'Optional header format ("IMAGE_OPTIONAL_HEADER32").
 'this is not as "optional" as its name suggests
-Type OptHeader			Byte
-	'Standard fields.
-	Magic				As Word  '"Magic number": &H10B = PE32, &H20B = PE32+, &H107 = ROM image
+public class OptHeader			Byte
+
+{	'Standard fields.
+	Magic				As Word  '"Magic number": 0x10B = PE32, 0x20B = PE32+, 0x107 = ROM image
 	MajLinkerVer		As Byte
 	MinLinkerVer		As Byte
 	SizeOfCode			As Dword
@@ -296,7 +308,7 @@ Type OptHeader			Byte
 	BaseOfData			As Dword
 
 	'NT additional fields.
-	ImageBase			As Dword 'defaults: DLL = &H10000000, EXE = &H400000
+	ImageBase			As Dword 'defaults: DLL = 0x10000000, EXE = 0x400000
 	SectionAlign		As Dword 'must be => file alignment
 	FileAlign			As Dword 'alignment of raw data of sections. value should be a power of 2, => 512 and <= 64K ( default = 512)
 	MajOSVer			As Word
@@ -319,13 +331,14 @@ Type OptHeader			Byte
 	NumberOfRvaAndSizes As Dword 'Number of data-directory entries in the remainder of Optional Header
 	'DataDirectory( %NumberOfDirectoryEntries ) As DataDir
 
-End Type 'OptionalHeader
+} 'OptionalHeader
 
 
 'Section header format.
 'Borland calls its code sections "CODE", rather than ".text".
-Type SectionHeader		Byte	 ' _IMAGE_SECTION_HEADER
-	SectName			As String * %SizeOfShortName
+public class SectionHeader		Byte	 ' _IMAGE_SECTION_HEADER
+
+{	SectName			As String * %SizeOfShortName
 	VirtSize			As Dword
 	'VirtualAddress		 As Dword	 'changed from "RVA"
 	RVA					As Dword
@@ -336,7 +349,7 @@ Type SectionHeader		Byte	 ' _IMAGE_SECTION_HEADER
 	NumberOfRelocations As Word
 	NumberOfLineNums	As Word
 	Characteristics		As Dword
-End Type 'SectionHeader
+} 'SectionHeader
 
 
 '**************************************

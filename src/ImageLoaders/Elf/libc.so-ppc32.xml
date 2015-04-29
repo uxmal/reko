@@ -33,7 +33,93 @@
     <typedef name="clockid_t">
       <prim domain="SignedInt" size="4" />
     </typedef>
+    <typedef name="time_t">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="va_list">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+    <typedef name="mode_t">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
   </Types>
+  <procedure name="__libc_start_main">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="main">
+        <ptr>
+          <fn>
+            <return>
+              <prim domain="SignedInt" size="4" />
+            </return>
+            <arg>
+              <prim domain="SignedInt" size="4" />
+            </arg>
+            <arg>
+              <ptr>
+                <ptr>
+                  <prim domain="Character" size="1" />
+                </ptr>
+              </ptr>
+            </arg>
+            <arg>
+              <ptr>
+                <ptr>
+                  <prim domain="Character" size="1" />
+                </ptr>
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name="argc">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="ubp_av">
+        <ptr>
+          <ptr>
+            <prim domain="Character" size="1" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg name="init">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name="fini">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name="rtld_fini">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name="stack_end">
+        <ptr>
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
   <procedure name="scanf">
     <signature>
       <return>
@@ -229,6 +315,45 @@
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
+      <arg>
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="fputc">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="1" />
+      </arg>
+      <arg name="stream">
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getc">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="fgetc">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
       <arg>
         <ptr>
           <type>FILE</type>
@@ -940,6 +1065,231 @@
       </arg>
       <arg name="off">
         <type>off64_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="memcmp">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr>
+          <void />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr>
+          <void />
+        </ptr>
+      </arg>
+      <arg>
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="strstr">
+    <signature>
+      <return>
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="localtime">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="tm" />
+        </ptr>
+      </return>
+      <arg name="t">
+        <type>time_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="mbtowc">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="pwc">
+        <ptr>
+          <prim domain="Character" size="2" />
+        </ptr>
+      </arg>
+      <arg name="pmb">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="max">
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="memmovve">
+    <signature>
+      <return>
+        <ptr>
+          <void />
+        </ptr>
+      </return>
+      <arg>
+        <ptr>
+          <void />
+        </ptr>
+      </arg>
+      <arg name="src">
+        <ptr>
+          <void />
+        </ptr>
+      </arg>
+      <arg name="cb">
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="tcsetattr">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="fd">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="optional_actions">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="termios_p">
+        <ptr>
+          <struct name="termios" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="munmap">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="addr">
+        <ptr>
+          <void />
+        </ptr>
+      </arg>
+      <arg name="length">
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="utime">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="filename">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="times">
+        <ptr>
+          <struct name="utimbuf" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="time">
+    <signature>
+      <return>
+        <type>time_t</type>
+      </return>
+      <arg name="result">
+        <ptr>
+          <type>time_t</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="__vfprintf_chk">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="fp">
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg name="flag">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="format">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="ap">
+        <type>va_list</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="ferror">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="chmod">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="pathname">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="mode">
+        <type>mode_t</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="fnmatch">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="pattern">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="string">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="flags">
+        <prim domain="SignedInt" size="4" />
       </arg>
     </signature>
   </procedure>

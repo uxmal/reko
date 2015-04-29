@@ -26,41 +26,42 @@ namespace Decompiler.TypeLib
 
 //いいいいいいいいいいいいいいいいいいい
 
-//%Debug		= 1 'enable/disable debugging code
-const int Study		= 1 'enable/disable code to help study the format
-const int Priority	= 0 'set minimum priority level for logging and alerts
+//%Debug		= 1 //enable/disable debugging code
+const int Study		= 1 ; // enable/disable code to help study the format
+const int Priority	= 0 ; // set minimum priority level for logging and alerts
 
 #if DEBUG
-%ProfileOn		= 1
+const int ProfileOn		= 1;
 
-public static Long dbg;		As Long
-public static string  dbs;		As String
+public static int dbg;		
+public static string  dbs;	
 
 public void zz()
+{
 
-End Sub 'zz
+}
 
 #else
 
-#endIf
+#endif
 
 //いいいいいいいいいいいいいいいいいいい
 
-$Caption = "TheirCorp's Type Library Dumper"
+public const string Caption = "TheirCorp's Type Library Dumper";
 
-%GoBtn   = 1001
-%PathTxt = 1101
-%LogTxt  = 1102
-%FileLbl = 1103
-%MsgLbl  = 1104
+public short GoBtn   = 1001;
+public short PathTxt = 1101;
+public short LogTxt  = 1102;
+public short FileLbl = 1103;
+public short MsgLbl  = 1104;
 
-%LogLines = 8
-//%fo  	  = 10 'output file's number
-Macro fo = 10 'output file's number
+public short LogLines = 8;
+//%fo  	  = 10 // output file// s number
+Macro fo = 10 // output file's number
 %IsOpen		= 0
 
 Global ghDlg		As Dword
-Global LocalPath	As String   'local path
+Global LocalPath	As String   // local path
 
 //いいいいいいいいいいいいいいいいいいい
 
@@ -72,18 +73,15 @@ Declare Function DisSltg(cs As String) As Dword
 
 //いいいいいいいいいいいいいいいいいいい
 
-#Include "MSFT.bas"
-#Include "DisTypeLib.inc"
-#Include "GetTypeLibData.bas"
 
 //いいいいいいいいいいいいいいいいいいい
 
 Declare Function GetResource( _
 	cs As String,       _
 	ByVal ird As IMAGE_RESOURCE_DIRECTORY Ptr, _
-	ByVal de As Dword,  _   'value to subtract from ".link" offsets's
-	ByVal ss As Dword,   _   'section size
-	ByVal Offset As Dword _   'offset to resource section
+	ByVal de As Dword,  _   // value to subtract from ".link" offsets's
+	ByVal ss As Dword,   _   // section size
+	ByVal Offset As Dword _   // offset to resource section
 	) As Long
 Declare Function GetTypeLibData(cs As String, fs As String) As Long
 
@@ -102,14 +100,14 @@ Static ls   As String
 Static ts   As String
 
 	If Len(Command$) Then
-		'MsgBox ps
+		// MsgBox ps
 
 	Else
 		Incr ct
 
 		If Len(ps) Then
-			'Control Get Text ghDlg, %LogTxt To ls
-			'Dialog DoEvents
+			// Control Get Text ghDlg, %LogTxt To ls
+			// Dialog DoEvents
 			ps = ps & $CrLf
 		Else
 			ct = 1
@@ -133,7 +131,7 @@ Static ts   As String
 
 	End If
 
-End Sub 'UpdateLog
+End Sub // UpdateLog
 
 //いいいいいいいいいいいいいいいいいいい
 //returns %true, if any files were received
@@ -156,10 +154,11 @@ End Function
 //expects "fs" to contain the path and name
 //of either a PE or TLB format file
 //It determines which type it is automatically
-Function ProcessFile(fs As String) As Long
-Local n		As Long
-Local cs	As String
-Local ls	As String
+int ProcessFile(string fs)
+{
+int n		;
+byte [] cs	;
+string ls	;
 
 	If Len(Dir$(fs)) Then
 
@@ -169,12 +168,12 @@ Local ls	As String
 
 			UpdateLog "Processing..."
 
-			'--------------------------------------
-			'open an output file for the disassembly
+			// --------------------------------------
+			// open an output file for the disassembly
 			Try
 				#If %Def(%Study)
 					CurFile = fs
-					Note "" 'reset message counter
+					Note "" // reset message counter
 				#EndIf
 				ls = Mid$(fs, InStr(-1, fs, "\") + 1)
 				ls = MCase$(Extract$(ls, ".")) & ".txt"
@@ -195,7 +194,7 @@ Local ls	As String
 
 	If FileAttr(fo, %IsOpen) Then Close# fo
 
-End Function 'ProcessFile
+End Function // ProcessFile
 
 //いいいいいいいいいいいいいいいいいいい
 
@@ -208,7 +207,7 @@ Local  fs   As String
 
 	Select Case As Long CbMsg
 
-		'Case %WM_INITDIALOG
+		// Case %WM_INITDIALOG
 
 		Case %WM_NCACTIVATE
 			Static hWndSaveFocus  As Dword
@@ -249,7 +248,7 @@ Local lRslt As Long
 	Profile "Profile.txt"
 #EndIf
 
-	'get and save the local path without a trailing backslash
+	// get and save the local path without a trailing backslash
 	LocalPath = String$(%MAX_PATH, $Nul)
 	GetModuleFileName(ByVal 0, ByVal StrPtr(LocalPath), %MAX_PATH)
 	LocalPath = Left$(LocalPath, InStr(-1, LocalPath, "\") - 1)
@@ -289,7 +288,7 @@ Local lRslt As Long
 		Dialog Send ghDlg, %DM_SETDEFID, %GoBtn, 0
 		Control Set Focus ghDlg, %PathTxt
 
-		DragAcceptFiles ghDlg, %True 'Register window to accept dropped files.
+		DragAcceptFiles ghDlg, %True // Register window to accept dropped files.
 
 		Dialog Show Modal ghDlg, Call ShowDlgProc To lRslt
 

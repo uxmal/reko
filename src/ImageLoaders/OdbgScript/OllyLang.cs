@@ -83,6 +83,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         private rulong membpaddr, membpsize;
 
         private bool require_addonaction;
+        private bool back_to_debugloop;
 
         private string errorstr;
 

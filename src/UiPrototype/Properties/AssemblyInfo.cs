@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("UiPrototype")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("User interface prototype")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]
@@ -22,5 +22,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("dd560e51-e15a-4527-bc1d-c4c72695fa44")]
 
-[assembly: AssemblyVersion("0.4.1.0")]
-[assembly: AssemblyFileVersion("0.4.1.0")]
+[assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]

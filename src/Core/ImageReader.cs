@@ -210,6 +210,14 @@ namespace Decompiler.Core
             return true;
         }
 
+        public bool TryReadBeUInt16(out ushort us)
+        {
+            if (!LoadedImage.TryReadBeUInt16(bytes, (uint)off, out us))
+                return false;
+            off += 2;
+            return true;
+        }
+
         public ushort ReadBeUInt16()
         {
             ushort u = LoadedImage.ReadBeUInt16(bytes, (uint)off);
@@ -327,6 +335,7 @@ namespace Decompiler.Core
         public abstract bool TryReadInt64(out long value);
 
         public abstract ushort ReadUInt16();
+        public abstract bool TryReadUInt16(out ushort ui16);
         public abstract uint ReadUInt32();
         public abstract bool TryReadUInt32(out uint ui32);
         public abstract ulong ReadUInt64();
@@ -426,6 +435,7 @@ namespace Decompiler.Core
         public override long ReadInt64() { return ReadLeInt64(); }
         public override bool TryReadInt64(out long value) { return TryReadLeInt64(out value); }
         public override ushort ReadUInt16() { return ReadLeUInt16(); }
+        public override bool  TryReadUInt16(out ushort value) { return TryReadLeUInt16(out value); }
         public override uint ReadUInt32() { return ReadLeUInt32(); }
         public override bool TryReadUInt32(out uint ui32) { return TryReadLeUInt32(out ui32); }
         public override ulong ReadUInt64() { return ReadLeUInt64(); }
@@ -464,6 +474,7 @@ namespace Decompiler.Core
         public override bool TryReadInt32(out int i32) { return TryReadBeInt32(out i32); }
         public override long ReadInt64() { return ReadBeInt64(); }
         public override ushort ReadUInt16() { return ReadBeUInt16(); }
+        public override bool TryReadUInt16(out ushort ui16) { return TryReadBeUInt16(out ui16); }
         public override uint ReadUInt32() { return ReadBeUInt32(); }
         public override bool TryReadUInt32(out uint ui32) { return TryReadBeUInt32(out ui32); }
         public override ulong ReadUInt64() { return ReadBeUInt64(); }

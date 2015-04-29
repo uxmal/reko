@@ -39,7 +39,7 @@ namespace Decompiler.Gui.Windows
         {
             if (segment == null)
                 return;
-            ShowWindow("imageSegmentViewer", "Image segment viewer", pane);
+            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, pane);
             pane.DisplaySegment(segment, program);
         }
     }

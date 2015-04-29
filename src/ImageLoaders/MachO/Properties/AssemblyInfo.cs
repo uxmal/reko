@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MachO image file loader")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Decompiler support for MachO image file format.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Decompiler.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Decompiler.AssemblyMetadata.Product)]

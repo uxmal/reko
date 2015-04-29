@@ -1,4 +1,5 @@
-﻿using Decompiler.Core;
+﻿using Decompiler.Arch.X86;
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    using Decompiler.Arch.X86;
     using rulong = System.UInt64;
 
     public class Debugger

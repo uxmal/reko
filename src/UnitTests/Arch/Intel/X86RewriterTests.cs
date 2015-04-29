@@ -1214,5 +1214,30 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "0|10000000(4): 1 instructions",
                 "1|L--|C = __btr(ebx, 0x00, out ebx)");
         }
+
+        [Test]
+        public void X86rw_more_xmm()
+        {
+            Run32bitTest(0x66, 0x0f, 0x6e, 0xc0);
+            AssertCode(
+                "0|10000000(4): 1 instructions",
+                "1|L--|xmm0 = (word128) eax");
+            Run32bitTest(0x66, 0x0f, 0x7e, 0x01);
+            AssertCode(
+                "0|10000000(4): 1 instructions",
+                "1|L--|Mem0[ecx:word32] = (word32) xmm0");
+            Run32bitTest(0x66, 0x0f, 0x60, 0xc0);
+            AssertCode(
+                "0|10000000(4): 1 instructions",
+                "1|L--|xmm0 = __punpcklbw(xmm0, xmm0)");
+            Run32bitTest(0x66, 0x0f, 0x61, 0xc0);
+            AssertCode(
+                "0|10000000(4): 1 instructions",
+                "1|L--|xmm0 = __punpcklwd(xmm0, xmm0)");
+            Run32bitTest(0x66, 0x0f, 0x70, 0xc0, 0x00);
+            AssertCode(
+                "0|10000000(5): 1 instructions",
+                "1|L--|xmm0 = __pshufd(xmm0, xmm0, 0x00)");
+        }
     }
 }

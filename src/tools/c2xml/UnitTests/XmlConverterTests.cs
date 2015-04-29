@@ -293,7 +293,7 @@ namespace Decompiler.Tools.C2Xml.UnitTests
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
     <typedef name=""PunchCard"">
-      <arr length=""0"">
+      <arr>
         <prim domain=""Character"" size=""1"" />
       </arr>
     </typedef>
@@ -713,6 +713,93 @@ namespace Decompiler.Tools.C2Xml.UnitTests
       <arg name=""pfoo"">
         <ptr>
           <struct name=""foo"" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(cCode, sExp);
+        }
+
+        [Test]
+        public void C2X_fn_with_pfn_args()
+        {
+            var cCode =
+                "int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));";
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""__libc_start_main"">
+    <signature>
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+      </return>
+      <arg name=""main"">
+        <ptr>
+          <fn>
+            <return>
+              <prim domain=""SignedInt"" size=""4"" />
+            </return>
+            <arg>
+              <prim domain=""SignedInt"" size=""4"" />
+            </arg>
+            <arg>
+              <ptr>
+                <ptr>
+                  <prim domain=""Character"" size=""1"" />
+                </ptr>
+              </ptr>
+            </arg>
+            <arg>
+              <ptr>
+                <ptr>
+                  <prim domain=""Character"" size=""1"" />
+                </ptr>
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""argc"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </arg>
+      <arg name=""ubp_av"">
+        <ptr>
+          <ptr>
+            <prim domain=""Character"" size=""1"" />
+          </ptr>
+        </ptr>
+      </arg>
+      <arg name=""init"">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""fini"">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""rtld_fini"">
+        <ptr>
+          <fn>
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+      <arg name=""stack_end"">
+        <ptr>
+          <void />
         </ptr>
       </arg>
     </signature>

@@ -120,6 +120,7 @@ namespace Decompiler.Arch.X86
                 }
                 break;
             case 128:
+            default:
                 switch (bits)
                 {
                 case 0: return Registers.xmm0;
@@ -245,6 +246,7 @@ namespace Decompiler.Arch.X86
             switch (dataWidth.BitSize)
             {
             default: throw new NotImplementedException();
+            case 32:
             case 64:
             case 128:
                 switch (bits)
@@ -692,6 +694,9 @@ namespace Decompiler.Arch.X86
             case 'q':
                 dataWidth = dataWidth != defaultDataWidth ?  PrimitiveType.Word128 : PrimitiveType.Word64;
                 break;
+            case 'y':
+                dataWidth = dataWidth != defaultDataWidth ? PrimitiveType.Word32 : PrimitiveType.Word64;
+                break;
             }
 			return dataWidth;
 		}
@@ -712,6 +717,10 @@ namespace Decompiler.Arch.X86
                 return defaultDataWidth != dataWidth
                     ? PrimitiveType.Word128
                     : PrimitiveType.Word256;
+            case 'y':
+                return defaultDataWidth != dataWidth
+                    ? PrimitiveType.Word32
+                    : PrimitiveType.Word64;
             default: throw new NotImplementedException(string.Format("Unknown operand width {0}", fmt[i-1]));
             }
         }

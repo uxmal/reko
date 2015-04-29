@@ -975,6 +975,7 @@ IGNORE tab + cr + lf
         //AbstractDeclarator =
         //    Pointer [DirectAbstractDeclarator]
         //| DirectAbstractDeclarator.
+        // | Pointer DirectAbstractDeclarator.
 
         Declarator Parse_AbstractDeclarator()
         {
@@ -987,7 +988,11 @@ IGNORE tab + cr + lf
                 decl = Parse_AbstractPointer();
                 return grammar.CallConventionDeclarator(token.Type, decl);
             case CTokenType.Star:
-                return Parse_AbstractPointer();
+                var ptr = Parse_Pointer();
+                decl = Parse_DirectAbstractDeclarator();
+                if (decl == null)
+                    return ptr;
+                return ptr;
             default:
                 return Parse_DirectAbstractDeclarator();
             }
