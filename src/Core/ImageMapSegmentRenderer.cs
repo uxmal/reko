@@ -26,11 +26,6 @@ using System.Text;
 
 namespace Decompiler.Core
 {
-    /// <summary>
-    /// Base class for optional renderers for image map segments. It is used to render
-    /// the contents of a loaded image segment differently from just dumping its contents
-    /// as a bunch of bytes.
-    /// </summary>
     public abstract class ImageMapSegmentRenderer
     {
         public abstract void Render(ImageMapSegment segment, Program program, Formatter formatter);
