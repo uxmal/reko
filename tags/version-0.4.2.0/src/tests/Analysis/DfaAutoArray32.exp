@@ -1,0 +1,34 @@
+// void fn10000000(Stack word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO eax ecx edi ax cx di al cl ah ch
+// Preserved: esp
+// Stack args: Stack +0004(32)
+// fn10000000
+// Return size: 0
+void fn10000000(word32 dwArg04)
+fn10000000_entry:
+fn10000000_frame_asgn:
+	ptr32 fp_13 = &fn10000000_frame
+l10000000:
+	Mem17[fp - 0x00000010:word32] = 0x00000001
+	Mem18[fp - 0x0000000C:word32] = 0x00000002
+	Mem19[fp - 0x00000008:word32] = 0x00000003
+	word32 eax_15 = 0x00000000
+	word32 ecx_18 = 0x00000000
+	goto l10000027
+	// succ:  l10000027
+l10000023:
+	eax_14 = eax_14 + Mem0[(fp - 0x0000000C) + ecx_15 * 0x00000004:word32]
+	ecx_15 = ecx_15 + 0x00000001
+	// succ:  l10000027
+l10000027:
+	branch ecx_15 <= 0x00000003 l10000023
+	// succ:  l1000002C l10000023
+l1000002C:
+	Mem26[dwArg04:word32] = eax_14
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+

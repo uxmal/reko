@@ -1,0 +1,156 @@
+fp:fp
+esp_1: orig: esp
+Mem0:Global memory
+    def:  def Mem0
+    uses: eax_3 = Mem0[0x10003420:word32]
+eax_3: orig: eax
+    def:  eax_3 = Mem0[0x10003420:word32]
+    uses: ax_6 = fn10000017(eax_3)
+esp_4: orig: esp
+dwLoc04_5: orig: dwLoc04
+ax_6: orig: ax
+    def:  ax_6 = fn10000017(eax_3)
+    uses: Mem9[0x10003428:word16] = ax_6
+esp_7: orig: esp
+SCZO_8: orig: SCZO
+Mem9: orig: Mem0
+    def:  Mem9[0x10003428:word16] = ax_6
+// fn10000000
+// Return size: 0
+void fn10000000()
+fn10000000_entry:
+	def Mem0
+	// succ:  l10000000
+l10000000:
+	eax_3 = Mem0[0x10003420:word32]
+	ax_6 = fn10000017(eax_3)
+	Mem9[0x10003428:word16] = ax_6
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+
+fp:fp
+esp_1: orig: esp
+esp_2: orig: esp
+ebp:ebp
+dwLoc04_4: orig: dwLoc04
+ebp_5: orig: ebp
+esp_6: orig: esp
+ecx:ecx
+dwLoc08_8: orig: dwLoc08
+wLoc08_9: orig: wLoc08
+    def:  wLoc08_9 = 0x0000
+    uses: wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+dwArg04:Stack +0004
+    def:  def dwArg04
+    uses: edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
+          branch dwArg04 != 0x00000000 l1000002F
+SCZO_11: orig: SCZO
+Z_12: orig: Z
+SO:Flags
+cx:cx
+ecx_15: orig: ecx
+edx_16: orig: edx
+Z_17: orig: Z
+SO_18: orig: SO
+cx_19: orig: cx
+SCZO_20: orig: SCZO
+wLoc08_21: orig: wLoc08
+ax_22: orig: ax
+    def:  ax_22 = PHI(ax_29, ax_49)
+    uses: return ax_22
+eax_23: orig: eax
+SZO_24: orig: SZO
+C_25: orig: C
+esp_26: orig: esp
+ebp_27: orig: ebp
+esp_28: orig: esp
+ax_29: orig: ax
+    def:  ax_29 = 0x0000
+    uses: ax_22 = PHI(ax_29, ax_49)
+eax:eax
+eax_31: orig: eax
+SZO_32: orig: SZO
+C_33: orig: C
+edx:edx
+SO_35: orig: SO
+cx_36: orig: cx
+SCZO_37: orig: SCZO
+wLoc08_38: orig: wLoc08
+    def:  wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+    uses: eax_39 = (int32) wLoc08_38
+          ax_49 = wLoc08_38
+          eax_51 = (int32) wLoc08_38
+          cx_55 = wLoc08_38 + 0x0001
+eax_39: orig: eax
+    def:  eax_39 = (int32) wLoc08_38
+    uses: edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
+ecx_40: orig: ecx
+Mem0:Global memory
+    def:  def Mem0
+    uses: edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
+edx_42: orig: edx
+    def:  edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
+    uses: branch edx_42 == 0x00000000 l1000005A
+SZO_43: orig: SZO
+Z_44: orig: Z
+C_45: orig: C
+SO_46: orig: SO
+SCZO_47: orig: SCZO
+eax_48: orig: eax
+ax_49: orig: ax
+    def:  ax_49 = wLoc08_38
+    uses: ax_22 = PHI(ax_29, ax_49)
+eax_50: orig: eax
+eax_51: orig: eax
+    def:  eax_51 = (int32) wLoc08_38
+    uses: branch eax_51 >= 0x00007FFF l1000005A
+SCZO_52: orig: SCZO
+SO_53: orig: SO
+cx_54: orig: cx
+cx_55: orig: cx
+    def:  cx_55 = wLoc08_38 + 0x0001
+    uses: wLoc08_57 = cx_55
+SCZO_56: orig: SCZO
+wLoc08_57: orig: wLoc08
+    def:  wLoc08_57 = cx_55
+    uses: wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+// fn10000017
+// Return size: 0
+word16 fn10000017(word32 dwArg04)
+fn10000017_entry:
+	def dwArg04
+	def Mem0
+	// succ:  l10000017
+l10000017:
+	wLoc08_9 = 0x0000
+	branch dwArg04 != 0x00000000 l1000002F
+	// succ:  l10000027 l1000002F
+l10000027:
+	ax_29 = 0x0000
+	goto l1000005E
+	// succ:  l1000005E
+l1000002F:
+	wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+	eax_39 = (int32) wLoc08_38
+	edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
+	branch edx_42 == 0x00000000 l1000005A
+	// succ:  l1000003E l1000005A
+l1000003E:
+	eax_51 = (int32) wLoc08_38
+	branch eax_51 >= 0x00007FFF l1000005A
+	// succ:  l10000049 l1000005A
+l10000049:
+	cx_55 = wLoc08_38 + 0x0001
+	wLoc08_57 = cx_55
+	goto l1000002F
+	// succ:  l1000002F
+l1000005A:
+	ax_49 = wLoc08_38
+	// succ:  l1000005E
+l1000005E:
+	ax_22 = PHI(ax_29, ax_49)
+	return ax_22
+	// succ:  fn10000017_exit
+fn10000017_exit:
+

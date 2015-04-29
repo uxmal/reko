@@ -1,0 +1,7 @@
+T_1 (in id : word32)
+	trait_primitive(word32)
+	trait_primitive(word32)
+	trait_primitive(ui32)
+	trait_primitive(ui32)
+T_2 (in id * id : word32)
+	trait_primitive(ui32)

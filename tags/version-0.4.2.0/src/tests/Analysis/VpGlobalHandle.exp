@@ -1,0 +1,258 @@
+= fn10000000 ========================
+fp:fp
+    def:  def fp
+    uses: esp_1 = fp
+          esp_2 = fp - 0x00000004
+          esp_7 = fp - 0x00000008
+          esp_11 = fp - 0x0000000C
+          esp_14 = fp - 0x00000008
+          esp_15 = fp - 0x0000000C
+          esp_18 = fp - 0x00000008
+          esp_19 = fp - 0x0000000C
+          esp_22 = fp - 0x00000008
+          esp_23 = fp - 0x0000000C
+          esp_26 = fp - 0x00000008
+          esp_28 = fp - 0x00000004
+          esp_30 = fp
+esp_1: orig: esp
+    def:  esp_1 = fp
+esp_2: orig: esp
+    def:  esp_2 = fp - 0x00000004
+esi:esi
+    def:  def esi
+    uses: dwLoc04_4 = esi
+dwLoc04_4: orig: dwLoc04
+    def:  dwLoc04_4 = esi
+    uses: esi_29 = dwLoc04_4
+dwArg04:Stack +0004
+    def:  def dwArg04
+    uses: esi_6 = dwArg04
+esi_6: orig: esi
+    def:  esi_6 = dwArg04
+    uses: dwLoc0C_12 = esi_6
+          dwLoc0C_20 = esi_6
+esp_7: orig: esp
+    def:  esp_7 = fp - 0x00000008
+edi:edi
+    def:  def edi
+    uses: dwLoc08_9 = edi
+dwLoc08_9: orig: dwLoc08
+    def:  dwLoc08_9 = edi
+    uses: edi_27 = dwLoc08_9
+edi_10: orig: edi
+    def:  edi_10 = GlobalHandle
+esp_11: orig: esp
+    def:  esp_11 = fp - 0x0000000C
+dwLoc0C_12: orig: dwLoc0C
+    def:  dwLoc0C_12 = esi_6
+    uses: eax_13 = GlobalHandle(dwLoc0C_12)
+eax_13: orig: eax
+    def:  eax_13 = GlobalHandle(dwLoc0C_12)
+    uses: dwLoc0C_16 = eax_13
+esp_14: orig: esp
+    def:  esp_14 = fp - 0x00000008
+esp_15: orig: esp
+    def:  esp_15 = fp - 0x0000000C
+dwLoc0C_16: orig: dwLoc0C
+    def:  dwLoc0C_16 = eax_13
+    uses: eax_17 = GlobalUnlock(dwLoc0C_16)
+eax_17: orig: eax
+    def:  eax_17 = GlobalUnlock(dwLoc0C_16)
+esp_18: orig: esp
+    def:  esp_18 = fp - 0x00000008
+esp_19: orig: esp
+    def:  esp_19 = fp - 0x0000000C
+dwLoc0C_20: orig: dwLoc0C
+    def:  dwLoc0C_20 = esi_6
+    uses: eax_21 = GlobalHandle(dwLoc0C_20)
+eax_21: orig: eax
+    def:  eax_21 = GlobalHandle(dwLoc0C_20)
+    uses: dwLoc0C_24 = eax_21
+esp_22: orig: esp
+    def:  esp_22 = fp - 0x00000008
+esp_23: orig: esp
+    def:  esp_23 = fp - 0x0000000C
+dwLoc0C_24: orig: dwLoc0C
+    def:  dwLoc0C_24 = eax_21
+    uses: eax_25 = GlobalFree(dwLoc0C_24)
+eax_25: orig: eax
+    def:  eax_25 = GlobalFree(dwLoc0C_24)
+esp_26: orig: esp
+    def:  esp_26 = fp - 0x00000008
+edi_27: orig: edi
+    def:  edi_27 = dwLoc08_9
+esp_28: orig: esp
+    def:  esp_28 = fp - 0x00000004
+esi_29: orig: esi
+    def:  esi_29 = dwLoc04_4
+esp_30: orig: esp
+    def:  esp_30 = fp
+// fn10000000
+// Return size: 0
+void fn10000000(word32 dwArg04)
+fn10000000_entry:
+	def fp
+	def esi
+	def dwArg04
+	def edi
+	// succ:  l10000000
+l10000000:
+	esp_1 = fp
+	esp_2 = fp - 0x00000004
+	dwLoc04_4 = esi
+	esi_6 = dwArg04
+	esp_7 = fp - 0x00000008
+	dwLoc08_9 = edi
+	edi_10 = GlobalHandle
+	esp_11 = fp - 0x0000000C
+	dwLoc0C_12 = esi_6
+	eax_13 = GlobalHandle(dwLoc0C_12)
+	esp_14 = fp - 0x00000008
+	esp_15 = fp - 0x0000000C
+	dwLoc0C_16 = eax_13
+	eax_17 = GlobalUnlock(dwLoc0C_16)
+	esp_18 = fp - 0x00000008
+	esp_19 = fp - 0x0000000C
+	dwLoc0C_20 = esi_6
+	eax_21 = GlobalHandle(dwLoc0C_20)
+	esp_22 = fp - 0x00000008
+	esp_23 = fp - 0x0000000C
+	dwLoc0C_24 = eax_21
+	eax_25 = GlobalFree(dwLoc0C_24)
+	esp_26 = fp - 0x00000008
+	edi_27 = dwLoc08_9
+	esp_28 = fp - 0x00000004
+	esi_29 = dwLoc04_4
+	esp_30 = fp
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+
+fp:fp
+    def:  def fp
+    uses: esp_1 = fp
+          esp_2 = fp - 0x00000004
+          esp_7 = fp - 0x00000008
+          esp_11 = fp - 0x0000000C
+          esp_14 = fp - 0x00000008
+          esp_15 = fp - 0x0000000C
+          esp_18 = fp - 0x00000008
+          esp_19 = fp - 0x0000000C
+          esp_22 = fp - 0x00000008
+          esp_23 = fp - 0x0000000C
+          esp_26 = fp - 0x00000008
+          esp_28 = fp - 0x00000004
+          esp_30 = fp
+esp_1: orig: esp
+    def:  esp_1 = fp
+esp_2: orig: esp
+    def:  esp_2 = fp - 0x00000004
+esi:esi
+    def:  def esi
+    uses: dwLoc04_4 = esi
+          esi_29 = esi
+dwLoc04_4: orig: dwLoc04
+    def:  dwLoc04_4 = esi
+dwArg04:Stack +0004
+    def:  def dwArg04
+    uses: esi_6 = dwArg04
+          dwLoc0C_12 = dwArg04
+          eax_13 = GlobalHandle(dwArg04)
+          dwLoc0C_20 = dwArg04
+          eax_21 = GlobalHandle(dwArg04)
+esi_6: orig: esi
+    def:  esi_6 = dwArg04
+esp_7: orig: esp
+    def:  esp_7 = fp - 0x00000008
+edi:edi
+    def:  def edi
+    uses: dwLoc08_9 = edi
+          edi_27 = edi
+dwLoc08_9: orig: dwLoc08
+    def:  dwLoc08_9 = edi
+edi_10: orig: edi
+    def:  edi_10 = GlobalHandle
+esp_11: orig: esp
+    def:  esp_11 = fp - 0x0000000C
+dwLoc0C_12: orig: dwLoc0C
+    def:  dwLoc0C_12 = dwArg04
+eax_13: orig: eax
+    def:  eax_13 = GlobalHandle(dwArg04)
+    uses: dwLoc0C_16 = eax_13
+          eax_17 = GlobalUnlock(eax_13)
+esp_14: orig: esp
+    def:  esp_14 = fp - 0x00000008
+esp_15: orig: esp
+    def:  esp_15 = fp - 0x0000000C
+dwLoc0C_16: orig: dwLoc0C
+    def:  dwLoc0C_16 = eax_13
+eax_17: orig: eax
+    def:  eax_17 = GlobalUnlock(eax_13)
+esp_18: orig: esp
+    def:  esp_18 = fp - 0x00000008
+esp_19: orig: esp
+    def:  esp_19 = fp - 0x0000000C
+dwLoc0C_20: orig: dwLoc0C
+    def:  dwLoc0C_20 = dwArg04
+eax_21: orig: eax
+    def:  eax_21 = GlobalHandle(dwArg04)
+    uses: dwLoc0C_24 = eax_21
+          eax_25 = GlobalFree(eax_21)
+esp_22: orig: esp
+    def:  esp_22 = fp - 0x00000008
+esp_23: orig: esp
+    def:  esp_23 = fp - 0x0000000C
+dwLoc0C_24: orig: dwLoc0C
+    def:  dwLoc0C_24 = eax_21
+eax_25: orig: eax
+    def:  eax_25 = GlobalFree(eax_21)
+esp_26: orig: esp
+    def:  esp_26 = fp - 0x00000008
+edi_27: orig: edi
+    def:  edi_27 = edi
+esp_28: orig: esp
+    def:  esp_28 = fp - 0x00000004
+esi_29: orig: esi
+    def:  esi_29 = esi
+esp_30: orig: esp
+    def:  esp_30 = fp
+// fn10000000
+// Return size: 0
+void fn10000000(word32 dwArg04)
+fn10000000_entry:
+	def fp
+	def esi
+	def dwArg04
+	def edi
+	// succ:  l10000000
+l10000000:
+	esp_1 = fp
+	esp_2 = fp - 0x00000004
+	dwLoc04_4 = esi
+	esi_6 = dwArg04
+	esp_7 = fp - 0x00000008
+	dwLoc08_9 = edi
+	edi_10 = GlobalHandle
+	esp_11 = fp - 0x0000000C
+	dwLoc0C_12 = dwArg04
+	eax_13 = GlobalHandle(dwArg04)
+	esp_14 = fp - 0x00000008
+	esp_15 = fp - 0x0000000C
+	dwLoc0C_16 = eax_13
+	eax_17 = GlobalUnlock(eax_13)
+	esp_18 = fp - 0x00000008
+	esp_19 = fp - 0x0000000C
+	dwLoc0C_20 = dwArg04
+	eax_21 = GlobalHandle(dwArg04)
+	esp_22 = fp - 0x00000008
+	esp_23 = fp - 0x0000000C
+	dwLoc0C_24 = eax_21
+	eax_25 = GlobalFree(eax_21)
+	esp_26 = fp - 0x00000008
+	edi_27 = edi
+	esp_28 = fp - 0x00000004
+	esi_29 = esi
+	esp_30 = fp
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:

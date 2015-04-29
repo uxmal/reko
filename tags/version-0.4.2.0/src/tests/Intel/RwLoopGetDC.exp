@@ -1,0 +1,51 @@
+// fn10000000
+// Return size: 4
+// Mem0:Global memory
+// fp:fp
+// esp:esp
+// edi:edi
+// esi:esi
+// ebx:ebx
+// SZO:Flags
+// C:Flags
+// Z:Flags
+// eax:eax
+// SCZO:Flags
+// return address size: 4
+void fn10000000()
+fn10000000_entry:
+	// succ:  l10000000
+l10000000:
+	esp = fp
+	edi = Mem0[0x1000002C:word32]
+	esi = 0x00000003
+	ebx = GetDC
+	goto l10000027
+	// succ:  l10000027
+l10000016:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = Mem0[edi:word32]
+	eax = GetDC(Mem0[esp:HWND])
+	esp = esp + 0x00000004
+	Mem0[edi:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	eax = GetDC(Mem0[esp:HWND])
+	esp = esp + 0x00000004
+	Mem0[edi + 0x00000004:word32] = eax
+	esi = esi - 0x00000001
+	SZO = cond(esi)
+	edi = edi + 0x00000008
+	SCZO = cond(edi)
+	// succ:  l10000027
+l10000027:
+	esi = esi | esi
+	SZO = cond(esi)
+	C = false
+	branch Test(NE,Z) l10000016
+	// succ:  l1000002B l10000016
+l1000002B:
+	return
+	// succ:  fn10000000_exit
+fn10000000_exit:
+

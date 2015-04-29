@@ -1,0 +1,112 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  bp si ds
+	BypassIn: 
+	Trashed:   SCZO ax cx dx bx bp si al cl dl bl ah ch dh bh
+	Preserved: sp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: bp si ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	sp = fp
+	call fn0C00_0004 (retsize: 2; depth: 2)
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp cx:0x0004 dx:0x5427 bx:<invalid> bp:<invalid> si:<invalid> al:<invalid> ah:0x40
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// fn0C00_0004 /////////////////////
+	LiveOut:  
+	MayUseIn:  bp si ds
+	BypassIn: 
+	Trashed:   SCZO ax cx dx bx bp si al cl dl bl ah ch dh bh
+	Preserved: sp
+// fn0C00_0004
+void fn0C00_0004()
+// SymbolicIn: sp:fp
+fn0C00_0004_entry:
+// DataOut: bp si ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp al:<invalid> ah:0x40 bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
+l0C00_0004:
+	sp = fp
+	al = Mem0[ds:si:byte]
+	al = al >>u 0x01
+	SCZO = cond(al)
+	al = al >>u 0x01
+	SCZO = cond(al)
+	al = al >>u 0x01
+	SCZO = cond(al)
+	al = al >>u 0x01
+	SCZO = cond(al)
+	al = al + 0x30
+	SCZO = cond(al)
+	SCZO = cond(al - 0x39)
+	branch Test(LE,SZO) l0C00_0016
+// DataOut: bp si al ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp al:<invalid> ah:0x40 bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
+l0C00_0014:
+	al = al + 0x07
+	SCZO = cond(al)
+// DataOut: bp si al ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp al:<invalid> ah:0x40 bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
+l0C00_0016:
+	ah = Mem0[ds:si:byte]
+	ah = ah & 0x0F
+	SZO = cond(ah)
+	C = false
+	ah = ah + 0x30
+	SCZO = cond(ah)
+	SCZO = cond(ah - 0x39)
+	branch Test(LE,SZO) l0C00_0026
+// DataOut: ax bp si al ah ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp al:<invalid> ah:<invalid> bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
+l0C00_0023:
+	ah = ah + 0x07
+	SCZO = cond(ah)
+// DataOut: ax bp si ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp al:<invalid> ah:<invalid> bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
+l0C00_0026:
+	Mem0[ds:0x5427:word16] = ax
+	ah = 0x40
+	bx = Mem0[ds:0x5424:word16]
+	cx = 0x0004
+	dx = 0x5427
+	C = msdos_write_file(bx, 0x0004, ds_dx, out ax)
+	si = si + 0x0001
+	SZO = cond(si)
+	bp = bp - 0x0001
+	SZO = cond(bp)
+	branch Test(NE,Z) l0C00_0004
+// DataOut: bp si ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp al:<invalid> ah:0x40 bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
+l0C00_003C:
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp al:<invalid> ah:0x40 bx:<invalid> cx:0x0004 dx:0x5427 si:<invalid> bp:<invalid>
+fn0C00_0004_exit:
+// DataOut:
+// DataOut (flags): 
+

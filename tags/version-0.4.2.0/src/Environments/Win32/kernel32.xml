@@ -1,0 +1,1302 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="int">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+
+    <typedef name="WORD">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    
+    <typedef name="DWORD">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    
+    <typedef name="UINT">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>    
+    
+    <typedef name="BOOL">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    
+    <typedef name="SIZE_T">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+
+    <typedef name="LONG">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    
+    <typedef name="VOID">
+        <void />
+    </typedef>
+    
+    <typedef name="INT">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    
+    <typedef name="LCID">
+      <prim domain="SignedInt" size="4" />
+    </typedef>    
+    
+    <typedef name="LPTOP_LEVEL_EXCEPTION_FILTER">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>  
+    
+     <typedef name="LPSTARTUPINFOA">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>  
+    
+     <typedef name="LPSECURITY_ATTRIBUTES">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>  
+    
+    <typedef name="LPOSVERSIONINFOA">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+    
+    <typedef name="FARPROC">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+    
+    <typedef name="PEXCEPTION_RECORD">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+
+    <typedef name="PVOID">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPVOID">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPCVOID">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPBOOL">
+      <ptr>
+        <type>BOOL</type>
+      </ptr>
+    </typedef>    
+    
+    <typedef name="LPWORD">
+      <ptr>
+        <type>WORD</type>
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPDWORD">
+      <ptr>
+        <type>DWORD</type>
+      </ptr>
+    </typedef>
+    
+    <typedef name="PLONG">
+      <ptr>
+        <prim domain="SignedInt" size="4" />
+      </ptr>
+    </typedef>
+    
+    <typedef name="UINT_PTR">
+      <ptr>
+        <prim domain="UnsignedInt" size="4" />
+      </ptr>
+    </typedef> 
+      
+    <typedef name="ULONG_PTR">
+      <ptr>
+        <prim domain="UnsignedInt" size="4" />
+      </ptr>
+    </typedef> 
+    
+    <typedef name="LPCSTR">
+      <ptr>
+        <prim domain="Character" size="1" />
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPWCSTR">
+      <ptr>
+        <prim domain="Character" size="2" />
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPCWSTR">
+      <ptr>
+        <prim domain="Character" size="2" />
+      </ptr>
+    </typedef>
+
+    <typedef name="LPSTR">
+      <ptr>
+        <prim domain="Character" size="1" />
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPWSTR">
+      <ptr>
+        <prim domain="Character" size="2" />
+      </ptr>
+    </typedef>
+    
+    <typedef name="LPORD">
+      <ptr>
+        <prim domain="UnsignedInt" size="2" />
+      </ptr>
+    </typedef>
+
+    <typedef name="LPOVERLAPPED">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>    
+    
+    <typedef name="LPSYSTEMTIME">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>    
+
+    <typedef name="HANDLE">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+
+    <typedef name="HMODULE">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+  
+    <typedef name="HRSRC">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+    
+    <typedef name="HGLOBAL">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>    
+    <typedef name="PCPINFO">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
+  </Types>
+  <default>
+    <signature convention="stdapi"></signature>
+  </default>
+  <procedure name="CreateFileA">
+    <signature>
+      <return>
+        <type>HANDLE</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpFileName">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwDesiredAccess">
+        <type>DWORD</type>"
+        <stack size="4" />
+      </arg>
+      <arg name="dwShareMode">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpSecurityAttributes">
+        <ptr>
+          <void />
+        </ptr>
+        <stack size="4" />
+      </arg>
+      <arg name="dwCreationDisposition">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFlagsAndAttributes">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="hTemplateFile">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="CloseHandle">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hObject">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetCommandLineA">
+    <signature>
+      <return>
+        <type>LPSTR</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="GetEnvironmentVariableA">
+    <signature>
+      <return>
+        <type>DWORD</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpName">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpBuffer">
+        <type>LPSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="nSize">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetModuleFileNameA">
+    <signature>
+      <return>
+        <reg>eax</reg>
+      </return>
+      <arg name="hModule">
+        <type>HMODULE</type>
+        <stack size="4" />
+        <type>LPCSTR</type>
+      </arg>
+      <arg name="pFileName">
+        <type>LPSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="nSize">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetModuleHandleA">
+    <signature convention="__stdcall">
+      <return>
+        <type>HMODULE</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="pModuleName">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetVersion">
+    <signature>
+      <return>
+        <type>DWORD</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="WriteFile">
+    <signature>
+      <return >
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hFile">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpBuffer">
+        <type>LPCVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg  name="nNumberOfBytesToWrite">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg  name="lpNumberOfBytesWritten">
+        <type>LPDWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg  name="lpOverlapped">
+        <type>LPOVERLAPPED</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GlobalHandle">
+    <signature>
+      <return >
+        <type>HGLOBAL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="pMem">
+        <type>LPCVOID</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetTempPathA">
+    <signature>
+      <return >
+        <type>DWORD</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="nBufferLength">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpBuffer">
+        <type>LPSTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="ReadFile">
+    <signature>
+      <return >
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hFile">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpBuffer">
+        <type>LPVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="nNumberOfBytesToRead">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpNumberOfBytesRead">
+        <type>LPDWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpOverlapped">
+        <type>LPOVERLAPPED</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GlobalAlloc">
+    <signature>
+      <return >
+        <type>HGLOBAL</type>
+        <reg>eax</reg>
+      </return>
+      <arg  name="uFlags">
+        <type>UINT</type>
+        <stack size="4" />
+      </arg>
+      <arg  name="dwBytes">
+        <type>SIZE_T</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="HeapAlloc">
+    <signature>
+      <return >
+        <type>LPVOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hHeap">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFlags">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwBytes">
+        <type>SIZE_T</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="HeapFree">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hHeap">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFlags">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="pMem">
+        <type>LPVOID</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="HeapReAlloc">
+    <signature>
+      <return>
+        <type>LPVOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hHeap">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFlags">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg  name="pMem">
+        <type>LPVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg  name="dwBytes">
+        <type>SIZE_T</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="LockResource">
+    <signature>
+      <return >
+        <type>LPVOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hResData">
+        <type>HGLOBAL</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="LoadResource">
+    <signature>
+      <return>
+        <type>HGLOBAL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hModule">
+        <type>HMODULE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="hResInfo">
+        <type>HRSRC</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="CreateFileA">
+    <signature>
+      <return>
+        <type>HANDLE</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpFileName">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwDesiredAccess">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwShareMode">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpSecurityAttributes">
+        <type>LPSECURITY_ATTRIBUTES</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwCreationDisposition">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFlagsAndAttributes">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="hTemplateFile">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetTickCount">
+    <signature>
+      <return>
+        <type>DWORD</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="GlobalFree">
+    <signature>
+      <return>
+        <type>HGLOBAL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hMem">
+        <type>HGLOBAL</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetLastError">
+    <signature>
+      <return>
+        <type>DWORD</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="FindResourceA">
+    <signature>
+      <return>
+        <type>HRSRC</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hModule">
+        <type>HMODULE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpName">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpType">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetSystemTime">
+    <signature>
+      <return>
+        <type>VOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpSystemTime">
+        <type>LPSYSTEMTIME</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="FreeResource">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hResData">
+        <type>HGLOBAL</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="MulDiv">
+    <signature>
+      <return>
+        <type>int</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="nNumber">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="nNumerator">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="nDenominator">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GlobalUnlock">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hMem">
+        <type>HGLOBAL</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GlobalLock">
+    <signature>
+      <return>
+        <type>LPVOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hMem">
+        <type>HGLOBAL</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <!-- This should be in ntdll.xml -->
+  <procedure name="RtlUnwind">
+    <signature>
+      <arg name="TargetFrame">
+        <type>PVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="TargetIP">
+        <type>PVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="ExceptionRecord">
+        <stack size="4" />
+        <type>PEXCEPTION_RECORD</type>
+      </arg>
+      <arg name="ReturnValue">
+        <type>PVOID</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetFileType">
+    <signature>
+      <return>
+        <type>DWORD</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hFile">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetVersionExA">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpVersionInformation">
+        <type>LPOSVERSIONINFOA</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="HeapDestroy">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hHeap">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="HeapCreate">
+    <signature>
+      <return>
+        <type>HANDLE</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="flOption">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwInitialSiz">
+        <type>SIZE_T</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwMaximumSize">
+        <type>SIZE_T</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="VirtualAlloc">
+    <signature>
+      <return>
+        <type>LPVOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpAddres">
+        <type>LPVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwSiz">
+        <type>SIZE_T</type>
+        <stack size="4" />
+      </arg>
+      <arg name="flAllocationTyp">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="flProtect">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="VirtualFree">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpAddres">
+        <type>LPVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwSiz">
+        <type>SIZE_T</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFreeType">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="IsBadWritePtr">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="l">
+        <type>LPVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="ucb">
+        <type>UINT_PTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetProcAddress">
+    <signature>
+      <return>
+        <type>FARPROC</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hModul">
+        <type>HMODULE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpProcName">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="ExitProcess">
+    DECLSPEC_NORETURN
+    <signature>
+      <return>
+        <type>VOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="uExitCode">
+        <type>UINT</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="TerminateProcess">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hProces">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="uExitCode">
+        <type>UINT</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetCurrentProcess">
+    <signature>
+      <return>
+        <type>HANDLE</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="SetHandleCount">
+    <signature>
+      <return>
+        <type>UINT</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="uNumber">
+        <type>UINT</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetStdHandle">
+    <signature>
+      <return>
+        <type>HANDLE</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="nStdHandle">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetStartupInfoA">
+    <signature>
+      <return>
+        <type>VOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpStartupInfo">
+        <type>LPSTARTUPINFOA</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="FreeEnvironmentStringsA">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="pEnvStrings">
+        <type>LPSTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="FreeEnvironmentStringsW">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="pEnvstrings">
+        <type>LPWSTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="IsBadCodePtr">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpfn">
+        <type>FARPROC</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="IsBadReadPtr">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="l">
+        <type>LPVOID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="ucb">
+        <type>UINT_PTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="MultiByteToWideChar">
+    <signature>
+      <return>
+        <type>int</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="CodePag">
+        <type>UINT</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFlag">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpMultiByteSt">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cbMultiByt">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpWideCharSt">
+        <type>LPWSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchWideChar">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="WideCharToMultiByte">
+    <signature>
+      <return>
+        <type>int</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="CodePag">
+        <type>UINT</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwFlag">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpWideCharSt">
+        <type>LPCWSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchWideCha">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpMultiByteSt">
+        <type>LPSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cbMultiByt">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpDefaultCha">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpUsedDefaultChar">
+        <type>LPBOOL</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetEnvironmentStrings">
+    <signature>
+      <return>
+        <type>LPSTR</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="GetEnvironmentStringsW">
+    <signature>
+      <return>
+        <type>LPWSTR</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="DisableThreadLibraryCalls">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hLibModule">
+        <type>HMODULE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="SetUnhandledExceptionFilter">
+    <signature>
+      <return>
+        <type>LPTOP_LEVEL_EXCEPTION_FILTER</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpTopLevelExceptionFilter">
+        <type>LPTOP_LEVEL_EXCEPTION_FILTER</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="SetFilePointer">
+    <signature>
+      <return>
+        <type>DWORD</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hFil">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lDistanceToMov">
+        <type>LONG</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpDistanceToMoveHig">
+        <type>PLONG</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwMoveMethod">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetACP">
+    <signature>
+      <return>
+        <type>UINT</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="GetOEMCP">
+    <signature>
+      <return>
+        <type>UINT</type>
+        <reg>eax</reg>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="GetCPInfo">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="CodePag">
+        <type>INT</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpCPInf">
+        <type>PCPINFO</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="LoadLibraryA">
+    <signature>
+      <return>
+        <type>HMODULE</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="lpLibFileName">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetStringTypeA">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="Local">
+        <type>LCID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwInfoTyp">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpSrcSt">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchSr">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpCharType">
+        <type>LPWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="GetStringTypeW">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="dwInfoTyp">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpSrcSt">
+        <type>LPCWSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchSr">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpCharType">
+        <type>LPWORD</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="LCMapStringA">
+    <signature>
+      <return>
+        <type>int</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="Local">
+        <type>LCID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwMapFlag">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpSrcSt">
+        <type>LPCSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchSr">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpDestSt">
+        <type>LPSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchDest">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="LCMapStringW">
+    <signature>
+      <return>
+        <type>int</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="Local">
+        <type>LCID</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwMapFlag">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpSrcSt">
+        <type>LPCWSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchSr">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+      <arg name="lpDestSt">
+        <type>LPWSTR</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cchDest">
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="SetStdHandle">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="nStdHandl">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="hHandle">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="RaiseException">
+    <signature>
+      <return>
+        <type>VOID</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="dwExceptionCod">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="dwExceptionFlag">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="nNumberOfArgument">
+        <type>DWORD</type>
+        <stack size="4" />
+      </arg>
+      <arg name="cpArguments">
+        <type>ULONG_PTR</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="FlushFileBuffers">
+    <signature>
+      <return>
+        <type>BOOL</type>
+        <reg>eax</reg>
+      </return>
+      <arg name="hFile">
+        <type>HANDLE</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+</library>

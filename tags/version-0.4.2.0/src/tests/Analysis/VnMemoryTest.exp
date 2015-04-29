@@ -1,0 +1,59 @@
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+bx: bx:Register, def: {def bx}, uses: {Mem7[bx + 0x0002:word16] = 0x0000}{si_8 = Mem7[bx + 0x0004:word16]}{ax_9 = Mem7[bx + 0x0002:word16]}{cx_10 = Mem7[bx + 0x0002:word16]}{dx_11 = Mem7[bx + 0x0004:word16]}
+si: si:Register, def: {def si}
+ax: ax:Register, def: {def ax}
+cx: cx:Register, def: {def cx}
+dx: dx:Register, def: {def dx}
+Mem7: orig: Mem0, def: {Mem7[bx + 0x0002:word16] = 0x0000}, uses: {si_8 = Mem7[bx + 0x0004:word16]}{ax_9 = Mem7[bx + 0x0002:word16]}{cx_10 = Mem7[bx + 0x0002:word16]}{dx_11 = Mem7[bx + 0x0004:word16]}
+si_8: orig: si, def: {si_8 = Mem7[bx + 0x0004:word16]}
+ax_9: orig: ax, def: {ax_9 = Mem7[bx + 0x0002:word16]}
+cx_10: orig: cx, def: {cx_10 = Mem7[bx + 0x0002:word16]}
+dx_11: orig: dx, def: {dx_11 = Mem7[bx + 0x0004:word16]}
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def bx
+	def si
+	def ax
+	def cx
+	def dx
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	Mem7[bx + 0x0002:word16] = 0x0000
+	si_8 = Mem7[bx + 0x0004:word16]
+	ax_9 = Mem7[bx + 0x0002:word16]
+	cx_10 = Mem7[bx + 0x0002:word16]
+	dx_11 = Mem7[bx + 0x0004:word16]
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+Values:
+	any: <store(Mem7[bx + 0x0002:word16])>
+	ax: <ax>
+	bx: <bx>
+	cx: <cx>
+	dx: <dx>
+	fp: <fp>
+	Mem0: <Mem0>
+	si: <si>
+	store(Mem7[bx + 0x0002:word16]): <ax_9>
+	store(Mem7[bx + 0x0002:word16]): <cx_10>
+	store(Mem7[bx + 0x0004:word16]): <dx_11>
+	store(Mem7[bx + 0x0004:word16]): <si_8>
+Identifiers:
+	Mem0: <Mem0>
+	fp: <fp>
+	bx: <bx>
+	si: <si>
+	ax: <ax>
+	cx: <cx>
+	dx: <dx>
+	Mem7: <store(Mem7[bx + 0x0002:word16])>
+	si_8: <si_8>
+	ax_9: <ax_9>
+	cx_10: <cx_10>
+	dx_11: <dx_11>

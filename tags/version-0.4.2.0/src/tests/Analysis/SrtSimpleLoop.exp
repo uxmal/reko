@@ -1,0 +1,23 @@
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	goto l1
+	// succ:  l1
+done:
+	return
+	// succ:  ProcedureBuilder_exit
+l1:
+	p_0 = 0x00003000
+	goto loop
+	// succ:  loop
+l2:
+	Mem2[p_1 + 0x00000000:word32] = 0x00000000
+	p_3 = p_1 + 0x00000004
+	// succ:  loop
+loop:
+	p_1 = PHI(p_0, p_3)
+	branch p_1 == 0x00001000 done
+	goto l2
+	// succ:  l2 done
+ProcedureBuilder_exit:

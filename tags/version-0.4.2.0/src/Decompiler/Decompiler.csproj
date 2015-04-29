@@ -1,0 +1,786 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProjectGuid>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Decompiler</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Decompiler</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <UseMSBuildEngine>False</UseMSBuildEngine>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analysis\Aliases.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\BlockFlow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Coalescer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ConditionCodeEliminator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\CriticalInstruction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DataFlow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DataFlowAnalysis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DeadCode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DeclarationInserter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DefinedIdentifierFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ExpressionUseAdder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\GlobalCallRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\GrfDefinitionFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ProcedureFlow2.cs" />
+    <Compile Include="Analysis\ProcedureGraph.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinder2.cs" />
+    <Compile Include="Analysis\UsedIdentifierFinder.cs" />
+    <Compile Include="Analysis\IdentifierLiveness.cs" />
+    <Compile Include="Analysis\Interference.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\InteferenceGraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\IntraBlockDeadRegisters.cs" />
+    <Compile Include="Analysis\LinearInductionVariableContext.cs" />
+    <Compile Include="Analysis\LinearInductionVariableFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\LiveCopyInserter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\LongAddRewriter.cs" />
+    <Compile Include="Analysis\MemReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\OutParameterTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ProcedureFlow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ProgramDataFlow.cs" />
+    <Compile Include="Analysis\ExpressionPropagator.cs" />
+    <Compile Include="Analysis\RegisterLiveness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SegmentedAccessClassifier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SideEffectFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaEvaluationContext.cs" />
+    <Compile Include="Analysis\SsaIdentifier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaIdentifierCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaLiveness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaTransform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\TerminationAnalysis.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinder.cs" />
+    <Compile Include="Analysis\TrashedRegisterSummarizer.cs" />
+    <Compile Include="Analysis\TrashedStorageHelper.cs" />
+    <Compile Include="Analysis\ValueNumbering.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ValuePropagator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Web.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\WebBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Decompiler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DecompilerHost.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Evaluation\AddTwoIdsRule.cs" />
+    <Compile Include="Evaluation\Add_e_c_cRule.cs" />
+    <Compile Include="Evaluation\Add_mul_id_c_id_Rule.cs" />
+    <Compile Include="Evaluation\ConstConstBin_Rule.cs" />
+    <Compile Include="Evaluation\DpbConstantRule.cs" />
+    <Compile Include="Evaluation\ExpressionSimplifier.cs" />
+    <Compile Include="Evaluation\IdBinIdc_Rule.cs" />
+    <Compile Include="Evaluation\IdConstant.cs" />
+    <Compile Include="Evaluation\IdCopyPropagationRule.cs" />
+    <Compile Include="Evaluation\InstructionMatcher.cs" />
+    <Compile Include="Evaluation\Mps_Constant_Rule.cs" />
+    <Compile Include="Evaluation\NegSub_Rule.cs" />
+    <Compile Include="Evaluation\Shl_mul_e_Rule.cs" />
+    <Compile Include="Evaluation\Shl_Shl_c_c_Rule.cs" />
+    <Compile Include="Evaluation\SliceConstant_Rule.cs" />
+    <Compile Include="Evaluation\SliceMem_Rule.cs" />
+    <Compile Include="Evaluation\SliceShift.cs" />
+    <Compile Include="Evaluation\BinOpWithSelf_Rule.cs" />
+    <Compile Include="Evaluation\Substitutor.cs" />
+    <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
+    <Compile Include="Evaluation\SymbolicEvaluator.cs" />
+    <Compile Include="Gui\AddressSearchResult.cs" />
+    <Compile Include="Gui\BlockNavigator.cs" />
+    <Compile Include="Gui\CommandGroup.cs" />
+    <Compile Include="Gui\Components\ITimer.cs" />
+    <Compile Include="Gui\Controls\IButton.cs" />
+    <Compile Include="Gui\Controls\ICheckBox.cs" />
+    <Compile Include="Gui\Controls\IComboBox.cs" />
+    <Compile Include="Gui\Controls\INavigableControl.cs" />
+    <Compile Include="Gui\Controls\ITextBox.cs" />
+    <Compile Include="Gui\Controls\ITreeView.cs" />
+    <Compile Include="Gui\Design\ImageMapSegmentDesigner.cs" />
+    <Compile Include="Gui\Design\ProcedureDesigner.cs" />
+    <Compile Include="Gui\Design\SystemServiceDesigner.cs" />
+    <Compile Include="Gui\Design\ProgramDesigner.cs" />
+    <Compile Include="Gui\Design\MetadataFileDesigner.cs" />
+    <Compile Include="Gui\FileDropEventArgs.cs" />
+    <Compile Include="Gui\FindResult.cs" />
+    <Compile Include="Gui\Forms\IAssembleFileDialog .cs" />
+    <Compile Include="Gui\Forms\IOpenAsDialog.cs" />
+    <Compile Include="Gui\Forms\IPatternSearchDialog.cs" />
+    <Compile Include="Gui\Forms\OpenAsInteractor.cs" />
+    <Compile Include="Gui\HtmlCodeFormatter.cs" />
+    <Compile Include="Gui\HtmlFormatter.cs" />
+    <Compile Include="Gui\HungarianParser.cs" />
+    <Compile Include="Gui\ICodeViewerService.cs" />
+    <Compile Include="Gui\ICommandTarget.cs" />
+    <Compile Include="Gui\IConsoleService.cs" />
+    <Compile Include="Gui\IDecompilerService.cs" />
+    <Compile Include="Gui\IDecompilerShellUiService.cs" />
+    <Compile Include="Gui\IDialog.cs" />
+    <Compile Include="Gui\IDisassemblyViewService.cs" />
+    <Compile Include="Gui\Forms\IMainForm.cs" />
+    <Compile Include="Gui\ILowLevelViewService.cs" />
+    <Compile Include="Gui\ImageSegmentService.cs" />
+    <Compile Include="Gui\IMenuAdapter.cs" />
+    <Compile Include="Gui\IProgressBar.cs" />
+    <Compile Include="Gui\IProjectBrowserService.cs" />
+    <Compile Include="Gui\ITabControlHostService.cs" />
+    <Compile Include="Gui\IUiPreferencesService.cs" />
+    <Compile Include="Gui\IViewerService.cs" />
+    <Compile Include="Gui\ProjectBrowserService.cs" />
+    <Compile Include="Gui\SearchService.cs" />
+    <Compile Include="Gui\Windows\CheckBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\Controls\CodeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\CodeView.Designer.cs">
+      <DependentUpon>CodeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\DisassemblyTextModel.cs" />
+    <Compile Include="Gui\Windows\Controls\ImageMapView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageMapView.Designer.cs">
+      <DependentUpon>ImageMapView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageSegmentView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageSegmentView.Designer.cs">
+      <DependentUpon>ImageSegmentView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\MenuStatusSetter.cs" />
+    <Compile Include="Gui\Windows\Controls\TextBuffer.cs" />
+    <Compile Include="Gui\Windows\Controls\TextViewModel.cs" />
+    <Compile Include="Gui\Windows\Controls\TextView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\TextView.Designer.cs">
+      <DependentUpon>TextView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\LowLevelView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\LowLevelView.Designer.cs">
+      <DependentUpon>LowLevelView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\DisassemblyFormatter.cs" />
+    <Compile Include="Gui\Windows\Forms\AssembleFileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AssembleFileDialog.Designer.cs">
+      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AssembleFileInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\UserPreferencesDialog.Designer.cs">
+      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\UserPreferencesInteractor.cs" />
+    <Compile Include="Gui\Windows\ImageSegmentPane.cs" />
+    <Compile Include="Gui\Windows\ImageSegmentServiceImpl.cs" />
+    <Compile Include="Gui\Windows\IRegistryService.cs" />
+    <Compile Include="Gui\ISearchDialog.cs" />
+    <Compile Include="Gui\ISearchResult.cs" />
+    <Compile Include="Gui\ISearchResultService.cs">
+    </Compile>
+    <Compile Include="Gui\IServiceFactory.cs" />
+    <Compile Include="Gui\ISettingsService.cs" />
+    <Compile Include="Gui\IStartPage.cs" />
+    <Compile Include="Gui\IStatusBarService.cs" />
+    <Compile Include="Gui\IWindowPane.cs" />
+    <Compile Include="Gui\IWorkerDialogService.cs" />
+    <Compile Include="Gui\ListOption.cs" />
+    <Compile Include="Gui\MenuBuilder.cs" />
+    <Compile Include="Gui\ProcedureNavigator.cs" />
+    <Compile Include="Gui\ProcedureSearchResult.cs">
+    </Compile>
+    <Compile Include="Gui\SignatureParser.cs" />
+    <Compile Include="Gui\AddressNavigator.cs" />
+    <Compile Include="Gui\Windows\ButtonWrapper.cs" />
+    <Compile Include="Gui\Windows\CodeViewerPane.cs" />
+    <Compile Include="Gui\Windows\CodeViewerServiceImpl.cs" />
+    <Compile Include="Gui\Windows\ComboBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\Controls\CodeControl.cs" />
+    <Compile Include="Gui\Windows\Controls\CommandMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\DirtyManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\DisassemblyControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\ImageMapControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\MemoryControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\MenuSystem.cs" />
+    <Compile Include="Gui\Windows\Controls\RegexValidator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\DecompilerShellUiService.cs" />
+    <Compile Include="Gui\Windows\DecompilerUiService.cs" />
+    <Compile Include="Gui\Windows\DisassemblyViewInteractor.cs" />
+    <Compile Include="Gui\Windows\DisassemblyViewServiceImpl.cs" />
+    <Compile Include="Gui\Windows\Forms\AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AddressPromptDialog.Designer.cs">
+      <DependentUpon>AddressPromptDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\ArchiveBrowserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ArchiveBrowserDialog.Designer.cs">
+      <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ArchiveBrowserService.cs" />
+    <Compile Include="Gui\Windows\Forms\EditProjectInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\EnvironmentSelectorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\EnvironmentSelectorDialog.Designer.cs">
+      <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\CmdIds.cs" />
+    <Compile Include="Gui\Windows\Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\EditProjectDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\EditProjectDialog.Designer.cs">
+      <DependentUpon>EditProjectDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\OpenAsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\OpenAsDialog.Designer.cs">
+      <DependentUpon>OpenAsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\SearchDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\SearchDialog.Designer.cs">
+      <DependentUpon>SearchDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\SearchDialogInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\WorkerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\WorkerDialog.Designer.cs">
+      <DependentUpon>WorkerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\IWindowFrame.cs" />
+    <Compile Include="Gui\Windows\LowLevelViewInteractor.cs" />
+    <Compile Include="Gui\Windows\LowLevelViewServiceImpl.cs" />
+    <Compile Include="Gui\Windows\MenuItemAdapter.cs" />
+    <Compile Include="Gui\Windows\NavigationInteractor.cs" />
+    <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
+    <Compile Include="Gui\Windows\TabControlHost.cs" />
+    <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />
+    <Compile Include="Gui\Windows\TextBoxWrapper.cs" />
+    <Compile Include="Gui\TreeNodeDesigner.cs" />
+    <Compile Include="Gui\Windows\TextSpanFormatter.cs" />
+    <Compile Include="Gui\Windows\ToolStripButtonWrapper.cs" />
+    <Compile Include="Gui\Windows\ToolStripItemAdapter.cs" />
+    <Compile Include="Gui\Windows\ToolStripTextBoxWrapper.cs" />
+    <Compile Include="Gui\Windows\TreeViewWrapper.cs" />
+    <Compile Include="Gui\Windows\TypeMarker.cs" />
+    <Compile Include="Gui\Windows\ViewService.cs" />
+    <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
+    <Compile Include="Gui\Windows\WindowsFormsRegistryService.cs" />
+    <Compile Include="Gui\Windows\WindowsFormsSettingsService.cs" />
+    <Compile Include="Loading\ImageSignature.cs" />
+    <Compile Include="Loading\NullImageLoader.cs" />
+    <Compile Include="Loading\SignatureLoader.cs" />
+    <Compile Include="Loading\UnpackerSignatureLoader.cs" />
+    <Compile Include="Loading\UnpackingService.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Scanning\AhoCorasickSearch.cs" />
+    <Compile Include="Scanning\Backwalker.cs" />
+    <Compile Include="Scanning\BlockCloner.cs" />
+    <Compile Include="Scanning\Dfa\DfaBuilder.cs" />
+    <Compile Include="Scanning\Dfa\PatternParser.cs" />
+    <Compile Include="Scanning\Dfa\State.cs" />
+    <Compile Include="Scanning\Dfa\TreeNode.cs" />
+    <Compile Include="Scanning\Dfa\Automaton.cs" />
+    <Compile Include="Scanning\IdentifierReplacer.cs" />
+    <Compile Include="Scanning\BlockWorkitem.cs" />
+    <Compile Include="Scanning\EntryPointWorkitem.cs" />
+    <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
+    <Compile Include="Scanning\StringSearch.cs" />
+    <Compile Include="Scanning\KmpStringSearch.cs" />
+    <Compile Include="Scanning\ProcedureWorkItem.cs" />
+    <Compile Include="Scanning\VectorWorkItem.cs" />
+    <Compile Include="Structure\AbsynCodeGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\Conditional.cs" />
+    <Compile Include="Gui\Windows\Forms\DecompilerMenus.cs" />
+    <Compile Include="Gui\Windows\Forms\DiagnosticsInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\FinalPageInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\FindDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\FindDialog.Designer.cs">
+      <DependentUpon>FindDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\FindDialogInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\AddressPromptDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AddressPromptInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\InitialPageInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\LoadedPageInteractor.cs" />
+    <Compile Include="Gui\Forms\MainFormInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\PhasePageInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\ProcedureDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ProcedureDialog.Designer.cs">
+      <DependentUpon>ProcedureDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractor.cs" />
+    <Compile Include="Gui\Windows\ListViewItemWrapper.cs" />
+    <Compile Include="Gui\MruList.cs" />
+    <Compile Include="Loading\Loader.cs" />
+    <Compile Include="Scanning\EscapedAccessRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\HeuristicScanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\InstructionTrie.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\Regexp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\RegexpBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\Scanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\VectorBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\WorkItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\StrengthReduction.cs" />
+    <Compile Include="Structure\AbsynStatementEmitter.cs" />
+    <Compile Include="Structure\DerivedGraph.cs" />
+    <Compile Include="Structure\DerivedSequenceBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\CaseFinder.cs" />
+    <Compile Include="Structure\ProcedureStructure.cs" />
+    <Compile Include="Structure\CompoundConditionCoalescer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\ControlFlowGraphCleaner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\Interval.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\IntervalBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\Loop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\LoopFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\ProcedureStructureBuilder.cs" />
+    <Compile Include="Structure\StructureAnalysis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
+    <Compile Include="Typing\ConstantPointerTraversal.cs" />
+    <Compile Include="Typing\ExpressionTypeAscender.cs" />
+    <Compile Include="Typing\ExpressionTypeDescender.cs" />
+    <Compile Include="Typing\InductionVariableCollector.cs" />
+    <Compile Include="Typing\StructureFieldMerger.cs" />
+    <Compile Include="Structure\StructureNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\AddressTraitCollector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ArrayExpressionMatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ComplexExpressionBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ComplexTypeNamer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\DataTypeBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\DerivedPointerAnalysis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\EquivalenceClassBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ExpressionNormalizer.cs" />
+    <Compile Include="Typing\ITraitHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\NestedComplexTypeExtractor.cs" />
+    <Compile Include="Typing\PtrPrimitiveReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\StructureMerger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TraitCollector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeAnalyzer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeCollector.cs" />
+    <Compile Include="Typing\TypedConstantRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypedExpressionRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypedMemoryExpressionRewriter.cs" />
+    <Compile Include="Typing\TypeInferenceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeVariableReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\UnionPointersStructuresMatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\ILoadedPage.cs" />
+    <Compile Include="Gui\IListViewItem.cs" />
+    <Compile Include="Gui\Forms\IAddressPromptDialog.cs" />
+    <Compile Include="Gui\IDialogFactory.cs" />
+    <Compile Include="Gui\Windows\WindowsFormsDialogFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Gui\Windows\Controls\CodeView.resx">
+      <DependentUpon>CodeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\DirtyManager.resx">
+      <DependentUpon>DirtyManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\ImageMapView.resx">
+      <DependentUpon>ImageMapView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\ImageSegmentView.resx">
+      <DependentUpon>ImageSegmentView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\TextView.resx">
+      <DependentUpon>TextView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\ImageMapControl.resx">
+      <DependentUpon>ImageMapControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\LowLevelView.resx">
+      <DependentUpon>LowLevelView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Controls\MemoryControl.resx">
+      <DependentUpon>MemoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\ArchiveBrowserDialog.resx">
+      <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\AssembleFileDialog.resx">
+      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\EnvironmentSelectorDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\FindDialog.resx">
+      <DependentUpon>FindDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\AddressPromptDialog.resx">
+      <DependentUpon>AddressPromptDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\OpenAsDialog.resx">
+      <DependentUpon>OpenAsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\ProcedureDialog.resx">
+      <DependentUpon>ProcedureDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\EditProjectDialog.resx">
+      <DependentUpon>EditProjectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\SearchDialog.resx">
+      <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\UserPreferencesDialog.resx">
+      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
+      <DependentUpon>WorkerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Gui\decompiler-menus.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Gui\Windows\Forms\cmdids.xslt" />
+    <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
+    <Content Include="Images\RwSection.ico" />
+    <Content Include="Images\RxSection.ico" />
+    <Content Include="Images\WxSection.ico" />
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml" />
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml" />
+    <Content Include="Loading\Signatures\PLATFORM_INDEPENDENT.xml" />
+    <None Include="Images\Back.bmp" />
+    <Content Include="Images\Back.ico" />
+    <Content Include="Images\Binary.ico" />
+    <Content Include="Images\Code.ico" />
+    <Content Include="Images\Data.ico" />
+    <Content Include="Images\Delete.ico" />
+    <Content Include="Images\error.png" />
+    <Content Include="Images\FinishDecompilation.ico" />
+    <None Include="Images\Forward.bmp" />
+    <Content Include="Images\Forward.ico" />
+    <Content Include="Images\Header.ico" />
+    <Content Include="Images\NewBo.ico" />
+    <Content Include="Images\NextPhase.ico" />
+    <Content Include="Images\Open.ico" />
+    <Content Include="Images\Procedure.ico" />
+    <Content Include="Images\Save.ico" />
+    <Content Include="Images\typelib.ico" />
+    <Content Include="Images\Usercode.ico" />
+    <Content Include="Images\Userproc.ico" />
+    <Content Include="Images\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>"$(SolutionDir)tools\xslt" "$(ProjectDir)Gui\Windows\Forms\cmdids.xslt" "$(ProjectDir)Gui\decompiler-menus.xml" "$(ProjectDir)Gui\Windows\Forms\CmdIds.cs"
+"$(SolutionDir)tools\xslt" "$(ProjectDir)Gui\Windows\Forms\decompiler-menus.xslt" "$(ProjectDir)Gui\decompiler-menus.xml" "$(ProjectDir)Gui\Windows\Forms\DecompilerMenus.cs"</PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Gui\idc\" />
+  </ItemGroup>
+</Project>

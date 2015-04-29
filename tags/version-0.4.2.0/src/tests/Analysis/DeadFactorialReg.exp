@@ -1,0 +1,97 @@
+fp:fp
+sp_1: orig: sp
+cx_2: orig: cx
+    def:  cx_2 = 0x0005
+    uses: ax_3 = fn0C00_000B(cx_2)
+ax_3: orig: ax
+    def:  ax_3 = fn0C00_000B(cx_2)
+    uses: Mem4[ds:0x0064:word16] = ax_3
+Mem4: orig: Mem0
+    def:  Mem4[ds:0x0064:word16] = ax_3
+ds:ds
+    def:  def ds
+    uses: Mem4[ds:0x0064:word16] = ax_3
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	cx_2 = 0x0005
+	ax_3 = fn0C00_000B(cx_2)
+	Mem4[ds:0x0064:word16] = ax_3
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+fp:fp
+sp_1: orig: sp
+sp_2: orig: sp
+si:si
+wLoc02_4: orig: wLoc02
+cx:cx
+    def:  def cx
+    uses: si_16 = cx
+          cx_17 = cx - 0x0001
+          branch cx <= 0x0001 l0C00_001C
+SCZO_6: orig: SCZO
+SZO_7: orig: SZO
+cx_8: orig: cx
+dx_ax_9: orig: dx_ax
+ax_10: orig: ax
+    def:  ax_10 = PHI(ax_21, ax_25)
+    uses: return ax_10
+dx_11: orig: dx
+SCZO_12: orig: SCZO
+SZO_13: orig: SZO
+si_14: orig: si
+sp_15: orig: sp
+si_16: orig: si
+    def:  si_16 = cx
+    uses: dx_ax_20 = si_16 *s ax_19
+cx_17: orig: cx
+    def:  cx_17 = cx - 0x0001
+    uses: ax_19 = fn0C00_000B(cx_17)
+SZO_18: orig: SZO
+ax_19: orig: ax
+    def:  ax_19 = fn0C00_000B(cx_17)
+    uses: dx_ax_20 = si_16 *s ax_19
+dx_ax_20: orig: dx_ax
+    def:  dx_ax_20 = si_16 *s ax_19
+    uses: ax_21 = (word16) dx_ax_20 (alias)
+ax_21: orig: ax
+    def:  ax_21 = (word16) dx_ax_20 (alias)
+    uses: ax_10 = PHI(ax_21, ax_25)
+dx_22: orig: dx
+SCZO_23: orig: SCZO
+SZO_24: orig: SZO
+ax_25: orig: ax
+    def:  ax_25 = 0x0001
+    uses: ax_10 = PHI(ax_21, ax_25)
+dx:dx
+dx_ax_27: orig: dx_ax
+// fn0C00_000B
+// Return size: 0
+word16 fn0C00_000B(word16 cx)
+fn0C00_000B_entry:
+	def cx
+	// succ:  l0C00_000B
+l0C00_000B:
+	branch cx <= 0x0001 l0C00_001C
+	// succ:  l0C00_0011 l0C00_001C
+l0C00_0011:
+	si_16 = cx
+	cx_17 = cx - 0x0001
+	ax_19 = fn0C00_000B(cx_17)
+	dx_ax_20 = si_16 *s ax_19
+	ax_21 = (word16) dx_ax_20 (alias)
+	goto l0C00_001F
+	// succ:  l0C00_001F
+l0C00_001C:
+	ax_25 = 0x0001
+	// succ:  l0C00_001F
+l0C00_001F:
+	ax_10 = PHI(ax_21, ax_25)
+	return ax_10
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:
