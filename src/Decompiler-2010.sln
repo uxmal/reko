@@ -11,6 +11,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5C315C78-1F97-4B16-81AA-917284969DFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decompiler", "Decompiler\Decompiler.csproj", "{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901} = {C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architectures", "Architectures", "{18994109-C4D5-49F9-86E0-3B5B1046C08E}"
 EndProject
