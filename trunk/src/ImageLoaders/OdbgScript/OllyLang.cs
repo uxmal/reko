@@ -858,30 +858,30 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 script_pos = (uint) script.NextCommandIndex((int)script_pos_next);
 
                 // Check if script out of bounds
-                if (script_pos >= script.lines.Count)
+                if (script_pos >= script.Lines.Count)
                     return false;
 
-                var line = script.lines[(int)script_pos];
+                var line = script.Lines[(int)script_pos];
 
                 script_pos_next = script_pos + 1;
 
                 // Log line of code if  enabled
-                if (script.log)
+                if (script.Log)
                 {
-                    string logstr = "-. " + line.line;
+                    string logstr = "-. " + line.RawLine;
                     Host.TE_Log(logstr, Host.TS_LOG_COMMAND);
                 }
 
                 bool result = false;
 
                 // Find command and execute it
-                Func<string[], bool> cmd = line.commandptr;
+                Func<string[], bool> cmd = line.CommandPtr;
                 if (cmd == null)
                 {
                     Func<string[], bool> it;
-                    if (commands.TryGetValue(line.command, out it))
+                    if (commands.TryGetValue(line.Command, out it))
                     {
-                        line.commandptr = cmd = it;
+                        line.CommandPtr = cmd = it;
                     }
                 }
 
@@ -891,20 +891,20 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 else
                 {
-                    errorstr = "Unknown command: " + line.command;
+                    errorstr = "Unknown command: " + line.Command;
                 }
 
                 if (callbacks.Count != 0 && resumeDebuggee)
                 {
                     result = false;
-                    errorstr = "Unallowed command during callback: " + line.command;
+                    errorstr = "Unallowed command during callback: " + line.Command;
                 }
 
                 // Error in processing, show error and die
                 if (!result)
                 {
                     Pause();
-                    string message = "Error on line " + Helper.rul2decstr(line.linenum) + ": " + line.line + "\r\n" + errorstr;
+                    string message = "Error on line " + Helper.rul2decstr(line.LineNumber) + ": " + line.RawLine + "\r\n" + errorstr;
                     Host.MsgError(message);
                     errorstr = "";
                     return false;
@@ -2101,7 +2101,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             Var ret = Var.Empty();
 
-            uint label = script.labels[Label_AutoFixIATEx];
+            uint label = script.Labels[Label_AutoFixIATEx];
             variables["$TE_ARG_1"] = Var.Create((rulong)fIATPointer);
             if (StepCallback(label, true, Var.etype.DW, ref ret))
                 return (object)ret.ToUInt64();

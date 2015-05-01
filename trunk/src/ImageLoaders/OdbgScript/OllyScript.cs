@@ -13,37 +13,37 @@ namespace Decompiler.ImageLoaders.OdbgScript
     {
         public class Line
         {
-            public uint linenum;
-            public string line;
+            public uint LineNumber;
+            public string RawLine;
             public bool IsCommand;
-            public string command;
-            public Func<string[], bool> commandptr;
+            public string Command;
+            public Func<string[], bool> CommandPtr;
             public string[] args = new string[0];
         }
 
-        public bool log;
-        public string path;
-        public List<Line> lines;
-        public Dictionary<string, uint> labels;
-        private Host Host;
+        private string path;
+        private Host host;
 
         public OllyScript(Host host)
         {
-            this.Host = host;
+            this.host = host;
             this.IsLoaded = false;
-            this.log = false;
-            this.lines = new List<Line>();
-            this.labels = new Dictionary<string, uint>();
+            this.Log = false;
+            this.Lines = new List<Line>();
+            this.Labels = new Dictionary<string, uint>();
         }
 
         public bool IsLoaded { get; private set; }
+        public Dictionary<string, uint> Labels { get; private set; }
+        public List<Line> Lines {get; private set; }
+        public bool Log { get; private set; }
 
         public void Clear()
         {
             IsLoaded = false;
             path = "";
-            lines.Clear();
-            labels.Clear();
+            Lines.Clear();
+            Labels.Clear();
         }
 
         void parse_insert(List<string> toInsert, string currentdir)
@@ -130,7 +130,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                             if (!in_asm && len > 1 && scriptline[len - 1] == ':')
                             {
                                 scriptline = scriptline.Remove(len - 1);
-                                labels[Helper.trim(scriptline)] = (uint)(lines.Count);
+                                Labels[Helper.trim(scriptline)] = (uint)(Lines.Count);
                             }
                             // Check for #inc and include file if it exists
                             else if (0 == lcline.IndexOf("#inc"))
@@ -152,14 +152,14 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                                         parse_insert(Helper.ReadLinesFromFile(philename), dir);
                                     }
-                                    else Host.MsgError("Bad #inc directive!");
+                                    else host.MsgError("Bad #inc directive!");
                                 }
-                                else this.Host.MsgError("Bad #inc directive!");
+                                else this.host.MsgError("Bad #inc directive!");
                             }
                             // Logging
                             else if (!in_asm && lcline == "#log")
                             {
-                                log = true;
+                                Log = true;
                             }
                             // Add line
                             else
@@ -169,8 +169,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                 if (in_asm && lcline == "ende")
                                     in_asm = false;
 
-                                cur.line = scriptline;
-                                cur.linenum = curline;
+                                cur.RawLine = scriptline;
+                                cur.LineNumber = curline;
                                 cur.IsCommand = !in_asm;
 
                                 if (!in_asm && lcline == "exec")
@@ -178,7 +178,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
                                 ParseArgumentsIntoLine(scriptline, cur);
 
-                                lines.Add(cur);
+                                Lines.Add(cur);
                             }
                         }
                         nextline = true;
@@ -192,27 +192,27 @@ namespace Decompiler.ImageLoaders.OdbgScript
             int pos = scriptline.IndexOfAny(Helper.whitespaces.ToCharArray());
             if (pos >= 0)
             {
-                cur.command = scriptline.Substring(0, pos).ToLowerInvariant();
+                cur.Command = scriptline.Substring(0, pos).ToLowerInvariant();
                 cur.args = Helper.split(',', scriptline.Substring(pos + 1))
                     .Select(s => s.Trim())
                     .ToArray();
             }
             else
             {
-                cur.command = scriptline.ToLowerInvariant();
+                cur.Command = scriptline.ToLowerInvariant();
             }
         }
 
         public int NextCommandIndex(int from)
         {
-            while (from < lines.Count && !lines[from].IsCommand)
+            while (from < Lines.Count && !Lines[from].IsCommand)
             {
                 from++;
             }
             return from;
         }
 
-        public bool load_file(string file, string dir = null)
+        public bool LoadFile(string file, string dir = null)
         {
             Clear();
 
@@ -261,7 +261,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public bool is_label(string s)
         {
-            return (labels.ContainsKey(s));
+            return (Labels.ContainsKey(s));
         }
     }
 }
