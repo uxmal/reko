@@ -100,7 +100,6 @@ namespace Decompiler.Core.Configuration
             Type t = Type.GetType(elem.TypeName, true);
             return (Assembler)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
-
    
         public virtual ICollection GetEnvironments()
         {

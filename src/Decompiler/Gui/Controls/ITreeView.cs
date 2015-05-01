@@ -27,7 +27,6 @@ namespace Decompiler.Gui.Controls
 
         ITreeNode CreateNode();
         ITreeNode CreateNode(string text);
-
     }
 
     public interface ITreeNodeCollection : IList<ITreeNode>

@@ -54,6 +54,7 @@ namespace Decompiler.Core.Output
             mpopstr.Add(Operator.UMul, "UMul");
             mpopstr.Add(Operator.Or, "Or");
             mpopstr.Add(Operator.ISub, "ISub");
+            mpopstr.Add(Operator.USub, "USub");
             mpopstr.Add(Operator.Uge, "Uge");
             mpopstr.Add(Operator.Ugt, "Ugt");
             mpopstr.Add(Operator.Ule, "Ule");

@@ -409,6 +409,11 @@ namespace Decompiler.Core.Expressions
             return new TestCondition(cc, expr);
         }
 
+        public BinaryExpression USub(Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.USub, left.DataType, left, right);
+        }
+
         public BinaryExpression UDiv(Expression a, Expression b)
         {
             return new BinaryExpression(

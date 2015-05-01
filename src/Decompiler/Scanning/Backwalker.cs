@@ -160,7 +160,9 @@ namespace Decompiler.Scanning
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
-                    if (binCmp != null && binCmp.Operator is ISubOperator)
+                    if (binCmp != null && 
+                        (binCmp.Operator is ISubOperator ||
+                         binCmp.Operator is USubOperator))
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
                         if (idLeft != null &&

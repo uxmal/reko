@@ -70,17 +70,24 @@ namespace Decompiler.Gui.Windows
 
         public void DisplaySegment(ImageMapSegment segment, Program program)
         {
-            if (segmentView == null || 
-                segment == null ||
-                segment.Renderer == null)
-                return;
-            this.program = program;
-            var tsf = new TextSpanFormatter();
-            segment.Renderer.Render(
-                segment, 
-                program,
-                tsf);
-            this.segmentView.TextView.Model = tsf.GetModel();
+            try
+            {
+                if (segmentView == null ||
+                    segment == null ||
+                    segment.Renderer == null)
+                    return;
+                this.program = program;
+                var tsf = new TextSpanFormatter();
+                segment.Renderer.Render(
+                    segment,
+                    program,
+                    tsf);
+                this.segmentView.TextView.Model = tsf.GetModel();
+            }
+            catch
+            {
+
+            }
         }
     }
 }
