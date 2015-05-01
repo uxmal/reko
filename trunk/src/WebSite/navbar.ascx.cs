@@ -1,5 +1,6 @@
+#region License 
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 using System.Data;
@@ -23,7 +25,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-namespace Revenge.WebSite
+namespace Decompiler.WebSite
 {
 	public class navbar : System.Web.UI.UserControl
 	{
