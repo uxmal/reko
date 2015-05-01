@@ -1,5 +1,6 @@
+#region License
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler;
 using Decompiler.Core;
@@ -32,8 +34,11 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using Decompiler.Loading;
+using System.ComponentModel.Design;
+using Decompiler.Core.Configuration;
 
-namespace Revenge.WebSite
+namespace Decompiler.WebSite
 {
 	public class TestC : System.Web.UI.Page
 	{
@@ -141,12 +146,22 @@ namespace Revenge.WebSite
 				CopyCSourceToTempFile(txtAssembler.Text, cFile);
 				if (CompileCFile(tmpDir, cFile))
 				{
-					DecompilerDriver decomp = new DecompilerDriver();
-					DecompilerProject project = new DecompilerProject();
-					project.Input.FileFormat = InputFormat.Assembler;
-					project.Input.Filename = asmFile;
-					project.Input.BaseAddress = new Address(0x10000000);
-					decomp.Decompile(project, host);
+                    var sc = new ServiceContainer();
+                    var ldr = new Loader(sc);
+                    var cfg = new DecompilerConfiguration();
+                    var asm = cfg.GetAssembler("x86-masm");
+                    var program = asm.AssembleFragment(Address.Ptr32(0x10000000), txtAssembler.Text + Environment.NewLine);
+					DecompilerDriver decomp = new DecompilerDriver(ldr, host, sc);
+					var project = new Project
+                    {
+                        Programs = { program }
+                    };
+                    decomp.Project = project;
+                    decomp.ScanPrograms();
+                    decomp.AnalyzeDataFlow();
+                    decomp.ReconstructTypes();
+                    decomp.StructureProgram();
+                    decomp.WriteDecompilerProducts();
 
 					plcOutput.Text = host.DisassemblyWriter.ToString();
 					plcDecompiled.Text = host.DecompiledCodeWriter.ToString();

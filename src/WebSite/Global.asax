@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="Revenge.WebSite.Global" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="Decompiler.WebSite.Global" %>

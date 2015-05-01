@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="TestC.aspx.cs" AutoEventWireup="false" Inherits="Revenge.WebSite.TestC" %>
-<%@ Register tagprefix="r" namespace="Revenge.WebSite" assembly="revenge" %>
+<%@ Page language="c#" Codebehind="TestC.aspx.cs" AutoEventWireup="false" Inherits="Decompiler.WebSite.TestC" %>
+<%@ Register tagprefix="r" namespace="Decompiler.WebSite" assembly="Decompiler.WebSite" %>
 <%@ Register tagprefix="r" tagname="navbar" src="navbar.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
@@ -9,7 +9,7 @@
     <meta name="CODE_LANGUAGE" Content="C#">
     <meta name=vs_defaultClientScript content="JavaScript">
     <meta name=vs_targetSchema content="http://schemas.microsoft.com/intellisense/ie5">
-    <link href="revenge.css" rel="stylesheet" type="text/css">
+    <link href="decompiler.css" rel="stylesheet" type="text/css">
   </head>
   <body>
 	<form id="Form1" method="post" runat="server">

@@ -1,5 +1,6 @@
+#region License
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2015 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +16,16 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler;
+using Decompiler.Core;
 using System;
 using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 
-namespace Revenge.WebSite
+namespace Decompiler.WebSite
 {
 	public class WebDecompilerHost : DecompilerHost
 	{
@@ -65,8 +68,6 @@ namespace Revenge.WebSite
 		}
 
 
-		#region DecompilerHost Members
-
 		public TextWriter DecompiledCodeWriter
 		{
 			get { return writer; }
@@ -87,13 +88,6 @@ namespace Revenge.WebSite
 			get { return writer; }
 		}
 
-		public void Finished()
-		{
-		}
-
-		public void ShowProgress(string caption, int numerator, int denominator)
-		{
-		}
 
 		public void WriteDiagnostic(Diagnostic d, string format, params object[] args)
 		{
@@ -102,6 +96,34 @@ namespace Revenge.WebSite
 			writer.WriteLine("<br>");
 		}
 
-		#endregion
-	}
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteIntermediateCode(Program program, Action<TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteTypes(Program program, Action<TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteDecompiledCode(Program program, Action<TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteGlobals(Program program, Action<TextWriter> writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Decompiler.Core.Configuration.IDecompilerConfigurationService Configuration
+        {
+            get { throw new NotImplementedException(); }
+        }
+    }
 }
