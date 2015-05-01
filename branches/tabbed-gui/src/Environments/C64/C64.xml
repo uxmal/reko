@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<image>
+  <variable address="0000">
+    <description>
+      | $0000 || 0 || Register || 6510 CPU's data direction I/O port register; 0 = input, 1 = output
+      |-
+      | rowspan="8" colspan ="3" |
+      | Bit 0 - Direction of I/O on port at bit 0 of address $0001; default = 1
+      |-
+      | Bit 1 - Direction of I/O on port at bit 1 of address $0001; default = 1
+      |-
+      | Bit 2 - Direction of I/O on port at bit 2 of address $0001; default = 1
+      |-
+      | Bit 3 - Direction of I/O on port at bit 3 of address $0001; default = 1
+      |-
+      | Bit 4 - Direction of I/O on port at bit 4 of address $0001; default = 0
+      |-
+      | Bit 5 - Direction of I/O on port at bit 5 of address $0001; default = 1
+      |-
+      | Bit 6 - Direction of I/O on port at bit 6 of address $0001; unused, as bit 6 of address $0001 is undefined
+      |-
+      | Bit 7 - Direction of I/O on port at bit 7 of address $0001; unused, as bit 7 of address $0001 is undefined
+    </description>
+  </variable>
+
+  <variable address="0001">
+    <description>
+|6510 CPU's on-chip port register
+|-
+| rowspan="8" colspan ="3" | 
+| Bit 0 - LORAM: Configures [[RAM]] or [[ROM]] at $A000-$BFFF (see [[Bankswitching|bankswitching]])
+|-
+| Bit 1 - HIRAM: Configures [[RAM]] or [[ROM]] at $E000-$FFFF (see [[Bankswitching|bankswitching]])
+|-
+| Bit 2 - CHAREN: Configures [[I/O]] or [[ROM]] at $D000-$DFFF (see [[Bankswitching|bankswitching]])
+|-
+| Bit 3 - Cassette Data Output Line ([[Datasette]])
+|-
+| Bit 4 - Cassette Switch Sense; 1 = Switch Closed
+|-
+| Bit 5 - Cassette Motor Control; 0 = On, 1 = Off
+|-
+| Bit 6 - Undefined
+|-
+| Bit 7 - Undefined
+    </description>
+  </variable>
+
+<variable address="$0002"><description> Unused</description></variable>
+<variable address="$0003"><description> Low Byte pointing to address 45482/$B1AA; a [[ROM]] routine for converting [[Floating point arithmetic|floating point]] numbers to integers
+</description></variable>
+<variable address="$0004"><description> High Byte pointing to address 45482/$B1AA; a [[ROM]] routine for converting [[Floating point arithmetic|floating point]] numbers to integers
+</description></variable>
+<variable address="$0005"><description> Low Byte pointing to 45969/$B391; a [[ROM]] routine for converting integer numbers to [[Floating point arithmetic|floating point]] format
+</description></variable>
+<variable address="$0006"><description> High Byte pointing to 45969/$B391; a [[ROM]] routine for converting integer numbers to [[Floating point arithmetic|floating point]] format
+</description></variable>
+<variable address="$0007"><description> Search character/temporary integer during [[INT]], [[OR]] and [[AND]]
+</description></variable>
+<variable address="$0008"><description> Scan for quote character at end of string during tokenization of BASIC commands.
+</description></variable>
+<variable address="$0009"><description> [[Cursor]] column position after last invocation of [[TAB]] or [[SPC]] 
+</description></variable>
+<variable address="$000A"><description> Sets condition for BASIC [[Interpreter]] function; 0 = [[LOAD]], 1 = [[VERIFY]]
+</description></variable>
+<variable address="$000B"><description> Input buffer pointer/number of subscripts for [[DIM]], line length for tokenization
+</description></variable>
+<variable address="$000C"><description> Default size of array for [[DIM]]</description></variable>
+<variable address="$000D"><description> Variable type; 0 = numeric, 255 = character string
+</description></variable>
+<variable address="$000E"><description> Numeric variable type flag; 0 = floating-point, 128 = integer
+</description></variable>
+<variable address="$000F"><description> For [[LIST]], [[Garbarge Collection]] or tokenization
+</description></variable>
+<variable address="$0010"><description> Discerns between user function call or array variable
+</description></variable>
+<variable address="$0011"><description> Discerns data entry method; 0 = [[INPUT]], 64 = [[GET]] or 152 = [[READ]]
+</description></variable>
+<variable address="$0012"><description> Stores sign of [[TAN]] or [[SIN]] function calls or a comparison operator; 1 = >, 2 = equals, 3 = > or combination of these
+</description></variable>
+<variable address="$0013"><description> Current input device number: 0 = [[Keyboard]], 1 = [[Datassette]], 2 = [[RS-232]], 3 = [[Monitor]], 4-7 = [[Printer]], 8-31 = [[Floppy]]
+</description></variable>
+<variable address="$0014"><description> Low Byte target line number for [[ON]], [[GOTO]], [[GOSUB]] and [[LIST]], and address for [[PEEK]], [[POKE]] and [[SYS]]
+</description></variable>
+<variable address="$0015"><description> High Byte target line number for [[ON]], [[GOTO]], [[GOSUB]] and [[LIST]], and address for [[PEEK]], [[POKE]] and [[SYS]]
+</description></variable>
+<variable address="$0016"><description> Next available space in temporary string descriptor stack between addresses 25-33 ($0019-$0021)
+</description></variable>
+<variable address="$0017"><description> last used temporary string address or string stack pointer; value = 3 less than the value at address 22 ($0016)
+</description></variable>
+<variable address="$0018"><description> last used temporary string address or string stack pointer; value = 0
+</description></variable>
+<variable address="$0019-$0021"><description> temporary string stack: string length, start and end address of last used string
+</description></variable>
+<variable address="$0022-$0025"><description> utility pointer area for the BASIC interpreter
+</description></variable>
+<variable address="$0026-$002A"><description> floating result of multiplication or division
+</description></variable>
+<variable address="$002B"><description> Low Byte TXTTAB, start of BASIC program text, default: 2049 / $0801
+</description></variable>
+<variable address="$002C"><description> High Byte TXTTAB, start of BASIC program text, default: 2049 / $0801
+</description></variable>
+<variable address="$002D"><description> Low Byte VARTAB, end of BASIC program text+1 / start of numeric variables
+</description></variable>
+<variable address="$002E"><description> High Byte VARTAB, end of BASIC program text+1 / start of numeric variables
+</description></variable>
+<variable address="$002F"><description> Low Byte ARYTAB, end of numeric Variables+1 / start of array variables
+</description></variable>
+<variable address="$0030"><description> High Byte ARYTAB, end of numeric Variables+1 / start of array variables
+</description></variable>
+<variable address="$0031"><description> Low Byte STREND, end of array variables+1 / lowest address for string stack
+</description></variable>
+<variable address="$0032"><description> High Byte STREND, end of array variables+1 / lowest address for string stack
+</description></variable>
+<variable address="$0033"><description> Low Byte FRETOP, top of string stack
+</description></variable>
+<variable address="$0034"><description> High Byte FRETOP, top of string stack
+</description></variable>
+<variable address="$0035"><description> Low Byte FRESPC, utility pointer for strings
+</description></variable>
+<variable address="$0036"><description> High Byte FRESPC, utility pointer for strings
+</description></variable>
+<variable address="$0037"><description> Low Byte MEMSIZ, highest BASIC [[RAM]] address / bottom of string stack
+</description></variable>
+<variable address="$0038"><description> High Byte MEMSIZ, highest BASIC [[RAM]] address / bottom of string stack
+</description></variable>
+<variable address="$0039"><description> Low Byte current BASIC line number
+</description></variable>
+<variable address="$003A"><description> High Byte current BASIC line number
+</description></variable>
+<variable address="$003B"><description> Low Byte previous BASIC line number for [[CONT]] after [[STOP]]
+</description></variable>
+<variable address="$003C"><description> High Byte previous BASIC line number for [[CONT]] after [[STOP]]
+</description></variable>
+<variable address="$003D"><description> Low Byte next BASIC statement for [[CONT]]
+</description></variable>
+<variable address="$003E"><description> High Byte next BASIC statement for [[CONT]]
+</description></variable>
+<variable address="$003F"><description> Low Byte current DATA line
+</description></variable>
+<variable address="$0040"><description> High Byte current DATA line
+</description></variable>
+<variable address="$0041-$0042"><description> next DATA item for [[READ]]
+</description></variable>
+<variable address="$0043"><description> temporary storage for [[INPUT]]
+</description></variable>
+<variable address="$0044"><description> temporary storage for [[INPUT]]
+</description></variable>
+<variable address="$0045"><description> Name of variable to look up in variable table (VARNAM).
+</description></variable>
+<variable address="$0046"><description> Name of variable to look up in variable table (VARNAM).
+</description></variable>
+<variable address="$0047"><description> VARNAM of current variable if integer; to descriptor if string
+</description></variable>
+<variable address="$0048"><description> VARNAM of current variable if integer; to descriptor if string
+</description></variable>
+<variable address="$0049"><description> index variable of [[FOR]] ... [[NEXT]] loop
+</description></variable>
+<variable address="$004A"><description> index variable of [[FOR]] ... [[NEXT]] loop
+</description></variable>
+<variable address="$004B"><description> temporary storage for mathematical operations or TXTPTR during READ/GET/INPUT
+</description></variable>
+<variable address="$004C"><description> temporary storage for mathematical operations or TXTPTR during READ/GET/INPUT
+</description></variable>
+<variable address="$004D"><description> mask used during evaluation (FRMEVL) of &lt;, &gt;, =
+</description></variable>
+<variable address="$004E-$004F"><description> temporary storage for FN or floating point value during FLPT
+</description></variable>
+<variable address="$0050-$0052"><description> strings
+</description></variable>
+<variable address="$0053"><description> length of string variable during garbage collection
+</description></variable>				
+<variable address="$0054"><description>processor opcode "JMP absolute"; value = 76 
+</description></variable>				
+<variable address="$0055-$0056"><description> pointer during function evaluation
+</description></variable>				
+<variable address="$005-$005B"><description> register for [[TAN]] (floating point accumulator ([[FAC]]) #3)
+</description></variable>				
+<variable address="$005C-$0060"><description> register for [[TAN]] ([[FAC]] #4)
+</description></variable>				
+<variable address="$0061"><description> floating point accumulator ([[FAC]]) #1 exponent
+</description></variable>				
+<variable address="$0062"><description> floating point accumulator ([[FAC]]) #1 mantissa
+</description></variable>				
+<variable address="$0063"><description> floating point accumulator ([[FAC]]) #1 mantissa
+</description></variable>				
+<variable address="$0064"><description> floating point accumulator ([[FAC]]) #1 mantissa
+</description></variable>				
+<variable address="$0065"><description> floating point accumulator ([[FAC]]) #1 mantissa
+</description></variable>				
+<variable address="$0066"><description> floating point accumulator ([[FAC]]) #1 sign
+</description></variable>				
+<variable address="$0067"><description> number of terms in series evaluation
+</description></variable>				
+<variable address="$0068"><description> [[FAC]] #1: bit overflow area during normalization
+</description></variable>				
+<variable address="$0069"><description> floating point accumulator ([[FAC]]) #2 exponent
+</description></variable>				
+<variable address="$006A"><description> floating point accumulator ([[FAC]]) #2 mantissa
+</description></variable>				
+<variable address="$006B"><description> floating point accumulator ([[FAC]]) #2 mantissa
+</description></variable>				
+<variable address="$006C"><description> floating point accumulator ([[FAC]]) #2 mantissa
+</description></variable>				
+<variable address="$006D"><description> floating point accumulator ([[FAC]]) #2 mantissa
+</description></variable>				
+<variable address="$006E"><description> floating point accumulator ([[FAC]]) #2 sign
+</description></variable>				
+<variable address="$006F"><description> result of signed comparison between [[FAC]] #1 and [[FAC]] #2: 0 = equal signs, 255 = different signs
+</description></variable>				
+<variable address="$0070"><description> [[FAC]] #2: low byte of [[FAC]] #1 mantissa during rounding if mantissa bigger longer than four bytes
+</description></variable>				
+<variable address="$0071-$0072"><description> to temporary table during series evaluation
+</description></variable>				
+<variable address="$0073-$008A"><description> CHRGET routine: fetches next character of BASIC program text
+</description></variable>				
+<variable address="$008B-$00BF"><description> seed stored by last invocation of [[RND]]
+</description></variable>				
+<variable address="$0090"><description> [[KERNAL]] I/O [[STATUS]] indicates end of file if bit 6 is set
+</description></variable>				
+<variable address="$0091"><description>  127 = {{Key|stop}}, 223 = {{Key|C&#061;}}, 239 = {{Key|SPACE}}, 251 = {{Key|CTRL}}, 255 = no key pressed
+</description></variable>				
+<variable address="$0092"><description> constant for timing of cassette reads
+</description></variable>				
+<variable address="$0093"><description> [[KERNAL]] [[LOAD]] routine: 0 = [[LOAD]], 1 = [[VERIFY]]
+</description></variable>				
+<variable address="$0094"><description> character waiting in serial bus output register
+</description></variable>				
+<variable address="$0095"><description> serial bus output register
+</description></variable>				
+<variable address="$0096"><description> cassette block synchronisation number
+</description></variable>				
+<variable address="$0097"><description> temporary storage for X register
+</description></variable>				
+<variable address="$0098"><description> number of open I/O file; pointer to top of file table (see addresses 601-631)
+</description></variable>				
+<variable address="$0099"><description> current input device: defaults to 0 = keyboard
+</description></variable>				
+<variable address="$009A"><description> current output device for [[CMD]]: defaults to 3 = screen
+</description></variable>				
+<variable address="$009B"><description> cassette parity byte
+</description></variable>				
+<variable address="$009C"><description> tape byte received
+</description></variable>				
+<variable address="$009D"><description> [[KERNAL]] message display control: bit 6 = error messages, bit 7 = control message
+</description></variable>				
+<variable address="$009E"><description> cassette read pass 1 error log
+</description></variable>				
+<variable address="$009F"><description> cassette read pass 2 error log
+</description></variable>				
+<variable address="$00A0-$00A2"><description> software jiffy clock, updated by KERNAL IRQ every 1/60 second
+</description></variable>				
+<variable address="$00A3-$00A4"><description>  bit counter for serial bus / cassette I/O (EOI)
+</description></variable>				
+<variable address="$00A5"><description> cassette synchronization byte counter
+</description></variable>				
+<variable address="$00A6"><description> number of characters in cassette I/O buffer
+</description></variable>				
+<variable address="$00A7"><description> temporary RS-232 / cassette read data register
+</description></variable>				
+<variable address="$00A8"><description> RS-232 input bits received / flag: cassette read error
+</description></variable>				
+<variable address="$00A9"><description> RS-232 start bit 0 = received, 144 = not received
+</description></variable>				
+<variable address="$00AA"><description> rs-232 input byte buffer / flag: cassette read character sync/data
+</description></variable>				
+<variable address="$00AB"><description> rs-232 input parity/cassette leader counter
+</description></variable>				
+<variable address="$00AC"><description> to the starting address of a load / screen scrolling temporary storage
+</description></variable>				
+<variable address="$00AD"><description> to the starting address of a load / screen scrolling temporary storage
+</description></variable>				
+<variable address="$00AE"><description> to end address of LOAD/VERIFY/SAVE
+</description></variable>				
+<variable address="$00AF"><description> to end address of LOAD/VERIFY/SAVE
+</description></variable>				
+<variable address="$00B0"><description> pointer to  constant for timing of cassette reads (default: 146)
+</description></variable>
+<variable address="$00B1"><description> pointer to  constant for timing of cassette reads (default: 146)
+</description></variable>
+<variable address="$00B2"><description> to start of cassette buffer
+</description></variable>				
+<variable address="$00B3"><description> to start of cassette buffer
+</description></variable>				
+<variable address="$00B4"><description> RS-232 output bit counter / cassette ready to read next byte
+</description></variable>				
+<variable address="$00B5"><description> next output bit / cassette read block byte counter
+</description></variable>				
+<variable address="$00B6"><description> output buffer
+</description></variable>				
+<variable address="$00B7"><description> length of current file name
+</description></variable>				
+<variable address="$00B8"><description> current logical file number
+</description></variable>				
+<variable address="$00B9"><description> current secondary address
+</description></variable>				
+<variable address="$00BA"><description> current device number
+</description></variable>				
+<variable address="$00BB"><description> to current file name
+</description></variable>				
+<variable address="$00BC"><description> to current file name 
+</description></variable>				
+<variable address="$00BD"><description> RS-232 output parity / temporary cassette read/write register
+</description></variable>	
+<variable address="$00BE"><description> cassette read/write duplicate block counter
+</description></variable>
+<variable address="$00BF"><description> cassette read byte register
+</description></variable>
+<variable address="$00C0"><description> cassette motor 0 = off, 1 = on
+</description></variable>
+<variable address="$00C1"><description> start address for LOAD / SAVE
+</description></variable>
+<variable address="$00C2"><description> start address for LOAD / SAVE
+</description></variable>
+<variable address="$00C3"><description> end address for LOAD / SAVE
+</description></variable>
+<variable address="$00C4"><description> end address for LOAD / SAVE
+</description></variable>
+<variable address="$00C5"><description> matrix coordinate of last pressed key, 64 = none
+</description></variable>
+<variable address="$00C6"><description> number of characters in keyboard buffer
+</description></variable>
+<variable address="$00C7"><description> print reverse characters, default 0 = normal
+</description></variable>
+<variable address="$00C8"><description> last column of current line during INPUT
+</description></variable> 
+<variable address="$00C9"><description> x coordinate of cursor during INPUT
+</description></variable>
+<variable address="$00CA"><description> y coordinate of cursor during INPUT
+</description></variable>
+<variable address="$00CB"><description> index to keyboard decoding table for currently pressed key, 64 = no key was depressed
+</description></variable>
+<variable address="$00CC"><description> flash cursor 0 = yes, other no
+</description></variable>
+<variable address="$00CD"><description> counter for cursor flashing, default 20, decreased every jiffy
+</description></variable>	
+<variable address="$00CE"><description> character at cursor position
+</description></variable>
+<variable address="$00CF"><description> cursor flash phase 0 = visible, &gt;0 invisible
+</description></variable>
+<variable address="$00D0"><description> input from 0 = keyboard or 3 = screen
+</description></variable>
+<variable address="$00D1"><description> memory address of current screen line
+</description></variable>
+<variable address="$00D2"><description> memory address of current screen line
+</description></variable>
+<variable address="$00D3"><description> Column of cursor in current logical line, used by [[SPC(]]
+</description></variable>
+<variable address="$00D4"><description> quote mode, &gt;0 = editor is in quote mode, i.e. control characters are printed as reverse graphic characters
+</description></variable>
+<variable address="$00D5"><description> Maximum length of logical screen line
+</description></variable>
+<variable address="$00D6"><description> Current physical line number of cursor
+</description></variable>
+<variable address="$00D7"><description> ASCII value of last printed character
+</description></variable>
+<variable address="$00D8"><description> Insert mode, if &gt; 0 puts editor in quote mode (see address 212 ($00D4))
+</description></variable>
+<variable address="$00D9-$00F2"><description> screen line link table / temporary storage for editor; 25 bytes, one byte for each screen line: bit 0…3 index to page in screen RAM, used with address 209; bit 7 indicates the logical line is longer than 40 characters, one physical line.
+</description></variable>
+<variable address="$00F3"><description> To first address in [[Color RAM]] of current screen line
+</description></variable>
+<variable address="$00F4"><description> To first address in [[Color RAM]] of current screen line
+</description></variable>
+<variable address="$00F5"><description> To the keyboard decoding table 
+</description></variable>
+<variable address="$00F6"><description> To the keyboard decoding table 
+</description></variable>
+<variable address="$00F7"><description> To RS-232 input buffer
+</description></variable>
+<variable address="$00F8"><description> To RS-232 input buffer
+</description></variable>
+<variable address="$00F9"><description> To RS-232 output buffer
+</description></variable>
+<variable address="$00FA"><description> To RS-232 output buffer
+</description></variable>
+<variable address="$00FB"><description> Unused
+</description></variable>
+<variable address="$00FC"><description> Unused
+</description></variable>
+<variable address="$00FD"><description> Unused
+</description></variable>
+<variable address="$00FE"><description> Unused
+</description></variable>
+<variable address="$00FF"><description> Temporary register for BASIC floating point to ASCII conversion
+</description></variable>
+</image>

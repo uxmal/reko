@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SerializedSignature convention="stdapi">
+  <return>
+    <type xmlns="http://schemata.jklnet.org/Decompiler">int</type>
+    <reg>ax</reg>
+  </return>
+  <arg name="lParam">
+    <prim domain="SignedInt" size="4" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <stack />
+  </arg>
+  <arg>
+    <prim domain="SignedInt" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <stack />
+  </arg>
+</SerializedSignature>

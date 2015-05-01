@@ -1,0 +1,65 @@
+fp:fp
+sp_1: orig: sp
+bx:bx
+    def:  def bx
+    uses: branch bx == 0x0000 l0C00_0013
+          branch bx > 0x0000 l0C00_000D
+SCZO_3: orig: SCZO
+Z_4: orig: Z
+SZO_5: orig: SZO
+C_6: orig: C
+SZO_7: orig: SZO
+Z_8: orig: Z
+C_9: orig: C
+SCZO_10: orig: SCZO
+ax_11: orig: ax
+    def:  ax_11 = PHI(ax_14, ax_16, ax_15)
+    uses: Mem12[ds:0x0100:word16] = ax_11
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0100:word16] = ax_11
+ds:ds
+    def:  def ds
+    uses: Mem12[ds:0x0100:word16] = ax_11
+ax_14: orig: ax
+    def:  ax_14 = 0xFFFF
+    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+ax_15: orig: ax
+    def:  ax_15 = 0x0001
+    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+ax_16: orig: ax
+    def:  ax_16 = 0x0000
+    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+SZO_17: orig: SZO
+Z_18: orig: Z
+C_19: orig: C
+SCZO_20: orig: SCZO
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word16 bx, selector ds)
+fn0C00_0000_entry:
+	def bx
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	branch bx == 0x0000 l0C00_0013
+	// succ:  l0C00_0005 l0C00_0013
+l0C00_0005:
+	branch bx > 0x0000 l0C00_000D
+	// succ:  l0C00_0007 l0C00_000D
+l0C00_0007:
+	ax_14 = 0xFFFF
+	goto l0C00_0015
+	// succ:  l0C00_0015
+l0C00_000D:
+	ax_15 = 0x0001
+	goto l0C00_0015
+	// succ:  l0C00_0015
+l0C00_0013:
+	ax_16 = 0x0000
+	// succ:  l0C00_0015
+l0C00_0015:
+	ax_11 = PHI(ax_14, ax_16, ax_15)
+	Mem12[ds:0x0100:word16] = ax_11
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:

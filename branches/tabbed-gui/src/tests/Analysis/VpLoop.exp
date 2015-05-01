@@ -1,0 +1,112 @@
+= main ========================
+r0:r0
+    def:  def r0
+    uses: r0_1 = PHI(r0, r0_3)
+r0_1: orig: r0
+    def:  r0_1 = PHI(r0, r0_3)
+    uses: Mem2[r0_1:word32] = 0x00000000
+          r0_3 = r0_1 - 0x00000004
+Mem2: orig: Mem0
+    def:  Mem2[r0_1:word32] = 0x00000000
+r0_3: orig: r0
+    def:  r0_3 = r0_1 - 0x00000004
+    uses: Z_4 = cond(r0_3)
+          r0_1 = PHI(r0, r0_3)
+          branch r0_3 != 0x00000000 l0000
+Z_4: orig: Z
+    def:  Z_4 = cond(r0_3)
+r0_5: orig: r0
+    def:  r0_5 = 0x0000002A
+    uses: r0_6 = PHI(r0_5, r0_8)
+r0_6: orig: r0
+    def:  r0_6 = PHI(r0_5, r0_8)
+    uses: Mem7[r0_6:word32] = 0x0000000C
+          r0_8 = r0_6 - 0x00000004
+Mem7: orig: Mem0
+    def:  Mem7[r0_6:word32] = 0x0000000C
+r0_8: orig: r0
+    def:  r0_8 = r0_6 - 0x00000004
+    uses: branch r0_8 == 0x00000000 l0002
+          r0_6 = PHI(r0_5, r0_8)
+// main
+// Return size: 0
+void main(word32 r1)
+main_entry:
+	def r0
+	// succ:  l0000
+l0000:
+	r0_1 = PHI(r0, r0_3)
+	Mem2[r0_1:word32] = 0x00000000
+	r0_3 = r0_1 - 0x00000004
+	Z_4 = cond(r0_3)
+	branch r0_3 != 0x00000000 l0000
+	// succ:  l0001 l0000
+l0001:
+	r0_5 = 0x0000002A
+	// succ:  l0002
+l0002:
+	r0_6 = PHI(r0_5, r0_8)
+	Mem7[r0_6:word32] = 0x0000000C
+	r0_8 = r0_6 - 0x00000004
+	branch r0_8 == 0x00000000 l0002
+	// succ:  l1 l0002
+l1:
+	return
+	// succ:  main_exit
+main_exit:
+
+r0:r0
+    def:  def r0
+    uses: r0_1 = PHI(r0, r0_3)
+r0_1: orig: r0
+    def:  r0_1 = PHI(r0, r0_3)
+    uses: Mem2[r0_1:word32] = 0x00000000
+          r0_3 = r0_1 - 0x00000004
+Mem2: orig: Mem0
+    def:  Mem2[r0_1:word32] = 0x00000000
+r0_3: orig: r0
+    def:  r0_3 = r0_1 - 0x00000004
+    uses: Z_4 = cond(r0_3)
+          r0_1 = PHI(r0, r0_3)
+          branch r0_3 != 0x00000000 l0000
+Z_4: orig: Z
+    def:  Z_4 = cond(r0_3)
+r0_5: orig: r0
+    def:  r0_5 = 0x0000002A
+    uses: r0_6 = PHI(r0_5, r0_8)
+r0_6: orig: r0
+    def:  r0_6 = PHI(r0_5, r0_8)
+    uses: Mem7[r0_6:word32] = 0x0000000C
+          r0_8 = r0_6 - 0x00000004
+Mem7: orig: Mem0
+    def:  Mem7[r0_6:word32] = 0x0000000C
+r0_8: orig: r0
+    def:  r0_8 = r0_6 - 0x00000004
+    uses: branch r0_8 == 0x00000000 l0002
+          r0_6 = PHI(r0_5, r0_8)
+// main
+// Return size: 0
+void main(word32 r1)
+main_entry:
+	def r0
+	// succ:  l0000
+l0000:
+	r0_1 = PHI(r0, r0_3)
+	Mem2[r0_1:word32] = 0x00000000
+	r0_3 = r0_1 - 0x00000004
+	Z_4 = cond(r0_3)
+	branch r0_3 != 0x00000000 l0000
+	// succ:  l0001 l0000
+l0001:
+	r0_5 = 0x0000002A
+	// succ:  l0002
+l0002:
+	r0_6 = PHI(r0_5, r0_8)
+	Mem7[r0_6:word32] = 0x0000000C
+	r0_8 = r0_6 - 0x00000004
+	branch r0_8 == 0x00000000 l0002
+	// succ:  l1 l0002
+l1:
+	return
+	// succ:  main_exit
+main_exit:
