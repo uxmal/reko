@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="fixwild.cs" />
-    <Compile Include="makedsig.cs" />
     <Content Include="MAKEDSIG.TXT" />
     <Compile Include="perflib.cs" />
     <Compile Include="perflib.h.cs" />

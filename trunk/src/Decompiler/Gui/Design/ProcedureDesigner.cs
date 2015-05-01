@@ -76,6 +76,7 @@ namespace Decompiler.Gui.Design
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ActionEditSignature:
                 case CmdIds.ViewFindWhatPointsHere:
+                case CmdIds.EditRename:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
                 }
@@ -96,6 +97,9 @@ namespace Decompiler.Gui.Design
                     return true;
                 case CmdIds.ViewFindWhatPointsHere:
                     ViewWhatPointsHere();
+                    return true;
+                case CmdIds.EditRename:
+                    Rename();
                     return true;
                 }
             }
@@ -118,6 +122,15 @@ namespace Decompiler.Gui.Design
                 },
                 PointerScannerFlags.All);
             resultSvc.ShowSearchResults(new AddressSearchResult(Services, addrControl.Select(a => new AddressSearchHit(program, a))));
+        }
+
+        private void Rename()
+        {
+        }
+
+        void tv_BeforeLabelEdit(object sender, System.Windows.Forms.NodeLabelEditEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public override int GetHashCode()

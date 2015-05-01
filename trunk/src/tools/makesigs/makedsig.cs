@@ -481,31 +481,34 @@ readSyms()
 
 
 void
-writeFile(char *buffer, int len)
+writeFile(byte [] buffer, int len)
 {
-	if ((int)fwrite(buffer, 1, len, f2) != len)
-	{
-		printf("Could not write to file\n");
-		exit(1);
-	}
+    try
+    {
+        f2.Write(buffer, 0, len);
+    } 
+    catch
+    {
+        Console.WriteLine("Could not write to file");
+        Environment.Exit(1);
+    }
 }
 
 void
 writeFileShort(word w)
 {
-	byte b;
+	byte[] b = new byte[2];
 
-	b = (byte)(w & 0xFF);
-	writeFile(&b, 1);		/* Write a short little endian */
-	b = (byte)(w>>8);
-	writeFile(&b, 1);
+	b[0] = (byte)(w & 0xFF);
+    b[1] = (byte)(w >> 8);
+    writeFile(b, 2);		/* Write a short little endian */
 }
 
 void
 saveFile()
 {
 	int i, len;
-	word *pTable;
+	word [] pTable;
 
 	writeFile("dccs", 4);					/* Signature */				
 	writeFileShort(numKeys);				/* Number of keys */
