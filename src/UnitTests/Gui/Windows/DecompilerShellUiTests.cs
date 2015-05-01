@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             form = new Form();
             form.IsMdiContainer = true;
             sc = new ServiceContainer();
-            svc = new DecompilerShellUiService(form, null, null, null, sc);
+            svc = new DecompilerShellUiService(null, null, null, null, sc);
             repository = new MockRepository();
         }
 
@@ -101,6 +101,5 @@ namespace Decompiler.UnitTests.Gui.Windows
             form.Close();
             form = null;
         }
-
     }
 }
