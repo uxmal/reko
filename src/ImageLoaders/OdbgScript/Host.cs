@@ -14,6 +14,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
     public class Host
     {
         public static object TS_LOG_COMMAND;
+
         private OdbgScriptLoader loader;
 
         public Host(OdbgScriptLoader loader)

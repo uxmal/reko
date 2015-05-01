@@ -349,7 +349,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             if (args.Length == 2 && GetRulong(args[0], out addr) && script.is_label(args[1]))
             {
-                bpjumps[addr] = script.labels[args[1]];
+                bpjumps[addr] = script.Labels[args[1]];
                 return true;
             }
             return false;
@@ -973,7 +973,7 @@ string filename;
                 }
                 else if (script.is_label(args[0])) // Set label to go to
                 {
-                    EOB_row = (int)script.labels[args[0]];
+                    EOB_row = (int)script.Labels[args[0]];
                     return true;
                 }
             }
@@ -991,7 +991,7 @@ string filename;
                 }
                 else if (script.is_label(args[0])) // Set label to go to
                 {
-                    EOE_row = (int)script.labels[args[0]];
+                    EOE_row = (int)script.Labels[args[0]];
                     return true;
                 }
             }
@@ -1017,7 +1017,7 @@ string filename;
                 uint first = script_pos + 1;
                 uint ende = (uint)script.NextCommandIndex((int)first);
 
-                if (ende > script.lines.Count)
+                if (ende > script.Lines.Count)
                 {
                     errorstr = "EXEC needs ENDE command!";
                     return false;
@@ -1033,7 +1033,7 @@ string filename;
 
                     for (uint i = first; i < ende; i++)
                     {
-                        string line = ResolveVarsForExec(script.lines[(int)i].line, true);
+                        string line = ResolveVarsForExec(script.Lines[(int)i].RawLine, true);
                         if ((len = Host.AssembleEx(line, (pmemforexec + (uint)totallen))) == 0)
                         {
                             Host.TE_FreeMemory(pmemforexec);
@@ -2700,7 +2700,7 @@ string str = "";
         {
             if (args.Length == 1 && script.is_label(args[0]))
             {
-                script_pos_next = script.labels[args[0]];
+                script_pos_next = script.Labels[args[0]];
                 return true;
             }
             return false;
