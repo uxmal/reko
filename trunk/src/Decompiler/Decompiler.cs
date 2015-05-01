@@ -447,7 +447,7 @@ namespace Decompiler
 			eventListener.ShowStatus("Rewriting complete.");
 		}
 
-		private void WriteDecompilerProducts()
+		public void WriteDecompilerProducts()
 		{
             foreach (var program in Project.Programs)
             {

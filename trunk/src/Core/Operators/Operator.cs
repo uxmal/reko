@@ -27,6 +27,7 @@ namespace Decompiler.Core.Operators
 	{
 		public static readonly BinaryOperator IAdd = new IAddOperator();
         public static readonly BinaryOperator ISub = new ISubOperator();
+        public static readonly BinaryOperator USub = new USubOperator();
         public static readonly BinaryOperator IMul = new IMulOperator();
         public static readonly BinaryOperator SMul = new SMulOperator();
         public static readonly BinaryOperator UMul = new UMulOperator();

@@ -83,6 +83,7 @@ namespace Decompiler.Core.Output
             precedences[Operator.FDiv] = 4;
             precedences[Operator.IAdd] = 5;
             precedences[Operator.ISub] = 5;
+            precedences[Operator.USub] = 5;
             precedences[Operator.FAdd] = 5;
             precedences[Operator.FSub] = 5;
             precedences[Operator.Sar] = 6;

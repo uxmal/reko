@@ -23,6 +23,9 @@ using System;
 
 namespace Decompiler.Core.Operators
 {
+    /// <summary>
+    /// Integer subtraction.
+    /// </summary>
 	public class ISubOperator : BinaryOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
@@ -34,6 +37,22 @@ namespace Decompiler.Core.Operators
 		{
 			return " - ";
 		}
-
 	}
+
+    /// <summary>
+    /// Unsigned integer subtraction. Used to model the PowerPC cmpl instruction,
+    /// which sets the LT, GT flags based on _unsigned_ comparison.
+    /// </summary>
+    public class USubOperator : BinaryOperator
+    {
+        public override Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt64() - c2.ToUInt64()));
+        }
+
+        public override string ToString()
+        {
+            return " -u ";
+        }
+    }
 }
