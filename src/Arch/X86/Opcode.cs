@@ -196,6 +196,7 @@ namespace Decompiler.Arch.X86
         movaps,
         movd,
         movdqa,
+        movq,
         movs,
         movsb,
         movsx,

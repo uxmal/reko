@@ -319,7 +319,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.@lock),
 				new SingleByteOpRec(Opcode.illegal),
 				new F2ByteOpRec(),
-				new SingleByteOpRec(Opcode.rep),
+				new F3ByteOpRec(),
 				new SingleByteOpRec(Opcode.hlt),
 				new SingleByteOpRec(Opcode.cmc),
 				new GroupOpRec(3, "Eb"),

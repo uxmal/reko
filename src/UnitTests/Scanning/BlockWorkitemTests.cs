@@ -320,6 +320,7 @@ namespace Decompiler.UnitTests.Scanning
                 Arg<string>.Is.Anything,
                 Arg<ProcessorState>.Is.Anything))
                 .Return(terminator);
+            scanner.Expect(s => s.TerminateBlock(Arg<Block>.Is.NotNull, Arg<Address>.Is.NotNull));
             arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
