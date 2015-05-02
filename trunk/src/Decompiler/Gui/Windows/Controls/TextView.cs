@@ -207,12 +207,6 @@ namespace Decompiler.Gui.Windows.Controls
             UpdateScrollbar();
             OnScroll();
             Invalidate();
-
-            //model.SetPositionAsFraction(vScroll.Value, vScroll.Maximum);
-            //RecomputeLayout();
-            //OnScroll();
-            //Invalidate();
-
         }
 
         protected override void OnPaint(PaintEventArgs e)

@@ -61,6 +61,10 @@ namespace Decompiler.UiPrototype.WinForms
             public void MoveTo(object position, int offset)
             {
                 this.position = (int)position + offset;
+                if (this.position < 0)
+                    this.position = 0;
+                if (this.position >= lines.Length)
+                    this.position = lines.Length - 1;
             }
 
             TextSpan[][] TextViewModel.GetLineSpans(int count)
