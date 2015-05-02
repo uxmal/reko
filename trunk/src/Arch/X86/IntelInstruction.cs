@@ -61,6 +61,15 @@ namespace Decompiler.Arch.X86
 		{
 			if (code == Opcode.movsx || code == Opcode.movzx)
 				return true;
+            if (code == Opcode.lea ||
+                code == Opcode.lds ||
+                code == Opcode.les ||
+                code == Opcode.lfs || 
+                code == Opcode.lgs || 
+                code == Opcode.lss)
+                return false;
+            if (Operands >= 2 && op1.Width.Size != op2.Width.Size)
+                return true;
 			return 
 				 (Operands < 1 || !ImplicitWidth(op1)) &&
 				 (Operands < 2 || !ImplicitWidth(op2)) &&

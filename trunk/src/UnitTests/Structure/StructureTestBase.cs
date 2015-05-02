@@ -59,6 +59,7 @@ namespace Decompiler.UnitTests.Structure
         {
             var asm = new IntelTextAssembler();
             program = asm.AssembleFragment(addrBase, asmFragment);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
             return RewriteProgram();
         }

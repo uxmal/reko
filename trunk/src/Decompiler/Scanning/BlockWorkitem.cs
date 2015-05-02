@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ProcedureCharacteristics  = Decompiler.Core.Serialization.ProcedureCharacteristics;
 
 namespace Decompiler.Scanning
 {
@@ -120,7 +121,9 @@ namespace Decompiler.Scanning
                 {
                     ri = rtlInstr;
                     if (!ri.Accept(this))
+                    {
                         return;
+                    }
                 }
                 var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
                 if (blNext != null)
@@ -283,6 +286,12 @@ namespace Decompiler.Scanning
                 proc.ControlGraph.AddEdge(blockFrom, blockTo);
         }
 
+        /// <summary>
+        /// RtlGoto transfers control to either a constant destination or 
+        /// a variable destination computed at run-time.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <returns></returns>
         public bool VisitGoto(RtlGoto g)
         {
             scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
@@ -422,14 +431,16 @@ namespace Decompiler.Scanning
             return OnAfterCall(sig, null);
         }
 
-        private bool OnAfterCall(ProcedureSignature sigCallee, Decompiler.Core.Serialization.ProcedureCharacteristics characteristics)
+        private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
         {
             if (sigCallee == null)
                 return true;
             state.OnAfterCall(stackReg, sigCallee, eval);
             if (characteristics != null && characteristics.Terminates)
+            {
+                scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 return false;
-
+            }
             int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
             if (delta != 0)
             {
@@ -483,7 +494,13 @@ namespace Decompiler.Scanning
                 {
                     var fn = appl.Procedure as ProcedureConstant;
                     if (fn != null)
-                        return !fn.Procedure.Characteristics.Terminates;
+                    {
+                        if (fn.Procedure.Characteristics.Terminates)
+                        {
+                            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+                            return false;
+                        }
+                    }
                 }
             }
             return true;
@@ -504,6 +521,7 @@ namespace Decompiler.Scanning
                 Emit(BuildApplication(fn, ep.Signature, site));
                 if (svc.Characteristics.Terminates)
                 {
+                    scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return true;
                 }

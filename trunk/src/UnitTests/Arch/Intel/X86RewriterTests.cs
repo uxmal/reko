@@ -1093,7 +1093,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             Run32bitTest(0x0F, 0xEF, 0xC9);
             AssertCode(
                 "0|10000000(3): 1 instructions",
-                "1|L--|xmm1 = (word128) 0");
+                "1|L--|mm1 = (word64) 0");
         }
 
         [Test]
