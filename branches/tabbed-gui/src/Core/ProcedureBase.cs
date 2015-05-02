@@ -42,7 +42,9 @@ namespace Decompiler.Core
         /// <summary>
         /// The name of the procedure.
         /// </summary>
-		public string Name { get; private set; }
+        public string Name { get { return name; } set { name = value; NameChanged.Fire(this); } }
+        public event EventHandler NameChanged;
+        private string name;
 
 		public abstract ProcedureSignature Signature { get; set; }
 

@@ -204,6 +204,7 @@ namespace Decompiler.Gui.Windows.Controls
         {
             model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
             RecomputeLayout();
+            UpdateScrollbar();
             OnScroll();
             Invalidate();
         }

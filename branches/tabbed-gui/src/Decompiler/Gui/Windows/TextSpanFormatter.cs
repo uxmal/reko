@@ -169,7 +169,11 @@ namespace Decompiler.Gui.Windows
 
             public void MoveTo(object position, int offset)
             {
-                position = (int)position + offset;
+                this.position = (int)position + offset;
+                if (this.position < 0)
+                    this.position = 0;
+                if (this.position >= lines.Length)
+                    this.position = lines.Length - 1;
             }
 
             public TextSpan[][] GetLineSpans(int count)

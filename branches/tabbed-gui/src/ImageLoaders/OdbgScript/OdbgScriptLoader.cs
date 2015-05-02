@@ -41,7 +41,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
     /// file to specify the script file to use.</remarks>
     public class OdbgScriptLoader : ImageLoader
     {
-        private Debugger Debugger;
+        private Debugger debugger;
+        private OllyLang ollylang;
+        private rulong OldIP;
 
         public OdbgScriptLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
@@ -76,8 +78,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
             Win32Emulator win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
             X86State state = (X86State)program.Architecture.CreateProcessorState();
             X86Emulator emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
-            Debugger = new Debugger(emu);
-            ollylang = new OllyLang(new Host(this), Debugger);
+            debugger = new Debugger(emu);
+            ollylang = new OllyLang(new Host(this), debugger);
 
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.WriteRegister(Registers.esp, (uint)Image.BaseAddress.ToLinear() + 0x1000 - 4u);
@@ -113,12 +115,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public virtual void LoadScript(string scriptFilename, OllyScript script)
         {
-            script.load_file(scriptFilename, null);
+            script.LoadFile(scriptFilename, null);
         }
 
         private void emu_ExceptionRaised(object sender, EventArgs e)
         {
-
         }
 
         private void emu_BeforeStart(object sender, EventArgs e)
@@ -130,7 +131,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             ScripterResume();
         }
 
-        // 
         /*
         Design:
 
@@ -158,7 +158,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         // TitanEngine plugin callbacks
 
-        rulong OldIP;
 
         void TitanDebuggingCallBack(DEBUG_EVENT debugEvent, int CallReason)
         {
@@ -180,7 +179,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 case DEBUG_EVENT.EXCEPTION_DEBUG_EVENT:
                     if (ollylang.script_running)
                     {
-                        rulong NewIP = Debugger.GetContextData(eContextData.UE_CIP);
+                        rulong NewIP = debugger.GetContextData(eContextData.UE_CIP);
                         //if(debugEvent.u.Exception.ExceptionRecord.ExceptionCode == 1) // EXCEPTION_BREAKPOINT)
                         NewIP--;
 
@@ -201,15 +200,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
         }
 
-        private OllyLang ollylang;
-
-        //
         public bool ScripterLoadFile(string szFileName)
         {
             ollylang.Reset();
-            return ollylang.script.load_file(szFileName);
+            return ollylang.script.LoadFile(szFileName);
         }
-
 
         public bool ScripterLoadBuffer(string szScript)
         {
@@ -241,6 +236,5 @@ namespace Decompiler.ImageLoaders.OdbgScript
             }
             return false;
         }
-
     }
 }
