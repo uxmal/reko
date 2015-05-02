@@ -46,7 +46,6 @@ namespace Decompiler.Arch.X86
         private bool useRexPrefix;
         private byte rexPrefix;
         private bool dataSizeOverride;
-        private bool addrSizeOverride;
         private bool f2PrefixSeen;
         private bool f3PrefixSeen;
 
@@ -431,19 +430,30 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        public class ThreeByteOpRec : OpRec
+        {
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                switch (op)
+                {
+                case 0x3A:
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec0F3A[op].Decode(disasm, op, "");
+                default: return null;
+                }
+            }
+        }
         public class F2ByteOpRec : OpRec
         {
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.rdr.PeekByte(0) == 0x0F)
                 {
-                    OpRec oprec;
-                    op = disasm.rdr.PeekByte(1);
-                    if (s_aOpRecF2.TryGetValue(op, out oprec))
-                    {
-                        disasm.rdr.Offset += 2;
-                        return oprec.Decode(disasm, op, opFormat);
-                    }
+                    disasm.f2PrefixSeen = true;
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec[op].Decode(disasm, op, opFormat);
                 }
                 return disasm.DecodeOperands(Opcode.repne, 0xF2, opFormat);
             }
@@ -946,20 +956,19 @@ namespace Decompiler.Arch.X86
 
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
+		private static OpRec [] s_aOpRec0F3A;
 		private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
-        private static Dictionary<byte, OpRec> s_aOpRecF2;
 
 		static X86Disassembler()
 		{
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
+            s_aOpRec0F3A = Create0F3AOprecs();
 
             s_aOpRecGrp = CreateGroupOprecs();
             s_aFpOpRec = CreateFpuOprecs();
             Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
-
-            s_aOpRecF2 = CreateF2Oprecs();
 		}
 	}
 }	

@@ -584,6 +584,16 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("punpcklbw\txmm1,xmm3", 0x66, 0x0f, 0x60, 0xcb);
         }
+
+        [Test]
+        public void Dis_x86_more2()
+        {
+            AssertCode32("movlhps\txmm3,xmm3", 0x0f, 0x16, 0xdb);
+            AssertCode32("pshuflw\txmm3,xmm3,00", 0xf2, 0x0f, 0x70, 0xdb, 0x00);
+            AssertCode32("pcmpeqb\txmm0,[eax]", 0x66, 0x0f, 0x74, 0x00);
+            AssertCode32("stmxcsr\tdword ptr [ebp-0C]", 0x0f, 0xae, 0x5d, 0xf4);
+            AssertCode32("palignr\txmm3,xmm1,00", 0x66, 0x0f, 0x3a, 0x0f, 0xd9, 0x00);
+            AssertCode32("movq\t[edi],xmm1", 0x66, 0x0f, 0xd6, 0x0f);
+        }
     }
 }
-
