@@ -85,7 +85,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="X86Disassembler.F2.cs" />
+    <Compile Include="X86Disassembler.0F3A.cs" />
     <Compile Include="X86Emulator.cs" />
     <Compile Include="X86PointerScanner.cs" />
     <Compile Include="X86AddressOperand.cs" />

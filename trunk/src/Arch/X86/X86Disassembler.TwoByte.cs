@@ -57,7 +57,10 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new PrefixedOpRec(
+                    Opcode.movlhps, "Vx,Wx",
+                    Opcode.movhpd, "Vx,Wx",
+                    Opcode.movshdup, "Vx,Wx"),
 				new SingleByteOpRec(Opcode.illegal),
 
 				new SingleByteOpRec(Opcode.illegal),
@@ -83,7 +86,11 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.cvttps2pi, "Pq,Wq",
+                    Opcode.cvttpd2si, "Pd,Wq",
+                    Opcode.cvttss2si, "Gd,Wq",
+                    Opcode.cvttsd2si, "Gd,Wq"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -100,7 +107,7 @@ namespace Decompiler.Arch.X86
 
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new ThreeByteOpRec(),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -171,11 +178,15 @@ namespace Decompiler.Arch.X86
 				// 70
 				new PrefixedOpRec(
                     Opcode.pshufw, "Pq,Qq,Ib",
-                    Opcode.pshufd, "Vq,Wq,Ib"),
+                    Opcode.pshufd, "Vx,Wx,Ib",
+                    Opcode.pshufhw, "Vx,Wx,Ib",
+                    Opcode.pshuflw, "Vx,Wx,Ib"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new PrefixedOpRec(
+                    Opcode.pcmpeqb, "Pq,Qq",
+                    Opcode.pcmpeqb, "Vx,Wx"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -246,7 +257,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.bts, "Ev,Gv"),
 				new SingleByteOpRec(Opcode.shrd, "Ev,Gv,Ib"),
 				new SingleByteOpRec(Opcode.shrd, "Ev,Gv,c"),
-				new SingleByteOpRec(Opcode.illegal),
+				new GroupOpRec(15, ""),
 				new SingleByteOpRec(Opcode.imul, "Gv,Ev"),
 
 				// B0
@@ -294,7 +305,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.movq, "Wx,Vx"),
 				new SingleByteOpRec(Opcode.illegal),
 
 				new SingleByteOpRec(Opcode.illegal),
