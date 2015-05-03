@@ -34,23 +34,16 @@ namespace Decompiler.Gui.Design
         {
             this.segment = (ImageMapSegment) obj;
             base.TreeNode.Text = segment.Name;
-            base.TreeNode.ImageName = GetImageName(segment.Access);
-            base.TreeNode.ToolTipText = string.Format(
-                "{0}{1}{2}{1}Size: {3:X}{1}{4}{5}{6}",
-                segment.Name,
-                Environment.NewLine,
-                segment.Address,
-                segment.Size,
-                (segment.Access & AccessMode.Read)!= 0 ? 'r' : '-',
-                (segment.Access & AccessMode.Write)!= 0 ? 'w' : '-',
-                (segment.Access & AccessMode.Execute)!= 0 ? 'x' : '-'
-                );
+            base.TreeNode.ImageName = GetImageName();
+            base.TreeNode.ToolTipText = GetTooltip();
             PopulateChildren();
         }
 
-        public string GetImageName(AccessMode access)
+        public string GetImageName()
         {
-            switch (access)
+            if (segment.IsDiscardable)
+                return "DiscardableSection.ico";
+            switch (segment.Access)
             {
             case AccessMode.ReadWriteExecute:
                 return "WxSection.ico";
@@ -61,6 +54,27 @@ namespace Decompiler.Gui.Design
             default:
                 return "RoSection.ico";
             }
+        }
+
+        public string GetTooltip()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(segment.Name);
+            sb.AppendFormat("Address: {0}", segment.Address);
+            sb.AppendLine();
+            sb.AppendFormat("Size: {0:X}", segment.Size);
+            sb.AppendLine();
+            sb.AppendFormat("{0}{1}{2}", 
+              (segment.Access & AccessMode.Read) != 0 ? 'r' : '-',
+                 (segment.Access & AccessMode.Write) != 0 ? 'w' : '-',
+                 (segment.Access & AccessMode.Execute) != 0 ? 'x' : '-'
+                 );
+            if (segment.IsDiscardable)
+            {
+                sb.AppendLine();
+                sb.Append("Discardable");
+            }
+            return sb.ToString();
         }
 
         private void PopulateChildren()

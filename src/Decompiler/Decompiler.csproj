@@ -721,6 +721,7 @@
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
     <Content Include="Images\CloseTab.ico" />
     <Content Include="Images\RwSection.ico" />
+    <Content Include="Images\DiscardableSection.ico" />
     <Content Include="Images\RxSection.ico" />
     <Content Include="Images\WxSection.ico" />
     <Content Include="Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml" />
