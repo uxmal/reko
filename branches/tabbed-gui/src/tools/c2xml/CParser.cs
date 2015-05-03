@@ -651,10 +651,10 @@ IGNORE tab + cr + lf
                     if (PeekThenDiscard(CTokenType.LBrace))
                     {
                         decls = new List<StructDecl>();
-                        do
+                        while (PeekTokenType() != CTokenType.RBrace) 
                         {
                             decls.Add(Parse_StructDecl());
-                        } while (PeekTokenType() != CTokenType.RBrace);
+                        }
                         ExpectToken(CTokenType.RBrace);
                     }
                 }
@@ -705,6 +705,7 @@ IGNORE tab + cr + lf
             case CTokenType.Volatile:
             case CTokenType.Comma:
             case CTokenType.Const:
+            case CTokenType.RBrace:
                 return null;
             default:
                 throw new NotImplementedException(string.Format("Meuf line {0}: {1}", lexer.LineNumber, token));

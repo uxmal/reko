@@ -139,6 +139,9 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\ntoskrnl.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
