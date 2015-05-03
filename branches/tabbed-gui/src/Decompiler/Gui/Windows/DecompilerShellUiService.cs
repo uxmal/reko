@@ -207,7 +207,7 @@ namespace Decompiler.Gui.Windows
                     tabPage.Controls.Add(ctrl);
                 }
                 tabPage.Show();
-                tabPage.BringToFront();
+                ((TabControl)tabPage.Parent).SelectedTab = tabPage;
             }
 
             public IWindowPane Pane

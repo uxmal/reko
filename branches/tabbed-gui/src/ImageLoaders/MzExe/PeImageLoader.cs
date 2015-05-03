@@ -185,10 +185,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			foreach (Section s in sectionMap.Values)
 			{
-				if (!s.IsDiscardable)
-				{
-					LoadSectionBytes(s, RawImage, imgLoaded.Bytes);
-				}
+				LoadSectionBytes(s, RawImage, imgLoaded.Bytes);
 			}
 		}
 
@@ -308,19 +305,17 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             foreach (Section s in sectionMap.Values)
             {
-                if (!s.IsDiscardable)
+                AccessMode acc = AccessMode.Read;
+                if ((s.Flags & SectionFlagsWriteable) != 0)
                 {
-                    AccessMode acc = AccessMode.Read;
-                    if ((s.Flags & SectionFlagsWriteable) != 0)
-                    {
-                        acc |= AccessMode.Write;
-                    }
-                    if ((s.Flags & SectionFlagsExecutable) != 0)
-                    {
-                        acc |= AccessMode.Execute;
-                    }
-                    imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc);
+                    acc |= AccessMode.Write;
                 }
+                if ((s.Flags & SectionFlagsExecutable) != 0)
+                {
+                    acc |= AccessMode.Execute;
+                }
+                var seg = imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc);
+                seg.IsDiscardable = s.IsDiscardable;
             }
         }
 

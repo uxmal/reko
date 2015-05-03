@@ -47,6 +47,8 @@ namespace Decompiler.Core
 
 		public AccessMode Access { get; private set; }
 
+        public bool IsDiscardable { get; set; }
+
         public ImageMapSegmentRenderer Renderer { get; set; }
 
 		public string Name { get;set; }
@@ -55,7 +57,8 @@ namespace Decompiler.Core
 		{
 			return string.Format("Segment {0} at {1}, {2} bytes", Name, Address.ToString(), Size);
 		}
-	}
+
+    }
 
 	[Flags]
 	public enum AccessMode

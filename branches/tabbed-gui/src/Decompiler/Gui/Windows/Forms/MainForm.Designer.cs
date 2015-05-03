@@ -104,6 +104,7 @@
             this.imlBrowser.Images.SetKeyName(6, "RwSection.ico");
             this.imlBrowser.Images.SetKeyName(7, "RxSection.ico");
             this.imlBrowser.Images.SetKeyName(8, "WxSection.ico");
+            this.imlBrowser.Images.SetKeyName(9, "DiscardableSection.ico");
             // 
             // tabControl1
             // 
@@ -171,7 +172,7 @@
             this.tabFindResults.Location = new System.Drawing.Point(4, 22);
             this.tabFindResults.Name = "tabFindResults";
             this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFindResults.Size = new System.Drawing.Size(773, 154);
+            this.tabFindResults.Size = new System.Drawing.Size(776, 142);
             this.tabFindResults.TabIndex = 0;
             this.tabFindResults.Text = "Find results";
             this.tabFindResults.UseVisualStyleBackColor = true;
@@ -183,7 +184,7 @@
             this.listFindResults.HideSelection = false;
             this.listFindResults.Location = new System.Drawing.Point(3, 3);
             this.listFindResults.Name = "listFindResults";
-            this.listFindResults.Size = new System.Drawing.Size(767, 148);
+            this.listFindResults.Size = new System.Drawing.Size(770, 136);
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
             // 
@@ -191,7 +192,7 @@
             // 
             this.tabConsole.Location = new System.Drawing.Point(4, 22);
             this.tabConsole.Name = "tabConsole";
-            this.tabConsole.Size = new System.Drawing.Size(773, 154);
+            this.tabConsole.Size = new System.Drawing.Size(776, 142);
             this.tabConsole.TabIndex = 2;
             this.tabConsole.Text = "Console";
             this.tabConsole.UseVisualStyleBackColor = true;
