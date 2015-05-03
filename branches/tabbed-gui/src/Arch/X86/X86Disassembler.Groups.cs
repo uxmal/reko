@@ -112,6 +112,96 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.bts),
 				new SingleByteOpRec(Opcode.btr),
 				new SingleByteOpRec(Opcode.btc),
+
+				// group 9
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 10
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 11
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 12
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 13
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 14
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 15
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.ldmxcsr, "Md"),
+				new SingleByteOpRec(Opcode.stmxcsr, "Md"),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 16
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+
+				// group 17
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
 			};
         }
     }

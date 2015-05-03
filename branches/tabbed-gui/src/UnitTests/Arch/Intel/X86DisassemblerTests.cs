@@ -91,6 +91,18 @@ namespace Decompiler.UnitTests.Arch.Intel
                 false);
         }
 
+        private void AssertCode32(string sExp, params byte[] bytes)
+        {
+            var instr = Disassemble32(bytes);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
+        private void AssertCode64(string sExp, params byte[] bytes)
+        {
+            var instr = Disassemble64(bytes);
+            Assert.AreEqual(sExp, instr.ToString());
+        }
+
         [Test]
         public void X86Dis_Sequence()
         {
@@ -163,7 +175,7 @@ foo:
             string s = sb.ToString();
             Assert.AreEqual(
                 "rol\tax,cl\r\n" +
-                "ror\t[bx+02],cl\r\n" +
+                "ror\tword ptr [bx+02],cl\r\n" +
                 "rcr\tword ptr [bp+04],04\r\n" +
                 "rcl\tax,01\r\n", s);
         }
@@ -427,7 +439,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_pxor()
         {
             var instr = Disassemble32(0x0F, 0xEF, 0xC1);
-            Assert.AreEqual("pxor\txmm0,xmm1", instr.ToString());
+            Assert.AreEqual("pxor\tmm0,mm1", instr.ToString());
         }
 
         [Test]
@@ -536,20 +548,54 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreEqual("btr\tebx,00", instr.ToString());
         }
 
-        private void AssertCode32(string sExp, params byte [] bytes)
+        [Test]
+        public void Dis_x86_movd_32()
         {
-            var instr = Disassemble32(bytes);
-            Assert.AreEqual(sExp, instr.ToString());
+            AssertCode32("movd\tdword ptr [esi],mm1", 0x0F, 0x7E, 0x0E);
+            AssertCode32("movd\tdword ptr [esi],xmm1", 0x66, 0x0F, 0x7E, 0x0E);
+            AssertCode32("movq\txmm1,qword ptr [esi]", 0xF3, 0x0F, 0x7E, 0x0E);
+            AssertCode32("movd\tesi,mm1", 0x0F, 0x7E, 0xCE);
+            AssertCode32("movd\tesi,xmm1", 0x66, 0x0F, 0x7E, 0xCE);
+            AssertCode32("movq\txmm1,xmm6", 0xF3, 0x0F, 0x7E, 0xCE);
         }
 
         [Test]
-        public void Dis_x86_more_xmm()
+        public void Dis_x86_movd_64()
         {
-            AssertCode32("movd\txmm0,eax", 0x66, 0x0f, 0x6e, 0xc0);
-            AssertCode32("movd\t[ecx],xmm0", 0x66, 0x0f, 0x7e, 0x01);
-            AssertCode32("punpcklbw\txmm0,xmm0", 0x66, 0x0f, 0x60, 0xc0);
-            AssertCode32("punpcklwd\txmm0,xmm0", 0x66, 0x0f, 0x61, 0xc0);
-            AssertCode32("pshufd\txmm0,xmm0,00", 0x66, 0x0f, 0x70, 0xc0, 0x00);
+            AssertCode64("movd\tdword ptr [rsi],mm1", 0x0F, 0x7E, 0x0E);
+            AssertCode64("movd\tdword ptr [rsi],xmm1", 0x66, 0x0F, 0x7E, 0x0E);
+            AssertCode64("movq\txmm1,qword ptr [rsi]", 0xF3, 0x0F, 0x7E, 0x0E);
+            AssertCode64("movd\tesi,mm1", 0x0F, 0x7E, 0xCE);
+            AssertCode64("movd\tesi,xmm1", 0x66, 0x0F, 0x7E, 0xCE);
+            AssertCode64("movq\txmm1,xmm6", 0xF3, 0x0F, 0x7E, 0xCE);
+        }
+
+        [Test]
+        public void Dis_x86_movd_64_rex()
+        {
+            AssertCode64("movq\t[rsi],mm1", 0x48, 0x0F, 0x7E, 0x0E);
+            AssertCode64("movq\tqword ptr [rsi],xmm1", 0x66, 0x48, 0x0F, 0x7E, 0x0E);
+            AssertCode64("movq\trsi,mm1", 0x48, 0x0F, 0x7E, 0xCE);
+            AssertCode64("movq\trsi,xmm1", 0x66, 0x48, 0x0F, 0x7E, 0xCE);
+        }
+
+        [Test]
+        public void Dis_x86_punpcklbw()
+        {
+            AssertCode32("punpcklbw\txmm1,xmm3", 0x66, 0x0f, 0x60, 0xcb);
+        }
+
+        [Test]
+        public void Dis_x86_more2()
+        {
+            AssertCode32("movlhps\txmm3,xmm3", 0x0f, 0x16, 0xdb);
+            AssertCode32("pshuflw\txmm3,xmm3,00", 0xf2, 0x0f, 0x70, 0xdb, 0x00);
+            AssertCode32("pcmpeqb\txmm0,[eax]", 0x66, 0x0f, 0x74, 0x00);
+            AssertCode32("stmxcsr\tdword ptr [ebp-0C]", 0x0f, 0xae, 0x5d, 0xf4);
+            AssertCode32("palignr\txmm3,xmm1,00", 0x66, 0x0f, 0x3a, 0x0f, 0xd9, 0x00);
+            AssertCode32("movq\t[edi],xmm1", 0x66, 0x0f, 0xd6, 0x0f);
+            AssertCode32("ldmxcsr\tdword ptr [ebp+08]", 0x0F, 0xAE, 0x55, 0x08);
+            AssertCode32("pcmpistri\txmm0,[edi-10],40", 0x66, 0x0F, 0x3A, 0x63, 0x47, 0xF0, 0x40);
         }
     }
 }

@@ -45,6 +45,9 @@ namespace Decompiler.Arch.X86
 		private ImageReader	rdr;
         private bool useRexPrefix;
         private byte rexPrefix;
+        private bool dataSizeOverride;
+        private bool f2PrefixSeen;
+        private bool f3PrefixSeen;
 
 		/// <summary>
 		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
@@ -102,42 +105,22 @@ namespace Decompiler.Arch.X86
 
         private RegisterStorage MmxRegFromBits(int bits, PrimitiveType dataWidth)
         {
-            if (this.defaultDataWidth != dataWidth)
-                dataWidth = PrimitiveType.Word128;
-            switch (dataWidth.BitSize)
+            switch (bits & 7)
             {
-            case 64:
-                switch (bits)
-                {
-                case 0: return Registers.mm0;
-                case 1: return Registers.mm1;
-                case 2: return Registers.mm2;
-                case 3: return Registers.mm3;
-                case 4: return Registers.mm4;
-                case 5: return Registers.mm5;
-                case 6: return Registers.mm6;
-                case 7: return Registers.mm7;
-                }
-                break;
-            case 128:
-            default:
-                switch (bits)
-                {
-                case 0: return Registers.xmm0;
-                case 1: return Registers.xmm1;
-                case 2: return Registers.xmm2;
-                case 3: return Registers.xmm3;
-                case 4: return Registers.xmm4;
-                case 5: return Registers.xmm5;
-                case 6: return Registers.xmm6;
-                case 7: return Registers.xmm7;
-                }
-                break;
+            case 0: return Registers.mm0;
+            case 1: return Registers.mm1;
+            case 2: return Registers.mm2;
+            case 3: return Registers.mm3;
+            case 4: return Registers.mm4;
+            case 5: return Registers.mm5;
+            case 6: return Registers.mm6;
+            case 7: return Registers.mm7;
             }
-			throw new ArgumentOutOfRangeException(string.Format(
+            throw new ArgumentOutOfRangeException(string.Format(
                 "Unsupported register {0} or data width {1}.",
                 bits, dataWidth));
         }
+
         private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             return fnReg((bits & 7) | ((rexPrefix & 2) << 2), dataWidth);
@@ -243,32 +226,24 @@ namespace Decompiler.Arch.X86
 
         private RegisterStorage XmmRegFromBits(int bits, PrimitiveType dataWidth)
         {
-            switch (dataWidth.BitSize)
+            switch (bits)
             {
-            default: throw new NotImplementedException();
-            case 32:
-            case 64:
-            case 128:
-                switch (bits)
-                {
-                case 0: return Registers.xmm0;
-                case 1: return Registers.xmm1;
-                case 2: return Registers.xmm2;
-                case 3: return Registers.xmm3;
-                case 4: return Registers.xmm4;
-                case 5: return Registers.xmm5;
-                case 6: return Registers.xmm6;
-                case 7: return Registers.xmm7;
-                case 8: return Registers.xmm8;
-                case 9: return Registers.xmm9;
-                case 10: return Registers.xmm10;
-                case 11: return Registers.xmm11;
-                case 12: return Registers.xmm12;
-                case 13: return Registers.xmm13;
-                case 14: return Registers.xmm14;
-                case 15: return Registers.xmm15;
-                }
-                break;
+            case 0: return Registers.xmm0;
+            case 1: return Registers.xmm1;
+            case 2: return Registers.xmm2;
+            case 3: return Registers.xmm3;
+            case 4: return Registers.xmm4;
+            case 5: return Registers.xmm5;
+            case 6: return Registers.xmm6;
+            case 7: return Registers.xmm7;
+            case 8: return Registers.xmm8;
+            case 9: return Registers.xmm9;
+            case 10: return Registers.xmm10;
+            case 11: return Registers.xmm11;
+            case 12: return Registers.xmm12;
+            case 13: return Registers.xmm13;
+            case 14: return Registers.xmm14;
+            case 15: return Registers.xmm15;
             }
             throw new NotImplementedException();
         }
@@ -349,7 +324,9 @@ namespace Decompiler.Arch.X86
                 {
                     disasm.rexPrefix = op;
                     if ((op & 8) != 0)
+                    {
                         disasm.dataWidth = PrimitiveType.Word64;
+                    }
                     op = disasm.rdr.ReadByte();
                     return s_aOpRec[op].Decode(disasm, op, opFormat);
                 }
@@ -453,21 +430,47 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        public class ThreeByteOpRec : OpRec
+        {
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                switch (op)
+                {
+                case 0x3A:
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec0F3A[op].Decode(disasm, op, "");
+                default: return null;
+                }
+            }
+        }
         public class F2ByteOpRec : OpRec
         {
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 if (disasm.rdr.PeekByte(0) == 0x0F)
                 {
-                    OpRec oprec;
-                    op = disasm.rdr.PeekByte(1);
-                    if (s_aOpRecF2.TryGetValue(op, out oprec))
-                    {
-                        disasm.rdr.Offset += 2;
-                        return oprec.Decode(disasm, op, opFormat);
-                    }
+                    disasm.f2PrefixSeen = true;
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec[op].Decode(disasm, op, opFormat);
                 }
                 return disasm.DecodeOperands(Opcode.repne, 0xF2, opFormat);
+            }
+        }
+
+        public class F3ByteOpRec : OpRec
+        {
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.rdr.PeekByte(0) == 0x0F)
+                {
+                    disasm.f3PrefixSeen = true;
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec[op].Decode(disasm, op, opFormat);
+                }
+                return disasm.DecodeOperands(Opcode.rep, 0xF3, opFormat);
             }
         }
 
@@ -475,6 +478,7 @@ namespace Decompiler.Arch.X86
         {
             public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
+                disasm.dataSizeOverride = true;
                 disasm.dataWidth = (disasm.dataWidth == PrimitiveType.Word16)
                         ? PrimitiveType.Word32
                         : PrimitiveType.Word16;
@@ -492,6 +496,84 @@ namespace Decompiler.Arch.X86
                         : PrimitiveType.Word16;
                 op = disasm.rdr.ReadByte();
                 return s_aOpRec[op].Decode(disasm, op, opFormat);
+            }
+        }
+
+        public class PrefixedOpRec : OpRec
+        {
+            private Opcode op;
+            private Opcode op66;
+            private Opcode opWide;
+            private Opcode op66Wide;
+            private Opcode opF3;
+            private Opcode opF2;
+            private string opFmt;
+            private string op66Fmt;
+            private string opF3Fmt;
+            private string opF2Fmt;
+
+            public PrefixedOpRec(
+                Opcode op,
+                string opFmt,
+                Opcode op66 = Opcode.illegal,
+                string op66Fmt = null,
+                Opcode opF3 = Opcode.illegal,
+                string opF3Fmt = null,
+                Opcode opF2 = Opcode.illegal,
+                string opF2Fmt = null)
+            {
+                this.op =   this.opWide = op;
+                this.op66 = this.op66Wide = op66;
+                this.opF3 = opF3;
+                this.opF2 = opF2;
+                this.opFmt = opFmt;
+                this.op66Fmt = op66Fmt;
+                this.opF3Fmt = opF3Fmt;
+                this.opF2Fmt = opF2Fmt;
+            }
+
+            public PrefixedOpRec(
+                Opcode op,
+                Opcode opWide, 
+                string opFmt, 
+                Opcode op66,
+                Opcode op66Wide,
+                string op66Fmt,
+                Opcode opF3 = Opcode.illegal,
+                string opF3Fmt = null)
+            {
+                this.op = op;
+                this.opWide = opWide;
+                this.op66 = op66;
+                this.op66Wide = op66Wide;
+                this.opF3 = opF3;
+                this.opF2 = Opcode.illegal;
+                this.opFmt = opFmt;
+                this.op66Fmt = op66Fmt;
+                this.opF3Fmt = opF3Fmt;
+                this.opF2Fmt = null;
+            }
+
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.f2PrefixSeen)
+                    return disasm.DecodeOperands(this.opF2, op, opF2Fmt);
+                else if (disasm.f3PrefixSeen)
+                    return disasm.DecodeOperands(this.opF3, op, opF3Fmt);
+                else if (disasm.dataSizeOverride)
+                {
+                    if (disasm.useRexPrefix && (disasm.rexPrefix & 8) != 0)
+                        return disasm.DecodeOperands(this.op66Wide, op, op66Fmt);
+                    else
+                        return disasm.DecodeOperands(this.op66, op, op66Fmt);
+                }
+                else
+                {
+                    if (disasm.useRexPrefix && (disasm.rexPrefix & 8) != 0)
+                        return disasm.DecodeOperands(this.opWide, op, opFmt);
+                    else
+                        return disasm.DecodeOperands(this.op, op, opFmt);
+                }
             }
         }
 
@@ -692,10 +774,10 @@ namespace Decompiler.Arch.X86
 				dataWidth = PrimitiveType.Real80;
 				break;
             case 'q':
-                dataWidth = dataWidth != defaultDataWidth ?  PrimitiveType.Word128 : PrimitiveType.Word64;
+                dataWidth = dataSizeOverride ?  PrimitiveType.Word128 : PrimitiveType.Word64;
                 break;
             case 'y':
-                dataWidth = dataWidth != defaultDataWidth ? PrimitiveType.Word32 : PrimitiveType.Word64;
+                dataWidth = (useRexPrefix && (rexPrefix & 8) != 0) ? PrimitiveType.Word64: PrimitiveType.Word32;
                 break;
             }
 			return dataWidth;
@@ -718,8 +800,8 @@ namespace Decompiler.Arch.X86
                     ? PrimitiveType.Word128
                     : PrimitiveType.Word256;
             case 'y':
-                return defaultDataWidth != dataWidth
-                    ? PrimitiveType.Word32
+                return dataSizeOverride
+                    ? PrimitiveType.Word128
                     : PrimitiveType.Word64;
             default: throw new NotImplementedException(string.Format("Unknown operand width {0}", fmt[i-1]));
             }
@@ -874,20 +956,19 @@ namespace Decompiler.Arch.X86
 
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
+		private static OpRec [] s_aOpRec0F3A;
 		private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
-        private static Dictionary<byte, OpRec> s_aOpRecF2;
 
 		static X86Disassembler()
 		{
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
+            s_aOpRec0F3A = Create0F3AOprecs();
 
             s_aOpRecGrp = CreateGroupOprecs();
             s_aFpOpRec = CreateFpuOprecs();
             Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
-
-            s_aOpRecF2 = CreateF2Oprecs();
 		}
 	}
 }	
