@@ -176,7 +176,7 @@ namespace Decompiler.Arch.X86
 				// group 15
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.ldmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.stmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
