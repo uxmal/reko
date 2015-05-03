@@ -95,6 +95,7 @@
             this.imlBrowser.Images.SetKeyName(6, "RwSection.ico");
             this.imlBrowser.Images.SetKeyName(7, "RxSection.ico");
             this.imlBrowser.Images.SetKeyName(8, "WxSection.ico");
+            this.imlBrowser.Images.SetKeyName(9, "DiscardableSection.ico");
             // 
             // tabControl1
             // 
