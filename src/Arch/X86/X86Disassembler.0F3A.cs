@@ -151,7 +151,9 @@ namespace Decompiler.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.illegal, null,
+                    Opcode.pcmpistri, "Vx,Wx,Ib"),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
