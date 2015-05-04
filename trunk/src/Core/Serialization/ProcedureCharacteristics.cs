@@ -41,6 +41,7 @@ namespace Decompiler.Core.Serialization
             Terminates = old.Terminates;
             Allocator = old.Allocator;
             ArraySize = old.ArraySize;
+            VarargsParserClass = old.VarargsParserClass;
         }
 
 		[XmlElement("is-alloca")]
@@ -61,6 +62,9 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("array-size")]
         public ArraySizeCharacteristic ArraySize { get; set; }
+
+        [XmlElement("varargs")]
+        public virtual string VarargsParserClass { get; set; }
 
         public void Write()
         {
@@ -102,7 +106,10 @@ namespace Decompiler.Core.Serialization
 			set { throw Invalid(); }
 		}
 
-		private Exception Invalid()
+        [XmlElement("varargs")]
+        public override string VarargsParserClass { get { return ""; } set { throw Invalid(); } }
+		
+        private Exception Invalid()
 		{
 			return new InvalidOperationException("Default characteristics may not be assigned.");
 		}

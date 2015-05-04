@@ -100,7 +100,9 @@
         <File Source="$(var.Win32.TargetPath)" />
         <File Source="$(var.Win32.ProjectDir)windows.xml" />
         <File Source="$(var.Win32.ProjectDir)commctrl.xml" />
+        <File Source="$(var.Win32.ProjectDir)ntoskrnl.xml" />
         <File Source="$(var.Win32.ProjectDir)oleaut32.xml" />
+        <File Source="$(var.Win32.ProjectDir)win32characteristics.xml" />
         <File Source="$(var.ZX81.TargetPath)" />
 
         <!-- Architectures -->

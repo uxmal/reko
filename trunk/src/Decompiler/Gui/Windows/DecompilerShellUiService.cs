@@ -19,39 +19,51 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public class DecompilerShellUiService : 
-        DecompilerUiService, 
+    public class DecompilerShellUiService :
+        DecompilerUiService,
         IDecompilerShellUiService,
         ICommandTarget
     {
-        private Form form;
+        private IMainForm form;
         private DecompilerMenus dm;
         private Dictionary<string, WindowFrame> framesByName;
-        private Dictionary<Form, WindowFrame> framesByForm;
-        private IServiceProvider sp;
+        private Dictionary<TabPage, WindowFrame> framesByTab;
+        private IServiceProvider services;
 
         public DecompilerShellUiService(
-            Form form,
+            IMainForm form,
             DecompilerMenus dm,
             OpenFileDialog ofd,
             SaveFileDialog sfd,
             IServiceProvider sp)
-            : base(form, ofd, sfd)
+            : base((Form)form, ofd, sfd)
         {
             this.form = form;
             this.dm = dm;
-            this.sp = sp;
-            this.framesByName = new Dictionary<string,WindowFrame>();
-            this.framesByForm = new Dictionary<Form, WindowFrame>();
+            this.services = sp;
+            this.framesByName = new Dictionary<string, WindowFrame>();
+            this.framesByTab = new Dictionary<TabPage, WindowFrame>();
+            this.form.DocumentTabs.ControlRemoved += documentTabs_ControlRemoved;
+            this.form.DocumentTabs.MouseUp += documentTabs_MouseUp;
+        }
+
+        void CloseTab(TabPage page)
+        {
+            form.DocumentTabs.TabPages.Remove(page);
+            framesByTab.Remove(page);
         }
 
         public virtual ContextMenu GetContextMenu(int menuId)
@@ -64,21 +76,23 @@ namespace Decompiler.Gui.Windows
             WindowFrame frame;
             if (framesByName.TryGetValue(windowType, out frame))
                 return frame;
-            else 
+            else
                 return null;
         }
 
         public IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane)
         {
-            Form mdiForm = new Form {
+            var tabPage = new TabPage
+            {
                 Text = windowTitle,
-                Size = new System.Drawing.Size(800, 600)
+                ImageIndex = 6,
             };
-            WindowFrame frame = new WindowFrame(this, windowType, mdiForm, pane);
+            WindowFrame frame = new WindowFrame(this, windowType, tabPage, pane);
             framesByName.Add(windowType, frame);
-            framesByForm.Add(mdiForm, frame);
-            pane.SetSite(sp);
-            mdiForm.MdiParent = form;
+            framesByTab.Add(tabPage, frame);
+            this.form.DocumentTabs.TabPages.Add(tabPage);
+            this.form.DocumentTabs.SelectedTab = tabPage;
+            pane.SetSite(services);
             return frame;
         }
 
@@ -93,21 +107,30 @@ namespace Decompiler.Gui.Windows
         }
 
 
-        private void RemoveFrame(WindowFrame windowFrame, string key, Form form)
+        private void RemoveFrame(WindowFrame windowFrame)
         {
-            framesByName.Remove(key);
-            framesByForm.Remove(form);
+            var name = framesByName
+                .Where(de => de.Value == windowFrame)
+                .Select(de => de.Key)
+                .SingleOrDefault();
+            if (name != null)
+                framesByName.Remove(name);
+            var page = framesByTab
+                .Where(de => de.Value == windowFrame)
+                .Select(de => de.Key)
+                .SingleOrDefault();
+            framesByTab.Remove(page);
         }
 
         public IWindowFrame ActiveFrame
         {
             get
             {
-                var activeMdiForm = form.ActiveMdiChild;
-                if (activeMdiForm == null)
+                var activeTab = form.DocumentTabs.SelectedTab;
+                if (activeTab == null)
                     return null;
                 WindowFrame frame;
-                if (!framesByForm.TryGetValue(activeMdiForm, out frame))
+                if (!framesByTab.TryGetValue(activeTab, out frame))
                     return null;
                 return frame;
             }
@@ -117,7 +140,7 @@ namespace Decompiler.Gui.Windows
         {
             var frame = ActiveFrame as WindowFrame;
             if (frame == null)
-                return null; 
+                return null;
             return frame.Pane as ICommandTarget;
         }
 
@@ -156,31 +179,24 @@ namespace Decompiler.Gui.Windows
         {
             DecompilerShellUiService svc;
             string key;
-            Form form;
+            TabPage tabPage;
             IWindowPane pane;
             Control ctrl;
 
-            public WindowFrame(DecompilerShellUiService svc, string key, Form form, IWindowPane pane)
+            public WindowFrame(DecompilerShellUiService svc, string key, TabPage tabPage, IWindowPane pane)
             {
                 this.svc = svc;
                 this.key = key;
-                this.form = form;
+                this.tabPage = tabPage;
                 this.pane = pane;
-                this.form.FormClosed += new FormClosedEventHandler(form_FormClosed);
             }
 
             public string WindowType { get { return key; } }
-            public string Title { get { return form.Text; } set { form.Text = value; } }
+            public string Title { get { return tabPage.Text; } set { tabPage.Text = value; } }
 
             public void Close()
             {
-                form.Close();
-            }
-
-            void form_FormClosed(object sender, FormClosedEventArgs e)
-            {
-                pane.Close();
-                svc.RemoveFrame(this, key, form);
+                svc.CloseTab(tabPage);
             }
 
             public void Show()
@@ -189,12 +205,10 @@ namespace Decompiler.Gui.Windows
                 {
                     ctrl = pane.CreateControl();
                     ctrl.Dock = DockStyle.Fill;
-                    form.Controls.Add(ctrl);
+                    tabPage.Controls.Add(ctrl);
                 }
-                form.Show();
-                form.BringToFront();
-                if (form.WindowState == FormWindowState.Minimized)
-                    form.WindowState = FormWindowState.Normal;
+                tabPage.Show();
+                ((TabControl)tabPage.Parent).SelectedTab = tabPage;
             }
 
             public IWindowPane Pane
@@ -204,5 +218,34 @@ namespace Decompiler.Gui.Windows
         }
 
         #endregion
+
+        void documentTabs_MouseUp(object sender, MouseEventArgs e)
+        {
+            Debug.Print("Mouse up at: {0,1}", e.Location);
+            for (int i = 0; i < form.DocumentTabs.TabPages.Count; ++i)
+            {
+                var tabPage = form.DocumentTabs.TabPages[i];
+                var tabRect = form.DocumentTabs.GetTabRect(i);
+                if (tabRect.Contains(e.Location))
+                {
+                    var killZone = new Rectangle(tabRect.X + 3, tabRect.Y, 20, tabRect.Height);
+                    Debug.Print("Hit tab #{0}; {1} {2}", i, e.Location, killZone.Contains(e.Location) ? "close!" : "", killZone);
+                    if (killZone.Contains(e.Location))
+                    {
+                        WindowFrame frame;
+                        if (framesByTab.TryGetValue(tabPage, out frame))
+                            frame.Close();
+                    }
+                }
+            }
+        }
+
+        void documentTabs_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            WindowFrame frame;
+            if (!framesByTab.TryGetValue((TabPage)e.Control, out frame))
+                return;
+            RemoveFrame(frame);
+        }
     }
 }

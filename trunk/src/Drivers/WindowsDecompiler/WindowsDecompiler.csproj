@@ -139,11 +139,16 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\ntoskrnl.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
       <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win32characteristics.xml" >
     </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)ImageLoaders\Elf\libc.so-ppc32.xml">
       <SubType>Designer</SubType>

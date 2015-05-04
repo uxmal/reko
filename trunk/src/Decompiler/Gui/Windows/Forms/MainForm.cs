@@ -59,6 +59,11 @@ namespace Decompiler.Gui.Windows.Forms
             this.toolBar = toolBar;
         }
 
+        public TabControl DocumentTabs
+        {
+            get { return tabDocuments; }
+        }
+
         public TabControl TabControl
         {
             get { return tabControl1; }

@@ -35,7 +35,6 @@ namespace Decompiler.Gui.Forms
 		/// The text of the window's title bar.
 		/// </summary>
 		string TitleText { get; set; }
-        void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
 
         ICollection<IWindowFrame> DocumentWindows { get; }
         ListView FindResultsList { get; }
@@ -49,11 +48,13 @@ namespace Decompiler.Gui.Forms
         TabControl TabControl { get; }
         ToolStrip ToolBar { get; }
         MainMenu Menu { get; set; }
+        TabControl DocumentTabs { get; }
 
         event EventHandler Closed;
         event EventHandler Load;
         event KeyEventHandler ProcessCommandKey;
 
+        void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
         void LayoutMdi(DocumentWindowLayout layout);
         
         void Show();
@@ -79,6 +80,7 @@ namespace Decompiler.Gui.Forms
         System.Drawing.Size Size { get; set; }
 
         FormWindowState WindowState { get; set; }
+
     }
 
     public enum DocumentWindowLayout
