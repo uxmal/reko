@@ -28,6 +28,7 @@ namespace Decompiler.Core.Services
     public interface ITypeLibraryLoaderService
     {
         TypeLibrary LoadLibrary(IProcessorArchitecture arch, string name);
+        CharacteristicsLibrary LoadCharacteristics(string name);
     }
 
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
@@ -48,6 +49,21 @@ namespace Decompiler.Core.Services
             {
                 return null;
             }
+        }
+
+        public CharacteristicsLibrary LoadCharacteristics(string name)
+        {
+            var filename = InstalledFileLocation(name);
+            if (!File.Exists(filename))
+                return new CharacteristicsLibrary();
+            var lib = CharacteristicsLibrary.Load(filename);
+            return lib;
+        }
+
+        public string InstalledFileLocation(string name)
+        {
+            string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
+            return Path.Combine(assemblyDir, name);
         }
 
         public string ImportFileLocation(string dllName)

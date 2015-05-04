@@ -37,6 +37,7 @@ namespace Decompiler.Environments.Win32
 		private SystemService int3svc;
         private SystemService int29svc;
         private TypeLibrary[] TypeLibs;
+        private CharacteristicsLibrary[] CharacteristicsLibs;
 
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
@@ -146,6 +147,10 @@ namespace Decompiler.Environments.Win32
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
                     .Where(tl => tl != null).ToArray();
+                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
+                    .OfType<ITypeLibraryElement>()
+                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
+                    .Where(cl => cl != null).ToArray();
             }
         }
 

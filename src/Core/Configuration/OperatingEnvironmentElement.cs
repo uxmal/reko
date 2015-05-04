@@ -31,8 +31,10 @@ namespace Decompiler.Core.Configuration
         string Description { get; }
         string TypeName { get; }
         TypeLibraryElementCollection TypeLibraries { get; }
+        TypeLibraryElementCollection CharacteristicsLibraries { get; set; }
 
         Platform Load(IServiceProvider services, IProcessorArchitecture arch);
+
     }
 
     public class OperatingEnvironmentElement : ConfigurationElement, OperatingEnvironment
@@ -69,6 +71,14 @@ namespace Decompiler.Core.Configuration
         {
             get { return (TypeLibraryElementCollection) this["TypeLibraries"]; }
             set { this["TypeLibraries"] = value; }
+        }
+
+        [ConfigurationProperty("Characteristics", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationCollection(typeof(TypeLibraryElement))]
+        public TypeLibraryElementCollection CharacteristicsLibraries
+        {
+            get { return (TypeLibraryElementCollection)this["Characteristics"]; }
+            set { this["Characteristics"] = value; }
         }
 
         public Platform Load(IServiceProvider services, IProcessorArchitecture arch)

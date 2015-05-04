@@ -149,6 +149,7 @@
     <Compile Include="Assemblers\Assembler.cs" />
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
+    <Compile Include="CharacteristicsLibrary.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="Rtl\RtlReturn.cs" />
     <Compile Include="Rtl\RtlSideEffect.cs" />
     <Compile Include="Rtl\RtlTransfer.cs" />
+    <Compile Include="Serialization\CharacteristicsLibrary_v1.cs" />
     <Compile Include="Serialization\Code_v1.cs" />
     <Compile Include="Serialization\DataTypeNameSerializer.cs" />
     <Compile Include="Serialization\ISerializedTypeVisitor.cs" />

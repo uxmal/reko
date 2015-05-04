@@ -83,7 +83,7 @@ namespace Decompiler.Gui
 
         public IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm)
         {
-            return new DecompilerShellUiService((Form)form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
+            return new DecompilerShellUiService(form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
         }
 
         public ILowLevelViewService CreateMemoryViewService()

@@ -1,4 +1,5 @@
 ﻿using Decompiler.Gui;
+using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -17,15 +18,17 @@ namespace Decompiler.UnitTests.Gui.Windows
         DecompilerShellUiService svc;
         ServiceContainer sc;
         MockRepository mr;
+        private IMainForm mainForm;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             form = new Form();
             form.IsMdiContainer = true;
             sc = new ServiceContainer();
-            svc = new DecompilerShellUiService(form, null, null, null, sc);
-            mr = new MockRepository();
+            mainForm = mr.Stub<IMainForm>();
+            svc = new DecompilerShellUiService(mainForm, null, null, null, sc);
         }
 
         [TearDown]
@@ -34,12 +37,10 @@ namespace Decompiler.UnitTests.Gui.Windows
             form.Close();
             form = null;
         }
-
+ 
         [Test]
-        public void Dsu_CreateWindow()
+        public void DSU_CreateWindow()
         {
-            Setup();
-
             Form mdiForm = new Form();
 
             var pane = mr.StrictMock<IWindowPane>();
@@ -58,7 +59,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
 
         [Test]
-        public void Dsu_UserCloseWindow()
+        public void DSU_UserCloseWindow()
         {
             form.Show();
 
@@ -82,7 +83,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         }
 
         [Test]
-        public void Dsu_MultipleCallsToShowShouldntCreateNewPaneControl()
+        public void DSU_MultipleCallsToShowShouldntCreateNewPaneControl()
         {
             form.Show();
 
@@ -99,8 +100,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             frame.Close();
 
             mr.VerifyAll();
-
         }
-
-    }
+     }
 }
