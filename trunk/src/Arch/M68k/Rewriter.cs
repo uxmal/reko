@@ -69,6 +69,7 @@ namespace Decompiler.Arch.M68k
                 {
                 case Opcode.add: RewriteBinOp((s, d) => emitter.IAdd(d, s), FlagM.CVZNX); break;
                 case Opcode.adda: RewriteBinOp((s, d) => emitter.IAdd(d, s)); break;
+                case Opcode.addi: RewriteArithmetic((s, d) => emitter.IAdd(d, s)); break;
                 case Opcode.addq: RewriteAddSubq((s, d) => emitter.IAdd(d, s)); break;
                 case Opcode.addx: RewriteAddSubx(Operator.IAdd); break;
                 
@@ -86,6 +87,7 @@ LS Low or Same 0011 C V Z
 VC Overflow Clear 1000 V
 VS Overflow Set 1001 V
  */
+                case Opcode.bclr: RewriteBclrBset("__bclr"); break;
                 case Opcode.bcc: RewriteBcc(ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.bcs: RewriteBcc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.beq: RewriteBcc(ConditionCode.EQ, FlagM.ZF); break;
@@ -100,6 +102,7 @@ VS Overflow Set 1001 V
                 case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.bchg: RewriteBchg(); break;
                 case Opcode.bra: RewriteBra(); break;
+                case Opcode.bset: RewriteBclrBset("__bset"); break;
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.btst: RewriteBtst(); break;
                 case Opcode.clr: RewriteClr(); break;
@@ -111,6 +114,7 @@ VS Overflow Set 1001 V
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Opcode.divu: RewriteDiv(Operator.UDiv); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
+                case Opcode.eori: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.exg: RewriteExg(); break;
                 case Opcode.ext: RewriteExt(); break;
                 case Opcode.extb: RewriteExtb(); break;

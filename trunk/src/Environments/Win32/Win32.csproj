@@ -86,7 +86,9 @@
     <Content Include="kernel32.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="msvcrt.xml" />
+    <Content Include="msvcrt.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ntoskrnl.inc" />
     <Content Include="Oleaut32.xml" />
     <Content Include="shell32.xml" />

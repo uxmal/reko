@@ -73,13 +73,6 @@ namespace Decompiler.ImageLoaders.Hunk
                         throw new BadImageFormatException("Invalid hunk file. The file is empty.");
                     break;
                 }
-                else if (rawHunkType < 0)
-                {
-                    if (isFirstHunk)
-                        throw new BadImageFormatException("Invalid hunk file. The file is too short.");
-                    else
-                        throw new BadImageFormatException(string.Format("Error reading hunk type @{0:X8}.", f.Offset));
-                }
                 var hunkType = (HunkType) (rawHunkType & Hunk.HUNK_TYPE_MASK);
                 var hunkFlags = rawHunkType & Hunk.HUNK_FLAGS_MASK;
 
@@ -352,6 +345,7 @@ namespace Decompiler.ImageLoaders.Hunk
             {
                 var hunk_info = new HunkInfo();
                 int hunk_size = this.read_long();
+                hunk_size &= 0x3FFFFFFF;           // Top 2 bits not handled yet.
                 if (hunk_size < 0)
                     throw new BadImageFormatException("Head hunk contains invalid hunk_size.");
                 int hunk_bytes = (hunk_size & ~Hunk.HUNKF_ALL) * 4;
@@ -505,7 +499,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 var value = this.read_long();
                 if (value < 0)
                     throw new NotImplementedException(string.Format("{0} has invalid symbol value", hunk.HunkType));
-                symbols.Add(x, value);
+                symbols[x] = value;
             }
         }
 

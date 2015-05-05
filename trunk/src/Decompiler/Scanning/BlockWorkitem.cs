@@ -820,7 +820,7 @@ namespace Decompiler.Scanning
             if (vector == null)
                 return null;
             var svc = program.Platform.FindService(vector.ToInt32(), state);
-            if (svc.Signature == null)
+            if (svc != null && svc.Signature == null)
             {
                 scanner.Error(ric.Address, string.Format("System service '{0}' didn't specify a signature.", svc.Name));
             }

@@ -87,7 +87,9 @@ namespace Decompiler.Core.Configuration
             if (elem == null)
                 return null;
 
-            Type t = Type.GetType(elem.TypeName, true);
+            Type t = Type.GetType(elem.TypeName, false);
+            if (t == null)
+                return null;
             return (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
 

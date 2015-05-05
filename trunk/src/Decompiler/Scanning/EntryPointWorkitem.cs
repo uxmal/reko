@@ -42,7 +42,7 @@ namespace Decompiler.Scanning
         {
             try
             {
-                var pb = scanner.ScanProcedure(ep.Address, ep.Name, program.Architecture.CreateProcessorState());
+                var pb = scanner.ScanProcedure(ep.Address, ep.Name, ep.ProcessorState);
                 var proc = pb as Procedure;
                 if (proc != null)
                 {
