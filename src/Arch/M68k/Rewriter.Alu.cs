@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Decompiler.Core;
 
 namespace Decompiler.Arch.M68k
 {
@@ -108,6 +109,20 @@ namespace Decompiler.Arch.M68k
             emitter.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 emitter.Cond(emitter.And(opDst, tmpMask)));
+        }
+
+        public void RewriteBclrBset(string name)
+        {
+            var opSrc = orw.RewriteSrc(di.op1, di.Address);
+            PrimitiveType w = (di.op2 is RegisterOperand)
+                 ? PrimitiveType.Word32 
+                 : PrimitiveType.Byte;
+            di.op2.Width = w;
+            orw.DataWidth = w;
+            var opDst = orw.RewriteSrc(di.op2, di.Address);
+            emitter.Assign(
+                orw.FlagGroup(FlagM.ZF),
+                PseudoProc(name, PrimitiveType.Bool, opDst, opSrc, emitter.Out(PrimitiveType.Pointer32, opDst)));
         }
 
         public void RewriteExg()

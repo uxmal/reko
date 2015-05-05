@@ -267,6 +267,15 @@ namespace Decompiler.Arch.M68k
                     return r;
                 }
             }
+            var addr = operand as M68kAddressOperand;
+            if (addr != null)
+            {
+                var load = m.Load(dataWidth, addr.Address);
+                var tmp = frame.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(load));
+                m.Assign(load, tmp);
+                return tmp;
+            }
             var mem = operand as MemoryOperand;
             if (mem != null)
             {

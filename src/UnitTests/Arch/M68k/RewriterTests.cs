@@ -958,5 +958,55 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "4|L--|N = false",
                 "5|L--|V = false");
         }
+
+
+
+        [Test]
+        public void M68krw_bset_addr()
+        {
+            Rewrite(0x08e8, 0x0001, 0x0010); //                 bset #1,%a0@(1)
+            AssertCode(
+                "0|00010000(6): 1 instructions",
+                "1|L--|Z = __bset(Mem0[a0 + 16:byte], 0x0001, out Mem0[a0 + 16:byte])");
+            //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
+        }
+
+        [Test]
+        public void M68krw_bclr_addr()
+        {
+            Rewrite(0x08A8, 0x0001, 0x0010); //                 bclr #1,%a0@(1)
+            AssertCode(
+                "0|00010000(6): 1 instructions",
+                "1|L--|Z = __bclr(Mem0[a0 + 16:byte], 0x01, out Mem0[a0 + 16:byte])");
+            //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
+        }
+
+        [Test]
+        public void M68krw_addi()
+        {
+            Rewrite(0x0646, 0x000F);            // addiw #15,%d6
+            AssertCode(
+                "0|00010000(4): 3 instructions",
+                "1|L--|v3 = (word16) d6 + 0x000F",
+                "2|L--|d6 = DPB(d6, v3, 0, 16)",
+                "3|L--|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_eori()
+        {
+            Rewrite(0x0A40, 0x000F);     //                    eoriw #15,%d0    
+            AssertCode(
+                "0|00010000(4): 5 instructions",
+                "1|L--|v3 = (word16) d0 ^ 0x000F",
+                "2|L--|d0 = DPB(d0, v3, 0, 16)",
+                "3|L--|ZN = cond(v3)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+
+        
+
     }
 }
