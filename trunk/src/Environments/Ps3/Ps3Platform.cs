@@ -31,6 +31,9 @@ using System.Threading.Tasks;
 
 namespace Decompiler.Environments.Ps3
 {
+    /// <summary>
+    /// Platform support for Sony Playstation 3 (PS3).
+    /// </summary>
     public class Ps3Platform : Platform
     {
         public Ps3Platform(IServiceProvider services, IProcessorArchitecture arch)
