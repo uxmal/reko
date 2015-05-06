@@ -273,8 +273,6 @@ namespace Decompiler.Arch.M68k
         private MachineOperand AddressRegisterIndirectWithIndex(PrimitiveType dataWidth, ImageReader rdr)
         {
             ushort extension = rdr.ReadBeUInt16();
-            if (EXT_INDEX_SCALE(extension) != 0)
-                throw new FormatException("Illegal address mode.");
             if (EXT_FULL(extension))
             {
                 if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
@@ -318,9 +316,9 @@ namespace Decompiler.Arch.M68k
                     EXT_8BIT_DISPLACEMENT(extension),
                     Registers.AddressRegister(opcode & 7),
                     EXT_INDEX_AR(extension)
-                        ? Registers.AddressRegister((int) EXT_INDEX_REGISTER(extension))
-                        : Registers.DataRegister((int) EXT_INDEX_REGISTER(extension)),
-                    EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                        ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
+                    EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
                     EXT_INDEX_SCALE(extension));
             }
         }

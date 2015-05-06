@@ -695,8 +695,7 @@ namespace Decompiler.Arch.M68k
                 break;
             case 0x39:
                 // Absolute long address
-                mode = string.Format("${0}.l", read_imm_32());
-                break;
+                return new M68kAddressOperand(read_imm_32());
             case 0x3A:
                 // Program counter with displacement
                 temp_value = read_imm_16();
@@ -2079,7 +2078,7 @@ namespace Decompiler.Arch.M68k
                         i++;
                         run_length++;
                     }
-                    if (buffer[0] != 0)
+                    if (buffer.Length == 0)
                         buffer.Append("/");
                     buffer.AppendFormat("D{0}", first);
                     if (run_length > 0)
@@ -3032,10 +3031,10 @@ namespace Decompiler.Arch.M68k
 	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
 	new OpRec(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
 	new OpRec("sl:M,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),      // d68000_movem_pd_32  
-	new OpRec(d68000_movem_re_16  , 0xffc0, 0x4880, 0x2f8),
-	new OpRec("sl:M,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32   
-	new OpRec(d68000_movem_er_16  , 0xffc0, 0x4c80, 0x37b),
-	new OpRec("sl:nE0,m", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),      // d68000_movem_er_32 
+	new OpRec("sw:M,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),      // d68000_movem_re_16  
+	new OpRec("sl:M,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32
+	new OpRec("sw:nE0,m", 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16 
+	new OpRec("sl:nE0,m", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32 
 	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
 	new OpRec(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
 	new OpRec(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),

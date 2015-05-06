@@ -789,9 +789,12 @@ namespace Decompiler.ImageLoaders.Elf
                         // No need to do anything with these, if a shared object
                         var addr = Address.Ptr32(sym.st_value);
                         string symStr = ReadAsciiString(image.Bytes, pStrSection + sym.st_name);
-                        importReferences.Add(
-                            addr,
-                            new NamedImportReference(addr, null, symStr));
+                        if (addr.ToLinear() != 0)
+                        {
+                            importReferences.Add(
+                                addr,
+                                new NamedImportReference(addr, null, symStr));
+                        }
                         break;
                     default:
                         throw new NotSupportedException("Relocation type " + (int)relType + " not handled yet");

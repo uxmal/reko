@@ -661,5 +661,17 @@ namespace Decompiler.UnitTests.Arch.M68k
         {
             RunTest("rtd\t#$0012", 0x4E74, 0x0012);
         }
+
+        [Test]
+        public void M68kdis_address_mode()
+        {
+            RunTest("move.l\t(-04,a2,d0*2),d2", 0x2432, 0x04fc); 
+        }
+
+        [Test]
+        public void M68kdis_movem()
+        {
+            RunTest("movem.w\t$0004000A,d0-d1", 0x4CB9, 0x0003, 0x0004, 0x000A);    // move.l\t(-04,a2,d0*2),d2",
+        }
     }
 }

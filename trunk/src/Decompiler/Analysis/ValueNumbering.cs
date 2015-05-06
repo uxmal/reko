@@ -141,6 +141,11 @@ namespace Decompiler.Analysis
                 throw new NotImplementedException();
             }
 
+            public Expression GetDefiningExpression(Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
             public void RemoveIdentifierUse(Identifier id)
             {
                 throw new NotImplementedException();

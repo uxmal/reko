@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
 
@@ -26,6 +27,7 @@ namespace Decompiler.Core
     public interface IRewriterHost
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
+
         ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
         ExternalProcedure GetInterceptedCall(Address addrImportThunk);
     }

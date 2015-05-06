@@ -421,5 +421,11 @@ done:
             });
             RunTest(p, "Analysis/CceShrRcrPattern.txt");
         }
+
+        [Test]
+        public void CceIsqrt()
+        {
+            RunTest("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
+        }
 	}
 }

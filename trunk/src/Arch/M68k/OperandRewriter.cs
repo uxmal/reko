@@ -119,8 +119,49 @@ namespace Decompiler.Arch.M68k
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 return m.Load(DataWidth, m.IAdd(ea, ix));
-            } 
+            }
+            var indop = operand as IndexedOperand;
+            if (indop!=null)
+            {
+                Expression ea = Combine(indop.Base, indop.base_reg);
+                if (indop.postindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                if (indop.index_reg != null)
+                {
+                    var idx = Combine(null, indop.index_reg);
+                    if (indop.index_scale > 1)
+                        idx = m.IMul(idx, indop.index_scale);
+                    ea = Combine(ea, idx);
+                }
+                if (indop.preindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                ea = Combine(ea, indop.outer);
+                return m.Load(DataWidth, ea);
+            }
             throw new NotImplementedException("Unimplemented RewriteSrc for operand type " + operand.GetType().Name);
+        }
+
+        Expression Combine(Expression e, RegisterStorage reg)
+        {
+            if (reg == null)
+                return e;
+            var r = frame.EnsureRegister(reg);
+            if (e == null)
+                return r;
+            return m.IAdd(e, r);
+        }
+
+        Expression Combine(Expression e, Expression o)
+        {
+            if (o == null)
+                return e;
+            if (e == null)
+                return o;
+            return m.IAdd(e, o);
         }
 
         public Expression RewriteDst(MachineOperand operand, Address addrInstr, Expression src, Func<Expression, Expression, Expression> opGen)

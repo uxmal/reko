@@ -112,8 +112,6 @@ namespace Decompiler.Analysis
 			store.Src.Accept(this);
 			flags |= SideEffectFlags.Store;
 		}
-
-
 	}
 
 	[Flags]

@@ -42,6 +42,7 @@ namespace Decompiler.Evaluation
         private Add_mul_id_c_id_Rule addMici;
         private ConstConstBin_Rule constConstBin;
         private DpbConstantRule dpbConstantRule;
+        private DpbDpbRule dpbdpbRule;
         private IdConstant idConst;
         private IdCopyPropagationRule idCopyPropagation;
         private IdBinIdc_Rule idBinIdc;
@@ -62,6 +63,7 @@ namespace Decompiler.Evaluation
             this.addEcc = new Add_e_c_cRule(ctx);
             this.addMici = new Add_mul_id_c_id_Rule(ctx);
             this.dpbConstantRule = new DpbConstantRule();
+            this.dpbdpbRule = new DpbDpbRule(ctx);
             this.idConst = new IdConstant(ctx, new Unifier());
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
@@ -309,6 +311,11 @@ namespace Decompiler.Evaluation
             {
                 Changed = true;
                 return dpbConstantRule.Transform();
+            }
+            if (dpbdpbRule.Match(d))
+            {
+                Changed = true;
+                return dpbdpbRule.Transform();
             }
             return d;
         }

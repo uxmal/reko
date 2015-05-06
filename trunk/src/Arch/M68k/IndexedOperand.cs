@@ -109,6 +109,7 @@ namespace Decompiler.Arch.M68k
             if (index_reg != null)
             {
                 writer.Write(sep);
+                writer.Write(index_reg.Name);
                 if (index_scale > 1)
                     writer.Write("*{0}", index_scale);
                 sep = ",";

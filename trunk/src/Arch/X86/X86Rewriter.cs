@@ -253,6 +253,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.ISub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;
+                case Opcode.seta: RewriteSet(ConditionCode.UGT); break;
                 case Opcode.setc: RewriteSet(ConditionCode.ULT); break;
                 case Opcode.setbe: RewriteSet(ConditionCode.ULE); break;
                 case Opcode.setg: RewriteSet(ConditionCode.GT); break;
