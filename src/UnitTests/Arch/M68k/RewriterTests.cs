@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "3|L--|ZN = cond(v4)",
                 "4|L--|C = false",
                 "5|L--|V = false");
-        }        
+        }
 
         [Test]
         public void M68krw_Eor_l()
@@ -287,7 +287,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68krw_neg_w_post()
         {
-            Rewrite( 0x445B);
+            Rewrite(0x445B);
             AssertCode(
                 "0|00010000(2): 4 instructions",
                 "1|L--|v3 = -Mem0[a3:word16]",
@@ -311,7 +311,7 @@ namespace Decompiler.UnitTests.Arch.M68k
         public void M68krw_negx_8()
         {
             Rewrite(0x4021);        // negx.b -(a1)
- 
+
             AssertCode(
                 "0|00010000(2): 4 instructions",
                 "1|L--|a1 = a1 - 0x00000001",
@@ -876,12 +876,12 @@ namespace Decompiler.UnitTests.Arch.M68k
         [Test]
         public void M68krw_rol()
         {
-             Rewrite(0xE199);
-             AssertCode(
-                "0|00010000(2): 3 instructions",
-                "1|L--|d1 = __rol(d1, 0x00000008)",
-                "2|L--|CZN = cond(d1)",
-                "3|L--|V = false");
+            Rewrite(0xE199);
+            AssertCode(
+               "0|00010000(2): 3 instructions",
+               "1|L--|d1 = __rol(d1, 0x00000008)",
+               "2|L--|CZN = cond(d1)",
+               "3|L--|V = false");
         }
 
         [Test]
@@ -1005,8 +1005,37 @@ namespace Decompiler.UnitTests.Arch.M68k
                 "5|L--|V = false");
         }
 
+        [Test]
+        public void M68krw_address_mode()
+        {
+            Rewrite(0x2432, 0x04fc);    // move.l\t(-04,a2,d0*2),d2",
+            AssertCode(
+                "0|00010000(4): 2 instructions",
+                "1|L--|d2 = Mem0[a2 + -4 + d0 * 2:word32]"
+                );
 
-        
+        }
 
+        [Test]
+        public void M68krw_movem()
+        {
+            Rewrite(0x4CB9, 0x0003, 0x0004, 0x000A); // , "movem.w\t$0004000A,d0-d1");
+            AssertCode(
+               "0|00010000(8): 5 instructions",
+               "1|L--|v2 = 0004000A",
+               "2|L--|d0 = Mem0[v2:word16]",
+               "3|L--|v2 = v2 + 0x0002",
+               "4|L--|d1 = Mem0[v2:word16]",
+               "5|L--|v2 = v2 + 0x0002");
+        }
+
+        [Test]
+        public void M68krw_indexedOperand()
+        {
+            Rewrite(0x2C70, 0xE9B5, 0x0001, 0x7FEC);
+            AssertCode(
+               "0|00010000(8): 1 instructions",
+               "1|L--|a6 = Mem0[Mem0[0x00017FEC:word32] + a6:word32]");
+        }
     }
 }

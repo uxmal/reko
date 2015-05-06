@@ -164,6 +164,11 @@ namespace Decompiler.Core
             return Constant.Invalid;
         }
 
+        public Expression GetDefiningExpression(Identifier id)
+        {
+            return null;
+        }
+
         public void RemoveIdentifierUse(Identifier id)
         {
         }

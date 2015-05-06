@@ -437,5 +437,34 @@ namespace Decompiler.UnitTests.Analysis
 				Return(edx);
 			}
 		}
+
+        [Test]
+        public void VpDbpDbp()
+        {
+            var m = new ProcedureBuilder();
+            var d1 = m.Reg32("d32");
+            var a1 = m.Reg32("a32");
+            var tmp = m.Frame.CreateTemporary(PrimitiveType.Word16);
+
+            m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0, 16));
+            m.Assign(d1, m.Dpb(d1, m.LoadW(m.IAdd(a1, 4)), 0, 16));
+
+			Procedure proc = m.Procedure;
+			var gr = proc.CreateBlockDominatorGraph();
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, gr);
+			SsaState ssa = sst.SsaState;
+
+            ssa.DebugDump(true);
+
+			var vp = new ValuePropagator(ssa.Identifiers, proc);
+			vp.Transform();
+
+			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
+			{
+				proc.Write(false, fut.TextWriter);
+				fut.TextWriter.WriteLine();
+				fut.AssertFilesEqual();
+			}
+		}
 	}
 }

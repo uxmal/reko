@@ -48,19 +48,7 @@ namespace Decompiler.CmdLine
             services.AddService(typeof(IDecompilerConfigurationService), config);
             services.AddService(typeof(ITypeLibraryLoaderService), new TypeLibraryLoaderServiceImpl());
             var driver = new CmdLineDriver(services, config);
-            try
-            {
-                driver.Execute(args);
-            } catch (Exception ex)
-            {
-                Console.Write("error:");
-                while (ex != null)
-                {
-                    Console.Write(" {0}", ex.Message);
-                    ex = ex.InnerException;
-                }
-                Console.WriteLine();
-            }
+            driver.Execute(args);
         }
 
         public CmdLineDriver(IServiceProvider services, DecompilerConfiguration config)

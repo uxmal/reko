@@ -208,7 +208,6 @@
     <Compile Include="ILoader.cs" />
     <Compile Include="ImageHeader.cs" />
     <Compile Include="ImageMapSegmentRenderer.cs" />
-    <Compile Include="ImageUnpacker.cs" />
     <Compile Include="ImportReference.cs" />
     <Compile Include="ImportResolver.cs" />
     <Compile Include="AddressContext.cs" />

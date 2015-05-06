@@ -70,12 +70,16 @@ namespace Decompiler.Analysis
             return access;
         }
 
+        public Expression GetDefiningExpression(Identifier id)
+        {
+            return ssaIds[id].DefExpression;
+        }
+
         public void RemoveIdentifierUse(Identifier id)
         {
             if (id != null)
                 ssaIds[id].Uses.Remove(Statement);
         }
-
 
         public void SetValue(Identifier id, Expression value)
         {

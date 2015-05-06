@@ -216,6 +216,7 @@
     <Compile Include="Evaluation\Add_mul_id_c_id_Rule.cs" />
     <Compile Include="Evaluation\ConstConstBin_Rule.cs" />
     <Compile Include="Evaluation\DpbConstantRule.cs" />
+    <Compile Include="Evaluation\DpbDpbRule.cs" />
     <Compile Include="Evaluation\ExpressionSimplifier.cs" />
     <Compile Include="Evaluation\IdBinIdc_Rule.cs" />
     <Compile Include="Evaluation\IdConstant.cs" />
