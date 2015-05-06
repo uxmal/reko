@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Decompiler.Environments.C64
 {
+    /// <summary>
+    /// Implementation of the C64 platform.
+    /// </summary>
     public class C64Platform : Platform
     {
         private Mos6502ProcessorArchitecture arch;

@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Decompiler.Environments.C64
 {
+    /// <summary>
+    /// Models directory entries on D64 disks.
+    /// </summary>
     public class DirectoryEntry
     {
         public byte NextDirectoryTrack;

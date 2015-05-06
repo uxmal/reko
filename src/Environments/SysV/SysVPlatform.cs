@@ -30,6 +30,7 @@ using System.Text;
 
 namespace Decompiler.Environments.SysV
 {
+    //$TODO: rename to Elf-Neutral?
     public class SysVPlatform : Platform
     {
         private TypeLibrary[] typelibs;

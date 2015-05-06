@@ -27,7 +27,10 @@ using System.Text;
 
 namespace Decompiler.Environments.C64
 {
-    public class C64BasicInstruction  : MachineInstruction
+    /// <summary>
+    /// Models C64 BASIC instructions as machine instructions(!)
+    /// </summary>
+    public class C64BasicInstruction : MachineInstruction
     {
         public ushort NextAddress;
         public byte[] Line;

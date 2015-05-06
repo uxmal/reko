@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Decompiler.Environments.ZX81
 {
+    /// <summary>
+    /// Implements the very meager ZX81 environment.
+    /// </summary>
     public class ZX81Environment : Platform
     {
         private ZX81Encoding encoding;

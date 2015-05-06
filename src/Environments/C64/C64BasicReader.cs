@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Decompiler.Environments.C64
 {
+    /// <summary>
+    /// Parses a stream of bytes into Commoder BASIC instructions.
+    /// </summary>
     public class C64BasicReader : IEnumerable<C64BasicInstruction>
     {
         private LoadedImage image;

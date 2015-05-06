@@ -32,6 +32,9 @@ using System.Text;
 
 namespace Decompiler.Environments.C64
 {
+    /// <summary>
+    /// For the lulz: Commodore 64 BASIC as a "processor"!
+    /// </summary>
     public class C64Basic : IProcessorArchitecture
     {
         private SortedList<ushort, C64BasicInstruction> prog;
