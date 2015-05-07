@@ -113,6 +113,11 @@ namespace Decompiler.Gui.Windows.Forms
             AddDiagnostic(location, new ErrorDiagnostic(message, ex));
         }
 
+        public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
+        {
+            AddDiagnostic(location, new ErrorDiagnostic(string.Format(message, args), ex));
+        }
+
         public void Warn(string message)
         {
             AddDiagnostic(new NullCodeLocation(""), new WarningDiagnostic(message));
@@ -121,6 +126,11 @@ namespace Decompiler.Gui.Windows.Forms
         public void Warn(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new WarningDiagnostic(message));
+        }
+
+        public void Warn(ICodeLocation location, string message, params object[] args)
+        {
+            AddDiagnostic(location, new WarningDiagnostic(string.Format(message, args)));
         }
 
         public void ClearDiagnostics()

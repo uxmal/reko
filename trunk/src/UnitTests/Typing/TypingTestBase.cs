@@ -21,6 +21,7 @@
 using Decompiler.Analysis;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
@@ -47,6 +48,8 @@ namespace Decompiler.UnitTests.Typing
 		protected Program RewriteFile(string relativePath, Address addrBase)
 		{
             var services = new ServiceContainer();
+            var config = new FakeDecompilerConfiguration();
+            services.AddService<IDecompilerConfigurationService>(config);
             ILoader ldr = new Loader(services);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),

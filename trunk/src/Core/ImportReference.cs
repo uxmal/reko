@@ -71,7 +71,10 @@ namespace Decompiler.Core
 
         public override string ToString()
         {
-            return string.Format("{0}!{1}", ModuleName, ImportName);
+            return string.Format(
+                ModuleName != null ? "{0}!{1}" : "{1}",
+                ModuleName, 
+                ImportName);
         }
     }
 

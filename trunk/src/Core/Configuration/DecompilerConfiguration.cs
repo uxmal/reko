@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -44,6 +45,8 @@ namespace Decompiler.Core.Configuration
          Assembler GetAssembler(string assemblerName);
 
          DefaultPreferences GetDefaultPreferences ();
+
+         string GetPath(string path);
     }
 
     public class DecompilerConfiguration : IDecompilerConfigurationService
@@ -122,6 +125,17 @@ namespace Decompiler.Core.Configuration
             if (handler == null)
                 handler = new UiPreferencesSectionHandler();
             return handler.GetPreferences();
+        }
+
+        public string GetPath(string filename)
+        {
+            if (!Path.IsPathRooted(filename))
+            {
+                return Path.Combine(
+                    Path.GetDirectoryName(GetType().Assembly.Location),
+                    filename);
+            }
+            return filename;
         }
     }
 }

@@ -727,7 +727,7 @@ namespace Decompiler.Core.Output
 
         public void VisitLineComment(AbsynLineComment comment)
         {
-            writer.WriteComment("// " + comment);
+            writer.WriteComment("// " + comment.Comment);
             writer.Terminate();
         }
 

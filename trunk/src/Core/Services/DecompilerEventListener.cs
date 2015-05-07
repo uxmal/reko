@@ -31,7 +31,6 @@ namespace Decompiler.Core.Services
         ICodeLocation CreateAddressNavigator(Program program, Address address);
         ICodeLocation CreateProcedureNavigator(Procedure proc);
         ICodeLocation CreateBlockNavigator(Block block);
-        void AddDiagnostic(ICodeLocation location, Diagnostic d);
         void Warn(ICodeLocation location, string message);
         void Error(ICodeLocation location, string message);
         void Error(ICodeLocation location, Exception ex, string message);
@@ -112,6 +111,11 @@ namespace Decompiler.Core.Services
 
         public void NavigateTo()
         {
+        }
+
+        public override string ToString()
+        {
+            return Text;
         }
     }
 }

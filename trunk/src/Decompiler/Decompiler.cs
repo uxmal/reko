@@ -430,7 +430,7 @@ namespace Decompiler
                     {
                         eventListener.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
                         ++i;
-
+                        Console.WriteLine("rewriting: {0}", proc);
                         StructureAnalysis sa = new StructureAnalysis(proc);
                         sa.Structure();
                     }

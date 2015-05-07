@@ -126,6 +126,8 @@ namespace Decompiler.ImageLoaders.Elf
 
         private const int ET_REL = 0x01;
 
+        private const int R_386_COPY = 5;
+
         private int ELF32_R_SYM(int info) { return ((info) >> 8); }
         private int ELF32_ST_BIND(int i) { return ((i) >> 4); }
         private int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
@@ -323,7 +325,7 @@ namespace Decompiler.ImageLoaders.Elf
             return ((IEnumerable)env.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Where(tl => tl.Architecture == "ppc32")
-                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
+                    .Select(tl => tlSvc.LoadLibrary(arch,  dcSvc.GetPath(tl.Name)))
                     .Where(tl => tl != null);
         }
 
@@ -779,6 +781,8 @@ namespace Decompiler.ImageLoaders.Elf
                         A = relocR.ReadUInt32(pRelWord);
                         P = destNatOrigin + r_offset;
                         relocW.WriteUInt32(pRelWord, S + A - P);
+                        break;
+                    case R_386_COPY:   // no action needed
                         break;
                     case 6: // R_386_GLOB_DAT: S
                         // S = sym.st_value;

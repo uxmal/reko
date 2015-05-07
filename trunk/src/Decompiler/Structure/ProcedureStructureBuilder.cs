@@ -133,7 +133,6 @@ namespace Decompiler.Structure
             AddPseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode, reverseGraph);
 
             var pdg = new DominatorGraph<StructureNode>(reverseGraph, curProc.ExitNode);
-            pdg.Write(Console.Out); 
             SetImmediatePostDominators(pdg);
 
             RemovePseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode);

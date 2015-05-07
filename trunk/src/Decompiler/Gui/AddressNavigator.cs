@@ -54,5 +54,10 @@ namespace Decompiler.Gui
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("{0}!{1}", Program.Filename, Address);
+        }
     }
 }

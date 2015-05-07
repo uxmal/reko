@@ -141,7 +141,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
-            throw new NotImplementedException();
+            stms.Add(new AbsynLineComment(def.ToString()));
         }
 
         void InstructionVisitor.VisitGotoInstruction(GotoInstruction g)
@@ -151,7 +151,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            stms.Add(new AbsynLineComment(phi.ToString()));
         }
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)

@@ -74,6 +74,12 @@ namespace Decompiler.UnitTests.Mocks
 
         public ICollection GetSignatureFiles()
         {
+            return new SignatureFileElement[0];
+        }
+
+
+        public string GetPath(string path)
+        {
             throw new NotImplementedException();
         }
     }

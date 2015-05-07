@@ -406,7 +406,7 @@ namespace Decompiler.Typing
                 var iv = GetInductionVariable(p);
                 if (iv != null)
                 {
-                    VisitInductionVariable(globals, (Identifier) p, iv, offset, access);
+                    VisitInductionVariable(null, (Identifier) p, iv, offset, access);
                 }
             }
             else if (effectiveAddress is Constant)
@@ -524,7 +524,7 @@ namespace Decompiler.Typing
             if (size <= 0)
                 throw new ArgumentOutOfRangeException("size must be positive");
             var s = factory.CreateStructureType(null, size);
-            var ptr = eBase != null
+            var ptr = eBase != null && eBase != globals
                 ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable, s, platform.FramePointerType.Size)
                 : (DataType) factory.CreatePointer(s, platform.PointerType.Size);
             return MeetDataType(tStruct, ptr);

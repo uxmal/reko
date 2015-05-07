@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void AddDiagnostic()
         {
-            svc.AddDiagnostic(new NullCodeLocation("01000"), new WarningDiagnostic("test"));
+            svc.Warn(new NullCodeLocation("01000"), "test");
             Assert.AreEqual(1, lv.Items.Count);
             Assert.AreEqual("01000", lv.Items[0].Text);
         }
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void ClearDiagnostics()
         {
-            svc.AddDiagnostic(new NullCodeLocation("01000"), new WarningDiagnostic("test"));
+            svc.Warn(new NullCodeLocation("01000"), "test");
             svc.ClearDiagnostics();
             Assert.AreEqual(0, lv.Items.Count);
         }
@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             location.Expect(x => x.NavigateTo());
             mr.ReplayAll();
 
-            svc.AddDiagnostic(location, new Diagnostic("Hello"));
+            svc.Warn(location, "Hello");
             interactor.FocusedListItem = lv.Items[0];
             interactor.UserDoubleClicked();
 

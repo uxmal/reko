@@ -154,9 +154,8 @@
       <SubType>Designer</SubType>
     </DecompilerMetadata>
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml">
-      <SubType>Designer</SubType>
-    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
   </ItemGroup>

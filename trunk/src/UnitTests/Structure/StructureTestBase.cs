@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using Decompiler.Environments.Msdos;
+using Decompiler.Core.Configuration;
 
 namespace Decompiler.UnitTests.Structure
 {
@@ -47,13 +48,27 @@ namespace Decompiler.UnitTests.Structure
 
 		protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
-            var ldr = new Loader(new ServiceContainer());
+            var sc = new ServiceContainer();
+            sc.AddService<IDecompilerConfigurationService>(new FakeDecompilerConfiguration());
+            var ldr = new Loader(sc);
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
                 new IntelTextAssembler { Platform = new MsdosPlatform(null, new X86ArchitectureReal())},
                 addrBase);
             return RewriteProgram();
 		}
+
+        protected Program RewriteProgram32(string sourceFilename, Address addrBase)
+        {
+            var sc = new ServiceContainer();
+            sc.AddService<IDecompilerConfigurationService>(new FakeDecompilerConfiguration());
+            var ldr = new Loader(sc);
+            program = ldr.AssembleExecutable(
+                FileUnitTester.MapTestPath(sourceFilename),
+                new IntelTextAssembler { Platform = new DefaultPlatform(null, new X86ArchitectureFlat32()) },
+                addrBase);
+            return RewriteProgram();
+        }
 
         protected Program RewriteX86Fragment(string asmFragment, Address addrBase)
         {

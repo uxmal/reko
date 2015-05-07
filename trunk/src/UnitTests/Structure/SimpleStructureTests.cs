@@ -33,6 +33,135 @@ namespace Decompiler.UnitTests.Structure
     [TestFixture]
     public class SimpleStructureTests : StructureTestBase
     {
+        private void RunTest(string sourceFilename, string outFilename)
+        {
+            RunTest16(sourceFilename, outFilename, Address.SegPtr(0xC00, 0));
+        }
+
+        private void RunTest(ProcedureBuilder mock, string outFilename)
+        {
+            Procedure proc = mock.Procedure;
+            using (FileUnitTester fut = new FileUnitTester(outFilename))
+            {
+                ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(proc);
+                cfgc.Transform();
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+
+                StructureAnalysis sa = new StructureAnalysis(proc);
+                sa.Structure();
+                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                fmt.Write(proc);
+                fut.TextWriter.WriteLine("===========================");
+
+                fut.AssertFilesEqual();
+            }
+        }
+
+        private void RunTest16(string sourceFilename, string outFilename, Address addrBase)
+        {
+            using (FileUnitTester fut = new FileUnitTester(outFilename))
+            {
+                RewriteProgramMsdos(sourceFilename, addrBase);
+                foreach (Procedure proc in program.Procedures.Values)
+                {
+                    var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
+                    cfgc.Transform();
+                    proc.Write(false, fut.TextWriter);
+                    fut.TextWriter.WriteLine();
+
+                    var sa = new StructureAnalysis(proc);
+                    sa.Structure();
+                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                    fmt.Write(proc);
+                    fut.TextWriter.WriteLine("===========================");
+                }
+                fut.AssertFilesEqual();
+            }
+        }
+
+        private void RunTest32(string sourceFilename, string outFilename)
+        {
+            RunTest32(sourceFilename, outFilename, Address.Ptr32(0x00400000));
+        }
+
+        private void RunTest32(string sourceFilename, string outFilename, Address addrBase)
+        {
+            using (FileUnitTester fut = new FileUnitTester(outFilename))
+            {
+                RewriteProgram32(sourceFilename, addrBase);
+                foreach (Procedure proc in program.Procedures.Values)
+                {
+                    var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
+                    cfgc.Transform();
+                    proc.Write(false, fut.TextWriter);
+                    fut.TextWriter.WriteLine();
+
+                    var sa = new StructureAnalysis(proc);
+                    sa.Structure();
+                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                    fmt.Write(proc);
+                    fut.TextWriter.WriteLine("===========================");
+                }
+                fut.AssertFilesEqual();
+            }
+        }
+
+        private void RunTest32(ProcedureBuilder mock, string outFilename)
+        {
+            Procedure proc = mock.Procedure;
+            using (FileUnitTester fut = new FileUnitTester(outFilename))
+            {
+                ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(proc);
+                cfgc.Transform();
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+
+                StructureAnalysis sa = new StructureAnalysis(proc);
+                sa.Structure();
+                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
+                fmt.Write(proc);
+                fut.TextWriter.WriteLine("===========================");
+
+                fut.AssertFilesEqual();
+            }
+        }
+
+
+        private void RunTest(string expected, Program program)
+        {
+            var sw = new StringWriter();
+            foreach (var proc in program.Procedures.Values)
+            {
+                var cfgc = new ControlFlowGraphCleaner(proc);
+                cfgc.Transform();
+                var sa = new StructureAnalysis(proc);
+                sa.Structure();
+                var fmt = new CodeFormatter(new TextFormatter(sw));
+                fmt.Write(proc);
+                sw.WriteLine("===");
+            }
+            Console.WriteLine(sw);
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
+        private void RunTest32(string expected, Program program)
+        {
+            var sw = new StringWriter();
+            foreach (var proc in program.Procedures.Values)
+            {
+                var cfgc = new ControlFlowGraphCleaner(proc);
+                cfgc.Transform();
+                var sa = new StructureAnalysis(proc);
+                sa.Structure();
+                var fmt = new CodeFormatter(new TextFormatter(sw));
+                fmt.Write(proc);
+                sw.WriteLine("===");
+            }
+            Console.WriteLine(sw);
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
         [Test]
         public void StrIf()
         {
@@ -84,7 +213,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void StrReg00006()
         {
-            RunTest("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
+            RunTest16("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
         }
 
 
@@ -123,70 +252,6 @@ namespace Decompiler.UnitTests.Structure
         public void StrManyIncrements()
         {
             RunTest(new ManyIncrements(), "Structure/StrManyIncrements.txt");
-        }
-
-        private void RunTest(string sourceFilename, string outFilename)
-        {
-            RunTest(sourceFilename, outFilename, Address.SegPtr(0xC00, 0));
-        }
-
-        private void RunTest(ProcedureBuilder mock, string outFilename)
-        {
-            Procedure proc = mock.Procedure;
-            using (FileUnitTester fut = new FileUnitTester(outFilename))
-            {
-                ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(proc);
-                cfgc.Transform();
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
-
-                StructureAnalysis sa = new StructureAnalysis(proc);
-                sa.Structure();
-                CodeFormatter fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
-                fmt.Write(proc);
-                fut.TextWriter.WriteLine("===========================");
-
-                fut.AssertFilesEqual();
-            }
-        }
-
-        private void RunTest(string sourceFilename, string outFilename, Address addrBase)
-        {
-            using (FileUnitTester fut = new FileUnitTester(outFilename))
-            {
-                RewriteProgramMsdos(sourceFilename, addrBase);
-                foreach (Procedure proc in program.Procedures.Values)
-                {
-                    var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
-                    cfgc.Transform();
-                    proc.Write(false, fut.TextWriter);
-                    fut.TextWriter.WriteLine();
-
-                    var sa = new StructureAnalysis(proc);
-                    sa.Structure();
-                    var fmt = new CodeFormatter(new TextFormatter(fut.TextWriter));
-                    fmt.Write(proc);
-                    fut.TextWriter.WriteLine("===========================");
-                }
-                fut.AssertFilesEqual();
-            }
-        }
-
-        private void RunTest(string expected, Program program)
-        {
-            var sw = new StringWriter();
-            foreach (var proc in program.Procedures.Values)
-            {
-                var cfgc = new ControlFlowGraphCleaner(proc);
-                cfgc.Transform();
-                var sa = new StructureAnalysis(proc);
-                sa.Structure();
-                var fmt = new CodeFormatter(new TextFormatter(sw));
-                fmt.Write(proc);
-                sw.WriteLine("===");
-            }
-            Console.WriteLine(sw);
-            Assert.AreEqual(expected, sw.ToString());
         }
 
         [Test]

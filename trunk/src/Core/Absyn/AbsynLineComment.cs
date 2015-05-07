@@ -27,6 +27,13 @@ namespace Decompiler.Core.Absyn
 {
     public class AbsynLineComment : AbsynStatement
     {
+        public AbsynLineComment(string comment)
+        {
+            this.Comment = comment;
+        }
+
+        public string Comment { get; set; }
+
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitLineComment(this);
