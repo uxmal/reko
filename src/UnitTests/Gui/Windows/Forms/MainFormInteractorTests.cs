@@ -101,7 +101,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_MainFormInteractor();
             form.Stub(f => f.CloseAllDocumentWindows());
-            diagnosticSvc.Stub(d => d.AddDiagnostic(null, null)).IgnoreArguments();
+            diagnosticSvc.Stub(d => d.Error(
+                Arg<ICodeLocation>.Is.NotNull, 
+                Arg<string>.Is.NotNull)).IgnoreArguments();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             brSvc.Stub(b => b.Clear());
             Expect_UiPreferences_Loaded();
@@ -112,7 +114,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-            diagnosticSvc.AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic("test"));
+            diagnosticSvc.Error(new NullCodeLocation(""), "test");
             interactor.OpenBinary(null);
 
             mr.VerifyAll();

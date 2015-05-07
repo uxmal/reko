@@ -348,7 +348,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Matches(a => a.ToLinear() == 0x00100000))).Return(block);
                 scanner.Stub(s => s.FindContainingBlock(
                     Arg<Address>.Matches(a => a.ToLinear() == 0x00100004))).Return(followBlock);
-                scanner.Stub(s => s.AddDiagnostic(null, null)).IgnoreArguments().WhenCalled(m =>
+                scanner.Stub(s => s.Warn(null, null)).IgnoreArguments().WhenCalled(m =>
                 {
                     var d = (Diagnostic) m.Arguments[1];
                     Debug.Print("{0}: {1}", d.GetType().Name, d.Message);

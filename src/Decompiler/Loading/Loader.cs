@@ -43,7 +43,7 @@ namespace Decompiler.Loading
         public Loader(IServiceProvider services)
         {
             this.Services = services;
-            this.cfgSvc = services.GetService<IDecompilerConfigurationService>();
+            this.cfgSvc = services.RequireService<IDecompilerConfigurationService>();
             this.unpackerSvc = new UnpackingService(services);
             this.unpackerSvc.LoadSignatureFiles();
             Services.RequireService<IServiceContainer>().AddService(typeof(IUnpackerService), unpackerSvc);

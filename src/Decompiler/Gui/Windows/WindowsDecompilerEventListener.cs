@@ -181,11 +181,6 @@ namespace Decompiler.Gui.Windows
 
         #region DecompilerEventListener Members
 
-        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
-        {
-            diagnosticSvc.AddDiagnostic(location, d);
-        }
-
         public void Warn(ICodeLocation location, string message)
         {
             diagnosticSvc.Warn(location, message);
@@ -220,7 +215,6 @@ namespace Decompiler.Gui.Windows
         {
             return new ProcedureNavigator(proc, sp);
         }
-
 
         private void ShowStatus(string newStatus)
         {

@@ -112,7 +112,7 @@ namespace Decompiler.Structure
         {
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
             {
-                Dump(scc);
+                // Dump(scc);
                 loopNodeSet.UnionWith(scc);
             }
         }

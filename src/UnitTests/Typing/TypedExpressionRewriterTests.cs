@@ -428,6 +428,12 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
+        public void TerReg00017()
+        {
+            RunTest32("Fragments/regressions/r00017.asm", "Typing/TerReg00017.txt");
+        }
+
+        [Test]
         public void TerCallTable()
         {
             var pb = new ProgramBuilder();

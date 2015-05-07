@@ -44,9 +44,11 @@ namespace Decompiler.CmdLine
             var services = new ServiceContainer();
             var listener = new CmdLineListener();
             var config = new DecompilerConfiguration();
+            var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
             services.AddService(typeof(DecompilerEventListener), listener);
             services.AddService(typeof(IDecompilerConfigurationService), config);
             services.AddService(typeof(ITypeLibraryLoaderService), new TypeLibraryLoaderServiceImpl());
+            services.AddService(typeof(IDiagnosticsService), diagnosticSvc);
             var driver = new CmdLineDriver(services, config);
             driver.Execute(args);
         }

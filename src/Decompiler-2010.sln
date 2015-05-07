@@ -137,6 +137,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDecompiler", "Drivers\MonoDecompiler\MonoDecompiler.csproj", "{3269A135-4077-4BA0-B358-7974CCF09974}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine", "Drivers\CmdLine\CmdLine.csproj", "{D439868B-C78F-472F-82F2-1E3E5C88163B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5307665E-072F-4398-872D-6550BE6FC1EB} = {5307665E-072F-4398-872D-6550BE6FC1EB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SysV", "Environments\SysV\SysV.csproj", "{5307665E-072F-4398-872D-6550BE6FC1EB}"
 EndProject

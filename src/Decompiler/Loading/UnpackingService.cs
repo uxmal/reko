@@ -56,15 +56,14 @@ namespace Decompiler.Loading
                 try
                 {
                     var ldr = CreateSignatureLoader(sfe);
-                    Signatures.AddRange(ldr.Load(sfe.Filename));
+                    Signatures.AddRange(ldr.Load(cfgSvc.GetPath(sfe.Filename)));
                 }
                 catch (Exception ex)
                 {
-                    Services.RequireService<IDiagnosticsService>().AddDiagnostic(
+                    Services.RequireService<IDiagnosticsService>().Error(
                         new NullCodeLocation(sfe.Filename),
-                        new ErrorDiagnostic(
-                            string.Format("Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type),
-                            ex));
+                        ex,
+                        "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type);
                 }
             }
         }

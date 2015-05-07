@@ -27,13 +27,14 @@ namespace Decompiler.Core.Services
 {
     public interface IDiagnosticsService
     {
-        void AddDiagnostic(ICodeLocation location, Diagnostic diagnostic);
         void Error(string message);
         void Error(Exception ex, string message);
         void Error(ICodeLocation location, string message);
         void Error(ICodeLocation location, Exception ex, string message);
+        void Error(ICodeLocation location, Exception ex, string message, params object [] args);
         void Warn(string message);
         void Warn(ICodeLocation location, string message);
+        void Warn(ICodeLocation location, string message, params object[] args);
         void ClearDiagnostics();
     }
 }

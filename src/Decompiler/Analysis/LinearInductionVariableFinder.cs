@@ -168,8 +168,10 @@ namespace Decompiler.Analysis
 					Branch b = u.Instruction as Branch;
                     if (b == null)
                         continue;
-					BinaryExpression bin = b.Condition as BinaryExpression;
-					if (bin != null && bin.Operator is ConditionalOperator)
+					BinaryExpression bin;
+					if (b.Condition.As<BinaryExpression>(out bin) && 
+                        bin.Left is Identifier && 
+                        bin.Operator is ConditionalOperator)
 					{
 						ctx.TestOperator = bin.Operator;
 						ctx.TestStatement = u;

@@ -85,3 +85,4 @@ int __vfprintf_chk(FILE * fp, int flag, const char * format, va_list ap);
 int ferror(FILE *);
 int chmod(const char *pathname, mode_t mode);
 int fnmatch(const char *pattern, const char *string, int flags);
+FILE * fopen(const char * file, const char * mode);

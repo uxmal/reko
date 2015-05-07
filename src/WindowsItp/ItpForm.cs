@@ -200,6 +200,12 @@ namespace Decompiler.WindowsItp
             {
                 throw new NotImplementedException();
             }
+
+
+            public string GetPath(string path)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void emulatorToolStripMenuItem_Click(object sender, EventArgs e)

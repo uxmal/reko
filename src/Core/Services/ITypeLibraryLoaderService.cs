@@ -60,6 +60,7 @@ namespace Decompiler.Core.Services
             return lib;
         }
 
+        [Obsolete("Let the configuration service do this.")]
         public string InstalledFileLocation(string name)
         {
             string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);

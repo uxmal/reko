@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Scanning
                 lr.Architecture,
                 new FakePlatform(null, arch));
             scan = CreateScanner(program);
-            EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
+            EntryPoint ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
         }
 
@@ -295,7 +295,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Platform = new FakePlatform(null, arch);
             var proj = new Project { Programs = { prog } };
             var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(proj), new FakeDecompilerEventListener());
-            EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
+            EntryPoint ep = new EntryPoint(addr, prog.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 

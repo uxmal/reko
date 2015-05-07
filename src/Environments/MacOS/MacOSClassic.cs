@@ -77,11 +77,12 @@ namespace Decompiler.Environments.MacOS
 
         public void LoadMacOsServices()
         {
-            var envCfg = Services.RequireService<IDecompilerConfigurationService>().GetEnvironment("macOs");
+            var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+            var envCfg = cfgSvc.GetEnvironment("macOs");
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             this.TypeLibs = ((IEnumerable)envCfg.TypeLibraries)
                 .OfType<ITypeLibraryElement>()
-                .Select(tl => tlSvc.LoadLibrary(Architecture, tl.Name))
+                .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
                 .Where(tl => tl != null).ToArray();
         }
     }

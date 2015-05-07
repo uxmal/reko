@@ -43,14 +43,15 @@ namespace Decompiler.Environments.SysV
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         private void EnsureTypeLibraries()
         {
             if (typelibs == null)
             {
-                var envCfg = Services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
+                var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+                var envCfg = cfgSvc.GetEnvironment("elf-neutral");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
@@ -61,7 +62,13 @@ namespace Decompiler.Environments.SysV
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            EnsureTypeLibraries();
+            return this.typelibs
+                .Where(t => t.ServicesByVector != null && t.ServicesByVector.Count > 0)
+                .SelectMany(t => t.ServicesByVector)
+                .Where(svc => svc.Value.SyscallInfo.Matches(vector, state))
+                .Select(svc => svc.Value)
+                .FirstOrDefault();
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)

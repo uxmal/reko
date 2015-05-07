@@ -52,8 +52,8 @@ namespace Decompiler.Scanning
         void EnqueueUserProcedure(Procedure_v1 sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
 
-        void AddDiagnostic(Address addr, Diagnostic d);
         void Warn(Address addr, string message);
+        void Warn(Address addr, string message, params object[] args);
         void Error(Address addr, string message);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
@@ -195,14 +195,14 @@ namespace Decompiler.Scanning
             }
         }
 
-        public void AddDiagnostic(Address addr, Diagnostic d)
-        {
-            eventListener.AddDiagnostic(eventListener.CreateAddressNavigator(program, addr), d);
-        }
-
         public void Warn(Address addr, string message)
         {
             eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message);
+        }
+
+        public void Warn(Address addr, string message, params object[] args)
+        {
+            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), string.Format(message, args));
         }
 
         public void Error(Address addr, string message)
@@ -675,14 +675,14 @@ namespace Decompiler.Scanning
             {
                 if (proc.Frame.ReturnAddressSize != returnAddressBytes)
                 {
-                    AddDiagnostic(
+                    Warn(
                         address,
-                        new WarningDiagnostic(string.Format(
+                        string.Format(
                             "Procedure {1} previously had a return address of {2} bytes on the stack, " +
                             "but now seems to have a return address of {0} bytes on the stack.",
                         returnAddressBytes,
                         proc.Name,
-                        proc.Frame.ReturnAddressSize)));
+                        proc.Frame.ReturnAddressSize));
                 }
             }
             else

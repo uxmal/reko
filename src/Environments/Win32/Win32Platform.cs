@@ -141,11 +141,12 @@ namespace Decompiler.Environments.Win32
         {
             if (TypeLibs == null)
             {
-                var envCfg = Services.RequireService<IDecompilerConfigurationService>().GetEnvironment("win32");
+                var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+                var envCfg = cfgSvc.GetEnvironment("win32");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(arch, tl.Name))
+                    .Select(tl => tlSvc.LoadLibrary(arch, cfgSvc.GetPath(tl.Name)))
                     .Where(tl => tl != null).ToArray();
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()

@@ -23,9 +23,11 @@ using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Assemblers;
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using Decompiler.Environments.Msdos;
 using Decompiler.Loading;
@@ -159,7 +161,12 @@ namespace Decompiler.UnitTests.Analysis
 
         private static void Rewrite(Program prog, Assembler asm, string configFile)
         {
-            var loader = new Loader(new ServiceContainer());
+            var fakeDiagnosticsService = new FakeDiagnosticsService();
+            var fakeConfigService = new FakeDecompilerConfiguration();
+            var sc = new ServiceContainer();
+            sc.AddService(typeof(IDiagnosticsService), fakeDiagnosticsService);
+            sc.AddService(typeof(IDecompilerConfigurationService), fakeConfigService);
+            var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
                 : new ProjectLoader("", loader).LoadProject(FileUnitTester.MapTestPath(configFile));

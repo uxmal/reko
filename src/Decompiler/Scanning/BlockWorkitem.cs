@@ -465,10 +465,11 @@ namespace Decompiler.Scanning
             int stackDelta = ret.ReturnAddressBytes + ret.ExtraBytesPopped;
             if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)
             {
-                scanner.AddDiagnostic(
+                scanner.Warn(
                     ric.Address,
-                    new WarningDiagnostic(string.Format(
-                    "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
+                    "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", 
+                    proc.Name,
+                    proc.Signature.StackDelta);
             }
             else
             {
