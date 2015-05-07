@@ -51,13 +51,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TranslateHeader Include="libc.so.inc" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="linux-syscalls-i386.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
+       -->
   <Target Name="BeforeBuild">
+    <Exec Command="$(SolutionDir)tools\c2xml\bin\$(Configuration)\c2xml.exe %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml">
+    </Exec>
   </Target>
+  <!--
   <Target Name="AfterBuild">
   </Target>
   -->

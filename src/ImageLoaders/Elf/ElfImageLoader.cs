@@ -810,7 +810,7 @@ namespace Decompiler.ImageLoaders.Elf
         /// <remarks>
         /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
         /// should contain the same number of entries, even if the individual entry 
-        /// sizes are distinct. The entries in .real.plt refer to symbols while the
+        /// sizes are distinct. The entries in .rela.plt refer to symbols while the
         /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
         /// of pointers in the .plt table is a "trampoline", and should be replaced
         /// in the decompiled code with just a call to the symbol obtained from the
