@@ -31,19 +31,21 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedMemoryExpressionRewriter : ExpressionVisitor<Expression>
 	{
-        private Platform arch;
+        private Program prog;
+        private Platform platform;
         private TypeStore store;
 		private Identifier globals;
 		private Expression basePointer;
         private DataType dtResult;
         private TypedConstantRewriter tcr;
 
-		public TypedMemoryExpressionRewriter(Platform arch, TypeStore store, Identifier globals)
+		public TypedMemoryExpressionRewriter(Program prog)
 		{
-            this.arch = arch;
-            this.tcr = new TypedConstantRewriter(arch, store, globals);
-			this.store = store;
-			this.globals = globals;
+            this.prog = prog;
+            this.platform = prog.Platform;
+            this.tcr = new TypedConstantRewriter(prog);
+			this.store = prog.TypeStore;
+			this.globals = prog.Globals;
 		}
 
 		public Expression Rewrite(MemoryAccess access)
@@ -65,9 +67,9 @@ namespace Decompiler.Typing
 
         public Expression RewriteArrayAccess(TypeVariable typeVariable, Expression arr, Expression idx)
         {
-            var ter = new TypedExpressionRewriter(arch, store, globals);
+            var ter = new TypedExpressionRewriter(prog);
             basePointer = null;
-            dtResult = new Pointer(typeVariable.DataType, arch.PointerType.Size);
+            dtResult = new Pointer(typeVariable.DataType, platform.PointerType.Size);
             var dtElement = Dereference(arr.TypeVariable.DataType);
             var dtElementOrig = Dereference(arr.TypeVariable.OriginalDataType);
             arr = arr.Accept(ter);
@@ -139,7 +141,7 @@ namespace Decompiler.Typing
 
 		public Expression VisitArrayAccess(ArrayAccess acc)
 		{
-            var ter = new TypedExpressionRewriter(arch, store, globals);
+            var ter = new TypedExpressionRewriter(prog);
             var arr = acc.Array.Accept(ter);
             var idx = acc.Index.Accept(ter);
             var ceb = new ComplexExpressionBuilder(
@@ -176,8 +178,7 @@ namespace Decompiler.Typing
                     binExp, tvLeft.DataType, tvRight.DataType);
             }
 
-            var ter = new TypedExpressionRewriter(arch, store, globals);
-
+            var ter = new TypedExpressionRewriter(prog);
             ComplexExpressionBuilder ceb;
             Constant cLeft = left as Constant;
             if (cLeft != null)
@@ -287,7 +288,7 @@ namespace Decompiler.Typing
 
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
-            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(arch, store, globals);
+            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(prog);
             Expression e = r.Rewrite(access);
             ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 dtResult,
@@ -301,7 +302,7 @@ namespace Decompiler.Typing
 
 		public Expression VisitMkSequence(MkSequence seq)
 		{
-            var ter = new TypedExpressionRewriter(arch, store, globals);
+            var ter = new TypedExpressionRewriter(prog);
             //$TODO: identical to TypedExpressionRewriter except for the ceb.Dereferenced statements. How to combine?
             var head = seq.Head.Accept(ter);
             var tail = seq.Tail.Accept(ter);
@@ -364,9 +365,9 @@ namespace Decompiler.Typing
 
 		public Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
-            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(arch, store, globals);
-            Expression e = r.Rewrite(access);
-            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+            var r = new TypedMemoryExpressionRewriter(prog);
+            var e = r.Rewrite(access);
+            var ceb = new ComplexExpressionBuilder(
                 dtResult,
                 e.DataType,
                 e.DataType,

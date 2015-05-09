@@ -119,6 +119,7 @@ namespace Decompiler.ImageLoaders.Elf
         private const ushort EM_MMIX = 80;          // Donald Knuth's educational 64-bit processor 
         private const ushort EM_HUANY = 81;         // Harvard University machine-independent object files 
         private const ushort EM_PRISM = 82;         // SiTera Prism 
+        private const ushort EM_AARCH64 = 183;      // ARM AARCH64
 
         private const uint SHF_WRITE = 0x1;
         private const uint SHF_ALLOC = 0x2;
@@ -456,6 +457,8 @@ namespace Decompiler.ImageLoaders.Elf
             switch (machineType)
             {
             case EM_NONE: return null; // No machine
+            case EM_AARCH64: arch = "aarch64"; break;
+            case EM_ARM: arch = "arm"; break;
             case EM_SPARC: arch = "sparc"; break;
             case EM_386: arch = "x86-protected-32"; break;
             case EM_68K: arch = "m68k"; break;
@@ -626,17 +629,12 @@ namespace Decompiler.ImageLoaders.Elf
             }
             else
             {
-                if (Header32.e_machine == EM_386)
+                switch (Header32.e_machine)
                 {
-                    RelocateI386();
-                }
-                else if (Header32.e_machine == EM_PPC)
-                {
-                    RelocatePpc32();
-                }
-                else
-                {
-                    throw new NotImplementedException();
+                case EM_386: RelocateI386(); break;
+                case EM_PPC: RelocatePpc32(); break;
+                case EM_ARM: RelocateArm(); break;
+                default: throw new NotImplementedException(string.Format("ELF relocation for {0} is not implemented yet.", arch.GetType().Name));
                 }
             }
             return new RelocationResults(entryPoints, relocations);
@@ -851,6 +849,10 @@ namespace Decompiler.ImageLoaders.Elf
                     addr,
                     new NamedImportReference(addr, null, symStr));
             }
+        }
+
+        public void RelocateArm()
+        {
         }
 
         public Elf64_SHdr GetSectionInfoByName64(string sectionName)

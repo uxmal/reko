@@ -36,6 +36,7 @@ namespace Decompiler.UnitTests.Mocks
         private Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
         private Dictionary<string, Block> blocks = new Dictionary<string, Block>();
 		private List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
+        private LoadedImage loadedImage;
 
 		public ProgramBuilder() : this(new FakeArchitecture())
 		{
@@ -45,6 +46,16 @@ namespace Decompiler.UnitTests.Mocks
         {
             Program = new Program {
                 Architecture = arch,
+            };
+        }
+
+        public ProgramBuilder(LoadedImage loadedImage)
+        {
+            Program = new Program
+            {
+                Image = loadedImage,
+                ImageMap = loadedImage.CreateImageMap(),
+                Architecture = new FakeArchitecture()
             };
         }
 

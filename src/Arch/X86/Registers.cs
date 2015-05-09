@@ -200,10 +200,10 @@ namespace Decompiler.Arch.X86
             FPUF = new RegisterStorage("FPUF", 38, PrimitiveType.Byte);
             FPST = new RegisterStorage("FPST", 38, PrimitiveType.Byte); 
 
-            rax = new Intel64AccRegister("rax", 40, 0, 8, 16, 20);
-            rcx = new Intel64AccRegister("rcx", 41, 1, 9, 17, 21);
-            rdx = new Intel64AccRegister("rdx", 42, 2, 10, 18, 22);
-            rbx = new Intel64AccRegister("rbx", 43, 3, 11, 19, 23);
+            rax = new Intel64AccRegister("rax", 0, 0, 8, 16, 20);
+            rcx = new Intel64AccRegister("rcx", 1, 1, 9, 17, 21);
+            rdx = new Intel64AccRegister("rdx", 2, 2, 10, 18, 22);
+            rbx = new Intel64AccRegister("rbx", 3, 3, 11, 19, 23);
             rsp = new Intel64Register("rsp", 4, 12, -1, -1);
             rbp = new Intel64Register("rbp",  5, 13, -1, -1);
             rsi = new Intel64Register("rsi",  6, 14, -1, -1);

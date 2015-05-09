@@ -193,7 +193,7 @@ namespace Decompiler.Core.Output
 		{
 			int prec = SetPrecedence(PrecedenceCase);
 			writer.Write("(");
-			writer.Write(cast.DataType.ToString());        //$TODO: use a TypeFormatter
+            cast.DataType.Accept(new TypeFormatter(writer, true));
 			writer.Write(") ");
 			cast.Expression.Accept(this);
 			ResetPresedence(prec);

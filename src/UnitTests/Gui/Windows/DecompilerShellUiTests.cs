@@ -1,11 +1,13 @@
 ﻿using Decompiler.Gui;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
+using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -27,7 +29,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             form = new Form();
             form.IsMdiContainer = true;
             sc = new ServiceContainer();
-            mainForm = mr.Stub<IMainForm>();
+            mainForm = new MainForm();
             svc = new DecompilerShellUiService(mainForm, null, null, null, sc);
         }
 
@@ -46,13 +48,12 @@ namespace Decompiler.UnitTests.Gui.Windows
             var pane = mr.StrictMock<IWindowPane>();
             Expect.Call(() => pane.SetSite(sc));
             Expect.Call(pane.CreateControl()).IgnoreArguments().Return(new Control());
-
             mr.ReplayAll();
 
             IWindowFrame window = svc.CreateWindow("testWin", "Test Window", pane);
             Assert.IsNotNull(window);
-            Assert.AreEqual(1, form.MdiChildren.Length);
-            Assert.AreEqual("Test Window", form.MdiChildren[0].Text);
+            Assert.AreEqual(1, mainForm.DocumentWindows.Count);
+            Assert.AreSame(pane, mainForm.DocumentWindows.First().Pane);
             window.Show();
             mr.VerifyAll();
         }

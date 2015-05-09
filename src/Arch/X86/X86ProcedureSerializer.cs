@@ -111,7 +111,8 @@ namespace Decompiler.Arch.X86
         {
             switch (bitSize)
             {
-            case 32: if (Architecture.WordWidth.BitSize == 16)
+            case 32: 
+                if (Architecture.WordWidth.BitSize == 16)
                     return new SequenceStorage(
                         new Identifier("dx", PrimitiveType.Word16, Architecture.GetRegister("dx")),
                         new Identifier("ax", PrimitiveType.Word16, Architecture.GetRegister("ax")));

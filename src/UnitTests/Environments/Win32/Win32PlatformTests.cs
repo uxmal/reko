@@ -117,6 +117,9 @@ namespace Decompiler.UnitTests.Environments.Win32
                 }
             };
             dcSvc.Expect(d => d.GetEnvironment("win32")).Return(opEnv);
+            dcSvc.Stub(c => c.GetPath(null)).IgnoreArguments()
+                .Do(new Func<string, string>(s => s));
+            
             sc.AddService<IDecompilerConfigurationService>(dcSvc);
         }
 

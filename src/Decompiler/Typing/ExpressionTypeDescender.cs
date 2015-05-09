@@ -158,7 +158,7 @@ namespace Decompiler.Typing
             var field = new StructureField(offset, tField);
             s.Fields.Add(field);
 
-            var pointer = tBase != null
+            var pointer = tBase != null && tBase != globals
                 ? (DataType) factory.CreateMemberPointer(tBase.TypeVariable, s, structPtrSize)
                 : (DataType) factory.CreatePointer(s, structPtrSize);
             return MeetDataType(tStruct, pointer);
@@ -406,7 +406,7 @@ namespace Decompiler.Typing
                 var iv = GetInductionVariable(p);
                 if (iv != null)
                 {
-                    VisitInductionVariable(null, (Identifier) p, iv, offset, access);
+                    VisitInductionVariable(globals, (Identifier) p, iv, offset, access);
                 }
             }
             else if (effectiveAddress is Constant)

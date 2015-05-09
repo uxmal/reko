@@ -74,6 +74,8 @@ namespace Decompiler.UnitTests.Typing
         protected void RunHexTest(string hexFile, string outputFile)
         {
             var svc = new ServiceContainer();
+            var cfg = new FakeDecompilerConfiguration();
+            svc.AddService<IDecompilerConfigurationService>(cfg);
             ILoader ldr = new Loader(svc);
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var img = imgLoader.Load(null);
@@ -98,7 +100,6 @@ namespace Decompiler.UnitTests.Typing
         {
             RunTest(RewriteFile32(srcfile), outputFile);
         }
-        
         
         protected void RunTest(ProgramBuilder mock, string outputFile)
         {
