@@ -1,0 +1,42 @@
+Mem0:Global memory
+    def:  def Mem0
+fp:fp
+    def:  def fp
+    uses: sp_6 = fp - 0x0002
+          sp_9 = fp
+sp:sp
+    def:  def sp
+ss:ss
+    def:  def ss
+es:es
+    def:  def es
+wLoc02:Local -0002
+    def:  def wLoc02
+sp_6: orig: sp
+    def:  sp_6 = fp - 0x0002
+wLoc02_7: orig: wLoc02
+    def:  wLoc02_7 = 0x0123
+    uses: es_8 = wLoc02_7
+es_8: orig: es
+    def:  es_8 = wLoc02_7
+sp_9: orig: sp
+    def:  sp_9 = fp
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+	def Mem0
+	def fp
+	def sp
+	def ss
+	def es
+	def wLoc02
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp_6 = fp - 0x0002
+	wLoc02_7 = 0x0123
+	es_8 = wLoc02_7
+	sp_9 = fp
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

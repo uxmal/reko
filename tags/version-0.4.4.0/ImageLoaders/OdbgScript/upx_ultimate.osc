@@ -1,0 +1,38 @@
+var diroep
+var filename
+var Dumped
+cmp $VERSION, "1.47"
+jb odbgver
+find eip,#61#
+cmp $RESULT,0
+je Exit
+mov diroep,$RESULT
+bp diroep
+run
+bc diroep
+find eip,#E9????????#
+cmp $RESULT,0
+je Exit
+mov diroep,$RESULT
+bp diroep
+run
+bc diroep
+sto
+an eip
+GPI PROCESSNAME
+mov filename,$RESULT
+eval "de_{filename}.exe"
+mov Dumped,$RESULT
+dpe Dumped,eip
+msg "OEP found!"
+msg "The File was dumped successfully, fix IAT with ImportREC"
+cmt eip, "<== OEP"
+ret
+
+odbgver:
+msg "This script work with ODbgscript 1.47 or above"
+ret
+
+Exit:
+msg "This Program isn't packed with UPX"
+ret

@@ -1,0 +1,87 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   SCZO ax si al ah
+	Preserved: sp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	sp = fp
+	call fn0C00_000A (retsize: 2; depth: 2)
+	branch Test(ULT,C) l0C00_0009
+// DataOut: ax ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp ax:<invalid> si:<invalid>
+l0C00_0005:
+	v6 = Mem0[ds:0x0300:word16] + ax
+	Mem0[ds:0x0300:word16] = v6
+	SCZO = cond(v6)
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp ax:<invalid> si:<invalid>
+l0C00_0009:
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp ax:<invalid> si:<invalid>
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// fn0C00_000A /////////////////////
+	LiveOut:   C ax ds
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   SCZO ax si al ah
+	Preserved: sp
+// fn0C00_000A
+void fn0C00_000A()
+// SymbolicIn: sp:fp
+fn0C00_000A_entry:
+// DataOut: ax ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_000A:
+	sp = fp
+	si = Mem0[ds:0x0100:word16]
+	SCZO = cond(si - Mem0[ds:0x0102:word16])
+	branch Test(EQ,Z) l0C00_001E
+// DataOut: ax si ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp si:<invalid>
+l0C00_0014:
+	ax = Mem0[ds:si:word16]
+	si = si + 0x0001
+	SZO = cond(si)
+	si = si + 0x0001
+	SZO = cond(si)
+	Mem0[ds:0x0100:word16] = si
+	C = false
+	return
+// DataOut: ax ds
+// DataOut (flags): C
+
+// SymbolicIn: sp:fp si:<invalid>
+l0C00_001E:
+	C = true
+	return
+// DataOut: ax ds
+// DataOut (flags): C
+
+// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
+fn0C00_000A_exit:
+// DataOut: ax ds
+// DataOut (flags): C
+

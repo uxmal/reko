@@ -1,0 +1,57 @@
+// ManyIncrements
+void ManyIncrements()
+ManyIncrements_entry:
+	goto loopTop
+	// succ:  loopTop
+done:
+	return
+	// succ:  ManyIncrements_exit
+l1:
+	r1 = Mem0[r0:byte]
+	r0 = r0 + 0x00000001
+	Mem0[0x33333330:word32] = r1
+	r1 = Mem0[r0:byte]
+	r0 = r0 + 0x00000001
+	Mem0[0x33333331:word32] = r1
+	goto loopTop
+	// succ:  loopTop
+l2:
+	r1 = Mem0[r0:byte]
+	r0 = r0 + 0x00000001
+	Mem0[0x33333330:word32] = r1
+	// succ:  loopTop
+loopTop:
+	r1 = Mem0[r0:byte]
+	r0 = r0 + 0x00000001
+	branch r1 != 1 not1
+	goto l1
+	// succ:  l1 not1
+not1:
+	branch r1 != 2 done
+	goto l2
+	// succ:  l2 done
+ManyIncrements_exit:
+
+void ManyIncrements()
+{
+	while (true)
+	{
+		r1 = Mem0[r0:byte];
+		r0 = r0 + 0x00000001;
+		if (r1 == 1)
+		{
+			r1 = Mem0[r0:byte];
+			r0 = r0 + 0x00000001;
+			Mem0[0x33333331:word32] = r1;
+		} else if (r1 != 2)
+		{
+			r1 = Mem0[r0:byte];
+			r0 = r0 + 0x00000001;
+			Mem0[0x33333330:word32] = r1;
+		}
+		else 
+			return;
+		
+	}
+}
+===========================

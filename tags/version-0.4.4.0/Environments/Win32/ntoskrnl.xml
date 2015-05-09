@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="IBM437"?>
+<library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="ULONG">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="NTSTATUS">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="BOOLEAN">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="DEVICE_TYPE">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <struct name="_EPROCESS" />
+    <typedef name="EPROCESS">
+      <struct name="_EPROCESS" />
+    </typedef>
+    <typedef name="PEPROCESS">
+      <ptr>
+        <struct name="_EPROCESS" />
+      </ptr>
+    </typedef>
+    <struct name="_KTHREAD" />
+    <typedef name="KTHREAD">
+      <struct name="_KTHREAD" />
+    </typedef>
+    <typedef name="PKTHREAD">
+      <ptr>
+        <struct name="_KTHREAD" />
+      </ptr>
+    </typedef>
+    <typedef name="PUNICODE_STRING">
+      <ptr>
+        <prim domain="Character" size="2" />
+      </ptr>
+    </typedef>
+    <struct name="_DEVICE_OBJECT" />
+    <typedef name="DEVICE_OBJECT">
+      <struct name="_DEVICE_OBJECT" />
+    </typedef>
+    <typedef name="PDEVICE_OBJECT">
+      <ptr>
+        <struct name="_DEVICE_OBJECT" />
+      </ptr>
+    </typedef>
+    <struct name="_DRIVER_OBJECT" />
+    <typedef name="DRIVER_OBJECT">
+      <struct name="_DRIVER_OBJECT" />
+    </typedef>
+    <typedef name="PDRIVER_OBJECT">
+      <ptr>
+        <struct name="_DRIVER_OBJECT" />
+      </ptr>
+    </typedef>
+  </Types>
+  <procedure name="DbgPrint">
+    <signature convention="__cdecl">
+      <return>
+        <type>ULONG</type>
+      </return>
+      <arg name="format">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="IoGetCurrentProcess">
+    <signature>
+      <return>
+        <type>PEPROCESS</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="KeGetCurrentThread">
+    <signature>
+      <return>
+        <type>PKTHREAD</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="IoCreateDevice">
+    <signature>
+      <return>
+        <type>NTSTATUS</type>
+      </return>
+      <arg name="DriverObject">
+        <type>PDRIVER_OBJECT</type>
+      </arg>
+      <arg name="DeviceExtensionSize">
+        <type>ULONG</type>
+      </arg>
+      <arg name="DeviceName">
+        <type>PUNICODE_STRING</type>
+      </arg>
+      <arg name="DeviceType">
+        <type>DEVICE_TYPE</type>
+      </arg>
+      <arg name="DeviceCharacteristics">
+        <type>ULONG</type>
+      </arg>
+      <arg name="Exclusive">
+        <type>BOOLEAN</type>
+      </arg>
+      <arg name="DeviceObject">
+        <ptr>
+          <type>PDEVICE_OBJECT</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="IoCreateSymbolicLink">
+    <signature>
+      <return>
+        <type>NTSTATUS</type>
+      </return>
+      <arg name="SymbolicLinkName">
+        <type>PUNICODE_STRING</type>
+      </arg>
+      <arg name="DeviceName">
+        <type>PUNICODE_STRING</type>
+      </arg>
+    </signature>
+  </procedure>
+</library>

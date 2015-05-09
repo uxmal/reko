@@ -1,0 +1,105 @@
+// Fn1
+// Return size: 0
+void Fn1()
+Fn1_entry:
+	// succ:  l1
+l1:
+	Mem0[p + 0x00000004:word32] = 0x00000042
+	Fn2(p)
+	return
+	// succ:  Fn1_exit
+Fn1_exit:
+
+// Fn2
+// Return size: 0
+void Fn2(word32 arg1)
+Fn2_entry:
+	// succ:  l1
+l1:
+	Mem0[arg1 + 0x00000008:word32] = 0x00000023
+	return
+	// succ:  Fn2_exit
+Fn2_exit:
+
+// Equivalence classes ////////////
+Eq_1: (ptr (struct))
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_2: word32
+	T_2 (in 0x00000042 : word32)
+	T_6 (in Mem0[p + 0x00000004:word32] : word32)
+Eq_3: (ptr (struct (4 T_6 t0004) (8 T_14 t0008)))
+	T_3 (in p : word32)
+	T_9 (in arg1 : word32)
+Eq_4: word32
+	T_4 (in 0x00000004 : word32)
+Eq_5: word32
+	T_5 (in p + 0x00000004 : word32)
+Eq_7: (ptr (fn T_10 (T_3)))
+	T_7 (in Fn2 : ptr32)
+	T_8 (in signature of Fn2 : void)
+Eq_10: word32
+	T_10 (in Fn2(p) : word32)
+Eq_11: word32
+	T_11 (in 0x00000023 : word32)
+	T_14 (in Mem0[arg1 + 0x00000008:word32] : word32)
+Eq_12: word32
+	T_12 (in 0x00000008 : word32)
+Eq_13: word32
+	T_13 (in arg1 + 0x00000008 : word32)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr (struct))
+  OrigDataType: (ptr (struct))
+T_2: (in 0x00000042 : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_3: (in p : word32)
+  Class: Eq_3
+  DataType: (ptr (struct (4 T_6 t0004) (8 T_14 t0008)))
+  OrigDataType: (ptr (struct (4 T_6 t0004)))
+T_4: (in 0x00000004 : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_5: (in p + 0x00000004 : word32)
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_6: (in Mem0[p + 0x00000004:word32] : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_7: (in Fn2 : ptr32)
+  Class: Eq_7
+  DataType: (ptr (fn T_10 (T_3)))
+  OrigDataType: (ptr (fn T_10 (T_3)))
+T_8: (in signature of Fn2 : void)
+  Class: Eq_7
+  DataType: (ptr (fn T_10 (T_3)))
+  OrigDataType: 
+T_9: (in arg1 : word32)
+  Class: Eq_3
+  DataType: (ptr (struct (4 T_6 t0004) (8 T_14 t0008)))
+  OrigDataType: (ptr (struct (8 T_14 t0008)))
+T_10: (in Fn2(p) : word32)
+  Class: Eq_10
+  DataType: word32
+  OrigDataType: word32
+T_11: (in 0x00000023 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_12: (in 0x00000008 : word32)
+  Class: Eq_12
+  DataType: word32
+  OrigDataType: word32
+T_13: (in arg1 + 0x00000008 : word32)
+  Class: Eq_13
+  DataType: word32
+  OrigDataType: word32
+T_14: (in Mem0[arg1 + 0x00000008:word32] : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32

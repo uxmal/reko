@@ -1,0 +1,108 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   SCZO bx bl bh
+	Preserved: sp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: ds
+// DataOut (flags): 
+// LocalsOut: fp(16)
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	sp = fp
+	sp = fp - 0x0002
+	wLoc02 = 0x0320
+	sp = fp - 0x0004
+	wLoc04 = 0x0300
+	call fn0C00_0010 (retsize: 2; depth: 6)
+	call fn0C00_0037 (retsize: 2; depth: 6)
+	sp = fp
+	SCZO = cond(fp)
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp bx:<invalid> -4(fp):0x0300 -2(fp):0x0320
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// fn0C00_0010 /////////////////////
+	LiveOut:   ds
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   bx bl bh
+	Preserved: sp bp
+// fn0C00_0010
+void fn0C00_0010()
+// SymbolicIn: sp:fp
+fn0C00_0010_entry:
+// DataOut: ds
+// DataOut (flags): 
+// LocalsOut: fp(16) Stack +0002(16) Stack +0004(16)
+
+// SymbolicIn: sp:fp
+l0C00_0010:
+	sp = fp
+	sp = fp - 0x0002
+	wLoc02 = bp
+	bp = fp - 0x0002
+	bx = wArg02
+	rLoc1 = Mem0[ds:bx:real64]
+	rLoc1 = rLoc1 * rLoc1
+	rLoc2 = Mem0[ds:bx + 0x0008:real64]
+	rLoc2 = rLoc2 * rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	rLoc2 = Mem0[ds:bx + 0x0010:real64]
+	rLoc2 = rLoc2 * rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	bx = wArg04
+	Mem0[ds:bx:real64] = rLoc1
+	rLoc1 = (real64) Mem0[ds:bx + 0x0020:int16]
+	Mem0[ds:bx + 0x0028:real64] = rLoc1
+	sp = fp - 0x0002
+	bp = wLoc02
+	sp = fp
+	return
+// DataOut: ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp bp:bp bx:<invalid> -2(fp):bp
+fn0C00_0010_exit:
+// DataOut: ds
+// DataOut (flags): 
+
+// fn0C00_0037 /////////////////////
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:  
+	Preserved: sp
+// fn0C00_0037
+void fn0C00_0037()
+// SymbolicIn: sp:fp
+fn0C00_0037_entry:
+// DataOut: ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0037:
+	sp = fp
+	rLoc1 = 0
+	Mem0[ds:0x0400:real64] = rLoc1
+	rLoc1 = 1
+	Mem0[ds:0x0408:int32] = (int32) rLoc1
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+fn0C00_0037_exit:
+// DataOut:
+// DataOut (flags): 
+

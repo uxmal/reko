@@ -1,0 +1,114 @@
+// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word16 di_0 = 0x5388
+	goto lupe
+	// succ:  lupe
+l2:
+	return
+	// succ:  proc1_exit
+lupe:
+	Mem4[ds:di_0 + 0x0000:word16] = 0x0000
+	di_0 = di_0 + 0x0002
+	cx = cx - 0x0001
+	branch cx != 0x0000 lupe
+	goto l2
+	// succ:  l2 lupe
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word16 Eq_5::*di_0 = Eq_5::a5388
+	goto lupe
+	// succ:  lupe
+l2:
+	return
+	// succ:  proc1_exit
+lupe:
+	ds->*di_0 = 0x0000;
+	di_0 = di_0 + 1;
+	cx = cx - 0x0001;
+	branch cx != 0x0000 lupe
+	goto l2
+	// succ:  l2 lupe
+proc1_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Eq_1")
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_5: (segment "Eq_5" (5388 (arr word16) a5388))
+	T_5 (in ds : word16)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct))
+T_2: (in di_0 : (memptr (ptr Eq_5) word16))
+  Class: Eq_2
+  DataType: (memptr (ptr Eq_5) word16)
+  OrigDataType: (memptr T_5 (struct 0002 (0 (union (word16 u0) (T_8 u1)) u0000)))
+T_3: (in 0x5388 : word16)
+  Class: Eq_2
+  DataType: (memptr (ptr Eq_5) word16)
+  OrigDataType: word16
+T_4: (in 0x0000 : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_5: (in ds : word16)
+  Class: Eq_5
+  DataType: (ptr Eq_5)
+  OrigDataType: (ptr (segment (5388 (arr T_16) a5388)))
+T_6: (in 0x0000 : word16)
+  Class: Eq_6
+  DataType: word16
+  OrigDataType: word16
+T_7: (in di_0 + 0x0000 : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
+T_8: (in Mem4[ds:di_0 + 0x0000:word16] : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_9: (in 0x0002 : word16)
+  Class: Eq_9
+  DataType: word16
+  OrigDataType: word16
+T_10: (in di_0 + 0x0002 : word16)
+  Class: Eq_2
+  DataType: (memptr (ptr Eq_5) word16)
+  OrigDataType: word16
+T_11: (in cx : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_12: (in 0x0001 : word16)
+  Class: Eq_12
+  DataType: word16
+  OrigDataType: word16
+T_13: (in cx - 0x0001 : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_14: (in 0x0000 : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_15: (in cx != 0x0000 : bool)
+  Class: Eq_15
+  DataType: bool
+  OrigDataType: bool
+T_16:
+  Class: Eq_16
+  DataType: word16
+  OrigDataType: (struct 0002 (0 T_8 t0000))
