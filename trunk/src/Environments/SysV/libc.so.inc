@@ -11,7 +11,9 @@ typedef int clockid_t;
 typedef long time_t;
 typedef void * va_list;	
 typedef int mode_t;
-
+struct stat
+{
+};
 int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));
 int scanf(char * format, ...);
 int printf(char * format, ...);
@@ -35,6 +37,7 @@ char * fgets(char *, int, FILE *);
 int strncasecmp(char *, char *, int n);
 int strcasecmp(char *, char *);
 int strncpy(char *, char *, int n);
+char * strcat(char *, char *);
 int fcntl(int fd, int cmd);
 void * calloc(size_t num, size_t size);
 void abort();
@@ -90,4 +93,5 @@ int fnmatch(const char *pattern, const char *string, int flags);
 FILE * fopen(const char * file, const char * mode);
 void perror(const char *msg);
 void atexit(void(*func)(void));
+int _xstat(int version, const char * path, struct stat * statbuf);
 

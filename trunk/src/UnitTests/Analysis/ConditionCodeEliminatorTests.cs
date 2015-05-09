@@ -423,6 +423,7 @@ done:
         }
 
         [Test]
+        [Ignore("Think about how to deal with long variables (edx:eax)")]
         public void CceIsqrt()
         {
             RunTest("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");

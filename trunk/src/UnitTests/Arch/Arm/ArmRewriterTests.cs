@@ -190,5 +190,15 @@ namespace Decompiler.UnitTests.Arch.Arm
                 "0|00100000(4): 1 instructions",
                 "1|T--|return (0,0)");
         }
+
+        [Test]
+        public void ArmRw_mvns()
+        {
+            BuildTest(0xE1F120D1);  // mvns\tr2,r1,asr r0
+                 AssertCode(
+                "0|00100000(4): 2 instructions",
+                "1|r2 = ~r0L",
+                "2|SCZO = cond(r2)");
+        }
     }
 }

@@ -33,8 +33,6 @@ namespace Decompiler.UnitTests.Typing
     [TestFixture]
     public class TypedExpressionRewriterTests : TypingTestBase
     {
-        private TypeFactory factory;
-        private TypeStore store;
         private TypedExpressionRewriter ter;
         private ExpressionNormalizer aen;
         private EquivalenceClassBuilder eqb;
@@ -58,16 +56,16 @@ namespace Decompiler.UnitTests.Typing
                 coll = new TraitCollector(factory, store, dtb, program);
                 coll.CollectProgramTraits(program);
 #else
-                var coll = new TypeCollector(factory, store, program);
+                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program);
                 coll.CollectTypes();
 #endif
-                store.BuildEquivalenceClassDataTypes(factory);
-                store.Dump();
+                program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+                program.TypeStore.Dump();
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
-                ctn.RenameAllTypes(store);
+                ctn.RenameAllTypes(program.TypeStore);
 
-                ter = new TypedExpressionRewriter(program.Platform, store, program.Globals);
+                ter = new TypedExpressionRewriter(program);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -83,6 +81,12 @@ namespace Decompiler.UnitTests.Typing
                     DumpProgAndStore(program, fut);
                 }
             }
+        }
+
+        private ProgramBuilder CreateProgramBuilder(uint linearAddress, int size)
+        {
+            return new ProgramBuilder(
+                new LoadedImage(Address.Ptr32(linearAddress), new byte[size]));
         }
 
         private void DumpProgram(Program program, FileUnitTester fut)
@@ -102,19 +106,17 @@ namespace Decompiler.UnitTests.Typing
                 fut.TextWriter.WriteLine();
             }
 
-            store.Write(fut.TextWriter);
+            prog.TypeStore.Write(fut.TextWriter);
             fut.AssertFilesEqual();
         }
 
         public void SetupPreStages(Program prog)
         {
-            factory = new TypeFactory();
-            store = new TypeStore();
             aen = new ExpressionNormalizer(prog.Platform.PointerType);
-            eqb = new EquivalenceClassBuilder(factory, store);
-            dtb = new DataTypeBuilder(factory, store, prog.Platform);
-            tvr = new TypeVariableReplacer(store);
-            trans = new TypeTransformer(factory, store, prog);
+            eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
+            dtb = new DataTypeBuilder(prog.TypeFactory, prog.TypeStore, prog.Platform);
+            tvr = new TypeVariableReplacer(prog.TypeStore);
+            trans = new TypeTransformer(prog.TypeFactory, prog.TypeStore, prog);
             ctn = new ComplexTypeNamer();
         }
 
@@ -126,25 +128,25 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerComplex()
         {
-            Program prog = new Program();
-            prog.Architecture = new FakeArchitecture();
-            prog.Platform = new DefaultPlatform(null, prog.Architecture);
-            SetupPreStages(prog);
+            Program program = new Program();
+            program.Architecture = new FakeArchitecture();
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            SetupPreStages(program);
             Identifier id = new Identifier("v0", PrimitiveType.Word32, null);
             Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
-            prog.Globals.Accept(eqb);
+            program.Globals.Accept(eqb);
             cmp.Accept(aen);
             cmp.Accept(eqb);
-            coll = new TraitCollector(factory, store, dtb, prog);
+            coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
             cmp.Accept(coll);
             dtb.BuildEquivalenceClassDataTypes();
 
             tvr.ReplaceTypeVariables();
             trans.Transform();
-            ctn.RenameAllTypes(store);
+            ctn.RenameAllTypes(program.TypeStore);
 
-            ter = new TypedExpressionRewriter(prog.Platform, store, prog.Globals);
+            ter = new TypedExpressionRewriter(program);
             cmp = cmp.Accept(ter);
             Assert.AreEqual("v0->dw0004", cmp.ToString());
         }
@@ -152,7 +154,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerPtrPtrInt()
         {
-            ProgramBuilder mock = new ProgramBuilder();
+            ProgramBuilder mock = CreateProgramBuilder(0x0010000, 0x1000);
             mock.Add(new PtrPtrIntMock());
             RunTest(mock.BuildProgram(), "Typing/TerPtrPtrInt.txt");
         }
@@ -184,19 +186,19 @@ namespace Decompiler.UnitTests.Typing
             Constant i = Constant.Int32(1);
             Identifier x = new Identifier("x", PrimitiveType.Word32, null);
             Assignment ass = new Assignment(x, r);
-            TypeVariable tvR = r.TypeVariable = factory.CreateTypeVariable();
-            TypeVariable tvI = i.TypeVariable = factory.CreateTypeVariable();
-            TypeVariable tvX = x.TypeVariable = factory.CreateTypeVariable();
-            store.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
-            UnionType u = factory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
+            TypeVariable tvR = r.TypeVariable = prog.TypeFactory.CreateTypeVariable();
+            TypeVariable tvI = i.TypeVariable = prog.TypeFactory.CreateTypeVariable();
+            TypeVariable tvX = x.TypeVariable = prog.TypeFactory.CreateTypeVariable();
+            prog.TypeStore.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
+            UnionType u = prog.TypeFactory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
             tvR.OriginalDataType = r.DataType;
             tvI.OriginalDataType = i.DataType;
             tvX.OriginalDataType = x.DataType;
             tvR.DataType = u;
             tvI.DataType = u;
             tvX.DataType = u;
-            ctn.RenameAllTypes(store);
-            TypedExpressionRewriter ter = new TypedExpressionRewriter(prog.Platform, store, prog.Globals);
+            ctn.RenameAllTypes(prog.TypeStore);
+            TypedExpressionRewriter ter = new TypedExpressionRewriter(prog);
             Instruction instr = ter.TransformAssignment(ass);
             Assert.AreEqual("x.u1 = 3F;", instr.ToString());
         }
@@ -212,7 +214,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerGlobalVariables()
         {
-            ProgramBuilder mock = new ProgramBuilder();
+            ProgramBuilder mock = CreateProgramBuilder(0x10000000, 0x1000);
             mock.Add(new GlobalVariablesMock());
             RunTest(mock.BuildProgram(), "Typing/TerGlobalVariables.txt");
         }
@@ -244,7 +246,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerArrayConstantPointers()
         {
-            ProgramBuilder pp = new ProgramBuilder();
+            ProgramBuilder pp = new ProgramBuilder(new LoadedImage(Address.Ptr32(0x00123000), new byte[4000]));
             pp.Add("Fn", m =>
             {
                 Identifier a = m.Local32("a");
@@ -313,7 +315,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerDereferenceSignedCompare()
         {
-            ProgramBuilder prog = new ProgramBuilder();
+            ProgramBuilder prog = CreateProgramBuilder(0x5000, 0x1000);
             prog.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
@@ -336,7 +338,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerFlatDereferenceSignedCompare()
         {
-            ProgramBuilder prog = new ProgramBuilder();
+            ProgramBuilder prog = CreateProgramBuilder(0x5400, 0x1000);
             prog.Add("proc1", m =>
             {
                 Identifier ds = m.Local32("ds");
@@ -355,12 +357,12 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerComparison()
         {
-            ProgramBuilder prog = new ProgramBuilder();
+            ProgramBuilder prog = new ProgramBuilder(new LoadedImage(Address.Ptr32(0x00100000), new byte[0x4000]));
             prog.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
                 Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
-                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(40)));
+                m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00100028)));
             });
             RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
         }

@@ -116,6 +116,7 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore("This may go away with SSA2 implemented.")]
         public void TrsMergeSubregisterWithRegister()
         {
             var cl = Decompiler.Arch.X86.Registers.cl;

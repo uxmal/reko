@@ -31,6 +31,7 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
+        private Program program;
         private Platform platform;
 		private TypeStore store;
 		private Identifier globals;
@@ -38,11 +39,12 @@ namespace Decompiler.Typing
 		private PrimitiveType pOrig;
 		private bool dereferenced;
 
-		public TypedConstantRewriter(Platform platform, TypeStore store, Identifier globals)
+		public TypedConstantRewriter(Program program)
 		{
-            this.platform = platform;
-			this.store = store;
-			this.globals = globals;
+            this.program = program;
+            this.platform = program.Platform;
+            this.store = program.TypeStore;
+            this.globals = program.Globals;
 		}
 
         /// <summary>
@@ -178,6 +180,17 @@ namespace Decompiler.Typing
                     np.DataType = c.DataType;
                     return np;
                 }
+
+                // An invalid pointer -- often used as sentinels in code.
+                if (!program.Image.IsValidLinearAddress(c.ToUInt64()))
+                {
+                    //$TODO: probably should use a reinterpret_cast here.
+                    var ce = new Cast(c.DataType, c);
+                    ce.TypeVariable = c.TypeVariable;
+                    ce.DataType = ptr;
+                    return ce;
+                }
+                
                 var dt = ptr.Pointee.ResolveAs<DataType>();
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
                 var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.Size);

@@ -44,6 +44,7 @@
     <typedef name="mode_t">
       <prim domain="SignedInt" size="4" />
     </typedef>
+    <struct name="stat" />
   </Types>
   <procedure name="__libc_start_main">
     <signature>
@@ -457,6 +458,25 @@
       </arg>
       <arg name="n">
         <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="strcat">
+    <signature>
+      <return>
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </return>
+      <arg>
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
       </arg>
     </signature>
   </procedure>
@@ -1356,6 +1376,26 @@
               <void />
             </return>
           </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_xstat">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="version">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg name="path">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="statbuf">
+        <ptr>
+          <struct name="stat" />
         </ptr>
       </arg>
     </signature>

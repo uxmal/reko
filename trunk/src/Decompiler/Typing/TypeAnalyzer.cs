@@ -77,7 +77,7 @@ namespace Decompiler.Typing
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,prog, eventListener);
             ctn = new ComplexTypeNamer();
-            ter = new TypedExpressionRewriter(prog.Platform, store, prog.Globals);
+            ter = new TypedExpressionRewriter(prog);
 
             // RestrictProcedures(prog, 0, 1, true); //$DEBUG
             eventListener.ShowStatus("Gathering primitive datatypes from instructions.");

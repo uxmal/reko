@@ -319,5 +319,12 @@ namespace Decompiler.UnitTests.Arch.Arm
             var instr = Disassemble(0xE92CCFF3);
             Assert.AreEqual("stmdb\tip!,{r0,r1,r4-fp,lr,pc}", instr.ToString());
         }
+
+        [Test]
+        public void ArmDasm_ldrsb()
+        {
+            var instr = Disassemble(0xE1F120D1);
+            Assert.AreEqual("mvns\tr2,r1,asr r0", instr.ToString());
+        }
     }
 }
