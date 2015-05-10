@@ -29,12 +29,23 @@ namespace Decompiler.Arch.Arm
 {
     public partial class ArmRewriter
     {
-        private void RewriteBinOp(Operator op)
+        private void RewriteBinOp(Operator op, bool setflags)
         {
             var opDst = this.Operand(instr.Dst);
             var opSrc1 = this.Operand(instr.Src1);
             var opSrc2 = this.Operand(instr.Src2);
             ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
+            if (setflags)
+            {
+                ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+            }
+        }
+
+        private void RewriteUnaryOp(UnaryOperator op)
+        {
+            var opDst = this.Operand(instr.Dst);
+            var opSrc = this.Operand(instr.Src1);
+            ConditionalAssign(opDst, new UnaryExpression(op,  PrimitiveType.Word32, opSrc));
             if (instr.OpFlags == OpFlags.S)
             {
                 ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));

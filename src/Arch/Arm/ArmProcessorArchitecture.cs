@@ -43,7 +43,8 @@ namespace Decompiler.Arch.Arm
 
         public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            return new ArmDisassembler2(this, imageReader);
+            return new ArmDisassembler(this, imageReader);
+            //return new ArmDisassembler2(this, imageReader);
         }
 
         public ProcessorState CreateProcessorState()
