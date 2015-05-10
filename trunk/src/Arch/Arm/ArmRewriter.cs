@@ -52,7 +52,7 @@ namespace Decompiler.Arch.Arm
 
         private IEnumerator<ArmInstruction> CreateInstructionStream(ImageReader rdr)
         {
-            return new ArmDisassembler2(arch, rdr).GetEnumerator();
+            return new ArmDisassembler(arch, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -65,22 +65,30 @@ namespace Decompiler.Arch.Arm
                 switch (instr.Opcode)
                 {
                 default:
-                    throw NYI();
-                case Opcode.add: RewriteBinOp(Operator.IAdd); break;
+                    throw new AddressCorrelatedException(
+                        instr.Address,
+                        "Rewriting ARM opcode '{0}' is not supported yet.",
+                        instr.Opcode);
+                case Opcode.and: RewriteBinOp(Operator.And, false); break;
+                case Opcode.add: RewriteBinOp(Operator.IAdd, false); break;
+                case Opcode.adds: RewriteBinOp(Operator.IAdd, true); break;
+                case Opcode.mvn: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.b: RewriteB(false); break;
                 case Opcode.bic: RewriteBic(); break;
                 case Opcode.bl: RewriteB(true); break;
                 case Opcode.cmn: RewriteCmn(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.ldr: RewriteLdr(PrimitiveType.Word32); break;
+                case Opcode.ldrsb: RewriteLdr(PrimitiveType.SByte); break;
                 case Opcode.ldrb: RewriteLdr(PrimitiveType.Byte); break;
                 case Opcode.ldm: RewriteLdm(); break;
                 case Opcode.mov: RewriteMov(); break;
-                case Opcode.orr: RewriteBinOp(Operator.Or); break;
+                case Opcode.orr: RewriteBinOp(Operator.Or, false); break;
                 case Opcode.stm: RewriteStm(); break;
+                case Opcode.stmdb: RewriteStm(); break;
                 case Opcode.str: RewriteStr(PrimitiveType.Word32); break;
                 case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
-                case Opcode.sub: RewriteBinOp(Operator.ISub); break;
+                case Opcode.sub: RewriteBinOp(Operator.ISub, false); break;
                 case Opcode.svc: RewriteSvc(); break;
                 case Opcode.teq: RewriteTeq(); break;
                 case Opcode.tst: RewriteTst(); break;
@@ -168,19 +176,26 @@ namespace Decompiler.Arch.Arm
                 switch (shOp.Opcode)
                 {
                 case Opcode.lsl: return emitter.Shl(r, sh);
+                case Opcode.asr: return emitter.Sar(r, sh);
                 default: throw new NotSupportedException(string.Format("Unsupported shift operation {0}.", shOp.Opcode));
                 }
             }
             var memOp = op as ArmMemoryOperand;
             if (memOp != null)
             {
-                Expression ea = frame.EnsureRegister(memOp.Base);
+                Expression baseReg = frame.EnsureRegister(memOp.Base);
+                Expression ea = baseReg;
                 if (memOp.Offset != null)
                 {
                     var offset = Operand(memOp.Offset);
                     ea = memOp.Subtract
                         ? emitter.ISub(ea, offset)
                         : emitter.IAdd(ea, offset);
+                }
+                if (memOp.Preindexed && memOp.Writeback)
+                {
+                    emitter.Assign(baseReg, ea);
+                    ea = baseReg;
                 }
                 return emitter.Load(memOp.Width, ea);
             }

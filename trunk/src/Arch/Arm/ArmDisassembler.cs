@@ -28,6 +28,887 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
+namespace Decompiler.Arch.Arm
+{
+    using word = UInt32;
+    using address = UInt32;
+    using addrdiff = UInt32;
+
+    public class ArmDisassembler : DisassemblerBase<ArmInstruction>
+    {
+        private ArmProcessorArchitecture arch;
+        ImageReader rdr;
+        ArmInstruction arm;
+        private uint addr;
+
+        private static Opcode[] shiftTypes = new Opcode[]
+        { 
+            Opcode.lsl, Opcode.lsr, Opcode.asr, Opcode.ror 
+        };
+
+        public ArmDisassembler(ArmProcessorArchitecture arch, ImageReader rdr)
+        {
+            this.arch = arch;
+            this.rdr = rdr;
+        }
+
+        public override ArmInstruction DisassembleInstruction()
+        {
+            if (!rdr.IsValid)
+                return null;
+
+            arm = new ArmInstruction
+            {
+                Address = rdr.Address,
+                Length = 4,
+            };
+
+            addr =  arm.Address.ToUInt32();
+            word wInstr;
+            if (!rdr.TryReadLeUInt32(out wInstr))
+            {
+                arm.Opcode = Opcode.illegal;
+                return arm;
+            }
+            return this.Disassemble(wInstr);
+        }
+
+        public ArmInstruction Disassemble(uint uInstr)
+        {
+            // Section A5.1
+            arm.Cond = ConditionField(uInstr);
+            if (arm.Cond == Condition.nv)
+                return Unconditional(uInstr);
+            var op1 = (uInstr >> 25) & 7;
+            var op = (uInstr >> 4) & 1;
+            switch (op1)
+            {
+            case 0: case 1:
+                return DataProcessingAndMisc(uInstr);
+            case 2:
+                return LoadStoreUnsigned(uInstr);
+            case 3:
+                if (op == 0)
+                    return LoadStoreUnsigned(uInstr);
+                else
+                    return MediaInstructions(uInstr);
+            case 4:
+            case 5:
+                return BranchBlockTransfer(uInstr);
+            case 6:
+            case 7:
+                return CoprocessorSimdSupervisorCall(uInstr);
+            }
+            return arm;
+        }
+
+        private ArmInstruction DataProcessingAndMisc(addrdiff uInstr)
+        {
+            // Section A5.2
+            var imm = (uInstr >> 25) & 1;
+            var op1 = (uInstr >> 20) & 0x1F;
+            var op2 = (uInstr >> 4) & 0x0F;
+
+            if (imm == 0)
+            {
+                switch (op2)
+                {
+                case 0: case 2: case 4: case 6: 
+                    if ((op1 & 0x19) != 0x10)
+                    {
+                        return DataProcessingRegister(uInstr);
+                    }
+                    else
+                    {
+                        return MiscellaneousInstructions(uInstr);
+                    }
+                case 1: case 3: case 5: case 7:
+                    if ((op1 & 0x19) != 0x010)
+                    {
+                        return DataProcessingShiftedRegister(uInstr);
+                    }
+                    else 
+                    {
+                        return MiscellaneousInstructions(uInstr);
+                    }
+                case 8: case 0xA: case 0xC: case 0xE:
+                    if ((op1 & 0x19) != 0x10)
+                    {
+                        return DataProcessingRegister(uInstr);
+                    }
+                    else 
+                    {
+                        return HalfwordMultiplyAndAccumulate(uInstr);
+                    }
+                case 9:
+                    if ((op1 & 0x10) == 0)
+                    {
+                        return MultiplyAndAccumulate(uInstr);
+                    }
+                    else
+                    {
+                        return SynchronizationPrimitive(uInstr);
+                    }
+                case 0xB:
+                    if ((op1 & 0x12) != 2)
+                    { 
+                        return ExtraLoadStoreInstruction(uInstr);
+                    }
+                    else
+                    {
+                        return ExtraLoadStoreInstructionUnprivilged(uInstr);
+                    }
+                case 0xD:
+                case 0xF:
+                        return ExtraLoadStoreInstruction(uInstr);
+                }
+            }
+            else
+            {
+                if ((op1 & 0x19) != 0x10)
+                {
+                    return DataProcessingImmediate(uInstr);
+                }
+                switch (op1)
+                {
+                case 0x10: return ImmediateMove(uInstr);
+                case 0x14: return MovT(uInstr);
+                case 0x12:
+                case 0x016: return MsrAndHints(uInstr);
+                }
+            }
+            return new ArmInstruction
+            {
+                Opcode = Opcode.illegal,
+            };
+        }
+
+        private ArmInstruction DataProcessingRegister(addrdiff uInstr)
+        {
+            // A5.2.1
+            var op = (uInstr >> 20) & 0x1F;
+            var op2 = (uInstr >> 5) & 0x3;
+            switch (op)
+            {
+            case 0x0 : return DecodeOperands(uInstr, Opcode.and,  null, "3,4,*");
+            case 0x1 : return DecodeOperands(uInstr, Opcode.ands, null, "3,4,*");
+            case 0x2 : return DecodeOperands(uInstr, Opcode.eor,  null, "3,4,*");
+            case 0x3 : return DecodeOperands(uInstr, Opcode.eors, null, "3,4,*");
+            case 0x4 : return DecodeOperands(uInstr, Opcode.sub,  null, "3,4,*");
+            case 0x5 : return DecodeOperands(uInstr, Opcode.subs, null, "3,4,*");
+            case 0x6 : return DecodeOperands(uInstr, Opcode.rsb,  null, "3,4,*");
+            case 0x7: return DecodeOperands(uInstr, Opcode.rsbs, null, "3,4,*");
+            case 0x8 : return DecodeOperands(uInstr, Opcode.add,  null, "3,4,*");
+            case 0x9 : return DecodeOperands(uInstr, Opcode.adds, null, "3,4,*");
+            case 0xA : return DecodeOperands(uInstr, Opcode.adc,  null, "3,4,*");
+            case 0xB : return DecodeOperands(uInstr, Opcode.adcs, null, "3,4,*");
+            case 0xC : return DecodeOperands(uInstr, Opcode.sbc,  null, "3,4,*");
+            case 0xD : return DecodeOperands(uInstr, Opcode.sbcs, null, "3,4,*");
+            case 0xE : return DecodeOperands(uInstr, Opcode.rsc,  null, "3,4,*");
+            case 0xF: return DecodeOperands(uInstr, Opcode.rscs, null, "3,4,*");
+
+            case 0x10:
+            case 0x12:
+            case 0x14:
+            case 0x16:
+                return DataProcessingAndMisc(uInstr);
+            case 0x11: return DecodeOperands(uInstr, Opcode.tst , null, "4,*");
+            case 0x13: return DecodeOperands(uInstr, Opcode.teq , null, "4,*");
+            case 0x15: return DecodeOperands(uInstr, Opcode.cmp , null, "4,*");
+            case 0x17: return DecodeOperands(uInstr, Opcode.cmn , null, "4,*");
+            case 0x18: return DecodeOperands(uInstr, Opcode.orr , null, "3,4,*");
+            case 0x19: return DecodeOperands(uInstr, Opcode.orrs, null, "3,4,*");
+            case 0x1A: 
+            case 0x1B:
+                return DecodeOperands(uInstr, Opcode.mov, null, "3,*");
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction DataProcessingShiftedRegister(addrdiff uInstr)
+        {
+            // A5.2.2
+            var op = (uInstr >> 20) & 0x1F;
+            var op2 = (uInstr >> 5) & 0x3;
+            switch (op)
+            {
+            case 0x0: return DecodeOperands(uInstr, Opcode.and,  null, "@@@");
+            case 0x1: return DecodeOperands(uInstr, Opcode.ands, null,  "@@@");
+            case 0x2: return DecodeOperands(uInstr, Opcode.eor,  null, "@@@");
+            case 0x3: return DecodeOperands(uInstr, Opcode.eors, null,  "@@@");
+            case 0x4: return DecodeOperands(uInstr, Opcode.sub,  null, "@@@");
+            case 0x5: return DecodeOperands(uInstr, Opcode.subs, null,  "@@@");
+            case 0x6: return DecodeOperands(uInstr, Opcode.rsb,  null, "@@@");
+            case 0x7: return DecodeOperands(uInstr, Opcode.rsbs, null,  "@@@");
+            case 0x8: return DecodeOperands(uInstr, Opcode.add,  null, "@@@");
+            case 0x9: return DecodeOperands(uInstr, Opcode.adds, null,  "@@@");
+            case 0xA: return DecodeOperands(uInstr, Opcode.adc,  null, "@@@");
+            case 0xB: return DecodeOperands(uInstr, Opcode.adcs, null,  "@@@");
+            case 0xC: return DecodeOperands(uInstr, Opcode.sbc,  null, "@@@");
+            case 0xD: return DecodeOperands(uInstr, Opcode.sbcs, null,  "3,4,*");
+            case 0xE: return DecodeOperands(uInstr, Opcode.rsc,  null, "@@@");
+            case 0xF: return DecodeOperands(uInstr, Opcode.rscs, null,  "@@@");
+            case 0x10:
+            case 0x12:
+            case 0x14:
+            case 0x16:
+                return DataProcessingAndMisc(uInstr);
+            case 0x11: return DecodeOperands(uInstr, Opcode.tst , null, "@@@");
+            case 0x13: return DecodeOperands(uInstr, Opcode.teq , null, "@@@");
+            case 0x15: return DecodeOperands(uInstr, Opcode.cmp , null, "@@@");
+            case 0x17: return DecodeOperands(uInstr, Opcode.cmn , null, "@@@");
+            case 0x18: return DecodeOperands(uInstr, Opcode.orr , null, "@@@");
+            case 0x19: return DecodeOperands(uInstr, Opcode.orrs, null, "@@@");
+            case 0x1A:
+            case 0x1B:
+                return DecodeOperands(uInstr, Opcode.mov, null, "@@@");
+            case 0x1C: return DecodeOperands(uInstr, Opcode.bic , null, "3,4,*");
+            case 0x1D: return DecodeOperands(uInstr, Opcode.bics, null, "3,4,*");
+            case 0x1E: return DecodeOperands(uInstr, Opcode.mvn , null, "@@@");
+            case 0x1F: return DecodeOperands(uInstr, Opcode.mvns, null, "@@@");
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction MiscellaneousInstructions(uint uInstr)
+        {
+            var op2 = (uInstr >> 4) & 7;
+            var b = (uInstr >> 9) & 9;
+            var op1 = (uInstr >> 16) & 0xF;
+            var op = (uInstr >> 21) & 3;
+            switch (op2)
+            {
+            case 0:
+                if (b != 0)
+                {
+                    if ((op & 1) == 0)
+                    {
+                        return DecodeOperands(uInstr, Opcode.mrs, null, "@@@");
+                    }
+                    else
+                    {
+                        return DecodeOperands(uInstr, Opcode.msr, null, "@@@");
+                    }
+                }
+                else
+                {
+                    switch (op)
+                    {
+                    case 0:
+                    case 2:
+                        return DecodeOperands(uInstr, Opcode.mrs, null, "@@@");
+                    case 1:
+                        switch (op1 & 3)
+                        {
+                        case 0:
+                            return DecodeOperands(uInstr, Opcode.msr, null, "@@@");
+                        case 1:
+                        case 2:
+                        case 3:
+                            return DecodeOperands(uInstr, Opcode.msr, null, "@@@");
+                        }
+                        break;
+                    case 3:
+                        return DecodeOperands(uInstr, Opcode.msr, null, "@@@");
+                    }
+                }
+                break;
+            case 1:
+                if (op == 1)
+                    return DecodeOperands(uInstr, Opcode.bx, null, "@@@");
+                else if (op == 3)
+                    return DecodeOperands(uInstr, Opcode.clz, null, "@@@");
+                break;
+            case 2:
+                if (op == 1)
+                    return DecodeOperands(uInstr, Opcode.bxj, null, "@@@");
+                break;
+            case 3:
+                if (op == 1)
+                    return DecodeOperands(uInstr, Opcode.blx, null, "@@@");
+                break;
+            case 5:
+                return SaturatingAddSub(uInstr);
+            case 6:
+                if (op == 3)
+                    return DecodeOperands(uInstr, Opcode.eret, null, "@@@");
+                break;
+            case 7:
+                switch (op)
+                {
+                case 1: return DecodeOperands(uInstr, Opcode.bkpt,null,  "@@@");
+                case 2: return DecodeOperands(uInstr, Opcode.hvc, null, "@@@");
+                case 3: return DecodeOperands(uInstr, Opcode.smc, null, "@@@");
+                }
+                break;
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction SaturatingAddSub(addrdiff uInstr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction HalfwordMultiplyAndAccumulate(uint uInstr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction MultiplyAndAccumulate(addrdiff uInstr)
+        {
+            switch ((uInstr >> 20) & 0xF)
+            {
+            case 0: return DecodeOperands(uInstr, Opcode.mul, PrimitiveType.Word32, "@@@");
+            case 1: return DecodeOperands(uInstr, Opcode.muls, PrimitiveType.Word32, "4,0,2");
+            case 2: return DecodeOperands(uInstr, Opcode.mla, PrimitiveType.Word32, "4,0,2,3");
+            case 3: return DecodeOperands(uInstr, Opcode.mlas, PrimitiveType.Word32, "4,0,2,3");
+            case 4: return DecodeOperands(uInstr, Opcode.umaal, PrimitiveType.Word32, "@@@");
+            case 6: return DecodeOperands(uInstr, Opcode.mls, PrimitiveType.Word32, "@@@");
+            case 8:
+            case 9:  return DecodeOperands(uInstr, Opcode.umull, PrimitiveType.Word32, "@@@");
+            case 0xA:
+            case 0xB: return DecodeOperands(uInstr, Opcode.umlal, PrimitiveType.Word32, "@@@");
+            case 0xC:
+            case 0xD: return DecodeOperands(uInstr, Opcode.smull, PrimitiveType.Word32, "@@@");
+            case 0xE:
+            case 0xF: return DecodeOperands(uInstr, Opcode.smlal, PrimitiveType.Word32, "@@@");
+
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction SynchronizationPrimitive(addrdiff uInstr)
+        {
+            var op = (uInstr >> 20) & 0xF;
+            switch (op)
+            {
+            case 0:
+                return DecodeOperands(uInstr, Opcode.swp, null, "@@@");
+            case 4:
+                return DecodeOperands(uInstr, Opcode.swpb, PrimitiveType.Byte, "3,0,I4");
+            case 0x8: return DecodeOperands(uInstr, Opcode.strex,  null,"@@@");
+            case 0x9: return DecodeOperands(uInstr, Opcode.ldrex,  null,"@@@");
+            case 0xA: return DecodeOperands(uInstr, Opcode.strexd, null, "@@@");
+            case 0xB: return DecodeOperands(uInstr, Opcode.ldrexd, null, "@@@");
+            case 0xC: return DecodeOperands(uInstr, Opcode.strexb, null, "@@@");
+            case 0xD: return DecodeOperands(uInstr, Opcode.ldrexb, null, "@@@");
+            case 0xE: return DecodeOperands(uInstr, Opcode.strexh, null, "@@@");
+            case 0xF: return DecodeOperands(uInstr, Opcode.ldrexh, null, "@@@");
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction ExtraLoadStoreInstructionUnprivilged(addrdiff uInstr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction ExtraLoadStoreInstruction(uint uInstr)
+        {
+            var op2 = (uInstr >> 5) & 0x3;
+            var op1 = (uInstr >> 20) & 0x05;
+            var rn = (uInstr >> 16) & 0xF;
+            switch (op2)
+            {
+            case 1:
+                switch (op1)
+                {
+                case 0: return DecodeOperands(uInstr, Opcode.strh, null, "@@@");
+                case 1: return DecodeOperands(uInstr, Opcode.ldrh, null, "@@@");
+                case 4: return DecodeOperands(uInstr, Opcode.strh, null, "@@@");
+                case 6: 
+                    if (rn == 0xF)
+                        return DecodeOperands(uInstr, Opcode.ldrh, null, "@@@");
+                    else 
+                        return DecodeOperands(uInstr, Opcode.ldrh, null, "@@@");
+                }
+                break;
+            case 2:
+                switch (op1)
+                {
+                case 0: return DecodeOperands(uInstr, Opcode.ldrd, null, "@@@");
+                case 1: return DecodeOperands(uInstr, Opcode.ldrsb, null, "@@@");
+                case 4: 
+                    if (rn == 0xF)
+                        return DecodeOperands(uInstr, Opcode.ldrd, null, "@@@");
+                    else
+                        return DecodeOperands(uInstr, Opcode.ldrd, null, "@@@");
+                case 5: 
+                    if (rn == 0xF)
+                        return DecodeOperands(uInstr, Opcode.ldrsb, null, "@@@");
+                    else
+                        return DecodeOperands(uInstr, Opcode.ldrsb, PrimitiveType.SByte, "3,\\");
+                }
+                break;
+            case 3:
+                switch (op1)
+                {
+                case 0: return DecodeOperands(uInstr, Opcode.strd, null, "@@@");
+                case 1: return DecodeOperands(uInstr, Opcode.ldrsh, null, "@@@");
+                case 4: return DecodeOperands(uInstr, Opcode.strd, null, "@@@");
+                case 5: 
+                    if (rn == 0xF)
+                        return DecodeOperands(uInstr, Opcode.ldrsh, null, "@@@");
+                    else 
+                        return DecodeOperands(uInstr, Opcode.ldrsh, null, "@@@");
+                }
+                break;
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction DataProcessingImmediate(addrdiff uInstr)
+        {
+            var rn = (uInstr >> 16) & 0xF;
+               // A5.2.2
+            var op = (uInstr >> 20) & 0x1F;
+            var op2 = (uInstr >> 5) & 0x3;
+            switch (op)
+            {
+            case 0x0: return DecodeOperands(uInstr, Opcode.and,  null, "@@@");
+            case 0x1: return DecodeOperands(uInstr, Opcode.ands, null,  "@@@");
+            case 0x2: return DecodeOperands(uInstr, Opcode.eor,  null, "@@@");
+            case 0x3: return DecodeOperands(uInstr, Opcode.eors, null,  "@@@");
+            case 0x4: 
+                if (rn != 0xF)
+                    return DecodeOperands(uInstr, Opcode.sub,  null, "3,4,*");
+                else
+                    return DecodeOperands(uInstr, Opcode.adr,  null, "@@@");
+            case 0x5:
+                if (rn != 0xF)
+                    return DecodeOperands(uInstr, Opcode.subs, null,  "@@@");
+                else
+                    return DecodeOperands(uInstr, Opcode.subs, null, "@@@");
+            case 0x6: return DecodeOperands(uInstr, Opcode.rsb,  null, "@@@");
+            case 0x7: return DecodeOperands(uInstr, Opcode.rsbs, null,  "@@@");
+            case 0x8:
+                if (rn != 0xF)
+                return DecodeOperands(uInstr, Opcode.add,  null, "@@@");
+                else
+                return DecodeOperands(uInstr, Opcode.adr,  null, "@@@");
+            case 0x9: return DecodeOperands(uInstr, Opcode.adds, null,  "@@@");
+            case 0xA: return DecodeOperands(uInstr, Opcode.adc,  null, "@@@");
+            case 0xB: return DecodeOperands(uInstr, Opcode.adcs, null,  "@@@");
+            case 0xC: return DecodeOperands(uInstr, Opcode.sbc,  null, "@@@");
+            case 0xD: return DecodeOperands(uInstr, Opcode.sbcs, null,  "3,4,*");
+            case 0xE: return DecodeOperands(uInstr, Opcode.rsc,  null, "3,4,*");
+            case 0xF: return DecodeOperands(uInstr, Opcode.rscs, null,  "@@@");
+            case 0x10:
+            case 0x12:
+            case 0x14:
+            case 0x16:
+                return DataProcessingAndMisc(uInstr);
+            case 0x11: return DecodeOperands(uInstr, Opcode.tst , null, "4,*");
+            case 0x13: return DecodeOperands(uInstr, Opcode.teq , null, "@@@");
+            case 0x15: return DecodeOperands(uInstr, Opcode.cmp , null, "@@@");
+            case 0x17: return DecodeOperands(uInstr, Opcode.cmn , null, "@@@");
+            case 0x18: return DecodeOperands(uInstr, Opcode.orr , null, "@@@");
+            case 0x19: return DecodeOperands(uInstr, Opcode.orrs, null, "@@@");
+            case 0x1A:
+            case 0x1B:
+                return DecodeOperands(uInstr, Opcode.mov, null, "@@@");
+            case 0x1C: return DecodeOperands(uInstr, Opcode.bic , null, "3,4,*");
+            case 0x1D: return DecodeOperands(uInstr, Opcode.bics, null, "@@@");
+            case 0x1E: return DecodeOperands(uInstr, Opcode.mvn , null, "@@@");
+            case 0x1F: return DecodeOperands(uInstr, Opcode.mvns, null, "@@@");
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction ImmediateMove(addrdiff uInstr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction MovT(addrdiff uInstr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction MsrAndHints(addrdiff uInstr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction LoadStoreUnsigned(uint uInstr)
+        {
+            var op1 = (uInstr >> 20) & 0x17;
+            var rn = (uInstr >> 16) & 0xF;
+            var a = (uInstr >> 25) & 1;
+            var b = (uInstr >> 4) & 1;
+            if ((a & b) != 0)
+                return MediaInstructions(uInstr);
+            switch (op1)
+            {
+            case 0x00:
+            case 0x08:
+            case 0x10:
+            case 0x12:
+            case 0x18:
+            case 0x1A:
+                if (a == 0)
+                    return DecodeOperands(uInstr, Opcode.str, PrimitiveType.Word32, "3,/");
+                else
+                    return DecodeOperands(uInstr, Opcode.str, PrimitiveType.Word32, "@@@");
+
+            case 0x02:
+                return DecodeOperands(uInstr, Opcode.strt, PrimitiveType.Word32, "@@@");
+            case 0x01:
+            case 0x09:
+            case 0x11:
+            case 0x13:
+            case 0x19:
+            case 0x1B:
+                if (rn == 0xF)
+                    return DecodeOperands(uInstr, Opcode.ldr, PrimitiveType.Word32, "@@@");
+                else 
+                    return DecodeOperands(uInstr, Opcode.ldr, PrimitiveType.Word32, "3,/");
+            case 0x03:
+                return DecodeOperands(uInstr, Opcode.ldrt, PrimitiveType.Word32, "@@@");
+
+            case 0x04:
+            case 0x0C:
+            case 0x14:
+            case 0x16:
+            case 0x1C:
+            case 0x1E:
+                if (a == 0)
+                    return DecodeOperands(uInstr, Opcode.strb, PrimitiveType.Byte, "@@@");
+                else
+                    return DecodeOperands(uInstr, Opcode.strb, PrimitiveType.Byte, "3,/");
+            case 0x06:
+                return DecodeOperands(uInstr, Opcode.strbt, PrimitiveType.Byte, "@@@");
+            case 0x05:
+            case 0x0D:
+            case 0x15:
+            case 0x17:
+            case 0x1D:
+            case 0x1F:
+                if (a == 0)
+                    return DecodeOperands(uInstr, Opcode.ldrb, PrimitiveType.Byte, "3,/");
+                else
+                    return DecodeOperands(uInstr, Opcode.ldrb, PrimitiveType.Byte, "3,/");
+            case 0x07:
+                return DecodeOperands(uInstr, Opcode.ldrbt, PrimitiveType.Byte, "@@@"); 
+
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction MediaInstructions(addrdiff uInstr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction BranchBlockTransfer(addrdiff uInstr)
+        {
+            var opHi = (uInstr >> 24) & 3;
+            var opLo = (uInstr >> 20) & 0xF;
+            var rn = (uInstr >> 16) & 0xF;
+            var r = (uInstr >> 15) & 1;
+            switch (opHi)
+            {
+            case 0:
+                switch (opLo)
+                {
+                case 0:
+                case 2: return DecodeOperands(uInstr, Opcode.stmda, null, "@@@");
+                case 1:
+                case 3: return DecodeOperands(uInstr, Opcode.ldmda, null, "@@@");
+                case 8:
+                case 0xA: return DecodeOperands(uInstr, Opcode.stm, null, "@@@");
+                case 0x9: return DecodeOperands(uInstr, Opcode.ldm, null, "4,%");
+                case 0xB:
+                    if (rn != 0xD)
+                    {
+                        arm.Update = true;
+                        return DecodeOperands(uInstr, Opcode.ldm, null, "4,%");
+                    }
+                    else
+                        return DecodeOperands(uInstr, Opcode.pop, null, "@@@");
+                }
+                break;
+            case 1:
+                switch (opLo)
+                {
+                case 0x0: return DecodeOperands(uInstr, Opcode.stmdb, null, "@@@");
+                case 0x2: 
+                    if (rn != 0x0D)
+                    {
+                        arm.Update = BitN_Set(uInstr, 21);
+                        return DecodeOperands(uInstr, Opcode.stmdb, null, "4,%");
+                    }
+                    else
+                        return DecodeOperands(uInstr, Opcode.push, null, "@@@");
+                case 0x1:
+                case 0x3:
+                    return DecodeOperands(uInstr, Opcode.ldmdb, null, "@@@");
+                case 0x8:
+                case 0xA:
+                    return DecodeOperands(uInstr, Opcode.stmib, null, "@@@");
+                case 0x9:
+                case 0xB:
+                    return DecodeOperands(uInstr, Opcode.ldmib, null, "@@@");
+                }
+                break;
+            case 2:
+                return DecodeOperands(uInstr, Opcode.b, null, "&");
+            case 3:
+                return DecodeOperands(uInstr, Opcode.bl, null, "&");
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction CoprocessorSimdSupervisorCall(uint uInstr)
+        {
+            var opHi = (uInstr >> 24) & 3;
+            if (opHi == 3)
+                return DecodeOperands(uInstr, Opcode.svc, null, "$");
+            throw new NotImplementedException();
+        }
+
+        private Condition ConditionField(uint uInstr)
+        {
+            return (Condition)(uInstr >> 28);
+        }
+
+        private ArmInstruction Unconditional(uint uInstr)
+        {
+            arm.Cond = Condition.al;
+            var rn = (uInstr >> 16) & 0xF;
+            var opHi = (uInstr >> 24) & 0xF;
+            var opLo = (uInstr >> 20) & 0xF;
+            switch (opHi)
+            {
+            case 0x0:
+            case 0x1:
+            case 0x2:
+            case 0x3:
+                return MemoryHints(uInstr);
+            case 0x8:
+            case 0x9:
+                switch (opLo & 5)
+                {
+                case 1: return DecodeOperands(uInstr, Opcode.rfe, null, "@@@");
+                case 4: return DecodeOperands(uInstr, Opcode.srs, null, "@@@");
+                }
+                break;
+            case 0xA:
+            case 0xB:
+                return DecodeOperands(uInstr, Opcode.blx, null, "x");
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction MemoryHints(addrdiff uInstr)
+        {
+            var opHi = (uInstr >> 24) & 0x7;
+            var opLo = (uInstr >> 20) & 0xF;
+            var op2 = (uInstr >> 4) & 0xF;
+            var rn = (uInstr >> 16) & 0xF;
+            if (opHi == 0x1)
+            {
+                if (opLo == 0)
+                {
+                    if (op2 == 0 && (rn & 1) == 1)
+                        return DecodeOperands(uInstr,
+                            BitN_Set(uInstr, 9) ? Opcode.setendbe : Opcode.setendle,
+                            null,
+                            "");
+                }
+            }
+            throw new NotImplementedException();
+        }
+
+        private ArmInstruction DecodeOperands(uint instr, Opcode opcode, PrimitiveType width, string format)
+        {
+            var ops = new MachineOperand[4];
+            int iOp = 0;
+            int offset;
+            uint dstAddr;
+            for (int i = 0; i < format.Length; ++i)
+            {
+                char ch = format[i];
+                switch (ch)
+                {
+                default:
+                    throw new NotImplementedException(string.Format("Unknown format character '{0}'.", ch));
+                case ',':
+                    ++iOp;
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    ops[iOp] = new RegisterOperand(A32Registers.GpRegs[(instr >> ((ch - '0') << 2)) & 0xF]);
+                    break;
+                case '*':
+                    ops[iOp] = DecodeImmediateOperand(instr);
+                    break;
+                case '&':   // Offset for b and bl instructions.
+                    offset = ((int)instr << 8) >> 6;
+                    dstAddr = (uint)(addr + 8 + offset);
+                    ops[iOp] = new AddressOperand(Address.Ptr32(dstAddr));
+                    break;
+                case 'x':   // Offset for blx instructions
+                    offset = ((int)instr << 8) >> 6;
+                    offset |= (int)((instr >> 23) & 2);
+                    dstAddr = (uint)(addr + 8 + offset);
+                    ops[iOp] = new AddressOperand(Address.Ptr32(dstAddr));
+                    break;
+                case '/':   // Format for ldr, str
+                    ops[iOp] = DecodeIndirectOperand(width, instr);
+                    break;
+                case '\\':  // Format for ldrsb
+                    ops[iOp] = DecodeIndirectShortOffset(width, instr);
+                    break;
+                case 'I':   // Indirect register, nibble in following character.
+                    ops[iOp] = new ArmMemoryOperand(width, A32Registers.GpRegs[(instr >> ((format[++i] - '0') << 2)) & 0xF]);
+                    break;
+                case '%': // Register range
+                    ops[iOp] = new RegisterRangeOperand(instr & 0xFFFF);
+                    break;
+                case '$':       // Service # for 'svc' instruction.
+                    ops[iOp] = new ImmediateOperand(Constant.Word32(instr & 0x00FFFFFF));
+                    break;
+                }
+            }
+            arm.Opcode = opcode;
+            if (ops[0] != null)
+            {
+                arm.Dst = ops[0];
+                if (ops[1] != null)
+                {
+                    arm.Src1 = ops[1];
+                    if (ops[2] != null)
+                    {
+                        arm.Src2 = ops[2];
+                        if (ops[3] != null)
+                        {
+                            arm.Src3 = ops[3];
+                        }
+                    }
+                }
+            }
+            return arm;
+        }
+
+        private MachineOperand DecodeIndirectShortOffset(PrimitiveType width, uint instr)
+        {
+            var rn = A32Registers.GpRegs[(instr >> 16) & 0xF];
+            var offset = ArmImmediateOperand.Word32(
+                ((instr >> 4) & 0xF0) |
+                (instr & 0x0F));
+            return new ArmMemoryOperand(width, rn, offset)
+            {
+                Preindexed = BitN_Set(instr, 24),
+                Writeback = BitN_Set(instr, 21)
+            };
+        }
+
+        private MachineOperand DecodeImmediateOperand(word instr)
+        {
+            if (((instr >> 25) & 1) == 0)
+            {
+                return DecodeShiftOperand(instr);
+            }
+            else
+            {
+                // Immediate value in bits 0..7, rotate amount in 8..11
+                uint imm8 = instr & 0xFF;
+                int rotAmt = (int)((instr >> 7) & 0x1E);
+                return ArmImmediateOperand.Word32((imm8 >> rotAmt) | (imm8 << (32 - rotAmt)));
+            }
+        }
+
+        private ArmMemoryOperand DecodeIndirectOperand(PrimitiveType width, uint instr)
+        {
+            var rn = A32Registers.GpRegs[(instr >> 16) & 0xF];
+            MachineOperand offset;
+            if (BitN_Set(instr, 25))
+            {
+                // Offset is shifted register
+                offset = DecodeShiftOperand(instr);
+            }
+            else
+            {
+                // Offset is 12-bit immediate value-
+                var o = instr & 0xFFF;
+                offset = o != 0 ? ArmImmediateOperand.Word32(o) : null;
+            }
+            if (((instr >> 24) & 1) == 0)
+            {
+                // Post index
+                return new ArmMemoryOperand(width, rn, offset)
+                {
+                    Preindexed = false,
+                    Subtract = !BitN_Set(instr, 23),
+                };
+            }
+            else
+            {
+                // Pre index
+                var op = new ArmMemoryOperand(width, rn, offset)
+                {
+                    Preindexed = true,
+                    Writeback = BitN_Set(instr, 21),
+                    Subtract = !BitN_Set(instr, 23),
+                };
+                return op;
+            }
+        }
+
+        private MachineOperand DecodeShiftOperand(word instr)
+        {
+            // Register (with shift) in 0..11
+            var shiftType = shiftTypes[(instr >> 5) & 3];
+            var reg = get_regop(instr & 0xF);
+            if ((instr & (1 << 4)) == 0)
+            {
+                // Shift by immediate amount in 7..11
+                int immShift = (int)((instr >> 7) & 0x1F);
+                if (immShift == 0)
+                {
+                    switch (shiftType)
+                    {
+                    case Opcode.lsl:
+                        // Special case: use Rm directly.
+                        return reg;
+                    case Opcode.lsr:
+                    case Opcode.asr:
+                        // Special case: lsr,asr #0 is actually lsr,asr #32
+                        immShift = 32;
+                        break;
+                    case Opcode.ror:
+                        // Special case: ror 0 is actually rrx 1
+                        shiftType = Opcode.rrx;
+                        immShift = 1;
+                        break;
+                    }
+                }
+                return new ShiftOperand(reg, shiftType, immShift);
+            }
+            else
+            {
+                // Shift by register in 8..11
+                return new ShiftOperand(reg, shiftType, get_regop(instr >> 8));
+            }
+        }
+
+        private static RegisterOperand get_regop(addrdiff bits)
+        {
+            return new RegisterOperand(A32Registers.GpRegs[bits & 0xF]);
+        }
+
+        private static bool BitN_Set(uint instr, int n)
+        {
+            return ((instr >> n) & 1) != 0;
+        }
+
+    }
+
 /* disarm -- a simple disassembler for ARM instructions
  * (c) 2000 Gareth McCaughan
  *
@@ -51,11 +932,7 @@ using System.Text;
  * Share and enjoy!    -- g
  */
 
-namespace Decompiler.Arch.Arm
-{
-    using word = UInt32;
-    using address = UInt32;
-    using addrdiff = UInt32;
+
 
     public class ArmDisassembler2 : DisassemblerBase<ArmInstruction>
     {
@@ -122,7 +999,13 @@ namespace Decompiler.Arch.Arm
             };
 
             addr =  arm.Address.ToUInt32();
-            return this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
+            word wInstr;
+            if (!rdr.TryReadLeUInt32(out wInstr))
+            {
+                arm.Opcode = Opcode.illegal;
+                return arm;
+            }
+            return this.Disassemble(wInstr, new DisOptions());
         }
 
         public ArmInstruction Disassemble(word instr, DisOptions opts)
@@ -1662,2492 +2545,3 @@ namespace Decompiler.Arch.Arm
         void swiname(word w, string s, int sz) { return; }
     }
 }
-
-#region OpCode map
-/*
-http://imrannazar.com/ARM-Opcode-Map
- * <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
- <head>
-  <title>Imran Nazar: ARM Opcode Map</title>
-  <meta http-equiv="description" content="There are many places in which you can look if you want an explanation of the instructions available on the ARM series of processor cores. However, there is no overview of the instruction set in the form of a table or map; not even the official ARM instruction reference provides this anywhere in its 811 pages. I produced an opcode map in 2006, in an attempt to rectify this problem: it provides a mapping of all the instructions and addressing modes for cores up to ARM version 4, with version 5 extensions highlighted in blue and the DSP extensions in green.">
-  <link href="/css/index.css" type="text/css" rel="stylesheet">
-  <link href="/css/content.css" type="text/css" rel="stylesheet">
-  <link rel='stylesheet' type='text/css' href='/content/css/opcode-map.css'>
-  <link rel="alternate" type="application/rss+xml"  href="/rss.xml" title="ImranNazar.com">
-  <style type="text/css">
-#head h1 { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=crop,src='http://imrannazar.com/content/titles/opcode-map.png'); }
-#head > h1 { background: url(http://imrannazar.com/content/titles/opcode-map.png) no-repeat top left; }
-  </style>
- </head>
- <body>
-  <div id="wrapper">
-   <div id="head">
-    <h1><a href="http://imrannazar.com/">Imran Nazar</a>: ARM Opcode Map</h1>
-    <a id="navlink" href="#nav">Skip to navigation</a>
-   </div>
-   <div id="container">
-    <div id="content">
-  <p>The following is a full opcode map of instructions for the ARM7 and ARM9 series of CPU cores. Instructions added for ARM9 are highlighted in blue, and instructions specific to the M-extension are shown in green. The Thumb instruction set is also included, in Table 2.</p>
-  <div id="opcodemaps">
-  <table>
-   <caption>Table 1. ARM Opcode Map.</caption>
-   <thead>
-    <tr>
-     <th rowspan='2'>Bits<br>27-20</th>
-     <th colspan='16'>Bits 7-4</th>
-    </tr>
-    <tr>
-     <th>0</th><th>1</th><th>2</th><th>3</th>
-     <th>4</th><th>5</th><th>6</th><th>7</th>
-     <th>8</th><th>9</th><th>A</th><th>B</th>
-     <th>C</th><th>D</th><th>E</th><th>F</th>
-    </tr>
-   </thead>
-   <tbody>
-<tr>
- <td class='bit'>00</td>
- <td><span title='Logical And'>AND</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Logical And'>AND</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Logical And'>AND</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Logical And'>AND</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Logical And'>AND</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Logical And'>AND</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Logical And'>AND</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Logical And'>AND</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Logical And'>AND</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Multiply registers'>MUL</span></td>
- <td><span title='Logical And'>AND</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical And'>AND</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical And'>AND</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Register offset, post-decrement'>ptrm</span></td>
-</tr>
-<tr>
- <td class='bit'>01</td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Multiply registers, setting flags'>MULS</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical And, setting flags'>ANDS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Register offset, post-decrement'>ptrm</span></td>
-</tr>
-<tr>
- <td class='bit'>02</td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Multiply and accumulate registers'>MLA</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Register offset, post-decrement'>ptrm</span></td>
-</tr>
-<tr>
- <td class='bit'>03</td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Multiply and accumulate registers, setting flags'>MLAS</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Register offset, post-decrement'>ptrm</span></td>
- <td><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Register offset, post-decrement'>ptrm</span></td>
-</tr>
-<tr>
- <td class='bit'>04</td>
- <td><span title='Subtract from register'>SUB</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>05</td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Subtract, setting flags'>SUBS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>06</td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Subtract register from value'>RSB</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>07</td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
- <td><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>08</td>
- <td><span title='Add to register'>ADD</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Unsigned long multiply (32x32 to 64)'>UMULL</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register'>ADD</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Register offset, post-increment'>ptrp</span></td>
-</tr>
-<tr>
- <td class='bit'>09</td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Unsigned long multiply, setting flags'>UMULLS</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register, setting flags'>ADDS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Register offset, post-increment'>ptrp</span></td>
-</tr>
-<tr>
- <td class='bit'>0A</td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Unsigned long multiply and accumulate'>UMLAL</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register with carry'>ADC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Register offset, post-increment'>ptrp</span></td>
-</tr>
-<tr>
- <td class='bit'>0B</td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Unsigned long multiply and accumulate, setting flags'>UMLALS</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Register offset, post-increment'>ptrp</span></td>
- <td><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Register offset, post-increment'>ptrp</span></td>
-</tr>
-<tr>
- <td class='bit'>0C</td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Signed long multiply (32x32 to 64)'>SMULL</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract from register with borrow'>SBC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>0D</td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Signed long multiply, setting flags'>SMULLS</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>0E</td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Signed long multiply and accumulate'>SMLAL</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract register from value with borrow'>RSC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>0F</td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Signed long multiply and accumulate, setting flags'>SMLALS</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Immediate offset, post-increment'>ptip</span></td>
- <td><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>10</td>
- <td><span title='Move status word to register'>MRS</span> <span title='Register, CPSR'>rc</span></td>
- <td class='und' colspan='4'></td>
- <td class='edsp'><span title='Saturated add'>QADD</span></td>
- <td class='und' colspan='2'></td>
- <td class='edsp'><span title='Signed multiply bottom-half of first operand with bottom-half of second, and accumulate'>SMLABB</span></td>
- <td><span title='Swap registers with memory word'>SWP</span></td>
- <td class='edsp'><span title='Signed multiply top-half of first operand with bottom-half of second, and accumulate'>SMLATB</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Negative register offset'>ofrm</span></td>
- <td class='edsp'><span title='Signed multiply bottom-half of first operand with top-half of second, and accumulate'>SMLABT</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Negative register offset'>ofrm</span></td>
- <td class='edsp'><span title='Signed multiply top-half of first operand with top-half of second, and accumulate'>SMLATT</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Negative register offset'>ofrm</span></td>
-</tr>
-<tr>
- <td class='bit'>11</td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Negative register offset'>ofrm</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Negative register offset'>ofrm</span></td>
- <td><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Negative register offset'>ofrm</span></td>
-</tr>
-<tr>
- <td class='bit'>12</td>
- <td><span title='Move value to status word'>MSR</span> <span title='Register, CPSR'>rc</span></td>
- <td><span title='Branch and switch execution modes'>BX</span></td>
- <td class='und'></td>
- <td class='arm9'><span title='Branch, link and switch execution modes '>BLX</span> <span title='Register offset'>reg</span></td>
- <td class='und'></td>
- <td class='edsp'><span title='Saturated subtract'>QSUB</span></td>
- <td class='und'></td>
- <td class='arm9'><span title='Software breakpoint'>BKPT</span></td>
- <td class='edsp'><span title='Signed multiply first operand with bottom-half of second operand, keeping top 32 bits, and accumulate'>SMLAWB</span></td>
- <td class='und'></td>
- <td class='edsp'><span title='Signed multiply first operand with bottom-half of second operand, keeping top 32 bits'>SMULWB</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Register offset, pre-decrement'>prrm</span></td>
- <td class='edsp'><span title='Signed multiply first operand with top-half of second operand, keeping top 32 bits, and accumulate'>SMLAWT</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Register offset, pre-decrement'>prrm</span></td>
- <td class='edsp'><span title='Signed multiply first operand with top-half of second operand, keeping top 32 bits'>SMULWT</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Register offset, pre-decrement'>prrm</span></td>
-</tr>
-<tr>
- <td class='bit'>13</td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Register offset, pre-decrement'>prrm</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Register offset, pre-decrement'>prrm</span></td>
- <td><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Register offset, pre-decrement'>prrm</span></td>
-</tr>
-<tr>
- <td class='bit'>14</td>
- <td><span title='Move status word to register'>MRS</span> <span title='Register, SPSR'>rs</span></td>
- <td class='und' colspan='4'></td>
- <td class='edsp'><span title='Saturated add with doubling of second operand'>QDADD</span></td>
- <td class='und' colspan='2'></td>
- <td class='edsp'><span title='Signed multiply bottom-half of first operand with bottom-half of second, and 64-bit accumulate'>SMLALBB</span></td>
- <td><span title='Swap registers with memory byte'>SWPB</span></td>
- <td class='edsp'><span title='Signed multiply top-half of first operand with bottom-half of second, and 64-bit accumulate'>SMLALTB</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Negative immediate offset'>ofim</span></td>
- <td class='edsp'><span title='Signed multiply bottom-half of first operand with top-half of second, and 64-bit accumulate'>SMLALBT</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Negative immediate offset'>ofim</span></td>
- <td class='edsp'><span title='Signed multiply top-half of first operand with top-half of second, and 64-bit accumulate'>SMLALTT</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Negative immediate offset'>ofim</span></td>
-</tr>
-<tr>
- <td class='bit'>15</td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Negative immediate offset'>ofim</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Negative immediate offset'>ofim</span></td>
- <td><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Negative immediate offset'>ofim</span></td>
-</tr>
-<tr>
- <td class='bit'>16</td>
- <td><span title='Move value to status word'>MSR</span> <span title='Register, SPSR'>rs</span></td>
- <td class='arm9'><span title='Count leading zeros in register'>CLZ</span></td>
- <td class='und' colspan='3'></td>
- <td class='edsp'><span title='Saturated subtract with doubling of second operand'>QDSUB</span></td>
- <td class='und' colspan='2'></td>
- <td class='edsp'><span title='Signed multiply bottom-half of first operand with bottom-half of second'>SMULBB</span></td>
- <td class='und'></td>
- <td class='edsp'><span title='Signed multiply top-half of first operand with bottom-half of second'>SMULTB</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
- <td class='edsp'><span title='Signed multiply bottom-half of first operand with top-half of second'>SMULBT</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
- <td class='edsp'><span title='Signed multiply top-half of first operand with top-half of second'>SMULTT</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
-</tr>
-<tr>
- <td class='bit'>17</td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
- <td><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
-</tr>
-<tr>
- <td class='bit'>18</td>
- <td><span title='Logical Or'>ORR</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Logical Or'>ORR</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Positive register offset'>ofrp</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Positive register offset'>ofrp</span></td>
- <td><span title='Logical Or'>ORR</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Positive register offset'>ofrp</span></td>
-</tr>
-<tr>
- <td class='bit'>19</td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Positive register offset'>ofrp</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Positive register offset'>ofrp</span></td>
- <td><span title='Logical Or, setting flags'>ORRS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Positive register offset'>ofrp</span></td>
-</tr>
-<tr>
- <td class='bit'>1A</td>
- <td><span title='Move value to a register'>MOV</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Register offset, pre-increment'>prrp</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Register offset, pre-increment'>prrp</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Register offset, pre-increment'>prrp</span></td>
-</tr>
-<tr>
- <td class='bit'>1B</td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Register offset, pre-increment'>prrp</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Register offset, pre-increment'>prrp</span></td>
- <td><span title='Move value to a register, setting flags'>MOVS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Register offset, pre-increment'>prrp</span></td>
-</tr>
-<tr>
- <td class='bit'>1C</td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Positive immediate offset'>ofip</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Positive immediate offset'>ofip</span></td>
- <td><span title='Clear bits in register (NAND)'>BIC</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Positive immediate offset'>ofip</span></td>
-</tr>
-<tr>
- <td class='bit'>1D</td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Positive immediate offset'>ofip</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Positive immediate offset'>ofip</span></td>
- <td><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Positive immediate offset'>ofip</span></td>
-</tr>
-<tr>
- <td class='bit'>1E</td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Store halfword'>STRH</span> <span title='Immediate offset, pre-increment'>prip</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td class='edsp'><span title='Load doubleword'>LDRD</span> <span title='Immediate offset, pre-increment'>prip</span></td>
- <td><span title='Move negation of value to a register'>MVN</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td class='edsp'><span title='Store doubleword'>STRD</span> <span title='Immediate offset, pre-increment'>prip</span></td>
-</tr>
-<tr>
- <td class='bit'>1F</td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Logical shift-left by register'>llr</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Logical shift-right by register'>lrr</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Arithmetic shift-right by register'>arr</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Rotate right by register'>rrr</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Logical shift-left by immediate'>lli</span></td>
- <td class='und'></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Logical shift-right by immediate'>lri</span></td>
- <td><span title='Load halfword'>LDRH</span> <span title='Immediate offset, pre-increment'>prip</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Arithmetic shift-right by immediate'>ari</span></td>
- <td><span title='Load signed byte'>LDRSB</span> <span title='Immediate offset, pre-increment'>prip</span></td>
- <td><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Rotate right by immediate, or rotate right with extend (RRX)'>rri</span></td>
- <td><span title='Load signed halfword'>LDRSH</span> <span title='Immediate offset, pre-increment'>prip</span></td>
-</tr>
-<tr>
- <td class='bit'>20</td>
- <td colspan='16'><span title='Logical And'>AND</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>21</td>
- <td colspan='16'><span title='Logical And, setting flags'>ANDS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>22</td>
- <td colspan='16'><span title='Logical Exclusive-or'>EOR</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>23</td>
- <td colspan='16'><span title='Logical Exclusive-or, setting flags'>EORS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>24</td>
- <td colspan='16'><span title='Subtract from register'>SUB</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>25</td>
- <td colspan='16'><span title='Subtract, setting flags'>SUBS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>26</td>
- <td colspan='16'><span title='Subtract register from value'>RSB</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>27</td>
- <td colspan='16'><span title='Reverse Subtract, setting flags'>RSBS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>28</td>
- <td colspan='16'><span title='Add to register'>ADD</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>29</td>
- <td colspan='16'><span title='Add to register, setting flags'>ADDS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>2A</td>
- <td colspan='16'><span title='Add to register with carry'>ADC</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>2B</td>
- <td colspan='16'><span title='Add to register with carry, setting flags'>ADCS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>2C</td>
- <td colspan='16'><span title='Subtract from register with borrow'>SBC</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>2D</td>
- <td colspan='16'><span title='Subtract from register with borrow, setting flags'>SBCS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>2E</td>
- <td colspan='16'><span title='Subtract register from value with borrow'>RSC</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>2F</td>
- <td colspan='16'><span title='Subtract register from value with borrow, setting flags'>RSCS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>30</td>
- <td class='und' colspan='16'></td>
-</tr>
-<tr>
- <td class='bit'>31</td>
- <td colspan='16'><span title='Test bits in register (Logical And), setting flags'>TSTS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>32</td>
- <td colspan='16'><span title='Move value to status word'>MSR</span> <span title='Immediate, CPSR'>ic</span></td>
-</tr>
-<tr>
- <td class='bit'>33</td>
- <td colspan='16'><span title='Test equivalence of bits in register (Logical Exclusive-or), setting flags'>TEQS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>34</td>
- <td class='und' colspan='16'></td>
-</tr>
-<tr>
- <td class='bit'>35</td>
- <td colspan='16'><span title='Compare register to value (Subtract), setting flags'>CMPS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>36</td>
- <td colspan='16'><span title='Move value to status word'>MSR</span> <span title='Immediate, SPSR'>is</span></td>
-</tr>
-<tr>
- <td class='bit'>37</td>
- <td colspan='16'><span title='Compare register to negation of value (Add), setting flags'>CMNS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>38</td>
- <td colspan='16'><span title='Logical Or'>ORR</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>39</td>
- <td colspan='16'><span title='Logical Or, setting flags'>ORRS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>3A</td>
- <td colspan='16'><span title='Move value to a register'>MOV</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>3B</td>
- <td colspan='16'><span title='Move value to a register, setting flags'>MOVS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>3C</td>
- <td colspan='16'><span title='Clear bits in register (NAND)'>BIC</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>3D</td>
- <td colspan='16'><span title='Clear bits in register (NAND), setting flags'>BICS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>3E</td>
- <td colspan='16'><span title='Move negation of value to a register'>MVN</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>3F</td>
- <td colspan='16'><span title='Move negation of value to a register, setting flags'>MVNS</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>40</td>
- <td colspan='16'><span title='Store word'>STR</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>41</td>
- <td colspan='16'><span title='Load word'>LDR</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>42</td>
- <td colspan='16'><span title='Store word from user-mode register'>STRT</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>43</td>
- <td colspan='16'><span title='Load word into user-mode register'>LDRT</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>44</td>
- <td colspan='16'><span title='Store byte'>STRB</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>45</td>
- <td colspan='16'><span title='Load byte'>LDRB</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>46</td>
- <td colspan='16'><span title='Store byte from user-mode register'>STRBT</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>47</td>
- <td colspan='16'><span title='Load byte into user-mode register'>LDRBT</span> <span title='Immediate offset, post-decrement'>ptim</span></td>
-</tr>
-<tr>
- <td class='bit'>48</td>
- <td colspan='16'><span title='Store word'>STR</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>49</td>
- <td colspan='16'><span title='Load word'>LDR</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>4A</td>
- <td colspan='16'><span title='Store word from user-mode register'>STRT</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>4B</td>
- <td colspan='16'><span title='Load word into user-mode register'>LDRT</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>4C</td>
- <td colspan='16'><span title='Store byte'>STRB</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>4D</td>
- <td colspan='16'><span title='Load byte'>LDRB</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>4E</td>
- <td colspan='16'><span title='Store byte from user-mode register'>STRBT</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>4F</td>
- <td colspan='16'><span title='Load byte into user-mode register'>LDRBT</span> <span title='Immediate offset, post-increment'>ptip</span></td>
-</tr>
-<tr>
- <td class='bit'>50</td>
- <td colspan='16'><span title='Store word'>STR</span> <span title='Negative immediate offset'>ofim</span></td>
-</tr>
-<tr>
- <td class='bit'>51</td>
- <td colspan='16'><span title='Load word'>LDR</span> <span title='Negative immediate offset'>ofim</span></td>
-</tr>
-<tr>
- <td class='bit'>52</td>
- <td colspan='16'><span title='Store word'>STR</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
-</tr>
-<tr>
- <td class='bit'>53</td>
- <td colspan='16'><span title='Load word'>LDR</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
-</tr>
-<tr>
- <td class='bit'>54</td>
- <td colspan='16'><span title='Store byte'>STRB</span> <span title='Negative immediate offset'>ofim</span></td>
-</tr>
-<tr>
- <td class='bit'>55</td>
- <td colspan='16'><span title='Load byte'>LDRB</span> <span title='Negative immediate offset'>ofim</span></td>
-</tr>
-<tr>
- <td class='bit'>56</td>
- <td colspan='16'><span title='Store byte'>STRB</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
-</tr>
-<tr>
- <td class='bit'>57</td>
- <td colspan='16'><span title='Load byte'>LDRB</span> <span title='Immediate offset, pre-decrement'>prim</span></td>
-</tr>
-<tr>
- <td class='bit'>58</td>
- <td colspan='16'><span title='Store word'>STR</span> <span title='Positive immediate offset'>ofip</span></td>
-</tr>
-<tr>
- <td class='bit'>59</td>
- <td colspan='16'><span title='Load word'>LDR</span> <span title='Positive immediate offset'>ofip</span></td>
-</tr>
-<tr>
- <td class='bit'>5A</td>
- <td colspan='16'><span title='Store word'>STR</span> <span title='Immediate offset, pre-increment'>prip</span></td>
-</tr>
-<tr>
- <td class='bit'>5B</td>
- <td colspan='16'><span title='Load word'>LDR</span> <span title='Immediate offset, pre-increment'>prip</span></td>
-</tr>
-<tr>
- <td class='bit'>5C</td>
- <td colspan='16'><span title='Store byte'>STRB</span> <span title='Positive immediate offset'>ofip</span></td>
-</tr>
-<tr>
- <td class='bit'>5D</td>
- <td colspan='16'><span title='Load byte'>LDRB</span> <span title='Positive immediate offset'>ofip</span></td>
-</tr>
-<tr>
- <td class='bit'>5E</td>
- <td colspan='16'><span title='Store byte'>STRB</span> <span title='Immediate offset, pre-increment'>prip</span></td>
-</tr>
-<tr>
- <td class='bit'>5F</td>
- <td colspan='16'><span title='Load byte'>LDRB</span> <span title='Immediate offset, pre-increment'>prip</span></td>
-</tr>
-<tr>
- <td class='bit'>60</td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>61</td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>62</td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>63</td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>64</td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>65</td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>66</td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>67</td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Left-shifted register offset, post-decrement'>ptrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-shifted register offset, post-decrement'>ptrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Arithmetic-right-shifted register offset, post-decrement'>ptrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-rotated register offset, post-decrement'>ptrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>68</td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>69</td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>6A</td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word from user-mode register'>STRT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>6B</td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word into user-mode register'>LDRT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>6C</td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>6D</td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>6E</td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte from user-mode register'>STRBT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>6F</td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Left-shifted register offset, post-increment'>ptrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-shifted register offset, post-increment'>ptrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Arithmetic-right-shifted register offset, post-increment'>ptrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte into user-mode register'>LDRBT</span> <span title='Right-rotated register offset, post-increment'>ptrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>70</td>
- <td><span title='Store word'>STR</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>71</td>
- <td><span title='Load word'>LDR</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>72</td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>73</td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>74</td>
- <td><span title='Store byte'>STRB</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>75</td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative left-shifted register offset'>ofrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative right-shifted register offset'>ofrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative arithmetic-right-shifted register offset'>ofrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Negative right-rotated register offset'>ofrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>76</td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>77</td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, pre-decrement'>prrmll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, pre-decrement'>prrmlr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, pre-decrement'>prrmar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, pre-decrement'>prrmrr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>78</td>
- <td><span title='Store word'>STR</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>79</td>
- <td><span title='Load word'>LDR</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>7A</td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Store word'>STR</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>7B</td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Load word'>LDR</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>7C</td>
- <td><span title='Store byte'>STRB</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>7D</td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive left-shifted register offset'>ofrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive right-shifted register offset'>ofrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive arithmetic-right-shifted register offset'>ofrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Positive right-rotated register offset'>ofrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>7E</td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Store byte'>STRB</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>7F</td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Left-shifted register offset, pre-increment'>prrpll</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-shifted register offset, pre-increment'>prrplr</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Arithmetic-right-shifted register offset, pre-increment'>prrpar</span></td>
- <td class='und'></td>
- <td><span title='Load byte'>LDRB</span> <span title='Right-rotated register offset, pre-increment'>prrprr</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>80</td>
- <td colspan='16'><span title='Store multiple words, decrement after'>STMDA</span></td>
-</tr>
-<tr>
- <td class='bit'>81</td>
- <td colspan='16'><span title='Load multiple words, decrement after'>LDMDA</span></td>
-</tr>
-<tr>
- <td class='bit'>82</td>
- <td colspan='16'><span title='Store multiple words, decrement after'>STMDA</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>83</td>
- <td colspan='16'><span title='Load multiple words, decrement after'>LDMDA</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>84</td>
- <td colspan='16'><span title='Store multiple words, decrement after'>STMDA</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>85</td>
- <td colspan='16'><span title='Load multiple words, decrement after'>LDMDA</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>86</td>
- <td colspan='16'><span title='Store multiple words, decrement after'>STMDA</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>87</td>
- <td colspan='16'><span title='Load multiple words, decrement after'>LDMDA</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>88</td>
- <td colspan='16'><span title='Store multiple words, increment after'>STMIA</span></td>
-</tr>
-<tr>
- <td class='bit'>89</td>
- <td colspan='16'><span title='Load multiple words, increment after'>LDMIA</span></td>
-</tr>
-<tr>
- <td class='bit'>8A</td>
- <td colspan='16'><span title='Store multiple words, increment after'>STMIA</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>8B</td>
- <td colspan='16'><span title='Load multiple words, increment after'>LDMIA</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>8C</td>
- <td colspan='16'><span title='Store multiple words, increment after'>STMIA</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>8D</td>
- <td colspan='16'><span title='Load multiple words, increment after'>LDMIA</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>8E</td>
- <td colspan='16'><span title='Store multiple words, increment after'>STMIA</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>8F</td>
- <td colspan='16'><span title='Load multiple words, increment after'>LDMIA</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>90</td>
- <td colspan='16'><span title='Store multiple words, decrement before'>STMDB</span></td>
-</tr>
-<tr>
- <td class='bit'>91</td>
- <td colspan='16'><span title='Load multiple words, decrement before'>LDMDB</span></td>
-</tr>
-<tr>
- <td class='bit'>92</td>
- <td colspan='16'><span title='Store multiple words, decrement before'>STMDB</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>93</td>
- <td colspan='16'><span title='Load multiple words, decrement before'>LDMDB</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>94</td>
- <td colspan='16'><span title='Store multiple words, decrement before'>STMDB</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>95</td>
- <td colspan='16'><span title='Load multiple words, decrement before'>LDMDB</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>96</td>
- <td colspan='16'><span title='Store multiple words, decrement before'>STMDB</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>97</td>
- <td colspan='16'><span title='Load multiple words, decrement before'>LDMDB</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>98</td>
- <td colspan='16'><span title='Store multiple words, increment before'>STMIB</span></td>
-</tr>
-<tr>
- <td class='bit'>99</td>
- <td colspan='16'><span title='Load multiple words, increment before'>LDMIB</span></td>
-</tr>
-<tr>
- <td class='bit'>9A</td>
- <td colspan='16'><span title='Store multiple words, increment before'>STMIB</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>9B</td>
- <td colspan='16'><span title='Load multiple words, increment before'>LDMIB</span> <span title='Write back'>w</span></td>
-</tr>
-<tr>
- <td class='bit'>9C</td>
- <td colspan='16'><span title='Store multiple words, increment before'>STMIB</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>9D</td>
- <td colspan='16'><span title='Load multiple words, increment before'>LDMIB</span> <span title='Use user-mode registers'>u</span></td>
-</tr>
-<tr>
- <td class='bit'>9E</td>
- <td colspan='16'><span title='Store multiple words, increment before'>STMIB</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>9F</td>
- <td colspan='16'><span title='Load multiple words, increment before'>LDMIB</span> <span title='Use user-mode registers, with write back'>uw</span></td>
-</tr>
-<tr>
- <td class='bit'>A0</td>
- <td rowspan='16' colspan='16'><span title='Branch'>B</span></td>
-</tr>
-<tr>
- <td class='bit'>A1</td>
-</tr>
-<tr>
- <td class='bit'>A2</td>
-</tr>
-<tr>
- <td class='bit'>A3</td>
-</tr>
-<tr>
- <td class='bit'>A4</td>
-</tr>
-<tr>
- <td class='bit'>A5</td>
-</tr>
-<tr>
- <td class='bit'>A6</td>
-</tr>
-<tr>
- <td class='bit'>A7</td>
-</tr>
-<tr>
- <td class='bit'>A8</td>
-</tr>
-<tr>
- <td class='bit'>A9</td>
-</tr>
-<tr>
- <td class='bit'>AA</td>
-</tr>
-<tr>
- <td class='bit'>AB</td>
-</tr>
-<tr>
- <td class='bit'>AC</td>
-</tr>
-<tr>
- <td class='bit'>AD</td>
-</tr>
-<tr>
- <td class='bit'>AE</td>
-</tr>
-<tr>
- <td class='bit'>AF</td>
-</tr>
-<tr>
- <td class='bit'>B0</td>
- <td rowspan='16' colspan='16'><span title='Branch and link'>BL</span></td>
-</tr>
-<tr>
- <td class='bit'>B1</td>
-</tr>
-<tr>
- <td class='bit'>B2</td>
-</tr>
-<tr>
- <td class='bit'>B3</td>
-</tr>
-<tr>
- <td class='bit'>B4</td>
-</tr>
-<tr>
- <td class='bit'>B5</td>
-</tr>
-<tr>
- <td class='bit'>B6</td>
-</tr>
-<tr>
- <td class='bit'>B7</td>
-</tr>
-<tr>
- <td class='bit'>B8</td>
-</tr>
-<tr>
- <td class='bit'>B9</td>
-</tr>
-<tr>
- <td class='bit'>BA</td>
-</tr>
-<tr>
- <td class='bit'>BB</td>
-</tr>
-<tr>
- <td class='bit'>BC</td>
-</tr>
-<tr>
- <td class='bit'>BD</td>
-</tr>
-<tr>
- <td class='bit'>BE</td>
-</tr>
-<tr>
- <td class='bit'>BF</td>
-</tr>
-<tr>
- <td class='bit'>C0</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Negative offset'>ofm</span></td>
-</tr>
-<tr>
- <td class='bit'>C1</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Negative offset'>ofm</span></td>
-</tr>
-<tr>
- <td class='bit'>C2</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Pre-decrement'>prm</span></td>
-</tr>
-<tr>
- <td class='bit'>C3</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Pre-decrement'>prm</span></td>
-</tr>
-<tr>
- <td class='bit'>C4</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Negative offset'>ofm</span></td>
-</tr>
-<tr>
- <td class='bit'>C5</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Negative offset'>ofm</span></td>
-</tr>
-<tr>
- <td class='bit'>C6</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Pre-decrement'>prm</span></td>
-</tr>
-<tr>
- <td class='bit'>C7</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Pre-decrement'>prm</span></td>
-</tr>
-<tr>
- <td class='bit'>C8</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Positive offset'>ofp</span></td>
-</tr>
-<tr>
- <td class='bit'>C9</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Positive offset'>ofp</span></td>
-</tr>
-<tr>
- <td class='bit'>CA</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Pre-increment'>prp</span></td>
-</tr>
-<tr>
- <td class='bit'>CB</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Pre-increment'>prp</span></td>
-</tr>
-<tr>
- <td class='bit'>CC</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Positive offset'>ofp</span></td>
-</tr>
-<tr>
- <td class='bit'>CD</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Positive offset'>ofp</span></td>
-</tr>
-<tr>
- <td class='bit'>CE</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Pre-increment'>prp</span></td>
-</tr>
-<tr>
- <td class='bit'>CF</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Pre-increment'>prp</span></td>
-</tr>
-<tr>
- <td class='bit'>D0</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Unindexed, bits 7-0 available for copro use'>unm</span></td>
-</tr>
-<tr>
- <td class='bit'>D1</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Unindexed, bits 7-0 available for copro use'>unm</span></td>
-</tr>
-<tr>
- <td class='bit'>D2</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Post-decrement'>ptm</span></td>
-</tr>
-<tr>
- <td class='bit'>D3</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Post-decrement'>ptm</span></td>
-</tr>
-<tr>
- <td class='bit'>D4</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Unindexed, bits 7-0 available for copro use'>unm</span></td>
-</tr>
-<tr>
- <td class='bit'>D5</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Unindexed, bits 7-0 available for copro use'>unm</span></td>
-</tr>
-<tr>
- <td class='bit'>D6</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Post-decrement'>ptm</span></td>
-</tr>
-<tr>
- <td class='bit'>D7</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Post-decrement'>ptm</span></td>
-</tr>
-<tr>
- <td class='bit'>D8</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Unindexed, bits 7-0 available for copro use'>unp</span></td>
-</tr>
-<tr>
- <td class='bit'>D9</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Unindexed, bits 7-0 available for copro use'>unp</span></td>
-</tr>
-<tr>
- <td class='bit'>DA</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Post-increment'>ptp</span></td>
-</tr>
-<tr>
- <td class='bit'>DB</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Post-increment'>ptp</span></td>
-</tr>
-<tr>
- <td class='bit'>DC</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Unindexed, bits 7-0 available for copro use'>unp</span></td>
-</tr>
-<tr>
- <td class='bit'>DD</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Unindexed, bits 7-0 available for copro use'>unp</span></td>
-</tr>
-<tr>
- <td class='bit'>DE</td>
- <td colspan='16'><span title='Store coprocessor data to memory'>STC</span> <span title='Post-increment'>ptp</span></td>
-</tr>
-<tr>
- <td class='bit'>DF</td>
- <td colspan='16'><span title='Load coprocessor data from memory'>LDC</span> <span title='Post-increment'>ptp</span></td>
-</tr>
-<tr>
- <td class='bit'>E0</td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- <td rowspan='16'><span title='Perform coprocessor data operation'>CDP</span></td>
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>E1</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>E2</td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>E3</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>E4</td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>E5</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>E6</td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>E7</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>E8</td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>E9</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>EA</td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>EB</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>EC</td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>ED</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>EE</td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
- 
- <td><span title='Write coprocessor register from ARM register'>MCR</span></td>
-</tr>
-<tr>
- <td class='bit'>EF</td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
- 
- <td><span title='Read coprocessor register to ARM register'>MRC</span></td>
-</tr>
-<tr>
- <td class='bit'>F0</td>
- <td rowspan='16' colspan='16'><span title='Software interrupt (enter supervisor mode)'>SWI</span></td>
-</tr>
-<tr>
- <td class='bit'>F1</td>
-</tr>
-<tr>
- <td class='bit'>F2</td>
-</tr>
-<tr>
- <td class='bit'>F3</td>
-</tr>
-<tr>
- <td class='bit'>F4</td>
-</tr>
-<tr>
- <td class='bit'>F5</td>
-</tr>
-<tr>
- <td class='bit'>F6</td>
-</tr>
-<tr>
- <td class='bit'>F7</td>
-</tr>
-<tr>
- <td class='bit'>F8</td>
-</tr>
-<tr>
- <td class='bit'>F9</td>
-</tr>
-<tr>
- <td class='bit'>FA</td>
-</tr>
-<tr>
- <td class='bit'>FB</td>
-</tr>
-<tr>
- <td class='bit'>FC</td>
-</tr>
-<tr>
- <td class='bit'>FD</td>
-</tr>
-<tr>
- <td class='bit'>FE</td>
-</tr>
-<tr>
- <td class='bit'>FF</td>
-</tr>
-   </tbody>
-  </table>
-  <table>
-   <caption>Table 2. Thumb Opcode Map.</caption>
-   <thead>
-    <tr>
-     <th rowspan='2'>Bits<br>15-12</th>
-     <th colspan='16'>Bits 11-8</th>
-    </tr>
-    <tr>
-     <th>0</th><th>1</th><th>2</th><th>3</th>
-     <th>4</th><th>5</th><th>6</th><th>7</th>
-     <th>8</th><th>9</th><th>A</th><th>B</th>
-     <th>C</th><th>D</th><th>E</th><th>F</th>
-    </tr>
-   </thead>
-   <tbody>
-<tr>
- <td class='bit'>0</td>
- <td colspan='8'><span title='Logical shift-left register'>LSL</span> <span title='Immediate value'>imm</span></td>
- <td colspan='8'><span title='Logical shift-right register'>LSR</span> <span title='Immediate value'>imm</span></td>
-</tr>
-<tr>
- <td class='bit'>1</td>
- <td colspan='8'><span title='Arithmetic shift-right register'>ASR</span> <span title='Immediate value'>imm</span></td>
- <td colspan='2'><span title='Add to register'>ADD</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Subtract from register'>SUB</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Add to register'>ADD</span> <span title='3-bit immediate offset'>imm3</span></td>
- <td colspan='2'><span title='Subtract from register'>SUB</span> <span title='3-bit immediate offset'>imm3</span></td>
-</tr>
-<tr>
- <td class='bit'>2</td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r0'>i8r0</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r1'>i8r1</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r2'>i8r2</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r3'>i8r3</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r4'>i8r4</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r5'>i8r5</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r6'>i8r6</span></td>
- <td><span title='Move value to a register'>MOV</span> <span title='8-bit immediate offset, using r7'>i8r7</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r0'>i8r0</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r1'>i8r1</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r2'>i8r2</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r3'>i8r3</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r4'>i8r4</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r5'>i8r5</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r6'>i8r6</span></td>
- <td><span title='Compare register to value (Subtract)'>CMP</span> <span title='8-bit immediate offset, using r7'>i8r7</span></td>
-</tr>
-<tr>
- <td class='bit'>3</td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r0'>i8r0</span></td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r1'>i8r1</span></td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r2'>i8r2</span></td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r3'>i8r3</span></td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r4'>i8r4</span></td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r5'>i8r5</span></td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r6'>i8r6</span></td>
- <td><span title='Add to register'>ADD</span> <span title='8-bit immediate offset, using r7'>i8r7</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r0'>i8r0</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r1'>i8r1</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r2'>i8r2</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r3'>i8r3</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r4'>i8r4</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r5'>i8r5</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r6'>i8r6</span></td>
- <td><span title='Subtract from register'>SUB</span> <span title='8-bit immediate offset, using r7'>i8r7</span></td>
-</tr>
-<tr>
- <td class='bit'>4</td>
- <td><span title='Thumb data processing'>DP</span> <span title='Instruction group 1'>g1</span></td>
- <td><span title='Thumb data processing'>DP</span> <span title='Instruction group 2'>g2</span></td>
- <td><span title='Thumb data processing'>DP</span> <span title='Instruction group 3'>g3</span></td>
- <td><span title='Thumb data processing'>DP</span> <span title='Instruction group 4'>g4</span></td>
- <td><span title='Add registers, select from all 16'>ADDH</span></td>
- <td><span title='Compare registers, select from all 16'>CMPH</span></td>
- <td><span title='Move to a register, select from all 16'>MOVH</span></td>
- <td><span title='Branch and switch execution modes'>BX</span> <span title='Register offset'>reg</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r0'>r0</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r1'>r1</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r2'>r2</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r3'>r3</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r4'>r4</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r5'>r5</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r6'>r6</span></td>
- <td><span title='r15-relative load word'>LDRPC</span> <span title='Using r7'>r7</span></td>
-</tr>
-<tr>
- <td class='bit'>5</td>
- <td colspan='2'><span title='Store word'>STR</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Store halfword'>STRH</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Store byte'>STRB</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Load signed byte'>LDRSB</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Load word'>LDR</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Load halfword'>LDRH</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Load byte'>LDRB</span> <span title='Register offset'>reg</span></td>
- <td colspan='2'><span title='Load signed halfword'>LDRSH</span> <span title='Register offset'>reg</span></td>
-</tr>
-<tr>
- <td class='bit'>6</td>
- <td colspan='8'><span title='Store word'>STR</span> <span title='5-bit immediate offset'>imm5</span></td>
- <td colspan='8'><span title='Load word'>LDR</span> <span title='5-bit immediate offset'>imm5</span></td>
-</tr>
-<tr>
- <td class='bit'>7</td>
- <td colspan='8'><span title='Store byte'>STRB</span> <span title='5-bit immediate offset'>imm5</span></td>
- <td colspan='8'><span title='Load byte'>LDRB</span> <span title='5-bit immediate offset'>imm5</span></td>
-</tr>
-<tr>
- <td class='bit'>8</td>
- <td colspan='8'><span title='Store halfword'>STRH</span> <span title='5-bit immediate offset'>imm5</span></td>
- <td colspan='8'><span title='Load halfword'>LDRH</span> <span title='5-bit immediate offset'>imm5</span></td>
-</tr>
-<tr>
- <td class='bit'>9</td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r0'>r0</span></td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r1'>r1</span></td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r2'>r2</span></td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r3'>r3</span></td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r4'>r4</span></td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r5'>r5</span></td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r6'>r6</span></td>
- <td><span title='r13-relative store word'>STRSP</span> <span title='Using r7'>r7</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r0'>r0</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r1'>r1</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r2'>r2</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r3'>r3</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r4'>r4</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r5'>r5</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r6'>r6</span></td>
- <td><span title='r13-relative load word'>LDRSP</span> <span title='Using r7'>r7</span></td>
-</tr>
-<tr>
- <td class='bit'>A</td>
- <td><span title=''>ADDPC</span> <span title='Using r0'>r0</span></td>
- <td><span title=''>ADDPC</span> <span title='Using r1'>r1</span></td>
- <td><span title=''>ADDPC</span> <span title='Using r2'>r2</span></td>
- <td><span title=''>ADDPC</span> <span title='Using r3'>r3</span></td>
- <td><span title=''>ADDPC</span> <span title='Using r4'>r4</span></td>
- <td><span title=''>ADDPC</span> <span title='Using r5'>r5</span></td>
- <td><span title=''>ADDPC</span> <span title='Using r6'>r6</span></td>
- <td><span title=''>ADDPC</span> <span title='Using r7'>r7</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r0'>r0</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r1'>r1</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r2'>r2</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r3'>r3</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r4'>r4</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r5'>r5</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r6'>r6</span></td>
- <td><span title=''>ADDSP</span> <span title='Using r7'>r7</span></td>
-</tr>
-<tr>
- <td class='bit'>B</td>
- <td><span title=''>ADDSP</span> <span title='7-bit immediate offset'>imm7</span></td>
- <td class='und' colspan='3'></td>
- <td><span title='Store multiple words to memory (STMDB equivalent)'>PUSH</span></td>
- <td><span title='Store multiple words to memory (STMDB equivalent)'>PUSH</span> <span title='Include r14'>lr</span></td>
- <td class='und' colspan='6'></td>
- <td><span title='Load multiple words from memory (LDMIA equivalent)'>POP</span></td>
- <td><span title='Load multiple words from memory (LDMIA equivalent)'>POP</span> <span title='Include r15'>pc</span></td>
- <td class='arm9'><span title='Software breakpoint'>BKPT</span></td>
- <td class='und'></td>
-</tr>
-<tr>
- <td class='bit'>C</td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r0'>r0</span></td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r1'>r1</span></td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r2'>r2</span></td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r3'>r3</span></td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r4'>r4</span></td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r5'>r5</span></td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r6'>r6</span></td>
- <td><span title='Store multiple words, increment after'>STMIA</span> <span title='Using r7'>r7</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r0'>r0</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r1'>r1</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r2'>r2</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r3'>r3</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r4'>r4</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r5'>r5</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r6'>r6</span></td>
- <td><span title='Load multiple words, increment after'>LDMIA</span> <span title='Using r7'>r7</span></td>
-</tr>
-<tr>
- <td class='bit'>D</td>
- <td><span title='Branch if zero flag set'>BEQ</span></td>
- <td><span title='Branch if zero flag clear'>BNE</span></td>
- <td><span title='Branch if carry flag set'>BCS</span></td>
- <td><span title='Branch if carry flag clear'>BCC</span></td>
- <td><span title='Branch if negative flag set'>BMI</span></td>
- <td><span title='Branch if negative flag clear'>BPL</span></td>
- <td><span title='Branch if overflow flag set'>BVS</span></td>
- <td><span title='Branch if overflow flag clear'>BVC</span></td>
- <td><span title='Branch if higher (unsigned)'>BHI</span></td>
- <td><span title='Branch if lower or the same (unsigned)'>BLS</span></td>
- <td><span title='Branch if greater than or equal to'>BGE</span></td>
- <td><span title='Branch if less than'>BLT</span></td>
- <td><span title='Branch if greater than'>BGT</span></td>
- <td><span title='Branch if less than or equal to'>BLE</span></td>
- <td class='und'></td>
- <td><span title='Software interrupt (enter supervisor mode)'>SWI</span></td>
-</tr>
-<tr>
- <td class='bit'>E</td>
- <td colspan='8'><span title='Branch'>B</span></td>
- <td class='arm9' colspan='8'><span title='Branch, link and switch execution modes '>BLX</span> <span title='Two-instruction branch, low 11 bits of offset'>off</span></td>
-</tr>
-<tr>
- <td class='bit'>F</td>
- <td colspan='8'><span title='Branch and link'>BL</span> <span title='Two-instruction branch, high 11 bits of offset'>setup</span></td>
- <td colspan='8'><span title='Branch and link'>BL</span> <span title='Two-instruction branch, low 11 bits of offset'>off</span></td>
-</tr>
-   </tbody>
-  </table>
-  <table>
-   <caption>Table 2A. Thumb Opcode Map - Register/Register Data Processing.</caption>
-   <thead>
-    <tr>
-     <th rowspan='2'>Bits<br>9-8</th>
-     <th colspan='4'>Bits 7-6</th>
-    </tr>
-    <tr>
-     <th>0</th><th>1</th><th>2</th><th>3</th>
-    </tr>
-   </thead>
-   <tbody>
-<tr>
- <td class='bit'>0</td>
- <td><span title='Logical And'>AND</span></td>
- <td><span title='Logical Exclusive-or'>EOR</span></td>
- <td><span title='Logical Left-shift'>LSL</span></td>
- <td><span title='Logical Right-shift'>LSR</span></td>
-</tr>
-<tr>
- <td class='bit'>1</td>
- <td><span title='Arithmetic Right-shift'>ASR</span></td>
- <td><span title='Add'>ADD</span></td>
- <td><span title='Subtract'>SUB</span></td>
- <td><span title='Rotate right'>ROR</span></td>
-</tr>
-<tr>
- <td class='bit'>2</td>
- <td><span title='Test Bits (Logical And)'>TST</span></td>
- <td><span title='Negate (Subtract from zero)'>NEG</span></td>
- <td><span title='Compare (Subtract)'>CMP</span></td>
- <td><span title='Compare negative (Add)'>CMN</span></td>
-</tr>
-<tr>
- <td class='bit'>3</td>
- <td><span title='Logical Or'>ORR</span></td>
- <td><span title='Multiply'>MUL</span></td>
- <td><span title='Bit Clear (NAND)'>BIC</span></td>
- <td><span title='Move negative (NOT)'>MVN</span></td>
-</tr>
-   </tbody>
-  </table>
-  </div>
-<p><em>Article dated: 4th Oct 2007</em></p>    
-    </div>
-   </div>
-   <div id="foot">
-    <div class="inner">
-     Operated by Imran Nazar Ltd, registered in the UK (#07698370). Content copyright Imran Nazar, 2005-2011.<br>
-     Design and imagery copyright Imran Nazar, 2008-2011; "Parchment" used by license from <a href="http://sxc.hu">sxc</a>.
-    </div>
-   </div>
-   <ul id="nav">
-    <li  id="nav_Articles"><a href="/Articles">Articles</a></li>
-    <li class="hilite" id="nav_Programming"><a href="/Programming">Programming</a></li>
-    <li  id="nav_Fiction"><a href="/Fiction">Fiction</a></li>
-    <li  id="nav_Contact"><a href="/Contact">Get in touch</a></li>
-   </ul>
-   <a href="/rss.xml" id="rss">Get the RSS feed</a>
-   <div id="ads">
-<script type="text/javascript"><!--
-
-
-*/
-#endregion

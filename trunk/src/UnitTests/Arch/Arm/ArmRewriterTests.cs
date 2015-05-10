@@ -192,13 +192,13 @@ namespace Decompiler.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmRw_mvns()
+        public void ArmRw_ldrsb()
         {
-            BuildTest(0xE1F120D1);  // mvns\tr2,r1,asr r0
-                 AssertCode(
+            BuildTest(0xE1F120D1);  // ldrsb r2,[r1,#1]!
+            AssertCode(
                 "0|00100000(4): 2 instructions",
-                "1|r2 = ~r0L",
-                "2|SCZO = cond(r2)");
+                "1|L--|r1 = r1 + 0x00000001",
+                "2|L--|r2 = Mem0[r1:int8]");
         }
     }
 }
