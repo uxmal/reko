@@ -26,7 +26,7 @@ namespace Decompiler.Core
 	/// Represent a segment of memory, corresponding to an 16-bit segment for intel real and protected modes, and 
 	/// executable sections for flat processor modes.
 	/// </summary>
-    [Designer("Decompiler.Gui.Design.ImageMapSegmentDesigner,Decompiler")]
+    [Designer("Decompiler.Gui.Design.ImageMapSegmentNodeDesigner,Decompiler")]
 	public class ImageMapSegment : ImageMapItem
 	{
 		public ImageMapSegment(string name, AccessMode access) : base() 
@@ -49,7 +49,7 @@ namespace Decompiler.Core
 
         public bool IsDiscardable { get; set; }
 
-        public ImageMapSegmentRenderer Renderer { get; set; }
+        public ImageMapSegmentRenderer Designer { get; set; }
 
 		public string Name { get;set; }
 

@@ -74,11 +74,11 @@ namespace Decompiler.Gui.Windows
             {
                 if (segmentView == null ||
                     segment == null ||
-                    segment.Renderer == null)
+                    segment.Designer == null)
                     return;
                 this.program = program;
                 var tsf = new TextSpanFormatter();
-                segment.Renderer.Render(
+                segment.Designer.Render(
                     segment,
                     program,
                     tsf);

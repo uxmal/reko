@@ -257,7 +257,7 @@ namespace Decompiler.ImageLoaders.Elf
                         platform.MakeAddressFromLinear(segment.sh_addr), 
                         GetSectionName(segment.sh_name),
                         mode);
-                    seg.Renderer = CreateRenderer64(segment);
+                    seg.Designer = CreateRenderer64(segment);
                 }
             }
             else
@@ -277,7 +277,7 @@ namespace Decompiler.ImageLoaders.Elf
                     if ((segment.sh_flags & SHF_EXECINSTR) != 0)
                         mode |= AccessMode.Execute;
                     var seg = imageMap.AddSegment(Address.Ptr32(segment.sh_addr), GetSectionName(segment.sh_name), mode);
-                    seg.Renderer = CreateRenderer(segment);
+                    seg.Designer = CreateRenderer(segment);
                 }
                 imageMap.DumpSections();
             }
@@ -302,10 +302,6 @@ namespace Decompiler.ImageLoaders.Elf
                 platform = env.Load(Services, arch);
                 return platform;
             case ELFOSABI_CELL_LV2: // PS/3
-                //$TODO: I know nothing about that platform, so use
-                // defaults. If you think you know better, and you think
-                // the platform differs by a significant amount, 
-                // implement a PS/3 platform and use it here.
                 env = dcSvc.GetEnvironment("elf-cell-lv2");
                 platform = env.Load(Services, arch);
                 return platform;

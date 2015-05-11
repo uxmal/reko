@@ -1,3 +1,6 @@
+ELF plt's and byte signatures
+
+
 The challenge of SSA and Type information
 ---
 After scanning, we have translated machine code to IL. We now want to convert the resulting IL into SSA 

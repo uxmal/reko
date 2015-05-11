@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
@@ -41,6 +42,17 @@ namespace Decompiler.Arch.Arm
             }
         }
 
+        private void RewriteRevBinOp(Operator op, bool setflags)
+        {
+            var opDst = this.Operand(instr.Dst);
+            var opSrc1 = this.Operand(instr.Src2);
+            var opSrc2 = this.Operand(instr.Src1);
+            ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
+            if (setflags)
+            {
+                ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+            }
+        }
         private void RewriteUnaryOp(UnaryOperator op)
         {
             var opDst = this.Operand(instr.Dst);
@@ -102,6 +114,14 @@ namespace Decompiler.Arch.Arm
         {
             var opSrc = this.Operand(instr.Src1);
             var opDst = this.Operand(instr.Dst);
+            Identifier dst = (Identifier)opDst;
+            var rDst = dst.Storage as RegisterStorage;
+            if (rDst == A32Registers.pc)
+            {
+                // Assignment to PC is the same as a jump
+                emitter.Goto(opSrc);
+                return;
+            }
             emitter.Assign(opDst, opSrc);
         }
 

@@ -325,6 +325,50 @@ namespace Decompiler.UnitTests.Arch.Arm
         {
             var instr = Disassemble(0xE1F322D1);
             Assert.AreEqual("ldrsb\tr2,[r3,#&21]!", instr.ToString());
+            instr = Disassemble(0xE19120D3);
+            Assert.AreEqual("ldrsb\tr2,[r1,r3]", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mov()
+        {
+            var instr = Disassemble(0xE3A0B000);
+            Assert.AreEqual("mov\tfp,#0", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mov_pc()
+        {
+            var instr = Disassemble(0xE59F0010);
+            Assert.AreEqual("ldr\tr0,[pc,#&10]", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_orr()
+        {
+            var instr = Disassemble(0xe3812001);
+            Assert.AreEqual("orr\tr2,r1,#1", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mvn()
+        {
+            var instr = Disassemble(0xe3e03102);
+            Assert.AreEqual("mvn\tr3,#&80000000", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_cmn()
+        {
+            var instr = Disassemble(0xE3730001);
+            Assert.AreEqual("cmn\tr3,#1", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_strdeq()
+        {
+            var instr = Disassemble(0x00EB0FFC);
+            Assert.AreEqual("strdeq\tr0,[fp],#&FC", instr.ToString());
         }
     }
 }

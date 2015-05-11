@@ -652,6 +652,15 @@ namespace Decompiler.Scanning
             return program.EnsurePseudoProcedure(name, returnType, arity);
         }
 
+        public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+        {
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            return new Application(
+                new ProcedureConstant(program.Architecture.PointerType, ppp),
+                returnType,
+                args);
+        }
+
         /// <summary>
         /// Generates the name for a block stating at address <paramref name="addr"/>.
         /// </summary>
