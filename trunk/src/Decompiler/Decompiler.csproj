@@ -243,7 +243,7 @@
     <Compile Include="Gui\Controls\INavigableControl.cs" />
     <Compile Include="Gui\Controls\ITextBox.cs" />
     <Compile Include="Gui\Controls\ITreeView.cs" />
-    <Compile Include="Gui\Design\ImageMapSegmentDesigner.cs" />
+    <Compile Include="Gui\Design\ImageMapSegmentNodeDesigner.cs" />
     <Compile Include="Gui\Design\ProcedureDesigner.cs" />
     <Compile Include="Gui\Design\SystemServiceDesigner.cs" />
     <Compile Include="Gui\Design\ProgramDesigner.cs" />

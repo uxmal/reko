@@ -64,17 +64,13 @@ namespace Decompiler.Arch.Arm
             };
 
             addr =  arm.Address.ToUInt32();
-            word wInstr;
-            if (!rdr.TryReadLeUInt32(out wInstr))
+            uint uInstr;
+            if (!rdr.TryReadLeUInt32(out uInstr))
             {
                 arm.Opcode = Opcode.illegal;
                 return arm;
             }
-            return this.Disassemble(wInstr);
-        }
-
-        public ArmInstruction Disassemble(uint uInstr)
-        {
+        
             // Section A5.1
             arm.Cond = ConditionField(uInstr);
             if (arm.Cond == Condition.nv)
@@ -232,9 +228,9 @@ namespace Decompiler.Arch.Arm
             var op2 = (uInstr >> 5) & 0x3;
             switch (op)
             {
-            case 0x0: return DecodeOperands(uInstr, Opcode.and,  null, "@@@");
-            case 0x1: return DecodeOperands(uInstr, Opcode.ands, null,  "@@@");
-            case 0x2: return DecodeOperands(uInstr, Opcode.eor,  null, "@@@");
+            case 0x0: return DecodeOperands(uInstr, Opcode.and,  null, "3,4,*");
+            case 0x1: return DecodeOperands(uInstr, Opcode.ands, null,  "3,4,*");
+            case 0x2: return DecodeOperands(uInstr, Opcode.eor, null, "3,4,*");
             case 0x3: return DecodeOperands(uInstr, Opcode.eors, null,  "@@@");
             case 0x4: return DecodeOperands(uInstr, Opcode.sub,  null, "@@@");
             case 0x5: return DecodeOperands(uInstr, Opcode.subs, null,  "@@@");
@@ -261,7 +257,7 @@ namespace Decompiler.Arch.Arm
             case 0x19: return DecodeOperands(uInstr, Opcode.orrs, null, "@@@");
             case 0x1A:
             case 0x1B:
-                return DecodeOperands(uInstr, Opcode.mov, null, "@@@");
+                return DecodeOperands(uInstr, Opcode.mov, null, "3,*");
             case 0x1C: return DecodeOperands(uInstr, Opcode.bic , null, "3,4,*");
             case 0x1D: return DecodeOperands(uInstr, Opcode.bics, null, "3,4,*");
             case 0x1E: return DecodeOperands(uInstr, Opcode.mvn , null, "@@@");
@@ -415,7 +411,7 @@ namespace Decompiler.Arch.Arm
                 switch (op1)
                 {
                 case 0: return DecodeOperands(uInstr, Opcode.strh, null, "@@@");
-                case 1: return DecodeOperands(uInstr, Opcode.ldrh, null, "@@@");
+                case 1: return DecodeOperands(uInstr, Opcode.ldrh, PrimitiveType.UInt16, "3,\\");
                 case 4: return DecodeOperands(uInstr, Opcode.strh, null, "@@@");
                 case 6: 
                     if (rn == 0xF)
@@ -428,7 +424,7 @@ namespace Decompiler.Arch.Arm
                 switch (op1)
                 {
                 case 0: return DecodeOperands(uInstr, Opcode.ldrd, null, "@@@");
-                case 1: return DecodeOperands(uInstr, Opcode.ldrsb, null, "@@@");
+                case 1: return DecodeOperands(uInstr, Opcode.ldrsb, PrimitiveType.SByte, "3,\\");
                 case 4: 
                     if (rn == 0xF)
                         return DecodeOperands(uInstr, Opcode.ldrd, null, "@@@");
@@ -446,7 +442,7 @@ namespace Decompiler.Arch.Arm
                 {
                 case 0: return DecodeOperands(uInstr, Opcode.strd, null, "@@@");
                 case 1: return DecodeOperands(uInstr, Opcode.ldrsh, null, "@@@");
-                case 4: return DecodeOperands(uInstr, Opcode.strd, null, "@@@");
+                case 4: return DecodeOperands(uInstr, Opcode.strd, PrimitiveType.Word64, "3,\\");
                 case 5: 
                     if (rn == 0xF)
                         return DecodeOperands(uInstr, Opcode.ldrsh, null, "@@@");
@@ -466,10 +462,10 @@ namespace Decompiler.Arch.Arm
             var op2 = (uInstr >> 5) & 0x3;
             switch (op)
             {
-            case 0x0: return DecodeOperands(uInstr, Opcode.and,  null, "@@@");
-            case 0x1: return DecodeOperands(uInstr, Opcode.ands, null,  "@@@");
-            case 0x2: return DecodeOperands(uInstr, Opcode.eor,  null, "@@@");
-            case 0x3: return DecodeOperands(uInstr, Opcode.eors, null,  "@@@");
+            case 0x0: return DecodeOperands(uInstr, Opcode.and,  null, "3,4,*");
+            case 0x1: return DecodeOperands(uInstr, Opcode.ands, null,  "3,4,*");
+            case 0x2: return DecodeOperands(uInstr, Opcode.eor,  null, "3,4,*");
+            case 0x3: return DecodeOperands(uInstr, Opcode.eors, null,  "3,4,*");
             case 0x4: 
                 if (rn != 0xF)
                     return DecodeOperands(uInstr, Opcode.sub,  null, "3,4,*");
@@ -477,16 +473,12 @@ namespace Decompiler.Arch.Arm
                     return DecodeOperands(uInstr, Opcode.adr,  null, "@@@");
             case 0x5:
                 if (rn != 0xF)
-                    return DecodeOperands(uInstr, Opcode.subs, null,  "@@@");
+                    return DecodeOperands(uInstr, Opcode.subs, null,  "3,4,*");
                 else
                     return DecodeOperands(uInstr, Opcode.subs, null, "@@@");
-            case 0x6: return DecodeOperands(uInstr, Opcode.rsb,  null, "@@@");
-            case 0x7: return DecodeOperands(uInstr, Opcode.rsbs, null,  "@@@");
-            case 0x8:
-                if (rn != 0xF)
-                return DecodeOperands(uInstr, Opcode.add,  null, "@@@");
-                else
-                return DecodeOperands(uInstr, Opcode.adr,  null, "@@@");
+            case 0x6: return DecodeOperands(uInstr, Opcode.rsb,  null, "3,4,*");
+            case 0x7: return DecodeOperands(uInstr, Opcode.rsbs, null,  "3,4,*");
+            case 0x8: return DecodeOperands(uInstr, Opcode.add,  null, "3,4,*");
             case 0x9: return DecodeOperands(uInstr, Opcode.adds, null,  "@@@");
             case 0xA: return DecodeOperands(uInstr, Opcode.adc,  null, "@@@");
             case 0xB: return DecodeOperands(uInstr, Opcode.adcs, null,  "@@@");
@@ -500,18 +492,18 @@ namespace Decompiler.Arch.Arm
             case 0x16:
                 return DataProcessingAndMisc(uInstr);
             case 0x11: return DecodeOperands(uInstr, Opcode.tst , null, "4,*");
-            case 0x13: return DecodeOperands(uInstr, Opcode.teq , null, "@@@");
-            case 0x15: return DecodeOperands(uInstr, Opcode.cmp , null, "@@@");
-            case 0x17: return DecodeOperands(uInstr, Opcode.cmn , null, "@@@");
-            case 0x18: return DecodeOperands(uInstr, Opcode.orr , null, "@@@");
-            case 0x19: return DecodeOperands(uInstr, Opcode.orrs, null, "@@@");
+            case 0x13: return DecodeOperands(uInstr, Opcode.teq , null, "4,*");
+            case 0x15: return DecodeOperands(uInstr, Opcode.cmp , null, "4,*");
+            case 0x17: return DecodeOperands(uInstr, Opcode.cmn , null, "4,*");
+            case 0x18: return DecodeOperands(uInstr, Opcode.orr, null, "3,4,*");
+            case 0x19: return DecodeOperands(uInstr, Opcode.orrs, null, "3,4,*");
             case 0x1A:
             case 0x1B:
-                return DecodeOperands(uInstr, Opcode.mov, null, "@@@");
+                return DecodeOperands(uInstr, Opcode.mov, null, "3,*");
             case 0x1C: return DecodeOperands(uInstr, Opcode.bic , null, "3,4,*");
             case 0x1D: return DecodeOperands(uInstr, Opcode.bics, null, "@@@");
-            case 0x1E: return DecodeOperands(uInstr, Opcode.mvn , null, "@@@");
-            case 0x1F: return DecodeOperands(uInstr, Opcode.mvns, null, "@@@");
+            case 0x1E: return DecodeOperands(uInstr, Opcode.mvn , null, "3,*");
+            case 0x1F: return DecodeOperands(uInstr, Opcode.mvns, null, "3,*");
             }
             throw new NotImplementedException();
         }
@@ -550,8 +542,7 @@ namespace Decompiler.Arch.Arm
                 if (a == 0)
                     return DecodeOperands(uInstr, Opcode.str, PrimitiveType.Word32, "3,/");
                 else
-                    return DecodeOperands(uInstr, Opcode.str, PrimitiveType.Word32, "@@@");
-
+                    return DecodeOperands(uInstr, Opcode.str, PrimitiveType.Word32, "3,/");
             case 0x02:
                 return DecodeOperands(uInstr, Opcode.strt, PrimitiveType.Word32, "@@@");
             case 0x01:
@@ -561,8 +552,8 @@ namespace Decompiler.Arch.Arm
             case 0x19:
             case 0x1B:
                 if (rn == 0xF)
-                    return DecodeOperands(uInstr, Opcode.ldr, PrimitiveType.Word32, "@@@");
-                else 
+                    return DecodeOperands(uInstr, Opcode.ldr, PrimitiveType.Word32, "3,/");
+                else
                     return DecodeOperands(uInstr, Opcode.ldr, PrimitiveType.Word32, "3,/");
             case 0x03:
                 return DecodeOperands(uInstr, Opcode.ldrt, PrimitiveType.Word32, "@@@");
@@ -574,7 +565,7 @@ namespace Decompiler.Arch.Arm
             case 0x1C:
             case 0x1E:
                 if (a == 0)
-                    return DecodeOperands(uInstr, Opcode.strb, PrimitiveType.Byte, "@@@");
+                    return DecodeOperands(uInstr, Opcode.strb, PrimitiveType.Byte, "3,/");
                 else
                     return DecodeOperands(uInstr, Opcode.strb, PrimitiveType.Byte, "3,/");
             case 0x06:
@@ -596,9 +587,9 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
 
-        private ArmInstruction MediaInstructions(addrdiff uInstr)
+        private ArmInstruction MediaInstructions(uint uInstr)
         {
-            throw new NotImplementedException();
+            return arm;
         }
 
         private ArmInstruction BranchBlockTransfer(addrdiff uInstr)
@@ -617,7 +608,7 @@ namespace Decompiler.Arch.Arm
                 case 1:
                 case 3: return DecodeOperands(uInstr, Opcode.ldmda, null, "@@@");
                 case 8:
-                case 0xA: return DecodeOperands(uInstr, Opcode.stm, null, "@@@");
+                case 0xA: return DecodeOperands(uInstr, Opcode.stm, null, "4,%");
                 case 0x9: return DecodeOperands(uInstr, Opcode.ldm, null, "4,%");
                 case 0xB:
                     if (rn != 0xD)
@@ -626,24 +617,30 @@ namespace Decompiler.Arch.Arm
                         return DecodeOperands(uInstr, Opcode.ldm, null, "4,%");
                     }
                     else
-                        return DecodeOperands(uInstr, Opcode.pop, null, "@@@");
+                    {
+                        arm.Update = true;
+                        return DecodeOperands(uInstr, Opcode.ldmfd, null, "4,%");
+                    }
                 }
                 break;
             case 1:
                 switch (opLo)
                 {
                 case 0x0: return DecodeOperands(uInstr, Opcode.stmdb, null, "@@@");
-                case 0x2: 
+                case 0x2:
                     if (rn != 0x0D)
                     {
                         arm.Update = BitN_Set(uInstr, 21);
                         return DecodeOperands(uInstr, Opcode.stmdb, null, "4,%");
                     }
                     else
-                        return DecodeOperands(uInstr, Opcode.push, null, "@@@");
+                    {
+                        arm.Update = BitN_Set(uInstr, 21);
+                        return DecodeOperands(uInstr, Opcode.stmdb, null, "4,%");
+                    }
                 case 0x1:
                 case 0x3:
-                    return DecodeOperands(uInstr, Opcode.ldmdb, null, "@@@");
+                    return DecodeOperands(uInstr, Opcode.ldmdb, null, "4,%");
                 case 0x8:
                 case 0xA:
                     return DecodeOperands(uInstr, Opcode.stmib, null, "@@@");
@@ -665,7 +662,7 @@ namespace Decompiler.Arch.Arm
             var opHi = (uInstr >> 24) & 3;
             if (opHi == 3)
                 return DecodeOperands(uInstr, Opcode.svc, null, "$");
-            throw new NotImplementedException();
+            return arm;
         }
 
         private Condition ConditionField(uint uInstr)
@@ -698,7 +695,7 @@ namespace Decompiler.Arch.Arm
             case 0xB:
                 return DecodeOperands(uInstr, Opcode.blx, null, "x");
             }
-            throw new NotImplementedException();
+            return arm;
         }
 
         private ArmInstruction MemoryHints(addrdiff uInstr)
@@ -798,14 +795,24 @@ namespace Decompiler.Arch.Arm
         private MachineOperand DecodeIndirectShortOffset(PrimitiveType width, uint instr)
         {
             var rn = A32Registers.GpRegs[(instr >> 16) & 0xF];
-            var offset = ArmImmediateOperand.Word32(
-                ((instr >> 4) & 0xF0) |
-                (instr & 0x0F));
-            return new ArmMemoryOperand(width, rn, offset)
+
+            MachineOperand offset;
+            if (BitN_Set(instr, 22))
             {
-                Preindexed = BitN_Set(instr, 24),
-                Writeback = BitN_Set(instr, 21)
-            };
+                offset = ArmImmediateOperand.Word32(
+                     ((instr >> 4) & 0xF0) |
+                     (instr & 0x0F));
+            }
+            else
+            {
+                offset = get_regop(instr & 0xF);
+            }
+            return new ArmMemoryOperand(width, rn, offset)
+                {
+                    Preindexed = BitN_Set(instr, 24),
+                    Writeback = BitN_Set(instr, 21),
+                    Subtract = !BitN_Set(instr, 23),
+                };
         }
 
         private MachineOperand DecodeImmediateOperand(word instr)

@@ -135,6 +135,15 @@ namespace Decompiler.UnitTests.Arch.Intel
                 return p;
             }
 
+            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            {
+                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                return new Application(
+                    new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                    returnType,
+                    args);
+            }
+
             public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
             {
                 throw new NotImplementedException();

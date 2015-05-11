@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Gui.Design
             treeNode.Expect(t => t.Text = "seg1");
             treeNode.Expect(t => t.ImageName = "RoSection.ico");
             treeNode.Expect(t => t.ToolTipText = "seg1\r\nAddress: 00001000\r\nSize: 0\r\n--x");
-            var des = new ImageMapSegmentDesigner();
+            var des = new ImageMapSegmentNodeDesigner();
             des.Host = host;
             des.TreeNode = treeNode;
             des.Component = seg1;

@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
@@ -53,6 +54,10 @@ namespace Decompiler.UnitTests.Arch
                 throw new NotImplementedException();
             }
 
+            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            {
+                throw new NotImplementedException();
+            }
 
             public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
             {

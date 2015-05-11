@@ -200,5 +200,41 @@ namespace Decompiler.UnitTests.Arch.Arm
                 "1|L--|r1 = r1 + 0x00000001",
                 "2|L--|r2 = Mem0[r1:int8]");
         }
+
+        [Test]
+        public void ArmRw_mov_pc()
+        {
+            BuildTest(0xE59F0010);  // ldr\tr0,[pc,#&10]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|r0 = Mem0[0x00100018:word32]");
+        }
+
+        [Test]
+        public void ArmRw_cmp()
+        {
+            BuildTest(0xE3530000);  // cmp r3,#0
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|SZCO = cond(r3 - 0x00000000)");
+        }
+
+        [Test]
+        public void ArmRw_cmn()
+        {
+            BuildTest(0xE3730001); /// cmn r3,#1
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|L--|SZCO = cond(r3 + 0x00000001)");
+        }
+
+        [Test]
+        public void ArmRw_ldr_pc()
+        {
+            BuildTest(0xE59CF000); // ldr pc,[ip]
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|T--|goto Mem0[ip:word32]");
+        }
     }
 }

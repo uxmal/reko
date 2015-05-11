@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.Gui.Design
 {
-    public class ImageMapSegmentDesigner : TreeNodeDesigner
+    public class ImageMapSegmentNodeDesigner : TreeNodeDesigner
     {
         private ImageMapSegment segment;
 
@@ -105,7 +105,7 @@ namespace Decompiler.Gui.Design
 
         public override void DoDefaultAction()
         {
-            if (segment.Renderer != null)
+            if (segment.Designer != null)
             {
                 var segSvc = Services.RequireService<ImageSegmentService>();
                 segSvc.DisplayImageSegment(segment, GetProgram());

@@ -206,6 +206,8 @@ namespace Decompiler.Arch.Arm
         mls,
         muls,
         mlas,
+        ldmfd,
+        ldmia,
 
 
 
