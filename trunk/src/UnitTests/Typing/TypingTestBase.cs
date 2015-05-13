@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Typing
 		{
             var services = new ServiceContainer();
             var config = new FakeDecompilerConfiguration();
-            services.AddService<IDecompilerConfigurationService>(config);
+            services.AddService<IConfigurationService>(config);
             ILoader ldr = new Loader(services);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Typing
         {
             var svc = new ServiceContainer();
             var cfg = new FakeDecompilerConfiguration();
-            svc.AddService<IDecompilerConfigurationService>(cfg);
+            svc.AddService<IConfigurationService>(cfg);
             ILoader ldr = new Loader(svc);
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var img = imgLoader.Load(null);

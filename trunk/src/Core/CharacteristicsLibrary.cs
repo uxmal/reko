@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,6 +30,11 @@ namespace Decompiler.Core
 {
     public class CharacteristicsLibrary
     {
+        public CharacteristicsLibrary()
+        {
+            Entries = new Dictionary<string, Serialization.ProcedureCharacteristics>();
+        }
+
         public static CharacteristicsLibrary Load(string filename)
         {
             XmlSerializer ser = new XmlSerializer(typeof(Serialization.CharacteristicsLibrary_v1));
@@ -43,6 +49,14 @@ namespace Decompiler.Core
             }
         }
 
-        public Dictionary<string, Serialization.ProcedureCharacteristics> Entries { get; set; }
+        public Dictionary<string, ProcedureCharacteristics> Entries { get; set; }
+
+        public ProcedureCharacteristics Lookup(string procName)
+        {
+            ProcedureCharacteristics ch;
+            if (!Entries.TryGetValue(procName, out ch))
+                return null;
+            return ch;
+        }
     }
 }

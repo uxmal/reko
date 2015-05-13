@@ -21,6 +21,7 @@
 using Decompiler.Arch.Mos6502;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,11 @@ namespace Decompiler.Environments.C64
         public override string DefaultCallingConvention
         {
             get { return ""; }
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
         }
 
         public override SystemService FindService(RtlInstruction rtl, ProcessorState state)

@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Loading
         private MockRepository mr;
         private IServiceContainer sc;
         private FakeDecompilerEventListener eventListener;
-        private IDecompilerConfigurationService dcSvc;
+        private IConfigurationService dcSvc;
         private List<SignatureFileElement> signatureFiles;
 
         [SetUp]
@@ -51,10 +51,10 @@ namespace Decompiler.UnitTests.Loading
             mr = new MockRepository();
             sc = new ServiceContainer();
             eventListener = new FakeDecompilerEventListener();
-            dcSvc = mr.Stub<IDecompilerConfigurationService>();
+            dcSvc = mr.Stub<IConfigurationService>();
             signatureFiles = new List<SignatureFileElement>();
             sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<IDecompilerConfigurationService>(dcSvc);
+            sc.AddService<IConfigurationService>(dcSvc);
             dcSvc.Stub(d => d.GetSignatureFiles()).Return(signatureFiles);
         }
 

@@ -54,7 +54,7 @@ namespace Decompiler.Assemblers.Pdp11
                 image,
                 image.CreateImageMap(),
                 arch,
-                new DefaultPlatform(null, null));
+                new DefaultPlatform(null, arch));
         }
 
         public Dictionary<string, object> Equates { get; private set; }

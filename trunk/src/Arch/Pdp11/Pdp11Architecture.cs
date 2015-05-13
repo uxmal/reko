@@ -149,11 +149,6 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public int InstructionBitSize { get { return 16; } }
 
         public string GrfToString(uint grf)

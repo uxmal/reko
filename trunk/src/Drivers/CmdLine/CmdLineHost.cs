@@ -77,7 +77,7 @@ namespace Decompiler.CmdLine
             }
         }
 
-        public IDecompilerConfigurationService Configuration
+        public IConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }

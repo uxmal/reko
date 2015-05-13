@@ -85,6 +85,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
   </ItemGroup>

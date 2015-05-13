@@ -32,6 +32,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Decompiler.Core.Lib;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
 {
@@ -66,7 +67,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var image = new LoadedImage(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = image.CreateImageMap();
             var arch = mr.StrictMock<IProcessorArchitecture>();
-            var platform = mr.StrictMock<Platform>(null, null);
+            arch.Stub(a => a.CreateRegisterBitset()).Return(new BitSet(32));
+            arch.Replay();
+            var platform = mr.StrictMock<Platform>(null, arch);
+            arch.BackToRecord();
             program = new Program(image, imageMap, arch, platform);
             project = new Project { Programs = { program } };
 

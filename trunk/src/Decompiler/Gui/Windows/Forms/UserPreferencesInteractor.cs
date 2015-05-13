@@ -64,7 +64,7 @@ namespace Decompiler.Gui.Windows.Forms
             var addrData = Address.Ptr32(0x001001A);
             imageMap.AddItemWithSize(addrCode, new ImageMapBlock { Address = addrCode, Size = 0x0E });
             imageMap.AddItemWithSize(addrData, new ImageMapItem { Address = addrData, DataType = PrimitiveType.Byte, Size = 0x0E });
-            var arch = dlg.Services.RequireService<IDecompilerConfigurationService>().GetArchitecture("x86-protected-32");
+            var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");
             this.program = new Program
             {
                 Image = image,

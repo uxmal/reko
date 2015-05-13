@@ -52,7 +52,7 @@ namespace Decompiler.Mono
                 var listener = NullDecompilerEventListener.Instance;
 
                 services.AddService(typeof (DecompilerEventListener), listener);
-                services.AddService(typeof(IDecompilerConfigurationService), new DecompilerConfiguration());
+                services.AddService(typeof(IConfigurationService), new DecompilerConfiguration());
                 var ldr = new Loader(services);
 				var dec = new DecompilerDriver(ldr, host, services);
 				dec.Decompile(args[0]);

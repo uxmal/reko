@@ -16,14 +16,14 @@ namespace Decompiler.UnitTests.Loading
     {
         private MockRepository mr;
         private ServiceContainer sc;
-        private IDecompilerConfigurationService cfgSvc;
+        private IConfigurationService cfgSvc;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
             sc = new ServiceContainer();
-            cfgSvc = mr.Stub<IDecompilerConfigurationService>();
+            cfgSvc = mr.Stub<IConfigurationService>();
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Loading
             le.Label = "LoaderKey";
             le.TypeName = typeof(TestImageLoader).AssemblyQualifiedName;
             cfgSvc.Stub(c => c.GetImageLoaders()).Return(new List<LoaderElement> { le });
-            sc.AddService(typeof(IDecompilerConfigurationService), cfgSvc);
+            sc.AddService(typeof(IConfigurationService), cfgSvc);
             mr.ReplayAll();
 
             var upSvc = new UnpackingService(sc);

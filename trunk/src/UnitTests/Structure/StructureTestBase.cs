@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Structure
 		protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
             var sc = new ServiceContainer();
-            sc.AddService<IDecompilerConfigurationService>(new FakeDecompilerConfiguration());
+            sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
             var ldr = new Loader(sc);
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Structure
         protected Program RewriteProgram32(string sourceFilename, Address addrBase)
         {
             var sc = new ServiceContainer();
-            sc.AddService<IDecompilerConfigurationService>(new FakeDecompilerConfiguration());
+            sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
             var ldr = new Loader(sc);
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),

@@ -18,8 +18,10 @@
  */
 #endregion
 
+using Decompiler.Arch.M68k;
 using Decompiler.Core;
 using Decompiler.Core.Configuration;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Services;
 using System;
 using System.Collections;
@@ -39,6 +41,13 @@ namespace Decompiler.Environments.MacOS
         {
             encoding = new MacOsRomanEncoding();
             LoadMacOsServices();
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.a7.SetAliases(bitset, true);
+            return bitset;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -77,7 +86,7 @@ namespace Decompiler.Environments.MacOS
 
         public void LoadMacOsServices()
         {
-            var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             var envCfg = cfgSvc.GetEnvironment("macOs");
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             this.TypeLibs = ((IEnumerable)envCfg.TypeLibraries)

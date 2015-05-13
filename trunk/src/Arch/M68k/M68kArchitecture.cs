@@ -35,12 +35,8 @@ namespace Decompiler.Arch.M68k
 {
     public class M68kArchitecture : IProcessorArchitecture
     {
-        private BitSet implicitRegs;
-
         public M68kArchitecture()
         {
-            implicitRegs = CreateRegisterBitset();
-            implicitRegs[Registers.a7.Number] = true;
         }
 
         public M68kDisassembler CreateDisassembler(ImageReader rdr)
@@ -143,11 +139,6 @@ namespace Decompiler.Arch.M68k
         public Address CreateSegmentedAddress(int size, ImageReader rdr, ushort segBase)
         {
             throw new NotSupportedException("M68k architecture doesn't support segmented pointers.");
-        }
-
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { return implicitRegs; }
         }
 
         public int InstructionBitSize { get { return 16; } }

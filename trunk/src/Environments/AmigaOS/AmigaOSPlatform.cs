@@ -21,6 +21,7 @@
 using Decompiler.Arch.M68k;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Serialization;
@@ -56,6 +57,13 @@ namespace Decompiler.Environments.AmigaOS
                         PrimitiveType.Word32),
                     4,
                     RtlClass.Transfer));
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.a7.SetAliases(bitset, true);
+            return bitset;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

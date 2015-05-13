@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using Decompiler.Core.Serialization;
 using System.Globalization;
+using Decompiler.Core.Operators;
 
 namespace Decompiler.Arch.Arm
 {
@@ -54,7 +55,7 @@ namespace Decompiler.Arch.Arm
 
         public BitSet CreateRegisterBitset()
         {
-            throw new NotImplementedException();
+            return new BitSet(16);
         }
 
         public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
@@ -99,7 +100,7 @@ namespace Decompiler.Arch.Arm
 
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
-            throw new NotImplementedException();
+            return new ArmProcedureSerializer(this, typeLoader, defaultCc);
         }
 
         public RegisterStorage GetRegister(int i)
@@ -109,7 +110,11 @@ namespace Decompiler.Arch.Arm
 
         public RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            if (name == null) throw new ArgumentNullException("name");
+            RegisterStorage reg;
+            if (!A32Registers.RegistersByName.TryGetValue(name, out reg))
+                reg = null;
+            return reg;
         }
 
         public Address MakeAddressFromConstant(Constant c)
@@ -134,7 +139,10 @@ namespace Decompiler.Arch.Arm
 
         public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            return new MemoryAccess(new BinaryExpression(
+                         Operator.IAdd, FramePointerType,
+                         frame.EnsureRegister(StackRegister), Constant.Word32(cbOffset)),
+                         dataType);
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
@@ -144,14 +152,14 @@ namespace Decompiler.Arch.Arm
 
         public int InstructionBitSize { get { return 32; } }
 
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public PrimitiveType FramePointerType

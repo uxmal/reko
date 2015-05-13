@@ -36,7 +36,7 @@ namespace Decompiler
         void WriteDecompiledCode(Program program, Action<TextWriter> writer);
         void WriteGlobals(Program program, Action<TextWriter> writer);
 
-        IDecompilerConfigurationService Configuration { get; }
+        IConfigurationService Configuration { get; }
 	}
 
 	/// <summary>
@@ -48,7 +48,7 @@ namespace Decompiler
 
 		#region DecompilerHost Members
 
-        public IDecompilerConfigurationService Configuration
+        public IConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }

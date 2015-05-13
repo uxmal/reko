@@ -18,37 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Configuration;
-using Decompiler.Gui.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Decompiler.ImageLoaders.Elf
 {
-    public  class AssembleFileInteractor 
+    public class ElfSymbol
     {
-        private AssembleFileDialog dlg;
-
-        public void Attach(AssembleFileDialog dlg)
-        {
-            this.dlg = dlg;
-            dlg.Load += dlg_Load;
-        }
-
-        void dlg_Load(object sender, EventArgs e)
-        {
-            var asms = dlg.Services.RequireService<IConfigurationService>()
-                .GetAssemblers()
-                .OfType<AssemblerElement>()
-                .Select(elem => new ListOption { Text = elem.Description, Value = e }).ToList();
-            dlg.AssemblerList.DataSource = asms;
-        }
+        public string Name;
+        public uint Value;
+        public byte Info;
     }
 }

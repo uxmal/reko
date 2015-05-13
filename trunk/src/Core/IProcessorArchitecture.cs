@@ -111,17 +111,6 @@ namespace Decompiler.Core
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
 
-		/// <summary>
-		/// A bitset that represents those registers that are never used as arguments to a procedure. 
-		/// </summary>
-		/// <remarks>
-		/// Typically, the stack pointer register is one of these registers. Some architectures define
-		/// global registers that are preserved across calls; these should also be present in this set.
-        /// //$REVIEW: it may make more sense to have the Platform decided what which the implict regs
-        /// are. Calling conventions may vary from computer to computer.
-		/// </remarks>
-		BitSet ImplicitArgumentRegisters { get; }
-
         string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
 
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)

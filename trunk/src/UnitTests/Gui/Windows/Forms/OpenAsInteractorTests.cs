@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IOpenAsDialog dlg;
         private ListOption[] archNames;
         private ListOption[] platformNames;
-        private IDecompilerConfigurationService dcSvc;
+        private IConfigurationService dcSvc;
         private IComboBox ddlPlatform;
         private IComboBox ddlArchitecture;
         private ServiceContainer sc;
@@ -49,9 +49,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             mr = new MockRepository();
-            dcSvc = mr.Stub<IDecompilerConfigurationService>();
+            dcSvc = mr.Stub<IConfigurationService>();
             sc = new ServiceContainer();
-            sc.AddService(typeof(IDecompilerConfigurationService), dcSvc);
+            sc.AddService(typeof(IConfigurationService), dcSvc);
         }
 
         [Test]

@@ -231,12 +231,12 @@ namespace Decompiler.Arch.Arm
             case 0x0: return DecodeOperands(uInstr, Opcode.and,  null, "3,4,*");
             case 0x1: return DecodeOperands(uInstr, Opcode.ands, null,  "3,4,*");
             case 0x2: return DecodeOperands(uInstr, Opcode.eor, null, "3,4,*");
-            case 0x3: return DecodeOperands(uInstr, Opcode.eors, null,  "@@@");
-            case 0x4: return DecodeOperands(uInstr, Opcode.sub,  null, "@@@");
+            case 0x3: return DecodeOperands(uInstr, Opcode.eors, null,  "3,4,*");
+            case 0x4: return DecodeOperands(uInstr, Opcode.sub,  null,  "@@@");
             case 0x5: return DecodeOperands(uInstr, Opcode.subs, null,  "@@@");
-            case 0x6: return DecodeOperands(uInstr, Opcode.rsb,  null, "@@@");
+            case 0x6: return DecodeOperands(uInstr, Opcode.rsb,  null,  "@@@");
             case 0x7: return DecodeOperands(uInstr, Opcode.rsbs, null,  "@@@");
-            case 0x8: return DecodeOperands(uInstr, Opcode.add,  null, "@@@");
+            case 0x8: return DecodeOperands(uInstr, Opcode.add,  null,  "@@@");
             case 0x9: return DecodeOperands(uInstr, Opcode.adds, null,  "@@@");
             case 0xA: return DecodeOperands(uInstr, Opcode.adc,  null, "@@@");
             case 0xB: return DecodeOperands(uInstr, Opcode.adcs, null,  "@@@");
@@ -410,7 +410,7 @@ namespace Decompiler.Arch.Arm
             case 1:
                 switch (op1)
                 {
-                case 0: return DecodeOperands(uInstr, Opcode.strh, null, "@@@");
+                case 0: return DecodeOperands(uInstr, Opcode.strh, PrimitiveType.UInt16, "3,\\");
                 case 1: return DecodeOperands(uInstr, Opcode.ldrh, PrimitiveType.UInt16, "3,\\");
                 case 4: return DecodeOperands(uInstr, Opcode.strh, null, "@@@");
                 case 6: 
@@ -515,12 +515,12 @@ namespace Decompiler.Arch.Arm
 
         private ArmInstruction MovT(addrdiff uInstr)
         {
-            throw new NotImplementedException();
+            return arm;
         }
 
         private ArmInstruction MsrAndHints(addrdiff uInstr)
         {
-            throw new NotImplementedException();
+            return arm;
         }
 
         private ArmInstruction LoadStoreUnsigned(uint uInstr)
