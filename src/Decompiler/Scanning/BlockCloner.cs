@@ -159,7 +159,7 @@ namespace Decompiler.Scanning
 
         public Expression VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            return addr.CloneExpression();
         }
 
         public Expression VisitApplication(Application appl)

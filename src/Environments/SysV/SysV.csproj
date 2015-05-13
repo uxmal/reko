@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <TranslateHeader Include="libc.so.inc" />
+    <TranslateHeader Include="Xlib.inc" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="linux-syscalls-i386.xml" />

@@ -55,6 +55,11 @@ namespace Decompiler.ImageLoaders.Elf
                 sh_entsize = rdr.ReadUInt32(),
             };
         }
+
+        public bool ContainsAddress(uint uAddress)
+        {
+            return sh_addr <= uAddress && uAddress < sh_addr + sh_size;
+        }
     }
 
     public class Elf64_SHdr

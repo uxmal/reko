@@ -151,12 +151,14 @@ namespace Decompiler.ImageLoaders.Elf
         private LoadedImage image;
         private ImageMap imageMap;
         private Dictionary<Address, ImportReference> importReferences;
+        private List<EntryPoint> entryPoints;
         private ulong m_uPltMin;
         private ulong m_uPltMax;
 
         public ElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)
         {
+            this.entryPoints = new List<EntryPoint>();
         }
 
         public Elf32_EHdr Header32 { get; set; }
@@ -601,7 +603,6 @@ namespace Decompiler.ImageLoaders.Elf
         {
             if (image == null)
                 throw new InvalidOperationException(); // No file loaded
-            List<EntryPoint> entryPoints = new List<EntryPoint>();
             RelocationDictionary relocations = new RelocationDictionary();
             var addrEntry = GetEntryPointAddress();
             if (addrEntry != null)
@@ -845,9 +846,11 @@ namespace Decompiler.ImageLoaders.Elf
         public void RelocateArm()
         {
             // Add symbol info. Some symbols will be in the main table only, and others in the dynamic table only.
-            // The best idea is to add symbols for all sections of the appropriate type
+            // The best idea is to add symbols for all sections of the appropriate type.
+            var textSeg = GetSectionInfoByName32(".text");
             foreach (var sec in SectionHeaders)
             {
+
                 if (sec.sh_type == SectionHeaderType.SHT_SYMTAB || sec.sh_type == SectionHeaderType.SHT_DYNSYM)
                 {
                     foreach (var symbol in ReadAllSymbols(sec)
@@ -856,7 +859,15 @@ namespace Decompiler.ImageLoaders.Elf
                         Debug.Print("Symbol: {0:X8} {1:X7} {2}", symbol.Value, symbol.Info, symbol.Name);
                         var addr = 
                             Address.Ptr32(symbol.Value);
-                        importReferences[addr] = new NamedImportReference(addr, null, symbol.Name);
+                        if (symbol.Name == "main"
+                            || (textSeg != null && textSeg.ContainsAddress(symbol.Value)))
+                        {
+                            entryPoints.Add(new EntryPoint(addr, symbol.Name, arch.CreateProcessorState()));
+                        }
+                        else
+                        {
+                            importReferences[addr] = new NamedImportReference(addr, null, symbol.Name);
+                        }
                     }
                 }
             }

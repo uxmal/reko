@@ -73,6 +73,8 @@ namespace Decompiler.Arch.Arm
                 case Opcode.ands: RewriteBinOp(Operator.And, true); break;
                 case Opcode.add: RewriteBinOp(Operator.IAdd, false); break;
                 case Opcode.adds: RewriteBinOp(Operator.IAdd, true); break;
+                case Opcode.eor: RewriteBinOp(Operator.Xor, false); break;
+                case Opcode.eors: RewriteBinOp(Operator.Xor, true); break;
                 case Opcode.mvn: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.b: RewriteB(false); break;
                 case Opcode.bic: RewriteBic(); break;
@@ -83,6 +85,7 @@ namespace Decompiler.Arch.Arm
                 case Opcode.ldrb: RewriteLdr(PrimitiveType.Byte); break;
                 case Opcode.ldrh: RewriteLdr(PrimitiveType.UInt16); break;
                 case Opcode.ldrsb: RewriteLdr(PrimitiveType.SByte); break;
+                case Opcode.ldrsh: RewriteLdr(PrimitiveType.Int16); break;
                 case Opcode.ldm: RewriteLdm(); break;
                 case Opcode.ldmdb: RewriteLdm(); break;
                 case Opcode.ldmfd: RewriteLdm(); break;
@@ -92,8 +95,10 @@ namespace Decompiler.Arch.Arm
                 case Opcode.rsbs: RewriteRevBinOp(Operator.ISub, true); break;
                 case Opcode.stm: RewriteStm(); break;
                 case Opcode.stmdb: RewriteStm(); break;
+                case Opcode.stmib: RewriteStmib(); break;
                 case Opcode.str: RewriteStr(PrimitiveType.Word32); break;
                 case Opcode.strb: RewriteStr(PrimitiveType.Byte); break;
+                case Opcode.strh: RewriteStr(PrimitiveType.UInt16); break;
                 case Opcode.sub: RewriteBinOp(Operator.ISub, false); break;
                 case Opcode.subs: RewriteBinOp(Operator.ISub, true); break;
                 case Opcode.svc: RewriteSvc(); break;
@@ -206,7 +211,7 @@ namespace Decompiler.Arch.Arm
                         return emitter.Load(memOp.Width, Address.Ptr32(dst));
                     }
                 }
-                if (memOp.Offset != null)
+                if (memOp.Offset != null && memOp.Preindexed)
                 {
                     var offset = Operand(memOp.Offset);
                     ea = memOp.Subtract
@@ -221,6 +226,21 @@ namespace Decompiler.Arch.Arm
                 return emitter.Load(memOp.Width, ea);
             }
             throw new NotSupportedException(string.Format("Unsupported operand {0}.", op));
+        }
+
+        private void MaybePostOperand(MachineOperand op)
+        {
+            var memOp = op as ArmMemoryOperand;
+            if (memOp == null || memOp.Offset  == null)
+                return;
+            if (memOp.Preindexed)
+                return;
+            Expression baseReg = frame.EnsureRegister(memOp.Base);
+            var offset = Operand(memOp.Offset);
+            var ea = memOp.Subtract
+                ? emitter.ISub(baseReg, offset)
+                : emitter.IAdd(baseReg, offset);
+            emitter.Assign(baseReg, ea);
         }
 
         private TestCondition TestCond(Condition cond)
@@ -249,6 +269,8 @@ namespace Decompiler.Arch.Arm
                 return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte));
             case Condition.mi:
                 return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF, "N", PrimitiveType.Byte));
+            case Condition.pl:
+                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF, "NZ", PrimitiveType.Byte));
             case Condition.ne:
                 return new TestCondition(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
             case Condition.vs:

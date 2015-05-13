@@ -44,6 +44,45 @@
     <typedef name="mode_t">
       <prim domain="SignedInt" size="4" />
     </typedef>
+    <typedef name="uid_t">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="gid_t">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <struct name="passwd">
+      <field offset="0" name="pw_name">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="4" name="pw_passwd">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="8" name="pw_uid">
+        <type>uid_t</type>
+      </field>
+      <field offset="12" name="pw_gid">
+        <type>gid_t</type>
+      </field>
+      <field offset="16" name="pw_gecos">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="20" name="pw_dir">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+      <field offset="24" name="pw_shell">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </field>
+    </struct>
     <struct name="stat" />
   </Types>
   <procedure name="__libc_start_main">
@@ -806,14 +845,58 @@
       </arg>
     </signature>
   </procedure>
-  <procedure name="unlink">
+  <procedure name="fprintf">
     <signature>
       <return>
         <prim domain="SignedInt" size="4" />
       </return>
-      <arg name="path">
+      <arg name="fp">
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+      <arg>
         <ptr>
           <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="...">
+        <stack />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="_IO_getc">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="fp">
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="fileno">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr>
+          <type>FILE</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="ferror">
+    <signature>
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg>
+        <ptr>
+          <type>FILE</type>
         </ptr>
       </arg>
     </signature>
@@ -1024,18 +1107,6 @@
       <arg>
         <ptr>
           <prim domain="Character" size="1" />
-        </ptr>
-      </arg>
-    </signature>
-  </procedure>
-  <procedure name="fileno">
-    <signature>
-      <return>
-        <prim domain="SignedInt" size="4" />
-      </return>
-      <arg>
-        <ptr>
-          <type>FILE</type>
         </ptr>
       </arg>
     </signature>
@@ -1286,14 +1357,14 @@
       </arg>
     </signature>
   </procedure>
-  <procedure name="ferror">
+  <procedure name="unlink">
     <signature>
       <return>
         <prim domain="SignedInt" size="4" />
       </return>
-      <arg>
+      <arg name="path">
         <ptr>
-          <type>FILE</type>
+          <prim domain="Character" size="1" />
         </ptr>
       </arg>
     </signature>
@@ -1397,6 +1468,32 @@
         <ptr>
           <struct name="stat" />
         </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="getuid">
+    <signature>
+      <return>
+        <type>uid_t</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="geteuid">
+    <signature>
+      <return>
+        <type>uid_t</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="getpwuid">
+    <signature>
+      <return>
+        <ptr>
+          <struct name="passwd" />
+        </ptr>
+      </return>
+      <arg name="uid">
+        <type>uid_t</type>
       </arg>
     </signature>
   </procedure>
