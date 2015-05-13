@@ -53,6 +53,7 @@ namespace Decompiler.Arch.Arm
                 ConditionalAssign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
             }
         }
+
         private void RewriteUnaryOp(UnaryOperator op)
         {
             var opDst = this.Operand(instr.Dst);
@@ -123,6 +124,7 @@ namespace Decompiler.Arch.Arm
                 return;
             }
             emitter.Assign(opDst, opSrc);
+            MaybePostOperand(instr.Src1);
         }
 
         private void RewriteStr(DataType size)
@@ -130,6 +132,7 @@ namespace Decompiler.Arch.Arm
             var opSrc = this.Operand(instr.Dst);
             var opDst = this.Operand(instr.Src1);
             emitter.Assign(opDst, opSrc);
+            MaybePostOperand(instr.Src1);
         }
 
         private void RewriteMov()
@@ -166,7 +169,7 @@ namespace Decompiler.Arch.Arm
                     : (Expression) dst;
                 var reg = arch.GetRegister(r);
                 var srcReg = frame.EnsureRegister(reg);
-                emitter.Assign(emitter.LoadDw(ea), srcReg);
+                emitter.Assign(srcReg, emitter.LoadDw(ea));
                 offset += srcReg.DataType.Size;
                 if (reg == A32Registers.pc)
                     pcRestored = true;
@@ -193,6 +196,26 @@ namespace Decompiler.Arch.Arm
                 var srcReg = frame.EnsureRegister(arch.GetRegister(r));
                 emitter.Assign(emitter.LoadDw(ea), srcReg);
                 offset += srcReg.DataType.Size;
+            }
+            if (offset != 0 && instr.Update)
+            {
+                emitter.Assign(dst, emitter.ISub(dst, offset));
+            }
+        }
+
+        private void RewriteStmib()
+        {
+            var dst = frame.EnsureRegister(((RegisterOperand)instr.Dst).Register);
+            var range = (RegisterRangeOperand)instr.Src1;
+            int offset = 0;
+            foreach (var r in range.GetRegisters())
+            {
+                var srcReg = frame.EnsureRegister(arch.GetRegister(r));
+                offset += srcReg.DataType.Size;
+                Expression ea = offset != 0
+                    ? emitter.ISub(dst, offset)
+                    : (Expression)dst;
+                emitter.Assign(emitter.LoadDw(ea), srcReg);
             }
             if (offset != 0 && instr.Update)
             {

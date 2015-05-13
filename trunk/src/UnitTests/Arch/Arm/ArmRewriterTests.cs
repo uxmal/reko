@@ -236,5 +236,15 @@ namespace Decompiler.UnitTests.Arch.Arm
                 "0|00100000(4): 1 instructions",
                 "1|T--|goto Mem0[ip:word32]");
         }
+
+        [Test]
+        public void ArmRw_ldr_post()
+        {
+            BuildTest(0xE4D43001);// ldrb r3,[r4],#1
+            AssertCode(
+                "0|00100000(4): 2 instructions",
+                "1|L--|r3 = Mem0[r4:byte]",
+                "2|L--|r4 = r4 + 0x00000001");
+        }
     }
 }

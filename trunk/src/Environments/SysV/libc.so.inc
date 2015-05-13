@@ -11,6 +11,17 @@ typedef int clockid_t;
 typedef long time_t;
 typedef void * va_list;	
 typedef int mode_t;
+typedef int uid_t;
+typedef int gid_t;
+struct passwd {
+    char   *pw_name;
+    char   *pw_passwd;
+    uid_t   pw_uid;   
+    gid_t   pw_gid;   
+    char   *pw_gecos; 
+    char   *pw_dir;   
+    char   *pw_shell; 
+};
 struct stat
 {
 };
@@ -60,7 +71,11 @@ int read(int fd, void * buf, size_t count);
 int strtol(char * s);
 int socket(int dom, int type, int proto);
 int feof(FILE * fp);
-int unlink(char * path);
+int fprintf(FILE * fp, char *,...);
+int _IO_getc(FILE * fp);
+int fileno(FILE*);
+int ferror(FILE *);
+
 char * strerror ( int errnum );
 int mkdir(char *path,int);
 size_t fread ( void * ptr, size_t size, size_t count, FILE * stream );
@@ -72,7 +87,6 @@ int __snprintf_chk(char * str, size_t maxlen, int flag, size_t strlen, const cha
 int * __errno_location();
 void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function);
 char * strpbrk(char *, char *);
-int fileno(FILE*);
 void * __rawmemchr(const void * s, int c);
 void __stack_chk_fail(void);
 int _IO_putc(int __c, _IO_FILE * __fp);
@@ -87,11 +101,13 @@ int munmap(void *addr, size_t length);
 int utime(const char *filename,  struct utimbuf *times);
 time_t time (time_t *result);
 int __vfprintf_chk(FILE * fp, int flag, const char * format, va_list ap);
-int ferror(FILE *);
+int unlink(char * path);
 int chmod(const char *pathname, mode_t mode);
 int fnmatch(const char *pattern, const char *string, int flags);
 FILE * fopen(const char * file, const char * mode);
 void perror(const char *msg);
 void atexit(void(*func)(void));
 int _xstat(int version, const char * path, struct stat * statbuf);
-
+uid_t getuid(void);
+uid_t geteuid(void);
+struct passwd *getpwuid(uid_t uid);

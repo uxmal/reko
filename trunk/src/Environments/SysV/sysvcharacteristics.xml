@@ -5,4 +5,9 @@
       <terminates>true</terminates>
     </characteristics>
   </entry>
+  <entry name="exit">
+    <characteristics>
+      <terminates>true</terminates>
+    </characteristics>
+  </entry>
 </characteristics>
