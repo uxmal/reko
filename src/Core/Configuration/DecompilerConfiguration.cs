@@ -32,7 +32,7 @@ namespace Decompiler.Core.Configuration
     /// <summary>
     /// Provides access to information stored in the app.config file.
     /// </summary>
-    public interface IDecompilerConfigurationService
+    public interface IConfigurationService
     {
          ICollection GetImageLoaders();
          ICollection GetArchitectures();
@@ -49,7 +49,7 @@ namespace Decompiler.Core.Configuration
          string GetPath(string path);
     }
 
-    public class DecompilerConfiguration : IDecompilerConfigurationService
+    public class DecompilerConfiguration : IConfigurationService
     {
         public virtual ICollection GetImageLoaders()
         {

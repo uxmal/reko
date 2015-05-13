@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
@@ -37,10 +38,6 @@ namespace Decompiler.Core
         /// <summary>
         /// Initializes a Platform instance
         /// </summary>
-        /// <remarks>We don't actually need the architecture in the base class, but we have to force a 
-        /// uniform constructor signature across all derived classes. All subclasses must implement this 
-        /// constructor.
-        /// </remarks>
         /// <param name="arch"></param>
         protected Platform(IServiceProvider services, IProcessorArchitecture arch) 
         {
@@ -63,6 +60,16 @@ namespace Decompiler.Core
         public virtual Encoding DefaultTextEncoding { get { return Encoding.ASCII; } }
 
         public abstract string DefaultCallingConvention { get; }
+
+        /// <summary>
+        /// Creates a bitset that represents those registers that are never used as arguments to a 
+        /// procedure. 
+        /// </summary>
+        /// <remarks>
+        /// Typically, the stack pointer register is one of these registers. Some architectures define
+        /// global registers that are preserved across calls; these should also be present in this set.
+        /// </remarks>
+        public abstract BitSet CreateImplicitArgumentRegisters();
 
         public IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, Address[] address, PointerScannerFlags pointerScannerFlags)
         {
@@ -127,7 +134,7 @@ namespace Decompiler.Core
         {
             return null;
         }
-    }
+   }
 
     /// <summary>
     /// The default platform is used when a specific platform cannot be determind.
@@ -144,6 +151,11 @@ namespace Decompiler.Core
         public override string DefaultCallingConvention
         {
             get { return ""; }
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

@@ -21,6 +21,7 @@
 using Decompiler.Arch.X86;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
@@ -65,8 +66,11 @@ namespace Decompiler.UnitTests.Scanning
             scanner = mr.StrictMock<IScanner>();
             arch = mr.DynamicMock<IProcessorArchitecture>();
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(s => s.CreateRegisterBitset()).Return(new BitSet(32));
             prog.Architecture = arch;
+            arch.Replay();
             prog.Platform = new DefaultPlatform(null, arch);
+            arch.BackToRecord();
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -265,6 +269,7 @@ namespace Decompiler.UnitTests.Scanning
             state.SetRegister(Registers.eax, Constant.Word32(0x0400));
             var wi = CreateWorkItem(Address.Ptr32(0x1000), state);
             wi.ProcessInternal();
+
             mr.VerifyAll();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.AreEqual("esp = esp - 0x00000400", block.Statements.Last.ToString());
@@ -437,7 +442,7 @@ testProc_exit:
         [Test]
         public void Bwi_IndirectCallMatchedByPlatform()
         {
-            var platform = mr.StrictMock<Platform>(null, null);
+            var platform = mr.StrictMock<Platform>(null, arch);
             var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, PrimitiveType.Pointer32));
             var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Pointer32));
             var sysSvc = new SystemService {

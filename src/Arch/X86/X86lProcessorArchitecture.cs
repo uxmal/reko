@@ -61,7 +61,6 @@ namespace Decompiler.Arch.X86
     /// </summary>
 	public class IntelArchitecture : IProcessorArchitecture
 	{
-		private BitSet implicitRegs;
 		private ProcessorMode mode;
         private List<FlagGroupStorage> flagGroups;
 
@@ -70,11 +69,6 @@ namespace Decompiler.Arch.X86
 			this.mode = mode;
             this.flagGroups = new List<FlagGroupStorage>();
 		
-			implicitRegs = CreateRegisterBitset();
-			implicitRegs[Registers.cs.Number] = true;
-			implicitRegs[Registers.ss.Number] = true;
-			implicitRegs[Registers.sp.Number] = true;
-			implicitRegs[Registers.esp.Number] = true;
 		}
 
 		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
@@ -204,11 +198,6 @@ namespace Decompiler.Arch.X86
             reg = Registers.GetRegister(name);
             return (reg != RegisterStorage.None);
         }
-
-		public BitSet ImplicitArgumentRegisters
-		{
-			get { return implicitRegs; }
-		}
 
         public int InstructionBitSize { get { return 8; } }
 

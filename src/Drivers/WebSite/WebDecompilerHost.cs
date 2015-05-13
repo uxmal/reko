@@ -121,7 +121,7 @@ namespace Decompiler.WebSite
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Configuration.IDecompilerConfigurationService Configuration
+        public Decompiler.Core.Configuration.IConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }

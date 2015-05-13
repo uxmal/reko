@@ -83,7 +83,7 @@ namespace Decompiler.Assemblers.M68k
                 image,
                 image.CreateImageMap(),
                 arch, 
-                new DefaultPlatform(null, null));
+                new DefaultPlatform(null, arch));
         }
 
         internal void Cnop(int extra, int align)

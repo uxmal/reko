@@ -43,7 +43,7 @@ namespace Decompiler.Gui.Forms
 
         private void dlg_Load(object sender, EventArgs e)
         {
-            var dcCfg = dlg.Services.RequireService<IDecompilerConfigurationService>();
+            var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateArchitectures(dcCfg);
             PopulatePlatforms(dcCfg);
             dlg.AddressTextBox.Text = "0";
@@ -54,7 +54,7 @@ namespace Decompiler.Gui.Forms
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0;
         }
 
-        private void PopulatePlatforms(IDecompilerConfigurationService dcCfg)
+        private void PopulatePlatforms(IConfigurationService dcCfg)
         {
             var noneOption = new ListOption
             {
@@ -71,7 +71,7 @@ namespace Decompiler.Gui.Forms
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }
 
-        private void PopulateArchitectures(IDecompilerConfigurationService dcCfg)
+        private void PopulateArchitectures(IConfigurationService dcCfg)
         {
             var archs = dcCfg.GetArchitectures()
                 .OfType<Architecture>()

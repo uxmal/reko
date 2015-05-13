@@ -69,6 +69,7 @@
     <Compile Include="ArmImmediateOperand.cs" />
     <Compile Include="ArmInstruction.cs" />
     <Compile Include="ArmMemoryOperand.cs" />
+    <Compile Include="ArmProcedureSerializer.cs" />
     <Compile Include="ArmProcessorArchitecture.cs" />
     <Compile Include="ArmProcessorState.cs" />
     <Compile Include="ArmRewriter.Alu.cs" />

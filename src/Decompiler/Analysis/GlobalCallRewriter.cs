@@ -157,7 +157,8 @@ namespace Decompiler.Analysis
 				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);
 			}
 
-			BitSet mayUse = flow.MayUse - Program.Architecture.ImplicitArgumentRegisters;
+            var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
+            BitSet mayUse = flow.MayUse - implicitRegs;
 			foreach (int r in mayUse)
 			{
 				if (!IsSubRegisterOfRegisters(r, mayUse))
@@ -176,7 +177,7 @@ namespace Decompiler.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-			BitSet liveOut = flow.LiveOut - Program.Architecture.ImplicitArgumentRegisters;
+            BitSet liveOut = flow.LiveOut - implicitRegs;
 			foreach (int r in liveOut)
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))

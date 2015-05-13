@@ -48,7 +48,7 @@ namespace Decompiler.Loading
         /// </summary>
         public void LoadSignatureFiles()
         {
-            var cfgSvc = Services.GetService<IDecompilerConfigurationService>();
+            var cfgSvc = Services.GetService<IConfigurationService>();
             if (cfgSvc == null)
                 return;
             foreach (SignatureFileElement sfe in cfgSvc.GetSignatureFiles())
@@ -81,7 +81,7 @@ namespace Decompiler.Loading
             var signature = Signatures.Where(s => Matches(s, image, entryPointOffset)).FirstOrDefault();
             if (signature == null)
                 return null;
-            var loaders = Services.RequireService<IDecompilerConfigurationService>().GetImageLoaders();
+            var loaders = Services.RequireService<IConfigurationService>().GetImageLoaders();
             var le = loaders.Cast<LoaderElement>().Where(l => l.Label == signature.Name).FirstOrDefault();  //$REVIEW: all of themn?
             if (le == null)
                 return null;

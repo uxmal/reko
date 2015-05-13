@@ -34,14 +34,14 @@ namespace Decompiler.UnitTests.Mocks
         private StringWriter decompiled = new StringWriter();
         private StringWriter typesWriter = new StringWriter();
         private StringWriter globalsWriter = new StringWriter();
-        private IDecompilerConfigurationService config = new FakeDecompilerConfiguration();
+        private IConfigurationService config = new FakeDecompilerConfiguration();
 
         public TextWriter CreateDecompiledCodeWriter(string file)
         {
             return decompiled;
         }
 
-        IDecompilerConfigurationService DecompilerHost.Configuration
+        IConfigurationService DecompilerHost.Configuration
         {
             get { return config; }
         }

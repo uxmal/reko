@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeDecompilerConfiguration : IDecompilerConfigurationService
+    public class FakeDecompilerConfiguration : IConfigurationService
     {
         private ArrayList imageLoaders = new ArrayList();
 

@@ -43,6 +43,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			program = new Program();
 			program.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            program.Platform = new DefaultPlatform(null, program.Architecture);
 			gcr = new GlobalCallRewriter(program, null);
             proc = new Procedure("foo", program.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, program.Architecture);

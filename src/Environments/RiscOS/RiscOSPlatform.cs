@@ -21,6 +21,7 @@
 using Decompiler.Arch.Arm;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Serialization;
@@ -43,6 +44,11 @@ namespace Decompiler.Environments.RiscOS
         public override string DefaultCallingConvention
         {
             get { return ""; }
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

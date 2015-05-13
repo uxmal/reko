@@ -37,7 +37,7 @@ namespace Decompiler.Gui
     public interface IServiceFactory
     {
         IArchiveBrowserService CreateArchiveBrowserService();
-        IDecompilerConfigurationService CreateDecompilerConfiguration();
+        IConfigurationService CreateDecompilerConfiguration();
         DecompilerEventListener CreateDecompilerEventListener();
         IDecompilerService CreateDecompilerService();
         IDiagnosticsService CreateDiagnosticsService(ListView list);
@@ -69,7 +69,7 @@ namespace Decompiler.Gui
             return new ArchiveBrowserService(services);
         }
 
-        public IDecompilerConfigurationService CreateDecompilerConfiguration()
+        public IConfigurationService CreateDecompilerConfiguration()
         {
             return new DecompilerConfiguration();
         }
@@ -143,7 +143,7 @@ namespace Decompiler.Gui
 
         public IUiPreferencesService CreateUiPreferencesService()
         {
-            var configSvc = services.RequireService<IDecompilerConfigurationService>();
+            var configSvc = services.RequireService<IConfigurationService>();
             var settingsSvc = services.RequireService<ISettingsService>();
             return new UiPreferencesService(configSvc, settingsSvc);
         }

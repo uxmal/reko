@@ -42,7 +42,6 @@ namespace Decompiler.UnitTests.Mocks
 	public class FakeArchitecture : IProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
-		private BitSet implicitRegs;
         private RtlTraceBuilder rewriters;
 
 		internal const int RegisterCount = 64;
@@ -51,9 +50,6 @@ namespace Decompiler.UnitTests.Mocks
 
 		public FakeArchitecture()
 		{
-			this.implicitRegs = new BitSet(RegisterCount);
-			implicitRegs[iStackRegister]  = true;
-			implicitRegs[iReturnRegister] = true;
             this.rewriters = new RtlTraceBuilder();
 		}
 
@@ -152,11 +148,6 @@ namespace Decompiler.UnitTests.Mocks
                     return GetRegister(reg);
             }
             return null;
-		}
-
-		public BitSet ImplicitArgumentRegisters
-		{
-			get { return implicitRegs; }
 		}
 
         public int InstructionBitSize { get { return 32; } }

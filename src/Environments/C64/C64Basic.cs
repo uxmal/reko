@@ -136,11 +136,6 @@ namespace Decompiler.Environments.C64
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public Core.Lib.BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public string GrfToString(uint grf)
         {
             throw new NotImplementedException();

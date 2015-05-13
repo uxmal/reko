@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             mr = new MockRepository();
             var services = mr.Stub<IServiceProvider>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
-            var configSvc = mr.StrictMock<IDecompilerConfigurationService>();
+            var configSvc = mr.StrictMock<IConfigurationService>();
             var win32env = new OperatingEnvironmentElement
             {
                 TypeLibraries = 
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             configSvc.Stub(c => c.GetPath(null)).IgnoreArguments()
                 .Do(new Func<string, string>(s => s));
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
-            services.Stub(s => s.GetService(typeof(IDecompilerConfigurationService))).Return(configSvc);
+            services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
             tlSvc.Stub(t => t.LoadLibrary(null, null)).IgnoreArguments()
                 .Do(new Func<IProcessorArchitecture, string, TypeLibrary>((a, n) =>
                 {

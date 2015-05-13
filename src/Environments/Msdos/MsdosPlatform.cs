@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
 using System;
 using System.IO;
@@ -34,6 +36,16 @@ namespace Decompiler.Environments.Msdos
 		{
 			LoadRealmodeServices(arch);
 		}
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.cs.SetAliases(bitset, true);
+            Registers.ss.SetAliases(bitset, true);
+            Registers.sp.SetAliases(bitset, true);
+            Registers.esp.SetAliases(bitset, true);
+            return bitset;
+        }
 
 		public override SystemService FindService(int vector, ProcessorState state)
 		{

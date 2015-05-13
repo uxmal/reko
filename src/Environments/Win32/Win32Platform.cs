@@ -22,6 +22,7 @@ using Decompiler.Arch.X86;
 using Decompiler.Core;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
@@ -73,6 +74,18 @@ namespace Decompiler.Environments.Win32
                     Terminates = true
                 }
             };
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.cs.SetAliases(bitset, true);
+            Registers.ss.SetAliases(bitset, true);
+            Registers.sp.SetAliases(bitset, true);
+            Registers.esp.SetAliases(bitset, true);
+            Registers.fs.SetAliases(bitset, true);
+            Registers.gs.SetAliases(bitset, true);
+            return bitset;
         }
 
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
@@ -141,7 +154,7 @@ namespace Decompiler.Environments.Win32
         {
             if (TypeLibs == null)
             {
-                var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+                var cfgSvc = Services.RequireService<IConfigurationService>();
                 var envCfg = cfgSvc.GetEnvironment("win32");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)

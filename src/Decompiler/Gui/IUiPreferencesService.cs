@@ -60,12 +60,12 @@ namespace Decompiler.Gui
 
     public class UiPreferencesService : IUiPreferencesService
     {
-        private IDecompilerConfigurationService configSvc;
+        private IConfigurationService configSvc;
         private ISettingsService settingsSvc;
 
         public event EventHandler UiPreferencesChanged;
 
-        public UiPreferencesService(IDecompilerConfigurationService configSvc, ISettingsService settingsSvc)
+        public UiPreferencesService(IConfigurationService configSvc, ISettingsService settingsSvc)
         {
             this.configSvc = configSvc;
             this.settingsSvc = settingsSvc;

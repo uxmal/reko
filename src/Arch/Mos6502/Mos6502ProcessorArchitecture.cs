@@ -120,11 +120,6 @@ namespace Decompiler.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public BitSet ImplicitArgumentRegisters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public int InstructionBitSize { get { return 8; } }
 
         public string GrfToString(uint grf)

@@ -25,6 +25,7 @@ using Decompiler.Core;
 using Decompiler.Core.Assemblers;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
@@ -165,7 +166,7 @@ namespace Decompiler.UnitTests.Analysis
             var fakeConfigService = new FakeDecompilerConfiguration();
             var sc = new ServiceContainer();
             sc.AddService(typeof(IDiagnosticsService), fakeDiagnosticsService);
-            sc.AddService(typeof(IDecompilerConfigurationService), fakeConfigService);
+            sc.AddService(typeof(IConfigurationService), fakeConfigService);
             var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
@@ -293,7 +294,8 @@ namespace Decompiler.UnitTests.Analysis
                 .Return(null);
 
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-
+            platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
+                new Decompiler.Arch.X86.X86ArchitectureFlat32().CreateRegisterBitset());
             Given_Platform(platform);
         }
 	}

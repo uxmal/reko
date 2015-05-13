@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,6 +31,11 @@ namespace Decompiler.UnitTests.Mocks
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
         {
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

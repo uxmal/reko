@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Environments.Win32
         private IntelArchitecture arch;
         private ExternalProcedure extProc;
         private OperatingEnvironment opEnv;
-        private IDecompilerConfigurationService dcSvc;
+        private IConfigurationService dcSvc;
 
         [SetUp]
         public void Setup()
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             repository = new MockRepository();
             sc = new ServiceContainer();
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            dcSvc = repository.StrictMock<IDecompilerConfigurationService>();
+            dcSvc = repository.StrictMock<IConfigurationService>();
             opEnv = repository.StrictMock<OperatingEnvironment>();
         }
 
@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Environments.Win32
 
         private void Given_Configuration_With_Win32_Element()
         {
-            var dcSvc = repository.Stub<IDecompilerConfigurationService>();
+            var dcSvc = repository.Stub<IConfigurationService>();
             var opEnv = new OperatingEnvironmentElement 
             {
                 TypeLibraries =
@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Environments.Win32
             dcSvc.Stub(c => c.GetPath(null)).IgnoreArguments()
                 .Do(new Func<string, string>(s => s));
             
-            sc.AddService<IDecompilerConfigurationService>(dcSvc);
+            sc.AddService<IConfigurationService>(dcSvc);
         }
 
         private void When_Creating_Win32_Platform()

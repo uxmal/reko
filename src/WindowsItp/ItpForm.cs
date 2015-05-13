@@ -148,13 +148,13 @@ namespace Decompiler.WindowsItp
             {
                 var sc = new ServiceContainer();
                 var cfgSvc = new FakeConfigurationService();
-                sc.AddService(typeof(IDecompilerConfigurationService), cfgSvc);
+                sc.AddService(typeof(IConfigurationService), cfgSvc);
                 dlg.Services = sc;
                 dlg.ShowDialog(this);
             }
         }
 
-        private class FakeConfigurationService : IDecompilerConfigurationService
+        private class FakeConfigurationService : IConfigurationService
         {
             public ICollection GetImageLoaders()
             {

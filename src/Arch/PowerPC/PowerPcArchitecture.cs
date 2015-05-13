@@ -250,13 +250,6 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public BitSet ImplicitArgumentRegisters
-        {
-            get {
-                return CreateRegisterBitset();
-            }
-        }
-
         public int InstructionBitSize { get { return 32; } }
 
         public string GrfToString(uint grf)

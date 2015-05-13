@@ -345,7 +345,7 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
         private MockRepository mr;
         private IProcessorArchitecture arch;
         private IServiceProvider services;
-        private IDecompilerConfigurationService dcSvc;
+        private IConfigurationService dcSvc;
         private ITypeLibraryLoaderService tlSvc;
 
         [SetUp]
@@ -354,9 +354,9 @@ namespace Decompiler.UnitTests.ImageLoaders.Elf
             this.mr = new MockRepository();
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.services = mr.Stub<IServiceProvider>();
-            this.dcSvc = mr.Stub<IDecompilerConfigurationService>();
+            this.dcSvc = mr.Stub<IConfigurationService>();
             this.tlSvc = mr.Stub<ITypeLibraryLoaderService>(); 
-            services.Stub(s => s.GetService(typeof(IDecompilerConfigurationService))).Return(dcSvc);
+            services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(dcSvc);
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             dcSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
             dcSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement

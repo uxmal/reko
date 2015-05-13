@@ -21,6 +21,7 @@
 using Decompiler.Arch.PowerPC;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -44,6 +45,11 @@ namespace Decompiler.Environments.Ps3
         public override string DefaultCallingConvention { get { return ""; } }
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Pointer32; } }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
+        }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {

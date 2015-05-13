@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Services;
 using System;
@@ -34,6 +35,7 @@ namespace Decompiler.Environments.SysV
     public class SysVPlatform : Platform
     {
         private TypeLibrary[] typelibs;
+        private CharacteristicsLibrary[] CharacteristicsLibs;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch)
@@ -46,17 +48,26 @@ namespace Decompiler.Environments.SysV
             get { return ""; }
         }
 
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            return Architecture.CreateRegisterBitset();
+        }
+
         private void EnsureTypeLibraries()
         {
             if (typelibs == null)
             {
-                var cfgSvc = Services.RequireService<IDecompilerConfigurationService>();
+                var cfgSvc = Services.RequireService<IConfigurationService>();
                 var envCfg = cfgSvc.GetEnvironment("elf-neutral");
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.typelibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
                     .Select(tl => tlSvc.LoadLibrary(Architecture, tl.Name))
                     .Where(tl => tl != null).ToArray();
+                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
+                    .OfType<ITypeLibraryElement>()
+                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
+                    .Where(cl => cl != null).ToArray();
             }
         }
 
@@ -116,10 +127,16 @@ namespace Decompiler.Environments.SysV
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
             EnsureTypeLibraries();
-            return typelibs.Select(t => t.Lookup(procName))
+            var proc = typelibs.Select(t => t.Lookup(procName))
                         .Where(sig => sig != null)
                         .Select(s => new ExternalProcedure(procName, s))
                         .FirstOrDefault();
+            var characteristics = CharacteristicsLibs.Select(cl => cl.Lookup(procName))
+                .Where(c => c != null)
+                .FirstOrDefault();
+            if (characteristics != null)
+                proc.Characteristics = characteristics;
+            return proc;
         }
     }
 }

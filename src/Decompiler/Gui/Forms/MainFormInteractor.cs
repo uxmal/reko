@@ -69,7 +69,7 @@ namespace Decompiler.Gui.Forms
         private DecompilerMenus dm;
         private string projectFileName;
         private IServiceContainer sc;
-        private IDecompilerConfigurationService config;
+        private IConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
         private static string dirSettings;
 
@@ -131,7 +131,7 @@ namespace Decompiler.Gui.Forms
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
         {
             config = svcFactory.CreateDecompilerConfiguration();
-            sc.AddService(typeof(IDecompilerConfigurationService), config);
+            sc.AddService(typeof(IConfigurationService), config);
 
             sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
 
@@ -757,7 +757,7 @@ namespace Decompiler.Gui.Forms
 
         #region DecompilerHost Members //////////////////////////////////
 
-        public IDecompilerConfigurationService Configuration
+        public IConfigurationService Configuration
         {
             get { return config; }
         }

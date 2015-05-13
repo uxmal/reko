@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Decompiler.Arch.Z80;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +39,13 @@ namespace Decompiler.Environments.ZX81
             : base(services, arch)
         {
             encoding = new ZX81Encoding();
+        }
+
+        public override BitSet CreateImplicitArgumentRegisters()
+        {
+            var bitset = Architecture.CreateRegisterBitset();
+            Registers.sp.SetAliases(bitset, true);
+            return bitset;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

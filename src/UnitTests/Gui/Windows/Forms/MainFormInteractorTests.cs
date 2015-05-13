@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IDisassemblyViewService disasmSvc;
         private IDiagnosticsService diagnosticSvc;
         private IDecompilerShellUiService uiSvc;
-        private IDecompilerConfigurationService configSvc;
+        private IConfigurationService configSvc;
         private ITypeLibraryLoaderService typeLibSvc;
         private IProjectBrowserService brSvc;
         private IFileSystemService fsSvc;
@@ -72,8 +72,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
             mr = new MockRepository();
             services = new ServiceContainer();
-            configSvc = mr.Stub<IDecompilerConfigurationService>();
-            services.AddService<IDecompilerConfigurationService>(configSvc);
+            configSvc = mr.Stub<IConfigurationService>();
+            services.AddService<IConfigurationService>(configSvc);
 		}
 
 		[Test]
