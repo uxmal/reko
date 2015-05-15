@@ -27,12 +27,13 @@ using System.Text;
 
 namespace Decompiler.Core
 {
-
     /// <summary>
-    /// Implementors assume responsibility for loading project files or binariesassembling
+    /// Implementors assume responsibility for loading project files or binaries.
     /// </summary>
     public interface ILoader
     {
+        string DefaultToFormat { get; set; }
+
         byte[] LoadImageBytes(string fileName, int offset);
         Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress);
         Program AssembleExecutable(string fileName, string asmName, Address loadAddress);

@@ -136,7 +136,8 @@ namespace Decompiler.ImageLoaders.MzExe
 		public override Address PreferredBaseAddress
 		{
 			get { return GetDeferredLoader().PreferredBaseAddress; }
-		}
+            set { throw new NotImplementedException(); }
+        }
 
 		public void ReadCommonExeFields()
 		{

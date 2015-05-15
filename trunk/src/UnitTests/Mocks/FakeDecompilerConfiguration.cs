@@ -46,6 +46,11 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public ICollection GetRawFiles()
+        {
+            throw new NotImplementedException();
+
+        }
         public IProcessorArchitecture GetArchitecture(string sArch)
         {
             throw new NotImplementedException();
@@ -62,6 +67,11 @@ namespace Decompiler.UnitTests.Mocks
         }
 
         public OperatingEnvironment GetEnvironment(string envName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RawFileElement GetRawFile(string rawFileFormat)
         {
             throw new NotImplementedException();
         }

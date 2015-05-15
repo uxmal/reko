@@ -31,31 +31,40 @@ namespace Decompiler.Loading
     /// </summary>
     public class NullImageLoader : ImageLoader
     {
+        private Address baseAddr;
         private byte[] imageBytes;
 
         public NullImageLoader(IServiceProvider services, string filename, byte[] image) : base(services, filename, image)
         {
             this.imageBytes = image;
+            this.baseAddr = Address.Ptr32(0);
+            this.EntryPoints = new List<EntryPoint>();
+        }
+
+        public IProcessorArchitecture Architecture { get; set; }
+        public List<EntryPoint> EntryPoints { get; private set; }
+        public Platform Platform { get; set; }
+        public override Address PreferredBaseAddress
+        {
+            get { return this.baseAddr; }
+            set { this.baseAddr = value; }
         }
 
         public override Program Load(Address addrLoad)
         {
+            if (addrLoad == null)
+                addrLoad = PreferredBaseAddress;
             var image = new LoadedImage(addrLoad, imageBytes);
             return new Program(
                 image,
                 image.CreateImageMap(),
-                null,
-                new DefaultPlatform(Services, null));
-        }
-
-        public override Address PreferredBaseAddress
-        {
-            get { return Address.Ptr32(0); }
+                Architecture,
+                Platform ?? new DefaultPlatform(Services, Architecture));
         }
 
         public override RelocationResults Relocate(Address addrLoad)
         {
-            return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary());
+            return new RelocationResults(EntryPoints, new RelocationDictionary());
         }
     }
 }

@@ -98,6 +98,7 @@
         <File Source="$(var.RiscOS.TargetPath)" />
         <File Source="$(var.SysV.TargetPath)" />
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
+        <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />
         <File Source="$(var.Win32.TargetPath)" />
         <File Source="$(var.Win32.ProjectDir)windows.xml" />

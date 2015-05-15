@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Loading
         }
 
         [Test]
-        public void LoaderMatch()
+        public void Ldr_Match()
         {
             mr.ReplayAll();
 
@@ -69,11 +69,11 @@ namespace Decompiler.UnitTests.Loading
             mr.VerifyAll();
         }
 
-        [Test]
-        public void LoaderUnknownImageType()
+        [Test(Description="Unless otherwise specified, fail loading unknown file formats.")]
+        public void Ldr_UnknownImageType()
         {
             dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
-
+            dcSvc.Stub(d => d.GetRawFile(null)).IgnoreArguments().Return(null);
             var testImage = new byte[] { 42, 42, 42, 42, };
             mr.ReplayAll();
             Loader ldr = mr.PartialMock<Loader>(sc);
@@ -81,15 +81,61 @@ namespace Decompiler.UnitTests.Loading
 
             Program prog = ldr.LoadExecutable("", testImage, null);
 
-            Assert.AreEqual("ErrorDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
+            Assert.AreEqual("WarningDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
             Assert.IsNull(prog.Architecture);
             Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
             mr.VerifyAll();
         }
 
+        [Test(Description = "Use default settings when loading unknown file formats.")]
+        public void Ldr_UnknownImageType_DefaultSpecified()
+        {
+            Given_MsDosRawFileFormat();
+            dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
+
+            var testImage = new byte[] { 42, 42, 42, 42, };
+            mr.ReplayAll();
+            Loader ldr = mr.PartialMock<Loader>(sc);
+            ldr.Replay();
+
+            ldr.DefaultToFormat = "ms-dos-com";
+            Program prog = ldr.LoadExecutable("", testImage, null);
+
+            Assert.IsNull(eventListener.LastDiagnostic);
+            Assert.AreEqual("0C00:0100", prog.Image.BaseAddress.ToString());
+            Assert.IsNull(prog.Architecture);
+            Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
+            mr.VerifyAll();
+        }
+
+        private void Given_MsDosRawFileFormat()
+        {
+            var arch = mr.Stub<IProcessorArchitecture>();
+            var env = mr.Stub<OperatingEnvironment>();
+            var platform = mr.Stub<Platform>(sc, arch);
+            var state = mr.Stub<ProcessorState>();
+            var rawFile = new RawFileElementImpl
+            {
+                BaseAddress = "0C00:0100",
+                Environment = "ms-dos",
+                Architecture = "x86-real-16",
+            };
+            rawFile.EntryPoint.Address = null;
+            rawFile.EntryPoint.Name = "Start_Here";
+            dcSvc.Stub(d => d.GetRawFile("ms-dos-com")).Return(rawFile);
+            dcSvc.Stub(d => d.GetArchitecture("x86-real-16")).Return(arch);
+            dcSvc.Stub(d => d.GetEnvironment("ms-dos")).Return(env);
+            env.Stub(e => e.Load(null, null)).IgnoreArguments().Return(platform);
+            arch.Stub(a => a.TryParseAddress(
+                Arg<string>.Is.Equal("0C00:0100"),
+                out Arg<Address>.Out(Address.SegPtr(0x0C00, 0x0100)).Dummy))
+                .Return(true);
+            arch.Stub(a => a.CreateProcessorState()).Return(state);
+        }
+
         [Test]
-        public void LoaderAtOffset()
+        public void Ldr_AtOffset()
         {
             dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList
             {
@@ -111,6 +157,20 @@ namespace Decompiler.UnitTests.Loading
             mr.VerifyAll();
         }
 
+        [Test]
+        public void CreateDefaultImageLoader_GivenDefault()
+        {
+            Given_MsDosRawFileFormat();
+            mr.ReplayAll();
+            var ldr = mr.PartialMock<Loader>(sc);
+            ldr.Replay();
+
+
+            ldr.DefaultToFormat = "ms-dos-com";
+            var imgLoader = ldr.CreateDefaultImageLoader("foo.com", new byte[30]);
+            var program = imgLoader.Load(null);
+        }
+
         public class TestImageLoader : ImageLoader
         {
             public TestImageLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
@@ -120,6 +180,7 @@ namespace Decompiler.UnitTests.Loading
             public override Address PreferredBaseAddress
             {
                 get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
             }
 
             public override Program Load(Address addrLoad)

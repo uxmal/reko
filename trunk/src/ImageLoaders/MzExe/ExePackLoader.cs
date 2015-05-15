@@ -140,6 +140,7 @@ namespace Decompiler.ImageLoaders.MzExe
         public override Address PreferredBaseAddress
         {
             get { return Address.SegPtr(0x800, 0); }
+            set { throw new NotImplementedException(); }
         }
 
         public override RelocationResults Relocate(Address addrLoad)

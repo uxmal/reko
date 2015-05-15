@@ -67,6 +67,11 @@ namespace Decompiler.CmdLine
 
             var host = new CmdLineHost();
             var ldr = new Loader(services);
+            object defaultTo;
+            if (pArgs.TryGetValue("--default-to", out defaultTo))
+            {
+                ldr.DefaultToFormat = (string)defaultTo;
+            }
             var dec = new DecompilerDriver(ldr, host, services);
 
             if (OverridesRequested(pArgs))
@@ -210,6 +215,11 @@ namespace Decompiler.CmdLine
                     if (i < args.Length - 1)
                         parsedArgs["--entry"] = args[++i];
                 }
+                else if (args[i] == "--default-to")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--default-to"] = args[++i];
+                }
                 else if (args[i] == "--reg" || args[i] == "-r")
                 {
                     if (i < args.Length - 1)
@@ -259,10 +269,13 @@ namespace Decompiler.CmdLine
             w.WriteLine(" --version               Show version number and exit");
             w.WriteLine(" -h, --help              Show this message and exit");
             w.WriteLine(" --arch <architecture>   Use an architecture from the following:");
-            DumpArchitectures(config, w, "    {0,-20} {1}");
+            DumpArchitectures(config, w, "    {0,-24} {1}");
             w.WriteLine(" --env <environment>     Use an operating environment from the following:");
-            DumpEnvironments(config, w, "    {0,-20} {1}");
+            DumpEnvironments(config, w, "    {0,-24} {1}");
             w.WriteLine(" --base <address>        Use <address> as the base address of the program");
+            w.WriteLine(" --default-to <format>   If no executable format can be recognized, default");
+            w.WriteLine("                         to one of the following formats:");
+            DumpRawFiles(config, w, "    {0,-24} {1}");
             w.WriteLine(" --entry <address>       Use <address> as an entry point to the program");
             w.WriteLine(" --reg <regInit>         Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
@@ -285,6 +298,16 @@ namespace Decompiler.CmdLine
                 .OrderBy(a => a.Name))
             {
                 w.WriteLine(fmtString, arch.Name, arch.Description);
+            }
+        }
+
+        private static void DumpRawFiles(DecompilerConfiguration config, TextWriter w, string fmtString)
+        {
+            foreach (var raw in config.GetRawFiles()
+                .OfType<RawFileElement>()
+                .OrderBy(a => a.Name))
+            {
+                w.WriteLine(fmtString, raw.Name, raw.Description);
             }
         }
     }

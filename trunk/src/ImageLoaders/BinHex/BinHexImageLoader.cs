@@ -90,6 +90,7 @@ namespace Decompiler.ImageLoaders.BinHex
         public override Address PreferredBaseAddress
         {
             get { return Address.Ptr32(0x00100000); }
+            set { throw new NotImplementedException(); }
         }
 
         public override RelocationResults Relocate(Address addrLoad)

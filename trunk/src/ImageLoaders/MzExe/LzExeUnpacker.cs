@@ -195,7 +195,8 @@ namespace Decompiler.ImageLoaders.MzExe
 		public override Address PreferredBaseAddress
 		{
 			get { return Address.SegPtr(0x0800, 0); }
-		}
+            set { throw new NotImplementedException(); }
+        }
 
 		public LoadedImage Unpack(byte [] abC, Address addrLoad)
 		{

@@ -168,6 +168,9 @@
     <Compile Include="Configuration\OperatingEnvironmentElement.cs" />
     <Compile Include="Configuration\OperatingEnvironmentElementCollection.cs" />
     <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
+    <Compile Include="Configuration\RawFileElement.cs" />
+    <Compile Include="Configuration\RawFileElementCollection.cs" />
+    <Compile Include="Configuration\RawFileSectionHandler.cs" />
     <Compile Include="Configuration\SignatureFileElement.cs" />
     <Compile Include="Configuration\SignatureFileSectionHandler.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />
