@@ -49,6 +49,7 @@ namespace Decompiler.Loading
             Services.RequireService<IServiceContainer>().AddService(typeof(IUnpackerService), unpackerSvc);
         }
 
+        public string DefaultToFormat { get; set; }
         public IServiceProvider Services { get; private set; }
 
         public Program AssembleExecutable(string filename, string assemblerName, Address addrLoad)
@@ -87,7 +88,7 @@ namespace Decompiler.Loading
             ImageLoader imgLoader = FindImageLoader<ImageLoader>(
                 filename, 
                 image,
-                () => new NullImageLoader(Services, filename, image));
+                () => CreateDefaultImageLoader(filename, image));
             if (addrLoad == null)
             {
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
@@ -98,6 +99,50 @@ namespace Decompiler.Loading
             var relocations = imgLoader.Relocate(addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
             return program;
+        }
+
+        public ImageLoader CreateDefaultImageLoader(string filename, byte[] image)
+        {
+            var imgLoader = new NullImageLoader(Services, filename, image);
+            var rawFile = cfgSvc.GetRawFile(DefaultToFormat);
+            if (rawFile == null)
+            {
+                this.Services.RequireService<DecompilerEventListener>().Warn(
+                    new NullCodeLocation(""),
+                    "The format of the file is unknown.");
+                return imgLoader;
+            }
+            var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
+            var env = cfgSvc.GetEnvironment(rawFile.Environment);
+            Platform platform;
+            Address baseAddr;
+            Address entryAddr;
+            if (env != null)
+            {
+                platform = env.Load(Services, arch);
+            }
+            else
+            {
+                platform = new DefaultPlatform(Services, arch);
+            }
+            imgLoader.Architecture = arch;
+            imgLoader.Platform = platform;
+            if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
+            {
+                imgLoader.PreferredBaseAddress = baseAddr;
+                entryAddr = baseAddr;
+                if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
+                {
+                    if (!arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
+                        entryAddr = baseAddr;
+                }
+                var state = arch.CreateProcessorState();
+                imgLoader.EntryPoints.Add(new EntryPoint(
+                    entryAddr,
+                    rawFile.EntryPoint.Name,
+                    state));
+            }
+            return imgLoader;
         }
 
         /// <summary>
@@ -150,9 +195,6 @@ namespace Decompiler.Loading
                     return CreateImageLoader<T>(Services, e.TypeName, filename, rawBytes);
                 }
             }
-            this.Services.RequireService<DecompilerEventListener>().Error(
-                new NullCodeLocation(""),
-                "The format of the file is unknown.");
             return defaultLoader();
         }
 

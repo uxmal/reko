@@ -51,6 +51,7 @@ namespace Decompiler.ImageLoaders.Hunk
         public override Address PreferredBaseAddress
         {
             get { return Address.Ptr32(0x1000); }
+            set { throw new NotImplementedException(); }
         }
 
         public override Program Load(Address addrLoad)

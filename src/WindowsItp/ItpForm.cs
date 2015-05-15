@@ -171,6 +171,11 @@ namespace Decompiler.WindowsItp
                 throw new NotImplementedException();
             }
 
+            public ICollection GetRawFiles()
+            {
+                throw new NotImplementedException();
+            }
+
             public OperatingEnvironment GetEnvironment(string envName)
             {
                 throw new NotImplementedException();
@@ -201,6 +206,10 @@ namespace Decompiler.WindowsItp
                 throw new NotImplementedException();
             }
 
+            public RawFileElement GetRawFile(string rawFileFormat)
+            {
+                throw new NotImplementedException();
+            }
 
             public string GetPath(string path)
             {

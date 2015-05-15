@@ -53,6 +53,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public override Address PreferredBaseAddress
         {
             get { return Address.Ptr32(0x00400000); }
+            set { throw new NotImplementedException(); }
         }
 
         public LoadedImage Image { get; private set; }

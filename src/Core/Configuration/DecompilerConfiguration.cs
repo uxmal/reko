@@ -39,10 +39,12 @@ namespace Decompiler.Core.Configuration
          ICollection GetEnvironments();
          ICollection GetSignatureFiles();
          ICollection GetAssemblers();
+         ICollection GetRawFiles();
 
          OperatingEnvironment GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
          Assembler GetAssembler(string assemblerName);
+         RawFileElement GetRawFile(string rawFileFormat);
 
          DefaultPreferences GetDefaultPreferences ();
 
@@ -75,12 +77,28 @@ namespace Decompiler.Core.Configuration
             return handler.Architectures;
         }
 
+        public virtual ICollection GetEnvironments()
+        {
+            var handler = (OperatingEnvironmentSectionHandler)ConfigurationManager.GetSection("Decompiler/Environments");
+            if (handler == null)
+                return new OperatingEnvironmentElement[0];
+            return handler.Environments;
+        }
+
         public virtual ICollection GetAssemblers()
         {
             var handler = (AssemblerSectionHandler)ConfigurationManager.GetSection("Decompiler/Assemblers");
             if (handler == null)
                 return new AssemblerElement[0];
             return handler.Environments;
+        }
+
+        public virtual ICollection GetRawFiles()
+        {
+            var handler = (RawFileSectionHandler)ConfigurationManager.GetSection("Decompiler/RawFiles");
+            if (handler == null)
+                return new RawFileElement[0];
+            return handler.RawFiles;
         }
 
         public IProcessorArchitecture GetArchitecture(string archLabel)
@@ -106,17 +124,16 @@ namespace Decompiler.Core.Configuration
             return (Assembler)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
    
-        public virtual ICollection GetEnvironments()
-        {
-            var handler = (OperatingEnvironmentSectionHandler) ConfigurationManager.GetSection("Decompiler/Environments");
-            if (handler == null)
-                return new OperatingEnvironmentElement[0];
-            return handler.Environments;
-        }
-
         public OperatingEnvironment GetEnvironment(string envName)
         {
-            return GetEnvironments().OfType<OperatingEnvironment>().Where(e => e.Name == envName).Single();
+            return GetEnvironments().OfType<OperatingEnvironment>().Where(e => e.Name == envName).SingleOrDefault();
+        }
+
+        public virtual RawFileElement GetRawFile(string rawFileFormat)
+        {
+            return GetRawFiles().OfType<RawFileElement>()
+                .Where(r => r.Name == rawFileFormat)
+                .SingleOrDefault();
         }
 
         public DefaultPreferences GetDefaultPreferences()

@@ -47,7 +47,8 @@ namespace Decompiler.ImageLoaders.MzExe
 		public override Address PreferredBaseAddress
 		{
 			get { return Address.SegPtr(0x0800, 0); }
-		}
+            set { throw new NotImplementedException(); }
+        }
 
         public override Program Load(Address addrLoad)
         {

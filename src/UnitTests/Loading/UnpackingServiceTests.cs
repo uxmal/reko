@@ -84,6 +84,7 @@ namespace Decompiler.UnitTests.Loading
         public override Address PreferredBaseAddress
         {
             get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         public override Program Load(Address addrLoad)

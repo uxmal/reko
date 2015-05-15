@@ -98,6 +98,7 @@ namespace Decompiler.Environments.C64
         public override Address PreferredBaseAddress
         {
             get { return Address.Ptr16(2048); }
+            set { throw new NotImplementedException(); }
         }
 
         public ImageHeader LoadHeaderH()

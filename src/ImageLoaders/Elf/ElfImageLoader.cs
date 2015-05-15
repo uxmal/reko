@@ -167,7 +167,10 @@ namespace Decompiler.ImageLoaders.Elf
         public List<Elf64_SHdr> SectionHeaders64 { get; private set; }
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
-        public override Address PreferredBaseAddress { get { return addrPreferred; } }
+        public override Address PreferredBaseAddress {
+            get { return addrPreferred; }
+            set { throw new NotImplementedException(); }
+        }
 
         public override Program Load(Address addrLoad)
         {
