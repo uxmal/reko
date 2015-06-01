@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,10 +28,15 @@ namespace Decompiler.Core.Absyn
 {
     public class AbsynCase : AbsynStatement
     {
-        //$REVIEW: Should take an expression.
+        [Obsolete("Use constructor with Constant parameter")]
         public AbsynCase(int i)
         {
             this.Number = i;
+        }
+
+        public AbsynCase(Constant c)
+        {
+            this.Constant = c;
         }
 
         public override void Accept(IAbsynVisitor visitor)
@@ -39,5 +45,18 @@ namespace Decompiler.Core.Absyn
         }
 
         public int Number { get; private set; }
+        public Constant Constant { get; private set; }
+    }
+
+    public class AbsynDefault: AbsynStatement
+    {
+        public AbsynDefault()
+        {
+        }
+
+        public override void Accept(IAbsynVisitor visitor)
+        {
+            visitor.VisitDefault(this);
+        }
     }
 }

@@ -252,4 +252,12 @@ namespace Decompiler.Arch.X86
         {
         }
     }
+
+    public class X86ArchitectureFlat64 : IntelArchitecture
+    {
+        public X86ArchitectureFlat64()
+            : base(ProcessorMode.Protected64)
+        {
+        }
+    }
 }

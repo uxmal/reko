@@ -71,6 +71,7 @@
     <Compile Include="SignatureGuesser.cs" />
     <Compile Include="Win32Emulator.cs" />
     <Compile Include="Win32Platform.cs" />
+    <Compile Include="Win_x86_64_Platform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

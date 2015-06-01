@@ -21,6 +21,7 @@ decompiler only if you have legal rights to decompiler the binary
 == Version 0.4.5.0 ==
 * Command line interpreter supports --default-to option
 * More ARM instructions implemented
+* CP/M environment added
 
 == Version 0.4.4.0 ==
 * Mostly bugfixes

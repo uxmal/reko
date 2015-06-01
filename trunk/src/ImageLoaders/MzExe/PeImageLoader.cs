@@ -53,8 +53,8 @@ namespace Decompiler.ImageLoaders.MzExe
 		private uint rvaImportTable;
         private uint rvaDelayImportDescriptor;
         private Dictionary<Address, ImportReference> importReferences;
-		private const short MACHINE_i386 = (short) 0x014C;
-        private const short MACHINE_x86_64 = unchecked((short)0x8664);
+		private const ushort MACHINE_i386 = (ushort) 0x014C;
+        private const ushort MACHINE_x86_64 = unchecked((ushort)0x8664);
 		private const short ImageFileRelocationsStripped = 0x0001;
 		private const short ImageFileExecutable = 0x0002;
 
@@ -112,7 +112,7 @@ namespace Decompiler.ImageLoaders.MzExe
             return new EntryPoint(addrLoad + addr, new string(chars), arch.CreateProcessorState());
         }
 
-		public IProcessorArchitecture CreateArchitecture(short peMachineType)
+		public IProcessorArchitecture CreateArchitecture(ushort peMachineType)
 		{
 			switch (peMachineType)
 			{
@@ -122,7 +122,17 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-        private short GetExpectedMagic(short peMachineType)
+        public Platform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
+        {
+            switch (peMachineType)
+            {
+            case MACHINE_i386: return new Win32Platform(sp, arch);
+            case MACHINE_x86_64: return new Win_x86_64_Platform(sp, arch);
+            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
+            }
+        }
+
+        private short GetExpectedMagic(ushort peMachineType)
         {
             switch (peMachineType)
             {
@@ -197,10 +207,10 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public short ReadCoffHeader(ImageReader rdr)
 		{
-			short machine = rdr.ReadLeInt16();
+			ushort machine = rdr.ReadLeUInt16();
             short expectedMagic = GetExpectedMagic(machine);
             arch = CreateArchitecture(machine);
-			platform = new Win32Platform(Services, arch);
+			platform = CreatePlatform(machine, Services, arch);
 
 			sections = rdr.ReadLeInt16();
 			sectionMap = new SortedDictionary<string, Section>();
@@ -219,7 +229,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new BadImageFormatException("Optional header size should be larger than 0 in a PE executable image file.");
 
 			short magic = rdr.ReadLeInt16();
-			if (magic != expectedMagic) // 0x010B || magic != 0x020B)
+			if (magic != expectedMagic) 
 				throw new BadImageFormatException("Not a valid PE Header.");
 			rdr.ReadByte();		// Linker major version
 			rdr.ReadByte();		// Linker minor version
@@ -248,35 +258,62 @@ namespace Decompiler.ImageLoaders.MzExe
 			uint stackCommit = rdr.ReadLeUInt32();
 			uint heapReserve = rdr.ReadLeUInt32();
 			uint heapCommit = rdr.ReadLeUInt32();
-			rdr.ReadLeUInt32();			// obsolete
+			rdr.ReadLeUInt32();			// loader flags
 			uint dictionaryCount = rdr.ReadLeUInt32();
 
+            if (dictionaryCount == 0) return;
 			rvaExportTable = rdr.ReadLeUInt32();
 			sizeExportTable = rdr.ReadLeUInt32();
-			rvaImportTable = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            rvaImportTable = rdr.ReadLeUInt32();
 			uint importTableSize = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// resource address
 			rdr.ReadLeUInt32();			// resource size
+
+            if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// exception address
 			rdr.ReadLeUInt32();			// exception size
+
+            if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// certificate address
 			rdr.ReadLeUInt32();			// certificate size
-			uint rvaBaseRelocAddress = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
+            uint rvaBaseRelocAddress = rdr.ReadLeUInt32();
 			uint baseRelocSize = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             uint rvaDebug = rdr.ReadLeUInt32();
             uint cbDebug = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             uint rvaArchitecture = rdr.ReadLeUInt32();
             uint cbArchitecture = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             uint rvaGlobalPointer = rdr.ReadLeUInt32();
             uint cbGlobalPointer = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             uint rvaTls = rdr.ReadLeUInt32();
             uint cbTls = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             uint rvaLoadConfig = rdr.ReadLeUInt32();
             uint cbLoadConfig = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             uint rvaBoundImport = rdr.ReadLeUInt32();
             uint cbBoundImport = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             uint rvaIat = rdr.ReadLeUInt32();
             uint cbIat = rdr.ReadLeUInt32();
+
+            if (--dictionaryCount == 0) return;
             this.rvaDelayImportDescriptor = rdr.ReadLeUInt32();
             uint cbDelayImportDescriptor = rdr.ReadLeUInt32();
 		}

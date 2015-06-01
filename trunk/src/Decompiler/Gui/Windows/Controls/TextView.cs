@@ -42,6 +42,8 @@ namespace Decompiler.Gui.Windows.Controls
         private Brush fgBrush;
         private Brush bgBrush;
         private StringFormat stringFormat;
+        private SortedList<float, LayoutLine> visibleLines;
+        private bool ignoreScroll;
 
         public TextView()
         {
@@ -238,6 +240,11 @@ namespace Decompiler.Gui.Windows.Controls
             public int ContextMenuID;
         }
 
+        /// <summary>
+        /// Computes the layout of all visibile text spans and stores them the 
+        /// member variable 'visibleLines'.
+        /// </summary>
+        /// <param name="g"></param>
         protected void ComputeLayout(Graphics g)
         {
             float cyLine = GetLineHeight();
@@ -366,6 +373,14 @@ namespace Decompiler.Gui.Windows.Controls
            
         }
 
+        public object GetTagFromPoint(Point ptClient)
+        {
+            var span = GetSpan(ptClient);
+            if (span == null)
+                return null;
+            return span.Tag;
+        }
+
         /// <summary>
         /// Returns the number of visible lines, including any partially visible ones.
         /// </summary>
@@ -389,9 +404,7 @@ namespace Decompiler.Gui.Windows.Controls
 
         public Dictionary<string, EditorStyle> Styles { get { return styles; } }
         private Dictionary<string, EditorStyle> styles;
-        private SortedList<float, LayoutLine> visibleLines;
-        private bool ignoreScroll;
-
+        
         void model_ModelChanged(object sender, EventArgs e)
         {
             OnModelChanged();

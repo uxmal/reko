@@ -106,7 +106,6 @@ namespace Decompiler.Gui.Windows
             throw new NotImplementedException();
         }
 
-
         private void RemoveFrame(WindowFrame windowFrame)
         {
             var name = framesByName
@@ -136,14 +135,13 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        private ICommandTarget ActiveMdiCommandTarget()
+        private ICommandTarget ActiveCommandTarget()
         {
             var frame = ActiveFrame as WindowFrame;
             if (frame == null)
                 return null;
             return frame.Pane as ICommandTarget;
         }
-
 
         #region ICommandTarget Members
 
@@ -157,7 +155,7 @@ namespace Decompiler.Gui.Windows
         /// <returns></returns>
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            ICommandTarget ct = ActiveMdiCommandTarget();
+            ICommandTarget ct = ActiveCommandTarget();
             if (ct == null)
                 return false;
             return ct.QueryStatus(cmdId, status, text);
@@ -165,7 +163,7 @@ namespace Decompiler.Gui.Windows
 
         public bool Execute(CommandID cmdId)
         {
-            ICommandTarget ct = ActiveMdiCommandTarget();
+            ICommandTarget ct = ActiveCommandTarget();
             if (ct == null)
                 return false;
             return ct.Execute(cmdId);

@@ -601,6 +601,11 @@ namespace Decompiler.Gui.Forms
 
         #region ICommandTarget members
 
+        /// <summary>
+        /// Determines a command target that should be handling commands. This 
+        /// is in essence the "router" that routes commands.
+        /// </summary>
+        /// <returns></returns>
         private ICommandTarget GetSubCommandTarget()
         {
             if (form.TabControl.ContainsFocus)

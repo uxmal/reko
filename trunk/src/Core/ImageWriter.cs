@@ -55,8 +55,13 @@ namespace Decompiler.Core
         {
             if (Position >= Bytes.Length)
             {
+                int newSize = (Bytes.Length + 1) * 2;
+                while (newSize < Position - 1)
+                {
+                    newSize *= 2;
+                }
                 var bytes = Bytes;
-                Array.Resize<byte>(ref bytes, (Bytes.Length + 1) * 2);
+                Array.Resize<byte>(ref bytes, newSize);
                 Bytes = bytes;
             }
             Bytes[Position++] = b;
@@ -141,6 +146,31 @@ namespace Decompiler.Core
         public ImageWriter WriteLeInt32(int i)
         {
             return WriteLeUInt32((uint)i);
+        }
+
+        public ImageWriter WriteLeUInt64(uint offset, ulong qw)
+        {
+            Bytes[offset] = (byte)qw;
+            Bytes[offset + 1] = (byte)(qw >> 8);
+            Bytes[offset + 2] = (byte)(qw >> 16);
+            Bytes[offset + 3] = (byte)(qw >> 24);
+            Bytes[offset + 4] = (byte)(qw >> 32);
+            Bytes[offset + 5] = (byte)(qw >> 40);
+            Bytes[offset + 6] = (byte)(qw >> 48);
+            Bytes[offset + 7] = (byte)(qw >> 56);
+            return this;
+        }
+
+        public ImageWriter WriteLeUInt64(ulong qw)
+        {
+            WriteLeUInt64((uint)Position, qw);
+            Position += 8;
+            return this;
+        }
+
+        public ImageWriter WriteLeInt64(long qw)
+        {
+            return WriteLeUInt64((ulong)qw);
         }
     }
 

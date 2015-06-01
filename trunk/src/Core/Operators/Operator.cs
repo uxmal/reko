@@ -74,6 +74,8 @@ namespace Decompiler.Core.Operators
 		public static readonly UnaryOperator Comp = new ComplementOperator();
 		public static readonly UnaryOperator AddrOf = new AddressOfOperator();
 
+        public static readonly BinaryOperator Comma = new CommaOperator();
+
         public virtual Constant ApplyConstants(Constant c1, Constant c2)
         {
             throw new NotSupportedException();

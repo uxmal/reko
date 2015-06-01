@@ -532,6 +532,12 @@ namespace Decompiler.Core
             abImage[offset + 3] = (byte) dw;
         }
 
+        public static void WriteLeInt16(byte[] abImage, ulong offset, short w)
+        {
+            abImage[offset] = (byte)(w & 0xFF);
+            abImage[offset + 1] = (byte)(w >> 8);
+        }
+
         public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
         public void WriteLeUInt32(Address addr, uint dw) { WriteLeUInt32(ToOffset(addr), dw); }
 

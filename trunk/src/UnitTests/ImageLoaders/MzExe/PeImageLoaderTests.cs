@@ -32,16 +32,32 @@ using System.Text;
 
 namespace Decompiler.UnitTests.ImageLoaders.MzExe
 {
+    /// <summary>
+    /// Tests for PeImageLoader
+    /// </summary>
+    /// <remarks>
+    /// File map:
+    /// +--------------------------------------+
+    /// | 0000 - 0FFF | Header |
+    /// | 1000 - 1FFF | Text   | .text
+    /// | 2000 - 21FF | ILT    | .reloc
+    /// | 2200 - 23FF | IAT    |
+    /// | 3000 - 3FFF | data   | .data
+    /// </remarks>
     [TestFixture]
     public class PeImageLoaderTests
     {
         private ServiceContainer sc;
         private MockRepository mr;
-        private LoadedImage image;
+        private byte[] fileImage;
         private PeImageLoader peldr;
         private LeImageWriter writer;
         private Address addrLoad;
-        private const int rvaPeHdr = 0x40;
+        private int rvaDirectories;
+        private const int RvaPeHdr = 0x0040;
+        private const int RvaText = 0x1000;
+        private const int RvaImportDescriptor = 0x2000;
+        private const int RvaData= 0x3000;
 
         [SetUp]
         public void Setup()
@@ -49,50 +65,33 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             sc = new ServiceContainer();
             mr = new MockRepository();
             addrLoad = Address.Ptr32(0x00100000);
+            fileImage = new byte[0x4000];
+            writer = new LeImageWriter(fileImage);
         }
 
-        [Test]
-        public void Pil_DelayLoads()
-        {
-            Given_PeHeader();
-            Given_Section(".text");
-            Given_DelayLoadDirectories(
-                new DelayLoadDirectoryEntry
-                {
-                    Name = "user32.dll",
-                    ImportNames = new string[] {
-                        "GetDesktopWindow",
-                        "GetFocus"
-                    }
-                });
-            Given_PeLoader();
-
-            var program = peldr.Load(addrLoad);
-            var rel=peldr.Relocate(addrLoad);
-
-            Assert.AreEqual(2, program.ImportReferences.Count);
-            Assert.AreEqual("user32.dll!GetDesktopWindow", program.ImportReferences[Address.Ptr32(0x0010103C)].ToString());
-            Assert.AreEqual("user32.dll!GetFocus", program.ImportReferences[Address.Ptr32(0x00101040)].ToString());
-        }
-
-        private void Given_Section(string section)
+        // PE section headers are always 40 bytes.
+        private void Given_Section(string section, uint virtAddress, uint rvaData)
         {
             var bytes = Encoding.UTF8.GetBytes(section);
             writer.WriteBytes(bytes).WriteBytes(0, 8 - (uint)bytes.Length);
-            writer.WriteLeInt32(0x300);
-            writer.WriteLeInt32(0x1000);
-            writer.WriteLeInt32(0x200); // raw data
-            writer.WriteLeInt32(0x1000);    // rva to raw data
+            writer.WriteLeUInt32(0x1000);     // Section size in memory
+            writer.WriteLeUInt32(virtAddress);   // Where to load this
+            writer.WriteLeUInt32(0x1000);     // raw data
+            writer.WriteLeUInt32(rvaData);    // rva to raw data
             writer.WriteLeInt32(0);         // relocs
             writer.WriteLeInt32(0);         // line numbers
-            writer.WriteLeInt32(0);         // #relocs
-            writer.WriteLeInt32(0);         // #line numbers
+            writer.WriteLeInt16(0);         // #relocs
+            writer.WriteLeInt16(0);         // #line numbers
             writer.WriteLeInt32(0);         // characteristics
+
+            // Increment the section count in the optional header.
+            short sections = LoadedImage.ReadLeInt16(fileImage, RvaPeHdr + 6);
+            LoadedImage.WriteLeInt16(fileImage, RvaPeHdr + 6, (short)(sections + 1));
         }
 
         private void Given_DelayLoadDirectories(params DelayLoadDirectoryEntry [] delayLoadDirectory)
         {
-            writer.Position = 0x1000;
+            writer.Position = 0x1800;
             foreach (var entry in delayLoadDirectory)
             {
                 entry.rvaName = writer.Position;
@@ -133,8 +132,10 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             }
             writer.WriteLeUInt32(0);
             writer.WriteLeUInt32(0);
-            writer.Position = rvaPeHdr + 0xE0;
+            writer.Position = rvaDirectories + 13 * 8;
             writer.WriteLeInt32(rvaDld);
+            writer.Position = rvaDirectories - 4;
+            writer.WriteLeInt32(14);
         }
 
         private void Align()
@@ -155,14 +156,14 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             public List<int> arvaImportNames;
         }
 
-        private void Given_PeHeader()
+        private void Given_Pe32Header(uint uAddrBase)
         {
-            image = new LoadedImage(addrLoad, new byte[0x10000]);
-            writer = new LeImageWriter(image.Bytes, rvaPeHdr);
-            writer.WriteBytes(new byte[] { 0x50, 0x45, 0, 0 });
+            writer.Position = RvaPeHdr;
 
+            writer.WriteBytes(new byte[] { 0x50, 0x45, 0, 0 });
+            var p = writer.Position;
             writer.WriteLeInt16(0x14C);
-            writer.WriteLeInt16(1); // sections.
+            writer.WriteLeInt16(0); // sections.
             writer.WriteLeInt32(0);		// timestamp.
             writer.WriteLeInt32(0);		// COFF symbol
             writer.WriteLeInt32(0);		// #of symbols
@@ -173,40 +174,99 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             // Optional header
             var rvaOptHdr = writer.Position;
             writer.WriteLeInt16(0x010B);
-            writer.WriteBytes(0, 0xCE);
+            writer.WriteLeInt16(0);         // linker
+            writer.WriteLeInt32(0);         // size of code
+            writer.WriteLeInt32(0);         // size of init data
+            writer.WriteLeInt32(0);         // size of uninit data
+            writer.WriteLeUInt32(RvaText);   // RVA of entry point.
+            writer.WriteLeUInt32(RvaText);   // RVA of base of code.
+            writer.WriteLeUInt32(RvaData);   // RVA of base of data.
+            writer.WriteLeUInt32(uAddrBase);    // preferred image base.
+            writer.WriteLeUInt32(0);        // section alignment
+            writer.WriteLeUInt32(0);        // file alignment
+            writer.WriteLeUInt32(0);        // OS version
+            writer.WriteLeUInt32(0);        // image version
+            writer.WriteLeUInt32(0);        // subsystem version
+            writer.WriteLeUInt32(0);        // Win32 version
+            writer.WriteLeUInt32(0);        // size of image
+            writer.WriteLeUInt32(0);        // size of headers
+            writer.WriteLeUInt32(0);        // checksum
+            writer.WriteLeUInt16(0);        // subsystem
+            writer.WriteLeUInt16(0);        // DLL characeristics
+            writer.WriteLeUInt32(0);        // stack reserve
+            writer.WriteLeUInt32(0);        // stack commit
+            writer.WriteLeUInt32(0);        // heap reserve
+            writer.WriteLeUInt32(0);        // heap commit
+            writer.WriteLeUInt32(0);        // loader flags
+            writer.WriteLeUInt32(2);        // number of data directory entries
 
-            var pos = writer.Position;
-            var optHdrSize = pos - rvaOptHdr;
+            rvaDirectories = writer.Position;
+            writer.Position = rvaDirectories + 2 * 8;
+            var optHdrSize = writer.Position - rvaOptHdr;
+            var rvaSections = writer.Position;
             writer.Position = rvaOptionalHeaderSize;
             writer.WriteLeInt16((short)optHdrSize);
-            writer.Position = pos;
+            writer.Position = rvaSections;
+        }
+
+        private void Given_Pe64Header(uint rvaEntryPoint, ulong uAddrBase, uint rvaImportTable)
+        {
+            writer.Position = RvaPeHdr;
+            writer.WriteBytes(new byte[] { 0x50, 0x45, 0, 0 });
+
+            writer.WriteLeUInt16((ushort)0x8664u);
+            writer.WriteLeInt16(0);     // sections.
+            writer.WriteLeInt32(0);		// timestamp.
+            writer.WriteLeInt32(0);		// COFF symbol
+            writer.WriteLeInt32(0);		// #of symbols
+            var rvaOptionalHeaderSize = writer.Position;
+            writer.WriteLeInt16(0);       // optionalHeaderSize
+            writer.WriteLeInt16(0);     //  short fileFlags 
+
+            // Optional header
+            var rvaOptHdr = writer.Position;
+            writer.WriteLeInt16(0x020B);    // magic
+            writer.WriteLeInt16(0);         // linker
+            writer.WriteLeInt32(0);         // size of code
+            writer.WriteLeInt32(0);         // size of init data
+            writer.WriteLeInt32(0);         // size of uninit data
+            writer.WriteLeUInt32(rvaEntryPoint); // RVA of entry point.
+            writer.WriteLeUInt32(RvaText);   // RVA of base of code.
+
+            writer.WriteLeUInt64(uAddrBase); // 0x0000000140000000L);  // preferred image base
+            writer.WriteLeUInt32(0);        // section alignment
+            writer.WriteLeUInt32(0);        // file alignment
+            writer.WriteLeUInt32(0);        // OS version
+            writer.WriteLeUInt32(0);        // image version
+            writer.WriteLeUInt32(0);        // subsystem version
+            writer.WriteLeUInt32(0);        // Win32 version
+            writer.WriteLeUInt32(0);        // size of image
+            writer.WriteLeUInt32(0);        // size of headers
+            writer.WriteLeUInt32(0);        // checksum
+            writer.WriteLeUInt16(0);        // subsystem
+            writer.WriteLeUInt16(0);        // DLL characeristics
+            writer.WriteLeUInt64(0);        // stack reserve
+            writer.WriteLeUInt64(0);        // stack commit
+            writer.WriteLeUInt64(0);        // heap reserve
+            writer.WriteLeUInt64(0);        // heap commit
+            writer.WriteLeUInt32(0);        // loader flags
+            writer.WriteLeUInt32(2);        // number of data directory entries
+
+            rvaDirectories = writer.Position;
+            var optHdrSize = rvaDirectories - rvaOptHdr;
+            writer.Position = rvaOptionalHeaderSize;
+            writer.WriteLeInt16((short)optHdrSize);
+            writer.Position = rvaDirectories;
+
+            writer.WriteLeUInt32(0);        // Export table rva
+            writer.WriteLeUInt32(0);        // Export table size
+            writer.WriteLeUInt32(rvaImportTable);
+            writer.WriteLeUInt32(0x0800);
         }
 
         private void Given_PeLoader()
         {
-            peldr = new PeImageLoader(null, "test.exe", image.Bytes, rvaPeHdr);
-        }
-
-        [Test]
-        public void Pil32_SaneIat()
-        {
-            Given_PeHeader();
-            Given_Section(".text");
-            writer.Position = 0x1000;
-            var rvaId = Given_ImportDescriptor32(
-                Given_Ilt32("malloc", "free", "realloc"),
-                "msvcrt.dll",
-                Given_Ilt32("malloc", "free", "realloc"));
-            Given_PeLoader();
-            var program = peldr.Load(addrLoad);
-
-            var rdrId = new LeImageReader(image.Bytes,(uint) rvaId);
-            var ret = peldr.ReadImportDescriptor(rdrId, addrLoad);
-            Assert.IsTrue(ret);
-            Assert.AreEqual(3, program.ImportReferences.Count); ;
-            Assert.AreEqual("msvcrt.dll!malloc", program.ImportReferences[Address.Ptr32(0x0010102A)].ToString());
-            Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010102E)].ToString());
-            Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00101032)].ToString());
+            peldr = new PeImageLoader(null, "test.exe", fileImage, RvaPeHdr);
         }
 
         private int Given_ImportDescriptor32(
@@ -245,7 +305,40 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
                 }
                 else if (imp is uint)
                 {
-                    writer.WriteLeUInt32((uint)imp);
+                    if ((uint)imp != 0)
+                    {
+                        writer.WriteLeUInt32((uint)imp | 0x80000000);
+                    }
+                    else
+                    {
+                        writer.WriteLeUInt32((uint)imp);
+                    }
+                }
+            }
+            writer.WriteLeInt32(0);
+            writer.Position = strWriter.Position;
+            return rvaTable;
+        }
+
+        private int Given_Ilt64(params object[] import)
+        {
+            var rvaTable = writer.Position;
+            writer.WriteBytes(0, (uint)(1 + import.Length) * 8);  // Reserve space for ulongs and terminating zero.
+            var strWriter = writer.Clone();                 // write strings after
+            writer.Position = rvaTable;                     // rewind to beginning of table.
+            foreach (object imp in import)
+            {
+                var s = imp as string;
+                if (s != null)
+                {
+                    writer.WriteLeInt64(strWriter.Position);
+                    strWriter.WriteLeInt16(0);
+                    strWriter.WriteString(s, Encoding.UTF8);
+                    strWriter.WriteByte(0);
+                }
+                else if (imp is uint)
+                {
+                    writer.WriteLeUInt64((ulong)imp | 0x8000000000000000);
                 }
             }
             writer.WriteLeInt32(0);
@@ -254,11 +347,59 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
         }
 
         [Test]
+        public void Pil_DelayLoads()
+        {
+            Given_Pe32Header(0x00100000);
+            Given_Section(".text", 0x1000u, 0x1000u);
+            Given_DelayLoadDirectories(
+                new DelayLoadDirectoryEntry
+                {
+                    Name = "user32.dll",
+                    ImportNames = new string[] {
+                        "GetDesktopWindow",
+                        "GetFocus"
+                    }
+                });
+            Given_PeLoader();
+
+            var program = peldr.Load(addrLoad);
+            var rel = peldr.Relocate(addrLoad);
+
+            Assert.AreEqual(2, program.ImportReferences.Count);
+            Assert.AreEqual("user32.dll!GetDesktopWindow", program.ImportReferences[Address.Ptr32(0x0010183C)].ToString());
+            Assert.AreEqual("user32.dll!GetFocus", program.ImportReferences[Address.Ptr32(0x00101840)].ToString());
+        }
+
+        [Test]
+        public void Pil32_SaneIat()
+        {
+            Given_Pe32Header(0x00100000);
+            Given_Section(".text", 0x1000u, 0x1000u);
+            Given_Section(".idata", 0x2000u, 0x2000u);
+            writer.Position = RvaImportDescriptor;
+            var rvaId = Given_ImportDescriptor32(
+                Given_Ilt32("malloc", "free", "realloc"),
+                "msvcrt.dll",
+                Given_Ilt32("malloc", "free", "realloc"));
+            Given_PeLoader();
+            var program = peldr.Load(addrLoad);
+
+            var rdrId = new LeImageReader(fileImage, (uint)rvaId);
+            var ret = peldr.ReadImportDescriptor(rdrId, addrLoad);
+            Assert.IsTrue(ret);
+            Assert.AreEqual(3, program.ImportReferences.Count); ;
+            Assert.AreEqual("msvcrt.dll!malloc", program.ImportReferences[Address.Ptr32(0x0010202A)].ToString());
+            Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010202E)].ToString());
+            Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00102032)].ToString());
+        }
+
+        [Test]
         public void Pil32_BlankIat()
         {
-            Given_PeHeader();
-            Given_Section(".text");
-            writer.Position = 0x1000;
+            Given_Pe32Header(0x00100000);
+            Given_Section(".text", 0x1000, 0x1000);
+            Given_Section(".idata", 0x2000, 0x2000);
+            writer.Position = RvaImportDescriptor;
             var rvaId = Given_ImportDescriptor32(
                 Given_Ilt32("malloc", "free", "realloc"),
                 "msvcrt.dll",
@@ -266,13 +407,13 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
             Given_PeLoader();
             var program = peldr.Load(addrLoad);
 
-            var rdrId = new LeImageReader(image.Bytes, (uint)rvaId);
+            var rdrId = new LeImageReader(fileImage, (uint)rvaId);
             var ret = peldr.ReadImportDescriptor(rdrId, addrLoad);
             Assert.IsTrue(ret);
             Assert.AreEqual(3, program.ImportReferences.Count); ;
-            Assert.AreEqual("msvcrt.dll!malloc", program.ImportReferences[Address.Ptr32(0x0010102A)].ToString());
-            Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010102E)].ToString());
-            Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00101032)].ToString());
+            Assert.AreEqual("msvcrt.dll!malloc", program.ImportReferences[Address.Ptr32(0x0010202A)].ToString());
+            Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010202E)].ToString());
+            Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00102032)].ToString());
         }
     }
 }

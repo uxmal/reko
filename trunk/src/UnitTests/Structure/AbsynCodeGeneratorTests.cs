@@ -349,7 +349,6 @@ namespace Decompiler.UnitTests.Structure
                 "	}" + nl +
                 "\treturn;" + nl +
                 "}" + nl);
-
         }
 
         [Test]

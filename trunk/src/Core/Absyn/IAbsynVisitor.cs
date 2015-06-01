@@ -31,7 +31,8 @@ namespace Decompiler.Core.Absyn
 		void VisitBreak(AbsynBreak brk);
         void VisitCase(AbsynCase absynCase);
 		void VisitContinue(AbsynContinue cont);
-		void VisitDeclaration(AbsynDeclaration decl);
+        void VisitDeclaration(AbsynDeclaration decl);
+        void VisitDefault(AbsynDefault decl);
 		void VisitDoWhile(AbsynDoWhile loop);
 		void VisitGoto(AbsynGoto gotoStm);
 		void VisitIf(AbsynIf ifStm);

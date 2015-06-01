@@ -44,6 +44,8 @@ namespace Decompiler.UnitTests.Loading
         private FakeDecompilerEventListener eventListener;
         private IConfigurationService dcSvc;
         private List<SignatureFileElement> signatureFiles;
+        private IProcessorArchitecture x86arch;
+        private Platform msdosPlatform;
 
         [SetUp]
         public void Setup()
@@ -104,16 +106,16 @@ namespace Decompiler.UnitTests.Loading
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", prog.Image.BaseAddress.ToString());
-            Assert.IsNull(prog.Architecture);
-            Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
+            Assert.AreSame(x86arch, prog.Architecture);
+            Assert.AreSame(msdosPlatform, prog.Platform);
             mr.VerifyAll();
         }
 
         private void Given_MsDosRawFileFormat()
         {
-            var arch = mr.Stub<IProcessorArchitecture>();
+            this.x86arch = mr.Stub<IProcessorArchitecture>();
             var env = mr.Stub<OperatingEnvironment>();
-            var platform = mr.Stub<Platform>(sc, arch);
+            this.msdosPlatform = mr.Stub<Platform>(sc, x86arch);
             var state = mr.Stub<ProcessorState>();
             var rawFile = new RawFileElementImpl
             {
@@ -124,14 +126,14 @@ namespace Decompiler.UnitTests.Loading
             rawFile.EntryPoint.Address = null;
             rawFile.EntryPoint.Name = "Start_Here";
             dcSvc.Stub(d => d.GetRawFile("ms-dos-com")).Return(rawFile);
-            dcSvc.Stub(d => d.GetArchitecture("x86-real-16")).Return(arch);
+            dcSvc.Stub(d => d.GetArchitecture("x86-real-16")).Return(x86arch);
             dcSvc.Stub(d => d.GetEnvironment("ms-dos")).Return(env);
-            env.Stub(e => e.Load(null, null)).IgnoreArguments().Return(platform);
-            arch.Stub(a => a.TryParseAddress(
+            env.Stub(e => e.Load(null, null)).IgnoreArguments().Return(msdosPlatform);
+            x86arch.Stub(a => a.TryParseAddress(
                 Arg<string>.Is.Equal("0C00:0100"),
                 out Arg<Address>.Out(Address.SegPtr(0x0C00, 0x0100)).Dummy))
                 .Return(true);
-            arch.Stub(a => a.CreateProcessorState()).Return(state);
+            x86arch.Stub(a => a.CreateProcessorState()).Return(state);
         }
 
         [Test]
@@ -164,7 +166,6 @@ namespace Decompiler.UnitTests.Loading
             mr.ReplayAll();
             var ldr = mr.PartialMock<Loader>(sc);
             ldr.Replay();
-
 
             ldr.DefaultToFormat = "ms-dos-com";
             var imgLoader = ldr.CreateDefaultImageLoader("foo.com", new byte[30]);

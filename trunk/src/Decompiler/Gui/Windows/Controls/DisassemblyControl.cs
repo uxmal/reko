@@ -135,20 +135,12 @@ namespace Decompiler.Gui.Windows.Controls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             Focus();
-            var obj = GetTagFromMouseEvent(e.X, e.Y);
+            var obj = GetTagFromPoint(new Point(e.X, e.Y));
             if (e.Button == MouseButtons.Left)
                 SelectedObject = obj;       // Fire a notification only if left-click.
             else
                 selectedObject = obj;
             base.OnMouseDown(e);
-        }
-
-        private object GetTagFromMouseEvent(int p1, int p2)
-        {
-            var span =  base.GetSpan(new Point(p1, p2));
-            if (span == null)
-                return null;
-            return span.Tag;
         }
     }
 
