@@ -29,10 +29,10 @@ namespace Decompiler.Core.Absyn
         private Expression expr;
         private List<AbsynStatement> statements;
 
-        public AbsynSwitch(Expression expr)
+        public AbsynSwitch(Expression expr, List<AbsynStatement> statements)
         {
             this.expr = expr;
-            this.statements = new List<AbsynStatement>();
+            this.statements = statements;
         }
 
         public override void Accept(IAbsynVisitor visitor)

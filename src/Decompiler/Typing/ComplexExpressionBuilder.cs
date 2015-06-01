@@ -253,7 +253,7 @@ namespace Decompiler.Typing
 
 		public Expression VisitEquivalenceClass(EquivalenceClass eq)
 		{
-			EquivalenceClass eqOriginal = dtOriginal as EquivalenceClass;
+			var eqOriginal = dtOriginal as EquivalenceClass;
 			if (eqOriginal != null && eq.Number == eqOriginal.Number)
 			{
 				complexExp.DataType = eq;

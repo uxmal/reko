@@ -581,6 +581,15 @@ namespace Decompiler.Core.Output
             writer.Terminate(":");
             writer.Indentation += writer.TabSize;
         }
+
+        public void VisitDefault(AbsynDefault d)
+        {
+            writer.Indentation -= writer.TabSize;
+            writer.Indent();
+            writer.WriteKeyword("default");
+            writer.Terminate(":");
+            writer.Indentation += writer.TabSize;
+        }
 		
         public void VisitContinue(AbsynContinue cont)
 		{

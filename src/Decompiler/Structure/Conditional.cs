@@ -187,7 +187,7 @@ namespace Decompiler.Structure
             codeGen.EmitLinearBlockStatements(node, emitter);
 
             Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;
-            AbsynSwitch switchStm = emitter.EmitSwitch(node, exp);
+            AbsynSwitch switchStm = emitter.EmitSwitch(node, exp, new List<AbsynStatement>());
             AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);
 
             if (Follow == null)

@@ -30,7 +30,7 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
-    public class StructureAnalysis
+    public class StructureAnalysis : IStructureAnalysis
     {
         private Procedure proc;
 

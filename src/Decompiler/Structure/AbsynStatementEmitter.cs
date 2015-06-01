@@ -97,9 +97,9 @@ namespace Decompiler.Structure
             stms.Add(new AbsynWhile(expr, body));
         }
 
-        public AbsynSwitch EmitSwitch(StructureNode node, Expression exp)
+        public AbsynSwitch EmitSwitch(StructureNode node, Expression exp, List<AbsynStatement> stmts)
         {
-            AbsynSwitch switchStm = new AbsynSwitch(exp);
+            AbsynSwitch switchStm = new AbsynSwitch(exp, stmts);
             stms.Add(switchStm);
             return switchStm;
         }
@@ -206,6 +206,11 @@ namespace Decompiler.Structure
         public void VisitDeclaration(AbsynDeclaration decl)
         {
             stms.Add(decl);
+        }
+
+        public void VisitDefault(AbsynDefault def)
+        {
+            stms.Add(def);
         }
 
         public void VisitDoWhile(AbsynDoWhile loop)

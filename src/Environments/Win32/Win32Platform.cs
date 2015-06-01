@@ -34,7 +34,6 @@ namespace Decompiler.Environments.Win32
 {
 	public class Win32Platform : Platform
 	{
-        private IProcessorArchitecture arch;
 		private SystemService int3svc;
         private SystemService int29svc;
         private TypeLibrary[] TypeLibs;
@@ -45,7 +44,6 @@ namespace Decompiler.Environments.Win32
 
 		public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch)
 		{
-			this.arch = arch;
             int3svc = new SystemService
             {
                 SyscallInfo = new SyscallInfo
@@ -159,7 +157,7 @@ namespace Decompiler.Environments.Win32
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
                     .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(arch, cfgSvc.GetPath(tl.Name)))
+                    .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
                     .Where(tl => tl != null).ToArray();
                 this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
                     .OfType<ITypeLibraryElement>()
@@ -184,7 +182,10 @@ namespace Decompiler.Environments.Win32
 
         public override ProcedureSignature SignatureFromName(string fnName)
         {
-            return SignatureGuesser.SignatureFromName(fnName, new TypeLibraryLoader(arch, true), arch);
+            return SignatureGuesser.SignatureFromName(
+                fnName, 
+                new TypeLibraryLoader(Architecture, true),
+                Architecture);
         }
 	}
 }

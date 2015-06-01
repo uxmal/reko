@@ -382,7 +382,6 @@ namespace Decompiler.Core.Expressions
 
 		public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
         public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
-
     }
 
     internal class ConstantBool : Constant

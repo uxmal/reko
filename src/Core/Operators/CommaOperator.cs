@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2015 John Källén.
+ * Copyright (C) 1999-2015 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,14 @@
  */
 #endregion
 
-using Decompiler.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Decompiler.Core.Operators
 {
-    public interface IDecompilerShellUiService : IDecompilerUIService, ICommandTarget
+    public class CommaOperator : BinaryOperator
     {
-        ContextMenu GetContextMenu(int menuID);
-
-        IWindowFrame ActiveFrame { get; }
-
-        IWindowFrame FindWindow(string windowType);
-        IWindowFrame FindDocumentWindow(string documentType, object docItem);
-        IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
-        IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane);
-        DialogResult ShowModalDialog(IDialog dlg);
     }
 }
