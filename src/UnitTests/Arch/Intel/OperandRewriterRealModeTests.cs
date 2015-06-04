@@ -37,6 +37,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private IntelArchitecture arch;
         private X86State state;
 		private Procedure proc;
+        private IntelInstruction instr;
 
 		[TestFixtureSetUp]
 		public void Setup()
@@ -49,19 +50,24 @@ namespace Decompiler.UnitTests.Arch.Intel
                 arch,
                 null);
 			var procAddress = Address.Ptr32(0x10000000);
+            instr = new IntelInstruction(Opcode.nop, PrimitiveType.Word16, PrimitiveType.Word16)
+            {
+                Address = procAddress,
+            };
+
             proc = Procedure.Create(procAddress, arch.CreateFrame());
-			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
+			orw = new OperandRewriter16(arch, proc.Frame, new FakeRewriterHost(prog));
             state = (X86State)arch.CreateProcessorState();
         }
 
 		[Test]
-		public void RewriteSegConst()
+		public void X86Orw16_RewriteSegConst()
 		{
 			var m = new MemoryOperand(
 				PrimitiveType.Byte,
 				Registers.bx,
 				Constant.Int32(32));
-			var e = orw.CreateMemoryAccess( null, m, state);
+			var e = orw.CreateMemoryAccess(instr, m, state);
 			Assert.AreEqual("Mem0[ds:bx + 0x0020:byte]", e.ToString());
 		}
 	}

@@ -157,6 +157,11 @@ namespace Decompiler.Core
 			Constant c = Relocations[(uint)imageOffset];
 			if (c != null && c.DataType.Size == type.Size)
 				return c;
+            return ReadLe(abImage, imageOffset, type);
+        }
+
+        public static Constant ReadLe(byte[] abImage, ulong imageOffset, PrimitiveType type)
+        {
             if (type.Domain == Domain.Real)
             {
                 switch (type.Size)
@@ -172,6 +177,7 @@ namespace Decompiler.Core
 			case 1: return Constant.Create(type, abImage[imageOffset]);
             case 2: return Constant.Create(type, ReadLeUInt16(abImage, imageOffset));
             case 4: return Constant.Create(type, ReadLeUInt32(abImage, imageOffset));
+            case 8: return Constant.Create(type, ReadLeUInt64(abImage, imageOffset));
 			}
 			throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
 		}

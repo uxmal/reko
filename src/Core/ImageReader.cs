@@ -26,7 +26,10 @@ using System.Text;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// Reads bytes and differently sized words sequentially from an associated LoadedImage.
+    /// Reads bytes and differently sized words sequentially from an 
+    /// associated LoadedImage. Concrete derived classes 
+    /// <see cref="BeImageReader"/> and <see cref="LeImageReader"/> 
+    /// implement big- and little-endian interpretation of byte sequences.
     /// </summary>
     public abstract class ImageReader
     {
@@ -148,7 +151,7 @@ namespace Decompiler.Core
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public Constant ReadLe(PrimitiveType type)
         {
-            Constant c = image.ReadLe(off, type);
+            Constant c = LoadedImage.ReadLe(bytes, off, type);
             off += (uint)type.Size;
             return c;
         }

@@ -36,8 +36,6 @@ namespace Decompiler.Environments.Win32
 	{
 		private SystemService int3svc;
         private SystemService int29svc;
-        private TypeLibrary[] TypeLibs;
-        private CharacteristicsLibrary[] CharacteristicsLibs;
 
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
@@ -122,7 +120,8 @@ namespace Decompiler.Environments.Win32
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            EnsureTypeLibraries();
+            //$REVIEW: common code with Win32_64 platform, consider pushing to base class?
+            EnsureTypeLibraries("win32");
             return TypeLibs.Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)
                 .Select(s => new ExternalProcedure(procName, s))
@@ -131,7 +130,7 @@ namespace Decompiler.Environments.Win32
 
         public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries();
+            EnsureTypeLibraries("win32");
             return TypeLibs
                 .Where(t => string.Compare(t.ModuleName, moduleName, true) == 0)
                 .Select(t =>
@@ -146,24 +145,6 @@ namespace Decompiler.Environments.Win32
                 })
                 .Where(p => p != null)
                 .FirstOrDefault();
-        }
-
-        private void EnsureTypeLibraries()
-        {
-            if (TypeLibs == null)
-            {
-                var cfgSvc = Services.RequireService<IConfigurationService>();
-                var envCfg = cfgSvc.GetEnvironment("win32");
-                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
-                    .Where(tl => tl != null).ToArray();
-                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
-                    .OfType<ITypeLibraryElement>()
-                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
-                    .Where(cl => cl != null).ToArray();
-            }
         }
 
 		public override SystemService FindService(int vector, ProcessorState state)

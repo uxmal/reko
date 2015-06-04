@@ -18,9 +18,11 @@
  */
 #endregion
 
+using Decompiler.Core.Configuration;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -47,6 +49,9 @@ namespace Decompiler.Core
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; private set; }
+        public TypeLibrary[] TypeLibs { get; private set; }
+        public CharacteristicsLibrary[] CharacteristicsLibs { get; private set; }
+
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 
@@ -74,6 +79,32 @@ namespace Decompiler.Core
         public IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, Address[] address, PointerScannerFlags pointerScannerFlags)
         {
             return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
+        }
+
+        /// <summary>
+        /// Utility function for subclasses that loads all type libraries and characteristics libraries 
+        /// </summary>
+        /// <param name="envName"></param>
+        protected void EnsureTypeLibraries(string envName)
+        {
+            if (TypeLibs == null)
+            {
+                var cfgSvc = Services.RequireService<IConfigurationService>();
+                var envCfg = cfgSvc.GetEnvironment(envName);
+                if (envCfg == null)
+                    throw new ApplicationException(string.Format(
+                        "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
+                        envName));
+                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+                this.TypeLibs = ((System.Collections.IEnumerable)envCfg.TypeLibraries)
+                    .OfType<ITypeLibraryElement>()
+                    .Select(tl => tlSvc.LoadLibrary(Architecture, cfgSvc.GetPath(tl.Name)))
+                    .Where(tl => tl != null).ToArray();
+                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
+                    .OfType<ITypeLibraryElement>()
+                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
+                    .Where(cl => cl != null).ToArray();
+            }
         }
 
 		public abstract SystemService FindService(int vector, ProcessorState state);

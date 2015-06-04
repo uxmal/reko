@@ -26,6 +26,11 @@ using System.Text;
 
 namespace Decompiler.Gui
 {
+    /// <summary>
+    /// This service is used the GUI to display the contents of an image segments.
+    /// Implementors are responsible for rendering the segment contents in an 
+    /// appropriate manner.
+    /// </summary>
     public interface ImageSegmentService
     {
         void DisplayImageSegment(ImageMapSegment segment, Program program);

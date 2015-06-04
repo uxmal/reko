@@ -238,12 +238,7 @@ namespace Decompiler.Arch.X86
             ImmediateOperand imm = op as ImmediateOperand;
             if (imm != null)
             {
-                if (arch.ProcessorMode == ProcessorMode.Protected32)
-                {
-                    return Address.Ptr32(imm.Value.ToUInt32());
-                }
-                else
-                    return Address.SegPtr(instrCur.Address.Selector, imm.Value.ToUInt32());
+                return orw.ImmediateAsAddress(instrCur.Address, imm);
             }
             return null;
         }

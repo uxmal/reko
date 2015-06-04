@@ -37,9 +37,10 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private X86State state;
 		private Procedure proc;
         private Program prog;
+        private IntelInstruction instr;
 
 		[Test]
-		public void OrwCreation()
+		public void X86Orw32_Creation()
 		{
 		}
 
@@ -55,13 +56,17 @@ namespace Decompiler.UnitTests.Arch.Intel
             prog = new Program();
             prog.Image = new LoadedImage(Address.Ptr32(0x10000), new byte[4]);
             var procAddress = Address.Ptr32(0x10000000);
+            instr = new IntelInstruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
+            {
+                Address = procAddress,
+            };
             proc = Procedure.Create(procAddress, arch.CreateFrame());
 			state = (X86State) arch.CreateProcessorState();
-			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
+			orw = new OperandRewriter32(arch, proc.Frame, new FakeRewriterHost(prog));
 		}
 
 		[Test]
-		public void OrwRegister()
+		public void X86Orw32_Register()
 		{
 			var r = new RegisterOperand(Registers.ebp);
 			var id = (Identifier) orw.Transform(null, r, r.Width, state);
@@ -70,7 +75,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void OrwImmediate()
+		public void X86Orw32_Immediate()
 		{
 			var imm = new ImmediateOperand(Constant.Word16(0x0003));
 			var c = (Constant) orw.Transform(null, imm, imm.Width, state);
@@ -78,7 +83,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void OrwImmediateExtend()
+		public void X86Orw32_ImmediateExtend()
 		{
 			var imm = new ImmediateOperand(Constant.SByte(-1));
 			var c = (Constant) orw.Transform(null, imm, PrimitiveType.Word16, state);
@@ -86,33 +91,33 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void OrwFpu()
+		public void X86Orw32_Fpu()
 		{
 			FpuOperand f = new FpuOperand(3);
-			Identifier id = (Identifier) orw.Transform(null, f, PrimitiveType.Real64,  state);
+			Identifier id = (Identifier) orw.Transform(instr, f, PrimitiveType.Real64,  state);
 			Assert.AreEqual(PrimitiveType.Real64, id.DataType);
 		}
 
 		[Test]
-		public void OrwMemAccess()
+        public void X86Orw32_MemAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
 			mem.Base = Registers.ecx;
 			mem.Offset = Constant.Word32(4);
-			Expression expr = orw.Transform(null, mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
 		}	
 
 		[Test]
-		public void OrwIndexedAccess()
+		public void X86Orw32_IndexedAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, Constant.Word32(0x24));
-			Expression expr = orw.Transform(null, mem, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[eax + 0x00000024 + edx * 0x00000004:word32]", expr.ToString());
 		}
 
 		[Test]
-		public void OrwAddrOf()
+		public void X86Orw32_AddrOf()
 		{
 			Identifier eax = orw.AluRegister(Registers.eax);
 			UnaryExpression ptr = orw.AddrOf(eax);
@@ -120,7 +125,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void OrwAluRegister()
+		public void X86Orw32_AluRegister()
 		{
 			Assert.AreEqual("si", orw.AluRegister(Registers.esi, PrimitiveType.Word16).ToString());
 		}
@@ -243,6 +248,12 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void Error(Address address, string message)
         {
             throw new NotImplementedException();
         }

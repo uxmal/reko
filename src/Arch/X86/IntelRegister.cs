@@ -129,7 +129,7 @@ namespace Decompiler.Arch.X86
 	public class Intel64Register : IntelRegister
 	{
 		public Intel64Register(string name, int number, int regWord, int regHiByte, int regLoByte)
-			: base(name, number, PrimitiveType.Word32, number, regWord, regHiByte, regLoByte) 
+			: base(name, number, PrimitiveType.Word64, number, regWord, regHiByte, regLoByte) 
 		{
 		}
 
@@ -530,10 +530,13 @@ namespace Decompiler.Arch.X86
 		{
 			base.SetRegisterFileValues(registerFile, value, valid);
 			int r = regWord;
-			registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
-			valid[r] = valid[regHiByte];
+            if ( r >= 0)
+			    registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
+            if (regHiByte >= 0)
+			    valid[r] = valid[regHiByte];
 			r = regDword;
-			registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
+            if (r >= 0)
+			    registerFile[r] = (ulong) (registerFile[r] & ~0xFFU) | (value & 0xFF);
 		}
 
         public override void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)

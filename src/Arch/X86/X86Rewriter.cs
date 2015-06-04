@@ -75,7 +75,7 @@ namespace Decompiler.Arch.X86
                 instrCur = dasm.Current;
                 ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
                 emitter = new RtlEmitter(ric.Instructions);
-                orw = new OperandRewriter(arch, frame, host);
+                orw = arch.ProcessorMode.CreateOperandRewriter(arch, frame, host);
                 switch (instrCur.code)
                 {
                 default:
@@ -217,6 +217,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
+                case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
                 case Opcode.movsx: RewriteMovsx(); break;
@@ -229,6 +230,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.@outs: RewriteStringInstruction(); break;
                 case Opcode.@outsb: RewriteStringInstruction(); break;
+                case Opcode.palignr: RewritePalignr(); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.popa: RewritePopa(); break;
                 case Opcode.popf: RewritePopf(); break;
@@ -261,6 +263,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.setl: RewriteSet(ConditionCode.LT); break;
                 case Opcode.setle: RewriteSet(ConditionCode.LE); break;
                 case Opcode.setnc: RewriteSet(ConditionCode.UGE); break;
+                case Opcode.setns: RewriteSet(ConditionCode.NS); break;
                 case Opcode.setnz: RewriteSet(ConditionCode.NE); break;
                 case Opcode.seto: RewriteSet(ConditionCode.OV); break;
                 case Opcode.sets: RewriteSet(ConditionCode.SG); break;
@@ -346,7 +349,7 @@ namespace Decompiler.Arch.X86
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 emitter.Assign(tmp, src);
-                var ea = orw.CreateMemoryAccess(instrCur.Address, (MemoryOperand)opDst, state);
+                var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst, state);
                 emitter.Assign(ea, tmp);
                 dst = tmp;
             }
@@ -362,12 +365,12 @@ namespace Decompiler.Arch.X86
 
         private Expression SrcOp(MachineOperand opSrc)
         {
-            return orw.Transform(instrCur.Address, opSrc, opSrc.Width, state);
+            return orw.Transform(instrCur, opSrc, opSrc.Width, state);
         }
 
         private Expression SrcOp(MachineOperand opSrc, PrimitiveType dstWidth)
         {
-            return orw.Transform(instrCur.Address, opSrc, dstWidth, state);
+            return orw.Transform(instrCur, opSrc, dstWidth, state);
         }
     }
 }

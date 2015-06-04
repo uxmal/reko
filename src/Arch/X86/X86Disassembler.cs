@@ -311,6 +311,30 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
+        /// <summary>
+        /// Use this OpRec when an instruction encoding is dependent on whether the processor
+        /// is in 64-bit mode or not.
+        /// </summary>
+        public class Alternative64OpRec : OpRec
+        {
+            private OpRec oprec32;
+            private OpRec oprec64;
+
+            public Alternative64OpRec(OpRec oprec32, OpRec oprec64)
+            {
+                this.oprec32 = oprec32;
+                this.oprec64 = oprec64;
+            }
+
+            public override IntelInstruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (disasm.defaultAddressWidth.BitSize == 64)
+                    return oprec64.Decode(disasm, op, opFormat);
+                else
+                    return oprec32.Decode(disasm, op, opFormat);
+            }
+        }
+
         public class Rex_SingleByteOpRec : SingleByteOpRec
         {
             public Rex_SingleByteOpRec(Opcode op, string fmt)
@@ -665,9 +689,11 @@ namespace Decompiler.Arch.X86
                 case 'J':		// Relative ("near") jump.
                     width = OperandWidth(strFormat[i++]);
                     offset = rdr.ReadLeSigned(width);
-                    uint uAddr = (uint) (rdr.Address.Offset + offset);
-                    if (defaultAddressWidth.BitSize == 32)
-                        pOperand = AddressOperand.Ptr32(uAddr);
+                    ulong uAddr = (ulong) ((long)rdr.Address.Offset + (long)offset);
+                    if (defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
+                        pOperand = AddressOperand.Ptr64(uAddr);
+                    else if (defaultAddressWidth.BitSize == 32)
+                        pOperand = AddressOperand.Ptr32((uint)uAddr);
                     else
                         pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, uAddr));
                     break;
@@ -778,6 +804,9 @@ namespace Decompiler.Arch.X86
                 break;
             case 'y':
                 dataWidth = (useRexPrefix && (rexPrefix & 8) != 0) ? PrimitiveType.Word64: PrimitiveType.Word32;
+                break;
+            case 'z':
+                dataWidth = this.dataWidth.BitSize == 64 ? PrimitiveType.Int32 : this.dataWidth;
                 break;
             }
 			return dataWidth;
@@ -892,8 +921,16 @@ namespace Decompiler.Arch.X86
 				case 0:
 					if (rm == 0x05)
 					{
-						offsetWidth = PrimitiveType.Pointer32;
-						b = RegisterStorage.None;
+                        if (defaultAddressWidth.BitSize == 64)      //$REFACTOR: should subclass this type of behaviour.
+                        {
+                            b = Registers.rip;
+                            offsetWidth = PrimitiveType.Int32;
+                        }
+                        else
+                        {
+                            offsetWidth = PrimitiveType.Pointer32;
+                            b = RegisterStorage.None;
+                        }
 					}
 					else
 					{

@@ -77,6 +77,10 @@ namespace Decompiler.Core
         /// <returns></returns>
         IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
+        /// <summary>
+        /// Creates a Frame instance appropriate for this architecture type.
+        /// </summary>
+        /// <returns></returns>
         Frame CreateFrame();
 
         /// <summary>
@@ -100,13 +104,13 @@ namespace Decompiler.Core
         /// processor.
         /// </summary>
         /// <param name="typeLoader">Used to resolve data types</param>
-        /// <param name="defaultConvention">Default calling convetion, if none specified.</param>
+        /// <param name="defaultConvention">Default calling convention, if none specified.</param>
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
 
-		RegisterStorage GetRegister(int i);			// Returns register corresponding to number i.
-		RegisterStorage GetRegister(string name);	// Returns register whose name is 'name'
+		RegisterStorage GetRegister(int i);			        // Returns register corresponding to number i.
+		RegisterStorage GetRegister(string name);	        // Returns register whose name is 'name'
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
-        FlagGroupStorage GetFlagGroup(uint grf);		// Returns flag group matching the bitflags.
+        FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
