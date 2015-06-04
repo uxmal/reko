@@ -83,6 +83,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 Arg<string>.Is.NotNull,
                 Arg<byte[]>.Is.NotNull,
                 Arg<Address>.Is.Null)).Return(prog);
+            ldr.Stub(l => l.ProgramLoaded += null).IgnoreArguments();
             ldr.Replay();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.Load("test.exe");

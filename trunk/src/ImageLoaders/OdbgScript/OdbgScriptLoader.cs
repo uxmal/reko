@@ -42,7 +42,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
     public class OdbgScriptLoader : ImageLoader
     {
         private Debugger debugger;
-        private OllyLang ollylang;
+        private OllyLang scriptInterpreter;
         private rulong OldIP;
 
         public OdbgScriptLoader(IServiceProvider services, string filename, byte[] imgRaw)
@@ -69,26 +69,27 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             // First load the file as a PE Executable. This gives us a (writeable) image and 
             // the packed entry point.
-            PeImageLoader pe = CreatePeImageLoader();
-            Program program = pe.Load(pe.PreferredBaseAddress);
-            RelocationResults rr = pe.Relocate(pe.PreferredBaseAddress);
+            var pe = CreatePeImageLoader();
+            var program = pe.Load(pe.PreferredBaseAddress);
+            var rr = pe.Relocate(pe.PreferredBaseAddress);
             this.Image = program.Image;
             this.ImageMap = program.ImageMap;
             this.Architecture = (IntelArchitecture)program.Architecture;
 
-            Win32Emulator win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
-            X86State state = (X86State)program.Architecture.CreateProcessorState();
-            X86Emulator emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
-            debugger = new Debugger(emu);
-            ollylang = new OllyLang(new Host(this), debugger);
-
+            var win32 = new Win32Emulator(program.Image, program.Platform, program.ImportReferences);
+            var state = (X86State)program.Architecture.CreateProcessorState();
+            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.Image, win32);
+            this.debugger = new Debugger(emu);
+            this.scriptInterpreter = new OllyLang();
+            this.scriptInterpreter.Host = new Host(this);
+            this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.WriteRegister(Registers.esp, (uint)Image.BaseAddress.ToLinear() + 0x1000 - 4u);
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 
             // Load the script.
-            LoadScript(Argument, ollylang.script);
+            LoadScript(Argument, scriptInterpreter.script);
 
             emu.Start();
 
@@ -125,10 +126,10 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         private void emu_BeforeStart(object sender, EventArgs e)
         {
-            ollylang.Reset();
-            ollylang.debuggee_running = false;
+            scriptInterpreter.Reset();
+            scriptInterpreter.debuggee_running = false;
             OldIP = 0;
-            ollylang.InitGlobalVariables();
+            scriptInterpreter.InitGlobalVariables();
             ScripterResume();
         }
 
@@ -155,30 +156,21 @@ namespace Decompiler.ImageLoaders.OdbgScript
         or return
         */
 
-
-
         // TitanEngine plugin callbacks
-
-
         void TitanDebuggingCallBack(DEBUG_EVENT debugEvent, int CallReason)
         {
             switch (CallReason)
             {
-
             case Ue.UE_PLUGIN_CALL_REASON_POSTDEBUG:
                 break;
             case Ue.UE_PLUGIN_CALL_REASON_EXCEPTION:
                 switch (debugEvent.dwDebugEventCode)
                 {
                 case DEBUG_EVENT.CREATE_PROCESS_DEBUG_EVENT:
-                    //if(FileNameFromHandle(debugEvent->u.CreateProcessInfo.hFile, TargetPath))
-                    //{
-                    //    strcpy(TargetDirectory, folderfrompath(TargetPath).c_str());
-                    ollylang.InitGlobalVariables();
-                    //}
+                    scriptInterpreter.InitGlobalVariables();
                     break;
                 case DEBUG_EVENT.EXCEPTION_DEBUG_EVENT:
-                    if (ollylang.script_running)
+                    if (scriptInterpreter.script_running)
                     {
                         rulong NewIP = debugger.GetContextData(eContextData.UE_CIP);
                         //if(debugEvent.u.Exception.ExceptionRecord.ExceptionCode == 1) // EXCEPTION_BREAKPOINT)
@@ -187,7 +179,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                         //DBG_LOG("Exception debug event @ " + Helper.rul2hexstr(NewIP));   //$LATER
 
                         if (NewIP != OldIP)
-                            ollylang.debuggee_running = false;
+                            scriptInterpreter.debuggee_running = false;
 
                         //$LATER
                         //if(!debugEvent.u.Exception.dwFirstChance)
@@ -203,24 +195,25 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         public bool ScripterLoadFile(string szFileName)
         {
-            ollylang.Reset();
-            return ollylang.script.LoadFile(szFileName);
+            scriptInterpreter.Reset();
+            return scriptInterpreter.script.LoadFile(szFileName);
         }
 
         public bool ScripterLoadBuffer(string szScript)
         {
-            ollylang.Reset();
-            return ollylang.script.load_buff(szScript);
+            scriptInterpreter.Reset();
+            return scriptInterpreter.script.LoadScriptFromString(szScript);
         }
 
         public bool ScripterResume()
         {
-            return ollylang.Run();
+            scriptInterpreter.Run();
+            return true;
         }
 
         bool ScripterPause()
         {
-            return ollylang.Pause();
+            return scriptInterpreter.Pause();
         }
 
         private void AutoDebugEntry()
@@ -230,9 +223,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         bool ScripterAutoDebug(string szDebuggee)
         {
-            if (ollylang.script.IsLoaded && ollylang.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
+            if (scriptInterpreter.script.IsLoaded && scriptInterpreter.Debugger.InitDebugEx(szDebuggee, null, null, AutoDebugEntry) != null)
             {
-                ollylang.Debugger.DebugLoop();
+                scriptInterpreter.Debugger.DebugLoop();
                 return true;
             }
             return false;

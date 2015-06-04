@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,8 @@ namespace Decompiler.Gui.Design
 {
     public class ProgramDesigner : TreeNodeDesigner
     {
+        private Program program;
+
         public override void Initialize(object obj)
         {
             base.Initialize(obj);
@@ -48,6 +51,37 @@ namespace Decompiler.Gui.Design
                 program.Filename != null ? program.Filename : "(No file name)",
                 Environment.NewLine,
                 program.Image.BaseAddress);
+        }
+
+        public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditProperties: 
+                    status.Status = MenuStatus.Enabled|MenuStatus.Visible;
+                    return true;
+                }
+            }
+            return base.QueryStatus(cmdId, status, text);
+        }
+
+        public override bool Execute(CommandID cmdId)
+        {
+            if (cmdId.Guid == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditProperties:
+                    var dlgFactory = Services.RequireService<IDialogFactory>();
+                    var dlg = dlgFactory.CreateProgramPropertiesDialog((Program)this.Component);
+                    var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+                    uiSvc.ShowModalDialog(dlg);
+                    return true;
+                }
+            }
+            return base.Execute(cmdId);
         }
     }
 }

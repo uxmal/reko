@@ -456,7 +456,7 @@ namespace Decompiler.ImageLoaders.MzExe
             if (rvaILT == 0 && dllName == null)
                 return false;
 
-            ImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT);
+            ImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT!=0 ? rvaILT:rvaIAT);
             ImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
             while (innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat))
                 ;

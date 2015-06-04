@@ -1,3 +1,23 @@
+#region License
+/* 
+ * Copyright (C) 1999-2015 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
@@ -347,7 +367,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         {
             rulong addr;
 
-            if (args.Length == 2 && GetRulong(args[0], out addr) && script.is_label(args[1]))
+            if (args.Length == 2 && GetRulong(args[0], out addr) && script.IsLabel(args[1]))
             {
                 bpjumps[addr] = script.Labels[args[1]];
                 return true;
@@ -627,7 +647,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
         private bool DoCALL(params string[] args)
         {
-            if (args.Length == 1 && script.is_label(args[0]))
+            if (args.Length == 1 && script.IsLabel(args[0]))
             {
                 calls.Add(script_pos + 1);
                 return DoJMP(args);
@@ -673,7 +693,6 @@ rulong hwnd;
                     return false;
 
                 Var v1, v2;
-
                 if (GetRulong(args[0], out dw1) && GetRulong(args[1], out dw2))
                 {
                     v1 = Var.Create(dw1);
@@ -971,7 +990,7 @@ string filename;
                     EOB_row = -1;
                     return true;
                 }
-                else if (script.is_label(args[0])) // Set label to go to
+                else if (script.IsLabel(args[0])) // Set label to go to
                 {
                     EOB_row = (int)script.Labels[args[0]];
                     return true;
@@ -989,7 +1008,7 @@ string filename;
                     EOE_row = -1;
                     return true;
                 }
-                else if (script.is_label(args[0])) // Set label to go to
+                else if (script.IsLabel(args[0])) // Set label to go to
                 {
                     EOE_row = (int)script.Labels[args[0]];
                     return true;
@@ -1083,12 +1102,17 @@ string filename;
             return false;
         }
 
+        /// <summary>
+        /// FILL [addr],[length],[value] fills a chunk of memory with a byte value.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool DoFILL(string[] args)
         {
             rulong addr, len;
             byte val = 0;
 
-            if (args.Length == 3 && GetRulong(args[0], out addr) && GetRulong(args[1], out len) && GetNum(args[2], ref val))
+            if (args.Length == 3 && GetRulong(args[0], out addr) && GetRulong(args[1], out len) && GetByte(args[2], ref val))
             {
                 byte[] membuf = new byte[PAGE_SIZE];
                 int cb = Math.Min((int)len, membuf.Length);
@@ -1096,16 +1120,17 @@ string filename;
                 {
                     membuf[i] = val;
                 }
+                
+                // First write full pages, then partial page.
                 while (len >= (rulong)membuf.Length)
                 {
-                    if (!Host.TE_WriteMemory(addr, membuf.Length, membuf))
+                    if (!Host.WriteMemory(addr, membuf.Length, membuf))
                         return false;
 
-                    addr += (rulong)(membuf).Length;
-                    len -= (rulong)(membuf).Length;
+                    addr += (rulong)membuf.Length;
+                    len -= (rulong)membuf.Length;
                 }
-
-                if (len != 0 && !Host.TE_WriteMemory(addr, (int)len, membuf))
+                if (len > 0 && !Host.WriteMemory(addr, (int)len, membuf))
                     return false;
 
                 return true;
@@ -1113,6 +1138,11 @@ string filename;
             return false;
         }
 
+        /// <summary>
+        /// Searches 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool DoFIND(string[] args)
         {
             rulong addr;
@@ -1163,24 +1193,20 @@ string filename;
                 if (maxsize != 0 && (int)maxsize < memlen)
                     memlen = (int)maxsize;
 
-                byte[] membuf = null;
-                byte[] mask = null;
-                byte[] bytes = null;
-
-                membuf = new byte[memlen];
+                byte[] membuf = new byte[memlen];
                 if (Host.Image.TryReadBytes(Address.Ptr32((uint)addr), memlen, membuf))
                 {
                     int bytecount = finddata.Length / 2;
 
-                    mask = new byte[bytecount];
-                    bytes = new byte[bytecount];
+                    byte[] mask = new byte[bytecount];
+                    byte[] bytes= new byte[bytecount];
 
                     Helper.hexstr2bytemask(finddata, mask, bytecount);
                     Helper.hexstr2bytes(finddata, bytes, bytecount);
 
                     for (int i = 0; (i + bytecount) <= memlen; i++)
                     {
-                        if (Helper.memcmp_mask(membuf, i, bytes, mask, bytecount))
+                        if (Helper.MaskedCompare(membuf, i, bytes, mask, bytecount))
                         {
                             variables["$RESULT"] = Var.Create(addr + (ulong)i);
                             break;
@@ -1281,7 +1307,11 @@ string filename;
             */
         }
 
-        // TE?
+        /// <summary>
+        /// Assembles the command and then searches for it.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool DoFINDCMD(string[] args)
         {
             //bool bRefVisible = false, bResetDisam = false;
@@ -1296,7 +1326,6 @@ string filename;
             {
                 errorstr = "Unsupported command!";
                 return false;
-                //return true;
             }
             return false;
 
@@ -1406,7 +1435,7 @@ string filename;
             TE_FreeMemory(tmpaddr);
             return false;
             */
-            return true;
+            //return true;
         }
         /*
         //Buggy, could assemble different command code bytes, (from chinese code)
@@ -1551,7 +1580,7 @@ string filename;
                                 if (len == 0)
                                     break;
 
-                                if (len >= bytecount && Helper.memcmp_mask(membuf, i, bytes, mask, bytecount))
+                                if (len >= bytecount && Helper.MaskedCompare(membuf, i, bytes, mask, bytecount))
                                 {
                                     variables["$RESULT"] = Var.Create(addr + (uint)i);
                                     variables["$RESULT_1"] = Var.Create(len);
@@ -1723,7 +1752,7 @@ string filename;
                 }
                 else if (param == "SIZE")
                 {
-                    variables["$RESULT"] = Host.LengthDisassembleEx(addr);
+                    variables["$RESULT"] = Var.Create(Host.LengthDisassembleEx(addr));
                     return true;
                 }
                 else if (param == "TYPE") // Olly only
@@ -1803,17 +1832,17 @@ rulong addr;
                     mod = mod.Remove(8);
                 mod = mod.ToLowerInvariant();
 
-                List<MODULEENTRY32> Modules = new List<MODULEENTRY32>();
-                if (Host.TE_GetModules(Modules))
+                var modules = new List<MODULEENTRY32>();
+                if (Host.TE_GetModules(modules))
                 {
-                    for (int i = 0; i < Modules.Count; i++)
+                    for (int i = 0; i < modules.Count; i++)
                     {
-                        string cur = Modules[i].szModule;
+                        string cur = modules[i].szModule;
                         if (cur.Length > 8)
                             cur = cur.Remove(8);
                         if (cur.ToLowerInvariant() == mod)
                         {
-                            return callCommand(DoGMI, Helper.rul2hexstr((rulong)Modules[i].modBaseAddr), args[1]);
+                            return callCommand(DoGMI, Helper.rul2hexstr((rulong)modules[i].modBaseAddr), args[1]);
                         }
                     }
                 }
@@ -1876,11 +1905,11 @@ rulong addr;
                 errorstr = "Unsupported command!";
                 return false;
 
+                /*
                 variables["$RESULT"] = Var.Create(0);
 
                 str = args[1].ToUpperInvariant();
 
-                /*
                 ulong args.Length = 0;
                 bool cache = false, cached = false;
 
@@ -2698,7 +2727,7 @@ string str = "";
 
         private bool DoJMP(string[] args)
         {
-            if (args.Length == 1 && script.is_label(args[0]))
+            if (args.Length == 1 && script.IsLabel(args[0]))
             {
                 script_pos_next = script.Labels[args[0]];
                 return true;
@@ -3170,7 +3199,7 @@ string filename;
                                 copybuffer = new byte[maxsize];
                                 errorstr = "Out of memory!";
 
-                                if (!Host.TryReadBytes(src, maxsize, copybuffer) || !Host.TE_WriteMemory(target, maxsize, copybuffer))
+                                if (!Host.TryReadBytes(src, maxsize, copybuffer) || !Host.WriteMemory(target, (int)maxsize, copybuffer))
                                 {
                                     return false;
                                 }
@@ -3181,7 +3210,7 @@ string filename;
                         {
                             if (maxsize == 0)
                                 maxsize = sizeof(rulong);
-                            return Host.TE_WriteMemory(target, maxsize, dw);
+                            return Host.WriteMemory(target, dw);
                         }
                         else if (GetString(args[1], (int)maxsize, out str))
                         {
@@ -3189,11 +3218,11 @@ string filename;
                             if (maxsize == 0)
                                 maxsize = (rulong)v.size;
                             maxsize = Math.Min(maxsize, (rulong)v.size);
-                            return Host.TE_WriteMemory(target, maxsize, Encoding.UTF8.GetBytes(v.to_string()));
+                            return Host.WriteMemory(target, (int)maxsize, Encoding.UTF8.GetBytes(v.to_string()));
                         }
                         else if (GetFloat(args[1], out flt))
                         {
-                            return Host.TE_WriteMemory(target, sizeof(double), flt);
+                            return Host.WriteMemory(target, flt);
                         }
                     }
                 }
@@ -3467,7 +3496,7 @@ string param;
             {
                 rulong CSP = Debugger.GetContextData(eContextData.UE_CSP) - sizeof(rulong);
                 Debugger.SetContextData(eContextData.UE_CSP, CSP);
-                return Host.TE_WriteMemory(CSP, sizeof(rulong), dw); ;
+                return Host.WriteMemory(CSP, dw); ;
             }
             return false;
         }
@@ -3593,7 +3622,7 @@ string param;
                 variables["$RESULT_1"] = Var.Create(0);
                 variables["$RESULT_2"] = Var.Create(0);
 
-                return (valid_commands.Contains(str, StringComparer.InvariantCultureIgnoreCase));
+                return valid_commands.Contains(str, StringComparer.InvariantCultureIgnoreCase);
 
             }
             return false;
@@ -3660,7 +3689,7 @@ string param;
 
                     for (int i = 0; (i + bytecount) <= (int)len; )
                     {
-                        if (Helper.memcmp_mask(membuf, i, bytes1, mask1, bytecount))
+                        if (Helper.MaskedCompare(membuf, i, bytes1, mask1, bytecount))
                         {
                             Helper.memcpy_mask(membuf, i, bytes2, mask2, bytecount);
                             i += bytecount;
@@ -3670,7 +3699,7 @@ string param;
                     }
 
                     if (replaced)
-                        Host.TE_WriteMemory(addr, len, membuf);
+                        Host.WriteMemory(addr, (int)len, membuf);
                 }
 
                 return true;

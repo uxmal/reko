@@ -547,5 +547,9 @@ namespace Decompiler.Core
         public void WriteByte(Address addr, byte b) { WriteByte(ToOffset(addr), b); }
         public void WriteLeUInt32(Address addr, uint dw) { WriteLeUInt32(ToOffset(addr), dw); }
 
+        public static void WriteBytes(byte[] srcBytes, ulong offset, int count, byte[] dstBytes)
+        {
+            Array.Copy(srcBytes, 0, dstBytes, (long)offset, count);
+        }
     }
 }

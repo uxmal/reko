@@ -119,6 +119,9 @@ namespace Decompiler.Core.Serialization
         [XmlElement("global-vars")]
         public string GlobalsFilename;
 
+        [XmlElement("onLoad")]
+        public Script_v2 OnLoadedScript;
+
         public override T Accept<T>(IProjectFileVisitor_v2<T> visitor)
         {
             return visitor.VisitInputFile(this);
@@ -148,5 +151,14 @@ namespace Decompiler.Core.Serialization
         {
             return visitor.VisitAssemblerFile(this);
         }
+    }
+
+    public class Script_v2
+    {
+        [XmlAttribute]
+        public bool Enabled;
+
+        [XmlText]
+        public string Script;
     }
 }

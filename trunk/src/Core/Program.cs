@@ -213,6 +213,11 @@ namespace Decompiler.Core
             this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
         }
 
+        /// <summary>
+        /// A script to run after the image is loaded.
+        /// </summary>
+        public Serialization.Script_v2 OnLoadedScript { get; set; }
+
         // Mutators /////////////////////////////////////////////////////////////////
 
         /// <summary>

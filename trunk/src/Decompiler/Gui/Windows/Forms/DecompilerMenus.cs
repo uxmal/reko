@@ -155,6 +155,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slEditSelectAll = new CommandMenuItem("Select _all", new Guid(CmdSets.Decompiler), CmdIds.EditSelectAll);
             slEditSelectAll.IsDynamic = false;
             slGrpEdit.Add(0, slEditSelectAll);
+            CommandMenuItem slEditProperties = new CommandMenuItem("P_roperties", new Guid(CmdSets.Decompiler), CmdIds.EditProperties);
+            slEditProperties.IsDynamic = false;
+            
             CommandMenuItem slViewMemory = new CommandMenuItem("_Memory", new Guid(CmdSets.Decompiler), CmdIds.ViewMemory);
             slViewMemory.IsDynamic = false;
             slGrpLowLevel.Add(0, slViewMemory);
@@ -249,6 +252,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpToolbarFileOps.Add(0, slFileOpen);
 			slGrpToolbarFileOps.Add(0, slFileSave);
 			slGrpEdit.Add(0, slEditCopy);
+			slGrpEdit.Add(0, slEditProperties);
 			slGrpToolbarActions.Add(0, slActionNextPhase);
 			slGrpToolbarActions.Add(0, slActionFinishDecompilation);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
@@ -265,6 +269,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpProcedure.Add(0, slActionEditSignature);
 			slGrpProcedure.Add(0, slViewGoToAddress);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
+			slGrpBrowser.Add(0, slEditProperties);
 			slGrpBrowserProc.Add(0, slViewGoToAddress);
 			slGrpBrowserProc.Add(0, slActionEditSignature);
 			slGrpBrowserProc.Add(0, slViewFindWhatPointsHere);

@@ -166,6 +166,7 @@ namespace Decompiler.Core.Serialization
             program.TypesFilename = sInput.TypesFilename;
             program.GlobalsFilename = sInput.GlobalsFilename;
             program.EnsureFilenames(sInput.Filename);
+            program.OnLoadedScript = sInput.OnLoadedScript;
             return program;
         }
 

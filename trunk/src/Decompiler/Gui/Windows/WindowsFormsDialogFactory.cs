@@ -18,6 +18,7 @@
 */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows.Forms;
 using System;
@@ -59,6 +60,15 @@ namespace Decompiler.Gui.Windows
             };
         }
 
+        public IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program)
+        {
+            return new ProgramPropertiesDialog
+            {
+                Services = services,
+                Program = program,
+            };
+        }
+
         public ISearchDialog CreateSearchDialog()
         {
             return new SearchDialog()
@@ -66,8 +76,6 @@ namespace Decompiler.Gui.Windows
 				Services = services,
             };
         }
-
-
     }
 }
 

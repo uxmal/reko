@@ -209,7 +209,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             return size;
         }
 
-        public static bool memcmp_mask(byte[] b1, int offset, byte[] b2, byte[] mask, int size)
+        public static bool MaskedCompare(byte[] b1, int offset, byte[] b2, byte[] mask, int size)
         {
             for (int i = 0; i < size; i++)
             {
