@@ -24,7 +24,7 @@ using System;
 
 namespace Decompiler.Core
 {
-    public interface IRewriterHost
+    public interface IRewriterHost 
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
@@ -32,6 +32,7 @@ namespace Decompiler.Core
         ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
         ExternalProcedure GetInterceptedCall(Address addrImportThunk);
 
+        void Error(Address address, string message);
     }
 }
 

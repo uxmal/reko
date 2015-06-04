@@ -39,18 +39,22 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelArchitecture arch;
         private IntelArchitecture arch16;
         private IntelArchitecture arch32;
+        private IntelArchitecture arch64;
         private RewriterHost host;
         private X86State state;
         private Address baseAddr;
         private Address baseAddr16;
         private Address baseAddr32;
+        private Address baseAddr64;
 
         public X86RewriterTests()
         {
             arch16 = new IntelArchitecture(ProcessorMode.Real);
             arch32 = new IntelArchitecture(ProcessorMode.Protected32);
+            arch64 = new IntelArchitecture(ProcessorMode.Protected64);
             baseAddr16 = Address.SegPtr(0x0C00, 0x0000);
             baseAddr32 = Address.Ptr32(0x10000000);
+            baseAddr64 = Address.Ptr64(0x140000000ul);
         }
 
         public override IProcessorArchitecture Architecture
@@ -163,6 +167,12 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 throw new NotImplementedException();
             }
+
+
+            public void Error(Address address, string message)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void Run16bitTest(Action<IntelAssembler> fn)
@@ -183,6 +193,13 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             arch = arch32;
             image = new LoadedImage(baseAddr32, bytes);
+            host = new RewriterHost(null);
+        }
+
+        private void Run64bitTest(params byte[] bytes)
+        {
+            arch = arch64;
+            image = new LoadedImage(baseAddr64, bytes);
             host = new RewriterHost(null);
         }
 
@@ -1247,6 +1264,35 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode(
                 "0|10000000(5): 1 instructions",
                 "1|L--|xmm0 = __pshufd(xmm0, xmm0, 0x00)");
+        }
+
+        [Test]
+        public void X86rw_64_movsxd()
+        {
+            Run64bitTest(0x48, 0x63, 0x48, 0x3c); // "movsx\trcx,dword ptr [rax+3C]", 
+            AssertCode(
+                "0|0000000140000000(4): 1 instructions",
+                "1|L--|rcx = (int64) Mem0[rax + 0x000000000000003C:word32]");
+        }
+
+        [Test]
+        public void X86rw_64_rip_relative()
+        {
+            Run64bitTest(0x49, 0x8b, 0x05, 0x00, 0x00, 0x10, 0x00); // "mov\trax,qword ptr [rip+00100000]",
+            AssertCode(
+                "0|0000000140000000(7): 1 instructions",
+                "1|L--|rax = Mem0[0x0000000140100007:word64]");
+        }
+
+
+        [Test]
+        public void X86rw_64_sub_immediate_dword()
+        {
+            Run64bitTest(0x48, 0x81, 0xEC, 0x08, 0x05, 0x00, 0x00); // "sub\trsp,+00000508", 
+           AssertCode(
+                "0|0000000140000000(7): 2 instructions",
+                "1|L--|rsp = rsp - 1288",
+                "2|L--|SCZO = cond(rsp)");
         }
     }
 }

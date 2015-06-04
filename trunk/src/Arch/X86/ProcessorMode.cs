@@ -62,7 +62,9 @@ namespace Decompiler.Arch.X86
         public abstract IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
         public abstract X86Disassembler CreateDisassembler(ImageReader rdr);
-        
+
+        public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host);
+
         public virtual Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             var sp = frame.EnsureRegister(Registers.sp);
@@ -107,6 +109,11 @@ namespace Decompiler.Arch.X86
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
             return new X86Disassembler(rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+        }
+
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
+        {
+            return new OperandRewriter16(arch, frame, host);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -156,6 +163,11 @@ namespace Decompiler.Arch.X86
         public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
+        }
+
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
+        {
+            return new OperandRewriter16(arch, frame, host);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -211,6 +223,11 @@ namespace Decompiler.Arch.X86
             return new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
 
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
+        {
+            return new OperandRewriter32(arch, frame, host);
+        }
+
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             var esp = frame.EnsureRegister(Registers.esp);
@@ -259,6 +276,11 @@ namespace Decompiler.Arch.X86
         public override X86Disassembler CreateDisassembler(ImageReader rdr)
         {
             return new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+        }
+
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
+        {
+            return new OperandRewriter64(arch, frame, host);
         }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)

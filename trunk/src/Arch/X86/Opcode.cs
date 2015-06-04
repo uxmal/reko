@@ -273,6 +273,8 @@ namespace Decompiler.Arch.X86
         stos,
         stosb,
         sub,
+        syscall,
+        sysret,
         test,
         wait,
         xadd,

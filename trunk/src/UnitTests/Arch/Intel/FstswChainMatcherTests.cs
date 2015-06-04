@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             asm = new IntelAssembler(arch, Address.Ptr32(0x10000), new List<EntryPoint>());
             Procedure proc = new Procedure("test", arch.CreateFrame());
-            orw = new OperandRewriter(arch, proc.Frame, null);
+            orw = new OperandRewriter32(arch, proc.Frame, null);
             emitter = new ProcedureBuilder();
         }
 

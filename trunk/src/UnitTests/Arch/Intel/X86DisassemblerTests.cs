@@ -474,7 +474,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_Call32()
         {
             var instr = Disassemble32(0xE9, 0x78, 0x56, 0x34, 012);
-            var addrOp = (AddressOperand) instr.op1;
+            var addrOp = (AddressOperand)instr.op1;
         }
 
         [Test]
@@ -511,7 +511,7 @@ movzx	ax,byte ptr [bp+04]
         }
         //$TOD: copy only gives me n-1 bytes rathern than n. bytes
         //   0048D4A8 
-        
+
         // 66 0F 6F 06                    f.o    
         [Test]
         public void Dis_x86_bts()
@@ -596,6 +596,39 @@ movzx	ax,byte ptr [bp+04]
             AssertCode32("movq\t[edi],xmm1", 0x66, 0x0f, 0xd6, 0x0f);
             AssertCode32("ldmxcsr\tdword ptr [ebp+08]", 0x0F, 0xAE, 0x55, 0x08);
             AssertCode32("pcmpistri\txmm0,[edi-10],40", 0x66, 0x0F, 0x3A, 0x63, 0x47, 0xF0, 0x40);
+        }
+
+        [Test]
+        public void Dis_x86_64_movsxd()
+        {
+            AssertCode64("movsx\trcx,dword ptr [rax+3C]", 0x48, 0x63, 0x48, 0x3c);
+        }
+
+        [Test]
+        public void Dis_x86_64_rip_relative()
+        {
+            AssertCode64("mov\trax,[rip+00100000]", 0x49, 0x8b, 0x05, 0x00, 0x00, 0x10, 0x00);
+            AssertCode64("mov\trax,[rip+00100000]", 0x48, 0x8b, 0x05, 0x00, 0x00, 0x10, 0x00);
+        }
+
+        [Test]
+        public void Dis_x86_64_sub_immediate_dword()
+        {
+            AssertCode64("sub\trsp,+00000508", 0x48, 0x81, 0xEC, 0x08, 0x05, 0x00, 0x00);
+        }
+
+        [Test]
+        public void Dis_x86_nops()
+        {
+            AssertCode64("nop\t", 0x90);
+            AssertCode64("nop\t", 0x66, 0x90);
+            AssertCode64("nop\tdword ptr [rax]", 0x0F, 0x1F, 0x00);
+            AssertCode64("nop\tdword ptr [rax+00]", 0x0F, 0x1F, 0x40, 0x00);
+            AssertCode64("nop\tdword ptr [rax+rax+00]", 0x0F, 0x1F, 0x44, 0x00, 0x00);
+            AssertCode64("nop\tword ptr [rax+rax+00]", 0x66, 0x0F, 0x1F, 0x44, 0x00, 0x00);
+            AssertCode64("nop\tdword ptr [rax+00000000]", 0x0F, 0x1F, 0x80, 0x00, 0x00, 0x00, 0x00);
+            AssertCode64("nop\tdword ptr [rax+rax+00000000]", 0x0F, 0x1F, 0x84, 0x00, 0x00, 0x00, 0x00, 0x00);
+            AssertCode64("nop\tword ptr [rax+rax+00000000]", 0x66, 0x0F, 0x1F, 0x84, 0x00, 0x00, 0x00, 0x00, 0x00);
         }
     }
 }

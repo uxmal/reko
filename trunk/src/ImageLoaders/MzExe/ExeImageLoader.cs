@@ -112,11 +112,13 @@ namespace Decompiler.ImageLoaders.MzExe
             var loaderSvc = services.RequireService<IUnpackerService>();
             if (IsPortableExecutable)
             {
-                var entryPointOffset = PeImageLoader.ReadEntryPoint(RawImage, e_lfanew);
+                var peLdr = new PeImageLoader(services, Filename, base.RawImage, e_lfanew);
+                uint entryPointOffset = peLdr.ReadEntryPointRva();
+
                 var unpacker = loaderSvc.FindUnpackerBySignature(Filename, base.RawImage, entryPointOffset);
                 if (unpacker != null)
                     return unpacker;
-                return new PeImageLoader(services, Filename,  base.RawImage, e_lfanew);
+                return peLdr;
             }
             else if (IsNewExecutable)
             {

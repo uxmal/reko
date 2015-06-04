@@ -497,7 +497,7 @@ namespace Decompiler.Typing
 		public DataType VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);
-			return handler.MemAccessTrait(null, deref.Expression, 0, deref, 0);
+            return handler.MemAccessTrait(null, deref.Expression, deref.Expression.DataType.Size, deref, 0);
 		}
 
 		public DataType VisitFieldAccess(FieldAccess acc)

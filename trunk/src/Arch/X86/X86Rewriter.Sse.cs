@@ -71,5 +71,17 @@ namespace Decompiler.Arch.X86
                     SrcOp(instrCur.op1),
                     SrcOp(instrCur.op2)));
         }
+
+        private void RewritePalignr()
+        {
+            emitter.Assign(
+                SrcOp(instrCur.op1),
+                PseudoProc(
+                    "__palignr",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2),
+                    SrcOp(instrCur.op3)));
+        }
     }
 }

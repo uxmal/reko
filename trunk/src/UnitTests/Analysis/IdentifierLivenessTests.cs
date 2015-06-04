@@ -28,8 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-//$REFACTOR: rename file to IdentifierLivenessTests
-
 namespace Decompiler.UnitTests.Analysis
 {
 	[TestFixture]

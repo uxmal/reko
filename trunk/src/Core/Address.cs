@@ -75,7 +75,7 @@ namespace Decompiler.Core
         }
 
         public abstract bool IsNull { get; }
-        public abstract uint Offset { get; }
+        public abstract ulong Offset { get; }
         public abstract ushort Selector { get; }			// Segment selector.
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -233,7 +233,7 @@ namespace Decompiler.Core
         }
 
         public override bool IsNull { get { return uValue == 0; } }
-        public override uint Offset { get { return uValue; } }
+        public override ulong Offset { get { return uValue; } }
         public override ushort Selector { get { throw new NotSupportedException(); } }
         
         public override Address Add(long offset)
@@ -283,7 +283,7 @@ namespace Decompiler.Core
         }
 
         public override bool IsNull { get { return uValue == 0; } }
-        public override uint Offset { get { return uValue; } }
+        public override ulong Offset { get { return uValue; } }
         public override ushort Selector { get { throw new NotSupportedException(); } }
 
         public override Address Add(long offset)
@@ -336,7 +336,7 @@ namespace Decompiler.Core
         }
 
         public override bool IsNull { get { return uSegment == 0 && uOffset == 0; } }
-        public override uint Offset { get { return uOffset; } }
+        public override ulong Offset { get { return uOffset; } }
         public override ushort Selector { get { return uSegment; } }
 
         public override Address Add(long offset)
@@ -394,7 +394,7 @@ namespace Decompiler.Core
         }
 
         public override bool IsNull { get { return uValue == 0; } }
-        public override uint Offset { get { throw new NotImplementedException("How to handle offsets that are this large?"); } }
+        public override ulong Offset { get { return uValue; } }
         public override ushort Selector { get { throw new NotSupportedException(); } }
 
         public override Address Add(long offset)

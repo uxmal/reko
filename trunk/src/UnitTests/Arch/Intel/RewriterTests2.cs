@@ -177,7 +177,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 			RunTest("Fragments/multiple/read_file.asm", "Intel/RwReadFile.txt");
 		}
 
-
 		[Test]
 		public void X86Rw_ProcIsolation()
 		{

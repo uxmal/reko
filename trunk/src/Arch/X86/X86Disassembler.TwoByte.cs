@@ -37,9 +37,13 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.illegal),
+                    new SingleByteOpRec(Opcode.syscall)),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.illegal),
+                    new SingleByteOpRec(Opcode.sysret)),
 
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -70,7 +74,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.nop, "Ev"),
 
 				// 20
 				new SingleByteOpRec(Opcode.illegal),

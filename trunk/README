@@ -18,10 +18,12 @@ other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompiler the binary
 (for instance if the binary is your own.) 
 
+
 == Version 0.4.5.0 ==
 * Command line interpreter supports --default-to option
 * More ARM instructions implemented
 * CP/M environment added
+* 64-bit Windows enviroment added
 
 == Version 0.4.4.0 ==
 * Mostly bugfixes
@@ -31,7 +33,7 @@ decompiler only if you have legal rights to decompiler the binary
 * Command line interpreter now understands a few switches; try typing
     decompile --help
 * More x86 and m68k instructions supported
-    
+
 == Version 0.4.2.0 ==
 * Added support for PS3 and System V ELF files.
 * For fun: a C64 BASIC "decompiler"!

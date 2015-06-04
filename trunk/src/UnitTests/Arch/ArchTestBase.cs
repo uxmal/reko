@@ -63,6 +63,12 @@ namespace Decompiler.UnitTests.Arch
             {
                 throw new NotImplementedException();
             }
+
+
+            public void Error(Address address, string message)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         protected virtual IRewriterHost CreateRewriterHost()

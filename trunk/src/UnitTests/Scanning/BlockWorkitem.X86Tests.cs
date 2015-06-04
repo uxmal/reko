@@ -134,6 +134,12 @@ namespace Decompiler.UnitTests.Scanning
             {
                 throw new NotImplementedException();
             }
+
+
+            public void Error(Address address, string message)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)

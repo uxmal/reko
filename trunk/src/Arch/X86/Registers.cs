@@ -157,6 +157,9 @@ namespace Decompiler.Arch.X86
         public static readonly RegisterStorage mm14;
         public static readonly RegisterStorage mm15;
 
+        public static readonly RegisterStorage rip;
+
+
         private static readonly RegisterStorage[] regs;
 
         static Registers()
@@ -233,10 +236,10 @@ namespace Decompiler.Arch.X86
             r14w = new Intel32Register("r14w", 14, 15, -1, -1);
             r15w = new Intel32Register("r15w", 15, 15, -1, -1);
 
-            spl = new IntelLoByteRegister("spl", 8, 12, -1, -1, -1);
-            bpl = new IntelLoByteRegister("bpl", 9, 13, -1, -1, -1);
-            sil = new IntelLoByteRegister("sil", 8, 12, -1, -1, -1);
-            dil = new IntelLoByteRegister("dil", 9, 13, -1, -1, -1);
+            spl = new IntelLoByteRegister("spl", 8, 4, 12, -1, -1);
+            bpl = new IntelLoByteRegister("bpl", 9, 5, 13, -1, -1);
+            sil = new IntelLoByteRegister("sil", 8, 6, 14, -1, -1);
+            dil = new IntelLoByteRegister("dil", 9, 7, 15, -1, -1);
 
             r8b = new IntelLoByteRegister("r8b", 8, 12, -1, -1, -1);
             r9b = new IntelLoByteRegister("r9b", 9, 13, -1, -1, -1);
@@ -280,6 +283,8 @@ namespace Decompiler.Arch.X86
             xmm13 = new RegisterStorage("xmm13", 13, PrimitiveType.Word128);
             xmm14 = new RegisterStorage("xmm14", 14, PrimitiveType.Word128);
             xmm15 = new RegisterStorage("xmm15", 15, PrimitiveType.Word128);
+
+            rip = new RegisterStorage("rip", 23, PrimitiveType.Pointer64);
 
             regs = new RegisterStorage[] {
 				eax,
