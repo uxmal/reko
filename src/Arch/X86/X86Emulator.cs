@@ -89,7 +89,7 @@ namespace Decompiler.Arch.X86
         /// </summary>
         public void StepOver(Action callback)
         {
-            stepOverAddress = (TWord)((uint)dasm.Current.Address.ToLinear() + dasm.Current.Length);
+            stepOverAddress = (TWord)((long)dasm.Current.Address.ToLinear() + dasm.Current.Length);
             stepAction = callback;
         }
 
@@ -124,7 +124,7 @@ namespace Decompiler.Arch.X86
             {
                 while (running && dasm.MoveNext())
                 {
- //                   Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
+                    // Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
                     Action bpAction;
                     TWord eip = (uint)dasm.Current.Address.ToLinear();
                     if (bpExecute.TryGetValue(eip, out bpAction))

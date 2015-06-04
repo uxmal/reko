@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2015 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,11 +42,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
 
         private string path;
-        private Host host;
+        private OllyLang interpreter;
 
-        public OllyScript(Host host)
+        public OllyScript(OllyLang interpreter)
         {
-            this.host = host;
+            this.interpreter = interpreter;
             this.IsLoaded = false;
             this.Log = false;
             this.Lines = new List<Line>();
@@ -46,7 +66,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             Labels.Clear();
         }
 
-        void parse_insert(List<string> toInsert, string currentdir)
+        private void InsertLines(List<string> toInsert, string currentdir)
         {
             uint curline = 1;
             bool in_comment = false, in_asm = false;
@@ -150,11 +170,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
                                         else
                                             dir = Helper.folderfrompath(philename);
 
-                                        parse_insert(Helper.ReadLinesFromFile(philename), dir);
+                                        InsertLines(Helper.ReadLinesFromFile(philename), dir);
                                     }
-                                    else host.MsgError("Bad #inc directive!");
+                                    else interpreter.Host.MsgError("Bad #inc directive!");
                                 }
-                                else this.host.MsgError("Bad #inc directive!");
+                                else this.interpreter.Host.MsgError("Bad #inc directive!");
                             }
                             // Logging
                             else if (!in_asm && lcline == "#log")
@@ -231,20 +251,18 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 sdir = dir;
 
             List<string> unparsedScript = Helper.ReadLinesFromFile(path);
-            parse_insert(unparsedScript, sdir);
-
-            //TSErrorExit = false;
+            InsertLines(unparsedScript, sdir);
             return true;
         }
 
-        public bool load_buff(string buff, string dir = null)
+        public bool LoadScriptFromString(string buff, string dir = null)
         {
             Clear();
 
             string curdir = Helper.pathfixup(Environment.CurrentDirectory, true);
             string sdir;
 
-            path = "";
+            this.path = "";
             if (dir == null)
             {
                 sdir = curdir;
@@ -253,13 +271,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 sdir = dir;
 
             List<string> unparsedScript = Helper.ReadLines(new StringReader(buff));
-            parse_insert(unparsedScript, sdir);
-
-            //$LATER TSErrorExit = false;
+            InsertLines(unparsedScript, sdir);
             return true;
         }
 
-        public bool is_label(string s)
+        public bool IsLabel(string s)
         {
             return (Labels.ContainsKey(s));
         }

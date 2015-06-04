@@ -347,7 +347,7 @@ namespace Decompiler.UnitTests.ImageLoaders.MzExe
         }
 
         [Test]
-        public void Pil_DelayLoads()
+        public void Pil32_DelayLoads()
         {
             Given_Pe32Header(0x00100000);
             Given_Section(".text", 0x1000u, 0x1000u);

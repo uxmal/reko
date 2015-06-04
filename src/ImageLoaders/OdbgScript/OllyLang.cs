@@ -1,3 +1,23 @@
+#region License
+/* 
+ * Copyright (C) 1999-2015 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
@@ -8,10 +28,11 @@ using System.Text;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
+    using Decompiler.Arch.X86;
     using rulong = System.UInt64;
 
     // This is the table for Script Execution
-    public struct t_dbgmemblock
+    public class t_dbgmemblock
     {
         public rulong address;    //Memory Adress
         public uint size;     //Block Size
@@ -28,13 +49,13 @@ namespace Decompiler.ImageLoaders.OdbgScript
         public eContextData reg_to_return;
     }
 
-    public struct t_export
+    public class t_export
     {
         public rulong addr;
         public string label; // ;label[256];
     }
 
-    partial class OllyLang
+    public partial class OllyLang : IScriptInterpreter
     {
         private enum eBreakpointType { PP_INT3BREAK = 0x10, PP_MEMBREAK = 0x20, PP_HWBREAK = 0x40 };
 
@@ -92,7 +113,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
         void MemoryCallback()   { OnBreakpoint(eBreakpointType.PP_MEMBREAK); }
         void EXECJMPCallback()  { DoSTI(); }
 
-        struct callback_t
+        public struct callback_t
         {
             public uint call;
             public bool returns_value;
@@ -163,11 +184,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
             public readonly byte value;
         }
 
-        //static register_t [] registers;
-        //static string fpu_registers[];
-        //static string e_flags[];
-        //static constant_t constants[];
-
         public class eflags_t
         {
             public ulong dw;
@@ -190,17 +206,6 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 public bool IF { get { return ((eflags_t.dw & 256) != 0); } set { if (value) eflags_t.dw |= 256u; else eflags_t.dw &= ~256u; } }
                 public bool DF { get { return ((eflags_t.dw & 512) != 0); } set { if (value) eflags_t.dw |= 512u; else eflags_t.dw &= ~512u; } }
                 public bool OF { get { return ((eflags_t.dw & 1024) != 0); } set { if (value) eflags_t.dw |= 1024u; else eflags_t.dw &= ~1024u; } }
-                //bool dummy1 : 1;
-                //bool PF : 1;
-                //bool dummy2 : 1;
-                //bool AF : 1;
-                //bool dummy3 : 1;
-                //bool ZF : 1;
-                //bool SF : 1;
-                //bool TF : 1;
-                //bool IF : 1;
-                //bool DF : 1;
-                //bool OF : 1
             }
             public readonly Flagomizer bits;
 
@@ -208,23 +213,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             {
                 bits = new Flagomizer(this);
             }
-
-            //struct
-            //{
-            //    bool CF : 1;
-            //    bool dummy1 : 1;
-            //    bool PF : 1;
-            //    bool dummy2 : 1;
-            //    bool AF : 1;
-            //    bool dummy3 : 1;
-            //    bool ZF : 1;
-            //    bool SF : 1;
-            //    bool TF : 1;
-            //    bool IF : 1;
-            //    bool DF : 1;
-            //    bool OF : 1;
-            //} bits;
-        };
+        }
 
         // Commands that can be executed
         Dictionary<string, Func<string[], bool>> commands = new Dictionary<string, Func<string[], bool>>();
@@ -251,27 +240,19 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
 
         // Commands
-        bool GetNum<T>(string op, ref T value)
+        bool GetByte(string op, ref byte value)
         {
-            throw new NotImplementedException();
-#if LATER
             rulong temp;
-
-            if (GetRulong(op, out temp)/* && temp <= numeric_limits<T>::max()*/)
+            if (GetRulong(op, out temp) && temp <= Byte.MaxValue)
             {
-                value = temp;
+                value = (byte) temp;
                 return true;
             }
-            return false;
-#endif
-        }
-
-        bool SetNum<T>(string op, T value, int size = -1)
-        {
-            throw new NotImplementedException();
-            //if (size < 0)
-            //    size = Marshal.SizeOf(value);
-            //return SetRulong(op, (rulong)value, size);
+            else 
+            {
+                value = 0;
+                return false;
+            }
         }
 
         // Save / Restore Breakpoints
@@ -444,16 +425,11 @@ namespace Decompiler.ImageLoaders.OdbgScript
 #endif
 };
 
-        public readonly Debugger Debugger;
-        private Host Host;
-
-        public OllyLang(Host host, Debugger dbg)
+        public OllyLang()
         {
-            this.Debugger = dbg;
-            this.Host = host;
-            this.script = new OllyScript(Host);
+            this.script = new OllyScript(this);
 
-            // Init command array
+            #region Initialize command array
             commands["add"] = DoADD;
             commands["ai"] = DoAI;
             commands["alloc"] = DoALLOC;
@@ -634,6 +610,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             commands["xchg"] = DoXCHG;
             commands["wrt"] = DoWRT;
             commands["wrta"] = DoWRTA;
+            #endregion
 
 #if LATER
             commands["error"] = DoError;
@@ -749,6 +726,9 @@ namespace Decompiler.ImageLoaders.OdbgScript
 #endif
         }
 
+        public Debugger Debugger { get; set; }
+        public IHost Host { get; set; }
+
         public void Dispose()
         {
             if (search_buffer != null)
@@ -831,11 +811,20 @@ namespace Decompiler.ImageLoaders.OdbgScript
             importsCacheAddr = 0;
         }
 
-        public bool Run()
+        public void LoadFromFile(string scriptFilename, string curDir)
+        {
+            script.LoadFile(scriptFilename, curDir);
+        }
+
+        public void LoadFromString(string scriptString, string curDir)
+        {
+            script.LoadScriptFromString(scriptString, curDir);
+        }
+
+        public void Run()
         {
             script_running = true;
             Step();
-            return true;
         }
 
         public bool Pause()
@@ -868,7 +857,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 // Log line of code if  enabled
                 if (script.Log)
                 {
-                    string logstr = "-. " + line.RawLine;
+                    string logstr = "--> " + line.RawLine;
                     Host.TE_Log(logstr, Host.TS_LOG_COMMAND);
                 }
 
@@ -1680,7 +1669,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 {
                     Debug.Assert(target != 0);
 
-                    return Host.TE_WriteMemory(target, sizeof(double), value);
+                    return Host.WriteMemory(target, value);
                 }
             }
             return false;
@@ -1703,7 +1692,8 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 if (GetRulong(tmp, out target))
                 {
                     Debug.Assert(target != 0);
-                    return Host.TE_WriteMemory(target, Math.Min(size, value.Length), value);
+                    var bytes = Encoding.ASCII.GetBytes(value);
+                    return Host.WriteMemory(target, Math.Min(size, bytes.Length), bytes);
                 }
             }
             return false;
@@ -2027,7 +2017,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                 }
                 else if (run_till_return)
                 {
-                    var instr = Host.DisassembleEx(Debugger.InstructionPointer);
+                    var instr = (IntelInstruction) Host.DisassembleEx(Debugger.InstructionPointer);
                     if (instr.code == Arch.X86.Opcode.ret ||
                        instr.code == Arch.X86.Opcode.retf)
                     {
@@ -2044,7 +2034,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
                     that's not gonna do us any good for jumps
                     so we'll stepinto except for a few exceptions
                     */
-                    var instr = Host.DisassembleEx(Debugger.InstructionPointer);
+                    var instr = (IntelInstruction) Host.DisassembleEx(Debugger.InstructionPointer);
                     if (instr.code == Arch.X86.Opcode.call || instr.code == Arch.X86.Opcode.rep ||
                         instr.code == Arch.X86.Opcode.repne)
                         Debugger.StepOver(StepOverCallback);

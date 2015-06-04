@@ -56,6 +56,8 @@ namespace Decompiler.Core
 
         protected ImageReader(LoadedImage img, ulong off)
         {
+            if (img == null)
+                throw new ArgumentNullException("img");
             this.image = img;
             this.bytes = img.Bytes;
             this.addrStart = img.BaseAddress + off;
@@ -151,7 +153,11 @@ namespace Decompiler.Core
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public Constant ReadLe(PrimitiveType type)
         {
-            Constant c = LoadedImage.ReadLe(bytes, off, type);
+            Constant c;
+            if (image != null)
+                c = image.ReadLe(off, type);
+            else
+                c = LoadedImage.ReadLe(bytes, Offset, type);
             off += (uint)type.Size;
             return c;
         }

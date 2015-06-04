@@ -18,19 +18,20 @@
 */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Gui.Forms;
 using System;
 
 namespace Decompiler.Gui
 {
-	public interface IDialogFactory
-	{
-		IAddressPromptDialog CreateAddressPromptDialog();
+    public interface IDialogFactory
+    {
+        IAssembleFileDialog CreateAssembleFileDialog();
+        IAddressPromptDialog CreateAddressPromptDialog();
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
+        IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
         ISearchDialog CreateSearchDialog();
-
-        IAssembleFileDialog CreateAssembleFileDialog();
     }
 }
 

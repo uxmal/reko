@@ -77,6 +77,7 @@ namespace Decompiler
             if (services == null)
                 throw new ArgumentNullException("services");
             this.loader = ldr;
+            this.loader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.OnLoadedScript); };
             this.host = host;
             this.services = services;
             this.eventListener = services.GetService<DecompilerEventListener>();
@@ -205,6 +206,33 @@ namespace Decompiler
             }
             eventListener.ShowStatus("Source program loaded.");
             return isProject;
+        }
+
+        public void RunScriptOnProgramImage(Program program, Script_v2 script)
+        {
+            if (script == null || !script.Enabled)
+                return;
+            IScriptInterpreter interpreter;
+            try
+            {
+                //$TODO: should be in the config file, yeah.
+                var type = Type.GetType("Decompiler.ImageLoaders.OdbgScript.OllyLang,Decompiler.ImageLoaders.OdbgScript");
+                interpreter = (IScriptInterpreter) Activator.CreateInstance(type);
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(new NullCodeLocation(""), ex, string.Format("Unable to load script interpreter {0}."));
+                return;
+            }
+
+            try
+            {
+                interpreter.LoadFromString(script.Script, null);
+                interpreter.Run();
+            } catch (Exception ex)
+            {
+                eventListener.Error(new NullCodeLocation(""), ex, string.Format("An error occurred while running the script."));
+            }
         }
 
         public TypeLibrary LoadMetadata(string fileName)

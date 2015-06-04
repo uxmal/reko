@@ -42,10 +42,11 @@ namespace Decompiler.UnitTests.Loading
         private MockRepository mr;
         private IServiceContainer sc;
         private FakeDecompilerEventListener eventListener;
-        private IConfigurationService dcSvc;
+        private IConfigurationService cfgSvc;
         private List<SignatureFileElement> signatureFiles;
         private IProcessorArchitecture x86arch;
         private Platform msdosPlatform;
+        private byte[] testImage;
 
         [SetUp]
         public void Setup()
@@ -53,11 +54,11 @@ namespace Decompiler.UnitTests.Loading
             mr = new MockRepository();
             sc = new ServiceContainer();
             eventListener = new FakeDecompilerEventListener();
-            dcSvc = mr.Stub<IConfigurationService>();
+            cfgSvc = mr.Stub<IConfigurationService>();
             signatureFiles = new List<SignatureFileElement>();
             sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<IConfigurationService>(dcSvc);
-            dcSvc.Stub(d => d.GetSignatureFiles()).Return(signatureFiles);
+            sc.AddService<IConfigurationService>(cfgSvc);
+            cfgSvc.Stub(d => d.GetSignatureFiles()).Return(signatureFiles);
         }
 
         [Test]
@@ -74,8 +75,8 @@ namespace Decompiler.UnitTests.Loading
         [Test(Description="Unless otherwise specified, fail loading unknown file formats.")]
         public void Ldr_UnknownImageType()
         {
-            dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
-            dcSvc.Stub(d => d.GetRawFile(null)).IgnoreArguments().Return(null);
+            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
+            cfgSvc.Stub(d => d.GetRawFile(null)).IgnoreArguments().Return(null);
             var testImage = new byte[] { 42, 42, 42, 42, };
             mr.ReplayAll();
             Loader ldr = mr.PartialMock<Loader>(sc);
@@ -94,7 +95,7 @@ namespace Decompiler.UnitTests.Loading
         public void Ldr_UnknownImageType_DefaultSpecified()
         {
             Given_MsDosRawFileFormat();
-            dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
+            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
 
             var testImage = new byte[] { 42, 42, 42, 42, };
             mr.ReplayAll();
@@ -125,9 +126,9 @@ namespace Decompiler.UnitTests.Loading
             };
             rawFile.EntryPoint.Address = null;
             rawFile.EntryPoint.Name = "Start_Here";
-            dcSvc.Stub(d => d.GetRawFile("ms-dos-com")).Return(rawFile);
-            dcSvc.Stub(d => d.GetArchitecture("x86-real-16")).Return(x86arch);
-            dcSvc.Stub(d => d.GetEnvironment("ms-dos")).Return(env);
+            cfgSvc.Stub(d => d.GetRawFile("ms-dos-com")).Return(rawFile);
+            cfgSvc.Stub(d => d.GetArchitecture("x86-real-16")).Return(x86arch);
+            cfgSvc.Stub(d => d.GetEnvironment("ms-dos")).Return(env);
             env.Stub(e => e.Load(null, null)).IgnoreArguments().Return(msdosPlatform);
             x86arch.Stub(a => a.TryParseAddress(
                 Arg<string>.Is.Equal("0C00:0100"),
@@ -139,7 +140,7 @@ namespace Decompiler.UnitTests.Loading
         [Test]
         public void Ldr_AtOffset()
         {
-            dcSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList
+            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList
             {
                 new LoaderElementImpl {
                     Offset = "0002",
@@ -147,8 +148,9 @@ namespace Decompiler.UnitTests.Loading
                     TypeName = typeof(TestImageLoader).AssemblyQualifiedName,
                 }
             });
-            var testImage = new byte[] { 42, 42, 0xA0, 0xA0 };
+            Given_Image();
             mr.ReplayAll();
+
             Loader ldr = mr.PartialMock<Loader>(sc);
             ldr.Stub(l => l.LoadImageBytes("", 0)).Return(testImage);
             mr.ReplayAll();
@@ -159,8 +161,45 @@ namespace Decompiler.UnitTests.Loading
             mr.VerifyAll();
         }
 
+        private void Given_Image()
+        {
+            this.testImage = new byte[] { 0x2A, 0x2A, 0xA0, 0xA0 };
+        }
+
+        private class FakeImageLoader  : ImageLoader
+        {
+            public FakeImageLoader(IServiceProvider services, string filename, byte[]imgRaw) :
+                base(services, filename, imgRaw)
+            {
+
+            }
+
+            public override Address PreferredBaseAddress {get; set; }
+
+            public override Program Load(Address addrLoad)
+            {
+                return new Program();
+            }
+
+            public override RelocationResults Relocate(Address addrLoad)
+            {
+                return new RelocationResults(new List<EntryPoint>(), new RelocationDictionary());
+            }
+        }
+
+        private void Given_ImageLoader()
+        {
+            var ldrs = new List<LoaderElement>{
+                new LoaderElementImpl {
+                    MagicNumber = "2A2A",
+                    TypeName = typeof(FakeImageLoader).AssemblyQualifiedName,
+                }
+            };
+            cfgSvc.Expect(c => c.GetImageLoaders()).Return(ldrs);
+        }
+
         [Test]
-        public void CreateDefaultImageLoader_GivenDefault()
+        public void Ldr_CreateDefaultImageLoader_GivenDefault()
         {
             Given_MsDosRawFileFormat();
             mr.ReplayAll();
@@ -170,6 +209,24 @@ namespace Decompiler.UnitTests.Loading
             ldr.DefaultToFormat = "ms-dos-com";
             var imgLoader = ldr.CreateDefaultImageLoader("foo.com", new byte[30]);
             var program = imgLoader.Load(null);
+        }
+
+        [Test]
+        public void Ldr_FiresProgramLoaded()
+        {
+            Given_Image();
+            Given_ImageLoader();
+            mr.ReplayAll();
+            var ldr = mr.PartialMock<Loader>(sc);
+            ldr.Stub(l => l.LoadImageBytes("", 0)).IgnoreArguments().Return(testImage);
+            ldr.Replay();
+
+            bool programLoadedFired = false;
+            ldr.ProgramLoaded += delegate { programLoadedFired = true; };
+            ldr.LoadExecutable("foo.exe", testImage, Address.Ptr32(0x1000));
+
+            Assert.IsTrue(programLoadedFired, "ProgramLoaded event should have fired.");
+
         }
 
         public class TestImageLoader : ImageLoader

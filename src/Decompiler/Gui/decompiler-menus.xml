@@ -79,6 +79,7 @@
   <cmd id="EditCopyAll" cmdSet="Decompiler" container="EditCopyAll">_Copy All</cmd>
   <cmd id="EditRename" cmdSet="Decompiler" container="GrpEdit">_Rename</cmd>
   <cmd id="EditSelectAll" cmdSet="Decompiler" container="GrpEdit">Select _all</cmd>
+  <cmd id="EditProperties" cmdSet="Decompiler" container="EditProperties">P_roperties</cmd>
 
   <cmd id="ViewMemory" cmdSet="Decompiler" container="GrpLowLevel">_Memory</cmd>
   <cmd id="ViewDisassembly" cmdSet="Decompiler" container="GrpLowLevel">_Disassembly</cmd>
@@ -123,8 +124,9 @@
 
   <placement item="FileOpen" container="GrpToolbarFileOps"/>
   <placement item="FileSave" container="GrpToolbarFileOps"/>
-  
+
   <placement item="EditCopy" container="GrpEdit" />
+  <placement item="EditProperties" container="GrpEdit" />
   
   <placement item="ActionNextPhase" container="GrpToolbarActions"/>
   <placement item="ActionFinishDecompilation" container="GrpToolbarActions"/>
@@ -147,6 +149,7 @@
   <placement item="ViewGoToAddress" container="GrpProcedure"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />
 
+  <placement item="EditProperties" container="GrpBrowser" />
   <placement item="ViewGoToAddress" container="GrpBrowserProc"/>
   <placement item="ActionEditSignature" container="GrpBrowserProc"/>
   <placement item="ViewFindWhatPointsHere" container="GrpBrowserProc" />

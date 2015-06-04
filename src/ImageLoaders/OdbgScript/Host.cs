@@ -1,5 +1,26 @@
-﻿using Decompiler.Arch.X86;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2015 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using System;
@@ -11,9 +32,52 @@ using System.Windows.Forms;
 
 namespace Decompiler.ImageLoaders.OdbgScript
 {
-    public class Host
+    public interface IHost
     {
-        public static object TS_LOG_COMMAND;
+        LoadedImage Image { get; }
+        object TS_LOG_COMMAND { get; set; }
+
+        ulong TE_AllocMemory(ulong size);
+        int AssembleEx(string asm, ulong addr);
+        bool DialogASK(string title, out string returned);
+        bool DialogMSG(string msg, out int input);
+        bool DialogMSGYN(string msg, out DialogResult input);
+        string Disassemble(byte[] buffer, ulong addr, out int opsize);
+        MachineInstruction DisassembleEx(Address addr);
+        ulong FindHandle(ulong var, string sClassName, ulong x, ulong y);
+        bool TE_FreeMemory(ulong pmemforexec);
+        bool TE_FreeMemory(ulong addr, ulong size);
+        object TE_GetCurrentThreadHandle();
+        uint TE_GetCurrentThreadId();
+        List<string> getlines_file(string p);
+        ulong TE_GetMainThreadId();
+        ulong TE_GetMainThreadHandle();
+        bool TE_GetMemoryInfo(ulong addr, out MEMORY_BASIC_INFORMATION MemInfo);
+        bool TE_GetModules(List<MODULEENTRY32> Modules);
+        object TE_GetProcessHandle();
+        ulong TE_GetProcessId();
+        string TE_GetTargetDirectory();
+        string TE_GetTargetPath();
+        string TE_GetOutputPath();
+        int LengthDisassemble(byte[] membuf, int i);
+        int LengthDisassembleBackEx(ulong addr);
+        uint LengthDisassembleEx(ulong addr);
+        void TE_Log(string message);
+        void TE_Log(string message, object p);
+        void MsgError(string message);
+        void SetOriginalEntryPoint(ulong ep);
+        bool TryReadBytes(ulong addr, ulong memlen, byte[] membuf);
+        bool WriteMemory(ulong addr, int length, byte[] membuf);
+        bool WriteMemory(ulong addr, ulong qw);
+        bool WriteMemory(ulong addr, uint dw);
+        bool WriteMemory(ulong addr, ushort w);
+        bool WriteMemory(ulong addr, byte b);
+        bool WriteMemory(ulong target, double value);
+    }
+
+    public class Host : IHost
+    {
+        public object TS_LOG_COMMAND { get; set; }
 
         private OdbgScriptLoader loader;
 
@@ -29,15 +93,24 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
+        public virtual bool DialogMSG(string msg, out int input)
+        {
+            loader.Services.RequireService<IDiagnosticsService>().Warn(msg);
+            input = 0;
+            return true;
+        }
+
+        public virtual bool DialogMSGYN(string msg, out DialogResult input)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void TE_FreeMemory(ulong p1, uint p2)
         {
             throw new NotImplementedException();
         }
 
-        public static bool TE_WriteMemory(ulong target, int size, double flt)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public virtual bool DialogASK(string title, out string returned)
         {
@@ -115,7 +188,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual Var LengthDisassembleEx(ulong addr)
+        public virtual uint LengthDisassembleEx(ulong addr)
         {
             throw new NotImplementedException();
         }
@@ -140,7 +213,17 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual bool TE_WriteMemory(ulong addr, int p, byte[] membuf)
+        public virtual void TE_Log(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void TE_Log(string message, object p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual bool WriteMemory(ulong addr, int p, byte[] membuf)
         {
             throw new NotImplementedException();
         }
@@ -160,7 +243,7 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual IntelInstruction DisassembleEx(Address addr)
+        public virtual MachineInstruction DisassembleEx(Address addr)
         {
             var rdr = loader.Architecture.CreateImageReader(loader.Image,  addr);
             var dasm = new X86Disassembler(rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
@@ -177,43 +260,26 @@ namespace Decompiler.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual bool TE_WriteMemory(ulong CSP, int p, ulong dw)
+        public virtual bool WriteMemory(ulong target, double d)
         {
             throw new NotImplementedException();
         }
-
-        public virtual bool DialogMSG(string msg, out int input)
-        {
-            loader.Services.RequireService<IDiagnosticsService>().Warn(msg);
-            input = 0;
-            return true;
-        }
-
-        public virtual void TE_Log(string logstr, object p)
+        public virtual bool WriteMemory(ulong target, ulong qw)
         {
             throw new NotImplementedException();
         }
-
-        public virtual void TE_Log(string message)
+        public virtual bool WriteMemory(ulong target, uint dw)
         {
             throw new NotImplementedException();
         }
-
-        public virtual bool DialogMSGYN(string msg, out DialogResult input)
+        public virtual bool WriteMemory(ulong target, ushort w)
         {
             throw new NotImplementedException();
         }
-
-        public virtual bool TE_WriteMemory(ulong target, int p, string value)
+        public virtual bool WriteMemory(ulong target, byte b)
         {
             throw new NotImplementedException();
         }
-
-        public virtual bool TE_WriteMemory(ulong target, ulong maxsize, ulong dw)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public virtual ulong FindHandle(ulong var, string sClassName, ulong x, ulong y)
         {

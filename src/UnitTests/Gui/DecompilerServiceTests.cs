@@ -83,14 +83,17 @@ namespace Decompiler.UnitTests.Gui
             var host = mr.StrictMock<DecompilerHost>();
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<Platform>(sc, arch);
-            var dec = new DecompilerDriver(loader, host, sc);
+            var fileName = "foo\\bar\\baz.exe";
             var bytes = new byte[100];
             var image = new LoadedImage(Address.Ptr32(0x1000), bytes);
             var imageMap = image.CreateImageMap();
             var prog = new Program(image, imageMap, arch, platform);
-            var fileName = "foo\\bar\\baz.exe";
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(fileName, bytes, null)).Return(prog);
+            loader.Stub(l => l.ProgramLoaded += null);
+            LastCall.IgnoreArguments();
+            loader.Replay();
+            var dec = new DecompilerDriver(loader, host, sc);
             mr.ReplayAll();
 
             svc.Decompiler = dec;

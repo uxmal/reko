@@ -10,7 +10,7 @@ namespace Decompiler.UnitTests.Structure
     public class StructureAnalysisTests
     {
         [Test]
-        public void UnstructuredJumpOutOfLoop()
+        public void StrAn_UnstructuredJumpOutOfLoop()
         {
             string sExp =
 @"Node 1: Block: ProcedureBuilder_entry
