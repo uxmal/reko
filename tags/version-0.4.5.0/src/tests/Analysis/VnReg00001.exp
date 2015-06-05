@@ -1,0 +1,280 @@
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {si_17 = Mem0[bp + 0x0008:word16]}{ax_19 = Mem0[si_18 + 0x000C:word16]}{ax_20 = ax_19 - Mem0[bp + 0xFF7E:word16]}
+fp: fp:Temporary, def: {def fp}
+bx: bx:Register, def: {def bx}, uses: {dx_14 = bx * 0x0024}
+dx: dx:Register, def: {def dx}
+si: si:Register, def: {def si}, uses: {bx_16 = si}
+bp: bp:Register, def: {def bp}, uses: {si_17 = Mem0[bp + 0x0008:word16]}{ax_20 = ax_19 - Mem0[bp + 0xFF7E:word16]}{Mem26[bp + 0xFF6A:word32]) = eax_23}{store(Mem34[bp + di_28 - 0x003C:word32]) = edx_33}{SCZO_42 = cond(Mem34[bp + 0xFF6A:word16] - 0x00)}{edx_44 = edx_eax_37 % Mem34[bp + 0xFF6A:word32]}{eax_47 = edx_eax_46 / Mem34[bp + 0xFF6A:word32]}{store(Mem52[bp + di_28 - 0x0078:word32] = eax_47}
+ax: ax:Register, def: {def ax}
+SCZO: SCZO:Flags, def: {def SCZO}
+eax: eax:Register, def: {def eax}
+cx: cx:Register, def: {def cx}
+edx: edx:Register, def: {def edx}, uses: {edx_15 = DPB(edx, dx_14, 0, 16) (alias)}
+di: di:Register, def: {def di}, uses: {di_28 = PHI(di, di_59)}
+edx_eax: edx_eax:Sequence edx:eax, def: {def edx_eax}, uses: {edx_eax_25 = DPB(edx_eax, eax_23, 0, 32) (alias)}
+Z: Z:Flags, def: {def Z}
+dx_14: orig: dx, def: {dx_14 = bx * 0x0024}, uses: {edx_15 = DPB(edx, dx_14, 0, 16) (alias)}{si_18 = si_17 + dx_14}
+edx_15: orig: edx, def: {edx_15 = DPB(edx, dx_14, 0, 16) (alias)}
+bx_16: orig: bx, def: {bx_16 = si}, uses: {bx_31 = PHI(bx_16, bx_61)}
+si_17: orig: si, def: {si_17 = Mem0[bp + 0x0008:word16]}, uses: {si_18 = si_17 + dx_14}
+si_18: orig: si, def: {si_18 = si_17 + dx_14}, uses: {ax_19 = Mem0[si_18 + 0x000C:word16]}{si_30 = PHI(si_18, si_60)}
+ax_19: orig: ax, def: {ax_19 = Mem0[si_18 + 0x000C:word16]}, uses: {ax_20 = ax_19 - Mem0[bp + 0xFF7E:word16]}
+ax_20: orig: ax, def: {ax_20 = ax_19 - Mem0[bp + 0xFF7E:word16]}, uses: {SCZO_21 = cond(ax_20)}{eax_23 = SEX(ax_20, 16)}
+SCZO_21: orig: SCZO, def: {SCZO_21 = cond(ax_20)}, uses: {Z_22 = SCZO_21 (alias)}
+Z_22: orig: Z, def: {Z_22 = SCZO_21 (alias)}
+eax_23: orig: eax, def: {eax_23 = SEX(ax_20, 16)}, uses: {ax_24 = (word16) eax_23 (alias)}{edx_eax_25 = DPB(edx_eax, eax_23, 0, 32) (alias)}{Mem26[bp + 0xFF6A:word32] = eax_23}
+ax_24: orig: ax, def: {ax_24 = (word16) eax_23 (alias)}
+edx_eax_25: orig: edx_eax, def: {edx_eax_25 = DPB(edx_eax, eax_23, 0, 32) (alias)}
+Mem26: orig: Mem0, def: {Mem26[bp + 0xFF6A:word32] = eax_23}, uses: {Mem32 = PHI(Mem26, Mem58)}
+cx_27: orig: cx, def: {cx_27 = 0x0005}, uses: {cx_29 = PHI(cx_27, cx_63)}
+di_28: orig: di, def: {di_28 = PHI(di, di_59)}, uses: {Mem34[bp + di_28 - 0x003C:word32]) = edx_33}{store(Mem52[bp + di_28 - 0x0078:word32] = eax_47}{di_59 = di_28 + 0x0004}
+cx_29: orig: cx, def: {cx_29 = PHI(cx_27, cx_63)}, uses: {cx_63 = cx_29 - 0x0001}
+si_30: orig: si, def: {si_30 = PHI(si_18, si_60)}, uses: {eax_35 = Mem34[si_30 + 0x0010:word32]}{si_60 = si_30 + 0x0004}
+bx_31: orig: bx, def: {bx_31 = PHI(bx_16, bx_61)}, uses: {edx_33 = Mem32[bx_31 + 0x0010:word32]}{bx_61 = bx_31 + 0x0004}
+Mem32: orig: Mem0, def: {Mem32 = PHI(Mem26, Mem58)}, uses: {edx_33 = Mem32[bx_31 + 0x0010:word32]}
+edx_33: orig: edx, def: {edx_33 = Mem32[bx_31 + 0x0010:word32]}, uses: {Mem34[bp + di_28 - 0x003C:word32] = edx_33}{eax_36 = eax_35 - edx_33}
+Mem34: orig: Mem0, def: {Mem34[bp + di_28 - 0x003C:word32] = edx_33}, uses: {eax_35 = Mem34[si_30 + 0x0010:word32]}{SCZO_42 = cond(Mem34[bp + 0xFF6A:word16] - 0x00)}{Mem58 = PHI(Mem52, Mem34)}{edx_44 = edx_eax_37 % Mem34[bp + 0xFF6A:word32]}{eax_47 = edx_eax_46 / Mem34[bp + 0xFF6A:word32]}
+eax_35: orig: eax, def: {eax_35 = Mem34[si_30 + 0x0010:word32]}, uses: {eax_36 = eax_35 - edx_33}
+eax_36: orig: eax, def: {eax_36 = eax_35 - edx_33}, uses: {edx_eax_37 = SEX(eax_36, 64)}
+edx_eax_37: orig: edx_eax, def: {edx_eax_37 = SEX(eax_36, 64)}, uses: {dx_38 = SLICE(edx_eax_37, word16, 32) (alias)}{ax_39 = (word16) edx_eax_37 (alias)}{eax_40 = (word32) edx_eax_37 (alias)}{edx_41 = SLICE(edx_eax_37, word32, 32) (alias)}{edx_eax_53 = PHI(edx_eax_49, edx_eax_37)}{edx_44 = edx_eax_37 % Mem34[bp + 0xFF6A:word32]}{edx_eax_46 = DPB(edx_eax_37, edx_44, 0, 32) (alias)}
+dx_38: orig: dx, def: {dx_38 = SLICE(edx_eax_37, word16, 32) (alias)}, uses: {dx_57 = PHI(dx_45, dx_38)}
+ax_39: orig: ax, def: {ax_39 = (word16) edx_eax_37 (alias)}, uses: {ax_56 = PHI(ax_48, ax_39)}
+eax_40: orig: eax, def: {eax_40 = (word32) edx_eax_37 (alias)}, uses: {eax_55 = PHI(eax_47, eax_40)}
+edx_41: orig: edx, def: {edx_41 = SLICE(edx_eax_37, word32, 32) (alias)}, uses: {edx_54 = PHI(edx_44, edx_41)}
+SCZO_42: orig: SCZO, def: {SCZO_42 = cond(Mem34[bp + 0xFF6A:word16] - 0x00)}, uses: {Z_43 = SCZO_42 (alias)}
+Z_43: orig: Z, def: {Z_43 = SCZO_42 (alias)}, uses: {branch Test(EQ,Z_43)}
+edx_44: orig: edx, def: {edx_44 = edx_eax_37 % Mem34[bp + 0xFF6A:word32]}, uses: {dx_45 = (word16) edx_44 (alias)}{edx_eax_46 = DPB(edx_eax_37, edx_44, 0, 32) (alias)}{edx_54 = PHI(edx_44, edx_41)}
+dx_45: orig: dx, def: {dx_45 = (word16) edx_44 (alias)}, uses: {dx_57 = PHI(dx_45, dx_38)}
+edx_eax_46: orig: edx_eax, def: {edx_eax_46 = DPB(edx_eax_37, edx_44, 0, 32) (alias)}, uses: {eax_47 = edx_eax_46 / Mem34[bp + 0xFF6A:word32]}{edx_eax_49 = DPB(edx_eax_46, eax_47, 0, 32) (alias)}
+eax_47: orig: eax, def: {eax_47 = edx_eax_46 / Mem34[bp + 0xFF6A:word32]}, uses: {ax_48 = (word16) eax_47 (alias)}{edx_eax_49 = DPB(edx_eax_46, eax_47, 0, 32) (alias)}{SCZO_50 = cond(eax_47)}{Mem52[bp + di_28 - 0x0078:word32] = eax_47}{eax_55 = PHI(eax_47, eax_40)}
+ax_48: orig: ax, def: {ax_48 = (word16) eax_47 (alias)}, uses: {ax_56 = PHI(ax_48, ax_39)}
+edx_eax_49: orig: edx_eax, def: {edx_eax_49 = DPB(edx_eax_46, eax_47, 0, 32) (alias)}, uses: {edx_eax_53 = PHI(edx_eax_49, edx_eax_37)}
+SCZO_50: orig: SCZO, def: {SCZO_50 = cond(eax_47)}, uses: {Z_51 = SCZO_50 (alias)}
+Z_51: orig: Z, def: {Z_51 = SCZO_50 (alias)}
+Mem52: orig: Mem0, def: {Mem52[bp + di_28 - 0x0078:word32] = eax_47}, uses: {Mem58 = PHI(Mem52, Mem34)}
+edx_eax_53: orig: edx_eax, def: {edx_eax_53 = PHI(edx_eax_49, edx_eax_37)}
+edx_54: orig: edx, def: {edx_54 = PHI(edx_44, edx_41)}
+eax_55: orig: eax, def: {eax_55 = PHI(eax_47, eax_40)}
+ax_56: orig: ax, def: {ax_56 = PHI(ax_48, ax_39)}
+dx_57: orig: dx, def: {dx_57 = PHI(dx_45, dx_38)}
+Mem58: orig: Mem0, def: {Mem58 = PHI(Mem52, Mem34)}, uses: {Mem32 = PHI(Mem26, Mem58)}
+di_59: orig: di, def: {di_59 = di_28 + 0x0004}, uses: {di_28 = PHI(di, di_59)}
+si_60: orig: si, def: {si_60 = si_30 + 0x0004}, uses: {si_30 = PHI(si_18, si_60)}
+bx_61: orig: bx, def: {bx_61 = bx_31 + 0x0004}, uses: {SCZO_62 = cond(bx_61)}{bx_31 = PHI(bx_16, bx_61)}
+SCZO_62: orig: SCZO, def: {SCZO_62 = cond(bx_61)}
+cx_63: orig: cx, def: {cx_63 = cx_29 - 0x0001}, uses: {Z_64 = cond(cx_63)}{cx_29 = PHI(cx_27, cx_63)}
+Z_64: orig: Z, def: {Z_64 = cond(cx_63)}, uses: {SCZO_65 = Z_64 (alias)}{branch Test(NE,Z_64)}
+SCZO_65: orig: SCZO, def: {SCZO_65 = Z_64 (alias)}
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def bx
+	def dx
+	def si
+	def bp
+	def ax
+	def SCZO
+	def eax
+	def cx
+	def edx
+	def di
+	def edx_eax
+	def Z
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	dx_14 = bx * 0x0024
+	edx_15 = DPB(edx, dx_14, 0, 16) (alias)
+	bx_16 = si
+	si_17 = Mem0[bp + 0x0008:word16]
+	si_18 = si_17 + dx_14
+	ax_19 = Mem0[si_18 + 0x000C:word16]
+	ax_20 = ax_19 - Mem0[bp + 0xFF7E:word16]
+	SCZO_21 = cond(ax_20)
+	Z_22 = SCZO_21 (alias)
+	eax_23 = SEX(ax_20, 16)
+	ax_24 = (word16) eax_23 (alias)
+	edx_eax_25 = DPB(edx_eax, eax_23, 0, 32) (alias)
+	Mem26[bp + 0xFF6A:word32] = eax_23
+	cx_27 = 0x0005
+	// succ:  2
+l0C00_001D:		// block 2, pred: 1 4
+	di_28 = PHI(di, di_59)
+	cx_29 = PHI(cx_27, cx_63)
+	si_30 = PHI(si_18, si_60)
+	bx_31 = PHI(bx_16, bx_61)
+	Mem32 = PHI(Mem26, Mem58)
+	edx_33 = Mem32[bx_31 + 0x0010:word32]
+	Mem34[bp + di_28 - 0x003C:word32] = edx_33
+	eax_35 = Mem34[si_30 + 0x0010:word32]
+	eax_36 = eax_35 - edx_33
+	edx_eax_37 = SEX(eax_36, 64)
+	dx_38 = SLICE(edx_eax_37, word16, 32) (alias)
+	ax_39 = (word16) edx_eax_37 (alias)
+	eax_40 = (word32) edx_eax_37 (alias)
+	edx_41 = SLICE(edx_eax_37, word32, 32) (alias)
+	SCZO_42 = cond(Mem34[bp + 0xFF6A:word16] - 0x00)
+	Z_43 = SCZO_42 (alias)
+	branch Test(EQ,Z_43)
+	// succ:  3 4
+l0C00_0035:		// block 3, pred: 2
+	edx_44 = edx_eax_37 % Mem34[bp + 0xFF6A:word32]
+	dx_45 = (word16) edx_44 (alias)
+	edx_eax_46 = DPB(edx_eax_37, edx_44, 0, 32) (alias)
+	eax_47 = edx_eax_46 / Mem34[bp + 0xFF6A:word32]
+	ax_48 = (word16) eax_47 (alias)
+	edx_eax_49 = DPB(edx_eax_46, eax_47, 0, 32) (alias)
+	SCZO_50 = cond(eax_47)
+	Z_51 = SCZO_50 (alias)
+	Mem52[bp + di_28 - 0x0078:word32] = eax_47
+	// succ:  4
+l0C00_003E:		// block 4, pred: 3 2
+	edx_eax_53 = PHI(edx_eax_49, edx_eax_37)
+	edx_54 = PHI(edx_44, edx_41)
+	eax_55 = PHI(eax_47, eax_40)
+	ax_56 = PHI(ax_48, ax_39)
+	dx_57 = PHI(dx_45, dx_38)
+	Mem58 = PHI(Mem52, Mem34)
+	di_59 = di_28 + 0x0004
+	si_60 = si_30 + 0x0004
+	bx_61 = bx_31 + 0x0004
+	SCZO_62 = cond(bx_61)
+	cx_63 = cx_29 - 0x0001
+	Z_64 = cond(cx_63)
+	SCZO_65 = Z_64 (alias)
+	branch Test(NE,Z_64)
+	// succ:  5 2
+l0C00_0049:		// block 5, pred: 4
+	return
+	// succ:  6
+fn0C00_0000_exit:		// block 6, pred: 5
+	// succ: 
+Values:
+	(word16) eax_23: <ax_24>
+	(word16) eax_47: <ax_48>
+	(word16) edx_44: <dx_45>
+	(word16) edx_eax_37: <ax_39>
+	0x0005: <cx_27>
+	any: <store(Mem26[bp + 0xFF6A:word32])>
+	ax: <ax>
+	ax_19 - store(Mem0[bp + 0xFF7E:word16]): <ax_20>
+	bp: <bp>
+	bx * 0x0024: <dx_14>
+	bx: <bx>
+	bx_31 + 0x0004: <bx_61>
+	cond(ax_20): <SCZO_21>
+	cond(bx_61): <SCZO_62>
+	cond(cx_63): <Z_64>
+	cond(eax_47): <SCZO_50>
+	cond(Mem34[bp + 0xFF6A:word16] - 0x00): <SCZO_42>
+	cx: <cx>
+	cx_29 - 0x0001: <cx_63>
+	di: <di>
+	di_28 + 0x0004: <di_59>
+	DPB(edx, dx_14, 0, 16): <edx_15>
+	DPB(edx_eax, eax_23, 0, 32): <edx_eax_25>
+	DPB(edx_eax_37, edx_44, 0, 32): <edx_eax_46>
+	DPB(edx_eax_46, eax_47, 0, 32): <edx_eax_49>
+	dx: <dx>
+	dx_14 + si_17: <si_18>
+	eax: <eax>
+	eax_35 - edx_33: <eax_36>
+	edx: <edx>
+	edx_eax: <edx_eax>
+	edx_eax_37 % store(Mem34[bp + 0xFF6A:word32]): <edx_44>
+	edx_eax_46 / store(Mem34[bp + 0xFF6A:word32]): <eax_47>
+	fp: <fp>
+	Mem0: <Mem0>
+	PHI(ax_48, ax_39): <ax_56>
+	PHI(cx_27, cx_63): <cx_29>
+	PHI(di, di_59): <di_28>
+	PHI(dx_45, dx_38): <dx_57>
+	PHI(eax_47, ax_39): <eax_55>
+	PHI(edx_44, edx_41): <edx_54>
+	PHI(edx_eax_49, edx_eax_37): <edx_eax_53>
+	PHI(si, bx_61): <bx_31>
+	PHI(si_18, si_60): <si_30>
+	SCZO: <SCZO>
+	SCZO_21: <Z_22>
+	SCZO_42: <Z_43>
+	SCZO_50: <Z_51>
+	SEX(ax_20, 16): <eax_23>
+	SEX(eax_36, 64): <edx_eax_37>
+	si: <si>
+	si_30 + 0x0004: <si_60>
+	SLICE(edx_eax_37, word16, 32): <dx_38>
+	SLICE(edx_eax_37, word32, 32): <edx_41>
+	store(Mem0[bp + 0x0008:word16]): <si_17>
+	store(Mem0[si_18 + 0x000C:word16]): <ax_19>
+	store(Mem32[bx_31 + 0x0010:word32]): <edx_33>
+	store(Mem34[si_30 + 0x0010:word32]): <eax_35>
+	Z: <Z>
+	Z_64: <SCZO_65>
+Identifiers:
+	Mem0: <Mem0>
+	fp: <fp>
+	bx: <bx>
+	dx: <dx>
+	si: <si>
+	bp: <bp>
+	ax: <ax>
+	SCZO: <SCZO>
+	eax: <eax>
+	cx: <cx>
+	edx: <edx>
+	di: <di>
+	edx_eax: <edx_eax>
+	Z: <Z>
+	dx_14: <dx_14>
+	edx_15: <edx_15>
+	bx_16: <si>
+	si_17: <si_17>
+	si_18: <si_18>
+	ax_19: <ax_19>
+	ax_20: <ax_20>
+	SCZO_21: <SCZO_21>
+	Z_22: <Z_22>
+	eax_23: <eax_23>
+	ax_24: <ax_24>
+	edx_eax_25: <edx_eax_25>
+	Mem26: <store(Mem26[bp + 0xFF6A:word32])>
+	cx_27: <cx_27>
+	di_28: <di_28>
+	cx_29: <cx_29>
+	si_30: <si_30>
+	bx_31: <bx_31>
+	Mem32: <store(Mem26[bp + 0xFF6A:word32])>
+	edx_33: <edx_33>
+	Mem34: <store(Mem26[bp + 0xFF6A:word32])>
+	eax_35: <eax_35>
+	eax_36: <eax_36>
+	edx_eax_37: <edx_eax_37>
+	dx_38: <dx_38>
+	ax_39: <ax_39>
+	eax_40: <ax_39>
+	edx_41: <edx_41>
+	SCZO_42: <SCZO_42>
+	Z_43: <Z_43>
+	edx_44: <edx_44>
+	dx_45: <dx_45>
+	edx_eax_46: <edx_eax_46>
+	eax_47: <eax_47>
+	ax_48: <ax_48>
+	edx_eax_49: <edx_eax_49>
+	SCZO_50: <SCZO_50>
+	Z_51: <Z_51>
+	Mem52: <store(Mem26[bp + 0xFF6A:word32])>
+	edx_eax_53: <edx_eax_53>
+	edx_54: <edx_54>
+	eax_55: <eax_55>
+	ax_56: <ax_56>
+	dx_57: <dx_57>
+	Mem58: <store(Mem26[bp + 0xFF6A:word32])>
+	di_59: <di_59>
+	si_60: <si_60>
+	bx_61: <bx_61>
+	SCZO_62: <SCZO_62>
+	cx_63: <cx_63>
+	Z_64: <Z_64>
+	SCZO_65: <SCZO_65>
+

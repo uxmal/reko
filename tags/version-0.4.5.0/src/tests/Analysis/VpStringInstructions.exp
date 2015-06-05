@@ -1,0 +1,456 @@
+= fn0C00_0000 ========================
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+eax:eax
+    def:  def eax
+    uses: eax_3 = eax + eax * 0x00000004
+          eax_3 = eax + eax * 0x00000004
+eax_3: orig: eax
+    def:  eax_3 = eax + eax * 0x00000004
+    uses: Mem4[ds:0x02FC:word32] = eax_3
+Mem4: orig: Mem0
+    def:  Mem4[ds:0x02FC:word32] = eax_3
+    uses: eax_7 = Mem4[ds:si:word32]
+ds:ds
+    def:  def ds
+    uses: Mem4[ds:0x02FC:word32] = eax_3
+          eax_7 = Mem4[ds:si:word32]
+          Mem9[ds:0x0300:word32] = eax_7
+          eax_10 = Mem9[ds:si_8:word32]
+          Mem12[ds:0x0304:word32] = eax_10
+          ax_13 = Mem12[ds:si_11:word16]
+          Mem15[ds:0x0308:word16] = ax_13
+          ax_16 = Mem15[ds:si_14:word16]
+          Mem19[ds:0x030A:word16] = ax_16
+          fn0C00_0026(es, ds)
+si:si
+    def:  def si
+    uses: eax_7 = Mem4[ds:si:word32]
+          si_8 = si + 0x0004
+eax_7: orig: eax
+    def:  eax_7 = Mem4[ds:si:word32]
+    uses: Mem9[ds:0x0300:word32] = eax_7
+si_8: orig: si
+    def:  si_8 = si + 0x0004
+    uses: eax_10 = Mem9[ds:si_8:word32]
+          si_11 = si_8 + 0x0004
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0300:word32] = eax_7
+    uses: eax_10 = Mem9[ds:si_8:word32]
+eax_10: orig: eax
+    def:  eax_10 = Mem9[ds:si_8:word32]
+    uses: Mem12[ds:0x0304:word32] = eax_10
+          eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+si_11: orig: si
+    def:  si_11 = si_8 + 0x0004
+    uses: ax_13 = Mem12[ds:si_11:word16]
+          si_14 = si_11 + 0x0002
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0304:word32] = eax_10
+    uses: ax_13 = Mem12[ds:si_11:word16]
+ax_13: orig: ax
+    def:  ax_13 = Mem12[ds:si_11:word16]
+    uses: Mem15[ds:0x0308:word16] = ax_13
+si_14: orig: si
+    def:  si_14 = si_11 + 0x0002
+    uses: ax_16 = Mem15[ds:si_14:word16]
+          si_18 = si_14 + 0x0002
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x0308:word16] = ax_13
+    uses: ax_16 = Mem15[ds:si_14:word16]
+ax_16: orig: ax
+    def:  ax_16 = Mem15[ds:si_14:word16]
+    uses: eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+          Mem19[ds:0x030A:word16] = ax_16
+eax_17: orig: eax
+    def:  eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+si_18: orig: si
+    def:  si_18 = si_14 + 0x0002
+Mem19: orig: Mem0
+    def:  Mem19[ds:0x030A:word16] = ax_16
+es:es
+    def:  def es
+    uses: fn0C00_0026(es, ds)
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
+fn0C00_0000_entry:
+	def fp
+	def eax
+	def ds
+	def si
+	def es
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp_1 = fp
+	eax_3 = eax + eax * 0x00000004
+	Mem4[ds:0x02FC:word32] = eax_3
+	eax_7 = Mem4[ds:si:word32]
+	si_8 = si + 0x0004
+	Mem9[ds:0x0300:word32] = eax_7
+	eax_10 = Mem9[ds:si_8:word32]
+	si_11 = si_8 + 0x0004
+	Mem12[ds:0x0304:word32] = eax_10
+	ax_13 = Mem12[ds:si_11:word16]
+	si_14 = si_11 + 0x0002
+	Mem15[ds:0x0308:word16] = ax_13
+	ax_16 = Mem15[ds:si_14:word16]
+	eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+	si_18 = si_14 + 0x0002
+	Mem19[ds:0x030A:word16] = ax_16
+	fn0C00_0026(es, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+eax:eax
+    def:  def eax
+    uses: eax_3 = eax * 0x00000005
+          Mem4[ds:0x02FC:word32] = eax * 0x00000005
+eax_3: orig: eax
+    def:  eax_3 = eax * 0x00000005
+Mem4: orig: Mem0
+    def:  Mem4[ds:0x02FC:word32] = eax * 0x00000005
+    uses: eax_7 = Mem4[ds:si:word32]
+ds:ds
+    def:  def ds
+    uses: Mem4[ds:0x02FC:word32] = eax * 0x00000005
+          eax_7 = Mem4[ds:si:word32]
+          Mem9[ds:0x0300:word32] = eax_7
+          eax_10 = Mem9[ds:si + 0x0004:word32]
+          Mem12[ds:0x0304:word32] = eax_10
+          ax_13 = Mem12[ds:si + 0x0008:word16]
+          Mem15[ds:0x0308:word16] = ax_13
+          ax_16 = Mem15[ds:si + 0x000A:word16]
+          Mem19[ds:0x030A:word16] = ax_16
+          fn0C00_0026(es, ds)
+si:si
+    def:  def si
+    uses: eax_7 = Mem4[ds:si:word32]
+          si_8 = si + 0x0004
+          eax_10 = Mem9[ds:si + 0x0004:word32]
+          si_11 = si + 0x0008
+          si_11 = si + 0x0008
+          ax_13 = Mem12[ds:si + 0x0008:word16]
+          si_14 = si + 0x000A
+          si_14 = si + 0x000A
+          ax_16 = Mem15[ds:si + 0x000A:word16]
+          si_18 = si + 0x000C
+          si_18 = si + 0x000C
+eax_7: orig: eax
+    def:  eax_7 = Mem4[ds:si:word32]
+    uses: Mem9[ds:0x0300:word32] = eax_7
+si_8: orig: si
+    def:  si_8 = si + 0x0004
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0300:word32] = eax_7
+    uses: eax_10 = Mem9[ds:si + 0x0004:word32]
+eax_10: orig: eax
+    def:  eax_10 = Mem9[ds:si + 0x0004:word32]
+    uses: Mem12[ds:0x0304:word32] = eax_10
+          eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+si_11: orig: si
+    def:  si_11 = si + 0x0008
+Mem12: orig: Mem0
+    def:  Mem12[ds:0x0304:word32] = eax_10
+    uses: ax_13 = Mem12[ds:si + 0x0008:word16]
+ax_13: orig: ax
+    def:  ax_13 = Mem12[ds:si + 0x0008:word16]
+    uses: Mem15[ds:0x0308:word16] = ax_13
+si_14: orig: si
+    def:  si_14 = si + 0x000A
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x0308:word16] = ax_13
+    uses: ax_16 = Mem15[ds:si + 0x000A:word16]
+ax_16: orig: ax
+    def:  ax_16 = Mem15[ds:si + 0x000A:word16]
+    uses: eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+          Mem19[ds:0x030A:word16] = ax_16
+eax_17: orig: eax
+    def:  eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+si_18: orig: si
+    def:  si_18 = si + 0x000C
+Mem19: orig: Mem0
+    def:  Mem19[ds:0x030A:word16] = ax_16
+es:es
+    def:  def es
+    uses: fn0C00_0026(es, ds)
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
+fn0C00_0000_entry:
+	def fp
+	def eax
+	def ds
+	def si
+	def es
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp_1 = fp
+	eax_3 = eax * 0x00000005
+	Mem4[ds:0x02FC:word32] = eax * 0x00000005
+	eax_7 = Mem4[ds:si:word32]
+	si_8 = si + 0x0004
+	Mem9[ds:0x0300:word32] = eax_7
+	eax_10 = Mem9[ds:si + 0x0004:word32]
+	si_11 = si + 0x0008
+	Mem12[ds:0x0304:word32] = eax_10
+	ax_13 = Mem12[ds:si + 0x0008:word16]
+	si_14 = si + 0x000A
+	Mem15[ds:0x0308:word16] = ax_13
+	ax_16 = Mem15[ds:si + 0x000A:word16]
+	eax_17 = DPB(eax_10, ax_16, 0, 16) (alias)
+	si_18 = si + 0x000C
+	Mem19[ds:0x030A:word16] = ax_16
+	fn0C00_0026(es, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+= fn0C00_0026 ========================
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+ds:ds
+    def:  def ds
+    uses: cx_4 = Mem0[ds:0x0400:word16]
+          di_6 = Mem0[ds:0x0402:word16]
+          Mem17[ds:0x0404:word16] = di_15
+Mem0:Global memory
+    def:  def Mem0
+    uses: cx_4 = Mem0[ds:0x0400:word16]
+          di_6 = Mem0[ds:0x0402:word16]
+          SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+          branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+cx_4: orig: cx
+    def:  cx_4 = Mem0[ds:0x0400:word16]
+    uses: cx_12 = PHI(cx_4, cx_22)
+al_5: orig: al
+    def:  al_5 = 0x00
+di_6: orig: di
+    def:  di_6 = Mem0[ds:0x0402:word16]
+    uses: di_11 = PHI(di_6, di_21)
+SCZO:Flags
+    def:  def SCZO
+    uses: SCZO_9 = PHI(SCZO, SCZO_19)
+Z:Flags
+    def:  def Z
+    uses: Z_10 = PHI(Z, Z_20)
+SCZO_9: orig: SCZO
+    def:  SCZO_9 = PHI(SCZO, SCZO_19)
+    uses: SCZO_13 = PHI(SCZO_9, SCZO_19)
+Z_10: orig: Z
+    def:  Z_10 = PHI(Z, Z_20)
+    uses: Z_14 = PHI(Z_10, Z_20)
+di_11: orig: di
+    def:  di_11 = PHI(di_6, di_21)
+    uses: di_15 = PHI(di_11, di_21)
+          SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+          di_21 = di_11 + 0x0001
+          branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+cx_12: orig: cx
+    def:  cx_12 = PHI(cx_4, cx_22)
+    uses: branch cx_12 == 0x0000 l0C00_0032
+          cx_16 = PHI(cx_12, cx_22)
+          cx_22 = cx_12 - 0x0001
+SCZO_13: orig: SCZO
+    def:  SCZO_13 = PHI(SCZO_9, SCZO_19)
+Z_14: orig: Z
+    def:  Z_14 = PHI(Z_10, Z_20)
+di_15: orig: di
+    def:  di_15 = PHI(di_11, di_21)
+    uses: Mem17[ds:0x0404:word16] = di_15
+cx_16: orig: cx
+    def:  cx_16 = PHI(cx_12, cx_22)
+Mem17: orig: Mem0
+    def:  Mem17[ds:0x0404:word16] = di_15
+es:es
+    def:  def es
+    uses: SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+          branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+SCZO_19: orig: SCZO
+    def:  SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+    uses: Z_20 = SCZO_19 (alias)
+          SCZO_13 = PHI(SCZO_9, SCZO_19)
+          SCZO_9 = PHI(SCZO, SCZO_19)
+Z_20: orig: Z
+    def:  Z_20 = SCZO_19 (alias)
+    uses: Z_14 = PHI(Z_10, Z_20)
+          Z_10 = PHI(Z, Z_20)
+di_21: orig: di
+    def:  di_21 = di_11 + 0x0001
+    uses: di_15 = PHI(di_11, di_21)
+          di_11 = PHI(di_6, di_21)
+cx_22: orig: cx
+    def:  cx_22 = cx_12 - 0x0001
+    uses: cx_16 = PHI(cx_12, cx_22)
+          cx_12 = PHI(cx_4, cx_22)
+// fn0C00_0026
+// Return size: 0
+void fn0C00_0026(selector es, selector ds)
+fn0C00_0026_entry:
+	def fp
+	def ds
+	def Mem0
+	def SCZO
+	def Z
+	def es
+	// succ:  l0C00_0026
+l0C00_0026:
+	sp_1 = fp
+	cx_4 = Mem0[ds:0x0400:word16]
+	al_5 = 0x00
+	di_6 = Mem0[ds:0x0402:word16]
+	// succ:  l0C00_0030
+l0C00_0030:
+	SCZO_9 = PHI(SCZO, SCZO_19)
+	Z_10 = PHI(Z, Z_20)
+	di_11 = PHI(di_6, di_21)
+	cx_12 = PHI(cx_4, cx_22)
+	branch cx_12 == 0x0000 l0C00_0032
+	// succ:  l0C00_0030_1 l0C00_0032
+l0C00_0030_1:
+	SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+	Z_20 = SCZO_19 (alias)
+	di_21 = di_11 + 0x0001
+	cx_22 = cx_12 - 0x0001
+	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+	// succ:  l0C00_0032 l0C00_0030
+l0C00_0032:
+	SCZO_13 = PHI(SCZO_9, SCZO_19)
+	Z_14 = PHI(Z_10, Z_20)
+	di_15 = PHI(di_11, di_21)
+	cx_16 = PHI(cx_12, cx_22)
+	Mem17[ds:0x0404:word16] = di_15
+	return
+	// succ:  fn0C00_0026_exit
+fn0C00_0026_exit:
+
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+ds:ds
+    def:  def ds
+    uses: cx_4 = Mem0[ds:0x0400:word16]
+          di_6 = Mem0[ds:0x0402:word16]
+          Mem17[ds:0x0404:word16] = di_15
+Mem0:Global memory
+    def:  def Mem0
+    uses: cx_4 = Mem0[ds:0x0400:word16]
+          di_6 = Mem0[ds:0x0402:word16]
+          SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+          branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+cx_4: orig: cx
+    def:  cx_4 = Mem0[ds:0x0400:word16]
+    uses: cx_12 = PHI(cx_4, cx_22)
+al_5: orig: al
+    def:  al_5 = 0x00
+di_6: orig: di
+    def:  di_6 = Mem0[ds:0x0402:word16]
+    uses: di_11 = PHI(di_6, di_21)
+SCZO:Flags
+    def:  def SCZO
+    uses: SCZO_9 = PHI(SCZO, SCZO_19)
+Z:Flags
+    def:  def Z
+    uses: Z_10 = PHI(Z, Z_20)
+SCZO_9: orig: SCZO
+    def:  SCZO_9 = PHI(SCZO, SCZO_19)
+    uses: SCZO_13 = PHI(SCZO_9, SCZO_19)
+Z_10: orig: Z
+    def:  Z_10 = PHI(Z, Z_20)
+    uses: Z_14 = PHI(Z_10, Z_20)
+di_11: orig: di
+    def:  di_11 = PHI(di_6, di_21)
+    uses: di_15 = PHI(di_11, di_21)
+          SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+          di_21 = di_11 + 0x0001
+          branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+cx_12: orig: cx
+    def:  cx_12 = PHI(cx_4, cx_22)
+    uses: branch cx_12 == 0x0000 l0C00_0032
+          cx_16 = PHI(cx_12, cx_22)
+          cx_22 = cx_12 - 0x0001
+SCZO_13: orig: SCZO
+    def:  SCZO_13 = PHI(SCZO_9, SCZO_19)
+Z_14: orig: Z
+    def:  Z_14 = PHI(Z_10, Z_20)
+di_15: orig: di
+    def:  di_15 = PHI(di_11, di_21)
+    uses: Mem17[ds:0x0404:word16] = di_15
+cx_16: orig: cx
+    def:  cx_16 = PHI(cx_12, cx_22)
+Mem17: orig: Mem0
+    def:  Mem17[ds:0x0404:word16] = di_15
+es:es
+    def:  def es
+    uses: SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+          branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+SCZO_19: orig: SCZO
+    def:  SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+    uses: Z_20 = SCZO_19 (alias)
+          SCZO_13 = PHI(SCZO_9, SCZO_19)
+          SCZO_9 = PHI(SCZO, SCZO_19)
+Z_20: orig: Z
+    def:  Z_20 = SCZO_19 (alias)
+    uses: Z_14 = PHI(Z_10, Z_20)
+          Z_10 = PHI(Z, Z_20)
+di_21: orig: di
+    def:  di_21 = di_11 + 0x0001
+    uses: di_15 = PHI(di_11, di_21)
+          di_11 = PHI(di_6, di_21)
+cx_22: orig: cx
+    def:  cx_22 = cx_12 - 0x0001
+    uses: cx_16 = PHI(cx_12, cx_22)
+          cx_12 = PHI(cx_4, cx_22)
+// fn0C00_0026
+// Return size: 0
+void fn0C00_0026(selector es, selector ds)
+fn0C00_0026_entry:
+	def fp
+	def ds
+	def Mem0
+	def SCZO
+	def Z
+	def es
+	// succ:  l0C00_0026
+l0C00_0026:
+	sp_1 = fp
+	cx_4 = Mem0[ds:0x0400:word16]
+	al_5 = 0x00
+	di_6 = Mem0[ds:0x0402:word16]
+	// succ:  l0C00_0030
+l0C00_0030:
+	SCZO_9 = PHI(SCZO, SCZO_19)
+	Z_10 = PHI(Z, Z_20)
+	di_11 = PHI(di_6, di_21)
+	cx_12 = PHI(cx_4, cx_22)
+	branch cx_12 == 0x0000 l0C00_0032
+	// succ:  l0C00_0030_1 l0C00_0032
+l0C00_0030_1:
+	SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+	Z_20 = SCZO_19 (alias)
+	di_21 = di_11 + 0x0001
+	cx_22 = cx_12 - 0x0001
+	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+	// succ:  l0C00_0032 l0C00_0030
+l0C00_0032:
+	SCZO_13 = PHI(SCZO_9, SCZO_19)
+	Z_14 = PHI(Z_10, Z_20)
+	di_15 = PHI(di_11, di_21)
+	cx_16 = PHI(cx_12, cx_22)
+	Mem17[ds:0x0404:word16] = di_15
+	return
+	// succ:  fn0C00_0026_exit
+fn0C00_0026_exit:

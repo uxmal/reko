@@ -1,0 +1,362 @@
+= fn0C00_0000 ========================
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+dx_2: orig: dx
+    def:  dx_2 = 0x001E
+    uses: ax_3 = fn0C00_000B(dx_2)
+ax_3: orig: ax
+    def:  ax_3 = fn0C00_000B(dx_2)
+    uses: Mem4[ds:0x012C:word16] = ax_3
+Mem4: orig: Mem0
+    def:  Mem4[ds:0x012C:word16] = ax_3
+ds:ds
+    def:  def ds
+    uses: Mem4[ds:0x012C:word16] = ax_3
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def fp
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp_1 = fp
+	dx_2 = 0x001E
+	ax_3 = fn0C00_000B(dx_2)
+	Mem4[ds:0x012C:word16] = ax_3
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+dx_2: orig: dx
+    def:  dx_2 = 0x001E
+ax_3: orig: ax
+    def:  ax_3 = fn0C00_000B(0x001E)
+    uses: Mem4[ds:0x012C:word16] = ax_3
+Mem4: orig: Mem0
+    def:  Mem4[ds:0x012C:word16] = ax_3
+ds:ds
+    def:  def ds
+    uses: Mem4[ds:0x012C:word16] = ax_3
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	def fp
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp_1 = fp
+	dx_2 = 0x001E
+	ax_3 = fn0C00_000B(0x001E)
+	Mem4[ds:0x012C:word16] = ax_3
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+= fn0C00_000B ========================
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+dx:dx
+    def:  def dx
+    uses: ax_3 = fn0C00_000F(dx)
+ax_3: orig: ax
+    def:  ax_3 = fn0C00_000F(dx)
+    uses: return ax_3
+// fn0C00_000B
+// Return size: 0
+word16 fn0C00_000B(word16 dx)
+fn0C00_000B_entry:
+	def fp
+	def dx
+	// succ:  l0C00_000B
+l0C00_000B:
+	sp_1 = fp
+	ax_3 = fn0C00_000F(dx)
+	return ax_3
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:
+
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+dx:dx
+    def:  def dx
+    uses: ax_3 = fn0C00_000F(dx)
+ax_3: orig: ax
+    def:  ax_3 = fn0C00_000F(dx)
+    uses: return ax_3
+// fn0C00_000B
+// Return size: 0
+word16 fn0C00_000B(word16 dx)
+fn0C00_000B_entry:
+	def fp
+	def dx
+	// succ:  l0C00_000B
+l0C00_000B:
+	sp_1 = fp
+	ax_3 = fn0C00_000F(dx)
+	return ax_3
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:
+= fn0C00_000F ========================
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+          sp_2 = fp - 0x0002
+          sp_19 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+sp_2: orig: sp
+    def:  sp_2 = fp - 0x0002
+si:si
+    def:  def si
+    uses: wLoc02_4 = si
+wLoc02_4: orig: wLoc02
+    def:  wLoc02_4 = si
+    uses: si_18 = wLoc02_4
+si_5: orig: si
+    def:  si_5 = 0x0000
+    uses: si_12 = PHI(si_5, si_20)
+SZO_6: orig: SZO
+    def:  SZO_6 = cond(0x0000)
+    uses: SO_7 = SZO_6 (alias)
+SO_7: orig: SO
+    def:  SO_7 = SZO_6 (alias)
+C_8: orig: C
+    def:  C_8 = false
+    uses: SCZO_9 = C_8 (alias)
+SCZO_9: orig: SCZO
+    def:  SCZO_9 = C_8 (alias)
+dx:dx
+    def:  def dx
+    uses: dx_11 = PHI(dx, dx_23)
+dx_11: orig: dx
+    def:  dx_11 = PHI(dx, dx_23)
+    uses: SCZO_13 = cond(dx_11 - 0x0000)
+          si_20 = si_12 + dx_11
+          dx_23 = dx_11 - 0x0001
+          branch dx_11 >= 0x0000 l0C00_0015
+si_12: orig: si
+    def:  si_12 = PHI(si_5, si_20)
+    uses: ax_17 = si_12
+          si_20 = si_12 + dx_11
+SCZO_13: orig: SCZO
+    def:  SCZO_13 = cond(dx_11 - 0x0000)
+    uses: C_14 = SCZO_13 (alias)
+          SZO_15 = SCZO_13 (alias)
+          SO_16 = SCZO_13 (alias)
+C_14: orig: C
+    def:  C_14 = SCZO_13 (alias)
+SZO_15: orig: SZO
+    def:  SZO_15 = SCZO_13 (alias)
+SO_16: orig: SO
+    def:  SO_16 = SCZO_13 (alias)
+ax_17: orig: ax
+    def:  ax_17 = si_12
+    uses: return ax_17
+si_18: orig: si
+    def:  si_18 = wLoc02_4
+sp_19: orig: sp
+    def:  sp_19 = fp
+si_20: orig: si
+    def:  si_20 = si_12 + dx_11
+    uses: SCZO_21 = cond(si_20)
+          si_12 = PHI(si_5, si_20)
+SCZO_21: orig: SCZO
+    def:  SCZO_21 = cond(si_20)
+    uses: C_22 = SCZO_21 (alias)
+C_22: orig: C
+    def:  C_22 = SCZO_21 (alias)
+dx_23: orig: dx
+    def:  dx_23 = dx_11 - 0x0001
+    uses: SZO_24 = cond(dx_23)
+          dx_11 = PHI(dx, dx_23)
+SZO_24: orig: SZO
+    def:  SZO_24 = cond(dx_23)
+    uses: SCZO_25 = SZO_24 (alias)
+          SO_26 = SZO_24 (alias)
+SCZO_25: orig: SCZO
+    def:  SCZO_25 = SZO_24 (alias)
+SO_26: orig: SO
+    def:  SO_26 = SZO_24 (alias)
+// fn0C00_000F
+// Return size: 0
+word16 fn0C00_000F(word16 dx)
+fn0C00_000F_entry:
+	def fp
+	def si
+	def dx
+	// succ:  l0C00_000F
+l0C00_000F:
+	sp_1 = fp
+	sp_2 = fp - 0x0002
+	wLoc02_4 = si
+	si_5 = 0x0000
+	SZO_6 = cond(0x0000)
+	SO_7 = SZO_6 (alias)
+	C_8 = false
+	SCZO_9 = C_8 (alias)
+	goto l0C00_0018
+	// succ:  l0C00_0018
+l0C00_0015:
+	si_20 = si_12 + dx_11
+	SCZO_21 = cond(si_20)
+	C_22 = SCZO_21 (alias)
+	dx_23 = dx_11 - 0x0001
+	SZO_24 = cond(dx_23)
+	SCZO_25 = SZO_24 (alias)
+	SO_26 = SZO_24 (alias)
+	// succ:  l0C00_0018
+l0C00_0018:
+	dx_11 = PHI(dx, dx_23)
+	si_12 = PHI(si_5, si_20)
+	SCZO_13 = cond(dx_11 - 0x0000)
+	C_14 = SCZO_13 (alias)
+	SZO_15 = SCZO_13 (alias)
+	SO_16 = SCZO_13 (alias)
+	branch dx_11 >= 0x0000 l0C00_0015
+	// succ:  l0C00_001D l0C00_0015
+l0C00_001D:
+	ax_17 = si_12
+	si_18 = wLoc02_4
+	sp_19 = fp
+	return ax_17
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:
+
+fp:fp
+    def:  def fp
+    uses: sp_1 = fp
+          sp_2 = fp - 0x0002
+          sp_19 = fp
+sp_1: orig: sp
+    def:  sp_1 = fp
+sp_2: orig: sp
+    def:  sp_2 = fp - 0x0002
+si:si
+    def:  def si
+    uses: wLoc02_4 = si
+          si_18 = si
+wLoc02_4: orig: wLoc02
+    def:  wLoc02_4 = si
+si_5: orig: si
+    def:  si_5 = 0x0000
+    uses: si_12 = PHI(si_5, si_20)
+SZO_6: orig: SZO
+    def:  SZO_6 = cond(0x0000)
+    uses: SO_7 = SZO_6 (alias)
+SO_7: orig: SO
+    def:  SO_7 = SZO_6 (alias)
+C_8: orig: C
+    def:  C_8 = false
+SCZO_9: orig: SCZO
+    def:  SCZO_9 = false (alias)
+dx:dx
+    def:  def dx
+    uses: dx_11 = PHI(dx, dx_23)
+dx_11: orig: dx
+    def:  dx_11 = PHI(dx, dx_23)
+    uses: SCZO_13 = cond(dx_11)
+          si_20 = si_12 + dx_11
+          dx_23 = dx_11 - 0x0001
+          branch dx_11 >= 0x0000 l0C00_0015
+si_12: orig: si
+    def:  si_12 = PHI(si_5, si_20)
+    uses: ax_17 = si_12
+          si_20 = si_12 + dx_11
+          return si_12
+SCZO_13: orig: SCZO
+    def:  SCZO_13 = cond(dx_11)
+    uses: C_14 = SCZO_13 (alias)
+          SZO_15 = SCZO_13 (alias)
+          SO_16 = SCZO_13 (alias)
+C_14: orig: C
+    def:  C_14 = SCZO_13 (alias)
+SZO_15: orig: SZO
+    def:  SZO_15 = SCZO_13 (alias)
+SO_16: orig: SO
+    def:  SO_16 = SCZO_13 (alias)
+ax_17: orig: ax
+    def:  ax_17 = si_12
+si_18: orig: si
+    def:  si_18 = si
+sp_19: orig: sp
+    def:  sp_19 = fp
+si_20: orig: si
+    def:  si_20 = si_12 + dx_11
+    uses: SCZO_21 = cond(si_20)
+          si_12 = PHI(si_5, si_20)
+SCZO_21: orig: SCZO
+    def:  SCZO_21 = cond(si_20)
+    uses: C_22 = SCZO_21 (alias)
+C_22: orig: C
+    def:  C_22 = SCZO_21 (alias)
+dx_23: orig: dx
+    def:  dx_23 = dx_11 - 0x0001
+    uses: SZO_24 = cond(dx_23)
+          dx_11 = PHI(dx, dx_23)
+SZO_24: orig: SZO
+    def:  SZO_24 = cond(dx_23)
+    uses: SCZO_25 = SZO_24 (alias)
+          SO_26 = SZO_24 (alias)
+SCZO_25: orig: SCZO
+    def:  SCZO_25 = SZO_24 (alias)
+SO_26: orig: SO
+    def:  SO_26 = SZO_24 (alias)
+// fn0C00_000F
+// Return size: 0
+word16 fn0C00_000F(word16 dx)
+fn0C00_000F_entry:
+	def fp
+	def si
+	def dx
+	// succ:  l0C00_000F
+l0C00_000F:
+	sp_1 = fp
+	sp_2 = fp - 0x0002
+	wLoc02_4 = si
+	si_5 = 0x0000
+	SZO_6 = cond(0x0000)
+	SO_7 = SZO_6 (alias)
+	C_8 = false
+	SCZO_9 = false (alias)
+	goto l0C00_0018
+	// succ:  l0C00_0018
+l0C00_0015:
+	si_20 = si_12 + dx_11
+	SCZO_21 = cond(si_20)
+	C_22 = SCZO_21 (alias)
+	dx_23 = dx_11 - 0x0001
+	SZO_24 = cond(dx_23)
+	SCZO_25 = SZO_24 (alias)
+	SO_26 = SZO_24 (alias)
+	// succ:  l0C00_0018
+l0C00_0018:
+	dx_11 = PHI(dx, dx_23)
+	si_12 = PHI(si_5, si_20)
+	SCZO_13 = cond(dx_11)
+	C_14 = SCZO_13 (alias)
+	SZO_15 = SCZO_13 (alias)
+	SO_16 = SCZO_13 (alias)
+	branch dx_11 >= 0x0000 l0C00_0015
+	// succ:  l0C00_001D l0C00_0015
+l0C00_001D:
+	ax_17 = si_12
+	si_18 = si
+	sp_19 = fp
+	return si_12
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:

@@ -1,0 +1,15 @@
+r4_0: orig: r4
+    def:  Mem1[0x00000400:word32] = foo(out r4_0)
+Mem1: orig: Mem0
+    def:  Mem1[0x00000400:word32] = foo(out r4_0)
+// foo
+// Return size: 0
+void foo()
+foo_entry:
+	// succ:  l1
+l1:
+	Mem1[0x00000400:word32] = foo(out r4_0)
+	return
+	// succ:  foo_exit
+foo_exit:
+

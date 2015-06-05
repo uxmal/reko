@@ -1,0 +1,59 @@
+// MockIfElseIf
+// Return size: 0
+void MockIfElseIf()
+MockIfElseIf_entry:
+	branch r != 0x00000000 not_0
+	goto l2
+	// succ:  l2 not_0
+default:
+	x = 0xFFFFFFFF
+	// succ:  done
+done:
+	return x
+	// succ:  MockIfElseIf_exit
+l1:
+l2:
+	x = 0x00000000
+	goto done
+	// succ:  done
+l3:
+	x = 0x00000001
+	goto done
+	// succ:  done
+l4:
+	x = 0x00000002
+	goto done
+	// succ:  done
+l5:
+	x = 0x00000003
+	goto done
+	// succ:  done
+not_0:
+	branch r != 0x00000001 not_1
+	goto l3
+	// succ:  l3 not_1
+not_1:
+	branch r != 0x00000002 not_2
+	goto l4
+	// succ:  l4 not_2
+not_2:
+	branch r != 0x00000003 default
+	goto l5
+	// succ:  l5 default
+MockIfElseIf_exit:
+
+void MockIfElseIf()
+{
+	if (r == 0x00000000)
+		x = 0x00000000;
+	else if (r == 0x00000001)
+		x = 0x00000001;
+	else if (r == 0x00000002)
+		x = 0x00000002;
+	else if (r == 0x00000003)
+		x = 0x00000003;
+	else
+		x = 0xFFFFFFFF;
+	return x;
+}
+===========================

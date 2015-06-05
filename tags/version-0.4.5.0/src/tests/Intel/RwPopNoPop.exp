@@ -1,0 +1,69 @@
+// fn0C00_0000
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// C:Flags
+// ds:ds
+// bp:bp
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	sp = fp
+	call fn0C00_000A (retsize: 2;)
+	branch Test(ULT,C) l0C00_0009
+	// succ:  l0C00_0005 l0C00_0009
+l0C00_0005:
+	Mem0[ds:0x0200:word16] = bp
+	// succ:  l0C00_0009
+l0C00_0009:
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+// fn0C00_000A
+// Return size: 2
+// Mem0:Global memory
+// fp:fp
+// sp:sp
+// bp:bp
+// ss:ss
+// SCZO:Flags
+// Z:Flags
+// C:Flags
+// return address size: 2
+void fn0C00_000A()
+fn0C00_000A_entry:
+	// succ:  l0C00_000A
+l0C00_000A:
+	sp = fp
+	sp = sp - 0x0002
+	Mem0[ss:sp:word16] = bp
+	bp = 0x0300
+	goto l0C00_0014
+	// succ:  l0C00_0014
+l0C00_0011:
+	bp = Mem0[ss:bp + 0x0000:word16]
+	// succ:  l0C00_0014
+l0C00_0014:
+	SCZO = cond(bp - 0x0000)
+	branch Test(EQ,Z) l0C00_0024
+	// succ:  l0C00_0019 l0C00_0024
+l0C00_0019:
+	SCZO = cond(Mem0[ss:bp + 0x0000:word16] - 0x0000)
+	branch Test(NE,Z) l0C00_0011
+	// succ:  l0C00_001F l0C00_0011
+l0C00_001F:
+	sp = sp + 0x0002
+	SCZO = cond(sp)
+	C = false
+	return
+	// succ:  fn0C00_000A_exit
+l0C00_0024:
+	bp = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	C = true
+	return
+	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:

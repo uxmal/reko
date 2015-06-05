@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D439868B-C78F-472F-82F2-1E3E5C88163B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Decompiler.CmdLine</RootNamespace>
+    <AssemblyName>decompile</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CmdLineDiagnosticsService.cs" />
+    <Compile Include="CmdLineHost.cs" />
+    <Compile Include="CmdLineListener.cs" />
+    <Compile Include="CmdLineDriver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Decompiler\Decompiler.csproj">
+      <Project>{5e21c722-f9c6-4192-95ec-89fcef2acdb7}</Project>
+      <Name>Decompiler</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_bdos_services.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\realmodeintservices.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\msvcrt.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\ntoskrnl.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
+      <SubType>Designer</SubType>
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win32characteristics.xml" >
+    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+    <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Decompiler.Arch.Arm.*" />
+    <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Decompiler.Arch.M68k.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Decompiler.Arch.Mips.*" />
+    <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Decompiler.Arch.Mos6502.*" />
+    <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Decompiler.Arch.PowerPC.*" />
+    <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Decompiler.Arch.Sparc.*" />
+    <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Decompiler.Arch.X86.*" />
+    <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Decompiler.Arch.Z80.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Decompiler.ImageLoaders.MzExe.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Decompiler.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Decompiler.ImageLoaders.Elf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Decompiler.ImageLoaders.Hunk.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Decompiler.ImageLoaders.OdbgScript.*" />
+    <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Decompiler.Environments.AmigaOS.*" />
+    <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Decompiler.Environments.C64.*" />
+    <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Decompiler.Environments.Cpm.*" />
+    <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Decompiler.Environments.MacOS.*" />
+    <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Decompiler.Environments.Msdos.*" />
+    <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Decompiler.Environments.Ps3.*" />
+    <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Decompiler.Environments.RiscOS.*" />
+    <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Decompiler.Environments.SysV.*" />
+    <Environments Include="$(SolutionDir)Environments\Win32\$(OutDir)Decompiler.Environments.Win32.*" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.-->
+  <Target Name="BeforeBuild">
+    <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
+    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying ImageLoaders to $(TargetDir)" />
+    <Copy SourceFiles="@(ImageLoaders)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Architectures to $(TargetDir)" />
+    <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Environments to $(TargetDir)" />
+    <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Odbg scripts to $(TargetDir)" />
+    <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

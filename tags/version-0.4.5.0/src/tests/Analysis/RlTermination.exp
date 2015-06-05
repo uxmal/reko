@@ -1,0 +1,84 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   ax cx bx al cl bl ah ch bh
+	Preserved: sp
+// fn0C00_0000
+void fn0C00_0000()
+// SymbolicIn: sp:fp
+fn0C00_0000_entry:
+// DataOut: ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0000:
+	sp = fp
+	cx = 0x007B
+	ax = 0x0020
+	bx = 0x3212
+	ax = maybeterminate(0x0020, 0x3212)
+	Mem0[ds:0x0230:word16] = ax
+	Mem0[ds:0x0234:word16] = 0x007B
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp cx:0x007B ax:<invalid> bx:0x3212
+fn0C00_0000_exit:
+// DataOut:
+// DataOut (flags): 
+
+// maybeterminate /////////////////////
+	LiveOut:  
+	MayUseIn:  ax bx ds
+	BypassIn: 
+	Trashed:   SCZO ax bx al bl ah bh
+	Preserved: sp
+// maybeterminate
+word16 maybeterminate(word16 ax, word16 bx)
+// SymbolicIn: sp:fp
+maybeterminate_entry:
+// DataOut: ax bx ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0015:
+	sp = fp
+	SCZO = cond(ax - Mem0[ds:bx:word16])
+	branch Test(ULT,C) l0C00_0023
+// DataOut: ax bx ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0019:
+	SCZO = cond(ax - Mem0[ds:bx + 0x0002:word16])
+	branch Test(UGE,C) l0C00_0023
+// DataOut: ax bx ds
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_001E:
+	bx = bx + ax
+	SCZO = cond(bx)
+	ax = Mem0[ds:bx:word16]
+	return
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp
+l0C00_0023:
+	cx = 0x0000
+	SZO = cond(0x0000)
+	C = false
+	Mem0[ds:0x0232:word16] = 0x0000
+	ax = 0x4C00
+	msdos_terminate(al)
+// DataOut:
+// DataOut (flags): 
+
+// SymbolicIn: sp:fp bx:bx + ax ax:<invalid>
+maybeterminate_exit:
+// DataOut:
+// DataOut (flags): 
+

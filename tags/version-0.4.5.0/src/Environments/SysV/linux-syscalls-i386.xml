@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <service name="sys_personality">
+    <syscallinfo>
+      <vector>80</vector>
+      <regvalue reg="eax">88</regvalue>
+      <signature>
+        <return>
+          <reg>eax</reg>
+          <prim domain="SignedInt" size="4" />
+        </return>
+        <arg name="persona">
+          <reg>ebx</reg>
+          <prim domain="UnsignedInt" size="4" />
+        </arg>
+      </signature>
+    </syscallinfo>
+  </service>
+</library>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <target-gtk-version>2.12</target-gtk-version>
+  </configuration>
+  <import>
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../../Decompiler/bin/Debug/Decompiler.dll" />
+    <widget-library name="../bin/Debug/GtkDecompiler.exe" internal="true" />
+  </import>
+  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+    <action-group name="Default">
+      <action id="File">
+        <property name="Type">Action</property>
+        <property name="Label">&amp;File</property>
+        <property name="ShortLabel">&amp;File</property>
+      </action>
+      <action id="Open">
+        <property name="Type">Action</property>
+        <property name="Label">&amp;Open</property>
+        <property name="ShortLabel">&amp;Open</property>
+      </action>
+      <action id="Close">
+        <property name="Type">Action</property>
+        <property name="Label">&amp;Close</property>
+        <property name="ShortLabel">&amp;Close</property>
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <widget class="Gtk.Alignment" id="alignment1">
+        <property name="MemberName" />
+        <child>
+          <widget class="Gtk.TextView" id="textview1">
+            <property name="MemberName" />
+            <property name="Tooltip">Bite me</property>
+            <property name="CanFocus">True</property>
+            <property name="Text" />
+            <property name="LeftMargin">30</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+</stetic-interface>
