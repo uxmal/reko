@@ -35,13 +35,20 @@ namespace Decompiler.Scanning.Dfa
 
         public static Automaton CreateFromPattern(string pattern)
         {
-            var parser = new PatternParser(pattern);
-            var tree = parser.Parse();
-            var builder = new DfaBuilder(tree);
-            builder.ExtendWithEos();
-            builder.BuildNodeSets();
-            builder.BuildAutomaton(tree);
-            return new Automaton(builder.States, builder.Transitions);
+            try
+            {
+                var parser = new PatternParser(pattern);
+                var tree = parser.Parse();
+                var builder = new DfaBuilder(tree);
+                builder.ExtendWithEos();
+                builder.BuildNodeSets();
+                builder.BuildAutomaton(tree);
+                return new Automaton(builder.States, builder.Transitions);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public Automaton(State[] states, int[,] transitions)

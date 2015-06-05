@@ -50,7 +50,6 @@ namespace Decompiler.UnitTests
             var sp = new ServiceContainer();
             loader = mr.StrictMock<ILoader>();
             sp.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            loader.Stub(l => l.ProgramLoaded += null).IgnoreArguments();
             loader.Replay();
             decompiler = new TestDecompiler(loader, host, sp);
             loader.BackToRecord();

@@ -97,7 +97,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 var absFile = FileUnitTester.MapTestPath(configFile);
                 using (Stream stm = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    project = new ProjectLoader(absFile, new Loader(new ServiceContainer())).LoadProject(stm);
+                    project = new ProjectLoader(new Loader(new ServiceContainer())).LoadProject(stm);
                 }
             }
             else

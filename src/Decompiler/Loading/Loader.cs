@@ -37,9 +37,6 @@ namespace Decompiler.Loading
     /// </summary>
     public class Loader : ILoader
     {
-        public event EventHandler<ProgramEventArgs> ProgramLoaded;
-        public event EventHandler<TypeLibraryEventArgs> TypeLibraryLoaded;
-
         private IConfigurationService cfgSvc;
         private UnpackingService unpackerSvc;
 
@@ -101,7 +98,6 @@ namespace Decompiler.Loading
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(addrLoad);
             program.EntryPoints.AddRange(relocations.EntryPoints);
-            ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }
 
@@ -159,7 +155,6 @@ namespace Decompiler.Loading
             var rawBytes = LoadImageBytes(fileName, 0);
             var mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
             var result = mdLoader.Load();
-            TypeLibraryLoaded.Fire(this, new TypeLibraryEventArgs(result));
             return result;
         }
 

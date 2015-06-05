@@ -90,8 +90,6 @@ namespace Decompiler.UnitTests.Gui
             var prog = new Program(image, imageMap, arch, platform);
             loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(fileName, bytes, null)).Return(prog);
-            loader.Stub(l => l.ProgramLoaded += null);
-            LastCall.IgnoreArguments();
             loader.Replay();
             var dec = new DecompilerDriver(loader, host, sc);
             mr.ReplayAll();

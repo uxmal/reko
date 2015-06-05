@@ -31,12 +31,13 @@ namespace Decompiler.Core.Serialization
 {
     public class ProjectLoader 
     {
-        private string filename;
+        public event EventHandler<ProgramEventArgs> ProgramLoaded;
+        public event EventHandler<TypeLibraryEventArgs> TypeLibraryLoaded;
+
         private ILoader loader;
 
-        public ProjectLoader(string filename, ILoader loader)
+        public ProjectLoader(ILoader loader)
         {
-            this.filename = filename;
             this.loader = loader;
         }
 
@@ -46,14 +47,14 @@ namespace Decompiler.Core.Serialization
         /// <param name="image"></param>
         /// <param name="loader"></param>
         /// <returns></returns>
-        public static Project LoadProject(string fileName, byte[] image, ILoader loader)
+        public Project LoadProject(string fileName, byte[] image)
         {
             if (!IsXmlFile(image))
                 return null;
             try
             {
                 Stream stm = new MemoryStream(image);
-                return new ProjectLoader(fileName, loader).LoadProject(stm);
+                return LoadProject(stm);
             }
             catch (XmlException)
             {
@@ -167,13 +168,14 @@ namespace Decompiler.Core.Serialization
             program.GlobalsFilename = sInput.GlobalsFilename;
             program.EnsureFilenames(sInput.Filename);
             program.OnLoadedScript = sInput.OnLoadedScript;
+            ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }
 
         public MetadataFile VisitMetadataFile(MetadataFile_v2 sMetadata)
         {
             var typeLib = loader.LoadMetadata(sMetadata.Filename);
-            
+            TypeLibraryLoaded.Fire(this, new TypeLibraryEventArgs(typeLib));
             return new MetadataFile
             {
                 Filename = sMetadata.Filename,
@@ -230,5 +232,25 @@ namespace Decompiler.Core.Serialization
                 Programs = { program }
             };
         }
+    }
+
+    public class ProgramEventArgs : EventArgs
+    {
+        public ProgramEventArgs(Program program)
+        {
+            this.Program = program;
+        }
+
+        public Program Program { get; private set; }
+    }
+
+    public class TypeLibraryEventArgs : EventArgs
+    {
+        public TypeLibraryEventArgs(TypeLibrary typelib)
+        { 
+            this.TypeLibrary = typelib; 
+        }
+
+        public TypeLibrary TypeLibrary { get; private set; }
     }
 }

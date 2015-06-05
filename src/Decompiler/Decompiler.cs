@@ -77,7 +77,6 @@ namespace Decompiler
             if (services == null)
                 throw new ArgumentNullException("services");
             this.loader = ldr;
-            this.loader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.OnLoadedScript); };
             this.host = host;
             this.services = services;
             this.eventListener = services.GetService<DecompilerEventListener>();
@@ -192,7 +191,9 @@ namespace Decompiler
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            Project = ProjectLoader.LoadProject(fileName, image, loader);
+            var projectLoader = new ProjectLoader(loader);
+            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.OnLoadedScript); };
+            Project = projectLoader.LoadProject(fileName, image);
             bool isProject;
             if (Project != null)
             {
