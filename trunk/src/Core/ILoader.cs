@@ -33,8 +33,6 @@ namespace Decompiler.Core
     public interface ILoader
     {
         string DefaultToFormat { get; set; }
-        event EventHandler<ProgramEventArgs> ProgramLoaded;
-        event EventHandler<TypeLibraryEventArgs> TypeLibraryLoaded;
 
         byte[] LoadImageBytes(string fileName, int offset);
         Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress);
@@ -43,25 +41,5 @@ namespace Decompiler.Core
         Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress);
 
         TypeLibrary LoadMetadata(string fileName);
-    }
-
-    public class ProgramEventArgs : EventArgs
-    {
-        public ProgramEventArgs(Program program)
-        {
-            this.Program = program;
-        }
-
-        public Program Program { get; private set; }
-    }
-
-    public class TypeLibraryEventArgs : EventArgs
-    {
-        public TypeLibraryEventArgs(TypeLibrary typelib)
-        { 
-            this.TypeLibrary = typelib; 
-        }
-
-        public TypeLibrary TypeLibrary { get; private set; }
     }
 }

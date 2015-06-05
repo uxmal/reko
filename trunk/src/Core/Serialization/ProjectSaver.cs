@@ -67,6 +67,7 @@ namespace Decompiler.Core.Serialization
                 OutputFilename = program.OutputFilename,
                 TypesFilename = program.TypesFilename,
                 GlobalsFilename = program.GlobalsFilename,
+                OnLoadedScript = program.OnLoadedScript,
             };
         }
 

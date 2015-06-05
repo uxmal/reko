@@ -211,24 +211,6 @@ namespace Decompiler.UnitTests.Loading
             var program = imgLoader.Load(null);
         }
 
-        [Test]
-        public void Ldr_FiresProgramLoaded()
-        {
-            Given_Image();
-            Given_ImageLoader();
-            mr.ReplayAll();
-            var ldr = mr.PartialMock<Loader>(sc);
-            ldr.Stub(l => l.LoadImageBytes("", 0)).IgnoreArguments().Return(testImage);
-            ldr.Replay();
-
-            bool programLoadedFired = false;
-            ldr.ProgramLoaded += delegate { programLoadedFired = true; };
-            ldr.LoadExecutable("foo.exe", testImage, Address.Ptr32(0x1000));
-
-            Assert.IsTrue(programLoadedFired, "ProgramLoaded event should have fired.");
-
-        }
-
         public class TestImageLoader : ImageLoader
         {
             public TestImageLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)

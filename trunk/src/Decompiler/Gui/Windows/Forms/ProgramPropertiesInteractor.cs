@@ -29,9 +29,36 @@ namespace Decompiler.Gui.Windows.Forms
     {
         private ProgramPropertiesDialog dlg;
 
-        internal void Attach(ProgramPropertiesDialog dlg)
+        public void Attach(ProgramPropertiesDialog dlg)
         {
             this.dlg = dlg;
+            dlg.Load += dlg_Load;
+            dlg.EnableScript.CheckedChanged += delegate { EnableControls(); };
+            dlg.OkButton.Click += OkButton_Click;
+        }
+
+        private void EnableControls()
+        {
+            dlg.LoadScript.Enabled = dlg.EnableScript.Checked;
+        }
+
+        private void dlg_Load(object sender, EventArgs e)
+        {
+            var loadedScript = dlg.Program.OnLoadedScript;
+            if (loadedScript != null)
+            {
+                dlg.EnableScript.Checked = loadedScript.Enabled;
+                dlg.LoadScript.Text = loadedScript.Script;
+            }
+        }
+
+        void OkButton_Click(object sender, EventArgs e)
+        {
+            dlg.Program.OnLoadedScript = new Core.Serialization.Script_v2
+            {
+                Enabled = dlg.EnableScript.Checked,
+                Script = dlg.LoadScript.Text,
+            };
         }
     }
 }

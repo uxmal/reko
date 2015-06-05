@@ -136,7 +136,8 @@ namespace Decompiler.Scanning.Dfa
             if (PeekAndDiscard('('))
             {
                 var head = Parse();
-                Expect(']');
+                EatSpaces();
+                Expect(')');
                 return head;
             }
             if (Peek('['))

@@ -48,6 +48,8 @@ namespace Decompiler.Gui.Windows.Forms
 
         public Program Program { get; set; }
 
-        public TextBox LoadScript { get; set; }
+        public TextBox LoadScript { get { return txtScript; } }
+        public CheckBox EnableScript { get { return chkRunScript; } }
+        public Button OkButton { get { return btnOk; } }
     }
 }

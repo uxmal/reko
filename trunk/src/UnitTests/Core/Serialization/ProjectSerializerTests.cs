@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader("", loader);
+            var ps = new ProjectLoader(loader);
             var p = ps.LoadProject(sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 
@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Core.Serialization
                 }
             };
             var sw = new StringWriter();
-            new ProjectLoader("", loader).Save(sp, sw);
+            new ProjectLoader(loader).Save(sp, sw);
             Console.WriteLine(sw);
         }
     }

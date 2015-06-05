@@ -81,7 +81,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             ILoader ldr = mr.StrictMock<ILoader>();
             ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(prog);
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
-            ldr.Stub(l => l.ProgramLoaded += null).IgnoreArguments();
             ldr.Replay();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             this.decSvc = new DecompilerService();

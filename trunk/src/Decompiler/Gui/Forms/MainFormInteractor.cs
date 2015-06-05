@@ -441,7 +441,8 @@ namespace Decompiler.Gui.Forms
                 {
                     Func<int, Program, bool> filter = GetScannedFilter(dlg);
                     var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
-
+                    if (re == null)
+                        return;
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
                         .SelectMany(program => 
                               re.GetMatches(program.Image.Bytes, 0)
@@ -537,7 +538,7 @@ namespace Decompiler.Gui.Forms
             {
                 //$REFACTOR: rule of Demeter, push this into a Save() method.
                 var sp =  new ProjectSaver().Save(decompilerSvc.Decompiler.Project);
-                new ProjectLoader(ProjectFileName, loader).Save(sp, sw);
+                new ProjectLoader(loader).Save(sp, sw);
             }
             return true;
         }

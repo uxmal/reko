@@ -205,7 +205,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             };
             mr.ReplayAll();
 
-            var ps = new ProjectLoader("", loader);
+            var ps = new ProjectLoader(loader);
             var project = ps.LoadProject(sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
@@ -315,7 +315,7 @@ namespace Decompiler.UnitTests.Core.Serialization
             loader.Stub(l => l.LoadMetadata("")).IgnoreArguments().Return(typelib);
             mr.ReplayAll();
 
-            var ploader = new ProjectLoader("",loader);
+            var ploader = new ProjectLoader(loader);
             var project = ploader.LoadProject(sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
