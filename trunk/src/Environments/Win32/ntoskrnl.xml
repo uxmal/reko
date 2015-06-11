@@ -10,6 +10,11 @@
     <typedef name="BOOLEAN">
       <prim domain="SignedInt" size="4" />
     </typedef>
+    <typedef name="PVOID">
+      <ptr>
+        <void />
+      </ptr>
+    </typedef>
     <typedef name="DEVICE_TYPE">
       <prim domain="SignedInt" size="4" />
     </typedef>
@@ -124,6 +129,26 @@
       </arg>
       <arg name="DeviceName">
         <type>PUNICODE_STRING</type>
+      </arg>
+    </signature>
+  </procedure>
+
+  <procedure name="NtSetInformationProcess">
+    <signature>
+      <return>
+        <type>NTSTATUS</type>
+      </return>
+      <arg name="ProcessHandle">
+        <type>HANDLE</type>
+      </arg>
+      <arg name="ProcessInformationClass">
+        <type>PROCESS_INFORMATION_CLASS</type>
+      </arg>
+      <arg name="ProcessInformation">
+        <type>PVOID</type>
+      </arg>
+      <arg name="ProcessInformation">
+        <type>ULONG</type>
       </arg>
     </signature>
   </procedure>

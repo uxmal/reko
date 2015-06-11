@@ -46,6 +46,6 @@ namespace Decompiler.UnitTests.Arch.Intel
         protected ParsedOperand si = new ParsedOperand(new RegisterOperand(Registers.si));
         protected ParsedOperand di = new ParsedOperand(new RegisterOperand(Registers.di));
 
-        public abstract void Build(IntelAssembler m);
+        public abstract void Build(X86Assembler m);
     }
 }

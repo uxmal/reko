@@ -60,8 +60,8 @@
   <ItemGroup>
     <Compile Include="AssembledSegment.cs" />
     <Compile Include="ErrorEvent.cs" />
-    <Compile Include="IntelAssembler.cs" />
-    <Compile Include="IntelTextAssembler.cs" />
+    <Compile Include="X86Assembler.cs" />
+    <Compile Include="X86TextAssembler.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="ModRmBuilder.cs" />
     <Compile Include="OperandParser.cs" />

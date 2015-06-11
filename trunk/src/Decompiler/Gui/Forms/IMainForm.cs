@@ -35,8 +35,9 @@ namespace Decompiler.Gui.Forms
 		/// The text of the window's title bar.
 		/// </summary>
 		string TitleText { get; set; }
+        System.Drawing.Size Size { get; set; }
+        FormWindowState WindowState { get; set; }
 
-        ICollection<IWindowFrame> DocumentWindows { get; }
         ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }
         TabPage DiagnosticsPage { get; }
@@ -63,7 +64,6 @@ namespace Decompiler.Gui.Forms
         DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
 
         void Close();
-        void CloseAllDocumentWindows();
 
         void SetCurrentPage(object page);
 
@@ -76,10 +76,6 @@ namespace Decompiler.Gui.Forms
         void SetStatus(string txt);
         void SetStatusDetails(string txt);
 
-
-        System.Drawing.Size Size { get; set; }
-
-        FormWindowState WindowState { get; set; }
 
     }
 

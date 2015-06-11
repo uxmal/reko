@@ -67,5 +67,16 @@ namespace Decompiler.Core
         {
             return new HashSet<TElement>(source);
         }
+
+        public static SortedSet<TElement> ToSortedSet<TElement>(
+            this IEnumerable<TElement> source)
+        {
+            SortedSet<TElement> set = new SortedSet<TElement>();
+            foreach (var element in source)
+            {
+                set.Add(element);
+            }
+            return set;
+        }
     }
 }

@@ -141,6 +141,16 @@ namespace Decompiler.ImageLoaders.OdbgScript
 
             Assert.AreEqual("***---#", Encoding.ASCII.GetString(image.Bytes));
         }
+        
+        [Test]
+        public void Ose_FormatWords()
+        {
+            Given_Engine();
+            //Assert.AreEqual("foo", engine.FormatAsmDwords("foo "));
+            //Assert.AreEqual("foo 0xa", engine.FormatAsmDwords("foo a"));
+            //Assert.AreEqual("foo [0xa]", engine.FormatAsmDwords("foo [a]"));
+            Assert.AreEqual("foo [0xa],0xb", engine.FormatAsmDwords("foo [a],b"));
+        }
     }
 
     [TestFixture]

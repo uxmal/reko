@@ -233,7 +233,6 @@ namespace Decompiler.Core.Lib
 			return CreateEdgeCollectionCore(node, true);
 		}
 
-
 		private struct Node
 		{
 			public T Item;
@@ -430,7 +429,6 @@ namespace Decompiler.Core.Lib
 				get { return null; }
 			}
 
-
 			#region IEnumerable Members
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -443,7 +441,6 @@ namespace Decompiler.Core.Lib
 				return new NodeEnumerator(graph);
 			}
 			#endregion
-
 		}
 
 		private class NodeEnumerator : IEnumerator<T>

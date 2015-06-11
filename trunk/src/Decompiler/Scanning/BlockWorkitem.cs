@@ -758,12 +758,16 @@ namespace Decompiler.Scanning
             var mem = callTarget as MemoryAccess;
             if (mem == null)
                 return null;
-            if (mem.EffectiveAddress.DataType.Size != PrimitiveType.Word32.Size)
+            if (mem.EffectiveAddress.DataType.Size != this.program.Platform.PointerType.Size)
                 return null;
-            var offset = mem.EffectiveAddress as Constant;
-            if (offset == null)
-                return null;
-            var addrTarget = program.Platform.MakeAddressFromConstant(offset);
+            Address addrTarget = mem.EffectiveAddress as Address;
+            if (addrTarget == null)
+            {
+                var offset = mem.EffectiveAddress as Constant;
+                if (offset == null)
+                    return null;
+                addrTarget = program.Platform.MakeAddressFromConstant(offset);
+            }
             var impEp = scanner.GetImportedProcedure(addrTarget, ric.Address);
             //if (impEp != null)
                 return impEp;

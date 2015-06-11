@@ -547,27 +547,12 @@ namespace Decompiler.ImageLoaders.MzExe
                 ulong iltEntry = rdrIlt.ReadLeUInt64();
                 if (iltEntry == 0)
                     return false;
-
                 outer.importReferences.Add(
                     addrThunk,
                     ResolveImportedFunction(dllName, iltEntry, addrThunk));
+                Debug.Print("{0}: {1}", addrThunk, outer.importReferences[addrThunk]);
                 return true;
             }
-        }
-
-        [Obsolete("word-specific", true)]
-        private bool ResolveImportDescriptorEntry(string dllName, ImageReader rdrIlt, ImageReader rdrIat)
-        {
-            Address addrThunk = rdrIat.Address;
-            uint iatEntry = rdrIat.ReadLeUInt32();
-            uint iltEntry = rdrIlt.ReadLeUInt32();
-            if (iltEntry == 0)
-                return false;
-
-            importReferences.Add(
-                addrThunk,
-                ResolveImportedFunction(dllName, iltEntry, addrThunk));
-            return true;
         }
 
         private bool ReadDeferredLoadDescriptors(ImageReader rdr, Address addrLoad)
@@ -588,7 +573,7 @@ namespace Decompiler.ImageLoaders.MzExe
                     break;
                 importReferences.Add(
                     addrThunk, 
-                    ResolveImportedFunction(dllName, rvaName, addrThunk));
+                    innerLoader.ResolveImportedFunction(dllName, rvaName, addrThunk));
             }
             rdr.ReadLeInt32();
             rdr.ReadLeInt32();
@@ -596,21 +581,21 @@ namespace Decompiler.ImageLoaders.MzExe
             return true;
         }
         
-        [Obsolete("word-size dependent")]
-        private ImportReference ResolveImportedFunction(string dllName, uint rvaEntry, Address addrThunk)
-        {
-            if (!ImportedFunctionNameSpecified(rvaEntry))
-            {
-                return new OrdinalImportReference(
-                    addrThunk, dllName, (int) rvaEntry & 0x7FFFFFF);
-            }
-            else
-            {
-                string fnName = ReadUtf8String(rvaEntry + 2, 0);
-                return new NamedImportReference(
-                    addrThunk, dllName, fnName);
-            }
-        }
+        //[Obsolete("word-size dependent")]
+        //private ImportReference ResolveImportedFunction(string dllName, uint rvaEntry, Address addrThunk)
+        //{
+        //    if (!ImportedFunctionNameSpecified(rvaEntry))
+        //    {
+        //        return new OrdinalImportReference(
+        //            addrThunk, dllName, (int) rvaEntry & 0x7FFFFFF);
+        //    }
+        //    else
+        //    {
+        //        string fnName = ReadUtf8String(rvaEntry + 2, 0);
+        //        return new NamedImportReference(
+        //            addrThunk, dllName, fnName);
+        //    }
+        //}
 
         [Obsolete("word-size dependent")]
         private bool ImportedFunctionNameSpecified(uint rvaEntry)

@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Analysis;
+using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Configuration;
@@ -53,7 +54,7 @@ namespace Decompiler.UnitTests.Typing
             ILoader ldr = new Loader(services);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new IntelTextAssembler(),
+                new X86TextAssembler(new IntelArchitecture(ProcessorMode.Real)),
                 addrBase);
             program.Platform = new DefaultPlatform(services, program.Architecture);
             var ep = new EntryPoint(program.Image.BaseAddress, program.Architecture.CreateProcessorState());

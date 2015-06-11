@@ -120,7 +120,6 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/multiple/preserved_alias.asm", "Analysis/DfaPreservedAlias.txt");
 		}
 
-
 		[Test]
 		public void DfaReadFile()
 		{

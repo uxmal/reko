@@ -148,23 +148,55 @@ namespace Decompiler.Arch.X86
 				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
 
 				// 50
-				new SingleByteOpRec(Opcode.push, "rv"),
-				new SingleByteOpRec(Opcode.push, "rv"),
-				new SingleByteOpRec(Opcode.push, "rv"),
-				new SingleByteOpRec(Opcode.push, "rv"),
-				new SingleByteOpRec(Opcode.push, "rv"),
-				new SingleByteOpRec(Opcode.push, "rv"),
-				new SingleByteOpRec(Opcode.push, "rv"),
-				new SingleByteOpRec(Opcode.push, "rv"),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.push, "rv"),
+                    new SingleByteOpRec(Opcode.push, "rq")),
 
-				new SingleByteOpRec(Opcode.pop, "rv"),
-				new SingleByteOpRec(Opcode.pop, "rv"),
-				new SingleByteOpRec(Opcode.pop, "rv"),
-				new SingleByteOpRec(Opcode.pop, "rv"),
-				new SingleByteOpRec(Opcode.pop, "rv"),
-				new SingleByteOpRec(Opcode.pop, "rv"),
-				new SingleByteOpRec(Opcode.pop, "rv"),
-				new SingleByteOpRec(Opcode.pop, "rv"),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.pop, "rv"),
+                    new SingleByteOpRec(Opcode.pop, "rq")),
 
 				// 60
 				new Alternative64OpRec(

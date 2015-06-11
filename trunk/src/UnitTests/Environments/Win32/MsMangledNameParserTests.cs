@@ -459,5 +459,13 @@ namespace Decompiler.UnitTests.Environments.Win32
                 "__thiscall public: CNoTrackObject * CProcessLocalObject::GetData(__stdcall public: CNoTrackObject *() *)",
                 "?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z");
         }
+
+        [Test]
+        public void PMNP_regression9()
+        {
+            RunTest(
+                "__cdecl public: void CLASS_DESCRIPTOR::CLASS_DESCRIPTOR()",
+                "??0CLASS_DESCRIPTOR@@QEAA@XZ");
+        }
     }
 }

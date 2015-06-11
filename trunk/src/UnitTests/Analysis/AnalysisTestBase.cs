@@ -115,7 +115,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
             Program program;
-            Assembler asm = new IntelTextAssembler();
+            Assembler asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
@@ -133,7 +133,7 @@ namespace Decompiler.UnitTests.Analysis
         private Program RewriteFile32(string relativePath, string configFile)
         {
             Program program;
-            var asm = new IntelTextAssembler();
+            var asm = new X86TextAssembler(new X86ArchitectureReal());
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 if (this.platform == null)
@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Analysis
 
         protected Program RewriteCodeFragment(string s)
         {
-            Assembler asm = new IntelTextAssembler();
+            Assembler asm = new X86TextAssembler(new X86ArchitectureReal());
             var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             Rewrite(program, asm, null);

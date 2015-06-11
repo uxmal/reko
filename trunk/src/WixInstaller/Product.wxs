@@ -101,7 +101,8 @@
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />
         <File Source="$(var.Win32.TargetPath)" />
-        <File Source="$(var.Win32.ProjectDir)windows.xml" />
+        <File Source="$(var.Win32.ProjectDir)windows32.xml" />
+        <File Source="$(var.Win32.ProjectDir)windows64.xml" />
         <File Source="$(var.Win32.ProjectDir)commctrl.xml" />
         <File Source="$(var.Win32.ProjectDir)ntoskrnl.xml" />
         <File Source="$(var.Win32.ProjectDir)oleaut32.xml" />

@@ -33,13 +33,13 @@ namespace Decompiler.UnitTests.Assemblers.x86
     [TestFixture]
     public class IntelCodeAssemblerTests : AssemblerBase
     {
-        IntelAssembler m;
+        X86Assembler m;
 
         [SetUp]
         public new void Setup()
         {
             base.Setup();
-            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), Address.SegPtr(0x100, 0x0100), new List<EntryPoint>());
+            m = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), Address.SegPtr(0x100, 0x0100), new List<EntryPoint>());
         }
 
         [Test]

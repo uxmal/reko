@@ -74,14 +74,13 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\ntoskrnl.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows.xml">
-      <SubType>Designer</SubType>
-    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\windows64.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\oleaut32.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win32characteristics.xml" >
-    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win32characteristics.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Win32\win64characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />

@@ -353,7 +353,50 @@ ProcedureBuilder_exit:
         [Test]
         public void SsarLocaldiamond()
         {
-            var sExp = "@@@";
+            var sExp = @"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def fp
+	def bp
+	def r1
+	def wArg04
+	goto l1
+	// succ:  l1
+done:
+	dwLoc0C_17 = PHI(dwLoc0C_18, dwLoc0C_19)
+	r1_8 = dwLoc0C_17
+	bp_9 = dwLoc04_14
+	r63_10 = fp
+	return
+	// succ:  ProcedureBuilder_exit
+ge3:
+	dwLoc0C_19 = r1
+	goto done
+	// succ:  done
+l1:
+	r63_1 = fp
+	r63_2 = fp - 0x00000004
+	dwLoc04_14 = bp
+	bp_5 = fp - 0x00000004
+	dwLoc0C_15 = 0x00000000
+	CZS_7 = wArg04 - 0x0003
+	branch Test(GE,CZS_7) ge3
+	// succ:  l2 ge3
+l2:
+	dwLoc0C_18 = r1
+	goto done
+	// succ:  done
+ProcedureBuilder_exit:
+	use bp_9
+	use CZS_7
+	use dwLoc04_14
+	use dwLoc0C_17
+	use fp
+	use r1_8
+	use r63_10
+	use wArg04
+";
             RunTest(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);

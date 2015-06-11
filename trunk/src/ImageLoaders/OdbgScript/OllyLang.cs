@@ -1795,61 +1795,45 @@ namespace Decompiler.ImageLoaders.OdbgScript
         }
 
         //Add zero char before dw values, ex: 0DEADBEEF (to be assembled) usefull if first char is letter
-        string FormatAsmDwords(string asmLine)
+        public string FormatAsmDwords(string asmLine)
         {
             // Create command and arguments
-            string command, arg, args;
+            string args;
             string cSep = "";
-            int pos;
-
-            pos = asmLine.IndexOfAny(Helper.whitespaces.ToCharArray());
+            int pos = asmLine.IndexOfAny(Helper.whitespaces.ToCharArray());
 
             if (pos < 0)
                 return asmLine; //no args
 
-            command = asmLine.Substring(0, pos) + ' ';
-            args = asmLine.Substring(pos + 1);
-
-            while ((pos = args.IndexOf("+,[")) >= 0)
+            var command = new StringBuilder(asmLine.Substring(0, pos));
+            command.Append(' ');
+            args = asmLine.Substring(pos + 1).Trim();
+            int iStart = 0;
+            while (iStart < args.Length)
             {
-                arg = Helper.trim(args.Substring(0, pos));
-      //      ForLastArg:
-                if (cSep == "[")
-                {
-                    if (arg.Length!=0 && arg[arg.Length - 1] == ']')
-                    {
-                        if (Helper.is_hex(arg.Substring(0, arg.Length - 1)) && Char.IsLetter(arg[0]))
-                        {
-                            arg = "0" + arg;
-                        }
-                    }
+                int iEnd = args.IndexOfAny(new [] {'+', '-', ',', '[', ']'}, iStart+1);
+                if (iEnd > iStart && args[iStart] == '[' && args[iEnd] == ']')
+                { 
+                    var arg = args.Substring(iStart+1, iEnd - iStart - 1).Trim();
+                    if (Char.IsLetter(arg[0]))
+                        command.AppendFormat("[0x{0}]", arg);
+                    else 
+                        command.AppendFormat("[0x{0}]", arg);
                 }
                 else
                 {
+                    if (iEnd < 0)
+                        iEnd = args.Length;
+                    command.Append(args[iStart]);
+                    ++iStart;
+                    var arg = args.Substring(iStart, iEnd-iStart);
                     if (Helper.is_hex(arg) && Char.IsLetter(arg[0]))
-                    {
-                        arg = "0" + arg;
-                    }
+                        command.Append("0x");
+                    command.Append(arg);
                 }
-
-                command += cSep + arg;
-
-                if (args != "")
-                {
-                    cSep = "" + args[pos];
-                    args = args.Substring(pos + 1);
-                }
+                iStart = iEnd + 1;
             }
-
-            args = Helper.trim(args);
-            if (args != "")
-            {
-                arg = args;
-                args = "";
-        //        goto ForLastArg;
-            }
-
-            return Helper.trim(command);
+            return Helper.trim(command.ToString());
         }
 
         bool callCommand(Func<string[], bool> command, params string[] args)

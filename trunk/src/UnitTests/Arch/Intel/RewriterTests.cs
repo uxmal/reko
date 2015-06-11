@@ -53,9 +53,9 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[SetUp]
 		public void SetUp()
 		{
-			prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            asm = new IntelTextAssembler();
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            prog = new Program() { Architecture = arch };
+            asm = new X86TextAssembler(arch);
 			configFile = null;
 		}
 

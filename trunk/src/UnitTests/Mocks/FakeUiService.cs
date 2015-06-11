@@ -114,6 +114,10 @@ namespace Decompiler.UnitTests.Mocks
         IDecompilerShellUiService,
         ICommandTarget
     {
+        public IEnumerable<IWindowFrame> DocumentWindows { get; set; }
+
+        public IEnumerable<IWindowFrame> ToolWindows { get; set; }
+
         public ContextMenu GetContextMenu(int menuId)
         {
             return new ContextMenu();

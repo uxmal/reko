@@ -57,13 +57,13 @@ namespace Decompiler.UnitTests.Scanning
             repository = new MockRepository();
         }
 
-        private void BuildTest32(Action<IntelAssembler> m)
+        private void BuildTest32(Action<X86Assembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Protected32);
             BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(null, arch), m);
         }
 
-        private void BuildTest16(Action<IntelAssembler> m)
+        private void BuildTest16(Action<X86Assembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(null, arch), m);
@@ -142,13 +142,13 @@ namespace Decompiler.UnitTests.Scanning
             }
         }
 
-        private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)
+        private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<X86Assembler> m)
         {
             this.arch = new IntelArchitecture(ProcessorMode.Protected32);
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
-            var asm = new IntelAssembler(arch, addr, new List<EntryPoint>());
+            var asm = new X86Assembler(arch, addr, new List<EntryPoint>());
             scanner = repository.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();
@@ -197,7 +197,7 @@ namespace Decompiler.UnitTests.Scanning
         public void BwiX86_WalkX86ServiceCall()
         {
             // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 m.Int(0x21);
 
@@ -215,7 +215,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkBswap()
         {
-            BuildTest32(delegate(IntelAssembler m)
+            BuildTest32(delegate(X86Assembler m)
             {
                 m.Bswap(m.ebp);
             });
@@ -228,7 +228,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkMovConst()
         {
-            BuildTest32(delegate(IntelAssembler m)
+            BuildTest32(delegate(X86Assembler m)
             {
                 m.Mov(m.si, 0x606);
             });
@@ -240,7 +240,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_XorWithSelf()
         {
-            BuildTest32(delegate(IntelAssembler m)
+            BuildTest32(delegate(X86Assembler m)
             {
                 m.Xor(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -254,7 +254,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_SubWithSelf()
         {
-            BuildTest32(delegate(IntelAssembler m)
+            BuildTest32(delegate(X86Assembler m)
             {
                 m.Sub(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -267,7 +267,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_PseudoProcsShouldNukeRecipientRegister()
         {
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 m.In(m.al, m.dx);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
@@ -281,7 +281,7 @@ namespace Decompiler.UnitTests.Scanning
         public void BwiX86_RewriteIndirectCall()
         {
             var addr = Address.SegPtr(0xC00, 0x0000);
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
                     new ProcedureSignature(
@@ -304,7 +304,7 @@ namespace Decompiler.UnitTests.Scanning
         //$TODO: big-endian version of this, please.
         public void BwiX86_IndirectJumpGated()
         {
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 m.And(m.bx, m.Const(3));
                 m.Add(m.bx, m.bx);
@@ -383,7 +383,7 @@ namespace Decompiler.UnitTests.Scanning
         public void BwiX86_RepMovsw()
         {
             var follow = new Block(proc, "follow");
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 m.Rep();
                 m.Movsw();
@@ -418,7 +418,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_XorFlags()
         {
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 m.Xor(m.esi, m.esi);
                 m.Label("x");
@@ -451,7 +451,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void BwiX86_IndirectCallToConstant()
         {
-            BuildTest32(delegate(IntelAssembler m)
+            BuildTest32(delegate(X86Assembler m)
             {
                 m.Mov(m.ebx, m.MemDw("_GetDC"));
                 m.Call(m.ebx);

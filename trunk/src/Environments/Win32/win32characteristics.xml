@@ -5,4 +5,9 @@
       <varargs>Decompiler.Environments.Win32.MsPrintfFormatParser,Decompiler.Environments.Win32</varargs>
     </characteristics>
   </entry>
+  <entry name="exit">
+    <characteristics>
+      <terminates>true</terminates>
+    </characteristics>
+  </entry>
 </characteristics>

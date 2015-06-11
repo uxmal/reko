@@ -187,7 +187,7 @@ namespace Decompiler.Assemblers.x86
 						if (addrWidth == null || sym != null)
 							memOp.Offset = Constant.Create(defaultAddressWidth, totalInt);
 						else
-							memOp.Offset = IntelAssembler.IntegralConstant(totalInt, addrWidth);
+							memOp.Offset = X86Assembler.IntegralConstant(totalInt, addrWidth);
 					}
 					return new ParsedOperand(memOp, sym);
 				case Token.PLUS:
@@ -210,7 +210,7 @@ namespace Decompiler.Assemblers.x86
 			}
 			else
 			{
-				return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, defaultWordWidth)));
+				return new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(totalInt, defaultWordWidth)));
 			}
 		}
 		public ParsedOperand ParseOperand()

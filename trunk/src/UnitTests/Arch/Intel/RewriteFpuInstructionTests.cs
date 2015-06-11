@@ -17,7 +17,7 @@ namespace Decompiler.UnitTests.Arch.Intel
     public class RewriteFpuInstructionTests : Arch.RewriterTestBase
     {
         private X86ArchitectureFlat32 arch;
-        private IntelAssembler asm;
+        private X86Assembler asm;
         private Program asmResult;
         private Address loadAddress = Address.Ptr32(0x0010000);
 
@@ -25,7 +25,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void Setup()
         {
             arch = new X86ArchitectureFlat32();
-            asm = new IntelAssembler(arch, loadAddress, new List<EntryPoint>());
+            asm = new X86Assembler(arch, loadAddress, new List<EntryPoint>());
         }
 
         public override IProcessorArchitecture Architecture
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             get { return loadAddress; } 
         }
 
-        private void BuildTest(Action<IntelAssembler> m)
+        private void BuildTest(Action<X86Assembler> m)
         {
             m(asm);
             asmResult = asm.GetImage();

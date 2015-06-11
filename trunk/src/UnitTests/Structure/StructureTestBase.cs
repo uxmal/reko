@@ -51,9 +51,11 @@ namespace Decompiler.UnitTests.Structure
             var sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
             var ldr = new Loader(sc);
+            var arch = new X86ArchitectureReal();
+
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new IntelTextAssembler { Platform = new MsdosPlatform(null, new X86ArchitectureReal())},
+                new X86TextAssembler(arch) { Platform = new MsdosPlatform(null, arch) },
                 addrBase);
             return RewriteProgram();
 		}
@@ -63,16 +65,17 @@ namespace Decompiler.UnitTests.Structure
             var sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
             var ldr = new Loader(sc);
+            var arch = new X86ArchitectureFlat32();
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new IntelTextAssembler { Platform = new DefaultPlatform(null, new X86ArchitectureFlat32()) },
+                new X86TextAssembler(arch) { Platform = new DefaultPlatform(null, arch) },
                 addrBase);
             return RewriteProgram();
         }
 
         protected Program RewriteX86Fragment(string asmFragment, Address addrBase)
         {
-            var asm = new IntelTextAssembler();
+            var asm = new X86TextAssembler(new X86ArchitectureReal());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));

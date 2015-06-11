@@ -800,7 +800,7 @@ namespace Decompiler.Arch.X86
 				dataWidth = PrimitiveType.Real80;
 				break;
             case 'q':
-                dataWidth = dataSizeOverride ?  PrimitiveType.Word128 : PrimitiveType.Word64;
+                dataWidth = PrimitiveType.Word64;
                 break;
             case 'y':
                 dataWidth = (useRexPrefix && (rexPrefix & 8) != 0) ? PrimitiveType.Word64: PrimitiveType.Word32;
