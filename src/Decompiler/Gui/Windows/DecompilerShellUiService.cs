@@ -60,6 +60,16 @@ namespace Decompiler.Gui.Windows
             this.form.DocumentTabs.MouseUp += documentTabs_MouseUp;
         }
 
+        public IEnumerable<IWindowFrame> DocumentWindows
+        {
+            get {  return framesByTab.Values; }
+        }
+
+        public IEnumerable<IWindowFrame> ToolWindows
+        {
+            get { throw new NotImplementedException();  }
+        }
+
         void CloseTab(TabPage page)
         {
             form.DocumentTabs.TabPages.Remove(page);
@@ -195,6 +205,7 @@ namespace Decompiler.Gui.Windows
             public void Close()
             {
                 svc.CloseTab(tabPage);
+                pane.Close();
             }
 
             public void Show()

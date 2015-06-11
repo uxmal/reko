@@ -83,7 +83,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             brSvc.Stub(d => d.Clear());
-            form.Stub(f => f.CloseAllDocumentWindows());
             Given_DecompilerInstance();
             dcSvc.Stub(d => d.Decompiler = null);
             Given_SavePrompt(true);
@@ -100,7 +99,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Given_Loader();
             Given_MainFormInteractor();
-            form.Stub(f => f.CloseAllDocumentWindows());
             diagnosticSvc.Stub(d => d.Error(
                 Arg<ICodeLocation>.Is.NotNull, 
                 Arg<string>.Is.NotNull)).IgnoreArguments();
@@ -128,8 +126,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_DecompilerInstance();
             dcSvc.Expect(d => d.Decompiler = null);
-            form.Stub(f => f.DocumentWindows).Return(docWindows);
-            form.Expect(f => f.CloseAllDocumentWindows());
             brSvc.Expect(b => b.Clear());
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
@@ -138,7 +134,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
-            form.DocumentWindows.Add(new TestForm());
             interactor.OpenBinary("");
 
             mr.VerifyAll();
@@ -163,12 +158,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_MainFormInteractor();
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
-            form.Expect(f => f.CloseAllDocumentWindows());
             brSvc.Stub(b => b.Clear());
             Given_LoadPreferences();
             Given_DecompilerInstance();
             Given_SavePrompt(true);
             dcSvc.Stub(d => d.Decompiler = null);
+            uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -394,7 +389,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-
         private void Given_UiSvc_IgnoresCommands()
         {
             uiSvc.Stub(u => u.QueryStatus(
@@ -411,16 +405,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_Loader();
             Given_MainFormInteractor();
             var docWindows = new List<IWindowFrame>();
-            form.Stub(f => f.DocumentWindows).Return(docWindows);
-            form.Expect(f => f.CloseAllDocumentWindows());
+            uiSvc.Stub(u => u.DocumentWindows).Return(docWindows);
+            //form.Expect(f => f.CloseAllDocumentWindows());
             Given_LoadPreferences();
             Given_CommandNotHandledBySubwindow();
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
             var mdi = new TestForm();
-            form.DocumentWindows.Add(mdi);
-            Assert.AreEqual(1, form.DocumentWindows.Count);
+            //form.DocumentWindows.Add(mdi);
+            //Assert.AreEqual(1, form.DocumentWindows.Count);
             interactor.Execute(new CommandID(CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll));
 
             mr.VerifyAll();
@@ -472,7 +466,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_LoadPreferences();
             Given_CommandNotHandledBySubwindow();
-            form.Expect(f => f.CloseAllDocumentWindows());
+            uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
+            //form.Expect(f => f.CloseAllDocumentWindows());
             brSvc.Expect(b => b.Clear());
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             Given_DecompilerInstance();
@@ -574,6 +569,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 Arg<CommandStatus>.Is.Anything,
                 Arg<CommandText>.Is.Anything)).Return(false);
             tcHostSvc.Stub(t => t.Execute(Arg<CommandID>.Is.Anything)).Return(false);
+
+            uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
         }
 
         private void When_CreateMainFormInteractor()

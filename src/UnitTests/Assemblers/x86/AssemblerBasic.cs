@@ -34,14 +34,14 @@ namespace Decompiler.UnitTests.Assemblers.x86
 	public class AssemblerBase
 	{
 		protected IntelArchitecture arch;
-		protected IntelTextAssembler asm;
+		protected X86TextAssembler asm;
 
 		[SetUp]
 		public void Setup()
 		{
-			asm = new IntelTextAssembler();
             arch = new IntelArchitecture(ProcessorMode.Real);
-		}
+            asm = new X86TextAssembler(arch);
+        }
 
         protected void AssertEqualBytes(string expected, byte[] actual)
         {
@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dumper = new Dumper(asm.Architecture);
+				Dumper dumper = new Dumper(program.Architecture);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
 				dumper.DumpData(program.Image, program.Image.BaseAddress, program.Image.Length, fut.TextWriter);

@@ -28,7 +28,7 @@ namespace Decompiler.UnitTests.TestCode
 {
     public partial class X86 
     {
-        public static void Switch(IntelAssembler m)
+        public static void Switch(X86Assembler m)
         {
             m.Proc("foo");
             m.Push(m.cs);
@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.TestCode
             m.Ret();
         }
 
-        public static void Switch32(IntelAssembler m)
+        public static void Switch32(X86Assembler m)
         {
             m.Proc("foo");
             m.Mov(m.eax, m.MemDw(Registers.esp, 4));

@@ -66,9 +66,10 @@ namespace Decompiler.UnitTests.Scanning
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
             var ldr = new Loader(new ServiceContainer());
+            var arch = new X86ArchitectureReal();
             Program program = ldr.AssembleExecutable(
                  FileUnitTester.MapTestPath(sourceFile),
-                 new IntelTextAssembler(),
+                 new X86TextAssembler(arch),
                 addr);
             var project = new Project { Programs = { program } };
 			var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), new ImportResolver(project), null);

@@ -105,10 +105,26 @@ namespace Decompiler.Environments.Win32
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             EnsureTypeLibraries("win64");
-            return TypeLibs.Select(t => t.Lookup(procName))
+            var ep = TypeLibs.Select(t => t.Lookup(procName))
                 .Where(sig => sig != null)
                 .Select(s => new ExternalProcedure(procName, s))
                 .FirstOrDefault();
+            if (ep != null)
+            {
+                var ch = CharacteristicsLibs
+                    .Select(c => c.Lookup(ep.Name))
+                    .FirstOrDefault();
+                ep.Characteristics = ch;
+            }
+            return ep;
+        }
+
+        public override ProcedureSignature SignatureFromName(string fnName)
+        {
+            return SignatureGuesser.SignatureFromName(
+                fnName,
+                new TypeLibraryLoader(Architecture, true),
+                Architecture);
         }
     }
 }

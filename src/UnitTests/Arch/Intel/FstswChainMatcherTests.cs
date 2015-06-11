@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Arch.Intel
     {
         IntelArchitecture arch;
         ProcedureBuilder emitter;
-        IntelAssembler asm;
+        X86Assembler asm;
         OperandRewriter orw;
         List<IntelInstruction> instrs;
 
@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void Fstsw_Setup()
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
-            asm = new IntelAssembler(arch, Address.Ptr32(0x10000), new List<EntryPoint>());
+            asm = new X86Assembler(arch, Address.Ptr32(0x10000), new List<EntryPoint>());
             Procedure proc = new Procedure("test", arch.CreateFrame());
             orw = new OperandRewriter32(arch, proc.Frame, null);
             emitter = new ProcedureBuilder();

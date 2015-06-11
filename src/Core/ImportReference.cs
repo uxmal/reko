@@ -50,7 +50,10 @@ namespace Decompiler.Core
             this.ImportName = importName;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, Platform platform, AddressContext ctx)
+        public override ExternalProcedure ResolveImportedProcedure(
+            IImportResolver resolver, 
+            Platform platform, 
+            AddressContext ctx)
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
             if (ep != null)

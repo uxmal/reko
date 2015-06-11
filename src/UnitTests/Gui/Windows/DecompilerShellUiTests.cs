@@ -46,14 +46,14 @@ namespace Decompiler.UnitTests.Gui.Windows
             Form mdiForm = new Form();
 
             var pane = mr.StrictMock<IWindowPane>();
-            Expect.Call(() => pane.SetSite(sc));
-            Expect.Call(pane.CreateControl()).IgnoreArguments().Return(new Control());
+            pane.Expect(p => p.SetSite(sc));
+            pane.Expect(p => p.CreateControl()).Return(new Control());
             mr.ReplayAll();
 
             IWindowFrame window = svc.CreateWindow("testWin", "Test Window", pane);
             Assert.IsNotNull(window);
-            Assert.AreEqual(1, mainForm.DocumentWindows.Count);
-            Assert.AreSame(pane, mainForm.DocumentWindows.First().Pane);
+            Assert.AreEqual(1, svc.DocumentWindows.Count());
+            Assert.AreSame(pane, svc.DocumentWindows.First().Pane);
             window.Show();
             mr.VerifyAll();
         }
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             var frame = svc.CreateWindow("testWindow", "Test Window", pane);
             frame.Show();
-            Assert.AreEqual(1, form.MdiChildren.Length);
+            Assert.AreEqual(1, svc.DocumentWindows.Count());
             Assert.IsNotNull(svc.FindWindow("testWindow"));
             frame.Close();
             Assert.IsNull(svc.FindWindow("testWindow"));

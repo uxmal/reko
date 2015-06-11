@@ -89,10 +89,10 @@ namespace Decompiler.UnitTests.Scanning
             return new ProcedureSignature(retReg, argIds.ToArray());
         }
 
-        private void BuildX86RealTest(Action<IntelAssembler> test)
+        private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
+            var m = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             test(m);
             var lr = m.GetImage();
             program = new Program(
@@ -266,7 +266,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             Program prog = new Program();
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
+            var m = new X86Assembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             m.i86();
 
             m.Proc("main");
@@ -305,7 +305,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Scanner_RepeatUntilBlock()
         {
-            BuildX86RealTest(delegate(IntelAssembler m)
+            BuildX86RealTest(delegate(X86Assembler m)
             {
                 m.i86();
                 m.Mov(m.ax, 0);         // To ensure we end up with a split block.

@@ -349,6 +349,10 @@ namespace Decompiler.Environments.Win32
 
         public string ParseThisStorageClass()
         {
+            if (PeekAndDiscard('E'))    // 64-bit ptr
+            {
+                // do nothing?
+            }
             switch (str[i++])
             {
             case 'A': return "";
@@ -550,16 +554,20 @@ namespace Decompiler.Environments.Win32
 
         public SerializedType ParsePointer(List<Argument_v1> compoundArgs)
         {
-            int size = 0;       //$REVIEW how to deal with 64-bitness
+            int size = 4;       //$TODO: should follow platform pointer size, really.
             SerializedType type;
+            if (PeekAndDiscard('E')) // 64-bit pointer
+            {
+                size = 8;
+            }
             switch (str[i++])
             {
-            case 'A': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       //$BUG: assumes 32-bitness
-            case 'B': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const ptr
-            case 'C': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // volatile ptr
-            case 'D': size = 4; type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const volatile ptr
-            case '6': size = 4; type = ParseFunctionTypeCode(); break;     // fn ptr
-            case '8': return ParseMemberFunctionPointerCode(4, compoundArgs);
+            case 'A': type = ParseDataTypeCode(new List<Argument_v1>()); break;       //$BUG: assumes 32-bitness
+            case 'B': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const ptr
+            case 'C': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // volatile ptr
+            case 'D': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const volatile ptr
+            case '6': type = ParseFunctionTypeCode(); break;     // fn ptr
+            case '8': return ParseMemberFunctionPointerCode(size, compoundArgs);
             default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }
             var pType = new PointerType_v1

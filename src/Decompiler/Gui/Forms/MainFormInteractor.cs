@@ -343,10 +343,19 @@ namespace Decompiler.Gui.Forms
                         return;
                 }
             }
-            form.CloseAllDocumentWindows();
+
+            CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
+        }
+
+        private void CloseAllDocumentWindows()
+        {
+            foreach (var frame in uiSvc.DocumentWindows.ToArray())
+            {
+                frame.Close();
+            }
         }
 
         public InitialPageInteractor InitialPageInteractor
@@ -718,7 +727,7 @@ namespace Decompiler.Gui.Forms
                 case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); return true;
                 case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); return true;
                 case CmdIds.WindowsTileHorizontal: LayoutMdi(DocumentWindowLayout.TiledHorizontal); return true;
-                case CmdIds.WindowsCloseAll: form.CloseAllDocumentWindows(); return true;
+                case CmdIds.WindowsCloseAll: CloseAllDocumentWindows(); return true;
 
                 case CmdIds.HelpAbout: ShowAboutBox(); return true;
                 }

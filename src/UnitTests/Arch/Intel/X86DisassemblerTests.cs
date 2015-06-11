@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Dis_Sequence()
         {
-            IntelTextAssembler asm = new IntelTextAssembler();
+            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 @"	mov	ax,0
@@ -138,7 +138,7 @@ foo:
         [Test]
         public void SegmentOverrides()
         {
-            IntelTextAssembler asm = new IntelTextAssembler();
+            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
@@ -156,7 +156,7 @@ foo:
         [Test]
         public void Rotations()
         {
-            IntelTextAssembler asm = new IntelTextAssembler();
+            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
             var lr = asm.AssembleFragment(
                 Address.SegPtr(0xB96, 0),
                 "foo	proc\r\n" +
@@ -183,7 +183,7 @@ foo:
         [Test]
         public void Extensions()
         {
-            IntelTextAssembler asm = new IntelTextAssembler();
+            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
             var program = asm.AssembleFragment(
                 Address.SegPtr(0xA14, 0),
 @"		.i86
@@ -211,7 +211,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void DisEdiTimes2()
         {
-            IntelTextAssembler asm = new IntelTextAssembler();
+            X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureFlat32());
             var program = asm.AssembleFragment(Address.SegPtr(0x0B00, 0),
                 @"	.i386
 	mov ebx,[edi*2]
@@ -229,7 +229,7 @@ movzx	ax,byte ptr [bp+04]
         {
             using (FileUnitTester fut = new FileUnitTester("Intel/DisFpuInstructions.txt"))
             {
-                IntelTextAssembler asm = new IntelTextAssembler();
+                X86TextAssembler asm = new X86TextAssembler(new X86ArchitectureReal());
                 Program lr;
                 using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
                 {
@@ -629,6 +629,12 @@ movzx	ax,byte ptr [bp+04]
             AssertCode64("nop\tdword ptr [rax+00000000]", 0x0F, 0x1F, 0x80, 0x00, 0x00, 0x00, 0x00);
             AssertCode64("nop\tdword ptr [rax+rax+00000000]", 0x0F, 0x1F, 0x84, 0x00, 0x00, 0x00, 0x00, 0x00);
             AssertCode64("nop\tword ptr [rax+rax+00000000]", 0x66, 0x0F, 0x1F, 0x84, 0x00, 0x00, 0x00, 0x00, 0x00);
+        }
+
+        [Test]
+        public void Dis_x86_rex_prefix_40()
+        {
+            AssertCode64("push\trbp", 0x40, 0x55);
         }
     }
 }

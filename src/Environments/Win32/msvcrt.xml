@@ -264,4 +264,15 @@
     </signature>
   </procedure>
 
+  <procedure name="exit">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+
 </library>

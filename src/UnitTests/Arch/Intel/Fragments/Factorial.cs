@@ -28,7 +28,7 @@ namespace Decompiler.UnitTests.Arch.Intel.Fragments
 {
     public class Factorial : AssemblerFragment
     {
-        public override void Build(IntelAssembler m)
+        public override void Build(X86Assembler m)
         {
             m.i86();
             // A straight-forward factorial function + a driver program to ensure the return value 

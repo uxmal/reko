@@ -81,20 +81,20 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
         }
 
-        private IntelAssembler Create16bitAssembler()
+        private X86Assembler Create16bitAssembler()
         {
             arch = arch16;
             baseAddr = baseAddr16;
-            var asm = new IntelAssembler(arch, baseAddr16, new List<EntryPoint>());
+            var asm = new X86Assembler(arch, baseAddr16, new List<EntryPoint>());
             host = new RewriterHost(asm.ImportReferences);
             return asm;
         }
 
-        private IntelAssembler Create32bitAssembler()
+        private X86Assembler Create32bitAssembler()
         {
             arch = arch32;
             baseAddr = baseAddr32;
-            var asm = new IntelAssembler(arch, baseAddr32, new List<EntryPoint>());
+            var asm = new X86Assembler(arch, baseAddr32, new List<EntryPoint>());
             host = new RewriterHost(asm.ImportReferences);
             return asm;
         }
@@ -175,14 +175,14 @@ namespace Decompiler.UnitTests.Arch.Intel
             }
         }
 
-        private void Run16bitTest(Action<IntelAssembler> fn)
+        private void Run16bitTest(Action<X86Assembler> fn)
         {
             var m = Create16bitAssembler();
             fn(m);
             image = m.GetImage().Image;
         }
 
-        private void Run32bitTest(Action<IntelAssembler> fn)
+        private void Run32bitTest(Action<X86Assembler> fn)
         {
             var m = Create32bitAssembler();
             fn(m);
@@ -215,7 +215,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "1|L--|ax = bx");
         }
 
-        private X86Rewriter CreateRewriter32(IntelAssembler m)
+        private X86Rewriter CreateRewriter32(X86Assembler m)
         {
             state = new X86State(arch32);
             return new X86Rewriter(arch32, host, state, m.GetImage().Image.CreateLeReader(0), new Frame(arch32.WordWidth));
@@ -337,7 +337,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Cmp()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Cmp(m.ebx, 3);
             });
@@ -349,7 +349,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_PushPop()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Push(m.eax);
                 m.Pop(m.ebx);
@@ -366,7 +366,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Jmp()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Label("lupe");
                 m.Jmp("lupe");
@@ -379,7 +379,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_JmpIndirect()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Jmp(m.WordPtr(m.bx, 0x10));
             });
@@ -391,7 +391,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Jne()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Label("lupe");
                 m.Jnz("lupe");
@@ -407,7 +407,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Call16bit()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Label("self");
                 m.Call("self");
@@ -420,7 +420,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Call32Bit()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Label("self");
                 m.Call("self");
@@ -433,7 +433,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Bswap()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Bswap(m.ebx);
             });
@@ -445,7 +445,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_IntInstruction()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Mov(m.ax, 0x4C00);
                 m.Int(0x21);
@@ -460,7 +460,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_InInstruction()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.In(m.al, m.dx);
             });
@@ -472,7 +472,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RetInstruction()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Ret();
             });
@@ -484,7 +484,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RealModeReboot()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.JmpF(Address.SegPtr(0xF000, 0xFFF0));
             });
@@ -496,7 +496,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RetNInstruction()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Ret(8);
             });
@@ -508,7 +508,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Loop()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Label("lupe");
                 m.Loop("lupe");
@@ -522,7 +522,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Loope()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Label("lupe");
                 m.Loope("lupe");
@@ -539,7 +539,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Adc()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Adc(m.WordPtr(0x100), m.ax);
             });
@@ -553,7 +553,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Lea()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Lea(m.bx, m.MemW(Registers.bx, 4));
             });
@@ -565,7 +565,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Enter()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Enter(16, 0);
             });
@@ -580,7 +580,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Neg()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Neg(m.ecx);
             });
@@ -594,7 +594,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Not()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Not(m.bx);
             });
@@ -606,7 +606,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Out()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Out(m.dx, m.al);
             });
@@ -618,7 +618,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Jcxz()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Label("lupe");
                 m.Jcxz("lupe");
@@ -631,7 +631,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RepLodsw()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Rep();
                 m.Lodsw();
@@ -653,7 +653,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Shld()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Shld(m.edx, m.eax, m.cl);
             });
@@ -665,7 +665,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Shrd()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Shrd(m.eax, m.edx, 4);
             });
@@ -677,7 +677,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Fild()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Fild(m.MemDw(Registers.ebx, 4));
             });
@@ -689,7 +689,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Fstp()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Fstp(m.MemDw(Registers.ebx, 4));
             });
@@ -701,7 +701,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RepScasb()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Rep();
                 m.Scasb();
@@ -721,7 +721,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteLesBxStack()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Les(m.bx, m.MemW(Registers.bp, 6));
             });
@@ -741,7 +741,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteBswap()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Bswap(m.ebx);
             });
@@ -753,7 +753,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteFiadd()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Fiadd(m.WordPtr(m.bx, 0));
             });
@@ -768,7 +768,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteAnd()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.And(m.ax, m.Const(8));
             });
@@ -782,7 +782,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test(Description = "Captures the side effect of setting CF = 0")]
         public void X86Rw_RewriteTest()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Test(m.ax, m.Const(8));
             });
@@ -795,7 +795,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteImul()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Imul(m.cx);
             });
@@ -808,7 +808,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteMul()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Mul(m.cx);
             });
@@ -821,7 +821,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteFmul()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Fmul(m.St(1));
             });
@@ -833,7 +833,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteDivWithRemainder()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Div(m.cx);
             });
@@ -847,7 +847,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteIdivWithRemainder()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Idiv(m.cx);
             });
@@ -861,7 +861,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteBsr()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Bsr(m.ecx, m.eax);
             });
@@ -874,7 +874,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_RewriteIndirectCalls()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Call(m.bx);
                 m.Call(m.WordPtr(m.bx, 4));
@@ -908,7 +908,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_FstswSahf()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Fstsw(m.ax);
                 m.Sahf();
@@ -921,7 +921,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_FstswTestAhEq()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Label("foo");
                 m.Fcompp();
@@ -940,7 +940,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Sar()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Sar(m.ax, 1);
                 m.Sar(m.bx, m.cl);
@@ -961,7 +961,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Xlat16()
         {
-            Run16bitTest(delegate(IntelAssembler m)
+            Run16bitTest(delegate(X86Assembler m)
             {
                 m.Xlat();
             });
@@ -973,7 +973,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Xlat32()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Xlat();
             });
@@ -985,7 +985,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Aaa()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Aaa();
             });
@@ -997,7 +997,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Aam()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Aam();
             });
@@ -1009,7 +1009,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Cmpsb()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Cmpsb();
             });
@@ -1023,7 +1023,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Hlt()
         {
-            Run32bitTest(delegate(IntelAssembler m)
+            Run32bitTest(delegate(X86Assembler m)
             {
                 m.Hlt();
             });

@@ -49,7 +49,7 @@ namespace Decompiler.Core
 
         public ExternalProcedure ResolveProcedure(string moduleName, string importName, Platform platform)
         {
-            foreach (var module in project.MetadataFiles.Where(m => m.ModuleName == moduleName && m.TypeLibrary != null))
+            foreach (var module in project.MetadataFiles.Where(m => m.TypeLibrary != null))
             {
                 SystemService svc;
                 if (module.TypeLibrary.ServicesByName.TryGetValue(importName, out svc))

@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 TypeLibraries = 
                 {
                     new TypeLibraryElement {  Name= "msvcrt.xml" },
-                    new TypeLibraryElement {  Name= "windows.xml" },
+                    new TypeLibraryElement {  Name= "windows32.xml" },
                 }
             };
             configSvc.Stub(c => c.GetEnvironment("win32")).Return(win32env);
@@ -139,7 +139,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
-            var asm = new IntelTextAssembler();
+            var asm = new X86TextAssembler(new X86ArchitectureFlat32());
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);

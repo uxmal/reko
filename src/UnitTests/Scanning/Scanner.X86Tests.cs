@@ -39,22 +39,22 @@ namespace Decompiler.UnitTests.Scanning
         private Scanner scanner;
         private Program program;
 
-        private void BuildTest16(Action<IntelAssembler> asmProg)
+        private void BuildTest16(Action<X86Assembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
             BuildTest(Address.SegPtr(0x0C00, 0x0000), new MsdosPlatform(null, arch), asmProg);
         }
 
-        private void BuildTest32(Action<IntelAssembler> asmProg)
+        private void BuildTest32(Action<X86Assembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Protected32);
             BuildTest(Address.Ptr32(0x00100000), new FakePlatform(null, null), asmProg);
         }
 
-        private void BuildTest(Address addrBase, Platform platform , Action<IntelAssembler> asmProg)
+        private void BuildTest(Address addrBase, Platform platform , Action<X86Assembler> asmProg)
         {
             var entryPoints = new List<EntryPoint>();
-            var asm = new IntelAssembler(arch, addrBase, entryPoints);
+            var asm = new X86Assembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
             var lr = asm.GetImage();
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Scanx86NestedProcedures()
         {
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 m.Mov(m.ax, 3);
                 m.Push(m.ax);
@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Scanx86RepScasw()
         {
-            BuildTest16(delegate(IntelAssembler m)
+            BuildTest16(delegate(X86Assembler m)
             {
                 m.Rep();
                 m.Scasw();

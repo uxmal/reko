@@ -28,14 +28,15 @@ namespace Decompiler.Gui
 {
     public interface IDecompilerShellUiService : IDecompilerUIService, ICommandTarget
     {
-        ContextMenu GetContextMenu(int menuID);
-
         IWindowFrame ActiveFrame { get; }
+        IEnumerable<IWindowFrame> DocumentWindows { get; }
+        IEnumerable<IWindowFrame> ToolWindows { get; }
 
-        IWindowFrame FindWindow(string windowType);
-        IWindowFrame FindDocumentWindow(string documentType, object docItem);
         IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
         IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane);
+        IWindowFrame FindWindow(string windowType);
+        IWindowFrame FindDocumentWindow(string documentType, object docItem);
+        ContextMenu GetContextMenu(int menuID);
         DialogResult ShowModalDialog(IDialog dlg);
     }
 }
