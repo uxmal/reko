@@ -40,7 +40,7 @@ namespace Decompiler.Scanning
             failureTable = BuildFailureTable(W);
         }
 
-        public override IEnumerator<int> GetMatchPositions(C [] text)
+        public override IEnumerable<int> GetMatchPositions(C [] text)
         {
             int m = 0; // the beginning of the current match in S
             int i = 0; // the position of the current character in W

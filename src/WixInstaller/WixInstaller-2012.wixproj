@@ -263,6 +263,9 @@
       <Name>WixUIExtension</Name>
     </WixExtension>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties.wxi" />
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

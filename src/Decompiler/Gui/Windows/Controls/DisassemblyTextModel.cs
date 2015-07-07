@@ -55,8 +55,7 @@ namespace Decompiler.Gui.Windows.Controls
             var lines = new List<TextSpan[]>();
             if (program.Architecture != null)
             {
-                var dasm = program.Architecture.CreateDisassembler(
-                    program.Architecture.CreateImageReader(program.Image, position)).GetEnumerator();
+                var dasm = program.CreateDisassembler(position).GetEnumerator();
                 while (count != 0 && dasm.MoveNext())
                 {
                     var line = new List<TextSpan>();
@@ -76,7 +75,7 @@ namespace Decompiler.Gui.Windows.Controls
         private string BuildBytes(MachineInstruction instr)
         {
             var sb = new StringBuilder();
-            var rdr = program.Architecture.CreateImageReader(program.Image, instr.Address);
+            var rdr = program.CreateImageReader(instr.Address);
             for (int i = 0; i < instr.Length; ++i)
             {
                 sb.AppendFormat("{0:X2} ", rdr.ReadByte());

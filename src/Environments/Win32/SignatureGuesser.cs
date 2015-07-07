@@ -30,11 +30,21 @@ namespace Decompiler.Environments.Win32
 {
     public class SignatureGuesser
     {
+        /// <summary>
+        /// Guesses the signature of a procedure based on its name.
+        /// </summary>
+        /// <param name="fnName"></param>
+        /// <param name="loader"></param>
+        /// <param name="arch"></param>
+        /// <returns></returns>
         public static ProcedureSignature SignatureFromName(string fnName, TypeLibraryLoader loader, IProcessorArchitecture arch)
         {
             int argBytes;
             if (fnName[0] == '_')
             {
+                // Win32 prefixes cdecl and stdcall functions with '_'. Stdcalls will have @<nn> 
+                // where <nn> is the number of bytes pushed on the stack. If 0 bytes are pushed
+                // the result is indistinguishable from the corresponding cdecl call, which is OK.
                 int lastAt = fnName.LastIndexOf('@');
                 if (lastAt < 0)
                     return CdeclSignature(fnName.Substring(1), arch);
@@ -46,6 +56,7 @@ namespace Decompiler.Environments.Win32
             }
             else if (fnName[0] == '@')
             {
+                // Win32 prefixes fastcall functions with '@'.
                 int lastAt = fnName.LastIndexOf('@');
                 if (lastAt <= 0)
                     return CdeclSignature(fnName.Substring(1), arch);
@@ -57,6 +68,7 @@ namespace Decompiler.Environments.Win32
             }
             else if (fnName[0] == '?')
             {
+                // Microsoft-mangled signatures begin with '?'
                 var pmnp = new MsMangledNameParser(fnName);
                 StructField_v1 field = null;
                 try
@@ -75,13 +87,8 @@ namespace Decompiler.Environments.Win32
                     var sser = arch.CreateProcedureSerializer(loader, "__cdecl");
                     return sser.Deserialize(sproc, arch.CreateFrame());    //$BUGBUG: catch dupes?   
                 }
-                else
-                {
-                    return null;
-                }
             }
-            else
-                return null;
+            return null;
         }
 
         private static ProcedureSignature CdeclSignature(string name, IProcessorArchitecture arch)

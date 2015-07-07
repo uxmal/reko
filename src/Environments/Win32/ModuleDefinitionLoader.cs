@@ -105,6 +105,7 @@ namespace Decompiler.Environments.Win32
                     Name = entryName,
                     Signature = ParseSignature(entryName, lib),
                 };
+                Debug.Print("Loaded {0} @ {1}", entryName, ordinal);
                 if (ordinal != -1)
                 {
                     svc.SyscallInfo = new SyscallInfo { Vector = ordinal };

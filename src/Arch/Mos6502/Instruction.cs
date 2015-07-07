@@ -31,6 +31,8 @@ namespace Decompiler.Arch.Mos6502
         public Opcode Code;
         public Operand Operand;
 
+        public override int OpcodeAsInteger { get { return (int)Code; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(Code.ToString());

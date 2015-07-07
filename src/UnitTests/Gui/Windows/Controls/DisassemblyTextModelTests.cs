@@ -141,6 +141,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
 
         private class TestInstruction : MachineInstruction
         {
+            public override int OpcodeAsInteger
+            {
+                get { throw new NotImplementedException(); }
+            }
+
             public override void Render(MachineInstructionWriter writer)
             {
                 writer.WriteOpcode("opcode.l");

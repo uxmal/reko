@@ -36,6 +36,7 @@ namespace Decompiler.UnitTests.Mocks
             this.ops = ops;
         }
 
+        public override int OpcodeAsInteger { get { return (int)operation; } }
         public Operation Operation { get { return operation; } }
         public MachineOperand[] Operands { get { return ops; } }
     }

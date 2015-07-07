@@ -18,14 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
-using Decompiler.Core.Rtl;
-using Decompiler.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Decompiler.Arch.Mips
 {
@@ -35,6 +28,8 @@ namespace Decompiler.Arch.Mips
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
+
+        public override int OpcodeAsInteger { get { return (int) opcode; } }
 
         public override void Render(MachineInstructionWriter writer)
         {

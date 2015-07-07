@@ -103,7 +103,7 @@ namespace Decompiler.Gui
                 };
             }
             int bgColor = SelectBgColor(item);
-            var dasm = program.Architecture.CreateDisassembler(program.Architecture.CreateImageReader(program.Image, addr));
+            var dasm = program.CreateDisassembler(addr);
             try
             {
                 var instr = string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));

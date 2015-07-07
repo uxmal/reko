@@ -51,6 +51,8 @@ namespace Decompiler.Arch.PowerPC
             this.setsCR0 = setsCR0;
         }
 
+        public override int OpcodeAsInteger { get { return (int)opcode; } }
+
         public int Operands
         {
             get

@@ -158,6 +158,9 @@ namespace Decompiler.Core.Serialization
         [XmlAttribute]
         public bool Enabled;
 
+        [XmlAttribute]
+        public string Interpreter;
+
         [XmlText]
         public string Script;
     }

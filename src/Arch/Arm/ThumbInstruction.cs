@@ -23,10 +23,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ThOpcode = Decompiler.Arch.Arm.ThumbOpcode;
 
 namespace Decompiler.Arch.Arm
 {
     public class ThumbInstruction : MachineInstruction
     {
+        public ThOpcode Opcode;
+        public override int OpcodeAsInteger { get { return (int) Opcode; } }
+
     }
 }

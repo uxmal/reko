@@ -32,6 +32,8 @@ namespace Decompiler.Arch.Z80
         public MachineOperand Op1;
         public MachineOperand Op2;
 
+        public override int OpcodeAsInteger { get { return (int)Code; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             if (Code == Opcode.ex_af)

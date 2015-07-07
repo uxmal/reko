@@ -38,6 +38,11 @@ namespace Decompiler.Environments.C64
         private const int TokenMin = 0x80;
         private const int TokenMax = 0xCC;
 
+        public override int OpcodeAsInteger
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.Write("{0} ", Address.ToLinear());

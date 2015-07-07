@@ -24,18 +24,18 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
-    public abstract class StringSearch<TChar>
+    public abstract class StringSearch<TSymbol>
     {
-        public StringSearch(TChar[] pattern, bool scannedMemory, bool unscannedMemory)
+        public StringSearch(TSymbol[] pattern, bool scannedMemory, bool unscannedMemory)
         {
             this.Pattern = pattern;
             this.ScannedMemory = scannedMemory;
             this.UnscannedMemory = unscannedMemory;
         }
 
-        public abstract IEnumerator<int> GetMatchPositions(TChar[] stringToSearch);
+        public abstract IEnumerable<int> GetMatchPositions(TSymbol[] stringToSearch);
 
-        public TChar[] Pattern { get; private set; }
+        public TSymbol[] Pattern { get; private set; }
         public bool ScannedMemory { get; private set; }
         public bool UnscannedMemory { get; private set; }
     }

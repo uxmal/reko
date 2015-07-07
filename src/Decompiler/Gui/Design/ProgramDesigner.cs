@@ -36,7 +36,7 @@ namespace Decompiler.Gui.Design
         public override void Initialize(object obj)
         {
             base.Initialize(obj);
-            var program = (Program) obj;
+            program = (Program) obj;
             if (program.ImageMap != null)
                 Host.AddComponents(program, program.ImageMap.Segments.Values);
 

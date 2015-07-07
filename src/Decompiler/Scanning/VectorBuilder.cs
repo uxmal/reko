@@ -88,7 +88,7 @@ namespace Decompiler.Scanning
             int[] map = new int[limit];
             var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
             
-            var rdr = program.Architecture.CreateImageReader(program.Image, addrTableStart);
+            var rdr = program.CreateImageReader(addrTableStart);
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();
