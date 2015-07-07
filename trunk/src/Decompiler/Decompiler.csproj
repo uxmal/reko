@@ -475,6 +475,9 @@
     <Compile Include="Scanning\Dfa\State.cs" />
     <Compile Include="Scanning\Dfa\TreeNode.cs" />
     <Compile Include="Scanning\Dfa\Automaton.cs" />
+    <Compile Include="Scanning\HeuristicBlock.cs" />
+    <Compile Include="Scanning\HeuristicProcedure.cs" />
+    <Compile Include="Scanning\HeuristicProcedureScanner.cs" />
     <Compile Include="Scanning\IdentifierReplacer.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />

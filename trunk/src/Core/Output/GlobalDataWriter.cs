@@ -60,7 +60,7 @@ namespace Decompiler.Core.Output
                     if (program.Image.IsValidAddress(addr))
                     {
                         formatter.Write(" = ");
-                        this.rdr = program.Architecture.CreateImageReader(program.Image, addr);
+                        this.rdr = program.CreateImageReader(addr);
                         field.DataType.Accept(this);
                     }
                 }

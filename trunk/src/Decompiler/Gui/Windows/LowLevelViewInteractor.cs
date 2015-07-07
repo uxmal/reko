@@ -224,8 +224,7 @@ namespace Decompiler.Gui.Windows
             var addrRange = GetSelectedAddressRange();
             if (addrRange == null)
                 return;
-            var arch = program.Architecture;
-            var rdr = arch.CreateImageReader(program.Image, addrRange.Begin);
+            var rdr = program.CreateImageReader(addrRange.Begin);
             var addrDst = rdr.Read(program.Platform.PointerType);
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();

@@ -35,6 +35,7 @@ namespace Decompiler.Arch.Cil
         };
 
         public OpCode Opcode { get; set; }
+        public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
 
         public override void Render(MachineInstructionWriter writer)
         {

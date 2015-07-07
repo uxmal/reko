@@ -542,7 +542,7 @@ namespace Decompiler.Scanning
         {
             var arch = program.Architecture;
             var target = program.Platform.GetTrampolineDestination(
-                arch.CreateImageReader(program.Image, addr),
+                program.CreateImageReader(addr),
                 this);
             return target;
         }
@@ -572,7 +572,7 @@ namespace Decompiler.Scanning
         {
             if (!image.IsValidAddress(addrImportThunk))
                 return null;
-            var rdr= program.Architecture.CreateImageReader(image, addrImportThunk);
+            var rdr= program.CreateImageReader(addrImportThunk);
             uint uDest;
             if (!rdr.TryReadUInt32(out uDest))
                 return null;

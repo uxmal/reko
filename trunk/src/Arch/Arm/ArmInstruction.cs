@@ -38,6 +38,8 @@ namespace Decompiler.Arch.Arm
         public MachineOperand Src2;
         public MachineOperand Src3;
 
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(string.Format("{0}{1}{2}",

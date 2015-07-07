@@ -218,6 +218,17 @@ namespace Decompiler.Core
         /// </summary>
         public Serialization.Script_v2 OnLoadedScript { get; set; }
 
+        public ImageReader CreateImageReader(Address addr)
+        {
+            return Architecture.CreateImageReader(Image, addr);
+        }
+
+        public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
+        {
+            return Architecture.CreateDisassembler(
+                Architecture.CreateImageReader(Image, addr));
+        }
+
         // Mutators /////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -267,7 +278,6 @@ namespace Decompiler.Core
             }
             throw new NotImplementedException();
         }
-
     } 
 
 	public class VectorUse

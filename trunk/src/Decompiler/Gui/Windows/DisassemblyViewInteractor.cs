@@ -61,7 +61,7 @@ namespace Decompiler.Gui.Windows
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
                     var image = program.Image;
-                    var dasm = arch.CreateDisassembler(arch.CreateImageReader(image, StartAddress)).GetEnumerator();
+                    var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
                     while (dasm.MoveNext())
                     {
                         var instr = dasm.Current;
@@ -165,7 +165,6 @@ namespace Decompiler.Gui.Windows
         }
 
         #endregion
-
 
         #region ICommandTarget Members
 

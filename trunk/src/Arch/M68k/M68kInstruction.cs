@@ -35,6 +35,8 @@ namespace Decompiler.Arch.M68k
         public MachineOperand op2;
         public MachineOperand op3;
 
+        public override int OpcodeAsInteger { get { return (int)code; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             if (code == Opcode.illegal && op1 != null && writer.Platform != null)

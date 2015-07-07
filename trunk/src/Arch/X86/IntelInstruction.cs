@@ -57,6 +57,8 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
+        public override int OpcodeAsInteger { get { return (int) code; } } 
+
 		private bool NeedsExplicitMemorySize()
 		{
 			if (code == Opcode.movsx || code == Opcode.movzx)

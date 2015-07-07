@@ -44,6 +44,11 @@ namespace Decompiler.Core.Machine
         {
         }
 
+        /// <summary>
+        /// Each different supported opcode should have a different numerical value, exposed here.
+        /// </summary>
+        public abstract int OpcodeAsInteger { get; }
+
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();

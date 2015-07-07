@@ -33,6 +33,8 @@ namespace Decompiler.Arch.Pdp11
         public MachineOperand op1;
         public MachineOperand op2;
 
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(Opcode.ToString());

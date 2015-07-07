@@ -25,7 +25,7 @@ using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
-	public abstract class Address : Expression, IComparable
+	public abstract class Address : Expression, IComparable<Address>, IComparable
 	{
         protected Address(DataType size)
             : base(size)
@@ -146,6 +146,11 @@ namespace Decompiler.Core
 		{
 			return (long) a.ToLinear() - (long) b.ToLinear();
 		}
+
+        public int CompareTo(Address a)
+        {
+            return this.ToLinear().CompareTo(a.ToLinear());
+        }
 
 		public int CompareTo(object a)
 		{

@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Assemblers.M68k
 
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                Dumper dumper = new Dumper(asm.Architecture);
+                Dumper dumper = new Dumper(prog.Architecture);
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
                 dumper.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);

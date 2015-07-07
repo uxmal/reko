@@ -84,6 +84,7 @@
     <Compile Include="ShiftOperand.cs" />
     <Compile Include="ThumbDisassembler.cs" />
     <Compile Include="ThumbInstruction.cs" />
+    <Compile Include="ThumbOpcode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(19, lib.Procedures.Count);
+			Assert.AreEqual(20, lib.Procedures.Count);
 		}
 
 		[Test]

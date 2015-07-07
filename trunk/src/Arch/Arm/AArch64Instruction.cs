@@ -50,6 +50,8 @@ namespace Decompiler.Arch.Arm
         public MachineOperand op2;
         public MachineOperand op3;
 
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(Opcode.ToString());

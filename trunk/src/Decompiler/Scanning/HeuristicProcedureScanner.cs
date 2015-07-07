@@ -1,0 +1,328 @@
+﻿#region License
+/* 
+ * Copyright (C) 1999-2015 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Core;
+using Decompiler.Core.Lib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Decompiler.Scanning
+{
+    public class HeuristicProcedureScanner
+    {
+        private Program program;
+        private HeuristicProcedure proc;
+        private DirectedGraph<HeuristicBlock> blocks;
+        private HashSet<Tuple<HeuristicBlock, HeuristicBlock>> conflicts;
+
+        public HeuristicProcedureScanner(Program program, HeuristicProcedure proc)
+        {
+            this.program = program;
+            this.proc = proc;
+            this.blocks = proc.Cfg;
+            this.conflicts = new HashSet<Tuple<HeuristicBlock, HeuristicBlock>>(new CollisionComparer());
+        }
+
+        /// <summary>
+        /// Resolve all block conflicts.
+        /// </summary>
+        /// <param name="blocks"></param>
+        public void BlockConflictResolution()
+        {
+            var valid = TraceReachableBlocks();
+            RemoveBlocksConflictingWithValidBlocks(valid);
+            RemoveParentsOfConflictingBlocks();
+            RemoveBlocksWithFewPredecessors();
+            RemoveBlocksWithFewSuccessors();
+            RemoveConflictsRandomly();
+        }
+
+        private HashSet<HeuristicBlock> TraceReachableBlocks()
+        {
+            // Trace the reachable blocks using DFS; call them 'valid'.
+            var valid = new DfsIterator<HeuristicBlock>(blocks).PreOrder().ToHashSet();
+
+            // Find all conflicting blocks: pairs that overlap.
+            var blockMap = blocks.Nodes.ToSortedList(n => n.Address);
+            for (int i = 0; i < blockMap.Count; ++i)
+            {
+                var u = blockMap.Values[i];
+                var uEnd = u.GetEndAddress();
+                for (int j = i + 1; j < blockMap.Count; ++j)
+                {
+                    var v = blockMap.Values[j];
+                    if (v.Address >= uEnd)
+                        break;
+                    conflicts.Add(Tuple.Create(u, v));
+                }
+            }
+            return valid;
+        }
+
+        private void RemoveBlocksConflictingWithValidBlocks(HashSet<HeuristicBlock> valid)
+        {
+            // Any node that is in conflict with a valid node must be removed.
+            var deleted = new HashSet<HeuristicBlock>();
+            foreach (var n in blocks.Nodes.Where(nn => !valid.Contains(nn)).ToList())
+            {
+                foreach (var v in valid)
+                {
+                    if (conflicts.Contains(Tuple.Create(n, v)))
+                        blocks.Nodes.Remove(n);
+                }
+            }
+        }
+
+        private void RemoveConflictsRandomly()
+        {
+            // foreach (conflict u, v)
+            //    pick u, v randomly and remove it.
+            foreach (var conflict in conflicts)
+            {
+                if (blocks.Nodes.Contains(conflict.Item1) &&
+                    blocks.Nodes.Contains(conflict.Item2))
+                {
+                    blocks.Nodes.Remove(conflict.Item2);
+                }
+            }
+        }
+
+        private void RemoveBlocksWithFewSuccessors()
+        {
+
+            // foreach (conflict (u, v)
+            //    if (u.succ.Count < v.succ.Count)
+            //      remove u
+            //    else if (u.succ.Count > v.succ.count)
+            //      remove v
+            foreach (var conflict in conflicts)
+            {
+                if (blocks.Nodes.Contains(conflict.Item1) &&
+                    blocks.Nodes.Contains(conflict.Item2))
+                {
+                    var uCount = blocks.Successors(conflict.Item1).Count;
+                    var vCount = blocks.Successors(conflict.Item2).Count;
+                    if (uCount < vCount)
+                        blocks.Nodes.Remove(conflict.Item1);
+                }
+            }
+        }
+
+        private void RemoveBlocksWithFewPredecessors()
+        {
+            // 
+            //    if (u.pred.Count < v.pred.Count)
+            //      remove u
+            //    else if (u.pred.Count > v.pred.count)
+            //      remove v
+            foreach (var conflict in conflicts)
+            {
+                var uCount = blocks.Predecessors(conflict.Item1).Count;
+                var vCount = blocks.Predecessors(conflict.Item2).Count;
+                if (uCount < vCount)
+                    blocks.Nodes.Remove(conflict.Item1);
+            }
+        }
+
+        private void RemoveParentsOfConflictingBlocks()
+        {
+            // for all conflicting (u,v)
+            //    for all common_parents p
+            //        remove p.
+            foreach (var conflict in conflicts)
+            {
+
+                //var uParents = cp.GetParents(conflict.Item1);
+                //var vParents = cp.GetParents(conflict.Item2);
+                //foreach (var uP in uParents)
+                //    if (vParents.Contains(uP))
+                //        blocks.Nodes.Remove(uP);
+            }
+        }
+
+        private IEnumerable<Tuple<Address, Address>> GetGaps()
+        {
+            var blockMap = proc.Cfg.Nodes.ToSortedList(n => n.Address);
+            var addrLastEnd = blockMap.Values[0].Address;
+            foreach (var b in blockMap.Values)
+            {
+                if (addrLastEnd < b.Address)
+                    yield return Tuple.Create(addrLastEnd, b.Address);
+                addrLastEnd = b.GetEndAddress();
+            }
+        }
+
+        public void GapResolution()
+        {
+            foreach (var gap in GetGaps())
+            {
+                var scores = new List<Tuple<int, Address>>();
+                foreach (var sequence in GetValidSequences(gap))
+                {
+                    int score = ScoreSequence(sequence);
+                    scores.Add(Tuple.Create(score, sequence));
+                }
+            }
+        }
+
+        private int ScoreSequence(Address sequence)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<Address> GetValidSequences(Tuple<Address, Address> gap)
+        {
+            for (Address addr = gap.Item1; addr < gap.Item2; addr = addr + program.Architecture.InstructionBitSize / 8)
+            {
+                var block = new HeuristicBlock(addr, "@@");
+                var dasm = program.Architecture.CreateRewriter(
+                    program.CreateImageReader(addr),
+                    program.Architecture.CreateProcessorState(),
+                    program.Architecture.CreateFrame(),
+                    null);
+                bool isValid = false;
+                foreach (var instr in dasm)
+                {
+                    if (instr.Address + instr.Length > gap.Item2)
+                        break;
+                    var lastInstr = instr.Instructions.Last();
+                    if (NonLocalTransferInstruction())
+                    {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (isValid)
+                    yield return addr;
+            }
+        }
+
+        private bool NonLocalTransferInstruction()
+        {
+            throw new NotImplementedException();
+        }
+
+        // Block conflict resolution
+
+        /// <summary>
+        /// Collects all the ancestors of a node 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graph"></param>
+        /// <param name="node"></param>
+        /// <param name="visited"></param>
+        public void GetAllAncestors<T>(DirectedGraph<T> graph, T node, HashSet<T> visited)
+        {
+            foreach (var p in graph.Predecessors(node))
+            {
+                if (!visited.Contains(p))
+                {
+                    visited.Add(p);
+                    GetAllAncestors(graph, p, visited);
+                }
+            }
+        }
+
+        private class CollisionComparer : IEqualityComparer<Tuple<HeuristicBlock, HeuristicBlock>>
+        {
+            public bool Equals(Tuple<HeuristicBlock, HeuristicBlock> x, Tuple<HeuristicBlock, HeuristicBlock> y)
+            {
+                return x.Item1 == y.Item1 && x.Item2 == y.Item2 ||
+                       x.Item1 == y.Item2 && x.Item2 == y.Item1;
+            }
+
+            public int GetHashCode(Tuple<HeuristicBlock, HeuristicBlock> obj)
+            {
+                return obj.Item1.GetHashCode() ^ obj.Item2.GetHashCode();
+            }
+        }
+
+
+        // Gap resolution
+
+        // find all valid instruction sequences
+        //   valid: if (last_sequence) ends at gap.end
+        //   or : last instr is non-intra-procedure control
+        //
+        // Instruction sequences are found by considering each
+        //byte between the start and the end of the gap as a potential
+        //start of a valid instruction sequence. Subsequent
+        //instructions are then decoded until the instruction sequence
+        //either meets or violates one of the necessary conditions
+        //defined above. When an instruction sequence
+        //meets a necessary condition, it is considered possibly
+        //valid and a sequence score is calculated for it. The sequence
+        //score is a measure of the likelihood that this instruction
+        //sequence appears in an executable. It is calculated
+        //as the sum of the instruction scores of all instructions
+        //in the sequence. The instruction score is similar to
+        //the sequence score and reflects the likelihood of an individual
+        //instruction. Instruction scores are always greater
+        //or equal than zero. Therefore, the score of a sequence
+        //cannot decrease when more instructions are added. We
+        //calculate instruction scores using statistical techniques
+        //and heuristics to identify improbable instructions
+
+        //        calculate instruction scores using statistical techniques
+        //and heuristics to identify improbable instructions.
+        //The statistical techniques are based on instruction probabilities
+        //and digraphs. Our approach utilizes tables that
+        //denote both the likelihood of individual instructions appearing
+        //in a binary as well as the likelihood of two instructions
+        //occurring as a consecutive pair. The tables
+        //were built by disassembling a large set of common executables
+        //and tabulating counts for the occurrence of each
+        //individual instruction as well as counts for each occurrence
+        //of a pair of instructions. These counts were subsequently
+        //stored for later use during the disassembly of
+        //an obfuscated binary. It is important to note that only instruction
+        //opcodes are taken into account with this technique;
+        //operands are not considered. The basic score
+        //for a particular instruction is calculated as the sum of
+        //the probability of occurrence of this instruction and the
+        //probability of occurrence of this instruction followed by
+        //the next instruction in the sequence.
+
+        //In addition to the statistical technique, a set of heuristics
+        //are used to identify improbable instructions. This
+        //analysis focuses on instruction arguments and observed
+        //notions of the validity of certain combinations of operations,
+        //registers, and accessing modes. Each heuristic is
+        //applied to an individual instruction and can modify the
+        //basic score calculated by the statistical technique. In our
+        //current implementation, the score of the corresponding
+        //instruction is set to zero whenever a rule matches. Examples
+        //of these rules include the following:
+        //• operand size mismatches;
+        //• certain arithmetic on special-purpose registers;
+        //• unexpected register-to-registermoves (e.g., moving
+        //from a register other than %ebp into %esp);
+        //• moves of a register value into memory referenced
+        //by the same register.
+
+        //        When all possible instruction sequences are determined,
+        //the one with the highest sequence score is selected as the
+        //valid instruction sequence between b1 and b2.
+   
+    }
+
+}

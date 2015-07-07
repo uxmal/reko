@@ -36,6 +36,8 @@ namespace Decompiler.Arch.Sparc
         public MachineOperand Op2;
         public MachineOperand Op3;
 
+        public override int OpcodeAsInteger { get { return (int)Opcode; } }
+
         public override void Render(MachineInstructionWriter writer)
         {
             writer.WriteOpcode(
