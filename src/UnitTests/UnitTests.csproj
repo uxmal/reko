@@ -407,7 +407,9 @@
     <Compile Include="Scanning\Dfa\AutomatonTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
+    <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
     <Compile Include="Scanning\HeuristicScannerTests.cs" />
+    <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
