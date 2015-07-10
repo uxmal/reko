@@ -183,9 +183,14 @@ namespace Decompiler.Scanning
 
         private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr, HeuristicProcedure proc)
         {
-            var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr.ToLinear()));
+            var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
             newBlock.Statements.AddRange(
                 block.Statements.Where(r => r.Address >= addr).OrderBy(r => r.Address));
+            foreach (var de in blockMap.Where(d => d.Key >= addr && d.Value == block).ToList())
+            {
+                blockMap[de.Key] = newBlock;
+            }
+            block.Statements.RemoveAll(r => r.Address >= addr);
             var succs = proc.Cfg.Successors(block).ToArray();
             foreach (var s in succs)
             {
@@ -206,7 +211,6 @@ namespace Decompiler.Scanning
         public HeuristicBlock HeuristicDisassemble(Address addr, HeuristicProcedure proc)
         {
             var current = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
-            proc.Cfg.AddNode(current);
             var rAddr = prog.Architecture.CreateRewriter(
                      prog.CreateImageReader(addr),
                      prog.Architecture.CreateProcessorState(),
@@ -218,7 +222,7 @@ namespace Decompiler.Scanning
                 if (blockMap.TryGetValue(rtl.Address, out block))
                 {
                     // This instruction was already disassembled before.
-                    if (rtl.Address != block.Address)
+                    if (rtl.Address.ToLinear() != block.Address.ToLinear())
                     {
                         block = SplitBlock(block, rtl.Address, proc);
                     }
@@ -231,6 +235,10 @@ namespace Decompiler.Scanning
                     {
                         // Fell into 'block' while disassembling
                         // 'current'. Create a fall-though edge
+                        if (!proc.Cfg.Nodes.Contains(current))
+                        {
+                            proc.Cfg.AddNode(current);
+                        }
                         proc.Cfg.AddEdge(current, block);
                         return current;
                     }
@@ -238,6 +246,10 @@ namespace Decompiler.Scanning
                 else
                 {
                     // Fresh instruction
+                    if (!proc.Cfg.Nodes.Contains(current))
+                    {
+                        proc.Cfg.AddNode(current);
+                    }
                     current.Statements.Add(rtl);
                     blockMap.Add(rtl.Address, current);
                     var rtlLast = rtl.Instructions.Last();
@@ -247,7 +259,7 @@ namespace Decompiler.Scanning
                         // we stop disassembling.
                         return current;
                     }
-                    var rtlJump  = rtlLast as RtlGoto;
+                    var rtlJump = rtlLast as RtlGoto;
                     if (rtlJump != null)
                     {
                         var target = rtlJump.Target as Address;

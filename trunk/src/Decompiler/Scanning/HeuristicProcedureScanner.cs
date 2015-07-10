@@ -193,7 +193,7 @@ namespace Decompiler.Scanning
         {
             for (Address addr = gap.Item1; addr < gap.Item2; addr = addr + program.Architecture.InstructionBitSize / 8)
             {
-                var block = new HeuristicBlock(addr, "@@");
+                var block = new HeuristicBlock(addr, string.Format("l{0:X}" + addr));
                 var dasm = program.Architecture.CreateRewriter(
                     program.CreateImageReader(addr),
                     program.Architecture.CreateProcessorState(),

@@ -18,37 +18,23 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Rtl;
+using Decompiler.Scanning;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Decompiler.UnitTests.Scanning
 {
-    public class HeuristicBlock
+    class HeuristicProcedureScannerTests
     {
-        //private static int cntr = 0; 
+        HeuristicProcedureScanner subject;
 
-        public HeuristicBlock(Address address, string name)
+        [Test]
+        public void HPSC_Valid()
         {
-            this.Address = address;
-            this.Name = name; // +"-" + (++cntr);
-            this.Statements = new List<RtlInstructionCluster>();
-        }
 
-        public Address Address { get; private set; }
-        public string Name { get; private set; }
-        public List<RtlInstructionCluster> Statements { get; private set; }
-
-        public Address GetEndAddress()
-        {
-            int iLast = Statements.Count - 1;
-            if (iLast < 0)
-                return Address;
-            var instr = Statements[iLast];
-            return instr.Address + instr.Length;
         }
     }
 }
