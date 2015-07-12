@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
             Assert.AreEqual(0, sig.StackDelta);
-            Assert.AreEqual("Register word32 test(FpuStack real64 fpArg0)", sig.ToString("test"));
+            Assert.AreEqual("Register int test(FpuStack real64 fpArg0)", sig.ToString("test"));
         }
 
         private SerializedType Type(string typeName)

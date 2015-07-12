@@ -56,7 +56,8 @@
   </procedure>
   <procedure name="rand">
 	<signature>
-	  <return type="int">
+	  <return>
+      <prim domain="SignedInt" size="4" />
 		<reg>eax</reg>
 	  </return>
 	</signature>
@@ -99,7 +100,8 @@
   </procedure>
   <procedure name="atol">
 	<signature>
-	  <return type="long">
+	  <return>
+      <prim domain="SignedInt" size="4" />
 		<reg>eax</reg>
 	  </return>
     <arg>
@@ -123,9 +125,7 @@
   <procedure name="srand">
 	<signature>
 	  <return>
-      <type>
-        <void />
-      </type>
+      <void />
 		  <reg>eax</reg>
 	  </return>
 	  <arg>

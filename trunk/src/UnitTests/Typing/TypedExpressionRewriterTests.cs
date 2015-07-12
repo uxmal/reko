@@ -466,6 +466,25 @@ namespace Decompiler.UnitTests.Typing
             prog.Add(new StaggeredArraysFragment());
             RunTest(prog.BuildProgram(), "Typing/TerStaggeredArrays.txt");
         }
+
+        [Test]
+        public void TerDeclaration()
+        {
+            ProgramBuilder pm = new ProgramBuilder();
+            pm.Add("proc1", m =>
+            {
+                var ax = m.Reg16("ax");
+                var rand = new ExternalProcedure(
+                    "rand",
+                    new ProcedureSignature(
+                        new Identifier("ax", PrimitiveType.Int16, ax.Storage),
+                        new Identifier[0]));
+                m.Declare(ax, m.Fn(rand));
+                m.Store( m.Word16(0x300), ax);
+                m.Return();
+            });
+            RunTest(pm, "Typing/TerDeclaration.txt");
+        }
     }
 
 	public class SegmentedMemoryPointerMock : ProcedureBuilder

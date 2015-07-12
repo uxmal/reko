@@ -74,8 +74,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature ssig = BuildSsigAxBxCl();
             Given_X86ProcedureSerializer();
             ProcedureSignature sig = sser.Deserialize(ssig, arch.CreateFrame());
-			Assert.AreEqual("Register word16 AxBxCl(Register word16 bx, Register byte cl)", sig.ToString("AxBxCl"));
-			Assert.AreEqual(PrimitiveType.Word16, sig.ReturnValue.DataType);
+			Assert.AreEqual("Register int16 AxBxCl(Register word16 bx, Register byte cl)", sig.ToString("AxBxCl"));
+			Assert.AreEqual(PrimitiveType.Int16, sig.ReturnValue.DataType);
 		}
 
 		[Test]
@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		}
 
 		[Test]
-		public void DeserializeOutArgument()
+		public void SsigDeserializeOutArgument()
 		{
             Argument_v1 arg = new Argument_v1
             {
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature ssig = new SerializedSignature();
 			
 			Argument_v1 sarg = new Argument_v1();
-			sarg.Type = new SerializedTypeReference("int");
+			sarg.Type = new PrimitiveType_v1(Domain.SignedInt, 2);
 			sarg.Kind = new Register_v1("ax");
 			ssig.ReturnValue = sarg;
 

@@ -54,6 +54,13 @@ namespace Decompiler.Core.Serialization
 			return new Identifier(name, type, storage);
 		}
 
+        /// <summary>
+        /// Deserializes the signature <paramref name="ss"/>. Any instantiated
+        /// registers or stack variables are introduced into the Frame.
+        /// </summary>
+        /// <param name="ss"></param>
+        /// <param name="frame"></param>
+        /// <returns></returns>
         public abstract ProcedureSignature Deserialize(SerializedSignature ss, Frame frame);
 
         public abstract Storage GetReturnRegister(Argument_v1 sArg, int bitSize);

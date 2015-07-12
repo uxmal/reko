@@ -75,9 +75,11 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void ArgSer_DeserializeRegister()
 		{
 			Register_v1 reg = new Register_v1("eax");
-			Argument_v1 arg = new Argument_v1();
-			arg.Name = "eax"; 
-			arg.Kind = reg;
+            Argument_v1 arg = new Argument_v1
+            {
+                Name = "eax",
+                Kind = reg,
+            };
             Identifier id = argser.Deserialize(arg);
 			Assert.AreEqual("eax", id.Name);
 			Assert.AreEqual(32, id.DataType.BitSize);
@@ -93,6 +95,18 @@ namespace Decompiler.UnitTests.Core.Serialization
             Assert.IsTrue(arg.OutParameter);
             Register_v1 sr = (Register_v1) arg.Kind;
             Assert.AreEqual("q", sr.Name);
+        }
+
+        [Test]
+        public void ArgSet_DerserializeReturnRegisterWithType()
+        {
+            var arg = new Argument_v1
+            {
+                Kind = new Register_v1("eax"),
+                Type = new PointerType_v1 { DataType = new PrimitiveType_v1 { ByteSize = 1, Domain = Domain.Character } }
+            };
+            var id = argser.DeserializeReturnValue(arg);
+            Assert.AreEqual("(ptr char)", id.DataType.ToString());
         }
 	}
 }

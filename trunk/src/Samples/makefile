@@ -2,7 +2,8 @@ all: $(Configuration) \
 	$(Configuration)\fib.exe \
 	$(Configuration)\main.exe \
 	$(Configuration)\driver.dll \
-	$(Configuration)\delayload.exe
+	$(Configuration)\delayload.exe \
+        $(Configuration)\win32api.exe 
 
 clean:
 	-@del /q $(Configuration)\*
@@ -29,3 +30,11 @@ $(Configuration)\delayload.exe: delayload\delayload.cpp
 	 $(Configuration)\delayload.obj \
 	 kernel32.lib \
 	 user32.lib
+
+$(Configuration)\win32api.exe: win32api\win32api.c
+	cl /nologo /c /FAc /Fa$(Configuration)\win32api.cod /GS- /Ox /Fo$(Configuration)\win32api.obj win32api\win32api.c
+	link /nologo /NOD /Entry:WinMain /OUT:$(Configuration)\win32api.exe \
+	 $(Configuration)\win32api.obj \
+	 kernel32.lib \
+	 user32.lib
+  

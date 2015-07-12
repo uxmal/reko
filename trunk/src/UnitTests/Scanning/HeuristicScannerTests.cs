@@ -21,6 +21,7 @@
 using Decompiler.Arch.Arm;
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -177,12 +178,16 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual(0x1000D, ranges[1].Item2.ToLinear());
         }
 
-        private void AssertBlocks(string sExpected, IEnumerable<HeuristicBlock> hBlocks)
+        private void AssertBlocks(string sExpected, DirectedGraph<HeuristicBlock> cfg)
         {
             var sb = new StringBuilder();
-            foreach (var hblock in hBlocks.OrderBy(hb => hb.Address))
+            foreach (var hblock in cfg.Nodes.OrderBy(hb => hb.Address))
             {
-                sb.AppendFormat("{0}:", hblock.Name);
+                sb.AppendFormat("{0}:  // pred:", hblock.Name);
+                foreach (var pred in cfg.Predecessors(hblock).OrderBy(hb => hb.Address))
+                {
+                    sb.AppendFormat(" {0}", pred.Name);
+                }
                 sb.AppendLine();
                 var lastAddr = hblock.GetEndAddress();
                 var dasm = prog.Architecture.CreateDisassembler(
@@ -225,67 +230,67 @@ namespace Decompiler.UnitTests.Scanning
                 prog.Image.BaseAddress + prog.Image.Length);
             var sExp =
                 #region Expected
- @"l00010000:
+ @"l00010000:  // pred: l00010003
     push ebp
-l00010001:
+l00010001:  // pred: l00010003
     mov ebp,esp
-l00010002:
+l00010002:  // pred: l00010006
     in eax,E8
-l00010003:
+l00010003:  // pred:
     call 11750008
-l00010004:
+l00010004:  // pred: l00010006
     add [eax],al
-l00010005:
+l00010005:  // pred: l00010009
     add [ecx+edx+0A],dh
-l00010006:
+l00010006:  // pred:
     jz 00010019
-l00010007:
+l00010007:  // pred:
     adc [edx],ecx
-l00010008:
+l00010008:  // pred: l00010006 l00010010
     or al,[0675003C]
-l00010009:
+l00010009:  // pred: l00010007
     add eax,0675003C
-l0001000A:
+l0001000A:  // pred: l0001000C
     cmp al,00
-l0001000B:
+l0001000B:  // pred:
     add [ebp+06],dh
-l0001000C:
+l0001000C:  // pred:
     jnz 00010014
-l0001000D:
+l0001000D:  // pred:
     push es
-l0001000E:
+l0001000E:  // pred: l00010009 l0001000B l0001000C l0001000D l00010010
     mov al,00
-l0001000F:
+l0001000F:  // pred: l00010018
     add bl,ch
-l00010010:
+l00010010:  // pred:
     jmp 00010019
-l00010011:
+l00010011:  // pred: l00010018
     pop es
-l00010012:
+l00010012:  // pred: l00010018
     or al,[740000A1]
-l00010013:
+l00010013:  // pred:
     add eax,740000A1
-l00010014:
+l00010014:  // pred: l0001000C
     mov eax,[01740000]
-l00010015:
+l00010015:  // pred: l00010017
     add [eax],al
-l00010016:
+l00010016:  // pred:
     add [ecx+eax-77],dh
-l00010017:
+l00010017:  // pred:
     jz 0001001A
-l00010018:
+l00010018:  // pred: l00010013
     add [ecx+90C35DEC],ecx
-l00010019:
+l00010019:  // pred: l00010006 l00010010 l00010014 l00010017 l0001001C
     mov esp,ebp
-l0001001A:
+l0001001A:  // pred: l00010016 l00010017
     in al,dx
-l0001001B:
+l0001001B:  // pred: l0001001A l0001001C
     pop ebp
-l0001001C:
+l0001001C:  // pred:
     ret 
 ";
             #endregion
-            AssertBlocks(sExp, proc.Cfg.Nodes);
+            AssertBlocks(sExp, proc.Cfg);
         }
     }
 }
